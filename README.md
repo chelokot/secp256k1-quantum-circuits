@@ -1,3 +1,10 @@
+> [!WARNING]
+> This repository was created entirely with ChatGPT 5.4 Pro. I personally have
+> only surface-level knowledge of quantum computing, so I cannot audit it in
+> depth myself. I have tried to make it as transparent, tested, and
+> reproducible as possible. Anyone with domain expertise is strongly encouraged
+> to review this repository and open issues or pull requests.
+
 # secp256k1 kickmix open audit repository
 
 This repository is an open audit package for a secp256k1 ECDLP point-addition
