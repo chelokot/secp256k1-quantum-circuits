@@ -1,160 +1,60 @@
 # Literature integration decisions
 
-This document explains what was actually integrated, what was translated only as
-scenario pressure, and what was deliberately left out of the mainline.
+This document explains how external work is used in the repository.
 
-## New rule after the correction
+## Directly integrated into repository artifacts
 
-The corrected cost model changes the interpretation of the literature.
+### 1. Public appendix baseline
 
-Earlier internal notes over-emphasized lookup papers because the lookup share was
-mistakenly computed as ~97% of the total. After correction, arithmetic remains
-the larger modeled share.
+Babbush et al. 2026 is used as the public secp256k1 appendix baseline recorded
+in `artifacts/optimized/out/resource_projection.json`.
 
-That means:
+### 2. Validation pressure
 
-- arithmetic papers remain highly relevant,
-- lookup papers still matter, but now as a bounded secondary frontier,
-- and the strongest next-step repo contribution is the one that can be integrated
-  exactly and audited cleanly.
+Validation-oriented literature informs the repository's emphasis on:
 
-## Integrated directly
+- deterministic replay transcripts
+- finite-model family checks
+- explicit scope and boundary documents
+- benchmark-ladder regression data
 
-### 1. Benchmark-ladder thinking
+### 3. Exact lookup-contract shaping
 
-Still integrated exactly as before.
+Lookup and windowing literature informs the signed folded lookup contract, but
+the repository only integrates the part that can be stated as an exact contract
+and audited directly.
 
-Why:
+### 4. Scenario translation
 
-- it strengthens regression testing,
-- it supports external reimplementation,
-- it aligns with the need for better ECDLP benchmark suites.
+Arithmetic-backend and architecture papers are used to define explicit scenario
+files and future-work branches rather than being merged into the main headline
+without a new exact artifact.
 
-Where:
+## Used as scenario or future-work inputs
 
-- `benchmarks/challenge_ladder/`
-- `docs/CHALLENGE_LADDER.md`
+The repository treats the following categories as scenario pressure, not as
+direct headline evidence:
 
-### 2. Cost-model correction
+- alternative multiplier and adder backends
+- deeper lookup-lowering frameworks
+- external IR and equivalence tooling
+- physical fault-tolerant architecture studies
+- alternate low-qubit ECDLP branches
 
-Integrated directly because the previous interpretation was wrong.
+## Why that split exists
 
-Where:
+The repository's main strength is a short trust path:
 
-- `docs/COST_MODEL_CORRECTION.md`
-- `artifacts/optimized/out/dominant_cost_breakdown.json`
-- `results/research_pass_summary.json`
+- machine-readable artifacts
+- transparent Python verification
+- local reruns without heavy external stacks
 
-### 3. Exact lookup-folding branch
+Literature is integrated directly only when the result can be expressed in those
+terms.
 
-Integrated directly because it could be stated as an exact contract rather than
-as a vague heuristic.
+## Supporting files
 
-Why:
-
-- it uses the public two's-complement lookup framing,
-- it exploits exact secp256k1 negation symmetry,
-- it does not require rewriting the exact arithmetic leaf,
-- it supports exhaustive and sampled audits.
-
-Where:
-
-- `artifacts/optimized/out/lookup_signed_fold_contract.json`
-- `artifacts/optimized/out/ecdlp_scaffold_lookup_folded.json`
-- `artifacts/optimized/out/lookup_signed_fold_summary.json`
-- `docs/LOOKUP_FOLDING_RESEARCH_PASS.md`
-
-## Translated only as scenarios
-
-### Multiplier/backend improvements
-
-Examples:
-
-- Litinski-style schoolbook multiplier improvements
-- more aggressive adder/backend substitutions
-
-Why not merged into the headline:
-
-- they would change the arithmetic leaf implementation itself,
-- the repository has not yet rewritten and re-audited that leaf,
-- so only model-level scenario translation is honest today.
-
-How they are used:
-
-- `artifacts/optimized/out/literature_projection_scenarios.json`
-
-### Deeper lookup-lowering papers
-
-Examples:
-
-- Gidney windowed arithmetic
-- Haner space-time lookup
-- unified lookup-architecture work
-- conditionally-clean ancilla work
-
-Why not merged fully into the headline:
-
-- the current repo stops at an exact contract layer for lookup,
-- not at a primitive-lowered qRAM/QROM implementation.
-
-How they are used:
-
-- to guide the next lowering experiments,
-- to justify the new folded-lookup branch,
-- and to define what to build next after this pass.
-
-## Deliberately not merged into the mainline
-
-### External heavy frameworks
-
-Examples:
-
-- Qualtran
-- Qrisp
-- QCEC
-
-Why not merged:
-
-- the transparent standard-library verifier remains one of the repo's main
-  strengths,
-- and these are better treated as external reimplementation or flattening paths.
-
-### Low-qubit affine/inversion branches
-
-Example:
-
-- Luo 2026
-
-Why not merged:
-
-- the current optimized line is built around complete mixed formulas and avoids
-  affine inversion in the hot path,
-- so a low-qubit affine branch is better framed as an alternate branch.
-
-### Physical architecture papers as logical-circuit evidence
-
-Examples:
-
-- Cain 2026
-- Gouzien 2023
-- Gu 2025
-
-Why not merged into the logical headline:
-
-- they live at a different abstraction layer,
-- they are great for transfer studies,
-- they do not strengthen the exact ISA-level artifact directly.
-
-## Ranked next steps after this pass
-
-1. **arithmetic-backend swap experiments**
-2. **primitive-lower more of the lookup layer**
-3. **fragment flattening + external equivalence checking**
-4. **alternate low-qubit branch**
-5. **broader physical-stack comparison matrix**
-
-## One-sentence summary
-
-This pass strengthened the repo by correcting a real internal modeling error and
-by adding one exact, audited lookup optimization instead of pretending that a
-large heuristic frontier jump was already achieved.
+- `results/literature_matrix.json`
+- `docs/STATE_OF_THE_ART_2026.md`
+- `docs/TOOLING_AND_REIMPLEMENTATION_PATHS.md`
+- `docs/PHYSICAL_STACKS_AND_HARDWARE_CONTEXT.md`

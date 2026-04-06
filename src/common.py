@@ -246,9 +246,13 @@ def relative_file_manifest(root: Path) -> Dict[str, Dict[str, Any]]:
         if not path.is_file():
             continue
         rel = path.relative_to(root).as_posix()
+        if rel.startswith('.git/'):
+            continue
         if '/__pycache__/' in f'/{rel}/' or rel.endswith('.pyc'):
             continue
         if rel == 'MANIFEST.sha256' or rel.endswith('.zip'):
+            continue
+        if rel == 'results/repo_verification_summary.json':
             continue
         manifest[rel] = {
             'sha256': sha256_path(path),

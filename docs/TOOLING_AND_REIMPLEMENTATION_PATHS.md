@@ -1,58 +1,43 @@
 # External tooling and reimplementation paths
 
-This repository intentionally keeps its main verification path minimal:
+The core verifier stays intentionally small:
 
-- Python standard library for the verifier,
-- optional matplotlib for figure regeneration.
+- Python standard library for verification logic
+- optional matplotlib for figure regeneration
 
-That keeps the audit surface small, but it also means some stronger future checks
-should happen **outside** the current core path.
+That keeps the trust path short. Stronger future checks can be added as
+separate reimplementation or lowering paths.
 
-## Best external next steps
+## Most relevant external directions
 
-### 1. Qualtran re-expression
+### 1. Qualtran or similar IR re-expression
 
-Use case:
-- represent the optimized leaf and scaffold in a more formal intermediate layer,
-- attach richer resource accounting,
-- and make block-structured compilation more explicit.
+Use:
 
-Why it matters:
-- good fit for hierarchical algorithm description and resource inspection.
+- represent the optimized leaf and scaffold in a more formal block structure
+- attach richer resource accounting
 
-### 2. QCEC fragment checking
+### 2. QCEC or equivalent fragment checking
 
-Use case:
-- after lowering fragments to OpenQASM / primitive-level circuits,
-- run equivalence checks with explicit ancilla / garbage handling.
+Use:
 
-Why it matters:
-- this is probably the cleanest route from today's exact ISA-level artifact to a
-  stronger flattened-fragment story.
+- check lowered fragments after conversion to a circuit IR
+- add ancilla-aware equivalence checks outside the current core verifier
 
-### 3. Qrisp / Q# / external-stack reimplementation
+### 3. Independent language-stack reimplementation
 
-Use case:
-- independent re-expression in a separate language / compiler stack.
+Use:
 
-Why it matters:
-- independent implementation diversity is one of the best anti-self-deception
-  tools for complicated arithmetic circuits.
+- reproduce the artifact in another implementation stack such as Qrisp or Q#
+- gain implementation diversity against verifier self-confirmation
 
-## Why these are not already merged here
+## Why these are not core dependencies
 
-Because the repository's current main strength is:
+The repository prioritizes:
 
-- a short trust path,
-- transparent code,
-- and easy local reruns.
+- local reruns
+- explicit machine-readable artifacts
+- transparent verifier code
 
-Pulling all of those frameworks directly into the core repo would make the main
-artifact less transparent, not more.
-
-So the right move is:
-
-- document the paths now,
-- preserve the current minimal core,
-- and treat heavyweight framework integration as a separate branch or follow-up
-  repository.
+Heavy external tooling is therefore documented as a next path, not embedded as a
+mandatory part of the current trust base.

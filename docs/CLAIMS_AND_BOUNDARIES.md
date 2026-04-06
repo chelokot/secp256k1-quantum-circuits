@@ -1,94 +1,115 @@
 # Claims and boundaries
 
-This file is the shortest honest statement of what the repository *does* and *does not* prove.
+This file defines the strongest claims supported by the checked-in artifacts.
 
 ## Strongest defensible claim
 
-The repository publishes an **exact kickmix-ISA arithmetic netlist** for a secp256k1-specialized complete mixed addition leaf, plus deterministic audits and finite-model family checks, and a **modeled** backend projection showing a large improvement over the **public** Google appendix envelope.
+The repository publishes exact kickmix-ISA arithmetic schedules for a
+secp256k1-specialized point-add leaf and explicit retained-window scaffold
+metadata, together with deterministic audits, finite-model checks, and modeled
+backend projections against the public appendix baseline of Babbush et al.
+2026.
 
 ## Exact layers
 
 ### 1. Optimized arithmetic leaf
-The file `artifacts/optimized/out/optimized_pointadd_secp256k1.json` is a machine-readable instruction schedule for:
+
+`artifacts/optimized/out/optimized_pointadd_secp256k1.json` is the primary
+machine-readable leaf schedule for:
 
 `Q <- Q + L`
 
 where:
-- `Q` is the accumulator in the repository's homogeneous projective representation,
-- `L` is an externally supplied affine lookup point,
-- field arithmetic is over secp256k1's prime field.
+
+- `Q` is the accumulator in the repository's projective representation
+- `L` is an externally supplied affine lookup point
+- field arithmetic is over the secp256k1 prime field
 
 This layer is checked by:
-- `optimized_pointadd_audit_16384.csv`
-- `toy_curve_exhaustive_19850.csv`
-- `toy_curve_family_extended_110692.csv`
+
+- `artifacts/optimized/out/optimized_pointadd_audit_16384.csv`
+- `artifacts/optimized/out/toy_curve_exhaustive_19850.csv`
+- `artifacts/optimized/out/toy_curve_family_extended_110692.csv`
 
 ### 2. Archived exact leaf
-The file `artifacts/exact_kickmix/out/pointadd_exact_kickmix.json` is a more verbose archived exact artifact.
-It remains useful as a semantic reference point and as a comparison baseline for the optimized leaf.
 
-### 3. Finite-model family checks
-The optimized family netlist is exhaustively checked on four prime-order `j = 0` toy curves.
-That is a genuine exhaustive finite-model result, not a random sample.
+`artifacts/exact_kickmix/out/pointadd_exact_kickmix.json` is an archived exact
+release of the same overall point-add role with a different schedule shape. It
+is retained as a reference artifact and replay target.
 
-### 4. Signed folded lookup contract
-The files `artifacts/optimized/out/lookup_signed_fold_contract.json` and
-`artifacts/optimized/out/ecdlp_scaffold_lookup_folded.json` define an exact
-lookup-contract variant that folds signed 16-bit two's-complement lookup words
-through secp256k1 negation symmetry.
+### 3. Retained-window scaffold metadata
 
-This layer is checked by:
-- `lookup_signed_fold_exhaustive_g.csv`
-- `lookup_signed_fold_multibase_sampled.csv`
+`artifacts/optimized/out/ecdlp_scaffold_optimized.json` is a machine-readable
+retained-window schedule with:
 
-It is exact at the contract/semantics level, but it is still not a primitive-gate
-qRAM realization.
+- one direct seed,
+- `28` retained point-add leaf calls,
+- `3` classical tail elisions,
+- window size `16`.
 
-## Explicitly non-exact layers
+Its internal coherence is checked by
+`artifacts/optimized/out/scaffold_schedule_audit_256.csv`.
 
-### A. Lookup memory / qRAM
-The leaf netlists do **not** flatten the lookup machinery into primitive gates.
+### 4. Exact lookup contracts
 
-Instead, they expose a lookup boundary:
-- affine `x`
-- affine `y`
-- metadata flags
+The repository exposes lookup words and returned semantic points explicitly.
+Two exact contract layers are checked:
 
-The publication-hardening pass adds `lookup_contract_audit_8192.csv` to make this boundary explicit and testable, but this is still not a primitive-gate qRAM construction.
+- the base lookup contract in
+  `artifacts/optimized/out/lookup_contract_summary.json`
+- the signed folded lookup contract in
+  `artifacts/optimized/out/lookup_signed_fold_contract.json`
 
-### B. MBUC cleanup
-The archived leaf contains `mbuc_clear` operations and the optimized leaf contains `mbuc_clear_bool`.
-These are abstract cleanup contracts, not flattened reversible gates.
+The signed folded variant is audited by:
 
-The verifier checks basis-state functional semantics.
-It does **not** prove phase-correct cleanup in a fully coherent primitive-gate model.
+- `artifacts/optimized/out/lookup_signed_fold_exhaustive_g.csv`
+- `artifacts/optimized/out/lookup_signed_fold_multibase_sampled.csv`
 
-### C. Hierarchical retained-window scaffold
-`ecdlp_scaffold_optimized.json` is a machine-readable retained-window schedule compatible with the public appendix count.
-It is not a flat gate list for the whole Shor period-finding stack.
+## Modeled or non-exact layers
 
-The strict verifier adds `scaffold_schedule_audit_256.csv` to show that the published schedule is semantically coherent on deterministic secp256k1 instances.
+### A. Primitive-gate lookup realization
 
-### D. Backend qubit / non-Clifford totals
-The headline `880q / 31.0M-32.8M` numbers live below the ISA boundary.
-They are explicit backend projections, not theorem-proved primitive-gate totals.
+The repository does not lower lookup memory into a primitive-gate qRAM or QROM
+construction. It proves the lookup contracts assumed at the ISA boundary.
 
-Read:
-- `artifacts/optimized/out/resource_projection.json`
-- `artifacts/optimized/out/projection_sensitivity.json`
+### B. Primitive-gate cleanup
 
-## Public-comparison boundary
+The `mbuc_*` cleanup operations are represented as abstract cleanup contracts.
+The verifier checks basis-state functional behavior, not a coherent
+phase-accurate primitive-gate implementation.
 
-The comparison target in this repository is the **public** Google appendix envelope:
-- `1191 / 81,105,024`
-- `1441 / 64,305,024`
+### C. Fully flattened Shor gate list
 
-This repository does **not** claim recovery of Google's unpublished hidden circuit.
+The repository provides a retained-window scaffold description, not a single
+flat primitive-gate circuit for the complete period-finding stack.
+
+### D. Backend logical-qubit and non-Clifford totals
+
+The headline totals in
+`artifacts/optimized/out/resource_projection.json` and
+`artifacts/optimized/out/lookup_folded_projection.json` are explicit backend
+projections. They are not theorem-proved primitive-gate totals.
+
+## Public baseline boundary
+
+When this repository refers to the **public appendix baseline**, it means the
+published lines stored in
+`artifacts/optimized/out/resource_projection.json`:
+
+- `1191 logical qubits / 81,105,024 non-Clifford`
+- `1441 logical qubits / 64,305,024 non-Clifford`
+
+These are the public appendix numbers from Babbush et al. 2026. The repository
+does not claim to reconstruct any unpublished internal circuit beyond those
+published lines.
 
 ## Bottom line
 
-If you want one sentence:
+Exact arithmetic leaf semantics: yes.
 
-**Exact arithmetic leaf and exact finite-model checks: yes.  
-Exact primitive-gate qRAM + cleanup + full Shor gate list: no.  
-Backend projection beating the public appendix envelope: yes, but explicitly modeled.**
+Exact lookup-contract semantics: yes.
+
+Exact primitive-gate lookup, cleanup, and full Shor flattening: no.
+
+Backend projection below the public appendix baseline: yes, but explicitly as a
+modeled result.

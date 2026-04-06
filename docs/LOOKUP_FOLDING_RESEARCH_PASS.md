@@ -1,98 +1,74 @@
-# Lookup folding research pass
+# Signed lookup-folding contract
 
-This document describes the new lookup-focused improvement added in this repo
-revision.
+This document describes the repository's exact signed lookup-contract variant
+for the retained-window point-add stack.
 
 ## Goal
 
-Improve the lookup layer **without changing the exact arithmetic leaf**.
+Reduce the lookup-domain size without changing the optimized arithmetic leaf in
+`artifacts/optimized/out/optimized_pointadd_secp256k1.json`.
 
-That keeps the strongest current property of the repo intact:
+## Contract definition
 
-- the optimized secp256k1 arithmetic leaf remains the same machine-readable
-  kickmix ISA artifact,
-- while the lookup contract around it is improved and re-audited.
+The public appendix framing uses a `w`-bit signed lookup address. For
+secp256k1, the repository exploits the group-law identity:
 
-## Main idea
+`[-d]U = (x([d]U), -y([d]U))`
 
-The public Google appendix states that the retained-window point additions are
-addressed by a `w`-bit register in **two's-complement** form.
+For a 16-bit signed word `d`, the contract is:
 
-For secp256k1 we can exploit the exact group-law identity:
-
-- `[-d]U = (x([d]U), -y([d]U))`
-
-So for a signed 16-bit lookup address we do not need a full 65,536-entry table
-per coordinate.
-
-Instead we can:
-
-1. interpret the raw 16-bit word as a signed value `d`,
+1. interpret the raw 16-bit word as signed two's-complement,
 2. fold the table to magnitudes `|d|` in `0..32767`,
-3. handle the unique exceptional word `0x8000 = -2^15` via one dedicated
-   special constant per base,
-4. derive the zero/no-op condition from the word directly,
-5. negate the looked-up Y coordinate when `d < 0`.
+3. treat `0x8000` as a dedicated exceptional constant,
+4. derive zero and sign metadata from the raw word,
+5. negate the looked-up `y` coordinate when `d < 0`.
 
-## What is exact here
+## Exact checked artifacts
 
-Exact and directly audited in the repository:
-
-- the signed-word decomposition,
-- the folded lookup contract,
-- the semantic point returned by the folded contract,
-- the folded scaffold metadata.
-
-Files:
+The exact contract-level artifacts are:
 
 - `artifacts/optimized/out/lookup_signed_fold_contract.json`
 - `artifacts/optimized/out/ecdlp_scaffold_lookup_folded.json`
-- `artifacts/optimized/out/lookup_signed_fold_exhaustive_g.csv`
-- `artifacts/optimized/out/lookup_signed_fold_multibase_sampled.csv`
 - `artifacts/optimized/out/lookup_signed_fold_summary.json`
 
-## Audit coverage
+The contract summary records:
 
-The repository now includes:
+- raw word domain size: `65,536`
+- folded entries per coordinate: `32,768`
+- exhaustive canonical-base audit: `65,536 / 65,536` pass
+- additional multibase semantic samples: `15,906 / 15,906` pass
 
-- a **full exhaustive audit over all 65,536 raw 16-bit words** for the canonical
-  secp256k1 `G`-window-0 lookup base,
-- plus **15,906 multibase semantic samples** over additional secp256k1 window
-  bases.
+## What is exact
 
-Current status in the checked-in summary:
-
-- exhaustive: **65,536 / 65,536 pass**
-- multibase samples: **15,906 / 15,906 pass**
+- signed-word decomposition
+- folded lookup-domain semantics
+- returned affine point semantics
+- folded scaffold metadata
 
 ## What remains modeled
 
-The translation from "folded 16-bit table" to total non-Clifford count is still
-below the repository's ISA boundary. So the new total numbers are projections,
-not new theorem-proved primitive-gate counts.
+The translation from the folded contract to total non-Clifford count remains a
+backend model below the ISA boundary.
 
-## Projected impact under the current repo model
+## Modeled totals for the folded branch
 
-Base case with zero extra per-window pad:
+`artifacts/optimized/out/lookup_folded_projection.json` records the base-case
+projection:
 
 - current 2-channel total: `30,998,464`
 - folded 2-channel total: `29,163,456`
-- improvement: **5.92%**
-
 - current 3-channel total: `32,833,472`
-- folded 3-channel conservative total: `30,080,960`
-- improvement: **8.38%**
+- folded conservative 3-channel total: `30,080,960`
 
-These are meaningful but bounded wins. They are not another dramatic 2x jump.
+The strongest contract-level conclusion is a 2x reduction in the per-coordinate
+table domain. The total non-Clifford improvement is meaningful but bounded.
 
-## Why this is still useful
+## Why this branch matters
 
-This branch is valuable because it is:
+This branch is:
 
-- algebraically clean,
-- exact at the lookup-contract level,
+- algebraically explicit,
+- exact at the contract layer,
 - heavily audited,
-- and easy to explain to external readers.
-
-That makes it a strong next-step optimization even though it is not the final
-answer to the whole resource problem.
+- compatible with the existing optimized arithmetic leaf,
+- easy to compare against other lookup-lowering strategies.

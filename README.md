@@ -1,95 +1,124 @@
 # secp256k1 kickmix open audit repository
 
-Open, auditable reconstruction package for a **secp256k1 ECDLP quantum point-add
-family** with:
+This repository is an open audit package for a secp256k1 ECDLP point-addition
+stack. It contains three artifact families:
 
-- a public-envelope reconstruction aligned to the public Google appendix numbers,
-- an archived exact kickmix ISA artifact,
-- an optimized secp256k1-specialized kickmix leaf and retained-window scaffold,
-- a transparent standard-library verifier,
-- a publication-hardening pass with red-team notes, stricter audits, and
-  boundary files,
-- and a research pass covering literature integration, benchmark ladders,
-  cost-frontier analysis, and now an exact lookup-contract optimization branch.
+- a public-envelope reconstruction aligned to the published appendix numbers in
+  Babbush et al. 2026,
+- an archived exact kickmix-ISA point-add artifact kept as a reference release,
+- a primary optimized secp256k1-specialized artifact with verification,
+  sensitivity, and research layers.
 
-## Main headline
+The repository is strongest at the arithmetic ISA boundary. It publishes exact,
+machine-readable point-add schedules and checks their basis-state semantics. It
+also publishes modeled backend totals for logical qubits and non-Clifford
+counts. Those modeled totals are explicit projections, not primitive-gate
+proofs.
 
-The strongest audited mainline in this tree is still the optimized package in
-`artifacts/optimized/`.
+## Main results
 
-Under the repository's explicit backend model it reports:
+### Primary audited mainline
+
+The primary release artifact is in `artifacts/optimized/`.
+
+Its modeled ECDLP projection, as recorded in
+`artifacts/optimized/out/resource_projection.json`, is:
 
 - **880 logical qubits**
-- **30,998,464 non-Clifford** in the 2-lookup model
-- **32,833,472 non-Clifford** in the 3-lookup model
+- **30,998,464 non-Clifford** under the 2-channel lookup model
+- **32,833,472 non-Clifford** under the 3-channel lookup model
 
-Compared with the public Google appendix envelope archived in
-`artifacts/optimized/out/resource_projection.json`, that is still a substantial
-modeled improvement.
+### Public baseline used for comparison
 
-## New in this revision
+When this repository says **public Google appendix envelope**, it means the
+published secp256k1 reference lines from Babbush et al. 2026 as stored in
+`artifacts/optimized/out/resource_projection.json`:
 
-This revision adds two important things.
+- **low-qubit line:** `1191 logical qubits`, `81,105,024 non-Clifford`
+- **low-gate line:** `1441 logical qubits`, `64,305,024 non-Clifford`
+- **window size:** `16`
+- **retained point additions:** `28`
 
-### 1. A correction
+The comparison is against those public appendix numbers only. It is not a claim
+to have reconstructed any unpublished internal circuit.
 
-An earlier internal frontier-analysis script overstated the lookup share by
-subtracting a **per-leaf** arithmetic estimate from a **whole-scaffold** total.
+### Exact signed lookup-folding branch
 
-That is now fixed and documented in:
+The optimized package also contains an exact signed lookup-contract variant in
+`artifacts/optimized/out/lookup_signed_fold_contract.json` and
+`artifacts/optimized/out/ecdlp_scaffold_lookup_folded.json`.
 
-- `docs/COST_MODEL_CORRECTION.md`
-- `artifacts/optimized/out/dominant_cost_breakdown.json`
+That branch is exact at the lookup-contract level and audited by:
 
-Corrected interpretation under the current backend model:
+- **65,536 / 65,536** exhaustive 16-bit words for the canonical `G` window-0
+  base
+- **15,906 / 15,906** additional multibase semantic samples
 
-- lookup share is **11.84%** in the 2-channel line,
-- lookup share is **16.77%** in the 3-channel line,
-- arithmetic remains the dominant modeled share.
+Its backend totals remain modeled. The base-case folded projection in
+`artifacts/optimized/out/lookup_folded_projection.json` is:
 
-### 2. A new exact lookup-contract improvement
+- **29,163,456 non-Clifford** under the folded 2-channel model
+- **30,080,960 non-Clifford** under the folded conservative 3-channel model
 
-The repo now includes a **signed two's-complement lookup-folding branch**.
+## Exact vs modeled layers
 
-What is exact here:
+### Exact in this repository
 
-- the folded signed-lookup contract,
-- the folded scaffold metadata,
-- exhaustive semantic audit over **all 65,536 raw 16-bit words** for one
-  secp256k1 base,
-- **15,906** additional multibase semantic samples.
+- optimized secp256k1 point-add leaf semantics
+- archived exact kickmix point-add leaf semantics
+- deterministic secp256k1 audit transcripts
+- exhaustive toy-curve family checks
+- explicit lookup-contract semantics, including the signed folded variant
+- retained-window scaffold metadata and deterministic scaffold replay
 
-What remains modeled:
+### Modeled in this repository
 
-- translation from the folded contract to total backend non-Clifford count.
+- primitive-gate lookup memory lowering
+- primitive-gate cleanup for `mbuc_*` operations
+- fully flattened Shor period-finding gate list
+- logical-qubit and non-Clifford totals below the ISA boundary
+- physical-machine runtime and physical-qubit transfer studies
 
-Base-case modeled impact of the folded branch:
+If you need the shortest honest description of the repository, use:
 
-- **29,163,456** in the folded 2-channel line
-- **30,080,960** in the conservative folded 3-channel line
-- roughly **5.9% to 8.4%** lower than the current modeled totals
+> This repository publishes exact ISA-level arithmetic artifacts and explicit
+> lookup contracts for a secp256k1 point-add stack, together with deterministic
+> audits, finite-model checks, retained-window scaffold replay, and modeled
+> backend resource projections against the public appendix baseline of Babbush
+> et al. 2026.
 
-Read:
+## Verification summary
 
-- `docs/LOOKUP_FOLDING_RESEARCH_PASS.md`
-- `artifacts/optimized/out/lookup_signed_fold_contract.json`
-- `artifacts/optimized/out/lookup_folded_projection.json`
+The checked-in summaries report:
 
-## The most important honesty line
+- optimized secp256k1 audit: **16,384 / 16,384** pass
+- archived exact replay: recorded in `results/exact_archive_verification_summary.json`
+- original toy-curve proof: **19,850 / 19,850** pass
+- strict lookup-contract audit: **8,192 / 8,192** pass
+- strict scaffold replay: **256 / 256** pass
+- extended toy-family proof: **110,692 / 110,692** pass
+- challenge ladder replay: **763 / 763** pass across **7** benchmark curves
 
-**This repository is exact at the kickmix ISA arithmetic layer. It is not a theorem-proved primitive-gate quantum circuit for the full Shor stack.**
+See:
 
-Read these first if you plan to publish or present the work:
+- `results/repo_verification_summary.json`
+- `results/strict_verification_summary.json`
+- `results/research_pass_summary.json`
 
-- `RESEARCH_BOUNDARY.md`
-- `docs/CLAIMS_AND_BOUNDARIES.md`
-- `docs/RED_TEAM_REVIEW.md`
-- `docs/COST_MODEL_CORRECTION.md`
-- `docs/LOOKUP_FOLDING_RESEARCH_PASS.md`
-- `docs/OPTIMIZATION_FRONTIERS.md`
-- `docs/STATE_OF_THE_ART_2026.md`
-- `docs/CAIN_2026_NEUTRAL_ATOM_INTEGRATION.md`
-- `docs/PHYSICAL_STACKS_AND_HARDWARE_CONTEXT.md`
+## Repository map
+
+- `artifacts/optimized/` — primary optimized artifact, audits, projections,
+  research outputs, and figures
+- `artifacts/exact_kickmix/` — archived exact kickmix point-add release
+- `artifacts/public_envelope/` — public-envelope reconstruction data for the
+  Babbush et al. 2026 appendix lines
+- `benchmarks/challenge_ladder/` — deterministic benchmark-curve replay suite
+- `src/` — verifier and research logic implemented in Python
+- `scripts/` — reproducibility entrypoints
+- `docs/` — scope, claims, baseline definitions, verification notes, and
+  research interpretation
+- `results/` — generated summary JSON files
+- `reports/` — report PDFs
 
 ## Quick start
 
@@ -117,68 +146,14 @@ make compare-lookup
 make test
 ```
 
-## Verification and research layers
+## Reading order
 
-| Layer | Status | Main files |
-|---|---|---|
-| Optimized arithmetic leaf `Q <- Q + L` | exact machine-checked | `optimized_pointadd_secp256k1.json`, `optimized_pointadd_audit_16384.csv` |
-| Family instantiation on toy curves | exact finite-model check | `toy_curve_exhaustive_19850.csv`, `toy_curve_family_extended_110692.csv` |
-| Original lookup contract | explicit and tested, not flattened | `lookup_contract_audit_8192.csv` |
-| **New folded signed lookup contract** | exact contract + exhaustive semantic audit | `lookup_signed_fold_contract.json`, `lookup_signed_fold_exhaustive_g.csv` |
-| Retained-window scaffold | hierarchical schedule + sampled replay | `ecdlp_scaffold_optimized.json`, `scaffold_schedule_audit_256.csv` |
-| Folded scaffold metadata | exact contract-level variant | `ecdlp_scaffold_lookup_folded.json` |
-| Cleanup (`mbuc_*`) | abstract contract only | leaf JSON files + verifier docs |
-| Backend qubit / non-Clifford totals | modeled, not theorem-proved | `resource_projection.json`, `projection_sensitivity.json`, `lookup_folded_projection.json` |
-| Challenge ladder | deterministic family regression layer | `benchmarks/challenge_ladder/` |
-| Literature / frontier analysis | explicit scenario layer | `dominant_cost_breakdown.json`, `literature_projection_scenarios.json` |
-
-## Repository map
-
-- `reports/` — the PDF reports
-- `artifacts/optimized/` — the primary release artifact, figures, transcripts,
-  projections, strict-pass outputs, and research-pass outputs
-- `artifacts/exact_kickmix/` — archived exact kickmix leaf and transcript replay
-  package
-- `artifacts/public_envelope/` — public-envelope reconstruction aligned to the
-  Google appendix lines
-- `benchmarks/challenge_ladder/` — deterministic secp-family micro-benchmark
-  ladder and audit transcript
-- `src/` — transparent verifier code using only the Python standard library
-- `scripts/` — entrypoints for verify, strict verify, research pass, figures,
-  hashing, and comparison tables
-- `docs/` — publication notes, cost-model correction, lookup pass, frontier
-  analysis, challenge ladder, literature integration, physical-stack context,
-  and tooling paths
-- `tests/` — unit and integrity tests
-- `results/` — generated verification summaries and literature / physical
-  matrices
-- `archive/` — earlier reconstruction assets used while preparing the reports
-
-## What to say publicly without overclaiming
-
-A defensible one-sentence description is:
-
-> This repository publishes an exact ISA-level arithmetic reconstruction for the secp256k1 point-add leaf, an exact signed lookup-contract improvement with exhaustive semantic audit, a tested retained-window scaffold compatible with the public Google appendix counts, and backend projections that remain explicit about lookup, cleanup, and primitive-gate boundaries.
-
-## What not to say
-
-Do **not** market this repository as any of the following:
-
-- “Google's hidden exact circuit”
-- “full primitive-gate proof”
-- “complete verified quantum computer implementation”
-- “proof that the final physical machine cost is exactly 880 logical qubits and 31.0M non-Clifford”
-- “lookup dominates almost all remaining cost”
-
-Those are stronger than what is actually checked here.
-
-## Suggested reading order
-
-1. `docs/CLAIMS_AND_BOUNDARIES.md`
-2. `docs/COST_MODEL_CORRECTION.md`
-3. `docs/LOOKUP_FOLDING_RESEARCH_PASS.md`
-4. `docs/STATE_OF_THE_ART_2026.md`
-5. `docs/OPTIMIZATION_FRONTIERS.md`
-6. `docs/LITERATURE_INTEGRATION_DECISIONS.md`
-7. `docs/RED_TEAM_REVIEW.md`
-8. `reports/secp256k1_optimized_880q_31p0M_2p62x_report.pdf`
+1. `docs/EXECUTIVE_SUMMARY.md`
+2. `docs/CLAIMS_AND_BOUNDARIES.md`
+3. `docs/GOOGLE_BASELINE_COMPARISON.md`
+4. `docs/STRICT_VERIFICATION.md`
+5. `docs/LOOKUP_FOLDING_RESEARCH_PASS.md`
+6. `docs/OPTIMIZATION_FRONTIERS.md`
+7. `docs/STATE_OF_THE_ART_2026.md`
+8. `docs/RED_TEAM_REVIEW.md`
+9. `reports/secp256k1_optimized_880q_31p0M_2p62x_report.pdf`

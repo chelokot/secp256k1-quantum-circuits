@@ -20,7 +20,6 @@ import csv
 import hashlib
 import json
 import math
-import time
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
@@ -728,7 +727,6 @@ def build_physical_stack_reference(repo_root: Path) -> Dict[str, Any]:
 
 
 def run_research_pass(repo_root: Path) -> Dict[str, Any]:
-    start = time.time()
     dominant = compute_dominant_cost_breakdown(repo_root)
     lookup_contract = build_lookup_folded_contract(repo_root)
     lookup_scaffold = build_lookup_folded_scaffold(repo_root, lookup_contract)
@@ -775,7 +773,6 @@ def run_research_pass(repo_root: Path) -> Dict[str, Any]:
         "physical_stack_reference": {
             "entry_count": len(physical_refs["entries"]),
         },
-        "elapsed_seconds": round(time.time() - start, 3),
     }
     out_path = repo_root / "results" / "research_pass_summary.json"
     dump_json(out_path, result)

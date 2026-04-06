@@ -34,6 +34,8 @@ class RepoIntegrityTests(unittest.TestCase):
         for line in manifest_lines:
             digest, rel = line.split('  ', 1)
             manifest[rel] = digest
+        self.assertTrue(all(not rel.startswith('.git/') for rel in manifest))
+        self.assertNotIn('results/repo_verification_summary.json', manifest)
         selected = [
             'reports/secp256k1_optimized_880q_31p0M_2p62x_report.pdf',
             'artifacts/optimized/out/optimized_pointadd_secp256k1.json',

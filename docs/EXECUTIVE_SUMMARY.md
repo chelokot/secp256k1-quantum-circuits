@@ -1,66 +1,62 @@
 # Executive summary
 
-## What this repository claims
+This repository publishes exact arithmetic artifacts for a secp256k1 point-add
+stack and explicit modeled projections below that arithmetic boundary.
 
-This repository publishes an **exact ISA-level arithmetic reconstruction** for a
-secp256k1 point-add leaf, a tested retained-window scaffold compatible with the
-**public** Google appendix counts, deterministic secp256k1 audits, exhaustive
-finite-model family checks on several prime-order toy curves, and an explicit
-backend projection that beats the **public** Google appendix envelope.
+## What is in scope
 
-## Main headline numbers
+- exact machine-readable point-add schedules at the kickmix ISA boundary
+- deterministic secp256k1 replay audits
+- exhaustive toy-curve family checks
+- explicit retained-window scaffold metadata and deterministic scaffold replay
+- explicit lookup contracts, including a signed folded variant
+- modeled logical-qubit and non-Clifford projections
 
-Optimized backend projection:
+## Primary headline
+
+The primary optimized projection stored in
+`artifacts/optimized/out/resource_projection.json` is:
 
 - **880 logical qubits**
-- **30.998M non-Clifford** (2-lookup model)
-- **32.833M non-Clifford** (3-lookup model)
+- **30.998M non-Clifford** under the 2-channel lookup model
+- **32.833M non-Clifford** under the 3-channel lookup model
 
-## New result in this revision
+## Public baseline
 
-This revision adds a **lookup-focused research pass** and corrects an internal
-cost-model mistake.
+The comparison baseline is the public appendix envelope from Babbush et al.
+2026, recorded in the same JSON file:
 
-New exact lookup-contract branch:
+- **1191 logical qubits / 81.105M non-Clifford** for the low-qubit line
+- **1441 logical qubits / 64.305M non-Clifford** for the low-gate line
 
-- signed 16-bit two's-complement lookup folding
-- exhaustive secp256k1 audit: **65,536 / 65,536 pass**
-- multibase semantic audit: **15,906 / 15,906 pass**
+This repository compares against those published appendix numbers. It does not
+claim recovery of any unpublished Google circuit.
 
-Modeled impact of that new branch:
+## Exact lookup-folding branch
 
-- **29.163M** in the folded 2-channel line
-- **30.081M** in the conservative folded 3-channel line
-- about **5.9% to 8.4%** lower than the current modeled totals
+The repository also contains an exact signed two's-complement lookup-contract
+variant. Its checked summaries report:
 
-## Why this matters
+- **65,536 / 65,536** exhaustive words passed for the canonical secp256k1 base
+- **15,906 / 15,906** multibase semantic samples passed
 
-The repository is stronger after this pass for two reasons:
+Its modeled folded totals are:
 
-1. it no longer relies on an incorrect “lookup is 97% of the total” story,
-2. it now contains one concrete, exact, audited lookup optimization instead of
-   only heuristic lookup-frontier speculation.
+- **29.163M non-Clifford** under the folded 2-channel line
+- **30.081M non-Clifford** under the folded conservative 3-channel line
 
 ## What remains modeled
 
-Still modeled rather than primitive-gate proved:
+- lookup memory / qRAM lowering
+- primitive-gate cleanup for `mbuc_*`
+- full flat Shor gate stack
+- backend lowering into logical-qubit and non-Clifford totals
+- physical-machine transfer studies
 
-- lookup memory / qRAM lowering,
-- cleanup (`mbuc_*`),
-- full flat Shor gate stack,
-- backend lowering into logical-qubit and non-Clifford totals.
+## Safe one-paragraph description
 
-## Safe public wording
-
-Good:
-
-- “exact ISA-level arithmetic artifact”
-- “exact signed lookup-contract improvement”
-- “public-envelope comparison”
-- “modeled backend projection”
-
-Unsafe:
-
-- “fully verified primitive-gate quantum circuit”
-- “Google's hidden exact circuit”
-- “final physical machine cost proven exactly”
+This repository publishes exact ISA-level arithmetic artifacts for a
+secp256k1-specialized point-add leaf, deterministic replay audits, exhaustive
+finite-model checks, explicit retained-window scaffold metadata, an exact signed
+lookup-contract variant, and modeled backend resource projections against the
+public appendix baseline of Babbush et al. 2026.

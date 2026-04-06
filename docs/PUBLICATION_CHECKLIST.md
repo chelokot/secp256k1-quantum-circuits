@@ -1,10 +1,7 @@
 # Publication checklist
 
-This is the practical release checklist for publishing the repository.
+## Required reproducibility checks
 
-## Before pushing public
-
-### Mandatory
 - run `python scripts/verify_all.py`
 - run `python scripts/verify_strict.py --mode all`
 - run `python -m unittest discover -s tests -v`
@@ -12,51 +9,38 @@ This is the practical release checklist for publishing the repository.
 - inspect `results/repo_verification_summary.json`
 - inspect `results/strict_verification_summary.json`
 
-### Strongly recommended
-- open `docs/RED_TEAM_REVIEW.md` and make sure the README wording still matches it
-- skim `docs/CLAIMS_AND_BOUNDARIES.md`
-- skim `docs/OPTIMIZATION_FRONTIERS.md`
-- verify the figures in `artifacts/optimized/figures/`
-- replace citation metadata if you want non-anonymous release info
+## Required wording checks
 
-## Public positioning checklist
+Before publishing, verify that the public-facing text still uses the repository
+definitions consistently:
 
-### Safe headline
-Use:
+- baseline means the public appendix lines of Babbush et al. 2026
+- exact means the ISA-level arithmetic and lookup-contract layers
+- modeled means backend totals below the ISA boundary
+- physical transfer means a separate architecture study, not a stronger logical
+  proof
+
+## Safe public wording
+
 - “exact ISA-level arithmetic artifact”
-- “public-envelope comparison”
+- “explicit lookup contract”
+- “tested retained-window scaffold”
 - “modeled backend projection”
-- “open audit repository”
+- “comparison against the public appendix baseline”
 
-### Avoid
-Avoid:
-- “Google’s exact hidden circuit”
-- “fully verified quantum circuit”
+## Wording to avoid
+
+- “unpublished Google circuit reconstruction”
+- “fully verified primitive-gate quantum circuit”
 - “final physical machine cost proven exactly”
-- “ZKP complete release” unless you actually add one
+- “primitive-gate qRAM already included”
 
-## Release assets that should be easy to find
+## Release assets to surface prominently
 
 - `README.md`
-- `reports/secp256k1_optimized_880q_31p0M_2p62x_report.pdf`
 - `docs/CLAIMS_AND_BOUNDARIES.md`
+- `docs/GOOGLE_BASELINE_COMPARISON.md`
 - `docs/RED_TEAM_REVIEW.md`
 - `artifacts/optimized/out/resource_projection.json`
 - `artifacts/optimized/out/projection_sensitivity.json`
-
-## Q&A prep
-
-If asked “what is the weakest part of the result?” answer:
-- the primitive-gate boundary: lookup, cleanup, and backend lowering are still modeled layers.
-
-If asked “what is the strongest part?” answer:
-- the exact arithmetic leaf plus the deterministic secp256k1 audit and exhaustive finite-model family checks.
-
-If asked “what could still improve?” answer:
-- mostly lookup engineering and lower-level backend/compiler work, not another obvious formula-level 2x.
-
-## Minimum honest public summary
-
-A one-paragraph honest summary is:
-
-This repository publishes an exact kickmix-ISA arithmetic reconstruction for a secp256k1-specialized point-add leaf, a tested retained-window scaffold compatible with the public Google appendix count, deterministic secp256k1 audits, exhaustive finite-model checks on several prime-order toy curves, and an explicit backend projection that beats the public Google appendix envelope while remaining honest about lookup, cleanup, and primitive-gate boundaries.
+- `reports/secp256k1_optimized_880q_31p0M_2p62x_report.pdf`

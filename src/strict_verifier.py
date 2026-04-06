@@ -15,7 +15,6 @@ import argparse
 import csv
 import json
 import math
-import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -481,7 +480,6 @@ def main() -> None:
     args = parser.parse_args()
     repo_root = Path(args.repo_root).resolve()
 
-    start = time.time()
     overall: Dict[str, Any] = {}
     if args.mode in ("lookup", "all"):
         overall["lookup_contract"] = run_lookup_contract(repo_root)
@@ -495,7 +493,6 @@ def main() -> None:
         overall["meta_analysis"] = run_meta_analysis(repo_root)
     if args.mode in ("boundaries", "all"):
         overall["claim_boundaries"] = run_claim_boundary_matrix(repo_root)
-    overall["elapsed_seconds"] = round(time.time() - start, 3)
 
     out_path = repo_root / "results" / "strict_verification_summary.json"
     dump_json(out_path, overall)

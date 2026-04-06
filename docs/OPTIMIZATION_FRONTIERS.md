@@ -1,114 +1,63 @@
 # Optimization frontiers
 
-The audited mainline headline in this repository is still:
+This file describes which parts of the resource budget are already improved in
+the checked-in artifacts and which parts remain the main frontier.
+
+## Audited mainline
+
+The primary modeled headline stored in
+`artifacts/optimized/out/resource_projection.json` is:
 
 - **880 logical qubits**
-- **30.998M non-Clifford** in the 2-lookup model
-- **32.833M non-Clifford** in the 3-lookup model
+- **30.998M non-Clifford** under the 2-channel lookup model
+- **32.833M non-Clifford** under the 3-channel lookup model
 
-This file distinguishes between:
+## Budget split of that mainline
 
-1. what is already exact and audited,
-2. what the corrected cost model says about the current mainline,
-3. what the new lookup-folding pass buys,
-4. and what would still be overclaim.
+`artifacts/optimized/out/dominant_cost_breakdown.json` records:
 
-## Executive verdict
+- **11.84%** lookup / **88.16%** arithmetic in the 2-channel model
+- **16.77%** lookup / **83.23%** arithmetic in the 3-channel model
 
-The most important change in this revision is not a new headline. It is a
-**correction**.
+So the optimized mainline is arithmetic-dominated under the repository's
+explicit backend model.
 
-An earlier internal research pass misread a per-leaf arithmetic estimate as if
-it were the arithmetic cost of the entire 28-call scaffold. After fixing that,
-the current explicit backend model says:
+## Lookup frontier
 
-- **11.84%** of the 2-channel total sits in the lookup layer
-- **16.77%** of the 3-channel total sits in the lookup layer
-- **88.16% / 83.23%** sits in the arithmetic layer respectively
+Lookup work is still valuable because:
 
-So the current mainline is **not** lookup-dominated.
+- the repository exposes lookup contracts explicitly,
+- lookup improvements can compose with the current optimized arithmetic leaf,
+- the signed folded contract already provides one exact example.
 
-## What the new lookup pass achieves
+The checked-in folded branch projects:
 
-The repository now adds an exact signed two's-complement lookup-folding branch.
+- **29,163,456 non-Clifford** under the folded 2-channel line
+- **30,080,960 non-Clifford** under the folded conservative 3-channel line
 
-At the contract level this is exact and audited. At the backend-cost level it is
-still modeled.
+## Arithmetic and backend frontier
 
-Base-case projected impact:
+Arithmetic and backend work remain the larger lever because most of the modeled
+budget sits outside lookup. The main open directions are:
 
-- **29,163,456** non-Clifford in the folded 2-channel line
-- **30,080,960** non-Clifford in the folded 3-channel conservative line
+1. arithmetic-backend substitutions
+2. lower-level lookup realization
+3. cross-window scheduling and batching
+4. fragment flattening plus external equivalence checking
 
-That corresponds to roughly:
+## What would be overclaim
 
-- **5.92%** improvement in the 2-channel line
-- **8.38%** improvement in the conservative 3-channel line
+It would be inaccurate to describe the repository as already having:
 
-This is a real gain, but not a second 2x breakthrough.
+- a primitive-gate lookup implementation,
+- a primitive-gate cleanup proof,
+- a fully flattened Shor circuit,
+- a theorem-proved backend total.
 
-## What the corrected frontier picture is
-
-### Lookup-only work
-
-Still valuable because:
-
-- it can be integrated without rewriting the exact arithmetic leaf,
-- it now has an explicit audited example in this repo,
-- and it can compose with deeper backend/lowering work later.
-
-But lookup-only work has bounded leverage under the current model.
-
-### Arithmetic/backend work
-
-Now looks more important than the previous frontier pass suggested.
-
-Because arithmetic dominates the current modeled total, backend substitutions
-such as cheaper multiplier realizations can plausibly move the total much more
-than a small lookup tweak.
-
-### Combined changes
-
-The most plausible path to another large headline shift is now:
-
-- a better arithmetic backend,
-- plus a better lookup contract,
-- plus more explicit lowering/scheduling.
-
-## Quantified machine-readable frontiers
-
-See:
+## Supporting files
 
 - `artifacts/optimized/out/dominant_cost_breakdown.json`
 - `artifacts/optimized/out/literature_projection_scenarios.json`
 - `artifacts/optimized/out/lookup_folded_projection.json`
 - `docs/COST_MODEL_CORRECTION.md`
 - `docs/LOOKUP_FOLDING_RESEARCH_PASS.md`
-
-## Ranked next directions
-
-### Highest priority
-
-1. **Arithmetic-backend experiments**
-2. **primitive-lower more of the lookup layer**
-3. **cross-window scheduling / batching**
-4. **fragment flattening + external equivalence checking**
-
-### Medium priority
-
-5. **alternate low-qubit branch**
-6. **architecture-sensitive adder and lookup choices**
-
-### Lower priority for the current line
-
-7. tiny leaf reshuffles that do not change the backend model,
-8. headline claims imported directly from external architecture papers,
-9. replacing audited artifacts with purely heuristic scenario numbers.
-
-## Honesty line
-
-The repository now includes an exact lookup-contract improvement and a corrected
-frontier analysis.
-
-The audited 880q / 30.998M / 32.833M mainline headline does **not** change unless
-an updated exact artifact itself is shipped and re-audited.

@@ -11,7 +11,6 @@ from __future__ import annotations
 import argparse
 import csv
 import json
-import time
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -226,12 +225,10 @@ def main() -> None:
 
     package_dir = Path(args.package_dir).resolve()
     overall: Dict[str, Any] = {}
-    start = time.time()
     if args.mode in ('audit', 'all'):
         overall['audit'] = run_audit(package_dir)
     if args.mode in ('toy', 'all'):
         overall['toy'] = run_toy(package_dir)
-    overall['elapsed_seconds'] = round(time.time() - start, 3)
     out_path = package_dir / 'out' / 'verifier_rebuild_summary.json'
     dump_json(out_path, overall)
     print(json.dumps(overall, indent=2))

@@ -1,15 +1,16 @@
 # Archived exact kickmix artifact
 
-This directory preserves the earlier exact kickmix point-add leaf and 28-call scaffold.
+This directory preserves an exact kickmix-ISA point-add release that the
+repository keeps as a reference artifact.
 
-The verification path here is a transcript replay rather than a fresh challenge rebuild:
-- the verifier recomputes the archived secp256k1 points from the archived scalars,
-- re-executes the exact ISA netlist,
-- checks the scaffold/oracle hash linkage,
-- checks the archived toy-proof summary,
-- checks the archived proof-manifest hashes.
+The verification path here is replay-oriented:
 
-Main verifier command from repository root:
+- recompute archived secp256k1 points from archived scalars
+- re-execute the exact ISA netlist
+- verify scaffold and oracle hash linkage
+- verify the archived proof-manifest hashes
+
+Verifier command from the repository root:
 
 ```bash
 python src/verify_exact_archive.py --repo-root .

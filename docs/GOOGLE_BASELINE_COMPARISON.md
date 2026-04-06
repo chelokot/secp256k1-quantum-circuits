@@ -1,49 +1,50 @@
-# Google baseline comparison
+# Public appendix baseline comparison
 
-The comparison target in this repository is the **public** Google appendix envelope.
-It is archived in:
+This file defines the baseline used when the repository says **public Google
+appendix envelope**.
 
-- `artifacts/optimized/out/resource_projection.json`
+## Baseline source
 
-## Public baseline lines
+The baseline is the published appendix envelope from Babbush et al. 2026 as
+stored in `artifacts/optimized/out/resource_projection.json`.
+
+The tracked public lines are:
 
 - low-qubit line: **1191 logical qubits**, **81,105,024 non-Clifford**
 - low-gate line: **1441 logical qubits**, **64,305,024 non-Clifford**
 - window size: **16**
 - retained point additions: **28**
 
-## Optimized repository projection
+## Repository projection compared against that baseline
 
-- optimized line: **880 logical qubits**
-- 2-lookup model: **30,998,464 non-Clifford**
-- 3-lookup model: **32,833,472 non-Clifford**
+The primary optimized projection is:
+
+- **880 logical qubits**
+- **30,998,464 non-Clifford** under the 2-channel lookup model
+- **32,833,472 non-Clifford** under the 3-channel lookup model
 
 ## Improvement factors
 
 Versus the public low-qubit line:
+
 - **1.3534x fewer logical qubits**
-- **2.6164x lower non-Clifford** in the 2-lookup model
-- **2.4702x lower non-Clifford** in the 3-lookup model
+- **2.6164x lower non-Clifford** under the 2-channel model
+- **2.4702x lower non-Clifford** under the 3-channel model
 
 Versus the public low-gate line:
+
 - **1.6375x fewer logical qubits**
-- **2.0745x lower non-Clifford** in the 2-lookup model
-- **1.9585x lower non-Clifford** in the 3-lookup model
+- **2.0745x lower non-Clifford** under the 2-channel model
+- **1.9585x lower non-Clifford** under the 3-channel model
 
-## Sensitivity / hostile-backend margin
+## Sensitivity margin
 
-See:
+The repository also stores hostile-backend margin sweeps in:
 
 - `artifacts/optimized/out/projection_sensitivity.json`
 - `artifacts/optimized/figures/projection_headroom.png`
 
-The key margins are:
+## Boundary
 
-- about **33.3M** non-Clifford headroom versus the public low-gate line in the 2-lookup model,
-- about **50.1M** headroom versus the public low-qubit line in the 2-lookup model,
-- about **31.5M** and **48.3M** respectively in the 3-lookup model.
-
-## Honesty note
-
-This file compares **modeled backend totals** below the ISA boundary.
-It is not a theorem-proved primitive-gate comparison.
+This comparison is between explicit modeled backend totals. It is not a
+primitive-gate equivalence proof between two fully lowered circuits.

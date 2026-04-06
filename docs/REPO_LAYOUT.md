@@ -2,103 +2,79 @@
 
 ## Top level
 
-- `README.md` — main entry point and claim ladder
-- `RESEARCH_BOUNDARY.md` — concise honesty boundary
-- `REFERENCES.md` — curated external literature and tooling references
+- `README.md` — main entry point and terminology
+- `RESEARCH_BOUNDARY.md` — shortest scope statement
+- `REFERENCES.md` — external papers and tooling used as baselines or future-work
+  inputs
 - `LICENSE` — repository license
-- `CITATION.cff` — machine-readable citation template
-- `MANIFEST.sha256` — whole-tree file hash manifest
+- `CITATION.cff` — citation metadata
+- `MANIFEST.sha256` — whole-tree hash manifest
 
-## Reports
-
-- `reports/secp256k1_reconstruction_1191q_81p1M_1441q_64p3M_audit.pdf`
-- `reports/secp256k1_exact_kickmix_netlist_report.pdf`
-- `reports/secp256k1_optimized_880q_31p0M_2p62x_report.pdf`
-
-## Artifacts
+## Artifact families
 
 ### `artifacts/public_envelope/`
-Public-envelope reconstruction aligned to the public Google appendix lines.
+
+Public appendix-aligned reconstruction data for the Babbush et al. 2026
+comparison lines.
 
 ### `artifacts/exact_kickmix/`
-Archived exact kickmix artifact:
-- exact leaf netlist,
-- scaffold sample,
-- transcript replay package.
+
+Archived exact kickmix point-add release and replay package.
 
 ### `artifacts/optimized/`
-Primary release artifact:
-- optimized leaf and family netlists,
-- deterministic secp256k1 audit,
-- toy-curve proofs,
-- strict-verifier outputs,
-- research-pass frontier outputs,
-- figures.
+
+Primary optimized release with:
+
+- optimized leaf and family netlists
+- retained-window scaffold metadata
+- deterministic audits
+- strict verification outputs
+- research and sensitivity outputs
+- figures used by the reports
 
 ## Benchmarks
 
 ### `benchmarks/challenge_ladder/`
-Deterministic secp-family benchmark ladder:
-- self-generated tiny `y^2 = x^3 + 7` curves,
-- known subgroup generators,
-- known challenge points,
-- scalar-accumulation replay audit.
+
+Deterministic benchmark-curve replay suite in the `y^2 = x^3 + 7` family.
 
 ## Source code
 
-### `src/common.py`
-Shared arithmetic, hashing, and serialization helpers.
-
-### `src/verifier.py`
-Quick verifier for the optimized package.
-
-### `src/verify_exact_archive.py`
-Replay verifier for the archived exact package.
-
-### `src/strict_verifier.py`
-Publication-hardening verifier:
-- lookup contract audit
-- scaffold replay
-- extended toy family proof
-- projection sensitivity
-- meta-analysis
-- claim boundary matrix
-
-### `src/research_extensions.py`
-Research-pass module:
-- dominant cost breakdown
-- literature projection scenarios
-- challenge-ladder generation and audit
-- literature matrix
-- physical-stack reference matrix
+- `src/common.py` — arithmetic, hashing, and serialization helpers
+- `src/verifier.py` — primary optimized-artifact verifier
+- `src/verify_exact_archive.py` — archived exact replay verifier
+- `src/strict_verifier.py` — strict verification and sensitivity layer
+- `src/research_extensions.py` — research-pass generation logic
 
 ## Scripts
 
-- `scripts/verify_all.py` — quick whole-repo verification
-- `scripts/verify_strict.py` — strict publication-hardening verification
-- `scripts/run_research_pass.py` — rebuild research-pass artifacts
-- `scripts/compare_google_baseline.py` — headline public-baseline comparison
-- `scripts/compare_cain_2026.py` — approximate neutral-atom transfer summary
-- `scripts/compare_literature.py` — literature/frontier summary table
-- `scripts/hash_repo.py` — rebuild `MANIFEST.sha256`
-- `scripts/generate_figures.py` — regenerate publication figures
+- `scripts/verify_all.py` — quick reproducibility path
+- `scripts/verify_strict.py` — strict verification path
+- `scripts/run_research_pass.py` — research-pass regeneration
+- `scripts/compare_google_baseline.py` — baseline comparison report
+- `scripts/compare_cain_2026.py` — neutral-atom transfer report
+- `scripts/compare_literature.py` — literature summary
+- `scripts/compare_lookup_research.py` — lookup-folding comparison
+- `scripts/hash_repo.py` — manifest regeneration
+- `scripts/generate_figures.py` — figure regeneration
 
-## Docs
+## Documentation
 
-- `docs/EXECUTIVE_SUMMARY.md`
-- `docs/CLAIMS_AND_BOUNDARIES.md`
-- `docs/RED_TEAM_REVIEW.md`
-- `docs/OPTIMIZATION_FRONTIERS.md`
-- `docs/STATE_OF_THE_ART_2026.md`
-- `docs/LITERATURE_INTEGRATION_DECISIONS.md`
-- `docs/CHALLENGE_LADDER.md`
-- `docs/TOOLING_AND_REIMPLEMENTATION_PATHS.md`
-- `docs/PHYSICAL_STACKS_AND_HARDWARE_CONTEXT.md`
-- `docs/META_ANALYSIS.md`
-- `docs/STRICT_VERIFICATION.md`
-- `docs/PUBLICATION_CHECKLIST.md`
-- `docs/GOOGLE_BASELINE_COMPARISON.md`
-- `docs/QUALITY_CONTROL.md`
+- `docs/EXECUTIVE_SUMMARY.md` — high-level repository summary
+- `docs/CLAIMS_AND_BOUNDARIES.md` — exact versus modeled claim boundary
+- `docs/GOOGLE_BASELINE_COMPARISON.md` — baseline definition and headline ratios
+- `docs/STRICT_VERIFICATION.md` — strict verification coverage
+- `docs/LOOKUP_FOLDING_RESEARCH_PASS.md` — signed folded lookup contract
+- `docs/OPTIMIZATION_FRONTIERS.md` — budget split and next frontiers
+- `docs/STATE_OF_THE_ART_2026.md` — external literature map
+- `docs/RED_TEAM_REVIEW.md` — skeptical reading guide
+- `docs/PHYSICAL_STACKS_AND_HARDWARE_CONTEXT.md` — logical versus physical layer
+- `docs/CAIN_2026_NEUTRAL_ATOM_INTEGRATION.md` — neutral-atom transfer study
+- `docs/CHALLENGE_LADDER.md` — benchmark-ladder definition
+- `docs/META_ANALYSIS.md` — artifact-family comparison
+- `docs/PUBLICATION_CHECKLIST.md` — release wording and verification checklist
+- `docs/QUALITY_CONTROL.md` — reproducibility paths
+- `docs/TOOLING_AND_REIMPLEMENTATION_PATHS.md` — external tooling directions
 
 ## Results
 

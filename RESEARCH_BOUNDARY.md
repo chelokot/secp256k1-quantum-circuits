@@ -1,41 +1,44 @@
 # Research boundary
 
-This bundle is intentionally scoped as an open, auditable reconstruction package.
+This repository is an open audit package, not an end-to-end primitive-gate
+proof release.
 
-## What it does
+## What the repository does
 
-- publishes exact kickmix-ISA arithmetic netlists and the optimized secp256k1-specialized variant,
-- publishes deterministic secp256k1 audit transcripts and exhaustive finite-model family transcripts,
-- publishes a transparent standard-library verifier,
-- publishes a retained-window scaffold compatible with the public appendix count,
-- compares the optimized backend projection against the public resource envelope from Google's cryptocurrency whitepaper,
-- publishes an internal red-team review and sensitivity sweep.
+- publishes exact kickmix-ISA point-add artifacts for secp256k1
+- publishes deterministic secp256k1 replay audits and finite-model checks
+- publishes explicit retained-window scaffold metadata
+- publishes explicit lookup contracts, including a signed folded variant
+- publishes a transparent Python verifier
+- publishes modeled logical-qubit and non-Clifford projections
+- compares those modeled projections with the public appendix baseline of
+  Babbush et al. 2026
 
-## What it does not claim
+## What the repository does not claim
 
-- it does not claim recovery of Google's unpublished hidden gate-level circuit,
-- it does not claim theorem-proved primitive-gate flattening below the kickmix ISA,
-- it does not claim that lookup memory is already flattened into a primitive-gate qRAM construction,
-- it does not claim that MBUC cleanup is already primitive-gate verified,
-- it does not claim that the backend non-Clifford counts are formally verified below the ISA level.
+- it does not claim recovery of an unpublished Google internal circuit
+- it does not claim primitive-gate lowering of lookup memory
+- it does not claim primitive-gate verification of `mbuc_*` cleanup
+- it does not claim a single flat gate list for the full Shor stack
+- it does not claim theorem-proved backend logical-qubit or non-Clifford totals
 
 ## Strongest exact layer
 
-The strongest exact layer here is:
+The strongest exact layer is the basis-state arithmetic semantics of the
+point-add leaf, supported by deterministic secp256k1 replay and finite-model
+family checks.
 
-**basis-state arithmetic semantics of the point-add leaf at the kickmix ISA boundary, plus finite-model family checks and deterministic secp256k1 audit replay.**
+## Main modeled layer
 
-## Main non-exact layers
+The main modeled layer is the translation from ISA-level arithmetic and lookup
+contracts into backend logical-qubit and non-Clifford totals.
 
-The main non-exact layers are:
+## Baseline definition
 
-- lookup interface,
-- cleanup contract,
-- full-Shor scaffold flattening,
-- backend lowering into logical-qubit / non-Clifford totals.
+The repository's public comparison baseline is the published appendix envelope
+from Babbush et al. 2026:
 
-## Source boundary used while assembling these materials
+- low-qubit: `1191 logical qubits / 81,105,024 non-Clifford`
+- low-gate: `1441 logical qubits / 64,305,024 non-Clifford`
 
-- the core comparison baseline is the public Google whitepaper appendix,
-- the main optimization rationale follows complete mixed addition on short Weierstrass `a = 0 / j = 0` curves,
-- no 2026 implementation writeups are vendored into this repository.
+Those are the only Google numbers this repository claims to compare against.
