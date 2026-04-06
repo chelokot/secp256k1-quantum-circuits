@@ -23,7 +23,7 @@ class StrictArtifactTests(unittest.TestCase):
         self.assertEqual(lookup['summary']['signed_i16']['pass'], 4096)
         self.assertEqual(lookup['summary']['unsigned_u16']['total'], 4096)
         self.assertEqual(lookup['summary']['unsigned_u16']['pass'], 4096)
-        self.assertEqual(lookup['sha256'], '88e52db07ebd633da177d4a28f37455ebd4d38b0f036a02966fd7f96ebeec40a')
+        self.assertEqual(lookup['sha256'], '8dce013093e35525c69721a28b9db375c28101dd83d8e8fb6e8a55b29692a3ec')
 
     def test_scaffold_replay_passes(self):
         scaffold = self.strict['scaffold_schedule']
@@ -39,9 +39,10 @@ class StrictArtifactTests(unittest.TestCase):
         self.assertEqual(toy['sha256'], '1934fbac5e0c4bbd2d5afd58a2956cd3dd40edcfcf5bc53be747af7f00baab72')
 
     def test_meta_analysis_reductions_are_substantial(self):
-        reductions = self.meta['reductions']
-        self.assertGreater(reductions['instruction_reduction_factor'], 2.0)
-        self.assertGreater(reductions['register_reduction_factor'], 3.0)
+        optimized = self.meta['optimized_vs_public_point_add']
+        self.assertGreater(optimized['vs_low_qubit_non_clifford_factor'], 2.5)
+        self.assertGreater(optimized['vs_low_gate_non_clifford_factor'], 2.0)
+        self.assertGreater(optimized['vs_low_qubit_logical_qubit_factor'], 1.3)
 
     def test_headroom_is_positive(self):
         headroom = self.sensitivity['headroom']

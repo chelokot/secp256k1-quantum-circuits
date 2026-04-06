@@ -32,7 +32,6 @@
       "layer": "mbuc_cleanup",
       "status": "abstract_contract_only",
       "evidence": [
-        "pointadd_exact_kickmix.json",
         "optimized_pointadd_secp256k1.json"
       ],
       "notes": "Cleanup remains an abstraction layer. The verifier only checks basis-state functional semantics, not primitive reversible cleanup."

@@ -1,13 +1,10 @@
-.PHONY: verify verify-optimized verify-exact verify-strict research test hashes compare compare-cain compare-literature compare-lookup figures release-check
+.PHONY: verify verify-optimized verify-strict research test hashes compare compare-cain compare-literature compare-lookup figures release-check
 
 verify:
 	python scripts/verify_all.py
 
 verify-optimized:
 	python src/verifier.py --package-dir artifacts/optimized --mode all
-
-verify-exact:
-	python src/verify_exact_archive.py --repo-root .
 
 verify-strict:
 	python scripts/verify_strict.py --mode all

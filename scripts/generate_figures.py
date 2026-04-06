@@ -19,26 +19,37 @@ def load(name: str):
     return json.loads((OUT_DIR / name).read_text())
 
 
-def fig_progression(meta):
-    exact = meta['exact_archived_leaf']
-    opt = meta['optimized_leaf']
-    labels = ['Archived exact', 'Optimized']
-    values = [exact['instruction_count'], opt['instruction_count']]
+def fig_progression(meta, projection):
+    low_qubit = meta['public_envelope']['low_qubit_point_add']
+    low_gate = meta['public_envelope']['low_gate_point_add']
+    optimized_projection = projection['optimized_ecdlp_projection']
+    labels = ['Google low-qubit', 'Google low-gate', 'Optimized 2-lookup', 'Optimized 3-lookup']
+    values = [
+        low_qubit['non_clifford'] / 1_000_000,
+        low_gate['non_clifford'] / 1_000_000,
+        optimized_projection['lookup_model_2channel']['total_non_clifford'] / 1_000_000,
+        optimized_projection['lookup_model_3channel']['total_non_clifford'] / 1_000_000,
+    ]
     fig, ax = plt.subplots(figsize=(7.2, 4.2))
     ax.bar(labels, values)
-    ax.set_ylabel('instruction count')
-    ax.set_title('Leaf progression: instruction count')
+    ax.set_ylabel('non-Clifford (millions)')
+    ax.set_title('Modeled non-Clifford comparison')
     for i, v in enumerate(values):
-        ax.text(i, v + max(values) * 0.03, str(v), ha='center')
+        ax.text(i, v + max(values) * 0.03, f'{v:.2f}', ha='center')
     fig.tight_layout()
     fig.savefig(FIG_DIR / 'progression_instruction_count.png', dpi=180)
     plt.close(fig)
 
-    values = [exact['register_count'], opt['register_count']]
+    values = [
+        low_qubit['logical_qubits'],
+        low_gate['logical_qubits'],
+        optimized_projection['logical_qubits_total'],
+        optimized_projection['logical_qubits_total'],
+    ]
     fig, ax = plt.subplots(figsize=(7.2, 4.2))
     ax.bar(labels, values)
-    ax.set_ylabel('register / arithmetic-slot count')
-    ax.set_title('Leaf progression: working width')
+    ax.set_ylabel('logical qubits')
+    ax.set_title('Logical-qubit comparison')
     for i, v in enumerate(values):
         ax.text(i, v + max(values) * 0.03, str(v), ha='center')
     fig.tight_layout()
@@ -208,6 +219,7 @@ def fig_lookup_fold_pad_sweep(folded):
 
 def main():
     meta = load('meta_analysis.json')
+    projection = load('resource_projection.json')
     sens = load('projection_sensitivity.json')
     strict = json.loads((RESULTS_DIR / 'strict_verification_summary.json').read_text())
     frontier = load('optimization_frontier_estimates.json')
@@ -217,7 +229,7 @@ def main():
     matrix = json.loads((RESULTS_DIR / 'literature_matrix.json').read_text())
     folded = load('lookup_folded_projection.json')
 
-    fig_progression(meta)
+    fig_progression(meta, projection)
     fig_headroom(sens)
     fig_verification_coverage(strict, ladder_summary)
     fig_frontier_ranges(frontier)

@@ -1,7 +1,7 @@
 {
-  "sha256": "88e52db07ebd633da177d4a28f37455ebd4d38b0f036a02966fd7f96ebeec40a",
+  "sha256": "8dce013093e35525c69721a28b9db375c28101dd83d8e8fb6e8a55b29692a3ec",
   "csv": "lookup_contract_audit_8192.csv",
-  "seed_sha256": "311869a5156fb6d08b1a36db273173d706e1859604dbeffc84f178eea3b146c4",
+  "seed_sha256": "71ea6284a01cc8839a201a275ae1cff77bde79939ff5af80d2473128447b2ab9",
   "summary": {
     "signed_i16": {
       "total": 4096,

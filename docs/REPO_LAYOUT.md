@@ -17,10 +17,6 @@
 Public appendix-aligned reconstruction data for the Babbush et al. 2026
 comparison lines.
 
-### `artifacts/exact_kickmix/`
-
-Archived exact kickmix point-add release and replay package.
-
 ### `artifacts/optimized/`
 
 Primary optimized release with:
@@ -42,7 +38,6 @@ Deterministic benchmark-curve replay suite in the `y^2 = x^3 + 7` family.
 
 - `src/common.py` — arithmetic, hashing, and serialization helpers
 - `src/verifier.py` — primary optimized-artifact verifier
-- `src/verify_exact_archive.py` — archived exact replay verifier
 - `src/strict_verifier.py` — strict verification and sensitivity layer
 - `src/research_extensions.py` — research-pass generation logic
 
@@ -80,7 +75,6 @@ Deterministic benchmark-curve replay suite in the `y^2 = x^3 + 7` family.
 
 - `results/repo_verification_summary.json`
 - `results/strict_verification_summary.json`
-- `results/exact_archive_verification_summary.json`
 - `results/research_pass_summary.json`
 - `results/literature_matrix.json`
 - `results/physical_stack_reference_points.json`

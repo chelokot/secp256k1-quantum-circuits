@@ -6,7 +6,6 @@ checked-in artifact families.
 ## Quick verification summaries
 
 - `repo_verification_summary.json`
-- `exact_archive_verification_summary.json`
 
 Regenerate with:
 

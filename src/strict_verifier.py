@@ -126,8 +126,8 @@ def verify_curve_metadata(curve: Dict[str, Any]) -> Dict[str, Any]:
 
 def run_lookup_contract(repo_root: Path, signed_cases: int = 4096, unsigned_cases: int = 4096) -> Dict[str, Any]:
     optimized_sha = sha256_path(repo_root / "artifacts" / "optimized" / "out" / "optimized_pointadd_secp256k1.json")
-    exact_sha = sha256_path(repo_root / "artifacts" / "exact_kickmix" / "out" / "pointadd_exact_kickmix.json")
-    seed = bytes.fromhex(sha256_bytes(bytes.fromhex(optimized_sha) + bytes.fromhex(exact_sha)))
+    baseline_sha = sha256_path(repo_root / "artifacts" / "public_envelope" / "low_qubit_circuit.json")
+    seed = bytes.fromhex(sha256_bytes(bytes.fromhex(optimized_sha) + bytes.fromhex(baseline_sha)))
 
     out_csv = repo_root / "artifacts" / "optimized" / "out" / "lookup_contract_audit_8192.csv"
     g_tables = precompute_window_tables(SECP_G, SECP_P, SECP_B, width=8, bits=256)
@@ -399,32 +399,51 @@ def run_projection_sensitivity(repo_root: Path) -> Dict[str, Any]:
 
 
 def run_meta_analysis(repo_root: Path) -> Dict[str, Any]:
-    exact = load_json(repo_root / "artifacts" / "exact_kickmix" / "out" / "pointadd_exact_kickmix.json")
+    low_qubit = load_json(repo_root / "artifacts" / "public_envelope" / "low_qubit_circuit.json")
+    low_gate = load_json(repo_root / "artifacts" / "public_envelope" / "low_gate_circuit.json")
     opt = load_json(repo_root / "artifacts" / "optimized" / "out" / "optimized_pointadd_secp256k1.json")
     proj = load_json(repo_root / "artifacts" / "optimized" / "out" / "resource_projection.json")
     from collections import Counter
-    exact_ops = Counter(ins["op"] for ins in exact["instructions"])
     opt_ops = Counter(ins["op"] for ins in opt["instructions"])
+    low_qubit_contract = low_qubit["resource_contract"]
+    low_gate_contract = low_gate["resource_contract"]
+    low_qubit_point_add_nc = low_qubit_contract["point_add_non_clifford"]
+    low_gate_point_add_nc = low_gate_contract["point_add_non_clifford"]
+    optimized_leaf_projection = proj["optimized_leaf_projection"]
     result = {
-        "exact_archived_leaf": {"instruction_count": len(exact["instructions"]), "register_count": len(exact["registers"]), "operation_mix": dict(exact_ops)},
+        "public_envelope": {
+            "low_qubit_point_add": {
+                "logical_qubits": low_qubit_contract["point_add_logical_qubits"],
+                "non_clifford": low_qubit_point_add_nc,
+                "register_count": len(low_qubit["registers"]),
+                "module_count": len(low_qubit["modules"]),
+            },
+            "low_gate_point_add": {
+                "logical_qubits": low_gate_contract["point_add_logical_qubits"],
+                "non_clifford": low_gate_point_add_nc,
+                "register_count": len(low_gate["registers"]),
+                "module_count": len(low_gate["modules"]),
+            },
+        },
         "optimized_leaf": {"instruction_count": len(opt["instructions"]), "register_count": len(opt["arithmetic_slots"]), "operation_mix": dict(opt_ops)},
-        "reductions": {
-            "instruction_reduction_factor": len(exact["instructions"]) / len(opt["instructions"]),
-            "register_reduction_factor": len(exact["registers"]) / len(opt["arithmetic_slots"]),
-            "mbuc_elimination_factor": exact_ops.get("mbuc_clear", 0) / max(1, opt_ops.get("mbuc_clear_bool", 0)),
-            "field_square_removed": exact_ops.get("field_square", 0),
-            "selector_op_reduction": (exact_ops.get("select_jacobian", 0) + exact_ops.get("bool_or", 0) + exact_ops.get("bool_and", 0) + exact_ops.get("bool_not_and", 0) + exact_ops.get("bool_not", 0)) - opt_ops.get("select_field_if_flag", 0),
+        "optimized_vs_public_point_add": {
+            "optimized_leaf_logical_qubits": optimized_leaf_projection["scratch_logical_qubits"],
+            "optimized_leaf_modeled_non_clifford_excluding_lookup": optimized_leaf_projection["modeled_non_clifford_excluding_lookup"],
+            "vs_low_qubit_non_clifford_factor": low_qubit_point_add_nc / optimized_leaf_projection["modeled_non_clifford_excluding_lookup"],
+            "vs_low_gate_non_clifford_factor": low_gate_point_add_nc / optimized_leaf_projection["modeled_non_clifford_excluding_lookup"],
+            "vs_low_qubit_logical_qubit_factor": low_qubit_contract["point_add_logical_qubits"] / optimized_leaf_projection["scratch_logical_qubits"],
+            "vs_low_gate_logical_qubit_factor": low_gate_contract["point_add_logical_qubits"] / optimized_leaf_projection["scratch_logical_qubits"],
         },
         "resource_projection_headline": proj["improvement_vs_google"],
         "main_reason_codes": [
-            {"code": "FORMULA_SWAP", "description": "Moved from an exception-heavy exact Jacobian/affine shape to a complete mixed j=0 formula with no inversion and a smaller selector surface."},
-            {"code": "ACCUMULATOR_COMPRESSION", "description": "Collapsed the archived 41-register working shape into 12 arithmetic slots in the optimized homogeneous accumulator."},
-            {"code": "LOOKUP_REBALANCE", "description": "Kept the same public retained-window count but pushed more of the cost into a narrow complete-mixed hot path."},
-            {"code": "BOUNDARY_HONESTY", "description": "The large gain is not coming from magical backend assumptions alone. Even hostile additive/multiplicative overhead leaves substantial margin against the public baseline."},
+            {"code": "COMPLETE_MIXED_J0", "description": "The optimized leaf uses a secp256k1-specialized complete mixed j=0 formula with a narrow, branch-free hot path."},
+            {"code": "WORKING_WIDTH_CONTROL", "description": "The optimized arithmetic schedule keeps the working state compact at 12 arithmetic slots while preserving exact ISA-level basis-state semantics."},
+            {"code": "WINDOW_RETENTION_DISCIPLINE", "description": "The repository keeps the public retained-window structure explicit instead of hiding schedule changes inside headline totals."},
+            {"code": "BOUNDARY_HONESTY", "description": "The resource win is reported as a backend projection against the public appendix envelope, with exactness claims kept at the ISA and lookup-contract boundary."},
         ],
         "notes": [
-            "This file compares artifacts already present in the repository. It does not use or infer any 2026 implementation leakage.",
-            "The exact archived leaf is a stronger semantic artifact than the public-envelope reconstruction, but it is not directly comparable in logical-qubit/non-Clifford totals because those are backend projections below ISA.",
+            "This file compares the primary optimized artifact against the checked-in public-envelope reconstruction data.",
+            "The public-envelope point-add numbers are resource contracts from the published appendix-aligned reconstruction, not machine-readable ISA schedules.",
         ],
     }
     out_json = repo_root / "artifacts" / "optimized" / "out" / "meta_analysis.json"
@@ -457,7 +476,7 @@ def run_claim_boundary_matrix(repo_root: Path) -> Dict[str, Any]:
             {
                 "layer": "mbuc_cleanup",
                 "status": "abstract_contract_only",
-                "evidence": ["pointadd_exact_kickmix.json", "optimized_pointadd_secp256k1.json"],
+                "evidence": ["optimized_pointadd_secp256k1.json"],
                 "notes": "Cleanup remains an abstraction layer. The verifier only checks basis-state functional semantics, not primitive reversible cleanup.",
             },
             {

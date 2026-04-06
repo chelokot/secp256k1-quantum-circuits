@@ -30,17 +30,16 @@ class VerificationPipelineTests(unittest.TestCase):
         self.assertEqual(toy['summary']['pass'], 19850)
         self.assertEqual(toy['sha256'], '70235a7be65ecbdd1a69583d12be3ab8ec0d39cf148f9dae1c36bd9c2e71b6e1')
 
-    def test_exact_archive_replay_passes(self):
-        replay = self.summary['archived_exact']['audit_replay']
-        self.assertEqual(replay['total_rows'], 9024)
-        self.assertEqual(replay['failed_rows'], 0)
-        self.assertEqual(replay['csv_sha256'], '39b0afb2d8059ab0d11c571d4c744576afdec9b8c93b43993092794e8a9b6f32')
-
-    def test_scaffold_linkage_passes(self):
-        scaffold = self.summary['archived_exact']['scaffold']
-        self.assertTrue(scaffold['oracle_hash_matches_netlist'])
-        self.assertEqual(scaffold['call_count'], 28)
-        self.assertEqual(scaffold['expected_call_count'], 28)
+    def test_public_envelope_inputs_are_present(self):
+        envelope = self.summary['public_envelope']
+        self.assertEqual(
+            envelope['low_qubit_circuit_sha256'],
+            '6597edd8832b2210b147e5b84d9f58f9ba8a474771e9465e84f9b8c9d0c0593d',
+        )
+        self.assertEqual(
+            envelope['low_gate_circuit_sha256'],
+            'fcbe3420926e934148bb7f21d63618939dc64c6c014c7720e2129bf50e93af2e',
+        )
 
 
 if __name__ == '__main__':

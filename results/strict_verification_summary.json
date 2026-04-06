@@ -1,8 +1,8 @@
 {
   "lookup_contract": {
-    "sha256": "88e52db07ebd633da177d4a28f37455ebd4d38b0f036a02966fd7f96ebeec40a",
+    "sha256": "8dce013093e35525c69721a28b9db375c28101dd83d8e8fb6e8a55b29692a3ec",
     "csv": "lookup_contract_audit_8192.csv",
-    "seed_sha256": "311869a5156fb6d08b1a36db273173d706e1859604dbeffc84f178eea3b146c4",
+    "seed_sha256": "71ea6284a01cc8839a201a275ae1cff77bde79939ff5af80d2473128447b2ab9",
     "summary": {
       "signed_i16": {
         "total": 4096,
@@ -2789,29 +2789,18 @@
     ]
   },
   "meta_analysis": {
-    "exact_archived_leaf": {
-      "instruction_count": 90,
-      "register_count": 41,
-      "operation_mix": {
-        "copy_field": 3,
-        "lookup_affine_x": 1,
-        "lookup_affine_y": 1,
-        "lookup_meta": 1,
-        "bool_from_flag": 1,
-        "field_is_zero": 3,
-        "field_square": 7,
-        "field_mul": 11,
-        "field_sub": 9,
-        "bool_and": 1,
-        "bool_not_and": 1,
-        "field_double": 3,
-        "field_const_mul": 3,
-        "set_jacobian_from_affine": 1,
-        "set_infinity": 1,
-        "bool_or": 3,
-        "bool_not": 1,
-        "select_jacobian": 5,
-        "mbuc_clear": 34
+    "public_envelope": {
+      "low_qubit_point_add": {
+        "logical_qubits": 1175,
+        "non_clifford": 2700000,
+        "register_count": 6,
+        "module_count": 8
+      },
+      "low_gate_point_add": {
+        "logical_qubits": 1425,
+        "non_clifford": 2100000,
+        "register_count": 6,
+        "module_count": 8
       }
     },
     "optimized_leaf": {
@@ -2831,12 +2820,13 @@
         "mbuc_clear_bool": 1
       }
     },
-    "reductions": {
-      "instruction_reduction_factor": 2.4324324324324325,
-      "register_reduction_factor": 3.4166666666666665,
-      "mbuc_elimination_factor": 34.0,
-      "field_square_removed": 7,
-      "selector_op_reduction": 8
+    "optimized_vs_public_point_add": {
+      "optimized_leaf_logical_qubits": 864,
+      "optimized_leaf_modeled_non_clifford_excluding_lookup": 976016,
+      "vs_low_qubit_non_clifford_factor": 2.7663480926542188,
+      "vs_low_gate_non_clifford_factor": 2.1516040720643925,
+      "vs_low_qubit_logical_qubit_factor": 1.3599537037037037,
+      "vs_low_gate_logical_qubit_factor": 1.6493055555555556
     },
     "resource_projection_headline": {
       "versus_low_qubit": {
@@ -2852,25 +2842,25 @@
     },
     "main_reason_codes": [
       {
-        "code": "FORMULA_SWAP",
-        "description": "Moved from an exception-heavy exact Jacobian/affine shape to a complete mixed j=0 formula with no inversion and a smaller selector surface."
+        "code": "COMPLETE_MIXED_J0",
+        "description": "The optimized leaf uses a secp256k1-specialized complete mixed j=0 formula with a narrow, branch-free hot path."
       },
       {
-        "code": "ACCUMULATOR_COMPRESSION",
-        "description": "Collapsed the archived 41-register working shape into 12 arithmetic slots in the optimized homogeneous accumulator."
+        "code": "WORKING_WIDTH_CONTROL",
+        "description": "The optimized arithmetic schedule keeps the working state compact at 12 arithmetic slots while preserving exact ISA-level basis-state semantics."
       },
       {
-        "code": "LOOKUP_REBALANCE",
-        "description": "Kept the same public retained-window count but pushed more of the cost into a narrow complete-mixed hot path."
+        "code": "WINDOW_RETENTION_DISCIPLINE",
+        "description": "The repository keeps the public retained-window structure explicit instead of hiding schedule changes inside headline totals."
       },
       {
         "code": "BOUNDARY_HONESTY",
-        "description": "The large gain is not coming from magical backend assumptions alone. Even hostile additive/multiplicative overhead leaves substantial margin against the public baseline."
+        "description": "The resource win is reported as a backend projection against the public appendix envelope, with exactness claims kept at the ISA and lookup-contract boundary."
       }
     ],
     "notes": [
-      "This file compares artifacts already present in the repository. It does not use or infer any 2026 implementation leakage.",
-      "The exact archived leaf is a stronger semantic artifact than the public-envelope reconstruction, but it is not directly comparable in logical-qubit/non-Clifford totals because those are backend projections below ISA."
+      "This file compares the primary optimized artifact against the checked-in public-envelope reconstruction data.",
+      "The public-envelope point-add numbers are resource contracts from the published appendix-aligned reconstruction, not machine-readable ISA schedules."
     ]
   },
   "claim_boundaries": {
@@ -2907,7 +2897,6 @@
         "layer": "mbuc_cleanup",
         "status": "abstract_contract_only",
         "evidence": [
-          "pointadd_exact_kickmix.json",
           "optimized_pointadd_secp256k1.json"
         ],
         "notes": "Cleanup remains an abstraction layer. The verifier only checks basis-state functional semantics, not primitive reversible cleanup."

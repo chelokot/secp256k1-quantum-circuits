@@ -20,7 +20,6 @@ class RepoIntegrityTests(unittest.TestCase):
     def test_key_reports_exist(self):
         for name in [
             'secp256k1_optimized_880q_31p0M_2p62x_report.pdf',
-            'secp256k1_exact_kickmix_netlist_report.pdf',
             'secp256k1_reconstruction_1191q_81p1M_1441q_64p3M_audit.pdf',
         ]:
             path = REPO_ROOT / 'reports' / name
@@ -39,7 +38,7 @@ class RepoIntegrityTests(unittest.TestCase):
         selected = [
             'reports/secp256k1_optimized_880q_31p0M_2p62x_report.pdf',
             'artifacts/optimized/out/optimized_pointadd_secp256k1.json',
-            'artifacts/exact_kickmix/out/pointadd_exact_kickmix.json',
+            'artifacts/public_envelope/low_qubit_circuit.json',
         ]
         for rel in selected:
             self.assertIn(rel, manifest)

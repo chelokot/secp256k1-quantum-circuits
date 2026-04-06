@@ -12,9 +12,8 @@ python -m unittest discover -s tests -v
 This covers:
 
 - optimized secp256k1 audit on `16,384` deterministic cases
-- archived exact replay verification
 - original toy proof on `19,850` exhaustive toy cases
-- scaffold hash linkage
+- public-envelope file and audit hash checks
 - manifest and summary checks
 
 ## Strict verification path

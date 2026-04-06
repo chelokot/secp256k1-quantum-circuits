@@ -8,11 +8,10 @@
 # secp256k1 kickmix open audit repository
 
 This repository is an open audit package for a secp256k1 ECDLP point-addition
-stack. It contains three artifact families:
+stack. It contains two active artifact families:
 
 - a public-envelope reconstruction aligned to the published appendix numbers in
   Babbush et al. 2026,
-- an archived exact kickmix-ISA point-add artifact kept as a reference release,
 - a primary optimized secp256k1-specialized artifact with verification,
   sensitivity, and research layers.
 
@@ -72,7 +71,6 @@ Its backend totals remain modeled. The base-case folded projection in
 ### Exact in this repository
 
 - optimized secp256k1 point-add leaf semantics
-- archived exact kickmix point-add leaf semantics
 - deterministic secp256k1 audit transcripts
 - exhaustive toy-curve family checks
 - explicit lookup-contract semantics, including the signed folded variant
@@ -99,7 +97,6 @@ If you need the shortest honest description of the repository, use:
 The checked-in summaries report:
 
 - optimized secp256k1 audit: **16,384 / 16,384** pass
-- archived exact replay: recorded in `results/exact_archive_verification_summary.json`
 - original toy-curve proof: **19,850 / 19,850** pass
 - strict lookup-contract audit: **8,192 / 8,192** pass
 - strict scaffold replay: **256 / 256** pass
@@ -116,7 +113,6 @@ See:
 
 - `artifacts/optimized/` — primary optimized artifact, audits, projections,
   research outputs, and figures
-- `artifacts/exact_kickmix/` — archived exact kickmix point-add release
 - `artifacts/public_envelope/` — public-envelope reconstruction data for the
   Babbush et al. 2026 appendix lines
 - `benchmarks/challenge_ladder/` — deterministic benchmark-curve replay suite

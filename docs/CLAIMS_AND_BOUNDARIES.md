@@ -31,13 +31,7 @@ This layer is checked by:
 - `artifacts/optimized/out/toy_curve_exhaustive_19850.csv`
 - `artifacts/optimized/out/toy_curve_family_extended_110692.csv`
 
-### 2. Archived exact leaf
-
-`artifacts/exact_kickmix/out/pointadd_exact_kickmix.json` is an archived exact
-release of the same overall point-add role with a different schedule shape. It
-is retained as a reference artifact and replay target.
-
-### 3. Retained-window scaffold metadata
+### 2. Retained-window scaffold metadata
 
 `artifacts/optimized/out/ecdlp_scaffold_optimized.json` is a machine-readable
 retained-window schedule with:
@@ -50,7 +44,7 @@ retained-window schedule with:
 Its internal coherence is checked by
 `artifacts/optimized/out/scaffold_schedule_audit_256.csv`.
 
-### 4. Exact lookup contracts
+### 3. Exact lookup contracts
 
 The repository exposes lookup words and returned semantic points explicitly.
 Two exact contract layers are checked:

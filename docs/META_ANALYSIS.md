@@ -1,6 +1,6 @@
 # Meta-analysis of artifact families
 
-This file compares the three artifact families stored in the repository.
+This file compares the two active artifact families stored in the repository.
 
 ## Artifact families
 
@@ -13,16 +13,7 @@ Role:
 - preserve the public appendix-aligned reconstruction data
 - keep the comparison target concrete and inspectable
 
-### 2. Archived exact kickmix artifact
-
-Location: `artifacts/exact_kickmix/`
-
-Role:
-
-- preserve an exact point-add artifact and replay package
-- serve as a reference release for exact ISA-level scheduling
-
-### 3. Optimized secp256k1 artifact
+### 2. Optimized secp256k1 artifact
 
 Location: `artifacts/optimized/`
 
@@ -36,10 +27,11 @@ Role:
 ## Quantified internal differences
 
 `artifacts/optimized/out/meta_analysis.json` records the main internal deltas
-between the archived exact artifact and the optimized artifact:
+between the public-envelope contracts and the optimized artifact:
 
-- instruction reduction: `90 / 37 = 2.43x`
-- register reduction: `41 / 12 = 3.42x`
+- public low-qubit point-add contract: `1175 logical qubits`, `2,700,000 non-Clifford`
+- public low-gate point-add contract: `1425 logical qubits`, `2,100,000 non-Clifford`
+- optimized exact leaf: `37` ISA instructions, `12` arithmetic slots
 
 ## Main interpretation
 
