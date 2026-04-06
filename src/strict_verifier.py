@@ -126,7 +126,7 @@ def verify_curve_metadata(curve: Dict[str, Any]) -> Dict[str, Any]:
 
 def run_lookup_contract(repo_root: Path, signed_cases: int = 4096, unsigned_cases: int = 4096) -> Dict[str, Any]:
     optimized_sha = sha256_path(repo_root / "artifacts" / "optimized" / "out" / "optimized_pointadd_secp256k1.json")
-    baseline_sha = sha256_path(repo_root / "artifacts" / "public_envelope" / "low_qubit_circuit.json")
+    baseline_sha = sha256_path(repo_root / "artifacts" / "optimized" / "out" / "resource_projection.json")
     seed = bytes.fromhex(sha256_bytes(bytes.fromhex(optimized_sha) + bytes.fromhex(baseline_sha)))
 
     out_csv = repo_root / "artifacts" / "optimized" / "out" / "lookup_contract_audit_8192.csv"
@@ -399,51 +399,42 @@ def run_projection_sensitivity(repo_root: Path) -> Dict[str, Any]:
 
 
 def run_meta_analysis(repo_root: Path) -> Dict[str, Any]:
-    low_qubit = load_json(repo_root / "artifacts" / "public_envelope" / "low_qubit_circuit.json")
-    low_gate = load_json(repo_root / "artifacts" / "public_envelope" / "low_gate_circuit.json")
     opt = load_json(repo_root / "artifacts" / "optimized" / "out" / "optimized_pointadd_secp256k1.json")
     proj = load_json(repo_root / "artifacts" / "optimized" / "out" / "resource_projection.json")
     from collections import Counter
     opt_ops = Counter(ins["op"] for ins in opt["instructions"])
-    low_qubit_contract = low_qubit["resource_contract"]
-    low_gate_contract = low_gate["resource_contract"]
-    low_qubit_point_add_nc = low_qubit_contract["point_add_non_clifford"]
-    low_gate_point_add_nc = low_gate_contract["point_add_non_clifford"]
+    google_baseline = proj["public_google_baseline"]
+    low_qubit = google_baseline["low_qubit"]
+    low_gate = google_baseline["low_gate"]
     optimized_leaf_projection = proj["optimized_leaf_projection"]
+    optimized_projection = proj["optimized_ecdlp_projection"]
     result = {
-        "public_envelope": {
-            "low_qubit_point_add": {
-                "logical_qubits": low_qubit_contract["point_add_logical_qubits"],
-                "non_clifford": low_qubit_point_add_nc,
-                "register_count": len(low_qubit["registers"]),
-                "module_count": len(low_qubit["modules"]),
-            },
-            "low_gate_point_add": {
-                "logical_qubits": low_gate_contract["point_add_logical_qubits"],
-                "non_clifford": low_gate_point_add_nc,
-                "register_count": len(low_gate["registers"]),
-                "module_count": len(low_gate["modules"]),
-            },
+        "google_baseline_estimates": {
+            "source": google_baseline["source"],
+            "window_size": google_baseline["window_size"],
+            "retained_window_additions": google_baseline["retained_window_additions"],
+            "low_qubit": low_qubit,
+            "low_gate": low_gate,
         },
         "optimized_leaf": {"instruction_count": len(opt["instructions"]), "register_count": len(opt["arithmetic_slots"]), "operation_mix": dict(opt_ops)},
-        "optimized_vs_public_point_add": {
+        "optimized_vs_google_estimates": {
             "optimized_leaf_logical_qubits": optimized_leaf_projection["scratch_logical_qubits"],
             "optimized_leaf_modeled_non_clifford_excluding_lookup": optimized_leaf_projection["modeled_non_clifford_excluding_lookup"],
-            "vs_low_qubit_non_clifford_factor": low_qubit_point_add_nc / optimized_leaf_projection["modeled_non_clifford_excluding_lookup"],
-            "vs_low_gate_non_clifford_factor": low_gate_point_add_nc / optimized_leaf_projection["modeled_non_clifford_excluding_lookup"],
-            "vs_low_qubit_logical_qubit_factor": low_qubit_contract["point_add_logical_qubits"] / optimized_leaf_projection["scratch_logical_qubits"],
-            "vs_low_gate_logical_qubit_factor": low_gate_contract["point_add_logical_qubits"] / optimized_leaf_projection["scratch_logical_qubits"],
+            "vs_low_qubit_non_clifford_factor": low_qubit["non_clifford"] / optimized_projection["lookup_model_2channel"]["total_non_clifford"],
+            "vs_low_gate_non_clifford_factor": low_gate["non_clifford"] / optimized_projection["lookup_model_2channel"]["total_non_clifford"],
+            "vs_low_qubit_logical_qubit_factor": low_qubit["logical_qubits"] / optimized_projection["logical_qubits_total"],
+            "vs_low_gate_logical_qubit_factor": low_gate["logical_qubits"] / optimized_projection["logical_qubits_total"],
         },
         "resource_projection_headline": proj["improvement_vs_google"],
         "main_reason_codes": [
             {"code": "COMPLETE_MIXED_J0", "description": "The optimized leaf uses a secp256k1-specialized complete mixed j=0 formula with a narrow, branch-free hot path."},
             {"code": "WORKING_WIDTH_CONTROL", "description": "The optimized arithmetic schedule keeps the working state compact at 12 arithmetic slots while preserving exact ISA-level basis-state semantics."},
             {"code": "WINDOW_RETENTION_DISCIPLINE", "description": "The repository keeps the public retained-window structure explicit instead of hiding schedule changes inside headline totals."},
-            {"code": "BOUNDARY_HONESTY", "description": "The resource win is reported as a backend projection against the public appendix envelope, with exactness claims kept at the ISA and lookup-contract boundary."},
+            {"code": "BOUNDARY_HONESTY", "description": "The resource win is reported as a backend projection against cited Google appendix estimates, with exactness claims kept at the ISA and lookup-contract boundary."},
         ],
         "notes": [
-            "This file compares the primary optimized artifact against the checked-in public-envelope reconstruction data.",
-            "The public-envelope point-add numbers are resource contracts from the published appendix-aligned reconstruction, not machine-readable ISA schedules.",
+            "This file compares the primary optimized artifact against cited Google appendix estimates stored in the projection file.",
+            "The Google numbers are published resource estimates, not machine-readable ISA schedules.",
         ],
     }
     out_json = repo_root / "artifacts" / "optimized" / "out" / "meta_analysis.json"

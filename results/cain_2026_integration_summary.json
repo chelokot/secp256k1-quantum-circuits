@@ -3,8 +3,7 @@
   "warning": "This file combines a secp256k1-specialized logical projection with a P-256 physical architecture paper. The time transfer is approximate; the space transfer is only heuristic.",
   "source_papers": {
     "our_repository_baseline": {
-      "path": "artifacts/optimized/out/resource_projection.json",
-      "google_public_envelope_path": "artifacts/public_envelope"
+      "path": "artifacts/optimized/out/resource_projection.json"
     },
     "cain_2026": {
       "paper_id": "arXiv:2603.28627",

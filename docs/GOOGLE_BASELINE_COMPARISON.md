@@ -1,11 +1,11 @@
 # Public appendix baseline comparison
 
-This file defines the baseline used when the repository says **public Google
-appendix envelope**.
+This file defines the baseline used when the repository says **Google's
+published appendix estimates**.
 
 ## Baseline source
 
-The baseline is the published appendix envelope from Babbush et al. 2026 as
+The baseline is the published appendix estimate from Babbush et al. 2026 as
 stored in `artifacts/optimized/out/resource_projection.json`.
 
 The tracked public lines are:

@@ -1,17 +1,18 @@
-# Meta-analysis of artifact families
+# Meta-analysis of repository layers
 
-This file compares the two active artifact families stored in the repository.
+This file compares the repository's cited Google baseline and its optimized
+artifact layer.
 
-## Artifact families
+## Compared layers
 
-### 1. Public-envelope reconstruction
+### 1. Cited Google appendix baseline
 
-Location: `artifacts/public_envelope/`
+Location: `artifacts/optimized/out/resource_projection.json`
 
 Role:
 
-- preserve the public appendix-aligned reconstruction data
-- keep the comparison target concrete and inspectable
+- define the cited comparison numbers used throughout the repository
+- keep the comparison target explicit and inspectable
 
 ### 2. Optimized secp256k1 artifact
 
@@ -27,10 +28,10 @@ Role:
 ## Quantified internal differences
 
 `artifacts/optimized/out/meta_analysis.json` records the main internal deltas
-between the public-envelope contracts and the optimized artifact:
+between the cited Google estimates and the optimized artifact:
 
-- public low-qubit point-add contract: `1175 logical qubits`, `2,700,000 non-Clifford`
-- public low-gate point-add contract: `1425 logical qubits`, `2,100,000 non-Clifford`
+- Google low-qubit ECDLP line: `1191 logical qubits`, `81,105,024 non-Clifford`
+- Google low-gate ECDLP line: `1441 logical qubits`, `64,305,024 non-Clifford`
 - optimized exact leaf: `37` ISA instructions, `12` arithmetic slots
 
 ## Main interpretation

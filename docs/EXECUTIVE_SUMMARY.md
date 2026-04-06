@@ -23,7 +23,7 @@ The primary optimized projection stored in
 
 ## Public baseline
 
-The comparison baseline is the public appendix envelope from Babbush et al.
+The comparison baseline is the published appendix estimate from Babbush et al.
 2026, recorded in the same JSON file:
 
 - **1191 logical qubits / 81.105M non-Clifford** for the low-qubit line

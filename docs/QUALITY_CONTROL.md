@@ -13,7 +13,7 @@ This covers:
 
 - optimized secp256k1 audit on `16,384` deterministic cases
 - original toy proof on `19,850` exhaustive toy cases
-- public-envelope file and audit hash checks
+- cited Google baseline presence inside the projection file
 - manifest and summary checks
 
 ## Strict verification path

@@ -1,7 +1,7 @@
 # Generated results
 
 These JSON files summarize verification and research outputs generated from the
-checked-in artifact families.
+checked-in repository layers.
 
 ## Quick verification summaries
 

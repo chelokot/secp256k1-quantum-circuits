@@ -20,8 +20,8 @@ def load(name: str):
 
 
 def fig_progression(meta, projection):
-    low_qubit = meta['public_envelope']['low_qubit_point_add']
-    low_gate = meta['public_envelope']['low_gate_point_add']
+    low_qubit = meta['google_baseline_estimates']['low_qubit']
+    low_gate = meta['google_baseline_estimates']['low_gate']
     optimized_projection = projection['optimized_ecdlp_projection']
     labels = ['Google low-qubit', 'Google low-gate', 'Optimized 2-lookup', 'Optimized 3-lookup']
     values = [

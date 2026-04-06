@@ -38,7 +38,7 @@ class RepoIntegrityTests(unittest.TestCase):
         selected = [
             'reports/secp256k1_optimized_880q_31p0M_2p62x_report.pdf',
             'artifacts/optimized/out/optimized_pointadd_secp256k1.json',
-            'artifacts/public_envelope/low_qubit_circuit.json',
+            'artifacts/optimized/out/resource_projection.json',
         ]
         for rel in selected:
             self.assertIn(rel, manifest)

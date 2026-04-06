@@ -10,12 +10,7 @@
 - `CITATION.cff` — citation metadata
 - `MANIFEST.sha256` — whole-tree hash manifest
 
-## Artifact families
-
-### `artifacts/public_envelope/`
-
-Public appendix-aligned reconstruction data for the Babbush et al. 2026
-comparison lines.
+## Artifact layer
 
 ### `artifacts/optimized/`
 

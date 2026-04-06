@@ -23,7 +23,7 @@ class StrictArtifactTests(unittest.TestCase):
         self.assertEqual(lookup['summary']['signed_i16']['pass'], 4096)
         self.assertEqual(lookup['summary']['unsigned_u16']['total'], 4096)
         self.assertEqual(lookup['summary']['unsigned_u16']['pass'], 4096)
-        self.assertEqual(lookup['sha256'], '8dce013093e35525c69721a28b9db375c28101dd83d8e8fb6e8a55b29692a3ec')
+        self.assertEqual(lookup['sha256'], 'cdf84e3729180b3a9170e743439a7fb885c0d3c004b46692994c147d9c77d4cd')
 
     def test_scaffold_replay_passes(self):
         scaffold = self.strict['scaffold_schedule']
@@ -39,7 +39,7 @@ class StrictArtifactTests(unittest.TestCase):
         self.assertEqual(toy['sha256'], '1934fbac5e0c4bbd2d5afd58a2956cd3dd40edcfcf5bc53be747af7f00baab72')
 
     def test_meta_analysis_reductions_are_substantial(self):
-        optimized = self.meta['optimized_vs_public_point_add']
+        optimized = self.meta['optimized_vs_google_estimates']
         self.assertGreater(optimized['vs_low_qubit_non_clifford_factor'], 2.5)
         self.assertGreater(optimized['vs_low_gate_non_clifford_factor'], 2.0)
         self.assertGreater(optimized['vs_low_qubit_logical_qubit_factor'], 1.3)

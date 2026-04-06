@@ -700,7 +700,7 @@ def build_physical_stack_reference(repo_root: Path) -> Dict[str, Any]:
             {
                 "id": "google_2026_superconducting",
                 "layer": "logical_to_physical_reference",
-                "headline": "Public whitepaper states that the public-envelope ECDLP circuits can execute in minutes on superconducting architectures with fewer than half a million physical qubits under its assumptions.",
+                "headline": "Public whitepaper states that the cited ECDLP-256 estimates can execute in minutes on superconducting architectures with fewer than half a million physical qubits under its assumptions.",
                 "status_in_repo": "baseline_context_only",
             },
             {

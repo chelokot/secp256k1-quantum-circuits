@@ -1,8 +1,8 @@
 {
   "lookup_contract": {
-    "sha256": "8dce013093e35525c69721a28b9db375c28101dd83d8e8fb6e8a55b29692a3ec",
+    "sha256": "cdf84e3729180b3a9170e743439a7fb885c0d3c004b46692994c147d9c77d4cd",
     "csv": "lookup_contract_audit_8192.csv",
-    "seed_sha256": "71ea6284a01cc8839a201a275ae1cff77bde79939ff5af80d2473128447b2ab9",
+    "seed_sha256": "dffe059bf63e21bc481ee64814672ed5b02f30fcc6c4e9ff21d9788e0df3450a",
     "summary": {
       "signed_i16": {
         "total": 4096,
@@ -2789,18 +2789,17 @@
     ]
   },
   "meta_analysis": {
-    "public_envelope": {
-      "low_qubit_point_add": {
-        "logical_qubits": 1175,
-        "non_clifford": 2700000,
-        "register_count": 6,
-        "module_count": 8
+    "google_baseline_estimates": {
+      "source": "Google cryptocurrency whitepaper public appendix envelope",
+      "window_size": 16,
+      "retained_window_additions": 28,
+      "low_qubit": {
+        "logical_qubits": 1191,
+        "non_clifford": 81105024
       },
-      "low_gate_point_add": {
-        "logical_qubits": 1425,
-        "non_clifford": 2100000,
-        "register_count": 6,
-        "module_count": 8
+      "low_gate": {
+        "logical_qubits": 1441,
+        "non_clifford": 64305024
       }
     },
     "optimized_leaf": {
@@ -2820,13 +2819,13 @@
         "mbuc_clear_bool": 1
       }
     },
-    "optimized_vs_public_point_add": {
+    "optimized_vs_google_estimates": {
       "optimized_leaf_logical_qubits": 864,
       "optimized_leaf_modeled_non_clifford_excluding_lookup": 976016,
-      "vs_low_qubit_non_clifford_factor": 2.7663480926542188,
-      "vs_low_gate_non_clifford_factor": 2.1516040720643925,
-      "vs_low_qubit_logical_qubit_factor": 1.3599537037037037,
-      "vs_low_gate_logical_qubit_factor": 1.6493055555555556
+      "vs_low_qubit_non_clifford_factor": 2.616420736201639,
+      "vs_low_gate_non_clifford_factor": 2.0744583989709944,
+      "vs_low_qubit_logical_qubit_factor": 1.353409090909091,
+      "vs_low_gate_logical_qubit_factor": 1.6375
     },
     "resource_projection_headline": {
       "versus_low_qubit": {
@@ -2855,12 +2854,12 @@
       },
       {
         "code": "BOUNDARY_HONESTY",
-        "description": "The resource win is reported as a backend projection against the public appendix envelope, with exactness claims kept at the ISA and lookup-contract boundary."
+        "description": "The resource win is reported as a backend projection against cited Google appendix estimates, with exactness claims kept at the ISA and lookup-contract boundary."
       }
     ],
     "notes": [
-      "This file compares the primary optimized artifact against the checked-in public-envelope reconstruction data.",
-      "The public-envelope point-add numbers are resource contracts from the published appendix-aligned reconstruction, not machine-readable ISA schedules."
+      "This file compares the primary optimized artifact against cited Google appendix estimates stored in the projection file.",
+      "The Google numbers are published resource estimates, not machine-readable ISA schedules."
     ]
   },
   "claim_boundaries": {

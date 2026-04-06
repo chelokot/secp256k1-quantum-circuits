@@ -35,7 +35,7 @@ contracts into backend logical-qubit and non-Clifford totals.
 
 ## Baseline definition
 
-The repository's public comparison baseline is the published appendix envelope
+The repository's public comparison baseline is the published appendix estimate
 from Babbush et al. 2026:
 
 - low-qubit: `1191 logical qubits / 81,105,024 non-Clifford`

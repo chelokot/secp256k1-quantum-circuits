@@ -8,12 +8,9 @@
 # secp256k1 kickmix open audit repository
 
 This repository is an open audit package for a secp256k1 ECDLP point-addition
-stack. It contains two active artifact families:
-
-- a public-envelope reconstruction aligned to the published appendix numbers in
-  Babbush et al. 2026,
-- a primary optimized secp256k1-specialized artifact with verification,
-  sensitivity, and research layers.
+stack. Its single artifact layer is a primary optimized
+secp256k1-specialized package with verification, sensitivity, and research
+layers.
 
 The repository is strongest at the arithmetic ISA boundary. It publishes exact,
 machine-readable point-add schedules and checks their basis-state semantics. It
@@ -36,8 +33,8 @@ Its modeled ECDLP projection, as recorded in
 
 ### Public baseline used for comparison
 
-When this repository says **public Google appendix envelope**, it means the
-published secp256k1 reference lines from Babbush et al. 2026 as stored in
+When this repository says **Google's published appendix estimates**, it means
+the published secp256k1 reference lines from Babbush et al. 2026 as stored in
 `artifacts/optimized/out/resource_projection.json`:
 
 - **low-qubit line:** `1191 logical qubits`, `81,105,024 non-Clifford`
@@ -113,8 +110,6 @@ See:
 
 - `artifacts/optimized/` — primary optimized artifact, audits, projections,
   research outputs, and figures
-- `artifacts/public_envelope/` — public-envelope reconstruction data for the
-  Babbush et al. 2026 appendix lines
 - `benchmarks/challenge_ladder/` — deterministic benchmark-curve replay suite
 - `src/` — verifier and research logic implemented in Python
 - `scripts/` — reproducibility entrypoints

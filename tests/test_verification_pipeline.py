@@ -30,16 +30,12 @@ class VerificationPipelineTests(unittest.TestCase):
         self.assertEqual(toy['summary']['pass'], 19850)
         self.assertEqual(toy['sha256'], '70235a7be65ecbdd1a69583d12be3ab8ec0d39cf148f9dae1c36bd9c2e71b6e1')
 
-    def test_public_envelope_inputs_are_present(self):
-        envelope = self.summary['public_envelope']
-        self.assertEqual(
-            envelope['low_qubit_circuit_sha256'],
-            '6597edd8832b2210b147e5b84d9f58f9ba8a474771e9465e84f9b8c9d0c0593d',
-        )
-        self.assertEqual(
-            envelope['low_gate_circuit_sha256'],
-            'fcbe3420926e934148bb7f21d63618939dc64c6c014c7720e2129bf50e93af2e',
-        )
+    def test_google_baseline_is_recorded(self):
+        baseline = self.summary['google_baseline']
+        self.assertEqual(baseline['window_size'], 16)
+        self.assertEqual(baseline['retained_window_additions'], 28)
+        self.assertEqual(baseline['low_qubit']['logical_qubits'], 1191)
+        self.assertEqual(baseline['low_gate']['logical_qubits'], 1441)
 
 
 if __name__ == '__main__':
