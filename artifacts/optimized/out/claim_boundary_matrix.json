@@ -1,0 +1,50 @@
+{
+  "layers": [
+    {
+      "layer": "optimized_leaf_arithmetic",
+      "status": "exact_machine_checked",
+      "evidence": [
+        "optimized_pointadd_secp256k1.json",
+        "optimized_pointadd_audit_16384.csv",
+        "toy_curve_exhaustive_19850.csv",
+        "toy_curve_family_extended_110692.csv"
+      ],
+      "notes": "Arithmetic semantics of Q <- Q + L are exact on basis-state inputs at the kickmix ISA level."
+    },
+    {
+      "layer": "lookup_table_contract",
+      "status": "explicit_interface_tested_not_flattened",
+      "evidence": [
+        "lookup_contract_audit_8192.csv"
+      ],
+      "notes": "The repo checks the signed/unsigned window contract, but does not ship a primitive-gate qRAM implementation."
+    },
+    {
+      "layer": "retained_window_scaffold",
+      "status": "hierarchical_schedule_tested",
+      "evidence": [
+        "ecdlp_scaffold_optimized.json",
+        "scaffold_schedule_audit_256.csv"
+      ],
+      "notes": "The schedule is exact metadata plus sampled end-to-end replay, not a flat gate list for the whole Shor stack."
+    },
+    {
+      "layer": "mbuc_cleanup",
+      "status": "abstract_contract_only",
+      "evidence": [
+        "pointadd_exact_kickmix.json",
+        "optimized_pointadd_secp256k1.json"
+      ],
+      "notes": "Cleanup remains an abstraction layer. The verifier only checks basis-state functional semantics, not primitive reversible cleanup."
+    },
+    {
+      "layer": "backend_resource_projection",
+      "status": "modeled_not_theorem_proved",
+      "evidence": [
+        "resource_projection.json",
+        "projection_sensitivity.json"
+      ],
+      "notes": "Public baseline comparison is against 1191/81105024 and 1441/64305024."
+    }
+  ]
+}

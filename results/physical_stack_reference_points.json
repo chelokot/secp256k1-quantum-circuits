@@ -1,0 +1,26 @@
+{
+  "entries": [
+    {
+      "id": "google_2026_superconducting",
+      "layer": "logical_to_physical_reference",
+      "headline": "Public whitepaper states that the public-envelope ECDLP circuits can execute in minutes on superconducting architectures with fewer than half a million physical qubits under its assumptions.",
+      "status_in_repo": "baseline_context_only"
+    },
+    {
+      "id": "cain_2026_neutral_atom",
+      "layer": "physical_architecture_integration",
+      "headline": "Approximate transfer already integrated in results/cain_2026_integration_summary.json.",
+      "status_in_repo": "integrated"
+    },
+    {
+      "id": "gouzien_2023_cat_qubit",
+      "layer": "alternative_physical_architecture_reference",
+      "headline": "Reports 9 hours with 126,133 cat qubits for a 256-bit elliptic-curve logarithm under cat-code assumptions.",
+      "status_in_repo": "reference_only"
+    }
+  ],
+  "notes": [
+    "These points live at different abstraction layers and should not be collapsed into a single apples-to-apples headline without major caveats.",
+    "The repository's strongest exact claim remains at the kickmix ISA arithmetic layer, not at the physical architecture layer."
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "dominant_cost_breakdown": {
+    "lookup_share_fraction_2lookup": 0.11839347910915844,
+    "lookup_share_fraction_3lookup": 0.1676649974757467,
+    "arithmetic_share_fraction_2lookup": 0.8816065208908416,
+    "arithmetic_share_fraction_3lookup": 0.8323350025242533,
+    "max_total_reduction_fraction_from_arithmetic_only_2lookup": 0.8816065208908416,
+    "max_total_reduction_fraction_from_arithmetic_only_3lookup": 0.8323350025242533
+  },
+  "lookup_folding": {
+    "contract_sha256": "85d6da13285ce909b74ad107112ea13bfe5cbfde76ed3f7f03558c183fe13119",
+    "folded_scaffold_sha256": "2c9e3c117e1c2e8d71f19bf01afa7bb39ecac8bfbd207ec1dfd03567cbc8f9f8",
+    "exhaustive_cases": 65536,
+    "exhaustive_pass": 65536,
+    "multibase_samples": 15906,
+    "multibase_pass": 15906,
+    "pad0_total_non_clifford_2channel_folded": 29163456,
+    "pad0_total_non_clifford_3channel_folded_conservative": 30080960,
+    "pad0_improvement_fraction_vs_current_2channel": 0.05919673955457927,
+    "pad0_improvement_fraction_vs_current_3channel_conservative": 0.08383249873787335
+  },
+  "challenge_ladder": {
+    "curve_count": 7,
+    "max_field_bits": 18,
+    "audit_total": 763,
+    "audit_pass": 763,
+    "sha256": "af75fb2e86a1fd640ba2da92529bda245f31f3d56b4b65dfa72b372b17179d68"
+  },
+  "literature_matrix": {
+    "entry_count": 17
+  },
+  "physical_stack_reference": {
+    "entry_count": 3
+  },
+  "elapsed_seconds": 29.227
+}

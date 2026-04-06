@@ -1,0 +1,61 @@
+{
+  "baseline": {
+    "retained_window_additions": 28,
+    "modeled_non_clifford_per_leaf_arithmetic_only": 976016,
+    "modeled_non_clifford_total_arithmetic_only": 27328448,
+    "total_non_clifford_2lookup": 30998464,
+    "total_non_clifford_3lookup": 32833472
+  },
+  "breakdown": {
+    "lookup_non_clifford_2lookup": 3670016,
+    "lookup_non_clifford_3lookup": 5505024,
+    "lookup_share_fraction_2lookup": 0.11839347910915844,
+    "lookup_share_fraction_3lookup": 0.1676649974757467,
+    "arithmetic_share_fraction_2lookup": 0.8816065208908416,
+    "arithmetic_share_fraction_3lookup": 0.8323350025242533
+  },
+  "ceilings": {
+    "perfect_arithmetic_elimination_total_2lookup": 3670016,
+    "perfect_arithmetic_elimination_total_3lookup": 5505024,
+    "max_total_reduction_fraction_from_arithmetic_only_2lookup": 0.8816065208908416,
+    "max_total_reduction_fraction_from_arithmetic_only_3lookup": 0.8323350025242533
+  },
+  "lookup_reduction_targets": [
+    {
+      "goal_total_non_clifford": 30000000,
+      "required_lookup_reduction_fraction_2lookup_without_other_changes": 0.27205984933035715,
+      "required_lookup_reduction_fraction_3lookup_without_other_changes": 0.5147065662202381,
+      "lookup_only_feasible_2lookup": true,
+      "lookup_only_feasible_3lookup": true
+    },
+    {
+      "goal_total_non_clifford": 29000000,
+      "required_lookup_reduction_fraction_2lookup_without_other_changes": 0.5445382254464286,
+      "required_lookup_reduction_fraction_3lookup_without_other_changes": 0.6963588169642857,
+      "lookup_only_feasible_2lookup": true,
+      "lookup_only_feasible_3lookup": true
+    },
+    {
+      "goal_total_non_clifford": 25000000,
+      "required_lookup_reduction_fraction_2lookup_without_other_changes": 1.6344517299107142,
+      "required_lookup_reduction_fraction_3lookup_without_other_changes": 1.4229678199404763,
+      "lookup_only_feasible_2lookup": false,
+      "lookup_only_feasible_3lookup": false
+    },
+    {
+      "goal_total_non_clifford": 20000000,
+      "required_lookup_reduction_fraction_2lookup_without_other_changes": 2.9968436104910716,
+      "required_lookup_reduction_fraction_3lookup_without_other_changes": 2.3312290736607144,
+      "lookup_only_feasible_2lookup": false,
+      "lookup_only_feasible_3lookup": false
+    }
+  ],
+  "main_takeaway": {
+    "summary": "Under the current explicit backend model, arithmetic still dominates the optimized mainline total, while lookup remains a meaningful secondary frontier.",
+    "verdict": "A clean next step is to improve the lookup contract without rewriting the arithmetic leaf; however, another dramatic overall drop would eventually require arithmetic-backend or schedule changes too."
+  },
+  "notes": [
+    "This file is derived only from repository artifacts already present in the tree.",
+    "It corrects an earlier internal research-pass bug where the per-leaf arithmetic budget was accidentally treated as the whole-circuit arithmetic budget."
+  ]
+}

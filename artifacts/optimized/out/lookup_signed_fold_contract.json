@@ -1,0 +1,33 @@
+{
+  "schema": "signed-folded-lookup-v1",
+  "curve": "secp256k1",
+  "window_size_bits": 16,
+  "input_representation": "16-bit two's complement",
+  "motivation": "Exploit the exact secp256k1 identity [\u2212d]U = (x([d]U), \u2212y([d]U)) to halve the lookup-table domain per coordinate.",
+  "folding": {
+    "full_signed_domain_size": 65536,
+    "folded_positive_table_entries_per_coordinate": 32768,
+    "special_case_word_hex": "0x8000",
+    "special_case_signed_value": -32768,
+    "zero_word_hex": "0x0000",
+    "meta_lookup_replacement": "derive infinity/no-op directly from the folded word instead of querying a separate metadata table",
+    "negative_path": "lookup positive magnitude then negate Y"
+  },
+  "algorithm": [
+    "Interpret the raw 16-bit window word as a signed two's-complement integer d.",
+    "If the raw word is 0x8000, bypass the folded table and use the dedicated precomputed point [\u22122^15]U.",
+    "Else let m = |d|, look up [m]U from a table indexed only by magnitudes 0..32767.",
+    "If d < 0 and d != \u22122^15, negate the looked-up Y coordinate.",
+    "If d = 0, return the point at infinity and skip the arithmetic leaf via the existing no-op path."
+  ],
+  "table_shape": {
+    "x_coordinate_table_entries": 32768,
+    "y_coordinate_table_entries": 32768,
+    "separate_metadata_table_needed": false,
+    "per_window_special_constant_points": 1
+  },
+  "notes": [
+    "This contract changes only the lookup layer. The arithmetic leaf remains the same exact machine-readable secp256k1 netlist already archived in the repository.",
+    "The backend-resource implication of halving the lookup domain is modeled separately in lookup_folded_projection.json."
+  ]
+}

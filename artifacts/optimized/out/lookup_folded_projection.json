@@ -1,0 +1,97 @@
+{
+  "schema": "lookup-folded-projection-v1",
+  "base_projection_sha256": "4db60843d1e1057a1a33d558bf2afe471ebb9e038b2a277cbfcbdd6140d9d7a7",
+  "assumptions": [
+    "The exact arithmetic leaf cost is unchanged from the repository's published optimized leaf.",
+    "Each signed 16-bit coordinate table is folded from 65536 entries to 32768 entries plus one special constant for 0x8000.",
+    "The separate metadata lookup is derived from the raw word instead of looked up from a table.",
+    "Small classical-preprocessing / sign-fix overhead below the ISA layer is not exactly lowered here, so a per-window additive pad sweep is included."
+  ],
+  "current_per_window": {
+    "arithmetic_non_clifford": 976016,
+    "lookup_2channel": 131072,
+    "lookup_3channel": 196608
+  },
+  "folded_per_window": {
+    "lookup_2channel": 65536,
+    "lookup_3channel_conservative": 98304,
+    "lookup_3channel_meta_elided": 65536
+  },
+  "base_case_pad0": {
+    "per_window_small_overhead_pad": 0,
+    "total_non_clifford_2channel_folded": 29163456,
+    "total_non_clifford_3channel_folded_conservative": 30080960,
+    "total_non_clifford_3channel_folded_meta_elided": 29163456,
+    "improvement_fraction_vs_current_2channel": 0.05919673955457927,
+    "improvement_fraction_vs_current_3channel_conservative": 0.08383249873787335,
+    "gain_vs_google_low_qubit_2channel": 2.7810498179639613,
+    "gain_vs_google_low_gate_2channel": 2.204986404903452
+  },
+  "pad_sweep": [
+    {
+      "per_window_small_overhead_pad": 0,
+      "total_non_clifford_2channel_folded": 29163456,
+      "total_non_clifford_3channel_folded_conservative": 30080960,
+      "total_non_clifford_3channel_folded_meta_elided": 29163456,
+      "improvement_fraction_vs_current_2channel": 0.05919673955457927,
+      "improvement_fraction_vs_current_3channel_conservative": 0.08383249873787335,
+      "gain_vs_google_low_qubit_2channel": 2.7810498179639613,
+      "gain_vs_google_low_gate_2channel": 2.204986404903452
+    },
+    {
+      "per_window_small_overhead_pad": 256,
+      "total_non_clifford_2channel_folded": 29170624,
+      "total_non_clifford_3channel_folded_conservative": 30088128,
+      "total_non_clifford_3channel_folded_meta_elided": 29170624,
+      "improvement_fraction_vs_current_2channel": 0.058965502290694194,
+      "improvement_fraction_vs_current_3channel_conservative": 0.0836141849390768,
+      "gain_vs_google_low_qubit_2channel": 2.780366439881437,
+      "gain_vs_google_low_gate_2channel": 2.2044445809592554
+    },
+    {
+      "per_window_small_overhead_pad": 512,
+      "total_non_clifford_2channel_folded": 29177792,
+      "total_non_clifford_3channel_folded_conservative": 30095296,
+      "total_non_clifford_3channel_folded_meta_elided": 29177792,
+      "improvement_fraction_vs_current_2channel": 0.05873426502680912,
+      "improvement_fraction_vs_current_3channel_conservative": 0.08339587114028024,
+      "gain_vs_google_low_qubit_2channel": 2.779683397564833,
+      "gain_vs_google_low_gate_2channel": 2.203903023230819
+    },
+    {
+      "per_window_small_overhead_pad": 1024,
+      "total_non_clifford_2channel_folded": 29192128,
+      "total_non_clifford_3channel_folded_conservative": 30109632,
+      "total_non_clifford_3channel_folded_meta_elided": 29192128,
+      "improvement_fraction_vs_current_2channel": 0.05827179049903897,
+      "improvement_fraction_vs_current_3channel_conservative": 0.08295924354268713,
+      "gain_vs_google_low_qubit_2channel": 2.7783183192400362,
+      "gain_vs_google_low_gate_2channel": 2.202820705636807
+    },
+    {
+      "per_window_small_overhead_pad": 2048,
+      "total_non_clifford_2channel_folded": 29220800,
+      "total_non_clifford_3channel_folded_conservative": 30138304,
+      "total_non_clifford_3channel_folded_meta_elided": 29220800,
+      "improvement_fraction_vs_current_2channel": 0.057346841443498664,
+      "improvement_fraction_vs_current_3channel_conservative": 0.08208598834750103,
+      "gain_vs_google_low_qubit_2channel": 2.775592180912227,
+      "gain_vs_google_low_gate_2channel": 2.200659256420084
+    },
+    {
+      "per_window_small_overhead_pad": 4096,
+      "total_non_clifford_2channel_folded": 29278144,
+      "total_non_clifford_3channel_folded_conservative": 30195648,
+      "total_non_clifford_3channel_folded_meta_elided": 29278144,
+      "improvement_fraction_vs_current_2channel": 0.05549694333241806,
+      "improvement_fraction_vs_current_3channel_conservative": 0.08033947795712859,
+      "gain_vs_google_low_qubit_2channel": 2.7701559224519148,
+      "gain_vs_google_low_gate_2channel": 2.1963490581916667
+    }
+  ],
+  "logical_qubit_comment": "The current repository does not primitive-lower the 16-bit sign/magnitude preprocessing. A small ancilla increase is plausible but expected to be negligible against the ~880 logical-qubit headline.",
+  "notes": [
+    "The strongest high-confidence consequence of the folded lookup contract is a 2x reduction in the per-coordinate table domain, not a change to the arithmetic leaf itself.",
+    "Under the repository's existing lookup-counting model this translates to a modest but real total non-Clifford reduction, not another dramatic 2x overall speedup."
+  ]
+}

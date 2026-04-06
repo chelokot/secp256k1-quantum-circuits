@@ -1,0 +1,161 @@
+{
+  "entries": [
+    {
+      "id": "roetteler_2017",
+      "year": 2017,
+      "layer": "logical_prime_field_baseline",
+      "title": "Quantum resource estimates for computing elliptic curve discrete logarithms",
+      "headline": "Explicit Toffoli-network baseline with up to 9n + 2\u2308log2 n\u2309 + 10 qubits and simulated controlled point-add cores.",
+      "direct_mergeability": "historical_baseline_only",
+      "repo_action": "Keep as the oldest rigorous prime-field anchor for comparisons and sanity checks."
+    },
+    {
+      "id": "gidney_2019_windowed_qrom",
+      "year": 2019,
+      "layer": "windowed_lookup_theory",
+      "title": "Windowed quantum arithmetic",
+      "headline": "QROM/QROAM-style windowed arithmetic with explicit lookup/unlookup tradeoffs and table-lookup cost scaling.",
+      "direct_mergeability": "conceptual_lookup_foundation",
+      "repo_action": "Use as a primary conceptual baseline for evaluating lookup-table reshaping and signed-domain folding."
+    },
+    {
+      "id": "haner_2022_space_time_lookup",
+      "year": 2022,
+      "layer": "windowed_lookup_theory",
+      "title": "Space-time optimized table lookup for quantum circuits",
+      "headline": "Systematic lookup space-time tradeoffs relevant once the repository lowers more of the lookup layer explicitly.",
+      "direct_mergeability": "future_lookup_backend_path",
+      "repo_action": "Track as the next backend-model refinement once current folded-lookup contracts are stable."
+    },
+    {
+      "id": "gouzien_2023",
+      "year": 2023,
+      "layer": "cat_qubit_physical_architecture",
+      "title": "Performance Analysis of a Repetition Cat Code Architecture: Computing 256-bit Elliptic Curve Logarithm in 9 Hours with 126133 Cat Qubits",
+      "headline": "Alternative physical architecture reference point with very different hardware assumptions.",
+      "direct_mergeability": "physical_reference_point_only",
+      "repo_action": "Keep as a reference against the Cain-style neutral-atom extrapolation."
+    },
+    {
+      "id": "qualtran_2024",
+      "year": 2024,
+      "layer": "tooling_ir_and_resource_analysis",
+      "title": "Expressing and Analyzing Quantum Algorithms with Qualtran",
+      "headline": "Open-source library for representing, testing, and tabulating resource requirements of quantum algorithms.",
+      "direct_mergeability": "future_tooling_path",
+      "repo_action": "Document as an external reimplementation target rather than importing it into the current standard-library verifier."
+    },
+    {
+      "id": "low_zhu_2024_lookup_architecture",
+      "year": 2024,
+      "layer": "windowed_lookup_theory",
+      "title": "A Unified Architecture for Quantum Lookup Tables",
+      "headline": "Parameterized QROM/SELECT-SWAP style lookup architecture with explicit qubit\u2013T-count tradeoffs.",
+      "direct_mergeability": "future_lookup_backend_path",
+      "repo_action": "Use to bound how much more the repository can squeeze from lookup realization once it goes below the current ISA layer."
+    },
+    {
+      "id": "litinski_2024",
+      "year": 2024,
+      "layer": "arithmetic_multiplier_backend",
+      "title": "Quantum schoolbook multiplication with fewer Toffoli gates",
+      "headline": "Controlled add-subtract multipliers asymptotically halve controlled-adder Toffoli cost.",
+      "direct_mergeability": "heuristic_possible",
+      "repo_action": "Still one of the highest-value next branches because the corrected cost model shows arithmetic dominates the current total."
+    },
+    {
+      "id": "khattar_gidney_2025",
+      "year": 2025,
+      "layer": "windowed_lookup_theory",
+      "title": "The rise of conditionally clean ancillae for optimizing quantum circuits",
+      "headline": "Unary-iteration and skew-tree tricks that can change lookup and control overhead once the lookup layer is lowered more explicitly.",
+      "direct_mergeability": "future_lookup_backend_path",
+      "repo_action": "Document as a follow-on if the repository chooses to primitive-lower lookup address decoding and table access."
+    },
+    {
+      "id": "qrisp_2025",
+      "year": 2025,
+      "layer": "external_compilable_ecc_stack",
+      "title": "End-to-end compilable implementation of quantum elliptic curve logarithm in Qrisp",
+      "headline": "One of the first fully compilable implementations of EC arithmetic in Qrisp.",
+      "direct_mergeability": "external_reimplementation_path",
+      "repo_action": "Reference as a separate compilation route; do not dilute the repository's transparent verifier with framework-specific imports."
+    },
+    {
+      "id": "luongo_2025",
+      "year": 2025,
+      "layer": "windowed_lookup_optimizations",
+      "title": "Optimized circuits for windowed modular arithmetic with applications to quantum attacks against RSA",
+      "headline": "Four lookup/unlookup improvements yielding modest but real logical savings on windowed arithmetic workloads.",
+      "direct_mergeability": "conceptually_relevant_but_not_drop_in",
+      "repo_action": "Use as a sanity check that lookup work often yields single-digit-percent total wins unless paired with larger architectural changes; this aligns with the new signed-fold branch."
+    },
+    {
+      "id": "papa_2025",
+      "year": 2025,
+      "layer": "formal_validation",
+      "title": "Validation of Quantum Elliptic Curve Point Addition Circuits",
+      "headline": "Shows why EC point-add circuits need aggressive validation and ancilla-cleanup scrutiny.",
+      "direct_mergeability": "philosophical_and_methodological",
+      "repo_action": "Strengthen red-teaming and cleanup-oriented verification rather than claiming cleanup is solved."
+    },
+    {
+      "id": "dallaire_demers_2025",
+      "year": 2025,
+      "layer": "benchmarking",
+      "title": "Brace for impact: ECDLP challenges for quantum cryptanalysis",
+      "headline": "Argues for precise ECDLP benchmark suites instead of sparse toy examples.",
+      "direct_mergeability": "direct_benchmark_inspiration",
+      "repo_action": "Keep the deterministic secp-family challenge ladder and extend it over time."
+    },
+    {
+      "id": "gu_2025",
+      "year": 2025,
+      "layer": "architecture_sensitive_2d_lattice",
+      "title": "Resource analysis of Shor's elliptic curve algorithm with an improved quantum adder on a two-dimensional lattice",
+      "headline": "Architecture-aware P-256 resource estimates using improved adders and dynamic-circuit assumptions.",
+      "direct_mergeability": "separate_architecture_branch",
+      "repo_action": "Track as an alternative physical/logical coupling branch; do not merge into the current baseline headline."
+    },
+    {
+      "id": "google_babbush_2026",
+      "year": 2026,
+      "layer": "public_prime_field_baseline",
+      "title": "Securing Elliptic Curve Cryptocurrencies against Quantum Vulnerabilities: Resource Estimates and Mitigations",
+      "headline": "Public appendix envelope of <1200 / <90M or <1450 / <70M plus ZK proof of existence without releasing the hidden circuit.",
+      "direct_mergeability": "already_integrated",
+      "repo_action": "Remain the main public secp256k1 comparison baseline."
+    },
+    {
+      "id": "cain_2026",
+      "year": 2026,
+      "layer": "neutral_atom_physical_architecture",
+      "title": "Shor's algorithm is possible with as few as 10,000 reconfigurable atomic qubits",
+      "headline": "Approximate physical architecture estimates for ECC-256 / P-256 with 10,000 to 26,000 physical qubits and day-scale runtimes under aggressive parallelism assumptions.",
+      "direct_mergeability": "already_integrated_as_approx_transfer",
+      "repo_action": "Keep as the primary physical-stack integration in the repo."
+    },
+    {
+      "id": "luo_2026",
+      "year": 2026,
+      "layer": "low_qubit_inversion_branch",
+      "title": "Space-Efficient Quantum Algorithm for Elliptic Curve Discrete Logarithms with Resource Estimation",
+      "headline": "3n + 4 floor(log2 n) modular inversion and 5n + 4 floor(log2 n) ECDLP qubit scaling; 1333 logical qubits quoted for a 256-bit prime-field curve.",
+      "direct_mergeability": "candidate_alt_branch_not_mainline",
+      "repo_action": "Good candidate for a future ultra-low-qubit branch, but not a drop-in improvement to the current mixed-formula mainline."
+    },
+    {
+      "id": "qcec_repo",
+      "year": 2026,
+      "layer": "equivalence_checking_tooling",
+      "title": "MQT QCEC repository",
+      "headline": "Open-source quantum circuit equivalence checker with partial-equivalence handling for ancilla and garbage qubits.",
+      "direct_mergeability": "future_flattening_path",
+      "repo_action": "Document as the right external checker once circuit fragments are lowered to OpenQASM / primitive gates."
+    }
+  ],
+  "notes": [
+    "This matrix is intentionally selective: it includes only works that materially affect how this repository should be interpreted, tested, or extended.",
+    "The corrected cost model changes the optimization story: arithmetic papers remain highly relevant, while lookup papers now guide a meaningful but bounded secondary frontier."
+  ]
+}

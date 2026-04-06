@@ -1,0 +1,40 @@
+{
+  "pointadd_netlist": {
+    "file": "pointadd_exact_kickmix.json",
+    "sha256": "5be8d9118b6658e5aafcdb2eccb4b3747fe7e1ead63c1060c024b43965e5b872",
+    "instruction_count": 90,
+    "register_count": 41
+  },
+  "ecdlp_scaffold": {
+    "file": "ecdlp_scaffold_exact_sample.json",
+    "sha256": "f5ba977549989250487c06637c1a1b225936ce617b7102eaa164e77b2d510866",
+    "instruction_count": 84,
+    "window_calls": 28
+  },
+  "pointadd_audit": {
+    "file": "pointadd_audit_9024.csv",
+    "sha256": "39b0afb2d8059ab0d11c571d4c744576afdec9b8c93b43993092794e8a9b6f32",
+    "cases": 9024,
+    "failures": 0,
+    "pass_rate": 1.0
+  },
+  "toy_exhaustive": {
+    "toy_curve": {
+      "p": 23,
+      "a": 0,
+      "b": 7,
+      "generator": [
+        1,
+        10
+      ],
+      "order": 24
+    },
+    "cases_exhaustively_checked": 9200,
+    "failure_count": 0,
+    "result": "pass",
+    "netlist_hash": "4468510b426dd0197cdce1e5d93e97bc04748f268ab961d74c6a309d2fbeeec6",
+    "file": "toy_curve_exhaustive.json",
+    "sha256": "1d57c1904dd0d68d8e5b2915a940fe07d463287abbad0ad34fcb3c5c6efff692"
+  },
+  "sample_public_key_secret_hash": "f64ea9912cbe46e13d4e26d1a7dd4ebb8c459f84563ff061eafc8634cb1dc83a"
+}

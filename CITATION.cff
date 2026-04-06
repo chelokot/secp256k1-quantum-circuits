@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite the repository release and the main optimized report."
+title: "secp256k1 kickmix open audit repository"
+type: software
+authors: []
+abstract: >
+  Open audit repository for a secp256k1-specialized kickmix ISA arithmetic
+  reconstruction, retained-window scaffold, deterministic secp256k1 audits,
+  finite-model toy-curve proofs, and explicit backend projection against the
+  public Google appendix envelope.
+keywords:
+  - quantum computing
+  - secp256k1
+  - elliptic curve discrete logarithm
+  - kickmix
+  - Shor
+  - formal verification
+license: MIT

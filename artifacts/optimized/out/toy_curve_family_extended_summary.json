@@ -1,0 +1,72 @@
+{
+  "sha256": "1934fbac5e0c4bbd2d5afd58a2956cd3dd40edcfcf5bc53be747af7f00baab72",
+  "csv": "toy_curve_family_extended_110692.csv",
+  "summary": {
+    "total": 110692,
+    "pass": 110692,
+    "curves": {
+      "toy61_b2": {
+        "total": 3721,
+        "pass": 3721,
+        "order": 61,
+        "p": 61,
+        "b": 2
+      },
+      "toy127_b11": {
+        "total": 16129,
+        "pass": 16129,
+        "order": 127,
+        "p": 109,
+        "b": 11
+      },
+      "toy181_b3": {
+        "total": 32761,
+        "pass": 32761,
+        "order": 181,
+        "p": 163,
+        "b": 3
+      },
+      "toy241_b29": {
+        "total": 58081,
+        "pass": 58081,
+        "order": 241,
+        "p": 211,
+        "b": 29
+      }
+    },
+    "metadata_checks": {
+      "toy61_b2": {
+        "curve": "toy61_b2",
+        "generator_on_curve": true,
+        "group_order_is_prime": true,
+        "generator_order_matches_claim": true,
+        "actual_generator_order": 61
+      },
+      "toy127_b11": {
+        "curve": "toy127_b11",
+        "generator_on_curve": true,
+        "group_order_is_prime": true,
+        "generator_order_matches_claim": true,
+        "actual_generator_order": 127
+      },
+      "toy181_b3": {
+        "curve": "toy181_b3",
+        "generator_on_curve": true,
+        "group_order_is_prime": true,
+        "generator_order_matches_claim": true,
+        "actual_generator_order": 181
+      },
+      "toy241_b29": {
+        "curve": "toy241_b29",
+        "generator_on_curve": true,
+        "group_order_is_prime": true,
+        "generator_order_matches_claim": true,
+        "actual_generator_order": 241
+      }
+    }
+  },
+  "notes": [
+    "The quick verifier exhausts two toy curves. The extended verifier exhausts four prime-order j=0 curves spanning orders 61, 127, 181, and 241.",
+    "This is still a finite-model family check, not a proof over all prime fields."
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "sha256": "88e52db07ebd633da177d4a28f37455ebd4d38b0f036a02966fd7f96ebeec40a",
+  "csv": "lookup_contract_audit_8192.csv",
+  "seed_sha256": "311869a5156fb6d08b1a36db273173d706e1859604dbeffc84f178eea3b146c4",
+  "summary": {
+    "signed_i16": {
+      "total": 4096,
+      "pass": 4096,
+      "edge_cases": 9
+    },
+    "unsigned_u16": {
+      "total": 4096,
+      "pass": 4096,
+      "edge_cases": 9
+    }
+  },
+  "notes": [
+    "This audit makes the lookup-table interface explicit instead of pretending that it is flattened into primitive gates.",
+    "It does not prove a coherent quantum RAM construction; it proves the arithmetic contract assumed at the ISA boundary."
+  ]
+}

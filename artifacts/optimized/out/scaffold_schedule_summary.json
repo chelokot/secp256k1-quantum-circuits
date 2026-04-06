@@ -1,0 +1,17 @@
+{
+  "sha256": "85017d7778bac523a50c8eb79c248685422c35d178dd8c0d29bf6e3c2f1712c4",
+  "csv": "scaffold_schedule_audit_256.csv",
+  "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+  "scaffold_sha256": "6f444c332728cde3ccfb9fd532012aaaa9c777a1b0f949573a3910602126cc03",
+  "summary": {
+    "total": 256,
+    "pass": 256,
+    "seed_zero_cases": 0,
+    "tail_nonzero_cases": 256,
+    "phase_b_base_variants": 256
+  },
+  "notes": [
+    "This check executes the published retained-window schedule as written: one direct seed, 28 retained optimized leaf calls, and 3 classical tail elisions.",
+    "It does not claim to reconstruct Google's private call ordering; it checks that the published schedule metadata is internally coherent and semantically complete."
+  ]
+}

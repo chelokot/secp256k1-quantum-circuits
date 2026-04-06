@@ -1,0 +1,58 @@
+{
+  "schema": "lookup-signed-fold-audit-v1",
+  "contract_sha256": "85d6da13285ce909b74ad107112ea13bfe5cbfde76ed3f7f03558c183fe13119",
+  "full_exhaustive_csv": "lookup_signed_fold_exhaustive_g.csv",
+  "full_exhaustive_sha256": "92f26d6e24cadeab48733dd12ab88a689411dfda261606e8b0209f525c6e93c7",
+  "multibase_sample_csv": "lookup_signed_fold_multibase_sampled.csv",
+  "multibase_sample_sha256": "f47ca91450f45059841a609395c23682db5aaa2e304a333a33a9bd1c939479d2",
+  "summary": {
+    "word_domain_size": 65536,
+    "folded_table_entries_per_coordinate": 32768,
+    "full_exhaustive_base": "g_window_0",
+    "full_exhaustive_cases": 65536,
+    "full_exhaustive_pass": 65536,
+    "direct_semantic_samples": 15906,
+    "direct_semantic_pass": 15906,
+    "bases": {
+      "g_window_0": {
+        "mode": "full_exhaustive",
+        "cases": 65536,
+        "pass": 65536,
+        "kind": "window_base",
+        "window_index": 0,
+        "special_neg_point": {
+          "x": 33602655200186679430886431101373729519010186911116350037909320311808627496821,
+          "y": 78431985975581104334567304158274906298973828211678835725129967778118270854594
+        },
+        "direct_sample_cases": 3975,
+        "direct_sample_pass": 3975
+      },
+      "g_window_5": {
+        "mode": "sampled_direct_semantics",
+        "cases": 3984,
+        "pass": 3984,
+        "kind": "window_base",
+        "window_index": 5
+      },
+      "g_window_10": {
+        "mode": "sampled_direct_semantics",
+        "cases": 3986,
+        "pass": 3986,
+        "kind": "window_base",
+        "window_index": 10
+      },
+      "g_window_15": {
+        "mode": "sampled_direct_semantics",
+        "cases": 3961,
+        "pass": 3961,
+        "kind": "window_base",
+        "window_index": 15
+      }
+    },
+    "notes": [
+      "The full secp256k1 exhaustive CSV covers every 16-bit raw window word for the canonical G-based window-0 table.",
+      "Additional secp256k1 window bases are checked on deterministic edge-and-random samples using an independent direct scalar-multiplication path.",
+      "This verifies the signed-word folding contract; it does not claim a primitive-gate realization of the folded lookup machinery."
+    ]
+  }
+}

@@ -1,0 +1,3 @@
+# Verification path: Python standard library only.
+# Optional figure regeneration path:
+matplotlib>=3.7

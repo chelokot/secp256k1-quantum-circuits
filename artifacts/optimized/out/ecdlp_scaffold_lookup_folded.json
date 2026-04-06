@@ -1,0 +1,335 @@
+{
+  "schema": "kickmix-hierarchical-scaffold-lookup-folded-v1",
+  "base_scaffold_sha256": "6f444c332728cde3ccfb9fd532012aaaa9c777a1b0f949573a3910602126cc03",
+  "base_scaffold_name": "ecdlp_scaffold_optimized.json",
+  "lookup_contract_sha256": "85d6da13285ce909b74ad107112ea13bfe5cbfde76ed3f7f03558c183fe13119",
+  "curve": "secp256k1",
+  "window_size": 16,
+  "retained_window_additions": [
+    {
+      "call_index": 0,
+      "raw_window_index": 1,
+      "phase_register": "phase_a",
+      "window_index_within_register": 1,
+      "bit_start": 16,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 1,
+      "raw_window_index": 2,
+      "phase_register": "phase_a",
+      "window_index_within_register": 2,
+      "bit_start": 32,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 2,
+      "raw_window_index": 3,
+      "phase_register": "phase_a",
+      "window_index_within_register": 3,
+      "bit_start": 48,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 3,
+      "raw_window_index": 4,
+      "phase_register": "phase_a",
+      "window_index_within_register": 4,
+      "bit_start": 64,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 4,
+      "raw_window_index": 5,
+      "phase_register": "phase_a",
+      "window_index_within_register": 5,
+      "bit_start": 80,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 5,
+      "raw_window_index": 6,
+      "phase_register": "phase_a",
+      "window_index_within_register": 6,
+      "bit_start": 96,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 6,
+      "raw_window_index": 7,
+      "phase_register": "phase_a",
+      "window_index_within_register": 7,
+      "bit_start": 112,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 7,
+      "raw_window_index": 8,
+      "phase_register": "phase_a",
+      "window_index_within_register": 8,
+      "bit_start": 128,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 8,
+      "raw_window_index": 9,
+      "phase_register": "phase_a",
+      "window_index_within_register": 9,
+      "bit_start": 144,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 9,
+      "raw_window_index": 10,
+      "phase_register": "phase_a",
+      "window_index_within_register": 10,
+      "bit_start": 160,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 10,
+      "raw_window_index": 11,
+      "phase_register": "phase_a",
+      "window_index_within_register": 11,
+      "bit_start": 176,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 11,
+      "raw_window_index": 12,
+      "phase_register": "phase_a",
+      "window_index_within_register": 12,
+      "bit_start": 192,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 12,
+      "raw_window_index": 13,
+      "phase_register": "phase_a",
+      "window_index_within_register": 13,
+      "bit_start": 208,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 13,
+      "raw_window_index": 14,
+      "phase_register": "phase_a",
+      "window_index_within_register": 14,
+      "bit_start": 224,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 14,
+      "raw_window_index": 15,
+      "phase_register": "phase_a",
+      "window_index_within_register": 15,
+      "bit_start": 240,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 15,
+      "raw_window_index": 16,
+      "phase_register": "phase_b",
+      "window_index_within_register": 0,
+      "bit_start": 0,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 16,
+      "raw_window_index": 17,
+      "phase_register": "phase_b",
+      "window_index_within_register": 1,
+      "bit_start": 16,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 17,
+      "raw_window_index": 18,
+      "phase_register": "phase_b",
+      "window_index_within_register": 2,
+      "bit_start": 32,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 18,
+      "raw_window_index": 19,
+      "phase_register": "phase_b",
+      "window_index_within_register": 3,
+      "bit_start": 48,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 19,
+      "raw_window_index": 20,
+      "phase_register": "phase_b",
+      "window_index_within_register": 4,
+      "bit_start": 64,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 20,
+      "raw_window_index": 21,
+      "phase_register": "phase_b",
+      "window_index_within_register": 5,
+      "bit_start": 80,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 21,
+      "raw_window_index": 22,
+      "phase_register": "phase_b",
+      "window_index_within_register": 6,
+      "bit_start": 96,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 22,
+      "raw_window_index": 23,
+      "phase_register": "phase_b",
+      "window_index_within_register": 7,
+      "bit_start": 112,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 23,
+      "raw_window_index": 24,
+      "phase_register": "phase_b",
+      "window_index_within_register": 8,
+      "bit_start": 128,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 24,
+      "raw_window_index": 25,
+      "phase_register": "phase_b",
+      "window_index_within_register": 9,
+      "bit_start": 144,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 25,
+      "raw_window_index": 26,
+      "phase_register": "phase_b",
+      "window_index_within_register": 10,
+      "bit_start": 160,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 26,
+      "raw_window_index": 27,
+      "phase_register": "phase_b",
+      "window_index_within_register": 11,
+      "bit_start": 176,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    },
+    {
+      "call_index": 27,
+      "raw_window_index": 28,
+      "phase_register": "phase_b",
+      "window_index_within_register": 12,
+      "bit_start": 192,
+      "bit_width": 16,
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "lookup_channels": 2,
+      "coordinate_model": "homogeneous_j0_complete_mixed"
+    }
+  ],
+  "lookup_encoding": {
+    "address_representation": "16-bit two's complement",
+    "folded_positive_domain_size": 32768,
+    "negative_symmetry_exploited": true,
+    "special_case": {
+      "word_hex": "0x8000",
+      "action": "dedicated constant-point injection per window base"
+    },
+    "zero_case": {
+      "word_hex": "0x0000",
+      "action": "derive no-op / infinity directly from the folded word"
+    }
+  },
+  "notes": [
+    "This artifact does not rewrite the arithmetic leaf. It rewrites only the lookup contract consumed by that leaf.",
+    "All retained-window metadata from the published scaffold remains unchanged."
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "exact_archived_leaf": {
+    "instruction_count": 90,
+    "register_count": 41,
+    "operation_mix": {
+      "copy_field": 3,
+      "lookup_affine_x": 1,
+      "lookup_affine_y": 1,
+      "lookup_meta": 1,
+      "bool_from_flag": 1,
+      "field_is_zero": 3,
+      "field_square": 7,
+      "field_mul": 11,
+      "field_sub": 9,
+      "bool_and": 1,
+      "bool_not_and": 1,
+      "field_double": 3,
+      "field_const_mul": 3,
+      "set_jacobian_from_affine": 1,
+      "set_infinity": 1,
+      "bool_or": 3,
+      "bool_not": 1,
+      "select_jacobian": 5,
+      "mbuc_clear": 34
+    }
+  },
+  "optimized_leaf": {
+    "instruction_count": 37,
+    "register_count": 12,
+    "operation_mix": {
+      "load_input": 3,
+      "lookup_affine_x": 1,
+      "lookup_affine_y": 1,
+      "lookup_meta": 1,
+      "bool_from_flag": 1,
+      "field_mul": 11,
+      "field_add": 10,
+      "field_sub": 3,
+      "mul_const": 2,
+      "select_field_if_flag": 3,
+      "mbuc_clear_bool": 1
+    }
+  },
+  "reductions": {
+    "instruction_reduction_factor": 2.4324324324324325,
+    "register_reduction_factor": 3.4166666666666665,
+    "mbuc_elimination_factor": 34.0,
+    "field_square_removed": 7,
+    "selector_op_reduction": 8
+  },
+  "resource_projection_headline": {
+    "versus_low_qubit": {
+      "qubit_gain": 1.353409090909091,
+      "toffoli_gain_2lookup": 2.616420736201639,
+      "toffoli_gain_3lookup": 2.470193344158059
+    },
+    "versus_low_gate": {
+      "qubit_gain": 1.6375,
+      "toffoli_gain_2lookup": 2.0744583989709944,
+      "toffoli_gain_3lookup": 1.9585203782286564
+    }
+  },
+  "main_reason_codes": [
+    {
+      "code": "FORMULA_SWAP",
+      "description": "Moved from an exception-heavy exact Jacobian/affine shape to a complete mixed j=0 formula with no inversion and a smaller selector surface."
+    },
+    {
+      "code": "ACCUMULATOR_COMPRESSION",
+      "description": "Collapsed the archived 41-register working shape into 12 arithmetic slots in the optimized homogeneous accumulator."
+    },
+    {
+      "code": "LOOKUP_REBALANCE",
+      "description": "Kept the same public retained-window count but pushed more of the cost into a narrow complete-mixed hot path."
+    },
+    {
+      "code": "BOUNDARY_HONESTY",
+      "description": "The large gain is not coming from magical backend assumptions alone. Even hostile additive/multiplicative overhead leaves substantial margin against the public baseline."
+    }
+  ],
+  "notes": [
+    "This file compares artifacts already present in the repository. It does not use or infer any 2026 implementation leakage.",
+    "The exact archived leaf is a stronger semantic artifact than the public-envelope reconstruction, but it is not directly comparable in logical-qubit/non-Clifford totals because those are backend projections below ISA."
+  ]
+}

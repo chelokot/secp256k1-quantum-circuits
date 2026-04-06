@@ -1,0 +1,124 @@
+{
+  "integration_name": "cain_2026_neutral_atom_transfer_v1",
+  "warning": "This file combines a secp256k1-specialized logical projection with a P-256 physical architecture paper. The time transfer is approximate; the space transfer is only heuristic.",
+  "source_papers": {
+    "our_repository_baseline": {
+      "path": "artifacts/optimized/out/resource_projection.json",
+      "google_public_envelope_path": "artifacts/public_envelope"
+    },
+    "cain_2026": {
+      "paper_id": "arXiv:2603.28627",
+      "title": "Shor's algorithm is possible with as few as 10,000 reconfigurable atomic qubits",
+      "target_curve_in_paper": "P-256",
+      "time_efficient_runtime_days": 10.0,
+      "balanced_runtime_days": 264.0,
+      "time_efficient_physical_qubits": 26000,
+      "headline_min_physical_qubits": 10000,
+      "cycle_time_ms": 1.0
+    }
+  },
+  "headline_ranges": {
+    "projected_time_efficient_days_min": 3.8220152675128976,
+    "projected_time_efficient_days_max": 5.105895302985969,
+    "projected_balanced_days_min": 100.9012030623405,
+    "projected_balanced_days_max": 134.79563599882957,
+    "naive_linear_space_physical_qubits_min": 15877.862595419847,
+    "naive_linear_space_physical_qubits_max": 19210.74727120067,
+    "half_fixed_overhead_space_physical_qubits_min": 20938.931297709925,
+    "half_fixed_overhead_space_physical_qubits_max": 22605.373635600336
+  },
+  "cases": [
+    {
+      "google_baseline_line": "low_qubit",
+      "optimized_lookup_model": "2lookup",
+      "google_logical_qubits": 1191,
+      "google_non_clifford": 81105024,
+      "optimized_logical_qubits": 880,
+      "optimized_non_clifford": 30998464,
+      "runtime_speedup_factor": 2.616420736201639,
+      "projected_time_efficient_days": 3.8220152675128976,
+      "projected_balanced_days": 100.9012030623405,
+      "space_transfer": {
+        "same_hardware_regime_physical_qubits": 26000,
+        "naive_linear_logical_scaling_physical_qubits": 19210.74727120067,
+        "half_fixed_overhead_scaling_physical_qubits": 22605.373635600336
+      },
+      "assumptions": [
+        "Runtime is transferred linearly with the dominant non-Clifford/Toffoli budget.",
+        "The physical architecture, cycle time, and parallelization regime are held fixed.",
+        "Space scaling is heuristic only; time transfer is the main supported comparison."
+      ]
+    },
+    {
+      "google_baseline_line": "low_qubit",
+      "optimized_lookup_model": "3lookup",
+      "google_logical_qubits": 1191,
+      "google_non_clifford": 81105024,
+      "optimized_logical_qubits": 880,
+      "optimized_non_clifford": 32833472,
+      "runtime_speedup_factor": 2.470193344158059,
+      "projected_time_efficient_days": 4.048266109877485,
+      "projected_balanced_days": 106.87422530076559,
+      "space_transfer": {
+        "same_hardware_regime_physical_qubits": 26000,
+        "naive_linear_logical_scaling_physical_qubits": 19210.74727120067,
+        "half_fixed_overhead_scaling_physical_qubits": 22605.373635600336
+      },
+      "assumptions": [
+        "Runtime is transferred linearly with the dominant non-Clifford/Toffoli budget.",
+        "The physical architecture, cycle time, and parallelization regime are held fixed.",
+        "Space scaling is heuristic only; time transfer is the main supported comparison."
+      ]
+    },
+    {
+      "google_baseline_line": "low_gate",
+      "optimized_lookup_model": "2lookup",
+      "google_logical_qubits": 1441,
+      "google_non_clifford": 64305024,
+      "optimized_logical_qubits": 880,
+      "optimized_non_clifford": 30998464,
+      "runtime_speedup_factor": 2.0744583989709944,
+      "projected_time_efficient_days": 4.820535328623778,
+      "projected_balanced_days": 127.26213267566776,
+      "space_transfer": {
+        "same_hardware_regime_physical_qubits": 26000,
+        "naive_linear_logical_scaling_physical_qubits": 15877.862595419847,
+        "half_fixed_overhead_scaling_physical_qubits": 20938.931297709925
+      },
+      "assumptions": [
+        "Runtime is transferred linearly with the dominant non-Clifford/Toffoli budget.",
+        "The physical architecture, cycle time, and parallelization regime are held fixed.",
+        "Space scaling is heuristic only; time transfer is the main supported comparison."
+      ]
+    },
+    {
+      "google_baseline_line": "low_gate",
+      "optimized_lookup_model": "3lookup",
+      "google_logical_qubits": 1441,
+      "google_non_clifford": 64305024,
+      "optimized_logical_qubits": 880,
+      "optimized_non_clifford": 32833472,
+      "runtime_speedup_factor": 1.9585203782286564,
+      "projected_time_efficient_days": 5.105895302985969,
+      "projected_balanced_days": 134.79563599882957,
+      "space_transfer": {
+        "same_hardware_regime_physical_qubits": 26000,
+        "naive_linear_logical_scaling_physical_qubits": 15877.862595419847,
+        "half_fixed_overhead_scaling_physical_qubits": 20938.931297709925
+      },
+      "assumptions": [
+        "Runtime is transferred linearly with the dominant non-Clifford/Toffoli budget.",
+        "The physical architecture, cycle time, and parallelization regime are held fixed.",
+        "Space scaling is heuristic only; time transfer is the main supported comparison."
+      ]
+    }
+  ],
+  "publication_safe_summary": {
+    "single_sentence": "If the optimized secp256k1 logical layer is transferred into the neutral-atom architecture of Cain et al. under constant cycle-time and parallelism assumptions, the headline ECC runtime moves from about 10 days to roughly 4-5 days, while physical-qubit savings are likely more modest and much more model-sensitive.",
+    "do_not_say": [
+      "Do not say the paper is beaten on its own P-256 target without recompiling for P-256.",
+      "Do not say the physical qubit count is exactly 20k or exactly 26k for our circuit.",
+      "Do not say the transfer is theorem-proved end-to-end."
+    ]
+  }
+}

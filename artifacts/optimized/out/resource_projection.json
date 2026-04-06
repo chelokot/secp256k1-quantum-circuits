@@ -1,0 +1,53 @@
+{
+  "model_name": "single-lane_carry-save_projection_v1",
+  "honesty_note": "Semantic correctness is exact at the kickmix-ISA level. The non-Clifford and logical-qubit totals below are backend projections, not theorem-proved primitive-gate counts.",
+  "public_google_baseline": {
+    "source": "Google cryptocurrency whitepaper public appendix envelope",
+    "window_size": 16,
+    "retained_window_additions": 28,
+    "low_qubit": {
+      "logical_qubits": 1191,
+      "non_clifford": 81105024
+    },
+    "low_gate": {
+      "logical_qubits": 1441,
+      "non_clifford": 64305024
+    }
+  },
+  "optimized_leaf_projection": {
+    "scratch_logical_qubits": 864,
+    "arithmetic_signature": {
+      "field_mul": 11,
+      "mul_const_b3": 2,
+      "field_add_sub": 13
+    },
+    "modeled_non_clifford_excluding_lookup": 976016
+  },
+  "optimized_ecdlp_projection": {
+    "window_size": 16,
+    "retained_window_additions": 28,
+    "logical_qubits_total": 880,
+    "lookup_model_2channel": {
+      "lookup_channels": 2,
+      "per_window_lookup_cost": 131072,
+      "total_non_clifford": 30998464
+    },
+    "lookup_model_3channel": {
+      "lookup_channels": 3,
+      "per_window_lookup_cost": 196608,
+      "total_non_clifford": 32833472
+    }
+  },
+  "improvement_vs_google": {
+    "versus_low_qubit": {
+      "qubit_gain": 1.353409090909091,
+      "toffoli_gain_2lookup": 2.616420736201639,
+      "toffoli_gain_3lookup": 2.470193344158059
+    },
+    "versus_low_gate": {
+      "qubit_gain": 1.6375,
+      "toffoli_gain_2lookup": 2.0744583989709944,
+      "toffoli_gain_3lookup": 1.9585203782286564
+    }
+  }
+}

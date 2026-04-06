@@ -1,0 +1,58 @@
+{
+  "audit": {
+    "sha256": "aea0983dbd9827717fcd10875e31110374208d63c9f009e40c0a4e959071cab0",
+    "summary": {
+      "total": 16384,
+      "pass": 16384,
+      "categories": {
+        "random": {
+          "total": 12288,
+          "pass": 12288
+        },
+        "doubling": {
+          "total": 1024,
+          "pass": 1024
+        },
+        "inverse": {
+          "total": 1024,
+          "pass": 1024
+        },
+        "accumulator_infinity": {
+          "total": 1024,
+          "pass": 1024
+        },
+        "lookup_infinity": {
+          "total": 1024,
+          "pass": 1024
+        }
+      }
+    },
+    "csv": "optimized_pointadd_audit_16384.csv",
+    "netlist_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74"
+  },
+  "toy": {
+    "sha256": "70235a7be65ecbdd1a69583d12be3ab8ec0d39cf148f9dae1c36bd9c2e71b6e1",
+    "summary": {
+      "total": 19850,
+      "pass": 19850,
+      "curves": {
+        "toy61_b2": {
+          "total": 3721,
+          "pass": 3721,
+          "order": 61,
+          "p": 61,
+          "b": 2
+        },
+        "toy127_b11": {
+          "total": 16129,
+          "pass": 16129,
+          "order": 127,
+          "p": 109,
+          "b": 11
+        }
+      }
+    },
+    "csv": "toy_curve_exhaustive_19850.csv"
+  },
+  "elapsed_seconds": 16.224
+}

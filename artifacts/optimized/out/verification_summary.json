@@ -1,0 +1,54 @@
+{
+  "netlist_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+  "audit_csv": "optimized_pointadd_audit_16384.csv",
+  "audit_sha256": "aea0983dbd9827717fcd10875e31110374208d63c9f009e40c0a4e959071cab0",
+  "audit_total_cases": 16384,
+  "audit_pass_cases": 16384,
+  "audit_categories": {
+    "random": {
+      "total": 12288,
+      "pass": 12288
+    },
+    "doubling": {
+      "total": 1024,
+      "pass": 1024
+    },
+    "inverse": {
+      "total": 1024,
+      "pass": 1024
+    },
+    "accumulator_infinity": {
+      "total": 1024,
+      "pass": 1024
+    },
+    "lookup_infinity": {
+      "total": 1024,
+      "pass": 1024
+    }
+  },
+  "toy_csv": "toy_curve_exhaustive_19850.csv",
+  "toy_sha256": "70235a7be65ecbdd1a69583d12be3ab8ec0d39cf148f9dae1c36bd9c2e71b6e1",
+  "toy_total_cases": 19850,
+  "toy_pass_cases": 19850,
+  "toy_curves": {
+    "toy61_b2": {
+      "total": 3721,
+      "pass": 3721,
+      "order": 61,
+      "p": 61,
+      "b": 2
+    },
+    "toy127_b11": {
+      "total": 16129,
+      "pass": 16129,
+      "order": 127,
+      "p": 109,
+      "b": 11
+    }
+  },
+  "rebuild_elapsed_seconds": 46.612,
+  "notes": [
+    "The secp256k1 audit compares the exact optimized leaf to both a direct affine group-law implementation and an independent complete-projective reference path.",
+    "The toy-curve proof exhaustively checks the same instruction schedule instantiated with curve-specific b3 values on two prime-order j=0 curves."
+  ]
+}

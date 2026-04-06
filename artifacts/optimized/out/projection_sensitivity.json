@@ -1,0 +1,2679 @@
+{
+  "base": {
+    "optimized_qubits": 880,
+    "optimized_nc_2lookup": 30998464,
+    "optimized_nc_3lookup": 32833472,
+    "google_low_qubit": {
+      "logical_qubits": 1191,
+      "non_clifford": 81105024
+    },
+    "google_low_gate": {
+      "logical_qubits": 1441,
+      "non_clifford": 64305024
+    }
+  },
+  "headroom": {
+    "non_clifford_margin_vs_low_qubit_2lookup": 50106560,
+    "non_clifford_margin_vs_low_gate_2lookup": 33306560,
+    "non_clifford_margin_vs_low_qubit_3lookup": 48271552,
+    "non_clifford_margin_vs_low_gate_3lookup": 31471552,
+    "qubit_margin_vs_low_qubit": 311,
+    "qubit_margin_vs_low_gate": 561,
+    "break_even_multiplier_vs_low_gate_2lookup": 2.0744583989709944,
+    "break_even_multiplier_vs_low_qubit_2lookup": 2.616420736201639,
+    "break_even_multiplier_vs_low_gate_3lookup": 1.9585203782286564,
+    "break_even_multiplier_vs_low_qubit_3lookup": 2.470193344158059
+  },
+  "scenario_grid": [
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.0,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.0,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.0,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.0,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.0,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.0,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.0,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.1,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.1,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.1,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.1,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.1,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.1,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.1,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.25,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.25,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.25,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.25,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.25,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.25,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.25,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.5,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.5,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.5,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.5,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.5,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.5,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.5,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.75,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.75,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.75,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.75,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.75,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.75,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 1.75,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 2.0,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 2.0,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 2.0,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 2.0,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 2.0,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 2.0,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 0,
+      "multiplier": 2.0,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.0,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.0,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.0,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.0,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.0,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.0,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.0,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.1,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.1,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.1,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.1,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.1,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.1,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.1,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.25,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.25,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.25,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.25,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.25,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.25,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.25,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.5,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.5,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.5,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.5,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.5,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.5,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.5,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.75,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.75,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.75,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.75,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.75,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.75,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 1.75,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 2.0,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 2.0,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 2.0,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 2.0,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 2.0,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 2.0,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 1000000,
+      "multiplier": 2.0,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.0,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.0,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.0,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.0,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.0,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.0,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.0,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.1,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.1,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.1,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.1,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.1,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.1,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.1,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.25,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.25,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.25,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.25,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.25,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.25,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.25,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.5,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.5,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.5,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.5,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.5,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.5,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.5,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.75,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.75,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.75,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.75,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.75,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.75,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 1.75,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 2.0,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 2.0,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 2.0,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 2.0,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 2.0,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 2.0,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 2000000,
+      "multiplier": 2.0,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.0,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.0,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.0,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.0,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.0,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.0,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.0,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.1,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.1,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.1,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.1,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.1,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.1,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.1,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.25,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.25,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.25,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.25,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.25,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.25,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.25,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.5,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.5,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.5,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.5,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.5,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.5,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.5,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.75,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.75,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.75,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.75,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.75,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.75,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 1.75,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 2.0,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 2.0,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 2.0,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 2.0,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 2.0,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 2.0,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 4000000,
+      "multiplier": 2.0,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.0,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.0,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.0,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.0,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.0,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.0,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.0,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.1,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.1,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.1,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.1,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.1,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.1,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.1,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.25,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.25,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.25,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.25,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.25,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.25,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.25,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.5,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.5,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.5,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.5,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.5,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.5,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.5,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.75,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.75,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.75,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.75,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.75,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.75,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 1.75,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 2.0,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 2.0,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 2.0,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 2.0,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 2.0,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 2.0,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 8000000,
+      "multiplier": 2.0,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.0,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.0,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.0,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.0,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.0,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.0,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.0,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.1,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.1,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.1,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.1,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.1,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.1,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.1,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.25,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.25,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.25,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.25,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.25,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.25,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.25,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": true,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.5,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.5,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.5,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.5,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.5,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.5,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.5,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.75,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.75,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.75,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.75,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.75,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.75,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 1.75,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 2.0,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 2.0,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 2.0,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 2.0,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 2.0,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 2.0,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 16000000,
+      "multiplier": 2.0,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.0,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.0,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.0,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.0,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.0,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.0,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.0,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": true,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.1,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.1,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.1,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.1,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.1,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.1,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.1,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.25,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.25,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.25,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.25,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.25,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.25,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.25,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": true
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.5,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.5,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.5,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.5,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.5,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.5,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.5,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": true,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.75,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": false,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.75,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": false,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.75,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": false,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.75,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": false,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.75,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": false,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.75,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": false,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 1.75,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": false,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 2.0,
+      "extra_qubits": 0,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": false,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 2.0,
+      "extra_qubits": 16,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": false,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 2.0,
+      "extra_qubits": 32,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": false,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 2.0,
+      "extra_qubits": 64,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": false,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 2.0,
+      "extra_qubits": 96,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": false,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 2.0,
+      "extra_qubits": 128,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": false,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    },
+    {
+      "extra_non_clifford": 32000000,
+      "multiplier": 2.0,
+      "extra_qubits": 192,
+      "beats_low_gate_2lookup": false,
+      "beats_low_qubit_2lookup": false,
+      "beats_low_gate_3lookup": false,
+      "beats_low_qubit_3lookup": false
+    }
+  ],
+  "notes": [
+    "This file is not a proof. It is a robustness check against hostile reinterpretations of the backend model.",
+    "If an objection can be modeled as additive or multiplicative backend overhead, these margins show how much room the optimized projection still has before losing the public-baseline win."
+  ]
+}

@@ -1,0 +1,389 @@
+{
+  "schema": "kickmix-netlist-v2",
+  "variant": "a0_complete_mixed_secp256k1",
+  "curve": "secp256k1",
+  "field_modulus_hex": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
+  "curve_b": 7,
+  "b3": 21,
+  "arithmetic_slots": [
+    "qx",
+    "qy",
+    "qz",
+    "lx",
+    "ly",
+    "t0",
+    "t1",
+    "t2",
+    "t3",
+    "t4",
+    "o1",
+    "o2"
+  ],
+  "interface_wires": [
+    "Q.X",
+    "Q.Y",
+    "Q.Z",
+    "k",
+    "T.x",
+    "T.y",
+    "T.meta"
+  ],
+  "instructions": [
+    {
+      "pc": 0,
+      "op": "load_input",
+      "dst": "qx",
+      "src": "Q.X",
+      "comment": "Accumulator X interface wire enters scratch slot qx."
+    },
+    {
+      "pc": 1,
+      "op": "load_input",
+      "dst": "qy",
+      "src": "Q.Y",
+      "comment": "Accumulator Y interface wire enters scratch slot qy."
+    },
+    {
+      "pc": 2,
+      "op": "load_input",
+      "dst": "qz",
+      "src": "Q.Z",
+      "comment": "Accumulator Z interface wire enters scratch slot qz."
+    },
+    {
+      "pc": 3,
+      "op": "lookup_affine_x",
+      "dst": "lx",
+      "src": {
+        "table": "T.x",
+        "key": "k"
+      },
+      "comment": "Load affine x coordinate for the selected window point."
+    },
+    {
+      "pc": 4,
+      "op": "lookup_affine_y",
+      "dst": "ly",
+      "src": {
+        "table": "T.y",
+        "key": "k"
+      },
+      "comment": "Load affine y coordinate for the selected window point."
+    },
+    {
+      "pc": 5,
+      "op": "lookup_meta",
+      "dst": "meta",
+      "src": {
+        "table": "T.meta",
+        "key": "k"
+      },
+      "comment": "Metadata bit0 marks the neutral lookup entry used for k = 0."
+    },
+    {
+      "pc": 6,
+      "op": "bool_from_flag",
+      "dst": "f_lookup_inf",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Set control bit for the no-op path when the lookup point is infinity."
+    },
+    {
+      "pc": 7,
+      "op": "field_mul",
+      "dst": "t0",
+      "src": [
+        "qx",
+        "lx"
+      ],
+      "comment": "t0 = X1 * X2"
+    },
+    {
+      "pc": 8,
+      "op": "field_mul",
+      "dst": "t1",
+      "src": [
+        "qy",
+        "ly"
+      ],
+      "comment": "t1 = Y1 * Y2"
+    },
+    {
+      "pc": 9,
+      "op": "field_add",
+      "dst": "t3",
+      "src": [
+        "lx",
+        "ly"
+      ],
+      "comment": "t3 = X2 + Y2"
+    },
+    {
+      "pc": 10,
+      "op": "field_add",
+      "dst": "t4",
+      "src": [
+        "qx",
+        "qy"
+      ],
+      "comment": "t4 = X1 + Y1"
+    },
+    {
+      "pc": 11,
+      "op": "field_mul",
+      "dst": "t3",
+      "src": [
+        "t3",
+        "t4"
+      ],
+      "comment": "t3 = (X2 + Y2)(X1 + Y1)"
+    },
+    {
+      "pc": 12,
+      "op": "field_add",
+      "dst": "t4",
+      "src": [
+        "t0",
+        "t1"
+      ],
+      "comment": "t4 = t0 + t1"
+    },
+    {
+      "pc": 13,
+      "op": "field_sub",
+      "dst": "t3",
+      "src": [
+        "t3",
+        "t4"
+      ],
+      "comment": "t3 = X1Y2 + X2Y1"
+    },
+    {
+      "pc": 14,
+      "op": "field_mul",
+      "dst": "t4",
+      "src": [
+        "ly",
+        "qz"
+      ],
+      "comment": "t4 = Y2 * Z1"
+    },
+    {
+      "pc": 15,
+      "op": "field_add",
+      "dst": "t4",
+      "src": [
+        "t4",
+        "qy"
+      ],
+      "comment": "t4 = Y1 + Y2Z1"
+    },
+    {
+      "pc": 16,
+      "op": "field_mul",
+      "dst": "o2",
+      "src": [
+        "lx",
+        "qz"
+      ],
+      "comment": "o2 = X2 * Z1"
+    },
+    {
+      "pc": 17,
+      "op": "field_add",
+      "dst": "o2",
+      "src": [
+        "o2",
+        "qx"
+      ],
+      "comment": "o2 = X1 + X2Z1"
+    },
+    {
+      "pc": 18,
+      "op": "field_add",
+      "dst": "o1",
+      "src": [
+        "t0",
+        "t0"
+      ],
+      "comment": "o1 = 2 * t0"
+    },
+    {
+      "pc": 19,
+      "op": "field_add",
+      "dst": "t0",
+      "src": [
+        "o1",
+        "t0"
+      ],
+      "comment": "t0 = 3 * X1X2"
+    },
+    {
+      "pc": 20,
+      "op": "mul_const",
+      "dst": "t2",
+      "src": "qz",
+      "const": 21,
+      "comment": "t2 = 3b * Z1 = 21 * Z1 for secp256k1."
+    },
+    {
+      "pc": 21,
+      "op": "field_add",
+      "dst": "qz",
+      "src": [
+        "t1",
+        "t2"
+      ],
+      "comment": "qz = Y1Y2 + 3bZ1"
+    },
+    {
+      "pc": 22,
+      "op": "field_sub",
+      "dst": "t1",
+      "src": [
+        "t1",
+        "t2"
+      ],
+      "comment": "t1 = Y1Y2 - 3bZ1"
+    },
+    {
+      "pc": 23,
+      "op": "mul_const",
+      "dst": "o2",
+      "src": "o2",
+      "const": 21,
+      "comment": "o2 = 3b(X1 + X2Z1)"
+    },
+    {
+      "pc": 24,
+      "op": "field_mul",
+      "dst": "o1",
+      "src": [
+        "t4",
+        "o2"
+      ],
+      "comment": "o1 = 3b(Y1 + Y2Z1)(X1 + X2Z1)"
+    },
+    {
+      "pc": 25,
+      "op": "field_mul",
+      "dst": "t2",
+      "src": [
+        "t3",
+        "t1"
+      ],
+      "comment": "t2 = (X1Y2 + X2Y1)(Y1Y2 - 3bZ1)"
+    },
+    {
+      "pc": 26,
+      "op": "field_sub",
+      "dst": "qx",
+      "src": [
+        "t2",
+        "o1"
+      ],
+      "comment": "qx = X3"
+    },
+    {
+      "pc": 27,
+      "op": "field_mul",
+      "dst": "o2",
+      "src": [
+        "o2",
+        "t0"
+      ],
+      "comment": "o2 = 9b X1X2 (X1 + X2Z1)"
+    },
+    {
+      "pc": 28,
+      "op": "field_mul",
+      "dst": "t1",
+      "src": [
+        "t1",
+        "qz"
+      ],
+      "comment": "t1 = (Y1Y2 - 3bZ1)(Y1Y2 + 3bZ1)"
+    },
+    {
+      "pc": 29,
+      "op": "field_add",
+      "dst": "qy",
+      "src": [
+        "t1",
+        "o2"
+      ],
+      "comment": "qy = Y3"
+    },
+    {
+      "pc": 30,
+      "op": "field_mul",
+      "dst": "t0",
+      "src": [
+        "t0",
+        "t3"
+      ],
+      "comment": "t0 = 3X1X2(X1Y2 + X2Y1)"
+    },
+    {
+      "pc": 31,
+      "op": "field_mul",
+      "dst": "qz",
+      "src": [
+        "qz",
+        "t4"
+      ],
+      "comment": "qz = (Y1Y2 + 3bZ1)(Y1 + Y2Z1)"
+    },
+    {
+      "pc": 32,
+      "op": "field_add",
+      "dst": "qz",
+      "src": [
+        "qz",
+        "t0"
+      ],
+      "comment": "qz = Z3"
+    },
+    {
+      "pc": 33,
+      "op": "select_field_if_flag",
+      "dst": "qx",
+      "src": [
+        "Q.X",
+        "qx"
+      ],
+      "flag": "f_lookup_inf",
+      "comment": "Neutral table entry keeps the original accumulator X."
+    },
+    {
+      "pc": 34,
+      "op": "select_field_if_flag",
+      "dst": "qy",
+      "src": [
+        "Q.Y",
+        "qy"
+      ],
+      "flag": "f_lookup_inf",
+      "comment": "Neutral table entry keeps the original accumulator Y."
+    },
+    {
+      "pc": 35,
+      "op": "select_field_if_flag",
+      "dst": "qz",
+      "src": [
+        "Q.Z",
+        "qz"
+      ],
+      "flag": "f_lookup_inf",
+      "comment": "Neutral table entry keeps the original accumulator Z."
+    },
+    {
+      "pc": 36,
+      "op": "mbuc_clear_bool",
+      "dst": "f_lookup_inf",
+      "comment": "Explicitly clear the one-bit classical control after deterministic selection."
+    }
+  ]
+}

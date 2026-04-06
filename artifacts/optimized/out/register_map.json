@@ -1,0 +1,31 @@
+{
+  "arithmetic_slots": [
+    "qx",
+    "qy",
+    "qz",
+    "lx",
+    "ly",
+    "t0",
+    "t1",
+    "t2",
+    "t3",
+    "t4",
+    "o1",
+    "o2"
+  ],
+  "scratch_slot_count": 12,
+  "auxiliary_control_slots": [
+    "meta",
+    "f_lookup_inf"
+  ],
+  "interface_wires": [
+    "Q.X",
+    "Q.Y",
+    "Q.Z",
+    "k",
+    "T.x",
+    "T.y",
+    "T.meta"
+  ],
+  "comment": "The 12-slot count refers to mutable field/arithmetic storage. Metadata and the one-bit control flag are tracked separately."
+}
