@@ -22,7 +22,7 @@ from verifier import run_audit, run_toy  # noqa: E402
 
 
 def main() -> None:
-    optimized_root = REPO_ROOT / 'artifacts' / 'optimized'
+    optimized_root = REPO_ROOT / 'artifacts'
 
     optimized = {
         'audit': run_audit(optimized_root),

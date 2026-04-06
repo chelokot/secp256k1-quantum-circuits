@@ -4,7 +4,7 @@ verify:
 	python scripts/verify_all.py
 
 verify-optimized:
-	python src/verifier.py --package-dir artifacts/optimized --mode all
+	python src/verifier.py --package-dir artifacts --mode all
 
 verify-strict:
 	python scripts/verify_strict.py --mode all

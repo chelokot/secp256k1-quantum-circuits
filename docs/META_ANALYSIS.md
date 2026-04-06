@@ -7,7 +7,7 @@ artifact layer.
 
 ### 1. Cited Google appendix baseline
 
-Location: `artifacts/optimized/out/resource_projection.json`
+Location: `artifacts/out/resource_projection.json`
 
 Role:
 
@@ -16,7 +16,7 @@ Role:
 
 ### 2. Optimized secp256k1 artifact
 
-Location: `artifacts/optimized/`
+Location: `artifacts/`
 
 Role:
 
@@ -27,7 +27,7 @@ Role:
 
 ## Quantified internal differences
 
-`artifacts/optimized/out/meta_analysis.json` records the main internal deltas
+`artifacts/out/meta_analysis.json` records the main internal deltas
 between the cited Google estimates and the optimized artifact:
 
 - Google low-qubit ECDLP line: `1191 logical qubits`, `81,105,024 non-Clifford`

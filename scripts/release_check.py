@@ -10,7 +10,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 COMMANDS = [
-    [sys.executable, 'src/verifier.py', '--package-dir', 'artifacts/optimized', '--mode', 'all'],
+    [sys.executable, 'src/verifier.py', '--package-dir', 'artifacts', '--mode', 'all'],
     [sys.executable, 'scripts/verify_all.py'],
     [sys.executable, 'scripts/verify_strict.py', '--mode', 'all'],
     [sys.executable, 'scripts/run_research_pass.py'],

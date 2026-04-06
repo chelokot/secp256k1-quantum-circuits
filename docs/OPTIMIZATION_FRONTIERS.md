@@ -6,7 +6,7 @@ the checked-in artifacts and which parts remain the main frontier.
 ## Audited mainline
 
 The primary modeled headline stored in
-`artifacts/optimized/out/resource_projection.json` is:
+`artifacts/out/resource_projection.json` is:
 
 - **880 logical qubits**
 - **30.998M non-Clifford** under the 2-channel lookup model
@@ -14,7 +14,7 @@ The primary modeled headline stored in
 
 ## Budget split of that mainline
 
-`artifacts/optimized/out/dominant_cost_breakdown.json` records:
+`artifacts/out/dominant_cost_breakdown.json` records:
 
 - **11.84%** lookup / **88.16%** arithmetic in the 2-channel model
 - **16.77%** lookup / **83.23%** arithmetic in the 3-channel model
@@ -56,8 +56,8 @@ It would be inaccurate to describe the repository as already having:
 
 ## Supporting files
 
-- `artifacts/optimized/out/dominant_cost_breakdown.json`
-- `artifacts/optimized/out/literature_projection_scenarios.json`
-- `artifacts/optimized/out/lookup_folded_projection.json`
+- `artifacts/out/dominant_cost_breakdown.json`
+- `artifacts/out/literature_projection_scenarios.json`
+- `artifacts/out/lookup_folded_projection.json`
 - `docs/COST_MODEL_CORRECTION.md`
 - `docs/LOOKUP_FOLDING_RESEARCH_PASS.md`

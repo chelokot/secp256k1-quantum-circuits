@@ -6,7 +6,7 @@ published appendix estimates**.
 ## Baseline source
 
 The baseline is the published appendix estimate from Babbush et al. 2026 as
-stored in `artifacts/optimized/out/resource_projection.json`.
+stored in `artifacts/out/resource_projection.json`.
 
 The tracked public lines are:
 
@@ -41,8 +41,8 @@ Versus the public low-gate line:
 
 The repository also stores hostile-backend margin sweeps in:
 
-- `artifacts/optimized/out/projection_sensitivity.json`
-- `artifacts/optimized/figures/projection_headroom.png`
+- `artifacts/out/projection_sensitivity.json`
+- `artifacts/figures/projection_headroom.png`
 
 ## Boundary
 

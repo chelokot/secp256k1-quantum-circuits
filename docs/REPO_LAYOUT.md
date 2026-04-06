@@ -12,7 +12,7 @@
 
 ## Artifact layer
 
-### `artifacts/optimized/`
+### `artifacts/`
 
 Primary optimized release with:
 

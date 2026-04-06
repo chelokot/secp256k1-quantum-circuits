@@ -10,9 +10,9 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
 def main() -> None:
-    dominant = json.loads((REPO_ROOT / 'artifacts' / 'optimized' / 'out' / 'dominant_cost_breakdown.json').read_text())
+    dominant = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'dominant_cost_breakdown.json').read_text())
     lit = json.loads((REPO_ROOT / 'results' / 'literature_matrix.json').read_text())
-    scenarios = json.loads((REPO_ROOT / 'artifacts' / 'optimized' / 'out' / 'literature_projection_scenarios.json').read_text())
+    scenarios = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'literature_projection_scenarios.json').read_text())
     ladder = json.loads((REPO_ROOT / 'benchmarks' / 'challenge_ladder' / 'challenge_ladder_summary.json').read_text())
 
     print('Research and literature summary')

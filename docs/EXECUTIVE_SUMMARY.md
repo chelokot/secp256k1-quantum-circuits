@@ -15,7 +15,7 @@ stack and explicit modeled projections below that arithmetic boundary.
 ## Primary headline
 
 The primary optimized projection stored in
-`artifacts/optimized/out/resource_projection.json` is:
+`artifacts/out/resource_projection.json` is:
 
 - **880 logical qubits**
 - **30.998M non-Clifford** under the 2-channel lookup model

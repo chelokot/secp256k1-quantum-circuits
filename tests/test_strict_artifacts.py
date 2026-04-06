@@ -13,9 +13,9 @@ class StrictArtifactTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.strict = json.loads((REPO_ROOT / 'results' / 'strict_verification_summary.json').read_text())
-        cls.boundaries = json.loads((REPO_ROOT / 'artifacts' / 'optimized' / 'out' / 'claim_boundary_matrix.json').read_text())
-        cls.meta = json.loads((REPO_ROOT / 'artifacts' / 'optimized' / 'out' / 'meta_analysis.json').read_text())
-        cls.sensitivity = json.loads((REPO_ROOT / 'artifacts' / 'optimized' / 'out' / 'projection_sensitivity.json').read_text())
+        cls.boundaries = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'claim_boundary_matrix.json').read_text())
+        cls.meta = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'meta_analysis.json').read_text())
+        cls.sensitivity = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'projection_sensitivity.json').read_text())
 
     def test_lookup_contract_passes(self):
         lookup = self.strict['lookup_contract']

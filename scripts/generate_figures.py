@@ -9,8 +9,8 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-FIG_DIR = REPO_ROOT / 'artifacts' / 'optimized' / 'figures'
-OUT_DIR = REPO_ROOT / 'artifacts' / 'optimized' / 'out'
+FIG_DIR = REPO_ROOT / 'artifacts' / 'figures'
+OUT_DIR = REPO_ROOT / 'artifacts' / 'out'
 BENCH_DIR = REPO_ROOT / 'benchmarks' / 'challenge_ladder'
 RESULTS_DIR = REPO_ROOT / 'results'
 

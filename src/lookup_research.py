@@ -185,19 +185,19 @@ def build_lookup_folded_contract(repo_root: Path) -> Dict[str, Any]:
             "The backend-resource implication of halving the lookup domain is modeled separately in lookup_folded_projection.json.",
         ],
     }
-    out_path = repo_root / "artifacts" / "optimized" / "out" / "lookup_signed_fold_contract.json"
+    out_path = repo_root / "artifacts" / "out" / "lookup_signed_fold_contract.json"
     dump_json(out_path, contract)
     return contract
 
 
 def build_lookup_folded_scaffold(repo_root: Path, contract: Dict[str, Any]) -> Dict[str, Any]:
-    scaffold_path = repo_root / "artifacts" / "optimized" / "out" / "ecdlp_scaffold_optimized.json"
+    scaffold_path = repo_root / "artifacts" / "out" / "ecdlp_scaffold_optimized.json"
     scaffold = json.loads(scaffold_path.read_text())
     result = {
         "schema": "kickmix-hierarchical-scaffold-lookup-folded-v1",
         "base_scaffold_sha256": sha256_path(scaffold_path),
         "base_scaffold_name": scaffold_path.name,
-        "lookup_contract_sha256": sha256_path(repo_root / "artifacts" / "optimized" / "out" / "lookup_signed_fold_contract.json"),
+        "lookup_contract_sha256": sha256_path(repo_root / "artifacts" / "out" / "lookup_signed_fold_contract.json"),
         "curve": scaffold["curve"],
         "window_size": scaffold["window_size"],
         "retained_window_additions": scaffold["retained_window_additions"],
@@ -219,18 +219,18 @@ def build_lookup_folded_scaffold(repo_root: Path, contract: Dict[str, Any]) -> D
             "All retained-window metadata from the published scaffold remains unchanged.",
         ],
     }
-    out_path = repo_root / "artifacts" / "optimized" / "out" / "ecdlp_scaffold_lookup_folded.json"
+    out_path = repo_root / "artifacts" / "out" / "ecdlp_scaffold_lookup_folded.json"
     dump_json(out_path, result)
     return result
 
 
 def run_lookup_folding_audit(repo_root: Path) -> Dict[str, Any]:
-    out_dir = repo_root / "artifacts" / "optimized" / "out"
+    out_dir = repo_root / "artifacts" / "out"
     full_csv = out_dir / "lookup_signed_fold_exhaustive_g.csv"
     sample_csv = out_dir / "lookup_signed_fold_multibase_sampled.csv"
 
     bases = build_lookup_base_set()
-    seed_material = sha256_bytes((sha256_path(repo_root / "artifacts" / "optimized" / "out" / "optimized_pointadd_secp256k1.json") + sha256_path(repo_root / "artifacts" / "optimized" / "out" / "ecdlp_scaffold_optimized.json")).encode())
+    seed_material = sha256_bytes((sha256_path(repo_root / "artifacts" / "out" / "optimized_pointadd_secp256k1.json") + sha256_path(repo_root / "artifacts" / "out" / "ecdlp_scaffold_optimized.json")).encode())
 
     summary: Dict[str, Any] = {
         "word_domain_size": WORD_SIZE,
@@ -350,7 +350,7 @@ def run_lookup_folding_audit(repo_root: Path) -> Dict[str, Any]:
 
 
 def build_lookup_folded_projection(repo_root: Path, small_pad_values: Iterable[int] = (0, 256, 512, 1024, 2048, 4096)) -> Dict[str, Any]:
-    projection_path = repo_root / "artifacts" / "optimized" / "out" / "resource_projection.json"
+    projection_path = repo_root / "artifacts" / "out" / "resource_projection.json"
     projection = json.loads(projection_path.read_text())
     windows = int(projection["optimized_ecdlp_projection"]["retained_window_additions"])
     per_leaf_arith = int(projection["optimized_leaf_projection"]["modeled_non_clifford_excluding_lookup"])
@@ -406,6 +406,6 @@ def build_lookup_folded_projection(repo_root: Path, small_pad_values: Iterable[i
             "Under the repository's existing lookup-counting model this translates to a modest but real total non-Clifford reduction, not another dramatic 2x overall speedup.",
         ],
     }
-    out_path = repo_root / "artifacts" / "optimized" / "out" / "lookup_folded_projection.json"
+    out_path = repo_root / "artifacts" / "out" / "lookup_folded_projection.json"
     dump_json(out_path, result)
     return result

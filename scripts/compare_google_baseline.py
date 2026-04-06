@@ -7,8 +7,8 @@ import json
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-projection = json.loads((REPO_ROOT / 'artifacts' / 'optimized' / 'out' / 'resource_projection.json').read_text())
-sensitivity = json.loads((REPO_ROOT / 'artifacts' / 'optimized' / 'out' / 'projection_sensitivity.json').read_text())
+projection = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'resource_projection.json').read_text())
+sensitivity = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'projection_sensitivity.json').read_text())
 base = projection['public_google_baseline']
 opt = projection['optimized_ecdlp_projection']
 gain = projection['improvement_vs_google']

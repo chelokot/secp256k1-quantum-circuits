@@ -35,16 +35,16 @@ class PublicationFilesTests(unittest.TestCase):
 
     def test_new_figures_exist(self):
         expected = [
-            'artifacts/optimized/figures/progression_instruction_count.png',
-            'artifacts/optimized/figures/progression_register_count.png',
-            'artifacts/optimized/figures/projection_headroom.png',
-            'artifacts/optimized/figures/verification_coverage_extended.png',
-            'artifacts/optimized/figures/optimization_frontier_ranges.png',
-            'artifacts/optimized/figures/dominant_cost_breakdown.png',
-            'artifacts/optimized/figures/lookup_reduction_targets.png',
-            'artifacts/optimized/figures/challenge_ladder_orders.png',
-            'artifacts/optimized/figures/literature_layer_map.png',
-            'artifacts/optimized/figures/lookup_fold_pad_sweep.png',
+            'artifacts/figures/progression_instruction_count.png',
+            'artifacts/figures/progression_register_count.png',
+            'artifacts/figures/projection_headroom.png',
+            'artifacts/figures/verification_coverage_extended.png',
+            'artifacts/figures/optimization_frontier_ranges.png',
+            'artifacts/figures/dominant_cost_breakdown.png',
+            'artifacts/figures/lookup_reduction_targets.png',
+            'artifacts/figures/challenge_ladder_orders.png',
+            'artifacts/figures/literature_layer_map.png',
+            'artifacts/figures/lookup_fold_pad_sweep.png',
         ]
         for rel in expected:
             path = REPO_ROOT / rel

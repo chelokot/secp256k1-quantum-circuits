@@ -7,7 +7,7 @@ This document explains how external work is used in the repository.
 ### 1. Public appendix baseline
 
 Babbush et al. 2026 is used as the public secp256k1 appendix baseline recorded
-in `artifacts/optimized/out/resource_projection.json`.
+in `artifacts/out/resource_projection.json`.
 
 ### 2. Validation pressure
 

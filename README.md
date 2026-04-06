@@ -22,10 +22,10 @@ proofs.
 
 ### Primary audited mainline
 
-The primary release artifact is in `artifacts/optimized/`.
+The primary release artifact is in `artifacts/`.
 
 Its modeled ECDLP projection, as recorded in
-`artifacts/optimized/out/resource_projection.json`, is:
+`artifacts/out/resource_projection.json`, is:
 
 - **880 logical qubits**
 - **30,998,464 non-Clifford** under the 2-channel lookup model
@@ -35,7 +35,7 @@ Its modeled ECDLP projection, as recorded in
 
 When this repository says **Google's published appendix estimates**, it means
 the published secp256k1 reference lines from Babbush et al. 2026 as stored in
-`artifacts/optimized/out/resource_projection.json`:
+`artifacts/out/resource_projection.json`:
 
 - **low-qubit line:** `1191 logical qubits`, `81,105,024 non-Clifford`
 - **low-gate line:** `1441 logical qubits`, `64,305,024 non-Clifford`
@@ -48,8 +48,8 @@ to have reconstructed any unpublished internal circuit.
 ### Exact signed lookup-folding branch
 
 The optimized package also contains an exact signed lookup-contract variant in
-`artifacts/optimized/out/lookup_signed_fold_contract.json` and
-`artifacts/optimized/out/ecdlp_scaffold_lookup_folded.json`.
+`artifacts/out/lookup_signed_fold_contract.json` and
+`artifacts/out/ecdlp_scaffold_lookup_folded.json`.
 
 That branch is exact at the lookup-contract level and audited by:
 
@@ -58,7 +58,7 @@ That branch is exact at the lookup-contract level and audited by:
 - **15,906 / 15,906** additional multibase semantic samples
 
 Its backend totals remain modeled. The base-case folded projection in
-`artifacts/optimized/out/lookup_folded_projection.json` is:
+`artifacts/out/lookup_folded_projection.json` is:
 
 - **29,163,456 non-Clifford** under the folded 2-channel model
 - **30,080,960 non-Clifford** under the folded conservative 3-channel model
@@ -108,7 +108,7 @@ See:
 
 ## Repository map
 
-- `artifacts/optimized/` — primary optimized artifact, audits, projections,
+- `artifacts/` — primary optimized artifact, audits, projections,
   research outputs, and figures
 - `benchmarks/challenge_ladder/` — deterministic benchmark-curve replay suite
 - `src/` — verifier and research logic implemented in Python

@@ -48,7 +48,7 @@ The right questions are:
 
 The repository keeps three different file classes:
 
-- `artifacts/optimized/out/resource_projection.json` for modeled logical totals
+- `artifacts/out/resource_projection.json` for modeled logical totals
 - `results/cain_2026_integration_summary.json` for approximate neutral-atom
   transfer
 - `results/physical_stack_reference_points.json` for cross-paper context

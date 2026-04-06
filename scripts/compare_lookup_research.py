@@ -11,9 +11,9 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 def main() -> None:
     summary = json.loads((REPO_ROOT / 'results' / 'research_pass_summary.json').read_text())
-    dominant = json.loads((REPO_ROOT / 'artifacts' / 'optimized' / 'out' / 'dominant_cost_breakdown.json').read_text())
-    folded = json.loads((REPO_ROOT / 'artifacts' / 'optimized' / 'out' / 'lookup_folded_projection.json').read_text())
-    audit = json.loads((REPO_ROOT / 'artifacts' / 'optimized' / 'out' / 'lookup_signed_fold_summary.json').read_text())
+    dominant = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'dominant_cost_breakdown.json').read_text())
+    folded = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'lookup_folded_projection.json').read_text())
+    audit = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'lookup_signed_fold_summary.json').read_text())
 
     base = folded['base_case_pad0']
     print('Lookup research summary')

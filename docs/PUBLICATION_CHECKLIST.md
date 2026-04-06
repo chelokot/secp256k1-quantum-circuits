@@ -41,6 +41,6 @@ definitions consistently:
 - `docs/CLAIMS_AND_BOUNDARIES.md`
 - `docs/GOOGLE_BASELINE_COMPARISON.md`
 - `docs/RED_TEAM_REVIEW.md`
-- `artifacts/optimized/out/resource_projection.json`
-- `artifacts/optimized/out/projection_sensitivity.json`
+- `artifacts/out/resource_projection.json`
+- `artifacts/out/projection_sensitivity.json`
 - `reports/secp256k1_optimized_880q_31p0M_2p62x_report.pdf`

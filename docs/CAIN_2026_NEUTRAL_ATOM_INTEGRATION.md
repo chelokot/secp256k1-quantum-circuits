@@ -12,7 +12,7 @@ The repository supplies:
 - an exact ISA-level arithmetic artifact for the optimized secp256k1 point-add
   stack
 - a modeled logical projection in
-  `artifacts/optimized/out/resource_projection.json`
+  `artifacts/out/resource_projection.json`
 
 ### Cain et al. 2026 input
 
@@ -40,7 +40,7 @@ The main supported transfer is a time scaling:
 > projected runtime ≈ Cain ECC runtime × (repository non-Clifford budget / public appendix baseline non-Clifford budget)
 
 The public appendix baseline here is the Babbush et al. 2026 appendix envelope
-stored in `artifacts/optimized/out/resource_projection.json`.
+stored in `artifacts/out/resource_projection.json`.
 
 ## Reported time range
 

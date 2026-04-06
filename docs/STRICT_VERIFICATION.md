@@ -12,8 +12,8 @@ python scripts/verify_strict.py --mode all
 
 Files:
 
-- `artifacts/optimized/out/lookup_contract_audit_8192.csv`
-- `artifacts/optimized/out/lookup_contract_summary.json`
+- `artifacts/out/lookup_contract_audit_8192.csv`
+- `artifacts/out/lookup_contract_summary.json`
 
 Purpose:
 
@@ -25,8 +25,8 @@ Purpose:
 
 Files:
 
-- `artifacts/optimized/out/scaffold_schedule_audit_256.csv`
-- `artifacts/optimized/out/scaffold_schedule_summary.json`
+- `artifacts/out/scaffold_schedule_audit_256.csv`
+- `artifacts/out/scaffold_schedule_summary.json`
 
 Purpose:
 
@@ -38,8 +38,8 @@ Purpose:
 
 Files:
 
-- `artifacts/optimized/out/toy_curve_family_extended_110692.csv`
-- `artifacts/optimized/out/toy_curve_family_extended_summary.json`
+- `artifacts/out/toy_curve_family_extended_110692.csv`
+- `artifacts/out/toy_curve_family_extended_summary.json`
 
 Purpose:
 
@@ -49,7 +49,7 @@ Purpose:
 
 File:
 
-- `artifacts/optimized/out/projection_sensitivity.json`
+- `artifacts/out/projection_sensitivity.json`
 
 Purpose:
 
