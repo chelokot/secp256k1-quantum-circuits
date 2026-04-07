@@ -6,13 +6,15 @@ import json
 import unittest
 from pathlib import Path
 
+from support import ensure_repo_verification_summary
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
 class ExtendedArtifactTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.extended = json.loads((REPO_ROOT / 'results' / 'repo_verification_summary.json').read_text())['extended']
+        cls.extended = json.loads(ensure_repo_verification_summary().read_text())['extended']
         cls.boundaries = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'claim_boundary_matrix.json').read_text())
         cls.meta = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'meta_analysis.json').read_text())
         cls.sensitivity = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'projection_sensitivity.json').read_text())

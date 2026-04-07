@@ -7,6 +7,8 @@ import sys
 import unittest
 from pathlib import Path
 
+from support import ensure_repo_verification_summary
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 SRC_DIR = REPO_ROOT / 'src'
@@ -85,7 +87,6 @@ class ReleaseInventoryTests(unittest.TestCase):
             'benchmarks/challenge_ladder/challenge_ladder.json',
             'benchmarks/challenge_ladder/challenge_ladder_audit.csv',
             'benchmarks/challenge_ladder/challenge_ladder_summary.json',
-            'results/repo_verification_summary.json',
             'results/research_pass_summary.json',
             'results/literature_matrix.json',
             'results/physical_stack_reference_points.json',
@@ -97,7 +98,7 @@ class ReleaseInventoryTests(unittest.TestCase):
             self.assertGreater(path.stat().st_size, 0, path)
 
     def test_machine_readable_summaries_are_deterministic(self):
-        verification = json.loads((REPO_ROOT / 'results' / 'repo_verification_summary.json').read_text())
+        verification = json.loads(ensure_repo_verification_summary().read_text())
         research = json.loads((REPO_ROOT / 'results' / 'research_pass_summary.json').read_text())
         rebuild = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'verifier_rebuild_summary.json').read_text())
         self.assertNotIn('elapsed_seconds', verification)
