@@ -15,7 +15,7 @@ class PublicationFilesTests(unittest.TestCase):
             'docs/RED_TEAM_REVIEW.md',
             'docs/OPTIMIZATION_FRONTIERS.md',
             'docs/META_ANALYSIS.md',
-            'docs/STRICT_VERIFICATION.md',
+            'docs/EXTENDED_VERIFICATION.md',
             'docs/PUBLICATION_CHECKLIST.md',
             'docs/CAIN_2026_NEUTRAL_ATOM_INTEGRATION.md',
             'docs/STATE_OF_THE_ART_2026.md',

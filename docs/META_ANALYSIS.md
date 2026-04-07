@@ -22,7 +22,7 @@ Role:
 
 - provide the primary optimized point-add leaf
 - provide the retained-window scaffold metadata
-- provide the strict verification and research layers
+- provide the extended verification and research layers
 - provide the modeled baseline comparison
 
 ## Quantified internal differences

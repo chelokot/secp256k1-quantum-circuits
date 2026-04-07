@@ -19,7 +19,7 @@ Primary optimized release with:
 - optimized leaf and family netlists
 - retained-window scaffold metadata
 - deterministic audits
-- strict verification outputs
+- extended verification outputs
 - research and sensitivity outputs
 - figures used by the reports
 
@@ -34,13 +34,12 @@ Deterministic benchmark-curve replay suite in the `y^2 = x^3 + 7` family.
 - `src/common.py` — arithmetic, hashing, and serialization helpers
 - `src/resource_projection.py` — canonical modeled projection data and ratio computation
 - `src/verifier.py` — primary optimized-artifact verifier
-- `src/strict_verifier.py` — strict verification and sensitivity layer
+- `src/extended_verifier.py` — extended verification and sensitivity layer
 - `src/research_extensions.py` — research-pass generation logic
 
 ## Scripts
 
-- `scripts/verify_all.py` — quick reproducibility path
-- `scripts/verify_strict.py` — strict verification path
+- `scripts/verify_all.py` — main verification path, with `--quick` for the core-only run
 - `scripts/run_research_pass.py` — research-pass regeneration
 - `scripts/rebuild_resource_projection.py` — canonical modeled projection regeneration
 - `scripts/compare_google_baseline.py` — baseline comparison report
@@ -54,7 +53,7 @@ Deterministic benchmark-curve replay suite in the `y^2 = x^3 + 7` family.
 
 - `docs/CLAIMS_AND_BOUNDARIES.md` — exact versus modeled claim boundary
 - `docs/GOOGLE_BASELINE_COMPARISON.md` — baseline definition and headline ratios
-- `docs/STRICT_VERIFICATION.md` — strict verification coverage
+- `docs/EXTENDED_VERIFICATION.md` — extended verification coverage
 - `docs/LOOKUP_FOLDING_RESEARCH_PASS.md` — signed folded lookup contract
 - `docs/OPTIMIZATION_FRONTIERS.md` — budget split and next frontiers
 - `docs/STATE_OF_THE_ART_2026.md` — external literature map
@@ -70,7 +69,6 @@ Deterministic benchmark-curve replay suite in the `y^2 = x^3 + 7` family.
 ## Results
 
 - `results/repo_verification_summary.json`
-- `results/strict_verification_summary.json`
 - `results/research_pass_summary.json`
 - `results/literature_matrix.json`
 - `results/physical_stack_reference_points.json`

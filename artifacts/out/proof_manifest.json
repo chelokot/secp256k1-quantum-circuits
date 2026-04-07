@@ -127,20 +127,16 @@
       "bytes": 303444
     },
     "src/verifier.py": {
-      "sha256": "0b35d2a86780d2bc9707dcbea7d9edf64b37f0d863d1b873015f19ad1b2f5b24",
-      "bytes": 9617
+      "sha256": "7f07eec8db45e52cf80b8b54cc645e63472751d0bccb65d2bf22cdcaaccf8211",
+      "bytes": 10391
     },
-    "src/strict_verifier.py": {
-      "sha256": "f7ece688d895d8e0ca75c125e0d995e3f448fbe4770d88e0cd68f0698ad6b9ef",
-      "bytes": 26418
-    },
-    "scripts/verify_strict.py": {
-      "sha256": "50013c5af0b6b23a53d3c4cb9b4d2f6608250030a8ccf0cbc5f8cfa8c5467a46",
-      "bytes": 389
+    "src/extended_verifier.py": {
+      "sha256": "7b85496e4ef45a66098a2c7bb8ced2319cc2bf83934e772ee1c23d09a264e101",
+      "bytes": 26419
     },
     "scripts/generate_figures.py": {
-      "sha256": "408e59d89d294e330b02921d26fec3d0f7492f4a080ba7933595b1d360d6c704",
-      "bytes": 10751
+      "sha256": "1db41b4eb20544a7e3e0a9566e2c5b0ac99bd07874c2031347166f83729824d4",
+      "bytes": 10773
     }
   }
 }

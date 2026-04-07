@@ -221,7 +221,7 @@ def main():
     meta = load('meta_analysis.json')
     projection = load('resource_projection.json')
     sens = load('projection_sensitivity.json')
-    strict = json.loads((RESULTS_DIR / 'strict_verification_summary.json').read_text())
+    verification = json.loads((RESULTS_DIR / 'repo_verification_summary.json').read_text())
     frontier = load('optimization_frontier_estimates.json')
     dominant = load('dominant_cost_breakdown.json')
     ladder = json.loads((BENCH_DIR / 'challenge_ladder.json').read_text())
@@ -231,7 +231,7 @@ def main():
 
     fig_progression(meta, projection)
     fig_headroom(sens)
-    fig_verification_coverage(strict, ladder_summary)
+    fig_verification_coverage(verification['extended'], ladder_summary)
     fig_frontier_ranges(frontier)
     fig_dominant_cost_breakdown(dominant)
     fig_lookup_reduction_targets(dominant)

@@ -3,7 +3,7 @@
 These JSON files summarize verification and research outputs generated from the
 checked-in repository layers.
 
-## Quick verification summaries
+## Verification summary
 
 - `repo_verification_summary.json`
 
@@ -13,15 +13,7 @@ Regenerate with:
 python scripts/verify_all.py
 ```
 
-## Strict verification summary
-
-- `strict_verification_summary.json`
-
-Regenerate with:
-
-```bash
-python scripts/verify_strict.py --mode all
-```
+Use `python scripts/verify_all.py --quick` for the shorter core-only path.
 
 ## Research summary files
 

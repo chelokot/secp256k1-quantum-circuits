@@ -6,6 +6,7 @@ Run:
 
 ```bash
 python scripts/verify_all.py
+python scripts/verify_all.py --quick
 python -m unittest discover -s tests -v
 ```
 
@@ -13,24 +14,13 @@ This covers:
 
 - optimized secp256k1 audit on `16,384` deterministic cases
 - original toy proof on `19,850` exhaustive toy cases
-- cited Google baseline presence inside the projection file
-- manifest and summary checks
-
-## Strict verification path
-
-Run:
-
-```bash
-python scripts/verify_strict.py --mode all
-```
-
-This adds:
-
-- lookup-contract audit on `8,192` deterministic signed and unsigned cases
-- scaffold replay on `256` deterministic secp256k1 cases
+- extended lookup-contract audit on `8,192` deterministic signed and unsigned cases
+- extended scaffold replay on `256` deterministic secp256k1 cases
 - extended toy-family proof on `110,692` exhaustive cases
+- cited Google baseline presence inside the projection file
 - projection sensitivity outputs
 - claim-boundary and meta-analysis outputs
+- manifest and summary checks
 
 ## Research path
 

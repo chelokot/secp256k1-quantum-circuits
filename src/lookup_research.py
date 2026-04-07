@@ -7,7 +7,7 @@ folding**.
 
 The public Google appendix models each windowed point addition as using lookups
 addressed by a w-bit two's-complement register k and quotes a 3 * 2^w lookup
-term for each merged point addition.  For secp256k1, negation is free at the
+term for each retained point addition. For secp256k1, negation is free at the
 elliptic-curve level in the sense that
 
     [−d]U = (x([d]U), −y([d]U)).
@@ -354,16 +354,16 @@ def build_lookup_folded_projection(repo_root: Path, small_pad_values: Iterable[i
     projection = json.loads(projection_path.read_text())
     windows = int(projection["optimized_ecdlp_projection"]["retained_window_additions"])
     per_leaf_arith = int(projection["optimized_leaf_projection"]["modeled_non_clifford_excluding_lookup"])
-    merged2 = int(projection["optimized_ecdlp_projection"]["lookup_model_2channel"]["per_window_lookup_cost"])
-    merged3 = int(projection["optimized_ecdlp_projection"]["lookup_model_3channel"]["per_window_lookup_cost"])
+    mainline_lookup_2channel = int(projection["optimized_ecdlp_projection"]["lookup_model_2channel"]["per_window_lookup_cost"])
+    mainline_lookup_3channel = int(projection["optimized_ecdlp_projection"]["lookup_model_3channel"]["per_window_lookup_cost"])
     google_low_q = projection["public_google_baseline"]["low_qubit"]["non_clifford"]
     google_low_g = projection["public_google_baseline"]["low_gate"]["non_clifford"]
 
     rows = []
     for pad in small_pad_values:
-        total2 = windows * (per_leaf_arith + merged2 + pad)
-        total3c = windows * (per_leaf_arith + merged3 + pad)
-        total3m = windows * (per_leaf_arith + merged2 + pad)
+        total2 = windows * (per_leaf_arith + mainline_lookup_2channel + pad)
+        total3c = windows * (per_leaf_arith + mainline_lookup_3channel + pad)
+        total3m = windows * (per_leaf_arith + mainline_lookup_2channel + pad)
         rows.append({
             "per_window_small_overhead_pad": pad,
             "total_non_clifford_2channel_folded": total2,
@@ -382,11 +382,11 @@ def build_lookup_folded_projection(repo_root: Path, small_pad_values: Iterable[i
             "The separate metadata lookup is derived from the raw word instead of looked up from a table.",
             "Small classical-preprocessing / sign-fix overhead below the ISA layer is not exactly lowered here, so a per-window additive pad sweep is included.",
         ],
-        "merged_mainline_per_window": {
+        "mainline_per_window": {
             "arithmetic_non_clifford": per_leaf_arith,
-            "lookup_2channel": merged2,
-            "lookup_3channel_conservative": merged3,
-            "lookup_3channel_meta_elided": merged2,
+            "lookup_2channel": mainline_lookup_2channel,
+            "lookup_3channel_conservative": mainline_lookup_3channel,
+            "lookup_3channel_meta_elided": mainline_lookup_2channel,
         },
         "base_case_pad0": rows[0],
         "pad_sweep": rows,

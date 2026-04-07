@@ -7,7 +7,7 @@
     "The separate metadata lookup is derived from the raw word instead of looked up from a table.",
     "Small classical-preprocessing / sign-fix overhead below the ISA layer is not exactly lowered here, so a per-window additive pad sweep is included."
   ],
-  "merged_mainline_per_window": {
+  "mainline_per_window": {
     "arithmetic_non_clifford": 976016,
     "lookup_2channel": 65536,
     "lookup_3channel_conservative": 98304,

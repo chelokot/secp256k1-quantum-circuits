@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Extended verification and publication-readiness checks.
 
-The quick verifier in `src/verifier.py` proves the arithmetic leaf on secp256k1 and
+The core verifier in `src/verifier.py` proves the arithmetic leaf on secp256k1 and
 two toy curves. This module adds stronger, slower checks:
 1. lookup-contract audit
 2. scaffold schedule audit
@@ -504,7 +504,7 @@ def main() -> None:
     if args.mode in ("boundaries", "all"):
         overall["claim_boundaries"] = run_claim_boundary_matrix(repo_root)
 
-    out_path = repo_root / "results" / "strict_verification_summary.json"
+    out_path = repo_root / "results" / "extended_verification_summary.json"
     dump_json(out_path, overall)
     print(json.dumps(overall, indent=2))
 

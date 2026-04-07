@@ -3,11 +3,10 @@
 ## Required reproducibility checks
 
 - run `python scripts/verify_all.py`
-- run `python scripts/verify_strict.py --mode all`
+- optionally run `python scripts/verify_all.py --quick` to confirm the core-only path still works
 - run `python -m unittest discover -s tests -v`
 - run `python scripts/hash_repo.py`
 - inspect `results/repo_verification_summary.json`
-- inspect `results/strict_verification_summary.json`
 
 ## Required wording checks
 

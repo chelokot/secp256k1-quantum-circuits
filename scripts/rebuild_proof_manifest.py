@@ -46,8 +46,7 @@ PROOF_MANIFEST_PATHS = [
     'artifacts/figures/optimization_frontier_ranges.png',
     'reports/secp256k1_optimized_report.pdf',
     'src/verifier.py',
-    'src/strict_verifier.py',
-    'scripts/verify_strict.py',
+    'src/extended_verifier.py',
     'scripts/generate_figures.py',
 ]
 

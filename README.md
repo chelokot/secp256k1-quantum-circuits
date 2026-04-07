@@ -91,15 +91,14 @@ The checked-in summaries report:
 
 - optimized secp256k1 audit: **16,384 / 16,384** pass
 - base toy-curve proof: **19,850 / 19,850** pass
-- strict lookup-contract audit: **8,192 / 8,192** pass
-- strict scaffold replay: **256 / 256** pass
+- extended lookup-contract audit: **8,192 / 8,192** pass
+- extended scaffold replay: **256 / 256** pass
 - extended toy-family proof: **110,692 / 110,692** pass
 - challenge ladder replay: **763 / 763** pass across **7** benchmark curves
 
 See:
 
 - `results/repo_verification_summary.json`
-- `results/strict_verification_summary.json`
 - `results/research_pass_summary.json`
 
 ## Repository map
@@ -120,7 +119,7 @@ From the repository root:
 
 ```bash
 python scripts/verify_all.py
-python scripts/verify_strict.py --mode all
+python scripts/verify_all.py --quick
 python scripts/run_research_pass.py
 python scripts/compare_google_baseline.py
 python scripts/compare_cain_2026.py
@@ -133,7 +132,7 @@ Or with `make`:
 
 ```bash
 make verify
-make verify-strict
+make verify-quick
 make research
 make compare
 make compare-lookup
@@ -144,7 +143,7 @@ make test
 
 1. `docs/CLAIMS_AND_BOUNDARIES.md`
 2. `docs/GOOGLE_BASELINE_COMPARISON.md`
-3. `docs/STRICT_VERIFICATION.md`
+3. `docs/EXTENDED_VERIFICATION.md`
 4. `docs/LOOKUP_FOLDING_RESEARCH_PASS.md`
 5. `docs/OPTIMIZATION_FRONTIERS.md`
 6. `docs/STATE_OF_THE_ART_2026.md`

@@ -27,7 +27,7 @@ class ReleaseInventoryTests(unittest.TestCase):
             'MANIFEST.sha256',
             'docs/CLAIMS_AND_BOUNDARIES.md',
             'docs/GOOGLE_BASELINE_COMPARISON.md',
-            'docs/STRICT_VERIFICATION.md',
+            'docs/EXTENDED_VERIFICATION.md',
             'docs/LOOKUP_FOLDING_RESEARCH_PASS.md',
             'docs/OPTIMIZATION_FRONTIERS.md',
             'docs/STATE_OF_THE_ART_2026.md',
@@ -44,7 +44,6 @@ class ReleaseInventoryTests(unittest.TestCase):
             'docs/TOOLING_AND_REIMPLEMENTATION_PATHS.md',
             'reports/secp256k1_optimized_report.pdf',
             'scripts/verify_all.py',
-            'scripts/verify_strict.py',
             'scripts/run_research_pass.py',
             'scripts/compare_google_baseline.py',
             'scripts/compare_lookup_research.py',
@@ -58,7 +57,7 @@ class ReleaseInventoryTests(unittest.TestCase):
             'src/common.py',
             'src/resource_projection.py',
             'src/verifier.py',
-            'src/strict_verifier.py',
+            'src/extended_verifier.py',
             'src/research_extensions.py',
             'src/lookup_research.py',
             'artifacts/out/optimized_pointadd_secp256k1.json',
@@ -90,7 +89,7 @@ class ReleaseInventoryTests(unittest.TestCase):
             'benchmarks/challenge_ladder/challenge_ladder.json',
             'benchmarks/challenge_ladder/challenge_ladder_audit.csv',
             'benchmarks/challenge_ladder/challenge_ladder_summary.json',
-            'results/strict_verification_summary.json',
+            'results/repo_verification_summary.json',
             'results/research_pass_summary.json',
             'results/literature_matrix.json',
             'results/physical_stack_reference_points.json',
@@ -102,10 +101,10 @@ class ReleaseInventoryTests(unittest.TestCase):
             self.assertGreater(path.stat().st_size, 0, path)
 
     def test_machine_readable_summaries_are_deterministic(self):
-        strict = json.loads((REPO_ROOT / 'results' / 'strict_verification_summary.json').read_text())
+        verification = json.loads((REPO_ROOT / 'results' / 'repo_verification_summary.json').read_text())
         research = json.loads((REPO_ROOT / 'results' / 'research_pass_summary.json').read_text())
         rebuild = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'verifier_rebuild_summary.json').read_text())
-        self.assertNotIn('elapsed_seconds', strict)
+        self.assertNotIn('elapsed_seconds', verification)
         self.assertNotIn('elapsed_seconds', research)
         self.assertNotIn('elapsed_seconds', rebuild)
 

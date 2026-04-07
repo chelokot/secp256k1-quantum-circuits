@@ -39,6 +39,14 @@ class VerificationPipelineTests(unittest.TestCase):
         self.assertEqual(baseline['low_gate']['logical_qubits'], 1450)
         self.assertEqual(baseline['low_gate']['non_clifford'], 70_000_000)
 
+    def test_extended_supporting_checks_are_recorded(self):
+        extended = self.summary['extended']
+        self.assertEqual(extended['lookup_contract']['summary']['signed_i16']['pass'], 4096)
+        self.assertEqual(extended['lookup_contract']['summary']['unsigned_u16']['pass'], 4096)
+        self.assertEqual(extended['scaffold_schedule']['summary']['pass'], 256)
+        self.assertEqual(extended['toy_extended']['summary']['pass'], 110692)
+        self.assertTrue(self.summary['headline_checks']['extended_checks_pass'])
+
 
 if __name__ == '__main__':
     unittest.main()

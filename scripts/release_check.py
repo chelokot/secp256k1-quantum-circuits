@@ -13,7 +13,6 @@ COMMANDS = [
     [sys.executable, 'scripts/rebuild_resource_projection.py'],
     [sys.executable, 'src/verifier.py', '--package-dir', 'artifacts', '--mode', 'all'],
     [sys.executable, 'scripts/verify_all.py'],
-    [sys.executable, 'scripts/verify_strict.py', '--mode', 'all'],
     [sys.executable, 'scripts/run_research_pass.py'],
     [sys.executable, 'scripts/generate_figures.py'],
     [sys.executable, 'scripts/rebuild_proof_manifest.py'],

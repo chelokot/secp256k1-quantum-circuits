@@ -1,9 +1,10 @@
-# Strict verification
+# Extended verification
 
-The strict verification path is:
+These checks are part of the default `python scripts/verify_all.py` path. The
+shorter core-only variant is:
 
 ```bash
-python scripts/verify_strict.py --mode all
+python scripts/verify_all.py --quick
 ```
 
 ## Outputs
@@ -58,7 +59,7 @@ Purpose:
 
 ## Boundary
 
-The strict verifier still does not:
+The extended verifier still does not:
 
 - primitive-lower lookup memory
 - primitive-verify `mbuc_*` cleanup
