@@ -12,7 +12,7 @@ import argparse
 import csv
 import json
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Callable, Dict, List, Optional
 
 from common import (
     SECP_B,
@@ -37,6 +37,8 @@ TOY_CURVES = [
     {'name': 'toy61_b2', 'p': 61, 'b': 2, 'order': 61, 'generator': (1, 8)},
     {'name': 'toy127_b11', 'p': 109, 'b': 11, 'order': 127, 'generator': (1, 11)},
 ]
+
+ProgressCallback = Callable[[int, int, int], None]
 
 
 def specialize_family_netlist(netlist_obj: Dict[str, Any], b3_value: int) -> Dict[str, Any]:
@@ -131,7 +133,7 @@ def make_audit_cases(netlist_sha: str):
     return cases
 
 
-def run_audit(package_dir: Path) -> Dict[str, Any]:
+def run_audit(package_dir: Path, progress: Optional[ProgressCallback] = None) -> Dict[str, Any]:
     secp_path = package_dir / 'out' / 'optimized_pointadd_secp256k1.json'
     netlist_obj = load_json(secp_path)
     netlist_sha = sha256_path(secp_path)
@@ -139,6 +141,9 @@ def run_audit(package_dir: Path) -> Dict[str, Any]:
     tables = precompute_window_tables(SECP_G, SECP_P, SECP_B, width=8, bits=256)
     out_csv = package_dir / 'out' / 'optimized_pointadd_audit_16384.csv'
     summary: Dict[str, Any] = {'total': 0, 'pass': 0, 'categories': {}}
+    total_cases = len(cases)
+    if progress is not None:
+        progress(0, total_cases, 0)
     with out_csv.open('w', newline='') as handle:
         writer = csv.writer(handle)
         writer.writerow([
@@ -160,6 +165,8 @@ def run_audit(package_dir: Path) -> Dict[str, Any]:
             summary['categories'].setdefault(category, {'total': 0, 'pass': 0})
             summary['categories'][category]['total'] += 1
             summary['categories'][category]['pass'] += int(ok)
+            if progress is not None and (summary['total'] % 256 == 0 or summary['total'] == total_cases):
+                progress(summary['total'], total_cases, summary['pass'])
             writer.writerow([
                 idx, category, format(a, '064x'), format(b, '064x'),
                 *hex_or_inf(pa), *hex_or_inf(qa), *hex_or_inf(ref_aff), *hex_or_inf(got_aff), *hex_or_inf(ref2_aff),
@@ -173,11 +180,14 @@ def run_audit(package_dir: Path) -> Dict[str, Any]:
     }
 
 
-def run_toy(package_dir: Path) -> Dict[str, Any]:
+def run_toy(package_dir: Path, progress: Optional[ProgressCallback] = None) -> Dict[str, Any]:
     family_path = package_dir / 'out' / 'optimized_pointadd_family.json'
     family = load_json(family_path)
     out_csv = package_dir / 'out' / 'toy_curve_exhaustive_19850.csv'
     summary: Dict[str, Any] = {'total': 0, 'pass': 0, 'curves': {}}
+    total_cases = sum(curve['order'] * curve['order'] for curve in TOY_CURVES)
+    if progress is not None:
+        progress(0, total_cases, 0)
     with out_csv.open('w', newline='') as handle:
         writer = csv.writer(handle)
         writer.writerow([
@@ -208,6 +218,8 @@ def run_toy(package_dir: Path) -> Dict[str, Any]:
                     summary['pass'] += int(ok)
                     curve_total += 1
                     curve_pass += int(ok)
+                    if progress is not None and (summary['total'] % 256 == 0 or summary['total'] == total_cases):
+                        progress(summary['total'], total_cases, summary['pass'])
                     writer.writerow([
                         cname, p, b, order, a, bb,
                         *hex_or_inf(pa), *hex_or_inf(qa), *hex_or_inf(ref_aff), *hex_or_inf(got_aff),

@@ -93,9 +93,7 @@ rounded published lines stored in
 - `1200 logical qubits / 90,000,000 non-Clifford`
 - `1450 logical qubits / 70,000,000 non-Clifford`
 
-These are the rounded public estimate lines from Babbush et al. 2026. The
-repository does not claim to reconstruct any unpublished internal circuit
-beyond those published lines.
+These are the rounded public estimate lines from Babbush et al. 2026.
 
 ## Bottom line
 
