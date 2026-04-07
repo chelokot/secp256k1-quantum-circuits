@@ -1,12 +1,13 @@
 # Public Google baseline comparison
 
 This file defines the baseline used when the repository says **Google's
-published 2026 secp256k1 estimates**.
+published 2026 secp256k1 estimates** and records the exact compiler-family
+comparison against that baseline.
 
 ## Baseline source
 
 The baseline is the rounded public secp256k1 estimate from Babbush et al. 2026
-as stored in `artifacts/projections/resource_projection.json`.
+as copied into `compiler_verification_project/artifacts/family_frontier.json`.
 
 The tracked public lines are:
 
@@ -15,55 +16,35 @@ The tracked public lines are:
 - window size: **16**
 - retained point additions: **28**
 
-## Repository projection compared against that baseline
+## Exact compiler-family comparison against that baseline
 
-The primary optimized projection is the default derived backend model rebuilt
-from:
+The repository's exact comparison layer is the compiler-family frontier in:
 
-- `artifacts/circuits/optimized_pointadd_secp256k1.json`
-- `artifacts/circuits/ecdlp_scaffold_optimized.json`
-- `artifacts/circuits/ecdlp_expanded_isa_optimized.json`
-- `artifacts/lookup/lookup_signed_fold_contract.json`
-- `artifacts/projections/backend_model_bundle.json`
+- `compiler_verification_project/artifacts/family_frontier.json`
 
-Its current default headline is:
+Its two checked headline points are:
 
-- **880 logical qubits**
-- **22,377,404 non-Clifford** under the 2-channel lookup model
-- **23,294,908 non-Clifford** under the conservative 3-channel lookup model
+- **best exact gate family:** `23,813,671 non-Clifford / 35,348 q`
+- **best exact qubit family:** `2,337 q / 37,432,935 non-Clifford`
 
-## Improvement factors
+## Exact non-Clifford comparison
 
-Versus the public low-qubit line:
+For the **best exact gate family**:
 
-- **1.3636x fewer logical qubits**
-- **4.0219x lower non-Clifford** under the 2-channel model
-- **3.8635x lower non-Clifford** under the conservative 3-channel model
+- **3.7793x** lower non-Clifford than the public low-qubit line
+- **2.9395x** lower non-Clifford than the public low-gate line
 
-Versus the public low-gate line:
+For the **best exact qubit family**:
 
-- **1.6477x fewer logical qubits**
-- **3.1282x lower non-Clifford** under the 2-channel model
-- **3.0049x lower non-Clifford** under the conservative 3-channel model
+- **2.4043x** lower non-Clifford than the public low-qubit line
+- **1.8700x** lower non-Clifford than the public low-gate line
 
-## Alternative backend scenarios
+## Exact qubit comparison
 
-The same structural artifact family also ships experimental alternatives:
+The exact frontier does **not** currently beat Google's published qubit lines:
 
-- `addsub_modmul_liveness_v2` — same explicit arithmetic backend, but qubits
-  priced from exact ISA liveness rather than named-slot allocation
+- the best exact qubit family is **1,137 qubits above** the public low-qubit line
+- the best exact qubit family is **887 qubits above** the public low-gate line
 
-These appear in `alternative_backend_scenarios` inside
-`artifacts/projections/resource_projection.json`.
-
-## Sensitivity margin
-
-The repository also stores hostile-backend margin sweeps in:
-
-- `artifacts/projections/projection_sensitivity.json`
-- `figures/core/projection_headroom.png`
-
-## Boundary
-
-This comparison is between explicit modeled backend totals. It is not a
-primitive-gate equivalence proof between two fully lowered circuits.
+Lower-exact modeled hypotheses are intentionally separated into
+`docs/research/MODELED_IMPLEMENTATION_HYPOTHESES.md`.

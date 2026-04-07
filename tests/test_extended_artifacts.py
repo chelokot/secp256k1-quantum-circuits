@@ -22,10 +22,9 @@ class ExtendedArtifactTests(unittest.TestCase):
     def setUpClass(cls):
         cls.summary = json.loads(ensure_repo_verification_summary().read_text())
         cls.extended = cls.summary['extended']
+        cls.compiler = cls.summary['compiler_project']
+        cls.frontier = cls.compiler['frontier']
         cls.boundaries = json.loads((REPO_ROOT / 'artifacts' / 'projections' / 'claim_boundary_matrix.json').read_text())
-        cls.meta = json.loads((REPO_ROOT / 'artifacts' / 'projections' / 'meta_analysis.json').read_text())
-        cls.sensitivity = json.loads((REPO_ROOT / 'artifacts' / 'projections' / 'projection_sensitivity.json').read_text())
-        cls.projection = cls.summary['optimized']['resource_projection']
         cls.lookup_summary_json = REPO_ROOT / 'artifacts' / 'verification' / 'extended' / 'lookup_contract_summary.json'
         cls.lookup_contract = REPO_ROOT / 'artifacts' / 'lookup' / 'lookup_signed_fold_contract.json'
         cls.lookup_research_summary = REPO_ROOT / 'artifacts' / 'lookup' / 'lookup_signed_fold_summary.json'
@@ -62,44 +61,18 @@ class ExtendedArtifactTests(unittest.TestCase):
         self.assertEqual(ladder['summary']['total'], ladder['summary']['pass'])
         self.assertGreaterEqual(ladder['summary']['total'], 700)
 
-    def test_meta_analysis_matches_projection_ratios(self):
-        optimized = self.meta['optimized_vs_google_estimates']
-        gains = self.projection['improvement_vs_google']
-        self.assertEqual(optimized['vs_low_qubit_non_clifford_factor'], gains['versus_low_qubit']['toffoli_gain_2lookup'])
-        self.assertEqual(optimized['vs_low_gate_non_clifford_factor'], gains['versus_low_gate']['toffoli_gain_2lookup'])
-        self.assertEqual(optimized['vs_low_qubit_logical_qubit_factor'], gains['versus_low_qubit']['qubit_gain'])
+    def test_exact_gate_frontier_matches_baseline_ratios(self):
+        baseline = self.frontier['public_google_baseline']
+        gate = self.frontier['best_gate_family']
+        self.assertAlmostEqual(gate['improvement_vs_google_low_qubit'], baseline['low_qubit']['non_clifford'] / gate['full_oracle_non_clifford'])
+        self.assertAlmostEqual(gate['improvement_vs_google_low_gate'], baseline['low_gate']['non_clifford'] / gate['full_oracle_non_clifford'])
 
-    def test_headroom_tracks_projection(self):
-        headroom = self.sensitivity['headroom']
-        optimized = self.projection['optimized_ecdlp_projection']
-        baseline = self.projection['public_google_baseline']
-        self.assertEqual(
-            headroom['non_clifford_margin_vs_low_gate_2lookup'],
-            baseline['low_gate']['non_clifford'] - optimized['lookup_model_2channel']['total_non_clifford'],
-        )
-        self.assertEqual(
-            headroom['non_clifford_margin_vs_low_qubit_2lookup'],
-            baseline['low_qubit']['non_clifford'] - optimized['lookup_model_2channel']['total_non_clifford'],
-        )
-        self.assertEqual(
-            headroom['qubit_margin_vs_low_qubit'],
-            baseline['low_qubit']['logical_qubits'] - optimized['logical_qubits_total'],
-        )
-
-    def test_projection_sensitivity_tracks_current_projection(self):
-        optimized = self.projection['optimized_ecdlp_projection']
-        self.assertEqual(self.sensitivity['base']['optimized_qubits'], optimized['logical_qubits_total'])
-        self.assertEqual(self.sensitivity['base']['optimized_nc_2lookup'], optimized['lookup_model_2channel']['total_non_clifford'])
-        self.assertEqual(self.sensitivity['base']['optimized_nc_3lookup'], optimized['lookup_model_3channel']['total_non_clifford'])
-
-    def test_meta_analysis_tracks_current_projection(self):
-        optimized_leaf = self.projection['optimized_leaf_projection']
-        gains = self.projection['improvement_vs_google']
-        self.assertEqual(
-            self.meta['optimized_vs_google_estimates']['optimized_leaf_modeled_non_clifford_excluding_lookup'],
-            optimized_leaf['modeled_non_clifford_excluding_lookup'],
-        )
-        self.assertEqual(self.meta['resource_projection_headline'], gains)
+    def test_exact_qubit_frontier_matches_baseline_ratios(self):
+        baseline = self.frontier['public_google_baseline']
+        qubit = self.frontier['best_qubit_family']
+        self.assertAlmostEqual(qubit['qubit_ratio_vs_google_low_qubit'], baseline['low_qubit']['logical_qubits'] / qubit['total_logical_qubits'])
+        self.assertAlmostEqual(qubit['qubit_ratio_vs_google_low_gate'], baseline['low_gate']['logical_qubits'] / qubit['total_logical_qubits'])
+        self.assertAlmostEqual(qubit['improvement_vs_google_low_qubit'], baseline['low_qubit']['non_clifford'] / qubit['full_oracle_non_clifford'])
 
     def test_claim_boundary_statuses(self):
         statuses = {layer['layer']: layer['status'] for layer in self.boundaries['layers']}

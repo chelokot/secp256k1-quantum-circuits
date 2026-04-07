@@ -1,35 +1,37 @@
 # Meta-analysis of repository layers
 
-This file compares the repository's cited Google baseline and its optimized
-artifact layer.
+This file compares the repository's cited Google baseline and its exact
+artifact layers.
 
 ## Compared layers
 
 ### 1. Cited Google baseline
 
-Location: `artifacts/projections/resource_projection.json`
+Location: `compiler_verification_project/artifacts/family_frontier.json`
 
 Role:
 
-- define the cited comparison numbers used throughout the repository
+- define the cited comparison numbers used throughout the exact comparison layer
 - keep the comparison target explicit and inspectable
 
-### 2. Optimized secp256k1 artifact
+### 2. Exact artifact layers
 
-Location: `artifacts/`
+Locations:
+
+- `artifacts/`
+- `compiler_verification_project/`
 
 Role:
 
 - provide the primary optimized point-add leaf
 - provide the retained-window scaffold metadata
-- provide the extended verification and research layers
-- provide the modeled baseline comparison
-- expose the derived structural/projection pipeline that rebuilds the mainline from source artifacts
+- provide the extended verification layers
+- provide the exact compiler-family whole-oracle comparison
 
 ## Quantified internal differences
 
-`artifacts/projections/meta_analysis.json` records the main internal deltas
-between the cited Google estimates and the optimized artifact:
+The structural comparison between the published baseline framing and the
+optimized artifact family includes:
 
 - Google low-qubit ECDLP line: `1200 logical qubits`, `90,000,000 non-Clifford`
 - Google low-gate ECDLP line: `1450 logical qubits`, `70,000,000 non-Clifford`
@@ -38,6 +40,6 @@ between the cited Google estimates and the optimized artifact:
 
 ## Main interpretation
 
-The repository's strongest improvement comes from reducing the cost of the
-retained point-add leaf while keeping the window structure and comparison
-baseline explicit.
+The repository's strongest exact result comes from pairing the optimized
+retained point-add leaf with an exact compiler-family whole-oracle frontier
+while keeping the public comparison baseline explicit.

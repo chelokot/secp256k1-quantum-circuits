@@ -38,6 +38,7 @@ class ReleaseInventoryTests(unittest.TestCase):
             'docs/core/REPO_LAYOUT.md',
             'docs/references/PHYSICAL_STACKS_AND_HARDWARE_CONTEXT.md',
             'docs/research/COST_MODEL_CORRECTION.md',
+            'docs/research/MODELED_IMPLEMENTATION_HYPOTHESES.md',
             'docs/references/TOOLING_AND_REIMPLEMENTATION_PATHS.md',
             'scripts/verify_all.py',
             'scripts/compare_cain_2026.py',
@@ -110,56 +111,14 @@ class ReleaseInventoryTests(unittest.TestCase):
         self.assertNotIn('elapsed_seconds', research)
         self.assertNotIn('elapsed_seconds', rebuild)
 
-    def test_resource_projection_is_self_consistent(self):
-        projection = json.loads((REPO_ROOT / 'artifacts' / 'projections' / 'resource_projection.json').read_text())
-        base = projection['public_google_baseline']
-        optimized = projection['optimized_ecdlp_projection']
-        gains = projection['improvement_vs_google']
-        self.assertAlmostEqual(
-            gains['versus_low_qubit']['toffoli_gain_3lookup'],
-            base['low_qubit']['non_clifford'] / optimized['lookup_model_3channel']['total_non_clifford'],
-        )
-        self.assertAlmostEqual(
-            gains['versus_low_gate']['toffoli_gain_3lookup'],
-            base['low_gate']['non_clifford'] / optimized['lookup_model_3channel']['total_non_clifford'],
-        )
-        self.assertEqual(
-            set(projection.keys()),
-            {
-                'model_name',
-                'honesty_note',
-                'public_google_baseline',
-                'source_artifacts',
-                'expanded_isa_schedule',
-                'backend_model_bundle',
-                'structural_accounting',
-                'optimized_leaf_projection',
-                'optimized_ecdlp_projection',
-                'default_model_details',
-                'alternative_backend_scenarios',
-                'improvement_vs_google',
-            },
-        )
-        self.assertTrue(projection['alternative_backend_scenarios'])
-        self.assertEqual(projection['backend_model_bundle']['default_model'], projection['model_name'])
-
-    def test_extended_projection_artifacts_match_current_projection(self):
+    def test_exact_frontier_is_self_consistent(self):
         ensure_repo_verification_summary()
-        projection = json.loads((REPO_ROOT / 'artifacts' / 'projections' / 'resource_projection.json').read_text())
-        sensitivity = json.loads((REPO_ROOT / 'artifacts' / 'projections' / 'projection_sensitivity.json').read_text())
-        meta = json.loads((REPO_ROOT / 'artifacts' / 'projections' / 'meta_analysis.json').read_text())
-        self.assertEqual(
-            sensitivity['base']['optimized_nc_2lookup'],
-            projection['optimized_ecdlp_projection']['lookup_model_2channel']['total_non_clifford'],
-        )
-        self.assertEqual(
-            sensitivity['base']['optimized_nc_3lookup'],
-            projection['optimized_ecdlp_projection']['lookup_model_3channel']['total_non_clifford'],
-        )
-        self.assertEqual(
-            meta['optimized_vs_google_estimates']['optimized_leaf_modeled_non_clifford_excluding_lookup'],
-            projection['optimized_leaf_projection']['modeled_non_clifford_excluding_lookup'],
-        )
+        frontier = json.loads((REPO_ROOT / 'compiler_verification_project' / 'artifacts' / 'family_frontier.json').read_text())
+        baseline = frontier['public_google_baseline']
+        best_gate = frontier['best_gate_family']
+        best_qubit = frontier['best_qubit_family']
+        self.assertAlmostEqual(best_gate['improvement_vs_google_low_gate'], baseline['low_gate']['non_clifford'] / best_gate['full_oracle_non_clifford'])
+        self.assertAlmostEqual(best_qubit['qubit_ratio_vs_google_low_gate'], baseline['low_gate']['logical_qubits'] / best_qubit['total_logical_qubits'])
 
     def test_proof_manifest_matches_curated_files(self):
         proof = json.loads((REPO_ROOT / 'artifacts' / 'package' / 'proof_manifest.json').read_text())

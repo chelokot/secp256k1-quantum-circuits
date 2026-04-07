@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
-"""Print the repository's approximate transfer into Cain et al. 2026.
+"""Print the repository's approximate exact-family transfer into Cain et al. 2026.
 
 This script intentionally keeps the model simple and explicit.  It does not
 pretend to prove a new physical architecture result.  Instead it combines:
-1. the repository's optimized logical non-Clifford budgets, and
+1. the repository's exact compiler-family logical budgets, and
 2. the neutral-atom headline runtimes from Cain et al. 2026.
-
-The main transfer rule is linear in the dominant non-Clifford budget.
 """
 
 from __future__ import annotations
@@ -54,11 +52,11 @@ def main() -> None:
     summary = json.loads(SUMMARY_PATH.read_text())
     head = summary['headline_ranges']
     cain = summary['source_papers']['cain_2026']
-    time_efficient_range = console.good(
-        f"{head['projected_time_efficient_days_min']:.2f} to {head['projected_time_efficient_days_max']:.2f} days"
+    runtime_90m_range = console.good(
+        f"{head['time_efficient_days_if_90M_min']:.2f} to {head['time_efficient_days_if_90M_max']:.2f} days"
     )
-    balanced_range = console.good(
-        f"{head['projected_balanced_days_min']:.1f} to {head['projected_balanced_days_max']:.1f} days"
+    runtime_70m_range = console.good(
+        f"{head['time_efficient_days_if_70M_min']:.2f} to {head['time_efficient_days_if_70M_max']:.2f} days"
     )
     print(console.heading('Cain et al. 2026 integration'))
     print(console.heading('============================='))
@@ -75,25 +73,24 @@ def main() -> None:
     print()
     print(console.heading('Headline ranges'))
     print(console.heading('---------------'))
-    print(f"time-efficient runtime : {time_efficient_range}")
-    print(f"balanced runtime       : {balanced_range}")
-    print(f"time-efficient space   : {head['same_density_time_efficient_physical_qubits_min']:.0f} to {head['same_density_time_efficient_physical_qubits_max']:.0f} physical qubits")
-    print(f"minimum-space line     : {head['same_density_min_space_physical_qubits_min']:.0f} to {head['same_density_min_space_physical_qubits_max']:.0f} physical qubits")
+    print(f"time-efficient runtime if 90M->10d : {runtime_90m_range}")
+    print(f"time-efficient runtime if 70M->10d : {runtime_70m_range}")
+    print(f"same-density space if 1200->26k    : {head['same_density_physical_qubits_if_1200_min']:.0f} to {head['same_density_physical_qubits_if_1200_max']:.0f} physical qubits")
+    print(f"same-density space if 1450->26k    : {head['same_density_physical_qubits_if_1450_min']:.0f} to {head['same_density_physical_qubits_if_1450_max']:.0f} physical qubits")
     print()
     print(console.heading('Case table'))
     print(console.heading('----------'))
     for case in summary['cases']:
-        non_clifford_gain = console.good(f"x{case['ratios']['non_clifford_gain']:.4f}")
-        time_efficient = console.good(f"{case['runtime_transfer']['projected_time_efficient_days']:.2f}d")
-        balanced = console.good(f"{case['runtime_transfer']['projected_balanced_days']:.1f}d")
+        gain_90m = console.good(f"x{summary['public_google_baseline']['low_qubit']['non_clifford'] / case['exact_non_clifford']:.4f}")
+        gain_70m = console.good(f"x{summary['public_google_baseline']['low_gate']['non_clifford'] / case['exact_non_clifford']:.4f}")
         print(
-            f"{case['source_model']:24s} {case['google_baseline_line']:10s} {case['optimized_lookup_model']:7s}  "
-            f"gain {non_clifford_gain}  "
-            f"time-efficient={time_efficient} "
-            f"(vs Cain {cain['time_efficient_runtime_days']:.1f}d, -{cain['time_efficient_runtime_days'] - case['runtime_transfer']['projected_time_efficient_days']:.2f}d)  "
-            f"balanced={balanced} "
-            f"(vs Cain {cain['balanced_runtime_days']:.1f}d, -{cain['balanced_runtime_days'] - case['runtime_transfer']['projected_balanced_days']:.1f}d)  "
-            f"time-efficient-space={case['space_transfer']['same_density_time_efficient_physical_qubits']:.0f}"
+            f"{case['family']:54s} "
+            f"gain90={gain_90m} "
+            f"gain70={gain_70m} "
+            f"time90={case['runtime_transfer']['time_efficient_days_if_90M_maps_to_10d']:.2f}d "
+            f"time70={case['runtime_transfer']['time_efficient_days_if_70M_maps_to_10d']:.2f}d "
+            f"space1200={case['space_transfer']['same_density_physical_qubits_if_1200_maps_to_26k']:.0f} "
+            f"space1450={case['space_transfer']['same_density_physical_qubits_if_1450_maps_to_26k']:.0f}"
         )
 
 

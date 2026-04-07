@@ -6,9 +6,9 @@ This file defines the strongest claims supported by the checked-in artifacts.
 
 The repository publishes exact kickmix-ISA arithmetic schedules for a
 secp256k1-specialized point-add leaf and explicit retained-window scaffold
-metadata, together with deterministic audits, finite-model checks, modeled
-backend projections, and a separate exact compiler-family oracle subproject that
-closes the classical-tail-elision gap for a fully quantum raw-32 schedule.
+metadata, together with deterministic audits, finite-model checks, and a
+separate exact compiler-family oracle subproject that closes the
+classical-tail-elision gap for a fully quantum raw-32 schedule.
 
 ## Exact layers
 
@@ -63,8 +63,8 @@ The signed folded variant is audited by:
 
 ### 4. Exact compiler-family whole-oracle layer
 
-The root-level `compiler_verification_project/` adds a stronger exact layer than
-the mainline modeled backend. It publishes:
+The root-level `compiler_verification_project/` adds the strongest exact layer
+below the ISA boundary. It publishes:
 
 - `compiler_verification_project/artifacts/full_raw32_oracle.json`
 - `compiler_verification_project/artifacts/family_frontier.json`
@@ -101,22 +101,17 @@ The compiler subproject closes more of that gap by publishing an exact raw-32
 whole-oracle family, but it still stops short of a globally optimized complete
 primitive-gate Shor implementation.
 
-### D. Backend logical-qubit and non-Clifford totals
+### D. Modeled implementation hypotheses
 
-The headline totals in
-`artifacts/projections/resource_projection.json` and
-`artifacts/projections/lookup_folded_projection.json` are explicit backend
-projections. In the current repository they are derived from the checked-in leaf
-netlist, retained-window scaffold, expanded ISA replay, folded lookup contract,
-and versioned backend-model bundle. They do not inherit a whole-leaf
-calibration constant, but they are still not theorem-proved primitive-gate
-totals.
+Lower-exact budgeting artifacts are intentionally isolated in
+`docs/research/MODELED_IMPLEMENTATION_HYPOTHESES.md`. They are not the
+repository's headline result.
 
 ## Public baseline boundary
 
 When this repository refers to the **public Google baseline**, it means the
 rounded published lines stored in
-`artifacts/projections/resource_projection.json`:
+`compiler_verification_project/artifacts/family_frontier.json`:
 
 - `1200 logical qubits / 90,000,000 non-Clifford`
 - `1450 logical qubits / 70,000,000 non-Clifford`
@@ -133,5 +128,4 @@ Mainline exact primitive-gate lookup, cleanup, and full Shor flattening: no.
 
 Exact compiler-family whole-oracle counts: yes, in `compiler_verification_project/`, but only for the named compiler families checked into that subproject.
 
-Backend projection below the public Google baseline: yes, but explicitly as a
-modeled result on the mainline and separately as exact-family counts in the compiler project.
+Exact compiler-family comparison against the public Google baseline: yes.

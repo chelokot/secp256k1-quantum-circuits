@@ -26,22 +26,21 @@ that such a circuit exists.
 This repository began as an attempt to reproduce that result from the public
 material alone. ChatGPT 5.4 Pro was used first to construct auditable
 secp256k1 circuit artifacts consistent with Google's published resource lines,
-and then to search for stronger secp256k1-specific optimizations. The
-resulting primary artifact in this repository reaches modeled non-Clifford
-totals that are <u>more than 2x lower than Google's published 2026
-secp256k1 estimates</u> under the repository's default derived backend model.
-Those totals are computed from checked-in leaf/scaffold artifacts plus a
-versioned backend-model bundle rather than stored as whole-circuit constants.
+and then to search for stronger secp256k1-specific optimizations.
 
 ## Content
 
-This repository has **two deliberately separated layers**.
+This repository has **two exact-first layers** and one quarantined hypothesis
+note.
 
 1. The primary `artifacts/` mainline publishes exact ISA-level secp256k1
-   arithmetic artifacts plus modeled backend projections.
+   arithmetic artifacts.
 2. The root-level `compiler_verification_project/` subproject completes the
    schedule into a fully quantum raw-32 oracle and publishes exact whole-oracle
    counts for named compiler families.
+3. Lower-exact implementation ideas are isolated in
+   `docs/research/MODELED_IMPLEMENTATION_HYPOTHESES.md` and are not used for
+   top-level claims, tests, or headline comparisons.
 
 The repository is strongest at the arithmetic ISA boundary, and the compiler
 project tightens one important gap by turning
@@ -50,23 +49,6 @@ exact schedule completion, exact lookup-family choice, exact slot allocation,
 and explicit phase-shell families.
 
 ## Main results
-
-### Primary audited mainline
-
-The primary release artifact is in `artifacts/`.
-
-Its modeled ECDLP projection, as recorded in
-`artifacts/projections/resource_projection.json`, is:
-
-- **880 logical qubits** under the conservative named-slot default model
-- **22,377,404 non-Clifford** under the 2-channel lookup model
-- **23,294,908 non-Clifford** under the conservative 3-channel lookup model
-
-The projection file also publishes exact structural provenance and experimental
-alternatives, including:
-
-- **736 logical qubits** under the ISA-liveness aliasing scenario
-- **736 logical qubits / 22,377,404 non-Clifford** under the combined explicit-backend plus liveness scenario
 
 ### Compiler + verification subproject
 
@@ -81,11 +63,26 @@ optimality. The best-gate family uses folded unary QROM with measurement-based
 uncompute; the best-qubit family uses folded linear-scan lookup plus an exact
 semiclassical-QFT phase shell and exact live-range slot allocation.
 
+Against Google's published 2026 secp256k1 baseline, the exact compiler frontier
+supports two separate comparisons:
+
+- the **best exact gate family** is **3.7793x** lower in non-Clifford cost than
+  the public low-qubit line and **2.9395x** lower than the public low-gate line
+- the **best exact qubit family** still uses **2,337 logical qubits**, which is
+  above both public Google qubit lines, while reducing non-Clifford cost by
+  **2.4043x** and **1.8700x** respectively
+
+### Primary audited mainline
+
+The primary release artifact in `artifacts/` still matters because it carries
+the exact ISA-level leaf, the retained-window scaffold metadata, and the exact
+lookup-contract layer that the compiler project builds on top of.
+
 ### Public baseline used for comparison
 
 When this repository says **Google's published 2026 secp256k1 estimates**, it
 means the rounded public comparison lines cited from Babbush et al. 2026 and
-stored in `artifacts/projections/resource_projection.json`:
+copied into the exact compiler frontier:
 
 - **low-qubit line:** `1200 logical qubits`, `90,000,000 non-Clifford`
 - **low-gate line:** `1450 logical qubits`, `70,000,000 non-Clifford`
@@ -105,15 +102,7 @@ That contract is exact at the lookup-contract level and audited by:
   base
 - **15,906 / 15,906** additional multibase semantic samples
 
-Its backend totals remain modeled. The supporting projection in
-`artifacts/projections/lookup_folded_projection.json` is:
-
-- **22,377,404 non-Clifford** under the folded 2-channel model
-- **23,294,908 non-Clifford** under the folded conservative 3-channel model
-
-## Exact vs modeled layers
-
-### Exact in this repository
+## Exact layers
 
 - optimized secp256k1 point-add leaf semantics
 - deterministic secp256k1 audit transcripts
@@ -124,13 +113,8 @@ Its backend totals remain modeled. The supporting projection in
 - exact leaf slot allocation for the checked-in mixed-add leaf
 - exact phase-shell family accounting for full-register vs semiclassical-QFT shells
 
-### Modeled in this repository
-
-- primitive-gate lookup memory lowering
-- primitive-gate cleanup for `mbuc_*` operations
-- fully flattened Shor period-finding gate list
-- logical-qubit and non-Clifford totals below the ISA boundary
-- physical-machine runtime and physical-qubit transfer studies
+Lower-exact implementation hypotheses are documented separately in
+`docs/research/MODELED_IMPLEMENTATION_HYPOTHESES.md`.
 
 ## Verification summary
 
@@ -146,7 +130,6 @@ The checked-in summaries report:
 See:
 
 - `results/repo_verification_summary.json`
-- `results/research_pass_summary.json`
 
 ## Cain et al. 2026
 
@@ -158,17 +141,16 @@ roughly **10,000 physical qubits** at the minimum-space end, or about
 **26,000 physical qubits** for a faster **ECC-256 / P-256** attack with a
 runtime around **10 days**; their slower balanced line is around **264 days**.
 
-This repository includes an approximate transfer of our logical secp256k1
-projection into that physical model in
+This repository includes an approximate transfer of the exact compiler-family
+frontier into that physical model in
 `docs/references/CAIN_2026_NEUTRAL_ATOM_INTEGRATION.md` and
 `results/cain_2026_integration_summary.json`. Under fixed cycle-time and
-parallelism assumptions, the modeled runtime shifts from Cain's **10 days** to
-roughly **2.49 to 3.33 days**, and the balanced line shifts from **264 days**
-to roughly **65.6 to 87.9 days** across the current supported backend family.
-Under same-density logical-to-physical scaling, the corresponding physical-qubit
-range is roughly **5.1k to 19.1k**. That transfer is intentionally stated as
-approximate, because Cain's paper targets **P-256**, while the primary artifact
-in this repository is specialized to **secp256k1**.
+parallelism assumptions, the exact-family runtime range spans roughly **2.65 to
+5.35 days** depending on which exact compiler family is chosen. The
+same-density physical-qubit range is much broader because the exact frontier
+includes both low-gate and low-space families. That transfer is intentionally
+stated as approximate, because Cain's paper targets **P-256**, while the
+primary artifact in this repository is specialized to **secp256k1**.
 
 ## Repository map
 

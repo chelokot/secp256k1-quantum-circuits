@@ -25,7 +25,7 @@ It is intentionally separate from the repository mainline.
 The artifacts in `compiler_verification_project/artifacts/` are exact for the
 **chosen compiler families**.
 
-That is a stricter boundary than the repository mainline modeled backend layer,
+That is a stricter boundary than the repository's quarantined hypothesis layer,
 but still
 short of a globally optimal primitive-gate proof. In particular, the arithmetic
 kernels are imported exact subroutines; this subproject still does **not** ship

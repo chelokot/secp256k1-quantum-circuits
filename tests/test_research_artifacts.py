@@ -19,33 +19,21 @@ class ResearchArtifactTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         run_research_pass(REPO_ROOT)
-        cls.summary = json.loads((REPO_ROOT / 'results' / 'research_pass_summary.json').read_text())
-        cls.dominant = json.loads((REPO_ROOT / 'artifacts' / 'projections' / 'dominant_cost_breakdown.json').read_text())
-        cls.scenarios = json.loads((REPO_ROOT / 'artifacts' / 'projections' / 'literature_projection_scenarios.json').read_text())
         cls.lookup_summary = json.loads((REPO_ROOT / 'artifacts' / 'lookup' / 'lookup_signed_fold_summary.json').read_text())
-        cls.lookup_projection = json.loads((REPO_ROOT / 'artifacts' / 'projections' / 'lookup_folded_projection.json').read_text())
         cls.matrix = json.loads((REPO_ROOT / 'results' / 'literature_matrix.json').read_text())
+        cls.frontier = json.loads((REPO_ROOT / 'compiler_verification_project' / 'artifacts' / 'family_frontier.json').read_text())
 
-    def test_cost_model_correction_is_reflected(self):
-        breakdown = self.dominant['breakdown']
-        ceilings = self.dominant['ceilings']
-        self.assertGreater(breakdown['arithmetic_share_fraction_2lookup'], breakdown['lookup_share_fraction_2lookup'])
-        self.assertGreater(breakdown['arithmetic_share_fraction_3lookup'], breakdown['lookup_share_fraction_3lookup'])
-        self.assertAlmostEqual(
-            ceilings['max_total_reduction_fraction_from_arithmetic_only_2lookup'],
-            breakdown['arithmetic_share_fraction_2lookup'],
-        )
-        self.assertAlmostEqual(
-            ceilings['max_total_reduction_fraction_from_arithmetic_only_3lookup'],
-            breakdown['arithmetic_share_fraction_3lookup'],
-        )
+    def test_exact_frontier_gate_advantage_is_derived(self):
+        baseline = self.frontier['public_google_baseline']
+        gate = self.frontier['best_gate_family']
+        self.assertAlmostEqual(gate['improvement_vs_google_low_qubit'], baseline['low_qubit']['non_clifford'] / gate['full_oracle_non_clifford'])
+        self.assertAlmostEqual(gate['improvement_vs_google_low_gate'], baseline['low_gate']['non_clifford'] / gate['full_oracle_non_clifford'])
 
-    def test_lookup_target_table_is_ordered(self):
-        targets = self.dominant['lookup_reduction_targets']
-        goals = [row['goal_total_non_clifford'] for row in targets]
-        self.assertEqual(goals, [30_000_000, 29_000_000, 25_000_000, 20_000_000])
-        reductions = [row['required_lookup_reduction_fraction_2lookup_without_other_changes'] for row in targets]
-        self.assertTrue(all(a < b for a, b in zip(reductions, reductions[1:])))
+    def test_exact_frontier_qubit_ratios_are_derived(self):
+        baseline = self.frontier['public_google_baseline']
+        qubit = self.frontier['best_qubit_family']
+        self.assertAlmostEqual(qubit['qubit_ratio_vs_google_low_qubit'], baseline['low_qubit']['logical_qubits'] / qubit['total_logical_qubits'])
+        self.assertAlmostEqual(qubit['qubit_ratio_vs_google_low_gate'], baseline['low_gate']['logical_qubits'] / qubit['total_logical_qubits'])
 
     def test_lookup_folding_audit_passes(self):
         summary = self.lookup_summary['summary']
@@ -53,13 +41,6 @@ class ResearchArtifactTests(unittest.TestCase):
         self.assertEqual(summary['full_exhaustive_cases'], summary['full_exhaustive_pass'])
         self.assertGreaterEqual(summary['direct_semantic_samples'], 15_000)
         self.assertEqual(summary['direct_semantic_samples'], summary['direct_semantic_pass'])
-
-    def test_lookup_folding_projection_is_meaningful(self):
-        base = self.lookup_projection['base_case_pad0']
-        self.assertLess(base['total_non_clifford_2channel_folded'], 30_000_000)
-        self.assertLess(base['total_non_clifford_3channel_folded_conservative'], 31_000_000)
-        self.assertGreater(base['gain_vs_google_low_qubit_2channel'], 3.0)
-        self.assertGreater(base['gain_vs_google_low_gate_2channel'], 2.3)
 
     def test_literature_matrix_has_expected_entries(self):
         ids = {entry['id'] for entry in self.matrix['entries']}
@@ -76,13 +57,6 @@ class ResearchArtifactTests(unittest.TestCase):
             'low_zhu_2024_lookup_architecture',
         }:
             self.assertIn(key, ids)
-
-    def test_scenarios_include_lookup_frontier_and_folding(self):
-        names = {entry['name'] for entry in self.scenarios['scenarios']}
-        self.assertIn('lookup_layer_reduction_frontier', names)
-        self.assertIn('litinski_style_multiplier_swap_band', names)
-        self.assertIn('exact_arithmetic_elimination_ceiling', names)
-        self.assertIn('signed_lookup_folding_contract_projection', names)
 
 
 if __name__ == '__main__':

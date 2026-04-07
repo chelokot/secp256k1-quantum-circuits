@@ -18,39 +18,50 @@ class CainIntegrationTests(unittest.TestCase):
 
     def test_headline_ranges_are_ordered(self):
         head = self.summary['headline_ranges']
-        self.assertLess(head['projected_time_efficient_days_min'], head['projected_time_efficient_days_max'])
-        self.assertLess(head['projected_balanced_days_min'], head['projected_balanced_days_max'])
-        self.assertLess(head['same_density_time_efficient_physical_qubits_min'], head['same_density_time_efficient_physical_qubits_max'])
-        self.assertLess(head['same_density_min_space_physical_qubits_min'], head['same_density_min_space_physical_qubits_max'])
+        self.assertLess(head['time_efficient_days_if_90M_min'], head['time_efficient_days_if_90M_max'])
+        self.assertLess(head['time_efficient_days_if_70M_min'], head['time_efficient_days_if_70M_max'])
+        self.assertLess(head['same_density_physical_qubits_if_1200_min'], head['same_density_physical_qubits_if_1200_max'])
+        self.assertLess(head['same_density_physical_qubits_if_1450_min'], head['same_density_physical_qubits_if_1450_max'])
 
     def test_case_transfer_formulas_are_self_consistent(self):
         cain = self.summary['source_papers']['cain_2026']
+        baseline = self.summary['public_google_baseline']
         for case in self.summary['cases']:
-            ratio = case['ratios']['non_clifford_ratio']
-            logical_ratio = case['ratios']['logical_qubit_ratio']
-            self.assertAlmostEqual(case['runtime_transfer']['projected_time_efficient_days'], cain['time_efficient_runtime_days'] * ratio)
-            self.assertAlmostEqual(case['runtime_transfer']['projected_balanced_days'], cain['balanced_runtime_days'] * ratio)
-            self.assertAlmostEqual(case['space_transfer']['same_density_time_efficient_physical_qubits'], cain['time_efficient_physical_qubits'] * logical_ratio)
-            self.assertAlmostEqual(case['space_transfer']['same_density_min_space_physical_qubits'], cain['headline_min_physical_qubits'] * logical_ratio)
+            self.assertAlmostEqual(
+                case['runtime_transfer']['time_efficient_days_if_90M_maps_to_10d'],
+                cain['time_efficient_runtime_days'] * case['exact_non_clifford'] / baseline['low_qubit']['non_clifford'],
+            )
+            self.assertAlmostEqual(
+                case['runtime_transfer']['time_efficient_days_if_70M_maps_to_10d'],
+                cain['time_efficient_runtime_days'] * case['exact_non_clifford'] / baseline['low_gate']['non_clifford'],
+            )
+            self.assertAlmostEqual(
+                case['space_transfer']['same_density_physical_qubits_if_1200_maps_to_26k'],
+                cain['time_efficient_physical_qubits'] * case['exact_logical_qubits'] / baseline['low_qubit']['logical_qubits'],
+            )
+            self.assertAlmostEqual(
+                case['space_transfer']['same_density_physical_qubits_if_1450_maps_to_26k'],
+                cain['time_efficient_physical_qubits'] * case['exact_logical_qubits'] / baseline['low_gate']['logical_qubits'],
+            )
 
     def test_headline_ranges_match_case_extrema(self):
         head = self.summary['headline_ranges']
-        time_values = [case['runtime_transfer']['projected_time_efficient_days'] for case in self.summary['cases']]
-        balanced_values = [case['runtime_transfer']['projected_balanced_days'] for case in self.summary['cases']]
-        time_space_values = [case['space_transfer']['same_density_time_efficient_physical_qubits'] for case in self.summary['cases']]
-        min_space_values = [case['space_transfer']['same_density_min_space_physical_qubits'] for case in self.summary['cases']]
-        self.assertEqual(head['projected_time_efficient_days_min'], min(time_values))
-        self.assertEqual(head['projected_time_efficient_days_max'], max(time_values))
-        self.assertEqual(head['projected_balanced_days_min'], min(balanced_values))
-        self.assertEqual(head['projected_balanced_days_max'], max(balanced_values))
-        self.assertEqual(head['same_density_time_efficient_physical_qubits_min'], min(time_space_values))
-        self.assertEqual(head['same_density_time_efficient_physical_qubits_max'], max(time_space_values))
-        self.assertEqual(head['same_density_min_space_physical_qubits_min'], min(min_space_values))
-        self.assertEqual(head['same_density_min_space_physical_qubits_max'], max(min_space_values))
+        runtime_90m_values = [case['runtime_transfer']['time_efficient_days_if_90M_maps_to_10d'] for case in self.summary['cases']]
+        runtime_70m_values = [case['runtime_transfer']['time_efficient_days_if_70M_maps_to_10d'] for case in self.summary['cases']]
+        qubit_1200_values = [case['space_transfer']['same_density_physical_qubits_if_1200_maps_to_26k'] for case in self.summary['cases']]
+        qubit_1450_values = [case['space_transfer']['same_density_physical_qubits_if_1450_maps_to_26k'] for case in self.summary['cases']]
+        self.assertEqual(head['time_efficient_days_if_90M_min'], min(runtime_90m_values))
+        self.assertEqual(head['time_efficient_days_if_90M_max'], max(runtime_90m_values))
+        self.assertEqual(head['time_efficient_days_if_70M_min'], min(runtime_70m_values))
+        self.assertEqual(head['time_efficient_days_if_70M_max'], max(runtime_70m_values))
+        self.assertEqual(head['same_density_physical_qubits_if_1200_min'], min(qubit_1200_values))
+        self.assertEqual(head['same_density_physical_qubits_if_1200_max'], max(qubit_1200_values))
+        self.assertEqual(head['same_density_physical_qubits_if_1450_min'], min(qubit_1450_values))
+        self.assertEqual(head['same_density_physical_qubits_if_1450_max'], max(qubit_1450_values))
 
     def test_publication_safe_summary_exists(self):
         pub = self.summary['publication_safe_summary']
-        self.assertIn('2.5-3.3 days', pub['single_sentence'])
+        self.assertIn('2.6-5.3 days', pub['single_sentence'])
         self.assertEqual(len(pub['do_not_say']), 3)
 
 

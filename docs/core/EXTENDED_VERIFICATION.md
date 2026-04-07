@@ -49,17 +49,6 @@ Purpose:
 
 - extend the finite-model proof to four prime-order `j = 0` toy curves
 
-### 4. Projection sensitivity
-
-File:
-
-- `artifacts/projections/projection_sensitivity.json`
-
-Purpose:
-
-- measure how much backend overhead the modeled headline can absorb while
-  staying below the published Google baseline
-
 ## Boundary
 
 The extended verifier still does not:

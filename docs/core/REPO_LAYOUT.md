@@ -47,11 +47,11 @@ Key files:
 ## Source code
 
 - `src/common.py` — arithmetic, hashing, and serialization helpers
-- `src/cain_integration.py` — Cain et al. transfer summary generation
+- `src/cain_integration.py` — exact-family Cain et al. transfer summary generation
 - `src/derived_resources.py` — exact structural replay, ISA liveness, and versioned backend-resource derivation
 - `src/figure_generation.py` — figure generation logic
 - `src/maintenance.py` — manifest and artifact-refresh helpers
-- `src/resource_projection.py` — canonical modeled projection entrypoint and ratio computation
+- `src/resource_projection.py` — lower-exact hypothesis projection entrypoint
 - `src/verifier.py` — primary optimized-artifact verifier
 - `src/extended_verifier.py` — extended verification and sensitivity layer
 - `src/research_extensions.py` — research-pass generation logic
@@ -64,11 +64,12 @@ Key files:
 
 ## Documentation
 
-- `docs/core/CLAIMS_AND_BOUNDARIES.md` — exact versus modeled claim boundary
+- `docs/core/CLAIMS_AND_BOUNDARIES.md` — exact claim boundary
 - `docs/references/GOOGLE_BASELINE_COMPARISON.md` — baseline definition and headline ratios
 - `docs/core/EXTENDED_VERIFICATION.md` — extended verification coverage
 - `docs/research/LOOKUP_FOLDING_RESEARCH_PASS.md` — signed folded lookup contract
-- `docs/research/OPTIMIZATION_FRONTIERS.md` — budget split and next frontiers
+- `docs/research/OPTIMIZATION_FRONTIERS.md` — exact frontiers and implementation gaps
+- `docs/research/MODELED_IMPLEMENTATION_HYPOTHESES.md` — quarantined modeled implementation ideas
 - `docs/references/STATE_OF_THE_ART_2026.md` — external literature map
 - `docs/core/RED_TEAM_REVIEW.md` — skeptical reading guide
 - `docs/references/PHYSICAL_STACKS_AND_HARDWARE_CONTEXT.md` — logical versus physical layer
@@ -86,7 +87,9 @@ Key files:
 - `artifacts/circuits/ecdlp_expanded_isa_optimized.json`
 - `artifacts/projections/structural_accounting.json`
 - `artifacts/projections/backend_model_bundle.json`
-- `artifacts/projections/resource_projection.json`
+
+Lower-exact hypothesis artifacts are cataloged in
+`docs/research/MODELED_IMPLEMENTATION_HYPOTHESES.md`.
 
 ## Results
 

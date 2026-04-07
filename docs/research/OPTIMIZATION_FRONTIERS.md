@@ -1,61 +1,22 @@
 # Optimization frontiers
 
-This file describes which parts of the resource budget are already improved in
-the checked-in artifacts and which parts remain the main frontier.
+This file describes which exact parts of the repository are already checked and
+which implementation gaps remain open.
 
-## Audited mainline
+## Checked exact layers
 
-The primary modeled headline stored in
-`artifacts/projections/resource_projection.json` is:
-
-- **880 logical qubits** under the conservative named-slot default model
-- **22.377M non-Clifford** under the 2-channel lookup model
-- **23.295M non-Clifford** under the conservative 3-channel lookup model
-
-That default line is derived from exact structural artifacts plus a
-versioned backend-model bundle, not from whole-circuit headline constants.
-
-## Budget split of that mainline
-
-`artifacts/projections/dominant_cost_breakdown.json` records:
-
-- **8.20%** lookup / **91.80%** arithmetic in the 2-channel model
-- **11.82%** lookup / **88.18%** arithmetic in the 3-channel model
-
-So the optimized mainline is arithmetic-dominated under the repository's
-explicit backend model.
-
-## Lookup frontier
-
-Lookup work is still valuable because:
-
-- the repository exposes lookup contracts explicitly,
-- lookup improvements can compose with the current optimized arithmetic leaf,
-- the signed folded contract already exists in the primary artifact and exposes a clean path for further lookup-side work.
-
-The signed folded contract projects:
-
-- **22,377,404 non-Clifford** under the folded 2-channel line
-- **23,294,908 non-Clifford** under the folded conservative 3-channel line
-
-## Arithmetic and backend frontier
-
-Arithmetic and backend work remain the larger lever because most of the modeled
-budget sits outside lookup. The checked-in projection family records this
-directly:
-
-- `addsub_modmul_named_slots_v2` is the default explicit arithmetic model, so
-  the mainline does not depend on a legacy calibrated multiplier family.
-- `addsub_modmul_liveness_v2` keeps that same arithmetic backend but drops to
-  **736 logical qubits** if exact ISA-slot liveness is used for backend
-  allocation.
+- ISA-level secp256k1 point-add leaf semantics
+- retained-window scaffold metadata and replay
+- signed lookup-folding contract semantics
+- exact compiler-family raw-32 whole-oracle frontier
+- exact slot allocation and exact phase-shell family accounting
 
 The main open directions are therefore:
 
-1. arithmetic-backend substitutions
-2. lower-level lookup realization
-3. cross-window scheduling and batching
-4. fragment flattening plus external equivalence checking
+1. explicit primitive-gate lookup realization for the named compiler families
+2. explicit primitive-gate arithmetic-kernel lowering for the named multiplier family
+3. coherent cleanup for the `mbuc_*` boundary
+4. flatter end-to-end Shor fragments with external equivalence checking
 
 ## What would be overclaim
 
@@ -64,12 +25,9 @@ It would be inaccurate to describe the repository as already having:
 - a primitive-gate lookup implementation,
 - a primitive-gate cleanup proof,
 - a fully flattened Shor circuit,
-- a theorem-proved backend total.
+- a globally optimal primitive-gate total.
 
-## Supporting files
+## Separate hypothesis layer
 
-- `artifacts/projections/dominant_cost_breakdown.json`
-- `artifacts/projections/literature_projection_scenarios.json`
-- `artifacts/projections/lookup_folded_projection.json`
-- `docs/research/COST_MODEL_CORRECTION.md`
-- `docs/research/LOOKUP_FOLDING_RESEARCH_PASS.md`
+Lower-exact budgeting and implementation hypotheses are isolated in
+`docs/research/MODELED_IMPLEMENTATION_HYPOTHESES.md`.

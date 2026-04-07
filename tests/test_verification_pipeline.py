@@ -40,8 +40,6 @@ class VerificationPipelineTests(unittest.TestCase):
 
     def test_google_baseline_is_recorded(self):
         baseline = self.summary['google_baseline']
-        self.assertEqual(baseline['window_size'], 16)
-        self.assertEqual(baseline['retained_window_additions'], 28)
         self.assertEqual(baseline['low_qubit']['logical_qubits'], 1200)
         self.assertEqual(baseline['low_qubit']['non_clifford'], 90_000_000)
         self.assertEqual(baseline['low_gate']['logical_qubits'], 1450)
@@ -71,6 +69,15 @@ class VerificationPipelineTests(unittest.TestCase):
         self.assertEqual(verify['slot_allocation_checks']['pass'], 1)
         self.assertEqual(verify['primitive_multiplier_checks']['pass'], 1)
         self.assertEqual(verify['qubit_frontier_checks']['pass'], 1)
+        baseline = self.summary['google_baseline']
+        self.assertAlmostEqual(
+            frontier['best_gate_family']['improvement_vs_google_low_qubit'],
+            baseline['low_qubit']['non_clifford'] / frontier['best_gate_family']['full_oracle_non_clifford'],
+        )
+        self.assertAlmostEqual(
+            frontier['best_qubit_family']['qubit_ratio_vs_google_low_qubit'],
+            baseline['low_qubit']['logical_qubits'] / frontier['best_qubit_family']['total_logical_qubits'],
+        )
         self.assertTrue(self.summary['headline_checks']['compiler_exact_checks_pass'])
 
 

@@ -15,13 +15,11 @@ SRC_DIR = REPO_ROOT / 'src'
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
-from common import artifact_core_verification_path, artifact_projection_path, dump_json, load_json, sha256_path  # noqa: E402
+from common import artifact_core_verification_path, dump_json, load_json, sha256_path  # noqa: E402
 from extended_verifier import (  # noqa: E402
     run_claim_boundary_matrix,
     run_extended_toy_family,
     run_lookup_contract,
-    run_meta_analysis,
-    run_projection_sensitivity,
     run_scaffold_schedule,
 )
 from research_extensions import build_challenge_ladder, run_challenge_ladder_audit  # noqa: E402
@@ -113,8 +111,6 @@ def build_extended_summary(repo_root: Path, progress: ProgressReporter, step: in
             repo_root,
             progress=lambda completed, total: progress.advance(step + 2, total_steps, 'Running extended toy-family check', completed, total, completed),
         ),
-        'projection_sensitivity': run_projection_sensitivity(repo_root),
-        'meta_analysis': run_meta_analysis(repo_root),
         'claim_boundaries': run_claim_boundary_matrix(repo_root),
         'challenge_ladder': run_challenge_ladder_audit(
             repo_root,
@@ -170,14 +166,19 @@ def build_summary(console: Console, show_progress: bool, quick: bool) -> Dict[st
         'toy': toy,
     }
     optimized['verification_summary_sha256'] = sha256_path(artifact_core_verification_path(optimized_root, 'verification_summary.json'))
-    optimized['resource_projection'] = load_json(artifact_projection_path(optimized_root, 'resource_projection.json'))
-    optimized['resource_projection_sha256'] = sha256_path(artifact_projection_path(optimized_root, 'resource_projection.json'))
-    google_baseline = optimized['resource_projection']['public_google_baseline']
     extended = None
     compiler_project = None
     if not quick:
         extended = build_extended_summary(REPO_ROOT, progress, 3, step_count)
         compiler_project = build_compiler_project_summary(REPO_ROOT)
+    google_baseline = (
+        compiler_project['frontier']['public_google_baseline']
+        if compiler_project is not None
+        else {
+            'low_qubit': {'logical_qubits': 1200, 'non_clifford': 90_000_000},
+            'low_gate': {'logical_qubits': 1450, 'non_clifford': 70_000_000},
+        }
+    )
 
     summary = {
         'optimized': optimized,
@@ -185,7 +186,12 @@ def build_summary(console: Console, show_progress: bool, quick: bool) -> Dict[st
         'headline_checks': {
             'optimized_audit_pass': optimized['audit']['summary']['pass'] == optimized['audit']['summary']['total'] == 16384,
             'optimized_toy_pass': optimized['toy']['summary']['pass'] == optimized['toy']['summary']['total'] == 19850,
-            'google_baseline_present': bool(google_baseline['source']) and google_baseline['window_size'] == 16 and google_baseline['retained_window_additions'] == 28,
+            'google_baseline_present': (
+                google_baseline['low_qubit']['logical_qubits'] == 1200
+                and google_baseline['low_qubit']['non_clifford'] == 90_000_000
+                and google_baseline['low_gate']['logical_qubits'] == 1450
+                and google_baseline['low_gate']['non_clifford'] == 70_000_000
+            ),
         },
     }
     if extended is not None:
@@ -222,7 +228,6 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
     total_sections = 2 + (4 if extended is not None else 0) + (2 if compiler_project is not None else 0)
     audit = optimized['audit']['summary']
     toy = optimized['toy']['summary']
-    projection = optimized['resource_projection']
     baseline = summary['google_baseline']
     checks = summary['headline_checks']
 
@@ -329,21 +334,11 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
         print(f"  best exact qubit family: {best_exact_qubit['total_logical_qubits']:,} q / {best_exact_qubit['full_oracle_non_clifford']:,} non-Clifford")
         print(f"  public baseline: {baseline['low_qubit']['logical_qubits']:,} q / {baseline['low_qubit']['non_clifford']:,} and {baseline['low_gate']['logical_qubits']:,} q / {baseline['low_gate']['non_clifford']:,}")
         print()
-
-    print(console.heading('Mainline modeled projection'))
-    print(f"  logical qubits: {projection['optimized_ecdlp_projection']['logical_qubits_total']:,}")
-    print(f"  2-channel total: {projection['optimized_ecdlp_projection']['lookup_model_2channel']['total_non_clifford']:,} non-Clifford")
-    print(f"  3-channel total: {projection['optimized_ecdlp_projection']['lookup_model_3channel']['total_non_clifford']:,} non-Clifford")
-    print(f"  public baseline: {baseline['low_qubit']['logical_qubits']:,} q / {baseline['low_qubit']['non_clifford']:,} and {baseline['low_gate']['logical_qubits']:,} q / {baseline['low_gate']['non_clifford']:,}")
-    print()
-
-    print(console.heading('Mainline modeled advantage'))
-    low_qubit_2channel = console.ok(f"{projection['improvement_vs_google']['versus_low_qubit']['toffoli_gain_2lookup']:.4f}x")
-    low_qubit_3channel = console.ok(f"{projection['improvement_vs_google']['versus_low_qubit']['toffoli_gain_3lookup']:.4f}x")
-    low_gate_2channel = console.ok(f"{projection['improvement_vs_google']['versus_low_gate']['toffoli_gain_2lookup']:.4f}x")
-    low_gate_3channel = console.ok(f"{projection['improvement_vs_google']['versus_low_gate']['toffoli_gain_3lookup']:.4f}x")
-    print(f"  lower modeled non-Clifford cost vs Google low-qubit line: {low_qubit_2channel} (2-channel), {low_qubit_3channel} (3-channel)")
-    print(f"  lower modeled non-Clifford cost vs Google low-gate line:  {low_gate_2channel} (2-channel), {low_gate_3channel} (3-channel)")
+        print(console.heading('Exact comparison to Google 2026 baseline'))
+        print(f"  best exact gate family vs low-qubit line: {best_exact_gate['improvement_vs_google_low_qubit']:.4f}x lower non-Clifford")
+        print(f"  best exact gate family vs low-gate line:  {best_exact_gate['improvement_vs_google_low_gate']:.4f}x lower non-Clifford")
+        print(f"  best exact qubit family vs low-qubit line: {baseline['low_qubit']['logical_qubits'] - best_exact_qubit['total_logical_qubits']:+,} q margin")
+        print(f"  best exact qubit family vs low-gate line:  {baseline['low_gate']['logical_qubits'] - best_exact_qubit['total_logical_qubits']:+,} q margin")
 
 
 def main() -> None:

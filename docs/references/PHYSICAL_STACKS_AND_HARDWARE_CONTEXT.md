@@ -21,7 +21,7 @@ Not claimed here:
 
 Role here:
 
-- neutral-atom transfer study for the repository's logical projection
+- neutral-atom transfer study for the repository's exact compiler-family frontier
 
 Files:
 
@@ -48,7 +48,8 @@ The right questions are:
 
 The repository keeps three different file classes:
 
-- `artifacts/projections/resource_projection.json` for modeled logical totals
+- `compiler_verification_project/artifacts/family_frontier.json` for exact
+  compiler-family logical totals
 - `results/cain_2026_integration_summary.json` for approximate neutral-atom
   transfer
 - `results/physical_stack_reference_points.json` for cross-paper context

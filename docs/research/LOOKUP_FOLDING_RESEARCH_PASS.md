@@ -45,23 +45,12 @@ The contract summary records:
 - returned affine point semantics
 - folded scaffold metadata
 
-## What remains modeled
-
-The translation from the folded contract to total non-Clifford count remains a
-backend model below the ISA boundary. In the current repository this projection
-is derived from the exact structural artifacts plus the versioned backend-model
-bundle, not repeated from a standalone whole-circuit constant table.
-
-## Modeled totals
-
-`artifacts/projections/lookup_folded_projection.json` records the base-case
-projection:
-
-- folded 2-channel total: `22,377,404`
-- folded conservative 3-channel total: `23,294,908`
+## Remaining implementation gap
 
 The strongest contract-level conclusion is a 2x reduction in the per-coordinate
-table domain. The total non-Clifford improvement is meaningful but bounded.
+table domain together with exact audited signed-word semantics. Lower-exact
+budget hypotheses for this contract are isolated in
+`docs/research/MODELED_IMPLEMENTATION_HYPOTHESES.md`.
 
 ## Why this optimization matters
 

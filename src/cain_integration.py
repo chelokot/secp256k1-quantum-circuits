@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Dict, List
 
-from common import artifact_projection_path, dump_json, load_json
+from common import dump_json, load_json
 
 
 CAIN_2026 = {
@@ -19,107 +19,69 @@ CAIN_2026 = {
     'cycle_time_ms': 1.0,
 }
 
-
-def _iter_projection_cases(projection: Dict[str, Any]) -> List[Dict[str, Any]]:
-    cases = [
-        {
-            'model_name': projection['model_name'],
-            'model_status': 'default',
-            'ecdlp': projection['optimized_ecdlp_projection'],
-        }
-    ]
-    for alternative in projection.get('alternative_backend_scenarios', []):
-        cases.append({
-            'model_name': alternative['model_name'],
-            'model_status': alternative['status'],
-            'ecdlp': alternative['ecdlp'],
-        })
-    return cases
-
-
 def build_cain_integration_summary(repo_root: Path) -> Dict[str, Any]:
-    projection = load_json(artifact_projection_path(repo_root / 'artifacts', 'resource_projection.json'))
-    google_baseline = projection['public_google_baseline']
+    frontier_path = repo_root / 'compiler_verification_project' / 'artifacts' / 'family_frontier.json'
+    exact_transfer_path = repo_root / 'compiler_verification_project' / 'artifacts' / 'cain_exact_transfer.json'
+    frontier = load_json(frontier_path)
+    exact_transfer = load_json(exact_transfer_path)
+    google_baseline = frontier['public_google_baseline']
+    family_rows = {entry['name']: entry for entry in frontier['families']}
 
     cases: List[Dict[str, Any]] = []
-    headline_times: List[float] = []
-    headline_balanced: List[float] = []
-    time_efficient_spaces: List[float] = []
-    min_spaces: List[float] = []
+    runtime_90m_values: List[float] = []
+    runtime_70m_values: List[float] = []
+    time_efficient_space_values: List[float] = []
+    low_gate_space_values: List[float] = []
 
-    for model_case in _iter_projection_cases(projection):
-        optimized = model_case['ecdlp']
-        for baseline_key in ('low_qubit', 'low_gate'):
-            baseline = google_baseline[baseline_key]
-            logical_ratio = optimized['logical_qubits_total'] / baseline['logical_qubits']
-            for lookup_label, lookup_key in (
-                ('2lookup', 'lookup_model_2channel'),
-                ('3lookup', 'lookup_model_3channel'),
-            ):
-                optimized_non_clifford = optimized[lookup_key]['total_non_clifford']
-                non_clifford_ratio = optimized_non_clifford / baseline['non_clifford']
-                projected_time_efficient = CAIN_2026['time_efficient_runtime_days'] * non_clifford_ratio
-                projected_balanced = CAIN_2026['balanced_runtime_days'] * non_clifford_ratio
-                same_density_time_efficient_space = CAIN_2026['time_efficient_physical_qubits'] * logical_ratio
-                same_density_min_space = CAIN_2026['headline_min_physical_qubits'] * logical_ratio
-
-                headline_times.append(projected_time_efficient)
-                headline_balanced.append(projected_balanced)
-                time_efficient_spaces.append(same_density_time_efficient_space)
-                min_spaces.append(same_density_min_space)
-
-                cases.append({
-                    'source_model': model_case['model_name'],
-                    'source_model_status': model_case['model_status'],
-                    'google_baseline_line': baseline_key,
-                    'optimized_lookup_model': lookup_label,
-                    'google_logical_qubits': baseline['logical_qubits'],
-                    'google_non_clifford': baseline['non_clifford'],
-                    'optimized_logical_qubits': optimized['logical_qubits_total'],
-                    'optimized_non_clifford': optimized_non_clifford,
-                    'ratios': {
-                        'logical_qubit_ratio': logical_ratio,
-                        'non_clifford_ratio': non_clifford_ratio,
-                        'logical_qubit_gain': baseline['logical_qubits'] / optimized['logical_qubits_total'],
-                        'non_clifford_gain': baseline['non_clifford'] / optimized_non_clifford,
-                    },
-                    'runtime_transfer': {
-                        'assumption': 'Fixed physical architecture, cycle time, and parallelization regime; runtime scales with non-Clifford ratio.',
-                        'projected_time_efficient_days': projected_time_efficient,
-                        'projected_balanced_days': projected_balanced,
-                    },
-                    'space_transfer': {
-                        'assumption': 'Logical-to-physical density is inherited from the cited Cain reference line.',
-                        'same_density_time_efficient_physical_qubits': same_density_time_efficient_space,
-                        'same_density_min_space_physical_qubits': same_density_min_space,
-                    },
-                })
+    for transfer_row in exact_transfer['families']:
+        family = family_rows[transfer_row['family']]
+        runtime_90m_values.append(transfer_row['heuristic_time_efficient_days_if_90M_maps_to_10d'])
+        runtime_70m_values.append(transfer_row['heuristic_time_efficient_days_if_70M_maps_to_10d'])
+        time_efficient_space_values.append(transfer_row['same_density_physical_qubits_if_1200_maps_to_26k'])
+        low_gate_space_values.append(transfer_row['same_density_physical_qubits_if_1450_maps_to_26k'])
+        cases.append({
+            'family': transfer_row['family'],
+            'exact_non_clifford': family['full_oracle_non_clifford'],
+            'exact_logical_qubits': family['total_logical_qubits'],
+            'runtime_transfer': {
+                'assumption': 'Fixed physical architecture, cycle time, and parallelization regime; runtime scales with exact-family non-Clifford ratio.',
+                'time_efficient_days_if_90M_maps_to_10d': transfer_row['heuristic_time_efficient_days_if_90M_maps_to_10d'],
+                'time_efficient_days_if_70M_maps_to_10d': transfer_row['heuristic_time_efficient_days_if_70M_maps_to_10d'],
+            },
+            'space_transfer': {
+                'assumption': 'Logical-to-physical density is inherited from the cited Cain reference line.',
+                'same_density_physical_qubits_if_1200_maps_to_26k': transfer_row['same_density_physical_qubits_if_1200_maps_to_26k'],
+                'same_density_physical_qubits_if_1450_maps_to_26k': transfer_row['same_density_physical_qubits_if_1450_maps_to_26k'],
+            },
+        })
 
     return {
-        'integration_name': 'cain_2026_neutral_atom_transfer_v2',
-        'warning': 'This file combines a secp256k1-specialized logical projection with a P-256 physical architecture paper. Runtime and space are transferred separately and remain approximate.',
+        'integration_name': 'cain_2026_neutral_atom_transfer_exact_families_v1',
+        'warning': 'This file combines a secp256k1 exact compiler-family frontier with a P-256 physical architecture paper. Runtime and space remain approximate transfer studies.',
+        'source_artifacts': {
+            'exact_frontier': {'path': 'compiler_verification_project/artifacts/family_frontier.json'},
+            'exact_transfer_table': {'path': 'compiler_verification_project/artifacts/cain_exact_transfer.json'},
+        },
         'source_papers': {
-            'our_repository_baseline': {
-                'path': 'artifacts/projections/resource_projection.json',
-            },
             'cain_2026': CAIN_2026,
         },
+        'public_google_baseline': google_baseline,
         'headline_ranges': {
-            'projected_time_efficient_days_min': min(headline_times),
-            'projected_time_efficient_days_max': max(headline_times),
-            'projected_balanced_days_min': min(headline_balanced),
-            'projected_balanced_days_max': max(headline_balanced),
-            'same_density_time_efficient_physical_qubits_min': min(time_efficient_spaces),
-            'same_density_time_efficient_physical_qubits_max': max(time_efficient_spaces),
-            'same_density_min_space_physical_qubits_min': min(min_spaces),
-            'same_density_min_space_physical_qubits_max': max(min_spaces),
+            'time_efficient_days_if_90M_min': min(runtime_90m_values),
+            'time_efficient_days_if_90M_max': max(runtime_90m_values),
+            'time_efficient_days_if_70M_min': min(runtime_70m_values),
+            'time_efficient_days_if_70M_max': max(runtime_70m_values),
+            'same_density_physical_qubits_if_1200_min': min(time_efficient_space_values),
+            'same_density_physical_qubits_if_1200_max': max(time_efficient_space_values),
+            'same_density_physical_qubits_if_1450_min': min(low_gate_space_values),
+            'same_density_physical_qubits_if_1450_max': max(low_gate_space_values),
         },
         'cases': cases,
         'publication_safe_summary': {
-            'single_sentence': "If the repository's optimized logical secp256k1 projection is transferred into the neutral-atom architecture of Cain et al. under fixed cycle-time and parallelism assumptions, the current supported backend family maps to roughly 2.5-3.3 days on the time-efficient line and about 6.1k-19.1k physical qubits under same-density scaling, depending on which public baseline line and backend scenario are used.",
+            'single_sentence': "If the repository's exact compiler-family frontier is transferred into the neutral-atom architecture of Cain et al. under fixed cycle-time and parallelism assumptions, the checked exact families span roughly 2.6-5.3 days and about 41.9k-776.9k physical qubits under the stored same-density reference lines.",
             'do_not_say': [
                 'Do not say the paper is beaten on its own P-256 target without recompiling for P-256.',
-                'Do not say any single runtime or physical-qubit number is exact; the file intentionally reports a scenario range.',
+                'Do not say any single runtime or physical-qubit number is exact; the file intentionally reports an exact-family transfer range.',
                 'Do not say the transfer is theorem-proved end-to-end.',
             ],
         },
