@@ -24,6 +24,7 @@ from extended_verifier import (  # noqa: E402
     run_scaffold_schedule,
 )
 from research_extensions import build_challenge_ladder, run_challenge_ladder_audit  # noqa: E402
+from resource_projection import write_resource_projection  # noqa: E402
 from verifier import run_audit, run_toy  # noqa: E402
 
 
@@ -126,6 +127,7 @@ def build_summary(console: Console, show_progress: bool, quick: bool) -> Dict[st
     optimized_root = REPO_ROOT / 'artifacts'
     step_count = 2 if quick else 6
     progress = ProgressReporter(console, enabled=show_progress)
+    write_resource_projection(REPO_ROOT)
 
     audit_title = 'Running deterministic secp256k1 audit'
     progress.start(1, step_count, audit_title)

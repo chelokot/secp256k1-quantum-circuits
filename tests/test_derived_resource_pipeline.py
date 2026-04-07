@@ -12,12 +12,14 @@ SRC_DIR = REPO_ROOT / 'src'
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
+from support import ensure_repo_verification_summary
 from derived_resources import minimal_addition_chain  # noqa: E402
 
 
 class DerivedResourcePipelineTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        ensure_repo_verification_summary()
         cls.projection = json.loads((REPO_ROOT / 'artifacts' / 'projections' / 'resource_projection.json').read_text())
         cls.structural = json.loads((REPO_ROOT / 'artifacts' / 'projections' / 'structural_accounting.json').read_text())
         cls.backend = json.loads((REPO_ROOT / 'artifacts' / 'projections' / 'backend_model_bundle.json').read_text())

@@ -135,8 +135,8 @@ def run_lookup_contract(
 ) -> Dict[str, Any]:
     package_root = repo_root / "artifacts"
     optimized_sha = sha256_path(artifact_circuits_path(package_root, "optimized_pointadd_secp256k1.json"))
-    baseline_sha = sha256_path(artifact_projection_path(package_root, "resource_projection.json"))
-    seed = bytes.fromhex(sha256_bytes(bytes.fromhex(optimized_sha) + bytes.fromhex(baseline_sha)))
+    scaffold_sha = sha256_path(artifact_circuits_path(package_root, "ecdlp_scaffold_optimized.json"))
+    seed = bytes.fromhex(sha256_bytes(bytes.fromhex(optimized_sha) + bytes.fromhex(scaffold_sha)))
 
     out_csv = artifact_extended_verification_path(package_root, "lookup_contract_audit_8192.csv")
     g_tables = precompute_window_tables(SECP_G, SECP_P, SECP_B, width=8, bits=256)
@@ -164,7 +164,7 @@ def run_lookup_contract(
         return word - 0x10000 if word & 0x8000 else word
 
     with out_csv.open("w", newline="") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow([
             "mode", "case_id", "base_scalar_hex", "window_key",
             "base_x", "base_y", "expected_x", "expected_y",

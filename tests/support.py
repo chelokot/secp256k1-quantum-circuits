@@ -12,8 +12,7 @@ _prepared_targets: set[Path] = set()
 def ensure_repo_verification_summary() -> Path:
     summary_path = REPO_ROOT / 'results' / 'repo_verification_summary.json'
     if summary_path not in _prepared_targets:
-        if not summary_path.exists():
-            subprocess.run([sys.executable, 'scripts/verify_all.py'], cwd=REPO_ROOT, check=True)
+        subprocess.run([sys.executable, 'scripts/verify_all.py'], cwd=REPO_ROOT, check=True)
         _prepared_targets.add(summary_path)
     return summary_path
 

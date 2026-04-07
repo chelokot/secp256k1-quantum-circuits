@@ -132,6 +132,24 @@ class ReleaseInventoryTests(unittest.TestCase):
         self.assertTrue(projection['alternative_backend_scenarios'])
         self.assertEqual(projection['backend_model_bundle']['default_model'], projection['model_name'])
 
+    def test_extended_projection_artifacts_match_current_projection(self):
+        ensure_repo_verification_summary()
+        projection = json.loads((REPO_ROOT / 'artifacts' / 'projections' / 'resource_projection.json').read_text())
+        sensitivity = json.loads((REPO_ROOT / 'artifacts' / 'projections' / 'projection_sensitivity.json').read_text())
+        meta = json.loads((REPO_ROOT / 'artifacts' / 'projections' / 'meta_analysis.json').read_text())
+        self.assertEqual(
+            sensitivity['base']['optimized_nc_2lookup'],
+            projection['optimized_ecdlp_projection']['lookup_model_2channel']['total_non_clifford'],
+        )
+        self.assertEqual(
+            sensitivity['base']['optimized_nc_3lookup'],
+            projection['optimized_ecdlp_projection']['lookup_model_3channel']['total_non_clifford'],
+        )
+        self.assertEqual(
+            meta['optimized_vs_google_estimates']['optimized_leaf_modeled_non_clifford_excluding_lookup'],
+            projection['optimized_leaf_projection']['modeled_non_clifford_excluding_lookup'],
+        )
+
     def test_proof_manifest_matches_curated_files(self):
         proof = json.loads((REPO_ROOT / 'artifacts' / 'package' / 'proof_manifest.json').read_text())
         for rel, record in proof['files'].items():
