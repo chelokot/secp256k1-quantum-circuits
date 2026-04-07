@@ -123,7 +123,7 @@ class ReleaseInventoryTests(unittest.TestCase):
             gains['versus_low_gate']['toffoli_gain_3lookup'],
             base['low_gate']['non_clifford'] / optimized['lookup_model_3channel']['total_non_clifford'],
         )
-        self.assertIn('unfolded_lookup_reference', projection)
+        self.assertIn('pre_folding_baseline', projection)
 
     def test_proof_manifest_matches_curated_files(self):
         proof = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'proof_manifest.json').read_text())

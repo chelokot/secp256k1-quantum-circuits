@@ -41,7 +41,7 @@ two's-complement lookup-folding optimization. Its checked summaries report:
 - **15,906 / 15,906** multibase semantic samples passed
 
 The supporting folded-lookup provenance file still records the merged totals and
-their delta versus the previous unfolded lookup reference:
+their delta versus the pre-folding baseline:
 
 - **29.163M non-Clifford** under the folded 2-channel line
 - **30.081M non-Clifford** under the folded conservative 3-channel line

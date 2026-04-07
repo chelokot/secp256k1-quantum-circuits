@@ -16,8 +16,8 @@
     "multibase_pass": 15906,
     "pad0_total_non_clifford_2channel_folded": 29163456,
     "pad0_total_non_clifford_3channel_folded_conservative": 30080960,
-    "pad0_improvement_fraction_vs_unfolded_reference_2channel": 0.05919673955457927,
-    "pad0_improvement_fraction_vs_unfolded_reference_3channel_conservative": 0.08383249873787335
+    "pad0_improvement_fraction_vs_pre_folding_baseline_2channel": 0.05919673955457927,
+    "pad0_improvement_fraction_vs_pre_folding_baseline_3channel_conservative": 0.08383249873787335
   },
   "challenge_ladder": {
     "curve_count": 7,

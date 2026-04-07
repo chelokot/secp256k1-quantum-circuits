@@ -38,7 +38,7 @@
       "total_non_clifford": 30080960
     }
   },
-  "unfolded_lookup_reference": {
+  "pre_folding_baseline": {
     "logical_qubits_total": 880,
     "lookup_model_2channel": {
       "lookup_channels": 2,

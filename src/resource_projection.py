@@ -49,7 +49,7 @@ OPTIMIZED_ECDLP_PROJECTION = {
     },
 }
 
-UNFOLDED_LOOKUP_REFERENCE = {
+PRE_FOLDING_BASELINE = {
     'logical_qubits_total': 880,
     'lookup_model_2channel': {
         'lookup_channels': 2,
@@ -93,7 +93,7 @@ def build_resource_projection() -> Dict[str, Any]:
         'public_google_baseline': PUBLIC_GOOGLE_BASELINE,
         'optimized_leaf_projection': OPTIMIZED_LEAF_PROJECTION,
         'optimized_ecdlp_projection': OPTIMIZED_ECDLP_PROJECTION,
-        'unfolded_lookup_reference': UNFOLDED_LOOKUP_REFERENCE,
+        'pre_folding_baseline': PRE_FOLDING_BASELINE,
         'improvement_vs_google': compute_improvement_vs_google(),
     }
 
