@@ -13,6 +13,11 @@ in principle recover private keys from public keys and signatures.
 
 This repository contains exact ISA-level secp256k1 quantum ECDLP circuits,
 verification artifacts, and modeled resource estimates.
+In Bitcoin terms, a successful attack of this kind would let an attacker
+recover spend keys for exposed public keys and authorize fraudulent spends, and
+the repository's current hardware-transfer estimate puts such an attack in the
+rough range of 3.2 to 4.3 days on a large fault-tolerant quantum machine under
+fixed-architecture assumptions.
 
 The repository is strongest at the arithmetic ISA boundary. It publishes exact,
 machine-readable point-add schedules and checks their basis-state semantics. It
