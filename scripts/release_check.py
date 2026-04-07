@@ -10,12 +10,14 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 COMMANDS = [
+    [sys.executable, 'scripts/rebuild_resource_projection.py'],
     [sys.executable, 'src/verifier.py', '--package-dir', 'artifacts', '--mode', 'all'],
     [sys.executable, 'scripts/verify_all.py'],
     [sys.executable, 'scripts/verify_strict.py', '--mode', 'all'],
     [sys.executable, 'scripts/run_research_pass.py'],
-    [sys.executable, '-m', 'unittest', 'discover', '-s', 'tests', '-v'],
     [sys.executable, 'scripts/generate_figures.py'],
+    [sys.executable, 'scripts/rebuild_proof_manifest.py'],
+    [sys.executable, '-m', 'unittest', 'discover', '-s', 'tests', '-v'],
     [sys.executable, 'scripts/compare_google_baseline.py'],
     [sys.executable, 'scripts/compare_cain_2026.py'],
     [sys.executable, 'scripts/compare_literature.py'],

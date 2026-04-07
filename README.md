@@ -5,18 +5,19 @@
 > reproducible as possible. Anyone with domain expertise is strongly encouraged
 > to review this repository and open issues or pull requests.
 
-# secp256k1 kickmix open audit repository
+# secp256k1 quantum attack circuits
 
-This repository is an open audit package for a secp256k1 ECDLP point-addition
-stack. Its single artifact layer is a primary optimized
-secp256k1-specialized package with verification, sensitivity, and research
-layers.
+secp256k1 is the elliptic curve used by Bitcoin and other cryptocurrency
+systems, and a sufficiently powerful fault-tolerant quantum attack on it would
+in principle recover private keys from public keys and signatures.
+
+This repository contains exact ISA-level secp256k1 quantum ECDLP circuits,
+verification artifacts, and modeled resource estimates.
 
 The repository is strongest at the arithmetic ISA boundary. It publishes exact,
 machine-readable point-add schedules and checks their basis-state semantics. It
 also publishes modeled backend totals for logical qubits and non-Clifford
-counts. Those modeled totals are explicit projections, not primitive-gate
-proofs.
+counts.
 
 ## Main results
 
@@ -28,8 +29,8 @@ Its modeled ECDLP projection, as recorded in
 `artifacts/out/resource_projection.json`, is:
 
 - **880 logical qubits**
-- **30,998,464 non-Clifford** under the 2-channel lookup model
-- **32,833,472 non-Clifford** under the 3-channel lookup model
+- **29,163,456 non-Clifford** under the 2-channel lookup model
+- **30,080,960 non-Clifford** under the conservative 3-channel lookup model
 
 ### Public baseline used for comparison
 
@@ -42,22 +43,20 @@ stored in `artifacts/out/resource_projection.json`:
 - **window size:** `16`
 - **retained point additions:** `28`
 
-The comparison is against those public appendix numbers only. It is not a claim
-to have reconstructed any unpublished internal circuit.
+### Signed lookup contract
 
-### Exact signed lookup-folding branch
-
-The optimized package also contains an exact signed lookup-contract variant in
+The optimized mainline incorporates the signed lookup-folding optimization. The
+exact lookup-contract artifacts are in
 `artifacts/out/lookup_signed_fold_contract.json` and
 `artifacts/out/ecdlp_scaffold_lookup_folded.json`.
 
-That branch is exact at the lookup-contract level and audited by:
+That contract is exact at the lookup-contract level and audited by:
 
 - **65,536 / 65,536** exhaustive 16-bit words for the canonical `G` window-0
   base
 - **15,906 / 15,906** additional multibase semantic samples
 
-Its backend totals remain modeled. The base-case folded projection in
+Its backend totals remain modeled. The supporting projection in
 `artifacts/out/lookup_folded_projection.json` is:
 
 - **29,163,456 non-Clifford** under the folded 2-channel model
@@ -81,20 +80,12 @@ Its backend totals remain modeled. The base-case folded projection in
 - logical-qubit and non-Clifford totals below the ISA boundary
 - physical-machine runtime and physical-qubit transfer studies
 
-If you need the shortest honest description of the repository, use:
-
-> This repository publishes exact ISA-level arithmetic artifacts and explicit
-> lookup contracts for a secp256k1 point-add stack, together with deterministic
-> audits, finite-model checks, retained-window scaffold replay, and modeled
-> backend resource projections against Google's published 2026 secp256k1
-> estimates from Babbush et al. 2026.
-
 ## Verification summary
 
 The checked-in summaries report:
 
 - optimized secp256k1 audit: **16,384 / 16,384** pass
-- original toy-curve proof: **19,850 / 19,850** pass
+- base toy-curve proof: **19,850 / 19,850** pass
 - strict lookup-contract audit: **8,192 / 8,192** pass
 - strict scaffold replay: **256 / 256** pass
 - extended toy-family proof: **110,692 / 110,692** pass
@@ -154,4 +145,4 @@ make test
 6. `docs/OPTIMIZATION_FRONTIERS.md`
 7. `docs/STATE_OF_THE_ART_2026.md`
 8. `docs/RED_TEAM_REVIEW.md`
-9. `reports/secp256k1_optimized_880q_31p0M_report.pdf`
+9. `reports/secp256k1_optimized_report.pdf`

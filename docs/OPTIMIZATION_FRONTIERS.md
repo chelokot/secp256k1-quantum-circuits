@@ -9,8 +9,8 @@ The primary modeled headline stored in
 `artifacts/out/resource_projection.json` is:
 
 - **880 logical qubits**
-- **30.998M non-Clifford** under the 2-channel lookup model
-- **32.833M non-Clifford** under the 3-channel lookup model
+- **29.163M non-Clifford** under the 2-channel lookup model
+- **30.081M non-Clifford** under the conservative 3-channel lookup model
 
 ## Budget split of that mainline
 
@@ -28,9 +28,9 @@ Lookup work is still valuable because:
 
 - the repository exposes lookup contracts explicitly,
 - lookup improvements can compose with the current optimized arithmetic leaf,
-- the signed folded contract already provides one exact example.
+- the signed folded contract is already merged into the mainline and exposes a clean path for further lookup-side work.
 
-The checked-in folded branch projects:
+The merged signed folded contract projects:
 
 - **29,163,456 non-Clifford** under the folded 2-channel line
 - **30,080,960 non-Clifford** under the folded conservative 3-channel line

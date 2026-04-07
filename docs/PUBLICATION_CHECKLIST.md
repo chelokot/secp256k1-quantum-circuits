@@ -43,4 +43,4 @@ definitions consistently:
 - `docs/RED_TEAM_REVIEW.md`
 - `artifacts/out/resource_projection.json`
 - `artifacts/out/projection_sensitivity.json`
-- `reports/secp256k1_optimized_880q_31p0M_report.pdf`
+- `reports/secp256k1_optimized_report.pdf`

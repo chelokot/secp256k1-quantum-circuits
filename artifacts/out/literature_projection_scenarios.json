@@ -1,8 +1,8 @@
 {
   "baseline_headline": {
     "logical_qubits": 880,
-    "total_non_clifford_2lookup": 30998464,
-    "total_non_clifford_3lookup": 32833472
+    "total_non_clifford_2lookup": 29163456,
+    "total_non_clifford_3lookup": 30080960
   },
   "scenarios": [
     {
@@ -12,16 +12,16 @@
         "All currently modeled non-lookup arithmetic cost disappears.",
         "Lookup costs are unchanged."
       ],
-      "projected_total_non_clifford_2lookup": 3670016,
-      "projected_total_non_clifford_3lookup": 5505024,
+      "projected_total_non_clifford_2lookup": 1835008,
+      "projected_total_non_clifford_3lookup": 2752512,
       "gains": {
         "lookup2": {
-          "vs_google_low_qubit": 24.523053850446427,
-          "vs_google_low_gate": 19.073486328125
+          "vs_google_low_qubit": 49.046107700892854,
+          "vs_google_low_gate": 38.14697265625
         },
         "lookup3": {
-          "vs_google_low_qubit": 16.348702566964285,
-          "vs_google_low_gate": 12.715657552083334
+          "vs_google_low_qubit": 32.69740513392857,
+          "vs_google_low_gate": 25.431315104166668
         }
       }
     },
@@ -37,105 +37,105 @@
         {
           "multiplier_share_of_total_arithmetic_budget": 0.75,
           "multiplier_saving_fraction": 0.15,
-          "projected_total_non_clifford_2lookup": 27924014,
-          "projected_total_non_clifford_3lookup": 29759022,
-          "total_reduction_fraction_2lookup": 0.09918073360021967,
-          "total_reduction_fraction_3lookup": 0.09363768778397849
+          "projected_total_non_clifford_2lookup": 26089006,
+          "projected_total_non_clifford_3lookup": 27006510,
+          "total_reduction_fraction_2lookup": 0.10542133278031246,
+          "total_reduction_fraction_3lookup": 0.10220586045126219
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.75,
           "multiplier_saving_fraction": 0.2,
-          "projected_total_non_clifford_2lookup": 26899197,
-          "projected_total_non_clifford_3lookup": 28734205,
-          "total_reduction_fraction_2lookup": 0.13224097813362623,
-          "total_reduction_fraction_3lookup": 0.124850250378638
+          "projected_total_non_clifford_2lookup": 25064189,
+          "projected_total_non_clifford_3lookup": 25981693,
+          "total_reduction_fraction_2lookup": 0.1405617770404166,
+          "total_reduction_fraction_3lookup": 0.13627448060168293
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.75,
           "multiplier_saving_fraction": 0.25,
-          "projected_total_non_clifford_2lookup": 25874380,
-          "projected_total_non_clifford_3lookup": 27709388,
-          "total_reduction_fraction_2lookup": 0.1653012226670328,
-          "total_reduction_fraction_3lookup": 0.1560628129732975
+          "projected_total_non_clifford_2lookup": 24039372,
+          "projected_total_non_clifford_3lookup": 24956876,
+          "total_reduction_fraction_2lookup": 0.17570222130052077,
+          "total_reduction_fraction_3lookup": 0.17034310075210365
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.75,
           "multiplier_saving_fraction": 0.3,
-          "projected_total_non_clifford_2lookup": 24849563,
-          "projected_total_non_clifford_3lookup": 26684571,
-          "total_reduction_fraction_2lookup": 0.19836146720043935,
-          "total_reduction_fraction_3lookup": 0.18727537556795698
+          "projected_total_non_clifford_2lookup": 23014555,
+          "projected_total_non_clifford_3lookup": 23932059,
+          "total_reduction_fraction_2lookup": 0.21084266556062492,
+          "total_reduction_fraction_3lookup": 0.20441172090252438
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.85,
           "multiplier_saving_fraction": 0.15,
-          "projected_total_non_clifford_2lookup": 27514087,
-          "projected_total_non_clifford_3lookup": 29349095,
-          "total_reduction_fraction_2lookup": 0.1124048314135823,
-          "total_reduction_fraction_3lookup": 0.1061227128218423
+          "projected_total_non_clifford_2lookup": 25679079,
+          "projected_total_non_clifford_3lookup": 26596583,
+          "total_reduction_fraction_2lookup": 0.11947751048435412,
+          "total_reduction_fraction_3lookup": 0.11583330851143049
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.85,
           "multiplier_saving_fraction": 0.2,
-          "projected_total_non_clifford_2lookup": 26352628,
-          "projected_total_non_clifford_3lookup": 28187636,
-          "total_reduction_fraction_2lookup": 0.14987310855144306,
-          "total_reduction_fraction_3lookup": 0.14149695042912305
+          "projected_total_non_clifford_2lookup": 24517620,
+          "projected_total_non_clifford_3lookup": 25435124,
+          "total_reduction_fraction_2lookup": 0.15930334731247217,
+          "total_reduction_fraction_3lookup": 0.15444441134857398
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.85,
           "multiplier_saving_fraction": 0.25,
-          "projected_total_non_clifford_2lookup": 25191169,
-          "projected_total_non_clifford_3lookup": 27026177,
-          "total_reduction_fraction_2lookup": 0.18734138568930384,
-          "total_reduction_fraction_3lookup": 0.17687118803640384
+          "projected_total_non_clifford_2lookup": 23356161,
+          "projected_total_non_clifford_3lookup": 24273665,
+          "total_reduction_fraction_2lookup": 0.1991291841405902,
+          "total_reduction_fraction_3lookup": 0.19305551418571748
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.85,
           "multiplier_saving_fraction": 0.3,
-          "projected_total_non_clifford_2lookup": 24029710,
-          "projected_total_non_clifford_3lookup": 25864718,
-          "total_reduction_fraction_2lookup": 0.2248096628271646,
-          "total_reduction_fraction_3lookup": 0.2122454256436846
+          "projected_total_non_clifford_2lookup": 22194702,
+          "projected_total_non_clifford_3lookup": 23112206,
+          "total_reduction_fraction_2lookup": 0.23895502096870824,
+          "total_reduction_fraction_3lookup": 0.23166661702286098
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.95,
           "multiplier_saving_fraction": 0.15,
-          "projected_total_non_clifford_2lookup": 27104160,
-          "projected_total_non_clifford_3lookup": 28939168,
-          "total_reduction_fraction_2lookup": 0.1256289292269449,
-          "total_reduction_fraction_3lookup": 0.11860773785970607
+          "projected_total_non_clifford_2lookup": 25269152,
+          "projected_total_non_clifford_3lookup": 26186656,
+          "total_reduction_fraction_2lookup": 0.13353368818839575,
+          "total_reduction_fraction_3lookup": 0.12946075657159875
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.95,
           "multiplier_saving_fraction": 0.2,
-          "projected_total_non_clifford_2lookup": 25806059,
-          "projected_total_non_clifford_3lookup": 27641067,
-          "total_reduction_fraction_2lookup": 0.1675052389692599,
-          "total_reduction_fraction_3lookup": 0.15814365047960813
+          "projected_total_non_clifford_2lookup": 23971051,
+          "projected_total_non_clifford_3lookup": 24888555,
+          "total_reduction_fraction_2lookup": 0.1780449175845277,
+          "total_reduction_fraction_3lookup": 0.17261434209546503
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.95,
           "multiplier_saving_fraction": 0.25,
-          "projected_total_non_clifford_2lookup": 24507958,
-          "projected_total_non_clifford_3lookup": 26342966,
-          "total_reduction_fraction_2lookup": 0.20938154871157486,
-          "total_reduction_fraction_3lookup": 0.19767956309951015
+          "projected_total_non_clifford_2lookup": 22672950,
+          "projected_total_non_clifford_3lookup": 23590454,
+          "total_reduction_fraction_2lookup": 0.22255614698065962,
+          "total_reduction_fraction_3lookup": 0.21576792761933128
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.95,
           "multiplier_saving_fraction": 0.3,
-          "projected_total_non_clifford_2lookup": 23209856,
-          "projected_total_non_clifford_3lookup": 25044864,
-          "total_reduction_fraction_2lookup": 0.2512578584538898,
-          "total_reduction_fraction_3lookup": 0.23721547571941215
+          "projected_total_non_clifford_2lookup": 21374848,
+          "projected_total_non_clifford_3lookup": 22292352,
+          "total_reduction_fraction_2lookup": 0.2670673763767915,
+          "total_reduction_fraction_3lookup": 0.2589215131431975
         }
       ],
       "envelope": {
-        "best_total_reduction_fraction_2lookup": 0.2512578584538898,
-        "best_total_reduction_fraction_3lookup": 0.23721547571941215,
-        "best_projected_total_non_clifford_2lookup": 23209856,
-        "best_projected_total_non_clifford_3lookup": 25044864
+        "best_total_reduction_fraction_2lookup": 0.2670673763767915,
+        "best_total_reduction_fraction_3lookup": 0.2589215131431975,
+        "best_projected_total_non_clifford_2lookup": 21374848,
+        "best_projected_total_non_clifford_3lookup": 22292352
       }
     },
     {
@@ -148,121 +148,121 @@
       "cases": [
         {
           "lookup_reduction_fraction": 0.01,
-          "projected_total_non_clifford_2lookup": 30961764,
-          "projected_total_non_clifford_3lookup": 32778422,
+          "projected_total_non_clifford_2lookup": 29145106,
+          "projected_total_non_clifford_3lookup": 30053435,
           "gains": {
             "lookup2": {
-              "vs_google_low_qubit": 2.906811123552263,
-              "vs_google_low_gate": 2.2608530960962043
+              "vs_google_low_qubit": 3.0879970036821964,
+              "vs_google_low_gate": 2.401775447308375
             },
             "lookup3": {
-              "vs_google_low_qubit": 2.7457087470531683,
-              "vs_google_low_gate": 2.1355512477080194
+              "vs_google_low_qubit": 2.9946660007416788,
+              "vs_google_low_gate": 2.329184667243528
             }
           }
         },
         {
           "lookup_reduction_fraction": 0.03,
-          "projected_total_non_clifford_2lookup": 30888364,
-          "projected_total_non_clifford_3lookup": 32668321,
+          "projected_total_non_clifford_2lookup": 29108406,
+          "projected_total_non_clifford_3lookup": 29998385,
           "gains": {
             "lookup2": {
-              "vs_google_low_qubit": 2.9137185770020064,
-              "vs_google_low_gate": 2.2662255598904495
+              "vs_google_low_qubit": 3.0918903632167285,
+              "vs_google_low_gate": 2.4048036158352333
             },
             "lookup3": {
-              "vs_google_low_qubit": 2.7549625216429092,
-              "vs_google_low_gate": 2.142748627944485
+              "vs_google_low_qubit": 3.0001615086945512,
+              "vs_google_low_gate": 2.3334589512068735
             }
           }
         },
         {
           "lookup_reduction_fraction": 0.05,
-          "projected_total_non_clifford_2lookup": 30814963,
-          "projected_total_non_clifford_3lookup": 32558221,
+          "projected_total_non_clifford_2lookup": 29071706,
+          "projected_total_non_clifford_3lookup": 29943334,
           "gains": {
             "lookup2": {
-              "vs_google_low_qubit": 2.920659031782709,
-              "vs_google_low_gate": 2.2716236913865515
+              "vs_google_low_qubit": 3.095793552672829,
+              "vs_google_low_gate": 2.407839429856645
             },
             "lookup3": {
-              "vs_google_low_qubit": 2.7642787976652654,
-              "vs_google_low_gate": 2.149994620406318
+              "vs_google_low_qubit": 3.005677323707507,
+              "vs_google_low_gate": 2.337749029550283
             }
           }
         },
         {
           "lookup_reduction_fraction": 0.1,
-          "projected_total_non_clifford_2lookup": 30631462,
-          "projected_total_non_clifford_3lookup": 32282970,
+          "projected_total_non_clifford_2lookup": 28979955,
+          "projected_total_non_clifford_3lookup": 29805709,
           "gains": {
             "lookup2": {
-              "vs_google_low_qubit": 2.9381555473911103,
-              "vs_google_low_gate": 2.285232092415308
+              "vs_google_low_qubit": 3.1055948844641064,
+              "vs_google_low_gate": 2.415462687916527
             },
             "lookup3": {
-              "vs_google_low_qubit": 2.7878475865138803,
-              "vs_google_low_gate": 2.1683259006219067
+              "vs_google_low_qubit": 3.0195557502087937,
+              "vs_google_low_gate": 2.3485433612735065
             }
           }
         },
         {
           "lookup_reduction_fraction": 0.2,
-          "projected_total_non_clifford_2lookup": 30264461,
-          "projected_total_non_clifford_3lookup": 31732467,
+          "projected_total_non_clifford_2lookup": 28796454,
+          "projected_total_non_clifford_3lookup": 29530458,
           "gains": {
             "lookup2": {
-              "vs_google_low_qubit": 2.973784994882281,
-              "vs_google_low_gate": 2.312943884908441
+              "vs_google_low_qubit": 3.1253848130051014,
+              "vs_google_low_gate": 2.430854854559523
             },
             "lookup3": {
-              "vs_google_low_qubit": 2.8362118835576196,
-              "vs_google_low_gate": 2.205942576100371
+              "vs_google_low_qubit": 3.0477007840515036,
+              "vs_google_low_gate": 2.3704339431511694
             }
           }
         },
         {
           "lookup_reduction_fraction": 0.3,
-          "projected_total_non_clifford_2lookup": 29897459,
-          "projected_total_non_clifford_3lookup": 31181965,
+          "projected_total_non_clifford_2lookup": 28612954,
+          "projected_total_non_clifford_3lookup": 29255206,
           "gains": {
             "lookup2": {
-              "vs_google_low_qubit": 3.010289269064639,
-              "vs_google_low_gate": 2.3413360981613858
+              "vs_google_low_qubit": 3.145428465722204,
+              "vs_google_low_gate": 2.4464443622283807
             },
             "lookup3": {
-              "vs_google_low_qubit": 2.886283786156517,
-              "vs_google_low_gate": 2.2448873892328467
+              "vs_google_low_qubit": 3.0763755346655226,
+              "vs_google_low_gate": 2.392736526962073
             }
           }
         },
         {
           "lookup_reduction_fraction": 0.3333333333333333,
-          "projected_total_non_clifford_2lookup": 29775125,
-          "projected_total_non_clifford_3lookup": 30998464,
+          "projected_total_non_clifford_2lookup": 28551787,
+          "projected_total_non_clifford_3lookup": 29163456,
           "gains": {
             "lookup2": {
-              "vs_google_low_qubit": 3.0226573356115214,
-              "vs_google_low_gate": 2.3509557054756276
+              "vs_google_low_qubit": 3.152166972946387,
+              "vs_google_low_gate": 2.451685423402745
             },
             "lookup3": {
-              "vs_google_low_qubit": 2.903369663735597,
-              "vs_google_low_gate": 2.2581764051276862
+              "vs_google_low_qubit": 3.086053998538445,
+              "vs_google_low_gate": 2.400264221085457
             }
           }
         },
         {
           "lookup_reduction_fraction": 0.5,
-          "projected_total_non_clifford_2lookup": 29163456,
-          "projected_total_non_clifford_3lookup": 30080960,
+          "projected_total_non_clifford_2lookup": 28245952,
+          "projected_total_non_clifford_3lookup": 28704704,
           "gains": {
             "lookup2": {
-              "vs_google_low_qubit": 3.086053998538445,
-              "vs_google_low_gate": 2.400264221085457
+              "vs_google_low_qubit": 3.186297278987092,
+              "vs_google_low_gate": 2.4782312169899603
             },
             "lookup3": {
-              "vs_google_low_qubit": 2.9919257896024596,
-              "vs_google_low_gate": 2.327053391913024
+              "vs_google_low_qubit": 3.1353746061969496,
+              "vs_google_low_gate": 2.4386246937087384
             }
           }
         }
@@ -283,8 +283,8 @@
           "total_non_clifford_2channel_folded": 29163456,
           "total_non_clifford_3channel_folded_conservative": 30080960,
           "total_non_clifford_3channel_folded_meta_elided": 29163456,
-          "improvement_fraction_vs_current_2channel": 0.05919673955457927,
-          "improvement_fraction_vs_current_3channel_conservative": 0.08383249873787335,
+          "improvement_fraction_vs_unfolded_reference_2channel": 0.05919673955457927,
+          "improvement_fraction_vs_unfolded_reference_3channel_conservative": 0.08383249873787335,
           "gain_vs_google_low_qubit_2channel": 3.086053998538445,
           "gain_vs_google_low_gate_2channel": 2.400264221085457
         },
@@ -293,8 +293,8 @@
           "total_non_clifford_2channel_folded": 29170624,
           "total_non_clifford_3channel_folded_conservative": 30088128,
           "total_non_clifford_3channel_folded_meta_elided": 29170624,
-          "improvement_fraction_vs_current_2channel": 0.058965502290694194,
-          "improvement_fraction_vs_current_3channel_conservative": 0.0836141849390768,
+          "improvement_fraction_vs_unfolded_reference_2channel": 0.058965502290694194,
+          "improvement_fraction_vs_unfolded_reference_3channel_conservative": 0.0836141849390768,
           "gain_vs_google_low_qubit_2channel": 3.0852956727974004,
           "gain_vs_google_low_gate_2channel": 2.399674412175756
         },
@@ -303,8 +303,8 @@
           "total_non_clifford_2channel_folded": 29177792,
           "total_non_clifford_3channel_folded_conservative": 30095296,
           "total_non_clifford_3channel_folded_meta_elided": 29177792,
-          "improvement_fraction_vs_current_2channel": 0.05873426502680912,
-          "improvement_fraction_vs_current_3channel_conservative": 0.08339587114028024,
+          "improvement_fraction_vs_unfolded_reference_2channel": 0.05873426502680912,
+          "improvement_fraction_vs_unfolded_reference_3channel_conservative": 0.08339587114028024,
           "gain_vs_google_low_qubit_2channel": 3.084537719646504,
           "gain_vs_google_low_gate_2channel": 2.399084893058392
         },
@@ -313,8 +313,8 @@
           "total_non_clifford_2channel_folded": 29192128,
           "total_non_clifford_3channel_folded_conservative": 30109632,
           "total_non_clifford_3channel_folded_meta_elided": 29192128,
-          "improvement_fraction_vs_current_2channel": 0.05827179049903897,
-          "improvement_fraction_vs_current_3channel_conservative": 0.08295924354268713,
+          "improvement_fraction_vs_unfolded_reference_2channel": 0.05827179049903897,
+          "improvement_fraction_vs_unfolded_reference_3channel_conservative": 0.08295924354268713,
           "gain_vs_google_low_qubit_2channel": 3.083022930017298,
           "gain_vs_google_low_gate_2channel": 2.3979067233467872
         },
@@ -323,8 +323,8 @@
           "total_non_clifford_2channel_folded": 29220800,
           "total_non_clifford_3channel_folded_conservative": 30138304,
           "total_non_clifford_3channel_folded_meta_elided": 29220800,
-          "improvement_fraction_vs_current_2channel": 0.057346841443498664,
-          "improvement_fraction_vs_current_3channel_conservative": 0.08208598834750103,
+          "improvement_fraction_vs_unfolded_reference_2channel": 0.057346841443498664,
+          "improvement_fraction_vs_unfolded_reference_3channel_conservative": 0.08208598834750103,
           "gain_vs_google_low_qubit_2channel": 3.0799978097793352,
           "gain_vs_google_low_gate_2channel": 2.395553852050594
         },
@@ -333,8 +333,8 @@
           "total_non_clifford_2channel_folded": 29278144,
           "total_non_clifford_3channel_folded_conservative": 30195648,
           "total_non_clifford_3channel_folded_meta_elided": 29278144,
-          "improvement_fraction_vs_current_2channel": 0.05549694333241806,
-          "improvement_fraction_vs_current_3channel_conservative": 0.08033947795712859,
+          "improvement_fraction_vs_unfolded_reference_2channel": 0.05549694333241806,
+          "improvement_fraction_vs_unfolded_reference_3channel_conservative": 0.08033947795712859,
           "gain_vs_google_low_qubit_2channel": 3.0739653442513295,
           "gain_vs_google_low_gate_2channel": 2.3908619344177007
         }
@@ -344,8 +344,8 @@
         "total_non_clifford_2channel_folded": 29163456,
         "total_non_clifford_3channel_folded_conservative": 30080960,
         "total_non_clifford_3channel_folded_meta_elided": 29163456,
-        "improvement_fraction_vs_current_2channel": 0.05919673955457927,
-        "improvement_fraction_vs_current_3channel_conservative": 0.08383249873787335,
+        "improvement_fraction_vs_unfolded_reference_2channel": 0.05919673955457927,
+        "improvement_fraction_vs_unfolded_reference_3channel_conservative": 0.08383249873787335,
         "gain_vs_google_low_qubit_2channel": 3.086053998538445,
         "gain_vs_google_low_gate_2channel": 2.400264221085457
       }
@@ -353,11 +353,11 @@
   ],
   "takeaways": [
     "Correcting the cost model shows that arithmetic, not lookup, dominates the current modeled total.",
-    "The new signed two's-complement lookup-folding branch still gives a clean and exact lookup-contract improvement with a modeled total reduction of about 5.9% in the 2-channel line and about 8.4% in the conservative 3-channel line at zero extra pad.",
+    "The signed two's-complement lookup-folding optimization is now merged into the mainline and gives a clean exact lookup-contract improvement of about 5.9% in the 2-channel line and about 8.4% in the conservative 3-channel line versus the previous unfolded lookup reference at zero extra pad.",
     "Another dramatic overall improvement would likely require arithmetic-backend substitution or combined lookup-plus-arithmetic changes rather than lookup work alone."
   ],
   "notes": [
-    "These are not replacement headlines for the repository. The repository's exact audited headline remains unchanged unless the exact artifact itself is rewritten and re-audited.",
+    "These scenario files complement the mainline projection rather than replacing the repository's exact ISA-level artifact boundary.",
     "The signed lookup-folding scenario is stronger than a pure heuristic because the signed-fold contract itself is explicitly encoded and audited over the full 16-bit domain for one secp256k1 window base."
   ]
 }

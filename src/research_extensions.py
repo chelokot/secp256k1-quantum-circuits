@@ -368,11 +368,11 @@ def compute_literature_projection_scenarios(repo_root: Path) -> Dict[str, Any]:
         "scenarios": scenarios,
         "takeaways": [
             "Correcting the cost model shows that arithmetic, not lookup, dominates the current modeled total.",
-            "The new signed two's-complement lookup-folding branch still gives a clean and exact lookup-contract improvement with a modeled total reduction of about 5.9% in the 2-channel line and about 8.4% in the conservative 3-channel line at zero extra pad.",
+            "The signed two's-complement lookup-folding optimization is now merged into the mainline and gives a clean exact lookup-contract improvement of about 5.9% in the 2-channel line and about 8.4% in the conservative 3-channel line versus the previous unfolded lookup reference at zero extra pad.",
             "Another dramatic overall improvement would likely require arithmetic-backend substitution or combined lookup-plus-arithmetic changes rather than lookup work alone.",
         ],
         "notes": [
-            "These are not replacement headlines for the repository. The repository's exact audited headline remains unchanged unless the exact artifact itself is rewritten and re-audited.",
+            "These scenario files complement the mainline projection rather than replacing the repository's exact ISA-level artifact boundary.",
             "The signed lookup-folding scenario is stronger than a pure heuristic because the signed-fold contract itself is explicitly encoded and audited over the full 16-bit domain for one secp256k1 window base.",
         ],
     }
@@ -757,8 +757,8 @@ def run_research_pass(repo_root: Path) -> Dict[str, Any]:
             "multibase_pass": lookup_audit["summary"]["direct_semantic_pass"],
             "pad0_total_non_clifford_2channel_folded": base_pad0["total_non_clifford_2channel_folded"],
             "pad0_total_non_clifford_3channel_folded_conservative": base_pad0["total_non_clifford_3channel_folded_conservative"],
-            "pad0_improvement_fraction_vs_current_2channel": base_pad0["improvement_fraction_vs_current_2channel"],
-            "pad0_improvement_fraction_vs_current_3channel_conservative": base_pad0["improvement_fraction_vs_current_3channel_conservative"],
+            "pad0_improvement_fraction_vs_unfolded_reference_2channel": base_pad0["improvement_fraction_vs_unfolded_reference_2channel"],
+            "pad0_improvement_fraction_vs_unfolded_reference_3channel_conservative": base_pad0["improvement_fraction_vs_unfolded_reference_3channel_conservative"],
         },
         "challenge_ladder": {
             "curve_count": len(ladder["curves"]),

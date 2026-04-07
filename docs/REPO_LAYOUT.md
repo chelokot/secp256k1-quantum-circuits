@@ -32,6 +32,7 @@ Deterministic benchmark-curve replay suite in the `y^2 = x^3 + 7` family.
 ## Source code
 
 - `src/common.py` — arithmetic, hashing, and serialization helpers
+- `src/resource_projection.py` — canonical modeled projection data and ratio computation
 - `src/verifier.py` — primary optimized-artifact verifier
 - `src/strict_verifier.py` — strict verification and sensitivity layer
 - `src/research_extensions.py` — research-pass generation logic
@@ -41,10 +42,11 @@ Deterministic benchmark-curve replay suite in the `y^2 = x^3 + 7` family.
 - `scripts/verify_all.py` — quick reproducibility path
 - `scripts/verify_strict.py` — strict verification path
 - `scripts/run_research_pass.py` — research-pass regeneration
+- `scripts/rebuild_resource_projection.py` — canonical modeled projection regeneration
 - `scripts/compare_google_baseline.py` — baseline comparison report
 - `scripts/compare_cain_2026.py` — neutral-atom transfer report
 - `scripts/compare_literature.py` — literature summary
-- `scripts/compare_lookup_research.py` — lookup-folding comparison
+- `scripts/compare_lookup_research.py` — merged lookup-folding mainline versus the unfolded pre-folding reference
 - `scripts/hash_repo.py` — manifest regeneration
 - `scripts/generate_figures.py` — figure regeneration
 

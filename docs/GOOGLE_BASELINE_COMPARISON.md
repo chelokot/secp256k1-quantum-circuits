@@ -20,22 +20,22 @@ The tracked public lines are:
 The primary optimized projection is:
 
 - **880 logical qubits**
-- **30,998,464 non-Clifford** under the 2-channel lookup model
-- **32,833,472 non-Clifford** under the 3-channel lookup model
+- **29,163,456 non-Clifford** under the 2-channel lookup model
+- **30,080,960 non-Clifford** under the conservative 3-channel lookup model
 
 ## Improvement factors
 
 Versus the public low-qubit line:
 
 - **1.3636x fewer logical qubits**
-- **2.9034x lower non-Clifford** under the 2-channel model
-- **2.7411x lower non-Clifford** under the 3-channel model
+- **3.0861x lower non-Clifford** under the 2-channel model
+- **2.9919x lower non-Clifford** under the conservative 3-channel model
 
 Versus the public low-gate line:
 
 - **1.6477x fewer logical qubits**
-- **2.2582x lower non-Clifford** under the 2-channel model
-- **2.1320x lower non-Clifford** under the 3-channel model
+- **2.4003x lower non-Clifford** under the 2-channel model
+- **2.3271x lower non-Clifford** under the conservative 3-channel model
 
 ## Sensitivity margin
 

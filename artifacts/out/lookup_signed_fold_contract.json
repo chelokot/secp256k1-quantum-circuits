@@ -27,7 +27,7 @@
     "per_window_special_constant_points": 1
   },
   "notes": [
-    "This contract changes only the lookup layer. The arithmetic leaf remains the same exact machine-readable secp256k1 netlist already archived in the repository.",
+    "This contract changes only the lookup layer. The arithmetic leaf remains the same exact machine-readable secp256k1 netlist already checked into the repository.",
     "The backend-resource implication of halving the lookup domain is modeled separately in lookup_folded_projection.json."
   ]
 }

@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this repository, please cite the repository release and the main optimized report."
-title: "secp256k1 quantum circuits open audit repository"
+title: "secp256k1 quantum attack circuits"
 type: software
 authors:
   - family-names: "Vlasenko"

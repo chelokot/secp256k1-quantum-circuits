@@ -11,8 +11,14 @@ projection = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'resource_projection.
 sensitivity = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'projection_sensitivity.json').read_text())
 base = projection['public_google_baseline']
 opt = projection['optimized_ecdlp_projection']
-gain = projection['improvement_vs_google']
 head = sensitivity['headroom']
+
+low_qubit_qubit_gain = base['low_qubit']['logical_qubits'] / opt['logical_qubits_total']
+low_gate_qubit_gain = base['low_gate']['logical_qubits'] / opt['logical_qubits_total']
+low_qubit_gain_2lookup = base['low_qubit']['non_clifford'] / opt['lookup_model_2channel']['total_non_clifford']
+low_qubit_gain_3lookup = base['low_qubit']['non_clifford'] / opt['lookup_model_3channel']['total_non_clifford']
+low_gate_gain_2lookup = base['low_gate']['non_clifford'] / opt['lookup_model_2channel']['total_non_clifford']
+low_gate_gain_3lookup = base['low_gate']['non_clifford'] / opt['lookup_model_3channel']['total_non_clifford']
 
 rows = [
     ('Google low-qubit', base['low_qubit']['logical_qubits'], base['low_qubit']['non_clifford']),
@@ -28,8 +34,8 @@ for name, qubits, nc in rows:
 print()
 print('Improvement factors')
 print('===================')
-print(f"vs low-qubit: qubits x{gain['versus_low_qubit']['qubit_gain']:.4f}, non-clifford x{gain['versus_low_qubit']['toffoli_gain_2lookup']:.4f} (2-lookup), x{gain['versus_low_qubit']['toffoli_gain_3lookup']:.4f} (3-lookup)")
-print(f"vs low-gate : qubits x{gain['versus_low_gate']['qubit_gain']:.4f}, non-clifford x{gain['versus_low_gate']['toffoli_gain_2lookup']:.4f} (2-lookup), x{gain['versus_low_gate']['toffoli_gain_3lookup']:.4f} (3-lookup)")
+print(f"vs low-qubit: qubits x{low_qubit_qubit_gain:.4f}, non-clifford x{low_qubit_gain_2lookup:.4f} (2-lookup), x{low_qubit_gain_3lookup:.4f} (3-lookup)")
+print(f"vs low-gate : qubits x{low_gate_qubit_gain:.4f}, non-clifford x{low_gate_gain_2lookup:.4f} (2-lookup), x{low_gate_gain_3lookup:.4f} (3-lookup)")
 print()
 print('Headroom margins')
 print('================')

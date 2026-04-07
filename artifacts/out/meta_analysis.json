@@ -32,21 +32,21 @@
   "optimized_vs_google_estimates": {
     "optimized_leaf_logical_qubits": 864,
     "optimized_leaf_modeled_non_clifford_excluding_lookup": 976016,
-    "vs_low_qubit_non_clifford_factor": 2.903369663735597,
-    "vs_low_gate_non_clifford_factor": 2.2581764051276862,
+    "vs_low_qubit_non_clifford_factor": 3.086053998538445,
+    "vs_low_gate_non_clifford_factor": 2.400264221085457,
     "vs_low_qubit_logical_qubit_factor": 1.3636363636363635,
     "vs_low_gate_logical_qubit_factor": 1.6477272727272727
   },
   "resource_projection_headline": {
     "versus_low_qubit": {
       "qubit_gain": 1.3636363636363635,
-      "toffoli_gain_2lookup": 2.903369663735597,
-      "toffoli_gain_3lookup": 2.7411051746218007
+      "toffoli_gain_2lookup": 3.086053998538445,
+      "toffoli_gain_3lookup": 2.9919257896024596
     },
     "versus_low_gate": {
       "qubit_gain": 1.6477272727272727,
-      "toffoli_gain_2lookup": 2.2581764051276862,
-      "toffoli_gain_3lookup": 2.1319706913725116
+      "toffoli_gain_2lookup": 2.400264221085457,
+      "toffoli_gain_3lookup": 2.327053391913024
     }
   },
   "main_reason_codes": [

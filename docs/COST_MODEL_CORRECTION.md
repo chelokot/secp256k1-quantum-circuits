@@ -10,22 +10,22 @@ From `artifacts/out/resource_projection.json`:
 - arithmetic-only cost per retained point-add leaf: `976,016`
 - retained point-add leaves in the scaffold: `28`
 - modeled arithmetic-only total across the scaffold: `27,328,448`
-- modeled 2-channel total: `30,998,464`
-- modeled 3-channel total: `32,833,472`
+- modeled 2-channel total: `29,163,456`
+- modeled conservative 3-channel total: `30,080,960`
 
 ## Derived lookup contribution
 
 Subtracting the full-scaffold arithmetic total from each modeled total gives:
 
-- 2-channel lookup contribution: `3,670,016`
-- 3-channel lookup contribution: `5,505,024`
+- 2-channel lookup contribution: `1,835,008`
+- conservative 3-channel lookup contribution: `2,752,512`
 
 ## Share of total modeled cost
 
 The resulting shares are:
 
-- **11.84% lookup / 88.16% arithmetic** in the 2-channel model
-- **16.77% lookup / 83.23% arithmetic** in the 3-channel model
+- **6.29% lookup / 93.71% arithmetic** in the 2-channel model
+- **9.15% lookup / 90.85% arithmetic** in the conservative 3-channel model
 
 ## Interpretation
 

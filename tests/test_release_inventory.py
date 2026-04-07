@@ -3,10 +3,17 @@
 from __future__ import annotations
 
 import json
+import sys
 import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+
+SRC_DIR = REPO_ROOT / 'src'
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
+
+from common import sha256_path  # noqa: E402
 
 
 class ReleaseInventoryTests(unittest.TestCase):
@@ -36,8 +43,7 @@ class ReleaseInventoryTests(unittest.TestCase):
             'docs/PHYSICAL_STACKS_AND_HARDWARE_CONTEXT.md',
             'docs/COST_MODEL_CORRECTION.md',
             'docs/TOOLING_AND_REIMPLEMENTATION_PATHS.md',
-            'reports/secp256k1_reconstruction_1200q_90M_1450q_70M_audit.pdf',
-            'reports/secp256k1_optimized_880q_31p0M_report.pdf',
+            'reports/secp256k1_optimized_report.pdf',
             'scripts/verify_all.py',
             'scripts/verify_strict.py',
             'scripts/run_research_pass.py',
@@ -46,9 +52,12 @@ class ReleaseInventoryTests(unittest.TestCase):
             'scripts/compare_literature.py',
             'scripts/compare_cain_2026.py',
             'scripts/generate_figures.py',
+            'scripts/rebuild_resource_projection.py',
+            'scripts/rebuild_proof_manifest.py',
             'scripts/hash_repo.py',
             'scripts/release_check.py',
             'src/common.py',
+            'src/resource_projection.py',
             'src/verifier.py',
             'src/strict_verifier.py',
             'src/research_extensions.py',
@@ -100,6 +109,29 @@ class ReleaseInventoryTests(unittest.TestCase):
         self.assertNotIn('elapsed_seconds', strict)
         self.assertNotIn('elapsed_seconds', research)
         self.assertNotIn('elapsed_seconds', rebuild)
+
+    def test_resource_projection_is_self_consistent(self):
+        projection = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'resource_projection.json').read_text())
+        base = projection['public_google_baseline']
+        optimized = projection['optimized_ecdlp_projection']
+        gains = projection['improvement_vs_google']
+        self.assertAlmostEqual(
+            gains['versus_low_qubit']['toffoli_gain_3lookup'],
+            base['low_qubit']['non_clifford'] / optimized['lookup_model_3channel']['total_non_clifford'],
+        )
+        self.assertAlmostEqual(
+            gains['versus_low_gate']['toffoli_gain_3lookup'],
+            base['low_gate']['non_clifford'] / optimized['lookup_model_3channel']['total_non_clifford'],
+        )
+        self.assertIn('unfolded_lookup_reference', projection)
+
+    def test_proof_manifest_matches_curated_files(self):
+        proof = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'proof_manifest.json').read_text())
+        for rel, record in proof['files'].items():
+            path = REPO_ROOT / rel
+            self.assertTrue(path.exists(), path)
+            self.assertEqual(path.stat().st_size, record['bytes'])
+            self.assertEqual(sha256_path(path), record['sha256'])
 
 
 if __name__ == '__main__':

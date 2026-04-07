@@ -19,8 +19,7 @@ from common import sha256_path  # noqa: E402
 class RepoIntegrityTests(unittest.TestCase):
     def test_key_reports_exist(self):
         for name in [
-            'secp256k1_optimized_880q_31p0M_report.pdf',
-            'secp256k1_reconstruction_1200q_90M_1450q_70M_audit.pdf',
+            'secp256k1_optimized_report.pdf',
         ]:
             path = REPO_ROOT / 'reports' / name
             self.assertTrue(path.exists(), path)
@@ -36,7 +35,7 @@ class RepoIntegrityTests(unittest.TestCase):
         self.assertTrue(all(not rel.startswith('.git/') for rel in manifest))
         self.assertNotIn('results/repo_verification_summary.json', manifest)
         selected = [
-            'reports/secp256k1_optimized_880q_31p0M_report.pdf',
+            'reports/secp256k1_optimized_report.pdf',
             'artifacts/out/optimized_pointadd_secp256k1.json',
             'artifacts/out/resource_projection.json',
         ]

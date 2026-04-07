@@ -1,4 +1,4 @@
-.PHONY: verify verify-optimized verify-strict research test hashes compare compare-cain compare-literature compare-lookup figures release-check
+.PHONY: verify verify-optimized verify-strict research projection test hashes compare compare-cain compare-literature compare-lookup figures release-check
 
 verify:
 	python scripts/verify_all.py
@@ -11,6 +11,9 @@ verify-strict:
 
 research:
 	python scripts/run_research_pass.py
+
+projection:
+	python scripts/rebuild_resource_projection.py
 
 test:
 	python -m unittest discover -s tests -v

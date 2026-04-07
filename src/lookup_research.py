@@ -181,7 +181,7 @@ def build_lookup_folded_contract(repo_root: Path) -> Dict[str, Any]:
             "per_window_special_constant_points": 1,
         },
         "notes": [
-            "This contract changes only the lookup layer. The arithmetic leaf remains the same exact machine-readable secp256k1 netlist already archived in the repository.",
+            "This contract changes only the lookup layer. The arithmetic leaf remains the same exact machine-readable secp256k1 netlist already checked into the repository.",
             "The backend-resource implication of halving the lookup domain is modeled separately in lookup_folded_projection.json.",
         ],
     }
@@ -354,27 +354,27 @@ def build_lookup_folded_projection(repo_root: Path, small_pad_values: Iterable[i
     projection = json.loads(projection_path.read_text())
     windows = int(projection["optimized_ecdlp_projection"]["retained_window_additions"])
     per_leaf_arith = int(projection["optimized_leaf_projection"]["modeled_non_clifford_excluding_lookup"])
-    lookup2 = int(projection["optimized_ecdlp_projection"]["lookup_model_2channel"]["per_window_lookup_cost"])
-    lookup3 = int(projection["optimized_ecdlp_projection"]["lookup_model_3channel"]["per_window_lookup_cost"])
+    merged2 = int(projection["optimized_ecdlp_projection"]["lookup_model_2channel"]["per_window_lookup_cost"])
+    merged3 = int(projection["optimized_ecdlp_projection"]["lookup_model_3channel"]["per_window_lookup_cost"])
+    unfolded2 = int(projection["unfolded_lookup_reference"]["lookup_model_2channel"]["per_window_lookup_cost"])
+    unfolded3 = int(projection["unfolded_lookup_reference"]["lookup_model_3channel"]["per_window_lookup_cost"])
+    unfolded_total2 = int(projection["unfolded_lookup_reference"]["lookup_model_2channel"]["total_non_clifford"])
+    unfolded_total3 = int(projection["unfolded_lookup_reference"]["lookup_model_3channel"]["total_non_clifford"])
     google_low_q = projection["public_google_baseline"]["low_qubit"]["non_clifford"]
     google_low_g = projection["public_google_baseline"]["low_gate"]["non_clifford"]
 
-    folded_lookup2 = lookup2 // 2
-    folded_lookup3_conservative = lookup3 // 2
-    folded_lookup3_meta_elided = lookup2 // 2
-
     rows = []
     for pad in small_pad_values:
-        total2 = windows * (per_leaf_arith + folded_lookup2 + pad)
-        total3c = windows * (per_leaf_arith + folded_lookup3_conservative + pad)
-        total3m = windows * (per_leaf_arith + folded_lookup3_meta_elided + pad)
+        total2 = windows * (per_leaf_arith + merged2 + pad)
+        total3c = windows * (per_leaf_arith + merged3 + pad)
+        total3m = windows * (per_leaf_arith + merged2 + pad)
         rows.append({
             "per_window_small_overhead_pad": pad,
             "total_non_clifford_2channel_folded": total2,
             "total_non_clifford_3channel_folded_conservative": total3c,
             "total_non_clifford_3channel_folded_meta_elided": total3m,
-            "improvement_fraction_vs_current_2channel": 1.0 - total2 / projection["optimized_ecdlp_projection"]["lookup_model_2channel"]["total_non_clifford"],
-            "improvement_fraction_vs_current_3channel_conservative": 1.0 - total3c / projection["optimized_ecdlp_projection"]["lookup_model_3channel"]["total_non_clifford"],
+            "improvement_fraction_vs_unfolded_reference_2channel": 1.0 - total2 / unfolded_total2,
+            "improvement_fraction_vs_unfolded_reference_3channel_conservative": 1.0 - total3c / unfolded_total3,
             "gain_vs_google_low_qubit_2channel": google_low_q / total2,
             "gain_vs_google_low_gate_2channel": google_low_g / total2,
         })
@@ -388,22 +388,22 @@ def build_lookup_folded_projection(repo_root: Path, small_pad_values: Iterable[i
             "The separate metadata lookup is derived from the raw word instead of looked up from a table.",
             "Small classical-preprocessing / sign-fix overhead below the ISA layer is not exactly lowered here, so a per-window additive pad sweep is included.",
         ],
-        "current_per_window": {
+        "unfolded_reference_per_window": {
             "arithmetic_non_clifford": per_leaf_arith,
-            "lookup_2channel": lookup2,
-            "lookup_3channel": lookup3,
+            "lookup_2channel": unfolded2,
+            "lookup_3channel": unfolded3,
         },
-        "folded_per_window": {
-            "lookup_2channel": folded_lookup2,
-            "lookup_3channel_conservative": folded_lookup3_conservative,
-            "lookup_3channel_meta_elided": folded_lookup3_meta_elided,
+        "merged_mainline_per_window": {
+            "lookup_2channel": merged2,
+            "lookup_3channel_conservative": merged3,
+            "lookup_3channel_meta_elided": merged2,
         },
         "base_case_pad0": rows[0],
         "pad_sweep": rows,
         "logical_qubit_comment": "The current repository does not primitive-lower the 16-bit sign/magnitude preprocessing. A small ancilla increase is plausible but expected to be negligible against the ~880 logical-qubit headline.",
         "notes": [
-            "The strongest high-confidence consequence of the folded lookup contract is a 2x reduction in the per-coordinate table domain, not a change to the arithmetic leaf itself.",
-            "Under the repository's existing lookup-counting model this translates to a modest but real total non-Clifford reduction, not another dramatic 2x overall speedup.",
+            "The signed folded lookup contract is now merged into the repository's main optimized projection.",
+            "This file preserves the quantitative comparison against the pre-folding unfolded reference rather than against the current mainline.",
         ],
     }
     out_path = repo_root / "artifacts" / "out" / "lookup_folded_projection.json"

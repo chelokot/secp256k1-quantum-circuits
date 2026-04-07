@@ -18,8 +18,8 @@ The primary optimized projection stored in
 `artifacts/out/resource_projection.json` is:
 
 - **880 logical qubits**
-- **30.998M non-Clifford** under the 2-channel lookup model
-- **32.833M non-Clifford** under the 3-channel lookup model
+- **29.163M non-Clifford** under the 2-channel lookup model
+- **30.081M non-Clifford** under the conservative 3-channel lookup model
 
 ## Public baseline
 
@@ -32,15 +32,16 @@ et al. 2026, recorded in the same JSON file:
 This repository compares against those published estimates. It does not claim
 recovery of any unpublished Google circuit.
 
-## Exact lookup-folding branch
+## Signed lookup contract merged into the mainline
 
-The repository also contains an exact signed two's-complement lookup-contract
-variant. Its checked summaries report:
+The repository's optimized mainline already includes the exact signed
+two's-complement lookup-folding optimization. Its checked summaries report:
 
 - **65,536 / 65,536** exhaustive words passed for the canonical secp256k1 base
 - **15,906 / 15,906** multibase semantic samples passed
 
-Its modeled folded totals are:
+The supporting folded-lookup provenance file still records the merged totals and
+their delta versus the previous unfolded lookup reference:
 
 - **29.163M non-Clifford** under the folded 2-channel line
 - **30.081M non-Clifford** under the folded conservative 3-channel line

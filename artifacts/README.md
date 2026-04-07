@@ -1,4 +1,4 @@
-# Optimized artifact
+# Primary artifact package
 
 This directory contains the primary release artifact of the repository.
 

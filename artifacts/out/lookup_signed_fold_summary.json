@@ -1,6 +1,6 @@
 {
   "schema": "lookup-signed-fold-audit-v1",
-  "contract_sha256": "85d6da13285ce909b74ad107112ea13bfe5cbfde76ed3f7f03558c183fe13119",
+  "contract_sha256": "0727068cfe6b5d0bad467b3b55892a5661bfab1ee990de73bd0a23393142484e",
   "full_exhaustive_csv": "lookup_signed_fold_exhaustive_g.csv",
   "full_exhaustive_sha256": "92f26d6e24cadeab48733dd12ab88a689411dfda261606e8b0209f525c6e93c7",
   "multibase_sample_csv": "lookup_signed_fold_multibase_sampled.csv",

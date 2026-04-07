@@ -1,7 +1,7 @@
 # Signed lookup-folding contract
 
-This document describes the repository's exact signed lookup-contract variant
-for the retained-window point-add stack.
+This document describes the repository's exact signed lookup-contract
+optimization for the retained-window point-add stack.
 
 ## Goal
 
@@ -50,22 +50,22 @@ The contract summary records:
 The translation from the folded contract to total non-Clifford count remains a
 backend model below the ISA boundary.
 
-## Modeled totals for the folded branch
+## Modeled totals for the merged mainline
 
 `artifacts/out/lookup_folded_projection.json` records the base-case
 projection:
 
-- current 2-channel total: `30,998,464`
+- unfolded-reference 2-channel total: `30,998,464`
 - folded 2-channel total: `29,163,456`
-- current 3-channel total: `32,833,472`
+- unfolded-reference 3-channel total: `32,833,472`
 - folded conservative 3-channel total: `30,080,960`
 
 The strongest contract-level conclusion is a 2x reduction in the per-coordinate
 table domain. The total non-Clifford improvement is meaningful but bounded.
 
-## Why this branch matters
+## Why this optimization matters
 
-This branch is:
+This optimization is:
 
 - algebraically explicit,
 - exact at the contract layer,

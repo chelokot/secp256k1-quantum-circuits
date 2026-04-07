@@ -1,7 +1,6 @@
 # Research boundary
 
-This repository is an open audit package, not an end-to-end primitive-gate
-proof release.
+This repository does not provide an end-to-end primitive-gate proof release.
 
 ## What the repository does
 

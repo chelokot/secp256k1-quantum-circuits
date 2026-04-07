@@ -3,49 +3,49 @@
     "retained_window_additions": 28,
     "modeled_non_clifford_per_leaf_arithmetic_only": 976016,
     "modeled_non_clifford_total_arithmetic_only": 27328448,
-    "total_non_clifford_2lookup": 30998464,
-    "total_non_clifford_3lookup": 32833472
+    "total_non_clifford_2lookup": 29163456,
+    "total_non_clifford_3lookup": 30080960
   },
   "breakdown": {
-    "lookup_non_clifford_2lookup": 3670016,
-    "lookup_non_clifford_3lookup": 5505024,
-    "lookup_share_fraction_2lookup": 0.11839347910915844,
-    "lookup_share_fraction_3lookup": 0.1676649974757467,
-    "arithmetic_share_fraction_2lookup": 0.8816065208908416,
-    "arithmetic_share_fraction_3lookup": 0.8323350025242533
+    "lookup_non_clifford_2lookup": 1835008,
+    "lookup_non_clifford_3lookup": 2752512,
+    "lookup_share_fraction_2lookup": 0.0629214863972226,
+    "lookup_share_fraction_3lookup": 0.09150346265544716,
+    "arithmetic_share_fraction_2lookup": 0.9370785136027774,
+    "arithmetic_share_fraction_3lookup": 0.9084965373445528
   },
   "ceilings": {
-    "perfect_arithmetic_elimination_total_2lookup": 3670016,
-    "perfect_arithmetic_elimination_total_3lookup": 5505024,
-    "max_total_reduction_fraction_from_arithmetic_only_2lookup": 0.8816065208908416,
-    "max_total_reduction_fraction_from_arithmetic_only_3lookup": 0.8323350025242533
+    "perfect_arithmetic_elimination_total_2lookup": 1835008,
+    "perfect_arithmetic_elimination_total_3lookup": 2752512,
+    "max_total_reduction_fraction_from_arithmetic_only_2lookup": 0.9370785136027774,
+    "max_total_reduction_fraction_from_arithmetic_only_3lookup": 0.9084965373445528
   },
   "lookup_reduction_targets": [
     {
       "goal_total_non_clifford": 30000000,
-      "required_lookup_reduction_fraction_2lookup_without_other_changes": 0.27205984933035715,
-      "required_lookup_reduction_fraction_3lookup_without_other_changes": 0.5147065662202381,
+      "required_lookup_reduction_fraction_2lookup_without_other_changes": -0.4558803013392857,
+      "required_lookup_reduction_fraction_3lookup_without_other_changes": 0.029413132440476192,
       "lookup_only_feasible_2lookup": true,
       "lookup_only_feasible_3lookup": true
     },
     {
       "goal_total_non_clifford": 29000000,
-      "required_lookup_reduction_fraction_2lookup_without_other_changes": 0.5445382254464286,
-      "required_lookup_reduction_fraction_3lookup_without_other_changes": 0.6963588169642857,
+      "required_lookup_reduction_fraction_2lookup_without_other_changes": 0.08907645089285714,
+      "required_lookup_reduction_fraction_3lookup_without_other_changes": 0.39271763392857145,
       "lookup_only_feasible_2lookup": true,
       "lookup_only_feasible_3lookup": true
     },
     {
       "goal_total_non_clifford": 25000000,
-      "required_lookup_reduction_fraction_2lookup_without_other_changes": 1.6344517299107142,
-      "required_lookup_reduction_fraction_3lookup_without_other_changes": 1.4229678199404763,
+      "required_lookup_reduction_fraction_2lookup_without_other_changes": 2.2689034598214284,
+      "required_lookup_reduction_fraction_3lookup_without_other_changes": 1.8459356398809523,
       "lookup_only_feasible_2lookup": false,
       "lookup_only_feasible_3lookup": false
     },
     {
       "goal_total_non_clifford": 20000000,
-      "required_lookup_reduction_fraction_2lookup_without_other_changes": 2.9968436104910716,
-      "required_lookup_reduction_fraction_3lookup_without_other_changes": 2.3312290736607144,
+      "required_lookup_reduction_fraction_2lookup_without_other_changes": 4.993687220982143,
+      "required_lookup_reduction_fraction_3lookup_without_other_changes": 3.6624581473214284,
       "lookup_only_feasible_2lookup": false,
       "lookup_only_feasible_3lookup": false
     }
