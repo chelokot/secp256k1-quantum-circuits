@@ -131,8 +131,8 @@
       "bytes": 10602
     },
     "src/extended_verifier.py": {
-      "sha256": "78ef296cb1bcc520dc5290010deff1130cdebc36e10a34cc149384cdc1c7566a",
-      "bytes": 26961
+      "sha256": "b11877aa659de58b33c9213b8aae69ed960f337b713f6a2ec99882ebcbb04380",
+      "bytes": 27856
     },
     "scripts/generate_figures.py": {
       "sha256": "8fd3e318083ceafdf389ddd271c28b12515fc0abde5ef4ae1da4b3d41573cb88",

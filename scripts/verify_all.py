@@ -98,45 +98,33 @@ def parse_args() -> argparse.Namespace:
 
 
 def build_extended_summary(repo_root: Path, progress: ProgressReporter, step: int, total_steps: int) -> Dict[str, Any]:
-    title = 'Running extended supporting checks'
-    total = 7
-    completed = 0
-
-    def mark_done() -> None:
-        nonlocal completed
-        completed += 1
-        progress.advance(step, total_steps, title, completed, total, completed)
-
-    progress.advance(step, total_steps, title, 0, total, 0)
-    lookup_contract = run_lookup_contract(repo_root)
-    mark_done()
-    scaffold_schedule = run_scaffold_schedule(repo_root)
-    mark_done()
-    toy_extended = run_extended_toy_family(repo_root)
-    mark_done()
-    projection_sensitivity = run_projection_sensitivity(repo_root)
-    mark_done()
-    meta_analysis = run_meta_analysis(repo_root)
-    mark_done()
-    claim_boundaries = run_claim_boundary_matrix(repo_root)
-    mark_done()
-    challenge_ladder = run_challenge_ladder_audit(repo_root, build_challenge_ladder())
-    mark_done()
-
     return {
-        'lookup_contract': lookup_contract,
-        'scaffold_schedule': scaffold_schedule,
-        'toy_extended': toy_extended,
-        'projection_sensitivity': projection_sensitivity,
-        'meta_analysis': meta_analysis,
-        'claim_boundaries': claim_boundaries,
-        'challenge_ladder': challenge_ladder,
+        'lookup_contract': run_lookup_contract(
+            repo_root,
+            progress=lambda completed, total: progress.advance(step, total_steps, 'Running lookup-contract audit', completed, total, completed),
+        ),
+        'scaffold_schedule': run_scaffold_schedule(
+            repo_root,
+            progress=lambda completed, total: progress.advance(step + 1, total_steps, 'Running scaffold replay audit', completed, total, completed),
+        ),
+        'toy_extended': run_extended_toy_family(
+            repo_root,
+            progress=lambda completed, total: progress.advance(step + 2, total_steps, 'Running extended toy-family check', completed, total, completed),
+        ),
+        'projection_sensitivity': run_projection_sensitivity(repo_root),
+        'meta_analysis': run_meta_analysis(repo_root),
+        'claim_boundaries': run_claim_boundary_matrix(repo_root),
+        'challenge_ladder': run_challenge_ladder_audit(
+            repo_root,
+            build_challenge_ladder(),
+            progress=lambda completed, total: progress.advance(step + 3, total_steps, 'Running challenge-ladder replay', completed, total, completed),
+        ),
     }
 
 
 def build_summary(console: Console, show_progress: bool, quick: bool) -> Dict[str, Any]:
     optimized_root = REPO_ROOT / 'artifacts'
-    step_count = 2 if quick else 3
+    step_count = 2 if quick else 6
     progress = ProgressReporter(console, enabled=show_progress)
 
     audit_title = 'Running deterministic secp256k1 audit'
@@ -191,7 +179,7 @@ def build_summary(console: Console, show_progress: bool, quick: bool) -> Dict[st
 def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) -> None:
     optimized = summary['optimized']
     extended = summary.get('extended')
-    total_sections = 3 if extended is not None else 2
+    total_sections = 6 if extended is not None else 2
     audit = optimized['audit']['summary']
     toy = optimized['toy']['summary']
     projection = optimized['resource_projection']
@@ -233,25 +221,34 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
         scaffold = extended['scaffold_schedule']['summary']
         toy_extended = extended['toy_extended']['summary']
         extended_pass = summary['headline_checks']['extended_checks_pass']
-        print(f"[3/{total_sections}] Extended supporting checks  {console.ok('PASS') if extended_pass else console.fail('FAIL')}")
+        print(f"[3/{total_sections}] Lookup-contract audit       {console.ok('PASS') if lookup['signed_i16']['pass'] + lookup['unsigned_u16']['pass'] == lookup['signed_i16']['total'] + lookup['unsigned_u16']['total'] else console.fail('FAIL')}")
         print(console.detail(
             f"      lookup contract: {lookup['signed_i16']['pass'] + lookup['unsigned_u16']['pass']:,} / "
             f"{lookup['signed_i16']['total'] + lookup['unsigned_u16']['total']:,} deterministic signed/unsigned cases"
         ))
+        print(console.detail(f"      lookup sha256: {extended['lookup_contract']['sha256']}"))
+        print()
+
+        print(f"[4/{total_sections}] Scaffold replay audit       {console.ok('PASS') if scaffold['pass'] == scaffold['total'] else console.fail('FAIL')}")
         print(console.detail(
             f"      scaffold replay: {scaffold['pass']:,} / {scaffold['total']:,} retained-window replay cases"
         ))
+        print(console.detail(f"      scaffold sha256: {extended['scaffold_schedule']['sha256']}"))
+        print()
+
+        print(f"[5/{total_sections}] Extended toy-family check   {console.ok('PASS') if toy_extended['pass'] == toy_extended['total'] else console.fail('FAIL')}")
         print(console.detail(
             f"      extended toy family: {toy_extended['pass']:,} / {toy_extended['total']:,} exhaustive cases across four toy curves"
         ))
-        print(console.detail(
-            f"      challenge ladder: {extended['challenge_ladder']['summary']['pass']:,} / "
-            f"{extended['challenge_ladder']['summary']['total']:,} replay cases across "
-            f"{extended['challenge_ladder']['summary']['curve_count']} deterministic benchmark curves"
-        ))
-        print(console.detail(f"      lookup sha256: {extended['lookup_contract']['sha256']}"))
-        print(console.detail(f"      scaffold sha256: {extended['scaffold_schedule']['sha256']}"))
         print(console.detail(f"      extended toy sha256: {extended['toy_extended']['sha256']}"))
+        print()
+
+        challenge_ladder = extended['challenge_ladder']['summary']
+        print(f"[6/{total_sections}] Challenge-ladder replay     {console.ok('PASS') if challenge_ladder['pass'] == challenge_ladder['total'] else console.fail('FAIL')}")
+        print(console.detail(
+            f"      challenge ladder: {challenge_ladder['pass']:,} / {challenge_ladder['total']:,} replay cases across "
+            f"{challenge_ladder['curve_count']} deterministic benchmark curves"
+        ))
         print()
 
     print(console.heading('Primary modeled projection'))

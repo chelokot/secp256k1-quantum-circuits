@@ -20,7 +20,7 @@ import hashlib
 import json
 import math
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Tuple
+from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple
 
 from common import (
     SECP_B,
@@ -416,13 +416,31 @@ def build_challenge_ladder(bit_sizes: Iterable[int] = (6, 8, 10, 12, 14, 16, 18)
     return serializable
 
 
-def run_challenge_ladder_audit(repo_root: Path, ladder: Dict[str, Any], max_random_scalars_per_curve: int = 128) -> Dict[str, Any]:
+def run_challenge_ladder_audit(
+    repo_root: Path,
+    ladder: Dict[str, Any],
+    max_random_scalars_per_curve: int = 128,
+    progress: Callable[[int, int], None] | None = None,
+) -> Dict[str, Any]:
     family = load_json(artifact_circuits_path(repo_root / "artifacts", "optimized_pointadd_family.json"))
 
     total = 0
     passed = 0
     curves_summary: Dict[str, Any] = {}
     seed_material = sha256_bytes(json.dumps(ladder, sort_keys=True).encode())
+    total_cases = 0
+    scalar_sets: Dict[int, List[int]] = {}
+    for curve_obj in ladder["curves"]:
+        order = int(curve_obj["subgroup_order"])
+        field_bits = int(curve_obj["field_bits"])
+        challenge_scalar = int(curve_obj["challenge_scalar"])
+        seed = bytes.fromhex(seed_material) + field_bits.to_bytes(2, "big")
+        scalars = [0, 1, 2, order - 1, order // 2, challenge_scalar]
+        scalars.extend(deterministic_scalars(seed, max_random_scalars_per_curve, order))
+        deduped = list(dict.fromkeys([value % order for value in scalars]))
+        scalar_sets[field_bits] = deduped
+        total_cases += len(deduped)
+    completed_cases = 0
     for curve_obj in ladder["curves"]:
         p = int(curve_obj["p"])
         b = int(curve_obj["b"])
@@ -437,10 +455,7 @@ def run_challenge_ladder_audit(repo_root: Path, ladder: Dict[str, Any], max_rand
         tables = precompute_window_tables(generator, p, b, width=width, bits=bits)
         netlist = specialize_family_netlist(family, 3 * b)["instructions"]
 
-        seed = bytes.fromhex(seed_material) + field_bits.to_bytes(2, "big")
-        scalars = [0, 1, 2, order - 1, order // 2, challenge_scalar]
-        scalars.extend(deterministic_scalars(seed, max_random_scalars_per_curve, order))
-        scalars = list(dict.fromkeys([value % order for value in scalars]))
+        scalars = scalar_sets[field_bits]
 
         local_total = 0
         local_pass = 0
@@ -461,6 +476,9 @@ def run_challenge_ladder_audit(repo_root: Path, ladder: Dict[str, Any], max_rand
             passed += int(ok)
             local_total += 1
             local_pass += int(ok)
+            completed_cases += 1
+            if progress is not None:
+                progress(completed_cases, total_cases)
 
         curves_summary[f"bits_{field_bits}"] = {
             "field_bits": field_bits,

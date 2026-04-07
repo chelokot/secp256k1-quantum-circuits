@@ -16,7 +16,7 @@ import csv
 import json
 import math
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from common import (
     SECP_B,
@@ -127,7 +127,12 @@ def verify_curve_metadata(curve: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
-def run_lookup_contract(repo_root: Path, signed_cases: int = 4096, unsigned_cases: int = 4096) -> Dict[str, Any]:
+def run_lookup_contract(
+    repo_root: Path,
+    signed_cases: int = 4096,
+    unsigned_cases: int = 4096,
+    progress: Callable[[int, int], None] | None = None,
+) -> Dict[str, Any]:
     package_root = repo_root / "artifacts"
     optimized_sha = sha256_path(artifact_circuits_path(package_root, "optimized_pointadd_secp256k1.json"))
     baseline_sha = sha256_path(artifact_projection_path(package_root, "resource_projection.json"))
@@ -145,6 +150,14 @@ def run_lookup_contract(repo_root: Path, signed_cases: int = 4096, unsigned_case
         "signed_i16": {"total": 0, "pass": 0, "edge_cases": len(LOOKUP_EDGE_KEYS_SIGNED_16)},
         "unsigned_u16": {"total": 0, "pass": 0, "edge_cases": len(LOOKUP_EDGE_KEYS_UNSIGNED_16)},
     }
+    total_cases = signed_cases + unsigned_cases
+    completed_cases = 0
+
+    def advance() -> None:
+        nonlocal completed_cases
+        completed_cases += 1
+        if progress is not None:
+            progress(completed_cases, total_cases)
 
     def signed_key_from_word(word: int) -> int:
         word &= 0xFFFF
@@ -164,6 +177,7 @@ def run_lookup_contract(repo_root: Path, signed_cases: int = 4096, unsigned_case
             ok = is_on_curve(base_point, SECP_P, SECP_B) and is_on_curve(expected, SECP_P, SECP_B)
             summary["signed_i16"]["total"] += 1
             summary["signed_i16"]["pass"] += int(ok)
+            advance()
             writer.writerow(["signed_i16", idx, format(base_scalar, "064x"), key, *hex_or_inf(base_point), *hex_or_inf(expected), int(is_on_curve(expected, SECP_P, SECP_B)), "PASS" if ok else "FAIL"])
 
         edge_bases_u = [mul_fixed_window(s, g_tables, SECP_P, SECP_B, width=8, order=SECP_N) for s in unsigned_stream[:len(LOOKUP_EDGE_KEYS_UNSIGNED_16)]]
@@ -172,6 +186,7 @@ def run_lookup_contract(repo_root: Path, signed_cases: int = 4096, unsigned_case
             ok = is_on_curve(base_point, SECP_P, SECP_B) and is_on_curve(expected, SECP_P, SECP_B)
             summary["unsigned_u16"]["total"] += 1
             summary["unsigned_u16"]["pass"] += int(ok)
+            advance()
             writer.writerow(["unsigned_u16", off, format(base_scalar, "064x"), key, *hex_or_inf(base_point), *hex_or_inf(expected), int(is_on_curve(expected, SECP_P, SECP_B)), "PASS" if ok else "FAIL"])
 
         for i in range(signed_cases - len(LOOKUP_EDGE_KEYS_SIGNED_16)):
@@ -182,6 +197,7 @@ def run_lookup_contract(repo_root: Path, signed_cases: int = 4096, unsigned_case
             ok = is_on_curve(base_point, SECP_P, SECP_B) and is_on_curve(expected, SECP_P, SECP_B)
             summary["signed_i16"]["total"] += 1
             summary["signed_i16"]["pass"] += int(ok)
+            advance()
             writer.writerow(["signed_i16", len(LOOKUP_EDGE_KEYS_SIGNED_16) + i, format(base_scalar, "064x"), key, *hex_or_inf(base_point), *hex_or_inf(expected), int(is_on_curve(expected, SECP_P, SECP_B)), "PASS" if ok else "FAIL"])
 
         for i in range(unsigned_cases - len(LOOKUP_EDGE_KEYS_UNSIGNED_16)):
@@ -192,6 +208,7 @@ def run_lookup_contract(repo_root: Path, signed_cases: int = 4096, unsigned_case
             ok = is_on_curve(base_point, SECP_P, SECP_B) and is_on_curve(expected, SECP_P, SECP_B)
             summary["unsigned_u16"]["total"] += 1
             summary["unsigned_u16"]["pass"] += int(ok)
+            advance()
             writer.writerow(["unsigned_u16", len(LOOKUP_EDGE_KEYS_UNSIGNED_16) + i, format(base_scalar, "064x"), key, *hex_or_inf(base_point), *hex_or_inf(expected), int(is_on_curve(expected, SECP_P, SECP_B)), "PASS" if ok else "FAIL"])
 
     out_json = artifact_extended_verification_path(package_root, "lookup_contract_summary.json")
@@ -209,7 +226,11 @@ def run_lookup_contract(repo_root: Path, signed_cases: int = 4096, unsigned_case
     return result
 
 
-def run_scaffold_schedule(repo_root: Path, case_count: int = 256) -> Dict[str, Any]:
+def run_scaffold_schedule(
+    repo_root: Path,
+    case_count: int = 256,
+    progress: Callable[[int, int], None] | None = None,
+) -> Dict[str, Any]:
     package_root = repo_root / "artifacts"
     scaffold = load_json(artifact_circuits_path(package_root, "ecdlp_scaffold_optimized.json"))
     leaf = load_json(artifact_circuits_path(package_root, "optimized_pointadd_secp256k1.json"))
@@ -273,6 +294,8 @@ def run_scaffold_schedule(repo_root: Path, case_count: int = 256) -> Dict[str, A
             ok = acc == expected and is_on_curve(acc, SECP_P, SECP_B) and is_on_curve(expected, SECP_P, SECP_B)
             summary["total"] += 1
             summary["pass"] += int(ok)
+            if progress is not None:
+                progress(i + 1, case_count)
             writer.writerow([i, format(h_scalar, "064x"), format(a_scalar, "064x"), format(b_scalar, "064x"), *hex_or_inf(compute_window_lookup(g_window_bases, 0, seed_digit, SECP_P, SECP_B)), *hex_or_inf(expected), *hex_or_inf(acc), *[str(x) for x in tail_digits], "PASS" if ok else "FAIL"])
 
     summary["phase_b_base_variants"] = len(unique_h)
@@ -292,11 +315,16 @@ def run_scaffold_schedule(repo_root: Path, case_count: int = 256) -> Dict[str, A
     return result
 
 
-def run_extended_toy_family(repo_root: Path) -> Dict[str, Any]:
+def run_extended_toy_family(
+    repo_root: Path,
+    progress: Callable[[int, int], None] | None = None,
+) -> Dict[str, Any]:
     package_root = repo_root / "artifacts"
     family = load_json(artifact_circuits_path(package_root, "optimized_pointadd_family.json"))
     out_csv = artifact_extended_verification_path(package_root, "toy_curve_family_extended_110692.csv")
     summary: Dict[str, Any] = {"total": 0, "pass": 0, "curves": {}, "metadata_checks": {}}
+    total_cases = sum(curve["order"] * curve["order"] for curve in CURATED_EXTENDED_TOY_CURVES)
+    completed_cases = 0
 
     with out_csv.open("w", newline="") as handle:
         writer = csv.writer(handle)
@@ -324,6 +352,9 @@ def run_extended_toy_family(repo_root: Path) -> Dict[str, Any]:
                     summary["pass"] += int(ok)
                     curve_total += 1
                     curve_pass += int(ok)
+                    completed_cases += 1
+                    if progress is not None:
+                        progress(completed_cases, total_cases)
                     writer.writerow([cname, p, b, order, a, bb, *minimal_hex_or_inf(ref_aff), *minimal_hex_or_inf(got_aff), "PASS" if ok else "FAIL"])
             summary["curves"][cname] = {"total": curve_total, "pass": curve_pass, "order": order, "p": p, "b": b}
             summary["metadata_checks"][cname] = verify_curve_metadata(curve)
