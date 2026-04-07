@@ -21,11 +21,7 @@ Use `python scripts/verify_all.py --quick` for the shorter core-only path.
 - `literature_matrix.json`
 - `physical_stack_reference_points.json`
 
-Regenerate with:
-
-```bash
-python scripts/release_check.py
-```
+These are checked-in generated summaries validated by the test suite.
 
 ## Physical transfer summary
 

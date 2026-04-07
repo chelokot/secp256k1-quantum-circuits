@@ -35,7 +35,6 @@ Primary optimized release with:
 - `scripts/verify_all.py` — main verification path, with `--quick` for the core-only run
 - `scripts/rebuild_resource_projection.py` — canonical modeled projection regeneration
 - `scripts/compare_cain_2026.py` — neutral-atom transfer report
-- `scripts/release_check.py` — full maintainer rebuild and publication-readiness pass
 - `scripts/hash_repo.py` — manifest regeneration
 - `scripts/generate_figures.py` — figure regeneration
 

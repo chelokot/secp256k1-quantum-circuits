@@ -50,7 +50,6 @@ class ReleaseInventoryTests(unittest.TestCase):
             'scripts/rebuild_resource_projection.py',
             'scripts/rebuild_proof_manifest.py',
             'scripts/hash_repo.py',
-            'scripts/release_check.py',
             'src/common.py',
             'src/resource_projection.py',
             'src/verifier.py',

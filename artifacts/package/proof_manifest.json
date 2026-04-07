@@ -67,7 +67,7 @@
       "bytes": 1470
     },
     "artifacts/verification/core/verifier_rebuild_summary.json": {
-      "sha256": "61e343346456e96744076442da5a5a7e2028c973cf03eaaa9cf055ef2730daf1",
+      "sha256": "91f781fc06deccc3b7927f28d276ff044077370b9af5a229727f832836fa0a2d",
       "bytes": 1282
     },
     "artifacts/verification/extended/lookup_contract_summary.json": {

@@ -24,7 +24,7 @@ This covers:
 
 ## Research outputs
 
-`python scripts/release_check.py` also rebuilds:
+The repository also carries generated research summaries for:
 
 - dominant cost breakdown
 - lookup-folding provenance for the primary artifact

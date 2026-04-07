@@ -1,4 +1,4 @@
-.PHONY: verify verify-quick verify-optimized projection test hashes figures release-check compare-cain
+.PHONY: verify verify-quick verify-optimized projection test hashes figures compare-cain
 
 verify:
 	python scripts/verify_all.py
@@ -20,9 +20,6 @@ hashes:
 
 figures:
 	python scripts/generate_figures.py
-
-release-check:
-	python scripts/release_check.py
 
 compare-cain:
 	python scripts/compare_cain_2026.py
