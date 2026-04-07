@@ -39,7 +39,6 @@ class ReleaseInventoryTests(unittest.TestCase):
             'docs/references/PHYSICAL_STACKS_AND_HARDWARE_CONTEXT.md',
             'docs/research/COST_MODEL_CORRECTION.md',
             'docs/references/TOOLING_AND_REIMPLEMENTATION_PATHS.md',
-            'reports/secp256k1_optimized_report.pdf',
             'scripts/verify_all.py',
             'scripts/compare_cain_2026.py',
             'scripts/refresh_repo.py',

@@ -122,10 +122,6 @@
       "sha256": "609f98ea3e82f4dde7cc153dbd98dc6bd54daa94db559a21d88426ce7c080e9e",
       "bytes": 79298
     },
-    "reports/secp256k1_optimized_report.pdf": {
-      "sha256": "a3b271c7ea2391cc0f5a6eea33c2c47ed6fae42c483bffc57feb2e6fbe243abd",
-      "bytes": 303444
-    },
     "src/verifier.py": {
       "sha256": "b8aac972c5a64c2ea01fcfc2759792ddbcdbb09b8a8f2bf107dffcf376cad98f",
       "bytes": 10602

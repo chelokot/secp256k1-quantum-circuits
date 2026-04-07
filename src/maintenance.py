@@ -40,7 +40,6 @@ PROOF_MANIFEST_PATHS = [
     'figures/core/projection_headroom.png',
     'figures/research/verification_coverage_extended.png',
     'figures/research/optimization_frontier_ranges.png',
-    'reports/secp256k1_optimized_report.pdf',
     'src/verifier.py',
     'src/extended_verifier.py',
     'src/figure_generation.py',

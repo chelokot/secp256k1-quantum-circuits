@@ -152,7 +152,6 @@ in this repository is specialized to **secp256k1**.
   research interpretation
 - `figures/` — generated report figures
 - `results/` — generated summary JSON files
-- `reports/` — report PDFs
 
 ## Quick start
 
@@ -172,4 +171,3 @@ python scripts/compare_cain_2026.py
 5. `docs/research/OPTIMIZATION_FRONTIERS.md`
 6. `docs/references/STATE_OF_THE_ART_2026.md`
 7. `docs/core/RED_TEAM_REVIEW.md`
-8. `reports/secp256k1_optimized_report.pdf`

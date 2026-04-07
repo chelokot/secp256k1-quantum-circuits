@@ -16,14 +16,6 @@ from maintenance import write_repository_manifest  # noqa: E402
 
 
 class RepoIntegrityTests(unittest.TestCase):
-    def test_key_reports_exist(self):
-        for name in [
-            'secp256k1_optimized_report.pdf',
-        ]:
-            path = REPO_ROOT / 'reports' / name
-            self.assertTrue(path.exists(), path)
-            self.assertGreater(path.stat().st_size, 100_000)
-
     def test_hash_manifest_matches_selected_files(self):
         write_repository_manifest(REPO_ROOT)
         manifest_lines = (REPO_ROOT / 'MANIFEST.sha256').read_text().splitlines()
@@ -34,9 +26,9 @@ class RepoIntegrityTests(unittest.TestCase):
         self.assertTrue(all(not rel.startswith('.git/') for rel in manifest))
         self.assertNotIn('results/repo_verification_summary.json', manifest)
         selected = [
-            'reports/secp256k1_optimized_report.pdf',
             'artifacts/circuits/optimized_pointadd_secp256k1.json',
             'artifacts/projections/resource_projection.json',
+            'results/cain_2026_integration_summary.json',
         ]
         for rel in selected:
             self.assertIn(rel, manifest)
