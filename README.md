@@ -11,12 +11,31 @@ secp256k1 is the elliptic curve used by Bitcoin and other cryptocurrency
 systems, and a sufficiently powerful fault-tolerant quantum attack on it would
 in principle recover private keys from public keys and signatures.
 
+On March 31, 2026, Google Research published a whitepaper and blog post
+reporting new secp256k1 quantum ECDLP resource estimates and arguing that the
+risk horizon for fault-tolerant attacks may be closer than many earlier
+timelines assumed. Google reported rounded estimates of under 1,200 logical
+qubits and 90 million non-Clifford gates, or under 1,450 logical qubits and 70
+million non-Clifford gates, for secp256k1, but did not publish the full
+underlying circuit. Instead, they published a zero-knowledge proof attesting
+that such a circuit exists.
+
+This repository began as an attempt to reproduce that result from the public
+material alone. ChatGPT 5.4 Pro was used first to construct auditable
+secp256k1 circuit artifacts consistent with Google's published resource lines,
+and then to search for stronger secp256k1-specific optimizations. The
+resulting primary artifact in this repository reaches modeled non-Clifford
+totals that are more than 2x lower than Google's published 2026 secp256k1
+estimates.
+
+## Content
+
 This repository contains exact ISA-level secp256k1 quantum ECDLP circuits,
-verification artifacts, and modeled resource estimates.
-In Bitcoin terms, a successful attack of this kind would let an attacker
-recover spend keys for exposed public keys and authorize fraudulent spends, and
-the repository's current hardware-transfer estimate puts such an attack in the
-rough range of 3.2 to 4.3 days on a large fault-tolerant quantum machine under
+verification artifacts, and modeled resource estimates. In Bitcoin terms, a
+successful attack of this kind would let an attacker recover spend keys for
+exposed public keys and authorize fraudulent spends, and the repository's
+current hardware-transfer estimate puts such an attack in the rough range of
+3.2 to 4.3 days on a large fault-tolerant quantum machine under
 fixed-architecture assumptions.
 
 The repository is strongest at the arithmetic ISA boundary. It publishes exact,
