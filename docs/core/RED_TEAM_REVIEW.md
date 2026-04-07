@@ -10,7 +10,7 @@ repository-supported answer to each one.
 | “This is not a primitive-gate circuit because lookup is abstracted.” | High | True. The repository proves lookup contracts, not a primitive-gate lookup implementation. | Yes |
 | “`mbuc_*` cleanup is not a primitive-gate verified coherent subcircuit.” | High | True. The repository checks basis-state semantics at the ISA boundary. | Yes |
 | “The scaffold is metadata, not a full Shor gate list.” | High | True. The scaffold is replayed and checked for coherence, but it is not a single flattened gate list. | Yes |
-| “The 880q / 31.0M headline depends on a backend model.” | High | True. Those totals are explicit modeled projections. | Yes |
+| “The 880q / 29.16M headline depends on a backend model.” | High | True. Those totals are explicit modeled projections derived from structural artifacts plus a backend-model bundle, not from a primitive-gate lowering. | Yes |
 | “Toy-curve proofs are not universal proofs over all prime fields.” | Medium | True. They are finite-model support for the family story. | Yes |
 | “No primitive-gate qRAM or QROM is shipped.” | Medium | True. The repository keeps lookup as an explicit contract boundary. | Yes |
 | “No end-to-end physical machine proof is shipped.” | Medium | True. Physical studies are separate transfer analyses. | Yes |
@@ -23,7 +23,7 @@ repository-supported answer to each one.
 - deterministic scaffold replay for the retained-window schedule
 - exact signed folded lookup-contract semantics
 - modeled improvement over Google's published 2026 secp256k1 estimates from
-  Babbush et al. 2026
+  Babbush et al. 2026 using a derived structural pipeline rather than a standalone headline table
 
 ## Statements the repository should not make
 

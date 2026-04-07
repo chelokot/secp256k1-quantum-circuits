@@ -8,9 +8,12 @@ the checked-in artifacts and which parts remain the main frontier.
 The primary modeled headline stored in
 `artifacts/projections/resource_projection.json` is:
 
-- **880 logical qubits**
+- **880 logical qubits** under the conservative named-slot default model
 - **29.163M non-Clifford** under the 2-channel lookup model
 - **30.081M non-Clifford** under the conservative 3-channel lookup model
+
+That default line is now derived from exact structural artifacts plus a
+versioned backend-model bundle, not from whole-circuit headline constants.
 
 ## Budget split of that mainline
 
@@ -32,13 +35,24 @@ Lookup work is still valuable because:
 
 The signed folded contract projects:
 
-- **29,163,456 non-Clifford** under the folded 2-channel line
-- **30,080,960 non-Clifford** under the folded conservative 3-channel line
+- **29,163,260 non-Clifford** under the folded 2-channel line
+- **30,080,764 non-Clifford** under the folded conservative 3-channel line
 
 ## Arithmetic and backend frontier
 
 Arithmetic and backend work remain the larger lever because most of the modeled
-budget sits outside lookup. The main open directions are:
+budget sits outside lookup. The checked-in projection family now makes this more
+concrete:
+
+- `carry_save_liveness_alias_v1` keeps the default arithmetic model but drops to
+  **736 logical qubits** if exact ISA-slot liveness is used for backend
+  allocation.
+- `addsub_modmul_explicit_v1` keeps the conservative named-slot qubit policy but
+  drops to **22,377,404 non-Clifford** under an explicit add-sub
+  modular-multiplication backend.
+- `addsub_modmul_liveness_v1` combines both experimental substitutions.
+
+The main open directions are therefore:
 
 1. arithmetic-backend substitutions
 2. lower-level lookup realization

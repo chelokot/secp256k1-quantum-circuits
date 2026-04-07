@@ -82,7 +82,10 @@ flat primitive-gate circuit for the complete period-finding stack.
 The headline totals in
 `artifacts/projections/resource_projection.json` and
 `artifacts/projections/lookup_folded_projection.json` are explicit backend
-projections. They are not theorem-proved primitive-gate totals.
+projections. In the current repository they are derived from the checked-in leaf
+netlist, retained-window scaffold, expanded ISA replay, folded lookup contract,
+and versioned backend-model bundle. They are still not theorem-proved
+primitive-gate totals.
 
 ## Public baseline boundary
 

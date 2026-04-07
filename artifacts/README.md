@@ -9,6 +9,11 @@ This directory contains the primary release artifact of the repository.
 - `circuits/optimized_pointadd_family.json` — symbolic family netlist
 - `circuits/ecdlp_scaffold_optimized.json` — retained-window scaffold
   metadata
+- `circuits/ecdlp_expanded_isa_optimized.json` — exact retained-window replay
+  of the checked-in leaf over the checked-in scaffold
+- `projections/structural_accounting.json` — derived opcode, liveness, and
+  scaffold accounting
+- `projections/backend_model_bundle.json` — versioned backend-model family
 - `projections/resource_projection.json` — modeled baseline comparison and
   headline totals
 

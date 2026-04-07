@@ -17,6 +17,7 @@ Primary optimized release with:
 
 - optimized leaf and family netlists
 - retained-window scaffold metadata
+- an exact expanded retained-window ISA replay
 - deterministic audits
 - extended verification outputs
 - research and sensitivity outputs
@@ -25,9 +26,10 @@ Primary optimized release with:
 
 - `src/common.py` — arithmetic, hashing, and serialization helpers
 - `src/cain_integration.py` — Cain et al. transfer summary generation
+- `src/derived_resources.py` — exact structural replay, ISA liveness, and versioned backend-resource derivation
 - `src/figure_generation.py` — figure generation logic
 - `src/maintenance.py` — manifest and artifact-refresh helpers
-- `src/resource_projection.py` — canonical modeled projection data and ratio computation
+- `src/resource_projection.py` — canonical modeled projection entrypoint and ratio computation
 - `src/verifier.py` — primary optimized-artifact verifier
 - `src/extended_verifier.py` — extended verification and sensitivity layer
 - `src/research_extensions.py` — research-pass generation logic
@@ -56,6 +58,13 @@ Primary optimized release with:
 
 - `figures/core/` — main report and comparison figures
 - `figures/research/` — research and supporting-analysis figures
+
+## Derived structural/projection artifacts
+
+- `artifacts/circuits/ecdlp_expanded_isa_optimized.json`
+- `artifacts/projections/structural_accounting.json`
+- `artifacts/projections/backend_model_bundle.json`
+- `artifacts/projections/resource_projection.json`
 
 ## Results
 

@@ -384,6 +384,161 @@ def compute_literature_projection_scenarios(repo_root: Path) -> Dict[str, Any]:
     return result
 
 
+def build_optimization_frontier_estimates(repo_root: Path) -> Dict[str, Any]:
+    package_root = repo_root / "artifacts"
+    projection = load_json(artifact_projection_path(package_root, "resource_projection.json"))
+    scenarios = {entry["model_name"]: entry for entry in projection.get("alternative_backend_scenarios", [])}
+    lookup_folded = load_json(artifact_projection_path(package_root, "lookup_folded_projection.json"))
+
+    default2 = int(projection["optimized_ecdlp_projection"]["lookup_model_2channel"]["total_non_clifford"])
+    default3 = int(projection["optimized_ecdlp_projection"]["lookup_model_3channel"]["total_non_clifford"])
+    defaultq = int(projection["optimized_ecdlp_projection"]["logical_qubits_total"])
+
+    def ratio_range(total2: int, total3: int) -> List[float]:
+        low = min(total2 / default2, total3 / default3)
+        high = max(total2 / default2, total3 / default3)
+        return [low, high]
+
+    frontiers = [
+        {
+            "name": "derived_structural_pipeline",
+            "status": "now_shipped",
+            "confidence": "high",
+            "estimated_total_non_clifford_multiplier_range": [1.0, 1.0],
+            "estimated_total_qubit_multiplier_range": [1.0, 1.0],
+            "derived_headline": {
+                "logical_qubits": defaultq,
+                "non_clifford_2lookup": default2,
+                "non_clifford_3lookup": default3,
+            },
+            "rationale": "The repository now derives the mainline from checked-in structural artifacts plus a versioned backend-model bundle instead of storing whole-circuit headline constants.",
+            "main_risk": "Still a backend model below the kickmix ISA boundary, not a primitive-gate lowering.",
+        },
+    ]
+
+    if "carry_save_liveness_alias_v1" in scenarios:
+        alt = scenarios["carry_save_liveness_alias_v1"]
+        frontiers.append({
+            "name": "isa_liveness_aliasing",
+            "status": "experimental_in_repo",
+            "confidence": "medium",
+            "estimated_total_non_clifford_multiplier_range": ratio_range(
+                int(alt["ecdlp"]["lookup_model_2channel"]["total_non_clifford"]),
+                int(alt["ecdlp"]["lookup_model_3channel"]["total_non_clifford"]),
+            ),
+            "estimated_total_qubit_multiplier_range": [
+                alt["ecdlp"]["logical_qubits_total"] / defaultq,
+                alt["ecdlp"]["logical_qubits_total"] / defaultq,
+            ],
+            "derived_headline": {
+                "logical_qubits": int(alt["ecdlp"]["logical_qubits_total"]),
+                "non_clifford_2lookup": int(alt["ecdlp"]["lookup_model_2channel"]["total_non_clifford"]),
+                "non_clifford_3lookup": int(alt["ecdlp"]["lookup_model_3channel"]["total_non_clifford"]),
+            },
+            "rationale": "Exact ISA-slot liveness implies a lower peak live arithmetic-slot count than the conservative named-slot policy used by the default model.",
+            "main_risk": "This is a backend register-allocation hypothesis, not a theorem-proved primitive mapping.",
+        })
+
+    if "addsub_modmul_explicit_v1" in scenarios:
+        alt = scenarios["addsub_modmul_explicit_v1"]
+        frontiers.append({
+            "name": "explicit_addsub_modmul_backend",
+            "status": "experimental_in_repo",
+            "confidence": "medium",
+            "estimated_total_non_clifford_multiplier_range": ratio_range(
+                int(alt["ecdlp"]["lookup_model_2channel"]["total_non_clifford"]),
+                int(alt["ecdlp"]["lookup_model_3channel"]["total_non_clifford"]),
+            ),
+            "estimated_total_qubit_multiplier_range": [
+                alt["ecdlp"]["logical_qubits_total"] / defaultq,
+                alt["ecdlp"]["logical_qubits_total"] / defaultq,
+            ],
+            "derived_headline": {
+                "logical_qubits": int(alt["ecdlp"]["logical_qubits_total"]),
+                "non_clifford_2lookup": int(alt["ecdlp"]["lookup_model_2channel"]["total_non_clifford"]),
+                "non_clifford_3lookup": int(alt["ecdlp"]["lookup_model_3channel"]["total_non_clifford"]),
+            },
+            "rationale": "This swaps the calibrated field-multiplication family for an explicit add-sub modular-multiplication formula while keeping the rest of the structural pipeline fixed.",
+            "main_risk": "The arithmetic backend is explicit at the model layer, but the repository still does not ship a primitive-gate lowering for that multiplier family.",
+        })
+
+    if "addsub_modmul_liveness_v1" in scenarios:
+        alt = scenarios["addsub_modmul_liveness_v1"]
+        frontiers.append({
+            "name": "explicit_backend_plus_liveness",
+            "status": "experimental_in_repo",
+            "confidence": "medium",
+            "estimated_total_non_clifford_multiplier_range": ratio_range(
+                int(alt["ecdlp"]["lookup_model_2channel"]["total_non_clifford"]),
+                int(alt["ecdlp"]["lookup_model_3channel"]["total_non_clifford"]),
+            ),
+            "estimated_total_qubit_multiplier_range": [
+                alt["ecdlp"]["logical_qubits_total"] / defaultq,
+                alt["ecdlp"]["logical_qubits_total"] / defaultq,
+            ],
+            "derived_headline": {
+                "logical_qubits": int(alt["ecdlp"]["logical_qubits_total"]),
+                "non_clifford_2lookup": int(alt["ecdlp"]["lookup_model_2channel"]["total_non_clifford"]),
+                "non_clifford_3lookup": int(alt["ecdlp"]["lookup_model_3channel"]["total_non_clifford"]),
+            },
+            "rationale": "This combines the explicit arithmetic substitution with ISA-liveness-based slot reuse to show the strongest currently checked-in experimental scenario.",
+            "main_risk": "Both moving parts are still backend-level models below the exact ISA boundary.",
+        })
+
+    frontiers.extend([
+        {
+            "name": "signed_lookup_folding_contract",
+            "status": "exact_contract_plus_modeled_backend",
+            "confidence": "medium",
+            "estimated_total_non_clifford_multiplier_range": ratio_range(
+                int(lookup_folded["base_case_pad0"]["total_non_clifford_2channel_folded"]),
+                int(lookup_folded["base_case_pad0"]["total_non_clifford_3channel_folded_conservative"]),
+            ),
+            "estimated_total_qubit_multiplier_range": [1.0, 1.01],
+            "derived_headline": {
+                "logical_qubits": defaultq,
+                "non_clifford_2lookup": int(lookup_folded["base_case_pad0"]["total_non_clifford_2channel_folded"]),
+                "non_clifford_3lookup": int(lookup_folded["base_case_pad0"]["total_non_clifford_3channel_folded_conservative"]),
+            },
+            "rationale": "The signed folded contract is exact and heavily audited, but its backend impact remains bounded because arithmetic dominates the current model.",
+            "main_risk": "Further gains from lookup work alone are limited unless the arithmetic/backend layer also changes.",
+        },
+        {
+            "name": "cross_call_scheduler_and_flattening",
+            "status": "future_work",
+            "confidence": "low",
+            "estimated_total_non_clifford_multiplier_range": [0.92, 0.99],
+            "estimated_total_qubit_multiplier_range": [0.90, 1.00],
+            "rationale": "A flatter backend might fuse reductions or reuse state across retained calls, but that would move the repository to a different exactness boundary.",
+            "main_risk": "No checked-in exact artifact currently supports this claim.",
+        },
+        {
+            "name": "primitive_gate_lowering_and_cancellation",
+            "status": "future_work",
+            "confidence": "low",
+            "estimated_total_non_clifford_multiplier_range": [0.90, 1.05],
+            "estimated_total_qubit_multiplier_range": [0.95, 1.05],
+            "rationale": "Primitive lowering could reveal cancellation opportunities or hidden expansion penalties that are invisible at the ISA layer.",
+            "main_risk": "This is exactly the layer the repository still does not prove today.",
+        },
+    ])
+
+    result = {
+        "current_headline": {
+            "logical_qubits": defaultq,
+            "non_clifford_2lookup": default2,
+            "non_clifford_3lookup": default3,
+            "source_model": projection["model_name"],
+        },
+        "frontiers": frontiers,
+        "stacking_note": "Do not multiply these ranges naively. Some frontiers are already shipped experimental scenarios, others are future-work directions, and several overlap strongly.",
+        "author_note": "This file is a roadmap around the current derived mainline, not a primitive-gate proof beyond the repository's exact ISA boundary.",
+    }
+    out_path = artifact_projection_path(package_root, "optimization_frontier_estimates.json")
+    dump_json(out_path, result)
+    return result
+
+
 def build_challenge_ladder(bit_sizes: Iterable[int] = (6, 8, 10, 12, 14, 16, 18)) -> Dict[str, Any]:
     ladder_curves = []
     for bits in bit_sizes:
@@ -714,6 +869,7 @@ def run_research_pass(repo_root: Path) -> Dict[str, Any]:
     lookup_audit = run_lookup_folding_audit(repo_root)
     lookup_projection = build_lookup_folded_projection(repo_root)
     literature_scenarios = compute_literature_projection_scenarios(repo_root)
+    frontier = build_optimization_frontier_estimates(repo_root)
     ladder = build_challenge_ladder()
     ladder_audit = run_challenge_ladder_audit(repo_root, ladder)
     literature_matrix = build_literature_matrix(repo_root)
@@ -750,6 +906,10 @@ def run_research_pass(repo_root: Path) -> Dict[str, Any]:
         },
         "literature_matrix": {
             "entry_count": len(literature_matrix["entries"]),
+        },
+        "optimization_frontier": {
+            "frontier_count": len(frontier["frontiers"]),
+            "current_headline": frontier["current_headline"],
         },
         "physical_stack_reference": {
             "entry_count": len(physical_refs["entries"]),

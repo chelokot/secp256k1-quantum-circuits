@@ -29,7 +29,9 @@ secp256k1 circuit artifacts consistent with Google's published resource lines,
 and then to search for stronger secp256k1-specific optimizations. The
 resulting primary artifact in this repository reaches modeled non-Clifford
 totals that are <u>more than 2x lower than Google's published 2026
-secp256k1 estimates</u>.
+secp256k1 estimates</u> under the repository's default derived backend model.
+Those totals are now computed from checked-in leaf/scaffold artifacts plus a
+versioned backend-model bundle rather than stored as whole-circuit constants.
 
 ## Content
 
@@ -43,8 +45,12 @@ fixed-architecture assumptions.
 
 The repository is strongest at the arithmetic ISA boundary. It publishes exact,
 machine-readable point-add schedules and checks their basis-state semantics. It
-also publishes modeled backend totals for logical qubits and non-Clifford
-counts.
+also publishes an exact expanded retained-window ISA replay in
+`artifacts/circuits/ecdlp_expanded_isa_optimized.json`, together with modeled
+backend totals for logical qubits and non-Clifford counts. The canonical
+projection is rebuilt from the checked-in leaf netlist, retained-window
+scaffold, folded lookup contract, and backend-model bundle in
+`artifacts/projections/backend_model_bundle.json`.
 
 ## Main results
 
@@ -55,9 +61,16 @@ The primary release artifact is in `artifacts/`.
 Its modeled ECDLP projection, as recorded in
 `artifacts/projections/resource_projection.json`, is:
 
-- **880 logical qubits**
-- **29,163,456 non-Clifford** under the 2-channel lookup model
-- **30,080,960 non-Clifford** under the conservative 3-channel lookup model
+- **880 logical qubits** under the conservative named-slot default model
+- **29,163,260 non-Clifford** under the 2-channel lookup model
+- **30,080,764 non-Clifford** under the conservative 3-channel lookup model
+
+The projection file also publishes exact structural provenance and experimental
+alternatives, including:
+
+- **736 logical qubits** under the ISA-liveness aliasing scenario
+- **22,377,404 non-Clifford** under the explicit add-sub modular-multiplication scenario
+- **736 logical qubits / 22,377,404 non-Clifford** under the combined experimental scenario
 
 ### Public baseline used for comparison
 
@@ -86,8 +99,8 @@ That contract is exact at the lookup-contract level and audited by:
 Its backend totals remain modeled. The supporting projection in
 `artifacts/projections/lookup_folded_projection.json` is:
 
-- **29,163,456 non-Clifford** under the folded 2-channel model
-- **30,080,960 non-Clifford** under the folded conservative 3-channel model
+- **29,163,260 non-Clifford** under the folded 2-channel model
+- **30,080,764 non-Clifford** under the folded conservative 3-channel model
 
 ## Exact vs modeled layers
 

@@ -195,18 +195,20 @@ def fig_literature_layers(package_dir: Path, matrix: Any) -> None:
     plt.close(fig)
 
 
-def fig_lookup_fold_pad_sweep(package_dir: Path, folded: Any) -> None:
+def fig_lookup_fold_pad_sweep(package_dir: Path, folded: Any, projection: Any) -> None:
     rows = folded['pad_sweep']
     pads = [row['per_window_small_overhead_pad'] for row in rows]
     total2 = [row['total_non_clifford_2channel_folded'] / 1_000_000 for row in rows]
     total3 = [row['total_non_clifford_3channel_folded_conservative'] / 1_000_000 for row in rows]
     total3_meta = [row['total_non_clifford_3channel_folded_meta_elided'] / 1_000_000 for row in rows]
+    current2 = projection['optimized_ecdlp_projection']['lookup_model_2channel']['total_non_clifford'] / 1_000_000
+    current3 = projection['optimized_ecdlp_projection']['lookup_model_3channel']['total_non_clifford'] / 1_000_000
     fig, ax = plt.subplots(figsize=(8.0, 4.8))
     ax.plot(pads, total2, marker='o', label='2-channel folded')
     ax.plot(pads, total3, marker='o', label='3-channel folded (conservative)')
     ax.plot(pads, total3_meta, marker='o', label='3-channel folded (meta elided)')
-    ax.axhline(30.998464, linestyle='--', label='Current 2-channel')
-    ax.axhline(32.833472, linestyle=':', label='Current 3-channel')
+    ax.axhline(current2, linestyle='--', label='Current 2-channel')
+    ax.axhline(current3, linestyle=':', label='Current 3-channel')
     ax.set_xlabel('per-window small overhead pad')
     ax.set_ylabel('projected non-Clifford (millions)')
     ax.set_title('Signed lookup folding: pad sweep projection')
@@ -237,4 +239,4 @@ def write_figures(repo_root: Path) -> None:
     fig_lookup_reduction_targets(package_dir, dominant)
     fig_challenge_ladder(package_dir, ladder)
     fig_literature_layers(package_dir, matrix)
-    fig_lookup_fold_pad_sweep(package_dir, folded)
+    fig_lookup_fold_pad_sweep(package_dir, folded, projection)

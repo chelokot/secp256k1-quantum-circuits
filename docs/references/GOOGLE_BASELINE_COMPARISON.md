@@ -17,11 +17,20 @@ The tracked public lines are:
 
 ## Repository projection compared against that baseline
 
-The primary optimized projection is:
+The primary optimized projection is the default derived backend model rebuilt
+from:
+
+- `artifacts/circuits/optimized_pointadd_secp256k1.json`
+- `artifacts/circuits/ecdlp_scaffold_optimized.json`
+- `artifacts/circuits/ecdlp_expanded_isa_optimized.json`
+- `artifacts/lookup/lookup_signed_fold_contract.json`
+- `artifacts/projections/backend_model_bundle.json`
+
+Its current default headline is:
 
 - **880 logical qubits**
-- **29,163,456 non-Clifford** under the 2-channel lookup model
-- **30,080,960 non-Clifford** under the conservative 3-channel lookup model
+- **29,163,260 non-Clifford** under the 2-channel lookup model
+- **30,080,764 non-Clifford** under the conservative 3-channel lookup model
 
 ## Improvement factors
 
@@ -36,6 +45,18 @@ Versus the public low-gate line:
 - **1.6477x fewer logical qubits**
 - **2.4003x lower non-Clifford** under the 2-channel model
 - **2.3271x lower non-Clifford** under the conservative 3-channel model
+
+## Alternative backend scenarios
+
+The same structural artifact family also ships experimental alternatives:
+
+- `carry_save_liveness_alias_v1` — same arithmetic backend, but qubits priced
+  from exact ISA liveness rather than named-slot allocation
+- `addsub_modmul_explicit_v1` — explicit add-sub modular-multiplication backend
+- `addsub_modmul_liveness_v1` — combined arithmetic swap plus liveness aliasing
+
+These appear in `alternative_backend_scenarios` inside
+`artifacts/projections/resource_projection.json`.
 
 ## Sensitivity margin
 

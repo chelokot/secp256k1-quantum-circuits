@@ -1,6 +1,6 @@
 {
-  "model_name": "single-lane_carry-save_projection_v1",
-  "honesty_note": "Semantic correctness is exact at the kickmix-ISA level. The non-Clifford and logical-qubit totals below are backend projections, not theorem-proved primitive-gate counts.",
+  "model_name": "carry_save_single_lane_v2_derived",
+  "honesty_note": "Semantic correctness is exact at the kickmix-ISA level. The logical-qubit and non-Clifford totals below are versioned backend projections derived from source artifacts, not theorem-proved primitive-gate counts.",
   "public_google_baseline": {
     "source": "Google/Babbush et al. 2026 rounded published secp256k1 estimates",
     "window_size": 16,
@@ -14,40 +14,370 @@
       "non_clifford": 70000000
     }
   },
+  "source_artifacts": {
+    "leaf_path": "artifacts/circuits/optimized_pointadd_secp256k1.json",
+    "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+    "scaffold_path": "artifacts/circuits/ecdlp_scaffold_optimized.json",
+    "scaffold_sha256": "6f444c332728cde3ccfb9fd532012aaaa9c777a1b0f949573a3910602126cc03",
+    "folded_scaffold_path": "artifacts/circuits/ecdlp_scaffold_lookup_folded.json",
+    "folded_scaffold_sha256": "8411a9ad26c2ac51c0fb27e7a2a63b6750902cef8a5f9b4c4e702a315b460d7a",
+    "register_map_path": "artifacts/circuits/register_map.json",
+    "register_map_sha256": "f57b679f66d6758107e2a6ac249cc10e7eca548cc54a946435b4e0ea7ca96703",
+    "lookup_contract_path": "artifacts/lookup/lookup_signed_fold_contract.json",
+    "lookup_contract_sha256": "0727068cfe6b5d0bad467b3b55892a5661bfab1ee990de73bd0a23393142484e",
+    "expanded_isa_path": "artifacts/circuits/ecdlp_expanded_isa_optimized.json",
+    "expanded_isa_sha256": "ed09e967f53bf9fe7e7e622d58a264c92532a6ec9ec42d11e3d791212b4c7304"
+  },
+  "expanded_isa_schedule": {
+    "path": "artifacts/circuits/ecdlp_expanded_isa_optimized.json",
+    "sha256": "ed09e967f53bf9fe7e7e622d58a264c92532a6ec9ec42d11e3d791212b4c7304",
+    "expanded_leaf_instruction_count": 1036,
+    "expanded_instruction_count_total": 1040
+  },
+  "backend_model_bundle": {
+    "path": "artifacts/projections/backend_model_bundle.json",
+    "default_model": "carry_save_single_lane_v2_derived",
+    "model_names": [
+      "carry_save_single_lane_v2_derived",
+      "carry_save_liveness_alias_v1",
+      "addsub_modmul_explicit_v1",
+      "addsub_modmul_liveness_v1"
+    ]
+  },
+  "structural_accounting": {
+    "path": "artifacts/projections/structural_accounting.json",
+    "leaf_instruction_count": 37,
+    "retained_window_additions": 28,
+    "leaf_opcode_histogram": {
+      "load_input": 3,
+      "lookup_affine_x": 1,
+      "lookup_affine_y": 1,
+      "lookup_meta": 1,
+      "bool_from_flag": 1,
+      "field_mul": 11,
+      "field_add": 10,
+      "field_sub": 3,
+      "mul_const": 2,
+      "select_field_if_flag": 3,
+      "mbuc_clear_bool": 1
+    },
+    "allocated_field_slots": 12,
+    "peak_live_field_slots": 10
+  },
   "optimized_leaf_projection": {
-    "scratch_logical_qubits": 864,
+    "field_bits": 256,
+    "instruction_count": 37,
     "arithmetic_signature": {
       "field_mul": 11,
-      "mul_const_b3": 2,
-      "field_add_sub": 13
+      "field_add": 10,
+      "field_sub": 3,
+      "field_add_sub": 13,
+      "mul_const": 2,
+      "select_field_if_flag": 3,
+      "lookup_ops": 3
     },
-    "modeled_non_clifford_excluding_lookup": 976016
+    "scratch_logical_qubits": 864,
+    "allocated_field_slots": 12,
+    "effective_field_slots": 12,
+    "peak_live_field_slots": 10,
+    "peak_live_control_slots": 2,
+    "modeled_non_clifford_excluding_lookup": 976009
   },
   "optimized_ecdlp_projection": {
-    "window_size": 16,
     "retained_window_additions": 28,
     "logical_qubits_total": 880,
     "lookup_model_2channel": {
       "lookup_channels": 2,
       "per_window_lookup_cost": 65536,
-      "total_non_clifford": 29163456
+      "total_non_clifford": 29163260
     },
     "lookup_model_3channel": {
       "lookup_channels": 3,
       "per_window_lookup_cost": 98304,
-      "total_non_clifford": 30080960
+      "total_non_clifford": 30080764
     }
   },
+  "default_model_details": {
+    "summary": "Preserves the repository headline while deriving whole-circuit totals from exact source artifacts plus a versioned backend model.",
+    "logical_qubit_model": {
+      "field_slot_logical_qubits": 72,
+      "live_window_key_qubits": 16,
+      "slot_accounting_mode": "allocated_named_slots",
+      "include_auxiliary_control_slots_in_qubit_total": false,
+      "comment": "The field-slot width remains a backend assumption; the total is now derived from source artifacts using the checked-in named scratch-slot allocation instead of a whole-circuit constant."
+    },
+    "lookup_model": {
+      "kind": "folded_domain_linear",
+      "non_clifford_per_channel_per_window": 32768,
+      "special_case_constant_overhead": 0,
+      "channels_source": "artifacts/circuits/ecdlp_scaffold_lookup_folded.json:retained_window_additions[*].lookup_channels",
+      "effective_lookup_channels_per_call": 2,
+      "per_window_lookup_cost_2channel": 65536,
+      "per_window_lookup_cost_3channel": 98304
+    },
+    "per_opcode_non_clifford": {
+      "load_input": 0,
+      "lookup_affine_x": 0,
+      "lookup_affine_y": 0,
+      "lookup_meta": 0,
+      "bool_from_flag": 0,
+      "field_mul": 88079,
+      "field_add": 255,
+      "field_sub": 255,
+      "mul_const": 1530,
+      "select_field_if_flag": 255,
+      "mbuc_clear_bool": 0
+    }
+  },
+  "alternative_backend_scenarios": [
+    {
+      "model_name": "carry_save_liveness_alias_v1",
+      "status": "experimental",
+      "summary": "Experimental low-qubit transfer that keeps the default arithmetic backend but prices qubits from exact ISA liveness instead of named-slot allocation.",
+      "logical_qubit_model": {
+        "field_slot_logical_qubits": 72,
+        "live_window_key_qubits": 16,
+        "slot_accounting_mode": "peak_live_isa_slots",
+        "include_auxiliary_control_slots_in_qubit_total": false,
+        "comment": "This scenario reuses dead ISA slots across the leaf schedule. It is more aggressive than the default named-slot allocation and should be read as a backend register-allocation experiment."
+      },
+      "lookup_model": {
+        "kind": "folded_domain_linear",
+        "non_clifford_per_channel_per_window": 32768,
+        "special_case_constant_overhead": 0,
+        "channels_source": "artifacts/circuits/ecdlp_scaffold_lookup_folded.json:retained_window_additions[*].lookup_channels",
+        "effective_lookup_channels_per_call": 2,
+        "per_window_lookup_cost_2channel": 65536,
+        "per_window_lookup_cost_3channel": 98304
+      },
+      "per_opcode_non_clifford": {
+        "load_input": 0,
+        "lookup_affine_x": 0,
+        "lookup_affine_y": 0,
+        "lookup_meta": 0,
+        "bool_from_flag": 0,
+        "field_mul": 88079,
+        "field_add": 255,
+        "field_sub": 255,
+        "mul_const": 1530,
+        "select_field_if_flag": 255,
+        "mbuc_clear_bool": 0
+      },
+      "leaf": {
+        "field_bits": 256,
+        "instruction_count": 37,
+        "arithmetic_signature": {
+          "field_mul": 11,
+          "field_add": 10,
+          "field_sub": 3,
+          "field_add_sub": 13,
+          "mul_const": 2,
+          "select_field_if_flag": 3,
+          "lookup_ops": 3
+        },
+        "scratch_logical_qubits": 720,
+        "allocated_field_slots": 12,
+        "effective_field_slots": 10,
+        "peak_live_field_slots": 10,
+        "peak_live_control_slots": 2,
+        "modeled_non_clifford_excluding_lookup": 976009
+      },
+      "ecdlp": {
+        "retained_window_additions": 28,
+        "logical_qubits_total": 736,
+        "lookup_model_2channel": {
+          "lookup_channels": 2,
+          "per_window_lookup_cost": 65536,
+          "total_non_clifford": 29163260
+        },
+        "lookup_model_3channel": {
+          "lookup_channels": 3,
+          "per_window_lookup_cost": 98304,
+          "total_non_clifford": 30080764
+        }
+      },
+      "improvement_vs_google": {
+        "versus_low_qubit": {
+          "qubit_gain": 1.6304347826086956,
+          "toffoli_gain_2lookup": 3.0860747392438292,
+          "toffoli_gain_3lookup": 2.9919452843684424
+        },
+        "versus_low_gate": {
+          "qubit_gain": 1.9701086956521738,
+          "toffoli_gain_2lookup": 2.4002803527452006,
+          "toffoli_gain_3lookup": 2.3270685545087884
+        }
+      }
+    },
+    {
+      "model_name": "addsub_modmul_explicit_v1",
+      "status": "experimental",
+      "summary": "Experimental explicit multiplier substitution using a controlled add-subtract modular-multiplication formula.",
+      "logical_qubit_model": {
+        "field_slot_logical_qubits": 72,
+        "live_window_key_qubits": 16,
+        "slot_accounting_mode": "allocated_named_slots",
+        "include_auxiliary_control_slots_in_qubit_total": false,
+        "comment": "Kept identical to the default model so that only the arithmetic backend changes in this comparison."
+      },
+      "lookup_model": {
+        "kind": "folded_domain_linear",
+        "non_clifford_per_channel_per_window": 32768,
+        "special_case_constant_overhead": 0,
+        "channels_source": "artifacts/circuits/ecdlp_scaffold_lookup_folded.json:retained_window_additions[*].lookup_channels",
+        "effective_lookup_channels_per_call": 2,
+        "per_window_lookup_cost_2channel": 65536,
+        "per_window_lookup_cost_3channel": 98304
+      },
+      "per_opcode_non_clifford": {
+        "load_input": 0,
+        "lookup_affine_x": 0,
+        "lookup_affine_y": 0,
+        "lookup_meta": 0,
+        "bool_from_flag": 0,
+        "field_mul": 66047,
+        "field_add": 255,
+        "field_sub": 255,
+        "mul_const": 1530,
+        "select_field_if_flag": 255,
+        "mbuc_clear_bool": 0
+      },
+      "leaf": {
+        "field_bits": 256,
+        "instruction_count": 37,
+        "arithmetic_signature": {
+          "field_mul": 11,
+          "field_add": 10,
+          "field_sub": 3,
+          "field_add_sub": 13,
+          "mul_const": 2,
+          "select_field_if_flag": 3,
+          "lookup_ops": 3
+        },
+        "scratch_logical_qubits": 864,
+        "allocated_field_slots": 12,
+        "effective_field_slots": 12,
+        "peak_live_field_slots": 10,
+        "peak_live_control_slots": 2,
+        "modeled_non_clifford_excluding_lookup": 733657
+      },
+      "ecdlp": {
+        "retained_window_additions": 28,
+        "logical_qubits_total": 880,
+        "lookup_model_2channel": {
+          "lookup_channels": 2,
+          "per_window_lookup_cost": 65536,
+          "total_non_clifford": 22377404
+        },
+        "lookup_model_3channel": {
+          "lookup_channels": 3,
+          "per_window_lookup_cost": 98304,
+          "total_non_clifford": 23294908
+        }
+      },
+      "improvement_vs_google": {
+        "versus_low_qubit": {
+          "qubit_gain": 1.3636363636363635,
+          "toffoli_gain_2lookup": 4.021914248855676,
+          "toffoli_gain_3lookup": 3.863505277634065
+        },
+        "versus_low_gate": {
+          "qubit_gain": 1.6477272727272727,
+          "toffoli_gain_2lookup": 3.128155526887748,
+          "toffoli_gain_3lookup": 3.0049485492709396
+        }
+      }
+    },
+    {
+      "model_name": "addsub_modmul_liveness_v1",
+      "status": "experimental",
+      "summary": "Experimental combined scenario using the explicit add-sub modular-multiplication formula together with ISA-liveness-based slot reuse.",
+      "logical_qubit_model": {
+        "field_slot_logical_qubits": 72,
+        "live_window_key_qubits": 16,
+        "slot_accounting_mode": "peak_live_isa_slots",
+        "include_auxiliary_control_slots_in_qubit_total": false,
+        "comment": "This combines the explicit arithmetic substitution with the more aggressive liveness-based slot accounting rule."
+      },
+      "lookup_model": {
+        "kind": "folded_domain_linear",
+        "non_clifford_per_channel_per_window": 32768,
+        "special_case_constant_overhead": 0,
+        "channels_source": "artifacts/circuits/ecdlp_scaffold_lookup_folded.json:retained_window_additions[*].lookup_channels",
+        "effective_lookup_channels_per_call": 2,
+        "per_window_lookup_cost_2channel": 65536,
+        "per_window_lookup_cost_3channel": 98304
+      },
+      "per_opcode_non_clifford": {
+        "load_input": 0,
+        "lookup_affine_x": 0,
+        "lookup_affine_y": 0,
+        "lookup_meta": 0,
+        "bool_from_flag": 0,
+        "field_mul": 66047,
+        "field_add": 255,
+        "field_sub": 255,
+        "mul_const": 1530,
+        "select_field_if_flag": 255,
+        "mbuc_clear_bool": 0
+      },
+      "leaf": {
+        "field_bits": 256,
+        "instruction_count": 37,
+        "arithmetic_signature": {
+          "field_mul": 11,
+          "field_add": 10,
+          "field_sub": 3,
+          "field_add_sub": 13,
+          "mul_const": 2,
+          "select_field_if_flag": 3,
+          "lookup_ops": 3
+        },
+        "scratch_logical_qubits": 720,
+        "allocated_field_slots": 12,
+        "effective_field_slots": 10,
+        "peak_live_field_slots": 10,
+        "peak_live_control_slots": 2,
+        "modeled_non_clifford_excluding_lookup": 733657
+      },
+      "ecdlp": {
+        "retained_window_additions": 28,
+        "logical_qubits_total": 736,
+        "lookup_model_2channel": {
+          "lookup_channels": 2,
+          "per_window_lookup_cost": 65536,
+          "total_non_clifford": 22377404
+        },
+        "lookup_model_3channel": {
+          "lookup_channels": 3,
+          "per_window_lookup_cost": 98304,
+          "total_non_clifford": 23294908
+        }
+      },
+      "improvement_vs_google": {
+        "versus_low_qubit": {
+          "qubit_gain": 1.6304347826086956,
+          "toffoli_gain_2lookup": 4.021914248855676,
+          "toffoli_gain_3lookup": 3.863505277634065
+        },
+        "versus_low_gate": {
+          "qubit_gain": 1.9701086956521738,
+          "toffoli_gain_2lookup": 3.128155526887748,
+          "toffoli_gain_3lookup": 3.0049485492709396
+        }
+      }
+    }
+  ],
   "improvement_vs_google": {
     "versus_low_qubit": {
       "qubit_gain": 1.3636363636363635,
-      "toffoli_gain_2lookup": 3.086053998538445,
-      "toffoli_gain_3lookup": 2.9919257896024596
+      "toffoli_gain_2lookup": 3.0860747392438292,
+      "toffoli_gain_3lookup": 2.9919452843684424
     },
     "versus_low_gate": {
       "qubit_gain": 1.6477272727272727,
-      "toffoli_gain_2lookup": 2.400264221085457,
-      "toffoli_gain_3lookup": 2.327053391913024
+      "toffoli_gain_2lookup": 2.4002803527452006,
+      "toffoli_gain_3lookup": 2.3270685545087884
     }
   }
 }

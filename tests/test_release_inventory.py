@@ -44,6 +44,7 @@ class ReleaseInventoryTests(unittest.TestCase):
             'scripts/refresh_repo.py',
             'src/common.py',
             'src/cain_integration.py',
+            'src/derived_resources.py',
             'src/figure_generation.py',
             'src/maintenance.py',
             'src/resource_projection.py',
@@ -53,10 +54,13 @@ class ReleaseInventoryTests(unittest.TestCase):
             'src/lookup_research.py',
             'artifacts/circuits/optimized_pointadd_secp256k1.json',
             'artifacts/circuits/optimized_pointadd_family.json',
-            'artifacts/verification/core/optimized_pointadd_audit_16384.csv',
             'artifacts/circuits/ecdlp_scaffold_optimized.json',
-            'artifacts/projections/resource_projection.json',
+            'artifacts/circuits/ecdlp_expanded_isa_optimized.json',
             'artifacts/circuits/register_map.json',
+            'artifacts/verification/core/optimized_pointadd_audit_16384.csv',
+            'artifacts/projections/resource_projection.json',
+            'artifacts/projections/structural_accounting.json',
+            'artifacts/projections/backend_model_bundle.json',
             'artifacts/package/proof_manifest.json',
             'artifacts/verification/extended/lookup_contract_audit_8192.csv',
             'artifacts/verification/extended/lookup_contract_summary.json',
@@ -114,11 +118,19 @@ class ReleaseInventoryTests(unittest.TestCase):
                 'model_name',
                 'honesty_note',
                 'public_google_baseline',
+                'source_artifacts',
+                'expanded_isa_schedule',
+                'backend_model_bundle',
+                'structural_accounting',
                 'optimized_leaf_projection',
                 'optimized_ecdlp_projection',
+                'default_model_details',
+                'alternative_backend_scenarios',
                 'improvement_vs_google',
             },
         )
+        self.assertTrue(projection['alternative_backend_scenarios'])
+        self.assertEqual(projection['backend_model_bundle']['default_model'], projection['model_name'])
 
     def test_proof_manifest_matches_curated_files(self):
         proof = json.loads((REPO_ROOT / 'artifacts' / 'package' / 'proof_manifest.json').read_text())

@@ -1,8 +1,8 @@
 {
   "baseline_headline": {
     "logical_qubits": 880,
-    "total_non_clifford_2lookup": 29163456,
-    "total_non_clifford_3lookup": 30080960
+    "total_non_clifford_2lookup": 29163260,
+    "total_non_clifford_3lookup": 30080764
   },
   "scenarios": [
     {
@@ -37,105 +37,105 @@
         {
           "multiplier_share_of_total_arithmetic_budget": 0.75,
           "multiplier_saving_fraction": 0.15,
-          "projected_total_non_clifford_2lookup": 26089006,
-          "projected_total_non_clifford_3lookup": 27006510,
-          "total_reduction_fraction_2lookup": 0.10542133278031246,
-          "total_reduction_fraction_3lookup": 0.10220586045126219
+          "projected_total_non_clifford_2lookup": 26088832,
+          "projected_total_non_clifford_3lookup": 27006336,
+          "total_reduction_fraction_2lookup": 0.10542128520611208,
+          "total_reduction_fraction_3lookup": 0.10220579337679056
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.75,
           "multiplier_saving_fraction": 0.2,
-          "projected_total_non_clifford_2lookup": 25064189,
-          "projected_total_non_clifford_3lookup": 25981693,
-          "total_reduction_fraction_2lookup": 0.1405617770404166,
-          "total_reduction_fraction_3lookup": 0.13627448060168293
+          "projected_total_non_clifford_2lookup": 25064022,
+          "projected_total_non_clifford_3lookup": 25981526,
+          "total_reduction_fraction_2lookup": 0.14056171360814945,
+          "total_reduction_fraction_3lookup": 0.1362743911690541
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.75,
           "multiplier_saving_fraction": 0.25,
-          "projected_total_non_clifford_2lookup": 24039372,
-          "projected_total_non_clifford_3lookup": 24956876,
-          "total_reduction_fraction_2lookup": 0.17570222130052077,
-          "total_reduction_fraction_3lookup": 0.17034310075210365
+          "projected_total_non_clifford_2lookup": 24039213,
+          "projected_total_non_clifford_3lookup": 24956717,
+          "total_reduction_fraction_2lookup": 0.1757021420101868,
+          "total_reduction_fraction_3lookup": 0.1703429889613176
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.75,
           "multiplier_saving_fraction": 0.3,
-          "projected_total_non_clifford_2lookup": 23014555,
-          "projected_total_non_clifford_3lookup": 23932059,
-          "total_reduction_fraction_2lookup": 0.21084266556062492,
-          "total_reduction_fraction_3lookup": 0.20441172090252438
+          "projected_total_non_clifford_2lookup": 23014403,
+          "projected_total_non_clifford_3lookup": 23931907,
+          "total_reduction_fraction_2lookup": 0.21084257041222415,
+          "total_reduction_fraction_3lookup": 0.20441158675358112
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.85,
           "multiplier_saving_fraction": 0.15,
-          "projected_total_non_clifford_2lookup": 25679079,
-          "projected_total_non_clifford_3lookup": 26596583,
-          "total_reduction_fraction_2lookup": 0.11947751048435412,
-          "total_reduction_fraction_3lookup": 0.11583330851143049
+          "projected_total_non_clifford_2lookup": 25678908,
+          "projected_total_non_clifford_3lookup": 26596412,
+          "total_reduction_fraction_2lookup": 0.11947745656692701,
+          "total_reduction_fraction_3lookup": 0.11583323249369597
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.85,
           "multiplier_saving_fraction": 0.2,
-          "projected_total_non_clifford_2lookup": 24517620,
-          "projected_total_non_clifford_3lookup": 25435124,
-          "total_reduction_fraction_2lookup": 0.15930334731247217,
-          "total_reduction_fraction_3lookup": 0.15444441134857398
+          "projected_total_non_clifford_2lookup": 24517457,
+          "projected_total_non_clifford_3lookup": 25434961,
+          "total_reduction_fraction_2lookup": 0.15930327542256936,
+          "total_reduction_fraction_3lookup": 0.1544443099915946
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.85,
           "multiplier_saving_fraction": 0.25,
-          "projected_total_non_clifford_2lookup": 23356161,
-          "projected_total_non_clifford_3lookup": 24273665,
-          "total_reduction_fraction_2lookup": 0.1991291841405902,
-          "total_reduction_fraction_3lookup": 0.19305551418571748
+          "projected_total_non_clifford_2lookup": 23356006,
+          "projected_total_non_clifford_3lookup": 24273510,
+          "total_reduction_fraction_2lookup": 0.19912909427821168,
+          "total_reduction_fraction_3lookup": 0.19305538748949327
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.85,
           "multiplier_saving_fraction": 0.3,
-          "projected_total_non_clifford_2lookup": 22194702,
-          "projected_total_non_clifford_3lookup": 23112206,
-          "total_reduction_fraction_2lookup": 0.23895502096870824,
-          "total_reduction_fraction_3lookup": 0.23166661702286098
+          "projected_total_non_clifford_2lookup": 22194556,
+          "projected_total_non_clifford_3lookup": 23112060,
+          "total_reduction_fraction_2lookup": 0.23895491313385403,
+          "total_reduction_fraction_3lookup": 0.23166646498739193
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.95,
           "multiplier_saving_fraction": 0.15,
-          "projected_total_non_clifford_2lookup": 25269152,
-          "projected_total_non_clifford_3lookup": 26186656,
-          "total_reduction_fraction_2lookup": 0.13353368818839575,
-          "total_reduction_fraction_3lookup": 0.12946075657159875
+          "projected_total_non_clifford_2lookup": 25268984,
+          "projected_total_non_clifford_3lookup": 26186488,
+          "total_reduction_fraction_2lookup": 0.13353362792774195,
+          "total_reduction_fraction_3lookup": 0.12946067161060137
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.95,
           "multiplier_saving_fraction": 0.2,
-          "projected_total_non_clifford_2lookup": 23971051,
-          "projected_total_non_clifford_3lookup": 24888555,
-          "total_reduction_fraction_2lookup": 0.1780449175845277,
-          "total_reduction_fraction_3lookup": 0.17261434209546503
+          "projected_total_non_clifford_2lookup": 23970892,
+          "projected_total_non_clifford_3lookup": 24888396,
+          "total_reduction_fraction_2lookup": 0.17804483723698927,
+          "total_reduction_fraction_3lookup": 0.17261422881413516
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.95,
           "multiplier_saving_fraction": 0.25,
-          "projected_total_non_clifford_2lookup": 22672950,
-          "projected_total_non_clifford_3lookup": 23590454,
-          "total_reduction_fraction_2lookup": 0.22255614698065962,
-          "total_reduction_fraction_3lookup": 0.21576792761933128
+          "projected_total_non_clifford_2lookup": 22672800,
+          "projected_total_non_clifford_3lookup": 23590304,
+          "total_reduction_fraction_2lookup": 0.2225560465462366,
+          "total_reduction_fraction_3lookup": 0.21576778601766897
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.95,
           "multiplier_saving_fraction": 0.3,
-          "projected_total_non_clifford_2lookup": 21374848,
-          "projected_total_non_clifford_3lookup": 22292352,
-          "total_reduction_fraction_2lookup": 0.2670673763767915,
-          "total_reduction_fraction_3lookup": 0.2589215131431975
+          "projected_total_non_clifford_2lookup": 21374708,
+          "projected_total_non_clifford_3lookup": 22292212,
+          "total_reduction_fraction_2lookup": 0.2670672558554839,
+          "total_reduction_fraction_3lookup": 0.25892134322120275
         }
       ],
       "envelope": {
-        "best_total_reduction_fraction_2lookup": 0.2670673763767915,
-        "best_total_reduction_fraction_3lookup": 0.2589215131431975,
-        "best_projected_total_non_clifford_2lookup": 21374848,
-        "best_projected_total_non_clifford_3lookup": 22292352
+        "best_total_reduction_fraction_2lookup": 0.2670672558554839,
+        "best_total_reduction_fraction_3lookup": 0.25892134322120275,
+        "best_projected_total_non_clifford_2lookup": 21374708,
+        "best_projected_total_non_clifford_3lookup": 22292212
       }
     },
     {
@@ -148,121 +148,121 @@
       "cases": [
         {
           "lookup_reduction_fraction": 0.01,
-          "projected_total_non_clifford_2lookup": 29145106,
-          "projected_total_non_clifford_3lookup": 30053435,
+          "projected_total_non_clifford_2lookup": 29144910,
+          "projected_total_non_clifford_3lookup": 30053239,
           "gains": {
             "lookup2": {
-              "vs_google_low_qubit": 3.0879970036821964,
-              "vs_google_low_gate": 2.401775447308375
+              "vs_google_low_qubit": 3.08801777051293,
+              "vs_google_low_gate": 2.4017915992878347
             },
             "lookup3": {
-              "vs_google_low_qubit": 2.9946660007416788,
-              "vs_google_low_gate": 2.329184667243528
+              "vs_google_low_qubit": 2.994685531233422,
+              "vs_google_low_gate": 2.329199857625995
             }
           }
         },
         {
           "lookup_reduction_fraction": 0.03,
-          "projected_total_non_clifford_2lookup": 29108406,
-          "projected_total_non_clifford_3lookup": 29998385,
+          "projected_total_non_clifford_2lookup": 29108210,
+          "projected_total_non_clifford_3lookup": 29998189,
           "gains": {
             "lookup2": {
-              "vs_google_low_qubit": 3.0918903632167285,
-              "vs_google_low_gate": 2.4048036158352333
+              "vs_google_low_qubit": 3.0919111824464642,
+              "vs_google_low_gate": 2.4048198085694725
             },
             "lookup3": {
-              "vs_google_low_qubit": 3.0001615086945512,
-              "vs_google_low_gate": 2.3334589512068735
+              "vs_google_low_qubit": 3.000181110933063,
+              "vs_google_low_gate": 2.3334741973923827
             }
           }
         },
         {
           "lookup_reduction_fraction": 0.05,
-          "projected_total_non_clifford_2lookup": 29071706,
-          "projected_total_non_clifford_3lookup": 29943334,
+          "projected_total_non_clifford_2lookup": 29071510,
+          "projected_total_non_clifford_3lookup": 29943138,
           "gains": {
             "lookup2": {
-              "vs_google_low_qubit": 3.095793552672829,
-              "vs_google_low_gate": 2.407839429856645
+              "vs_google_low_qubit": 3.0958144245001376,
+              "vs_google_low_gate": 2.407855663500107
             },
             "lookup3": {
-              "vs_google_low_qubit": 3.005677323707507,
-              "vs_google_low_gate": 2.337749029550283
+              "vs_google_low_qubit": 3.00569699809018,
+              "vs_google_low_gate": 2.337764331847918
             }
           }
         },
         {
           "lookup_reduction_fraction": 0.1,
-          "projected_total_non_clifford_2lookup": 28979955,
-          "projected_total_non_clifford_3lookup": 29805709,
+          "projected_total_non_clifford_2lookup": 28979759,
+          "projected_total_non_clifford_3lookup": 29805513,
           "gains": {
             "lookup2": {
-              "vs_google_low_qubit": 3.1055948844641064,
-              "vs_google_low_gate": 2.415462687916527
+              "vs_google_low_qubit": 3.105615888662152,
+              "vs_google_low_gate": 2.4154790245150073
             },
             "lookup3": {
-              "vs_google_low_qubit": 3.0195557502087937,
-              "vs_google_low_gate": 2.3485433612735065
+              "vs_google_low_qubit": 3.01957560670068,
+              "vs_google_low_gate": 2.3485588052116397
             }
           }
         },
         {
           "lookup_reduction_fraction": 0.2,
-          "projected_total_non_clifford_2lookup": 28796454,
-          "projected_total_non_clifford_3lookup": 29530458,
+          "projected_total_non_clifford_2lookup": 28796258,
+          "projected_total_non_clifford_3lookup": 29530262,
           "gains": {
             "lookup2": {
-              "vs_google_low_qubit": 3.1253848130051014,
-              "vs_google_low_gate": 2.430854854559523
+              "vs_google_low_qubit": 3.125406085749058,
+              "vs_google_low_gate": 2.430871400027045
             },
             "lookup3": {
-              "vs_google_low_qubit": 3.0477007840515036,
-              "vs_google_low_gate": 2.3704339431511694
+              "vs_google_low_qubit": 3.0477210124312477,
+              "vs_google_low_gate": 2.370449676335415
             }
           }
         },
         {
           "lookup_reduction_fraction": 0.3,
-          "projected_total_non_clifford_2lookup": 28612954,
-          "projected_total_non_clifford_3lookup": 29255206,
+          "projected_total_non_clifford_2lookup": 28612758,
+          "projected_total_non_clifford_3lookup": 29255010,
           "gains": {
             "lookup2": {
-              "vs_google_low_qubit": 3.145428465722204,
-              "vs_google_low_gate": 2.4464443622283807
+              "vs_google_low_qubit": 3.1454500121938613,
+              "vs_google_low_gate": 2.4464611205952256
             },
             "lookup3": {
-              "vs_google_low_qubit": 3.0763755346655226,
-              "vs_google_low_gate": 2.392736526962073
+              "vs_google_low_qubit": 3.076396145480723,
+              "vs_google_low_gate": 2.392752557596118
             }
           }
         },
         {
           "lookup_reduction_fraction": 0.3333333333333333,
-          "projected_total_non_clifford_2lookup": 28551787,
-          "projected_total_non_clifford_3lookup": 29163456,
+          "projected_total_non_clifford_2lookup": 28551591,
+          "projected_total_non_clifford_3lookup": 29163260,
           "gains": {
             "lookup2": {
-              "vs_google_low_qubit": 3.152166972946387,
-              "vs_google_low_gate": 2.451685423402745
+              "vs_google_low_qubit": 3.152188611836027,
+              "vs_google_low_gate": 2.451702253650243
             },
             "lookup3": {
-              "vs_google_low_qubit": 3.086053998538445,
-              "vs_google_low_gate": 2.400264221085457
+              "vs_google_low_qubit": 3.0860747392438292,
+              "vs_google_low_gate": 2.4002803527452006
             }
           }
         },
         {
           "lookup_reduction_fraction": 0.5,
-          "projected_total_non_clifford_2lookup": 28245952,
-          "projected_total_non_clifford_3lookup": 28704704,
+          "projected_total_non_clifford_2lookup": 28245756,
+          "projected_total_non_clifford_3lookup": 28704508,
           "gains": {
             "lookup2": {
-              "vs_google_low_qubit": 3.186297278987092,
-              "vs_google_low_gate": 2.4782312169899603
+              "vs_google_low_qubit": 3.186319389008388,
+              "vs_google_low_gate": 2.4782484136731906
             },
             "lookup3": {
-              "vs_google_low_qubit": 3.1353746061969496,
-              "vs_google_low_gate": 2.4386246937087384
+              "vs_google_low_qubit": 3.135396015148561,
+              "vs_google_low_gate": 2.4386413451155478
             }
           }
         }
@@ -280,60 +280,60 @@
       "pad_sweep": [
         {
           "per_window_small_overhead_pad": 0,
-          "total_non_clifford_2channel_folded": 29163456,
-          "total_non_clifford_3channel_folded_conservative": 30080960,
-          "total_non_clifford_3channel_folded_meta_elided": 29163456,
-          "gain_vs_google_low_qubit_2channel": 3.086053998538445,
-          "gain_vs_google_low_gate_2channel": 2.400264221085457
+          "total_non_clifford_2channel_folded": 29163260,
+          "total_non_clifford_3channel_folded_conservative": 30080764,
+          "total_non_clifford_3channel_folded_meta_elided": 29163260,
+          "gain_vs_google_low_qubit_2channel": 3.0860747392438292,
+          "gain_vs_google_low_gate_2channel": 2.4002803527452006
         },
         {
           "per_window_small_overhead_pad": 256,
-          "total_non_clifford_2channel_folded": 29170624,
-          "total_non_clifford_3channel_folded_conservative": 30088128,
-          "total_non_clifford_3channel_folded_meta_elided": 29170624,
-          "gain_vs_google_low_qubit_2channel": 3.0852956727974004,
-          "gain_vs_google_low_gate_2channel": 2.399674412175756
+          "total_non_clifford_2channel_folded": 29170428,
+          "total_non_clifford_3channel_folded_conservative": 30087932,
+          "total_non_clifford_3channel_folded_meta_elided": 29170428,
+          "gain_vs_google_low_qubit_2channel": 3.0853164033109146,
+          "gain_vs_google_low_gate_2channel": 2.3996905359084892
         },
         {
           "per_window_small_overhead_pad": 512,
-          "total_non_clifford_2channel_folded": 29177792,
-          "total_non_clifford_3channel_folded_conservative": 30095296,
-          "total_non_clifford_3channel_folded_meta_elided": 29177792,
-          "gain_vs_google_low_qubit_2channel": 3.084537719646504,
-          "gain_vs_google_low_gate_2channel": 2.399084893058392
+          "total_non_clifford_2channel_folded": 29177596,
+          "total_non_clifford_3channel_folded_conservative": 30095100,
+          "total_non_clifford_3channel_folded_meta_elided": 29177596,
+          "gain_vs_google_low_qubit_2channel": 3.084558439975658,
+          "gain_vs_google_low_gate_2channel": 2.3991010088699563
         },
         {
           "per_window_small_overhead_pad": 1024,
-          "total_non_clifford_2channel_folded": 29192128,
-          "total_non_clifford_3channel_folded_conservative": 30109632,
-          "total_non_clifford_3channel_folded_meta_elided": 29192128,
-          "gain_vs_google_low_qubit_2channel": 3.083022930017298,
-          "gain_vs_google_low_gate_2channel": 2.3979067233467872
+          "total_non_clifford_2channel_folded": 29191932,
+          "total_non_clifford_3channel_folded_conservative": 30109436,
+          "total_non_clifford_3channel_folded_meta_elided": 29191932,
+          "gain_vs_google_low_qubit_2channel": 3.083043630000234,
+          "gain_vs_google_low_gate_2channel": 2.3979228233335155
         },
         {
           "per_window_small_overhead_pad": 2048,
-          "total_non_clifford_2channel_folded": 29220800,
-          "total_non_clifford_3channel_folded_conservative": 30138304,
-          "total_non_clifford_3channel_folded_meta_elided": 29220800,
-          "gain_vs_google_low_qubit_2channel": 3.0799978097793352,
-          "gain_vs_google_low_gate_2channel": 2.395553852050594
+          "total_non_clifford_2channel_folded": 29220604,
+          "total_non_clifford_3channel_folded_conservative": 30138108,
+          "total_non_clifford_3channel_folded_meta_elided": 29220604,
+          "gain_vs_google_low_qubit_2channel": 3.080018469159638,
+          "gain_vs_google_low_gate_2channel": 2.3955699204574965
         },
         {
           "per_window_small_overhead_pad": 4096,
-          "total_non_clifford_2channel_folded": 29278144,
-          "total_non_clifford_3channel_folded_conservative": 30195648,
-          "total_non_clifford_3channel_folded_meta_elided": 29278144,
-          "gain_vs_google_low_qubit_2channel": 3.0739653442513295,
-          "gain_vs_google_low_gate_2channel": 2.3908619344177007
+          "total_non_clifford_2channel_folded": 29277948,
+          "total_non_clifford_3channel_folded_conservative": 30195452,
+          "total_non_clifford_3channel_folded_meta_elided": 29277948,
+          "gain_vs_google_low_qubit_2channel": 3.073985922783933,
+          "gain_vs_google_low_gate_2channel": 2.3908779399430586
         }
       ],
       "base_case_pad0": {
         "per_window_small_overhead_pad": 0,
-        "total_non_clifford_2channel_folded": 29163456,
-        "total_non_clifford_3channel_folded_conservative": 30080960,
-        "total_non_clifford_3channel_folded_meta_elided": 29163456,
-        "gain_vs_google_low_qubit_2channel": 3.086053998538445,
-        "gain_vs_google_low_gate_2channel": 2.400264221085457
+        "total_non_clifford_2channel_folded": 29163260,
+        "total_non_clifford_3channel_folded_conservative": 30080764,
+        "total_non_clifford_3channel_folded_meta_elided": 29163260,
+        "gain_vs_google_low_qubit_2channel": 3.0860747392438292,
+        "gain_vs_google_low_gate_2channel": 2.4002803527452006
       }
     }
   ],

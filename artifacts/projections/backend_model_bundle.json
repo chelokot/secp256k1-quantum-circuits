@@ -1,0 +1,359 @@
+{
+  "schema": "kickmix-backend-model-bundle-v2",
+  "default_model": "carry_save_single_lane_v2_derived",
+  "field_bits": 256,
+  "window_bits": 16,
+  "lookup_contract_positive_entries": 32768,
+  "models": [
+    {
+      "name": "carry_save_single_lane_v2_derived",
+      "status": "default",
+      "summary": "Preserves the repository headline while deriving whole-circuit totals from exact source artifacts plus a versioned backend model.",
+      "logical_qubit_model": {
+        "field_slot_logical_qubits": 72,
+        "live_window_key_qubits": 16,
+        "slot_accounting_mode": "allocated_named_slots",
+        "include_auxiliary_control_slots_in_qubit_total": false,
+        "comment": "The field-slot width remains a backend assumption; the total is now derived from source artifacts using the checked-in named scratch-slot allocation instead of a whole-circuit constant."
+      },
+      "lookup_model": {
+        "kind": "folded_domain_linear",
+        "non_clifford_per_channel_per_window": 32768,
+        "special_case_constant_overhead": 0,
+        "channels_source": "artifacts/circuits/ecdlp_scaffold_lookup_folded.json:retained_window_additions[*].lookup_channels"
+      },
+      "opcode_models": {
+        "field_add": {
+          "kind": "gidney_style_modular_add_without_carryout",
+          "formula": "n - 1",
+          "field_bits": 256,
+          "non_clifford": 255
+        },
+        "field_sub": {
+          "kind": "gidney_style_modular_sub_without_carryout",
+          "formula": "n - 1",
+          "field_bits": 256,
+          "non_clifford": 255
+        },
+        "select_field_if_flag": {
+          "kind": "bitwise_select_without_extra_carry",
+          "formula": "n - 1",
+          "field_bits": 256,
+          "non_clifford": 255
+        },
+        "mul_const": {
+          "kind": "addition_chain_modular_add",
+          "const_value": 21,
+          "addition_chain": [
+            1,
+            2,
+            4,
+            8,
+            16,
+            20,
+            21
+          ],
+          "modular_add_count": 6,
+          "adder_non_clifford": 255,
+          "non_clifford": 1530
+        },
+        "bool_from_flag": {
+          "kind": "clifford_or_classical_extract",
+          "non_clifford": 0
+        },
+        "mbuc_clear_bool": {
+          "kind": "abstract_cleanup_contract",
+          "non_clifford": 0
+        },
+        "lookup_affine_x": {
+          "kind": "lookup_channel",
+          "non_clifford": 0
+        },
+        "lookup_affine_y": {
+          "kind": "lookup_channel",
+          "non_clifford": 0
+        },
+        "lookup_meta": {
+          "kind": "lookup_channel",
+          "non_clifford": 0
+        },
+        "load_input": {
+          "kind": "alias",
+          "non_clifford": 0
+        },
+        "field_mul": {
+          "kind": "legacy_residual_calibration",
+          "non_clifford": 88079,
+          "reference_leaf_non_clifford_excluding_lookup": 976016,
+          "derived_from": {
+            "field_mul_count": 11,
+            "field_add_sub_cost": 255,
+            "select_field_if_flag_cost": 255,
+            "mul_const_cost": 1530
+          },
+          "comment": "This is the only remaining calibrated primitive family in the default backend model. Whole-circuit headline totals are no longer hard-coded, but this leaf primitive still inherits the previous conservative calibration."
+        }
+      }
+    },
+    {
+      "name": "carry_save_liveness_alias_v1",
+      "status": "experimental",
+      "summary": "Experimental low-qubit transfer that keeps the default arithmetic backend but prices qubits from exact ISA liveness instead of named-slot allocation.",
+      "logical_qubit_model": {
+        "field_slot_logical_qubits": 72,
+        "live_window_key_qubits": 16,
+        "slot_accounting_mode": "peak_live_isa_slots",
+        "include_auxiliary_control_slots_in_qubit_total": false,
+        "comment": "This scenario reuses dead ISA slots across the leaf schedule. It is more aggressive than the default named-slot allocation and should be read as a backend register-allocation experiment."
+      },
+      "lookup_model": {
+        "kind": "folded_domain_linear",
+        "non_clifford_per_channel_per_window": 32768,
+        "special_case_constant_overhead": 0,
+        "channels_source": "artifacts/circuits/ecdlp_scaffold_lookup_folded.json:retained_window_additions[*].lookup_channels"
+      },
+      "opcode_models": {
+        "field_add": {
+          "kind": "gidney_style_modular_add_without_carryout",
+          "formula": "n - 1",
+          "field_bits": 256,
+          "non_clifford": 255
+        },
+        "field_sub": {
+          "kind": "gidney_style_modular_sub_without_carryout",
+          "formula": "n - 1",
+          "field_bits": 256,
+          "non_clifford": 255
+        },
+        "select_field_if_flag": {
+          "kind": "bitwise_select_without_extra_carry",
+          "formula": "n - 1",
+          "field_bits": 256,
+          "non_clifford": 255
+        },
+        "mul_const": {
+          "kind": "addition_chain_modular_add",
+          "const_value": 21,
+          "addition_chain": [
+            1,
+            2,
+            4,
+            8,
+            16,
+            20,
+            21
+          ],
+          "modular_add_count": 6,
+          "adder_non_clifford": 255,
+          "non_clifford": 1530
+        },
+        "bool_from_flag": {
+          "kind": "clifford_or_classical_extract",
+          "non_clifford": 0
+        },
+        "mbuc_clear_bool": {
+          "kind": "abstract_cleanup_contract",
+          "non_clifford": 0
+        },
+        "lookup_affine_x": {
+          "kind": "lookup_channel",
+          "non_clifford": 0
+        },
+        "lookup_affine_y": {
+          "kind": "lookup_channel",
+          "non_clifford": 0
+        },
+        "lookup_meta": {
+          "kind": "lookup_channel",
+          "non_clifford": 0
+        },
+        "load_input": {
+          "kind": "alias",
+          "non_clifford": 0
+        },
+        "field_mul": {
+          "kind": "legacy_residual_calibration",
+          "non_clifford": 88079,
+          "reference_leaf_non_clifford_excluding_lookup": 976016,
+          "derived_from": {
+            "field_mul_count": 11,
+            "field_add_sub_cost": 255,
+            "select_field_if_flag_cost": 255,
+            "mul_const_cost": 1530
+          },
+          "comment": "Arithmetic backend identical to the default model; only the slot-accounting rule changes."
+        }
+      }
+    },
+    {
+      "name": "addsub_modmul_explicit_v1",
+      "status": "experimental",
+      "summary": "Experimental explicit multiplier substitution using a controlled add-subtract modular-multiplication formula.",
+      "logical_qubit_model": {
+        "field_slot_logical_qubits": 72,
+        "live_window_key_qubits": 16,
+        "slot_accounting_mode": "allocated_named_slots",
+        "include_auxiliary_control_slots_in_qubit_total": false,
+        "comment": "Kept identical to the default model so that only the arithmetic backend changes in this comparison."
+      },
+      "lookup_model": {
+        "kind": "folded_domain_linear",
+        "non_clifford_per_channel_per_window": 32768,
+        "special_case_constant_overhead": 0,
+        "channels_source": "artifacts/circuits/ecdlp_scaffold_lookup_folded.json:retained_window_additions[*].lookup_channels"
+      },
+      "opcode_models": {
+        "field_add": {
+          "kind": "gidney_style_modular_add_without_carryout",
+          "formula": "n - 1",
+          "field_bits": 256,
+          "non_clifford": 255
+        },
+        "field_sub": {
+          "kind": "gidney_style_modular_sub_without_carryout",
+          "formula": "n - 1",
+          "field_bits": 256,
+          "non_clifford": 255
+        },
+        "select_field_if_flag": {
+          "kind": "bitwise_select_without_extra_carry",
+          "formula": "n - 1",
+          "field_bits": 256,
+          "non_clifford": 255
+        },
+        "mul_const": {
+          "kind": "addition_chain_modular_add",
+          "const_value": 21,
+          "addition_chain": [
+            1,
+            2,
+            4,
+            8,
+            16,
+            20,
+            21
+          ],
+          "modular_add_count": 6,
+          "adder_non_clifford": 255,
+          "non_clifford": 1530
+        },
+        "bool_from_flag": {
+          "kind": "clifford_or_classical_extract",
+          "non_clifford": 0
+        },
+        "mbuc_clear_bool": {
+          "kind": "abstract_cleanup_contract",
+          "non_clifford": 0
+        },
+        "lookup_affine_x": {
+          "kind": "lookup_channel",
+          "non_clifford": 0
+        },
+        "lookup_affine_y": {
+          "kind": "lookup_channel",
+          "non_clifford": 0
+        },
+        "lookup_meta": {
+          "kind": "lookup_channel",
+          "non_clifford": 0
+        },
+        "load_input": {
+          "kind": "alias",
+          "non_clifford": 0
+        },
+        "field_mul": {
+          "kind": "controlled_add_sub_modular_multiplication",
+          "formula": "n^2 + 2n - 1",
+          "field_bits": 256,
+          "non_clifford": 66047,
+          "comment": "This is an explicit formula scenario, not a primitive-gate proof for the repository leaf. It is included as a transparent backend substitution experiment."
+        }
+      }
+    },
+    {
+      "name": "addsub_modmul_liveness_v1",
+      "status": "experimental",
+      "summary": "Experimental combined scenario using the explicit add-sub modular-multiplication formula together with ISA-liveness-based slot reuse.",
+      "logical_qubit_model": {
+        "field_slot_logical_qubits": 72,
+        "live_window_key_qubits": 16,
+        "slot_accounting_mode": "peak_live_isa_slots",
+        "include_auxiliary_control_slots_in_qubit_total": false,
+        "comment": "This combines the explicit arithmetic substitution with the more aggressive liveness-based slot accounting rule."
+      },
+      "lookup_model": {
+        "kind": "folded_domain_linear",
+        "non_clifford_per_channel_per_window": 32768,
+        "special_case_constant_overhead": 0,
+        "channels_source": "artifacts/circuits/ecdlp_scaffold_lookup_folded.json:retained_window_additions[*].lookup_channels"
+      },
+      "opcode_models": {
+        "field_add": {
+          "kind": "gidney_style_modular_add_without_carryout",
+          "formula": "n - 1",
+          "field_bits": 256,
+          "non_clifford": 255
+        },
+        "field_sub": {
+          "kind": "gidney_style_modular_sub_without_carryout",
+          "formula": "n - 1",
+          "field_bits": 256,
+          "non_clifford": 255
+        },
+        "select_field_if_flag": {
+          "kind": "bitwise_select_without_extra_carry",
+          "formula": "n - 1",
+          "field_bits": 256,
+          "non_clifford": 255
+        },
+        "mul_const": {
+          "kind": "addition_chain_modular_add",
+          "const_value": 21,
+          "addition_chain": [
+            1,
+            2,
+            4,
+            8,
+            16,
+            20,
+            21
+          ],
+          "modular_add_count": 6,
+          "adder_non_clifford": 255,
+          "non_clifford": 1530
+        },
+        "bool_from_flag": {
+          "kind": "clifford_or_classical_extract",
+          "non_clifford": 0
+        },
+        "mbuc_clear_bool": {
+          "kind": "abstract_cleanup_contract",
+          "non_clifford": 0
+        },
+        "lookup_affine_x": {
+          "kind": "lookup_channel",
+          "non_clifford": 0
+        },
+        "lookup_affine_y": {
+          "kind": "lookup_channel",
+          "non_clifford": 0
+        },
+        "lookup_meta": {
+          "kind": "lookup_channel",
+          "non_clifford": 0
+        },
+        "load_input": {
+          "kind": "alias",
+          "non_clifford": 0
+        },
+        "field_mul": {
+          "kind": "controlled_add_sub_modular_multiplication",
+          "formula": "n^2 + 2n - 1",
+          "field_bits": 256,
+          "non_clifford": 66047,
+          "comment": "This is an explicit formula scenario, not a primitive-gate proof for the repository leaf. It is included as a transparent backend substitution experiment."
+        }
+      }
+    }
+  ]
+}

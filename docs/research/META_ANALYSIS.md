@@ -24,6 +24,7 @@ Role:
 - provide the retained-window scaffold metadata
 - provide the extended verification and research layers
 - provide the modeled baseline comparison
+- expose the derived structural/projection pipeline that now rebuilds the mainline from source artifacts
 
 ## Quantified internal differences
 
@@ -32,7 +33,8 @@ between the cited Google estimates and the optimized artifact:
 
 - Google low-qubit ECDLP line: `1200 logical qubits`, `90,000,000 non-Clifford`
 - Google low-gate ECDLP line: `1450 logical qubits`, `70,000,000 non-Clifford`
-- optimized exact leaf: `37` ISA instructions, `12` arithmetic slots
+- optimized exact leaf: `37` ISA instructions, `12` named arithmetic slots
+- expanded retained-window replay: `1036` exact leaf instructions over `28` retained additions
 
 ## Main interpretation
 

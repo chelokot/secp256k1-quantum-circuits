@@ -401,7 +401,7 @@ def build_lookup_folded_projection(repo_root: Path, small_pad_values: Iterable[i
         },
         "base_case_pad0": rows[0],
         "pad_sweep": rows,
-        "logical_qubit_comment": "The current repository does not primitive-lower the 16-bit sign/magnitude preprocessing. A small ancilla increase is plausible but expected to be negligible against the ~880 logical-qubit headline.",
+        "logical_qubit_comment": "The current repository does not primitive-lower the 16-bit sign/magnitude preprocessing. A small ancilla increase is plausible but expected to be negligible against the default named-slot headline and the repository's lower liveness-based scenario.",
         "notes": [
             "The signed folded lookup contract is part of the repository's primary optimized projection.",
             "This file records the current lookup-folded projection under a small additive pad sweep.",

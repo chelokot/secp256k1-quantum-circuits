@@ -15,12 +15,15 @@ PROOF_MANIFEST_PATHS = [
     'artifacts/circuits/optimized_pointadd_secp256k1.json',
     'artifacts/circuits/optimized_pointadd_family.json',
     'artifacts/circuits/ecdlp_scaffold_optimized.json',
+    'artifacts/circuits/ecdlp_expanded_isa_optimized.json',
     'artifacts/verification/core/optimized_pointadd_audit_16384.csv',
     'artifacts/verification/core/toy_curve_exhaustive_19850.csv',
     'artifacts/verification/extended/lookup_contract_audit_8192.csv',
     'artifacts/verification/extended/scaffold_schedule_audit_256.csv',
     'artifacts/verification/extended/toy_curve_family_extended_110692.csv',
     'artifacts/projections/resource_projection.json',
+    'artifacts/projections/structural_accounting.json',
+    'artifacts/projections/backend_model_bundle.json',
     'artifacts/projections/projection_sensitivity.json',
     'artifacts/projections/meta_analysis.json',
     'artifacts/projections/claim_boundary_matrix.json',
@@ -43,6 +46,8 @@ PROOF_MANIFEST_PATHS = [
     'src/verifier.py',
     'src/extended_verifier.py',
     'src/figure_generation.py',
+    'src/resource_projection.py',
+    'src/derived_resources.py',
 ]
 
 

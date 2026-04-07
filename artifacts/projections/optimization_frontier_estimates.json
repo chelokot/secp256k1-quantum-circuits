@@ -1,101 +1,142 @@
 {
   "current_headline": {
     "logical_qubits": 880,
-    "non_clifford_2lookup": 30998464,
-    "non_clifford_3lookup": 32833472
+    "non_clifford_2lookup": 29163260,
+    "non_clifford_3lookup": 30080764,
+    "source_model": "carry_save_single_lane_v2_derived"
   },
   "frontiers": [
     {
-      "name": "const21_backend_specialization",
-      "status": "not_in_current_projection",
+      "name": "derived_structural_pipeline",
+      "status": "now_shipped",
+      "confidence": "high",
+      "estimated_total_non_clifford_multiplier_range": [
+        1.0,
+        1.0
+      ],
+      "estimated_total_qubit_multiplier_range": [
+        1.0,
+        1.0
+      ],
+      "derived_headline": {
+        "logical_qubits": 880,
+        "non_clifford_2lookup": 29163260,
+        "non_clifford_3lookup": 30080764
+      },
+      "rationale": "The repository now derives the mainline from checked-in structural artifacts plus a versioned backend-model bundle instead of storing whole-circuit headline constants.",
+      "main_risk": "Still a backend model below the kickmix ISA boundary, not a primitive-gate lowering."
+    },
+    {
+      "name": "isa_liveness_aliasing",
+      "status": "experimental_in_repo",
       "confidence": "medium",
       "estimated_total_non_clifford_multiplier_range": [
-        0.96,
-        0.99
-      ],
-      "estimated_total_qubit_multiplier_range": [
-        0.99,
+        1.0,
         1.0
       ],
-      "rationale": "The leaf contains two multiplications by the fixed constant 21 = 3*b. A backend that compiles those as shift/add constant-arithmetic rather than generic field multipliers should shave a few percent.",
-      "main_risk": "Exact savings depend on the primitive arithmetic library and may already be partly hidden inside the current conservative projection."
+      "estimated_total_qubit_multiplier_range": [
+        0.8363636363636363,
+        0.8363636363636363
+      ],
+      "derived_headline": {
+        "logical_qubits": 736,
+        "non_clifford_2lookup": 29163260,
+        "non_clifford_3lookup": 30080764
+      },
+      "rationale": "Exact ISA-slot liveness implies a lower peak live arithmetic-slot count than the conservative named-slot policy used by the default model.",
+      "main_risk": "This is a backend register-allocation hypothesis, not a theorem-proved primitive mapping."
     },
     {
-      "name": "lookup_channel_packing",
-      "status": "not_in_current_projection",
-      "confidence": "low_to_medium",
+      "name": "explicit_addsub_modmul_backend",
+      "status": "experimental_in_repo",
+      "confidence": "medium",
       "estimated_total_non_clifford_multiplier_range": [
-        0.85,
-        0.95
+        0.7673149023805981,
+        0.7744121126710745
       ],
       "estimated_total_qubit_multiplier_range": [
-        0.95,
+        1.0,
         1.0
       ],
-      "rationale": "The current comparison uses explicit 2-channel and 3-channel lookup models. Better qROM/qRAM packing or serial readout could reduce the dominant lookup term.",
-      "main_risk": "This is backend-specific and could trade depth for width or latency in ways the current ISA-level repository does not model."
+      "derived_headline": {
+        "logical_qubits": 880,
+        "non_clifford_2lookup": 22377404,
+        "non_clifford_3lookup": 23294908
+      },
+      "rationale": "This swaps the calibrated field-multiplication family for an explicit add-sub modular-multiplication formula while keeping the rest of the structural pipeline fixed.",
+      "main_risk": "The arithmetic backend is explicit at the model layer, but the repository still does not ship a primitive-gate lowering for that multiplier family."
     },
     {
-      "name": "cross_call_lazy_reduction",
-      "status": "not_in_current_projection",
+      "name": "explicit_backend_plus_liveness",
+      "status": "experimental_in_repo",
+      "confidence": "medium",
+      "estimated_total_non_clifford_multiplier_range": [
+        0.7673149023805981,
+        0.7744121126710745
+      ],
+      "estimated_total_qubit_multiplier_range": [
+        0.8363636363636363,
+        0.8363636363636363
+      ],
+      "derived_headline": {
+        "logical_qubits": 736,
+        "non_clifford_2lookup": 22377404,
+        "non_clifford_3lookup": 23294908
+      },
+      "rationale": "This combines the explicit arithmetic substitution with ISA-liveness-based slot reuse to show the strongest currently checked-in experimental scenario.",
+      "main_risk": "Both moving parts are still backend-level models below the exact ISA boundary."
+    },
+    {
+      "name": "signed_lookup_folding_contract",
+      "status": "exact_contract_plus_modeled_backend",
+      "confidence": "medium",
+      "estimated_total_non_clifford_multiplier_range": [
+        1.0,
+        1.0
+      ],
+      "estimated_total_qubit_multiplier_range": [
+        1.0,
+        1.01
+      ],
+      "derived_headline": {
+        "logical_qubits": 880,
+        "non_clifford_2lookup": 29163260,
+        "non_clifford_3lookup": 30080764
+      },
+      "rationale": "The signed folded contract is exact and heavily audited, but its backend impact remains bounded because arithmetic dominates the current model.",
+      "main_risk": "Further gains from lookup work alone are limited unless the arithmetic/backend layer also changes."
+    },
+    {
+      "name": "cross_call_scheduler_and_flattening",
+      "status": "future_work",
       "confidence": "low",
       "estimated_total_non_clifford_multiplier_range": [
         0.92,
-        0.97
+        0.99
       ],
       "estimated_total_qubit_multiplier_range": [
-        0.95,
-        1.02
-      ],
-      "rationale": "The 28 retained additions are currently modeled as repeated independent leaf calls. A flatter backend could fuse consecutive modular reductions or keep carry-save state live across calls.",
-      "main_risk": "Requires a new exactness layer because it changes the ISA boundary itself."
-    },
-    {
-      "name": "tail_restructuring_beyond_2n_over_w_minus_4",
-      "status": "unclear",
-      "confidence": "low",
-      "estimated_total_non_clifford_multiplier_range": [
-        0.97,
+        0.9,
         1.0
       ],
-      "estimated_total_qubit_multiplier_range": [
-        0.98,
-        1.0
-      ],
-      "rationale": "Further reducing retained window additions below the public appendix relation would be a real structural gain.",
-      "main_risk": "This may simply be impossible without changing the higher-level algorithm, phase-estimation layout, or error model."
+      "rationale": "A flatter backend might fuse reductions or reuse state across retained calls, but that would move the repository to a different exactness boundary.",
+      "main_risk": "No checked-in exact artifact currently supports this claim."
     },
     {
-      "name": "primitive_gate_cancellation_after_flattening",
-      "status": "unclear",
+      "name": "primitive_gate_lowering_and_cancellation",
+      "status": "future_work",
       "confidence": "low",
       "estimated_total_non_clifford_multiplier_range": [
         0.9,
-        0.98
-      ],
-      "estimated_total_qubit_multiplier_range": [
-        0.98,
-        1.0
-      ],
-      "rationale": "A real primitive-gate compiler may find cancellations that are invisible at the kickmix ISA level.",
-      "main_risk": "This could also go the other direction if lookup and cleanup abstractions expand badly when flattened."
-    },
-    {
-      "name": "signed_digit_recoding",
-      "status": "negative_result_candidate",
-      "confidence": "medium",
-      "estimated_total_non_clifford_multiplier_range": [
-        0.98,
-        1.03
-      ],
-      "estimated_total_qubit_multiplier_range": [
-        0.98,
         1.05
       ],
-      "rationale": "Sparse signed-digit encodings help classically, but coherent reversible recoding has overhead and may erase most of the gain at w=16.",
-      "main_risk": "Easy place for optimistic self-deception; not counted as a likely near-term win here."
+      "estimated_total_qubit_multiplier_range": [
+        0.95,
+        1.05
+      ],
+      "rationale": "Primitive lowering could reveal cancellation opportunities or hidden expansion penalties that are invisible at the ISA layer.",
+      "main_risk": "This is exactly the layer the repository still does not prove today."
     }
   ],
-  "stacking_note": "Do not multiply the ranges naively. Most of these ideas overlap, and some require a different exactness boundary than the one claimed in this repository.",
-  "author_note": "This file is a roadmap, not a proved improvement over the audited 880q / 31.0M-32.8M projection."
+  "stacking_note": "Do not multiply these ranges naively. Some frontiers are already shipped experimental scenarios, others are future-work directions, and several overlap strongly.",
+  "author_note": "This file is a roadmap around the current derived mainline, not a primitive-gate proof beyond the repository's exact ISA boundary."
 }

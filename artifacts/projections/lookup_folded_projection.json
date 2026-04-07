@@ -1,6 +1,6 @@
 {
   "schema": "lookup-folded-projection-v1",
-  "base_projection_sha256": "65c6c5c37e1e132826e075bacb670607a424b935104689e43f79f45250122759",
+  "base_projection_sha256": "b574556e827d23a806128893162681cd21aa7ea57975b1789a5a03a61ba38794",
   "assumptions": [
     "The exact arithmetic leaf cost is unchanged from the repository's published optimized leaf.",
     "Each signed 16-bit coordinate table is folded from 65536 entries to 32768 entries plus one special constant for 0x8000.",
@@ -8,70 +8,70 @@
     "Small classical-preprocessing / sign-fix overhead below the ISA layer is not exactly lowered here, so a per-window additive pad sweep is included."
   ],
   "mainline_per_window": {
-    "arithmetic_non_clifford": 976016,
+    "arithmetic_non_clifford": 976009,
     "lookup_2channel": 65536,
     "lookup_3channel_conservative": 98304,
     "lookup_3channel_meta_elided": 65536
   },
   "base_case_pad0": {
     "per_window_small_overhead_pad": 0,
-    "total_non_clifford_2channel_folded": 29163456,
-    "total_non_clifford_3channel_folded_conservative": 30080960,
-    "total_non_clifford_3channel_folded_meta_elided": 29163456,
-    "gain_vs_google_low_qubit_2channel": 3.086053998538445,
-    "gain_vs_google_low_gate_2channel": 2.400264221085457
+    "total_non_clifford_2channel_folded": 29163260,
+    "total_non_clifford_3channel_folded_conservative": 30080764,
+    "total_non_clifford_3channel_folded_meta_elided": 29163260,
+    "gain_vs_google_low_qubit_2channel": 3.0860747392438292,
+    "gain_vs_google_low_gate_2channel": 2.4002803527452006
   },
   "pad_sweep": [
     {
       "per_window_small_overhead_pad": 0,
-      "total_non_clifford_2channel_folded": 29163456,
-      "total_non_clifford_3channel_folded_conservative": 30080960,
-      "total_non_clifford_3channel_folded_meta_elided": 29163456,
-      "gain_vs_google_low_qubit_2channel": 3.086053998538445,
-      "gain_vs_google_low_gate_2channel": 2.400264221085457
+      "total_non_clifford_2channel_folded": 29163260,
+      "total_non_clifford_3channel_folded_conservative": 30080764,
+      "total_non_clifford_3channel_folded_meta_elided": 29163260,
+      "gain_vs_google_low_qubit_2channel": 3.0860747392438292,
+      "gain_vs_google_low_gate_2channel": 2.4002803527452006
     },
     {
       "per_window_small_overhead_pad": 256,
-      "total_non_clifford_2channel_folded": 29170624,
-      "total_non_clifford_3channel_folded_conservative": 30088128,
-      "total_non_clifford_3channel_folded_meta_elided": 29170624,
-      "gain_vs_google_low_qubit_2channel": 3.0852956727974004,
-      "gain_vs_google_low_gate_2channel": 2.399674412175756
+      "total_non_clifford_2channel_folded": 29170428,
+      "total_non_clifford_3channel_folded_conservative": 30087932,
+      "total_non_clifford_3channel_folded_meta_elided": 29170428,
+      "gain_vs_google_low_qubit_2channel": 3.0853164033109146,
+      "gain_vs_google_low_gate_2channel": 2.3996905359084892
     },
     {
       "per_window_small_overhead_pad": 512,
-      "total_non_clifford_2channel_folded": 29177792,
-      "total_non_clifford_3channel_folded_conservative": 30095296,
-      "total_non_clifford_3channel_folded_meta_elided": 29177792,
-      "gain_vs_google_low_qubit_2channel": 3.084537719646504,
-      "gain_vs_google_low_gate_2channel": 2.399084893058392
+      "total_non_clifford_2channel_folded": 29177596,
+      "total_non_clifford_3channel_folded_conservative": 30095100,
+      "total_non_clifford_3channel_folded_meta_elided": 29177596,
+      "gain_vs_google_low_qubit_2channel": 3.084558439975658,
+      "gain_vs_google_low_gate_2channel": 2.3991010088699563
     },
     {
       "per_window_small_overhead_pad": 1024,
-      "total_non_clifford_2channel_folded": 29192128,
-      "total_non_clifford_3channel_folded_conservative": 30109632,
-      "total_non_clifford_3channel_folded_meta_elided": 29192128,
-      "gain_vs_google_low_qubit_2channel": 3.083022930017298,
-      "gain_vs_google_low_gate_2channel": 2.3979067233467872
+      "total_non_clifford_2channel_folded": 29191932,
+      "total_non_clifford_3channel_folded_conservative": 30109436,
+      "total_non_clifford_3channel_folded_meta_elided": 29191932,
+      "gain_vs_google_low_qubit_2channel": 3.083043630000234,
+      "gain_vs_google_low_gate_2channel": 2.3979228233335155
     },
     {
       "per_window_small_overhead_pad": 2048,
-      "total_non_clifford_2channel_folded": 29220800,
-      "total_non_clifford_3channel_folded_conservative": 30138304,
-      "total_non_clifford_3channel_folded_meta_elided": 29220800,
-      "gain_vs_google_low_qubit_2channel": 3.0799978097793352,
-      "gain_vs_google_low_gate_2channel": 2.395553852050594
+      "total_non_clifford_2channel_folded": 29220604,
+      "total_non_clifford_3channel_folded_conservative": 30138108,
+      "total_non_clifford_3channel_folded_meta_elided": 29220604,
+      "gain_vs_google_low_qubit_2channel": 3.080018469159638,
+      "gain_vs_google_low_gate_2channel": 2.3955699204574965
     },
     {
       "per_window_small_overhead_pad": 4096,
-      "total_non_clifford_2channel_folded": 29278144,
-      "total_non_clifford_3channel_folded_conservative": 30195648,
-      "total_non_clifford_3channel_folded_meta_elided": 29278144,
-      "gain_vs_google_low_qubit_2channel": 3.0739653442513295,
-      "gain_vs_google_low_gate_2channel": 2.3908619344177007
+      "total_non_clifford_2channel_folded": 29277948,
+      "total_non_clifford_3channel_folded_conservative": 30195452,
+      "total_non_clifford_3channel_folded_meta_elided": 29277948,
+      "gain_vs_google_low_qubit_2channel": 3.073985922783933,
+      "gain_vs_google_low_gate_2channel": 2.3908779399430586
     }
   ],
-  "logical_qubit_comment": "The current repository does not primitive-lower the 16-bit sign/magnitude preprocessing. A small ancilla increase is plausible but expected to be negligible against the ~880 logical-qubit headline.",
+  "logical_qubit_comment": "The current repository does not primitive-lower the 16-bit sign/magnitude preprocessing. A small ancilla increase is plausible but expected to be negligible against the default named-slot headline and the repository's lower liveness-based scenario.",
   "notes": [
     "The signed folded lookup contract is part of the repository's primary optimized projection.",
     "This file records the current lookup-folded projection under a small additive pad sweep."

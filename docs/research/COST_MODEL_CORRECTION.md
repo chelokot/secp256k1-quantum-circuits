@@ -1,17 +1,19 @@
 # Cost-model accounting
 
 This file defines the arithmetic-versus-lookup accounting used by the optimized
-projection and explains the shares reported elsewhere in the repository.
+projection and explains the shares reported elsewhere in the repository. The
+mainline numbers are now derived from the checked-in leaf, expanded scaffold,
+and backend-model bundle rather than repeated from standalone headline constants.
 
 ## Inputs taken from repository artifacts
 
 From `artifacts/projections/resource_projection.json`:
 
-- arithmetic-only cost per retained point-add leaf: `976,016`
+- arithmetic-only cost per retained point-add leaf: `976,009`
 - retained point-add leaves in the scaffold: `28`
-- modeled arithmetic-only total across the scaffold: `27,328,448`
-- modeled 2-channel total: `29,163,456`
-- modeled conservative 3-channel total: `30,080,960`
+- modeled arithmetic-only total across the scaffold: `27,328,252`
+- modeled 2-channel total: `29,163,260`
+- modeled conservative 3-channel total: `30,080,764`
 
 ## Derived lookup contribution
 
