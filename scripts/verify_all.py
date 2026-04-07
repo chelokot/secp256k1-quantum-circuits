@@ -211,10 +211,8 @@ def build_summary(console: Console, show_progress: bool, quick: bool) -> Dict[st
         compiler_build = compiler_project['build_summary']
         compiler_frontier = compiler_project['frontier']
         summary['headline_checks']['compiler_exact_checks_pass'] = (
-            compiler_verify['summary']['pass'] == compiler_verify['summary']['total']
-            and compiler_verify['slot_allocation_checks']['pass'] == 1
-            and compiler_verify['primitive_multiplier_checks']['pass'] == 1
-            and compiler_verify['qubit_frontier_checks']['pass'] == 1
+            compiler_verify['summary']['semantic_cases']['pass'] == compiler_verify['summary']['semantic_cases']['total']
+            and compiler_verify['summary']['invariant_checks']['pass'] == compiler_verify['summary']['invariant_checks']['total']
             and compiler_build['headline']['best_gate_family'] == compiler_frontier['best_gate_family']
             and compiler_build['headline']['best_qubit_family'] == compiler_frontier['best_qubit_family']
         )
@@ -318,10 +316,16 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
         print()
 
         section += 1
-        exact_pass = compiler_verify['summary']['pass'] == compiler_verify['summary']['total']
+        exact_pass = (
+            compiler_verify['summary']['semantic_cases']['pass'] == compiler_verify['summary']['semantic_cases']['total']
+            and compiler_verify['summary']['invariant_checks']['pass'] == compiler_verify['summary']['invariant_checks']['total']
+        )
         print(f"[{section}/{total_sections}] Exact compiler verification {console.ok('PASS') if exact_pass else console.fail('FAIL')}")
         print(console.detail(
-            f"      compiler-project checks: {compiler_verify['summary']['pass']:,} / {compiler_verify['summary']['total']:,} (raw-32 semantic replay + slot allocation + multiplier inventory + qubit frontier)"
+            f"      semantic replay: {compiler_verify['summary']['semantic_cases']['pass']:,} / {compiler_verify['summary']['semantic_cases']['total']:,} cases"
+        ))
+        print(console.detail(
+            f"      integrity checks: {compiler_verify['summary']['invariant_checks']['pass']:,} / {compiler_verify['summary']['invariant_checks']['total']:,} (canonical point + schedule + slot allocation + inventories + frontier + transfer handoffs)"
         ))
         print(console.detail(f"      verification sha256: {compiler_project['verification_summary_sha256']}"))
         print()

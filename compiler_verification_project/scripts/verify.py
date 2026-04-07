@@ -8,10 +8,13 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SRC = PROJECT_ROOT / 'compiler_verification_project' / 'src'
+ROOT_SRC = PROJECT_ROOT / 'src'
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
+if str(ROOT_SRC) not in sys.path:
+    sys.path.insert(0, str(ROOT_SRC))
 
-from project import write_verification_summary  # noqa: E402
+from integrity import write_verification_summary  # noqa: E402
 
 
 def parse_args() -> argparse.Namespace:
@@ -23,7 +26,11 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     payload = write_verification_summary(case_count=args.cases)
-    print(json.dumps(payload, indent=2))
+    print(json.dumps({
+        'summary': payload['summary'],
+        'semantic_replay': payload['semantic_replay']['summary'],
+        'artifact': 'compiler_verification_project/artifacts/verification_summary.json',
+    }, indent=2))
 
 
 if __name__ == '__main__':

@@ -65,10 +65,13 @@ class VerificationPipelineTests(unittest.TestCase):
         verify = compiler['verification_summary']
         self.assertEqual(build['headline']['best_gate_family'], frontier['best_gate_family'])
         self.assertEqual(build['headline']['best_qubit_family'], frontier['best_qubit_family'])
-        self.assertEqual(verify['summary']['pass'], verify['summary']['total'])
-        self.assertEqual(verify['slot_allocation_checks']['pass'], 1)
-        self.assertEqual(verify['primitive_multiplier_checks']['pass'], 1)
-        self.assertEqual(verify['qubit_frontier_checks']['pass'], 1)
+        self.assertEqual(verify['summary']['semantic_cases']['pass'], verify['summary']['semantic_cases']['total'])
+        self.assertEqual(verify['summary']['invariant_checks']['pass'], verify['summary']['invariant_checks']['total'])
+        self.assertEqual(verify['schedule_checks']['pass'], verify['schedule_checks']['total'])
+        self.assertEqual(verify['slot_allocation_checks']['pass'], verify['slot_allocation_checks']['total'])
+        self.assertEqual(verify['frontier_checks']['pass'], verify['frontier_checks']['total'])
+        self.assertEqual(verify['cain_transfer_checks']['pass'], verify['cain_transfer_checks']['total'])
+        self.assertEqual(verify['azure_seed_checks']['pass'], verify['azure_seed_checks']['total'])
         baseline = self.summary['google_baseline']
         self.assertAlmostEqual(
             frontier['best_gate_family']['improvement_vs_google_low_qubit'],

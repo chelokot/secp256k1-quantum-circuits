@@ -306,8 +306,8 @@ def exact_leaf_slot_allocation() -> Dict[str, Any]:
     for version in versions:
         version['last_use'] = max(uses[version['id']]) if uses[version['id']] else version['def_pc']
 
-    free_arithmetic: List[int] = []
-    free_control: List[int] = []
+    free_arithmetic: set[int] = set()
+    free_control: set[int] = set()
     next_arithmetic = 0
     next_control = 0
     assigned: Dict[int, int] = {}
@@ -358,24 +358,35 @@ def exact_leaf_slot_allocation() -> Dict[str, Any]:
             if reuse_slot is not None:
                 slot = reuse_slot
             elif dst in arithmetic_slots:
-                slot = free_arithmetic.pop() if free_arithmetic else next_arithmetic
+                slot = min(free_arithmetic) if free_arithmetic else next_arithmetic
                 if slot == next_arithmetic:
                     next_arithmetic += 1
+                else:
+                    free_arithmetic.remove(slot)
             else:
-                slot = free_control.pop() if free_control else next_control
+                slot = min(free_control) if free_control else next_control
                 if slot == next_control:
                     next_control += 1
+                else:
+                    free_control.remove(slot)
             assigned[new_vid] = slot
             live.add(new_vid)
 
         to_free = [vid for vid in list(live) if versions[vid]['last_use'] == pc]
         for vid in to_free:
             slot = assigned[vid]
-            if versions[vid]['reg'] in arithmetic_slots:
-                free_arithmetic.append(slot)
-            else:
-                free_control.append(slot)
             live.remove(vid)
+            if any(assigned[other_vid] == slot for other_vid in live):
+                continue
+            if versions[vid]['reg'] in arithmetic_slots:
+                free_arithmetic.add(slot)
+            else:
+                free_control.add(slot)
+
+        live_arithmetic_slots = [assigned[vid] for vid in live if versions[vid]['reg'] in arithmetic_slots]
+        live_control_slots = [assigned[vid] for vid in live if versions[vid]['reg'] in control_slots]
+        assert len(live_arithmetic_slots) == len(set(live_arithmetic_slots))
+        assert len(live_control_slots) == len(set(live_control_slots))
 
     peak_arithmetic = max(per_pc, key=lambda row: row['arithmetic_slots_needed_during_write'])
     peak_control = max(per_pc, key=lambda row: row['control_slots_needed_during_write'])
@@ -768,8 +779,9 @@ def full_attack_inventory() -> Dict[str, Any]:
 
 
 
-def write_azure_logical_counts() -> Dict[str, Any]:
-    frontier = compiler_family_frontier()
+def build_azure_logical_counts_payload(frontier: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    if frontier is None:
+        frontier = compiler_family_frontier()
     out = []
     for family in frontier['families']:
         out.append({
@@ -791,6 +803,11 @@ def write_azure_logical_counts() -> Dict[str, Any]:
             'The phase-shell rotation inventory is reported separately because this subproject does not synthesize inverse-QFT rotations into Clifford+T.',
         ],
     }
+    return payload
+
+
+def write_azure_logical_counts() -> Dict[str, Any]:
+    payload = build_azure_logical_counts_payload()
     dump_json(project_artifact_path('azure_resource_estimator_logical_counts.json'), payload)
     return payload
 
@@ -811,10 +828,47 @@ def _lookup_from_precomputed(tables: List[List[Any]], idx: int, digit: int) -> P
     return mul_fixed_window(digit, tables[idx], SECP_P, SECP_B, width=8, order=SECP_N)
 
 
+def structured_raw32_cases() -> List[Dict[str, Any]]:
+    cases = [
+        {'case_id': 'zero_zero', 'kind': 'structured', 'a_scalar': 0, 'b_scalar': 0},
+        {'case_id': 'seed_only_unit', 'kind': 'structured', 'a_scalar': 1, 'b_scalar': 0},
+        {'case_id': 'seed_zero_phase_b_unit', 'kind': 'structured', 'a_scalar': 0, 'b_scalar': 1},
+        {'case_id': 'phase_a_second_window', 'kind': 'structured', 'a_scalar': 1 << 16, 'b_scalar': 0},
+        {'case_id': 'phase_b_second_window', 'kind': 'structured', 'a_scalar': 0, 'b_scalar': 1 << 16},
+        {'case_id': 'phase_a_high_window', 'kind': 'structured', 'a_scalar': 1 << (16 * 15), 'b_scalar': 0},
+        {'case_id': 'phase_b_high_window', 'kind': 'structured', 'a_scalar': 0, 'b_scalar': 1 << (16 * 15)},
+        {'case_id': 'phase_a_low_full_word', 'kind': 'structured', 'a_scalar': 0xFFFF, 'b_scalar': 0},
+        {'case_id': 'phase_b_low_full_word', 'kind': 'structured', 'a_scalar': 0, 'b_scalar': 0xFFFF},
+        {'case_id': 'mixed_sparse_windows', 'kind': 'structured', 'a_scalar': (1 << (16 * 15)) + (1 << 16) + 1, 'b_scalar': (1 << (16 * 14)) + (1 << 32) + 1},
+        {'case_id': 'phase_a_half_order', 'kind': 'structured', 'a_scalar': SECP_N >> 1, 'b_scalar': 0},
+        {'case_id': 'phase_b_half_order', 'kind': 'structured', 'a_scalar': 0, 'b_scalar': SECP_N >> 1},
+        {'case_id': 'phase_a_order_minus_one', 'kind': 'structured', 'a_scalar': SECP_N - 1, 'b_scalar': 0},
+        {'case_id': 'phase_b_order_minus_one', 'kind': 'structured', 'a_scalar': 0, 'b_scalar': SECP_N - 1},
+    ]
+    for case in cases:
+        assert 0 <= case['a_scalar'] < SECP_N
+        assert 0 <= case['b_scalar'] < SECP_N
+    return cases
+
+
+def raw32_semantic_cases(case_count: int) -> List[Dict[str, Any]]:
+    secp_path = artifact_circuits_path(PROJECT_ROOT / 'artifacts', 'optimized_pointadd_secp256k1.json')
+    seed = bytes.fromhex(sha256_path(secp_path))
+    stream = deterministic_scalars(seed + b'compiler_project_raw32', case_count * 2, SECP_N)
+    cases = structured_raw32_cases()
+    for index in range(case_count):
+        cases.append({
+            'case_id': f'random_{index:04d}',
+            'kind': 'random',
+            'a_scalar': stream[2 * index],
+            'b_scalar': stream[2 * index + 1],
+        })
+    return cases
+
+
 
 def run_full_raw32_semantic_check(case_count: int = 16) -> Dict[str, Any]:
     leaf = _leaf()
-    secp_path = artifact_circuits_path(PROJECT_ROOT / 'artifacts', 'optimized_pointadd_secp256k1.json')
     schedule = raw32_schedule()
     canon = canonical_public_point()
     h_point = (int(canon['point']['x_hex'], 16), int(canon['point']['y_hex'], 16))
@@ -824,20 +878,27 @@ def run_full_raw32_semantic_check(case_count: int = 16) -> Dict[str, Any]:
     g_window_tables = [precompute_window_tables(base, SECP_P, SECP_B, width=8, bits=256) for base in window_bases(SECP_G)]
     h_window_tables = [precompute_window_tables(base, SECP_P, SECP_B, width=8, bits=256) for base in window_bases(h_point)]
 
-    seed = bytes.fromhex(sha256_path(secp_path))
-    stream = deterministic_scalars(seed + b'compiler_project_raw32', case_count * 2, SECP_N)
-
     out_csv = project_artifact_path(f'raw32_semantic_audit_{case_count}.csv')
-    summary = {'total': 0, 'pass': 0, 'seed_zero_cases': 0, 'phase_b_nonzero_cases': 0}
+    summary = {
+        'total': 0,
+        'pass': 0,
+        'structured_cases': 0,
+        'random_cases': 0,
+        'seed_zero_cases': 0,
+        'phase_b_zero_cases': 0,
+        'phase_b_nonzero_cases': 0,
+    }
+    cases = raw32_semantic_cases(case_count)
     with out_csv.open('w', newline='') as handle:
         writer = csv.writer(handle)
         writer.writerow([
-            'case_id', 'a_scalar_hex', 'b_scalar_hex',
+            'case_id', 'case_kind', 'a_scalar_hex', 'b_scalar_hex',
             'seed_x', 'seed_y', 'expected_x', 'expected_y', 'actual_x', 'actual_y', 'status'
         ])
-        for i in range(case_count):
-            a_scalar = stream[2 * i]
-            b_scalar = stream[2 * i + 1]
+        for case in cases:
+            a_scalar = case['a_scalar']
+            b_scalar = case['b_scalar']
+            summary[f"{case['kind']}_cases"] += 1
 
             seed_digit = window_digit_u16(a_scalar, 0)
             seed_point = _lookup_from_precomputed(g_window_tables, 0, seed_digit)
@@ -858,6 +919,8 @@ def run_full_raw32_semantic_check(case_count: int = 16) -> Dict[str, Any]:
 
             if any(window_digit_u16(b_scalar, idx) != 0 for idx in range(16)):
                 summary['phase_b_nonzero_cases'] += 1
+            else:
+                summary['phase_b_zero_cases'] += 1
 
             expected = add_affine(
                 mul_fixed_window(a_scalar, g_tables, SECP_P, SECP_B, width=8, order=SECP_N),
@@ -868,7 +931,7 @@ def run_full_raw32_semantic_check(case_count: int = 16) -> Dict[str, Any]:
             ok = acc == expected
             summary['total'] += 1
             summary['pass'] += int(ok)
-            writer.writerow([i, format(a_scalar, '064x'), format(b_scalar, '064x'), *hex_or_inf(seed_point), *hex_or_inf(expected), *hex_or_inf(acc), 'PASS' if ok else 'FAIL'])
+            writer.writerow([case['case_id'], case['kind'], format(a_scalar, '064x'), format(b_scalar, '064x'), *hex_or_inf(seed_point), *hex_or_inf(expected), *hex_or_inf(acc), 'PASS' if ok else 'FAIL'])
 
     return {
         'schema': 'compiler-project-raw32-semantic-check-v2',
@@ -939,42 +1002,9 @@ def build_all_artifacts() -> Dict[str, Any]:
 
 
 
-def write_verification_summary(case_count: int = 16) -> Dict[str, Any]:
-    semantic = run_full_raw32_semantic_check(case_count=case_count)
-    slot_alloc = exact_leaf_slot_allocation()
-    primitive_lib = primitive_multiplier_library()
-    frontier = compiler_family_frontier()
-    summary = {
-        'schema': 'compiler-project-verification-summary-v2',
-        'semantic_replay': semantic,
-        'slot_allocation_checks': {
-            'pass': int(slot_alloc['allocator_summary']['exact_arithmetic_slot_count'] == 9 and slot_alloc['allocator_summary']['exact_control_slot_count'] >= 1),
-            'expected_arithmetic_slots': 9,
-            'observed_arithmetic_slots': slot_alloc['allocator_summary']['exact_arithmetic_slot_count'],
-            'observed_control_slots': slot_alloc['allocator_summary']['exact_control_slot_count'],
-        },
-        'primitive_multiplier_checks': {
-            'pass': int(primitive_lib['whole_oracle_multiplier_instance_count'] == 31 * 11),
-            'expected_instance_count': 31 * 11,
-            'observed_instance_count': primitive_lib['whole_oracle_multiplier_instance_count'],
-        },
-        'qubit_frontier_checks': {
-            'pass': int(frontier['best_qubit_family']['total_logical_qubits'] < 2500),
-            'best_qubit_family': frontier['best_qubit_family']['name'],
-            'best_qubit_total': frontier['best_qubit_family']['total_logical_qubits'],
-        },
-        'summary': {
-            'total': semantic['summary']['total'] + 3,
-            'pass': semantic['summary']['pass'] + int(slot_alloc['allocator_summary']['exact_arithmetic_slot_count'] == 9) + int(primitive_lib['whole_oracle_multiplier_instance_count'] == 31 * 11) + int(frontier['best_qubit_family']['total_logical_qubits'] < 2500),
-        },
-    }
-    dump_json(project_artifact_path('verification_summary.json'), summary)
-    return summary
-
-
-
-def write_cain_transfer() -> Dict[str, Any]:
-    frontier = load_json(project_artifact_path('family_frontier.json')) if project_artifact_path('family_frontier.json').exists() else compiler_family_frontier()
+def build_cain_transfer_payload(frontier: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    if frontier is None:
+        frontier = load_json(project_artifact_path('family_frontier.json')) if project_artifact_path('family_frontier.json').exists() else compiler_family_frontier()
     out_rows = []
     for family in frontier['families']:
         nc = int(family['full_oracle_non_clifford'])
@@ -995,14 +1025,21 @@ def write_cain_transfer() -> Dict[str, Any]:
             'Cain et al. target P-256 and a neutral-atom architecture; these transfers are only a structured comparison aid.',
         ],
     }
+    return payload
+
+
+def write_cain_transfer() -> Dict[str, Any]:
+    payload = build_cain_transfer_payload()
     dump_json(project_artifact_path('cain_exact_transfer.json'), payload)
     return payload
 
 
 __all__ = [
     'build_all_artifacts',
-    'write_verification_summary',
     'write_cain_transfer',
+    'build_cain_transfer_payload',
+    'build_azure_logical_counts_payload',
+    'structured_raw32_cases',
     'compiler_family_frontier',
     'raw32_schedule',
 ]

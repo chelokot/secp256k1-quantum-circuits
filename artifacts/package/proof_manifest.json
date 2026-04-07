@@ -151,27 +151,27 @@
       "bytes": 28747
     },
     "compiler_verification_project/README.md": {
-      "sha256": "fa029374c216cca396f9967e771d64d8396b4b854e9c5ebb94a555726849b8e1",
-      "bytes": 3709
+      "sha256": "43537e4c0693885f8e958c6caba376b2b4e7d0e01426ea63aad2a264aa4b5eef",
+      "bytes": 3814
     },
     "compiler_verification_project/src/project.py": {
-      "sha256": "67fc9eaee842308bfc8b3c548d171f37e63617b1a7752d2fbcab93713ef38c28",
-      "bytes": 45418
+      "sha256": "66745df8f5494868799b74936d805b324a4224012767bf7bbc6bab8e27cb401f",
+      "bytes": 46971
     },
     "compiler_verification_project/scripts/build.py": {
       "sha256": "be1b22f40172be2352a807ef3045ad4321c7f35992d6ce7278837a257039076b",
       "bytes": 683
     },
     "compiler_verification_project/scripts/verify.py": {
-      "sha256": "00ac607a915a8323aad9913238bedc202dd7030b871d772607c824451caf61d7",
-      "bytes": 842
+      "sha256": "54711aaab493f52468653a658b5d1796107d64ff660852d066e28d2b195b33cc",
+      "bytes": 1142
     },
     "compiler_verification_project/artifacts/build_summary.json": {
       "sha256": "abae6dc3d4d9c2d6890d28508cc2b9ac32c5d02ebd7c6bce57f2d0c4a200098a",
       "bytes": 5103
     },
     "compiler_verification_project/artifacts/family_frontier.json": {
-      "sha256": "a4e4c82a138a42bf92341144b34c83e1a0054d2756aa19ef346134e69c6b16e0",
+      "sha256": "6f56e64be04b32d65888f9812eaf51add9f738511f4ef7de20635eb0f6abfd40",
       "bytes": 45925
     },
     "compiler_verification_project/artifacts/full_raw32_oracle.json": {
@@ -179,7 +179,7 @@
       "bytes": 5515
     },
     "compiler_verification_project/artifacts/exact_leaf_slot_allocation.json": {
-      "sha256": "22011b70395d5d1b4fd9f67d17fc4aa655fd7d75fc2aac97dcf1e74758e0b794",
+      "sha256": "580a05a937eb54b827a969a271f67384677694981c29ef86ba66c4ddf012d284",
       "bytes": 18247
     },
     "compiler_verification_project/artifacts/primitive_multiplier_library.json": {
@@ -191,8 +191,8 @@
       "bytes": 1296
     },
     "compiler_verification_project/artifacts/verification_summary.json": {
-      "sha256": "3bfff0b8160341a43642fa5c4cb01633d117418e378db564bd09c33af53a318f",
-      "bytes": 1775
+      "sha256": "b51ca8bf0fd4b73824f5acca6c56fb0bd01a6ff794e312fcde133e4f2fb54a42",
+      "bytes": 340319
     },
     "compiler_verification_project/artifacts/cain_exact_transfer.json": {
       "sha256": "4d6fa1080167b8d56fe1f458dcbe9af9ea41717fe0245ecf31fecb3a14415e82",

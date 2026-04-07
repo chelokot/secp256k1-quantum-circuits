@@ -48,7 +48,7 @@ What it does ship is:
 - `phase_shell_families.json` — full-register and semiclassical-QFT shell families
 - `table_manifests.json` — exact folded-table dimensions and canonical window bases
 - `full_attack_inventory.json` — structural inventory for the completed oracle
-- `verification_summary.json` — deterministic semantic replay summary
+- `verification_summary.json` — deterministic semantic replay plus cross-artifact integrity checks for schedule, slot allocation, inventories, frontier, and transfer handoffs
 - `cain_exact_transfer.json` — heuristic physical transfer for the exact families
 - `azure_resource_estimator_logical_counts.json` — logicalCounts-style handoff artifact for physical estimators
 
