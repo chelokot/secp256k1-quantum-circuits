@@ -142,12 +142,11 @@ make test
 
 ## Reading order
 
-1. `docs/EXECUTIVE_SUMMARY.md`
-2. `docs/CLAIMS_AND_BOUNDARIES.md`
-3. `docs/GOOGLE_BASELINE_COMPARISON.md`
-4. `docs/STRICT_VERIFICATION.md`
-5. `docs/LOOKUP_FOLDING_RESEARCH_PASS.md`
-6. `docs/OPTIMIZATION_FRONTIERS.md`
-7. `docs/STATE_OF_THE_ART_2026.md`
-8. `docs/RED_TEAM_REVIEW.md`
-9. `reports/secp256k1_optimized_report.pdf`
+1. `docs/CLAIMS_AND_BOUNDARIES.md`
+2. `docs/GOOGLE_BASELINE_COMPARISON.md`
+3. `docs/STRICT_VERIFICATION.md`
+4. `docs/LOOKUP_FOLDING_RESEARCH_PASS.md`
+5. `docs/OPTIMIZATION_FRONTIERS.md`
+6. `docs/STATE_OF_THE_ART_2026.md`
+7. `docs/RED_TEAM_REVIEW.md`
+8. `reports/secp256k1_optimized_report.pdf`

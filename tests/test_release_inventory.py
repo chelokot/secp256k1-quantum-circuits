@@ -25,7 +25,6 @@ class ReleaseInventoryTests(unittest.TestCase):
             'LICENSE',
             'CITATION.cff',
             'MANIFEST.sha256',
-            'docs/EXECUTIVE_SUMMARY.md',
             'docs/CLAIMS_AND_BOUNDARIES.md',
             'docs/GOOGLE_BASELINE_COMPARISON.md',
             'docs/STRICT_VERIFICATION.md',

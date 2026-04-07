@@ -52,7 +52,6 @@ Deterministic benchmark-curve replay suite in the `y^2 = x^3 + 7` family.
 
 ## Documentation
 
-- `docs/EXECUTIVE_SUMMARY.md` — high-level repository summary
 - `docs/CLAIMS_AND_BOUNDARIES.md` — exact versus modeled claim boundary
 - `docs/GOOGLE_BASELINE_COMPARISON.md` — baseline definition and headline ratios
 - `docs/STRICT_VERIFICATION.md` — strict verification coverage
