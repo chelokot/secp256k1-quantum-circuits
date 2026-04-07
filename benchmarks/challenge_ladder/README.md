@@ -12,7 +12,7 @@ Contents:
 Regenerate with:
 
 ```bash
-python scripts/run_research_pass.py
+python scripts/release_check.py
 ```
 
 For interpretation and scope, read `docs/CHALLENGE_LADDER.md`.

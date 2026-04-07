@@ -3,18 +3,22 @@
 from __future__ import annotations
 
 import json
-import subprocess
 import sys
 import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+SRC_DIR = REPO_ROOT / 'src'
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
+
+from research_extensions import run_research_pass
 
 
 class ResearchArtifactTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        subprocess.run([sys.executable, 'scripts/run_research_pass.py'], cwd=REPO_ROOT, check=True)
+        run_research_pass(REPO_ROOT)
         cls.summary = json.loads((REPO_ROOT / 'results' / 'research_pass_summary.json').read_text())
         cls.dominant = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'dominant_cost_breakdown.json').read_text())
         cls.scenarios = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'literature_projection_scenarios.json').read_text())

@@ -40,12 +40,9 @@ Deterministic benchmark-curve replay suite in the `y^2 = x^3 + 7` family.
 ## Scripts
 
 - `scripts/verify_all.py` — main verification path, with `--quick` for the core-only run
-- `scripts/run_research_pass.py` — research-pass regeneration
 - `scripts/rebuild_resource_projection.py` — canonical modeled projection regeneration
-- `scripts/compare_google_baseline.py` — baseline comparison report
 - `scripts/compare_cain_2026.py` — neutral-atom transfer report
-- `scripts/compare_literature.py` — literature summary
-- `scripts/compare_lookup_research.py` — lookup-folding summary
+- `scripts/release_check.py` — full maintainer rebuild and publication-readiness pass
 - `scripts/hash_repo.py` — manifest regeneration
 - `scripts/generate_figures.py` — figure regeneration
 

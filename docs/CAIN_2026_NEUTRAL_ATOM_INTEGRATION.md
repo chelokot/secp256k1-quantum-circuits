@@ -47,16 +47,16 @@ estimate stored in `artifacts/out/resource_projection.json`.
 Using the repository's two modeled lookup-accounting modes and the tracked
 public baseline lines, the stored transfer range is:
 
-- **3.82 to 5.11 days** for the time-efficient architecture
-- **100.9 to 134.8 days** for the balanced architecture
+- **3.24 to 4.30 days** for the time-efficient architecture
+- **85.5 to 113.4 days** for the balanced architecture
 
 ## Space transfer
 
 The space transfer is weaker and more model-sensitive than the time transfer.
 The file reports:
 
-- **15,878 to 19,211 physical qubits** under naive linear scaling
-- **20,939 to 22,605 physical qubits** under a toy model with 50% fixed
+- **15,779 to 19,067 physical qubits** under naive linear scaling
+- **20,890 to 22,533 physical qubits** under a toy model with 50% fixed
   overhead
 
 These space numbers are illustrative transfer outputs, not exact claims.

@@ -24,7 +24,7 @@ Use `python scripts/verify_all.py --quick` for the shorter core-only path.
 Regenerate with:
 
 ```bash
-python scripts/run_research_pass.py
+python scripts/release_check.py
 ```
 
 ## Physical transfer summary

@@ -22,15 +22,9 @@ This covers:
 - claim-boundary and meta-analysis outputs
 - manifest and summary checks
 
-## Research path
+## Research outputs
 
-Run:
-
-```bash
-python scripts/run_research_pass.py
-```
-
-This adds:
+`python scripts/release_check.py` also rebuilds:
 
 - dominant cost breakdown
 - lookup-folding provenance for the primary artifact

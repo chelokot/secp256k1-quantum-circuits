@@ -120,12 +120,8 @@ From the repository root:
 ```bash
 python scripts/verify_all.py
 python scripts/verify_all.py --quick
-python scripts/run_research_pass.py
-python scripts/compare_google_baseline.py
+python scripts/release_check.py
 python scripts/compare_cain_2026.py
-python scripts/compare_literature.py
-python scripts/compare_lookup_research.py
-python -m unittest discover -s tests -v
 ```
 
 Or with `make`:
@@ -133,10 +129,7 @@ Or with `make`:
 ```bash
 make verify
 make verify-quick
-make research
-make compare
-make compare-lookup
-make test
+make release-check
 ```
 
 ## Reading order
