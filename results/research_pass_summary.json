@@ -1,23 +1,23 @@
 {
   "dominant_cost_breakdown": {
-    "lookup_share_fraction_2lookup": 0.06292190927900379,
-    "lookup_share_fraction_3lookup": 0.09150405887297278,
-    "arithmetic_share_fraction_2lookup": 0.9370780907209962,
-    "arithmetic_share_fraction_3lookup": 0.9084959411270273,
-    "max_total_reduction_fraction_from_arithmetic_only_2lookup": 0.9370780907209962,
-    "max_total_reduction_fraction_from_arithmetic_only_3lookup": 0.9084959411270273
+    "lookup_share_fraction_2lookup": 0.08200272024404619,
+    "lookup_share_fraction_3lookup": 0.11815938487501217,
+    "arithmetic_share_fraction_2lookup": 0.9179972797559538,
+    "arithmetic_share_fraction_3lookup": 0.8818406151249878,
+    "max_total_reduction_fraction_from_arithmetic_only_2lookup": 0.9179972797559538,
+    "max_total_reduction_fraction_from_arithmetic_only_3lookup": 0.8818406151249878
   },
   "lookup_folding": {
-    "contract_sha256": "0727068cfe6b5d0bad467b3b55892a5661bfab1ee990de73bd0a23393142484e",
-    "folded_scaffold_sha256": "8411a9ad26c2ac51c0fb27e7a2a63b6750902cef8a5f9b4c4e702a315b460d7a",
+    "contract_sha256": "c3b6cc711aa323951a580f6a54a027d84bf84d6a5ad66965751db865553b635d",
+    "folded_scaffold_sha256": "dea4d9d209f42734fb70cee6b5a2d968f4c4f0bf61c4d1646a554fcd9518f3d4",
     "exhaustive_cases": 65536,
     "exhaustive_pass": 65536,
     "multibase_samples": 15906,
     "multibase_pass": 15906,
-    "pad0_total_non_clifford_2channel_folded": 29163260,
-    "pad0_total_non_clifford_3channel_folded_conservative": 30080764,
-    "pad0_gain_vs_google_low_qubit_2channel": 3.0860747392438292,
-    "pad0_gain_vs_google_low_gate_2channel": 2.4002803527452006
+    "pad0_total_non_clifford_2channel_folded": 22377404,
+    "pad0_total_non_clifford_3channel_folded_conservative": 23294908,
+    "pad0_gain_vs_google_low_qubit_2channel": 4.021914248855676,
+    "pad0_gain_vs_google_low_gate_2channel": 3.128155526887748
   },
   "challenge_ladder": {
     "curve_count": 7,
@@ -30,12 +30,12 @@
     "entry_count": 17
   },
   "optimization_frontier": {
-    "frontier_count": 7,
+    "frontier_count": 5,
     "current_headline": {
       "logical_qubits": 880,
-      "non_clifford_2lookup": 29163260,
-      "non_clifford_3lookup": 30080764,
-      "source_model": "carry_save_single_lane_v2_derived"
+      "non_clifford_2lookup": 22377404,
+      "non_clifford_3lookup": 23294908,
+      "source_model": "addsub_modmul_named_slots_v2"
     }
   },
   "physical_stack_reference": {

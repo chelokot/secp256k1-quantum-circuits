@@ -27,6 +27,7 @@ from common import (
     add_affine,
     artifact_circuits_path,
     artifact_extended_verification_path,
+    artifact_lookup_path,
     artifact_projection_path,
     deterministic_scalars,
     dump_json,
@@ -39,6 +40,7 @@ from common import (
     sha256_bytes,
     sha256_path,
 )
+from lookup_research import contract_parameter_checks, load_lookup_folded_contract, run_lookup_folding_audit
 from verifier import exec_netlist, specialize_family_netlist
 
 
@@ -50,10 +52,6 @@ CURATED_EXTENDED_TOY_CURVES = [
     {"name": "toy181_b3", "p": 163, "b": 3, "order": 181, "generator": (1, 2)},
     {"name": "toy241_b29", "p": 211, "b": 29, "order": 241, "generator": (1, 36)},
 ]
-
-LOOKUP_EDGE_KEYS_SIGNED_16 = [-32768, -32767, -2, -1, 0, 1, 2, 32766, 32767]
-LOOKUP_EDGE_KEYS_UNSIGNED_16 = [0, 1, 2, 3, 255, 256, 257, 65534, 65535]
-
 
 def is_prime(n: int) -> bool:
     if n < 2:
@@ -129,100 +127,56 @@ def verify_curve_metadata(curve: Dict[str, Any]) -> Dict[str, Any]:
 
 def run_lookup_contract(
     repo_root: Path,
-    signed_cases: int = 4096,
-    unsigned_cases: int = 4096,
     progress: Callable[[int, int], None] | None = None,
 ) -> Dict[str, Any]:
     package_root = repo_root / "artifacts"
-    optimized_sha = sha256_path(artifact_circuits_path(package_root, "optimized_pointadd_secp256k1.json"))
-    scaffold_sha = sha256_path(artifact_circuits_path(package_root, "ecdlp_scaffold_optimized.json"))
-    seed = bytes.fromhex(sha256_bytes(bytes.fromhex(optimized_sha) + bytes.fromhex(scaffold_sha)))
+    contract = load_lookup_folded_contract(repo_root)
+    parameter_results = contract_parameter_checks(contract)
+    audit = run_lookup_folding_audit(repo_root)
+    if progress is not None:
+        progress(1, 1)
 
-    out_csv = artifact_extended_verification_path(package_root, "lookup_contract_audit_8192.csv")
-    g_tables = precompute_window_tables(SECP_G, SECP_P, SECP_B, width=8, bits=256)
-
-    signed_stream = deterministic_scalars(seed + b"signed_lookup", signed_cases, SECP_N)
-    unsigned_stream = deterministic_scalars(seed + b"unsigned_lookup", unsigned_cases, SECP_N)
-    signed_key_stream = deterministic_scalars(seed + b"signed_keys", signed_cases, 1 << 16)
-    unsigned_key_stream = deterministic_scalars(seed + b"unsigned_keys", unsigned_cases, 1 << 16)
-
-    summary = {
-        "signed_i16": {"total": 0, "pass": 0, "edge_cases": len(LOOKUP_EDGE_KEYS_SIGNED_16)},
-        "unsigned_u16": {"total": 0, "pass": 0, "edge_cases": len(LOOKUP_EDGE_KEYS_UNSIGNED_16)},
+    parameter_total = len(parameter_results)
+    parameter_pass = sum(int(ok) for ok in parameter_results.values())
+    full_exhaustive = {
+        "base_id": audit["summary"]["full_exhaustive_base"],
+        "total": audit["summary"]["full_exhaustive_cases"],
+        "pass": audit["summary"]["full_exhaustive_pass"],
     }
-    total_cases = signed_cases + unsigned_cases
-    completed_cases = 0
-
-    def advance() -> None:
-        nonlocal completed_cases
-        completed_cases += 1
-        if progress is not None:
-            progress(completed_cases, total_cases)
-
-    def signed_key_from_word(word: int) -> int:
-        word &= 0xFFFF
-        return word - 0x10000 if word & 0x8000 else word
-
-    with out_csv.open("w", newline="") as handle:
-        writer = csv.writer(handle, lineterminator="\n")
-        writer.writerow([
-            "mode", "case_id", "base_scalar_hex", "window_key",
-            "base_x", "base_y", "expected_x", "expected_y",
-            "result_on_curve", "status",
-        ])
-
-        edge_bases = [mul_fixed_window(s, g_tables, SECP_P, SECP_B, width=8, order=SECP_N) for s in signed_stream[:len(LOOKUP_EDGE_KEYS_SIGNED_16)]]
-        for idx, (base_scalar, key, base_point) in enumerate(zip(signed_stream[:len(LOOKUP_EDGE_KEYS_SIGNED_16)], LOOKUP_EDGE_KEYS_SIGNED_16, edge_bases)):
-            expected = mul_affine(key, base_point, SECP_P, SECP_B, order=None)
-            ok = is_on_curve(base_point, SECP_P, SECP_B) and is_on_curve(expected, SECP_P, SECP_B)
-            summary["signed_i16"]["total"] += 1
-            summary["signed_i16"]["pass"] += int(ok)
-            advance()
-            writer.writerow(["signed_i16", idx, format(base_scalar, "064x"), key, *hex_or_inf(base_point), *hex_or_inf(expected), int(is_on_curve(expected, SECP_P, SECP_B)), "PASS" if ok else "FAIL"])
-
-        edge_bases_u = [mul_fixed_window(s, g_tables, SECP_P, SECP_B, width=8, order=SECP_N) for s in unsigned_stream[:len(LOOKUP_EDGE_KEYS_UNSIGNED_16)]]
-        for off, (base_scalar, key, base_point) in enumerate(zip(unsigned_stream[:len(LOOKUP_EDGE_KEYS_UNSIGNED_16)], LOOKUP_EDGE_KEYS_UNSIGNED_16, edge_bases_u)):
-            expected = mul_affine(key, base_point, SECP_P, SECP_B, order=None)
-            ok = is_on_curve(base_point, SECP_P, SECP_B) and is_on_curve(expected, SECP_P, SECP_B)
-            summary["unsigned_u16"]["total"] += 1
-            summary["unsigned_u16"]["pass"] += int(ok)
-            advance()
-            writer.writerow(["unsigned_u16", off, format(base_scalar, "064x"), key, *hex_or_inf(base_point), *hex_or_inf(expected), int(is_on_curve(expected, SECP_P, SECP_B)), "PASS" if ok else "FAIL"])
-
-        for i in range(signed_cases - len(LOOKUP_EDGE_KEYS_SIGNED_16)):
-            base_scalar = signed_stream[len(LOOKUP_EDGE_KEYS_SIGNED_16) + i]
-            key = signed_key_from_word(signed_key_stream[i])
-            base_point = mul_fixed_window(base_scalar, g_tables, SECP_P, SECP_B, width=8, order=SECP_N)
-            expected = mul_affine(key, base_point, SECP_P, SECP_B, order=None)
-            ok = is_on_curve(base_point, SECP_P, SECP_B) and is_on_curve(expected, SECP_P, SECP_B)
-            summary["signed_i16"]["total"] += 1
-            summary["signed_i16"]["pass"] += int(ok)
-            advance()
-            writer.writerow(["signed_i16", len(LOOKUP_EDGE_KEYS_SIGNED_16) + i, format(base_scalar, "064x"), key, *hex_or_inf(base_point), *hex_or_inf(expected), int(is_on_curve(expected, SECP_P, SECP_B)), "PASS" if ok else "FAIL"])
-
-        for i in range(unsigned_cases - len(LOOKUP_EDGE_KEYS_UNSIGNED_16)):
-            base_scalar = unsigned_stream[len(LOOKUP_EDGE_KEYS_UNSIGNED_16) + i]
-            key = unsigned_key_stream[i] & 0xFFFF
-            base_point = mul_fixed_window(base_scalar, g_tables, SECP_P, SECP_B, width=8, order=SECP_N)
-            expected = mul_affine(key, base_point, SECP_P, SECP_B, order=None)
-            ok = is_on_curve(base_point, SECP_P, SECP_B) and is_on_curve(expected, SECP_P, SECP_B)
-            summary["unsigned_u16"]["total"] += 1
-            summary["unsigned_u16"]["pass"] += int(ok)
-            advance()
-            writer.writerow(["unsigned_u16", len(LOOKUP_EDGE_KEYS_UNSIGNED_16) + i, format(base_scalar, "064x"), key, *hex_or_inf(base_point), *hex_or_inf(expected), int(is_on_curve(expected, SECP_P, SECP_B)), "PASS" if ok else "FAIL"])
+    multibase = {
+        "base_count": len(audit["summary"]["bases"]),
+        "total": audit["summary"]["direct_semantic_samples"],
+        "pass": audit["summary"]["direct_semantic_pass"],
+    }
 
     out_json = artifact_extended_verification_path(package_root, "lookup_contract_summary.json")
     result = {
-        "sha256": sha256_path(out_csv),
-        "csv": out_csv.name,
-        "seed_sha256": sha256_bytes(seed),
-        "summary": summary,
+        "contract_sha256": sha256_path(artifact_lookup_path(package_root, "lookup_signed_fold_contract.json")),
+        "lookup_research_summary_sha256": sha256_path(artifact_lookup_path(package_root, "lookup_signed_fold_summary.json")),
+        "summary": {
+            "parameter_checks": {
+                "total": parameter_total,
+                "pass": parameter_pass,
+                "checks": parameter_results,
+            },
+            "canonical_full_exhaustive": full_exhaustive,
+            "multibase_direct_samples": multibase,
+            "total": parameter_total + full_exhaustive["total"] + multibase["total"],
+            "pass": parameter_pass + full_exhaustive["pass"] + multibase["pass"],
+        },
+        "artifacts": {
+            "contract": "artifacts/lookup/lookup_signed_fold_contract.json",
+            "lookup_research_summary": "artifacts/lookup/lookup_signed_fold_summary.json",
+            "full_exhaustive_csv": f"artifacts/lookup/{audit['full_exhaustive_csv']}",
+            "multibase_sample_csv": f"artifacts/lookup/{audit['multibase_sample_csv']}",
+        },
         "notes": [
-            "This audit makes the lookup-table interface explicit instead of pretending that it is flattened into primitive gates.",
-            "It does not prove a coherent quantum RAM construction; it proves the arithmetic contract assumed at the ISA boundary.",
+            "This summary validates the checked-in folded lookup contract fields and then points at the exhaustive and sampled semantic audits generated under artifacts/lookup/.",
+            "The lookup contract is exact at the arithmetic interface layer, but the repository still does not ship a primitive-gate qRAM or QROM realization.",
         ],
     }
     dump_json(out_json, result)
+    result["sha256"] = sha256_path(out_json)
     return result
 
 
@@ -492,9 +446,9 @@ def run_claim_boundary_matrix(repo_root: Path) -> Dict[str, Any]:
             },
             {
                 "layer": "lookup_table_contract",
-                "status": "explicit_interface_tested_not_flattened",
-                "evidence": ["lookup_contract_audit_8192.csv"],
-                "notes": "The repo checks the signed/unsigned window contract, but does not ship a primitive-gate qRAM implementation.",
+                "status": "exact_contract_semantics_machine_checked_not_flattened",
+                "evidence": ["lookup_signed_fold_contract.json", "lookup_signed_fold_summary.json", "lookup_contract_summary.json"],
+                "notes": "The repo validates the checked-in folded contract parameters and audits its semantics exhaustively for one secp256k1 base plus deterministic multibase samples, but does not ship a primitive-gate qRAM implementation.",
             },
             {
                 "layer": "retained_window_scaffold",

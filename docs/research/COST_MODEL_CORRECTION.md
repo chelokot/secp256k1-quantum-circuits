@@ -9,11 +9,11 @@ and backend-model bundle rather than repeated from standalone headline constants
 
 From `artifacts/projections/resource_projection.json`:
 
-- arithmetic-only cost per retained point-add leaf: `976,009`
+- arithmetic-only cost per retained point-add leaf: `733,657`
 - retained point-add leaves in the scaffold: `28`
-- modeled arithmetic-only total across the scaffold: `27,328,252`
-- modeled 2-channel total: `29,163,260`
-- modeled conservative 3-channel total: `30,080,764`
+- modeled arithmetic-only total across the scaffold: `20,542,396`
+- modeled 2-channel total: `22,377,404`
+- modeled conservative 3-channel total: `23,294,908`
 
 ## Derived lookup contribution
 
@@ -26,8 +26,8 @@ Subtracting the full-scaffold arithmetic total from each modeled total gives:
 
 The resulting shares are:
 
-- **6.29% lookup / 93.71% arithmetic** in the 2-channel model
-- **9.15% lookup / 90.85% arithmetic** in the conservative 3-channel model
+- **8.20% lookup / 91.80% arithmetic** in the 2-channel model
+- **11.82% lookup / 88.18% arithmetic** in the conservative 3-channel model
 
 ## Interpretation
 

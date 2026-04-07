@@ -13,14 +13,17 @@ python scripts/verify_all.py --quick
 
 Files:
 
-- `artifacts/verification/extended/lookup_contract_audit_8192.csv`
 - `artifacts/verification/extended/lookup_contract_summary.json`
+- `artifacts/lookup/lookup_signed_fold_summary.json`
+- `artifacts/lookup/lookup_signed_fold_exhaustive_g.csv`
+- `artifacts/lookup/lookup_signed_fold_multibase_sampled.csv`
 
 Purpose:
 
 - make the lookup boundary explicit
-- test deterministic signed and unsigned 16-bit contract cases
-- check the arithmetic assumptions used at the ISA boundary
+- validate the machine-readable folded-contract fields
+- exhaustively check the canonical 16-bit secp256k1 base over the full word domain
+- check deterministic multibase semantic samples used at the ISA boundary
 
 ### 2. Scaffold replay
 

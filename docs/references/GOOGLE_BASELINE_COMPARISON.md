@@ -29,31 +29,29 @@ from:
 Its current default headline is:
 
 - **880 logical qubits**
-- **29,163,260 non-Clifford** under the 2-channel lookup model
-- **30,080,764 non-Clifford** under the conservative 3-channel lookup model
+- **22,377,404 non-Clifford** under the 2-channel lookup model
+- **23,294,908 non-Clifford** under the conservative 3-channel lookup model
 
 ## Improvement factors
 
 Versus the public low-qubit line:
 
 - **1.3636x fewer logical qubits**
-- **3.0861x lower non-Clifford** under the 2-channel model
-- **2.9919x lower non-Clifford** under the conservative 3-channel model
+- **4.0219x lower non-Clifford** under the 2-channel model
+- **3.8635x lower non-Clifford** under the conservative 3-channel model
 
 Versus the public low-gate line:
 
 - **1.6477x fewer logical qubits**
-- **2.4003x lower non-Clifford** under the 2-channel model
-- **2.3271x lower non-Clifford** under the conservative 3-channel model
+- **3.1282x lower non-Clifford** under the 2-channel model
+- **3.0049x lower non-Clifford** under the conservative 3-channel model
 
 ## Alternative backend scenarios
 
 The same structural artifact family also ships experimental alternatives:
 
-- `carry_save_liveness_alias_v1` — same arithmetic backend, but qubits priced
-  from exact ISA liveness rather than named-slot allocation
-- `addsub_modmul_explicit_v1` — explicit add-sub modular-multiplication backend
-- `addsub_modmul_liveness_v1` — combined arithmetic swap plus liveness aliasing
+- `addsub_modmul_liveness_v2` — same explicit arithmetic backend, but qubits
+  priced from exact ISA liveness rather than named-slot allocation
 
 These appear in `alternative_backend_scenarios` inside
 `artifacts/projections/resource_projection.json`.

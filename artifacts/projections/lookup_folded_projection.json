@@ -1,6 +1,6 @@
 {
   "schema": "lookup-folded-projection-v1",
-  "base_projection_sha256": "b574556e827d23a806128893162681cd21aa7ea57975b1789a5a03a61ba38794",
+  "base_projection_sha256": "c9b2cf05fd34b12f91fe9d06abe8c8a60ab091338f034bd522874ec92c4c2a01",
   "assumptions": [
     "The exact arithmetic leaf cost is unchanged from the repository's published optimized leaf.",
     "Each signed 16-bit coordinate table is folded from 65536 entries to 32768 entries plus one special constant for 0x8000.",
@@ -8,67 +8,67 @@
     "Small classical-preprocessing / sign-fix overhead below the ISA layer is not exactly lowered here, so a per-window additive pad sweep is included."
   ],
   "mainline_per_window": {
-    "arithmetic_non_clifford": 976009,
+    "arithmetic_non_clifford": 733657,
     "lookup_2channel": 65536,
     "lookup_3channel_conservative": 98304,
     "lookup_3channel_meta_elided": 65536
   },
   "base_case_pad0": {
     "per_window_small_overhead_pad": 0,
-    "total_non_clifford_2channel_folded": 29163260,
-    "total_non_clifford_3channel_folded_conservative": 30080764,
-    "total_non_clifford_3channel_folded_meta_elided": 29163260,
-    "gain_vs_google_low_qubit_2channel": 3.0860747392438292,
-    "gain_vs_google_low_gate_2channel": 2.4002803527452006
+    "total_non_clifford_2channel_folded": 22377404,
+    "total_non_clifford_3channel_folded_conservative": 23294908,
+    "total_non_clifford_3channel_folded_meta_elided": 22377404,
+    "gain_vs_google_low_qubit_2channel": 4.021914248855676,
+    "gain_vs_google_low_gate_2channel": 3.128155526887748
   },
   "pad_sweep": [
     {
       "per_window_small_overhead_pad": 0,
-      "total_non_clifford_2channel_folded": 29163260,
-      "total_non_clifford_3channel_folded_conservative": 30080764,
-      "total_non_clifford_3channel_folded_meta_elided": 29163260,
-      "gain_vs_google_low_qubit_2channel": 3.0860747392438292,
-      "gain_vs_google_low_gate_2channel": 2.4002803527452006
+      "total_non_clifford_2channel_folded": 22377404,
+      "total_non_clifford_3channel_folded_conservative": 23294908,
+      "total_non_clifford_3channel_folded_meta_elided": 22377404,
+      "gain_vs_google_low_qubit_2channel": 4.021914248855676,
+      "gain_vs_google_low_gate_2channel": 3.128155526887748
     },
     {
       "per_window_small_overhead_pad": 256,
-      "total_non_clifford_2channel_folded": 29170428,
-      "total_non_clifford_3channel_folded_conservative": 30087932,
-      "total_non_clifford_3channel_folded_meta_elided": 29170428,
-      "gain_vs_google_low_qubit_2channel": 3.0853164033109146,
-      "gain_vs_google_low_gate_2channel": 2.3996905359084892
+      "total_non_clifford_2channel_folded": 22384572,
+      "total_non_clifford_3channel_folded_conservative": 23302076,
+      "total_non_clifford_3channel_folded_meta_elided": 22384572,
+      "gain_vs_google_low_qubit_2channel": 4.020626349255193,
+      "gain_vs_google_low_gate_2channel": 3.127153827198483
     },
     {
       "per_window_small_overhead_pad": 512,
-      "total_non_clifford_2channel_folded": 29177596,
-      "total_non_clifford_3channel_folded_conservative": 30095100,
-      "total_non_clifford_3channel_folded_meta_elided": 29177596,
-      "gain_vs_google_low_qubit_2channel": 3.084558439975658,
-      "gain_vs_google_low_gate_2channel": 2.3991010088699563
+      "total_non_clifford_2channel_folded": 22391740,
+      "total_non_clifford_3channel_folded_conservative": 23309244,
+      "total_non_clifford_3channel_folded_meta_elided": 22391740,
+      "gain_vs_google_low_qubit_2channel": 4.019339274214509,
+      "gain_vs_google_low_gate_2channel": 3.1261527688335073
     },
     {
       "per_window_small_overhead_pad": 1024,
-      "total_non_clifford_2channel_folded": 29191932,
-      "total_non_clifford_3channel_folded_conservative": 30109436,
-      "total_non_clifford_3channel_folded_meta_elided": 29191932,
-      "gain_vs_google_low_qubit_2channel": 3.083043630000234,
-      "gain_vs_google_low_gate_2channel": 2.3979228233335155
+      "total_non_clifford_2channel_folded": 22406076,
+      "total_non_clifford_3channel_folded_conservative": 23323580,
+      "total_non_clifford_3channel_folded_meta_elided": 22406076,
+      "gain_vs_google_low_qubit_2channel": 4.016767594647095,
+      "gain_vs_google_low_gate_2channel": 3.124152573614407
     },
     {
       "per_window_small_overhead_pad": 2048,
-      "total_non_clifford_2channel_folded": 29220604,
-      "total_non_clifford_3channel_folded_conservative": 30138108,
-      "total_non_clifford_3channel_folded_meta_elided": 29220604,
-      "gain_vs_google_low_qubit_2channel": 3.080018469159638,
-      "gain_vs_google_low_gate_2channel": 2.3955699204574965
+      "total_non_clifford_2channel_folded": 22434748,
+      "total_non_clifford_3channel_folded_conservative": 23352252,
+      "total_non_clifford_3channel_folded_meta_elided": 22434748,
+      "gain_vs_google_low_qubit_2channel": 4.01163409546655,
+      "gain_vs_google_low_gate_2channel": 3.120159852029539
     },
     {
       "per_window_small_overhead_pad": 4096,
-      "total_non_clifford_2channel_folded": 29277948,
-      "total_non_clifford_3channel_folded_conservative": 30195452,
-      "total_non_clifford_3channel_folded_meta_elided": 29277948,
-      "gain_vs_google_low_qubit_2channel": 3.073985922783933,
-      "gain_vs_google_low_gate_2channel": 2.3908779399430586
+      "total_non_clifford_2channel_folded": 22492092,
+      "total_non_clifford_3channel_folded_conservative": 23409596,
+      "total_non_clifford_3channel_folded_meta_elided": 22492092,
+      "gain_vs_google_low_qubit_2channel": 4.001406360955664,
+      "gain_vs_google_low_gate_2channel": 3.112204947409961
     }
   ],
   "logical_qubit_comment": "The current repository does not primitive-lower the 16-bit sign/magnitude preprocessing. A small ancilla increase is plausible but expected to be negligible against the default named-slot headline and the repository's lower liveness-based scenario.",

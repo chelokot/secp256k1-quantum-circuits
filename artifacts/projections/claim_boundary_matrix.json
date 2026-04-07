@@ -13,11 +13,13 @@
     },
     {
       "layer": "lookup_table_contract",
-      "status": "explicit_interface_tested_not_flattened",
+      "status": "exact_contract_semantics_machine_checked_not_flattened",
       "evidence": [
-        "lookup_contract_audit_8192.csv"
+        "lookup_signed_fold_contract.json",
+        "lookup_signed_fold_summary.json",
+        "lookup_contract_summary.json"
       ],
-      "notes": "The repo checks the signed/unsigned window contract, but does not ship a primitive-gate qRAM implementation."
+      "notes": "The repo validates the checked-in folded contract parameters and audits its semantics exhaustively for one secp256k1 base plus deterministic multibase samples, but does not ship a primitive-gate qRAM implementation."
     },
     {
       "layer": "retained_window_scaffold",

@@ -12,10 +12,10 @@ This module strengthens the repository's modeled layer in three ways:
    structural counts, making every modeled total traceable to source artifacts.
 
 The exact boundary still ends at the kickmix ISA.  The backend models below do
-not claim to be primitive-gate proofs.  The default model is intentionally
-conservative and preserves the repository's previous headline through a single
-remaining calibrated primitive family (`field_mul`).  An additional explicit
-add-sub modular-multiplication scenario is also included for comparison.
+not claim to be primitive-gate proofs.  They do, however, avoid inheriting
+whole-leaf or whole-circuit calibration constants. Every opcode family in the
+current bundle is priced either from exact structural counts or from explicit
+closed-form backend assumptions tied to the checked-in artifact family.
 """
 
 from __future__ import annotations
@@ -239,8 +239,6 @@ def build_backend_model_bundle(repo_root: Path) -> Dict[str, Any]:
     add_cost = n - 1
     select_cost = n - 1
     mul_const_cost = add_chain_ops * add_cost
-    legacy_leaf_total = 976_016
-    legacy_field_mul = (legacy_leaf_total - 13 * add_cost - 2 * mul_const_cost - 3 * select_cost) // 11
     explicit_field_mul = n * n + 2 * n - 1
 
     def common_lookup_model() -> Dict[str, Any]:
@@ -289,66 +287,47 @@ def build_backend_model_bundle(repo_root: Path) -> Dict[str, Any]:
 
     default_ops = common_easy_ops()
     default_ops['field_mul'] = {
-        'kind': 'legacy_residual_calibration',
-        'non_clifford': legacy_field_mul,
-        'reference_leaf_non_clifford_excluding_lookup': legacy_leaf_total,
-        'derived_from': {
-            'field_mul_count': 11,
-            'field_add_sub_cost': add_cost,
-            'select_field_if_flag_cost': select_cost,
-            'mul_const_cost': mul_const_cost,
-        },
-        'comment': 'This is the only remaining calibrated primitive family in the default backend model. Whole-circuit headline totals are no longer hard-coded, but this leaf primitive still inherits the previous conservative calibration.',
-    }
-
-    liveness_ops = common_easy_ops()
-    liveness_ops['field_mul'] = {
-        'kind': 'legacy_residual_calibration',
-        'non_clifford': legacy_field_mul,
-        'reference_leaf_non_clifford_excluding_lookup': legacy_leaf_total,
-        'derived_from': {
-            'field_mul_count': 11,
-            'field_add_sub_cost': add_cost,
-            'select_field_if_flag_cost': select_cost,
-            'mul_const_cost': mul_const_cost,
-        },
-        'comment': 'Arithmetic backend identical to the default model; only the slot-accounting rule changes.',
-    }
-
-    explicit_ops = common_easy_ops()
-    explicit_ops['field_mul'] = {
         'kind': 'controlled_add_sub_modular_multiplication',
         'formula': 'n^2 + 2n - 1',
         'field_bits': n,
         'non_clifford': explicit_field_mul,
-        'comment': 'This is an explicit formula scenario, not a primitive-gate proof for the repository leaf. It is included as a transparent backend substitution experiment.',
+        'comment': 'This is an explicit arithmetic-backend formula applied uniformly to the exact leaf histogram. It remains a backend model, not a primitive-gate lowering of the shipped leaf.',
+    }
+
+    liveness_ops = common_easy_ops()
+    liveness_ops['field_mul'] = {
+        'kind': 'controlled_add_sub_modular_multiplication',
+        'formula': 'n^2 + 2n - 1',
+        'field_bits': n,
+        'non_clifford': explicit_field_mul,
+        'comment': 'Arithmetic backend identical to the default explicit model; only the slot-accounting rule changes.',
     }
 
     bundle = {
         'schema': 'kickmix-backend-model-bundle-v2',
-        'default_model': 'carry_save_single_lane_v2_derived',
+        'default_model': 'addsub_modmul_named_slots_v2',
         'field_bits': field_bits,
         'window_bits': window_bits,
         'lookup_contract_positive_entries': positive_entries,
         'models': [
             {
-                'name': 'carry_save_single_lane_v2_derived',
+                'name': 'addsub_modmul_named_slots_v2',
                 'status': 'default',
-                'summary': 'Preserves the repository headline while deriving whole-circuit totals from exact source artifacts plus a versioned backend model.',
+                'summary': 'Default explicit backend model derived from exact source artifacts plus closed-form opcode costs and conservative named-slot qubit accounting.',
                 'logical_qubit_model': {
                     'field_slot_logical_qubits': 72,
                     'live_window_key_qubits': window_bits,
                     'slot_accounting_mode': 'allocated_named_slots',
                     'include_auxiliary_control_slots_in_qubit_total': False,
-                    'comment': 'The field-slot width remains a backend assumption; the total is now derived from source artifacts using the checked-in named scratch-slot allocation instead of a whole-circuit constant.',
+                    'comment': 'The field-slot width remains a backend assumption; the total is derived from source artifacts using the checked-in named scratch-slot allocation.',
                 },
                 'lookup_model': common_lookup_model(),
                 'opcode_models': default_ops,
             },
             {
-                'name': 'carry_save_liveness_alias_v1',
+                'name': 'addsub_modmul_liveness_v2',
                 'status': 'experimental',
-                'summary': 'Experimental low-qubit transfer that keeps the default arithmetic backend but prices qubits from exact ISA liveness instead of named-slot allocation.',
+                'summary': 'Experimental low-qubit transfer that keeps the default explicit arithmetic backend but prices qubits from exact ISA liveness instead of named-slot allocation.',
                 'logical_qubit_model': {
                     'field_slot_logical_qubits': 72,
                     'live_window_key_qubits': window_bits,
@@ -358,34 +337,6 @@ def build_backend_model_bundle(repo_root: Path) -> Dict[str, Any]:
                 },
                 'lookup_model': common_lookup_model(),
                 'opcode_models': liveness_ops,
-            },
-            {
-                'name': 'addsub_modmul_explicit_v1',
-                'status': 'experimental',
-                'summary': 'Experimental explicit multiplier substitution using a controlled add-subtract modular-multiplication formula.',
-                'logical_qubit_model': {
-                    'field_slot_logical_qubits': 72,
-                    'live_window_key_qubits': window_bits,
-                    'slot_accounting_mode': 'allocated_named_slots',
-                    'include_auxiliary_control_slots_in_qubit_total': False,
-                    'comment': 'Kept identical to the default model so that only the arithmetic backend changes in this comparison.',
-                },
-                'lookup_model': common_lookup_model(),
-                'opcode_models': explicit_ops,
-            },
-            {
-                'name': 'addsub_modmul_liveness_v1',
-                'status': 'experimental',
-                'summary': 'Experimental combined scenario using the explicit add-sub modular-multiplication formula together with ISA-liveness-based slot reuse.',
-                'logical_qubit_model': {
-                    'field_slot_logical_qubits': 72,
-                    'live_window_key_qubits': window_bits,
-                    'slot_accounting_mode': 'peak_live_isa_slots',
-                    'include_auxiliary_control_slots_in_qubit_total': False,
-                    'comment': 'This combines the explicit arithmetic substitution with the more aggressive liveness-based slot accounting rule.',
-                },
-                'lookup_model': common_lookup_model(),
-                'opcode_models': explicit_ops,
             },
         ],
     }

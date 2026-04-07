@@ -51,7 +51,7 @@ class DerivedResourcePipelineTests(unittest.TestCase):
         default = self.projection['optimized_ecdlp_projection']
         self.assertEqual(default['logical_qubits_total'], 880)
         alt = {entry['model_name']: entry for entry in self.projection['alternative_backend_scenarios']}
-        self.assertEqual(alt['carry_save_liveness_alias_v1']['ecdlp']['logical_qubits_total'], 736)
+        self.assertEqual(alt['addsub_modmul_liveness_v2']['ecdlp']['logical_qubits_total'], 736)
 
     def test_default_lookup_cost_comes_from_folded_contract(self):
         positive_entries = self.lookup['table_shape']['x_coordinate_table_entries']
@@ -65,12 +65,13 @@ class DerivedResourcePipelineTests(unittest.TestCase):
         self.assertEqual(chain, [1, 2, 4, 8, 16, 20, 21])
         default = self.projection['default_model_details']['per_opcode_non_clifford']
         self.assertEqual(default['mul_const'], 6 * 255)
+        self.assertEqual(default['field_mul'], 256 * 256 + 2 * 256 - 1)
 
-    def test_explicit_arithmetic_scenario_is_lower_non_clifford(self):
+    def test_liveness_scenario_preserves_arithmetic_totals(self):
         default_total = self.projection['optimized_ecdlp_projection']['lookup_model_2channel']['total_non_clifford']
         alt = {entry['model_name']: entry for entry in self.projection['alternative_backend_scenarios']}
-        self.assertLess(alt['addsub_modmul_explicit_v1']['ecdlp']['lookup_model_2channel']['total_non_clifford'], default_total)
-        self.assertLess(alt['addsub_modmul_liveness_v1']['ecdlp']['lookup_model_2channel']['total_non_clifford'], default_total)
+        self.assertEqual(alt['addsub_modmul_liveness_v2']['ecdlp']['lookup_model_2channel']['total_non_clifford'], default_total)
+        self.assertLess(alt['addsub_modmul_liveness_v2']['ecdlp']['logical_qubits_total'], self.projection['optimized_ecdlp_projection']['logical_qubits_total'])
 
 
 if __name__ == '__main__':

@@ -46,7 +46,8 @@ Its internal coherence is checked by
 
 ### 3. Exact lookup contracts
 
-The repository exposes lookup words and returned semantic points explicitly.
+The repository exposes lookup words, structured folding rules, and audited
+semantic points explicitly.
 Two exact contract layers are checked:
 
 - the base lookup contract in
@@ -64,7 +65,8 @@ The signed folded variant is audited by:
 ### A. Primitive-gate lookup realization
 
 The repository does not lower lookup memory into a primitive-gate qRAM or QROM
-construction. It proves the lookup contracts assumed at the ISA boundary.
+construction. It validates the checked-in folded contract fields and proves the
+contract semantics assumed at the ISA boundary.
 
 ### B. Primitive-gate cleanup
 
@@ -84,8 +86,9 @@ The headline totals in
 `artifacts/projections/lookup_folded_projection.json` are explicit backend
 projections. In the current repository they are derived from the checked-in leaf
 netlist, retained-window scaffold, expanded ISA replay, folded lookup contract,
-and versioned backend-model bundle. They are still not theorem-proved
-primitive-gate totals.
+and versioned backend-model bundle. They no longer inherit a whole-leaf
+calibration constant, but they are still not theorem-proved primitive-gate
+totals.
 
 ## Public baseline boundary
 

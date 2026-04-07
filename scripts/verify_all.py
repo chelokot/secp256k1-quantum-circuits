@@ -168,9 +168,11 @@ def build_summary(console: Console, show_progress: bool, quick: bool) -> Dict[st
     }
     if extended is not None:
         summary['extended'] = extended
+        lookup = extended['lookup_contract']['summary']
         summary['headline_checks']['extended_checks_pass'] = (
-            extended['lookup_contract']['summary']['signed_i16']['pass'] == extended['lookup_contract']['summary']['signed_i16']['total']
-            and extended['lookup_contract']['summary']['unsigned_u16']['pass'] == extended['lookup_contract']['summary']['unsigned_u16']['total']
+            lookup['parameter_checks']['pass'] == lookup['parameter_checks']['total']
+            and lookup['canonical_full_exhaustive']['pass'] == lookup['canonical_full_exhaustive']['total']
+            and lookup['multibase_direct_samples']['pass'] == lookup['multibase_direct_samples']['total']
             and extended['scaffold_schedule']['summary']['pass'] == extended['scaffold_schedule']['summary']['total']
             and extended['toy_extended']['summary']['pass'] == extended['toy_extended']['summary']['total']
             and extended['challenge_ladder']['summary']['pass'] == extended['challenge_ladder']['summary']['total']
@@ -222,13 +224,27 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
         lookup = extended['lookup_contract']['summary']
         scaffold = extended['scaffold_schedule']['summary']
         toy_extended = extended['toy_extended']['summary']
-        extended_pass = summary['headline_checks']['extended_checks_pass']
-        print(f"[3/{total_sections}] Lookup-contract audit       {console.ok('PASS') if lookup['signed_i16']['pass'] + lookup['unsigned_u16']['pass'] == lookup['signed_i16']['total'] + lookup['unsigned_u16']['total'] else console.fail('FAIL')}")
+        lookup_pass = (
+            lookup['parameter_checks']['pass'] == lookup['parameter_checks']['total']
+            and lookup['canonical_full_exhaustive']['pass'] == lookup['canonical_full_exhaustive']['total']
+            and lookup['multibase_direct_samples']['pass'] == lookup['multibase_direct_samples']['total']
+        )
+        print(f"[3/{total_sections}] Lookup-contract audit       {console.ok('PASS') if lookup_pass else console.fail('FAIL')}")
         print(console.detail(
-            f"      lookup contract: {lookup['signed_i16']['pass'] + lookup['unsigned_u16']['pass']:,} / "
-            f"{lookup['signed_i16']['total'] + lookup['unsigned_u16']['total']:,} deterministic signed/unsigned cases"
+            f"      contract checks: {lookup['parameter_checks']['pass']:,} / {lookup['parameter_checks']['total']:,} "
+            f"machine-readable parameter checks"
         ))
-        print(console.detail(f"      lookup sha256: {extended['lookup_contract']['sha256']}"))
+        print(console.detail(
+            f"      canonical exhaustive: {lookup['canonical_full_exhaustive']['pass']:,} / "
+            f"{lookup['canonical_full_exhaustive']['total']:,} cases on "
+            f"{lookup['canonical_full_exhaustive']['base_id']}"
+        ))
+        print(console.detail(
+            f"      multibase samples: {lookup['multibase_direct_samples']['pass']:,} / "
+            f"{lookup['multibase_direct_samples']['total']:,} across "
+            f"{lookup['multibase_direct_samples']['base_count']} bases"
+        ))
+        print(console.detail(f"      lookup summary sha256: {extended['lookup_contract']['sha256']}"))
         print()
 
         print(f"[4/{total_sections}] Scaffold replay audit       {console.ok('PASS') if scaffold['pass'] == scaffold['total'] else console.fail('FAIL')}")

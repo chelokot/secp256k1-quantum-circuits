@@ -1,21 +1,43 @@
 {
-  "sha256": "e5d97eac376740a036f56953ab2f6e9a554e3d5fb53ade42171be51cefdf5980",
-  "csv": "lookup_contract_audit_8192.csv",
-  "seed_sha256": "6bc829034e3695f0e21ed7fb3a6c8d490a3c6d93a1285daf974d4bb5ed265790",
+  "contract_sha256": "c3b6cc711aa323951a580f6a54a027d84bf84d6a5ad66965751db865553b635d",
+  "lookup_research_summary_sha256": "f3cdbad240d69c8dd87aa26dfb59686aa39d209fde3b48309bfb10f33fa2f990",
   "summary": {
-    "signed_i16": {
-      "total": 4096,
-      "pass": 4096,
-      "edge_cases": 9
+    "parameter_checks": {
+      "total": 9,
+      "pass": 9,
+      "checks": {
+        "schema_matches": true,
+        "curve_matches": true,
+        "window_size_matches": true,
+        "input_representation_matches": true,
+        "address_domain_matches": true,
+        "folding_matches": true,
+        "structured_semantics_matches": true,
+        "table_shape_matches": true,
+        "audit_scope_matches": true
+      }
     },
-    "unsigned_u16": {
-      "total": 4096,
-      "pass": 4096,
-      "edge_cases": 9
-    }
+    "canonical_full_exhaustive": {
+      "base_id": "g_window_0",
+      "total": 65536,
+      "pass": 65536
+    },
+    "multibase_direct_samples": {
+      "base_count": 4,
+      "total": 15906,
+      "pass": 15906
+    },
+    "total": 81451,
+    "pass": 81451
+  },
+  "artifacts": {
+    "contract": "artifacts/lookup/lookup_signed_fold_contract.json",
+    "lookup_research_summary": "artifacts/lookup/lookup_signed_fold_summary.json",
+    "full_exhaustive_csv": "artifacts/lookup/lookup_signed_fold_exhaustive_g.csv",
+    "multibase_sample_csv": "artifacts/lookup/lookup_signed_fold_multibase_sampled.csv"
   },
   "notes": [
-    "This audit makes the lookup-table interface explicit instead of pretending that it is flattened into primitive gates.",
-    "It does not prove a coherent quantum RAM construction; it proves the arithmetic contract assumed at the ISA boundary."
+    "This summary validates the checked-in folded lookup contract fields and then points at the exhaustive and sampled semantic audits generated under artifacts/lookup/.",
+    "The lookup contract is exact at the arithmetic interface layer, but the repository still does not ship a primitive-gate qRAM or QROM realization."
   ]
 }

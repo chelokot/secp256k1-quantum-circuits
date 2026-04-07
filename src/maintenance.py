@@ -18,7 +18,6 @@ PROOF_MANIFEST_PATHS = [
     'artifacts/circuits/ecdlp_expanded_isa_optimized.json',
     'artifacts/verification/core/optimized_pointadd_audit_16384.csv',
     'artifacts/verification/core/toy_curve_exhaustive_19850.csv',
-    'artifacts/verification/extended/lookup_contract_audit_8192.csv',
     'artifacts/verification/extended/scaffold_schedule_audit_256.csv',
     'artifacts/verification/extended/toy_curve_family_extended_110692.csv',
     'artifacts/projections/resource_projection.json',

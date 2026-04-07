@@ -416,8 +416,8 @@ def build_optimization_frontier_estimates(repo_root: Path) -> Dict[str, Any]:
         },
     ]
 
-    if "carry_save_liveness_alias_v1" in scenarios:
-        alt = scenarios["carry_save_liveness_alias_v1"]
+    if "addsub_modmul_liveness_v2" in scenarios:
+        alt = scenarios["addsub_modmul_liveness_v2"]
         frontiers.append({
             "name": "isa_liveness_aliasing",
             "status": "experimental_in_repo",
@@ -437,52 +437,6 @@ def build_optimization_frontier_estimates(repo_root: Path) -> Dict[str, Any]:
             },
             "rationale": "Exact ISA-slot liveness implies a lower peak live arithmetic-slot count than the conservative named-slot policy used by the default model.",
             "main_risk": "This is a backend register-allocation hypothesis, not a theorem-proved primitive mapping.",
-        })
-
-    if "addsub_modmul_explicit_v1" in scenarios:
-        alt = scenarios["addsub_modmul_explicit_v1"]
-        frontiers.append({
-            "name": "explicit_addsub_modmul_backend",
-            "status": "experimental_in_repo",
-            "confidence": "medium",
-            "estimated_total_non_clifford_multiplier_range": ratio_range(
-                int(alt["ecdlp"]["lookup_model_2channel"]["total_non_clifford"]),
-                int(alt["ecdlp"]["lookup_model_3channel"]["total_non_clifford"]),
-            ),
-            "estimated_total_qubit_multiplier_range": [
-                alt["ecdlp"]["logical_qubits_total"] / defaultq,
-                alt["ecdlp"]["logical_qubits_total"] / defaultq,
-            ],
-            "derived_headline": {
-                "logical_qubits": int(alt["ecdlp"]["logical_qubits_total"]),
-                "non_clifford_2lookup": int(alt["ecdlp"]["lookup_model_2channel"]["total_non_clifford"]),
-                "non_clifford_3lookup": int(alt["ecdlp"]["lookup_model_3channel"]["total_non_clifford"]),
-            },
-            "rationale": "This swaps the calibrated field-multiplication family for an explicit add-sub modular-multiplication formula while keeping the rest of the structural pipeline fixed.",
-            "main_risk": "The arithmetic backend is explicit at the model layer, but the repository still does not ship a primitive-gate lowering for that multiplier family.",
-        })
-
-    if "addsub_modmul_liveness_v1" in scenarios:
-        alt = scenarios["addsub_modmul_liveness_v1"]
-        frontiers.append({
-            "name": "explicit_backend_plus_liveness",
-            "status": "experimental_in_repo",
-            "confidence": "medium",
-            "estimated_total_non_clifford_multiplier_range": ratio_range(
-                int(alt["ecdlp"]["lookup_model_2channel"]["total_non_clifford"]),
-                int(alt["ecdlp"]["lookup_model_3channel"]["total_non_clifford"]),
-            ),
-            "estimated_total_qubit_multiplier_range": [
-                alt["ecdlp"]["logical_qubits_total"] / defaultq,
-                alt["ecdlp"]["logical_qubits_total"] / defaultq,
-            ],
-            "derived_headline": {
-                "logical_qubits": int(alt["ecdlp"]["logical_qubits_total"]),
-                "non_clifford_2lookup": int(alt["ecdlp"]["lookup_model_2channel"]["total_non_clifford"]),
-                "non_clifford_3lookup": int(alt["ecdlp"]["lookup_model_3channel"]["total_non_clifford"]),
-            },
-            "rationale": "This combines the explicit arithmetic substitution with ISA-liveness-based slot reuse to show the strongest currently checked-in experimental scenario.",
-            "main_risk": "Both moving parts are still backend-level models below the exact ISA boundary.",
         })
 
     frontiers.extend([

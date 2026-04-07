@@ -1,6 +1,6 @@
 {
-  "integration_name": "cain_2026_neutral_atom_transfer_v1",
-  "warning": "This file combines a secp256k1-specialized logical projection with a P-256 physical architecture paper. The time transfer is approximate; the space transfer is only heuristic.",
+  "integration_name": "cain_2026_neutral_atom_transfer_v2",
+  "warning": "This file combines a secp256k1-specialized logical projection with a P-256 physical architecture paper. Runtime and space are transferred separately and remain approximate.",
   "source_papers": {
     "our_repository_baseline": {
       "path": "artifacts/projections/resource_projection.json"
@@ -17,106 +17,230 @@
     }
   },
   "headline_ranges": {
-    "projected_time_efficient_days_min": 3.2403622222222226,
-    "projected_time_efficient_days_max": 4.297252,
-    "projected_balanced_days_min": 85.54556266666667,
-    "projected_balanced_days_max": 113.44745280000001,
-    "naive_linear_space_physical_qubits_min": 15779.310344827585,
-    "naive_linear_space_physical_qubits_max": 19066.666666666664,
-    "half_fixed_overhead_space_physical_qubits_min": 20889.655172413793,
-    "half_fixed_overhead_space_physical_qubits_max": 22533.333333333332
+    "projected_time_efficient_days_min": 2.486378222222222,
+    "projected_time_efficient_days_max": 3.327844,
+    "projected_balanced_days_min": 65.64038506666667,
+    "projected_balanced_days_max": 87.85508159999999,
+    "same_density_time_efficient_physical_qubits_min": 13197.241379310346,
+    "same_density_time_efficient_physical_qubits_max": 19066.666666666664,
+    "same_density_min_space_physical_qubits_min": 5075.862068965517,
+    "same_density_min_space_physical_qubits_max": 7333.333333333333
   },
   "cases": [
     {
+      "source_model": "addsub_modmul_named_slots_v2",
+      "source_model_status": "default",
       "google_baseline_line": "low_qubit",
       "optimized_lookup_model": "2lookup",
       "google_logical_qubits": 1200,
       "google_non_clifford": 90000000,
       "optimized_logical_qubits": 880,
-      "optimized_non_clifford": 29163260,
-      "runtime_speedup_factor": 3.0860747392438292,
-      "projected_time_efficient_days": 3.2403622222222226,
-      "projected_balanced_days": 85.54556266666667,
-      "space_transfer": {
-        "same_hardware_regime_physical_qubits": 26000,
-        "naive_linear_logical_scaling_physical_qubits": 19066.666666666664,
-        "half_fixed_overhead_scaling_physical_qubits": 22533.333333333332
+      "optimized_non_clifford": 22377404,
+      "ratios": {
+        "logical_qubit_ratio": 0.7333333333333333,
+        "non_clifford_ratio": 0.24863782222222222,
+        "logical_qubit_gain": 1.3636363636363635,
+        "non_clifford_gain": 4.021914248855676
       },
-      "assumptions": [
-        "Runtime is transferred linearly with the dominant non-Clifford/Toffoli budget.",
-        "The physical architecture, cycle time, and parallelization regime are held fixed.",
-        "Space scaling is heuristic only; time transfer is the main supported comparison."
-      ]
+      "runtime_transfer": {
+        "assumption": "Fixed physical architecture, cycle time, and parallelization regime; runtime scales with non-Clifford ratio.",
+        "projected_time_efficient_days": 2.486378222222222,
+        "projected_balanced_days": 65.64038506666667
+      },
+      "space_transfer": {
+        "assumption": "Logical-to-physical density is inherited from the cited Cain reference line.",
+        "same_density_time_efficient_physical_qubits": 19066.666666666664,
+        "same_density_min_space_physical_qubits": 7333.333333333333
+      }
     },
     {
+      "source_model": "addsub_modmul_named_slots_v2",
+      "source_model_status": "default",
       "google_baseline_line": "low_qubit",
       "optimized_lookup_model": "3lookup",
       "google_logical_qubits": 1200,
       "google_non_clifford": 90000000,
       "optimized_logical_qubits": 880,
-      "optimized_non_clifford": 30080764,
-      "runtime_speedup_factor": 2.9919452843684424,
-      "projected_time_efficient_days": 3.342307111111111,
-      "projected_balanced_days": 88.23690773333333,
-      "space_transfer": {
-        "same_hardware_regime_physical_qubits": 26000,
-        "naive_linear_logical_scaling_physical_qubits": 19066.666666666664,
-        "half_fixed_overhead_scaling_physical_qubits": 22533.333333333332
+      "optimized_non_clifford": 23294908,
+      "ratios": {
+        "logical_qubit_ratio": 0.7333333333333333,
+        "non_clifford_ratio": 0.2588323111111111,
+        "logical_qubit_gain": 1.3636363636363635,
+        "non_clifford_gain": 3.863505277634065
       },
-      "assumptions": [
-        "Runtime is transferred linearly with the dominant non-Clifford/Toffoli budget.",
-        "The physical architecture, cycle time, and parallelization regime are held fixed.",
-        "Space scaling is heuristic only; time transfer is the main supported comparison."
-      ]
+      "runtime_transfer": {
+        "assumption": "Fixed physical architecture, cycle time, and parallelization regime; runtime scales with non-Clifford ratio.",
+        "projected_time_efficient_days": 2.588323111111111,
+        "projected_balanced_days": 68.33173013333334
+      },
+      "space_transfer": {
+        "assumption": "Logical-to-physical density is inherited from the cited Cain reference line.",
+        "same_density_time_efficient_physical_qubits": 19066.666666666664,
+        "same_density_min_space_physical_qubits": 7333.333333333333
+      }
     },
     {
+      "source_model": "addsub_modmul_named_slots_v2",
+      "source_model_status": "default",
       "google_baseline_line": "low_gate",
       "optimized_lookup_model": "2lookup",
       "google_logical_qubits": 1450,
       "google_non_clifford": 70000000,
       "optimized_logical_qubits": 880,
-      "optimized_non_clifford": 29163260,
-      "runtime_speedup_factor": 2.4002803527452006,
-      "projected_time_efficient_days": 4.16618,
-      "projected_balanced_days": 109.98715200000001,
-      "space_transfer": {
-        "same_hardware_regime_physical_qubits": 26000,
-        "naive_linear_logical_scaling_physical_qubits": 15779.310344827585,
-        "half_fixed_overhead_scaling_physical_qubits": 20889.655172413793
+      "optimized_non_clifford": 22377404,
+      "ratios": {
+        "logical_qubit_ratio": 0.6068965517241379,
+        "non_clifford_ratio": 0.3196772,
+        "logical_qubit_gain": 1.6477272727272727,
+        "non_clifford_gain": 3.128155526887748
       },
-      "assumptions": [
-        "Runtime is transferred linearly with the dominant non-Clifford/Toffoli budget.",
-        "The physical architecture, cycle time, and parallelization regime are held fixed.",
-        "Space scaling is heuristic only; time transfer is the main supported comparison."
-      ]
+      "runtime_transfer": {
+        "assumption": "Fixed physical architecture, cycle time, and parallelization regime; runtime scales with non-Clifford ratio.",
+        "projected_time_efficient_days": 3.196772,
+        "projected_balanced_days": 84.39478079999999
+      },
+      "space_transfer": {
+        "assumption": "Logical-to-physical density is inherited from the cited Cain reference line.",
+        "same_density_time_efficient_physical_qubits": 15779.310344827585,
+        "same_density_min_space_physical_qubits": 6068.9655172413795
+      }
     },
     {
+      "source_model": "addsub_modmul_named_slots_v2",
+      "source_model_status": "default",
       "google_baseline_line": "low_gate",
       "optimized_lookup_model": "3lookup",
       "google_logical_qubits": 1450,
       "google_non_clifford": 70000000,
       "optimized_logical_qubits": 880,
-      "optimized_non_clifford": 30080764,
-      "runtime_speedup_factor": 2.3270685545087884,
-      "projected_time_efficient_days": 4.297252,
-      "projected_balanced_days": 113.44745280000001,
-      "space_transfer": {
-        "same_hardware_regime_physical_qubits": 26000,
-        "naive_linear_logical_scaling_physical_qubits": 15779.310344827585,
-        "half_fixed_overhead_scaling_physical_qubits": 20889.655172413793
+      "optimized_non_clifford": 23294908,
+      "ratios": {
+        "logical_qubit_ratio": 0.6068965517241379,
+        "non_clifford_ratio": 0.3327844,
+        "logical_qubit_gain": 1.6477272727272727,
+        "non_clifford_gain": 3.0049485492709396
       },
-      "assumptions": [
-        "Runtime is transferred linearly with the dominant non-Clifford/Toffoli budget.",
-        "The physical architecture, cycle time, and parallelization regime are held fixed.",
-        "Space scaling is heuristic only; time transfer is the main supported comparison."
-      ]
+      "runtime_transfer": {
+        "assumption": "Fixed physical architecture, cycle time, and parallelization regime; runtime scales with non-Clifford ratio.",
+        "projected_time_efficient_days": 3.327844,
+        "projected_balanced_days": 87.85508159999999
+      },
+      "space_transfer": {
+        "assumption": "Logical-to-physical density is inherited from the cited Cain reference line.",
+        "same_density_time_efficient_physical_qubits": 15779.310344827585,
+        "same_density_min_space_physical_qubits": 6068.9655172413795
+      }
+    },
+    {
+      "source_model": "addsub_modmul_liveness_v2",
+      "source_model_status": "experimental",
+      "google_baseline_line": "low_qubit",
+      "optimized_lookup_model": "2lookup",
+      "google_logical_qubits": 1200,
+      "google_non_clifford": 90000000,
+      "optimized_logical_qubits": 736,
+      "optimized_non_clifford": 22377404,
+      "ratios": {
+        "logical_qubit_ratio": 0.6133333333333333,
+        "non_clifford_ratio": 0.24863782222222222,
+        "logical_qubit_gain": 1.6304347826086956,
+        "non_clifford_gain": 4.021914248855676
+      },
+      "runtime_transfer": {
+        "assumption": "Fixed physical architecture, cycle time, and parallelization regime; runtime scales with non-Clifford ratio.",
+        "projected_time_efficient_days": 2.486378222222222,
+        "projected_balanced_days": 65.64038506666667
+      },
+      "space_transfer": {
+        "assumption": "Logical-to-physical density is inherited from the cited Cain reference line.",
+        "same_density_time_efficient_physical_qubits": 15946.666666666666,
+        "same_density_min_space_physical_qubits": 6133.333333333333
+      }
+    },
+    {
+      "source_model": "addsub_modmul_liveness_v2",
+      "source_model_status": "experimental",
+      "google_baseline_line": "low_qubit",
+      "optimized_lookup_model": "3lookup",
+      "google_logical_qubits": 1200,
+      "google_non_clifford": 90000000,
+      "optimized_logical_qubits": 736,
+      "optimized_non_clifford": 23294908,
+      "ratios": {
+        "logical_qubit_ratio": 0.6133333333333333,
+        "non_clifford_ratio": 0.2588323111111111,
+        "logical_qubit_gain": 1.6304347826086956,
+        "non_clifford_gain": 3.863505277634065
+      },
+      "runtime_transfer": {
+        "assumption": "Fixed physical architecture, cycle time, and parallelization regime; runtime scales with non-Clifford ratio.",
+        "projected_time_efficient_days": 2.588323111111111,
+        "projected_balanced_days": 68.33173013333334
+      },
+      "space_transfer": {
+        "assumption": "Logical-to-physical density is inherited from the cited Cain reference line.",
+        "same_density_time_efficient_physical_qubits": 15946.666666666666,
+        "same_density_min_space_physical_qubits": 6133.333333333333
+      }
+    },
+    {
+      "source_model": "addsub_modmul_liveness_v2",
+      "source_model_status": "experimental",
+      "google_baseline_line": "low_gate",
+      "optimized_lookup_model": "2lookup",
+      "google_logical_qubits": 1450,
+      "google_non_clifford": 70000000,
+      "optimized_logical_qubits": 736,
+      "optimized_non_clifford": 22377404,
+      "ratios": {
+        "logical_qubit_ratio": 0.5075862068965518,
+        "non_clifford_ratio": 0.3196772,
+        "logical_qubit_gain": 1.9701086956521738,
+        "non_clifford_gain": 3.128155526887748
+      },
+      "runtime_transfer": {
+        "assumption": "Fixed physical architecture, cycle time, and parallelization regime; runtime scales with non-Clifford ratio.",
+        "projected_time_efficient_days": 3.196772,
+        "projected_balanced_days": 84.39478079999999
+      },
+      "space_transfer": {
+        "assumption": "Logical-to-physical density is inherited from the cited Cain reference line.",
+        "same_density_time_efficient_physical_qubits": 13197.241379310346,
+        "same_density_min_space_physical_qubits": 5075.862068965517
+      }
+    },
+    {
+      "source_model": "addsub_modmul_liveness_v2",
+      "source_model_status": "experimental",
+      "google_baseline_line": "low_gate",
+      "optimized_lookup_model": "3lookup",
+      "google_logical_qubits": 1450,
+      "google_non_clifford": 70000000,
+      "optimized_logical_qubits": 736,
+      "optimized_non_clifford": 23294908,
+      "ratios": {
+        "logical_qubit_ratio": 0.5075862068965518,
+        "non_clifford_ratio": 0.3327844,
+        "logical_qubit_gain": 1.9701086956521738,
+        "non_clifford_gain": 3.0049485492709396
+      },
+      "runtime_transfer": {
+        "assumption": "Fixed physical architecture, cycle time, and parallelization regime; runtime scales with non-Clifford ratio.",
+        "projected_time_efficient_days": 3.327844,
+        "projected_balanced_days": 87.85508159999999
+      },
+      "space_transfer": {
+        "assumption": "Logical-to-physical density is inherited from the cited Cain reference line.",
+        "same_density_time_efficient_physical_qubits": 13197.241379310346,
+        "same_density_min_space_physical_qubits": 5075.862068965517
+      }
     }
   ],
   "publication_safe_summary": {
-    "single_sentence": "If the optimized secp256k1 logical layer is transferred into the neutral-atom architecture of Cain et al. under constant cycle-time and parallelism assumptions, the headline ECC runtime moves from about 10 days to roughly 3-4 days, while physical-qubit savings are likely more modest and much more model-sensitive.",
+    "single_sentence": "If the repository's optimized logical secp256k1 projection is transferred into the neutral-atom architecture of Cain et al. under fixed cycle-time and parallelism assumptions, the current supported backend family maps to roughly 2.5-3.3 days on the time-efficient line and about 6.1k-19.1k physical qubits under same-density scaling, depending on which public baseline line and backend scenario are used.",
     "do_not_say": [
       "Do not say the paper is beaten on its own P-256 target without recompiling for P-256.",
-      "Do not say the physical qubit count is exactly 20k or exactly 26k for our circuit.",
+      "Do not say any single runtime or physical-qubit number is exact; the file intentionally reports a scenario range.",
       "Do not say the transfer is theorem-proved end-to-end."
     ]
   }

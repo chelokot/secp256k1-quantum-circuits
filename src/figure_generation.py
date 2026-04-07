@@ -75,10 +75,11 @@ def fig_headroom(package_dir: Path, sensitivity: Any) -> None:
 
 def fig_verification_coverage(package_dir: Path, verification: Any) -> None:
     extended = verification['extended']
+    lookup = extended['lookup_contract']['summary']
     entries = [
         ('quick secp audit', 16384),
         ('quick toy family', 19850),
-        ('lookup contract', extended['lookup_contract']['summary']['signed_i16']['total'] + extended['lookup_contract']['summary']['unsigned_u16']['total']),
+        ('lookup contract', lookup['canonical_full_exhaustive']['total'] + lookup['multibase_direct_samples']['total']),
         ('scaffold replay', extended['scaffold_schedule']['summary']['total']),
         ('extended toy family', extended['toy_extended']['summary']['total']),
         ('challenge ladder', extended['challenge_ladder']['summary']['total']),

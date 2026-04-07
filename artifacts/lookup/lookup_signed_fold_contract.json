@@ -1,8 +1,14 @@
 {
-  "schema": "signed-folded-lookup-v1",
+  "schema": "signed-folded-lookup-v2",
   "curve": "secp256k1",
   "window_size_bits": 16,
   "input_representation": "16-bit two's complement",
+  "address_domain": {
+    "bits": 16,
+    "unsigned_domain_size": 65536,
+    "signed_min": -32768,
+    "signed_max": 32767
+  },
   "motivation": "Exploit the exact secp256k1 identity [\u2212d]U = (x([d]U), \u2212y([d]U)) to halve the lookup-table domain per coordinate.",
   "folding": {
     "full_signed_domain_size": 65536,
@@ -12,6 +18,15 @@
     "zero_word_hex": "0x0000",
     "meta_lookup_replacement": "derive infinity/no-op directly from the folded word instead of querying a separate metadata table",
     "negative_path": "lookup positive magnitude then negate Y"
+  },
+  "structured_semantics": {
+    "magnitude_index_min": 0,
+    "magnitude_index_max": 32767,
+    "zero_maps_to_infinity": true,
+    "special_case_uses_dedicated_negative_point": true,
+    "negative_words_negate_y_after_positive_lookup": true,
+    "x_table_depends_only_on_magnitude": true,
+    "metadata_lookup_needed": false
   },
   "algorithm": [
     "Interpret the raw 16-bit window word as a signed two's-complement integer d.",
@@ -25,6 +40,26 @@
     "y_coordinate_table_entries": 32768,
     "separate_metadata_table_needed": false,
     "per_window_special_constant_points": 1
+  },
+  "audit_scope": {
+    "canonical_full_exhaustive_base_id": "g_window_0",
+    "sampled_base_ids": [
+      "g_window_0",
+      "g_window_5",
+      "g_window_10",
+      "g_window_15"
+    ],
+    "edge_words_hex": [
+      "0x0000",
+      "0x0001",
+      "0x0002",
+      "0x7fff",
+      "0x8000",
+      "0x8001",
+      "0xfffe",
+      "0xffff"
+    ],
+    "sample_cases_per_base": 4096
   },
   "notes": [
     "This contract changes only the lookup layer. The arithmetic leaf remains the same exact machine-readable secp256k1 netlist already checked into the repository.",

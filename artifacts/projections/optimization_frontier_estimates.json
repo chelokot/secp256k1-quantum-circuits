@@ -1,9 +1,9 @@
 {
   "current_headline": {
     "logical_qubits": 880,
-    "non_clifford_2lookup": 29163260,
-    "non_clifford_3lookup": 30080764,
-    "source_model": "carry_save_single_lane_v2_derived"
+    "non_clifford_2lookup": 22377404,
+    "non_clifford_3lookup": 23294908,
+    "source_model": "addsub_modmul_named_slots_v2"
   },
   "frontiers": [
     {
@@ -20,8 +20,8 @@
       ],
       "derived_headline": {
         "logical_qubits": 880,
-        "non_clifford_2lookup": 29163260,
-        "non_clifford_3lookup": 30080764
+        "non_clifford_2lookup": 22377404,
+        "non_clifford_3lookup": 23294908
       },
       "rationale": "The repository now derives the mainline from checked-in structural artifacts plus a versioned backend-model bundle instead of storing whole-circuit headline constants.",
       "main_risk": "Still a backend model below the kickmix ISA boundary, not a primitive-gate lowering."
@@ -40,51 +40,11 @@
       ],
       "derived_headline": {
         "logical_qubits": 736,
-        "non_clifford_2lookup": 29163260,
-        "non_clifford_3lookup": 30080764
+        "non_clifford_2lookup": 22377404,
+        "non_clifford_3lookup": 23294908
       },
       "rationale": "Exact ISA-slot liveness implies a lower peak live arithmetic-slot count than the conservative named-slot policy used by the default model.",
       "main_risk": "This is a backend register-allocation hypothesis, not a theorem-proved primitive mapping."
-    },
-    {
-      "name": "explicit_addsub_modmul_backend",
-      "status": "experimental_in_repo",
-      "confidence": "medium",
-      "estimated_total_non_clifford_multiplier_range": [
-        0.7673149023805981,
-        0.7744121126710745
-      ],
-      "estimated_total_qubit_multiplier_range": [
-        1.0,
-        1.0
-      ],
-      "derived_headline": {
-        "logical_qubits": 880,
-        "non_clifford_2lookup": 22377404,
-        "non_clifford_3lookup": 23294908
-      },
-      "rationale": "This swaps the calibrated field-multiplication family for an explicit add-sub modular-multiplication formula while keeping the rest of the structural pipeline fixed.",
-      "main_risk": "The arithmetic backend is explicit at the model layer, but the repository still does not ship a primitive-gate lowering for that multiplier family."
-    },
-    {
-      "name": "explicit_backend_plus_liveness",
-      "status": "experimental_in_repo",
-      "confidence": "medium",
-      "estimated_total_non_clifford_multiplier_range": [
-        0.7673149023805981,
-        0.7744121126710745
-      ],
-      "estimated_total_qubit_multiplier_range": [
-        0.8363636363636363,
-        0.8363636363636363
-      ],
-      "derived_headline": {
-        "logical_qubits": 736,
-        "non_clifford_2lookup": 22377404,
-        "non_clifford_3lookup": 23294908
-      },
-      "rationale": "This combines the explicit arithmetic substitution with ISA-liveness-based slot reuse to show the strongest currently checked-in experimental scenario.",
-      "main_risk": "Both moving parts are still backend-level models below the exact ISA boundary."
     },
     {
       "name": "signed_lookup_folding_contract",
@@ -100,8 +60,8 @@
       ],
       "derived_headline": {
         "logical_qubits": 880,
-        "non_clifford_2lookup": 29163260,
-        "non_clifford_3lookup": 30080764
+        "non_clifford_2lookup": 22377404,
+        "non_clifford_3lookup": 23294908
       },
       "rationale": "The signed folded contract is exact and heavily audited, but its backend impact remains bounded because arithmetic dominates the current model.",
       "main_risk": "Further gains from lookup work alone are limited unless the arithmetic/backend layer also changes."

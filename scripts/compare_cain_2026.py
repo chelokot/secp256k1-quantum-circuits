@@ -77,22 +77,23 @@ def main() -> None:
     print(console.heading('---------------'))
     print(f"time-efficient runtime : {time_efficient_range}")
     print(f"balanced runtime       : {balanced_range}")
-    print(f"naive linear space     : {head['naive_linear_space_physical_qubits_min']:.0f} to {head['naive_linear_space_physical_qubits_max']:.0f} physical qubits")
-    print(f"half-fixed space       : {head['half_fixed_overhead_space_physical_qubits_min']:.0f} to {head['half_fixed_overhead_space_physical_qubits_max']:.0f} physical qubits")
+    print(f"time-efficient space   : {head['same_density_time_efficient_physical_qubits_min']:.0f} to {head['same_density_time_efficient_physical_qubits_max']:.0f} physical qubits")
+    print(f"minimum-space line     : {head['same_density_min_space_physical_qubits_min']:.0f} to {head['same_density_min_space_physical_qubits_max']:.0f} physical qubits")
     print()
     print(console.heading('Case table'))
     print(console.heading('----------'))
     for case in summary['cases']:
-        speedup = console.good(f"x{case['runtime_speedup_factor']:.4f}")
-        time_efficient = console.good(f"{case['projected_time_efficient_days']:.2f}d")
-        balanced = console.good(f"{case['projected_balanced_days']:.1f}d")
+        non_clifford_gain = console.good(f"x{case['ratios']['non_clifford_gain']:.4f}")
+        time_efficient = console.good(f"{case['runtime_transfer']['projected_time_efficient_days']:.2f}d")
+        balanced = console.good(f"{case['runtime_transfer']['projected_balanced_days']:.1f}d")
         print(
-            f"{case['google_baseline_line']:10s} {case['optimized_lookup_model']:7s}  "
-            f"speedup {speedup}  "
+            f"{case['source_model']:24s} {case['google_baseline_line']:10s} {case['optimized_lookup_model']:7s}  "
+            f"gain {non_clifford_gain}  "
             f"time-efficient={time_efficient} "
-            f"(vs Cain {cain['time_efficient_runtime_days']:.1f}d, -{cain['time_efficient_runtime_days'] - case['projected_time_efficient_days']:.2f}d)  "
+            f"(vs Cain {cain['time_efficient_runtime_days']:.1f}d, -{cain['time_efficient_runtime_days'] - case['runtime_transfer']['projected_time_efficient_days']:.2f}d)  "
             f"balanced={balanced} "
-            f"(vs Cain {cain['balanced_runtime_days']:.1f}d, -{cain['balanced_runtime_days'] - case['projected_balanced_days']:.1f}d)"
+            f"(vs Cain {cain['balanced_runtime_days']:.1f}d, -{cain['balanced_runtime_days'] - case['runtime_transfer']['projected_balanced_days']:.1f}d)  "
+            f"time-efficient-space={case['space_transfer']['same_density_time_efficient_physical_qubits']:.0f}"
         )
 
 

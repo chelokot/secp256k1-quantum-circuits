@@ -1,8 +1,8 @@
 {
   "base": {
     "optimized_qubits": 880,
-    "optimized_nc_2lookup": 29163260,
-    "optimized_nc_3lookup": 30080764,
+    "optimized_nc_2lookup": 22377404,
+    "optimized_nc_3lookup": 23294908,
     "google_low_qubit": {
       "logical_qubits": 1200,
       "non_clifford": 90000000
@@ -13,16 +13,16 @@
     }
   },
   "headroom": {
-    "non_clifford_margin_vs_low_qubit_2lookup": 60836740,
-    "non_clifford_margin_vs_low_gate_2lookup": 40836740,
-    "non_clifford_margin_vs_low_qubit_3lookup": 59919236,
-    "non_clifford_margin_vs_low_gate_3lookup": 39919236,
+    "non_clifford_margin_vs_low_qubit_2lookup": 67622596,
+    "non_clifford_margin_vs_low_gate_2lookup": 47622596,
+    "non_clifford_margin_vs_low_qubit_3lookup": 66705092,
+    "non_clifford_margin_vs_low_gate_3lookup": 46705092,
     "qubit_margin_vs_low_qubit": 320,
     "qubit_margin_vs_low_gate": 570,
-    "break_even_multiplier_vs_low_gate_2lookup": 2.4002803527452006,
-    "break_even_multiplier_vs_low_qubit_2lookup": 3.0860747392438292,
-    "break_even_multiplier_vs_low_gate_3lookup": 2.3270685545087884,
-    "break_even_multiplier_vs_low_qubit_3lookup": 2.9919452843684424
+    "break_even_multiplier_vs_low_gate_2lookup": 3.128155526887748,
+    "break_even_multiplier_vs_low_qubit_2lookup": 4.021914248855676,
+    "break_even_multiplier_vs_low_gate_3lookup": 3.0049485492709396,
+    "break_even_multiplier_vs_low_qubit_3lookup": 3.863505277634065
   },
   "scenario_grid": [
     {
@@ -2234,63 +2234,63 @@
       "extra_non_clifford": 16000000,
       "multiplier": 2.0,
       "extra_qubits": 0,
-      "beats_low_gate_2lookup": false,
+      "beats_low_gate_2lookup": true,
       "beats_low_qubit_2lookup": true,
-      "beats_low_gate_3lookup": false,
+      "beats_low_gate_3lookup": true,
       "beats_low_qubit_3lookup": true
     },
     {
       "extra_non_clifford": 16000000,
       "multiplier": 2.0,
       "extra_qubits": 16,
-      "beats_low_gate_2lookup": false,
+      "beats_low_gate_2lookup": true,
       "beats_low_qubit_2lookup": true,
-      "beats_low_gate_3lookup": false,
+      "beats_low_gate_3lookup": true,
       "beats_low_qubit_3lookup": true
     },
     {
       "extra_non_clifford": 16000000,
       "multiplier": 2.0,
       "extra_qubits": 32,
-      "beats_low_gate_2lookup": false,
+      "beats_low_gate_2lookup": true,
       "beats_low_qubit_2lookup": true,
-      "beats_low_gate_3lookup": false,
+      "beats_low_gate_3lookup": true,
       "beats_low_qubit_3lookup": true
     },
     {
       "extra_non_clifford": 16000000,
       "multiplier": 2.0,
       "extra_qubits": 64,
-      "beats_low_gate_2lookup": false,
+      "beats_low_gate_2lookup": true,
       "beats_low_qubit_2lookup": true,
-      "beats_low_gate_3lookup": false,
+      "beats_low_gate_3lookup": true,
       "beats_low_qubit_3lookup": true
     },
     {
       "extra_non_clifford": 16000000,
       "multiplier": 2.0,
       "extra_qubits": 96,
-      "beats_low_gate_2lookup": false,
+      "beats_low_gate_2lookup": true,
       "beats_low_qubit_2lookup": true,
-      "beats_low_gate_3lookup": false,
+      "beats_low_gate_3lookup": true,
       "beats_low_qubit_3lookup": true
     },
     {
       "extra_non_clifford": 16000000,
       "multiplier": 2.0,
       "extra_qubits": 128,
-      "beats_low_gate_2lookup": false,
+      "beats_low_gate_2lookup": true,
       "beats_low_qubit_2lookup": true,
-      "beats_low_gate_3lookup": false,
+      "beats_low_gate_3lookup": true,
       "beats_low_qubit_3lookup": true
     },
     {
       "extra_non_clifford": 16000000,
       "multiplier": 2.0,
       "extra_qubits": 192,
-      "beats_low_gate_2lookup": false,
+      "beats_low_gate_2lookup": true,
       "beats_low_qubit_2lookup": true,
-      "beats_low_gate_3lookup": false,
+      "beats_low_gate_3lookup": true,
       "beats_low_qubit_3lookup": true
     },
     {
@@ -2486,63 +2486,63 @@
       "extra_non_clifford": 32000000,
       "multiplier": 1.5,
       "extra_qubits": 0,
-      "beats_low_gate_2lookup": false,
+      "beats_low_gate_2lookup": true,
       "beats_low_qubit_2lookup": true,
-      "beats_low_gate_3lookup": false,
+      "beats_low_gate_3lookup": true,
       "beats_low_qubit_3lookup": true
     },
     {
       "extra_non_clifford": 32000000,
       "multiplier": 1.5,
       "extra_qubits": 16,
-      "beats_low_gate_2lookup": false,
+      "beats_low_gate_2lookup": true,
       "beats_low_qubit_2lookup": true,
-      "beats_low_gate_3lookup": false,
+      "beats_low_gate_3lookup": true,
       "beats_low_qubit_3lookup": true
     },
     {
       "extra_non_clifford": 32000000,
       "multiplier": 1.5,
       "extra_qubits": 32,
-      "beats_low_gate_2lookup": false,
+      "beats_low_gate_2lookup": true,
       "beats_low_qubit_2lookup": true,
-      "beats_low_gate_3lookup": false,
+      "beats_low_gate_3lookup": true,
       "beats_low_qubit_3lookup": true
     },
     {
       "extra_non_clifford": 32000000,
       "multiplier": 1.5,
       "extra_qubits": 64,
-      "beats_low_gate_2lookup": false,
+      "beats_low_gate_2lookup": true,
       "beats_low_qubit_2lookup": true,
-      "beats_low_gate_3lookup": false,
+      "beats_low_gate_3lookup": true,
       "beats_low_qubit_3lookup": true
     },
     {
       "extra_non_clifford": 32000000,
       "multiplier": 1.5,
       "extra_qubits": 96,
-      "beats_low_gate_2lookup": false,
+      "beats_low_gate_2lookup": true,
       "beats_low_qubit_2lookup": true,
-      "beats_low_gate_3lookup": false,
+      "beats_low_gate_3lookup": true,
       "beats_low_qubit_3lookup": true
     },
     {
       "extra_non_clifford": 32000000,
       "multiplier": 1.5,
       "extra_qubits": 128,
-      "beats_low_gate_2lookup": false,
+      "beats_low_gate_2lookup": true,
       "beats_low_qubit_2lookup": true,
-      "beats_low_gate_3lookup": false,
+      "beats_low_gate_3lookup": true,
       "beats_low_qubit_3lookup": true
     },
     {
       "extra_non_clifford": 32000000,
       "multiplier": 1.5,
       "extra_qubits": 192,
-      "beats_low_gate_2lookup": false,
+      "beats_low_gate_2lookup": true,
       "beats_low_qubit_2lookup": true,
-      "beats_low_gate_3lookup": false,
+      "beats_low_gate_3lookup": true,
       "beats_low_qubit_3lookup": true
     },
     {
@@ -2613,63 +2613,63 @@
       "multiplier": 2.0,
       "extra_qubits": 0,
       "beats_low_gate_2lookup": false,
-      "beats_low_qubit_2lookup": false,
+      "beats_low_qubit_2lookup": true,
       "beats_low_gate_3lookup": false,
-      "beats_low_qubit_3lookup": false
+      "beats_low_qubit_3lookup": true
     },
     {
       "extra_non_clifford": 32000000,
       "multiplier": 2.0,
       "extra_qubits": 16,
       "beats_low_gate_2lookup": false,
-      "beats_low_qubit_2lookup": false,
+      "beats_low_qubit_2lookup": true,
       "beats_low_gate_3lookup": false,
-      "beats_low_qubit_3lookup": false
+      "beats_low_qubit_3lookup": true
     },
     {
       "extra_non_clifford": 32000000,
       "multiplier": 2.0,
       "extra_qubits": 32,
       "beats_low_gate_2lookup": false,
-      "beats_low_qubit_2lookup": false,
+      "beats_low_qubit_2lookup": true,
       "beats_low_gate_3lookup": false,
-      "beats_low_qubit_3lookup": false
+      "beats_low_qubit_3lookup": true
     },
     {
       "extra_non_clifford": 32000000,
       "multiplier": 2.0,
       "extra_qubits": 64,
       "beats_low_gate_2lookup": false,
-      "beats_low_qubit_2lookup": false,
+      "beats_low_qubit_2lookup": true,
       "beats_low_gate_3lookup": false,
-      "beats_low_qubit_3lookup": false
+      "beats_low_qubit_3lookup": true
     },
     {
       "extra_non_clifford": 32000000,
       "multiplier": 2.0,
       "extra_qubits": 96,
       "beats_low_gate_2lookup": false,
-      "beats_low_qubit_2lookup": false,
+      "beats_low_qubit_2lookup": true,
       "beats_low_gate_3lookup": false,
-      "beats_low_qubit_3lookup": false
+      "beats_low_qubit_3lookup": true
     },
     {
       "extra_non_clifford": 32000000,
       "multiplier": 2.0,
       "extra_qubits": 128,
       "beats_low_gate_2lookup": false,
-      "beats_low_qubit_2lookup": false,
+      "beats_low_qubit_2lookup": true,
       "beats_low_gate_3lookup": false,
-      "beats_low_qubit_3lookup": false
+      "beats_low_qubit_3lookup": true
     },
     {
       "extra_non_clifford": 32000000,
       "multiplier": 2.0,
       "extra_qubits": 192,
       "beats_low_gate_2lookup": false,
-      "beats_low_qubit_2lookup": false,
+      "beats_low_qubit_2lookup": true,
       "beats_low_gate_3lookup": false,
-      "beats_low_qubit_3lookup": false
+      "beats_low_qubit_3lookup": true
     }
   ],
   "notes": [

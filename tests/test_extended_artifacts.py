@@ -26,25 +26,22 @@ class ExtendedArtifactTests(unittest.TestCase):
         cls.meta = json.loads((REPO_ROOT / 'artifacts' / 'projections' / 'meta_analysis.json').read_text())
         cls.sensitivity = json.loads((REPO_ROOT / 'artifacts' / 'projections' / 'projection_sensitivity.json').read_text())
         cls.projection = cls.summary['optimized']['resource_projection']
-        cls.lookup_csv = REPO_ROOT / 'artifacts' / 'verification' / 'extended' / 'lookup_contract_audit_8192.csv'
-        cls.lookup_leaf = REPO_ROOT / 'artifacts' / 'circuits' / 'optimized_pointadd_secp256k1.json'
-        cls.lookup_scaffold = REPO_ROOT / 'artifacts' / 'circuits' / 'ecdlp_scaffold_optimized.json'
+        cls.lookup_summary_json = REPO_ROOT / 'artifacts' / 'verification' / 'extended' / 'lookup_contract_summary.json'
+        cls.lookup_contract = REPO_ROOT / 'artifacts' / 'lookup' / 'lookup_signed_fold_contract.json'
+        cls.lookup_research_summary = REPO_ROOT / 'artifacts' / 'lookup' / 'lookup_signed_fold_summary.json'
         cls.scaffold_csv = REPO_ROOT / 'artifacts' / 'verification' / 'extended' / 'scaffold_schedule_audit_256.csv'
         cls.toy_csv = REPO_ROOT / 'artifacts' / 'verification' / 'extended' / 'toy_curve_family_extended_110692.csv'
 
     def test_lookup_contract_passes(self):
         lookup = self.extended['lookup_contract']
-        self.assertEqual(lookup['summary']['signed_i16']['total'], 4096)
-        self.assertEqual(lookup['summary']['signed_i16']['pass'], 4096)
-        self.assertEqual(lookup['summary']['unsigned_u16']['total'], 4096)
-        self.assertEqual(lookup['summary']['unsigned_u16']['pass'], 4096)
-        self.assertEqual(lookup['sha256'], sha256_path(self.lookup_csv))
-        expected_seed = sha256_bytes(
-            bytes.fromhex(
-                sha256_bytes(bytes.fromhex(sha256_path(self.lookup_leaf)) + bytes.fromhex(sha256_path(self.lookup_scaffold)))
-            )
-        )
-        self.assertEqual(lookup['seed_sha256'], expected_seed)
+        summary = lookup['summary']
+        self.assertEqual(summary['parameter_checks']['pass'], summary['parameter_checks']['total'])
+        self.assertEqual(summary['canonical_full_exhaustive']['total'], 65_536)
+        self.assertEqual(summary['canonical_full_exhaustive']['pass'], 65_536)
+        self.assertEqual(summary['multibase_direct_samples']['pass'], summary['multibase_direct_samples']['total'])
+        self.assertEqual(lookup['sha256'], sha256_path(self.lookup_summary_json))
+        self.assertEqual(lookup['contract_sha256'], sha256_path(self.lookup_contract))
+        self.assertEqual(lookup['lookup_research_summary_sha256'], sha256_path(self.lookup_research_summary))
 
     def test_scaffold_replay_passes(self):
         scaffold = self.extended['scaffold_schedule']
@@ -65,17 +62,29 @@ class ExtendedArtifactTests(unittest.TestCase):
         self.assertEqual(ladder['summary']['total'], ladder['summary']['pass'])
         self.assertGreaterEqual(ladder['summary']['total'], 700)
 
-    def test_meta_analysis_reductions_are_substantial(self):
+    def test_meta_analysis_matches_projection_ratios(self):
         optimized = self.meta['optimized_vs_google_estimates']
-        self.assertGreater(optimized['vs_low_qubit_non_clifford_factor'], 2.5)
-        self.assertGreater(optimized['vs_low_gate_non_clifford_factor'], 2.0)
-        self.assertGreater(optimized['vs_low_qubit_logical_qubit_factor'], 1.3)
+        gains = self.projection['improvement_vs_google']
+        self.assertEqual(optimized['vs_low_qubit_non_clifford_factor'], gains['versus_low_qubit']['toffoli_gain_2lookup'])
+        self.assertEqual(optimized['vs_low_gate_non_clifford_factor'], gains['versus_low_gate']['toffoli_gain_2lookup'])
+        self.assertEqual(optimized['vs_low_qubit_logical_qubit_factor'], gains['versus_low_qubit']['qubit_gain'])
 
-    def test_headroom_is_positive(self):
+    def test_headroom_tracks_projection(self):
         headroom = self.sensitivity['headroom']
-        self.assertGreater(headroom['non_clifford_margin_vs_low_gate_2lookup'], 30_000_000)
-        self.assertGreater(headroom['non_clifford_margin_vs_low_qubit_2lookup'], 50_000_000)
-        self.assertGreater(headroom['qubit_margin_vs_low_qubit'], 300)
+        optimized = self.projection['optimized_ecdlp_projection']
+        baseline = self.projection['public_google_baseline']
+        self.assertEqual(
+            headroom['non_clifford_margin_vs_low_gate_2lookup'],
+            baseline['low_gate']['non_clifford'] - optimized['lookup_model_2channel']['total_non_clifford'],
+        )
+        self.assertEqual(
+            headroom['non_clifford_margin_vs_low_qubit_2lookup'],
+            baseline['low_qubit']['non_clifford'] - optimized['lookup_model_2channel']['total_non_clifford'],
+        )
+        self.assertEqual(
+            headroom['qubit_margin_vs_low_qubit'],
+            baseline['low_qubit']['logical_qubits'] - optimized['logical_qubits_total'],
+        )
 
     def test_projection_sensitivity_tracks_current_projection(self):
         optimized = self.projection['optimized_ecdlp_projection']
@@ -95,7 +104,7 @@ class ExtendedArtifactTests(unittest.TestCase):
     def test_claim_boundary_statuses(self):
         statuses = {layer['layer']: layer['status'] for layer in self.boundaries['layers']}
         self.assertEqual(statuses['optimized_leaf_arithmetic'], 'exact_machine_checked')
-        self.assertEqual(statuses['lookup_table_contract'], 'explicit_interface_tested_not_flattened')
+        self.assertEqual(statuses['lookup_table_contract'], 'exact_contract_semantics_machine_checked_not_flattened')
         self.assertEqual(statuses['mbuc_cleanup'], 'abstract_contract_only')
 
 

@@ -11,11 +11,11 @@
   },
   "folded_scaffold_source": {
     "path": "artifacts/circuits/ecdlp_scaffold_lookup_folded.json",
-    "sha256": "8411a9ad26c2ac51c0fb27e7a2a63b6750902cef8a5f9b4c4e702a315b460d7a"
+    "sha256": "dea4d9d209f42734fb70cee6b5a2d968f4c4f0bf61c4d1646a554fcd9518f3d4"
   },
   "lookup_contract_source": {
     "path": "artifacts/lookup/lookup_signed_fold_contract.json",
-    "sha256": "0727068cfe6b5d0bad467b3b55892a5661bfab1ee990de73bd0a23393142484e"
+    "sha256": "c3b6cc711aa323951a580f6a54a027d84bf84d6a5ad66965751db865553b635d"
   },
   "window_size": 16,
   "retained_window_additions": 28,

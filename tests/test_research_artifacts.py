@@ -27,12 +27,18 @@ class ResearchArtifactTests(unittest.TestCase):
         cls.matrix = json.loads((REPO_ROOT / 'results' / 'literature_matrix.json').read_text())
 
     def test_cost_model_correction_is_reflected(self):
-        self.assertGreater(self.dominant['breakdown']['arithmetic_share_fraction_2lookup'], 0.93 - 1e-9)
-        self.assertGreater(self.dominant['breakdown']['arithmetic_share_fraction_3lookup'], 0.90 - 1e-9)
-        self.assertLess(self.dominant['breakdown']['lookup_share_fraction_2lookup'], 0.07)
-        self.assertLess(self.dominant['breakdown']['lookup_share_fraction_3lookup'], 0.10)
-        self.assertGreater(self.dominant['ceilings']['max_total_reduction_fraction_from_arithmetic_only_2lookup'], 0.93 - 1e-9)
-        self.assertGreater(self.dominant['ceilings']['max_total_reduction_fraction_from_arithmetic_only_3lookup'], 0.90 - 1e-9)
+        breakdown = self.dominant['breakdown']
+        ceilings = self.dominant['ceilings']
+        self.assertGreater(breakdown['arithmetic_share_fraction_2lookup'], breakdown['lookup_share_fraction_2lookup'])
+        self.assertGreater(breakdown['arithmetic_share_fraction_3lookup'], breakdown['lookup_share_fraction_3lookup'])
+        self.assertAlmostEqual(
+            ceilings['max_total_reduction_fraction_from_arithmetic_only_2lookup'],
+            breakdown['arithmetic_share_fraction_2lookup'],
+        )
+        self.assertAlmostEqual(
+            ceilings['max_total_reduction_fraction_from_arithmetic_only_3lookup'],
+            breakdown['arithmetic_share_fraction_3lookup'],
+        )
 
     def test_lookup_target_table_is_ordered(self):
         targets = self.dominant['lookup_reduction_targets']

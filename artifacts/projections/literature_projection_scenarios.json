@@ -1,8 +1,8 @@
 {
   "baseline_headline": {
     "logical_qubits": 880,
-    "total_non_clifford_2lookup": 29163260,
-    "total_non_clifford_3lookup": 30080764
+    "total_non_clifford_2lookup": 22377404,
+    "total_non_clifford_3lookup": 23294908
   },
   "scenarios": [
     {
@@ -37,105 +37,105 @@
         {
           "multiplier_share_of_total_arithmetic_budget": 0.75,
           "multiplier_saving_fraction": 0.15,
-          "projected_total_non_clifford_2lookup": 26088832,
-          "projected_total_non_clifford_3lookup": 27006336,
-          "total_reduction_fraction_2lookup": 0.10542128520611208,
-          "total_reduction_fraction_3lookup": 0.10220579337679056
+          "projected_total_non_clifford_2lookup": 20066384,
+          "projected_total_non_clifford_3lookup": 20983888,
+          "total_reduction_fraction_2lookup": 0.1032746939725448,
+          "total_reduction_fraction_3lookup": 0.09920706920156112
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.75,
           "multiplier_saving_fraction": 0.2,
-          "projected_total_non_clifford_2lookup": 25064022,
-          "projected_total_non_clifford_3lookup": 25981526,
-          "total_reduction_fraction_2lookup": 0.14056171360814945,
-          "total_reduction_fraction_3lookup": 0.1362743911690541
+          "projected_total_non_clifford_2lookup": 19296045,
+          "projected_total_non_clifford_3lookup": 20213549,
+          "total_reduction_fraction_2lookup": 0.1376995919633931,
+          "total_reduction_fraction_3lookup": 0.1322760922687482
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.75,
           "multiplier_saving_fraction": 0.25,
-          "projected_total_non_clifford_2lookup": 24039213,
-          "projected_total_non_clifford_3lookup": 24956717,
-          "total_reduction_fraction_2lookup": 0.1757021420101868,
-          "total_reduction_fraction_3lookup": 0.1703429889613176
+          "projected_total_non_clifford_2lookup": 18525705,
+          "projected_total_non_clifford_3lookup": 19443209,
+          "total_reduction_fraction_2lookup": 0.17212448995424134,
+          "total_reduction_fraction_3lookup": 0.1653451153359352
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.75,
           "multiplier_saving_fraction": 0.3,
-          "projected_total_non_clifford_2lookup": 23014403,
-          "projected_total_non_clifford_3lookup": 23931907,
-          "total_reduction_fraction_2lookup": 0.21084257041222415,
-          "total_reduction_fraction_3lookup": 0.20441158675358112
+          "projected_total_non_clifford_2lookup": 17755365,
+          "projected_total_non_clifford_3lookup": 18672869,
+          "total_reduction_fraction_2lookup": 0.2065493879450896,
+          "total_reduction_fraction_3lookup": 0.19841413840312225
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.85,
           "multiplier_saving_fraction": 0.15,
-          "projected_total_non_clifford_2lookup": 25678908,
-          "projected_total_non_clifford_3lookup": 26596412,
-          "total_reduction_fraction_2lookup": 0.11947745656692701,
-          "total_reduction_fraction_3lookup": 0.11583323249369597
+          "projected_total_non_clifford_2lookup": 19758249,
+          "projected_total_non_clifford_3lookup": 20675753,
+          "total_reduction_fraction_2lookup": 0.1170446531688841,
+          "total_reduction_fraction_3lookup": 0.11243467842843594
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.85,
           "multiplier_saving_fraction": 0.2,
-          "projected_total_non_clifford_2lookup": 24517457,
-          "projected_total_non_clifford_3lookup": 25434961,
-          "total_reduction_fraction_2lookup": 0.15930327542256936,
-          "total_reduction_fraction_3lookup": 0.1544443099915946
+          "projected_total_non_clifford_2lookup": 18885197,
+          "projected_total_non_clifford_3lookup": 19802701,
+          "total_reduction_fraction_2lookup": 0.15605953755851215,
+          "total_reduction_fraction_3lookup": 0.14991290457124792
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.85,
           "multiplier_saving_fraction": 0.25,
-          "projected_total_non_clifford_2lookup": 23356006,
-          "projected_total_non_clifford_3lookup": 24273510,
-          "total_reduction_fraction_2lookup": 0.19912909427821168,
-          "total_reduction_fraction_3lookup": 0.19305538748949327
+          "projected_total_non_clifford_2lookup": 18012145,
+          "projected_total_non_clifford_3lookup": 18929649,
+          "total_reduction_fraction_2lookup": 0.19507442194814015,
+          "total_reduction_fraction_3lookup": 0.18739113071405988
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.85,
           "multiplier_saving_fraction": 0.3,
-          "projected_total_non_clifford_2lookup": 22194556,
-          "projected_total_non_clifford_3lookup": 23112060,
-          "total_reduction_fraction_2lookup": 0.23895491313385403,
-          "total_reduction_fraction_3lookup": 0.23166646498739193
+          "projected_total_non_clifford_2lookup": 17139093,
+          "projected_total_non_clifford_3lookup": 18056597,
+          "total_reduction_fraction_2lookup": 0.2340893063377682,
+          "total_reduction_fraction_3lookup": 0.22486935685687187
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.95,
           "multiplier_saving_fraction": 0.15,
-          "projected_total_non_clifford_2lookup": 25268984,
-          "projected_total_non_clifford_3lookup": 26186488,
-          "total_reduction_fraction_2lookup": 0.13353362792774195,
-          "total_reduction_fraction_3lookup": 0.12946067161060137
+          "projected_total_non_clifford_2lookup": 19450113,
+          "projected_total_non_clifford_3lookup": 20367617,
+          "total_reduction_fraction_2lookup": 0.1308146123652234,
+          "total_reduction_fraction_3lookup": 0.12566228765531076
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.95,
           "multiplier_saving_fraction": 0.2,
-          "projected_total_non_clifford_2lookup": 23970892,
-          "projected_total_non_clifford_3lookup": 24888396,
-          "total_reduction_fraction_2lookup": 0.17804483723698927,
-          "total_reduction_fraction_3lookup": 0.17261422881413516
+          "projected_total_non_clifford_2lookup": 18474349,
+          "projected_total_non_clifford_3lookup": 19391853,
+          "total_reduction_fraction_2lookup": 0.17441948315363123,
+          "total_reduction_fraction_3lookup": 0.1675497168737477
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.95,
           "multiplier_saving_fraction": 0.25,
-          "projected_total_non_clifford_2lookup": 22672800,
-          "projected_total_non_clifford_3lookup": 23590304,
-          "total_reduction_fraction_2lookup": 0.2225560465462366,
-          "total_reduction_fraction_3lookup": 0.21576778601766897
+          "projected_total_non_clifford_2lookup": 17498585,
+          "projected_total_non_clifford_3lookup": 18416089,
+          "total_reduction_fraction_2lookup": 0.21802435394203903,
+          "total_reduction_fraction_3lookup": 0.2094371460921846
         },
         {
           "multiplier_share_of_total_arithmetic_budget": 0.95,
           "multiplier_saving_fraction": 0.3,
-          "projected_total_non_clifford_2lookup": 21374708,
-          "projected_total_non_clifford_3lookup": 22292212,
-          "total_reduction_fraction_2lookup": 0.2670672558554839,
-          "total_reduction_fraction_3lookup": 0.25892134322120275
+          "projected_total_non_clifford_2lookup": 16522821,
+          "projected_total_non_clifford_3lookup": 17440325,
+          "total_reduction_fraction_2lookup": 0.2616292247304468,
+          "total_reduction_fraction_3lookup": 0.2513245753106215
         }
       ],
       "envelope": {
-        "best_total_reduction_fraction_2lookup": 0.2670672558554839,
-        "best_total_reduction_fraction_3lookup": 0.25892134322120275,
-        "best_projected_total_non_clifford_2lookup": 21374708,
-        "best_projected_total_non_clifford_3lookup": 22292212
+        "best_total_reduction_fraction_2lookup": 0.2616292247304468,
+        "best_total_reduction_fraction_3lookup": 0.2513245753106215,
+        "best_projected_total_non_clifford_2lookup": 16522821,
+        "best_projected_total_non_clifford_3lookup": 17440325
       }
     },
     {
@@ -148,121 +148,121 @@
       "cases": [
         {
           "lookup_reduction_fraction": 0.01,
-          "projected_total_non_clifford_2lookup": 29144910,
-          "projected_total_non_clifford_3lookup": 30053239,
+          "projected_total_non_clifford_2lookup": 22359054,
+          "projected_total_non_clifford_3lookup": 23267383,
           "gains": {
             "lookup2": {
-              "vs_google_low_qubit": 3.08801777051293,
-              "vs_google_low_gate": 2.4017915992878347
+              "vs_google_low_qubit": 4.025215020277692,
+              "vs_google_low_gate": 3.1307227935493156
             },
             "lookup3": {
-              "vs_google_low_qubit": 2.994685531233422,
-              "vs_google_low_gate": 2.329199857625995
+              "vs_google_low_qubit": 3.868075752223617,
+              "vs_google_low_gate": 3.008503362840591
             }
           }
         },
         {
           "lookup_reduction_fraction": 0.03,
-          "projected_total_non_clifford_2lookup": 29108210,
-          "projected_total_non_clifford_3lookup": 29998189,
+          "projected_total_non_clifford_2lookup": 22322354,
+          "projected_total_non_clifford_3lookup": 23212333,
           "gains": {
             "lookup2": {
-              "vs_google_low_qubit": 3.0919111824464642,
-              "vs_google_low_gate": 2.4048198085694725
+              "vs_google_low_qubit": 4.031832843435778,
+              "vs_google_low_gate": 3.135869989338938
             },
             "lookup3": {
-              "vs_google_low_qubit": 3.000181110933063,
-              "vs_google_low_gate": 2.3334741973923827
+              "vs_google_low_qubit": 3.8772492191973984,
+              "vs_google_low_gate": 3.0156382815979765
             }
           }
         },
         {
           "lookup_reduction_fraction": 0.05,
-          "projected_total_non_clifford_2lookup": 29071510,
-          "projected_total_non_clifford_3lookup": 29943138,
+          "projected_total_non_clifford_2lookup": 22285654,
+          "projected_total_non_clifford_3lookup": 23157282,
           "gains": {
             "lookup2": {
-              "vs_google_low_qubit": 3.0958144245001376,
-              "vs_google_low_gate": 2.407855663500107
+              "vs_google_low_qubit": 4.038472463047304,
+              "vs_google_low_gate": 3.141034137925681
             },
             "lookup3": {
-              "vs_google_low_qubit": 3.00569699809018,
-              "vs_google_low_gate": 2.337764331847918
+              "vs_google_low_qubit": 3.8864664687332477,
+              "vs_google_low_gate": 3.0228072534591925
             }
           }
         },
         {
           "lookup_reduction_fraction": 0.1,
-          "projected_total_non_clifford_2lookup": 28979759,
-          "projected_total_non_clifford_3lookup": 29805513,
+          "projected_total_non_clifford_2lookup": 22193903,
+          "projected_total_non_clifford_3lookup": 23019657,
           "gains": {
             "lookup2": {
-              "vs_google_low_qubit": 3.105615888662152,
-              "vs_google_low_gate": 2.4154790245150073
+              "vs_google_low_qubit": 4.055167763867401,
+              "vs_google_low_gate": 3.1540193718968674
             },
             "lookup3": {
-              "vs_google_low_qubit": 3.01957560670068,
-              "vs_google_low_gate": 2.3485588052116397
+              "vs_google_low_qubit": 3.909702042910544,
+              "vs_google_low_gate": 3.0408793667082006
             }
           }
         },
         {
           "lookup_reduction_fraction": 0.2,
-          "projected_total_non_clifford_2lookup": 28796258,
-          "projected_total_non_clifford_3lookup": 29530262,
+          "projected_total_non_clifford_2lookup": 22010402,
+          "projected_total_non_clifford_3lookup": 22744406,
           "gains": {
             "lookup2": {
-              "vs_google_low_qubit": 3.125406085749058,
-              "vs_google_low_gate": 2.430871400027045
+              "vs_google_low_qubit": 4.0889757488300305,
+              "vs_google_low_gate": 3.1803144713122458
             },
             "lookup3": {
-              "vs_google_low_qubit": 3.0477210124312477,
-              "vs_google_low_gate": 2.370449676335415
+              "vs_google_low_qubit": 3.9570169473759833,
+              "vs_google_low_gate": 3.0776798479590983
             }
           }
         },
         {
           "lookup_reduction_fraction": 0.3,
-          "projected_total_non_clifford_2lookup": 28612758,
-          "projected_total_non_clifford_3lookup": 29255010,
+          "projected_total_non_clifford_2lookup": 21826902,
+          "projected_total_non_clifford_3lookup": 22469154,
           "gains": {
             "lookup2": {
-              "vs_google_low_qubit": 3.1454500121938613,
-              "vs_google_low_gate": 2.4464611205952256
+              "vs_google_low_qubit": 4.123351999289684,
+              "vs_google_low_gate": 3.2070515550030874
             },
             "lookup3": {
-              "vs_google_low_qubit": 3.076396145480723,
-              "vs_google_low_gate": 2.392752557596118
+              "vs_google_low_qubit": 4.005491261486748,
+              "vs_google_low_gate": 3.1153820922674704
             }
           }
         },
         {
           "lookup_reduction_fraction": 0.3333333333333333,
-          "projected_total_non_clifford_2lookup": 28551591,
-          "projected_total_non_clifford_3lookup": 29163260,
+          "projected_total_non_clifford_2lookup": 21765735,
+          "projected_total_non_clifford_3lookup": 22377404,
           "gains": {
             "lookup2": {
-              "vs_google_low_qubit": 3.152188611836027,
-              "vs_google_low_gate": 2.451702253650243
+              "vs_google_low_qubit": 4.134939619544205,
+              "vs_google_low_gate": 3.216064148534382
             },
             "lookup3": {
-              "vs_google_low_qubit": 3.0860747392438292,
-              "vs_google_low_gate": 2.4002803527452006
+              "vs_google_low_qubit": 4.021914248855676,
+              "vs_google_low_gate": 3.128155526887748
             }
           }
         },
         {
           "lookup_reduction_fraction": 0.5,
-          "projected_total_non_clifford_2lookup": 28245756,
-          "projected_total_non_clifford_3lookup": 28704508,
+          "projected_total_non_clifford_2lookup": 21459900,
+          "projected_total_non_clifford_3lookup": 21918652,
           "gains": {
             "lookup2": {
-              "vs_google_low_qubit": 3.186319389008388,
-              "vs_google_low_gate": 2.4782484136731906
+              "vs_google_low_qubit": 4.1938685641591995,
+              "vs_google_low_gate": 3.2618977721238216
             },
             "lookup3": {
-              "vs_google_low_qubit": 3.135396015148561,
-              "vs_google_low_gate": 2.4386413451155478
+              "vs_google_low_qubit": 4.10609192572609,
+              "vs_google_low_gate": 3.1936270533425137
             }
           }
         }
@@ -280,60 +280,60 @@
       "pad_sweep": [
         {
           "per_window_small_overhead_pad": 0,
-          "total_non_clifford_2channel_folded": 29163260,
-          "total_non_clifford_3channel_folded_conservative": 30080764,
-          "total_non_clifford_3channel_folded_meta_elided": 29163260,
-          "gain_vs_google_low_qubit_2channel": 3.0860747392438292,
-          "gain_vs_google_low_gate_2channel": 2.4002803527452006
+          "total_non_clifford_2channel_folded": 22377404,
+          "total_non_clifford_3channel_folded_conservative": 23294908,
+          "total_non_clifford_3channel_folded_meta_elided": 22377404,
+          "gain_vs_google_low_qubit_2channel": 4.021914248855676,
+          "gain_vs_google_low_gate_2channel": 3.128155526887748
         },
         {
           "per_window_small_overhead_pad": 256,
-          "total_non_clifford_2channel_folded": 29170428,
-          "total_non_clifford_3channel_folded_conservative": 30087932,
-          "total_non_clifford_3channel_folded_meta_elided": 29170428,
-          "gain_vs_google_low_qubit_2channel": 3.0853164033109146,
-          "gain_vs_google_low_gate_2channel": 2.3996905359084892
+          "total_non_clifford_2channel_folded": 22384572,
+          "total_non_clifford_3channel_folded_conservative": 23302076,
+          "total_non_clifford_3channel_folded_meta_elided": 22384572,
+          "gain_vs_google_low_qubit_2channel": 4.020626349255193,
+          "gain_vs_google_low_gate_2channel": 3.127153827198483
         },
         {
           "per_window_small_overhead_pad": 512,
-          "total_non_clifford_2channel_folded": 29177596,
-          "total_non_clifford_3channel_folded_conservative": 30095100,
-          "total_non_clifford_3channel_folded_meta_elided": 29177596,
-          "gain_vs_google_low_qubit_2channel": 3.084558439975658,
-          "gain_vs_google_low_gate_2channel": 2.3991010088699563
+          "total_non_clifford_2channel_folded": 22391740,
+          "total_non_clifford_3channel_folded_conservative": 23309244,
+          "total_non_clifford_3channel_folded_meta_elided": 22391740,
+          "gain_vs_google_low_qubit_2channel": 4.019339274214509,
+          "gain_vs_google_low_gate_2channel": 3.1261527688335073
         },
         {
           "per_window_small_overhead_pad": 1024,
-          "total_non_clifford_2channel_folded": 29191932,
-          "total_non_clifford_3channel_folded_conservative": 30109436,
-          "total_non_clifford_3channel_folded_meta_elided": 29191932,
-          "gain_vs_google_low_qubit_2channel": 3.083043630000234,
-          "gain_vs_google_low_gate_2channel": 2.3979228233335155
+          "total_non_clifford_2channel_folded": 22406076,
+          "total_non_clifford_3channel_folded_conservative": 23323580,
+          "total_non_clifford_3channel_folded_meta_elided": 22406076,
+          "gain_vs_google_low_qubit_2channel": 4.016767594647095,
+          "gain_vs_google_low_gate_2channel": 3.124152573614407
         },
         {
           "per_window_small_overhead_pad": 2048,
-          "total_non_clifford_2channel_folded": 29220604,
-          "total_non_clifford_3channel_folded_conservative": 30138108,
-          "total_non_clifford_3channel_folded_meta_elided": 29220604,
-          "gain_vs_google_low_qubit_2channel": 3.080018469159638,
-          "gain_vs_google_low_gate_2channel": 2.3955699204574965
+          "total_non_clifford_2channel_folded": 22434748,
+          "total_non_clifford_3channel_folded_conservative": 23352252,
+          "total_non_clifford_3channel_folded_meta_elided": 22434748,
+          "gain_vs_google_low_qubit_2channel": 4.01163409546655,
+          "gain_vs_google_low_gate_2channel": 3.120159852029539
         },
         {
           "per_window_small_overhead_pad": 4096,
-          "total_non_clifford_2channel_folded": 29277948,
-          "total_non_clifford_3channel_folded_conservative": 30195452,
-          "total_non_clifford_3channel_folded_meta_elided": 29277948,
-          "gain_vs_google_low_qubit_2channel": 3.073985922783933,
-          "gain_vs_google_low_gate_2channel": 2.3908779399430586
+          "total_non_clifford_2channel_folded": 22492092,
+          "total_non_clifford_3channel_folded_conservative": 23409596,
+          "total_non_clifford_3channel_folded_meta_elided": 22492092,
+          "gain_vs_google_low_qubit_2channel": 4.001406360955664,
+          "gain_vs_google_low_gate_2channel": 3.112204947409961
         }
       ],
       "base_case_pad0": {
         "per_window_small_overhead_pad": 0,
-        "total_non_clifford_2channel_folded": 29163260,
-        "total_non_clifford_3channel_folded_conservative": 30080764,
-        "total_non_clifford_3channel_folded_meta_elided": 29163260,
-        "gain_vs_google_low_qubit_2channel": 3.0860747392438292,
-        "gain_vs_google_low_gate_2channel": 2.4002803527452006
+        "total_non_clifford_2channel_folded": 22377404,
+        "total_non_clifford_3channel_folded_conservative": 23294908,
+        "total_non_clifford_3channel_folded_meta_elided": 22377404,
+        "gain_vs_google_low_qubit_2channel": 4.021914248855676,
+        "gain_vs_google_low_gate_2channel": 3.128155526887748
       }
     }
   ],

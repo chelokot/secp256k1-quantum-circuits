@@ -49,8 +49,11 @@ class VerificationPipelineTests(unittest.TestCase):
 
     def test_extended_supporting_checks_are_recorded(self):
         extended = self.summary['extended']
-        self.assertEqual(extended['lookup_contract']['summary']['signed_i16']['pass'], 4096)
-        self.assertEqual(extended['lookup_contract']['summary']['unsigned_u16']['pass'], 4096)
+        lookup = extended['lookup_contract']['summary']
+        self.assertEqual(lookup['parameter_checks']['pass'], lookup['parameter_checks']['total'])
+        self.assertEqual(lookup['canonical_full_exhaustive']['total'], 65_536)
+        self.assertEqual(lookup['canonical_full_exhaustive']['pass'], 65_536)
+        self.assertEqual(lookup['multibase_direct_samples']['pass'], lookup['multibase_direct_samples']['total'])
         self.assertEqual(extended['scaffold_schedule']['summary']['pass'], 256)
         self.assertEqual(extended['toy_extended']['summary']['pass'], 110692)
         self.assertEqual(extended['challenge_ladder']['summary']['curve_count'], 7)

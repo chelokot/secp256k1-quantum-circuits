@@ -39,9 +39,10 @@ This repository contains exact ISA-level secp256k1 quantum ECDLP circuits,
 verification artifacts, and modeled resource estimates. In Bitcoin terms, a
 successful attack of this kind would let an attacker recover spend keys for
 exposed public keys and authorize fraudulent spends, and the repository's
-current hardware-transfer estimate puts such an attack in the rough range of
-3.2 to 4.3 days on a large fault-tolerant quantum machine under
-fixed-architecture assumptions.
+current hardware-transfer study puts such an attack in the rough range of
+2.5 to 3.3 days under the time-efficient Cain et al. transfer rule, with
+same-density physical-qubit scaling in the rough range of 5.1k to 19.1k
+depending on which public baseline line and backend scenario are used.
 
 The repository is strongest at the arithmetic ISA boundary. It publishes exact,
 machine-readable point-add schedules and checks their basis-state semantics. It
@@ -62,15 +63,14 @@ Its modeled ECDLP projection, as recorded in
 `artifacts/projections/resource_projection.json`, is:
 
 - **880 logical qubits** under the conservative named-slot default model
-- **29,163,260 non-Clifford** under the 2-channel lookup model
-- **30,080,764 non-Clifford** under the conservative 3-channel lookup model
+- **22,377,404 non-Clifford** under the 2-channel lookup model
+- **23,294,908 non-Clifford** under the conservative 3-channel lookup model
 
 The projection file also publishes exact structural provenance and experimental
 alternatives, including:
 
 - **736 logical qubits** under the ISA-liveness aliasing scenario
-- **22,377,404 non-Clifford** under the explicit add-sub modular-multiplication scenario
-- **736 logical qubits / 22,377,404 non-Clifford** under the combined experimental scenario
+- **736 logical qubits / 22,377,404 non-Clifford** under the combined explicit-backend plus liveness scenario
 
 ### Public baseline used for comparison
 
@@ -99,8 +99,8 @@ That contract is exact at the lookup-contract level and audited by:
 Its backend totals remain modeled. The supporting projection in
 `artifacts/projections/lookup_folded_projection.json` is:
 
-- **29,163,260 non-Clifford** under the folded 2-channel model
-- **30,080,764 non-Clifford** under the folded conservative 3-channel model
+- **22,377,404 non-Clifford** under the folded 2-channel model
+- **23,294,908 non-Clifford** under the folded conservative 3-channel model
 
 ## Exact vs modeled layers
 
@@ -126,7 +126,7 @@ The checked-in summaries report:
 
 - optimized secp256k1 audit: **16,384 / 16,384** pass
 - base toy-curve proof: **19,850 / 19,850** pass
-- extended lookup-contract audit: **8,192 / 8,192** pass
+- extended lookup-contract audit: **81,451 / 81,451** pass across **9** machine-readable contract checks, **65,536** exhaustive canonical-base words, and **15,906** multibase semantic samples
 - extended scaffold replay: **256 / 256** pass
 - extended toy-family proof: **110,692 / 110,692** pass
 - challenge ladder replay: **763 / 763** pass across **7** deterministic benchmark curves
@@ -151,8 +151,10 @@ projection into that physical model in
 `docs/references/CAIN_2026_NEUTRAL_ATOM_INTEGRATION.md` and
 `results/cain_2026_integration_summary.json`. Under fixed cycle-time and
 parallelism assumptions, the modeled runtime shifts from Cain's **10 days** to
-roughly **3.24 to 4.30 days**, and the balanced line shifts from **264 days**
-to roughly **85.5 to 113.4 days**. That transfer is intentionally stated as
+roughly **2.49 to 3.33 days**, and the balanced line shifts from **264 days**
+to roughly **65.6 to 87.9 days** across the current supported backend family.
+Under same-density logical-to-physical scaling, the corresponding physical-qubit
+range is roughly **5.1k to 19.1k**. That transfer is intentionally stated as
 approximate, because Cain's paper targets **P-256**, while the primary artifact
 in this repository is specialized to **secp256k1**.
 

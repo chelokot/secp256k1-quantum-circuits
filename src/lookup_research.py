@@ -49,6 +49,7 @@ from common import (
     deterministic_scalars,
     dump_json,
     hex_or_inf,
+    load_json,
     mul_affine,
     neg_affine,
     sha256_bytes,
@@ -154,13 +155,19 @@ def build_lookup_base_set() -> List[Dict[str, Any]]:
     return base_specs
 
 
-def build_lookup_folded_contract(repo_root: Path) -> Dict[str, Any]:
-    package_root = repo_root / "artifacts"
-    contract = {
-        "schema": "signed-folded-lookup-v1",
+def build_lookup_folded_contract_definition() -> Dict[str, Any]:
+    base_specs = build_lookup_base_set()
+    return {
+        "schema": "signed-folded-lookup-v2",
         "curve": "secp256k1",
         "window_size_bits": WORD_BITS,
         "input_representation": "16-bit two's complement",
+        "address_domain": {
+            "bits": WORD_BITS,
+            "unsigned_domain_size": WORD_SIZE,
+            "signed_min": -HALF_SIZE,
+            "signed_max": HALF_SIZE - 1,
+        },
         "motivation": "Exploit the exact secp256k1 identity [−d]U = (x([d]U), −y([d]U)) to halve the lookup-table domain per coordinate.",
         "folding": {
             "full_signed_domain_size": WORD_SIZE,
@@ -170,6 +177,15 @@ def build_lookup_folded_contract(repo_root: Path) -> Dict[str, Any]:
             "zero_word_hex": "0x0000",
             "meta_lookup_replacement": "derive infinity/no-op directly from the folded word instead of querying a separate metadata table",
             "negative_path": "lookup positive magnitude then negate Y",
+        },
+        "structured_semantics": {
+            "magnitude_index_min": 0,
+            "magnitude_index_max": HALF_SIZE - 1,
+            "zero_maps_to_infinity": True,
+            "special_case_uses_dedicated_negative_point": True,
+            "negative_words_negate_y_after_positive_lookup": True,
+            "x_table_depends_only_on_magnitude": True,
+            "metadata_lookup_needed": False,
         },
         "algorithm": [
             "Interpret the raw 16-bit window word as a signed two's-complement integer d.",
@@ -184,11 +200,66 @@ def build_lookup_folded_contract(repo_root: Path) -> Dict[str, Any]:
             "separate_metadata_table_needed": False,
             "per_window_special_constant_points": 1,
         },
+        "audit_scope": {
+            "canonical_full_exhaustive_base_id": FULL_EXHAUSTIVE_BASE_ID,
+            "sampled_base_ids": [spec["id"] for spec in base_specs],
+            "edge_words_hex": [f"0x{word:04x}" for word in EDGE_KEYS],
+            "sample_cases_per_base": EXTRA_BASE_SAMPLE_CASES,
+        },
         "notes": [
             "This contract changes only the lookup layer. The arithmetic leaf remains the same exact machine-readable secp256k1 netlist already checked into the repository.",
             "The backend-resource implication of halving the lookup domain is modeled separately in lookup_folded_projection.json.",
         ],
     }
+
+
+def load_lookup_folded_contract(repo_root: Path) -> Dict[str, Any]:
+    return load_json(artifact_lookup_path(repo_root / "artifacts", "lookup_signed_fold_contract.json"))
+
+
+def contract_parameter_checks(contract: Dict[str, Any]) -> Dict[str, bool]:
+    expected = build_lookup_folded_contract_definition()
+    return {
+        "schema_matches": contract.get("schema") == expected["schema"],
+        "curve_matches": contract.get("curve") == expected["curve"],
+        "window_size_matches": int(contract.get("window_size_bits", -1)) == expected["window_size_bits"],
+        "input_representation_matches": contract.get("input_representation") == expected["input_representation"],
+        "address_domain_matches": contract.get("address_domain") == expected["address_domain"],
+        "folding_matches": contract.get("folding") == expected["folding"],
+        "structured_semantics_matches": contract.get("structured_semantics") == expected["structured_semantics"],
+        "table_shape_matches": contract.get("table_shape") == expected["table_shape"],
+        "audit_scope_matches": contract.get("audit_scope") == expected["audit_scope"],
+    }
+
+
+def contract_lookup_point(word: int, base: PointAffine, contract: Dict[str, Any], p: int, b: int) -> PointAffine:
+    folding = contract["folding"]
+    semantics = contract["structured_semantics"]
+    special_word = int(folding["special_case_word_hex"], 16)
+    special_signed_value = int(folding["special_case_signed_value"])
+    zero_word = int(folding["zero_word_hex"], 16)
+
+    fold = fold_signed_i16(word)
+    if fold["word"] == zero_word and semantics["zero_maps_to_infinity"]:
+        return None
+
+    cache, special_pos = build_positive_table(base, p, b, semantics["magnitude_index_max"])
+    special_neg = neg_affine(special_pos, p)
+    if fold["word"] == special_word:
+        return mul_affine(special_signed_value, base, p, b, order=None) if special_neg is None else special_neg
+
+    magnitude = int(fold["folded_magnitude"])
+    point = cache[magnitude]
+    if point is None:
+        return None
+    if fold["is_negative"] and semantics["negative_words_negate_y_after_positive_lookup"]:
+        return neg_affine(point, p)
+    return point
+
+
+def build_lookup_folded_contract(repo_root: Path) -> Dict[str, Any]:
+    package_root = repo_root / "artifacts"
+    contract = build_lookup_folded_contract_definition()
     out_path = artifact_lookup_path(package_root, "lookup_signed_fold_contract.json")
     dump_json(out_path, contract)
     return contract

@@ -57,8 +57,8 @@ bundle, not repeated from a standalone whole-circuit constant table.
 `artifacts/projections/lookup_folded_projection.json` records the base-case
 projection:
 
-- folded 2-channel total: `29,163,260`
-- folded conservative 3-channel total: `30,080,764`
+- folded 2-channel total: `22,377,404`
+- folded conservative 3-channel total: `23,294,908`
 
 The strongest contract-level conclusion is a 2x reduction in the per-coordinate
 table domain. The total non-Clifford improvement is meaningful but bounded.

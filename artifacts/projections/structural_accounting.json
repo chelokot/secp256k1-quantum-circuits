@@ -6,13 +6,13 @@
     "scaffold_path": "artifacts/circuits/ecdlp_scaffold_optimized.json",
     "scaffold_sha256": "6f444c332728cde3ccfb9fd532012aaaa9c777a1b0f949573a3910602126cc03",
     "folded_scaffold_path": "artifacts/circuits/ecdlp_scaffold_lookup_folded.json",
-    "folded_scaffold_sha256": "8411a9ad26c2ac51c0fb27e7a2a63b6750902cef8a5f9b4c4e702a315b460d7a",
+    "folded_scaffold_sha256": "dea4d9d209f42734fb70cee6b5a2d968f4c4f0bf61c4d1646a554fcd9518f3d4",
     "register_map_path": "artifacts/circuits/register_map.json",
     "register_map_sha256": "f57b679f66d6758107e2a6ac249cc10e7eca548cc54a946435b4e0ea7ca96703",
     "lookup_contract_path": "artifacts/lookup/lookup_signed_fold_contract.json",
-    "lookup_contract_sha256": "0727068cfe6b5d0bad467b3b55892a5661bfab1ee990de73bd0a23393142484e",
+    "lookup_contract_sha256": "c3b6cc711aa323951a580f6a54a027d84bf84d6a5ad66965751db865553b635d",
     "expanded_isa_path": "artifacts/circuits/ecdlp_expanded_isa_optimized.json",
-    "expanded_isa_sha256": "ed09e967f53bf9fe7e7e622d58a264c92532a6ec9ec42d11e3d791212b4c7304"
+    "expanded_isa_sha256": "99c80cf0ba4d9e0d58f63f78ead4da50ce88f20d15a8d2105f597d71de7fb941"
   },
   "field_bits": 256,
   "window_bits": 16,

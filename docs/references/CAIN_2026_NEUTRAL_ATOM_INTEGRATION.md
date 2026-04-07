@@ -33,33 +33,36 @@ The two inputs are not the same object:
 This file therefore describes an approximate transfer study, not a new exact
 headline for P-256.
 
-## Transfer rule
+## Transfer rules
 
-The main supported transfer is a time scaling:
+The supported transfer keeps runtime and space separate:
 
 > projected runtime ≈ Cain ECC runtime × (repository non-Clifford budget / public Google baseline non-Clifford budget)
 
+> projected physical qubits ≈ Cain reference physical qubits × (repository logical qubits / public Google baseline logical qubits)
+
 The public Google baseline here is the rounded Babbush et al. 2026 secp256k1
-estimate stored in `artifacts/projections/resource_projection.json`.
+estimate stored in `artifacts/projections/resource_projection.json`. The stored
+range is taken across the current backend-model family and both published Google
+comparison lines.
 
 ## Reported time range
 
-Using the repository's two modeled lookup-accounting modes and the tracked
-public baseline lines, the stored transfer range is:
+Using the repository's supported backend-model family and the tracked public
+baseline lines, the stored runtime range is:
 
-- **3.24 to 4.30 days** for the time-efficient architecture
-- **85.5 to 113.4 days** for the balanced architecture
+- **2.49 to 3.33 days** for the time-efficient architecture
+- **65.6 to 87.9 days** for the balanced architecture
 
 ## Space transfer
 
-The space transfer is weaker and more model-sensitive than the time transfer.
-The file reports:
+The space transfer remains more model-sensitive than the runtime transfer. The
+current same-density scaling ranges are:
 
-- **15,779 to 19,067 physical qubits** under naive linear scaling
-- **20,890 to 22,533 physical qubits** under a toy model with 50% fixed
-  overhead
+- **13.2k to 19.1k physical qubits** against Cain's time-efficient line
+- **5.1k to 7.3k physical qubits** against Cain's minimum-space line
 
-These space numbers are illustrative transfer outputs, not exact claims.
+These space numbers are transfer outputs, not exact claims.
 
 ## Safe interpretation
 
@@ -67,8 +70,9 @@ The defensible claim is:
 
 > If the repository's optimized logical secp256k1 projection is transferred into
 > the neutral-atom architecture model of Cain et al. under fixed cycle-time and
-> parallelism assumptions, runtime improves substantially, while physical-qubit
-> savings are more model-sensitive.
+> parallelism assumptions, the current backend family maps to roughly 2.5 to
+> 3.3 days on the time-efficient line, while same-density physical-qubit ranges
+> remain more model-sensitive.
 
 ## Not supported by this file
 

@@ -20,63 +20,84 @@ CAIN_2026 = {
 }
 
 
+def _iter_projection_cases(projection: Dict[str, Any]) -> List[Dict[str, Any]]:
+    cases = [
+        {
+            'model_name': projection['model_name'],
+            'model_status': 'default',
+            'ecdlp': projection['optimized_ecdlp_projection'],
+        }
+    ]
+    for alternative in projection.get('alternative_backend_scenarios', []):
+        cases.append({
+            'model_name': alternative['model_name'],
+            'model_status': alternative['status'],
+            'ecdlp': alternative['ecdlp'],
+        })
+    return cases
+
+
 def build_cain_integration_summary(repo_root: Path) -> Dict[str, Any]:
     projection = load_json(artifact_projection_path(repo_root / 'artifacts', 'resource_projection.json'))
     google_baseline = projection['public_google_baseline']
-    optimized = projection['optimized_ecdlp_projection']
-    gains = projection['improvement_vs_google']
 
     cases: List[Dict[str, Any]] = []
     headline_times: List[float] = []
     headline_balanced: List[float] = []
-    naive_spaces: List[float] = []
-    half_fixed_spaces: List[float] = []
+    time_efficient_spaces: List[float] = []
+    min_spaces: List[float] = []
 
-    for baseline_key, gain_key in (('low_qubit', 'versus_low_qubit'), ('low_gate', 'versus_low_gate')):
-        baseline = google_baseline[baseline_key]
-        for lookup_label, lookup_key, gain_field in (
-            ('2lookup', 'lookup_model_2channel', 'toffoli_gain_2lookup'),
-            ('3lookup', 'lookup_model_3channel', 'toffoli_gain_3lookup'),
-        ):
-            optimized_non_clifford = optimized[lookup_key]['total_non_clifford']
-            runtime_speedup = gains[gain_key][gain_field]
-            projected_time_efficient = CAIN_2026['time_efficient_runtime_days'] / runtime_speedup
-            projected_balanced = CAIN_2026['balanced_runtime_days'] / runtime_speedup
-            naive_linear_space = CAIN_2026['time_efficient_physical_qubits'] * (
-                optimized['logical_qubits_total'] / baseline['logical_qubits']
-            )
-            half_fixed_space = (CAIN_2026['time_efficient_physical_qubits'] * 0.5) + (naive_linear_space * 0.5)
+    for model_case in _iter_projection_cases(projection):
+        optimized = model_case['ecdlp']
+        for baseline_key in ('low_qubit', 'low_gate'):
+            baseline = google_baseline[baseline_key]
+            logical_ratio = optimized['logical_qubits_total'] / baseline['logical_qubits']
+            for lookup_label, lookup_key in (
+                ('2lookup', 'lookup_model_2channel'),
+                ('3lookup', 'lookup_model_3channel'),
+            ):
+                optimized_non_clifford = optimized[lookup_key]['total_non_clifford']
+                non_clifford_ratio = optimized_non_clifford / baseline['non_clifford']
+                projected_time_efficient = CAIN_2026['time_efficient_runtime_days'] * non_clifford_ratio
+                projected_balanced = CAIN_2026['balanced_runtime_days'] * non_clifford_ratio
+                same_density_time_efficient_space = CAIN_2026['time_efficient_physical_qubits'] * logical_ratio
+                same_density_min_space = CAIN_2026['headline_min_physical_qubits'] * logical_ratio
 
-            headline_times.append(projected_time_efficient)
-            headline_balanced.append(projected_balanced)
-            naive_spaces.append(naive_linear_space)
-            half_fixed_spaces.append(half_fixed_space)
+                headline_times.append(projected_time_efficient)
+                headline_balanced.append(projected_balanced)
+                time_efficient_spaces.append(same_density_time_efficient_space)
+                min_spaces.append(same_density_min_space)
 
-            cases.append({
-                'google_baseline_line': baseline_key,
-                'optimized_lookup_model': lookup_label,
-                'google_logical_qubits': baseline['logical_qubits'],
-                'google_non_clifford': baseline['non_clifford'],
-                'optimized_logical_qubits': optimized['logical_qubits_total'],
-                'optimized_non_clifford': optimized_non_clifford,
-                'runtime_speedup_factor': runtime_speedup,
-                'projected_time_efficient_days': projected_time_efficient,
-                'projected_balanced_days': projected_balanced,
-                'space_transfer': {
-                    'same_hardware_regime_physical_qubits': CAIN_2026['time_efficient_physical_qubits'],
-                    'naive_linear_logical_scaling_physical_qubits': naive_linear_space,
-                    'half_fixed_overhead_scaling_physical_qubits': half_fixed_space,
-                },
-                'assumptions': [
-                    'Runtime is transferred linearly with the dominant non-Clifford/Toffoli budget.',
-                    'The physical architecture, cycle time, and parallelization regime are held fixed.',
-                    'Space scaling is heuristic only; time transfer is the main supported comparison.',
-                ],
-            })
+                cases.append({
+                    'source_model': model_case['model_name'],
+                    'source_model_status': model_case['model_status'],
+                    'google_baseline_line': baseline_key,
+                    'optimized_lookup_model': lookup_label,
+                    'google_logical_qubits': baseline['logical_qubits'],
+                    'google_non_clifford': baseline['non_clifford'],
+                    'optimized_logical_qubits': optimized['logical_qubits_total'],
+                    'optimized_non_clifford': optimized_non_clifford,
+                    'ratios': {
+                        'logical_qubit_ratio': logical_ratio,
+                        'non_clifford_ratio': non_clifford_ratio,
+                        'logical_qubit_gain': baseline['logical_qubits'] / optimized['logical_qubits_total'],
+                        'non_clifford_gain': baseline['non_clifford'] / optimized_non_clifford,
+                    },
+                    'runtime_transfer': {
+                        'assumption': 'Fixed physical architecture, cycle time, and parallelization regime; runtime scales with non-Clifford ratio.',
+                        'projected_time_efficient_days': projected_time_efficient,
+                        'projected_balanced_days': projected_balanced,
+                    },
+                    'space_transfer': {
+                        'assumption': 'Logical-to-physical density is inherited from the cited Cain reference line.',
+                        'same_density_time_efficient_physical_qubits': same_density_time_efficient_space,
+                        'same_density_min_space_physical_qubits': same_density_min_space,
+                    },
+                })
 
     return {
-        'integration_name': 'cain_2026_neutral_atom_transfer_v1',
-        'warning': 'This file combines a secp256k1-specialized logical projection with a P-256 physical architecture paper. The time transfer is approximate; the space transfer is only heuristic.',
+        'integration_name': 'cain_2026_neutral_atom_transfer_v2',
+        'warning': 'This file combines a secp256k1-specialized logical projection with a P-256 physical architecture paper. Runtime and space are transferred separately and remain approximate.',
         'source_papers': {
             'our_repository_baseline': {
                 'path': 'artifacts/projections/resource_projection.json',
@@ -88,17 +109,17 @@ def build_cain_integration_summary(repo_root: Path) -> Dict[str, Any]:
             'projected_time_efficient_days_max': max(headline_times),
             'projected_balanced_days_min': min(headline_balanced),
             'projected_balanced_days_max': max(headline_balanced),
-            'naive_linear_space_physical_qubits_min': min(naive_spaces),
-            'naive_linear_space_physical_qubits_max': max(naive_spaces),
-            'half_fixed_overhead_space_physical_qubits_min': min(half_fixed_spaces),
-            'half_fixed_overhead_space_physical_qubits_max': max(half_fixed_spaces),
+            'same_density_time_efficient_physical_qubits_min': min(time_efficient_spaces),
+            'same_density_time_efficient_physical_qubits_max': max(time_efficient_spaces),
+            'same_density_min_space_physical_qubits_min': min(min_spaces),
+            'same_density_min_space_physical_qubits_max': max(min_spaces),
         },
         'cases': cases,
         'publication_safe_summary': {
-            'single_sentence': "If the optimized secp256k1 logical layer is transferred into the neutral-atom architecture of Cain et al. under constant cycle-time and parallelism assumptions, the headline ECC runtime moves from about 10 days to roughly 3-4 days, while physical-qubit savings are likely more modest and much more model-sensitive.",
+            'single_sentence': "If the repository's optimized logical secp256k1 projection is transferred into the neutral-atom architecture of Cain et al. under fixed cycle-time and parallelism assumptions, the current supported backend family maps to roughly 2.5-3.3 days on the time-efficient line and about 6.1k-19.1k physical qubits under same-density scaling, depending on which public baseline line and backend scenario are used.",
             'do_not_say': [
                 'Do not say the paper is beaten on its own P-256 target without recompiling for P-256.',
-                'Do not say the physical qubit count is exactly 20k or exactly 26k for our circuit.',
+                'Do not say any single runtime or physical-qubit number is exact; the file intentionally reports a scenario range.',
                 'Do not say the transfer is theorem-proved end-to-end.',
             ],
         },
