@@ -202,10 +202,15 @@ def build_summary(console: Console, show_progress: bool, quick: bool) -> Dict[st
     if compiler_project is not None:
         summary['compiler_project'] = compiler_project
         compiler_verify = compiler_project['verification_summary']
+        compiler_build = compiler_project['build_summary']
+        compiler_frontier = compiler_project['frontier']
         summary['headline_checks']['compiler_exact_checks_pass'] = (
             compiler_verify['summary']['pass'] == compiler_verify['summary']['total']
-            and compiler_project['frontier']['best_qubit_family']['total_logical_qubits'] < 2500
-            and compiler_project['frontier']['best_gate_family']['full_oracle_non_clifford'] < 70_000_000
+            and compiler_verify['slot_allocation_checks']['pass'] == 1
+            and compiler_verify['primitive_multiplier_checks']['pass'] == 1
+            and compiler_verify['qubit_frontier_checks']['pass'] == 1
+            and compiler_build['headline']['best_gate_family'] == compiler_frontier['best_gate_family']
+            and compiler_build['headline']['best_qubit_family'] == compiler_frontier['best_qubit_family']
         )
     return summary
 
@@ -316,28 +321,29 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
         print(console.detail(f"      verification sha256: {compiler_project['verification_summary_sha256']}"))
         print()
 
-    print(console.heading('Primary modeled projection'))
+    if compiler_project is not None:
+        best_exact_gate = compiler_project['frontier']['best_gate_family']
+        best_exact_qubit = compiler_project['frontier']['best_qubit_family']
+        print(console.heading('Exact compiler-project frontier'))
+        print(f"  best exact gate family: {best_exact_gate['full_oracle_non_clifford']:,} non-Clifford / {best_exact_gate['total_logical_qubits']:,} q")
+        print(f"  best exact qubit family: {best_exact_qubit['total_logical_qubits']:,} q / {best_exact_qubit['full_oracle_non_clifford']:,} non-Clifford")
+        print(f"  public baseline: {baseline['low_qubit']['logical_qubits']:,} q / {baseline['low_qubit']['non_clifford']:,} and {baseline['low_gate']['logical_qubits']:,} q / {baseline['low_gate']['non_clifford']:,}")
+        print()
+
+    print(console.heading('Mainline modeled projection'))
     print(f"  logical qubits: {projection['optimized_ecdlp_projection']['logical_qubits_total']:,}")
     print(f"  2-channel total: {projection['optimized_ecdlp_projection']['lookup_model_2channel']['total_non_clifford']:,} non-Clifford")
     print(f"  3-channel total: {projection['optimized_ecdlp_projection']['lookup_model_3channel']['total_non_clifford']:,} non-Clifford")
     print(f"  public baseline: {baseline['low_qubit']['logical_qubits']:,} q / {baseline['low_qubit']['non_clifford']:,} and {baseline['low_gate']['logical_qubits']:,} q / {baseline['low_gate']['non_clifford']:,}")
     print()
 
-    print(console.heading('Advantage vs Google 2026 secp256k1 estimates'))
+    print(console.heading('Mainline modeled advantage'))
     low_qubit_2channel = console.ok(f"{projection['improvement_vs_google']['versus_low_qubit']['toffoli_gain_2lookup']:.4f}x")
     low_qubit_3channel = console.ok(f"{projection['improvement_vs_google']['versus_low_qubit']['toffoli_gain_3lookup']:.4f}x")
     low_gate_2channel = console.ok(f"{projection['improvement_vs_google']['versus_low_gate']['toffoli_gain_2lookup']:.4f}x")
     low_gate_3channel = console.ok(f"{projection['improvement_vs_google']['versus_low_gate']['toffoli_gain_3lookup']:.4f}x")
     print(f"  lower modeled non-Clifford cost vs Google low-qubit line: {low_qubit_2channel} (2-channel), {low_qubit_3channel} (3-channel)")
     print(f"  lower modeled non-Clifford cost vs Google low-gate line:  {low_gate_2channel} (2-channel), {low_gate_3channel} (3-channel)")
-
-    if compiler_project is not None:
-        best_exact_gate = compiler_project['frontier']['best_gate_family']
-        best_exact_qubit = compiler_project['frontier']['best_qubit_family']
-        print()
-        print(console.heading('Exact compiler-project frontier'))
-        print(f"  best exact gate family: {best_exact_gate['full_oracle_non_clifford']:,} non-Clifford / {best_exact_gate['total_logical_qubits']:,} q")
-        print(f"  best exact qubit family: {best_exact_qubit['total_logical_qubits']:,} q / {best_exact_qubit['full_oracle_non_clifford']:,} non-Clifford")
 
 
 def main() -> None:

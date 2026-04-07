@@ -8,7 +8,7 @@
   "frontiers": [
     {
       "name": "derived_structural_pipeline",
-      "status": "now_shipped",
+      "status": "checked_in",
       "confidence": "high",
       "estimated_total_non_clifford_multiplier_range": [
         1.0,
@@ -23,7 +23,7 @@
         "non_clifford_2lookup": 22377404,
         "non_clifford_3lookup": 23294908
       },
-      "rationale": "The repository now derives the mainline from checked-in structural artifacts plus a versioned backend-model bundle instead of storing whole-circuit headline constants.",
+      "rationale": "The mainline is derived from checked-in structural artifacts plus a versioned backend-model bundle instead of stored whole-circuit headline constants.",
       "main_risk": "Still a backend model below the kickmix ISA boundary, not a primitive-gate lowering."
     },
     {

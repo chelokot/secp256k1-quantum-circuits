@@ -994,7 +994,7 @@
     "exact_scope": "exact non-Clifford counts for the named arithmetic-kernel family; Clifford micro-counts are not flattened in this subproject",
     "notes": [
       "The multiplier cost follows the controlled add-subtract schoolbook family highlighted by Litinski 2024 for practical low-Toffoli ECC circuits.",
-      "This subproject now removes modeled whole-leaf constants, but it still does not ship a bit-for-bit primitive CX/CCX expansion for the 256-bit multiplier family."
+      "This subproject derives arithmetic totals from a named arithmetic-kernel family, but it still does not ship a bit-for-bit primitive CX/CCX expansion for the 256-bit multiplier family."
     ],
     "addition_chain_21": [
       1,
@@ -1303,7 +1303,7 @@
   },
   "notes": [
     "These are exact whole-oracle counts for named compiler families over a fixed kernel family and a fully quantum raw-32 schedule.",
-    "Compared with the earlier compiler pass, the qubit frontier is tightened by exact slot allocation and an explicit semiclassical phase-shell option rather than a fixed 512-bit phase-register policy.",
+    "The qubit frontier uses exact slot allocation and an explicit semiclassical phase-shell option rather than a fixed 512-bit phase-register policy.",
     "The arithmetic kernels remain an imported exact non-Clifford family boundary; whole-oracle counts are exact relative to that family."
   ]
 }

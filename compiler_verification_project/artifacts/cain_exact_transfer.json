@@ -46,7 +46,7 @@
   ],
   "notes": [
     "This is a heuristic transfer, not a compiled hardware estimate.",
-    "Compared with the earlier compiler pass, the qubit-side transfer now reflects exact slot allocation and the explicit semiclassical phase-shell family instead of a fixed 512-bit phase register.",
+    "The qubit-side transfer reflects exact slot allocation and the explicit semiclassical phase-shell family instead of a fixed 512-bit phase register.",
     "Cain et al. target P-256 and a neutral-atom architecture; these transfers are only a structured comparison aid."
   ]
 }

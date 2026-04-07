@@ -13,7 +13,7 @@ Two ideas drive the current pass:
   calls);
 * **exact qubit tightening inside the chosen family** — qubit counts are no
   longer taken from a coarse “10 live field slots + 512 phase bits” policy. The
-  compiler project now uses (a) exact versioned leaf live ranges with register
+  compiler project uses (a) exact versioned leaf live ranges with register
   reuse and (b) an explicit phase-shell family that includes a semiclassical-QFT
   option.
 
@@ -470,7 +470,7 @@ def arithmetic_kernel_library() -> Dict[str, Any]:
         exact_scope='exact non-Clifford counts for the named arithmetic-kernel family; Clifford micro-counts are not flattened in this subproject',
         notes=[
             'The multiplier cost follows the controlled add-subtract schoolbook family highlighted by Litinski 2024 for practical low-Toffoli ECC circuits.',
-            'This subproject now removes modeled whole-leaf constants, but it still does not ship a bit-for-bit primitive CX/CCX expansion for the 256-bit multiplier family.',
+            'This subproject derives arithmetic totals from a named arithmetic-kernel family, but it still does not ship a bit-for-bit primitive CX/CCX expansion for the 256-bit multiplier family.',
         ],
     )
     return {'schema': 'compiler-project-arithmetic-kernels-v2', **asdict(family), 'addition_chain_21': chain}
@@ -683,7 +683,7 @@ def compiler_family_frontier() -> Dict[str, Any]:
         'best_qubit_family': asdict(best_qubit),
         'notes': [
             'These are exact whole-oracle counts for named compiler families over a fixed kernel family and a fully quantum raw-32 schedule.',
-            'Compared with the earlier compiler pass, the qubit frontier is tightened by exact slot allocation and an explicit semiclassical phase-shell option rather than a fixed 512-bit phase-register policy.',
+            'The qubit frontier uses exact slot allocation and an explicit semiclassical phase-shell option rather than a fixed 512-bit phase-register policy.',
             'The arithmetic kernels remain an imported exact non-Clifford family boundary; whole-oracle counts are exact relative to that family.',
         ],
     }
@@ -930,8 +930,8 @@ def build_all_artifacts() -> Dict[str, Any]:
             'best_qubit_family': out['frontier']['best_qubit_family'],
         },
         'notes': [
-            'The compiler project is stronger than the mainline on one specific axis: it closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families.',
-            'This pass also tightens exact qubit accounting by replacing the older 10-slot/512-phase policy with exact slot allocation and an explicit semiclassical phase-shell family.',
+            'The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families.',
+            'Its qubit accounting uses exact slot allocation and an explicit semiclassical phase-shell family instead of a fixed 10-slot/512-phase policy.',
         ],
     }
     dump_json(project_artifact_path('build_summary.json'), build_summary)
@@ -991,7 +991,7 @@ def write_cain_transfer() -> Dict[str, Any]:
         'families': out_rows,
         'notes': [
             'This is a heuristic transfer, not a compiled hardware estimate.',
-            'Compared with the earlier compiler pass, the qubit-side transfer now reflects exact slot allocation and the explicit semiclassical phase-shell family instead of a fixed 512-bit phase register.',
+            'The qubit-side transfer reflects exact slot allocation and the explicit semiclassical phase-shell family instead of a fixed 512-bit phase register.',
             'Cain et al. target P-256 and a neutral-atom architecture; these transfers are only a structured comparison aid.',
         ],
     }

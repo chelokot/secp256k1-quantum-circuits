@@ -30,12 +30,12 @@ and then to search for stronger secp256k1-specific optimizations. The
 resulting primary artifact in this repository reaches modeled non-Clifford
 totals that are <u>more than 2x lower than Google's published 2026
 secp256k1 estimates</u> under the repository's default derived backend model.
-Those totals are now computed from checked-in leaf/scaffold artifacts plus a
+Those totals are computed from checked-in leaf/scaffold artifacts plus a
 versioned backend-model bundle rather than stored as whole-circuit constants.
 
 ## Content
 
-This repository now has **two deliberately separated layers**.
+This repository has **two deliberately separated layers**.
 
 1. The primary `artifacts/` mainline publishes exact ISA-level secp256k1
    arithmetic artifacts plus modeled backend projections.
@@ -43,8 +43,8 @@ This repository now has **two deliberately separated layers**.
    schedule into a fully quantum raw-32 oracle and publishes exact whole-oracle
    counts for named compiler families.
 
-The repository is still strongest at the arithmetic ISA boundary, but it no
-longer stops there. The compiler project tightens one important gap by turning
+The repository is strongest at the arithmetic ISA boundary, and the compiler
+project tightens one important gap by turning
 “leaf + scaffold + contract” into a checked exact compiler-family oracle with
 exact schedule completion, exact lookup-family choice, exact slot allocation,
 and explicit phase-shell families.

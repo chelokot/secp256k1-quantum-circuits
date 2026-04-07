@@ -156,6 +156,6 @@
   ],
   "notes": [
     "This matrix is intentionally selective: it includes only works that materially affect how this repository should be interpreted, tested, or extended.",
-    "The corrected cost model changes the optimization story: arithmetic papers remain highly relevant, while lookup papers now guide a meaningful but bounded secondary frontier."
+    "The checked-in cost model shows that arithmetic papers remain highly relevant, while lookup papers guide a meaningful but bounded secondary frontier."
   ]
 }

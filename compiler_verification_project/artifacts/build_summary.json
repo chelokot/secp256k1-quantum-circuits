@@ -69,7 +69,7 @@
     }
   },
   "notes": [
-    "The compiler project is stronger than the mainline on one specific axis: it closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families.",
-    "This pass also tightens exact qubit accounting by replacing the older 10-slot/512-phase policy with exact slot allocation and an explicit semiclassical phase-shell family."
+    "The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families.",
+    "Its qubit accounting uses exact slot allocation and an explicit semiclassical phase-shell family instead of a fixed 10-slot/512-phase policy."
   ]
 }

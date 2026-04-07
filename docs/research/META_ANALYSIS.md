@@ -24,7 +24,7 @@ Role:
 - provide the retained-window scaffold metadata
 - provide the extended verification and research layers
 - provide the modeled baseline comparison
-- expose the derived structural/projection pipeline that now rebuilds the mainline from source artifacts
+- expose the derived structural/projection pipeline that rebuilds the mainline from source artifacts
 
 ## Quantified internal differences
 

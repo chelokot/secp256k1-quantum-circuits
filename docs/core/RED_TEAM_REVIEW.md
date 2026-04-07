@@ -7,9 +7,9 @@ repository-supported answer to each one.
 
 | Objection | Severity if hidden | Repository-supported answer | Still open? |
 |---|---:|---|---|
-| “This is not a primitive-gate circuit because lookup is abstracted.” | High | Still true at the primitive-gate layer, but the lookup objection is narrower than before: the folded contract is now machine-readable and audited exhaustively for a canonical secp256k1 base plus deterministic multibase samples. | Yes |
+| “This is not a primitive-gate circuit because lookup is abstracted.” | High | Still true at the primitive-gate layer, but the lookup boundary is explicit: the folded contract is machine-readable and audited exhaustively for a canonical secp256k1 base plus deterministic multibase samples. | Yes |
 | “`mbuc_*` cleanup is not a primitive-gate verified coherent subcircuit.” | High | True. The repository checks basis-state semantics at the ISA boundary. | Yes |
-| “The scaffold is metadata, not a full Shor gate list.” | High | Narrower than before. This is still true for the mainline, but the compiler subproject now publishes an exact fully quantum raw-32 oracle family with explicit whole-oracle counts. It is still not a globally optimized complete Shor implementation. | Partly |
+| “The scaffold is metadata, not a full Shor gate list.” | High | This is true for the mainline, and the compiler subproject publishes an exact fully quantum raw-32 oracle family with explicit whole-oracle counts. It is still not a globally optimized complete Shor implementation. | Partly |
 | “The 880q / 22.38M headline depends on a backend model.” | High | Still true for the mainline. The compiler subproject is the answer to this objection: it publishes separate exact whole-oracle family counts instead of another backend projection. | Yes |
 | “Toy-curve proofs are not universal proofs over all prime fields.” | Medium | True. They are finite-model support for the family story. | Yes |
 | “No primitive-gate qRAM or QROM is shipped.” | Medium | True. The repository keeps lookup as an explicit contract boundary. | Yes |
@@ -52,4 +52,7 @@ Unsafe:
 
 ## Bottom line
 
-The repository now has two strengths rather than one: a checked arithmetic mainline plus a separate exact compiler-family oracle subproject. It is still not a solved end-to-end globally optimal primitive-gate implementation, but the old criticism that “nothing below ISA is exact” is no longer fully accurate.
+The repository has two strengths: a checked arithmetic mainline and a separate
+exact compiler-family oracle subproject. It is not a solved end-to-end
+globally optimal primitive-gate implementation, but the statement “nothing
+below ISA is exact” does not describe the checked-in artifacts accurately.

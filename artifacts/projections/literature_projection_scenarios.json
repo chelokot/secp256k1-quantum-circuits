@@ -344,6 +344,6 @@
   ],
   "notes": [
     "These scenario files complement the mainline projection rather than replacing the repository's exact ISA-level artifact boundary.",
-    "The signed lookup-folding scenario is stronger than a pure heuristic because the signed-fold contract itself is explicitly encoded and audited over the full 16-bit domain for one secp256k1 window base."
+    "The signed lookup-folding scenario includes a signed-fold contract that is explicitly encoded and audited over the full 16-bit domain for one secp256k1 window base."
   ]
 }

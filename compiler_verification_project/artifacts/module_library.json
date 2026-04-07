@@ -25,7 +25,7 @@
   "exact_scope": "exact non-Clifford counts for the named arithmetic-kernel family; Clifford micro-counts are not flattened in this subproject",
   "notes": [
     "The multiplier cost follows the controlled add-subtract schoolbook family highlighted by Litinski 2024 for practical low-Toffoli ECC circuits.",
-    "This subproject now removes modeled whole-leaf constants, but it still does not ship a bit-for-bit primitive CX/CCX expansion for the 256-bit multiplier family."
+    "This subproject derives arithmetic totals from a named arithmetic-kernel family, but it still does not ship a bit-for-bit primitive CX/CCX expansion for the 256-bit multiplier family."
   ],
   "addition_chain_21": [
     1,

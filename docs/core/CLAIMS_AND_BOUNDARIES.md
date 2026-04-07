@@ -108,7 +108,7 @@ The headline totals in
 `artifacts/projections/lookup_folded_projection.json` are explicit backend
 projections. In the current repository they are derived from the checked-in leaf
 netlist, retained-window scaffold, expanded ISA replay, folded lookup contract,
-and versioned backend-model bundle. They no longer inherit a whole-leaf
+and versioned backend-model bundle. They do not inherit a whole-leaf
 calibration constant, but they are still not theorem-proved primitive-gate
 totals.
 

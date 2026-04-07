@@ -56,6 +56,6 @@
   },
   "notes": [
     "This file is derived only from repository artifacts already present in the tree.",
-    "It corrects an earlier internal research-pass bug where the per-leaf arithmetic budget was accidentally treated as the whole-circuit arithmetic budget."
+    "The per-leaf arithmetic budget and the whole-circuit arithmetic budget are accounted for separately."
   ]
 }

@@ -62,11 +62,15 @@ class VerificationPipelineTests(unittest.TestCase):
 
     def test_compiler_project_checks_are_recorded(self):
         compiler = self.summary['compiler_project']
+        build = compiler['build_summary']
         frontier = compiler['frontier']
         verify = compiler['verification_summary']
-        self.assertLess(frontier['best_gate_family']['full_oracle_non_clifford'], 70_000_000)
-        self.assertLess(frontier['best_qubit_family']['total_logical_qubits'], 2500)
+        self.assertEqual(build['headline']['best_gate_family'], frontier['best_gate_family'])
+        self.assertEqual(build['headline']['best_qubit_family'], frontier['best_qubit_family'])
         self.assertEqual(verify['summary']['pass'], verify['summary']['total'])
+        self.assertEqual(verify['slot_allocation_checks']['pass'], 1)
+        self.assertEqual(verify['primitive_multiplier_checks']['pass'], 1)
+        self.assertEqual(verify['qubit_frontier_checks']['pass'], 1)
         self.assertTrue(self.summary['headline_checks']['compiler_exact_checks_pass'])
 
 

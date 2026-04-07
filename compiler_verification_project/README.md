@@ -25,7 +25,8 @@ It is intentionally separate from the repository mainline.
 The artifacts in `compiler_verification_project/artifacts/` are exact for the
 **chosen compiler families**.
 
-That is stronger than the repository mainline modeled backend layer, but still
+That is a stricter boundary than the repository mainline modeled backend layer,
+but still
 short of a globally optimal primitive-gate proof. In particular, the arithmetic
 kernels are imported exact subroutines; this subproject still does **not** ship
 bit-for-bit primitive CX/CCX netlists for every 256-bit field multiplier.
@@ -65,14 +66,14 @@ exact semiclassical-QFT phase shell and an exact 9-slot leaf allocation.
 This subproject is strongest when read as a **compiler-family exact oracle**,
 not as a claim of hidden-Google reconstruction or global optimality.
 
-Its strongest exact improvements over the earlier compiler pass are:
+Its defining exact features are:
 
 - exact slot allocation cuts the leaf-side arithmetic peak from 10 named field
   slots to **9 exact physical field slots**;
-- a semiclassical-QFT phase-shell family removes the old fixed **512 live phase
+- a semiclassical-QFT phase-shell family removes the fixed **512 live phase
   qubits** assumption; and
-- those two changes together reduce the best exact low-qubit family from the
-  earlier 3.1k-scale range to **2,337 logical qubits**.
+- those two ingredients place the best exact low-qubit family at **2,337
+  logical qubits**.
 
 ## Quick start
 

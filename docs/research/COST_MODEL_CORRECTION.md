@@ -2,7 +2,7 @@
 
 This file defines the arithmetic-versus-lookup accounting used by the optimized
 projection and explains the shares reported elsewhere in the repository. The
-mainline numbers are now derived from the checked-in leaf, expanded scaffold,
+mainline numbers are derived from the checked-in leaf, expanded scaffold,
 and backend-model bundle rather than repeated from standalone headline constants.
 
 ## Inputs taken from repository artifacts

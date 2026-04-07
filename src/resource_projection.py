@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 """Canonical modeled resource projection for the primary secp256k1 artifact.
 
-The primary improvement over earlier revisions is that the whole-circuit totals
-are no longer stored as standalone constants.  Instead, they are derived from:
+The whole-circuit totals in this file are derived from:
 
 - the checked-in leaf netlist,
 - the checked-in retained-window scaffold,
 - the checked-in lookup contract,
 - a versioned backend model bundle.
 
-The exact boundary still ends at the kickmix ISA.  Below that boundary the file
+The exact boundary still ends at the kickmix ISA. Below that boundary the file
 emits backend projections, not theorem-proved primitive-gate totals.
 """
 

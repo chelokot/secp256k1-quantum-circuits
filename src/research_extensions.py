@@ -257,7 +257,7 @@ def compute_dominant_cost_breakdown(repo_root: Path) -> Dict[str, Any]:
         },
         "notes": [
             "This file is derived only from repository artifacts already present in the tree.",
-            "It corrects an earlier internal research-pass bug where the per-leaf arithmetic budget was accidentally treated as the whole-circuit arithmetic budget.",
+            "The per-leaf arithmetic budget and the whole-circuit arithmetic budget are accounted for separately.",
         ],
     }
     out_path = artifact_projection_path(package_root, "dominant_cost_breakdown.json")
@@ -376,7 +376,7 @@ def compute_literature_projection_scenarios(repo_root: Path) -> Dict[str, Any]:
         ],
         "notes": [
             "These scenario files complement the mainline projection rather than replacing the repository's exact ISA-level artifact boundary.",
-            "The signed lookup-folding scenario is stronger than a pure heuristic because the signed-fold contract itself is explicitly encoded and audited over the full 16-bit domain for one secp256k1 window base.",
+            "The signed lookup-folding scenario includes a signed-fold contract that is explicitly encoded and audited over the full 16-bit domain for one secp256k1 window base.",
         ],
     }
     out_path = artifact_projection_path(package_root, "literature_projection_scenarios.json")
@@ -402,7 +402,7 @@ def build_optimization_frontier_estimates(repo_root: Path) -> Dict[str, Any]:
     frontiers = [
         {
             "name": "derived_structural_pipeline",
-            "status": "now_shipped",
+            "status": "checked_in",
             "confidence": "high",
             "estimated_total_non_clifford_multiplier_range": [1.0, 1.0],
             "estimated_total_qubit_multiplier_range": [1.0, 1.0],
@@ -411,7 +411,7 @@ def build_optimization_frontier_estimates(repo_root: Path) -> Dict[str, Any]:
                 "non_clifford_2lookup": default2,
                 "non_clifford_3lookup": default3,
             },
-            "rationale": "The repository now derives the mainline from checked-in structural artifacts plus a versioned backend-model bundle instead of storing whole-circuit headline constants.",
+            "rationale": "The mainline is derived from checked-in structural artifacts plus a versioned backend-model bundle instead of stored whole-circuit headline constants.",
             "main_risk": "Still a backend model below the kickmix ISA boundary, not a primitive-gate lowering.",
         },
     ]
@@ -776,7 +776,7 @@ def build_literature_matrix(repo_root: Path) -> Dict[str, Any]:
         ],
         "notes": [
             "This matrix is intentionally selective: it includes only works that materially affect how this repository should be interpreted, tested, or extended.",
-            "The corrected cost model changes the optimization story: arithmetic papers remain highly relevant, while lookup papers now guide a meaningful but bounded secondary frontier.",
+            "The checked-in cost model shows that arithmetic papers remain highly relevant, while lookup papers guide a meaningful but bounded secondary frontier.",
         ],
     }
     out_path = repo_root / "results" / "literature_matrix.json"

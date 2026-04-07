@@ -12,7 +12,7 @@ The primary modeled headline stored in
 - **22.377M non-Clifford** under the 2-channel lookup model
 - **23.295M non-Clifford** under the conservative 3-channel lookup model
 
-That default line is now derived from exact structural artifacts plus a
+That default line is derived from exact structural artifacts plus a
 versioned backend-model bundle, not from whole-circuit headline constants.
 
 ## Budget split of that mainline
@@ -41,11 +41,11 @@ The signed folded contract projects:
 ## Arithmetic and backend frontier
 
 Arithmetic and backend work remain the larger lever because most of the modeled
-budget sits outside lookup. The checked-in projection family now makes this more
-concrete:
+budget sits outside lookup. The checked-in projection family records this
+directly:
 
-- `addsub_modmul_named_slots_v2` is now the default explicit arithmetic model,
-  so the mainline no longer depends on a legacy calibrated multiplier family.
+- `addsub_modmul_named_slots_v2` is the default explicit arithmetic model, so
+  the mainline does not depend on a legacy calibrated multiplier family.
 - `addsub_modmul_liveness_v2` keeps that same arithmetic backend but drops to
   **736 logical qubits** if exact ISA-slot liveness is used for backend
   allocation.
