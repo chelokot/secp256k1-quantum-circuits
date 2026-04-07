@@ -25,6 +25,9 @@ from common import (
     SECP_P,
     affine_to_proj,
     add_affine,
+    artifact_circuits_path,
+    artifact_extended_verification_path,
+    artifact_projection_path,
     deterministic_scalars,
     dump_json,
     hex_or_inf,
@@ -125,11 +128,12 @@ def verify_curve_metadata(curve: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def run_lookup_contract(repo_root: Path, signed_cases: int = 4096, unsigned_cases: int = 4096) -> Dict[str, Any]:
-    optimized_sha = sha256_path(repo_root / "artifacts" / "out" / "optimized_pointadd_secp256k1.json")
-    baseline_sha = sha256_path(repo_root / "artifacts" / "out" / "resource_projection.json")
+    package_root = repo_root / "artifacts"
+    optimized_sha = sha256_path(artifact_circuits_path(package_root, "optimized_pointadd_secp256k1.json"))
+    baseline_sha = sha256_path(artifact_projection_path(package_root, "resource_projection.json"))
     seed = bytes.fromhex(sha256_bytes(bytes.fromhex(optimized_sha) + bytes.fromhex(baseline_sha)))
 
-    out_csv = repo_root / "artifacts" / "out" / "lookup_contract_audit_8192.csv"
+    out_csv = artifact_extended_verification_path(package_root, "lookup_contract_audit_8192.csv")
     g_tables = precompute_window_tables(SECP_G, SECP_P, SECP_B, width=8, bits=256)
 
     signed_stream = deterministic_scalars(seed + b"signed_lookup", signed_cases, SECP_N)
@@ -190,7 +194,7 @@ def run_lookup_contract(repo_root: Path, signed_cases: int = 4096, unsigned_case
             summary["unsigned_u16"]["pass"] += int(ok)
             writer.writerow(["unsigned_u16", len(LOOKUP_EDGE_KEYS_UNSIGNED_16) + i, format(base_scalar, "064x"), key, *hex_or_inf(base_point), *hex_or_inf(expected), int(is_on_curve(expected, SECP_P, SECP_B)), "PASS" if ok else "FAIL"])
 
-    out_json = repo_root / "artifacts" / "out" / "lookup_contract_summary.json"
+    out_json = artifact_extended_verification_path(package_root, "lookup_contract_summary.json")
     result = {
         "sha256": sha256_path(out_csv),
         "csv": out_csv.name,
@@ -207,16 +211,16 @@ def run_lookup_contract(repo_root: Path, signed_cases: int = 4096, unsigned_case
 
 def run_scaffold_schedule(repo_root: Path, case_count: int = 256) -> Dict[str, Any]:
     package_root = repo_root / "artifacts"
-    scaffold = load_json(package_root / "out" / "ecdlp_scaffold_optimized.json")
-    leaf = load_json(package_root / "out" / "optimized_pointadd_secp256k1.json")
-    leaf_sha = sha256_path(package_root / "out" / "optimized_pointadd_secp256k1.json")
-    scaffold_sha = sha256_path(package_root / "out" / "ecdlp_scaffold_optimized.json")
+    scaffold = load_json(artifact_circuits_path(package_root, "ecdlp_scaffold_optimized.json"))
+    leaf = load_json(artifact_circuits_path(package_root, "optimized_pointadd_secp256k1.json"))
+    leaf_sha = sha256_path(artifact_circuits_path(package_root, "optimized_pointadd_secp256k1.json"))
+    scaffold_sha = sha256_path(artifact_circuits_path(package_root, "ecdlp_scaffold_optimized.json"))
     seed = bytes.fromhex(sha256_bytes(bytes.fromhex(leaf_sha) + bytes.fromhex(scaffold_sha)))
     stream = deterministic_scalars(seed + b"scaffold", case_count * 3, SECP_N)
     g_tables = precompute_window_tables(SECP_G, SECP_P, SECP_B, width=8, bits=256)
     g_window_bases = window_bases(SECP_G, SECP_P, SECP_B, 16, 16)
 
-    out_csv = package_root / "out" / f"scaffold_schedule_audit_{case_count}.csv"
+    out_csv = artifact_extended_verification_path(package_root, f"scaffold_schedule_audit_{case_count}.csv")
     summary = {"total": 0, "pass": 0, "seed_zero_cases": 0, "tail_nonzero_cases": 0, "phase_b_base_variants": 0}
     unique_h = set()
 
@@ -272,7 +276,7 @@ def run_scaffold_schedule(repo_root: Path, case_count: int = 256) -> Dict[str, A
             writer.writerow([i, format(h_scalar, "064x"), format(a_scalar, "064x"), format(b_scalar, "064x"), *hex_or_inf(compute_window_lookup(g_window_bases, 0, seed_digit, SECP_P, SECP_B)), *hex_or_inf(expected), *hex_or_inf(acc), *[str(x) for x in tail_digits], "PASS" if ok else "FAIL"])
 
     summary["phase_b_base_variants"] = len(unique_h)
-    out_json = package_root / "out" / "scaffold_schedule_summary.json"
+    out_json = artifact_extended_verification_path(package_root, "scaffold_schedule_summary.json")
     result = {
         "sha256": sha256_path(out_csv),
         "csv": out_csv.name,
@@ -290,8 +294,8 @@ def run_scaffold_schedule(repo_root: Path, case_count: int = 256) -> Dict[str, A
 
 def run_extended_toy_family(repo_root: Path) -> Dict[str, Any]:
     package_root = repo_root / "artifacts"
-    family = load_json(package_root / "out" / "optimized_pointadd_family.json")
-    out_csv = package_root / "out" / "toy_curve_family_extended_110692.csv"
+    family = load_json(artifact_circuits_path(package_root, "optimized_pointadd_family.json"))
+    out_csv = artifact_extended_verification_path(package_root, "toy_curve_family_extended_110692.csv")
     summary: Dict[str, Any] = {"total": 0, "pass": 0, "curves": {}, "metadata_checks": {}}
 
     with out_csv.open("w", newline="") as handle:
@@ -324,7 +328,7 @@ def run_extended_toy_family(repo_root: Path) -> Dict[str, Any]:
             summary["curves"][cname] = {"total": curve_total, "pass": curve_pass, "order": order, "p": p, "b": b}
             summary["metadata_checks"][cname] = verify_curve_metadata(curve)
 
-    out_json = package_root / "out" / "toy_curve_family_extended_summary.json"
+    out_json = artifact_extended_verification_path(package_root, "toy_curve_family_extended_summary.json")
     result = {
         "sha256": sha256_path(out_csv),
         "csv": out_csv.name,
@@ -339,7 +343,8 @@ def run_extended_toy_family(repo_root: Path) -> Dict[str, Any]:
 
 
 def run_projection_sensitivity(repo_root: Path) -> Dict[str, Any]:
-    projection = load_json(repo_root / "artifacts" / "out" / "resource_projection.json")
+    package_root = repo_root / "artifacts"
+    projection = load_json(artifact_projection_path(package_root, "resource_projection.json"))
     low_q = projection["public_google_baseline"]["low_qubit"]
     low_g = projection["public_google_baseline"]["low_gate"]
     opt2 = projection["optimized_ecdlp_projection"]["lookup_model_2channel"]["total_non_clifford"]
@@ -393,14 +398,15 @@ def run_projection_sensitivity(repo_root: Path) -> Dict[str, Any]:
             "If an objection can be modeled as additive or multiplicative backend overhead, these margins show how much room the optimized projection still has before losing the public-baseline win.",
         ],
     }
-    out_json = repo_root / "artifacts" / "out" / "projection_sensitivity.json"
+    out_json = artifact_projection_path(package_root, "projection_sensitivity.json")
     dump_json(out_json, result)
     return result
 
 
 def run_meta_analysis(repo_root: Path) -> Dict[str, Any]:
-    opt = load_json(repo_root / "artifacts" / "out" / "optimized_pointadd_secp256k1.json")
-    proj = load_json(repo_root / "artifacts" / "out" / "resource_projection.json")
+    package_root = repo_root / "artifacts"
+    opt = load_json(artifact_circuits_path(package_root, "optimized_pointadd_secp256k1.json"))
+    proj = load_json(artifact_projection_path(package_root, "resource_projection.json"))
     from collections import Counter
     opt_ops = Counter(ins["op"] for ins in opt["instructions"])
     google_baseline = proj["public_google_baseline"]
@@ -437,13 +443,14 @@ def run_meta_analysis(repo_root: Path) -> Dict[str, Any]:
             "The Google numbers are published resource estimates, not machine-readable ISA schedules.",
         ],
     }
-    out_json = repo_root / "artifacts" / "out" / "meta_analysis.json"
+    out_json = artifact_projection_path(package_root, "meta_analysis.json")
     dump_json(out_json, result)
     return result
 
 
 def run_claim_boundary_matrix(repo_root: Path) -> Dict[str, Any]:
-    projection = load_json(repo_root / "artifacts" / "out" / "resource_projection.json")
+    package_root = repo_root / "artifacts"
+    projection = load_json(artifact_projection_path(package_root, "resource_projection.json"))
     result = {
         "layers": [
             {
@@ -478,7 +485,7 @@ def run_claim_boundary_matrix(repo_root: Path) -> Dict[str, Any]:
             },
         ]
     }
-    out_json = repo_root / "artifacts" / "out" / "claim_boundary_matrix.json"
+    out_json = artifact_projection_path(package_root, "claim_boundary_matrix.json")
     dump_json(out_json, result)
     return result
 

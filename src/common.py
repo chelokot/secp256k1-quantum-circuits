@@ -43,6 +43,38 @@ def dump_json(path: Path, obj: Any) -> None:
     path.write_text(json.dumps(obj, indent=2, sort_keys=False))
 
 
+def artifact_circuits_path(package_dir: Path, name: str) -> Path:
+    return package_dir / 'out' / 'circuits' / name
+
+
+def artifact_lookup_path(package_dir: Path, name: str) -> Path:
+    return package_dir / 'out' / 'lookup' / name
+
+
+def artifact_projection_path(package_dir: Path, name: str) -> Path:
+    return package_dir / 'out' / 'projections' / name
+
+
+def artifact_core_verification_path(package_dir: Path, name: str) -> Path:
+    return package_dir / 'out' / 'verification' / 'core' / name
+
+
+def artifact_extended_verification_path(package_dir: Path, name: str) -> Path:
+    return package_dir / 'out' / 'verification' / 'extended' / name
+
+
+def artifact_package_path(package_dir: Path, name: str) -> Path:
+    return package_dir / 'out' / 'package' / name
+
+
+def artifact_core_figure_path(package_dir: Path, name: str) -> Path:
+    return package_dir / 'figures' / 'core' / name
+
+
+def artifact_research_figure_path(package_dir: Path, name: str) -> Path:
+    return package_dir / 'figures' / 'research' / name
+
+
 def affine_to_proj(point: PointAffine, p: int) -> PointProj:
     if point is None:
         return (0, 1, 0)

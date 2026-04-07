@@ -7,7 +7,7 @@ This document explains how external work is used in the repository.
 ### 1. Public Google baseline
 
 Babbush et al. 2026 is used as the published secp256k1 estimate baseline recorded
-in `artifacts/out/resource_projection.json`.
+in `artifacts/out/projections/resource_projection.json`.
 
 ### 2. Validation pressure
 
@@ -55,6 +55,6 @@ terms.
 ## Supporting files
 
 - `results/literature_matrix.json`
-- `docs/STATE_OF_THE_ART_2026.md`
-- `docs/TOOLING_AND_REIMPLEMENTATION_PATHS.md`
-- `docs/PHYSICAL_STACKS_AND_HARDWARE_CONTEXT.md`
+- `docs/references/STATE_OF_THE_ART_2026.md`
+- `docs/references/TOOLING_AND_REIMPLEMENTATION_PATHS.md`
+- `docs/references/PHYSICAL_STACKS_AND_HARDWARE_CONTEXT.md`

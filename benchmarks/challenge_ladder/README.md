@@ -15,4 +15,4 @@ Regenerate with:
 python scripts/release_check.py
 ```
 
-For interpretation and scope, read `docs/CHALLENGE_LADDER.md`.
+For interpretation and scope, read `docs/research/CHALLENGE_LADDER.md`.

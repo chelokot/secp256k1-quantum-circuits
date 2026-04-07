@@ -37,9 +37,9 @@ definitions consistently:
 ## Release assets to surface prominently
 
 - `README.md`
-- `docs/CLAIMS_AND_BOUNDARIES.md`
-- `docs/GOOGLE_BASELINE_COMPARISON.md`
-- `docs/RED_TEAM_REVIEW.md`
-- `artifacts/out/resource_projection.json`
-- `artifacts/out/projection_sensitivity.json`
+- `docs/core/CLAIMS_AND_BOUNDARIES.md`
+- `docs/references/GOOGLE_BASELINE_COMPARISON.md`
+- `docs/core/RED_TEAM_REVIEW.md`
+- `artifacts/out/projections/resource_projection.json`
+- `artifacts/out/projections/projection_sensitivity.json`
 - `reports/secp256k1_optimized_report.pdf`

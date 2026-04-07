@@ -36,8 +36,8 @@ class RepoIntegrityTests(unittest.TestCase):
         self.assertNotIn('results/repo_verification_summary.json', manifest)
         selected = [
             'reports/secp256k1_optimized_report.pdf',
-            'artifacts/out/optimized_pointadd_secp256k1.json',
-            'artifacts/out/resource_projection.json',
+            'artifacts/out/circuits/optimized_pointadd_secp256k1.json',
+            'artifacts/out/projections/resource_projection.json',
         ]
         for rel in selected:
             self.assertIn(rel, manifest)

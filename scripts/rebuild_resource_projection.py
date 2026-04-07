@@ -16,7 +16,7 @@ from resource_projection import write_resource_projection  # noqa: E402
 
 def main() -> None:
     write_resource_projection(REPO_ROOT)
-    print(f'Wrote {REPO_ROOT / "artifacts" / "out" / "resource_projection.json"}')
+    print(f'Wrote {REPO_ROOT / "artifacts" / "out" / "projections" / "resource_projection.json"}')
 
 
 if __name__ == '__main__':

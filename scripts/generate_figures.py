@@ -4,19 +4,25 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-FIG_DIR = REPO_ROOT / 'artifacts' / 'figures'
-OUT_DIR = REPO_ROOT / 'artifacts' / 'out'
+SRC_DIR = REPO_ROOT / 'src'
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
+
+from common import artifact_core_figure_path, artifact_projection_path, artifact_research_figure_path  # noqa: E402
+
+PACKAGE_DIR = REPO_ROOT / 'artifacts'
 BENCH_DIR = REPO_ROOT / 'benchmarks' / 'challenge_ladder'
 RESULTS_DIR = REPO_ROOT / 'results'
 
 
 def load(name: str):
-    return json.loads((OUT_DIR / name).read_text())
+    return json.loads(artifact_projection_path(PACKAGE_DIR, name).read_text())
 
 
 def fig_progression(meta, projection):
@@ -37,7 +43,7 @@ def fig_progression(meta, projection):
     for i, v in enumerate(values):
         ax.text(i, v + max(values) * 0.03, f'{v:.2f}', ha='center')
     fig.tight_layout()
-    fig.savefig(FIG_DIR / 'progression_instruction_count.png', dpi=180)
+    fig.savefig(artifact_core_figure_path(PACKAGE_DIR, 'progression_instruction_count.png'), dpi=180)
     plt.close(fig)
 
     values = [
@@ -53,7 +59,7 @@ def fig_progression(meta, projection):
     for i, v in enumerate(values):
         ax.text(i, v + max(values) * 0.03, str(v), ha='center')
     fig.tight_layout()
-    fig.savefig(FIG_DIR / 'progression_register_count.png', dpi=180)
+    fig.savefig(artifact_core_figure_path(PACKAGE_DIR, 'progression_register_count.png'), dpi=180)
     plt.close(fig)
 
 
@@ -72,7 +78,7 @@ def fig_headroom(sensitivity):
     ax.set_title('Projection headroom under multiplicative overhead')
     ax.legend()
     fig.tight_layout()
-    fig.savefig(FIG_DIR / 'projection_headroom.png', dpi=180)
+    fig.savefig(artifact_core_figure_path(PACKAGE_DIR, 'projection_headroom.png'), dpi=180)
     plt.close(fig)
 
 
@@ -95,7 +101,7 @@ def fig_verification_coverage(strict_summary, ladder_summary):
     for i, v in enumerate(values):
         ax.text(i, v + max(values) * 0.02, f'{v:,}', ha='center', fontsize=8)
     fig.tight_layout()
-    fig.savefig(FIG_DIR / 'verification_coverage_extended.png', dpi=180)
+    fig.savefig(artifact_research_figure_path(PACKAGE_DIR, 'verification_coverage_extended.png'), dpi=180)
     plt.close(fig)
 
 
@@ -115,7 +121,7 @@ def fig_frontier_ranges(frontier):
     ax.set_title('Possible future optimization ranges (heuristic)')
     ax.axvline(1.0, linestyle='--')
     fig.tight_layout()
-    fig.savefig(FIG_DIR / 'optimization_frontier_ranges.png', dpi=180)
+    fig.savefig(artifact_research_figure_path(PACKAGE_DIR, 'optimization_frontier_ranges.png'), dpi=180)
     plt.close(fig)
 
 
@@ -135,7 +141,7 @@ def fig_dominant_cost_breakdown(dominant):
     ax.text(0, arith + lookup2 + 0.25, f"{100.0 * dominant['breakdown']['lookup_share_fraction_2lookup']:.2f}% lookup", ha='center', fontsize=9)
     ax.text(1, arith + lookup3 + 0.25, f"{100.0 * dominant['breakdown']['lookup_share_fraction_3lookup']:.2f}% lookup", ha='center', fontsize=9)
     fig.tight_layout()
-    fig.savefig(FIG_DIR / 'dominant_cost_breakdown.png', dpi=180)
+    fig.savefig(artifact_research_figure_path(PACKAGE_DIR, 'dominant_cost_breakdown.png'), dpi=180)
     plt.close(fig)
 
 
@@ -158,7 +164,7 @@ def fig_lookup_reduction_targets(dominant):
     ax.set_title('Lookup-only reductions are bounded under the corrected model')
     ax.legend()
     fig.tight_layout()
-    fig.savefig(FIG_DIR / 'lookup_reduction_targets.png', dpi=180)
+    fig.savefig(artifact_research_figure_path(PACKAGE_DIR, 'lookup_reduction_targets.png'), dpi=180)
     plt.close(fig)
 
 
@@ -175,7 +181,7 @@ def fig_challenge_ladder(ladder):
     for i, (q, qb) in enumerate(zip(subgroup_orders, subgroup_bits)):
         ax1.text(i, q + max(subgroup_orders) * 0.015, f'q≈2^{qb}', ha='center', fontsize=8)
     fig.tight_layout()
-    fig.savefig(FIG_DIR / 'challenge_ladder_orders.png', dpi=180)
+    fig.savefig(artifact_research_figure_path(PACKAGE_DIR, 'challenge_ladder_orders.png'), dpi=180)
     plt.close(fig)
 
 
@@ -193,7 +199,7 @@ def fig_literature_layers(matrix):
     for i, v in enumerate(values):
         ax.text(i, v + 0.05, str(v), ha='center', fontsize=8)
     fig.tight_layout()
-    fig.savefig(FIG_DIR / 'literature_layer_map.png', dpi=180)
+    fig.savefig(artifact_research_figure_path(PACKAGE_DIR, 'literature_layer_map.png'), dpi=180)
     plt.close(fig)
 
 
@@ -214,7 +220,7 @@ def fig_lookup_fold_pad_sweep(folded):
     ax.set_title('Signed lookup folding: pad sweep projection')
     ax.legend()
     fig.tight_layout()
-    fig.savefig(FIG_DIR / 'lookup_fold_pad_sweep.png', dpi=180)
+    fig.savefig(artifact_research_figure_path(PACKAGE_DIR, 'lookup_fold_pad_sweep.png'), dpi=180)
     plt.close(fig)
 
 def main():
@@ -238,7 +244,7 @@ def main():
     fig_challenge_ladder(ladder)
     fig_literature_layers(matrix)
     fig_lookup_fold_pad_sweep(folded)
-    print('wrote figures to', FIG_DIR)
+    print('wrote figures to', PACKAGE_DIR / 'figures')
 
 
 if __name__ == '__main__':

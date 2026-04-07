@@ -7,7 +7,7 @@ artifact layer.
 
 ### 1. Cited Google baseline
 
-Location: `artifacts/out/resource_projection.json`
+Location: `artifacts/out/projections/resource_projection.json`
 
 Role:
 
@@ -27,7 +27,7 @@ Role:
 
 ## Quantified internal differences
 
-`artifacts/out/meta_analysis.json` records the main internal deltas
+`artifacts/out/projections/meta_analysis.json` records the main internal deltas
 between the cited Google estimates and the optimized artifact:
 
 - Google low-qubit ECDLP line: `1200 logical qubits`, `90,000,000 non-Clifford`

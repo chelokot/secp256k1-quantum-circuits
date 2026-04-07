@@ -5,7 +5,7 @@ projection and explains the shares reported elsewhere in the repository.
 
 ## Inputs taken from repository artifacts
 
-From `artifacts/out/resource_projection.json`:
+From `artifacts/out/projections/resource_projection.json`:
 
 - arithmetic-only cost per retained point-add leaf: `976,016`
 - retained point-add leaves in the scaffold: `28`
@@ -42,6 +42,6 @@ Under the repository's explicit backend model:
 
 See:
 
-- `artifacts/out/dominant_cost_breakdown.json`
+- `artifacts/out/projections/dominant_cost_breakdown.json`
 - `results/research_pass_summary.json`
-- `docs/OPTIMIZATION_FRONTIERS.md`
+- `docs/research/OPTIMIZATION_FRONTIERS.md`

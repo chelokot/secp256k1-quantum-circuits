@@ -48,8 +48,8 @@ The literature supports the following present-tense reading of the repository:
 
 ## Files that operationalize this map
 
-- `docs/LOOKUP_FOLDING_RESEARCH_PASS.md`
-- `docs/OPTIMIZATION_FRONTIERS.md`
-- `docs/TOOLING_AND_REIMPLEMENTATION_PATHS.md`
-- `docs/PHYSICAL_STACKS_AND_HARDWARE_CONTEXT.md`
+- `docs/research/LOOKUP_FOLDING_RESEARCH_PASS.md`
+- `docs/research/OPTIMIZATION_FRONTIERS.md`
+- `docs/references/TOOLING_AND_REIMPLEMENTATION_PATHS.md`
+- `docs/references/PHYSICAL_STACKS_AND_HARDWARE_CONTEXT.md`
 - `results/literature_matrix.json`

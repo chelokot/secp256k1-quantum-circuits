@@ -21,6 +21,8 @@ from common import (
     SECP_P,
     affine_to_proj,
     add_affine,
+    artifact_circuits_path,
+    artifact_core_verification_path,
     complete_projective_add_a0,
     deterministic_scalars,
     dump_json,
@@ -134,12 +136,12 @@ def make_audit_cases(netlist_sha: str):
 
 
 def run_audit(package_dir: Path, progress: Optional[ProgressCallback] = None) -> Dict[str, Any]:
-    secp_path = package_dir / 'out' / 'optimized_pointadd_secp256k1.json'
+    secp_path = artifact_circuits_path(package_dir, 'optimized_pointadd_secp256k1.json')
     netlist_obj = load_json(secp_path)
     netlist_sha = sha256_path(secp_path)
     cases = make_audit_cases(netlist_sha)
     tables = precompute_window_tables(SECP_G, SECP_P, SECP_B, width=8, bits=256)
-    out_csv = package_dir / 'out' / 'optimized_pointadd_audit_16384.csv'
+    out_csv = artifact_core_verification_path(package_dir, 'optimized_pointadd_audit_16384.csv')
     summary: Dict[str, Any] = {'total': 0, 'pass': 0, 'categories': {}}
     total_cases = len(cases)
     if progress is not None:
@@ -181,9 +183,9 @@ def run_audit(package_dir: Path, progress: Optional[ProgressCallback] = None) ->
 
 
 def run_toy(package_dir: Path, progress: Optional[ProgressCallback] = None) -> Dict[str, Any]:
-    family_path = package_dir / 'out' / 'optimized_pointadd_family.json'
+    family_path = artifact_circuits_path(package_dir, 'optimized_pointadd_family.json')
     family = load_json(family_path)
-    out_csv = package_dir / 'out' / 'toy_curve_exhaustive_19850.csv'
+    out_csv = artifact_core_verification_path(package_dir, 'toy_curve_exhaustive_19850.csv')
     summary: Dict[str, Any] = {'total': 0, 'pass': 0, 'curves': {}}
     total_cases = sum(curve['order'] * curve['order'] for curve in TOY_CURVES)
     if progress is not None:
@@ -241,7 +243,7 @@ def main() -> None:
         overall['audit'] = run_audit(package_dir)
     if args.mode in ('toy', 'all'):
         overall['toy'] = run_toy(package_dir)
-    out_path = package_dir / 'out' / 'verifier_rebuild_summary.json'
+    out_path = artifact_core_verification_path(package_dir, 'verifier_rebuild_summary.json')
     dump_json(out_path, overall)
     print(json.dumps(overall, indent=2))
 

@@ -6,7 +6,7 @@ published 2026 secp256k1 estimates**.
 ## Baseline source
 
 The baseline is the rounded public secp256k1 estimate from Babbush et al. 2026
-as stored in `artifacts/out/resource_projection.json`.
+as stored in `artifacts/out/projections/resource_projection.json`.
 
 The tracked public lines are:
 
@@ -41,8 +41,8 @@ Versus the public low-gate line:
 
 The repository also stores hostile-backend margin sweeps in:
 
-- `artifacts/out/projection_sensitivity.json`
-- `artifacts/figures/projection_headroom.png`
+- `artifacts/out/projections/projection_sensitivity.json`
+- `artifacts/figures/core/projection_headroom.png`
 
 ## Boundary
 

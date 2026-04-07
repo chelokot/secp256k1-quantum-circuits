@@ -48,20 +48,20 @@ Deterministic benchmark-curve replay suite in the `y^2 = x^3 + 7` family.
 
 ## Documentation
 
-- `docs/CLAIMS_AND_BOUNDARIES.md` — exact versus modeled claim boundary
-- `docs/GOOGLE_BASELINE_COMPARISON.md` — baseline definition and headline ratios
-- `docs/EXTENDED_VERIFICATION.md` — extended verification coverage
-- `docs/LOOKUP_FOLDING_RESEARCH_PASS.md` — signed folded lookup contract
-- `docs/OPTIMIZATION_FRONTIERS.md` — budget split and next frontiers
-- `docs/STATE_OF_THE_ART_2026.md` — external literature map
-- `docs/RED_TEAM_REVIEW.md` — skeptical reading guide
-- `docs/PHYSICAL_STACKS_AND_HARDWARE_CONTEXT.md` — logical versus physical layer
-- `docs/CAIN_2026_NEUTRAL_ATOM_INTEGRATION.md` — neutral-atom transfer study
-- `docs/CHALLENGE_LADDER.md` — benchmark-ladder definition
-- `docs/META_ANALYSIS.md` — artifact-family comparison
-- `docs/PUBLICATION_CHECKLIST.md` — release wording and verification checklist
-- `docs/QUALITY_CONTROL.md` — reproducibility paths
-- `docs/TOOLING_AND_REIMPLEMENTATION_PATHS.md` — external tooling directions
+- `docs/core/CLAIMS_AND_BOUNDARIES.md` — exact versus modeled claim boundary
+- `docs/references/GOOGLE_BASELINE_COMPARISON.md` — baseline definition and headline ratios
+- `docs/core/EXTENDED_VERIFICATION.md` — extended verification coverage
+- `docs/research/LOOKUP_FOLDING_RESEARCH_PASS.md` — signed folded lookup contract
+- `docs/research/OPTIMIZATION_FRONTIERS.md` — budget split and next frontiers
+- `docs/references/STATE_OF_THE_ART_2026.md` — external literature map
+- `docs/core/RED_TEAM_REVIEW.md` — skeptical reading guide
+- `docs/references/PHYSICAL_STACKS_AND_HARDWARE_CONTEXT.md` — logical versus physical layer
+- `docs/references/CAIN_2026_NEUTRAL_ATOM_INTEGRATION.md` — neutral-atom transfer study
+- `docs/research/CHALLENGE_LADDER.md` — benchmark-ladder definition
+- `docs/research/META_ANALYSIS.md` — artifact-family comparison
+- `docs/core/PUBLICATION_CHECKLIST.md` — release wording and verification checklist
+- `docs/core/QUALITY_CONTROL.md` — reproducibility paths
+- `docs/references/TOOLING_AND_REIMPLEMENTATION_PATHS.md` — external tooling directions
 
 ## Results
 

@@ -14,7 +14,7 @@ SRC_DIR = REPO_ROOT / 'src'
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
-from common import dump_json, load_json, sha256_path  # noqa: E402
+from common import artifact_core_verification_path, artifact_projection_path, dump_json, load_json, sha256_path  # noqa: E402
 from extended_verifier import (  # noqa: E402
     run_claim_boundary_matrix,
     run_extended_toy_family,
@@ -155,9 +155,9 @@ def build_summary(console: Console, show_progress: bool, quick: bool) -> Dict[st
         'audit': audit,
         'toy': toy,
     }
-    optimized['verification_summary_sha256'] = sha256_path(optimized_root / 'out' / 'verification_summary.json')
-    optimized['resource_projection'] = load_json(optimized_root / 'out' / 'resource_projection.json')
-    optimized['resource_projection_sha256'] = sha256_path(optimized_root / 'out' / 'resource_projection.json')
+    optimized['verification_summary_sha256'] = sha256_path(artifact_core_verification_path(optimized_root, 'verification_summary.json'))
+    optimized['resource_projection'] = load_json(artifact_projection_path(optimized_root, 'resource_projection.json'))
+    optimized['resource_projection_sha256'] = sha256_path(artifact_projection_path(optimized_root, 'resource_projection.json'))
     google_baseline = optimized['resource_projection']['public_google_baseline']
     extended = None
     if not quick:

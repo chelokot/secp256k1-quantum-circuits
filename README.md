@@ -31,7 +31,7 @@ counts.
 The primary release artifact is in `artifacts/`.
 
 Its modeled ECDLP projection, as recorded in
-`artifacts/out/resource_projection.json`, is:
+`artifacts/out/projections/resource_projection.json`, is:
 
 - **880 logical qubits**
 - **29,163,456 non-Clifford** under the 2-channel lookup model
@@ -41,7 +41,7 @@ Its modeled ECDLP projection, as recorded in
 
 When this repository says **Google's published 2026 secp256k1 estimates**, it
 means the rounded public comparison lines cited from Babbush et al. 2026 and
-stored in `artifacts/out/resource_projection.json`:
+stored in `artifacts/out/projections/resource_projection.json`:
 
 - **low-qubit line:** `1200 logical qubits`, `90,000,000 non-Clifford`
 - **low-gate line:** `1450 logical qubits`, `70,000,000 non-Clifford`
@@ -52,8 +52,8 @@ stored in `artifacts/out/resource_projection.json`:
 
 The optimized mainline incorporates the signed lookup-folding optimization. The
 exact lookup-contract artifacts are in
-`artifacts/out/lookup_signed_fold_contract.json` and
-`artifacts/out/ecdlp_scaffold_lookup_folded.json`.
+`artifacts/out/lookup/lookup_signed_fold_contract.json` and
+`artifacts/out/circuits/ecdlp_scaffold_lookup_folded.json`.
 
 That contract is exact at the lookup-contract level and audited by:
 
@@ -62,7 +62,7 @@ That contract is exact at the lookup-contract level and audited by:
 - **15,906 / 15,906** additional multibase semantic samples
 
 Its backend totals remain modeled. The supporting projection in
-`artifacts/out/lookup_folded_projection.json` is:
+`artifacts/out/projections/lookup_folded_projection.json` is:
 
 - **29,163,456 non-Clifford** under the folded 2-channel model
 - **30,080,960 non-Clifford** under the folded conservative 3-channel model
@@ -124,11 +124,11 @@ python scripts/compare_cain_2026.py
 
 ## Reading order
 
-1. `docs/CLAIMS_AND_BOUNDARIES.md`
-2. `docs/GOOGLE_BASELINE_COMPARISON.md`
-3. `docs/EXTENDED_VERIFICATION.md`
-4. `docs/LOOKUP_FOLDING_RESEARCH_PASS.md`
-5. `docs/OPTIMIZATION_FRONTIERS.md`
-6. `docs/STATE_OF_THE_ART_2026.md`
-7. `docs/RED_TEAM_REVIEW.md`
+1. `docs/core/CLAIMS_AND_BOUNDARIES.md`
+2. `docs/references/GOOGLE_BASELINE_COMPARISON.md`
+3. `docs/core/EXTENDED_VERIFICATION.md`
+4. `docs/research/LOOKUP_FOLDING_RESEARCH_PASS.md`
+5. `docs/research/OPTIMIZATION_FRONTIERS.md`
+6. `docs/references/STATE_OF_THE_ART_2026.md`
+7. `docs/core/RED_TEAM_REVIEW.md`
 8. `reports/secp256k1_optimized_report.pdf`

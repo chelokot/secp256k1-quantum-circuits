@@ -27,6 +27,9 @@ from common import (
     SECP_B,
     add_affine,
     affine_to_proj,
+    artifact_circuits_path,
+    artifact_lookup_path,
+    artifact_projection_path,
     deterministic_scalars,
     dump_json,
     hex_or_inf,
@@ -203,7 +206,8 @@ def compute_dominant_cost_breakdown(repo_root: Path) -> Dict[str, Any]:
     fixes that by multiplying the arithmetic leaf cost by the retained window
     count before forming whole-circuit shares.
     """
-    projection = load_json(repo_root / "artifacts" / "out" / "resource_projection.json")
+    package_root = repo_root / "artifacts"
+    projection = load_json(artifact_projection_path(package_root, "resource_projection.json"))
     windows = int(projection["optimized_ecdlp_projection"]["retained_window_additions"])
     per_leaf_arith = int(projection["optimized_leaf_projection"]["modeled_non_clifford_excluding_lookup"])
     total2 = int(projection["optimized_ecdlp_projection"]["lookup_model_2channel"]["total_non_clifford"])
@@ -258,15 +262,16 @@ def compute_dominant_cost_breakdown(repo_root: Path) -> Dict[str, Any]:
             "It corrects an earlier internal research-pass bug where the per-leaf arithmetic budget was accidentally treated as the whole-circuit arithmetic budget.",
         ],
     }
-    out_path = repo_root / "artifacts" / "out" / "dominant_cost_breakdown.json"
+    out_path = artifact_projection_path(package_root, "dominant_cost_breakdown.json")
     dump_json(out_path, result)
     return result
 
 
 def compute_literature_projection_scenarios(repo_root: Path) -> Dict[str, Any]:
-    breakdown = load_json(repo_root / "artifacts" / "out" / "dominant_cost_breakdown.json")
-    projection = load_json(repo_root / "artifacts" / "out" / "resource_projection.json")
-    folded = load_json(repo_root / "artifacts" / "out" / "lookup_folded_projection.json")
+    package_root = repo_root / "artifacts"
+    breakdown = load_json(artifact_projection_path(package_root, "dominant_cost_breakdown.json"))
+    projection = load_json(artifact_projection_path(package_root, "resource_projection.json"))
+    folded = load_json(artifact_projection_path(package_root, "lookup_folded_projection.json"))
     google = projection["public_google_baseline"]
     total_arith = int(breakdown["baseline"]["modeled_non_clifford_total_arithmetic_only"])
     total2 = int(breakdown["baseline"]["total_non_clifford_2lookup"])
@@ -376,7 +381,7 @@ def compute_literature_projection_scenarios(repo_root: Path) -> Dict[str, Any]:
             "The signed lookup-folding scenario is stronger than a pure heuristic because the signed-fold contract itself is explicitly encoded and audited over the full 16-bit domain for one secp256k1 window base.",
         ],
     }
-    out_path = repo_root / "artifacts" / "out" / "literature_projection_scenarios.json"
+    out_path = artifact_projection_path(package_root, "literature_projection_scenarios.json")
     dump_json(out_path, result)
     return result
 
@@ -419,7 +424,7 @@ def build_challenge_ladder(repo_root: Path, bit_sizes: Iterable[int] = (6, 8, 10
 
 def run_challenge_ladder_audit(repo_root: Path, max_random_scalars_per_curve: int = 128) -> Dict[str, Any]:
     ladder = load_json(repo_root / "benchmarks" / "challenge_ladder" / "challenge_ladder.json")
-    family = load_json(repo_root / "artifacts" / "out" / "optimized_pointadd_family.json")
+    family = load_json(artifact_circuits_path(repo_root / "artifacts", "optimized_pointadd_family.json"))
     out_dir = repo_root / "benchmarks" / "challenge_ladder"
     out_csv = out_dir / "challenge_ladder_audit.csv"
 
@@ -749,8 +754,8 @@ def run_research_pass(repo_root: Path) -> Dict[str, Any]:
             "max_total_reduction_fraction_from_arithmetic_only_3lookup": dominant["ceilings"]["max_total_reduction_fraction_from_arithmetic_only_3lookup"],
         },
         "lookup_folding": {
-            "contract_sha256": sha256_path(repo_root / "artifacts" / "out" / "lookup_signed_fold_contract.json"),
-            "folded_scaffold_sha256": sha256_path(repo_root / "artifacts" / "out" / "ecdlp_scaffold_lookup_folded.json"),
+            "contract_sha256": sha256_path(artifact_lookup_path(repo_root / "artifacts", "lookup_signed_fold_contract.json")),
+            "folded_scaffold_sha256": sha256_path(artifact_circuits_path(repo_root / "artifacts", "ecdlp_scaffold_lookup_folded.json")),
             "exhaustive_cases": lookup_audit["summary"]["full_exhaustive_cases"],
             "exhaustive_pass": lookup_audit["summary"]["full_exhaustive_pass"],
             "multibase_samples": lookup_audit["summary"]["direct_semantic_samples"],

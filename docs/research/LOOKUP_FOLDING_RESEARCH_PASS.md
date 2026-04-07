@@ -6,7 +6,7 @@ optimization for the retained-window point-add stack.
 ## Goal
 
 Reduce the lookup-domain size without changing the optimized arithmetic leaf in
-`artifacts/out/optimized_pointadd_secp256k1.json`.
+`artifacts/out/circuits/optimized_pointadd_secp256k1.json`.
 
 ## Contract definition
 
@@ -27,9 +27,9 @@ For a 16-bit signed word `d`, the contract is:
 
 The exact contract-level artifacts are:
 
-- `artifacts/out/lookup_signed_fold_contract.json`
-- `artifacts/out/ecdlp_scaffold_lookup_folded.json`
-- `artifacts/out/lookup_signed_fold_summary.json`
+- `artifacts/out/lookup/lookup_signed_fold_contract.json`
+- `artifacts/out/circuits/ecdlp_scaffold_lookup_folded.json`
+- `artifacts/out/lookup/lookup_signed_fold_summary.json`
 
 The contract summary records:
 
@@ -52,7 +52,7 @@ backend model below the ISA boundary.
 
 ## Modeled totals
 
-`artifacts/out/lookup_folded_projection.json` records the base-case
+`artifacts/out/projections/lookup_folded_projection.json` records the base-case
 projection:
 
 - folded 2-channel total: `29,163,456`

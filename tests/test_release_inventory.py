@@ -27,23 +27,23 @@ class ReleaseInventoryTests(unittest.TestCase):
             'LICENSE',
             'CITATION.cff',
             'MANIFEST.sha256',
-            'docs/CLAIMS_AND_BOUNDARIES.md',
-            'docs/GOOGLE_BASELINE_COMPARISON.md',
-            'docs/EXTENDED_VERIFICATION.md',
-            'docs/LOOKUP_FOLDING_RESEARCH_PASS.md',
-            'docs/OPTIMIZATION_FRONTIERS.md',
-            'docs/STATE_OF_THE_ART_2026.md',
-            'docs/LITERATURE_INTEGRATION_DECISIONS.md',
-            'docs/RED_TEAM_REVIEW.md',
-            'docs/CAIN_2026_NEUTRAL_ATOM_INTEGRATION.md',
-            'docs/CHALLENGE_LADDER.md',
-            'docs/META_ANALYSIS.md',
-            'docs/PUBLICATION_CHECKLIST.md',
-            'docs/QUALITY_CONTROL.md',
-            'docs/REPO_LAYOUT.md',
-            'docs/PHYSICAL_STACKS_AND_HARDWARE_CONTEXT.md',
-            'docs/COST_MODEL_CORRECTION.md',
-            'docs/TOOLING_AND_REIMPLEMENTATION_PATHS.md',
+            'docs/core/CLAIMS_AND_BOUNDARIES.md',
+            'docs/references/GOOGLE_BASELINE_COMPARISON.md',
+            'docs/core/EXTENDED_VERIFICATION.md',
+            'docs/research/LOOKUP_FOLDING_RESEARCH_PASS.md',
+            'docs/research/OPTIMIZATION_FRONTIERS.md',
+            'docs/references/STATE_OF_THE_ART_2026.md',
+            'docs/references/LITERATURE_INTEGRATION_DECISIONS.md',
+            'docs/core/RED_TEAM_REVIEW.md',
+            'docs/references/CAIN_2026_NEUTRAL_ATOM_INTEGRATION.md',
+            'docs/research/CHALLENGE_LADDER.md',
+            'docs/research/META_ANALYSIS.md',
+            'docs/core/PUBLICATION_CHECKLIST.md',
+            'docs/core/QUALITY_CONTROL.md',
+            'docs/core/REPO_LAYOUT.md',
+            'docs/references/PHYSICAL_STACKS_AND_HARDWARE_CONTEXT.md',
+            'docs/research/COST_MODEL_CORRECTION.md',
+            'docs/references/TOOLING_AND_REIMPLEMENTATION_PATHS.md',
             'reports/secp256k1_optimized_report.pdf',
             'scripts/verify_all.py',
             'scripts/compare_cain_2026.py',
@@ -58,32 +58,32 @@ class ReleaseInventoryTests(unittest.TestCase):
             'src/extended_verifier.py',
             'src/research_extensions.py',
             'src/lookup_research.py',
-            'artifacts/out/optimized_pointadd_secp256k1.json',
-            'artifacts/out/optimized_pointadd_family.json',
-            'artifacts/out/optimized_pointadd_audit_16384.csv',
-            'artifacts/out/ecdlp_scaffold_optimized.json',
-            'artifacts/out/resource_projection.json',
-            'artifacts/out/register_map.json',
-            'artifacts/out/proof_manifest.json',
-            'artifacts/out/lookup_contract_audit_8192.csv',
-            'artifacts/out/lookup_contract_summary.json',
-            'artifacts/out/scaffold_schedule_audit_256.csv',
-            'artifacts/out/scaffold_schedule_summary.json',
-            'artifacts/out/toy_curve_exhaustive_19850.csv',
-            'artifacts/out/toy_curve_family_extended_110692.csv',
-            'artifacts/out/toy_curve_family_extended_summary.json',
-            'artifacts/out/projection_sensitivity.json',
-            'artifacts/out/claim_boundary_matrix.json',
-            'artifacts/out/meta_analysis.json',
-            'artifacts/out/optimization_frontier_estimates.json',
-            'artifacts/out/dominant_cost_breakdown.json',
-            'artifacts/out/literature_projection_scenarios.json',
-            'artifacts/out/lookup_signed_fold_contract.json',
-            'artifacts/out/lookup_signed_fold_exhaustive_g.csv',
-            'artifacts/out/lookup_signed_fold_multibase_sampled.csv',
-            'artifacts/out/lookup_signed_fold_summary.json',
-            'artifacts/out/ecdlp_scaffold_lookup_folded.json',
-            'artifacts/out/lookup_folded_projection.json',
+            'artifacts/out/circuits/optimized_pointadd_secp256k1.json',
+            'artifacts/out/circuits/optimized_pointadd_family.json',
+            'artifacts/out/verification/core/optimized_pointadd_audit_16384.csv',
+            'artifacts/out/circuits/ecdlp_scaffold_optimized.json',
+            'artifacts/out/projections/resource_projection.json',
+            'artifacts/out/circuits/register_map.json',
+            'artifacts/out/package/proof_manifest.json',
+            'artifacts/out/verification/extended/lookup_contract_audit_8192.csv',
+            'artifacts/out/verification/extended/lookup_contract_summary.json',
+            'artifacts/out/verification/extended/scaffold_schedule_audit_256.csv',
+            'artifacts/out/verification/extended/scaffold_schedule_summary.json',
+            'artifacts/out/verification/core/toy_curve_exhaustive_19850.csv',
+            'artifacts/out/verification/extended/toy_curve_family_extended_110692.csv',
+            'artifacts/out/verification/extended/toy_curve_family_extended_summary.json',
+            'artifacts/out/projections/projection_sensitivity.json',
+            'artifacts/out/projections/claim_boundary_matrix.json',
+            'artifacts/out/projections/meta_analysis.json',
+            'artifacts/out/projections/optimization_frontier_estimates.json',
+            'artifacts/out/projections/dominant_cost_breakdown.json',
+            'artifacts/out/projections/literature_projection_scenarios.json',
+            'artifacts/out/lookup/lookup_signed_fold_contract.json',
+            'artifacts/out/lookup/lookup_signed_fold_exhaustive_g.csv',
+            'artifacts/out/lookup/lookup_signed_fold_multibase_sampled.csv',
+            'artifacts/out/lookup/lookup_signed_fold_summary.json',
+            'artifacts/out/circuits/ecdlp_scaffold_lookup_folded.json',
+            'artifacts/out/projections/lookup_folded_projection.json',
             'benchmarks/challenge_ladder/challenge_ladder.json',
             'benchmarks/challenge_ladder/challenge_ladder_audit.csv',
             'benchmarks/challenge_ladder/challenge_ladder_summary.json',
@@ -100,13 +100,13 @@ class ReleaseInventoryTests(unittest.TestCase):
     def test_machine_readable_summaries_are_deterministic(self):
         verification = json.loads(ensure_repo_verification_summary().read_text())
         research = json.loads((REPO_ROOT / 'results' / 'research_pass_summary.json').read_text())
-        rebuild = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'verifier_rebuild_summary.json').read_text())
+        rebuild = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'verification' / 'core' / 'verifier_rebuild_summary.json').read_text())
         self.assertNotIn('elapsed_seconds', verification)
         self.assertNotIn('elapsed_seconds', research)
         self.assertNotIn('elapsed_seconds', rebuild)
 
     def test_resource_projection_is_self_consistent(self):
-        projection = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'resource_projection.json').read_text())
+        projection = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'projections' / 'resource_projection.json').read_text())
         base = projection['public_google_baseline']
         optimized = projection['optimized_ecdlp_projection']
         gains = projection['improvement_vs_google']
@@ -131,7 +131,7 @@ class ReleaseInventoryTests(unittest.TestCase):
         )
 
     def test_proof_manifest_matches_curated_files(self):
-        proof = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'proof_manifest.json').read_text())
+        proof = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'package' / 'proof_manifest.json').read_text())
         for rel, record in proof['files'].items():
             path = REPO_ROOT / rel
             self.assertTrue(path.exists(), path)

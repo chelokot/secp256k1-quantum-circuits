@@ -6,7 +6,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Dict
 
-from common import dump_json
+from common import artifact_projection_path, dump_json
 
 
 PUBLIC_GOOGLE_BASELINE = {
@@ -84,5 +84,5 @@ def build_resource_projection() -> Dict[str, Any]:
 
 def write_resource_projection(repo_root: Path) -> Dict[str, Any]:
     projection = build_resource_projection()
-    dump_json(repo_root / 'artifacts' / 'out' / 'resource_projection.json', projection)
+    dump_json(artifact_projection_path(repo_root / 'artifacts', 'resource_projection.json'), projection)
     return projection

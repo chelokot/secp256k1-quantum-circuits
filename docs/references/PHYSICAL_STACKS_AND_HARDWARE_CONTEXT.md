@@ -25,7 +25,7 @@ Role here:
 
 Files:
 
-- `docs/CAIN_2026_NEUTRAL_ATOM_INTEGRATION.md`
+- `docs/references/CAIN_2026_NEUTRAL_ATOM_INTEGRATION.md`
 - `results/cain_2026_integration_summary.json`
 
 ### 3. Gouzien et al. 2023
@@ -48,7 +48,7 @@ The right questions are:
 
 The repository keeps three different file classes:
 
-- `artifacts/out/resource_projection.json` for modeled logical totals
+- `artifacts/out/projections/resource_projection.json` for modeled logical totals
 - `results/cain_2026_integration_summary.json` for approximate neutral-atom
   transfer
 - `results/physical_stack_reference_points.json` for cross-paper context
