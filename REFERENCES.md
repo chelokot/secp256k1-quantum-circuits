@@ -6,11 +6,17 @@ they play.
 ## Direct public baseline
 
 - Babbush et al. 2026, *Securing Elliptic Curve Cryptocurrencies against Quantum Vulnerabilities: Resource Estimates and Mitigations*
+- Google Research blog post, 2026, *Safeguarding cryptocurrency by disclosing quantum vulnerabilities responsibly*
 
 Role:
 
 - source of the published secp256k1 resource estimates used as the repository's
   main comparison baseline
+
+Links:
+
+- Whitepaper PDF: https://quantumai.google/static/site-assets/downloads/cryptocurrency-whitepaper.pdf
+- Google Research blog post: https://research.google/blog/safeguarding-cryptocurrency-by-disclosing-quantum-vulnerabilities-responsibly/
 
 ## Physical transfer and architecture context
 
@@ -22,6 +28,10 @@ Role:
 
 - hardware and architecture context
 - physical-transfer studies separate from the core logical artifact
+
+Links:
+
+- Cain et al. 2026: https://arxiv.org/abs/2603.28627
 
 ## Logical ECDLP, arithmetic, and lookup references
 

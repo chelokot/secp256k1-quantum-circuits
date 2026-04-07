@@ -11,7 +11,10 @@ secp256k1 is the elliptic curve used by Bitcoin and other cryptocurrency
 systems, and a sufficiently powerful fault-tolerant quantum attack on it would
 in principle recover private keys from public keys and signatures.
 
-On March 31, 2026, Google Research published a whitepaper and blog post
+On March 31, 2026, Google Research published a
+[whitepaper](https://quantumai.google/static/site-assets/downloads/cryptocurrency-whitepaper.pdf)
+and
+[blog post](https://research.google/blog/safeguarding-cryptocurrency-by-disclosing-quantum-vulnerabilities-responsibly/)
 reporting new secp256k1 quantum ECDLP resource estimates and arguing that the
 risk horizon for fault-tolerant attacks may be closer than many earlier
 timelines assumed. Google reported rounded estimates of under 1,200 logical
@@ -25,8 +28,8 @@ material alone. ChatGPT 5.4 Pro was used first to construct auditable
 secp256k1 circuit artifacts consistent with Google's published resource lines,
 and then to search for stronger secp256k1-specific optimizations. The
 resulting primary artifact in this repository reaches modeled non-Clifford
-totals that are more than 2x lower than Google's published 2026 secp256k1
-estimates.
+totals that are <u>more than 2x lower than Google's published 2026
+secp256k1 estimates</u>.
 
 ## Content
 
@@ -119,6 +122,26 @@ See:
 
 - `results/repo_verification_summary.json`
 - `results/research_pass_summary.json`
+
+## Cain et al. 2026
+
+Another paper that strongly shaped this repository's physical-layer thinking is
+[Shor's algorithm is possible with as few as 10,000 reconfigurable atomic qubits](https://arxiv.org/abs/2603.28627).
+Cain et al. study a fault-tolerant neutral-atom architecture rather than
+publishing a new secp256k1 circuit. Their headline reference points are
+roughly **10,000 physical qubits** at the minimum-space end, or about
+**26,000 physical qubits** for a faster **ECC-256 / P-256** attack with a
+runtime around **10 days**; their slower balanced line is around **264 days**.
+
+This repository includes an approximate transfer of our logical secp256k1
+projection into that physical model in
+`docs/references/CAIN_2026_NEUTRAL_ATOM_INTEGRATION.md` and
+`results/cain_2026_integration_summary.json`. Under fixed cycle-time and
+parallelism assumptions, the modeled runtime shifts from Cain's **10 days** to
+roughly **3.24 to 4.30 days**, and the balanced line shifts from **264 days**
+to roughly **85.5 to 113.4 days**. That transfer is intentionally stated as
+approximate, because Cain's paper targets **P-256**, while the primary artifact
+in this repository is specialized to **secp256k1**.
 
 ## Repository map
 
