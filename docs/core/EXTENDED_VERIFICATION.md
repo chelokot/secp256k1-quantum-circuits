@@ -13,8 +13,8 @@ python scripts/verify_all.py --quick
 
 Files:
 
-- `artifacts/out/verification/extended/lookup_contract_audit_8192.csv`
-- `artifacts/out/verification/extended/lookup_contract_summary.json`
+- `artifacts/verification/extended/lookup_contract_audit_8192.csv`
+- `artifacts/verification/extended/lookup_contract_summary.json`
 
 Purpose:
 
@@ -26,8 +26,8 @@ Purpose:
 
 Files:
 
-- `artifacts/out/verification/extended/scaffold_schedule_audit_256.csv`
-- `artifacts/out/verification/extended/scaffold_schedule_summary.json`
+- `artifacts/verification/extended/scaffold_schedule_audit_256.csv`
+- `artifacts/verification/extended/scaffold_schedule_summary.json`
 
 Purpose:
 
@@ -39,8 +39,8 @@ Purpose:
 
 Files:
 
-- `artifacts/out/verification/extended/toy_curve_family_extended_110692.csv`
-- `artifacts/out/verification/extended/toy_curve_family_extended_summary.json`
+- `artifacts/verification/extended/toy_curve_family_extended_110692.csv`
+- `artifacts/verification/extended/toy_curve_family_extended_summary.json`
 
 Purpose:
 
@@ -50,7 +50,7 @@ Purpose:
 
 File:
 
-- `artifacts/out/projections/projection_sensitivity.json`
+- `artifacts/projections/projection_sensitivity.json`
 
 Purpose:
 

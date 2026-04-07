@@ -40,6 +40,6 @@ definitions consistently:
 - `docs/core/CLAIMS_AND_BOUNDARIES.md`
 - `docs/references/GOOGLE_BASELINE_COMPARISON.md`
 - `docs/core/RED_TEAM_REVIEW.md`
-- `artifacts/out/projections/resource_projection.json`
-- `artifacts/out/projections/projection_sensitivity.json`
+- `artifacts/projections/resource_projection.json`
+- `artifacts/projections/projection_sensitivity.json`
 - `reports/secp256k1_optimized_report.pdf`

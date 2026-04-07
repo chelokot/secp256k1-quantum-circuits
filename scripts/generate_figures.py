@@ -244,7 +244,7 @@ def main():
     fig_challenge_ladder(ladder)
     fig_literature_layers(matrix)
     fig_lookup_fold_pad_sweep(folded)
-    print('wrote figures to', PACKAGE_DIR / 'figures')
+    print('wrote figures to', REPO_ROOT / 'figures')
 
 
 if __name__ == '__main__':

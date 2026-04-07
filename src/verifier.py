@@ -233,7 +233,7 @@ def run_toy(package_dir: Path, progress: Optional[ProgressCallback] = None) -> D
 
 def main() -> None:
     parser = argparse.ArgumentParser(description='Rebuild and verify the optimized secp256k1 kickmix package.')
-    parser.add_argument('--package-dir', default='artifacts', help='Path to the artifact package root containing out/ and figures/.')
+    parser.add_argument('--package-dir', default='artifacts', help='Path to the artifact package root containing circuits/, verification/, lookup/, projections/, and package/.')
     parser.add_argument('--mode', choices=['audit', 'toy', 'all'], default='all')
     args = parser.parse_args()
 

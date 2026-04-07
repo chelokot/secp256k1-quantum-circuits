@@ -44,35 +44,35 @@ def dump_json(path: Path, obj: Any) -> None:
 
 
 def artifact_circuits_path(package_dir: Path, name: str) -> Path:
-    return package_dir / 'out' / 'circuits' / name
+    return package_dir / 'circuits' / name
 
 
 def artifact_lookup_path(package_dir: Path, name: str) -> Path:
-    return package_dir / 'out' / 'lookup' / name
+    return package_dir / 'lookup' / name
 
 
 def artifact_projection_path(package_dir: Path, name: str) -> Path:
-    return package_dir / 'out' / 'projections' / name
+    return package_dir / 'projections' / name
 
 
 def artifact_core_verification_path(package_dir: Path, name: str) -> Path:
-    return package_dir / 'out' / 'verification' / 'core' / name
+    return package_dir / 'verification' / 'core' / name
 
 
 def artifact_extended_verification_path(package_dir: Path, name: str) -> Path:
-    return package_dir / 'out' / 'verification' / 'extended' / name
+    return package_dir / 'verification' / 'extended' / name
 
 
 def artifact_package_path(package_dir: Path, name: str) -> Path:
-    return package_dir / 'out' / 'package' / name
+    return package_dir / 'package' / name
 
 
 def artifact_core_figure_path(package_dir: Path, name: str) -> Path:
-    return package_dir / 'figures' / 'core' / name
+    return package_dir.parent / 'figures' / 'core' / name
 
 
 def artifact_research_figure_path(package_dir: Path, name: str) -> Path:
-    return package_dir / 'figures' / 'research' / name
+    return package_dir.parent / 'figures' / 'research' / name
 
 
 def affine_to_proj(point: PointAffine, p: int) -> PointProj:

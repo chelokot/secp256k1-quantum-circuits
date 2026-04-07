@@ -15,9 +15,9 @@ class ExtendedArtifactTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.extended = json.loads(ensure_repo_verification_summary().read_text())['extended']
-        cls.boundaries = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'projections' / 'claim_boundary_matrix.json').read_text())
-        cls.meta = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'projections' / 'meta_analysis.json').read_text())
-        cls.sensitivity = json.loads((REPO_ROOT / 'artifacts' / 'out' / 'projections' / 'projection_sensitivity.json').read_text())
+        cls.boundaries = json.loads((REPO_ROOT / 'artifacts' / 'projections' / 'claim_boundary_matrix.json').read_text())
+        cls.meta = json.loads((REPO_ROOT / 'artifacts' / 'projections' / 'meta_analysis.json').read_text())
+        cls.sensitivity = json.loads((REPO_ROOT / 'artifacts' / 'projections' / 'projection_sensitivity.json').read_text())
 
     def test_lookup_contract_passes(self):
         lookup = self.extended['lookup_contract']
