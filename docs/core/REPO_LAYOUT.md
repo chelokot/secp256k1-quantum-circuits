@@ -22,6 +22,28 @@ Primary optimized release with:
 - extended verification outputs
 - research and sensitivity outputs
 
+
+## Exact compiler-family subproject
+
+### `compiler_verification_project/`
+
+Separate exact-oracle layer with:
+
+- fully quantum raw-32 schedule artifacts
+- exact whole-oracle frontier for named compiler families
+- exact leaf slot allocation
+- explicit phase-shell families
+- exact-family Cain/Azure handoff artifacts
+
+Key files:
+
+- `compiler_verification_project/README.md`
+- `compiler_verification_project/scripts/build.py`
+- `compiler_verification_project/scripts/verify.py`
+- `compiler_verification_project/src/project.py`
+- `compiler_verification_project/artifacts/family_frontier.json`
+- `compiler_verification_project/artifacts/verification_summary.json`
+
 ## Source code
 
 - `src/common.py` — arithmetic, hashing, and serialization helpers

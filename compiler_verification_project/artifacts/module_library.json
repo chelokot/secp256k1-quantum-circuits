@@ -1,0 +1,39 @@
+{
+  "schema": "compiler-project-arithmetic-kernels-v2",
+  "name": "litinski_addsub_schoolbook_v1",
+  "summary": "Imported exact non-Clifford arithmetic kernel family: schoolbook multiplication via controlled add-subtract plus n-1-cost add/sub/select kernels.",
+  "gate_set": "Clifford + non-Clifford-counted arithmetic kernels",
+  "field_mul_non_clifford": 66047,
+  "field_add_non_clifford": 255,
+  "field_sub_non_clifford": 255,
+  "select_non_clifford": 255,
+  "mul_const_non_clifford": 1530,
+  "arithmetic_leaf_non_clifford": 733657,
+  "leaf_opcode_histogram": {
+    "load_input": 3,
+    "lookup_affine_x": 1,
+    "lookup_affine_y": 1,
+    "lookup_meta": 1,
+    "bool_from_flag": 1,
+    "field_mul": 11,
+    "field_add": 10,
+    "field_sub": 3,
+    "mul_const": 2,
+    "select_field_if_flag": 3,
+    "mbuc_clear_bool": 1
+  },
+  "exact_scope": "exact non-Clifford counts for the named arithmetic-kernel family; Clifford micro-counts are not flattened in this subproject",
+  "notes": [
+    "The multiplier cost follows the controlled add-subtract schoolbook family highlighted by Litinski 2024 for practical low-Toffoli ECC circuits.",
+    "This subproject now removes modeled whole-leaf constants, but it still does not ship a bit-for-bit primitive CX/CCX expansion for the 256-bit multiplier family."
+  ],
+  "addition_chain_21": [
+    1,
+    2,
+    4,
+    8,
+    16,
+    20,
+    21
+  ]
+}

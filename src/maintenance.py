@@ -47,6 +47,19 @@ PROOF_MANIFEST_PATHS = [
     'src/figure_generation.py',
     'src/resource_projection.py',
     'src/derived_resources.py',
+    'compiler_verification_project/README.md',
+    'compiler_verification_project/src/project.py',
+    'compiler_verification_project/scripts/build.py',
+    'compiler_verification_project/scripts/verify.py',
+    'compiler_verification_project/artifacts/build_summary.json',
+    'compiler_verification_project/artifacts/family_frontier.json',
+    'compiler_verification_project/artifacts/full_raw32_oracle.json',
+    'compiler_verification_project/artifacts/exact_leaf_slot_allocation.json',
+    'compiler_verification_project/artifacts/primitive_multiplier_library.json',
+    'compiler_verification_project/artifacts/phase_shell_families.json',
+    'compiler_verification_project/artifacts/verification_summary.json',
+    'compiler_verification_project/artifacts/cain_exact_transfer.json',
+    'compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json',
 ]
 
 
@@ -70,10 +83,10 @@ def write_proof_manifest(repo_root: Path) -> Dict[str, Any]:
         }
 
     proof_manifest = {
-        'artifact_family': 'secp256k1_optimized_kickmix_v2',
+        'artifact_family': 'secp256k1_mainline_plus_exact_compiler_v1',
         'base_dir': 'repository_root',
         'notes': [
-            'This manifest records the main optimized artifact files after the publication-hardening pass.',
+            'This manifest records the main optimized artifact files plus the exact compiler-family subproject artifacts.',
             'Paths are repository-relative.',
         ],
         'files': files,

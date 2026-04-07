@@ -1,0 +1,10 @@
+{
+  "derivation": "first deterministic public-point base from the checked-in leaf/scaffold hash stream",
+  "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+  "scaffold_sha256": "6f444c332728cde3ccfb9fd532012aaaa9c777a1b0f949573a3910602126cc03",
+  "h_scalar_hex": "67187ebf5e103907b421422ac84cdce3df49863a1a00c445df5bacfb48cdea52",
+  "point": {
+    "x_hex": "84b18b4548bd18cd1371f3c1a9b69b7353bec9b8458ca3da0c78132adb4a9287",
+    "y_hex": "e6fbb05ac34d4d44b6f0c75994f51d03904b13d14cfcbbc91ea698cf3933f574"
+  }
+}

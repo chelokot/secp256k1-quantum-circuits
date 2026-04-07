@@ -84,6 +84,18 @@ class ReleaseInventoryTests(unittest.TestCase):
             'results/literature_matrix.json',
             'results/physical_stack_reference_points.json',
             'results/cain_2026_integration_summary.json',
+            'compiler_verification_project/README.md',
+            'compiler_verification_project/scripts/build.py',
+            'compiler_verification_project/scripts/verify.py',
+            'compiler_verification_project/src/project.py',
+            'compiler_verification_project/artifacts/build_summary.json',
+            'compiler_verification_project/artifacts/family_frontier.json',
+            'compiler_verification_project/artifacts/verification_summary.json',
+            'compiler_verification_project/artifacts/exact_leaf_slot_allocation.json',
+            'compiler_verification_project/artifacts/primitive_multiplier_library.json',
+            'compiler_verification_project/artifacts/phase_shell_families.json',
+            'compiler_verification_project/artifacts/cain_exact_transfer.json',
+            'compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json',
         ]
         for rel in expected:
             path = REPO_ROOT / rel

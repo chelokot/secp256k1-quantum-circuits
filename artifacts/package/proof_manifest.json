@@ -1,8 +1,8 @@
 {
-  "artifact_family": "secp256k1_optimized_kickmix_v2",
+  "artifact_family": "secp256k1_mainline_plus_exact_compiler_v1",
   "base_dir": "repository_root",
   "notes": [
-    "This manifest records the main optimized artifact files after the publication-hardening pass.",
+    "This manifest records the main optimized artifact files plus the exact compiler-family subproject artifacts.",
     "Paths are repository-relative."
   ],
   "files": {
@@ -149,6 +149,58 @@
     "src/derived_resources.py": {
       "sha256": "8675f24d10429148f15716a9be6c46541b40d3e6c4520db55e8d2463b51d770d",
       "bytes": 28747
+    },
+    "compiler_verification_project/README.md": {
+      "sha256": "9d76960e24cd11b0dc13588867df092c9913140f2250c797fe832e56ccacee56",
+      "bytes": 3778
+    },
+    "compiler_verification_project/src/project.py": {
+      "sha256": "ca309ec4380520afd50b13edf196cc84f30ce9033a60cd00c03777476b35cc29",
+      "bytes": 45581
+    },
+    "compiler_verification_project/scripts/build.py": {
+      "sha256": "be1b22f40172be2352a807ef3045ad4321c7f35992d6ce7278837a257039076b",
+      "bytes": 683
+    },
+    "compiler_verification_project/scripts/verify.py": {
+      "sha256": "00ac607a915a8323aad9913238bedc202dd7030b871d772607c824451caf61d7",
+      "bytes": 842
+    },
+    "compiler_verification_project/artifacts/build_summary.json": {
+      "sha256": "c163e96317bb8746e6f22f290af6c12dc723936864fd3b965d8050c7dc11c2d7",
+      "bytes": 5188
+    },
+    "compiler_verification_project/artifacts/family_frontier.json": {
+      "sha256": "79e9bd41d180704ebe94e88927615c91741cd78f474abec96c921051a9d47c3b",
+      "bytes": 45954
+    },
+    "compiler_verification_project/artifacts/full_raw32_oracle.json": {
+      "sha256": "944d5f5a13d7256f2134d3f11ae2d8832aacb8d446590ea3f1d2ccc73ca8939a",
+      "bytes": 5515
+    },
+    "compiler_verification_project/artifacts/exact_leaf_slot_allocation.json": {
+      "sha256": "22011b70395d5d1b4fd9f67d17fc4aa655fd7d75fc2aac97dcf1e74758e0b794",
+      "bytes": 18247
+    },
+    "compiler_verification_project/artifacts/primitive_multiplier_library.json": {
+      "sha256": "d92f0bd2e749c0e4462aac905dfa1f1d8aea16d3c69815971a40eee4e2f07800",
+      "bytes": 6151
+    },
+    "compiler_verification_project/artifacts/phase_shell_families.json": {
+      "sha256": "d7b1a2cb5ebf08e8b3597d5c44f481e803066ace0000cb4c5badad61e06ee76c",
+      "bytes": 1296
+    },
+    "compiler_verification_project/artifacts/verification_summary.json": {
+      "sha256": "3bfff0b8160341a43642fa5c4cb01633d117418e378db564bd09c33af53a318f",
+      "bytes": 1775
+    },
+    "compiler_verification_project/artifacts/cain_exact_transfer.json": {
+      "sha256": "af638d5d84724e0674dead8c07754c8d306e8cd34592ae6f669fdf0ae1def141",
+      "bytes": 2779
+    },
+    "compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json": {
+      "sha256": "f3f0800191e9de2e6e77de0813ff645087c4a5d93bae8d7378e736afc832adbe",
+      "bytes": 2896
     }
   }
 }

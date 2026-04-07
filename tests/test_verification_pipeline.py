@@ -60,6 +60,15 @@ class VerificationPipelineTests(unittest.TestCase):
         self.assertEqual(extended['challenge_ladder']['summary']['pass'], extended['challenge_ladder']['summary']['total'])
         self.assertTrue(self.summary['headline_checks']['extended_checks_pass'])
 
+    def test_compiler_project_checks_are_recorded(self):
+        compiler = self.summary['compiler_project']
+        frontier = compiler['frontier']
+        verify = compiler['verification_summary']
+        self.assertLess(frontier['best_gate_family']['full_oracle_non_clifford'], 70_000_000)
+        self.assertLess(frontier['best_qubit_family']['total_logical_qubits'], 2500)
+        self.assertEqual(verify['summary']['pass'], verify['summary']['total'])
+        self.assertTrue(self.summary['headline_checks']['compiler_exact_checks_pass'])
+
 
 if __name__ == '__main__':
     unittest.main()

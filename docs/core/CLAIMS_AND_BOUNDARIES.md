@@ -6,9 +6,9 @@ This file defines the strongest claims supported by the checked-in artifacts.
 
 The repository publishes exact kickmix-ISA arithmetic schedules for a
 secp256k1-specialized point-add leaf and explicit retained-window scaffold
-metadata, together with deterministic audits, finite-model checks, and modeled
-backend projections against Google's published 2026 secp256k1 estimates from
-Babbush et al. 2026.
+metadata, together with deterministic audits, finite-model checks, modeled
+backend projections, and a separate exact compiler-family oracle subproject that
+closes the classical-tail-elision gap for a fully quantum raw-32 schedule.
 
 ## Exact layers
 
@@ -60,6 +60,25 @@ The signed folded variant is audited by:
 - `artifacts/lookup/lookup_signed_fold_exhaustive_g.csv`
 - `artifacts/lookup/lookup_signed_fold_multibase_sampled.csv`
 
+
+### 4. Exact compiler-family whole-oracle layer
+
+The root-level `compiler_verification_project/` adds a stronger exact layer than
+the mainline modeled backend. It publishes:
+
+- `compiler_verification_project/artifacts/full_raw32_oracle.json`
+- `compiler_verification_project/artifacts/family_frontier.json`
+- `compiler_verification_project/artifacts/exact_leaf_slot_allocation.json`
+- `compiler_verification_project/artifacts/verification_summary.json`
+
+This layer is exact for the **named compiler families** checked into that
+subproject. In particular, it fixes:
+
+- a fully quantum raw-32 schedule with no classical tail elisions,
+- explicit folded lookup families,
+- exact leaf slot allocation, and
+- explicit phase-shell families, including a semiclassical-QFT shell.
+
 ## Modeled or non-exact layers
 
 ### A. Primitive-gate lookup realization
@@ -76,8 +95,11 @@ phase-accurate primitive-gate implementation.
 
 ### C. Fully flattened Shor gate list
 
-The repository provides a retained-window scaffold description, not a single
-flat primitive-gate circuit for the complete period-finding stack.
+The mainline repository still provides a retained-window scaffold description,
+not a single flat primitive-gate circuit for the complete period-finding stack.
+The compiler subproject closes more of that gap by publishing an exact raw-32
+whole-oracle family, but it still stops short of a globally optimized complete
+primitive-gate Shor implementation.
 
 ### D. Backend logical-qubit and non-Clifford totals
 
@@ -107,7 +129,9 @@ Exact arithmetic leaf semantics: yes.
 
 Exact lookup-contract semantics: yes.
 
-Exact primitive-gate lookup, cleanup, and full Shor flattening: no.
+Mainline exact primitive-gate lookup, cleanup, and full Shor flattening: no.
+
+Exact compiler-family whole-oracle counts: yes, in `compiler_verification_project/`, but only for the named compiler families checked into that subproject.
 
 Backend projection below the public Google baseline: yes, but explicitly as a
-modeled result.
+modeled result on the mainline and separately as exact-family counts in the compiler project.

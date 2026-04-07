@@ -1,0 +1,1309 @@
+{
+  "schema": "compiler-project-frontier-v3",
+  "public_google_baseline": {
+    "low_qubit": {
+      "logical_qubits": 1200,
+      "non_clifford": 90000000
+    },
+    "low_gate": {
+      "logical_qubits": 1450,
+      "non_clifford": 70000000
+    }
+  },
+  "schedule": {
+    "schema": "compiler-project-full-raw32-v2",
+    "curve": "secp256k1",
+    "raw_window_bits": 16,
+    "raw_window_count": 32,
+    "phase_register_bits_total": 512,
+    "direct_seed": {
+      "phase_register": "phase_a",
+      "window_index_within_register": 0,
+      "bit_start": 0,
+      "bit_width": 16,
+      "comment": "This exact compiler path closes the mainline classical-tail-elision gap."
+    },
+    "leaf_calls": [
+      {
+        "call_index": 0,
+        "phase_register": "phase_a",
+        "window_index_within_register": 1,
+        "bit_start": 16,
+        "bit_width": 16
+      },
+      {
+        "call_index": 1,
+        "phase_register": "phase_a",
+        "window_index_within_register": 2,
+        "bit_start": 32,
+        "bit_width": 16
+      },
+      {
+        "call_index": 2,
+        "phase_register": "phase_a",
+        "window_index_within_register": 3,
+        "bit_start": 48,
+        "bit_width": 16
+      },
+      {
+        "call_index": 3,
+        "phase_register": "phase_a",
+        "window_index_within_register": 4,
+        "bit_start": 64,
+        "bit_width": 16
+      },
+      {
+        "call_index": 4,
+        "phase_register": "phase_a",
+        "window_index_within_register": 5,
+        "bit_start": 80,
+        "bit_width": 16
+      },
+      {
+        "call_index": 5,
+        "phase_register": "phase_a",
+        "window_index_within_register": 6,
+        "bit_start": 96,
+        "bit_width": 16
+      },
+      {
+        "call_index": 6,
+        "phase_register": "phase_a",
+        "window_index_within_register": 7,
+        "bit_start": 112,
+        "bit_width": 16
+      },
+      {
+        "call_index": 7,
+        "phase_register": "phase_a",
+        "window_index_within_register": 8,
+        "bit_start": 128,
+        "bit_width": 16
+      },
+      {
+        "call_index": 8,
+        "phase_register": "phase_a",
+        "window_index_within_register": 9,
+        "bit_start": 144,
+        "bit_width": 16
+      },
+      {
+        "call_index": 9,
+        "phase_register": "phase_a",
+        "window_index_within_register": 10,
+        "bit_start": 160,
+        "bit_width": 16
+      },
+      {
+        "call_index": 10,
+        "phase_register": "phase_a",
+        "window_index_within_register": 11,
+        "bit_start": 176,
+        "bit_width": 16
+      },
+      {
+        "call_index": 11,
+        "phase_register": "phase_a",
+        "window_index_within_register": 12,
+        "bit_start": 192,
+        "bit_width": 16
+      },
+      {
+        "call_index": 12,
+        "phase_register": "phase_a",
+        "window_index_within_register": 13,
+        "bit_start": 208,
+        "bit_width": 16
+      },
+      {
+        "call_index": 13,
+        "phase_register": "phase_a",
+        "window_index_within_register": 14,
+        "bit_start": 224,
+        "bit_width": 16
+      },
+      {
+        "call_index": 14,
+        "phase_register": "phase_a",
+        "window_index_within_register": 15,
+        "bit_start": 240,
+        "bit_width": 16
+      },
+      {
+        "call_index": 15,
+        "phase_register": "phase_b",
+        "window_index_within_register": 0,
+        "bit_start": 0,
+        "bit_width": 16
+      },
+      {
+        "call_index": 16,
+        "phase_register": "phase_b",
+        "window_index_within_register": 1,
+        "bit_start": 16,
+        "bit_width": 16
+      },
+      {
+        "call_index": 17,
+        "phase_register": "phase_b",
+        "window_index_within_register": 2,
+        "bit_start": 32,
+        "bit_width": 16
+      },
+      {
+        "call_index": 18,
+        "phase_register": "phase_b",
+        "window_index_within_register": 3,
+        "bit_start": 48,
+        "bit_width": 16
+      },
+      {
+        "call_index": 19,
+        "phase_register": "phase_b",
+        "window_index_within_register": 4,
+        "bit_start": 64,
+        "bit_width": 16
+      },
+      {
+        "call_index": 20,
+        "phase_register": "phase_b",
+        "window_index_within_register": 5,
+        "bit_start": 80,
+        "bit_width": 16
+      },
+      {
+        "call_index": 21,
+        "phase_register": "phase_b",
+        "window_index_within_register": 6,
+        "bit_start": 96,
+        "bit_width": 16
+      },
+      {
+        "call_index": 22,
+        "phase_register": "phase_b",
+        "window_index_within_register": 7,
+        "bit_start": 112,
+        "bit_width": 16
+      },
+      {
+        "call_index": 23,
+        "phase_register": "phase_b",
+        "window_index_within_register": 8,
+        "bit_start": 128,
+        "bit_width": 16
+      },
+      {
+        "call_index": 24,
+        "phase_register": "phase_b",
+        "window_index_within_register": 9,
+        "bit_start": 144,
+        "bit_width": 16
+      },
+      {
+        "call_index": 25,
+        "phase_register": "phase_b",
+        "window_index_within_register": 10,
+        "bit_start": 160,
+        "bit_width": 16
+      },
+      {
+        "call_index": 26,
+        "phase_register": "phase_b",
+        "window_index_within_register": 11,
+        "bit_start": 176,
+        "bit_width": 16
+      },
+      {
+        "call_index": 27,
+        "phase_register": "phase_b",
+        "window_index_within_register": 12,
+        "bit_start": 192,
+        "bit_width": 16
+      },
+      {
+        "call_index": 28,
+        "phase_register": "phase_b",
+        "window_index_within_register": 13,
+        "bit_start": 208,
+        "bit_width": 16
+      },
+      {
+        "call_index": 29,
+        "phase_register": "phase_b",
+        "window_index_within_register": 14,
+        "bit_start": 224,
+        "bit_width": 16
+      },
+      {
+        "call_index": 30,
+        "phase_register": "phase_b",
+        "window_index_within_register": 15,
+        "bit_start": 240,
+        "bit_width": 16
+      }
+    ],
+    "summary": {
+      "phase_a_leaf_calls": 15,
+      "phase_b_leaf_calls": 16,
+      "leaf_call_count_total": 31,
+      "classical_tail_elisions_removed": 3,
+      "lookup_invocations_total": 32
+    }
+  },
+  "slot_allocation": {
+    "schema": "compiler-project-slot-allocation-v1",
+    "field_bits": 256,
+    "tracked_arithmetic_registers": [
+      "lx",
+      "ly",
+      "o1",
+      "o2",
+      "qx",
+      "qy",
+      "qz",
+      "t0",
+      "t1",
+      "t2",
+      "t3",
+      "t4"
+    ],
+    "tracked_control_registers": [
+      "f_lookup_inf",
+      "meta"
+    ],
+    "peak_arithmetic_slots": {
+      "count": 9,
+      "pc": 10,
+      "opcode": "field_add"
+    },
+    "peak_control_slots": {
+      "count": 1,
+      "pc": 5,
+      "opcode": "lookup_meta"
+    },
+    "peak_total_slots": {
+      "count": 10,
+      "pc": 10,
+      "opcode": "field_add"
+    },
+    "allocator_summary": {
+      "exact_arithmetic_slot_count": 9,
+      "exact_control_slot_count": 1,
+      "arithmetic_bits": 2304,
+      "control_bits": 1
+    },
+    "per_pc": [
+      {
+        "pc": 0,
+        "opcode": "load_input",
+        "arithmetic_slots_live_before_write": 0,
+        "control_slots_live_before_write": 0,
+        "arithmetic_slots_needed_during_write": 1,
+        "control_slots_needed_during_write": 0,
+        "dst": "qx",
+        "reuses_existing_slot": false
+      },
+      {
+        "pc": 1,
+        "opcode": "load_input",
+        "arithmetic_slots_live_before_write": 1,
+        "control_slots_live_before_write": 0,
+        "arithmetic_slots_needed_during_write": 2,
+        "control_slots_needed_during_write": 0,
+        "dst": "qy",
+        "reuses_existing_slot": false
+      },
+      {
+        "pc": 2,
+        "opcode": "load_input",
+        "arithmetic_slots_live_before_write": 2,
+        "control_slots_live_before_write": 0,
+        "arithmetic_slots_needed_during_write": 3,
+        "control_slots_needed_during_write": 0,
+        "dst": "qz",
+        "reuses_existing_slot": false
+      },
+      {
+        "pc": 3,
+        "opcode": "lookup_affine_x",
+        "arithmetic_slots_live_before_write": 3,
+        "control_slots_live_before_write": 0,
+        "arithmetic_slots_needed_during_write": 4,
+        "control_slots_needed_during_write": 0,
+        "dst": "lx",
+        "reuses_existing_slot": false
+      },
+      {
+        "pc": 4,
+        "opcode": "lookup_affine_y",
+        "arithmetic_slots_live_before_write": 4,
+        "control_slots_live_before_write": 0,
+        "arithmetic_slots_needed_during_write": 5,
+        "control_slots_needed_during_write": 0,
+        "dst": "ly",
+        "reuses_existing_slot": false
+      },
+      {
+        "pc": 5,
+        "opcode": "lookup_meta",
+        "arithmetic_slots_live_before_write": 5,
+        "control_slots_live_before_write": 0,
+        "arithmetic_slots_needed_during_write": 5,
+        "control_slots_needed_during_write": 1,
+        "dst": "meta",
+        "reuses_existing_slot": false
+      },
+      {
+        "pc": 6,
+        "opcode": "bool_from_flag",
+        "arithmetic_slots_live_before_write": 5,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 5,
+        "control_slots_needed_during_write": 1,
+        "dst": "f_lookup_inf",
+        "reuses_existing_slot": true
+      },
+      {
+        "pc": 7,
+        "opcode": "field_mul",
+        "arithmetic_slots_live_before_write": 5,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 6,
+        "control_slots_needed_during_write": 1,
+        "dst": "t0",
+        "reuses_existing_slot": false
+      },
+      {
+        "pc": 8,
+        "opcode": "field_mul",
+        "arithmetic_slots_live_before_write": 6,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 7,
+        "control_slots_needed_during_write": 1,
+        "dst": "t1",
+        "reuses_existing_slot": false
+      },
+      {
+        "pc": 9,
+        "opcode": "field_add",
+        "arithmetic_slots_live_before_write": 7,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 8,
+        "control_slots_needed_during_write": 1,
+        "dst": "t3",
+        "reuses_existing_slot": false
+      },
+      {
+        "pc": 10,
+        "opcode": "field_add",
+        "arithmetic_slots_live_before_write": 8,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 9,
+        "control_slots_needed_during_write": 1,
+        "dst": "t4",
+        "reuses_existing_slot": false
+      },
+      {
+        "pc": 11,
+        "opcode": "field_mul",
+        "arithmetic_slots_live_before_write": 9,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 9,
+        "control_slots_needed_during_write": 1,
+        "dst": "t3",
+        "reuses_existing_slot": true
+      },
+      {
+        "pc": 12,
+        "opcode": "field_add",
+        "arithmetic_slots_live_before_write": 8,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 9,
+        "control_slots_needed_during_write": 1,
+        "dst": "t4",
+        "reuses_existing_slot": false
+      },
+      {
+        "pc": 13,
+        "opcode": "field_sub",
+        "arithmetic_slots_live_before_write": 9,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 9,
+        "control_slots_needed_during_write": 1,
+        "dst": "t3",
+        "reuses_existing_slot": true
+      },
+      {
+        "pc": 14,
+        "opcode": "field_mul",
+        "arithmetic_slots_live_before_write": 8,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 8,
+        "control_slots_needed_during_write": 1,
+        "dst": "t4",
+        "reuses_existing_slot": true
+      },
+      {
+        "pc": 15,
+        "opcode": "field_add",
+        "arithmetic_slots_live_before_write": 8,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 8,
+        "control_slots_needed_during_write": 1,
+        "dst": "t4",
+        "reuses_existing_slot": true
+      },
+      {
+        "pc": 16,
+        "opcode": "field_mul",
+        "arithmetic_slots_live_before_write": 7,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 7,
+        "control_slots_needed_during_write": 1,
+        "dst": "o2",
+        "reuses_existing_slot": true
+      },
+      {
+        "pc": 17,
+        "opcode": "field_add",
+        "arithmetic_slots_live_before_write": 7,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 7,
+        "control_slots_needed_during_write": 1,
+        "dst": "o2",
+        "reuses_existing_slot": true
+      },
+      {
+        "pc": 18,
+        "opcode": "field_add",
+        "arithmetic_slots_live_before_write": 6,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 7,
+        "control_slots_needed_during_write": 1,
+        "dst": "o1",
+        "reuses_existing_slot": false
+      },
+      {
+        "pc": 19,
+        "opcode": "field_add",
+        "arithmetic_slots_live_before_write": 7,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 7,
+        "control_slots_needed_during_write": 1,
+        "dst": "t0",
+        "reuses_existing_slot": true
+      },
+      {
+        "pc": 20,
+        "opcode": "mul_const",
+        "arithmetic_slots_live_before_write": 6,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 6,
+        "control_slots_needed_during_write": 1,
+        "dst": "t2",
+        "reuses_existing_slot": true
+      },
+      {
+        "pc": 21,
+        "opcode": "field_add",
+        "arithmetic_slots_live_before_write": 6,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 7,
+        "control_slots_needed_during_write": 1,
+        "dst": "qz",
+        "reuses_existing_slot": false
+      },
+      {
+        "pc": 22,
+        "opcode": "field_sub",
+        "arithmetic_slots_live_before_write": 6,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 6,
+        "control_slots_needed_during_write": 1,
+        "dst": "t1",
+        "reuses_existing_slot": true
+      },
+      {
+        "pc": 23,
+        "opcode": "mul_const",
+        "arithmetic_slots_live_before_write": 6,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 6,
+        "control_slots_needed_during_write": 1,
+        "dst": "o2",
+        "reuses_existing_slot": true
+      },
+      {
+        "pc": 24,
+        "opcode": "field_mul",
+        "arithmetic_slots_live_before_write": 6,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 7,
+        "control_slots_needed_during_write": 1,
+        "dst": "o1",
+        "reuses_existing_slot": false
+      },
+      {
+        "pc": 25,
+        "opcode": "field_mul",
+        "arithmetic_slots_live_before_write": 6,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 7,
+        "control_slots_needed_during_write": 1,
+        "dst": "t2",
+        "reuses_existing_slot": false
+      },
+      {
+        "pc": 26,
+        "opcode": "field_sub",
+        "arithmetic_slots_live_before_write": 6,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 6,
+        "control_slots_needed_during_write": 1,
+        "dst": "qx",
+        "reuses_existing_slot": true
+      },
+      {
+        "pc": 27,
+        "opcode": "field_mul",
+        "arithmetic_slots_live_before_write": 6,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 6,
+        "control_slots_needed_during_write": 1,
+        "dst": "o2",
+        "reuses_existing_slot": true
+      },
+      {
+        "pc": 28,
+        "opcode": "field_mul",
+        "arithmetic_slots_live_before_write": 6,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 6,
+        "control_slots_needed_during_write": 1,
+        "dst": "t1",
+        "reuses_existing_slot": true
+      },
+      {
+        "pc": 29,
+        "opcode": "field_add",
+        "arithmetic_slots_live_before_write": 6,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 6,
+        "control_slots_needed_during_write": 1,
+        "dst": "qy",
+        "reuses_existing_slot": true
+      },
+      {
+        "pc": 30,
+        "opcode": "field_mul",
+        "arithmetic_slots_live_before_write": 5,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 5,
+        "control_slots_needed_during_write": 1,
+        "dst": "t0",
+        "reuses_existing_slot": true
+      },
+      {
+        "pc": 31,
+        "opcode": "field_mul",
+        "arithmetic_slots_live_before_write": 4,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 4,
+        "control_slots_needed_during_write": 1,
+        "dst": "qz",
+        "reuses_existing_slot": true
+      },
+      {
+        "pc": 32,
+        "opcode": "field_add",
+        "arithmetic_slots_live_before_write": 3,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 3,
+        "control_slots_needed_during_write": 1,
+        "dst": "qz",
+        "reuses_existing_slot": true
+      },
+      {
+        "pc": 33,
+        "opcode": "select_field_if_flag",
+        "arithmetic_slots_live_before_write": 2,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 2,
+        "control_slots_needed_during_write": 1,
+        "dst": "qx",
+        "reuses_existing_slot": true
+      },
+      {
+        "pc": 34,
+        "opcode": "select_field_if_flag",
+        "arithmetic_slots_live_before_write": 2,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 2,
+        "control_slots_needed_during_write": 1,
+        "dst": "qy",
+        "reuses_existing_slot": true
+      },
+      {
+        "pc": 35,
+        "opcode": "select_field_if_flag",
+        "arithmetic_slots_live_before_write": 1,
+        "control_slots_live_before_write": 1,
+        "arithmetic_slots_needed_during_write": 1,
+        "control_slots_needed_during_write": 1,
+        "dst": "qz",
+        "reuses_existing_slot": true
+      },
+      {
+        "pc": 36,
+        "opcode": "mbuc_clear_bool",
+        "arithmetic_slots_live_before_write": 0,
+        "control_slots_live_before_write": 0,
+        "arithmetic_slots_needed_during_write": 0,
+        "control_slots_needed_during_write": 1,
+        "dst": "f_lookup_inf",
+        "reuses_existing_slot": false
+      }
+    ],
+    "versions": [
+      {
+        "version_id": 0,
+        "register": "qx",
+        "reg_type": "arithmetic",
+        "def_pc": 0,
+        "last_use_pc": 17,
+        "assigned_slot": 0
+      },
+      {
+        "version_id": 1,
+        "register": "qy",
+        "reg_type": "arithmetic",
+        "def_pc": 1,
+        "last_use_pc": 15,
+        "assigned_slot": 1
+      },
+      {
+        "version_id": 2,
+        "register": "qz",
+        "reg_type": "arithmetic",
+        "def_pc": 2,
+        "last_use_pc": 20,
+        "assigned_slot": 2
+      },
+      {
+        "version_id": 3,
+        "register": "lx",
+        "reg_type": "arithmetic",
+        "def_pc": 3,
+        "last_use_pc": 16,
+        "assigned_slot": 3
+      },
+      {
+        "version_id": 4,
+        "register": "ly",
+        "reg_type": "arithmetic",
+        "def_pc": 4,
+        "last_use_pc": 14,
+        "assigned_slot": 4
+      },
+      {
+        "version_id": 5,
+        "register": "meta",
+        "reg_type": "control",
+        "def_pc": 5,
+        "last_use_pc": 6,
+        "assigned_slot": 0
+      },
+      {
+        "version_id": 6,
+        "register": "f_lookup_inf",
+        "reg_type": "control",
+        "def_pc": 6,
+        "last_use_pc": 35,
+        "assigned_slot": 0
+      },
+      {
+        "version_id": 7,
+        "register": "t0",
+        "reg_type": "arithmetic",
+        "def_pc": 7,
+        "last_use_pc": 19,
+        "assigned_slot": 5
+      },
+      {
+        "version_id": 8,
+        "register": "t1",
+        "reg_type": "arithmetic",
+        "def_pc": 8,
+        "last_use_pc": 22,
+        "assigned_slot": 6
+      },
+      {
+        "version_id": 9,
+        "register": "t3",
+        "reg_type": "arithmetic",
+        "def_pc": 9,
+        "last_use_pc": 11,
+        "assigned_slot": 7
+      },
+      {
+        "version_id": 10,
+        "register": "t4",
+        "reg_type": "arithmetic",
+        "def_pc": 10,
+        "last_use_pc": 11,
+        "assigned_slot": 8
+      },
+      {
+        "version_id": 11,
+        "register": "t3",
+        "reg_type": "arithmetic",
+        "def_pc": 11,
+        "last_use_pc": 13,
+        "assigned_slot": 7
+      },
+      {
+        "version_id": 12,
+        "register": "t4",
+        "reg_type": "arithmetic",
+        "def_pc": 12,
+        "last_use_pc": 13,
+        "assigned_slot": 8
+      },
+      {
+        "version_id": 13,
+        "register": "t3",
+        "reg_type": "arithmetic",
+        "def_pc": 13,
+        "last_use_pc": 30,
+        "assigned_slot": 7
+      },
+      {
+        "version_id": 14,
+        "register": "t4",
+        "reg_type": "arithmetic",
+        "def_pc": 14,
+        "last_use_pc": 15,
+        "assigned_slot": 4
+      },
+      {
+        "version_id": 15,
+        "register": "t4",
+        "reg_type": "arithmetic",
+        "def_pc": 15,
+        "last_use_pc": 31,
+        "assigned_slot": 1
+      },
+      {
+        "version_id": 16,
+        "register": "o2",
+        "reg_type": "arithmetic",
+        "def_pc": 16,
+        "last_use_pc": 17,
+        "assigned_slot": 3
+      },
+      {
+        "version_id": 17,
+        "register": "o2",
+        "reg_type": "arithmetic",
+        "def_pc": 17,
+        "last_use_pc": 23,
+        "assigned_slot": 0
+      },
+      {
+        "version_id": 18,
+        "register": "o1",
+        "reg_type": "arithmetic",
+        "def_pc": 18,
+        "last_use_pc": 19,
+        "assigned_slot": 3
+      },
+      {
+        "version_id": 19,
+        "register": "t0",
+        "reg_type": "arithmetic",
+        "def_pc": 19,
+        "last_use_pc": 30,
+        "assigned_slot": 5
+      },
+      {
+        "version_id": 20,
+        "register": "t2",
+        "reg_type": "arithmetic",
+        "def_pc": 20,
+        "last_use_pc": 22,
+        "assigned_slot": 2
+      },
+      {
+        "version_id": 21,
+        "register": "qz",
+        "reg_type": "arithmetic",
+        "def_pc": 21,
+        "last_use_pc": 31,
+        "assigned_slot": 2
+      },
+      {
+        "version_id": 22,
+        "register": "t1",
+        "reg_type": "arithmetic",
+        "def_pc": 22,
+        "last_use_pc": 28,
+        "assigned_slot": 6
+      },
+      {
+        "version_id": 23,
+        "register": "o2",
+        "reg_type": "arithmetic",
+        "def_pc": 23,
+        "last_use_pc": 27,
+        "assigned_slot": 0
+      },
+      {
+        "version_id": 24,
+        "register": "o1",
+        "reg_type": "arithmetic",
+        "def_pc": 24,
+        "last_use_pc": 26,
+        "assigned_slot": 0
+      },
+      {
+        "version_id": 25,
+        "register": "t2",
+        "reg_type": "arithmetic",
+        "def_pc": 25,
+        "last_use_pc": 26,
+        "assigned_slot": 2
+      },
+      {
+        "version_id": 26,
+        "register": "qx",
+        "reg_type": "arithmetic",
+        "def_pc": 26,
+        "last_use_pc": 33,
+        "assigned_slot": 0
+      },
+      {
+        "version_id": 27,
+        "register": "o2",
+        "reg_type": "arithmetic",
+        "def_pc": 27,
+        "last_use_pc": 29,
+        "assigned_slot": 0
+      },
+      {
+        "version_id": 28,
+        "register": "t1",
+        "reg_type": "arithmetic",
+        "def_pc": 28,
+        "last_use_pc": 29,
+        "assigned_slot": 6
+      },
+      {
+        "version_id": 29,
+        "register": "qy",
+        "reg_type": "arithmetic",
+        "def_pc": 29,
+        "last_use_pc": 34,
+        "assigned_slot": 0
+      },
+      {
+        "version_id": 30,
+        "register": "t0",
+        "reg_type": "arithmetic",
+        "def_pc": 30,
+        "last_use_pc": 32,
+        "assigned_slot": 7
+      },
+      {
+        "version_id": 31,
+        "register": "qz",
+        "reg_type": "arithmetic",
+        "def_pc": 31,
+        "last_use_pc": 32,
+        "assigned_slot": 1
+      },
+      {
+        "version_id": 32,
+        "register": "qz",
+        "reg_type": "arithmetic",
+        "def_pc": 32,
+        "last_use_pc": 35,
+        "assigned_slot": 7
+      },
+      {
+        "version_id": 33,
+        "register": "qx",
+        "reg_type": "arithmetic",
+        "def_pc": 33,
+        "last_use_pc": 33,
+        "assigned_slot": 0
+      },
+      {
+        "version_id": 34,
+        "register": "qy",
+        "reg_type": "arithmetic",
+        "def_pc": 34,
+        "last_use_pc": 34,
+        "assigned_slot": 0
+      },
+      {
+        "version_id": 35,
+        "register": "qz",
+        "reg_type": "arithmetic",
+        "def_pc": 35,
+        "last_use_pc": 35,
+        "assigned_slot": 7
+      },
+      {
+        "version_id": 36,
+        "register": "f_lookup_inf",
+        "reg_type": "control",
+        "def_pc": 36,
+        "last_use_pc": 36,
+        "assigned_slot": 0
+      }
+    ],
+    "notes": [
+      "This artifact allocates versioned leaf values to physical slots using exact live ranges plus same-register overwrite reuse.",
+      "It is stricter than the mainline first-reference/last-reference interval approximation and reduces the exact arithmetic-slot peak from 10 named slots to 9 physical slots for the checked-in leaf."
+    ]
+  },
+  "arithmetic_kernel_family": {
+    "schema": "compiler-project-arithmetic-kernels-v2",
+    "name": "litinski_addsub_schoolbook_v1",
+    "summary": "Imported exact non-Clifford arithmetic kernel family: schoolbook multiplication via controlled add-subtract plus n-1-cost add/sub/select kernels.",
+    "gate_set": "Clifford + non-Clifford-counted arithmetic kernels",
+    "field_mul_non_clifford": 66047,
+    "field_add_non_clifford": 255,
+    "field_sub_non_clifford": 255,
+    "select_non_clifford": 255,
+    "mul_const_non_clifford": 1530,
+    "arithmetic_leaf_non_clifford": 733657,
+    "leaf_opcode_histogram": {
+      "load_input": 3,
+      "lookup_affine_x": 1,
+      "lookup_affine_y": 1,
+      "lookup_meta": 1,
+      "bool_from_flag": 1,
+      "field_mul": 11,
+      "field_add": 10,
+      "field_sub": 3,
+      "mul_const": 2,
+      "select_field_if_flag": 3,
+      "mbuc_clear_bool": 1
+    },
+    "exact_scope": "exact non-Clifford counts for the named arithmetic-kernel family; Clifford micro-counts are not flattened in this subproject",
+    "notes": [
+      "The multiplier cost follows the controlled add-subtract schoolbook family highlighted by Litinski 2024 for practical low-Toffoli ECC circuits.",
+      "This subproject now removes modeled whole-leaf constants, but it still does not ship a bit-for-bit primitive CX/CCX expansion for the 256-bit multiplier family."
+    ],
+    "addition_chain_21": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      20,
+      21
+    ]
+  },
+  "lookup_families": [
+    {
+      "name": "folded_linear_scan_tmpand_v1",
+      "summary": "Low-qubit exact lookup family using a 15-bit folded magnitude domain and temporary logical-AND equality ladders.",
+      "gate_set": "Clifford + temporary logical-AND + measurement",
+      "compute_lookup_non_clifford": 458752,
+      "uncompute_lookup_non_clifford": 0,
+      "zero_check_non_clifford": 14,
+      "magnitude_prepare_non_clifford": 28,
+      "conditional_negate_y_non_clifford": 255,
+      "direct_lookup_non_clifford": 459049,
+      "per_leaf_lookup_non_clifford": 459049,
+      "extra_lookup_workspace_qubits": 31,
+      "notes": [
+        "Scans only positive magnitudes 0..32767. The sign bit is handled separately via exact conditional y-negation.",
+        "This remains the lowest-space exact lookup family checked into the compiler project."
+      ]
+    },
+    {
+      "name": "folded_unary_qrom_v1",
+      "summary": "Lower-gate exact lookup family using a full unary conversion register over 32768 folded magnitudes.",
+      "gate_set": "Clifford + Toffoli-style unary QROM",
+      "compute_lookup_non_clifford": 32767,
+      "uncompute_lookup_non_clifford": 32767,
+      "zero_check_non_clifford": 14,
+      "magnitude_prepare_non_clifford": 28,
+      "conditional_negate_y_non_clifford": 255,
+      "direct_lookup_non_clifford": 65831,
+      "per_leaf_lookup_non_clifford": 65831,
+      "extra_lookup_workspace_qubits": 32786,
+      "notes": [
+        "This family minimizes gate count more aggressively than the linear-scan family, but uses a very large unary workspace.",
+        "The compute and reverse-uncompute halves are both counted explicitly."
+      ]
+    },
+    {
+      "name": "folded_unary_qrom_measured_uncompute_v1",
+      "summary": "Best exact low-gate family currently checked in: unary folded QROM compute plus 8/7-split measurement-based uncompute.",
+      "gate_set": "Clifford + Toffoli-style unary QROM + measurement",
+      "compute_lookup_non_clifford": 32767,
+      "uncompute_lookup_non_clifford": 383,
+      "zero_check_non_clifford": 14,
+      "magnitude_prepare_non_clifford": 28,
+      "conditional_negate_y_non_clifford": 255,
+      "direct_lookup_non_clifford": 33447,
+      "per_leaf_lookup_non_clifford": 33447,
+      "extra_lookup_workspace_qubits": 33042,
+      "notes": [
+        "This family uses the same forward unary QROM compute as folded_unary_qrom_v1 but replaces reverse uncompute by the exact 8/7-split measurement-based construction.",
+        "It improves the exact gate frontier while keeping the lookup semantics identical."
+      ]
+    }
+  ],
+  "phase_shell_families": [
+    {
+      "name": "full_phase_register_v1",
+      "summary": "Conservative shell that keeps the entire 512-bit phase-estimation register live.",
+      "live_quantum_bits": 512,
+      "total_measurements": 512,
+      "adaptive_rotations": 512,
+      "notes": [
+        "This family mirrors the simplest exact logical accounting: both 256-bit phase registers remain live throughout the oracle inventory.",
+        "Rotation synthesis below this shell is still out of scope; the shell affects qubit inventory, not oracle non-Clifford totals."
+      ]
+    },
+    {
+      "name": "semiclassical_qft_v1",
+      "summary": "Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
+      "live_quantum_bits": 1,
+      "total_measurements": 512,
+      "adaptive_rotations": 512,
+      "notes": [
+        "This family treats the phase-estimation shell as a one-qubit live quantum register with classical feed-forward between measurements.",
+        "It is the strongest exact qubit-compression lever currently checked into the compiler project because it removes the 512-bit coherent phase-register requirement without changing the oracle family itself."
+      ]
+    }
+  ],
+  "families": [
+    {
+      "name": "folded_linear_scan_tmpand_v1__full_phase_register_v1",
+      "summary": "Low-qubit exact lookup family using a 15-bit folded magnitude domain and temporary logical-AND equality ladders. / Conservative shell that keeps the entire 512-bit phase-estimation register live.",
+      "gate_set": "Clifford + temporary logical-AND + measurement; phase shell: full_phase_register_v1",
+      "phase_shell": "full_phase_register_v1",
+      "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
+      "lookup_family": "folded_linear_scan_tmpand_v1",
+      "arithmetic_leaf_non_clifford": 733657,
+      "direct_seed_non_clifford": 459049,
+      "per_leaf_lookup_non_clifford": 459049,
+      "full_oracle_non_clifford": 37432935,
+      "arithmetic_slot_count": 9,
+      "control_slot_count": 1,
+      "lookup_workspace_qubits": 31,
+      "live_phase_bits": 512,
+      "total_logical_qubits": 2848,
+      "improvement_vs_google_low_qubit": 2.4042998498514745,
+      "improvement_vs_google_low_gate": 1.8700109943289245,
+      "qubit_ratio_vs_google_low_qubit": 0.42134831460674155,
+      "qubit_ratio_vs_google_low_gate": 0.5091292134831461,
+      "notes": [
+        "Scans only positive magnitudes 0..32767. The sign bit is handled separately via exact conditional y-negation.",
+        "This remains the lowest-space exact lookup family checked into the compiler project.",
+        "This family mirrors the simplest exact logical accounting: both 256-bit phase registers remain live throughout the oracle inventory.",
+        "Rotation synthesis below this shell is still out of scope; the shell affects qubit inventory, not oracle non-Clifford totals."
+      ]
+    },
+    {
+      "name": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",
+      "summary": "Low-qubit exact lookup family using a 15-bit folded magnitude domain and temporary logical-AND equality ladders. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
+      "gate_set": "Clifford + temporary logical-AND + measurement; phase shell: semiclassical_qft_v1",
+      "phase_shell": "semiclassical_qft_v1",
+      "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
+      "lookup_family": "folded_linear_scan_tmpand_v1",
+      "arithmetic_leaf_non_clifford": 733657,
+      "direct_seed_non_clifford": 459049,
+      "per_leaf_lookup_non_clifford": 459049,
+      "full_oracle_non_clifford": 37432935,
+      "arithmetic_slot_count": 9,
+      "control_slot_count": 1,
+      "lookup_workspace_qubits": 31,
+      "live_phase_bits": 1,
+      "total_logical_qubits": 2337,
+      "improvement_vs_google_low_qubit": 2.4042998498514745,
+      "improvement_vs_google_low_gate": 1.8700109943289245,
+      "qubit_ratio_vs_google_low_qubit": 0.5134788189987163,
+      "qubit_ratio_vs_google_low_gate": 0.6204535729567822,
+      "notes": [
+        "Scans only positive magnitudes 0..32767. The sign bit is handled separately via exact conditional y-negation.",
+        "This remains the lowest-space exact lookup family checked into the compiler project.",
+        "This family treats the phase-estimation shell as a one-qubit live quantum register with classical feed-forward between measurements.",
+        "It is the strongest exact qubit-compression lever currently checked into the compiler project because it removes the 512-bit coherent phase-register requirement without changing the oracle family itself."
+      ]
+    },
+    {
+      "name": "folded_unary_qrom_v1__full_phase_register_v1",
+      "summary": "Lower-gate exact lookup family using a full unary conversion register over 32768 folded magnitudes. / Conservative shell that keeps the entire 512-bit phase-estimation register live.",
+      "gate_set": "Clifford + Toffoli-style unary QROM; phase shell: full_phase_register_v1",
+      "phase_shell": "full_phase_register_v1",
+      "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
+      "lookup_family": "folded_unary_qrom_v1",
+      "arithmetic_leaf_non_clifford": 733657,
+      "direct_seed_non_clifford": 65831,
+      "per_leaf_lookup_non_clifford": 65831,
+      "full_oracle_non_clifford": 24849959,
+      "arithmetic_slot_count": 9,
+      "control_slot_count": 1,
+      "lookup_workspace_qubits": 32786,
+      "live_phase_bits": 512,
+      "total_logical_qubits": 35603,
+      "improvement_vs_google_low_qubit": 3.621736357794393,
+      "improvement_vs_google_low_gate": 2.816906056062306,
+      "qubit_ratio_vs_google_low_qubit": 0.033705024857455836,
+      "qubit_ratio_vs_google_low_gate": 0.04072690503609246,
+      "notes": [
+        "This family minimizes gate count more aggressively than the linear-scan family, but uses a very large unary workspace.",
+        "The compute and reverse-uncompute halves are both counted explicitly.",
+        "This family mirrors the simplest exact logical accounting: both 256-bit phase registers remain live throughout the oracle inventory.",
+        "Rotation synthesis below this shell is still out of scope; the shell affects qubit inventory, not oracle non-Clifford totals."
+      ]
+    },
+    {
+      "name": "folded_unary_qrom_v1__semiclassical_qft_v1",
+      "summary": "Lower-gate exact lookup family using a full unary conversion register over 32768 folded magnitudes. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
+      "gate_set": "Clifford + Toffoli-style unary QROM; phase shell: semiclassical_qft_v1",
+      "phase_shell": "semiclassical_qft_v1",
+      "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
+      "lookup_family": "folded_unary_qrom_v1",
+      "arithmetic_leaf_non_clifford": 733657,
+      "direct_seed_non_clifford": 65831,
+      "per_leaf_lookup_non_clifford": 65831,
+      "full_oracle_non_clifford": 24849959,
+      "arithmetic_slot_count": 9,
+      "control_slot_count": 1,
+      "lookup_workspace_qubits": 32786,
+      "live_phase_bits": 1,
+      "total_logical_qubits": 35092,
+      "improvement_vs_google_low_qubit": 3.621736357794393,
+      "improvement_vs_google_low_gate": 2.816906056062306,
+      "qubit_ratio_vs_google_low_qubit": 0.034195828108970705,
+      "qubit_ratio_vs_google_low_gate": 0.041319958965006266,
+      "notes": [
+        "This family minimizes gate count more aggressively than the linear-scan family, but uses a very large unary workspace.",
+        "The compute and reverse-uncompute halves are both counted explicitly.",
+        "This family treats the phase-estimation shell as a one-qubit live quantum register with classical feed-forward between measurements.",
+        "It is the strongest exact qubit-compression lever currently checked into the compiler project because it removes the 512-bit coherent phase-register requirement without changing the oracle family itself."
+      ]
+    },
+    {
+      "name": "folded_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+      "summary": "Best exact low-gate family currently checked in: unary folded QROM compute plus 8/7-split measurement-based uncompute. / Conservative shell that keeps the entire 512-bit phase-estimation register live.",
+      "gate_set": "Clifford + Toffoli-style unary QROM + measurement; phase shell: full_phase_register_v1",
+      "phase_shell": "full_phase_register_v1",
+      "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
+      "lookup_family": "folded_unary_qrom_measured_uncompute_v1",
+      "arithmetic_leaf_non_clifford": 733657,
+      "direct_seed_non_clifford": 33447,
+      "per_leaf_lookup_non_clifford": 33447,
+      "full_oracle_non_clifford": 23813671,
+      "arithmetic_slot_count": 9,
+      "control_slot_count": 1,
+      "lookup_workspace_qubits": 33042,
+      "live_phase_bits": 512,
+      "total_logical_qubits": 35859,
+      "improvement_vs_google_low_qubit": 3.779341706702843,
+      "improvement_vs_google_low_gate": 2.9394879941022114,
+      "qubit_ratio_vs_google_low_qubit": 0.03346440224211495,
+      "qubit_ratio_vs_google_low_gate": 0.04043615270922223,
+      "notes": [
+        "This family uses the same forward unary QROM compute as folded_unary_qrom_v1 but replaces reverse uncompute by the exact 8/7-split measurement-based construction.",
+        "It improves the exact gate frontier while keeping the lookup semantics identical.",
+        "This family mirrors the simplest exact logical accounting: both 256-bit phase registers remain live throughout the oracle inventory.",
+        "Rotation synthesis below this shell is still out of scope; the shell affects qubit inventory, not oracle non-Clifford totals."
+      ]
+    },
+    {
+      "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+      "summary": "Best exact low-gate family currently checked in: unary folded QROM compute plus 8/7-split measurement-based uncompute. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
+      "gate_set": "Clifford + Toffoli-style unary QROM + measurement; phase shell: semiclassical_qft_v1",
+      "phase_shell": "semiclassical_qft_v1",
+      "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
+      "lookup_family": "folded_unary_qrom_measured_uncompute_v1",
+      "arithmetic_leaf_non_clifford": 733657,
+      "direct_seed_non_clifford": 33447,
+      "per_leaf_lookup_non_clifford": 33447,
+      "full_oracle_non_clifford": 23813671,
+      "arithmetic_slot_count": 9,
+      "control_slot_count": 1,
+      "lookup_workspace_qubits": 33042,
+      "live_phase_bits": 1,
+      "total_logical_qubits": 35348,
+      "improvement_vs_google_low_qubit": 3.779341706702843,
+      "improvement_vs_google_low_gate": 2.9394879941022114,
+      "qubit_ratio_vs_google_low_qubit": 0.03394817245671608,
+      "qubit_ratio_vs_google_low_gate": 0.0410207083851986,
+      "notes": [
+        "This family uses the same forward unary QROM compute as folded_unary_qrom_v1 but replaces reverse uncompute by the exact 8/7-split measurement-based construction.",
+        "It improves the exact gate frontier while keeping the lookup semantics identical.",
+        "This family treats the phase-estimation shell as a one-qubit live quantum register with classical feed-forward between measurements.",
+        "It is the strongest exact qubit-compression lever currently checked into the compiler project because it removes the 512-bit coherent phase-register requirement without changing the oracle family itself."
+      ]
+    }
+  ],
+  "best_gate_family": {
+    "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+    "summary": "Best exact low-gate family currently checked in: unary folded QROM compute plus 8/7-split measurement-based uncompute. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
+    "gate_set": "Clifford + Toffoli-style unary QROM + measurement; phase shell: semiclassical_qft_v1",
+    "phase_shell": "semiclassical_qft_v1",
+    "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
+    "lookup_family": "folded_unary_qrom_measured_uncompute_v1",
+    "arithmetic_leaf_non_clifford": 733657,
+    "direct_seed_non_clifford": 33447,
+    "per_leaf_lookup_non_clifford": 33447,
+    "full_oracle_non_clifford": 23813671,
+    "arithmetic_slot_count": 9,
+    "control_slot_count": 1,
+    "lookup_workspace_qubits": 33042,
+    "live_phase_bits": 1,
+    "total_logical_qubits": 35348,
+    "improvement_vs_google_low_qubit": 3.779341706702843,
+    "improvement_vs_google_low_gate": 2.9394879941022114,
+    "qubit_ratio_vs_google_low_qubit": 0.03394817245671608,
+    "qubit_ratio_vs_google_low_gate": 0.0410207083851986,
+    "notes": [
+      "This family uses the same forward unary QROM compute as folded_unary_qrom_v1 but replaces reverse uncompute by the exact 8/7-split measurement-based construction.",
+      "It improves the exact gate frontier while keeping the lookup semantics identical.",
+      "This family treats the phase-estimation shell as a one-qubit live quantum register with classical feed-forward between measurements.",
+      "It is the strongest exact qubit-compression lever currently checked into the compiler project because it removes the 512-bit coherent phase-register requirement without changing the oracle family itself."
+    ]
+  },
+  "best_qubit_family": {
+    "name": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",
+    "summary": "Low-qubit exact lookup family using a 15-bit folded magnitude domain and temporary logical-AND equality ladders. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
+    "gate_set": "Clifford + temporary logical-AND + measurement; phase shell: semiclassical_qft_v1",
+    "phase_shell": "semiclassical_qft_v1",
+    "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
+    "lookup_family": "folded_linear_scan_tmpand_v1",
+    "arithmetic_leaf_non_clifford": 733657,
+    "direct_seed_non_clifford": 459049,
+    "per_leaf_lookup_non_clifford": 459049,
+    "full_oracle_non_clifford": 37432935,
+    "arithmetic_slot_count": 9,
+    "control_slot_count": 1,
+    "lookup_workspace_qubits": 31,
+    "live_phase_bits": 1,
+    "total_logical_qubits": 2337,
+    "improvement_vs_google_low_qubit": 2.4042998498514745,
+    "improvement_vs_google_low_gate": 1.8700109943289245,
+    "qubit_ratio_vs_google_low_qubit": 0.5134788189987163,
+    "qubit_ratio_vs_google_low_gate": 0.6204535729567822,
+    "notes": [
+      "Scans only positive magnitudes 0..32767. The sign bit is handled separately via exact conditional y-negation.",
+      "This remains the lowest-space exact lookup family checked into the compiler project.",
+      "This family treats the phase-estimation shell as a one-qubit live quantum register with classical feed-forward between measurements.",
+      "It is the strongest exact qubit-compression lever currently checked into the compiler project because it removes the 512-bit coherent phase-register requirement without changing the oracle family itself."
+    ]
+  },
+  "notes": [
+    "These are exact whole-oracle counts for named compiler families over a fixed kernel family and a fully quantum raw-32 schedule.",
+    "Compared with the earlier compiler pass, the qubit frontier is tightened by exact slot allocation and an explicit semiclassical phase-shell option rather than a fixed 512-bit phase-register policy.",
+    "The arithmetic kernels remain an imported exact non-Clifford family boundary; whole-oracle counts are exact relative to that family."
+  ]
+}

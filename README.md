@@ -35,23 +35,19 @@ versioned backend-model bundle rather than stored as whole-circuit constants.
 
 ## Content
 
-This repository contains exact ISA-level secp256k1 quantum ECDLP circuits,
-verification artifacts, and modeled resource estimates. In Bitcoin terms, a
-successful attack of this kind would let an attacker recover spend keys for
-exposed public keys and authorize fraudulent spends, and the repository's
-current hardware-transfer study puts such an attack in the rough range of
-2.5 to 3.3 days under the time-efficient Cain et al. transfer rule, with
-same-density physical-qubit scaling in the rough range of 5.1k to 19.1k
-depending on which public baseline line and backend scenario are used.
+This repository now has **two deliberately separated layers**.
 
-The repository is strongest at the arithmetic ISA boundary. It publishes exact,
-machine-readable point-add schedules and checks their basis-state semantics. It
-also publishes an exact expanded retained-window ISA replay in
-`artifacts/circuits/ecdlp_expanded_isa_optimized.json`, together with modeled
-backend totals for logical qubits and non-Clifford counts. The canonical
-projection is rebuilt from the checked-in leaf netlist, retained-window
-scaffold, folded lookup contract, and backend-model bundle in
-`artifacts/projections/backend_model_bundle.json`.
+1. The primary `artifacts/` mainline publishes exact ISA-level secp256k1
+   arithmetic artifacts plus modeled backend projections.
+2. The root-level `compiler_verification_project/` subproject completes the
+   schedule into a fully quantum raw-32 oracle and publishes exact whole-oracle
+   counts for named compiler families.
+
+The repository is still strongest at the arithmetic ISA boundary, but it no
+longer stops there. The compiler project tightens one important gap by turning
+“leaf + scaffold + contract” into a checked exact compiler-family oracle with
+exact schedule completion, exact lookup-family choice, exact slot allocation,
+and explicit phase-shell families.
 
 ## Main results
 
@@ -71,6 +67,19 @@ alternatives, including:
 
 - **736 logical qubits** under the ISA-liveness aliasing scenario
 - **736 logical qubits / 22,377,404 non-Clifford** under the combined explicit-backend plus liveness scenario
+
+### Compiler + verification subproject
+
+The root-level `compiler_verification_project/` is the repository's strongest
+exact layer below the ISA boundary. Its checked-in whole-oracle frontier is:
+
+- **best exact gate family:** `23,813,671 non-Clifford`
+- **best exact qubit family:** `2,337 logical qubits`
+
+Those numbers are exact for the chosen compiler families, not claims of global
+optimality. The best-gate family uses folded unary QROM with measurement-based
+uncompute; the best-qubit family uses folded linear-scan lookup plus an exact
+semiclassical-QFT phase shell and exact live-range slot allocation.
 
 ### Public baseline used for comparison
 
@@ -111,6 +120,9 @@ Its backend totals remain modeled. The supporting projection in
 - exhaustive toy-curve family checks
 - explicit lookup-contract semantics, including the signed folded variant
 - retained-window scaffold metadata and deterministic scaffold replay
+- exact whole-oracle counts for named compiler families in `compiler_verification_project/`
+- exact leaf slot allocation for the checked-in mixed-add leaf
+- exact phase-shell family accounting for full-register vs semiclassical-QFT shells
 
 ### Modeled in this repository
 
@@ -167,6 +179,7 @@ in this repository is specialized to **secp256k1**.
   research interpretation
 - `figures/` — generated report figures
 - `results/` — generated summary JSON files
+- `compiler_verification_project/` — exact compiler-family oracle build, frontier, and verification artifacts
 
 ## Quick start
 
@@ -174,6 +187,8 @@ From the repository root:
 
 ```bash
 python scripts/verify_all.py
+python compiler_verification_project/scripts/build.py
+python compiler_verification_project/scripts/verify.py --cases 16
 python scripts/compare_cain_2026.py
 ```
 

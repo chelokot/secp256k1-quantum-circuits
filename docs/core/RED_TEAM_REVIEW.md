@@ -9,8 +9,8 @@ repository-supported answer to each one.
 |---|---:|---|---|
 | “This is not a primitive-gate circuit because lookup is abstracted.” | High | Still true at the primitive-gate layer, but the lookup objection is narrower than before: the folded contract is now machine-readable and audited exhaustively for a canonical secp256k1 base plus deterministic multibase samples. | Yes |
 | “`mbuc_*` cleanup is not a primitive-gate verified coherent subcircuit.” | High | True. The repository checks basis-state semantics at the ISA boundary. | Yes |
-| “The scaffold is metadata, not a full Shor gate list.” | High | True. The scaffold is replayed and checked for coherence, but it is not a single flattened gate list. | Yes |
-| “The 880q / 22.38M headline depends on a backend model.” | High | True. Those totals are explicit modeled projections derived from structural artifacts plus a backend-model bundle. They no longer inherit a hidden legacy leaf calibration constant, but they are still not a primitive-gate lowering. | Yes |
+| “The scaffold is metadata, not a full Shor gate list.” | High | Narrower than before. This is still true for the mainline, but the compiler subproject now publishes an exact fully quantum raw-32 oracle family with explicit whole-oracle counts. It is still not a globally optimized complete Shor implementation. | Partly |
+| “The 880q / 22.38M headline depends on a backend model.” | High | Still true for the mainline. The compiler subproject is the answer to this objection: it publishes separate exact whole-oracle family counts instead of another backend projection. | Yes |
 | “Toy-curve proofs are not universal proofs over all prime fields.” | Medium | True. They are finite-model support for the family story. | Yes |
 | “No primitive-gate qRAM or QROM is shipped.” | Medium | True. The repository keeps lookup as an explicit contract boundary. | Yes |
 | “No end-to-end physical machine proof is shipped.” | Medium | True. Physical studies are separate transfer analyses. | Yes |
@@ -24,13 +24,15 @@ repository-supported answer to each one.
 - exact signed folded lookup-contract semantics together with machine-readable contract-field validation
 - modeled improvement over Google's published 2026 secp256k1 estimates from
   Babbush et al. 2026 using a derived structural pipeline rather than a standalone headline table
+- exact whole-oracle counts for named compiler families in the compiler subproject
+- exact qubit tightening from slot allocation and semiclassical phase-shell accounting in that subproject
 
 ## Statements the repository should not make
 
-- “fully verified primitive-gate quantum circuit”
+- “fully verified globally optimal primitive-gate quantum circuit”
 - “reconstruction of an unpublished Google circuit”
 - “exact final physical machine cost”
-- “primitive-gate qRAM already proved”
+- “primitive-gate qRAM already proved for every compiler family”
 
 ## Publication-safe wording
 
@@ -50,6 +52,4 @@ Unsafe:
 
 ## Bottom line
 
-The repository is strongest when it is described exactly as a checked arithmetic
-artifact plus explicit modeled layers, not as a solved end-to-end quantum
-implementation.
+The repository now has two strengths rather than one: a checked arithmetic mainline plus a separate exact compiler-family oracle subproject. It is still not a solved end-to-end globally optimal primitive-gate implementation, but the old criticism that “nothing below ISA is exact” is no longer fully accurate.

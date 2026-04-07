@@ -1,0 +1,52 @@
+{
+  "schema": "compiler-project-cain-transfer-v2",
+  "families": [
+    {
+      "family": "folded_linear_scan_tmpand_v1__full_phase_register_v1",
+      "heuristic_time_efficient_days_if_90M_maps_to_10d": 4.159215,
+      "heuristic_time_efficient_days_if_70M_maps_to_10d": 5.347562142857143,
+      "same_density_physical_qubits_if_1200_maps_to_26k": 61706.666666666664,
+      "same_density_physical_qubits_if_1450_maps_to_26k": 51067.58620689655
+    },
+    {
+      "family": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",
+      "heuristic_time_efficient_days_if_90M_maps_to_10d": 4.159215,
+      "heuristic_time_efficient_days_if_70M_maps_to_10d": 5.347562142857143,
+      "same_density_physical_qubits_if_1200_maps_to_26k": 50635.0,
+      "same_density_physical_qubits_if_1450_maps_to_26k": 41904.8275862069
+    },
+    {
+      "family": "folded_unary_qrom_v1__full_phase_register_v1",
+      "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.7611065555555556,
+      "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.549994142857143,
+      "same_density_physical_qubits_if_1200_maps_to_26k": 771398.3333333334,
+      "same_density_physical_qubits_if_1450_maps_to_26k": 638398.6206896552
+    },
+    {
+      "family": "folded_unary_qrom_v1__semiclassical_qft_v1",
+      "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.7611065555555556,
+      "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.549994142857143,
+      "same_density_physical_qubits_if_1200_maps_to_26k": 760326.6666666666,
+      "same_density_physical_qubits_if_1450_maps_to_26k": 629235.8620689656
+    },
+    {
+      "family": "folded_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+      "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.6459634444444444,
+      "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.401953,
+      "same_density_physical_qubits_if_1200_maps_to_26k": 776945.0,
+      "same_density_physical_qubits_if_1450_maps_to_26k": 642988.9655172414
+    },
+    {
+      "family": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+      "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.6459634444444444,
+      "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.401953,
+      "same_density_physical_qubits_if_1200_maps_to_26k": 765873.3333333334,
+      "same_density_physical_qubits_if_1450_maps_to_26k": 633826.2068965518
+    }
+  ],
+  "notes": [
+    "This is a heuristic transfer, not a compiled hardware estimate.",
+    "Compared with the earlier compiler pass, the qubit-side transfer now reflects exact slot allocation and the explicit semiclassical phase-shell family instead of a fixed 512-bit phase register.",
+    "Cain et al. target P-256 and a neutral-atom architecture; these transfers are only a structured comparison aid."
+  ]
+}

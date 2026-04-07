@@ -22,6 +22,8 @@ def main() -> None:
     write_resource_projection(REPO_ROOT)
     write_verifier_rebuild_summary(REPO_ROOT)
     run_research_pass(REPO_ROOT)
+    subprocess.run([sys.executable, 'compiler_verification_project/scripts/build.py'], cwd=REPO_ROOT, check=True)
+    subprocess.run([sys.executable, 'compiler_verification_project/scripts/verify.py', '--cases', '16'], cwd=REPO_ROOT, check=True)
     subprocess.run([sys.executable, 'scripts/verify_all.py'], cwd=REPO_ROOT, check=True)
     write_cain_integration_summary(REPO_ROOT)
     write_figures(REPO_ROOT)

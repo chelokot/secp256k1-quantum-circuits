@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any, Dict
@@ -123,9 +124,28 @@ def build_extended_summary(repo_root: Path, progress: ProgressReporter, step: in
     }
 
 
+def build_compiler_project_summary(repo_root: Path) -> Dict[str, Any]:
+    subprocess.run([sys.executable, 'compiler_verification_project/scripts/build.py'], cwd=repo_root, check=True, stdout=subprocess.DEVNULL)
+    subprocess.run([sys.executable, 'compiler_verification_project/scripts/verify.py', '--cases', '16'], cwd=repo_root, check=True, stdout=subprocess.DEVNULL)
+    build_path = repo_root / 'compiler_verification_project' / 'artifacts' / 'build_summary.json'
+    verify_path = repo_root / 'compiler_verification_project' / 'artifacts' / 'verification_summary.json'
+    frontier_path = repo_root / 'compiler_verification_project' / 'artifacts' / 'family_frontier.json'
+    cain_path = repo_root / 'compiler_verification_project' / 'artifacts' / 'cain_exact_transfer.json'
+    return {
+        'build_summary': load_json(build_path),
+        'verification_summary': load_json(verify_path),
+        'frontier': load_json(frontier_path),
+        'cain_transfer': load_json(cain_path),
+        'build_summary_sha256': sha256_path(build_path),
+        'verification_summary_sha256': sha256_path(verify_path),
+        'frontier_sha256': sha256_path(frontier_path),
+        'cain_transfer_sha256': sha256_path(cain_path),
+    }
+
+
 def build_summary(console: Console, show_progress: bool, quick: bool) -> Dict[str, Any]:
     optimized_root = REPO_ROOT / 'artifacts'
-    step_count = 2 if quick else 6
+    step_count = 2 if quick else 8
     progress = ProgressReporter(console, enabled=show_progress)
     write_resource_projection(REPO_ROOT)
 
@@ -154,8 +174,10 @@ def build_summary(console: Console, show_progress: bool, quick: bool) -> Dict[st
     optimized['resource_projection_sha256'] = sha256_path(artifact_projection_path(optimized_root, 'resource_projection.json'))
     google_baseline = optimized['resource_projection']['public_google_baseline']
     extended = None
+    compiler_project = None
     if not quick:
         extended = build_extended_summary(REPO_ROOT, progress, 3, step_count)
+        compiler_project = build_compiler_project_summary(REPO_ROOT)
 
     summary = {
         'optimized': optimized,
@@ -177,13 +199,22 @@ def build_summary(console: Console, show_progress: bool, quick: bool) -> Dict[st
             and extended['toy_extended']['summary']['pass'] == extended['toy_extended']['summary']['total']
             and extended['challenge_ladder']['summary']['pass'] == extended['challenge_ladder']['summary']['total']
         )
+    if compiler_project is not None:
+        summary['compiler_project'] = compiler_project
+        compiler_verify = compiler_project['verification_summary']
+        summary['headline_checks']['compiler_exact_checks_pass'] = (
+            compiler_verify['summary']['pass'] == compiler_verify['summary']['total']
+            and compiler_project['frontier']['best_qubit_family']['total_logical_qubits'] < 2500
+            and compiler_project['frontier']['best_gate_family']['full_oracle_non_clifford'] < 70_000_000
+        )
     return summary
 
 
 def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) -> None:
     optimized = summary['optimized']
     extended = summary.get('extended')
-    total_sections = 6 if extended is not None else 2
+    compiler_project = summary.get('compiler_project')
+    total_sections = 2 + (4 if extended is not None else 0) + (2 if compiler_project is not None else 0)
     audit = optimized['audit']['summary']
     toy = optimized['toy']['summary']
     projection = optimized['resource_projection']
@@ -197,7 +228,8 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
         print(console.dim('results/repo_verification_summary.json was rebuilt'))
     print()
 
-    print(f"[1/{total_sections}] Deterministic secp256k1 audit  {console.ok('PASS') if checks['optimized_audit_pass'] else console.fail('FAIL')}")
+    section = 1
+    print(f"[{section}/{total_sections}] Deterministic secp256k1 audit  {console.ok('PASS') if checks['optimized_audit_pass'] else console.fail('FAIL')}")
     print(console.detail(f"      {audit['pass']:,} / {audit['total']:,} cases passed"))
     print(console.detail("      checks the exact point-add leaf on secp256k1 with Q <- Q + L against independent reference paths"))
     for category in ('random', 'doubling', 'inverse', 'accumulator_infinity', 'lookup_infinity'):
@@ -208,8 +240,9 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
     print(console.detail(f"      netlist sha256: {optimized['audit']['netlist_sha256']}"))
     print()
 
+    section += 1
     toy_pass = toy['pass'] == toy['total']
-    print(f"[2/{total_sections}] Toy-curve finite-model check   {console.ok('PASS') if toy_pass else console.fail('FAIL')}")
+    print(f"[{section}/{total_sections}] Toy-curve finite-model check   {console.ok('PASS') if toy_pass else console.fail('FAIL')}")
     print(console.detail(f"      {toy['pass']:,} / {toy['total']:,} cases passed"))
     print(console.detail("      exhaustively checks the same point-add leaf semantics over two small prime-order j=0 toy curves"))
     for curve_name, curve_summary in toy['curves'].items():
@@ -229,44 +262,58 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
             and lookup['canonical_full_exhaustive']['pass'] == lookup['canonical_full_exhaustive']['total']
             and lookup['multibase_direct_samples']['pass'] == lookup['multibase_direct_samples']['total']
         )
-        print(f"[3/{total_sections}] Lookup-contract audit       {console.ok('PASS') if lookup_pass else console.fail('FAIL')}")
+        section += 1
+        print(f"[{section}/{total_sections}] Lookup-contract audit       {console.ok('PASS') if lookup_pass else console.fail('FAIL')}")
         print(console.detail(
-            f"      contract checks: {lookup['parameter_checks']['pass']:,} / {lookup['parameter_checks']['total']:,} "
-            f"machine-readable parameter checks"
+            f"      contract checks: {lookup['parameter_checks']['pass']:,} / {lookup['parameter_checks']['total']:,} machine-readable parameter checks"
         ))
         print(console.detail(
-            f"      canonical exhaustive: {lookup['canonical_full_exhaustive']['pass']:,} / "
-            f"{lookup['canonical_full_exhaustive']['total']:,} cases on "
-            f"{lookup['canonical_full_exhaustive']['base_id']}"
+            f"      canonical exhaustive: {lookup['canonical_full_exhaustive']['pass']:,} / {lookup['canonical_full_exhaustive']['total']:,} cases on {lookup['canonical_full_exhaustive']['base_id']}"
         ))
         print(console.detail(
-            f"      multibase samples: {lookup['multibase_direct_samples']['pass']:,} / "
-            f"{lookup['multibase_direct_samples']['total']:,} across "
-            f"{lookup['multibase_direct_samples']['base_count']} bases"
+            f"      multibase samples: {lookup['multibase_direct_samples']['pass']:,} / {lookup['multibase_direct_samples']['total']:,} across {lookup['multibase_direct_samples']['base_count']} bases"
         ))
         print(console.detail(f"      lookup summary sha256: {extended['lookup_contract']['sha256']}"))
         print()
 
-        print(f"[4/{total_sections}] Scaffold replay audit       {console.ok('PASS') if scaffold['pass'] == scaffold['total'] else console.fail('FAIL')}")
-        print(console.detail(
-            f"      scaffold replay: {scaffold['pass']:,} / {scaffold['total']:,} retained-window replay cases"
-        ))
+        section += 1
+        print(f"[{section}/{total_sections}] Scaffold replay audit       {console.ok('PASS') if scaffold['pass'] == scaffold['total'] else console.fail('FAIL')}")
+        print(console.detail(f"      scaffold replay: {scaffold['pass']:,} / {scaffold['total']:,} retained-window replay cases"))
         print(console.detail(f"      scaffold sha256: {extended['scaffold_schedule']['sha256']}"))
         print()
 
-        print(f"[5/{total_sections}] Extended toy-family check   {console.ok('PASS') if toy_extended['pass'] == toy_extended['total'] else console.fail('FAIL')}")
-        print(console.detail(
-            f"      extended toy family: {toy_extended['pass']:,} / {toy_extended['total']:,} exhaustive cases across four toy curves"
-        ))
+        section += 1
+        print(f"[{section}/{total_sections}] Extended toy-family check   {console.ok('PASS') if toy_extended['pass'] == toy_extended['total'] else console.fail('FAIL')}")
+        print(console.detail(f"      extended toy family: {toy_extended['pass']:,} / {toy_extended['total']:,} exhaustive cases across four toy curves"))
         print(console.detail(f"      extended toy sha256: {extended['toy_extended']['sha256']}"))
         print()
 
         challenge_ladder = extended['challenge_ladder']['summary']
-        print(f"[6/{total_sections}] Challenge-ladder replay     {console.ok('PASS') if challenge_ladder['pass'] == challenge_ladder['total'] else console.fail('FAIL')}")
+        section += 1
+        print(f"[{section}/{total_sections}] Challenge-ladder replay     {console.ok('PASS') if challenge_ladder['pass'] == challenge_ladder['total'] else console.fail('FAIL')}")
         print(console.detail(
-            f"      challenge ladder: {challenge_ladder['pass']:,} / {challenge_ladder['total']:,} replay cases across "
-            f"{challenge_ladder['curve_count']} deterministic benchmark curves"
+            f"      challenge ladder: {challenge_ladder['pass']:,} / {challenge_ladder['total']:,} replay cases across {challenge_ladder['curve_count']} deterministic benchmark curves"
         ))
+        print()
+
+    if compiler_project is not None:
+        compiler_verify = compiler_project['verification_summary']
+        frontier = compiler_project['frontier']
+        section += 1
+        print(f"[{section}/{total_sections}] Exact compiler build        {console.ok('PASS')}")
+        print(console.detail(f"      best exact gate family: {frontier['best_gate_family']['full_oracle_non_clifford']:,} non-Clifford"))
+        print(console.detail(f"      best exact qubit family: {frontier['best_qubit_family']['total_logical_qubits']:,} logical qubits"))
+        print(console.detail(f"      best exact qubit family name: {frontier['best_qubit_family']['name']}"))
+        print(console.detail(f"      frontier sha256: {compiler_project['frontier_sha256']}"))
+        print()
+
+        section += 1
+        exact_pass = compiler_verify['summary']['pass'] == compiler_verify['summary']['total']
+        print(f"[{section}/{total_sections}] Exact compiler verification {console.ok('PASS') if exact_pass else console.fail('FAIL')}")
+        print(console.detail(
+            f"      compiler-project checks: {compiler_verify['summary']['pass']:,} / {compiler_verify['summary']['total']:,} (raw-32 semantic replay + slot allocation + multiplier inventory + qubit frontier)"
+        ))
+        print(console.detail(f"      verification sha256: {compiler_project['verification_summary_sha256']}"))
         print()
 
     print(console.heading('Primary modeled projection'))
@@ -283,6 +330,14 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
     low_gate_3channel = console.ok(f"{projection['improvement_vs_google']['versus_low_gate']['toffoli_gain_3lookup']:.4f}x")
     print(f"  lower modeled non-Clifford cost vs Google low-qubit line: {low_qubit_2channel} (2-channel), {low_qubit_3channel} (3-channel)")
     print(f"  lower modeled non-Clifford cost vs Google low-gate line:  {low_gate_2channel} (2-channel), {low_gate_3channel} (3-channel)")
+
+    if compiler_project is not None:
+        best_exact_gate = compiler_project['frontier']['best_gate_family']
+        best_exact_qubit = compiler_project['frontier']['best_qubit_family']
+        print()
+        print(console.heading('Exact compiler-project frontier'))
+        print(f"  best exact gate family: {best_exact_gate['full_oracle_non_clifford']:,} non-Clifford / {best_exact_gate['total_logical_qubits']:,} q")
+        print(f"  best exact qubit family: {best_exact_qubit['total_logical_qubits']:,} q / {best_exact_qubit['full_oracle_non_clifford']:,} non-Clifford")
 
 
 def main() -> None:

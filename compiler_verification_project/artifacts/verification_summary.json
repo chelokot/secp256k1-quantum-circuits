@@ -1,0 +1,48 @@
+{
+  "schema": "compiler-project-verification-summary-v2",
+  "semantic_replay": {
+    "schema": "compiler-project-raw32-semantic-check-v2",
+    "canonical_public_point": {
+      "derivation": "first deterministic public-point base from the checked-in leaf/scaffold hash stream",
+      "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+      "scaffold_sha256": "6f444c332728cde3ccfb9fd532012aaaa9c777a1b0f949573a3910602126cc03",
+      "h_scalar_hex": "67187ebf5e103907b421422ac84cdce3df49863a1a00c445df5bacfb48cdea52",
+      "point": {
+        "x_hex": "84b18b4548bd18cd1371f3c1a9b69b7353bec9b8458ca3da0c78132adb4a9287",
+        "y_hex": "e6fbb05ac34d4d44b6f0c75994f51d03904b13d14cfcbbc91ea698cf3933f574"
+      }
+    },
+    "csv": "raw32_semantic_audit_16.csv",
+    "sha256": "f1b99d0f68c024d33686c3477b39d266170384cf6f247b19540af1260e4bdb14",
+    "summary": {
+      "total": 16,
+      "pass": 16,
+      "seed_zero_cases": 0,
+      "phase_b_nonzero_cases": 16
+    },
+    "notes": [
+      "This check executes the exact same ISA leaf 31 times over a fully quantum raw-32 schedule: 1 direct seed, 15 phase_a leaf calls, and 16 phase_b leaf calls.",
+      "It intentionally removes the mainline retained schedule's three classical tail elisions."
+    ]
+  },
+  "slot_allocation_checks": {
+    "pass": 1,
+    "expected_arithmetic_slots": 9,
+    "observed_arithmetic_slots": 9,
+    "observed_control_slots": 1
+  },
+  "primitive_multiplier_checks": {
+    "pass": 1,
+    "expected_instance_count": 341,
+    "observed_instance_count": 341
+  },
+  "qubit_frontier_checks": {
+    "pass": 1,
+    "best_qubit_family": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",
+    "best_qubit_total": 2337
+  },
+  "summary": {
+    "total": 19,
+    "pass": 19
+  }
+}

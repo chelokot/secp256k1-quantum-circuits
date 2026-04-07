@@ -1,0 +1,27 @@
+{
+  "schema": "compiler-project-phase-shells-v1",
+  "families": [
+    {
+      "name": "full_phase_register_v1",
+      "summary": "Conservative shell that keeps the entire 512-bit phase-estimation register live.",
+      "live_quantum_bits": 512,
+      "total_measurements": 512,
+      "adaptive_rotations": 512,
+      "notes": [
+        "This family mirrors the simplest exact logical accounting: both 256-bit phase registers remain live throughout the oracle inventory.",
+        "Rotation synthesis below this shell is still out of scope; the shell affects qubit inventory, not oracle non-Clifford totals."
+      ]
+    },
+    {
+      "name": "semiclassical_qft_v1",
+      "summary": "Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
+      "live_quantum_bits": 1,
+      "total_measurements": 512,
+      "adaptive_rotations": 512,
+      "notes": [
+        "This family treats the phase-estimation shell as a one-qubit live quantum register with classical feed-forward between measurements.",
+        "It is the strongest exact qubit-compression lever currently checked into the compiler project because it removes the 512-bit coherent phase-register requirement without changing the oracle family itself."
+      ]
+    }
+  ]
+}

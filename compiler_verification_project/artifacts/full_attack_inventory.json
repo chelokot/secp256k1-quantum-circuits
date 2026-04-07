@@ -1,0 +1,310 @@
+{
+  "schema": "compiler-project-full-attack-inventory-v2",
+  "schedule": {
+    "schema": "compiler-project-full-raw32-v2",
+    "curve": "secp256k1",
+    "raw_window_bits": 16,
+    "raw_window_count": 32,
+    "phase_register_bits_total": 512,
+    "direct_seed": {
+      "phase_register": "phase_a",
+      "window_index_within_register": 0,
+      "bit_start": 0,
+      "bit_width": 16,
+      "comment": "This exact compiler path closes the mainline classical-tail-elision gap."
+    },
+    "leaf_calls": [
+      {
+        "call_index": 0,
+        "phase_register": "phase_a",
+        "window_index_within_register": 1,
+        "bit_start": 16,
+        "bit_width": 16
+      },
+      {
+        "call_index": 1,
+        "phase_register": "phase_a",
+        "window_index_within_register": 2,
+        "bit_start": 32,
+        "bit_width": 16
+      },
+      {
+        "call_index": 2,
+        "phase_register": "phase_a",
+        "window_index_within_register": 3,
+        "bit_start": 48,
+        "bit_width": 16
+      },
+      {
+        "call_index": 3,
+        "phase_register": "phase_a",
+        "window_index_within_register": 4,
+        "bit_start": 64,
+        "bit_width": 16
+      },
+      {
+        "call_index": 4,
+        "phase_register": "phase_a",
+        "window_index_within_register": 5,
+        "bit_start": 80,
+        "bit_width": 16
+      },
+      {
+        "call_index": 5,
+        "phase_register": "phase_a",
+        "window_index_within_register": 6,
+        "bit_start": 96,
+        "bit_width": 16
+      },
+      {
+        "call_index": 6,
+        "phase_register": "phase_a",
+        "window_index_within_register": 7,
+        "bit_start": 112,
+        "bit_width": 16
+      },
+      {
+        "call_index": 7,
+        "phase_register": "phase_a",
+        "window_index_within_register": 8,
+        "bit_start": 128,
+        "bit_width": 16
+      },
+      {
+        "call_index": 8,
+        "phase_register": "phase_a",
+        "window_index_within_register": 9,
+        "bit_start": 144,
+        "bit_width": 16
+      },
+      {
+        "call_index": 9,
+        "phase_register": "phase_a",
+        "window_index_within_register": 10,
+        "bit_start": 160,
+        "bit_width": 16
+      },
+      {
+        "call_index": 10,
+        "phase_register": "phase_a",
+        "window_index_within_register": 11,
+        "bit_start": 176,
+        "bit_width": 16
+      },
+      {
+        "call_index": 11,
+        "phase_register": "phase_a",
+        "window_index_within_register": 12,
+        "bit_start": 192,
+        "bit_width": 16
+      },
+      {
+        "call_index": 12,
+        "phase_register": "phase_a",
+        "window_index_within_register": 13,
+        "bit_start": 208,
+        "bit_width": 16
+      },
+      {
+        "call_index": 13,
+        "phase_register": "phase_a",
+        "window_index_within_register": 14,
+        "bit_start": 224,
+        "bit_width": 16
+      },
+      {
+        "call_index": 14,
+        "phase_register": "phase_a",
+        "window_index_within_register": 15,
+        "bit_start": 240,
+        "bit_width": 16
+      },
+      {
+        "call_index": 15,
+        "phase_register": "phase_b",
+        "window_index_within_register": 0,
+        "bit_start": 0,
+        "bit_width": 16
+      },
+      {
+        "call_index": 16,
+        "phase_register": "phase_b",
+        "window_index_within_register": 1,
+        "bit_start": 16,
+        "bit_width": 16
+      },
+      {
+        "call_index": 17,
+        "phase_register": "phase_b",
+        "window_index_within_register": 2,
+        "bit_start": 32,
+        "bit_width": 16
+      },
+      {
+        "call_index": 18,
+        "phase_register": "phase_b",
+        "window_index_within_register": 3,
+        "bit_start": 48,
+        "bit_width": 16
+      },
+      {
+        "call_index": 19,
+        "phase_register": "phase_b",
+        "window_index_within_register": 4,
+        "bit_start": 64,
+        "bit_width": 16
+      },
+      {
+        "call_index": 20,
+        "phase_register": "phase_b",
+        "window_index_within_register": 5,
+        "bit_start": 80,
+        "bit_width": 16
+      },
+      {
+        "call_index": 21,
+        "phase_register": "phase_b",
+        "window_index_within_register": 6,
+        "bit_start": 96,
+        "bit_width": 16
+      },
+      {
+        "call_index": 22,
+        "phase_register": "phase_b",
+        "window_index_within_register": 7,
+        "bit_start": 112,
+        "bit_width": 16
+      },
+      {
+        "call_index": 23,
+        "phase_register": "phase_b",
+        "window_index_within_register": 8,
+        "bit_start": 128,
+        "bit_width": 16
+      },
+      {
+        "call_index": 24,
+        "phase_register": "phase_b",
+        "window_index_within_register": 9,
+        "bit_start": 144,
+        "bit_width": 16
+      },
+      {
+        "call_index": 25,
+        "phase_register": "phase_b",
+        "window_index_within_register": 10,
+        "bit_start": 160,
+        "bit_width": 16
+      },
+      {
+        "call_index": 26,
+        "phase_register": "phase_b",
+        "window_index_within_register": 11,
+        "bit_start": 176,
+        "bit_width": 16
+      },
+      {
+        "call_index": 27,
+        "phase_register": "phase_b",
+        "window_index_within_register": 12,
+        "bit_start": 192,
+        "bit_width": 16
+      },
+      {
+        "call_index": 28,
+        "phase_register": "phase_b",
+        "window_index_within_register": 13,
+        "bit_start": 208,
+        "bit_width": 16
+      },
+      {
+        "call_index": 29,
+        "phase_register": "phase_b",
+        "window_index_within_register": 14,
+        "bit_start": 224,
+        "bit_width": 16
+      },
+      {
+        "call_index": 30,
+        "phase_register": "phase_b",
+        "window_index_within_register": 15,
+        "bit_start": 240,
+        "bit_width": 16
+      }
+    ],
+    "summary": {
+      "phase_a_leaf_calls": 15,
+      "phase_b_leaf_calls": 16,
+      "leaf_call_count_total": 31,
+      "classical_tail_elisions_removed": 3,
+      "lookup_invocations_total": 32
+    }
+  },
+  "inventory": {
+    "direct_seed_count": 1,
+    "phase_a_leaf_calls": 15,
+    "phase_b_leaf_calls": 16,
+    "total_leaf_calls": 31,
+    "classical_tail_elisions_removed": 3,
+    "whole_oracle_field_mul_count": 341,
+    "whole_oracle_field_add_count": 310,
+    "whole_oracle_field_sub_count": 93,
+    "whole_oracle_mul_const_count": 62,
+    "whole_oracle_select_count": 93,
+    "whole_oracle_lookup_count": 32
+  },
+  "best_gate_family": {
+    "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+    "summary": "Best exact low-gate family currently checked in: unary folded QROM compute plus 8/7-split measurement-based uncompute. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
+    "gate_set": "Clifford + Toffoli-style unary QROM + measurement; phase shell: semiclassical_qft_v1",
+    "phase_shell": "semiclassical_qft_v1",
+    "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
+    "lookup_family": "folded_unary_qrom_measured_uncompute_v1",
+    "arithmetic_leaf_non_clifford": 733657,
+    "direct_seed_non_clifford": 33447,
+    "per_leaf_lookup_non_clifford": 33447,
+    "full_oracle_non_clifford": 23813671,
+    "arithmetic_slot_count": 9,
+    "control_slot_count": 1,
+    "lookup_workspace_qubits": 33042,
+    "live_phase_bits": 1,
+    "total_logical_qubits": 35348,
+    "improvement_vs_google_low_qubit": 3.779341706702843,
+    "improvement_vs_google_low_gate": 2.9394879941022114,
+    "qubit_ratio_vs_google_low_qubit": 0.03394817245671608,
+    "qubit_ratio_vs_google_low_gate": 0.0410207083851986,
+    "notes": [
+      "This family uses the same forward unary QROM compute as folded_unary_qrom_v1 but replaces reverse uncompute by the exact 8/7-split measurement-based construction.",
+      "It improves the exact gate frontier while keeping the lookup semantics identical.",
+      "This family treats the phase-estimation shell as a one-qubit live quantum register with classical feed-forward between measurements.",
+      "It is the strongest exact qubit-compression lever currently checked into the compiler project because it removes the 512-bit coherent phase-register requirement without changing the oracle family itself."
+    ]
+  },
+  "best_qubit_family": {
+    "name": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",
+    "summary": "Low-qubit exact lookup family using a 15-bit folded magnitude domain and temporary logical-AND equality ladders. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
+    "gate_set": "Clifford + temporary logical-AND + measurement; phase shell: semiclassical_qft_v1",
+    "phase_shell": "semiclassical_qft_v1",
+    "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
+    "lookup_family": "folded_linear_scan_tmpand_v1",
+    "arithmetic_leaf_non_clifford": 733657,
+    "direct_seed_non_clifford": 459049,
+    "per_leaf_lookup_non_clifford": 459049,
+    "full_oracle_non_clifford": 37432935,
+    "arithmetic_slot_count": 9,
+    "control_slot_count": 1,
+    "lookup_workspace_qubits": 31,
+    "live_phase_bits": 1,
+    "total_logical_qubits": 2337,
+    "improvement_vs_google_low_qubit": 2.4042998498514745,
+    "improvement_vs_google_low_gate": 1.8700109943289245,
+    "qubit_ratio_vs_google_low_qubit": 0.5134788189987163,
+    "qubit_ratio_vs_google_low_gate": 0.6204535729567822,
+    "notes": [
+      "Scans only positive magnitudes 0..32767. The sign bit is handled separately via exact conditional y-negation.",
+      "This remains the lowest-space exact lookup family checked into the compiler project.",
+      "This family treats the phase-estimation shell as a one-qubit live quantum register with classical feed-forward between measurements.",
+      "It is the strongest exact qubit-compression lever currently checked into the compiler project because it removes the 512-bit coherent phase-register requirement without changing the oracle family itself."
+    ]
+  }
+}

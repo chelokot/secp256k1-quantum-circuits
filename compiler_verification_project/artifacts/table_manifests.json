@@ -1,0 +1,315 @@
+{
+  "schema": "compiler-project-table-manifests-v1",
+  "canonical_public_point": {
+    "derivation": "first deterministic public-point base from the checked-in leaf/scaffold hash stream",
+    "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+    "scaffold_sha256": "6f444c332728cde3ccfb9fd532012aaaa9c777a1b0f949573a3910602126cc03",
+    "h_scalar_hex": "67187ebf5e103907b421422ac84cdce3df49863a1a00c445df5bacfb48cdea52",
+    "point": {
+      "x_hex": "84b18b4548bd18cd1371f3c1a9b69b7353bec9b8458ca3da0c78132adb4a9287",
+      "y_hex": "e6fbb05ac34d4d44b6f0c75994f51d03904b13d14cfcbbc91ea698cf3933f574"
+    }
+  },
+  "folded_contract": {
+    "word_bits": 16,
+    "magnitude_bits": 15,
+    "positive_domain_size": 32768,
+    "coordinate_bits_per_record": 512
+  },
+  "phase_a_bases": [
+    {
+      "phase_register": "phase_a",
+      "window_index_within_register": 0,
+      "base_x_hex": "79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+      "base_y_hex": "483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_a",
+      "window_index_within_register": 1,
+      "base_x_hex": "363d90d447b00c9c99ceac05b6262ee053441c7e55552ffe526bad8f83ff4640",
+      "base_y_hex": "04e273adfc732221953b445397f3363145b9a89008199ecb62003c7f3bee9de9",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_a",
+      "window_index_within_register": 2,
+      "base_x_hex": "100f44da696e71672791d0a09b7bde459f1215a29b3c03bfefd7835b39a48db0",
+      "base_y_hex": "cdd9e13192a00b772ec8f3300c090666b7ff4a18ff5195ac0fbd5cd62bc65a09",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_a",
+      "window_index_within_register": 3,
+      "base_x_hex": "53904faa0b334cdda6e000935ef22151ec08d0f7bb11069f57545ccc1a37b7c0",
+      "base_y_hex": "5bc087d0bc80106d88c9eccac20d3c1c13999981e14434699dcb096b022771c8",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_a",
+      "window_index_within_register": 4,
+      "base_x_hex": "3322d401243c4e2582a2147c104d6ecbf774d163db0f5e5313b7e0e742d0e6bd",
+      "base_y_hex": "56e70797e9664ef5bfb019bc4ddaf9b72805f63ea2873af624f3a2e96c28b2a0",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_a",
+      "window_index_within_register": 5,
+      "base_x_hex": "e5037de0afc1d8d43d8348414bbf4103043ec8f575bfdc432953cc8d2037fa2d",
+      "base_y_hex": "4571534baa94d3b5f9f98d09fb990bddbd5f5b03ec481f10e0e5dc841d755bda",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_a",
+      "window_index_within_register": 6,
+      "base_x_hex": "fea74e3dbe778b1b10f238ad61686aa5c76e3db2be43057632427e2840fb27b6",
+      "base_y_hex": "6e0568db9b0b13297cf674deccb6af93126b596b973f7b77701d3db7f23cb96f",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_a",
+      "window_index_within_register": 7,
+      "base_x_hex": "b8da94032a957518eb0f6433571e8761ceffc73693e84edd49150a564f676e03",
+      "base_y_hex": "2804dfa44805a1e4d7c99cc9762808b092cc584d95ff3b511488e4e74efdf6e7",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_a",
+      "window_index_within_register": 8,
+      "base_x_hex": "8f68b9d2f63b5f339239c1ad981f162ee88c5678723ea3351b7b444c9ec4c0da",
+      "base_y_hex": "662a9f2dba063986de1d90c2b6be215dbbea2cfe95510bfdf23cbf79501fff82",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_a",
+      "window_index_within_register": 9,
+      "base_x_hex": "b6459e0ee3662ec8d23540c223bcbdc571cbcb967d79424f3cf29eb3de6b80ef",
+      "base_y_hex": "067c876d06f3e06de1dadf16e5661db3c4b3ae6d48e35b2ff30bf0b61a71ba45",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_a",
+      "window_index_within_register": 10,
+      "base_x_hex": "9c3919a84a474870faed8a9c1cc66021523489054d7f0308cbfc99c8ac1f98cd",
+      "base_y_hex": "ddb84f0f4a4ddd57584f044bf260e641905326f76c64c8e6be7e5e03d4fc599d",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_a",
+      "window_index_within_register": 11,
+      "base_x_hex": "0928955ee637a84463729fd30e7afd2ed5f96274e5ad7e5cb09eda9c06d903ac",
+      "base_y_hex": "c25621003d3f42a827b78a13093a95eeac3d26efa8a8d83fc5180e935bcd091f",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_a",
+      "window_index_within_register": 12,
+      "base_x_hex": "eaa649f21f51bdbae7be4ae34ce6e5217a58fdce7f47f9aa7f3b58fa2120e2b3",
+      "base_y_hex": "be3279ed5bbbb03ac69a80f89879aa5a01a6b965f13f7e59d47a5305ba5ad93d",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_a",
+      "window_index_within_register": 13,
+      "base_x_hex": "fa50c0f61d22e5f07e3acebb1aa07b128d0012209a28b9776d76a8793180eef9",
+      "base_y_hex": "6b84c6922397eba9b72cd2872281a68a5e683293a57a213b38cd8d7d3f4f2811",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_a",
+      "window_index_within_register": 14,
+      "base_x_hex": "959396981943785c3d3e57edf5018cdbe039e730e4918b3d884fdff09475b7ba",
+      "base_y_hex": "2e7e552888c331dd8ba0386a4b9cd6849c653f64c8709385e9b8abf87524f2fd",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_a",
+      "window_index_within_register": 15,
+      "base_x_hex": "13464a57a78102aa62b6979ae817f4637ffcfed3c4b1ce30bcd6303f6caf666b",
+      "base_y_hex": "69be159004614580ef7e433453ccb0ca48f300a81d0942e13f495a907f6ecc27",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    }
+  ],
+  "phase_b_bases": [
+    {
+      "phase_register": "phase_b",
+      "window_index_within_register": 0,
+      "base_x_hex": "84b18b4548bd18cd1371f3c1a9b69b7353bec9b8458ca3da0c78132adb4a9287",
+      "base_y_hex": "e6fbb05ac34d4d44b6f0c75994f51d03904b13d14cfcbbc91ea698cf3933f574",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_b",
+      "window_index_within_register": 1,
+      "base_x_hex": "1c669edc5eecfcd46d10103f2fedb73d47749f298134815d254e716830cf4d24",
+      "base_y_hex": "a108be12c585823b07a87f9d127bebeb707450f77d481a189ae8419fb64d4c83",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_b",
+      "window_index_within_register": 2,
+      "base_x_hex": "19c4d9e4ae3125e77f70869a1b9d26246f3b5e285f640ce65824ceed22857be0",
+      "base_y_hex": "1a1cf26745970c59eebb04acc0032a2464c2d678b150984c4f2e99204ec15b42",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_b",
+      "window_index_within_register": 3,
+      "base_x_hex": "e4e83bcef5ef4f9008a9afcb8f7dc97860172c5743ba153cc1ade832068534c8",
+      "base_y_hex": "895f837fd81d508f137119d6790bd9a076efb8bf242ae17ebc7abaa26da55516",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_b",
+      "window_index_within_register": 4,
+      "base_x_hex": "c189c1e39c40c7bf22e081e628aa3da90b64461cb0047b27f4919c11facfa22a",
+      "base_y_hex": "3fc5340f7089d106c51a530db55f1995d28c16a0177599c9c1356ff50d42fa1f",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_b",
+      "window_index_within_register": 5,
+      "base_x_hex": "682df732954844373ccd27201a90ce14b59f3c7c5ef4c42838e96bc065855577",
+      "base_y_hex": "3222a8f82380f1072b709a64c6baa548304d900087b7a7fab9e6c8694aea72be",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_b",
+      "window_index_within_register": 6,
+      "base_x_hex": "3a6657379639124f4ca2e7d2d5b9d98ddf82a35ba74af1b728f42ddf05657175",
+      "base_y_hex": "3b4306cade05816ed46badf9f8b2653a07cbb785cd151e135df815b520b7d2de",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_b",
+      "window_index_within_register": 7,
+      "base_x_hex": "00ede87685a41c9bc622ec9d44a77229654fa970ee558cec738a3b35c2e9674d",
+      "base_y_hex": "09bbe00347c5596649448b9ecce6da8e56ecfa542d6eedbb6e2231b2d15cf81f",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_b",
+      "window_index_within_register": 8,
+      "base_x_hex": "856d5966b347812b55bf90b9f7ca7d5f61bdc1458ed90414dbb0f3724d2915d8",
+      "base_y_hex": "21d6ff486ad6b5612c4195eaadef64af16bd49e940967ea1afd7d3da6a445f60",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_b",
+      "window_index_within_register": 9,
+      "base_x_hex": "b7098d412a5ac690a836ead79f700f235368c0138bd3ab424e90b550a10aade9",
+      "base_y_hex": "79b197f8d0a1f50cbb5256e9430b93d0338809eae9d18648262da101948c67af",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_b",
+      "window_index_within_register": 10,
+      "base_x_hex": "d363b82b38981893f4b5cc0b06287567b0ac5f40306b52c8e727842ba72003a0",
+      "base_y_hex": "cced178cb8a4fec082e87d52bc9453c7b9f2b588f2e99d5fab66709a1add34d2",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_b",
+      "window_index_within_register": 11,
+      "base_x_hex": "f43aba3800efb0fded0487d7598ecdc425795f30871ccb10ce5debb22c3393dd",
+      "base_y_hex": "06872b8cc6e39a53cbbe54cadf6bd2f0dacc289cf497c617e39d7f0740021ccf",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_b",
+      "window_index_within_register": 12,
+      "base_x_hex": "891dd9b1a06d5658733e8ea1137de4c58a72b6dab61578971980ce177b2291a6",
+      "base_y_hex": "20c6e968b124d462ab7eef5bb70e1a9819065c8baa6a3ba38a26ca3a2daa11b8",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_b",
+      "window_index_within_register": 13,
+      "base_x_hex": "e6104fa7e9bd86edf571d963ca681e1c9fa58b1778a46988907dd43367147003",
+      "base_y_hex": "ad85a324d9d9e02f9d308057ffeceda74962935460d222292924ac659fcfdd74",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_b",
+      "window_index_within_register": 14,
+      "base_x_hex": "f4e973ffecbbc763aef4ed8b4cc0a606a08f2c65969696c904722c961794a090",
+      "base_y_hex": "9e7623cc498c1f433ec6394ee787d811ae02ada195ac7fd1a85c691742852649",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    },
+    {
+      "phase_register": "phase_b",
+      "window_index_within_register": 15,
+      "base_x_hex": "7572ed9c883d0e4adf488539e66f19f9dd76c517ccb559fab1111c45ac5f06d5",
+      "base_y_hex": "db01e1667c2e2f0306205def2115476f46eb868552f389ba336449bcff2968ea",
+      "folded_positive_entries": 32768,
+      "special_min_entry": "[-2^15]U",
+      "record_coordinate_bits": 512
+    }
+  ],
+  "notes": [
+    "This artifact materializes the exact window bases and table dimensions used by the compiler project.",
+    "The classical table data vary with the canonical public point only on the phase_b side; the compiler-family non-Clifford counts themselves are public-point independent."
+  ]
+}

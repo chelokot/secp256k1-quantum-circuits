@@ -1,0 +1,75 @@
+{
+  "schema": "compiler-project-azure-logical-counts-v1",
+  "families": [
+    {
+      "family": "folded_linear_scan_tmpand_v1__full_phase_register_v1",
+      "logicalCounts": {
+        "numQubits": 2848,
+        "cczCount": 37432935,
+        "rotationCount": 512,
+        "rotationDepth": 512,
+        "measurementCount": 512
+      },
+      "notes": "Azure-style logicalCounts seed. The oracle non-Clifford total is exported as cczCount; phase-shell rotations remain unsynthesized."
+    },
+    {
+      "family": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",
+      "logicalCounts": {
+        "numQubits": 2337,
+        "cczCount": 37432935,
+        "rotationCount": 512,
+        "rotationDepth": 512,
+        "measurementCount": 512
+      },
+      "notes": "Azure-style logicalCounts seed. The oracle non-Clifford total is exported as cczCount; phase-shell rotations remain unsynthesized."
+    },
+    {
+      "family": "folded_unary_qrom_v1__full_phase_register_v1",
+      "logicalCounts": {
+        "numQubits": 35603,
+        "cczCount": 24849959,
+        "rotationCount": 512,
+        "rotationDepth": 512,
+        "measurementCount": 512
+      },
+      "notes": "Azure-style logicalCounts seed. The oracle non-Clifford total is exported as cczCount; phase-shell rotations remain unsynthesized."
+    },
+    {
+      "family": "folded_unary_qrom_v1__semiclassical_qft_v1",
+      "logicalCounts": {
+        "numQubits": 35092,
+        "cczCount": 24849959,
+        "rotationCount": 512,
+        "rotationDepth": 512,
+        "measurementCount": 512
+      },
+      "notes": "Azure-style logicalCounts seed. The oracle non-Clifford total is exported as cczCount; phase-shell rotations remain unsynthesized."
+    },
+    {
+      "family": "folded_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+      "logicalCounts": {
+        "numQubits": 35859,
+        "cczCount": 23813671,
+        "rotationCount": 512,
+        "rotationDepth": 512,
+        "measurementCount": 512
+      },
+      "notes": "Azure-style logicalCounts seed. The oracle non-Clifford total is exported as cczCount; phase-shell rotations remain unsynthesized."
+    },
+    {
+      "family": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+      "logicalCounts": {
+        "numQubits": 35348,
+        "cczCount": 23813671,
+        "rotationCount": 512,
+        "rotationDepth": 512,
+        "measurementCount": 512
+      },
+      "notes": "Azure-style logicalCounts seed. The oracle non-Clifford total is exported as cczCount; phase-shell rotations remain unsynthesized."
+    }
+  ],
+  "notes": [
+    "This file is not a claimed Azure output. It is a machine-readable logicalCounts seed suitable for exact-family handoff into a physical estimator.",
+    "The phase-shell rotation inventory is reported separately because this subproject does not synthesize inverse-QFT rotations into Clifford+T."
+  ]
+}
