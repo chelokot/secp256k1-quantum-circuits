@@ -32,7 +32,7 @@ et al. 2026, recorded in the same JSON file:
 This repository compares against those published estimates. It does not claim
 recovery of any unpublished Google circuit.
 
-## Signed lookup contract merged into the mainline
+## Signed lookup contract
 
 The repository's optimized mainline already includes the exact signed
 two's-complement lookup-folding optimization. Its checked summaries report:
@@ -40,8 +40,7 @@ two's-complement lookup-folding optimization. Its checked summaries report:
 - **65,536 / 65,536** exhaustive words passed for the canonical secp256k1 base
 - **15,906 / 15,906** multibase semantic samples passed
 
-The supporting folded-lookup provenance file still records the merged totals and
-their delta versus the pre-folding baseline:
+The supporting folded-lookup provenance file records the current totals:
 
 - **29.163M non-Clifford** under the folded 2-channel line
 - **30.081M non-Clifford** under the folded conservative 3-channel line

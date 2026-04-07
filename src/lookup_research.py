@@ -356,10 +356,6 @@ def build_lookup_folded_projection(repo_root: Path, small_pad_values: Iterable[i
     per_leaf_arith = int(projection["optimized_leaf_projection"]["modeled_non_clifford_excluding_lookup"])
     merged2 = int(projection["optimized_ecdlp_projection"]["lookup_model_2channel"]["per_window_lookup_cost"])
     merged3 = int(projection["optimized_ecdlp_projection"]["lookup_model_3channel"]["per_window_lookup_cost"])
-    baseline2 = int(projection["pre_folding_baseline"]["lookup_model_2channel"]["per_window_lookup_cost"])
-    baseline3 = int(projection["pre_folding_baseline"]["lookup_model_3channel"]["per_window_lookup_cost"])
-    baseline_total2 = int(projection["pre_folding_baseline"]["lookup_model_2channel"]["total_non_clifford"])
-    baseline_total3 = int(projection["pre_folding_baseline"]["lookup_model_3channel"]["total_non_clifford"])
     google_low_q = projection["public_google_baseline"]["low_qubit"]["non_clifford"]
     google_low_g = projection["public_google_baseline"]["low_gate"]["non_clifford"]
 
@@ -373,8 +369,6 @@ def build_lookup_folded_projection(repo_root: Path, small_pad_values: Iterable[i
             "total_non_clifford_2channel_folded": total2,
             "total_non_clifford_3channel_folded_conservative": total3c,
             "total_non_clifford_3channel_folded_meta_elided": total3m,
-            "improvement_fraction_vs_pre_folding_baseline_2channel": 1.0 - total2 / baseline_total2,
-            "improvement_fraction_vs_pre_folding_baseline_3channel_conservative": 1.0 - total3c / baseline_total3,
             "gain_vs_google_low_qubit_2channel": google_low_q / total2,
             "gain_vs_google_low_gate_2channel": google_low_g / total2,
         })
@@ -388,12 +382,8 @@ def build_lookup_folded_projection(repo_root: Path, small_pad_values: Iterable[i
             "The separate metadata lookup is derived from the raw word instead of looked up from a table.",
             "Small classical-preprocessing / sign-fix overhead below the ISA layer is not exactly lowered here, so a per-window additive pad sweep is included.",
         ],
-        "pre_folding_baseline_per_window": {
-            "arithmetic_non_clifford": per_leaf_arith,
-            "lookup_2channel": baseline2,
-            "lookup_3channel": baseline3,
-        },
         "merged_mainline_per_window": {
+            "arithmetic_non_clifford": per_leaf_arith,
             "lookup_2channel": merged2,
             "lookup_3channel_conservative": merged3,
             "lookup_3channel_meta_elided": merged2,
@@ -402,8 +392,8 @@ def build_lookup_folded_projection(repo_root: Path, small_pad_values: Iterable[i
         "pad_sweep": rows,
         "logical_qubit_comment": "The current repository does not primitive-lower the 16-bit sign/magnitude preprocessing. A small ancilla increase is plausible but expected to be negligible against the ~880 logical-qubit headline.",
         "notes": [
-            "The signed folded lookup contract is now merged into the repository's main optimized projection.",
-            "This file preserves the quantitative comparison against the pre-folding baseline rather than against the current mainline.",
+            "The signed folded lookup contract is part of the repository's primary optimized projection.",
+            "This file records the current lookup-folded projection under a small additive pad sweep.",
         ],
     }
     out_path = repo_root / "artifacts" / "out" / "lookup_folded_projection.json"

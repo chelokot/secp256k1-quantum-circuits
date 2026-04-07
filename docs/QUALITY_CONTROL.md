@@ -43,7 +43,7 @@ python scripts/run_research_pass.py
 This adds:
 
 - dominant cost breakdown
-- lookup-folding provenance versus the pre-folding baseline
+- lookup-folding provenance for the primary artifact
 - challenge-ladder generation and replay
 - literature and physical-context matrices
 

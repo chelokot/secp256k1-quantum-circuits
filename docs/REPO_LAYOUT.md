@@ -46,7 +46,7 @@ Deterministic benchmark-curve replay suite in the `y^2 = x^3 + 7` family.
 - `scripts/compare_google_baseline.py` — baseline comparison report
 - `scripts/compare_cain_2026.py` — neutral-atom transfer report
 - `scripts/compare_literature.py` — literature summary
-- `scripts/compare_lookup_research.py` — merged lookup-folding mainline versus the pre-folding baseline
+- `scripts/compare_lookup_research.py` — lookup-folding summary
 - `scripts/hash_repo.py` — manifest regeneration
 - `scripts/generate_figures.py` — figure regeneration
 

@@ -283,8 +283,6 @@
           "total_non_clifford_2channel_folded": 29163456,
           "total_non_clifford_3channel_folded_conservative": 30080960,
           "total_non_clifford_3channel_folded_meta_elided": 29163456,
-          "improvement_fraction_vs_pre_folding_baseline_2channel": 0.05919673955457927,
-          "improvement_fraction_vs_pre_folding_baseline_3channel_conservative": 0.08383249873787335,
           "gain_vs_google_low_qubit_2channel": 3.086053998538445,
           "gain_vs_google_low_gate_2channel": 2.400264221085457
         },
@@ -293,8 +291,6 @@
           "total_non_clifford_2channel_folded": 29170624,
           "total_non_clifford_3channel_folded_conservative": 30088128,
           "total_non_clifford_3channel_folded_meta_elided": 29170624,
-          "improvement_fraction_vs_pre_folding_baseline_2channel": 0.058965502290694194,
-          "improvement_fraction_vs_pre_folding_baseline_3channel_conservative": 0.0836141849390768,
           "gain_vs_google_low_qubit_2channel": 3.0852956727974004,
           "gain_vs_google_low_gate_2channel": 2.399674412175756
         },
@@ -303,8 +299,6 @@
           "total_non_clifford_2channel_folded": 29177792,
           "total_non_clifford_3channel_folded_conservative": 30095296,
           "total_non_clifford_3channel_folded_meta_elided": 29177792,
-          "improvement_fraction_vs_pre_folding_baseline_2channel": 0.05873426502680912,
-          "improvement_fraction_vs_pre_folding_baseline_3channel_conservative": 0.08339587114028024,
           "gain_vs_google_low_qubit_2channel": 3.084537719646504,
           "gain_vs_google_low_gate_2channel": 2.399084893058392
         },
@@ -313,8 +307,6 @@
           "total_non_clifford_2channel_folded": 29192128,
           "total_non_clifford_3channel_folded_conservative": 30109632,
           "total_non_clifford_3channel_folded_meta_elided": 29192128,
-          "improvement_fraction_vs_pre_folding_baseline_2channel": 0.05827179049903897,
-          "improvement_fraction_vs_pre_folding_baseline_3channel_conservative": 0.08295924354268713,
           "gain_vs_google_low_qubit_2channel": 3.083022930017298,
           "gain_vs_google_low_gate_2channel": 2.3979067233467872
         },
@@ -323,8 +315,6 @@
           "total_non_clifford_2channel_folded": 29220800,
           "total_non_clifford_3channel_folded_conservative": 30138304,
           "total_non_clifford_3channel_folded_meta_elided": 29220800,
-          "improvement_fraction_vs_pre_folding_baseline_2channel": 0.057346841443498664,
-          "improvement_fraction_vs_pre_folding_baseline_3channel_conservative": 0.08208598834750103,
           "gain_vs_google_low_qubit_2channel": 3.0799978097793352,
           "gain_vs_google_low_gate_2channel": 2.395553852050594
         },
@@ -333,8 +323,6 @@
           "total_non_clifford_2channel_folded": 29278144,
           "total_non_clifford_3channel_folded_conservative": 30195648,
           "total_non_clifford_3channel_folded_meta_elided": 29278144,
-          "improvement_fraction_vs_pre_folding_baseline_2channel": 0.05549694333241806,
-          "improvement_fraction_vs_pre_folding_baseline_3channel_conservative": 0.08033947795712859,
           "gain_vs_google_low_qubit_2channel": 3.0739653442513295,
           "gain_vs_google_low_gate_2channel": 2.3908619344177007
         }
@@ -344,8 +332,6 @@
         "total_non_clifford_2channel_folded": 29163456,
         "total_non_clifford_3channel_folded_conservative": 30080960,
         "total_non_clifford_3channel_folded_meta_elided": 29163456,
-        "improvement_fraction_vs_pre_folding_baseline_2channel": 0.05919673955457927,
-        "improvement_fraction_vs_pre_folding_baseline_3channel_conservative": 0.08383249873787335,
         "gain_vs_google_low_qubit_2channel": 3.086053998538445,
         "gain_vs_google_low_gate_2channel": 2.400264221085457
       }
@@ -353,7 +339,7 @@
   ],
   "takeaways": [
     "Correcting the cost model shows that arithmetic, not lookup, dominates the current modeled total.",
-    "The signed two's-complement lookup-folding optimization is now merged into the mainline and gives a clean exact lookup-contract improvement of about 5.9% in the 2-channel line and about 8.4% in the conservative 3-channel line versus the pre-folding baseline at zero extra pad.",
+    "The signed two's-complement lookup-folding optimization provides an exact audited lookup-contract layer for the current modeled totals.",
     "Another dramatic overall improvement would likely require arithmetic-backend substitution or combined lookup-plus-arithmetic changes rather than lookup work alone."
   ],
   "notes": [

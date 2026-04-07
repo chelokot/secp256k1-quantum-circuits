@@ -50,14 +50,12 @@ The contract summary records:
 The translation from the folded contract to total non-Clifford count remains a
 backend model below the ISA boundary.
 
-## Modeled totals for the merged mainline
+## Modeled totals
 
 `artifacts/out/lookup_folded_projection.json` records the base-case
 projection:
 
-- pre-folding baseline 2-channel total: `30,998,464`
 - folded 2-channel total: `29,163,456`
-- pre-folding baseline 3-channel total: `32,833,472`
 - folded conservative 3-channel total: `30,080,960`
 
 The strongest contract-level conclusion is a 2x reduction in the per-coordinate

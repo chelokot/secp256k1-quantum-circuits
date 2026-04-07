@@ -50,8 +50,8 @@ class ResearchArtifactTests(unittest.TestCase):
         base = self.lookup_projection['base_case_pad0']
         self.assertLess(base['total_non_clifford_2channel_folded'], 30_000_000)
         self.assertLess(base['total_non_clifford_3channel_folded_conservative'], 31_000_000)
-        self.assertGreater(base['improvement_fraction_vs_pre_folding_baseline_2channel'], 0.05)
-        self.assertGreater(base['improvement_fraction_vs_pre_folding_baseline_3channel_conservative'], 0.08)
+        self.assertGreater(base['gain_vs_google_low_qubit_2channel'], 3.0)
+        self.assertGreater(base['gain_vs_google_low_gate_2channel'], 2.3)
 
     def test_challenge_ladder_audit_passes(self):
         self.assertEqual(self.ladder_summary['summary']['curve_count'], 7)

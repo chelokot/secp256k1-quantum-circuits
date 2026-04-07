@@ -38,19 +38,6 @@
       "total_non_clifford": 30080960
     }
   },
-  "pre_folding_baseline": {
-    "logical_qubits_total": 880,
-    "lookup_model_2channel": {
-      "lookup_channels": 2,
-      "per_window_lookup_cost": 131072,
-      "total_non_clifford": 30998464
-    },
-    "lookup_model_3channel": {
-      "lookup_channels": 3,
-      "per_window_lookup_cost": 196608,
-      "total_non_clifford": 32833472
-    }
-  },
   "improvement_vs_google": {
     "versus_low_qubit": {
       "qubit_gain": 1.3636363636363635,

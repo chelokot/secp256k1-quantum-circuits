@@ -27,7 +27,7 @@ and audited directly.
 ### 4. Scenario translation
 
 Arithmetic-backend and architecture papers are used to define explicit scenario
-files and future-work branches rather than being merged into the main headline
+files and future-work branches rather than being treated as main-headline evidence
 without a new exact artifact.
 
 ## Used as scenario or future-work inputs

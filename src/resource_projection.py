@@ -49,21 +49,6 @@ OPTIMIZED_ECDLP_PROJECTION = {
     },
 }
 
-PRE_FOLDING_BASELINE = {
-    'logical_qubits_total': 880,
-    'lookup_model_2channel': {
-        'lookup_channels': 2,
-        'per_window_lookup_cost': 131_072,
-        'total_non_clifford': 30_998_464,
-    },
-    'lookup_model_3channel': {
-        'lookup_channels': 3,
-        'per_window_lookup_cost': 196_608,
-        'total_non_clifford': 32_833_472,
-    },
-}
-
-
 def compute_improvement_vs_google() -> Dict[str, Dict[str, float]]:
     optimized = OPTIMIZED_ECDLP_PROJECTION
     baseline = PUBLIC_GOOGLE_BASELINE
@@ -93,7 +78,6 @@ def build_resource_projection() -> Dict[str, Any]:
         'public_google_baseline': PUBLIC_GOOGLE_BASELINE,
         'optimized_leaf_projection': OPTIMIZED_LEAF_PROJECTION,
         'optimized_ecdlp_projection': OPTIMIZED_ECDLP_PROJECTION,
-        'pre_folding_baseline': PRE_FOLDING_BASELINE,
         'improvement_vs_google': compute_improvement_vs_google(),
     }
 

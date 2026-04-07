@@ -28,9 +28,9 @@ Lookup work is still valuable because:
 
 - the repository exposes lookup contracts explicitly,
 - lookup improvements can compose with the current optimized arithmetic leaf,
-- the signed folded contract is already merged into the mainline and exposes a clean path for further lookup-side work.
+- the signed folded contract already exists in the primary artifact and exposes a clean path for further lookup-side work.
 
-The merged signed folded contract projects:
+The signed folded contract projects:
 
 - **29,163,456 non-Clifford** under the folded 2-channel line
 - **30,080,960 non-Clifford** under the folded conservative 3-channel line
