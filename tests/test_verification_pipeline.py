@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 import json
-import subprocess
-import sys
 import unittest
 from pathlib import Path
+
+from support import ensure_repo_verification_summary
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
@@ -14,8 +14,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 class VerificationPipelineTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        subprocess.run([sys.executable, 'scripts/verify_all.py'], cwd=REPO_ROOT, check=True)
-        cls.summary = json.loads((REPO_ROOT / 'results' / 'repo_verification_summary.json').read_text())
+        cls.summary = json.loads(ensure_repo_verification_summary().read_text())
 
     def test_optimized_audit_passes(self):
         audit = self.summary['optimized']['audit']

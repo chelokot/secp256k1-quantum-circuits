@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 import json
-import subprocess
-import sys
 import unittest
 from pathlib import Path
+
+from support import ensure_cain_summary
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
@@ -14,8 +14,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 class CainIntegrationTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        subprocess.run([sys.executable, 'scripts/compare_cain_2026.py'], cwd=REPO_ROOT, check=True)
-        cls.summary = json.loads((REPO_ROOT / 'results' / 'cain_2026_integration_summary.json').read_text())
+        cls.summary = json.loads(ensure_cain_summary().read_text())
 
     def test_headline_ranges_are_ordered(self):
         head = self.summary['headline_ranges']
