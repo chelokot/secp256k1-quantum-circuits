@@ -67,7 +67,7 @@
       "bytes": 1470
     },
     "artifacts/verification/core/verifier_rebuild_summary.json": {
-      "sha256": "91f781fc06deccc3b7927f28d276ff044077370b9af5a229727f832836fa0a2d",
+      "sha256": "61e343346456e96744076442da5a5a7e2028c973cf03eaaa9cf055ef2730daf1",
       "bytes": 1282
     },
     "artifacts/verification/extended/lookup_contract_summary.json": {
@@ -134,9 +134,9 @@
       "sha256": "b11877aa659de58b33c9213b8aae69ed960f337b713f6a2ec99882ebcbb04380",
       "bytes": 27856
     },
-    "scripts/generate_figures.py": {
-      "sha256": "8fd3e318083ceafdf389ddd271c28b12515fc0abde5ef4ae1da4b3d41573cb88",
-      "bytes": 11190
+    "src/figure_generation.py": {
+      "sha256": "d6eb8336ef95670540aeda1bec2d3ee653f788ad20b9a5caa727ed0239fc1b5d",
+      "bytes": 11745
     }
   }
 }

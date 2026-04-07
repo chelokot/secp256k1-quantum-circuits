@@ -16,6 +16,12 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+SRC_DIR = REPO_ROOT / 'src'
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
+
+from cain_integration import write_cain_integration_summary  # noqa: E402
+
 SUMMARY_PATH = REPO_ROOT / 'results' / 'cain_2026_integration_summary.json'
 
 
@@ -42,6 +48,8 @@ class Console:
 
 
 def main() -> None:
+    if not SUMMARY_PATH.exists():
+        write_cain_integration_summary(REPO_ROOT)
     console = Console()
     summary = json.loads(SUMMARY_PATH.read_text())
     head = summary['headline_ranges']

@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import json
-import subprocess
 import sys
 import unittest
 from pathlib import Path
@@ -14,6 +12,7 @@ if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
 from common import sha256_path  # noqa: E402
+from maintenance import write_repository_manifest  # noqa: E402
 
 
 class RepoIntegrityTests(unittest.TestCase):
@@ -26,7 +25,7 @@ class RepoIntegrityTests(unittest.TestCase):
             self.assertGreater(path.stat().st_size, 100_000)
 
     def test_hash_manifest_matches_selected_files(self):
-        subprocess.run([sys.executable, 'scripts/hash_repo.py'], cwd=REPO_ROOT, check=True)
+        write_repository_manifest(REPO_ROOT)
         manifest_lines = (REPO_ROOT / 'MANIFEST.sha256').read_text().splitlines()
         manifest = {}
         for line in manifest_lines:

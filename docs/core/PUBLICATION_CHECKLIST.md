@@ -5,7 +5,7 @@
 - run `python scripts/verify_all.py`
 - optionally run `python scripts/verify_all.py --quick` to confirm the core-only path still works
 - run `python -m unittest discover -s tests -v`
-- run `python scripts/hash_repo.py`
+- run `python scripts/refresh_repo.py`
 - inspect `results/repo_verification_summary.json`
 
 ## Required wording checks

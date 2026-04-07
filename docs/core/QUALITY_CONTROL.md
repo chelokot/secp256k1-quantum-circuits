@@ -31,6 +31,12 @@ The repository also carries generated research summaries for:
 - challenge-ladder research summaries
 - literature and physical-context matrices
 
+Maintainers can refresh the checked-in generated layer with:
+
+```bash
+python scripts/refresh_repo.py
+```
+
 ## Independent reference paths
 
 The optimized arithmetic leaf is checked against:

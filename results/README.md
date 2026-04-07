@@ -23,6 +23,12 @@ Use `python scripts/verify_all.py --quick` for the shorter core-only path.
 
 These are checked-in generated summaries validated by the test suite.
 
+Maintainers can refresh the generated repository layer with:
+
+```bash
+python scripts/refresh_repo.py
+```
+
 ## Physical transfer summary
 
 - `cain_2026_integration_summary.json`

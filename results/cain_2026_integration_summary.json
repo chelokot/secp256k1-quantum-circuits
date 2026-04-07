@@ -17,14 +17,14 @@
     }
   },
   "headline_ranges": {
-    "projected_time_efficient_days_min": 3.240384,
+    "projected_time_efficient_days_min": 3.2403839999999997,
     "projected_time_efficient_days_max": 4.29728,
     "projected_balanced_days_min": 85.5461376,
     "projected_balanced_days_max": 113.448192,
-    "naive_linear_space_physical_qubits_min": 15779.310344827587,
-    "naive_linear_space_physical_qubits_max": 19066.666666666668,
+    "naive_linear_space_physical_qubits_min": 15779.310344827585,
+    "naive_linear_space_physical_qubits_max": 19066.666666666664,
     "half_fixed_overhead_space_physical_qubits_min": 20889.655172413793,
-    "half_fixed_overhead_space_physical_qubits_max": 22533.333333333336
+    "half_fixed_overhead_space_physical_qubits_max": 22533.333333333332
   },
   "cases": [
     {
@@ -35,12 +35,12 @@
       "optimized_logical_qubits": 880,
       "optimized_non_clifford": 29163456,
       "runtime_speedup_factor": 3.086053998538445,
-      "projected_time_efficient_days": 3.240384,
+      "projected_time_efficient_days": 3.2403839999999997,
       "projected_balanced_days": 85.5461376,
       "space_transfer": {
         "same_hardware_regime_physical_qubits": 26000,
-        "naive_linear_logical_scaling_physical_qubits": 19066.666666666668,
-        "half_fixed_overhead_scaling_physical_qubits": 22533.333333333336
+        "naive_linear_logical_scaling_physical_qubits": 19066.666666666664,
+        "half_fixed_overhead_scaling_physical_qubits": 22533.333333333332
       },
       "assumptions": [
         "Runtime is transferred linearly with the dominant non-Clifford/Toffoli budget.",
@@ -60,8 +60,8 @@
       "projected_balanced_days": 88.23748266666666,
       "space_transfer": {
         "same_hardware_regime_physical_qubits": 26000,
-        "naive_linear_logical_scaling_physical_qubits": 19066.666666666668,
-        "half_fixed_overhead_scaling_physical_qubits": 22533.333333333336
+        "naive_linear_logical_scaling_physical_qubits": 19066.666666666664,
+        "half_fixed_overhead_scaling_physical_qubits": 22533.333333333332
       },
       "assumptions": [
         "Runtime is transferred linearly with the dominant non-Clifford/Toffoli budget.",
@@ -81,7 +81,7 @@
       "projected_balanced_days": 109.9878912,
       "space_transfer": {
         "same_hardware_regime_physical_qubits": 26000,
-        "naive_linear_logical_scaling_physical_qubits": 15779.310344827587,
+        "naive_linear_logical_scaling_physical_qubits": 15779.310344827585,
         "half_fixed_overhead_scaling_physical_qubits": 20889.655172413793
       },
       "assumptions": [
@@ -102,7 +102,7 @@
       "projected_balanced_days": 113.448192,
       "space_transfer": {
         "same_hardware_regime_physical_qubits": 26000,
-        "naive_linear_logical_scaling_physical_qubits": 15779.310344827587,
+        "naive_linear_logical_scaling_physical_qubits": 15779.310344827585,
         "half_fixed_overhead_scaling_physical_qubits": 20889.655172413793
       },
       "assumptions": [

@@ -1,17 +1,13 @@
 #!/usr/bin/env python3
-"""Rebuild the curated proof manifest for the primary artifact package."""
 
 from __future__ import annotations
 
-import sys
+import json
 from pathlib import Path
+from typing import Any, Dict
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
-SRC_DIR = REPO_ROOT / 'src'
-if str(SRC_DIR) not in sys.path:
-    sys.path.insert(0, str(SRC_DIR))
-
-from common import dump_json, sha256_path  # noqa: E402
+from common import artifact_core_verification_path, dump_json, relative_file_manifest, sha256_path
+from verifier import run_audit, run_toy
 
 
 PROOF_MANIFEST_PATHS = [
@@ -47,15 +43,25 @@ PROOF_MANIFEST_PATHS = [
     'reports/secp256k1_optimized_report.pdf',
     'src/verifier.py',
     'src/extended_verifier.py',
-    'scripts/generate_figures.py',
+    'src/figure_generation.py',
 ]
 
 
-def main() -> None:
+def write_verifier_rebuild_summary(repo_root: Path) -> Dict[str, Any]:
+    package_dir = repo_root / 'artifacts'
+    summary = {
+        'audit': run_audit(package_dir),
+        'toy': run_toy(package_dir),
+    }
+    dump_json(artifact_core_verification_path(package_dir, 'verifier_rebuild_summary.json'), summary)
+    return summary
+
+
+def write_proof_manifest(repo_root: Path) -> Dict[str, Any]:
     files = {}
-    for rel in PROOF_MANIFEST_PATHS:
-        path = REPO_ROOT / rel
-        files[rel] = {
+    for relative_path in PROOF_MANIFEST_PATHS:
+        path = repo_root / relative_path
+        files[relative_path] = {
             'sha256': sha256_path(path),
             'bytes': path.stat().st_size,
         }
@@ -69,10 +75,11 @@ def main() -> None:
         ],
         'files': files,
     }
-    out_path = REPO_ROOT / 'artifacts' / 'package' / 'proof_manifest.json'
-    dump_json(out_path, proof_manifest)
-    print(f'Wrote {out_path}')
+    dump_json(repo_root / 'artifacts' / 'package' / 'proof_manifest.json', proof_manifest)
+    return proof_manifest
 
 
-if __name__ == '__main__':
-    main()
+def write_repository_manifest(repo_root: Path) -> None:
+    manifest = relative_file_manifest(repo_root)
+    lines = [f"{record['sha256']}  {relative_path}" for relative_path, record in manifest.items()]
+    (repo_root / 'MANIFEST.sha256').write_text('\n'.join(lines) + '\n')

@@ -25,6 +25,9 @@ Primary optimized release with:
 ## Source code
 
 - `src/common.py` — arithmetic, hashing, and serialization helpers
+- `src/cain_integration.py` — Cain et al. transfer summary generation
+- `src/figure_generation.py` — figure generation logic
+- `src/maintenance.py` — manifest and artifact-refresh helpers
 - `src/resource_projection.py` — canonical modeled projection data and ratio computation
 - `src/verifier.py` — primary optimized-artifact verifier
 - `src/extended_verifier.py` — extended verification and sensitivity layer
@@ -33,10 +36,8 @@ Primary optimized release with:
 ## Scripts
 
 - `scripts/verify_all.py` — main verification path, with `--quick` for the core-only run
-- `scripts/rebuild_resource_projection.py` — canonical modeled projection regeneration
 - `scripts/compare_cain_2026.py` — neutral-atom transfer report
-- `scripts/hash_repo.py` — manifest regeneration
-- `scripts/generate_figures.py` — figure regeneration
+- `scripts/refresh_repo.py` — maintainer-only artifact refresh path
 
 ## Documentation
 
