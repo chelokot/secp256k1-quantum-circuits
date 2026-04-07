@@ -3,7 +3,6 @@
 ## Top level
 
 - `README.md` — main entry point and terminology
-- `RESEARCH_BOUNDARY.md` — shortest scope statement
 - `REFERENCES.md` — external papers and tooling used as baselines or future-work
   inputs
 - `LICENSE` — repository license
@@ -51,8 +50,6 @@ Primary optimized release with:
 - `docs/references/PHYSICAL_STACKS_AND_HARDWARE_CONTEXT.md` — logical versus physical layer
 - `docs/references/CAIN_2026_NEUTRAL_ATOM_INTEGRATION.md` — neutral-atom transfer study
 - `docs/research/META_ANALYSIS.md` — artifact-family comparison
-- `docs/core/PUBLICATION_CHECKLIST.md` — release wording and verification checklist
-- `docs/core/QUALITY_CONTROL.md` — reproducibility paths
 - `docs/references/TOOLING_AND_REIMPLEMENTATION_PATHS.md` — external tooling directions
 
 ## Figures

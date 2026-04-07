@@ -22,7 +22,6 @@ class ReleaseInventoryTests(unittest.TestCase):
     def test_core_repository_inventory_is_present(self):
         expected = [
             'README.md',
-            'RESEARCH_BOUNDARY.md',
             'REFERENCES.md',
             'LICENSE',
             'CITATION.cff',
@@ -33,12 +32,9 @@ class ReleaseInventoryTests(unittest.TestCase):
             'docs/research/LOOKUP_FOLDING_RESEARCH_PASS.md',
             'docs/research/OPTIMIZATION_FRONTIERS.md',
             'docs/references/STATE_OF_THE_ART_2026.md',
-            'docs/references/LITERATURE_INTEGRATION_DECISIONS.md',
             'docs/core/RED_TEAM_REVIEW.md',
             'docs/references/CAIN_2026_NEUTRAL_ATOM_INTEGRATION.md',
             'docs/research/META_ANALYSIS.md',
-            'docs/core/PUBLICATION_CHECKLIST.md',
-            'docs/core/QUALITY_CONTROL.md',
             'docs/core/REPO_LAYOUT.md',
             'docs/references/PHYSICAL_STACKS_AND_HARDWARE_CONTEXT.md',
             'docs/research/COST_MODEL_CORRECTION.md',
