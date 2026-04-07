@@ -40,6 +40,12 @@ class ExtendedArtifactTests(unittest.TestCase):
         self.assertEqual(toy['summary']['pass'], 110692)
         self.assertEqual(toy['sha256'], '1934fbac5e0c4bbd2d5afd58a2956cd3dd40edcfcf5bc53be747af7f00baab72')
 
+    def test_challenge_ladder_passes(self):
+        ladder = self.extended['challenge_ladder']
+        self.assertEqual(ladder['summary']['curve_count'], 7)
+        self.assertEqual(ladder['summary']['total'], ladder['summary']['pass'])
+        self.assertGreaterEqual(ladder['summary']['total'], 700)
+
     def test_meta_analysis_reductions_are_substantial(self):
         optimized = self.meta['optimized_vs_google_estimates']
         self.assertGreater(optimized['vs_low_qubit_non_clifford_factor'], 2.5)

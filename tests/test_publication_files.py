@@ -20,7 +20,6 @@ class PublicationFilesTests(unittest.TestCase):
             'docs/references/CAIN_2026_NEUTRAL_ATOM_INTEGRATION.md',
             'docs/references/STATE_OF_THE_ART_2026.md',
             'docs/references/LITERATURE_INTEGRATION_DECISIONS.md',
-            'docs/research/CHALLENGE_LADDER.md',
             'docs/references/TOOLING_AND_REIMPLEMENTATION_PATHS.md',
             'docs/references/PHYSICAL_STACKS_AND_HARDWARE_CONTEXT.md',
             'docs/research/COST_MODEL_CORRECTION.md',

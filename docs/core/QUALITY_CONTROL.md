@@ -28,7 +28,7 @@ This covers:
 
 - dominant cost breakdown
 - lookup-folding provenance for the primary artifact
-- challenge-ladder generation and replay
+- challenge-ladder research summaries
 - literature and physical-context matrices
 
 ## Independent reference paths

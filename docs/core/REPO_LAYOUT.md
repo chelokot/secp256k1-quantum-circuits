@@ -21,13 +21,6 @@ Primary optimized release with:
 - deterministic audits
 - extended verification outputs
 - research and sensitivity outputs
-- figures used by the reports
-
-## Benchmarks
-
-### `benchmarks/challenge_ladder/`
-
-Deterministic benchmark-curve replay suite in the `y^2 = x^3 + 7` family.
 
 ## Source code
 
@@ -57,11 +50,15 @@ Deterministic benchmark-curve replay suite in the `y^2 = x^3 + 7` family.
 - `docs/core/RED_TEAM_REVIEW.md` — skeptical reading guide
 - `docs/references/PHYSICAL_STACKS_AND_HARDWARE_CONTEXT.md` — logical versus physical layer
 - `docs/references/CAIN_2026_NEUTRAL_ATOM_INTEGRATION.md` — neutral-atom transfer study
-- `docs/research/CHALLENGE_LADDER.md` — benchmark-ladder definition
 - `docs/research/META_ANALYSIS.md` — artifact-family comparison
 - `docs/core/PUBLICATION_CHECKLIST.md` — release wording and verification checklist
 - `docs/core/QUALITY_CONTROL.md` — reproducibility paths
 - `docs/references/TOOLING_AND_REIMPLEMENTATION_PATHS.md` — external tooling directions
+
+## Figures
+
+- `figures/core/` — main report and comparison figures
+- `figures/research/` — research and supporting-analysis figures
 
 ## Results
 

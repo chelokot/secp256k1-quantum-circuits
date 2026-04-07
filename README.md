@@ -94,7 +94,7 @@ The checked-in summaries report:
 - extended lookup-contract audit: **8,192 / 8,192** pass
 - extended scaffold replay: **256 / 256** pass
 - extended toy-family proof: **110,692 / 110,692** pass
-- challenge ladder replay: **763 / 763** pass across **7** benchmark curves
+- challenge ladder replay: **763 / 763** pass across **7** deterministic benchmark curves
 
 See:
 
@@ -103,13 +103,12 @@ See:
 
 ## Repository map
 
-- `artifacts/` — primary optimized artifact, audits, projections,
-  research outputs, and figures
-- `benchmarks/challenge_ladder/` — deterministic benchmark-curve replay suite
+- `artifacts/` — primary optimized artifact, audits, projections, and research outputs
 - `src/` — verifier and research logic implemented in Python
 - `scripts/` — reproducibility entrypoints
 - `docs/` — scope, claims, baseline definitions, verification notes, and
   research interpretation
+- `figures/` — generated report figures
 - `results/` — generated summary JSON files
 - `reports/` — report PDFs
 

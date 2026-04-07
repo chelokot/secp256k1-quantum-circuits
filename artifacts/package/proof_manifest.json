@@ -135,8 +135,8 @@
       "bytes": 26961
     },
     "scripts/generate_figures.py": {
-      "sha256": "0cdee09cbbf6289d22340fb2b81eef873d128ca34f74ea956675310a7bc25fc3",
-      "bytes": 11319
+      "sha256": "8fd3e318083ceafdf389ddd271c28b12515fc0abde5ef4ae1da4b3d41573cb88",
+      "bytes": 11190
     }
   }
 }

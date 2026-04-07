@@ -15,9 +15,9 @@ if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
 from common import artifact_core_figure_path, artifact_projection_path, artifact_research_figure_path  # noqa: E402
+from research_extensions import build_challenge_ladder  # noqa: E402
 
 PACKAGE_DIR = REPO_ROOT / 'artifacts'
-BENCH_DIR = REPO_ROOT / 'benchmarks' / 'challenge_ladder'
 RESULTS_DIR = REPO_ROOT / 'results'
 
 
@@ -82,14 +82,14 @@ def fig_headroom(sensitivity):
     plt.close(fig)
 
 
-def fig_verification_coverage(strict_summary, ladder_summary):
+def fig_verification_coverage(strict_summary):
     entries = [
         ('quick secp audit', 16384),
         ('quick toy family', 19850),
         ('lookup contract', strict_summary['lookup_contract']['summary']['signed_i16']['total'] + strict_summary['lookup_contract']['summary']['unsigned_u16']['total']),
         ('scaffold replay', strict_summary['scaffold_schedule']['summary']['total']),
         ('extended toy family', strict_summary['toy_extended']['summary']['total']),
-        ('challenge ladder', ladder_summary['summary']['total']),
+        ('challenge ladder', strict_summary['challenge_ladder']['summary']['total']),
     ]
     labels = [k for k, _ in entries]
     values = [v for _, v in entries]
@@ -230,14 +230,13 @@ def main():
     verification = json.loads((RESULTS_DIR / 'repo_verification_summary.json').read_text())
     frontier = load('optimization_frontier_estimates.json')
     dominant = load('dominant_cost_breakdown.json')
-    ladder = json.loads((BENCH_DIR / 'challenge_ladder.json').read_text())
-    ladder_summary = json.loads((BENCH_DIR / 'challenge_ladder_summary.json').read_text())
+    ladder = build_challenge_ladder()
     matrix = json.loads((RESULTS_DIR / 'literature_matrix.json').read_text())
     folded = load('lookup_folded_projection.json')
 
     fig_progression(meta, projection)
     fig_headroom(sens)
-    fig_verification_coverage(verification['extended'], ladder_summary)
+    fig_verification_coverage(verification['extended'])
     fig_frontier_ranges(frontier)
     fig_dominant_cost_breakdown(dominant)
     fig_lookup_reduction_targets(dominant)

@@ -23,6 +23,7 @@ from extended_verifier import (  # noqa: E402
     run_projection_sensitivity,
     run_scaffold_schedule,
 )
+from research_extensions import build_challenge_ladder, run_challenge_ladder_audit  # noqa: E402
 from verifier import run_audit, run_toy  # noqa: E402
 
 
@@ -98,7 +99,7 @@ def parse_args() -> argparse.Namespace:
 
 def build_extended_summary(repo_root: Path, progress: ProgressReporter, step: int, total_steps: int) -> Dict[str, Any]:
     title = 'Running extended supporting checks'
-    total = 6
+    total = 7
     completed = 0
 
     def mark_done() -> None:
@@ -119,6 +120,8 @@ def build_extended_summary(repo_root: Path, progress: ProgressReporter, step: in
     mark_done()
     claim_boundaries = run_claim_boundary_matrix(repo_root)
     mark_done()
+    challenge_ladder = run_challenge_ladder_audit(repo_root, build_challenge_ladder())
+    mark_done()
 
     return {
         'lookup_contract': lookup_contract,
@@ -127,6 +130,7 @@ def build_extended_summary(repo_root: Path, progress: ProgressReporter, step: in
         'projection_sensitivity': projection_sensitivity,
         'meta_analysis': meta_analysis,
         'claim_boundaries': claim_boundaries,
+        'challenge_ladder': challenge_ladder,
     }
 
 
@@ -179,6 +183,7 @@ def build_summary(console: Console, show_progress: bool, quick: bool) -> Dict[st
             and extended['lookup_contract']['summary']['unsigned_u16']['pass'] == extended['lookup_contract']['summary']['unsigned_u16']['total']
             and extended['scaffold_schedule']['summary']['pass'] == extended['scaffold_schedule']['summary']['total']
             and extended['toy_extended']['summary']['pass'] == extended['toy_extended']['summary']['total']
+            and extended['challenge_ladder']['summary']['pass'] == extended['challenge_ladder']['summary']['total']
         )
     return summary
 
@@ -238,6 +243,11 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
         ))
         print(console.detail(
             f"      extended toy family: {toy_extended['pass']:,} / {toy_extended['total']:,} exhaustive cases across four toy curves"
+        ))
+        print(console.detail(
+            f"      challenge ladder: {extended['challenge_ladder']['summary']['pass']:,} / "
+            f"{extended['challenge_ladder']['summary']['total']:,} replay cases across "
+            f"{extended['challenge_ladder']['summary']['curve_count']} deterministic benchmark curves"
         ))
         print(console.detail(f"      lookup sha256: {extended['lookup_contract']['sha256']}"))
         print(console.detail(f"      scaffold sha256: {extended['scaffold_schedule']['sha256']}"))

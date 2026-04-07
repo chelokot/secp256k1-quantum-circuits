@@ -16,7 +16,6 @@ The default research pass adds four kinds of outputs:
 
 from __future__ import annotations
 
-import csv
 import hashlib
 import json
 import math
@@ -32,7 +31,6 @@ from common import (
     artifact_projection_path,
     deterministic_scalars,
     dump_json,
-    hex_or_inf,
     load_json,
     mul_affine,
     mul_fixed_window,
@@ -386,7 +384,7 @@ def compute_literature_projection_scenarios(repo_root: Path) -> Dict[str, Any]:
     return result
 
 
-def build_challenge_ladder(repo_root: Path, bit_sizes: Iterable[int] = (6, 8, 10, 12, 14, 16, 18)) -> Dict[str, Any]:
+def build_challenge_ladder(bit_sizes: Iterable[int] = (6, 8, 10, 12, 14, 16, 18)) -> Dict[str, Any]:
     ladder_curves = []
     for bits in bit_sizes:
         curve = find_curve_fast(bits, b=SECP_B, subgroup_min_bits=max(5, bits - 1))
@@ -415,108 +413,69 @@ def build_challenge_ladder(repo_root: Path, bit_sizes: Iterable[int] = (6, 8, 10
             "It is intended for regression testing, transparency, and external reimplementation paths rather than for headline quantum resource claims.",
         ],
     }
-    out_dir = repo_root / "benchmarks" / "challenge_ladder"
-    out_dir.mkdir(parents=True, exist_ok=True)
-    out_path = out_dir / "challenge_ladder.json"
-    dump_json(out_path, serializable)
     return serializable
 
 
-def run_challenge_ladder_audit(repo_root: Path, max_random_scalars_per_curve: int = 128) -> Dict[str, Any]:
-    ladder = load_json(repo_root / "benchmarks" / "challenge_ladder" / "challenge_ladder.json")
+def run_challenge_ladder_audit(repo_root: Path, ladder: Dict[str, Any], max_random_scalars_per_curve: int = 128) -> Dict[str, Any]:
     family = load_json(artifact_circuits_path(repo_root / "artifacts", "optimized_pointadd_family.json"))
-    out_dir = repo_root / "benchmarks" / "challenge_ladder"
-    out_csv = out_dir / "challenge_ladder_audit.csv"
 
     total = 0
     passed = 0
     curves_summary: Dict[str, Any] = {}
     seed_material = sha256_bytes(json.dumps(ladder, sort_keys=True).encode())
+    for curve_obj in ladder["curves"]:
+        p = int(curve_obj["p"])
+        b = int(curve_obj["b"])
+        order = int(curve_obj["subgroup_order"])
+        field_bits = int(curve_obj["field_bits"])
+        generator = (int(curve_obj["generator"]["x"]), int(curve_obj["generator"]["y"]))
+        challenge_scalar = int(curve_obj["challenge_scalar"])
+        challenge_point = (int(curve_obj["challenge_point"]["x"]), int(curve_obj["challenge_point"]["y"]))
+        width = 4
+        bits = max(1, order.bit_length())
+        chunks = (bits + width - 1) // width
+        tables = precompute_window_tables(generator, p, b, width=width, bits=bits)
+        netlist = specialize_family_netlist(family, 3 * b)["instructions"]
 
-    with out_csv.open("w", newline="") as handle:
-        writer = csv.writer(handle)
-        writer.writerow([
-            "curve_bits",
-            "field_p",
-            "subgroup_order",
-            "width",
-            "scalar",
-            "challenge_scalar",
-            "accumulated_x",
-            "accumulated_y",
-            "direct_mul_x",
-            "direct_mul_y",
-            "challenge_point_x",
-            "challenge_point_y",
-            "status",
-        ])
+        seed = bytes.fromhex(seed_material) + field_bits.to_bytes(2, "big")
+        scalars = [0, 1, 2, order - 1, order // 2, challenge_scalar]
+        scalars.extend(deterministic_scalars(seed, max_random_scalars_per_curve, order))
+        scalars = list(dict.fromkeys([value % order for value in scalars]))
 
-        for curve_obj in ladder["curves"]:
-            p = int(curve_obj["p"])
-            b = int(curve_obj["b"])
-            order = int(curve_obj["subgroup_order"])
-            field_bits = int(curve_obj["field_bits"])
-            generator = (int(curve_obj["generator"]["x"]), int(curve_obj["generator"]["y"]))
-            challenge_scalar = int(curve_obj["challenge_scalar"])
-            challenge_point = (int(curve_obj["challenge_point"]["x"]), int(curve_obj["challenge_point"]["y"]))
-            width = 4
-            bits = max(1, order.bit_length())
-            chunks = (bits + width - 1) // width
-            tables = precompute_window_tables(generator, p, b, width=width, bits=bits)
-            netlist = specialize_family_netlist(family, 3 * b)["instructions"]
+        local_total = 0
+        local_pass = 0
+        for scalar in scalars:
+            qp = (0, 1, 0)
+            x = scalar
+            for pos in range(chunks):
+                digit = x & ((1 << width) - 1)
+                entry = None if digit == 0 else tables[pos][digit]
+                key = 0 if digit == 0 else 1
+                qp = exec_netlist(netlist, p, qp, entry, key)
+                x >>= width
+            got = proj_to_affine(qp, p)
+            ref = mul_fixed_window(scalar, tables, p, b, width=width, order=order)
+            ref2 = mul_affine(scalar, generator, p, b, order=order)
+            ok = got == ref == ref2
+            total += 1
+            passed += int(ok)
+            local_total += 1
+            local_pass += int(ok)
 
-            seed = bytes.fromhex(seed_material) + field_bits.to_bytes(2, "big")
-            scalars = [0, 1, 2, order - 1, order // 2, challenge_scalar]
-            scalars.extend(deterministic_scalars(seed, max_random_scalars_per_curve, order))
-            scalars = list(dict.fromkeys([value % order for value in scalars]))
-
-            local_total = 0
-            local_pass = 0
-            for scalar in scalars:
-                qp = (0, 1, 0)
-                x = scalar
-                for pos in range(chunks):
-                    digit = x & ((1 << width) - 1)
-                    entry = None if digit == 0 else tables[pos][digit]
-                    key = 0 if digit == 0 else 1
-                    qp = exec_netlist(netlist, p, qp, entry, key)
-                    x >>= width
-                got = proj_to_affine(qp, p)
-                ref = mul_fixed_window(scalar, tables, p, b, width=width, order=order)
-                ref2 = mul_affine(scalar, generator, p, b, order=order)
-                ok = got == ref == ref2
-                total += 1
-                passed += int(ok)
-                local_total += 1
-                local_pass += int(ok)
-                writer.writerow([
-                    field_bits,
-                    p,
-                    order,
-                    width,
-                    scalar,
-                    challenge_scalar,
-                    *hex_or_inf(got),
-                    *hex_or_inf(ref),
-                    *hex_or_inf(challenge_point),
-                    "PASS" if ok else "FAIL",
-                ])
-
-            curves_summary[f"bits_{field_bits}"] = {
-                "field_bits": field_bits,
-                "field_p": p,
-                "subgroup_order": order,
-                "generator": {"x": generator[0], "y": generator[1]},
-                "challenge_scalar": challenge_scalar,
-                "challenge_point": {"x": challenge_point[0], "y": challenge_point[1]},
-                "tested_scalars": local_total,
-                "pass": local_pass,
-                "width": width,
-            }
+        curves_summary[f"bits_{field_bits}"] = {
+            "field_bits": field_bits,
+            "field_p": p,
+            "subgroup_order": order,
+            "generator": {"x": generator[0], "y": generator[1]},
+            "challenge_scalar": challenge_scalar,
+            "challenge_point": {"x": challenge_point[0], "y": challenge_point[1]},
+            "tested_scalars": local_total,
+            "pass": local_pass,
+            "width": width,
+        }
 
     summary = {
-        "sha256": sha256_path(out_csv),
-        "csv": out_csv.name,
+        "input_sha256": sha256_bytes(json.dumps(ladder, sort_keys=True).encode()),
         "summary": {
             "total": total,
             "pass": passed,
@@ -528,7 +487,6 @@ def run_challenge_ladder_audit(repo_root: Path, max_random_scalars_per_curve: in
             "It strengthens the external reproducibility story without pretending to be a full Shor-period-finding proof.",
         ],
     }
-    dump_json(out_dir / "challenge_ladder_summary.json", summary)
     return summary
 
 
@@ -738,8 +696,8 @@ def run_research_pass(repo_root: Path) -> Dict[str, Any]:
     lookup_audit = run_lookup_folding_audit(repo_root)
     lookup_projection = build_lookup_folded_projection(repo_root)
     literature_scenarios = compute_literature_projection_scenarios(repo_root)
-    ladder = build_challenge_ladder(repo_root)
-    ladder_audit = run_challenge_ladder_audit(repo_root)
+    ladder = build_challenge_ladder()
+    ladder_audit = run_challenge_ladder_audit(repo_root, ladder)
     literature_matrix = build_literature_matrix(repo_root)
     physical_refs = build_physical_stack_reference(repo_root)
 
@@ -770,7 +728,7 @@ def run_research_pass(repo_root: Path) -> Dict[str, Any]:
             "max_field_bits": max(curve["field_bits"] for curve in ladder["curves"]),
             "audit_total": ladder_audit["summary"]["total"],
             "audit_pass": ladder_audit["summary"]["pass"],
-            "sha256": ladder_audit["sha256"],
+            "input_sha256": ladder_audit["input_sha256"],
         },
         "literature_matrix": {
             "entry_count": len(literature_matrix["entries"]),

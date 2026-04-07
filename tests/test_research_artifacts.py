@@ -24,8 +24,6 @@ class ResearchArtifactTests(unittest.TestCase):
         cls.scenarios = json.loads((REPO_ROOT / 'artifacts' / 'projections' / 'literature_projection_scenarios.json').read_text())
         cls.lookup_summary = json.loads((REPO_ROOT / 'artifacts' / 'lookup' / 'lookup_signed_fold_summary.json').read_text())
         cls.lookup_projection = json.loads((REPO_ROOT / 'artifacts' / 'projections' / 'lookup_folded_projection.json').read_text())
-        cls.ladder = json.loads((REPO_ROOT / 'benchmarks' / 'challenge_ladder' / 'challenge_ladder.json').read_text())
-        cls.ladder_summary = json.loads((REPO_ROOT / 'benchmarks' / 'challenge_ladder' / 'challenge_ladder_summary.json').read_text())
         cls.matrix = json.loads((REPO_ROOT / 'results' / 'literature_matrix.json').read_text())
 
     def test_cost_model_correction_is_reflected(self):
@@ -58,8 +56,8 @@ class ResearchArtifactTests(unittest.TestCase):
         self.assertGreater(base['gain_vs_google_low_gate_2channel'], 2.3)
 
     def test_challenge_ladder_audit_passes(self):
-        self.assertEqual(self.ladder_summary['summary']['curve_count'], 7)
-        self.assertEqual(self.ladder_summary['summary']['total'], self.ladder_summary['summary']['pass'])
+        self.assertEqual(self.summary['challenge_ladder']['curve_count'], 7)
+        self.assertEqual(self.summary['challenge_ladder']['audit_total'], self.summary['challenge_ladder']['audit_pass'])
         self.assertGreaterEqual(self.summary['challenge_ladder']['audit_total'], 700)
         self.assertGreaterEqual(self.summary['challenge_ladder']['max_field_bits'], 18)
 

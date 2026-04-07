@@ -24,7 +24,7 @@
     "max_field_bits": 18,
     "audit_total": 763,
     "audit_pass": 763,
-    "sha256": "af75fb2e86a1fd640ba2da92529bda245f31f3d56b4b65dfa72b372b17179d68"
+    "input_sha256": "4ef85ec2d436c41c80a9b78fb43f32b281cbe63e92420b20f6424ca9ad9bc428"
   },
   "literature_matrix": {
     "entry_count": 17

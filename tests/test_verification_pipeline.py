@@ -44,6 +44,8 @@ class VerificationPipelineTests(unittest.TestCase):
         self.assertEqual(extended['lookup_contract']['summary']['unsigned_u16']['pass'], 4096)
         self.assertEqual(extended['scaffold_schedule']['summary']['pass'], 256)
         self.assertEqual(extended['toy_extended']['summary']['pass'], 110692)
+        self.assertEqual(extended['challenge_ladder']['summary']['curve_count'], 7)
+        self.assertEqual(extended['challenge_ladder']['summary']['pass'], extended['challenge_ladder']['summary']['total'])
         self.assertTrue(self.summary['headline_checks']['extended_checks_pass'])
 
 
