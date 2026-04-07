@@ -1,6 +1,6 @@
 {
   "schema": "lookup-folded-projection-v1",
-  "base_projection_sha256": "4db60843d1e1057a1a33d558bf2afe471ebb9e038b2a277cbfcbdd6140d9d7a7",
+  "base_projection_sha256": "c4237cae46311dfb63ba55731a88b62c4e4df4b20a74603641176c3bf7f27a75",
   "assumptions": [
     "The exact arithmetic leaf cost is unchanged from the repository's published optimized leaf.",
     "Each signed 16-bit coordinate table is folded from 65536 entries to 32768 entries plus one special constant for 0x8000.",
@@ -24,8 +24,8 @@
     "total_non_clifford_3channel_folded_meta_elided": 29163456,
     "improvement_fraction_vs_current_2channel": 0.05919673955457927,
     "improvement_fraction_vs_current_3channel_conservative": 0.08383249873787335,
-    "gain_vs_google_low_qubit_2channel": 2.7810498179639613,
-    "gain_vs_google_low_gate_2channel": 2.204986404903452
+    "gain_vs_google_low_qubit_2channel": 3.086053998538445,
+    "gain_vs_google_low_gate_2channel": 2.400264221085457
   },
   "pad_sweep": [
     {
@@ -35,8 +35,8 @@
       "total_non_clifford_3channel_folded_meta_elided": 29163456,
       "improvement_fraction_vs_current_2channel": 0.05919673955457927,
       "improvement_fraction_vs_current_3channel_conservative": 0.08383249873787335,
-      "gain_vs_google_low_qubit_2channel": 2.7810498179639613,
-      "gain_vs_google_low_gate_2channel": 2.204986404903452
+      "gain_vs_google_low_qubit_2channel": 3.086053998538445,
+      "gain_vs_google_low_gate_2channel": 2.400264221085457
     },
     {
       "per_window_small_overhead_pad": 256,
@@ -45,8 +45,8 @@
       "total_non_clifford_3channel_folded_meta_elided": 29170624,
       "improvement_fraction_vs_current_2channel": 0.058965502290694194,
       "improvement_fraction_vs_current_3channel_conservative": 0.0836141849390768,
-      "gain_vs_google_low_qubit_2channel": 2.780366439881437,
-      "gain_vs_google_low_gate_2channel": 2.2044445809592554
+      "gain_vs_google_low_qubit_2channel": 3.0852956727974004,
+      "gain_vs_google_low_gate_2channel": 2.399674412175756
     },
     {
       "per_window_small_overhead_pad": 512,
@@ -55,8 +55,8 @@
       "total_non_clifford_3channel_folded_meta_elided": 29177792,
       "improvement_fraction_vs_current_2channel": 0.05873426502680912,
       "improvement_fraction_vs_current_3channel_conservative": 0.08339587114028024,
-      "gain_vs_google_low_qubit_2channel": 2.779683397564833,
-      "gain_vs_google_low_gate_2channel": 2.203903023230819
+      "gain_vs_google_low_qubit_2channel": 3.084537719646504,
+      "gain_vs_google_low_gate_2channel": 2.399084893058392
     },
     {
       "per_window_small_overhead_pad": 1024,
@@ -65,8 +65,8 @@
       "total_non_clifford_3channel_folded_meta_elided": 29192128,
       "improvement_fraction_vs_current_2channel": 0.05827179049903897,
       "improvement_fraction_vs_current_3channel_conservative": 0.08295924354268713,
-      "gain_vs_google_low_qubit_2channel": 2.7783183192400362,
-      "gain_vs_google_low_gate_2channel": 2.202820705636807
+      "gain_vs_google_low_qubit_2channel": 3.083022930017298,
+      "gain_vs_google_low_gate_2channel": 2.3979067233467872
     },
     {
       "per_window_small_overhead_pad": 2048,
@@ -75,8 +75,8 @@
       "total_non_clifford_3channel_folded_meta_elided": 29220800,
       "improvement_fraction_vs_current_2channel": 0.057346841443498664,
       "improvement_fraction_vs_current_3channel_conservative": 0.08208598834750103,
-      "gain_vs_google_low_qubit_2channel": 2.775592180912227,
-      "gain_vs_google_low_gate_2channel": 2.200659256420084
+      "gain_vs_google_low_qubit_2channel": 3.0799978097793352,
+      "gain_vs_google_low_gate_2channel": 2.395553852050594
     },
     {
       "per_window_small_overhead_pad": 4096,
@@ -85,8 +85,8 @@
       "total_non_clifford_3channel_folded_meta_elided": 29278144,
       "improvement_fraction_vs_current_2channel": 0.05549694333241806,
       "improvement_fraction_vs_current_3channel_conservative": 0.08033947795712859,
-      "gain_vs_google_low_qubit_2channel": 2.7701559224519148,
-      "gain_vs_google_low_gate_2channel": 2.1963490581916667
+      "gain_vs_google_low_qubit_2channel": 3.0739653442513295,
+      "gain_vs_google_low_gate_2channel": 2.3908619344177007
     }
   ],
   "logical_qubit_comment": "The current repository does not primitive-lower the 16-bit sign/magnitude preprocessing. A small ancilla increase is plausible but expected to be negligible against the ~880 logical-qubit headline.",

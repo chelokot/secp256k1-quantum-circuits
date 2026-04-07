@@ -33,12 +33,12 @@ Its modeled ECDLP projection, as recorded in
 
 ### Public baseline used for comparison
 
-When this repository says **Google's published appendix estimates**, it means
-the published secp256k1 reference lines from Babbush et al. 2026 as stored in
-`artifacts/out/resource_projection.json`:
+When this repository says **Google's published 2026 secp256k1 estimates**, it
+means the rounded public comparison lines cited from Babbush et al. 2026 and
+stored in `artifacts/out/resource_projection.json`:
 
-- **low-qubit line:** `1191 logical qubits`, `81,105,024 non-Clifford`
-- **low-gate line:** `1441 logical qubits`, `64,305,024 non-Clifford`
+- **low-qubit line:** `1200 logical qubits`, `90,000,000 non-Clifford`
+- **low-gate line:** `1450 logical qubits`, `70,000,000 non-Clifford`
 - **window size:** `16`
 - **retained point additions:** `28`
 
@@ -86,8 +86,8 @@ If you need the shortest honest description of the repository, use:
 > This repository publishes exact ISA-level arithmetic artifacts and explicit
 > lookup contracts for a secp256k1 point-add stack, together with deterministic
 > audits, finite-model checks, retained-window scaffold replay, and modeled
-> backend resource projections against the public appendix baseline of Babbush
-> et al. 2026.
+> backend resource projections against Google's published 2026 secp256k1
+> estimates from Babbush et al. 2026.
 
 ## Verification summary
 
@@ -154,4 +154,4 @@ make test
 6. `docs/OPTIMIZATION_FRONTIERS.md`
 7. `docs/STATE_OF_THE_ART_2026.md`
 8. `docs/RED_TEAM_REVIEW.md`
-9. `reports/secp256k1_optimized_880q_31p0M_2p62x_report.pdf`
+9. `reports/secp256k1_optimized_880q_31p0M_report.pdf`

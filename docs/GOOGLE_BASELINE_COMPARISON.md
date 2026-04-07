@@ -1,17 +1,17 @@
-# Public appendix baseline comparison
+# Public Google baseline comparison
 
 This file defines the baseline used when the repository says **Google's
-published appendix estimates**.
+published 2026 secp256k1 estimates**.
 
 ## Baseline source
 
-The baseline is the published appendix estimate from Babbush et al. 2026 as
-stored in `artifacts/out/resource_projection.json`.
+The baseline is the rounded public secp256k1 estimate from Babbush et al. 2026
+as stored in `artifacts/out/resource_projection.json`.
 
 The tracked public lines are:
 
-- low-qubit line: **1191 logical qubits**, **81,105,024 non-Clifford**
-- low-gate line: **1441 logical qubits**, **64,305,024 non-Clifford**
+- low-qubit line: **1200 logical qubits**, **90,000,000 non-Clifford**
+- low-gate line: **1450 logical qubits**, **70,000,000 non-Clifford**
 - window size: **16**
 - retained point additions: **28**
 
@@ -27,15 +27,15 @@ The primary optimized projection is:
 
 Versus the public low-qubit line:
 
-- **1.3534x fewer logical qubits**
-- **2.6164x lower non-Clifford** under the 2-channel model
-- **2.4702x lower non-Clifford** under the 3-channel model
+- **1.3636x fewer logical qubits**
+- **2.9034x lower non-Clifford** under the 2-channel model
+- **2.7411x lower non-Clifford** under the 3-channel model
 
 Versus the public low-gate line:
 
-- **1.6375x fewer logical qubits**
-- **2.0745x lower non-Clifford** under the 2-channel model
-- **1.9585x lower non-Clifford** under the 3-channel model
+- **1.6477x fewer logical qubits**
+- **2.2582x lower non-Clifford** under the 2-channel model
+- **2.1320x lower non-Clifford** under the 3-channel model
 
 ## Sensitivity margin
 

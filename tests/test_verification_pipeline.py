@@ -34,8 +34,10 @@ class VerificationPipelineTests(unittest.TestCase):
         baseline = self.summary['google_baseline']
         self.assertEqual(baseline['window_size'], 16)
         self.assertEqual(baseline['retained_window_additions'], 28)
-        self.assertEqual(baseline['low_qubit']['logical_qubits'], 1191)
-        self.assertEqual(baseline['low_gate']['logical_qubits'], 1441)
+        self.assertEqual(baseline['low_qubit']['logical_qubits'], 1200)
+        self.assertEqual(baseline['low_qubit']['non_clifford'], 90_000_000)
+        self.assertEqual(baseline['low_gate']['logical_qubits'], 1450)
+        self.assertEqual(baseline['low_gate']['non_clifford'], 70_000_000)
 
 
 if __name__ == '__main__':

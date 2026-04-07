@@ -2,8 +2,8 @@
 """Run the full repository verification pipeline.
 
 This is the simplest end-user entrypoint. It rebuilds the optimized package,
-checks the cited Google baseline stored in the projection file, and writes a
-combined summary to `results/repo_verification_summary.json`.
+checks the cited rounded Google baseline stored in the projection file, and
+writes a combined summary to `results/repo_verification_summary.json`.
 """
 
 from __future__ import annotations

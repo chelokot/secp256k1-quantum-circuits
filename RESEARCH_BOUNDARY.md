@@ -11,7 +11,7 @@ proof release.
 - publishes explicit lookup contracts, including a signed folded variant
 - publishes a transparent Python verifier
 - publishes modeled logical-qubit and non-Clifford projections
-- compares those modeled projections with the public appendix baseline of
+- compares those modeled projections with the published Google baseline of
   Babbush et al. 2026
 
 ## What the repository does not claim
@@ -35,10 +35,10 @@ contracts into backend logical-qubit and non-Clifford totals.
 
 ## Baseline definition
 
-The repository's public comparison baseline is the published appendix estimate
-from Babbush et al. 2026:
+The repository's public comparison baseline is the rounded published secp256k1
+estimate from Babbush et al. 2026:
 
-- low-qubit: `1191 logical qubits / 81,105,024 non-Clifford`
-- low-gate: `1441 logical qubits / 64,305,024 non-Clifford`
+- low-qubit: `1200 logical qubits / 90,000,000 non-Clifford`
+- low-gate: `1450 logical qubits / 70,000,000 non-Clifford`
 
 Those are the only Google numbers this repository claims to compare against.

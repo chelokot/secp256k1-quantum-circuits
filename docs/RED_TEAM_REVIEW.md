@@ -22,7 +22,8 @@ repository-supported answer to each one.
 - exhaustive finite-model family checks on the toy-curve set
 - deterministic scaffold replay for the retained-window schedule
 - exact signed folded lookup-contract semantics
-- modeled improvement over the public appendix baseline of Babbush et al. 2026
+- modeled improvement over Google's published 2026 secp256k1 estimates from
+  Babbush et al. 2026
 
 ## Statements the repository should not make
 
@@ -39,7 +40,7 @@ Safe:
 - “explicit lookup contract”
 - “tested retained-window scaffold”
 - “modeled backend projection”
-- “comparison against the public appendix baseline”
+- “comparison against Google's published 2026 secp256k1 estimates”
 
 Unsafe:
 

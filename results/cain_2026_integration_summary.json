@@ -17,30 +17,30 @@
     }
   },
   "headline_ranges": {
-    "projected_time_efficient_days_min": 3.8220152675128976,
-    "projected_time_efficient_days_max": 5.105895302985969,
-    "projected_balanced_days_min": 100.9012030623405,
-    "projected_balanced_days_max": 134.79563599882957,
-    "naive_linear_space_physical_qubits_min": 15877.862595419847,
-    "naive_linear_space_physical_qubits_max": 19210.74727120067,
-    "half_fixed_overhead_space_physical_qubits_min": 20938.931297709925,
-    "half_fixed_overhead_space_physical_qubits_max": 22605.373635600336
+    "projected_time_efficient_days_min": 3.4442737777777777,
+    "projected_time_efficient_days_max": 4.690496,
+    "projected_balanced_days_min": 90.92882773333334,
+    "projected_balanced_days_max": 123.8290944,
+    "naive_linear_space_physical_qubits_min": 15779.310344827587,
+    "naive_linear_space_physical_qubits_max": 19066.666666666668,
+    "half_fixed_overhead_space_physical_qubits_min": 20889.655172413793,
+    "half_fixed_overhead_space_physical_qubits_max": 22533.333333333336
   },
   "cases": [
     {
       "google_baseline_line": "low_qubit",
       "optimized_lookup_model": "2lookup",
-      "google_logical_qubits": 1191,
-      "google_non_clifford": 81105024,
+      "google_logical_qubits": 1200,
+      "google_non_clifford": 90000000,
       "optimized_logical_qubits": 880,
       "optimized_non_clifford": 30998464,
-      "runtime_speedup_factor": 2.616420736201639,
-      "projected_time_efficient_days": 3.8220152675128976,
-      "projected_balanced_days": 100.9012030623405,
+      "runtime_speedup_factor": 2.903369663735597,
+      "projected_time_efficient_days": 3.4442737777777777,
+      "projected_balanced_days": 90.92882773333334,
       "space_transfer": {
         "same_hardware_regime_physical_qubits": 26000,
-        "naive_linear_logical_scaling_physical_qubits": 19210.74727120067,
-        "half_fixed_overhead_scaling_physical_qubits": 22605.373635600336
+        "naive_linear_logical_scaling_physical_qubits": 19066.666666666668,
+        "half_fixed_overhead_scaling_physical_qubits": 22533.333333333336
       },
       "assumptions": [
         "Runtime is transferred linearly with the dominant non-Clifford/Toffoli budget.",
@@ -51,17 +51,17 @@
     {
       "google_baseline_line": "low_qubit",
       "optimized_lookup_model": "3lookup",
-      "google_logical_qubits": 1191,
-      "google_non_clifford": 81105024,
+      "google_logical_qubits": 1200,
+      "google_non_clifford": 90000000,
       "optimized_logical_qubits": 880,
       "optimized_non_clifford": 32833472,
-      "runtime_speedup_factor": 2.470193344158059,
-      "projected_time_efficient_days": 4.048266109877485,
-      "projected_balanced_days": 106.87422530076559,
+      "runtime_speedup_factor": 2.7411051746218007,
+      "projected_time_efficient_days": 3.6481635555555556,
+      "projected_balanced_days": 96.31151786666666,
       "space_transfer": {
         "same_hardware_regime_physical_qubits": 26000,
-        "naive_linear_logical_scaling_physical_qubits": 19210.74727120067,
-        "half_fixed_overhead_scaling_physical_qubits": 22605.373635600336
+        "naive_linear_logical_scaling_physical_qubits": 19066.666666666668,
+        "half_fixed_overhead_scaling_physical_qubits": 22533.333333333336
       },
       "assumptions": [
         "Runtime is transferred linearly with the dominant non-Clifford/Toffoli budget.",
@@ -72,17 +72,17 @@
     {
       "google_baseline_line": "low_gate",
       "optimized_lookup_model": "2lookup",
-      "google_logical_qubits": 1441,
-      "google_non_clifford": 64305024,
+      "google_logical_qubits": 1450,
+      "google_non_clifford": 70000000,
       "optimized_logical_qubits": 880,
       "optimized_non_clifford": 30998464,
-      "runtime_speedup_factor": 2.0744583989709944,
-      "projected_time_efficient_days": 4.820535328623778,
-      "projected_balanced_days": 127.26213267566776,
+      "runtime_speedup_factor": 2.2581764051276862,
+      "projected_time_efficient_days": 4.428352,
+      "projected_balanced_days": 116.9084928,
       "space_transfer": {
         "same_hardware_regime_physical_qubits": 26000,
-        "naive_linear_logical_scaling_physical_qubits": 15877.862595419847,
-        "half_fixed_overhead_scaling_physical_qubits": 20938.931297709925
+        "naive_linear_logical_scaling_physical_qubits": 15779.310344827587,
+        "half_fixed_overhead_scaling_physical_qubits": 20889.655172413793
       },
       "assumptions": [
         "Runtime is transferred linearly with the dominant non-Clifford/Toffoli budget.",
@@ -93,17 +93,17 @@
     {
       "google_baseline_line": "low_gate",
       "optimized_lookup_model": "3lookup",
-      "google_logical_qubits": 1441,
-      "google_non_clifford": 64305024,
+      "google_logical_qubits": 1450,
+      "google_non_clifford": 70000000,
       "optimized_logical_qubits": 880,
       "optimized_non_clifford": 32833472,
-      "runtime_speedup_factor": 1.9585203782286564,
-      "projected_time_efficient_days": 5.105895302985969,
-      "projected_balanced_days": 134.79563599882957,
+      "runtime_speedup_factor": 2.1319706913725116,
+      "projected_time_efficient_days": 4.690496,
+      "projected_balanced_days": 123.8290944,
       "space_transfer": {
         "same_hardware_regime_physical_qubits": 26000,
-        "naive_linear_logical_scaling_physical_qubits": 15877.862595419847,
-        "half_fixed_overhead_scaling_physical_qubits": 20938.931297709925
+        "naive_linear_logical_scaling_physical_qubits": 15779.310344827587,
+        "half_fixed_overhead_scaling_physical_qubits": 20889.655172413793
       },
       "assumptions": [
         "Runtime is transferred linearly with the dominant non-Clifford/Toffoli budget.",

@@ -26,13 +26,13 @@ class CainIntegrationTests(unittest.TestCase):
 
     def test_time_efficient_range_matches_expected_window(self):
         head = self.summary['headline_ranges']
-        self.assertAlmostEqual(head['projected_time_efficient_days_min'], 3.8220152675128976)
-        self.assertAlmostEqual(head['projected_time_efficient_days_max'], 5.105895302985969)
+        self.assertAlmostEqual(head['projected_time_efficient_days_min'], 3.4442737777777777)
+        self.assertAlmostEqual(head['projected_time_efficient_days_max'], 4.690496)
 
     def test_balanced_range_matches_expected_window(self):
         head = self.summary['headline_ranges']
-        self.assertAlmostEqual(head['projected_balanced_days_min'], 100.9012030623405)
-        self.assertAlmostEqual(head['projected_balanced_days_max'], 134.79563599882957)
+        self.assertAlmostEqual(head['projected_balanced_days_min'], 90.92882773333334)
+        self.assertAlmostEqual(head['projected_balanced_days_max'], 123.8290944)
 
     def test_publication_safe_summary_exists(self):
         pub = self.summary['publication_safe_summary']

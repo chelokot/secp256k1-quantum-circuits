@@ -9,7 +9,7 @@ That is separate from any physical-machine claim.
 
 Role here:
 
-- public secp256k1 appendix baseline
+- published secp256k1 estimate baseline
 - public urgency context for ECDLP resource estimation
 
 Not claimed here:

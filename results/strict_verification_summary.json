@@ -1,8 +1,8 @@
 {
   "lookup_contract": {
-    "sha256": "cdf84e3729180b3a9170e743439a7fb885c0d3c004b46692994c147d9c77d4cd",
+    "sha256": "9234104a9d858e22822d0a86e0a1c6f64c8b5984db41917668b291d081260d9a",
     "csv": "lookup_contract_audit_8192.csv",
-    "seed_sha256": "dffe059bf63e21bc481ee64814672ed5b02f30fcc6c4e9ff21d9788e0df3450a",
+    "seed_sha256": "9449b62de3734928e987ff20c7446caa02034ad9d6ecad242736ef7d5c2b6d0f",
     "summary": {
       "signed_i16": {
         "total": 4096,
@@ -115,25 +115,25 @@
       "optimized_nc_2lookup": 30998464,
       "optimized_nc_3lookup": 32833472,
       "google_low_qubit": {
-        "logical_qubits": 1191,
-        "non_clifford": 81105024
+        "logical_qubits": 1200,
+        "non_clifford": 90000000
       },
       "google_low_gate": {
-        "logical_qubits": 1441,
-        "non_clifford": 64305024
+        "logical_qubits": 1450,
+        "non_clifford": 70000000
       }
     },
     "headroom": {
-      "non_clifford_margin_vs_low_qubit_2lookup": 50106560,
-      "non_clifford_margin_vs_low_gate_2lookup": 33306560,
-      "non_clifford_margin_vs_low_qubit_3lookup": 48271552,
-      "non_clifford_margin_vs_low_gate_3lookup": 31471552,
-      "qubit_margin_vs_low_qubit": 311,
-      "qubit_margin_vs_low_gate": 561,
-      "break_even_multiplier_vs_low_gate_2lookup": 2.0744583989709944,
-      "break_even_multiplier_vs_low_qubit_2lookup": 2.616420736201639,
-      "break_even_multiplier_vs_low_gate_3lookup": 1.9585203782286564,
-      "break_even_multiplier_vs_low_qubit_3lookup": 2.470193344158059
+      "non_clifford_margin_vs_low_qubit_2lookup": 59001536,
+      "non_clifford_margin_vs_low_gate_2lookup": 39001536,
+      "non_clifford_margin_vs_low_qubit_3lookup": 57166528,
+      "non_clifford_margin_vs_low_gate_3lookup": 37166528,
+      "qubit_margin_vs_low_qubit": 320,
+      "qubit_margin_vs_low_gate": 570,
+      "break_even_multiplier_vs_low_gate_2lookup": 2.2581764051276862,
+      "break_even_multiplier_vs_low_qubit_2lookup": 2.903369663735597,
+      "break_even_multiplier_vs_low_gate_3lookup": 2.1319706913725116,
+      "break_even_multiplier_vs_low_qubit_3lookup": 2.7411051746218007
     },
     "scenario_grid": [
       {
@@ -457,7 +457,7 @@
         "extra_qubits": 0,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -466,7 +466,7 @@
         "extra_qubits": 16,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -475,7 +475,7 @@
         "extra_qubits": 32,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -484,7 +484,7 @@
         "extra_qubits": 64,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -493,7 +493,7 @@
         "extra_qubits": 96,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -502,7 +502,7 @@
         "extra_qubits": 128,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -511,7 +511,7 @@
         "extra_qubits": 192,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -835,7 +835,7 @@
         "extra_qubits": 0,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -844,7 +844,7 @@
         "extra_qubits": 16,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -853,7 +853,7 @@
         "extra_qubits": 32,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -862,7 +862,7 @@
         "extra_qubits": 64,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -871,7 +871,7 @@
         "extra_qubits": 96,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -880,7 +880,7 @@
         "extra_qubits": 128,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -889,7 +889,7 @@
         "extra_qubits": 192,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -1213,7 +1213,7 @@
         "extra_qubits": 0,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -1222,7 +1222,7 @@
         "extra_qubits": 16,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -1231,7 +1231,7 @@
         "extra_qubits": 32,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -1240,7 +1240,7 @@
         "extra_qubits": 64,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -1249,7 +1249,7 @@
         "extra_qubits": 96,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -1258,7 +1258,7 @@
         "extra_qubits": 128,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -1267,7 +1267,7 @@
         "extra_qubits": 192,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -1589,63 +1589,63 @@
         "extra_non_clifford": 4000000,
         "multiplier": 2.0,
         "extra_qubits": 0,
-        "beats_low_gate_2lookup": false,
+        "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 4000000,
         "multiplier": 2.0,
         "extra_qubits": 16,
-        "beats_low_gate_2lookup": false,
+        "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 4000000,
         "multiplier": 2.0,
         "extra_qubits": 32,
-        "beats_low_gate_2lookup": false,
+        "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 4000000,
         "multiplier": 2.0,
         "extra_qubits": 64,
-        "beats_low_gate_2lookup": false,
+        "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 4000000,
         "multiplier": 2.0,
         "extra_qubits": 96,
-        "beats_low_gate_2lookup": false,
+        "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 4000000,
         "multiplier": 2.0,
         "extra_qubits": 128,
-        "beats_low_gate_2lookup": false,
+        "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 4000000,
         "multiplier": 2.0,
         "extra_qubits": 192,
-        "beats_low_gate_2lookup": false,
+        "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -1906,7 +1906,7 @@
         "extra_qubits": 0,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -1915,7 +1915,7 @@
         "extra_qubits": 16,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -1924,7 +1924,7 @@
         "extra_qubits": 32,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -1933,7 +1933,7 @@
         "extra_qubits": 64,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -1942,7 +1942,7 @@
         "extra_qubits": 96,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -1951,13 +1951,22 @@
         "extra_qubits": 128,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 8000000,
         "multiplier": 1.75,
         "extra_qubits": 192,
+        "beats_low_gate_2lookup": true,
+        "beats_low_qubit_2lookup": true,
+        "beats_low_gate_3lookup": true,
+        "beats_low_qubit_3lookup": true
+      },
+      {
+        "extra_non_clifford": 8000000,
+        "multiplier": 2.0,
+        "extra_qubits": 0,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
@@ -1966,17 +1975,8 @@
       {
         "extra_non_clifford": 8000000,
         "multiplier": 2.0,
-        "extra_qubits": 0,
-        "beats_low_gate_2lookup": false,
-        "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": true
-      },
-      {
-        "extra_non_clifford": 8000000,
-        "multiplier": 2.0,
         "extra_qubits": 16,
-        "beats_low_gate_2lookup": false,
+        "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
         "beats_low_qubit_3lookup": true
@@ -1985,7 +1985,7 @@
         "extra_non_clifford": 8000000,
         "multiplier": 2.0,
         "extra_qubits": 32,
-        "beats_low_gate_2lookup": false,
+        "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
         "beats_low_qubit_3lookup": true
@@ -1994,7 +1994,7 @@
         "extra_non_clifford": 8000000,
         "multiplier": 2.0,
         "extra_qubits": 64,
-        "beats_low_gate_2lookup": false,
+        "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
         "beats_low_qubit_3lookup": true
@@ -2003,7 +2003,7 @@
         "extra_non_clifford": 8000000,
         "multiplier": 2.0,
         "extra_qubits": 96,
-        "beats_low_gate_2lookup": false,
+        "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
         "beats_low_qubit_3lookup": true
@@ -2012,7 +2012,7 @@
         "extra_non_clifford": 8000000,
         "multiplier": 2.0,
         "extra_qubits": 128,
-        "beats_low_gate_2lookup": false,
+        "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
         "beats_low_qubit_3lookup": true
@@ -2021,7 +2021,7 @@
         "extra_non_clifford": 8000000,
         "multiplier": 2.0,
         "extra_qubits": 192,
-        "beats_low_gate_2lookup": false,
+        "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
         "beats_low_qubit_3lookup": true
@@ -2221,7 +2221,7 @@
         "extra_qubits": 0,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -2230,7 +2230,7 @@
         "extra_qubits": 16,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -2239,7 +2239,7 @@
         "extra_qubits": 32,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -2248,7 +2248,7 @@
         "extra_qubits": 64,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -2257,7 +2257,7 @@
         "extra_qubits": 96,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -2266,7 +2266,7 @@
         "extra_qubits": 128,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -2275,7 +2275,7 @@
         "extra_qubits": 192,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -2348,7 +2348,7 @@
         "beats_low_gate_2lookup": false,
         "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": false
+        "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 16000000,
@@ -2357,7 +2357,7 @@
         "beats_low_gate_2lookup": false,
         "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": false
+        "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 16000000,
@@ -2366,7 +2366,7 @@
         "beats_low_gate_2lookup": false,
         "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": false
+        "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 16000000,
@@ -2375,7 +2375,7 @@
         "beats_low_gate_2lookup": false,
         "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": false
+        "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 16000000,
@@ -2384,7 +2384,7 @@
         "beats_low_gate_2lookup": false,
         "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": false
+        "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 16000000,
@@ -2393,7 +2393,7 @@
         "beats_low_gate_2lookup": false,
         "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": false
+        "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 16000000,
@@ -2402,7 +2402,7 @@
         "beats_low_gate_2lookup": false,
         "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": false
+        "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 32000000,
@@ -2410,7 +2410,7 @@
         "extra_qubits": 0,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -2419,7 +2419,7 @@
         "extra_qubits": 16,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -2428,7 +2428,7 @@
         "extra_qubits": 32,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -2437,7 +2437,7 @@
         "extra_qubits": 64,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -2446,7 +2446,7 @@
         "extra_qubits": 96,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -2455,7 +2455,7 @@
         "extra_qubits": 128,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
@@ -2464,12 +2464,75 @@
         "extra_qubits": 192,
         "beats_low_gate_2lookup": true,
         "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
+        "beats_low_gate_3lookup": true,
         "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 32000000,
         "multiplier": 1.1,
+        "extra_qubits": 0,
+        "beats_low_gate_2lookup": true,
+        "beats_low_qubit_2lookup": true,
+        "beats_low_gate_3lookup": true,
+        "beats_low_qubit_3lookup": true
+      },
+      {
+        "extra_non_clifford": 32000000,
+        "multiplier": 1.1,
+        "extra_qubits": 16,
+        "beats_low_gate_2lookup": true,
+        "beats_low_qubit_2lookup": true,
+        "beats_low_gate_3lookup": true,
+        "beats_low_qubit_3lookup": true
+      },
+      {
+        "extra_non_clifford": 32000000,
+        "multiplier": 1.1,
+        "extra_qubits": 32,
+        "beats_low_gate_2lookup": true,
+        "beats_low_qubit_2lookup": true,
+        "beats_low_gate_3lookup": true,
+        "beats_low_qubit_3lookup": true
+      },
+      {
+        "extra_non_clifford": 32000000,
+        "multiplier": 1.1,
+        "extra_qubits": 64,
+        "beats_low_gate_2lookup": true,
+        "beats_low_qubit_2lookup": true,
+        "beats_low_gate_3lookup": true,
+        "beats_low_qubit_3lookup": true
+      },
+      {
+        "extra_non_clifford": 32000000,
+        "multiplier": 1.1,
+        "extra_qubits": 96,
+        "beats_low_gate_2lookup": true,
+        "beats_low_qubit_2lookup": true,
+        "beats_low_gate_3lookup": true,
+        "beats_low_qubit_3lookup": true
+      },
+      {
+        "extra_non_clifford": 32000000,
+        "multiplier": 1.1,
+        "extra_qubits": 128,
+        "beats_low_gate_2lookup": true,
+        "beats_low_qubit_2lookup": true,
+        "beats_low_gate_3lookup": true,
+        "beats_low_qubit_3lookup": true
+      },
+      {
+        "extra_non_clifford": 32000000,
+        "multiplier": 1.1,
+        "extra_qubits": 192,
+        "beats_low_gate_2lookup": true,
+        "beats_low_qubit_2lookup": true,
+        "beats_low_gate_3lookup": true,
+        "beats_low_qubit_3lookup": true
+      },
+      {
+        "extra_non_clifford": 32000000,
+        "multiplier": 1.25,
         "extra_qubits": 0,
         "beats_low_gate_2lookup": false,
         "beats_low_qubit_2lookup": true,
@@ -2478,69 +2541,6 @@
       },
       {
         "extra_non_clifford": 32000000,
-        "multiplier": 1.1,
-        "extra_qubits": 16,
-        "beats_low_gate_2lookup": false,
-        "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": true
-      },
-      {
-        "extra_non_clifford": 32000000,
-        "multiplier": 1.1,
-        "extra_qubits": 32,
-        "beats_low_gate_2lookup": false,
-        "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": true
-      },
-      {
-        "extra_non_clifford": 32000000,
-        "multiplier": 1.1,
-        "extra_qubits": 64,
-        "beats_low_gate_2lookup": false,
-        "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": true
-      },
-      {
-        "extra_non_clifford": 32000000,
-        "multiplier": 1.1,
-        "extra_qubits": 96,
-        "beats_low_gate_2lookup": false,
-        "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": true
-      },
-      {
-        "extra_non_clifford": 32000000,
-        "multiplier": 1.1,
-        "extra_qubits": 128,
-        "beats_low_gate_2lookup": false,
-        "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": true
-      },
-      {
-        "extra_non_clifford": 32000000,
-        "multiplier": 1.1,
-        "extra_qubits": 192,
-        "beats_low_gate_2lookup": false,
-        "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": true
-      },
-      {
-        "extra_non_clifford": 32000000,
-        "multiplier": 1.25,
-        "extra_qubits": 0,
-        "beats_low_gate_2lookup": false,
-        "beats_low_qubit_2lookup": true,
-        "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": true
-      },
-      {
-        "extra_non_clifford": 32000000,
         "multiplier": 1.25,
         "extra_qubits": 16,
         "beats_low_gate_2lookup": false,
@@ -2600,7 +2600,7 @@
         "beats_low_gate_2lookup": false,
         "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": false
+        "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 32000000,
@@ -2609,7 +2609,7 @@
         "beats_low_gate_2lookup": false,
         "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": false
+        "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 32000000,
@@ -2618,7 +2618,7 @@
         "beats_low_gate_2lookup": false,
         "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": false
+        "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 32000000,
@@ -2627,7 +2627,7 @@
         "beats_low_gate_2lookup": false,
         "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": false
+        "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 32000000,
@@ -2636,7 +2636,7 @@
         "beats_low_gate_2lookup": false,
         "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": false
+        "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 32000000,
@@ -2645,7 +2645,7 @@
         "beats_low_gate_2lookup": false,
         "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": false
+        "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 32000000,
@@ -2654,70 +2654,70 @@
         "beats_low_gate_2lookup": false,
         "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": false
+        "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 32000000,
         "multiplier": 1.75,
         "extra_qubits": 0,
         "beats_low_gate_2lookup": false,
-        "beats_low_qubit_2lookup": false,
+        "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": false
+        "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 32000000,
         "multiplier": 1.75,
         "extra_qubits": 16,
         "beats_low_gate_2lookup": false,
-        "beats_low_qubit_2lookup": false,
+        "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": false
+        "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 32000000,
         "multiplier": 1.75,
         "extra_qubits": 32,
         "beats_low_gate_2lookup": false,
-        "beats_low_qubit_2lookup": false,
+        "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": false
+        "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 32000000,
         "multiplier": 1.75,
         "extra_qubits": 64,
         "beats_low_gate_2lookup": false,
-        "beats_low_qubit_2lookup": false,
+        "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": false
+        "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 32000000,
         "multiplier": 1.75,
         "extra_qubits": 96,
         "beats_low_gate_2lookup": false,
-        "beats_low_qubit_2lookup": false,
+        "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": false
+        "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 32000000,
         "multiplier": 1.75,
         "extra_qubits": 128,
         "beats_low_gate_2lookup": false,
-        "beats_low_qubit_2lookup": false,
+        "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": false
+        "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 32000000,
         "multiplier": 1.75,
         "extra_qubits": 192,
         "beats_low_gate_2lookup": false,
-        "beats_low_qubit_2lookup": false,
+        "beats_low_qubit_2lookup": true,
         "beats_low_gate_3lookup": false,
-        "beats_low_qubit_3lookup": false
+        "beats_low_qubit_3lookup": true
       },
       {
         "extra_non_clifford": 32000000,
@@ -2790,16 +2790,16 @@
   },
   "meta_analysis": {
     "google_baseline_estimates": {
-      "source": "Google cryptocurrency whitepaper public appendix envelope",
+      "source": "Google/Babbush et al. 2026 rounded published secp256k1 estimates",
       "window_size": 16,
       "retained_window_additions": 28,
       "low_qubit": {
-        "logical_qubits": 1191,
-        "non_clifford": 81105024
+        "logical_qubits": 1200,
+        "non_clifford": 90000000
       },
       "low_gate": {
-        "logical_qubits": 1441,
-        "non_clifford": 64305024
+        "logical_qubits": 1450,
+        "non_clifford": 70000000
       }
     },
     "optimized_leaf": {
@@ -2822,21 +2822,21 @@
     "optimized_vs_google_estimates": {
       "optimized_leaf_logical_qubits": 864,
       "optimized_leaf_modeled_non_clifford_excluding_lookup": 976016,
-      "vs_low_qubit_non_clifford_factor": 2.616420736201639,
-      "vs_low_gate_non_clifford_factor": 2.0744583989709944,
-      "vs_low_qubit_logical_qubit_factor": 1.353409090909091,
-      "vs_low_gate_logical_qubit_factor": 1.6375
+      "vs_low_qubit_non_clifford_factor": 2.903369663735597,
+      "vs_low_gate_non_clifford_factor": 2.2581764051276862,
+      "vs_low_qubit_logical_qubit_factor": 1.3636363636363635,
+      "vs_low_gate_logical_qubit_factor": 1.6477272727272727
     },
     "resource_projection_headline": {
       "versus_low_qubit": {
-        "qubit_gain": 1.353409090909091,
-        "toffoli_gain_2lookup": 2.616420736201639,
-        "toffoli_gain_3lookup": 2.470193344158059
+        "qubit_gain": 1.3636363636363635,
+        "toffoli_gain_2lookup": 2.903369663735597,
+        "toffoli_gain_3lookup": 2.7411051746218007
       },
       "versus_low_gate": {
-        "qubit_gain": 1.6375,
-        "toffoli_gain_2lookup": 2.0744583989709944,
-        "toffoli_gain_3lookup": 1.9585203782286564
+        "qubit_gain": 1.6477272727272727,
+        "toffoli_gain_2lookup": 2.2581764051276862,
+        "toffoli_gain_3lookup": 2.1319706913725116
       }
     },
     "main_reason_codes": [
@@ -2854,11 +2854,11 @@
       },
       {
         "code": "BOUNDARY_HONESTY",
-        "description": "The resource win is reported as a backend projection against cited Google appendix estimates, with exactness claims kept at the ISA and lookup-contract boundary."
+        "description": "The resource win is reported as a backend projection against cited rounded Google estimates, with exactness claims kept at the ISA and lookup-contract boundary."
       }
     ],
     "notes": [
-      "This file compares the primary optimized artifact against cited Google appendix estimates stored in the projection file.",
+      "This file compares the primary optimized artifact against cited rounded Google estimates stored in the projection file.",
       "The Google numbers are published resource estimates, not machine-readable ISA schedules."
     ]
   },
@@ -2907,7 +2907,7 @@
           "resource_projection.json",
           "projection_sensitivity.json"
         ],
-        "notes": "Public baseline comparison is against 1191/81105024 and 1441/64305024."
+        "notes": "Public baseline comparison uses rounded Google estimates of 1200/90000000 and 1450/70000000."
       }
     ]
   }

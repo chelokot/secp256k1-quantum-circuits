@@ -430,10 +430,10 @@ def run_meta_analysis(repo_root: Path) -> Dict[str, Any]:
             {"code": "COMPLETE_MIXED_J0", "description": "The optimized leaf uses a secp256k1-specialized complete mixed j=0 formula with a narrow, branch-free hot path."},
             {"code": "WORKING_WIDTH_CONTROL", "description": "The optimized arithmetic schedule keeps the working state compact at 12 arithmetic slots while preserving exact ISA-level basis-state semantics."},
             {"code": "WINDOW_RETENTION_DISCIPLINE", "description": "The repository keeps the public retained-window structure explicit instead of hiding schedule changes inside headline totals."},
-            {"code": "BOUNDARY_HONESTY", "description": "The resource win is reported as a backend projection against cited Google appendix estimates, with exactness claims kept at the ISA and lookup-contract boundary."},
+            {"code": "BOUNDARY_HONESTY", "description": "The resource win is reported as a backend projection against cited rounded Google estimates, with exactness claims kept at the ISA and lookup-contract boundary."},
         ],
         "notes": [
-            "This file compares the primary optimized artifact against cited Google appendix estimates stored in the projection file.",
+            "This file compares the primary optimized artifact against cited rounded Google estimates stored in the projection file.",
             "The Google numbers are published resource estimates, not machine-readable ISA schedules.",
         ],
     }
@@ -474,7 +474,7 @@ def run_claim_boundary_matrix(repo_root: Path) -> Dict[str, Any]:
                 "layer": "backend_resource_projection",
                 "status": "modeled_not_theorem_proved",
                 "evidence": ["resource_projection.json", "projection_sensitivity.json"],
-                "notes": f"Public baseline comparison is against {projection['public_google_baseline']['low_qubit']['logical_qubits']}/{projection['public_google_baseline']['low_qubit']['non_clifford']} and {projection['public_google_baseline']['low_gate']['logical_qubits']}/{projection['public_google_baseline']['low_gate']['non_clifford']}.",
+                "notes": f"Public baseline comparison uses rounded Google estimates of {projection['public_google_baseline']['low_qubit']['logical_qubits']}/{projection['public_google_baseline']['low_qubit']['non_clifford']} and {projection['public_google_baseline']['low_gate']['logical_qubits']}/{projection['public_google_baseline']['low_gate']['non_clifford']}.",
             },
         ]
     }

@@ -7,8 +7,8 @@ This file defines the strongest claims supported by the checked-in artifacts.
 The repository publishes exact kickmix-ISA arithmetic schedules for a
 secp256k1-specialized point-add leaf and explicit retained-window scaffold
 metadata, together with deterministic audits, finite-model checks, and modeled
-backend projections against the public appendix baseline of Babbush et al.
-2026.
+backend projections against Google's published 2026 secp256k1 estimates from
+Babbush et al. 2026.
 
 ## Exact layers
 
@@ -86,16 +86,16 @@ projections. They are not theorem-proved primitive-gate totals.
 
 ## Public baseline boundary
 
-When this repository refers to the **public appendix baseline**, it means the
-published lines stored in
+When this repository refers to the **public Google baseline**, it means the
+rounded published lines stored in
 `artifacts/out/resource_projection.json`:
 
-- `1191 logical qubits / 81,105,024 non-Clifford`
-- `1441 logical qubits / 64,305,024 non-Clifford`
+- `1200 logical qubits / 90,000,000 non-Clifford`
+- `1450 logical qubits / 70,000,000 non-Clifford`
 
-These are the public appendix numbers from Babbush et al. 2026. The repository
-does not claim to reconstruct any unpublished internal circuit beyond those
-published lines.
+These are the rounded public estimate lines from Babbush et al. 2026. The
+repository does not claim to reconstruct any unpublished internal circuit
+beyond those published lines.
 
 ## Bottom line
 
@@ -105,5 +105,5 @@ Exact lookup-contract semantics: yes.
 
 Exact primitive-gate lookup, cleanup, and full Shor flattening: no.
 
-Backend projection below the public appendix baseline: yes, but explicitly as a
+Backend projection below the public Google baseline: yes, but explicitly as a
 modeled result.

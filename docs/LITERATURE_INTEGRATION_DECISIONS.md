@@ -4,9 +4,9 @@ This document explains how external work is used in the repository.
 
 ## Directly integrated into repository artifacts
 
-### 1. Public appendix baseline
+### 1. Public Google baseline
 
-Babbush et al. 2026 is used as the public secp256k1 appendix baseline recorded
+Babbush et al. 2026 is used as the published secp256k1 estimate baseline recorded
 in `artifacts/out/resource_projection.json`.
 
 ### 2. Validation pressure

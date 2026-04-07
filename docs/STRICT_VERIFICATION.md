@@ -54,7 +54,7 @@ File:
 Purpose:
 
 - measure how much backend overhead the modeled headline can absorb while
-  staying below the public appendix baseline
+  staying below the published Google baseline
 
 ## Boundary
 

@@ -37,10 +37,10 @@ headline for P-256.
 
 The main supported transfer is a time scaling:
 
-> projected runtime ≈ Cain ECC runtime × (repository non-Clifford budget / public appendix baseline non-Clifford budget)
+> projected runtime ≈ Cain ECC runtime × (repository non-Clifford budget / public Google baseline non-Clifford budget)
 
-The public appendix baseline here is the Babbush et al. 2026 appendix envelope
-stored in `artifacts/out/resource_projection.json`.
+The public Google baseline here is the rounded Babbush et al. 2026 secp256k1
+estimate stored in `artifacts/out/resource_projection.json`.
 
 ## Reported time range
 

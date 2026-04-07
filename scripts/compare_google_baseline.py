@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Print a simple comparison table against the public Google appendix envelope."""
+"""Print a simple comparison table against the published rounded Google estimates."""
 
 from __future__ import annotations
 

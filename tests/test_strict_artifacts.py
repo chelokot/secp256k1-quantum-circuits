@@ -23,7 +23,7 @@ class StrictArtifactTests(unittest.TestCase):
         self.assertEqual(lookup['summary']['signed_i16']['pass'], 4096)
         self.assertEqual(lookup['summary']['unsigned_u16']['total'], 4096)
         self.assertEqual(lookup['summary']['unsigned_u16']['pass'], 4096)
-        self.assertEqual(lookup['sha256'], 'cdf84e3729180b3a9170e743439a7fb885c0d3c004b46692994c147d9c77d4cd')
+        self.assertEqual(lookup['sha256'], '9234104a9d858e22822d0a86e0a1c6f64c8b5984db41917668b291d081260d9a')
 
     def test_scaffold_replay_passes(self):
         scaffold = self.strict['scaffold_schedule']

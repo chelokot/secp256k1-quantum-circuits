@@ -29,7 +29,7 @@ contribution in direction 2.
 | Low, Zhu, Sundaram et al. 2024/2025 | lookup architecture | future lookup-lowering path |
 | Luongo et al. 2025 | windowed arithmetic | reference for bounded lookup-side gains |
 | Papa 2025 | validation | methodological support for strong checking discipline |
-| Babbush et al. 2026 | public secp256k1 appendix baseline | main public baseline comparison |
+| Babbush et al. 2026 | published secp256k1 resource estimates | main public baseline comparison |
 | Cain et al. 2026 | neutral-atom architecture | approximate physical transfer study |
 | Luo et al. 2026 | low-qubit ECDLP branch | alternate branch candidate |
 | QCEC | equivalence tooling | future flattening target |

@@ -9,7 +9,7 @@ they play.
 
 Role:
 
-- source of the public secp256k1 appendix envelope used as the repository's
+- source of the published secp256k1 resource estimates used as the repository's
   main comparison baseline
 
 ## Physical transfer and architecture context

@@ -43,7 +43,7 @@
         "resource_projection.json",
         "projection_sensitivity.json"
       ],
-      "notes": "Public baseline comparison is against 1191/81105024 and 1441/64305024."
+      "notes": "Public baseline comparison uses rounded Google estimates of 1200/90000000 and 1450/70000000."
     }
   ]
 }

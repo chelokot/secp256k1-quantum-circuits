@@ -14,7 +14,7 @@
 Before publishing, verify that the public-facing text still uses the repository
 definitions consistently:
 
-- baseline means the public appendix lines of Babbush et al. 2026
+- baseline means Google's rounded published 2026 secp256k1 estimates from Babbush et al. 2026
 - exact means the ISA-level arithmetic and lookup-contract layers
 - modeled means backend totals below the ISA boundary
 - physical transfer means a separate architecture study, not a stronger logical
@@ -26,7 +26,7 @@ definitions consistently:
 - “explicit lookup contract”
 - “tested retained-window scaffold”
 - “modeled backend projection”
-- “comparison against the public appendix baseline”
+- “comparison against Google's published 2026 secp256k1 estimates”
 
 ## Wording to avoid
 
@@ -43,4 +43,4 @@ definitions consistently:
 - `docs/RED_TEAM_REVIEW.md`
 - `artifacts/out/resource_projection.json`
 - `artifacts/out/projection_sensitivity.json`
-- `reports/secp256k1_optimized_880q_31p0M_2p62x_report.pdf`
+- `reports/secp256k1_optimized_880q_31p0M_report.pdf`

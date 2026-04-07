@@ -23,14 +23,14 @@ The primary optimized projection stored in
 
 ## Public baseline
 
-The comparison baseline is the published appendix estimate from Babbush et al.
-2026, recorded in the same JSON file:
+The comparison baseline is the rounded public secp256k1 estimate from Babbush
+et al. 2026, recorded in the same JSON file:
 
-- **1191 logical qubits / 81.105M non-Clifford** for the low-qubit line
-- **1441 logical qubits / 64.305M non-Clifford** for the low-gate line
+- **1200 logical qubits / 90.0M non-Clifford** for the low-qubit line
+- **1450 logical qubits / 70.0M non-Clifford** for the low-gate line
 
-This repository compares against those published appendix numbers. It does not
-claim recovery of any unpublished Google circuit.
+This repository compares against those published estimates. It does not claim
+recovery of any unpublished Google circuit.
 
 ## Exact lookup-folding branch
 
@@ -59,4 +59,4 @@ This repository publishes exact ISA-level arithmetic artifacts for a
 secp256k1-specialized point-add leaf, deterministic replay audits, exhaustive
 finite-model checks, explicit retained-window scaffold metadata, an exact signed
 lookup-contract variant, and modeled backend resource projections against the
-public appendix baseline of Babbush et al. 2026.
+published 2026 secp256k1 estimates of Babbush et al. 2026.

@@ -5,7 +5,7 @@ artifact layer.
 
 ## Compared layers
 
-### 1. Cited Google appendix baseline
+### 1. Cited Google baseline
 
 Location: `artifacts/out/resource_projection.json`
 
@@ -30,8 +30,8 @@ Role:
 `artifacts/out/meta_analysis.json` records the main internal deltas
 between the cited Google estimates and the optimized artifact:
 
-- Google low-qubit ECDLP line: `1191 logical qubits`, `81,105,024 non-Clifford`
-- Google low-gate ECDLP line: `1441 logical qubits`, `64,305,024 non-Clifford`
+- Google low-qubit ECDLP line: `1200 logical qubits`, `90,000,000 non-Clifford`
+- Google low-gate ECDLP line: `1450 logical qubits`, `70,000,000 non-Clifford`
 - optimized exact leaf: `37` ISA instructions, `12` arithmetic slots
 
 ## Main interpretation

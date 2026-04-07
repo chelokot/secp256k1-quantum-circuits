@@ -1,18 +1,25 @@
 cff-version: 1.2.0
 message: "If you use this repository, please cite the repository release and the main optimized report."
-title: "secp256k1 kickmix open audit repository"
+title: "secp256k1 quantum circuits open audit repository"
 type: software
-authors: []
+authors:
+  - family-names: "Vlasenko"
+    given-names: "Andrii"
+  - name: "OpenAI ChatGPT 5.4 Pro"
+  - name: "OpenAI Codex GPT 5.4 High"
 abstract: >
-  Open audit repository for a secp256k1-specialized kickmix ISA arithmetic
-  reconstruction, retained-window scaffold, deterministic secp256k1 audits,
-  finite-model toy-curve proofs, and explicit backend projection against the
-  public Google appendix envelope.
+  Open audit repository for exact ISA-level secp256k1 quantum ECDLP arithmetic
+  artifacts, deterministic verification transcripts, retained-window scaffold
+  replay, finite-model toy-curve proofs, lookup-contract audits, and modeled
+  resource comparisons against Google's published 2026 secp256k1 estimates.
 keywords:
   - quantum computing
+  - quantum circuits
   - secp256k1
   - elliptic curve discrete logarithm
-  - kickmix
+  - ECDLP
   - Shor
   - formal verification
+  - resource estimation
 license: MIT
+repository-code: "https://github.com/chelokot/secp256k1-quantum-circuits"
