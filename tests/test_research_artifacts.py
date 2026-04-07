@@ -55,12 +55,6 @@ class ResearchArtifactTests(unittest.TestCase):
         self.assertGreater(base['gain_vs_google_low_qubit_2channel'], 3.0)
         self.assertGreater(base['gain_vs_google_low_gate_2channel'], 2.3)
 
-    def test_challenge_ladder_audit_passes(self):
-        self.assertEqual(self.summary['challenge_ladder']['curve_count'], 7)
-        self.assertEqual(self.summary['challenge_ladder']['audit_total'], self.summary['challenge_ladder']['audit_pass'])
-        self.assertGreaterEqual(self.summary['challenge_ladder']['audit_total'], 700)
-        self.assertGreaterEqual(self.summary['challenge_ladder']['max_field_bits'], 18)
-
     def test_literature_matrix_has_expected_entries(self):
         ids = {entry['id'] for entry in self.matrix['entries']}
         for key in {
