@@ -119,17 +119,7 @@ From the repository root:
 
 ```bash
 python scripts/verify_all.py
-python scripts/verify_all.py --quick
-python scripts/release_check.py
 python scripts/compare_cain_2026.py
-```
-
-Or with `make`:
-
-```bash
-make verify
-make verify-quick
-make release-check
 ```
 
 ## Reading order
