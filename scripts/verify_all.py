@@ -360,16 +360,56 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
     if compiler_project is not None:
         best_exact_gate = compiler_project['frontier']['best_gate_family']
         best_exact_qubit = compiler_project['frontier']['best_qubit_family']
-        print(console.heading('Exact compiler-project frontier'))
-        print(f"  best exact gate family: {best_exact_gate['full_oracle_non_clifford']:,} non-Clifford / {best_exact_gate['total_logical_qubits']:,} q")
-        print(f"  best exact qubit family: {best_exact_qubit['total_logical_qubits']:,} q / {best_exact_qubit['full_oracle_non_clifford']:,} non-Clifford")
-        print(f"  public baseline: {baseline['low_qubit']['logical_qubits']:,} q / {baseline['low_qubit']['non_clifford']:,} and {baseline['low_gate']['logical_qubits']:,} q / {baseline['low_gate']['non_clifford']:,}")
-        print()
-        print(console.heading('Exact comparison to Google 2026 baseline'))
-        print(f"  best exact gate family vs low-qubit line: {best_exact_gate['improvement_vs_google_low_qubit']:.4f}x lower non-Clifford")
-        print(f"  best exact gate family vs low-gate line:  {best_exact_gate['improvement_vs_google_low_gate']:.4f}x lower non-Clifford")
-        print(f"  best exact qubit family vs low-qubit line: {baseline['low_qubit']['logical_qubits'] - best_exact_qubit['total_logical_qubits']:+,} q margin")
-        print(f"  best exact qubit family vs low-gate line:  {baseline['low_gate']['logical_qubits'] - best_exact_qubit['total_logical_qubits']:+,} q margin")
+        gate_baseline = baseline['low_gate']
+        qubit_baseline = baseline['low_qubit']
+
+        def comparison_text(observed: int, reference: int) -> tuple[str, str]:
+            if observed < reference:
+                return f'{reference / observed:.4f}x lower', 'good'
+            if observed > reference:
+                return f'{observed / reference:.4f}x higher', 'fail'
+            return '1.0000x equal', 'dim'
+
+        def format_comparison(observed: int, reference: int, width: int = 18) -> str:
+            text, tone = comparison_text(observed, reference)
+            if tone == 'good':
+                styled = console.ok(text)
+            elif tone == 'fail':
+                styled = console.fail(text)
+            else:
+                styled = console.dim(text)
+            plain = f'({text})'
+            return f'({styled})' + (' ' * max(0, width - len(plain)))
+
+        def format_row(
+            label: str,
+            non_clifford: int,
+            non_clifford_reference: int | None,
+            logical_qubits: int,
+            logical_qubit_reference: int | None,
+        ) -> str:
+            non_clifford_cmp = (
+                format_comparison(non_clifford, non_clifford_reference)
+                if non_clifford_reference is not None
+                else ' ' * 18
+            )
+            logical_qubit_cmp = (
+                format_comparison(logical_qubits, logical_qubit_reference)
+                if logical_qubit_reference is not None
+                else ''
+            )
+            return (
+                f"  {label:<27} "
+                f"{non_clifford:>11,} non-Clifford {non_clifford_cmp}"
+                f" / {logical_qubits:>7,} q"
+                + (f" {logical_qubit_cmp}" if logical_qubit_cmp else '')
+            )
+
+        print(console.heading('Exact compiler-project frontier and comparison to Google 2026 baseline'))
+        print(format_row('google baseline best gate:', gate_baseline['non_clifford'], None, gate_baseline['logical_qubits'], None))
+        print(format_row('our exact best gate:', best_exact_gate['full_oracle_non_clifford'], gate_baseline['non_clifford'], best_exact_gate['total_logical_qubits'], gate_baseline['logical_qubits']))
+        print(format_row('google baseline best qubits:', qubit_baseline['non_clifford'], None, qubit_baseline['logical_qubits'], None))
+        print(format_row('our exact best qubits:', best_exact_qubit['full_oracle_non_clifford'], qubit_baseline['non_clifford'], best_exact_qubit['total_logical_qubits'], qubit_baseline['logical_qubits']))
 
 
 def main() -> None:
