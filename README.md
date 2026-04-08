@@ -176,8 +176,18 @@ From the repository root:
 python scripts/verify_all.py
 python compiler_verification_project/scripts/build.py
 python compiler_verification_project/scripts/verify.py --cases 16
+python compiler_verification_project/scripts/materialize_exact_circuits.py
 python scripts/compare_cain_2026.py
 ```
+
+`compiler_verification_project/scripts/materialize_exact_circuits.py` writes
+ignored exact whole-oracle operation streams under
+`compiler_verification_project/generated_circuits/`. With no family arguments
+it materializes the exact best-gate and exact best-qubit families; use
+`--all-families` to dump every checked exact compiler family.
+
+`make test` uses the built-in parallel test runner in `scripts/run_tests.py`;
+use `make test-sequential` for a single-process pytest run.
 
 ## Reading order
 

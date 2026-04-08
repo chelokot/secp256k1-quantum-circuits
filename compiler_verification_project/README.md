@@ -116,4 +116,12 @@ From the repository root:
 ```bash
 python compiler_verification_project/scripts/build.py
 python compiler_verification_project/scripts/verify.py --cases 16
+python compiler_verification_project/scripts/materialize_exact_circuits.py
 ```
+
+`materialize_exact_circuits.py` writes ignored whole-oracle operation streams
+for the selected exact compiler families under
+`compiler_verification_project/generated_circuits/`. With no family arguments it
+materializes the exact best-gate and exact best-qubit families; use
+`--all-families` to dump every checked exact family or `--list-families` to
+inspect the available names.

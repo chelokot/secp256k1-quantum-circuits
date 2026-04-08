@@ -3,4 +3,6 @@ __pycache__/
 *.pyo
 *.tmp
 .DS_Store
+.pytest_cache/
 results/repo_verification_summary.json
+compiler_verification_project/generated_circuits/
