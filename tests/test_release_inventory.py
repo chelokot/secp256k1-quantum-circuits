@@ -96,6 +96,7 @@ class ReleaseInventoryTests(unittest.TestCase):
             'compiler_verification_project/src/ft_ir.py',
             'compiler_verification_project/src/lookup_lowering.py',
             'compiler_verification_project/src/phase_shell_lowering.py',
+            'compiler_verification_project/src/physical_estimator.py',
             'compiler_verification_project/src/project.py',
             'compiler_verification_project/src/subcircuit_equivalence.py',
             'compiler_verification_project/src/whole_oracle_recount.py',
@@ -114,6 +115,8 @@ class ReleaseInventoryTests(unittest.TestCase):
             'compiler_verification_project/artifacts/phase_shell_families.json',
             'compiler_verification_project/artifacts/cain_exact_transfer.json',
             'compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json',
+            'compiler_verification_project/artifacts/azure_resource_estimator_targets.json',
+            'compiler_verification_project/artifacts/azure_resource_estimator_results.json',
         ]
         for rel in expected:
             path = REPO_ROOT / rel

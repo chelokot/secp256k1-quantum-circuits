@@ -753,7 +753,7 @@ def build_literature_matrix(repo_root: Path) -> Dict[str, Any]:
                 "title": "Shor's algorithm is possible with as few as 10,000 reconfigurable atomic qubits",
                 "headline": "Approximate physical architecture estimates for ECC-256 / P-256 with 10,000 to 26,000 physical qubits and day-scale runtimes under aggressive parallelism assumptions.",
                 "direct_mergeability": "already_integrated_as_approx_transfer",
-                "repo_action": "Keep as the primary physical-stack integration in the repo.",
+                "repo_action": "Keep as a secondary cross-paper transfer beside the direct Microsoft Resource Estimator integration.",
             },
             {
                 "id": "luo_2026",
@@ -792,6 +792,12 @@ def build_physical_stack_reference(repo_root: Path) -> Dict[str, Any]:
                 "layer": "logical_to_physical_reference",
                 "headline": "Public whitepaper states that the cited ECDLP-256 estimates can execute in minutes on superconducting architectures with fewer than half a million physical qubits under its assumptions.",
                 "status_in_repo": "baseline_context_only",
+            },
+            {
+                "id": "microsoft_resource_estimator",
+                "layer": "physical_estimator_integration",
+                "headline": "Exact compiler-family logicalCounts are integrated into explicit Microsoft Resource Estimator target presets with recorded estimator outputs.",
+                "status_in_repo": "integrated",
             },
             {
                 "id": "cain_2026_neutral_atom",

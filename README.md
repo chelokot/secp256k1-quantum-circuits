@@ -56,7 +56,7 @@ The root-level `compiler_verification_project/` is the repository's strongest
 exact layer below the ISA boundary. Its checked-in whole-oracle frontier is:
 
 - **best exact gate family:** `23,813,671 non-Clifford`
-- **best exact qubit family:** `2,337 logical qubits`
+- **best exact qubit family:** `2,338 logical qubits`
 
 Those numbers are exact for the chosen compiler families, not claims of global
 optimality. The best-gate family uses folded unary QROM with measurement-based
@@ -68,7 +68,7 @@ supports two separate comparisons:
 
 - the **best exact gate family** is **3.7793x** lower in non-Clifford cost than
   the public low-qubit line and **2.9395x** lower than the public low-gate line
-- the **best exact qubit family** still uses **2,337 logical qubits**, which is
+- the **best exact qubit family** still uses **2,338 logical qubits**, which is
   above both public Google qubit lines, while reducing non-Clifford cost by
   **2.4043x** and **1.8700x** respectively
 
@@ -132,6 +132,11 @@ See:
 - `results/repo_verification_summary.json`
 
 ## Cain et al. 2026
+
+The repository's primary physical-layer file is the checked Microsoft Resource
+Estimator integration in
+`compiler_verification_project/artifacts/azure_resource_estimator_results.json`,
+which records official preset-target outputs for every exact compiler family.
 
 Another paper that strongly shaped this repository's physical-layer thinking is
 [Shor's algorithm is possible with as few as 10,000 reconfigurable atomic qubits](https://arxiv.org/abs/2603.28627).

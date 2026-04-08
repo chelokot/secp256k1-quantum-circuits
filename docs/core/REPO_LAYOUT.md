@@ -33,7 +33,8 @@ Separate exact-oracle layer with:
 - exact whole-oracle frontier for named compiler families
 - exact leaf slot allocation
 - explicit phase-shell families
-- exact-family Cain/Azure handoff artifacts
+- exact-family physical-estimator targets and recorded estimator outputs
+- exact-family Cain transfer artifacts
 
 Key files:
 

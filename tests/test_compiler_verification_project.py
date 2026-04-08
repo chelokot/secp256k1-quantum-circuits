@@ -64,6 +64,10 @@ def test_compiler_project_verification_summary_groups_all_pass() -> None:
     assert recount['pass'] == recount['total']
     subcircuit_equivalence = summary['subcircuit_equivalence_checks']
     assert subcircuit_equivalence['pass'] == subcircuit_equivalence['total']
+    physical_estimator_targets = summary['physical_estimator_target_checks']
+    assert physical_estimator_targets['pass'] == physical_estimator_targets['total']
+    physical_estimator_results = summary['physical_estimator_result_checks']
+    assert physical_estimator_results['pass'] == physical_estimator_results['total']
 
 
 def test_mutated_frontier_family_is_detected() -> None:
@@ -151,6 +155,23 @@ def test_mutated_azure_seed_is_detected() -> None:
     artifacts['azure_resource_estimator_logical_counts']['families'][0]['logicalCounts']['numQubits'] += 1
     groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
     assert groups['azure_seed_checks']['pass'] < groups['azure_seed_checks']['total']
+    assert groups['physical_estimator_target_checks']['pass'] < groups['physical_estimator_target_checks']['total']
+    assert groups['physical_estimator_result_checks']['pass'] < groups['physical_estimator_result_checks']['total']
+
+
+def test_mutated_physical_estimator_target_is_detected() -> None:
+    artifacts = deepcopy(_load_artifacts())
+    artifacts['azure_resource_estimator_targets']['targets'][0]['requested_params']['errorBudget'] = 0.01
+    groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
+    assert groups['physical_estimator_target_checks']['pass'] < groups['physical_estimator_target_checks']['total']
+    assert groups['physical_estimator_result_checks']['pass'] < groups['physical_estimator_result_checks']['total']
+
+
+def test_mutated_physical_estimator_result_is_detected() -> None:
+    artifacts = deepcopy(_load_artifacts())
+    artifacts['azure_resource_estimator_results']['families'][0]['estimates'][0]['physical_counts']['physicalQubits'] += 1
+    groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
+    assert groups['physical_estimator_result_checks']['pass'] < groups['physical_estimator_result_checks']['total']
 
 
 def test_mutated_subcircuit_equivalence_is_detected() -> None:

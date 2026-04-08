@@ -59,6 +59,10 @@ from ft_ir import build_ft_ir_compositions  # noqa: E402
 from generated_block_inventory import build_generated_block_inventories  # noqa: E402
 from lookup_lowering import lookup_lowering_library  # noqa: E402
 from phase_shell_lowering import phase_shell_family_summary, phase_shell_lowering_library  # noqa: E402
+from physical_estimator import (  # noqa: E402
+    build_azure_estimator_target_payload,
+    build_or_load_azure_estimator_results_payload,
+)
 from subcircuit_equivalence import build_subcircuit_equivalence_artifact  # noqa: E402
 from whole_oracle_recount import build_whole_oracle_recount  # noqa: E402
 from verifier import exec_netlist  # noqa: E402
@@ -782,7 +786,9 @@ def build_azure_logical_counts_payload(frontier: Optional[Dict[str, Any]] = None
             'family': family['name'],
             'logicalCounts': {
                 'numQubits': family['total_logical_qubits'],
+                'tCount': 0,
                 'cczCount': family['full_oracle_non_clifford'],
+                'ccixCount': 0,
                 'rotationCount': phase_shell_row['total_rotations'],
                 'rotationDepth': phase_shell_row['rotation_depth'],
                 'measurementCount': family['total_measurements'],
@@ -804,6 +810,40 @@ def write_azure_logical_counts() -> Dict[str, Any]:
     frontier = load_json(project_artifact_path('family_frontier.json')) if project_artifact_path('family_frontier.json').exists() else compiler_family_frontier()
     payload = build_azure_logical_counts_payload(frontier=frontier)
     dump_json(project_artifact_path('azure_resource_estimator_logical_counts.json'), payload)
+    return payload
+
+
+def write_azure_estimator_targets(logical_counts_payload: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    logical_counts = logical_counts_payload or (
+        load_json(project_artifact_path('azure_resource_estimator_logical_counts.json'))
+        if project_artifact_path('azure_resource_estimator_logical_counts.json').exists()
+        else write_azure_logical_counts()
+    )
+    payload = build_azure_estimator_target_payload(logical_counts)
+    dump_json(project_artifact_path('azure_resource_estimator_targets.json'), payload)
+    return payload
+
+
+def write_azure_estimator_results(
+    logical_counts_payload: Optional[Dict[str, Any]] = None,
+    target_payload: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
+    logical_counts = logical_counts_payload or (
+        load_json(project_artifact_path('azure_resource_estimator_logical_counts.json'))
+        if project_artifact_path('azure_resource_estimator_logical_counts.json').exists()
+        else write_azure_logical_counts()
+    )
+    targets = target_payload or (
+        load_json(project_artifact_path('azure_resource_estimator_targets.json'))
+        if project_artifact_path('azure_resource_estimator_targets.json').exists()
+        else write_azure_estimator_targets(logical_counts_payload=logical_counts)
+    )
+    payload = build_or_load_azure_estimator_results_payload(
+        logical_counts_payload=logical_counts,
+        target_payload=targets,
+        artifact_path=project_artifact_path('azure_resource_estimator_results.json'),
+    )
+    dump_json(project_artifact_path('azure_resource_estimator_results.json'), payload)
     return payload
 
 
@@ -1018,10 +1058,17 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('family_frontier.json'), out['frontier'])
     dump_json(project_artifact_path('full_attack_inventory.json'), out['full_attack_inventory'])
     dump_json(project_artifact_path('subcircuit_equivalence.json'), out['subcircuit_equivalence'])
-    write_azure_logical_counts()
+    out['azure_resource_estimator_logical_counts'] = write_azure_logical_counts()
+    out['azure_resource_estimator_targets'] = write_azure_estimator_targets(
+        logical_counts_payload=out['azure_resource_estimator_logical_counts']
+    )
+    out['azure_resource_estimator_results'] = write_azure_estimator_results(
+        logical_counts_payload=out['azure_resource_estimator_logical_counts'],
+        target_payload=out['azure_resource_estimator_targets'],
+    )
 
     build_summary = {
-        'schema': 'compiler-project-build-summary-v10',
+        'schema': 'compiler-project-build-summary-v11',
         'artifacts': {
             'canonical_public_point': 'compiler_verification_project/artifacts/canonical_public_point.json',
             'full_raw32_oracle': 'compiler_verification_project/artifacts/full_raw32_oracle.json',
@@ -1040,6 +1087,8 @@ def build_all_artifacts() -> Dict[str, Any]:
             'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
             'subcircuit_equivalence': 'compiler_verification_project/artifacts/subcircuit_equivalence.json',
             'azure_resource_estimator_logical_counts': 'compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json',
+            'azure_resource_estimator_targets': 'compiler_verification_project/artifacts/azure_resource_estimator_targets.json',
+            'azure_resource_estimator_results': 'compiler_verification_project/artifacts/azure_resource_estimator_results.json',
         },
         'headline': {
             'best_gate_family': out['frontier']['best_gate_family'],
@@ -1048,6 +1097,7 @@ def build_all_artifacts() -> Dict[str, Any]:
         'notes': [
             'The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families with explicit arithmetic, lookup, and phase-shell lowerings, generated block inventories, a compositional FT IR layer, a full whole-oracle recount, and internal subcircuit-equivalence witnesses.',
             'Its qubit accounting uses exact slot allocation and exact phase-shell lowering instead of a fixed 10-slot/512-phase policy.',
+            'The physical-estimator layer binds those exact logical counts to explicit Microsoft Resource Estimator target profiles and recorded estimator outputs.',
         ],
     }
     dump_json(project_artifact_path('build_summary.json'), build_summary)
@@ -1092,6 +1142,8 @@ __all__ = [
     'write_cain_transfer',
     'build_cain_transfer_payload',
     'build_azure_logical_counts_payload',
+    'write_azure_estimator_targets',
+    'write_azure_estimator_results',
     'structured_raw32_cases',
     'compiler_family_frontier',
     'raw32_schedule',

@@ -83,6 +83,8 @@ class VerificationPipelineTests(unittest.TestCase):
         self.assertEqual(verify['frontier_checks']['pass'], verify['frontier_checks']['total'])
         self.assertEqual(verify['cain_transfer_checks']['pass'], verify['cain_transfer_checks']['total'])
         self.assertEqual(verify['azure_seed_checks']['pass'], verify['azure_seed_checks']['total'])
+        self.assertEqual(verify['physical_estimator_target_checks']['pass'], verify['physical_estimator_target_checks']['total'])
+        self.assertEqual(verify['physical_estimator_result_checks']['pass'], verify['physical_estimator_result_checks']['total'])
         baseline = self.summary['google_baseline']
         self.assertAlmostEqual(
             frontier['best_gate_family']['improvement_vs_google_low_qubit'],

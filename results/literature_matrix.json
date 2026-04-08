@@ -133,7 +133,7 @@
       "title": "Shor's algorithm is possible with as few as 10,000 reconfigurable atomic qubits",
       "headline": "Approximate physical architecture estimates for ECC-256 / P-256 with 10,000 to 26,000 physical qubits and day-scale runtimes under aggressive parallelism assumptions.",
       "direct_mergeability": "already_integrated_as_approx_transfer",
-      "repo_action": "Keep as the primary physical-stack integration in the repo."
+      "repo_action": "Keep as a secondary cross-paper transfer beside the direct Microsoft Resource Estimator integration."
     },
     {
       "id": "luo_2026",

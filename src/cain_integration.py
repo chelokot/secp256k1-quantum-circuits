@@ -60,6 +60,7 @@ def build_cain_integration_summary(repo_root: Path) -> Dict[str, Any]:
         'warning': 'This file combines a secp256k1 exact compiler-family frontier with a P-256 physical architecture paper. Runtime and space remain approximate transfer studies.',
         'source_artifacts': {
             'exact_frontier': {'path': 'compiler_verification_project/artifacts/family_frontier.json'},
+            'exact_estimator_results': {'path': 'compiler_verification_project/artifacts/azure_resource_estimator_results.json'},
             'exact_transfer_table': {'path': 'compiler_verification_project/artifacts/cain_exact_transfer.json'},
         },
         'source_papers': {

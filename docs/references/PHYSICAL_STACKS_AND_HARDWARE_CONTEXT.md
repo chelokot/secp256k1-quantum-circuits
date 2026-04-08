@@ -22,13 +22,26 @@ Not claimed here:
 Role here:
 
 - neutral-atom transfer study for the repository's exact compiler-family frontier
+- secondary physical comparison beside the checked Microsoft Resource Estimator integration
 
 Files:
 
 - `docs/references/CAIN_2026_NEUTRAL_ATOM_INTEGRATION.md`
 - `results/cain_2026_integration_summary.json`
 
-### 3. Gouzien et al. 2023
+### 3. Microsoft Resource Estimator target presets
+
+Role here:
+
+- exact-family physical-estimator integration for fixed official target profiles
+
+Files:
+
+- `compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json`
+- `compiler_verification_project/artifacts/azure_resource_estimator_targets.json`
+- `compiler_verification_project/artifacts/azure_resource_estimator_results.json`
+
+### 4. Gouzien et al. 2023
 
 Role here:
 
@@ -50,6 +63,8 @@ The repository keeps three different file classes:
 
 - `compiler_verification_project/artifacts/family_frontier.json` for exact
   compiler-family logical totals
+- `compiler_verification_project/artifacts/azure_resource_estimator_results.json`
+  for checked physical-estimator outputs under explicit target profiles
 - `results/cain_2026_integration_summary.json` for approximate neutral-atom
   transfer
 - `results/physical_stack_reference_points.json` for cross-paper context

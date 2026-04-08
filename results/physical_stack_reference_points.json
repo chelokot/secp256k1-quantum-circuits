@@ -7,6 +7,12 @@
       "status_in_repo": "baseline_context_only"
     },
     {
+      "id": "microsoft_resource_estimator",
+      "layer": "physical_estimator_integration",
+      "headline": "Exact compiler-family logicalCounts are integrated into explicit Microsoft Resource Estimator target presets with recorded estimator outputs.",
+      "status_in_repo": "integrated"
+    },
+    {
       "id": "cain_2026_neutral_atom",
       "layer": "physical_architecture_integration",
       "headline": "Approximate transfer already integrated in results/cain_2026_integration_summary.json.",

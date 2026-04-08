@@ -1,0 +1,119 @@
+{
+  "schema": "compiler-project-azure-estimator-targets-v1",
+  "source_artifacts": {
+    "logical_counts": "compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json",
+    "family_frontier": "compiler_verification_project/artifacts/family_frontier.json"
+  },
+  "estimator_backend": {
+    "engine": "Microsoft Quantum Resource Estimator",
+    "required_python_packages": [
+      "qdk",
+      "qsharp"
+    ],
+    "official_docs": {
+      "target_parameters": "https://learn.microsoft.com/en-us/azure/quantum/overview-resources-estimator",
+      "resource_estimator_usage": "https://learn.microsoft.com/en-us/azure/quantum/how-to-submit-re-jobs"
+    }
+  },
+  "logical_counts_binding": {
+    "family_names": [
+      "folded_linear_scan_tmpand_v1__full_phase_register_v1",
+      "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",
+      "folded_unary_qrom_v1__full_phase_register_v1",
+      "folded_unary_qrom_v1__semiclassical_qft_v1",
+      "folded_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+      "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1"
+    ],
+    "logical_counts_sha256": "6148188f8e2bad2237c01f7b64ff6f001c2ae0b706cbacba24b1d86c04aabfc8"
+  },
+  "targets": [
+    {
+      "name": "gate_us_e3_surface_code",
+      "summary": "Gate-based microsecond preset with 1e-3 physical error rates and the surface code.",
+      "requested_params": {
+        "qubitParams": {
+          "name": "qubit_gate_us_e3"
+        },
+        "qecScheme": {
+          "name": "surface_code"
+        },
+        "errorBudget": 0.001,
+        "estimateType": "singlePoint"
+      }
+    },
+    {
+      "name": "gate_us_e4_surface_code",
+      "summary": "Gate-based microsecond preset with 1e-4 physical error rates and the surface code.",
+      "requested_params": {
+        "qubitParams": {
+          "name": "qubit_gate_us_e4"
+        },
+        "qecScheme": {
+          "name": "surface_code"
+        },
+        "errorBudget": 0.001,
+        "estimateType": "singlePoint"
+      }
+    },
+    {
+      "name": "gate_ns_e3_surface_code",
+      "summary": "Gate-based nanosecond preset with 1e-3 physical error rates and the surface code.",
+      "requested_params": {
+        "qubitParams": {
+          "name": "qubit_gate_ns_e3"
+        },
+        "qecScheme": {
+          "name": "surface_code"
+        },
+        "errorBudget": 0.001,
+        "estimateType": "singlePoint"
+      }
+    },
+    {
+      "name": "gate_ns_e4_surface_code",
+      "summary": "Gate-based nanosecond preset with 1e-4 physical error rates and the surface code.",
+      "requested_params": {
+        "qubitParams": {
+          "name": "qubit_gate_ns_e4"
+        },
+        "qecScheme": {
+          "name": "surface_code"
+        },
+        "errorBudget": 0.001,
+        "estimateType": "singlePoint"
+      }
+    },
+    {
+      "name": "maj_ns_e4_floquet_code",
+      "summary": "Majorana nanosecond preset with 1e-4 physical error rates and the Floquet code.",
+      "requested_params": {
+        "qubitParams": {
+          "name": "qubit_maj_ns_e4"
+        },
+        "qecScheme": {
+          "name": "floquet_code"
+        },
+        "errorBudget": 0.001,
+        "estimateType": "singlePoint"
+      }
+    },
+    {
+      "name": "maj_ns_e6_floquet_code",
+      "summary": "Majorana nanosecond preset with 1e-6 physical error rates and the Floquet code.",
+      "requested_params": {
+        "qubitParams": {
+          "name": "qubit_maj_ns_e6"
+        },
+        "qecScheme": {
+          "name": "floquet_code"
+        },
+        "errorBudget": 0.001,
+        "estimateType": "singlePoint"
+      }
+    }
+  ],
+  "notes": [
+    "These target profiles mirror the official predefined qubit/QEC presets documented for the Microsoft Quantum Resource Estimator.",
+    "Every target uses exact compiler-family logicalCounts as pre-layout input and keeps the estimator error budget fixed at 1e-3 for apples-to-apples comparison across target models."
+  ]
+}

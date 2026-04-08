@@ -5,6 +5,9 @@
     "exact_frontier": {
       "path": "compiler_verification_project/artifacts/family_frontier.json"
     },
+    "exact_estimator_results": {
+      "path": "compiler_verification_project/artifacts/azure_resource_estimator_results.json"
+    },
     "exact_transfer_table": {
       "path": "compiler_verification_project/artifacts/cain_exact_transfer.json"
     }

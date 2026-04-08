@@ -159,8 +159,8 @@
       "bytes": 28942
     },
     "compiler_verification_project/README.md": {
-      "sha256": "000d21c79da9829ae4368f468db9fcbb8fe4007a96083acb9bc9c75153394ad8",
-      "bytes": 6146
+      "sha256": "fbb95c4c23db6e3e73fb3c07d4aa98c267fa63830493f64850ed0f9ba85a79de",
+      "bytes": 6650
     },
     "compiler_verification_project/src/arithmetic_lowering.py": {
       "sha256": "9e8079087614890a51ec95f40665ccd3485afbc5d0d0f0491df6045d82fb17f2",
@@ -171,8 +171,8 @@
       "bytes": 25649
     },
     "compiler_verification_project/src/integrity.py": {
-      "sha256": "2113fa25954c459aa507be678b002524c690a4db14682a6fb20c7634772ffe1b",
-      "bytes": 77620
+      "sha256": "1e8ab9d9c0f592206dd0d9b5b947b9e218c000c306fc22ef735ef7ecedda41f7",
+      "bytes": 88269
     },
     "compiler_verification_project/src/generated_block_inventory.py": {
       "sha256": "a64ab21105efc321cef8041d80f66b857308b59a5c3c7af06cb3dba922f9bd9b",
@@ -186,9 +186,13 @@
       "sha256": "3dbc16253253de05bdece85ab80b66df92783de8da335ea32c757bd8a841a9e1",
       "bytes": 12529
     },
+    "compiler_verification_project/src/physical_estimator.py": {
+      "sha256": "f17434ca3132ee24f537778e7598d23f3c7be2529555d1a0158db2bdb16bb074",
+      "bytes": 12143
+    },
     "compiler_verification_project/src/project.py": {
-      "sha256": "d617e7d281accb642f4c0727c728afca80a0eb6dc31d7203f13f9f89da1f9ce2",
-      "bytes": 50025
+      "sha256": "2c3888fe573abc20ec20bea4d8b47cb1cd0827dfa195b733eae9966a04b80ea4",
+      "bytes": 52796
     },
     "compiler_verification_project/src/subcircuit_equivalence.py": {
       "sha256": "b8621736554ed40804717f65483f78a060627aad7a3d32fcc0d474015217953f",
@@ -207,8 +211,8 @@
       "bytes": 1142
     },
     "compiler_verification_project/artifacts/build_summary.json": {
-      "sha256": "f2aca3f43ef021e135855b72a79b0829e66275ad2e2027be1b5e4a584daeb1b5",
-      "bytes": 6216
+      "sha256": "47ea49080936f9aefe19ade6bacb619e369d179e02725c74cfaa438790b513a5",
+      "bytes": 6616
     },
     "compiler_verification_project/artifacts/arithmetic_lowerings.json": {
       "sha256": "ec7ed59930db6aae20205f706a83da65980350f5f7978183c43a8034ad2c8353",
@@ -259,16 +263,24 @@
       "bytes": 15987
     },
     "compiler_verification_project/artifacts/verification_summary.json": {
-      "sha256": "7aa080dc20c618f8d1375f476ddf19cd63c7f7c1a413bd5a4f8fc82287b696ac",
-      "bytes": 2848510
+      "sha256": "e1b717f3ea0d4ca1d0a6bd8e5a6842fbcd5c9907a67ae370d1c0d5976277902b",
+      "bytes": 3513465
     },
     "compiler_verification_project/artifacts/cain_exact_transfer.json": {
       "sha256": "02dc5be4230f4e9224742ff1ce6f747f986fec081e7c93822a481c3830c69148",
       "bytes": 2735
     },
     "compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json": {
-      "sha256": "41fa851924cc58e97f9cc27ee48c7ccc7587f3a89ce12ed284dccbfece1fb37f",
-      "bytes": 3173
+      "sha256": "5f4bfed85bc03601d8b15dd7c855cfab2ee9debd665c79d334aaf22506e4b8db",
+      "bytes": 3443
+    },
+    "compiler_verification_project/artifacts/azure_resource_estimator_targets.json": {
+      "sha256": "39d22424763d9696234d9ba5c724314b568fc2b8fbe0fc74e2bc0831b9aef5d6",
+      "bytes": 3963
+    },
+    "compiler_verification_project/artifacts/azure_resource_estimator_results.json": {
+      "sha256": "58012d2dfba89e57704e3a5de5631001ad0c32a4adb6a819b7366ffe6986dcd4",
+      "bytes": 226603
     }
   }
 }

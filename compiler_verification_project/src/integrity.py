@@ -26,6 +26,10 @@ from ft_ir import build_ft_ir_compositions
 from generated_block_inventory import build_generated_block_inventories
 from lookup_lowering import lookup_lowering_library, lowered_lookup_semantic_summary
 from phase_shell_lowering import phase_shell_family_summary, phase_shell_lowering_library
+from physical_estimator import (
+    build_azure_estimator_target_payload,
+    build_or_load_azure_estimator_results_payload,
+)
 from project import (
     FIELD_BITS,
     FOLDED_MAG_BITS,
@@ -97,6 +101,8 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'build_summary': artifact_root / 'build_summary.json',
         'cain_exact_transfer': artifact_root / 'cain_exact_transfer.json',
         'azure_resource_estimator_logical_counts': artifact_root / 'azure_resource_estimator_logical_counts.json',
+        'azure_resource_estimator_targets': artifact_root / 'azure_resource_estimator_targets.json',
+        'azure_resource_estimator_results': artifact_root / 'azure_resource_estimator_results.json',
     }
     if not all(path.exists() for path in required.values()):
         from project import build_all_artifacts, write_cain_transfer
@@ -1199,9 +1205,11 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'whole_oracle_recount': 'compiler_verification_project/artifacts/whole_oracle_recount.json',
         'subcircuit_equivalence': 'compiler_verification_project/artifacts/subcircuit_equivalence.json',
         'azure_resource_estimator_logical_counts': 'compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json',
+        'azure_resource_estimator_targets': 'compiler_verification_project/artifacts/azure_resource_estimator_targets.json',
+        'azure_resource_estimator_results': 'compiler_verification_project/artifacts/azure_resource_estimator_results.json',
     }
     checks = [
-        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v10', 'compiler-project-build-summary-v10', build_summary['schema']),
+        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v11', 'compiler-project-build-summary-v11', build_summary['schema']),
         _check('build_summary_artifact_paths_match_expected_set', build_summary['artifacts'] == expected_paths, expected_paths, build_summary['artifacts']),
         _check(
             'build_summary_paths_exist_on_disk',
@@ -1228,6 +1236,215 @@ def build_azure_seed_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     checks = [
         _check('azure_seed_matches_frontier_projection', artifacts['azure_resource_estimator_logical_counts'] == expected, expected, artifacts['azure_resource_estimator_logical_counts']),
     ]
+    return _summarize_checks(checks)
+
+
+def build_physical_estimator_target_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    expected = build_azure_estimator_target_payload(artifacts['azure_resource_estimator_logical_counts'])
+    checks = [
+        _check(
+            'physical_estimator_targets_match_expected_profiles',
+            artifacts['azure_resource_estimator_targets'] == expected,
+            expected,
+            artifacts['azure_resource_estimator_targets'],
+        ),
+    ]
+    return _summarize_checks(checks)
+
+
+def build_physical_estimator_result_checks(artifacts: Mapping[str, Any], repo_root: Path) -> Dict[str, Any]:
+    expected = build_or_load_azure_estimator_results_payload(
+        logical_counts_payload=artifacts['azure_resource_estimator_logical_counts'],
+        target_payload=artifacts['azure_resource_estimator_targets'],
+        artifact_path=repo_root / 'compiler_verification_project' / 'artifacts' / 'azure_resource_estimator_results.json',
+    )
+    results = artifacts['azure_resource_estimator_results']
+    target_names = [target['name'] for target in artifacts['azure_resource_estimator_targets']['targets']]
+    family_rows = results['families']
+    checks = [
+        _check(
+            'physical_estimator_results_match_recorded_projection',
+            results == expected,
+            expected,
+            results,
+        ),
+        _check(
+            'physical_estimator_result_family_count_matches_logical_counts',
+            len(family_rows) == len(artifacts['azure_resource_estimator_logical_counts']['families']),
+            len(artifacts['azure_resource_estimator_logical_counts']['families']),
+            len(family_rows),
+        ),
+        _check(
+            'physical_estimator_result_target_summary_count_matches_target_profiles',
+            len(results['target_summaries']) == len(target_names),
+            len(target_names),
+            len(results['target_summaries']),
+        ),
+        _check(
+            'physical_estimator_source_bindings_match_input_hashes',
+            results['source_bindings'] == expected['source_bindings'],
+            expected['source_bindings'],
+            results['source_bindings'],
+        ),
+    ]
+    family_lookup = {
+        row['family']: row['logicalCounts']
+        for row in artifacts['azure_resource_estimator_logical_counts']['families']
+    }
+    for family in family_rows:
+        estimate_targets = [estimate['target'] for estimate in family['estimates']]
+        checks.extend([
+            _check(
+                f"physical_estimator_{family['family']}_logical_counts_match_seed",
+                family['logical_counts'] == family_lookup[family['family']],
+                family_lookup[family['family']],
+                family['logical_counts'],
+            ),
+            _check(
+                f"physical_estimator_{family['family']}_covers_every_target_exactly_once",
+                estimate_targets == target_names,
+                target_names,
+                estimate_targets,
+            ),
+        ])
+        best_space = min(
+            family['estimates'],
+            key=lambda row: (
+                row['physical_counts']['physicalQubits'],
+                row['physical_counts']['runtime'],
+                row['physical_counts']['rqops'],
+            ),
+        )
+        best_runtime = min(
+            family['estimates'],
+            key=lambda row: (
+                row['physical_counts']['runtime'],
+                row['physical_counts']['physicalQubits'],
+                -row['physical_counts']['rqops'],
+            ),
+        )
+        checks.extend([
+            _check(
+                f"physical_estimator_{family['family']}_summary_best_space_matches_estimates",
+                family['summary']['lowest_physical_qubits_target'] == {
+                    'target': best_space['target'],
+                    'physical_qubits': best_space['physical_counts']['physicalQubits'],
+                    'runtime': best_space['physical_counts']['runtime'],
+                },
+                {
+                    'target': best_space['target'],
+                    'physical_qubits': best_space['physical_counts']['physicalQubits'],
+                    'runtime': best_space['physical_counts']['runtime'],
+                },
+                family['summary']['lowest_physical_qubits_target'],
+            ),
+            _check(
+                f"physical_estimator_{family['family']}_summary_best_runtime_matches_estimates",
+                family['summary']['fastest_runtime_target'] == {
+                    'target': best_runtime['target'],
+                    'runtime': best_runtime['physical_counts']['runtime'],
+                    'physical_qubits': best_runtime['physical_counts']['physicalQubits'],
+                },
+                {
+                    'target': best_runtime['target'],
+                    'runtime': best_runtime['physical_counts']['runtime'],
+                    'physical_qubits': best_runtime['physical_counts']['physicalQubits'],
+                },
+                family['summary']['fastest_runtime_target'],
+            ),
+        ])
+        for estimate in family['estimates']:
+            target = next(row for row in artifacts['azure_resource_estimator_targets']['targets'] if row['name'] == estimate['target'])
+            checks.extend([
+                _check(
+                    f"physical_estimator_{family['family']}_{estimate['target']}_requested_params_match_target_profile",
+                    estimate['requested_params'] == target['requested_params'],
+                    target['requested_params'],
+                    estimate['requested_params'],
+                ),
+                _check(
+                    f"physical_estimator_{family['family']}_{estimate['target']}_reported_logical_counts_match_input",
+                    estimate['reported_logical_counts'] == family['logical_counts'],
+                    family['logical_counts'],
+                    estimate['reported_logical_counts'],
+                ),
+                _check(
+                    f"physical_estimator_{family['family']}_{estimate['target']}_physical_qubits_positive",
+                    estimate['physical_counts']['physicalQubits'] > 0,
+                    '> 0',
+                    estimate['physical_counts']['physicalQubits'],
+                ),
+                _check(
+                    f"physical_estimator_{family['family']}_{estimate['target']}_runtime_positive",
+                    estimate['physical_counts']['runtime'] > 0,
+                    '> 0',
+                    estimate['physical_counts']['runtime'],
+                ),
+                _check(
+                    f"physical_estimator_{family['family']}_{estimate['target']}_job_params_qubit_model_matches_target",
+                    estimate['job_params']['qubitParams']['name'] == target['requested_params']['qubitParams']['name'],
+                    target['requested_params']['qubitParams']['name'],
+                    estimate['job_params']['qubitParams']['name'],
+                ),
+                _check(
+                    f"physical_estimator_{family['family']}_{estimate['target']}_job_params_qec_matches_target",
+                    estimate['job_params']['qecScheme']['name'] == target['requested_params']['qecScheme']['name'],
+                    target['requested_params']['qecScheme']['name'],
+                    estimate['job_params']['qecScheme']['name'],
+                ),
+            ])
+    for target_name in target_names:
+        target_estimates = [
+            next(estimate for estimate in family['estimates'] if estimate['target'] == target_name)
+            for family in family_rows
+        ]
+        best_space = min(
+            target_estimates,
+            key=lambda row: (
+                row['physical_counts']['physicalQubits'],
+                row['physical_counts']['runtime'],
+                row['physical_counts']['rqops'],
+            ),
+        )
+        best_runtime = min(
+            target_estimates,
+            key=lambda row: (
+                row['physical_counts']['runtime'],
+                row['physical_counts']['physicalQubits'],
+                -row['physical_counts']['rqops'],
+            ),
+        )
+        summary_row = next(row for row in results['target_summaries'] if row['target'] == target_name)
+        checks.extend([
+            _check(
+                f'physical_estimator_target_{target_name}_summary_best_space_matches_families',
+                summary_row['lowest_physical_qubits_family'] == {
+                    'family': best_space['family'],
+                    'physical_qubits': best_space['physical_counts']['physicalQubits'],
+                    'runtime': best_space['physical_counts']['runtime'],
+                },
+                {
+                    'family': best_space['family'],
+                    'physical_qubits': best_space['physical_counts']['physicalQubits'],
+                    'runtime': best_space['physical_counts']['runtime'],
+                },
+                summary_row['lowest_physical_qubits_family'],
+            ),
+            _check(
+                f'physical_estimator_target_{target_name}_summary_best_runtime_matches_families',
+                summary_row['fastest_runtime_family'] == {
+                    'family': best_runtime['family'],
+                    'runtime': best_runtime['physical_counts']['runtime'],
+                    'physical_qubits': best_runtime['physical_counts']['physicalQubits'],
+                },
+                {
+                    'family': best_runtime['family'],
+                    'runtime': best_runtime['physical_counts']['runtime'],
+                    'physical_qubits': best_runtime['physical_counts']['physicalQubits'],
+                },
+                summary_row['fastest_runtime_family'],
+            ),
+        ])
     return _summarize_checks(checks)
 
 
@@ -1275,6 +1492,8 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any]) -> Dic
         'build_summary_checks': build_build_summary_checks(artifacts, repo_root),
         'cain_transfer_checks': build_cain_transfer_checks(artifacts),
         'azure_seed_checks': build_azure_seed_checks(artifacts),
+        'physical_estimator_target_checks': build_physical_estimator_target_checks(artifacts),
+        'physical_estimator_result_checks': build_physical_estimator_result_checks(artifacts, repo_root),
     }
 
 
@@ -1291,7 +1510,7 @@ def build_verification_summary(case_count: int = 16, repo_root: Path | None = No
     invariant_total = sum(group['total'] for group in invariant_groups.values())
     invariant_pass = sum(group['pass'] for group in invariant_groups.values())
     return {
-        'schema': 'compiler-project-verification-summary-v9',
+        'schema': 'compiler-project-verification-summary-v10',
         'semantic_replay': semantic,
         **invariant_groups,
         'summary': {

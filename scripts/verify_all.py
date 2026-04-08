@@ -132,15 +132,21 @@ def build_compiler_project_summary(repo_root: Path) -> Dict[str, Any]:
     verify_path = repo_root / 'compiler_verification_project' / 'artifacts' / 'verification_summary.json'
     frontier_path = repo_root / 'compiler_verification_project' / 'artifacts' / 'family_frontier.json'
     cain_path = repo_root / 'compiler_verification_project' / 'artifacts' / 'cain_exact_transfer.json'
+    physical_targets_path = repo_root / 'compiler_verification_project' / 'artifacts' / 'azure_resource_estimator_targets.json'
+    physical_results_path = repo_root / 'compiler_verification_project' / 'artifacts' / 'azure_resource_estimator_results.json'
     return {
         'build_summary': load_json(build_path),
         'verification_summary': load_json(verify_path),
         'frontier': load_json(frontier_path),
         'cain_transfer': load_json(cain_path),
+        'physical_estimator_targets': load_json(physical_targets_path),
+        'physical_estimator_results': load_json(physical_results_path),
         'build_summary_sha256': sha256_path(build_path),
         'verification_summary_sha256': sha256_path(verify_path),
         'frontier_sha256': sha256_path(frontier_path),
         'cain_transfer_sha256': sha256_path(cain_path),
+        'physical_estimator_targets_sha256': sha256_path(physical_targets_path),
+        'physical_estimator_results_sha256': sha256_path(physical_results_path),
     }
 
 
@@ -343,9 +349,12 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
             f"      semantic replay: {compiler_verify['summary']['semantic_cases']['pass']:,} / {compiler_verify['summary']['semantic_cases']['total']:,} cases"
         ))
         print(console.detail(
-            f"      integrity checks: {compiler_verify['summary']['invariant_checks']['pass']:,} / {compiler_verify['summary']['invariant_checks']['total']:,} (canonical point + schedule + slot allocation + lowered arithmetic/lookup/phase shell + generated inventories + FT IR + whole-oracle recount + subcircuit equivalence + frontier + transfer handoffs)"
+            f"      integrity checks: {compiler_verify['summary']['invariant_checks']['pass']:,} / {compiler_verify['summary']['invariant_checks']['total']:,} (canonical point + schedule + slot allocation + lowered arithmetic/lookup/phase shell + generated inventories + FT IR + whole-oracle recount + subcircuit equivalence + frontier + physical-estimator handoffs + transfer handoffs)"
         ))
         print(console.detail(f"      verification sha256: {compiler_project['verification_summary_sha256']}"))
+        print(console.detail(
+            f"      physical estimator targets/results sha256: {compiler_project['physical_estimator_targets_sha256']} / {compiler_project['physical_estimator_results_sha256']}"
+        ))
         print()
 
     if compiler_project is not None:

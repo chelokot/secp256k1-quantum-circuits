@@ -59,7 +59,9 @@ What it does ship is:
 - `phase_shell_families.json` — compact summary of the exact phase-shell lowering families
 - `table_manifests.json` — exact folded-table dimensions and canonical window bases
 - `full_attack_inventory.json` — structural inventory for the completed oracle
-- `verification_summary.json` — deterministic semantic replay plus cross-artifact integrity checks for schedule, slot allocation, FT IR composition, lowered inventories, frontier, and transfer handoffs
+- `verification_summary.json` — deterministic semantic replay plus cross-artifact integrity checks for schedule, slot allocation, FT IR composition, lowered inventories, frontier, physical-estimator integrations, and transfer handoffs
+- `azure_resource_estimator_targets.json` — exact-family Microsoft Resource Estimator target profiles built from the official predefined presets
+- `azure_resource_estimator_results.json` — recorded Microsoft Resource Estimator outputs for every exact family under every checked target profile
 - `cain_exact_transfer.json` — heuristic physical transfer for the exact families
 - `azure_resource_estimator_logical_counts.json` — logicalCounts-style handoff artifact for physical estimators
 
@@ -95,6 +97,9 @@ Its defining exact features are:
 - subcircuit-equivalence witnesses bind traced ISA arithmetic/flag opcodes,
   lowered lookup-family semantics, the coherent cleanup window, and generated
   whole-oracle composition back to the checked source artifacts;
+- exact logicalCounts are bound to explicit Microsoft Resource Estimator target
+  profiles and recorded estimator outputs instead of stopping at a seed-only
+  handoff layer;
 - generated whole-oracle block inventories reconstruct each family total from
   arithmetic blocks, lookup blocks, qubit contributors, and explicit
   phase-shell lowering blocks;

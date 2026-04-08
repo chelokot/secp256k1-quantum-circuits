@@ -2,6 +2,9 @@
 
 This file explains how the repository's exact compiler-family frontier is
 transferred into the neutral-atom architecture model of Cain et al. 2026.
+The repository's direct physical-estimator integration lives separately in the
+Microsoft Resource Estimator artifacts under
+`compiler_verification_project/artifacts/`.
 
 ## Inputs being combined
 
@@ -13,6 +16,9 @@ The repository supplies:
   stack
 - an exact compiler-family whole-oracle frontier in
   `compiler_verification_project/artifacts/family_frontier.json`
+- a checked Microsoft Resource Estimator target-and-results layer in
+  `compiler_verification_project/artifacts/azure_resource_estimator_targets.json`
+  and `compiler_verification_project/artifacts/azure_resource_estimator_results.json`
 - an exact-family transfer table in
   `compiler_verification_project/artifacts/cain_exact_transfer.json`
 
