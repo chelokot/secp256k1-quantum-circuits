@@ -43,6 +43,7 @@ from project import (
     _register_map,
     build_azure_logical_counts_payload,
     build_cain_transfer_payload,
+    build_qubit_breakthrough_analysis,
     exact_leaf_slot_allocation,
     full_attack_inventory,
     leaf_opcode_histogram,
@@ -128,6 +129,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'lookup_lowerings': artifact_root / 'lookup_lowerings.json',
         'generated_block_inventories': artifact_root / 'generated_block_inventories.json',
         'family_frontier': artifact_root / 'family_frontier.json',
+        'qubit_breakthrough_analysis': artifact_root / 'qubit_breakthrough_analysis.json',
         'full_attack_inventory': artifact_root / 'full_attack_inventory.json',
         'ft_ir_compositions': artifact_root / 'ft_ir_compositions.json',
         'whole_oracle_recount': artifact_root / 'whole_oracle_recount.json',
@@ -897,6 +899,63 @@ def build_slot_allocation_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]
     return _summarize_checks(checks)
 
 
+def build_qubit_breakthrough_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    analysis = artifacts['qubit_breakthrough_analysis']
+    best_qubit = artifacts['family_frontier']['best_qubit_family']
+    fixed_non_arithmetic_overhead = (
+        int(best_qubit['lookup_workspace_qubits'])
+        + int(best_qubit['control_slot_count'])
+        + int(best_qubit['live_phase_bits'])
+    )
+    expected = build_qubit_breakthrough_analysis(
+        frontier=artifacts['family_frontier'],
+        slot_allocation=artifacts['exact_leaf_slot_allocation'],
+    )
+    checks = [
+        _check(
+            'qubit_breakthrough_analysis_matches_generator',
+            analysis == expected,
+            expected,
+            analysis,
+        ),
+        _check(
+            'qubit_breakthrough_exact_breakdown_matches_frontier_best_qubit_family',
+            analysis['exact_component_breakdown']['arithmetic_register_file_qubits']
+            == int(best_qubit['arithmetic_slot_count']) * FIELD_BITS
+            and analysis['exact_component_breakdown']['fixed_non_arithmetic_overhead_qubits'] == fixed_non_arithmetic_overhead,
+            {
+                'arithmetic_register_file_qubits': int(best_qubit['arithmetic_slot_count']) * FIELD_BITS,
+                'fixed_non_arithmetic_overhead_qubits': fixed_non_arithmetic_overhead,
+            },
+            {
+                'arithmetic_register_file_qubits': analysis['exact_component_breakdown']['arithmetic_register_file_qubits'],
+                'fixed_non_arithmetic_overhead_qubits': analysis['exact_component_breakdown']['fixed_non_arithmetic_overhead_qubits'],
+            },
+        ),
+        _check(
+            'qubit_breakthrough_google_thresholds_match_exact_frontier_math',
+            analysis['baseline_thresholds'] == {
+                name: {
+                    'baseline_logical_qubits': int(row['logical_qubits']),
+                    'max_arithmetic_slots_at_current_field_width': (int(row['logical_qubits']) - fixed_non_arithmetic_overhead) // FIELD_BITS,
+                    'max_field_slot_logical_qubits_at_current_exact_slot_count': (int(row['logical_qubits']) - fixed_non_arithmetic_overhead) // int(best_qubit['arithmetic_slot_count']),
+                }
+                for name, row in artifacts['family_frontier']['public_google_baseline'].items()
+            },
+            {
+                name: {
+                    'baseline_logical_qubits': int(row['logical_qubits']),
+                    'max_arithmetic_slots_at_current_field_width': (int(row['logical_qubits']) - fixed_non_arithmetic_overhead) // FIELD_BITS,
+                    'max_field_slot_logical_qubits_at_current_exact_slot_count': (int(row['logical_qubits']) - fixed_non_arithmetic_overhead) // int(best_qubit['arithmetic_slot_count']),
+                }
+                for name, row in artifacts['family_frontier']['public_google_baseline'].items()
+            },
+            analysis['baseline_thresholds'],
+        ),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_full_attack_inventory_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     inventory = artifacts['full_attack_inventory']
     schedule = artifacts['full_raw32_oracle']
@@ -1422,6 +1481,7 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
         'generated_block_inventories': 'compiler_verification_project/artifacts/generated_block_inventories.json',
         'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
+        'qubit_breakthrough_analysis': 'compiler_verification_project/artifacts/qubit_breakthrough_analysis.json',
         'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
         'ft_ir_compositions': 'compiler_verification_project/artifacts/ft_ir_compositions.json',
         'whole_oracle_recount': 'compiler_verification_project/artifacts/whole_oracle_recount.json',
@@ -1431,7 +1491,7 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'azure_resource_estimator_results': 'compiler_verification_project/artifacts/azure_resource_estimator_results.json',
     }
     checks = [
-        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v11', 'compiler-project-build-summary-v11', build_summary['schema']),
+        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v12', 'compiler-project-build-summary-v12', build_summary['schema']),
         _check('build_summary_artifact_paths_match_expected_set', build_summary['artifacts'] == expected_paths, expected_paths, build_summary['artifacts']),
         _check(
             'build_summary_paths_exist_on_disk',
@@ -1724,6 +1784,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any]) -> Dic
         'phase_shell_lowering_checks': build_phase_shell_lowering_checks(artifacts),
         'generated_block_inventory_checks': build_generated_block_inventory_checks(artifacts),
         'slot_allocation_checks': build_slot_allocation_checks(artifacts),
+        'qubit_breakthrough_checks': build_qubit_breakthrough_checks(artifacts),
         'full_attack_inventory_checks': build_full_attack_inventory_checks(artifacts),
         'ft_ir_checks': build_ft_ir_checks(artifacts, repo_root),
         'whole_oracle_recount_checks': build_whole_oracle_recount_checks(artifacts, repo_root),
@@ -1751,7 +1812,7 @@ def build_verification_summary(case_count: int = 16, repo_root: Path | None = No
     invariant_total = sum(group['total'] for group in invariant_groups.values())
     invariant_pass = sum(group['pass'] for group in invariant_groups.values())
     return {
-        'schema': 'compiler-project-verification-summary-v10',
+        'schema': 'compiler-project-verification-summary-v11',
         'semantic_replay': semantic,
         **invariant_groups,
         'summary': {

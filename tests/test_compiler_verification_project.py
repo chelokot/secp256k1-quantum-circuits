@@ -37,6 +37,24 @@ def test_compiler_project_frontier_and_schedule() -> None:
     assert frontier['best_qubit_family']['phase_shell'] == 'semiclassical_qft_v1'
 
 
+def test_qubit_breakthrough_analysis_thresholds_are_self_consistent() -> None:
+    build_path = ensure_compiler_project_build_summary()
+    assert build_path.exists()
+    frontier = json.loads((REPO_ROOT / 'compiler_verification_project' / 'artifacts' / 'family_frontier.json').read_text())
+    analysis = json.loads((REPO_ROOT / 'compiler_verification_project' / 'artifacts' / 'qubit_breakthrough_analysis.json').read_text())
+    best_qubit = frontier['best_qubit_family']
+    fixed_overhead = best_qubit['lookup_workspace_qubits'] + best_qubit['control_slot_count'] + best_qubit['live_phase_bits']
+    assert analysis['best_exact_qubit_family'] == best_qubit
+    assert analysis['exact_component_breakdown']['arithmetic_register_file_qubits'] == best_qubit['arithmetic_slot_count'] * 256
+    assert analysis['exact_component_breakdown']['fixed_non_arithmetic_overhead_qubits'] == fixed_overhead
+    assert analysis['baseline_thresholds']['low_gate']['max_arithmetic_slots_at_current_field_width'] == 5
+    assert analysis['baseline_thresholds']['low_qubit']['max_arithmetic_slots_at_current_field_width'] == 4
+    assert analysis['baseline_thresholds']['low_gate']['max_field_slot_logical_qubits_at_current_exact_slot_count'] == 157
+    assert analysis['baseline_thresholds']['low_qubit']['max_field_slot_logical_qubits_at_current_exact_slot_count'] == 129
+    assert analysis['modeled_reference_points']['addsub_modmul_named_slots_v2']['logical_qubits_total'] == 880
+    assert analysis['modeled_reference_points']['addsub_modmul_liveness_v2']['logical_qubits_total'] == 736
+
+
 def test_compiler_project_verification_summary_groups_all_pass() -> None:
     verify_path = ensure_compiler_project_verification_summary()
     summary = json.loads(verify_path.read_text())
@@ -83,6 +101,13 @@ def test_mutated_slot_assignment_is_detected() -> None:
     artifacts['exact_leaf_slot_allocation']['versions'][21]['assigned_slot'] = artifacts['exact_leaf_slot_allocation']['versions'][20]['assigned_slot']
     groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
     assert groups['slot_allocation_checks']['pass'] < groups['slot_allocation_checks']['total']
+
+
+def test_mutated_qubit_breakthrough_analysis_is_detected() -> None:
+    artifacts = deepcopy(_load_artifacts())
+    artifacts['qubit_breakthrough_analysis']['baseline_thresholds']['low_gate']['max_arithmetic_slots_at_current_field_width'] += 1
+    groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
+    assert groups['qubit_breakthrough_checks']['pass'] < groups['qubit_breakthrough_checks']['total']
 
 
 def test_mutated_lookup_lowering_stage_is_detected() -> None:

@@ -55,6 +55,7 @@ What it does ship is:
 - `generated_block_inventories.json` — generated whole-oracle block inventories for the supporting decomposition layer
 - `ft_ir_compositions.json` — compositional FT-style call graphs and leaf sigma reconstructions for every named compiler family
 - `whole_oracle_recount.json` — independent exact whole-oracle recount derived from the FT IR leaf sigma
+- `qubit_breakthrough_analysis.json` — exact qubit bottleneck decomposition, Google break-even thresholds, and counterfactual slot/field-width sweeps around the best exact qubit family
 - `subcircuit_equivalence.json` — cross-layer equivalence witnesses for traced ISA opcodes, lowered lookup families, the coherent cleanup window, and generated whole-oracle composition
 - `primitive_multiplier_library.json` — auditable manifest for all 341 multiplier instances in the raw-32 oracle
 - `phase_shell_families.json` — compact summary of the exact phase-shell lowering families
@@ -74,6 +75,11 @@ What it does ship is:
 The best exact gate family uses a hierarchical banked unary QROM decode with
 measured uncompute. The best exact qubit family uses folded linear-scan lookup
 plus an exact semiclassical-QFT phase shell and an exact 9-slot leaf allocation.
+`qubit_breakthrough_analysis.json` isolates what would have to change to beat
+the cited Google qubit lines: at the current exact field width that means
+reducing the arithmetic register file from 9 slots to 5 for the 1,450-qubit
+line or to 4 for the 1,200-qubit line, while at the current exact 9-slot count
+it means realizing field-slot widths of 157 or 129 logical qubits respectively.
 
 ## Interpreting the results
 

@@ -657,6 +657,170 @@ def compiler_family_frontier() -> Dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
+# Qubit breakthrough analysis
+# ---------------------------------------------------------------------------
+
+
+def build_qubit_breakthrough_analysis(
+    frontier: Optional[Mapping[str, Any]] = None,
+    slot_allocation: Optional[Mapping[str, Any]] = None,
+) -> Dict[str, Any]:
+    effective_frontier = dict(frontier) if frontier is not None else compiler_family_frontier()
+    effective_slot_allocation = dict(slot_allocation) if slot_allocation is not None else exact_leaf_slot_allocation()
+    best_qubit = dict(effective_frontier['best_qubit_family'])
+    arithmetic_slot_count = int(best_qubit['arithmetic_slot_count'])
+    control_slot_count = int(best_qubit['control_slot_count'])
+    lookup_workspace_qubits = int(best_qubit['lookup_workspace_qubits'])
+    live_phase_bits = int(best_qubit['live_phase_bits'])
+    arithmetic_register_file_qubits = arithmetic_slot_count * FIELD_BITS
+    fixed_non_arithmetic_overhead_qubits = control_slot_count + lookup_workspace_qubits + live_phase_bits
+    total_logical_qubits = int(best_qubit['total_logical_qubits'])
+    public_google_baseline = dict(effective_frontier['public_google_baseline'])
+
+    slot_sweep = []
+    for slots in range(arithmetic_slot_count, 3, -1):
+        derived_total = slots * FIELD_BITS + fixed_non_arithmetic_overhead_qubits
+        slot_sweep.append({
+            'arithmetic_slot_count': slots,
+            'derived_total_logical_qubits': derived_total,
+            'qubit_reduction_vs_current': total_logical_qubits - derived_total,
+            'qubit_reduction_fraction_vs_current': (total_logical_qubits - derived_total) / total_logical_qubits,
+            'beats_google_low_qubit': derived_total <= int(public_google_baseline['low_qubit']['logical_qubits']),
+            'beats_google_low_gate': derived_total <= int(public_google_baseline['low_gate']['logical_qubits']),
+        })
+
+    target_widths = {
+        FIELD_BITS,
+        192,
+        160,
+        157,
+        144,
+        129,
+        128,
+        112,
+        96,
+        80,
+        72,
+    }
+    field_width_sweep = []
+    for field_slot_width in sorted(target_widths, reverse=True):
+        derived_total = arithmetic_slot_count * field_slot_width + fixed_non_arithmetic_overhead_qubits
+        field_width_sweep.append({
+            'field_slot_logical_qubits': field_slot_width,
+            'derived_total_logical_qubits': derived_total,
+            'qubit_reduction_vs_current': total_logical_qubits - derived_total,
+            'qubit_reduction_fraction_vs_current': (total_logical_qubits - derived_total) / total_logical_qubits,
+            'beats_google_low_qubit': derived_total <= int(public_google_baseline['low_qubit']['logical_qubits']),
+            'beats_google_low_gate': derived_total <= int(public_google_baseline['low_gate']['logical_qubits']),
+        })
+
+    baseline_thresholds = {}
+    for baseline_name, baseline in public_google_baseline.items():
+        target_qubits = int(baseline['logical_qubits'])
+        baseline_thresholds[baseline_name] = {
+            'baseline_logical_qubits': target_qubits,
+            'max_arithmetic_slots_at_current_field_width': (target_qubits - fixed_non_arithmetic_overhead_qubits) // FIELD_BITS,
+            'max_field_slot_logical_qubits_at_current_exact_slot_count': (target_qubits - fixed_non_arithmetic_overhead_qubits) // arithmetic_slot_count,
+        }
+
+    projection = load_json(PROJECT_ROOT / 'artifacts' / 'projections' / 'resource_projection.json')
+    default_projection = projection['optimized_ecdlp_projection']
+    default_model = projection['default_model_details']
+    alternative_projection = next(
+        row
+        for row in projection['alternative_backend_scenarios']
+        if row['model_name'] == 'addsub_modmul_liveness_v2'
+    )
+    modeled_reference_points = {
+        projection['model_name']: {
+            'model_name': projection['model_name'],
+            'slot_accounting_mode': default_model['logical_qubit_model']['slot_accounting_mode'],
+            'field_slot_logical_qubits': int(default_model['logical_qubit_model']['field_slot_logical_qubits']),
+            'logical_qubits_total': int(default_projection['logical_qubits_total']),
+            'scratch_logical_qubits': int(projection['optimized_leaf_projection']['scratch_logical_qubits']),
+        },
+        alternative_projection['model_name']: {
+            'model_name': alternative_projection['model_name'],
+            'slot_accounting_mode': alternative_projection['logical_qubit_model']['slot_accounting_mode'],
+            'field_slot_logical_qubits': int(alternative_projection['logical_qubit_model']['field_slot_logical_qubits']),
+            'logical_qubits_total': int(alternative_projection['ecdlp']['logical_qubits_total']),
+            'scratch_logical_qubits': int(alternative_projection['leaf']['scratch_logical_qubits']),
+        },
+    }
+
+    lookup_tradeoffs = []
+    for row in sorted(
+        (
+            family
+            for family in effective_frontier['families']
+            if family['phase_shell'] == best_qubit['phase_shell']
+        ),
+        key=lambda family: (int(family['total_logical_qubits']), int(family['full_oracle_non_clifford'])),
+    ):
+        lookup_tradeoffs.append({
+            'name': row['name'],
+            'lookup_family': row['lookup_family'],
+            'lookup_workspace_qubits': int(row['lookup_workspace_qubits']),
+            'total_logical_qubits': int(row['total_logical_qubits']),
+            'full_oracle_non_clifford': int(row['full_oracle_non_clifford']),
+            'delta_qubits_vs_best_qubit': int(row['total_logical_qubits']) - total_logical_qubits,
+            'delta_non_clifford_vs_best_qubit': int(row['full_oracle_non_clifford']) - int(best_qubit['full_oracle_non_clifford']),
+        })
+
+    peak_pc = int(effective_slot_allocation['peak_arithmetic_slots']['pc'])
+    leaf_instructions = _leaf()['instructions']
+    peak_versions = [
+        entry
+        for entry in effective_slot_allocation['versions']
+        if entry['reg_type'] == 'arithmetic' and int(entry['def_pc']) <= peak_pc <= int(entry['last_use_pc'])
+    ]
+    peak_instruction_window = [
+        {
+            'pc': int(instruction['pc']),
+            'op': instruction['op'],
+            'dst': instruction.get('dst'),
+            'src': instruction.get('src'),
+            'flag': instruction.get('flag'),
+            'comment': instruction.get('comment'),
+        }
+        for instruction in leaf_instructions
+        if peak_pc - 3 <= int(instruction['pc']) <= peak_pc + 3
+    ]
+
+    return {
+        'schema': 'compiler-project-qubit-breakthrough-analysis-v1',
+        'public_google_baseline': public_google_baseline,
+        'best_exact_qubit_family': best_qubit,
+        'exact_component_breakdown': {
+            'arithmetic_register_file_qubits': arithmetic_register_file_qubits,
+            'lookup_workspace_qubits': lookup_workspace_qubits,
+            'control_slot_qubits': control_slot_count,
+            'live_phase_qubits': live_phase_bits,
+            'fixed_non_arithmetic_overhead_qubits': fixed_non_arithmetic_overhead_qubits,
+            'arithmetic_register_file_share_fraction': arithmetic_register_file_qubits / total_logical_qubits,
+            'fixed_non_arithmetic_overhead_share_fraction': fixed_non_arithmetic_overhead_qubits / total_logical_qubits,
+        },
+        'baseline_thresholds': baseline_thresholds,
+        'counterfactual_slot_sweep': slot_sweep,
+        'counterfactual_field_width_sweep': field_width_sweep,
+        'modeled_reference_points': modeled_reference_points,
+        'semiclassical_lookup_tradeoffs': lookup_tradeoffs,
+        'peak_live_hotspot': {
+            'peak_pc': peak_pc,
+            'peak_opcode': effective_slot_allocation['peak_arithmetic_slots']['opcode'],
+            'peak_arithmetic_slot_count': int(effective_slot_allocation['peak_arithmetic_slots']['count']),
+            'active_arithmetic_versions': sorted(peak_versions, key=lambda row: (int(row['assigned_slot']), int(row['def_pc']))),
+            'instruction_window': peak_instruction_window,
+        },
+        'notes': [
+            'This artifact isolates the dominant qubit bottleneck inside the exact compiler frontier and quantifies the break-even thresholds against the cited Google qubit lines.',
+            'The slot sweep and field-width sweep are counterfactual threshold budgets around the current exact best-qubit family, not new exact compiler-family claims.',
+            'Modeled reference points are copied from the quarantined backend projection layer and kept separate from the exact frontier.',
+        ],
+    }
+
+
+# ---------------------------------------------------------------------------
 # Additional exact structural artifacts
 # ---------------------------------------------------------------------------
 
@@ -1074,6 +1238,10 @@ def build_all_artifacts() -> Dict[str, Any]:
         'whole_oracle_recount': whole_oracle_recount,
     }
     out['frontier'] = compiler_family_frontier()
+    out['qubit_breakthrough_analysis'] = build_qubit_breakthrough_analysis(
+        frontier=out['frontier'],
+        slot_allocation=out['slot_allocation'],
+    )
     out['full_attack_inventory'] = full_attack_inventory()
     out['subcircuit_equivalence'] = build_subcircuit_equivalence_artifact(
         arithmetic_lowerings=out['arithmetic_lowerings'],
@@ -1096,6 +1264,7 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('ft_ir_compositions.json'), out['ft_ir_compositions'])
     dump_json(project_artifact_path('whole_oracle_recount.json'), out['whole_oracle_recount'])
     dump_json(project_artifact_path('family_frontier.json'), out['frontier'])
+    dump_json(project_artifact_path('qubit_breakthrough_analysis.json'), out['qubit_breakthrough_analysis'])
     dump_json(project_artifact_path('full_attack_inventory.json'), out['full_attack_inventory'])
     dump_json(project_artifact_path('subcircuit_equivalence.json'), out['subcircuit_equivalence'])
     out['azure_resource_estimator_logical_counts'] = write_azure_logical_counts()
@@ -1108,7 +1277,7 @@ def build_all_artifacts() -> Dict[str, Any]:
     )
 
     build_summary = {
-        'schema': 'compiler-project-build-summary-v11',
+        'schema': 'compiler-project-build-summary-v12',
         'artifacts': {
             'canonical_public_point': 'compiler_verification_project/artifacts/canonical_public_point.json',
             'full_raw32_oracle': 'compiler_verification_project/artifacts/full_raw32_oracle.json',
@@ -1124,6 +1293,7 @@ def build_all_artifacts() -> Dict[str, Any]:
             'ft_ir_compositions': 'compiler_verification_project/artifacts/ft_ir_compositions.json',
             'whole_oracle_recount': 'compiler_verification_project/artifacts/whole_oracle_recount.json',
             'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
+            'qubit_breakthrough_analysis': 'compiler_verification_project/artifacts/qubit_breakthrough_analysis.json',
             'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
             'subcircuit_equivalence': 'compiler_verification_project/artifacts/subcircuit_equivalence.json',
             'azure_resource_estimator_logical_counts': 'compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json',

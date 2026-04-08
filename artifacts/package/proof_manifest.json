@@ -159,8 +159,8 @@
       "bytes": 28942
     },
     "compiler_verification_project/README.md": {
-      "sha256": "f683ec21a8fa45ddef66290549d063006c2e185d33bbf64584d0366400b9d338",
-      "bytes": 7232
+      "sha256": "9b3f1e3a75853b7ba58c76425a18862214281cbef9e1d651133dc8fc5da2e84a",
+      "bytes": 7806
     },
     "compiler_verification_project/src/arithmetic_lowering.py": {
       "sha256": "7e387f7eee875e3f4b535fec31778dd717d31fd4f98e75166f0f1be90908cde4",
@@ -171,8 +171,8 @@
       "bytes": 25649
     },
     "compiler_verification_project/src/integrity.py": {
-      "sha256": "1e10a8c7b1f59713b6f8127e9a7b795213d9358c7b56906fe338b7d8b369d89f",
-      "bytes": 100191
+      "sha256": "4b891cd6b6da19757560360573bedf2ea1dad82cd419e467bfbf83db87a36b77",
+      "bytes": 103541
     },
     "compiler_verification_project/src/generated_block_inventory.py": {
       "sha256": "a64ab21105efc321cef8041d80f66b857308b59a5c3c7af06cb3dba922f9bd9b",
@@ -191,8 +191,8 @@
       "bytes": 12143
     },
     "compiler_verification_project/src/project.py": {
-      "sha256": "a43f582c9604600ecd11fdb8e0a177d75557dc37d3db501ca58f8ebeb8819042",
-      "bytes": 54572
+      "sha256": "be270260934b8ab16897d4b1d54648215afac5fc9d1ed7d82ad9de38a74abd69",
+      "bytes": 63666
     },
     "compiler_verification_project/src/subcircuit_equivalence.py": {
       "sha256": "b8621736554ed40804717f65483f78a060627aad7a3d32fcc0d474015217953f",
@@ -211,8 +211,8 @@
       "bytes": 1142
     },
     "compiler_verification_project/artifacts/build_summary.json": {
-      "sha256": "5cd682b6d87127b171844011f1210bece0f5626dc7fd6e80a40127945fe19338",
-      "bytes": 6673
+      "sha256": "ae789555c072ae719253529e3f82699a4347de8ba61d06a64418b529a560a885",
+      "bytes": 6784
     },
     "compiler_verification_project/artifacts/arithmetic_lowerings.json": {
       "sha256": "1c2819287f54fa757db55689439df6dce092b20a898227a6d7099a94b54186e0",
@@ -258,13 +258,17 @@
       "sha256": "480cc773a2a94ba590c3756260680ddbb4da756257b73b047a6dd5408c8c8eb9",
       "bytes": 18677
     },
+    "compiler_verification_project/artifacts/qubit_breakthrough_analysis.json": {
+      "sha256": "0774fb2a5f5054a86d2453761de1e8e84b96a2f26415d445fec44a9559100e8d",
+      "bytes": 13776
+    },
     "compiler_verification_project/artifacts/subcircuit_equivalence.json": {
       "sha256": "38f67fdd5c8a61747c8725bf4f1827166a2412d06d464ae92c9754c6dab0a9b7",
       "bytes": 18558
     },
     "compiler_verification_project/artifacts/verification_summary.json": {
-      "sha256": "968a0d476de2a3e883e7821cb8af475baf907b4283cb4326dbeecbc99ccde92f",
-      "bytes": 354149
+      "sha256": "e755421ad17808d1a05da5fc18555751e1f86af6b778ed48568c033af43b930d",
+      "bytes": 356726
     },
     "compiler_verification_project/artifacts/cain_exact_transfer.json": {
       "sha256": "90effac3de6322562587302040f9fedfe484e791d7434e6b1a9f14848a06686d",

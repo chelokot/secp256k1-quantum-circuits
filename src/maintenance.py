@@ -74,6 +74,7 @@ PROOF_MANIFEST_PATHS = [
     'compiler_verification_project/artifacts/generated_block_inventories.json',
     'compiler_verification_project/artifacts/ft_ir_compositions.json',
     'compiler_verification_project/artifacts/whole_oracle_recount.json',
+    'compiler_verification_project/artifacts/qubit_breakthrough_analysis.json',
     'compiler_verification_project/artifacts/subcircuit_equivalence.json',
     'compiler_verification_project/artifacts/verification_summary.json',
     'compiler_verification_project/artifacts/cain_exact_transfer.json',
