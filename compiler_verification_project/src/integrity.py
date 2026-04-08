@@ -48,6 +48,7 @@ from project import (
     structured_raw32_cases,
     table_manifests,
 )
+from subcircuit_equivalence import build_subcircuit_equivalence_artifact
 
 
 def _check(name: str, passed: bool, expected: Any, observed: Any) -> Dict[str, Any]:
@@ -86,6 +87,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'generated_block_inventories': artifact_root / 'generated_block_inventories.json',
         'family_frontier': artifact_root / 'family_frontier.json',
         'full_attack_inventory': artifact_root / 'full_attack_inventory.json',
+        'subcircuit_equivalence': artifact_root / 'subcircuit_equivalence.json',
         'build_summary': artifact_root / 'build_summary.json',
         'cain_exact_transfer': artifact_root / 'cain_exact_transfer.json',
         'azure_resource_estimator_logical_counts': artifact_root / 'azure_resource_estimator_logical_counts.json',
@@ -656,6 +658,113 @@ def build_full_attack_inventory_checks(artifacts: Mapping[str, Any]) -> Dict[str
     return _summarize_checks(checks)
 
 
+def build_subcircuit_equivalence_checks(artifacts: Mapping[str, Any], repo_root: Path) -> Dict[str, Any]:
+    equivalence = artifacts['subcircuit_equivalence']
+    expected = build_subcircuit_equivalence_artifact(
+        arithmetic_lowerings=artifacts['arithmetic_lowerings'],
+        lookup_lowerings=artifacts['lookup_lowerings'],
+        generated_block_inventories=artifacts['generated_block_inventories'],
+        frontier=artifacts['family_frontier'],
+        full_attack_inventory=artifacts['full_attack_inventory'],
+    )
+    arithmetic = equivalence['arithmetic_opcode_equivalence']
+    cleanup = equivalence['cleanup_window_equivalence']
+    lookup = equivalence['lookup_family_equivalence']
+    composition = equivalence['whole_oracle_composition_equivalence']
+    reduced_width_failures = []
+    for width_row in arithmetic['reduced_width_family_shape_witnesses']['widths']:
+        for opcode in ('field_add', 'field_sub', 'field_mul', 'mul_const', 'select_field_if_flag'):
+            if width_row[opcode]['pass'] != width_row[opcode]['total']:
+                reduced_width_failures.append({'field_bits': width_row['field_bits'], 'opcode': opcode})
+    composition_failures = []
+    for family in composition['families']:
+        if not (
+            family['generated_full_oracle_non_clifford'] == family['frontier_full_oracle_non_clifford'] == family['inventory_full_oracle_non_clifford']
+            and family['generated_total_logical_qubits'] == family['frontier_total_logical_qubits'] == family['inventory_total_logical_qubits']
+        ):
+            composition_failures.append(family['name'])
+    lookup_failures = [
+        row['name']
+        for row in lookup['families']
+        if not (
+            row['direct_lookup_non_clifford'] == row['stage_reconstructed_non_clifford']
+            and row['workspace_qubits'] == row['stage_reconstructed_workspace_qubits']
+            and row['canonical_full_exhaustive_pass'] == row['canonical_full_exhaustive_total']
+            and row['multibase_edge_pass'] == row['multibase_edge_total']
+        )
+    ]
+    arithmetic_per_pc_failures = [row['pc'] for row in arithmetic['per_pc'] if row['pass'] != row['total']]
+    arithmetic_per_opcode_failures = [row['opcode'] for row in arithmetic['per_opcode'] if row['pass'] != row['total']]
+    checks = [
+        _check('subcircuit_equivalence_artifact_matches_generator', equivalence == expected, expected, equivalence),
+        _check(
+            'subcircuit_equivalence_source_paths_match_expected',
+            equivalence['source_artifacts'] == {
+                'leaf': 'artifacts/circuits/optimized_pointadd_secp256k1.json',
+                'cleanup_summary': 'artifacts/verification/extended/coherent_cleanup_summary.json',
+                'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
+                'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
+                'generated_block_inventories': 'compiler_verification_project/artifacts/generated_block_inventories.json',
+                'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
+                'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
+            },
+            {
+                'leaf': 'artifacts/circuits/optimized_pointadd_secp256k1.json',
+                'cleanup_summary': 'artifacts/verification/extended/coherent_cleanup_summary.json',
+                'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
+                'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
+                'generated_block_inventories': 'compiler_verification_project/artifacts/generated_block_inventories.json',
+                'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
+                'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
+            },
+            equivalence['source_artifacts'],
+        ),
+        _check(
+            'subcircuit_equivalence_source_paths_exist_on_disk',
+            all((repo_root / path).exists() for path in equivalence['source_artifacts'].values()),
+            sorted(equivalence['source_artifacts'].values()),
+            sorted(path for path in equivalence['source_artifacts'].values() if (repo_root / path).exists()),
+        ),
+        _check('arithmetic_opcode_trace_equivalence_passes_all_traced_pcs', len(arithmetic_per_pc_failures) == 0, [], arithmetic_per_pc_failures),
+        _check('arithmetic_opcode_trace_equivalence_passes_all_opcodes', len(arithmetic_per_opcode_failures) == 0, [], arithmetic_per_opcode_failures),
+        _check(
+            'cleanup_trace_zero_after_clear_passes_all_cases',
+            cleanup['trace_cleanup_zero_pass'] == cleanup['trace_cleanup_zero_total'],
+            cleanup['trace_cleanup_zero_total'],
+            cleanup['trace_cleanup_zero_pass'],
+        ),
+        _check(
+            'cleanup_summary_hash_matches_checked_artifact',
+            cleanup['cleanup_summary_sha256'] == sha256_path(repo_root / cleanup['cleanup_summary_path']),
+            sha256_path(repo_root / cleanup['cleanup_summary_path']),
+            cleanup['cleanup_summary_sha256'],
+        ),
+        _check(
+            'cleanup_imported_audit_passes_all_cases',
+            cleanup['imported_cleanup_audit']['pass'] == cleanup['imported_cleanup_audit']['total'],
+            cleanup['imported_cleanup_audit']['total'],
+            cleanup['imported_cleanup_audit']['pass'],
+        ),
+        _check('lookup_family_equivalence_passes_all_semantic_witnesses', len(lookup_failures) == 0, [], lookup_failures),
+        _check('reduced_width_family_shape_witnesses_pass', len(reduced_width_failures) == 0, [], reduced_width_failures),
+        _check('whole_oracle_composition_equivalence_rows_match_all_layers', len(composition_failures) == 0, [], composition_failures),
+        _check(
+            'whole_oracle_best_families_match_generated_inventory',
+            composition['best_gate_family'] == artifacts['generated_block_inventories']['best_gate_family']
+            and composition['best_qubit_family'] == artifacts['generated_block_inventories']['best_qubit_family'],
+            {
+                'best_gate_family': artifacts['generated_block_inventories']['best_gate_family'],
+                'best_qubit_family': artifacts['generated_block_inventories']['best_qubit_family'],
+            },
+            {
+                'best_gate_family': composition['best_gate_family'],
+                'best_qubit_family': composition['best_qubit_family'],
+            },
+        ),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_primitive_multiplier_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     primitive = artifacts['primitive_multiplier_library']
     schedule = artifacts['full_raw32_oracle']
@@ -781,10 +890,11 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'generated_block_inventories': 'compiler_verification_project/artifacts/generated_block_inventories.json',
         'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
         'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
+        'subcircuit_equivalence': 'compiler_verification_project/artifacts/subcircuit_equivalence.json',
         'azure_resource_estimator_logical_counts': 'compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json',
     }
     checks = [
-        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v6', 'compiler-project-build-summary-v6', build_summary['schema']),
+        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v7', 'compiler-project-build-summary-v7', build_summary['schema']),
         _check('build_summary_artifact_paths_match_expected_set', build_summary['artifacts'] == expected_paths, expected_paths, build_summary['artifacts']),
         _check(
             'build_summary_paths_exist_on_disk',
@@ -849,6 +959,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any]) -> Dic
         'generated_block_inventory_checks': build_generated_block_inventory_checks(artifacts),
         'slot_allocation_checks': build_slot_allocation_checks(artifacts),
         'full_attack_inventory_checks': build_full_attack_inventory_checks(artifacts),
+        'subcircuit_equivalence_checks': build_subcircuit_equivalence_checks(artifacts, repo_root),
         'primitive_multiplier_checks': build_primitive_multiplier_checks(artifacts),
         'frontier_checks': build_frontier_checks(artifacts),
         'build_summary_checks': build_build_summary_checks(artifacts, repo_root),
@@ -870,7 +981,7 @@ def build_verification_summary(case_count: int = 16, repo_root: Path | None = No
     invariant_total = sum(group['total'] for group in invariant_groups.values())
     invariant_pass = sum(group['pass'] for group in invariant_groups.values())
     return {
-        'schema': 'compiler-project-verification-summary-v5',
+        'schema': 'compiler-project-verification-summary-v6',
         'semantic_replay': semantic,
         **invariant_groups,
         'summary': {

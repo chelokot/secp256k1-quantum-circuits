@@ -1,0 +1,590 @@
+{
+  "schema": "compiler-project-subcircuit-equivalence-v1",
+  "source_artifacts": {
+    "leaf": "artifacts/circuits/optimized_pointadd_secp256k1.json",
+    "cleanup_summary": "artifacts/verification/extended/coherent_cleanup_summary.json",
+    "arithmetic_lowerings": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+    "lookup_lowerings": "compiler_verification_project/artifacts/lookup_lowerings.json",
+    "generated_block_inventories": "compiler_verification_project/artifacts/generated_block_inventories.json",
+    "family_frontier": "compiler_verification_project/artifacts/family_frontier.json",
+    "full_attack_inventory": "compiler_verification_project/artifacts/full_attack_inventory.json"
+  },
+  "arithmetic_opcode_equivalence": {
+    "case_suite": {
+      "total": 96,
+      "per_category": {
+        "random": 32,
+        "doubling": 16,
+        "inverse": 16,
+        "accumulator_infinity": 16,
+        "lookup_infinity": 16
+      }
+    },
+    "per_pc": [
+      {
+        "pc": 6,
+        "opcode": "bool_from_flag",
+        "dst": "f_lookup_inf",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 7,
+        "opcode": "field_mul",
+        "dst": "t0",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 8,
+        "opcode": "field_mul",
+        "dst": "t1",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 9,
+        "opcode": "field_add",
+        "dst": "t3",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 10,
+        "opcode": "field_add",
+        "dst": "t4",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 11,
+        "opcode": "field_mul",
+        "dst": "t3",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 12,
+        "opcode": "field_add",
+        "dst": "t4",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 13,
+        "opcode": "field_sub",
+        "dst": "t3",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 14,
+        "opcode": "field_mul",
+        "dst": "t4",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 15,
+        "opcode": "field_add",
+        "dst": "t4",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 16,
+        "opcode": "field_mul",
+        "dst": "o2",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 17,
+        "opcode": "field_add",
+        "dst": "o2",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 18,
+        "opcode": "field_add",
+        "dst": "o1",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 19,
+        "opcode": "field_add",
+        "dst": "t0",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 20,
+        "opcode": "mul_const",
+        "dst": "t2",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 21,
+        "opcode": "field_add",
+        "dst": "qz",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 22,
+        "opcode": "field_sub",
+        "dst": "t1",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 23,
+        "opcode": "mul_const",
+        "dst": "o2",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 24,
+        "opcode": "field_mul",
+        "dst": "o1",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 25,
+        "opcode": "field_mul",
+        "dst": "t2",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 26,
+        "opcode": "field_sub",
+        "dst": "qx",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 27,
+        "opcode": "field_mul",
+        "dst": "o2",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 28,
+        "opcode": "field_mul",
+        "dst": "t1",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 29,
+        "opcode": "field_add",
+        "dst": "qy",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 30,
+        "opcode": "field_mul",
+        "dst": "t0",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 31,
+        "opcode": "field_mul",
+        "dst": "qz",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 32,
+        "opcode": "field_add",
+        "dst": "qz",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 33,
+        "opcode": "select_field_if_flag",
+        "dst": "qx",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 34,
+        "opcode": "select_field_if_flag",
+        "dst": "qy",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 35,
+        "opcode": "select_field_if_flag",
+        "dst": "qz",
+        "total": 96,
+        "pass": 96
+      },
+      {
+        "pc": 36,
+        "opcode": "clear_bool_from_flag",
+        "dst": "f_lookup_inf",
+        "total": 96,
+        "pass": 96
+      }
+    ],
+    "per_opcode": [
+      {
+        "opcode": "bool_from_flag",
+        "total": 96,
+        "pass": 96,
+        "lowering_non_clifford_per_kernel": null
+      },
+      {
+        "opcode": "clear_bool_from_flag",
+        "total": 96,
+        "pass": 96,
+        "lowering_non_clifford_per_kernel": null
+      },
+      {
+        "opcode": "field_add",
+        "total": 960,
+        "pass": 960,
+        "lowering_non_clifford_per_kernel": 255
+      },
+      {
+        "opcode": "field_mul",
+        "total": 1056,
+        "pass": 1056,
+        "lowering_non_clifford_per_kernel": 66047
+      },
+      {
+        "opcode": "field_sub",
+        "total": 288,
+        "pass": 288,
+        "lowering_non_clifford_per_kernel": 255
+      },
+      {
+        "opcode": "mul_const",
+        "total": 192,
+        "pass": 192,
+        "lowering_non_clifford_per_kernel": 1530
+      },
+      {
+        "opcode": "select_field_if_flag",
+        "total": 288,
+        "pass": 288,
+        "lowering_non_clifford_per_kernel": 255
+      }
+    ],
+    "cleanup_zero_after_clear": {
+      "total": 96,
+      "pass": 96
+    },
+    "infinity_select_keeps_original_accumulator": {
+      "total": 48,
+      "pass": 48
+    },
+    "bool_flag_value_partition": {
+      "flag_one_cases": 16,
+      "flag_zero_cases": 80
+    },
+    "reduced_width_family_shape_witnesses": {
+      "model": "reduced-width ring witnesses over modulo-2^n arithmetic for the named adder, subtractor, multiplier, fixed-constant multiply, and select families",
+      "widths": [
+        {
+          "field_bits": 3,
+          "field_add": {
+            "total": 64,
+            "pass": 64
+          },
+          "field_sub": {
+            "total": 64,
+            "pass": 64
+          },
+          "field_mul": {
+            "total": 64,
+            "pass": 64
+          },
+          "mul_const": {
+            "total": 8,
+            "pass": 8
+          },
+          "select_field_if_flag": {
+            "total": 128,
+            "pass": 128
+          }
+        },
+        {
+          "field_bits": 4,
+          "field_add": {
+            "total": 256,
+            "pass": 256
+          },
+          "field_sub": {
+            "total": 256,
+            "pass": 256
+          },
+          "field_mul": {
+            "total": 256,
+            "pass": 256
+          },
+          "mul_const": {
+            "total": 16,
+            "pass": 16
+          },
+          "select_field_if_flag": {
+            "total": 512,
+            "pass": 512
+          }
+        },
+        {
+          "field_bits": 5,
+          "field_add": {
+            "total": 1024,
+            "pass": 1024
+          },
+          "field_sub": {
+            "total": 1024,
+            "pass": 1024
+          },
+          "field_mul": {
+            "total": 1024,
+            "pass": 1024
+          },
+          "mul_const": {
+            "total": 32,
+            "pass": 32
+          },
+          "select_field_if_flag": {
+            "total": 2048,
+            "pass": 2048
+          }
+        },
+        {
+          "field_bits": 6,
+          "field_add": {
+            "total": 4096,
+            "pass": 4096
+          },
+          "field_sub": {
+            "total": 4096,
+            "pass": 4096
+          },
+          "field_mul": {
+            "total": 4096,
+            "pass": 4096
+          },
+          "mul_const": {
+            "total": 64,
+            "pass": 64
+          },
+          "select_field_if_flag": {
+            "total": 8192,
+            "pass": 8192
+          }
+        }
+      ]
+    },
+    "notes": [
+      "These traces check the ISA-level arithmetic and flag-manipulation opcodes directly on deterministic secp256k1 basis-state leaf cases.",
+      "The reduced-width witness section validates the family shape of the arithmetic kernels on exhaustive modulo-2^n instances; it is an internal family-shape check, not a 256-bit prime-field micro-expansion proof."
+    ]
+  },
+  "lookup_family_equivalence": {
+    "lookup_contract_sha256": "c3b6cc711aa323951a580f6a54a027d84bf84d6a5ad66965751db865553b635d",
+    "families": [
+      {
+        "name": "folded_linear_scan_tmpand_v1",
+        "direct_lookup_non_clifford": 459049,
+        "stage_reconstructed_non_clifford": 459049,
+        "workspace_qubits": 31,
+        "stage_reconstructed_workspace_qubits": 31,
+        "canonical_full_exhaustive_total": 65536,
+        "canonical_full_exhaustive_pass": 65536,
+        "multibase_edge_total": 32,
+        "multibase_edge_pass": 32
+      },
+      {
+        "name": "folded_unary_qrom_v1",
+        "direct_lookup_non_clifford": 65831,
+        "stage_reconstructed_non_clifford": 65831,
+        "workspace_qubits": 32786,
+        "stage_reconstructed_workspace_qubits": 32786,
+        "canonical_full_exhaustive_total": 65536,
+        "canonical_full_exhaustive_pass": 65536,
+        "multibase_edge_total": 32,
+        "multibase_edge_pass": 32
+      },
+      {
+        "name": "folded_unary_qrom_measured_uncompute_v1",
+        "direct_lookup_non_clifford": 33447,
+        "stage_reconstructed_non_clifford": 33447,
+        "workspace_qubits": 32786,
+        "stage_reconstructed_workspace_qubits": 32786,
+        "canonical_full_exhaustive_total": 65536,
+        "canonical_full_exhaustive_pass": 65536,
+        "multibase_edge_total": 32,
+        "multibase_edge_pass": 32
+      }
+    ]
+  },
+  "cleanup_window_equivalence": {
+    "leaf_sha256": "0281442bdea1ae1cb1871ca64638536b72717d9b1a4b381a42609051ca88aad1",
+    "cleanup_summary_path": "artifacts/verification/extended/coherent_cleanup_summary.json",
+    "cleanup_summary_sha256": "c89303570b9131b644719a34a2c6856121f128d1f3d7d85a4fc99f566a66d988",
+    "extract_pc": 6,
+    "select_pcs": [
+      33,
+      34,
+      35
+    ],
+    "clear_pc": 36,
+    "trace_extract_pass": 96,
+    "trace_extract_total": 96,
+    "trace_clear_pass": 96,
+    "trace_clear_total": 96,
+    "trace_cleanup_zero_pass": 96,
+    "trace_cleanup_zero_total": 96,
+    "imported_cleanup_audit": {
+      "total": 16384,
+      "pass": 16384,
+      "categories": {
+        "random": {
+          "total": 12288,
+          "pass": 12288
+        },
+        "doubling": {
+          "total": 1024,
+          "pass": 1024
+        },
+        "inverse": {
+          "total": 1024,
+          "pass": 1024
+        },
+        "accumulator_infinity": {
+          "total": 1024,
+          "pass": 1024
+        },
+        "lookup_infinity": {
+          "total": 1024,
+          "pass": 1024
+        }
+      }
+    }
+  },
+  "whole_oracle_composition_equivalence": {
+    "best_gate_family": {
+      "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+      "reconstruction": {
+        "arithmetic_leaf_non_clifford": 733657,
+        "direct_seed_non_clifford": 33447,
+        "per_leaf_lookup_non_clifford": 33447,
+        "full_oracle_non_clifford": 23813671,
+        "primitive_totals": {
+          "ccx": 23813671,
+          "cx": 0,
+          "x": 0,
+          "measurement": 385476
+        },
+        "total_measurements": 385988,
+        "phase_shell_measurements": 512,
+        "phase_shell_rotations": 512,
+        "arithmetic_slot_count": 9,
+        "control_slot_count": 2,
+        "lookup_workspace_qubits": 32786,
+        "live_phase_bits": 1,
+        "total_logical_qubits": 35093
+      }
+    },
+    "best_qubit_family": {
+      "name": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",
+      "reconstruction": {
+        "arithmetic_leaf_non_clifford": 733657,
+        "direct_seed_non_clifford": 459049,
+        "per_leaf_lookup_non_clifford": 459049,
+        "full_oracle_non_clifford": 37432935,
+        "primitive_totals": {
+          "ccx": 37432935,
+          "cx": 0,
+          "x": 0,
+          "measurement": 15053284
+        },
+        "total_measurements": 15053796,
+        "phase_shell_measurements": 512,
+        "phase_shell_rotations": 512,
+        "arithmetic_slot_count": 9,
+        "control_slot_count": 2,
+        "lookup_workspace_qubits": 31,
+        "live_phase_bits": 1,
+        "total_logical_qubits": 2338
+      }
+    },
+    "families": [
+      {
+        "name": "folded_linear_scan_tmpand_v1__full_phase_register_v1",
+        "generated_full_oracle_non_clifford": 37432935,
+        "generated_total_logical_qubits": 2849,
+        "frontier_full_oracle_non_clifford": 37432935,
+        "frontier_total_logical_qubits": 2849,
+        "inventory_full_oracle_non_clifford": 37432935,
+        "inventory_total_logical_qubits": 2849
+      },
+      {
+        "name": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",
+        "generated_full_oracle_non_clifford": 37432935,
+        "generated_total_logical_qubits": 2338,
+        "frontier_full_oracle_non_clifford": 37432935,
+        "frontier_total_logical_qubits": 2338,
+        "inventory_full_oracle_non_clifford": 37432935,
+        "inventory_total_logical_qubits": 2338
+      },
+      {
+        "name": "folded_unary_qrom_v1__full_phase_register_v1",
+        "generated_full_oracle_non_clifford": 24849959,
+        "generated_total_logical_qubits": 35604,
+        "frontier_full_oracle_non_clifford": 24849959,
+        "frontier_total_logical_qubits": 35604,
+        "inventory_full_oracle_non_clifford": 24849959,
+        "inventory_total_logical_qubits": 35604
+      },
+      {
+        "name": "folded_unary_qrom_v1__semiclassical_qft_v1",
+        "generated_full_oracle_non_clifford": 24849959,
+        "generated_total_logical_qubits": 35093,
+        "frontier_full_oracle_non_clifford": 24849959,
+        "frontier_total_logical_qubits": 35093,
+        "inventory_full_oracle_non_clifford": 24849959,
+        "inventory_total_logical_qubits": 35093
+      },
+      {
+        "name": "folded_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+        "generated_full_oracle_non_clifford": 23813671,
+        "generated_total_logical_qubits": 35604,
+        "frontier_full_oracle_non_clifford": 23813671,
+        "frontier_total_logical_qubits": 35604,
+        "inventory_full_oracle_non_clifford": 23813671,
+        "inventory_total_logical_qubits": 35604
+      },
+      {
+        "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+        "generated_full_oracle_non_clifford": 23813671,
+        "generated_total_logical_qubits": 35093,
+        "frontier_full_oracle_non_clifford": 23813671,
+        "frontier_total_logical_qubits": 35093,
+        "inventory_full_oracle_non_clifford": 23813671,
+        "inventory_total_logical_qubits": 35093
+      }
+    ]
+  },
+  "notes": [
+    "This artifact binds the exact compiler-family summaries back to checked lower layers: traced ISA arithmetic/flag opcodes, lowered lookup-family semantics, the coherent cleanup window, and generated whole-oracle block composition.",
+    "It does not claim external primitive-gate equivalence below the named arithmetic or lookup blocks."
+  ]
+}

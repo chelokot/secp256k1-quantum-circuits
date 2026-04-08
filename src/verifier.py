@@ -141,6 +141,30 @@ def exec_netlist_with_trace(
     return final_proj, trace
 
 
+def exec_netlist_with_state_trace(
+    netlist: List[Dict[str, Any]],
+    p: int,
+    q_proj,
+    table_entry,
+    key: int,
+    trace_pcs: set[int],
+):
+    env = _initial_environment(p, q_proj, table_entry, key)
+    trace: Dict[int, Dict[str, Any]] = {}
+    for ins in netlist:
+        pc = int(ins['pc'])
+        capture = pc in trace_pcs
+        before = dict(env) if capture else None
+        _apply_instruction(env, ins, p)
+        if capture:
+            trace[pc] = {
+                'instruction': ins,
+                'before': before,
+                'after': dict(env),
+            }
+    return (env['qx'] % p, env['qy'] % p, env['qz'] % p), trace
+
+
 def make_audit_cases(netlist_sha: str):
     specs = [
         ('random', 12288),

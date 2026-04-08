@@ -2443,6 +2443,6 @@
   "notes": [
     "These are exact whole-oracle counts for named compiler families over an explicit arithmetic-lowering family, an explicit lookup-lowering family, a generated block-inventory layer, and a fully quantum raw-32 schedule.",
     "The qubit frontier uses exact slot allocation and an explicit semiclassical phase-shell option rather than a fixed 512-bit phase-register policy.",
-    "The arithmetic kernels are lowered into explicit stage/block inventories at the non-Clifford layer; the remaining open gap is Clifford-complete micro-expansion and external equivalence checking below those blocks."
+    "The arithmetic kernels and lookup families are bound to explicit internal subcircuit-equivalence witnesses at the checked ISA and generated-inventory layers; the remaining open gap is Clifford-complete micro-expansion and external equivalence checking below the named blocks."
   ]
 }

@@ -24,7 +24,7 @@ The repository's exact comparison layer is the compiler-family frontier in:
 
 Its two checked headline points are:
 
-- **best exact gate family:** `23,813,671 non-Clifford / 35,348 q`
+- **best exact gate family:** `23,813,671 non-Clifford / 35,093 q`
 - **best exact qubit family:** `2,337 q / 37,432,935 non-Clifford`
 
 ## Exact non-Clifford comparison

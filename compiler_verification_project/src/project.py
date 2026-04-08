@@ -57,6 +57,7 @@ from common import (  # noqa: E402
 from arithmetic_lowering import arithmetic_kernel_summary, arithmetic_lowering_library  # noqa: E402
 from generated_block_inventory import build_generated_block_inventories  # noqa: E402
 from lookup_lowering import lookup_lowering_library  # noqa: E402
+from subcircuit_equivalence import build_subcircuit_equivalence_artifact  # noqa: E402
 from verifier import exec_netlist  # noqa: E402
 
 PointAffine = Optional[Tuple[int, int]]
@@ -616,7 +617,7 @@ def compiler_family_frontier() -> Dict[str, Any]:
         'notes': [
             'These are exact whole-oracle counts for named compiler families over an explicit arithmetic-lowering family, an explicit lookup-lowering family, a generated block-inventory layer, and a fully quantum raw-32 schedule.',
             'The qubit frontier uses exact slot allocation and an explicit semiclassical phase-shell option rather than a fixed 512-bit phase-register policy.',
-            'The arithmetic kernels are lowered into explicit stage/block inventories at the non-Clifford layer; the remaining open gap is Clifford-complete micro-expansion and external equivalence checking below those blocks.',
+            'The arithmetic kernels and lookup families are bound to explicit internal subcircuit-equivalence witnesses at the checked ISA and generated-inventory layers; the remaining open gap is Clifford-complete micro-expansion and external equivalence checking below the named blocks.',
         ],
     }
 
@@ -952,6 +953,13 @@ def build_all_artifacts() -> Dict[str, Any]:
         'frontier': compiler_family_frontier(),
         'full_attack_inventory': full_attack_inventory(),
     }
+    out['subcircuit_equivalence'] = build_subcircuit_equivalence_artifact(
+        arithmetic_lowerings=out['arithmetic_lowerings'],
+        lookup_lowerings=out['lookup_lowerings'],
+        generated_block_inventories=out['generated_block_inventories'],
+        frontier=out['frontier'],
+        full_attack_inventory=out['full_attack_inventory'],
+    )
     dump_json(project_artifact_path('canonical_public_point.json'), out['canonical_public_point'])
     dump_json(project_artifact_path('full_raw32_oracle.json'), out['raw32_schedule'])
     dump_json(project_artifact_path('exact_leaf_slot_allocation.json'), out['slot_allocation'])
@@ -964,10 +972,11 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('generated_block_inventories.json'), out['generated_block_inventories'])
     dump_json(project_artifact_path('family_frontier.json'), out['frontier'])
     dump_json(project_artifact_path('full_attack_inventory.json'), out['full_attack_inventory'])
+    dump_json(project_artifact_path('subcircuit_equivalence.json'), out['subcircuit_equivalence'])
     write_azure_logical_counts()
 
     build_summary = {
-        'schema': 'compiler-project-build-summary-v6',
+        'schema': 'compiler-project-build-summary-v7',
         'artifacts': {
             'canonical_public_point': 'compiler_verification_project/artifacts/canonical_public_point.json',
             'full_raw32_oracle': 'compiler_verification_project/artifacts/full_raw32_oracle.json',
@@ -981,6 +990,7 @@ def build_all_artifacts() -> Dict[str, Any]:
             'generated_block_inventories': 'compiler_verification_project/artifacts/generated_block_inventories.json',
             'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
             'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
+            'subcircuit_equivalence': 'compiler_verification_project/artifacts/subcircuit_equivalence.json',
             'azure_resource_estimator_logical_counts': 'compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json',
         },
         'headline': {
@@ -988,7 +998,7 @@ def build_all_artifacts() -> Dict[str, Any]:
             'best_qubit_family': out['frontier']['best_qubit_family'],
         },
         'notes': [
-            'The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families with explicit arithmetic and lookup lowerings and generated block inventories.',
+            'The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families with explicit arithmetic and lookup lowerings, generated block inventories, and internal subcircuit-equivalence witnesses.',
             'Its qubit accounting uses exact slot allocation and an explicit semiclassical phase-shell family instead of a fixed 10-slot/512-phase policy.',
         ],
     }

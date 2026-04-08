@@ -56,6 +56,8 @@ def test_compiler_project_verification_summary_groups_all_pass() -> None:
     assert cleanup_pair['pass'] == cleanup_pair['total']
     generated_block_inventory = summary['generated_block_inventory_checks']
     assert generated_block_inventory['pass'] == generated_block_inventory['total']
+    subcircuit_equivalence = summary['subcircuit_equivalence_checks']
+    assert subcircuit_equivalence['pass'] == subcircuit_equivalence['total']
 
 
 def test_mutated_frontier_family_is_detected() -> None:
@@ -121,3 +123,10 @@ def test_mutated_azure_seed_is_detected() -> None:
     artifacts['azure_resource_estimator_logical_counts']['families'][0]['logicalCounts']['numQubits'] += 1
     groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
     assert groups['azure_seed_checks']['pass'] < groups['azure_seed_checks']['total']
+
+
+def test_mutated_subcircuit_equivalence_is_detected() -> None:
+    artifacts = deepcopy(_load_artifacts())
+    artifacts['subcircuit_equivalence']['whole_oracle_composition_equivalence']['families'][0]['frontier_full_oracle_non_clifford'] += 1
+    groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
+    assert groups['subcircuit_equivalence_checks']['pass'] < groups['subcircuit_equivalence_checks']['total']
