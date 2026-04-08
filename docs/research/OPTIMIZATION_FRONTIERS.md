@@ -9,8 +9,9 @@ which implementation gaps remain open.
 - retained-window scaffold metadata and replay
 - signed lookup-folding contract semantics
 - exact ISA-level coherent flag cleanup
-- exact arithmetic-kernel stage/block inventories for the named compiler family
-- exact phase-shell stage/block inventories for the named full-register and semiclassical inverse-QFT families
+- exact arithmetic-kernel generated primitive-operation inventories for the named compiler family
+- exact lookup-family generated primitive-operation inventories for the named compiler families
+- exact phase-shell generated operation inventories for the named full-register and semiclassical inverse-QFT families
 - compositional FT-style call graphs and leaf sigma for the named compiler
   families
 - independent exact whole-oracle recount over the FT IR leaf sigma
@@ -22,15 +23,15 @@ which implementation gaps remain open.
 
 The main open directions are therefore:
 
-1. explicit primitive-gate lookup realization for the named compiler families
-2. Clifford-complete arithmetic micro-expansion and external equivalence checking below the named arithmetic and lookup blocks
+1. Clifford-complete arithmetic and lookup micro-expansion below the shipped generated compiler-family operation inventories
+2. external equivalence checking below the named arithmetic, lookup, and phase-shell blocks
 3. flatter end-to-end Shor fragments with external equivalence checking
 
 ## What would be overclaim
 
 It would be inaccurate to describe the repository as already having:
 
-- a primitive-gate lookup implementation,
+- a Clifford-complete primitive-gate lookup implementation,
 - a primitive-gate cleanup proof,
 - a fully flattened Shor circuit,
 - a globally optimal primitive-gate total.

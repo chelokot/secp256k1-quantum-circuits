@@ -7,6 +7,9 @@ from typing import Any, Dict, List, Mapping
 from derived_resources import minimal_addition_chain
 
 
+PrimitiveOperation = List[int | str]
+
+
 def _primitive_counts(ccx: int = 0, cx: int = 0, x: int = 0, measurement: int = 0) -> Dict[str, int]:
     return {
         'ccx': int(ccx),
@@ -16,20 +19,45 @@ def _primitive_counts(ccx: int = 0, cx: int = 0, x: int = 0, measurement: int = 
     }
 
 
+def _primitive_operation(gate: str, *operands: int) -> PrimitiveOperation:
+    return [gate, *[int(operand) for operand in operands]]
+
+
+def _primitive_counts_from_operations(primitive_operations: List[PrimitiveOperation]) -> Dict[str, int]:
+    counts = _primitive_counts()
+    for operation in primitive_operations:
+        counts[str(operation[0])] += 1
+    return counts
+
+
+def _ladder_operations(bit_count: int, include_measurement: bool) -> List[PrimitiveOperation]:
+    primitive_operations: List[PrimitiveOperation] = []
+    for bit_index in range(bit_count):
+        primitive_operations.append(_primitive_operation('ccx', bit_index))
+        if include_measurement:
+            primitive_operations.append(_primitive_operation('measurement', bit_index))
+    return primitive_operations
+
+
+def _field_mul_partial_product_operations(field_bits: int) -> List[PrimitiveOperation]:
+    primitive_operations: List[PrimitiveOperation] = []
+    for left_bit in range(field_bits):
+        for right_bit in range(field_bits):
+            primitive_operations.append(_primitive_operation('ccx', left_bit, right_bit))
+    return primitive_operations
+
+
 def _block(
     name: str,
     summary: str,
     instance_count: int,
-    primitive_counts_per_instance: Mapping[str, int],
+    primitive_operations: List[PrimitiveOperation],
     notes: List[str],
 ) -> Dict[str, Any]:
+    primitive_totals = _primitive_counts_from_operations(primitive_operations)
     primitive_counts = {
-        key: int(primitive_counts_per_instance.get(key, 0))
+        key: int(primitive_totals[key] // int(instance_count))
         for key in ('ccx', 'cx', 'x', 'measurement')
-    }
-    primitive_totals = {
-        key: int(instance_count) * value
-        for key, value in primitive_counts.items()
     }
     return {
         'name': name,
@@ -37,6 +65,8 @@ def _block(
         'instance_count': int(instance_count),
         'primitive_counts_per_instance': primitive_counts,
         'primitive_counts_total': primitive_totals,
+        'primitive_operation_encoding': ['gate', 'operand_0', 'operand_1'],
+        'primitive_operations': primitive_operations,
         'non_clifford_total': primitive_totals['ccx'],
         'notes': notes,
     }
@@ -78,7 +108,7 @@ def _field_add_kernel(field_bits: int) -> Dict[str, Any]:
         name='temporary_and_carry_ladder',
         summary='One temporary logical-AND edge per carry transition in the ripple-carry adder.',
         instance_count=field_bits - 1,
-        primitive_counts_per_instance=_primitive_counts(ccx=1, measurement=1),
+        primitive_operations=_ladder_operations(field_bits - 1, include_measurement=True),
         notes=[
             'This stage follows the temporary logical-AND carry pattern used for n-bit addition.',
             'The local measurement-reset path is counted inside the same stage inventory.',
@@ -107,7 +137,7 @@ def _field_sub_kernel(field_bits: int) -> Dict[str, Any]:
         name='temporary_and_borrow_ladder',
         summary='One temporary logical-AND edge per borrow transition in the ripple-carry subtractor.',
         instance_count=field_bits - 1,
-        primitive_counts_per_instance=_primitive_counts(ccx=1, measurement=1),
+        primitive_operations=_ladder_operations(field_bits - 1, include_measurement=True),
         notes=[
             'The subtractor reuses the same n-1 temporary logical-AND structure as the adder, interpreted as a borrow ladder.',
         ],
@@ -135,7 +165,7 @@ def _field_select_kernel(field_bits: int) -> Dict[str, Any]:
         name='bitwise_control_ladder',
         summary='One controlled field-bit select for each nontrivial bit position in the destination register.',
         instance_count=field_bits - 1,
-        primitive_counts_per_instance=_primitive_counts(ccx=1),
+        primitive_operations=_ladder_operations(field_bits - 1, include_measurement=False),
         notes=[
             'The select kernel is treated as a field-width controlled move whose non-Clifford cost matches the field-add kernel at this abstraction layer.',
         ],
@@ -167,7 +197,7 @@ def _mul_const_kernel(field_bits: int, const_value: int) -> Dict[str, Any]:
                 name=f'chain_step_{left}_to_{right}',
                 summary=f'One field-add kernel step in the monotone addition chain {left} -> {right}.',
                 instance_count=1,
-                primitive_counts_per_instance=_primitive_counts(ccx=field_bits - 1, measurement=field_bits - 1),
+                primitive_operations=_ladder_operations(field_bits - 1, include_measurement=True),
                 notes=[
                     'Each chain step reuses the checked field-add kernel cost over the same 256-bit register width.',
                 ],
@@ -196,7 +226,7 @@ def _field_mul_kernel(field_bits: int) -> Dict[str, Any]:
         name='partial_product_grid',
         summary='One schoolbook partial-product interaction for each pair of field bits.',
         instance_count=field_bits * field_bits,
-        primitive_counts_per_instance=_primitive_counts(ccx=1),
+        primitive_operations=_field_mul_partial_product_operations(field_bits),
         notes=[
             'This stage records the n^2 schoolbook bit-product interactions in the controlled add-subtract multiplier family.',
         ],
@@ -205,7 +235,7 @@ def _field_mul_kernel(field_bits: int) -> Dict[str, Any]:
         name='controlled_add_accumulator',
         summary='Carry-resolution path for the controlled-add half of the schoolbook multiplier.',
         instance_count=field_bits - 1,
-        primitive_counts_per_instance=_primitive_counts(ccx=1, measurement=1),
+        primitive_operations=_ladder_operations(field_bits - 1, include_measurement=True),
         notes=[
             'This stage accounts for the n-1 carry transitions in the add half of the controlled add-subtract multiplier.',
         ],
@@ -214,7 +244,7 @@ def _field_mul_kernel(field_bits: int) -> Dict[str, Any]:
         name='controlled_sub_accumulator',
         summary='Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.',
         instance_count=field_bits,
-        primitive_counts_per_instance=_primitive_counts(ccx=1, measurement=1),
+        primitive_operations=_ladder_operations(field_bits, include_measurement=True),
         notes=[
             'This stage accounts for the residual n borrow transitions in the subtract half of the controlled add-subtract multiplier.',
         ],
@@ -293,13 +323,13 @@ def arithmetic_lowering_library(field_bits: int, leaf_opcode_histogram: Mapping[
         _field_select_kernel(field_bits),
     ]
     return {
-        'schema': 'compiler-project-arithmetic-lowerings-v1',
+        'schema': 'compiler-project-arithmetic-lowerings-v2',
         'family': {
             'name': 'litinski_addsub_schoolbook_v1',
-            'summary': 'Exact arithmetic-kernel family with explicit stage/block inventories for schoolbook multiplication, ripple add/sub, conditional select, and fixed multiplication by 21.',
+            'summary': 'Exact arithmetic-kernel family with generated primitive-operation inventories for schoolbook multiplication, ripple add/sub, conditional select, and fixed multiplication by 21.',
             'gate_set': 'Clifford + Toffoli-style arithmetic + measurement',
             'field_bits': int(field_bits),
-            'exact_scope': 'exact non-Clifford counts and explicit stage/block inventories for the named arithmetic-kernel family; Clifford micro-counts remain outside the shipped lowering layer',
+            'exact_scope': 'exact non-Clifford counts and generated primitive-operation inventories for the named arithmetic-kernel family; Clifford micro-counts remain outside the shipped lowering layer',
             'source_references': [
                 {
                     'title': 'Quantum schoolbook multiplication with fewer Toffoli gates',
@@ -313,8 +343,8 @@ def arithmetic_lowering_library(field_bits: int, leaf_opcode_histogram: Mapping[
                 },
             ],
             'notes': [
-                'This family lowers the arithmetic side into explicit stage/block inventories instead of treating add/sub/mul/select costs as bare scalar formulas.',
-                'The lowering stays at the non-Clifford block layer. It does not yet publish bit-for-bit Clifford micro-expansions for every 256-bit kernel.',
+                'Each arithmetic block carries a generated primitive-operation inventory whose totals reconstruct the published per-kernel counts.',
+                'The lowering stays at the non-Clifford and measurement layer. It does not publish bit-for-bit Clifford micro-expansions for every 256-bit kernel.',
             ],
         },
         'kernels': kernels,

@@ -1,5 +1,5 @@
 {
-  "schema": "compiler-project-phase-shell-lowerings-v1",
+  "schema": "compiler-project-phase-shell-lowerings-v2",
   "phase_register_bits": 512,
   "families": [
     {
@@ -35,6 +35,120 @@
                 "single_qubit_rotation": 0,
                 "controlled_rotation": 130816,
                 "rotation_depth": 130816
+              },
+              "phase_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1",
+                "operand_2"
+              ],
+              "phase_operation_generator": {
+                "kind": "full_phase_rotation_ladder",
+                "phase_bits": 512
+              },
+              "phase_operation_stream": {
+                "operation_count": 130816,
+                "sha256": "c42060ebd49f31afc673450df5acb09fd280bd7fb0f6ba740791f7563af347b1",
+                "preview_head": [
+                  [
+                    "controlled_rotation",
+                    1,
+                    0,
+                    0
+                  ],
+                  [
+                    "controlled_rotation",
+                    2,
+                    0,
+                    1
+                  ],
+                  [
+                    "controlled_rotation",
+                    3,
+                    0,
+                    2
+                  ],
+                  [
+                    "controlled_rotation",
+                    4,
+                    0,
+                    3
+                  ],
+                  [
+                    "controlled_rotation",
+                    5,
+                    0,
+                    4
+                  ],
+                  [
+                    "controlled_rotation",
+                    6,
+                    0,
+                    5
+                  ],
+                  [
+                    "controlled_rotation",
+                    7,
+                    0,
+                    6
+                  ],
+                  [
+                    "controlled_rotation",
+                    8,
+                    0,
+                    7
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "controlled_rotation",
+                    510,
+                    507,
+                    130808
+                  ],
+                  [
+                    "controlled_rotation",
+                    511,
+                    507,
+                    130809
+                  ],
+                  [
+                    "controlled_rotation",
+                    509,
+                    508,
+                    130810
+                  ],
+                  [
+                    "controlled_rotation",
+                    510,
+                    508,
+                    130811
+                  ],
+                  [
+                    "controlled_rotation",
+                    511,
+                    508,
+                    130812
+                  ],
+                  [
+                    "controlled_rotation",
+                    510,
+                    509,
+                    130813
+                  ],
+                  [
+                    "controlled_rotation",
+                    511,
+                    509,
+                    130814
+                  ],
+                  [
+                    "controlled_rotation",
+                    511,
+                    510,
+                    130815
+                  ]
+                ]
               },
               "notes": [
                 "The lowering keeps the register coherent and counts every controlled dyadic phase separately.",
@@ -76,6 +190,89 @@
                 "controlled_rotation": 0,
                 "rotation_depth": 0
               },
+              "phase_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1",
+                "operand_2"
+              ],
+              "phase_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 512,
+                "gate": "hadamard"
+              },
+              "phase_operation_stream": {
+                "operation_count": 512,
+                "sha256": "dff20020fa10cf9b14a80affc6192bacc5cc23d51ae1ed1f9de34de0aae07a3a",
+                "preview_head": [
+                  [
+                    "hadamard",
+                    0
+                  ],
+                  [
+                    "hadamard",
+                    1
+                  ],
+                  [
+                    "hadamard",
+                    2
+                  ],
+                  [
+                    "hadamard",
+                    3
+                  ],
+                  [
+                    "hadamard",
+                    4
+                  ],
+                  [
+                    "hadamard",
+                    5
+                  ],
+                  [
+                    "hadamard",
+                    6
+                  ],
+                  [
+                    "hadamard",
+                    7
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "hadamard",
+                    504
+                  ],
+                  [
+                    "hadamard",
+                    505
+                  ],
+                  [
+                    "hadamard",
+                    506
+                  ],
+                  [
+                    "hadamard",
+                    507
+                  ],
+                  [
+                    "hadamard",
+                    508
+                  ],
+                  [
+                    "hadamard",
+                    509
+                  ],
+                  [
+                    "hadamard",
+                    510
+                  ],
+                  [
+                    "hadamard",
+                    511
+                  ]
+                ]
+              },
               "notes": [
                 "The Hadamards are part of the exact inverse-QFT shell rather than of the oracle core."
               ]
@@ -97,6 +294,89 @@
                 "single_qubit_rotation": 0,
                 "controlled_rotation": 0,
                 "rotation_depth": 0
+              },
+              "phase_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1",
+                "operand_2"
+              ],
+              "phase_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 512,
+                "gate": "measurement"
+              },
+              "phase_operation_stream": {
+                "operation_count": 512,
+                "sha256": "08cee4d999df9bf409d9c183164aea31f394cb47ff643985b8df7ae01c612464",
+                "preview_head": [
+                  [
+                    "measurement",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    1
+                  ],
+                  [
+                    "measurement",
+                    2
+                  ],
+                  [
+                    "measurement",
+                    3
+                  ],
+                  [
+                    "measurement",
+                    4
+                  ],
+                  [
+                    "measurement",
+                    5
+                  ],
+                  [
+                    "measurement",
+                    6
+                  ],
+                  [
+                    "measurement",
+                    7
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "measurement",
+                    504
+                  ],
+                  [
+                    "measurement",
+                    505
+                  ],
+                  [
+                    "measurement",
+                    506
+                  ],
+                  [
+                    "measurement",
+                    507
+                  ],
+                  [
+                    "measurement",
+                    508
+                  ],
+                  [
+                    "measurement",
+                    509
+                  ],
+                  [
+                    "measurement",
+                    510
+                  ],
+                  [
+                    "measurement",
+                    511
+                  ]
+                ]
               },
               "notes": [
                 "The shell ends in terminal measurements over the full phase register."
@@ -162,6 +442,104 @@
                 "controlled_rotation": 0,
                 "rotation_depth": 511
               },
+              "phase_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1",
+                "operand_2"
+              ],
+              "phase_operation_generator": {
+                "kind": "semiclassical_phase_updates",
+                "phase_bits": 512
+              },
+              "phase_operation_stream": {
+                "operation_count": 511,
+                "sha256": "c0a75c3aad6124b40341b9e650df25f6ae16fc90b0c6672b58b8e7a9c0247f40",
+                "preview_head": [
+                  [
+                    "single_qubit_rotation",
+                    1,
+                    1
+                  ],
+                  [
+                    "single_qubit_rotation",
+                    2,
+                    2
+                  ],
+                  [
+                    "single_qubit_rotation",
+                    3,
+                    3
+                  ],
+                  [
+                    "single_qubit_rotation",
+                    4,
+                    4
+                  ],
+                  [
+                    "single_qubit_rotation",
+                    5,
+                    5
+                  ],
+                  [
+                    "single_qubit_rotation",
+                    6,
+                    6
+                  ],
+                  [
+                    "single_qubit_rotation",
+                    7,
+                    7
+                  ],
+                  [
+                    "single_qubit_rotation",
+                    8,
+                    8
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "single_qubit_rotation",
+                    504,
+                    504
+                  ],
+                  [
+                    "single_qubit_rotation",
+                    505,
+                    505
+                  ],
+                  [
+                    "single_qubit_rotation",
+                    506,
+                    506
+                  ],
+                  [
+                    "single_qubit_rotation",
+                    507,
+                    507
+                  ],
+                  [
+                    "single_qubit_rotation",
+                    508,
+                    508
+                  ],
+                  [
+                    "single_qubit_rotation",
+                    509,
+                    509
+                  ],
+                  [
+                    "single_qubit_rotation",
+                    510,
+                    510
+                  ],
+                  [
+                    "single_qubit_rotation",
+                    511,
+                    511
+                  ]
+                ]
+              },
               "notes": [
                 "This follows the Griffiths\u2013Niu semiclassical QFT pattern in which prior measured bits determine the next one-qubit basis update.",
                 "All prior dyadic corrections for a given target bit are classically aggregated into one rotation before the Hadamard and measurement."
@@ -202,6 +580,89 @@
                 "controlled_rotation": 0,
                 "rotation_depth": 0
               },
+              "phase_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1",
+                "operand_2"
+              ],
+              "phase_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 512,
+                "gate": "hadamard"
+              },
+              "phase_operation_stream": {
+                "operation_count": 512,
+                "sha256": "dff20020fa10cf9b14a80affc6192bacc5cc23d51ae1ed1f9de34de0aae07a3a",
+                "preview_head": [
+                  [
+                    "hadamard",
+                    0
+                  ],
+                  [
+                    "hadamard",
+                    1
+                  ],
+                  [
+                    "hadamard",
+                    2
+                  ],
+                  [
+                    "hadamard",
+                    3
+                  ],
+                  [
+                    "hadamard",
+                    4
+                  ],
+                  [
+                    "hadamard",
+                    5
+                  ],
+                  [
+                    "hadamard",
+                    6
+                  ],
+                  [
+                    "hadamard",
+                    7
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "hadamard",
+                    504
+                  ],
+                  [
+                    "hadamard",
+                    505
+                  ],
+                  [
+                    "hadamard",
+                    506
+                  ],
+                  [
+                    "hadamard",
+                    507
+                  ],
+                  [
+                    "hadamard",
+                    508
+                  ],
+                  [
+                    "hadamard",
+                    509
+                  ],
+                  [
+                    "hadamard",
+                    510
+                  ],
+                  [
+                    "hadamard",
+                    511
+                  ]
+                ]
+              },
               "notes": [
                 "The single live phase qubit is reused across the full bit schedule."
               ]
@@ -223,6 +684,89 @@
                 "single_qubit_rotation": 0,
                 "controlled_rotation": 0,
                 "rotation_depth": 0
+              },
+              "phase_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1",
+                "operand_2"
+              ],
+              "phase_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 512,
+                "gate": "measurement"
+              },
+              "phase_operation_stream": {
+                "operation_count": 512,
+                "sha256": "08cee4d999df9bf409d9c183164aea31f394cb47ff643985b8df7ae01c612464",
+                "preview_head": [
+                  [
+                    "measurement",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    1
+                  ],
+                  [
+                    "measurement",
+                    2
+                  ],
+                  [
+                    "measurement",
+                    3
+                  ],
+                  [
+                    "measurement",
+                    4
+                  ],
+                  [
+                    "measurement",
+                    5
+                  ],
+                  [
+                    "measurement",
+                    6
+                  ],
+                  [
+                    "measurement",
+                    7
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "measurement",
+                    504
+                  ],
+                  [
+                    "measurement",
+                    505
+                  ],
+                  [
+                    "measurement",
+                    506
+                  ],
+                  [
+                    "measurement",
+                    507
+                  ],
+                  [
+                    "measurement",
+                    508
+                  ],
+                  [
+                    "measurement",
+                    509
+                  ],
+                  [
+                    "measurement",
+                    510
+                  ],
+                  [
+                    "measurement",
+                    511
+                  ]
+                ]
               },
               "notes": [
                 "Each measured bit is committed to classical state before the next adaptive basis update."
@@ -256,7 +800,7 @@
     }
   ],
   "notes": [
-    "This artifact lowers each named phase-shell family into exact stage/block inventories over explicit pre-layout phase-shell primitives.",
+    "This artifact lowers each named phase-shell family into generated phase-operation inventories over explicit pre-layout phase-shell primitives.",
     "The shell inventory is tracked separately from the arithmetic and lookup CCX totals because Azure logicalCounts accepts rotations and measurements as separate exact pre-layout inputs."
   ]
 }

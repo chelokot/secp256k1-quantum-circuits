@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Mapping, Optional, Tuple
@@ -11,7 +12,7 @@ ROOT_SRC = PROJECT_ROOT / 'src'
 if str(ROOT_SRC) not in sys.path:
     sys.path.insert(0, str(ROOT_SRC))
 
-from common import SECP_B, SECP_P, load_json, neg_affine, sha256_path  # noqa: E402
+from common import SECP_B, SECP_P, load_json, neg_affine, sha256_bytes, sha256_path  # noqa: E402
 from lookup_research import (  # noqa: E402
     build_lookup_folded_contract_definition,
     build_lookup_base_set,
@@ -21,6 +22,7 @@ from lookup_research import (  # noqa: E402
 )
 
 PointAffine = Optional[Tuple[int, int]]
+PrimitiveOperation = List[int | str]
 
 
 def _lookup_contract_path() -> Path:
@@ -53,21 +55,88 @@ def _primitive_counts(ccx: int = 0, cx: int = 0, x: int = 0, measurement: int = 
     }
 
 
+def _primitive_operation(gate: str, *operands: int) -> PrimitiveOperation:
+    return [gate, *[int(operand) for operand in operands]]
+
+
+def _primitive_counts_from_operations(primitive_operations: List[PrimitiveOperation]) -> Dict[str, int]:
+    counts = _primitive_counts()
+    for operation in primitive_operations:
+        counts[str(operation[0])] += 1
+    return counts
+
+
+def _repeated_ladder_operations(instance_count: int, bit_count: int, include_measurement: bool) -> List[PrimitiveOperation]:
+    primitive_operations: List[PrimitiveOperation] = []
+    for instance_index in range(instance_count):
+        for bit_index in range(bit_count):
+            primitive_operations.append(_primitive_operation('ccx', instance_index, bit_index))
+            if include_measurement:
+                primitive_operations.append(_primitive_operation('measurement', instance_index, bit_index))
+    return primitive_operations
+
+
+def _pointwise_operations(instance_count: int, gate: str, include_measurement: bool) -> List[PrimitiveOperation]:
+    primitive_operations: List[PrimitiveOperation] = []
+    for instance_index in range(instance_count):
+        primitive_operations.append(_primitive_operation(gate, instance_index))
+        if include_measurement:
+            primitive_operations.append(_primitive_operation('measurement', instance_index))
+    return primitive_operations
+
+
+def materialize_lookup_primitive_operations(generator: Mapping[str, Any]) -> List[PrimitiveOperation]:
+    kind = str(generator['kind'])
+    if kind == 'repeated_ladder':
+        return _repeated_ladder_operations(
+            int(generator['instance_count']),
+            int(generator['bit_count']),
+            bool(generator['include_measurement']),
+        )
+    if kind == 'pointwise':
+        return _pointwise_operations(
+            int(generator['instance_count']),
+            str(generator['gate']),
+            bool(generator['include_measurement']),
+        )
+    raise KeyError(f'unknown lookup primitive-operation generator: {kind}')
+
+
+def _operation_stream_summary(primitive_operations: List[PrimitiveOperation]) -> Dict[str, Any]:
+    serialized = json.dumps(primitive_operations, separators=(',', ':')).encode()
+    preview_count = min(8, len(primitive_operations))
+    return {
+        'operation_count': len(primitive_operations),
+        'sha256': sha256_bytes(serialized),
+        'preview_head': primitive_operations[:preview_count],
+        'preview_tail': primitive_operations[-preview_count:] if preview_count else [],
+    }
+
+
 def _block(
     name: str,
     summary: str,
     instance_count: int,
-    primitive_counts_per_instance: Mapping[str, int],
+    primitive_operation_generator: Mapping[str, Any],
     notes: List[str],
 ) -> Dict[str, Any]:
-    non_clifford_per_instance = int(primitive_counts_per_instance.get('ccx', 0))
+    primitive_operations = materialize_lookup_primitive_operations(primitive_operation_generator)
+    primitive_totals = _primitive_counts_from_operations(primitive_operations)
+    primitive_counts_per_instance = {
+        key: int(primitive_totals[key] // int(instance_count))
+        for key in ('ccx', 'cx', 'x', 'measurement')
+    }
     return {
         'name': name,
         'summary': summary,
         'instance_count': int(instance_count),
-        'primitive_counts_per_instance': dict(primitive_counts_per_instance),
-        'non_clifford_per_instance': non_clifford_per_instance,
-        'non_clifford_total': int(instance_count) * non_clifford_per_instance,
+        'primitive_counts_per_instance': primitive_counts_per_instance,
+        'primitive_counts_total': primitive_totals,
+        'primitive_operation_encoding': ['gate', 'operand_0', 'operand_1'],
+        'primitive_operation_generator': dict(primitive_operation_generator),
+        'primitive_operation_stream': _operation_stream_summary(primitive_operations),
+        'non_clifford_per_instance': primitive_counts_per_instance['ccx'],
+        'non_clifford_total': primitive_totals['ccx'],
         'notes': notes,
     }
 
@@ -81,12 +150,17 @@ def _stage(
     local_workspace_qubits: int,
     notes: List[str],
 ) -> Dict[str, Any]:
+    primitive_totals = {
+        key: sum(int(block['primitive_counts_total'][key]) for block in blocks)
+        for key in ('ccx', 'cx', 'x', 'measurement')
+    }
     return {
         'name': name,
         'summary': summary,
         'category': category,
         'blocks': blocks,
-        'non_clifford_total': sum(int(block['non_clifford_total']) for block in blocks),
+        'primitive_counts_total': primitive_totals,
+        'non_clifford_total': primitive_totals['ccx'],
         'persistent_workspace_qubits': int(persistent_workspace_qubits),
         'local_workspace_qubits': int(local_workspace_qubits),
         'total_workspace_qubits': int(persistent_workspace_qubits + local_workspace_qubits),
@@ -121,7 +195,12 @@ def _classification_stage(magnitude_bits: int, persistent_workspace_qubits: int)
                 name='magnitude_all_zero_tree',
                 summary='Temporary logical-AND ladder over the 15 magnitude bits.',
                 instance_count=1,
-                primitive_counts_per_instance=_primitive_counts(ccx=all_zero_cost, measurement=all_zero_cost),
+                primitive_operation_generator={
+                    'kind': 'repeated_ladder',
+                    'instance_count': 1,
+                    'bit_count': all_zero_cost,
+                    'include_measurement': True,
+                },
                 notes=[
                     'The all-zero predicate is shared by zero-word bypass and 0x8000 special-word routing.',
                     'The temporary logical-AND ladder is uncomputed by local measurements inside the stage.',
@@ -131,7 +210,12 @@ def _classification_stage(magnitude_bits: int, persistent_workspace_qubits: int)
                 name='signed_absolute_value_prepare',
                 summary='Two mirrored temporary logical-AND ladders prepare the folded absolute value for the positive lookup domain.',
                 instance_count=2,
-                primitive_counts_per_instance=_primitive_counts(ccx=magnitude_bits - 1, measurement=magnitude_bits - 1),
+                primitive_operation_generator={
+                    'kind': 'repeated_ladder',
+                    'instance_count': 2,
+                    'bit_count': magnitude_bits - 1,
+                    'include_measurement': True,
+                },
                 notes=[
                     'This stage implements the explicit absolute-value preparation used by all checked lookup families.',
                     'Separate zero/min routing is driven from the shared all-zero predicate and the raw sign bit, so no additional non-Clifford flag-materialization block is counted here.',
@@ -156,7 +240,12 @@ def _conditional_negation_stage(coordinate_bits: int, persistent_workspace_qubit
                 name='conditional_field_negation',
                 summary='Field-width conditional subtraction/select network over the Y coordinate.',
                 instance_count=1,
-                primitive_counts_per_instance=_primitive_counts(ccx=coordinate_bits - 1),
+                primitive_operation_generator={
+                    'kind': 'repeated_ladder',
+                    'instance_count': 1,
+                    'bit_count': coordinate_bits - 1,
+                    'include_measurement': False,
+                },
                 notes=[
                     'This stage is the exact post-lookup sign-fix assumption represented as a single field-width conditional negation.',
                 ],
@@ -185,10 +274,12 @@ def _linear_scan_family(contract: Mapping[str, Any]) -> Dict[str, Any]:
                     name='magnitude_equality_scan',
                     summary='One equality ladder for each positive folded-table address.',
                     instance_count=params['positive_domain_size'],
-                    primitive_counts_per_instance=_primitive_counts(
-                        ccx=params['magnitude_bits'] - 1,
-                        measurement=params['magnitude_bits'] - 1,
-                    ),
+                    primitive_operation_generator={
+                        'kind': 'repeated_ladder',
+                        'instance_count': params['positive_domain_size'],
+                        'bit_count': params['magnitude_bits'] - 1,
+                        'include_measurement': True,
+                    },
                     notes=[
                         'Every positive-domain table entry 0..32767 is matched coherently against the folded magnitude register.',
                         'The ladder family matches the low-space temporary logical-AND approach described in the family name.',
@@ -241,7 +332,12 @@ def _unary_qrom_family(contract: Mapping[str, Any], measured_uncompute: bool) ->
             name='unary_address_uncompute',
             summary='Reverse unary QROM cleanup across the full folded positive domain.',
             instance_count=params['positive_domain_size'] - 1,
-            primitive_counts_per_instance=_primitive_counts(ccx=1),
+            primitive_operation_generator={
+                'kind': 'pointwise',
+                'instance_count': params['positive_domain_size'] - 1,
+                'gate': 'ccx',
+                'include_measurement': False,
+            },
             notes=[
                 'This is the exact reverse path of the unary address decode.',
             ],
@@ -270,7 +366,12 @@ def _unary_qrom_family(contract: Mapping[str, Any], measured_uncompute: bool) ->
                 name='coarse_bucket_measured_uncompute',
                 summary='Measured cleanup of the coarse 8-bit bucket structure.',
                 instance_count=1 << 8,
-                primitive_counts_per_instance=_primitive_counts(ccx=1, measurement=1),
+                primitive_operation_generator={
+                    'kind': 'pointwise',
+                    'instance_count': 1 << 8,
+                    'gate': 'ccx',
+                    'include_measurement': True,
+                },
                 notes=[
                     'The measured cleanup is split into a coarse bucket layer and a fine residual tree.',
                 ],
@@ -279,7 +380,12 @@ def _unary_qrom_family(contract: Mapping[str, Any], measured_uncompute: bool) ->
                 name='fine_tree_measured_uncompute',
                 summary='Measured cleanup of the residual 7-bit tree inside each coarse bucket.',
                 instance_count=(1 << 7) - 1,
-                primitive_counts_per_instance=_primitive_counts(ccx=1, measurement=1),
+                primitive_operation_generator={
+                    'kind': 'pointwise',
+                    'instance_count': (1 << 7) - 1,
+                    'gate': 'ccx',
+                    'include_measurement': True,
+                },
                 notes=[
                     'The 8/7 split matches the checked family definition used by the compiler frontier.',
                 ],
@@ -309,7 +415,12 @@ def _unary_qrom_family(contract: Mapping[str, Any], measured_uncompute: bool) ->
                     name='unary_address_decode',
                     summary='One coherent unary activation edge for each nonzero folded magnitude transition.',
                     instance_count=params['positive_domain_size'] - 1,
-                    primitive_counts_per_instance=_primitive_counts(ccx=1),
+                    primitive_operation_generator={
+                        'kind': 'pointwise',
+                        'instance_count': params['positive_domain_size'] - 1,
+                        'gate': 'ccx',
+                        'include_measurement': False,
+                    },
                     notes=[
                         'This stage materializes a full unary address register spanning the 32768-entry folded positive domain.',
                     ],
@@ -357,6 +468,10 @@ def _family_payload(
     lookup_uncompute_stage = next(stage for stage in stages if stage['category'] == 'lookup_uncompute')
     negate_stage = next(stage for stage in stages if stage['category'] == 'post_lookup_fixup')
     persistent_total = sum(int(entry['qubits']) for entry in persistent_workspace)
+    primitive_totals = {
+        key: sum(int(stage['primitive_counts_total'][key]) for stage in stages)
+        for key in ('ccx', 'cx', 'x', 'measurement')
+    }
     return {
         'name': name,
         'summary': summary,
@@ -365,13 +480,14 @@ def _family_payload(
         'lowering_strategy': dict(lowering_strategy),
         'persistent_workspace': persistent_workspace,
         'stages': stages,
+        'primitive_counts_total': primitive_totals,
         'zero_check_non_clifford': int(classification_stage['blocks'][0]['non_clifford_total']),
         'magnitude_prepare_non_clifford': int(classification_stage['blocks'][1]['non_clifford_total']),
         'compute_lookup_non_clifford': int(lookup_compute_stage['non_clifford_total']),
         'uncompute_lookup_non_clifford': int(lookup_uncompute_stage['non_clifford_total']),
         'conditional_negate_y_non_clifford': int(negate_stage['non_clifford_total']),
-        'direct_lookup_non_clifford': sum(int(stage['non_clifford_total']) for stage in stages),
-        'per_leaf_lookup_non_clifford': sum(int(stage['non_clifford_total']) for stage in stages),
+        'direct_lookup_non_clifford': primitive_totals['ccx'],
+        'per_leaf_lookup_non_clifford': primitive_totals['ccx'],
         'extra_lookup_workspace_qubits': max(int(stage['total_workspace_qubits']) for stage in stages),
         'workspace_reconstruction': {
             'persistent_workspace_qubits': persistent_total,
@@ -396,7 +512,7 @@ def lookup_lowering_library() -> Dict[str, Any]:
         _unary_qrom_family(contract, measured_uncompute=True),
     ]
     return {
-        'schema': 'compiler-project-lookup-lowerings-v1',
+        'schema': 'compiler-project-lookup-lowerings-v2',
         'lookup_contract_path': 'artifacts/lookup/lookup_signed_fold_contract.json',
         'lookup_contract_sha256': sha256_path(_lookup_contract_path()),
         'lookup_contract_summary': {
@@ -407,9 +523,9 @@ def lookup_lowering_library() -> Dict[str, Any]:
         },
         'families': families,
         'notes': [
-            'This artifact lowers each named compiler-project lookup family into an explicit stage/block inventory below the contract-only layer.',
-            'The lowered families keep the signed-folded secp256k1 lookup semantics exact while exposing stage-local workspace and non-Clifford reconstruction.',
-            'This is still not a bit-for-bit primitive qRAM/QROM netlist; it is an explicit compiler-family lowering layer checked below the folded lookup contract.',
+            'This artifact lowers each named compiler-project lookup family into generated primitive-operation inventories below the folded lookup contract.',
+            'The lowered families keep the signed-folded secp256k1 lookup semantics exact while exposing stage-local workspace and primitive-count reconstruction.',
+            'The lookup layer is published as explicit generated compiler-family structure over temporary logical-AND and unary QROM-style primitives.',
         ],
     }
 
@@ -498,6 +614,7 @@ def lowered_lookup_semantic_summary() -> Dict[str, Any]:
 __all__ = [
     'lookup_lowering_library',
     'lookup_family_rows',
+    'materialize_lookup_primitive_operations',
     'lowered_lookup_point',
     'lowered_lookup_semantic_summary',
 ]

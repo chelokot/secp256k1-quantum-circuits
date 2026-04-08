@@ -79,9 +79,10 @@ This layer is exact for the **named compiler families** checked into that
 subproject. In particular, it fixes:
 
 - a fully quantum raw-32 schedule with no classical tail elisions,
-- explicit folded lookup families,
+- generated folded lookup-family operation inventories,
+- generated arithmetic-kernel operation inventories,
 - exact leaf slot allocation, and
-- explicit phase-shell lowerings for the named full-register and semiclassical inverse-QFT shells,
+- generated phase-shell operation inventories for the named full-register and semiclassical inverse-QFT shells,
 - compositional FT-style call graphs plus traversed leaf sigma for the named
   compiler families,
 - independent exact whole-oracle recount derived from that FT IR leaf sigma,
@@ -95,10 +96,10 @@ subproject. In particular, it fixes:
 ### A. Primitive-gate lookup realization
 
 The repository does not lower lookup memory into a primitive-gate qRAM or QROM
-construction. It validates the checked-in folded contract fields, ships explicit
-compiler-family lookup lowerings below that contract, and proves the lookup
-semantics assumed at the ISA boundary. It still stops short of a bit-for-bit
-primitive qRAM/QROM netlist.
+construction. It validates the checked-in folded contract fields, ships
+generated compiler-family lookup operation inventories below that contract, and
+proves the lookup semantics assumed at the ISA boundary. It still stops short
+of a bit-for-bit Clifford-complete qRAM/QROM netlist.
 
 ### B. Primitive-gate cleanup
 

@@ -473,7 +473,7 @@ def primitive_multiplier_library() -> Dict[str, Any]:
             'field_bits': FIELD_BITS,
             'exact_non_clifford': field_mul_kernel['exact_non_clifford_per_kernel'],
             'gate_set': kernel['gate_set'],
-            'stages': field_mul_kernel['stages'],
+            'arithmetic_lowering_artifact': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
         })
     full_instances = []
     for call in schedule['leaf_calls']:
@@ -486,7 +486,7 @@ def primitive_multiplier_library() -> Dict[str, Any]:
             })
     total_non_clifford = len(full_instances) * int(field_mul_kernel['exact_non_clifford_per_kernel'])
     return {
-        'schema': 'compiler-project-primitive-multiplier-library-v1',
+        'schema': 'compiler-project-primitive-multiplier-library-v2',
         'family': kernel['name'],
         'field_bits': FIELD_BITS,
         'per_leaf_multiplier_instances': per_leaf,
@@ -631,14 +631,14 @@ def compiler_family_frontier() -> Dict[str, Any]:
     best_gate = min(families, key=lambda row: (row.full_oracle_non_clifford, row.total_logical_qubits))
     best_qubit = min(families, key=lambda row: (row.total_logical_qubits, row.full_oracle_non_clifford))
     return {
-        'schema': 'compiler-project-frontier-v8',
+        'schema': 'compiler-project-frontier-v9',
         'public_google_baseline': PUBLIC_GOOGLE_BASELINE,
         'schedule': schedule,
         'slot_allocation': slot_alloc,
         'arithmetic_kernel_family': arithmetic_kernel_library(),
-        'arithmetic_lowerings': arithmetic_lowerings,
-        'lookup_lowerings': lookup_lowerings,
-        'phase_shell_lowerings': phase_shell_lowerings,
+        'arithmetic_lowering_artifact': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
+        'lookup_lowering_artifact': 'compiler_verification_project/artifacts/lookup_lowerings.json',
+        'phase_shell_lowering_artifact': 'compiler_verification_project/artifacts/phase_shell_lowerings.json',
         'generated_block_inventory_artifact': 'compiler_verification_project/artifacts/generated_block_inventories.json',
         'whole_oracle_recount_artifact': 'compiler_verification_project/artifacts/whole_oracle_recount.json',
         'lookup_families': [asdict(row) for row in lookup_families()],
@@ -712,13 +712,18 @@ def full_attack_inventory() -> Dict[str, Any]:
     kernel = arithmetic_kernel_library()
     hist = kernel['leaf_opcode_histogram']
     leaf_calls = schedule['summary']['leaf_call_count_total']
+    arithmetic_lowerings = arithmetic_lowering_library(
+        field_bits=FIELD_BITS,
+        leaf_opcode_histogram=kernel['leaf_opcode_histogram'],
+    )
+    phase_shell_lowerings = phase_shell_lowering_library(FULL_PHASE_REGISTER_BITS)
     generated_block_inventories = build_generated_block_inventories(
         schedule=schedule,
         slot_allocation=exact_leaf_slot_allocation(),
         kernel=kernel,
-        arithmetic_lowerings=frontier['arithmetic_lowerings'],
+        arithmetic_lowerings=arithmetic_lowerings,
         lookup_lowerings=lookup_lowering_library(),
-        phase_shells=frontier['phase_shell_lowerings']['families'],
+        phase_shells=phase_shell_lowerings['families'],
         field_bits=FIELD_BITS,
         public_google_baseline=PUBLIC_GOOGLE_BASELINE,
     )

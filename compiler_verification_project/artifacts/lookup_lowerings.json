@@ -1,5 +1,5 @@
 {
-  "schema": "compiler-project-lookup-lowerings-v1",
+  "schema": "compiler-project-lookup-lowerings-v2",
   "lookup_contract_path": "artifacts/lookup/lookup_signed_fold_contract.json",
   "lookup_contract_sha256": "c3b6cc711aa323951a580f6a54a027d84bf84d6a5ad66965751db865553b635d",
   "lookup_contract_summary": {
@@ -47,6 +47,111 @@
                 "x": 0,
                 "measurement": 14
               },
+              "primitive_counts_total": {
+                "ccx": 14,
+                "cx": 0,
+                "x": 0,
+                "measurement": 14
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "repeated_ladder",
+                "instance_count": 1,
+                "bit_count": 14,
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 28,
+                "sha256": "1dcb7cf81673b233c026134572f13c256993d0627c72191bad19f2d61367ab79",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0,
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    0
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    1
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    1
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    2
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    2
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    3
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    3
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0,
+                    10
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    10
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    11
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    11
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    12
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    12
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    13
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    13
+                  ]
+                ]
+              },
               "non_clifford_per_instance": 14,
               "non_clifford_total": 14,
               "notes": [
@@ -64,6 +169,111 @@
                 "x": 0,
                 "measurement": 14
               },
+              "primitive_counts_total": {
+                "ccx": 28,
+                "cx": 0,
+                "x": 0,
+                "measurement": 28
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "repeated_ladder",
+                "instance_count": 2,
+                "bit_count": 14,
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 56,
+                "sha256": "e3f4add9394f9d8f6f8b5a08535202a6b3919b582c973ee87fd36d7d96dd0bd6",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0,
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    0
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    1
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    1
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    2
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    2
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    3
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    3
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    1,
+                    10
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    10
+                  ],
+                  [
+                    "ccx",
+                    1,
+                    11
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    11
+                  ],
+                  [
+                    "ccx",
+                    1,
+                    12
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    12
+                  ],
+                  [
+                    "ccx",
+                    1,
+                    13
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    13
+                  ]
+                ]
+              },
               "non_clifford_per_instance": 14,
               "non_clifford_total": 28,
               "notes": [
@@ -72,6 +282,12 @@
               ]
             }
           ],
+          "primitive_counts_total": {
+            "ccx": 42,
+            "cx": 0,
+            "x": 0,
+            "measurement": 42
+          },
           "non_clifford_total": 42,
           "persistent_workspace_qubits": 18,
           "local_workspace_qubits": 13,
@@ -95,6 +311,111 @@
                 "x": 0,
                 "measurement": 14
               },
+              "primitive_counts_total": {
+                "ccx": 458752,
+                "cx": 0,
+                "x": 0,
+                "measurement": 458752
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "repeated_ladder",
+                "instance_count": 32768,
+                "bit_count": 14,
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 917504,
+                "sha256": "6676487373c80b91f4dd71317373c6c8fad95d86c7053b522bb73849c39b072d",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0,
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    0
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    1
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    1
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    2
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    2
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    3
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    3
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    32767,
+                    10
+                  ],
+                  [
+                    "measurement",
+                    32767,
+                    10
+                  ],
+                  [
+                    "ccx",
+                    32767,
+                    11
+                  ],
+                  [
+                    "measurement",
+                    32767,
+                    11
+                  ],
+                  [
+                    "ccx",
+                    32767,
+                    12
+                  ],
+                  [
+                    "measurement",
+                    32767,
+                    12
+                  ],
+                  [
+                    "ccx",
+                    32767,
+                    13
+                  ],
+                  [
+                    "measurement",
+                    32767,
+                    13
+                  ]
+                ]
+              },
               "non_clifford_per_instance": 14,
               "non_clifford_total": 458752,
               "notes": [
@@ -103,6 +424,12 @@
               ]
             }
           ],
+          "primitive_counts_total": {
+            "ccx": 458752,
+            "cx": 0,
+            "x": 0,
+            "measurement": 458752
+          },
           "non_clifford_total": 458752,
           "persistent_workspace_qubits": 18,
           "local_workspace_qubits": 13,
@@ -116,6 +443,12 @@
           "summary": "Measurement-reset is internal to the temporary logical-AND equality scan and does not add non-Clifford cost beyond the compute stage.",
           "category": "lookup_uncompute",
           "blocks": [],
+          "primitive_counts_total": {
+            "ccx": 0,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
           "non_clifford_total": 0,
           "persistent_workspace_qubits": 18,
           "local_workspace_qubits": 0,
@@ -139,6 +472,111 @@
                 "x": 0,
                 "measurement": 0
               },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "repeated_ladder",
+                "instance_count": 1,
+                "bit_count": 255,
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 255,
+                "sha256": "bc1daccf212c60fa60ea180cd084e3e8bde71a3bf7cc1fe295ef336a5eafa761",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0,
+                    0
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    1
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    2
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    3
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    4
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    5
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    6
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    7
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0,
+                    247
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    248
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    249
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    250
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    251
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    252
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    253
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    254
+                  ]
+                ]
+              },
               "non_clifford_per_instance": 255,
               "non_clifford_total": 255,
               "notes": [
@@ -146,6 +584,12 @@
               ]
             }
           ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
           "non_clifford_total": 255,
           "persistent_workspace_qubits": 18,
           "local_workspace_qubits": 0,
@@ -155,6 +599,12 @@
           ]
         }
       ],
+      "primitive_counts_total": {
+        "ccx": 459049,
+        "cx": 0,
+        "x": 0,
+        "measurement": 458794
+      },
       "zero_check_non_clifford": 14,
       "magnitude_prepare_non_clifford": 28,
       "compute_lookup_non_clifford": 458752,
@@ -216,6 +666,111 @@
                 "x": 0,
                 "measurement": 14
               },
+              "primitive_counts_total": {
+                "ccx": 14,
+                "cx": 0,
+                "x": 0,
+                "measurement": 14
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "repeated_ladder",
+                "instance_count": 1,
+                "bit_count": 14,
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 28,
+                "sha256": "1dcb7cf81673b233c026134572f13c256993d0627c72191bad19f2d61367ab79",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0,
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    0
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    1
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    1
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    2
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    2
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    3
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    3
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0,
+                    10
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    10
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    11
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    11
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    12
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    12
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    13
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    13
+                  ]
+                ]
+              },
               "non_clifford_per_instance": 14,
               "non_clifford_total": 14,
               "notes": [
@@ -233,6 +788,111 @@
                 "x": 0,
                 "measurement": 14
               },
+              "primitive_counts_total": {
+                "ccx": 28,
+                "cx": 0,
+                "x": 0,
+                "measurement": 28
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "repeated_ladder",
+                "instance_count": 2,
+                "bit_count": 14,
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 56,
+                "sha256": "e3f4add9394f9d8f6f8b5a08535202a6b3919b582c973ee87fd36d7d96dd0bd6",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0,
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    0
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    1
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    1
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    2
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    2
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    3
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    3
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    1,
+                    10
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    10
+                  ],
+                  [
+                    "ccx",
+                    1,
+                    11
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    11
+                  ],
+                  [
+                    "ccx",
+                    1,
+                    12
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    12
+                  ],
+                  [
+                    "ccx",
+                    1,
+                    13
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    13
+                  ]
+                ]
+              },
               "non_clifford_per_instance": 14,
               "non_clifford_total": 28,
               "notes": [
@@ -241,6 +901,12 @@
               ]
             }
           ],
+          "primitive_counts_total": {
+            "ccx": 42,
+            "cx": 0,
+            "x": 0,
+            "measurement": 42
+          },
           "non_clifford_total": 42,
           "persistent_workspace_qubits": 18,
           "local_workspace_qubits": 13,
@@ -264,6 +930,95 @@
                 "x": 0,
                 "measurement": 0
               },
+              "primitive_counts_total": {
+                "ccx": 32767,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 32767,
+                "gate": "ccx",
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 32767,
+                "sha256": "86810c39cb27241416fc74b8c560ff2e65cc3c05d1b70801ad3d28113f306b34",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "ccx",
+                    1
+                  ],
+                  [
+                    "ccx",
+                    2
+                  ],
+                  [
+                    "ccx",
+                    3
+                  ],
+                  [
+                    "ccx",
+                    4
+                  ],
+                  [
+                    "ccx",
+                    5
+                  ],
+                  [
+                    "ccx",
+                    6
+                  ],
+                  [
+                    "ccx",
+                    7
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    32759
+                  ],
+                  [
+                    "ccx",
+                    32760
+                  ],
+                  [
+                    "ccx",
+                    32761
+                  ],
+                  [
+                    "ccx",
+                    32762
+                  ],
+                  [
+                    "ccx",
+                    32763
+                  ],
+                  [
+                    "ccx",
+                    32764
+                  ],
+                  [
+                    "ccx",
+                    32765
+                  ],
+                  [
+                    "ccx",
+                    32766
+                  ]
+                ]
+              },
               "non_clifford_per_instance": 1,
               "non_clifford_total": 32767,
               "notes": [
@@ -271,6 +1026,12 @@
               ]
             }
           ],
+          "primitive_counts_total": {
+            "ccx": 32767,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
           "non_clifford_total": 32767,
           "persistent_workspace_qubits": 18,
           "local_workspace_qubits": 32768,
@@ -294,6 +1055,95 @@
                 "x": 0,
                 "measurement": 0
               },
+              "primitive_counts_total": {
+                "ccx": 32767,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 32767,
+                "gate": "ccx",
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 32767,
+                "sha256": "86810c39cb27241416fc74b8c560ff2e65cc3c05d1b70801ad3d28113f306b34",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "ccx",
+                    1
+                  ],
+                  [
+                    "ccx",
+                    2
+                  ],
+                  [
+                    "ccx",
+                    3
+                  ],
+                  [
+                    "ccx",
+                    4
+                  ],
+                  [
+                    "ccx",
+                    5
+                  ],
+                  [
+                    "ccx",
+                    6
+                  ],
+                  [
+                    "ccx",
+                    7
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    32759
+                  ],
+                  [
+                    "ccx",
+                    32760
+                  ],
+                  [
+                    "ccx",
+                    32761
+                  ],
+                  [
+                    "ccx",
+                    32762
+                  ],
+                  [
+                    "ccx",
+                    32763
+                  ],
+                  [
+                    "ccx",
+                    32764
+                  ],
+                  [
+                    "ccx",
+                    32765
+                  ],
+                  [
+                    "ccx",
+                    32766
+                  ]
+                ]
+              },
               "non_clifford_per_instance": 1,
               "non_clifford_total": 32767,
               "notes": [
@@ -301,6 +1151,12 @@
               ]
             }
           ],
+          "primitive_counts_total": {
+            "ccx": 32767,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
           "non_clifford_total": 32767,
           "persistent_workspace_qubits": 18,
           "local_workspace_qubits": 32768,
@@ -324,6 +1180,111 @@
                 "x": 0,
                 "measurement": 0
               },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "repeated_ladder",
+                "instance_count": 1,
+                "bit_count": 255,
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 255,
+                "sha256": "bc1daccf212c60fa60ea180cd084e3e8bde71a3bf7cc1fe295ef336a5eafa761",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0,
+                    0
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    1
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    2
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    3
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    4
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    5
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    6
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    7
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0,
+                    247
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    248
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    249
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    250
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    251
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    252
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    253
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    254
+                  ]
+                ]
+              },
               "non_clifford_per_instance": 255,
               "non_clifford_total": 255,
               "notes": [
@@ -331,6 +1292,12 @@
               ]
             }
           ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
           "non_clifford_total": 255,
           "persistent_workspace_qubits": 18,
           "local_workspace_qubits": 0,
@@ -340,6 +1307,12 @@
           ]
         }
       ],
+      "primitive_counts_total": {
+        "ccx": 65831,
+        "cx": 0,
+        "x": 0,
+        "measurement": 42
+      },
       "zero_check_non_clifford": 14,
       "magnitude_prepare_non_clifford": 28,
       "compute_lookup_non_clifford": 32767,
@@ -401,6 +1374,111 @@
                 "x": 0,
                 "measurement": 14
               },
+              "primitive_counts_total": {
+                "ccx": 14,
+                "cx": 0,
+                "x": 0,
+                "measurement": 14
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "repeated_ladder",
+                "instance_count": 1,
+                "bit_count": 14,
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 28,
+                "sha256": "1dcb7cf81673b233c026134572f13c256993d0627c72191bad19f2d61367ab79",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0,
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    0
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    1
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    1
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    2
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    2
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    3
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    3
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0,
+                    10
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    10
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    11
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    11
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    12
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    12
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    13
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    13
+                  ]
+                ]
+              },
               "non_clifford_per_instance": 14,
               "non_clifford_total": 14,
               "notes": [
@@ -418,6 +1496,111 @@
                 "x": 0,
                 "measurement": 14
               },
+              "primitive_counts_total": {
+                "ccx": 28,
+                "cx": 0,
+                "x": 0,
+                "measurement": 28
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "repeated_ladder",
+                "instance_count": 2,
+                "bit_count": 14,
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 56,
+                "sha256": "e3f4add9394f9d8f6f8b5a08535202a6b3919b582c973ee87fd36d7d96dd0bd6",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0,
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    0
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    1
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    1
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    2
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    2
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    3
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    3
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    1,
+                    10
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    10
+                  ],
+                  [
+                    "ccx",
+                    1,
+                    11
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    11
+                  ],
+                  [
+                    "ccx",
+                    1,
+                    12
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    12
+                  ],
+                  [
+                    "ccx",
+                    1,
+                    13
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    13
+                  ]
+                ]
+              },
               "non_clifford_per_instance": 14,
               "non_clifford_total": 28,
               "notes": [
@@ -426,6 +1609,12 @@
               ]
             }
           ],
+          "primitive_counts_total": {
+            "ccx": 42,
+            "cx": 0,
+            "x": 0,
+            "measurement": 42
+          },
           "non_clifford_total": 42,
           "persistent_workspace_qubits": 18,
           "local_workspace_qubits": 13,
@@ -449,6 +1638,95 @@
                 "x": 0,
                 "measurement": 0
               },
+              "primitive_counts_total": {
+                "ccx": 32767,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 32767,
+                "gate": "ccx",
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 32767,
+                "sha256": "86810c39cb27241416fc74b8c560ff2e65cc3c05d1b70801ad3d28113f306b34",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "ccx",
+                    1
+                  ],
+                  [
+                    "ccx",
+                    2
+                  ],
+                  [
+                    "ccx",
+                    3
+                  ],
+                  [
+                    "ccx",
+                    4
+                  ],
+                  [
+                    "ccx",
+                    5
+                  ],
+                  [
+                    "ccx",
+                    6
+                  ],
+                  [
+                    "ccx",
+                    7
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    32759
+                  ],
+                  [
+                    "ccx",
+                    32760
+                  ],
+                  [
+                    "ccx",
+                    32761
+                  ],
+                  [
+                    "ccx",
+                    32762
+                  ],
+                  [
+                    "ccx",
+                    32763
+                  ],
+                  [
+                    "ccx",
+                    32764
+                  ],
+                  [
+                    "ccx",
+                    32765
+                  ],
+                  [
+                    "ccx",
+                    32766
+                  ]
+                ]
+              },
               "non_clifford_per_instance": 1,
               "non_clifford_total": 32767,
               "notes": [
@@ -456,6 +1734,12 @@
               ]
             }
           ],
+          "primitive_counts_total": {
+            "ccx": 32767,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
           "non_clifford_total": 32767,
           "persistent_workspace_qubits": 18,
           "local_workspace_qubits": 32768,
@@ -479,6 +1763,95 @@
                 "x": 0,
                 "measurement": 1
               },
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 256,
+                "gate": "ccx",
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 512,
+                "sha256": "0923861fe093a6192edc5f44968c4951cfec6039cad04c230ca1545839a0588e",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ],
+                  [
+                    "ccx",
+                    1
+                  ],
+                  [
+                    "measurement",
+                    1
+                  ],
+                  [
+                    "ccx",
+                    2
+                  ],
+                  [
+                    "measurement",
+                    2
+                  ],
+                  [
+                    "ccx",
+                    3
+                  ],
+                  [
+                    "measurement",
+                    3
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    252
+                  ],
+                  [
+                    "measurement",
+                    252
+                  ],
+                  [
+                    "ccx",
+                    253
+                  ],
+                  [
+                    "measurement",
+                    253
+                  ],
+                  [
+                    "ccx",
+                    254
+                  ],
+                  [
+                    "measurement",
+                    254
+                  ],
+                  [
+                    "ccx",
+                    255
+                  ],
+                  [
+                    "measurement",
+                    255
+                  ]
+                ]
+              },
               "non_clifford_per_instance": 1,
               "non_clifford_total": 256,
               "notes": [
@@ -495,6 +1868,95 @@
                 "x": 0,
                 "measurement": 1
               },
+              "primitive_counts_total": {
+                "ccx": 127,
+                "cx": 0,
+                "x": 0,
+                "measurement": 127
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 127,
+                "gate": "ccx",
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 254,
+                "sha256": "166fc66672649584dbced27358032bc9519977f569e992d05c655462cbd831fa",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ],
+                  [
+                    "ccx",
+                    1
+                  ],
+                  [
+                    "measurement",
+                    1
+                  ],
+                  [
+                    "ccx",
+                    2
+                  ],
+                  [
+                    "measurement",
+                    2
+                  ],
+                  [
+                    "ccx",
+                    3
+                  ],
+                  [
+                    "measurement",
+                    3
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    123
+                  ],
+                  [
+                    "measurement",
+                    123
+                  ],
+                  [
+                    "ccx",
+                    124
+                  ],
+                  [
+                    "measurement",
+                    124
+                  ],
+                  [
+                    "ccx",
+                    125
+                  ],
+                  [
+                    "measurement",
+                    125
+                  ],
+                  [
+                    "ccx",
+                    126
+                  ],
+                  [
+                    "measurement",
+                    126
+                  ]
+                ]
+              },
               "non_clifford_per_instance": 1,
               "non_clifford_total": 127,
               "notes": [
@@ -502,6 +1964,12 @@
               ]
             }
           ],
+          "primitive_counts_total": {
+            "ccx": 383,
+            "cx": 0,
+            "x": 0,
+            "measurement": 383
+          },
           "non_clifford_total": 383,
           "persistent_workspace_qubits": 18,
           "local_workspace_qubits": 256,
@@ -525,6 +1993,111 @@
                 "x": 0,
                 "measurement": 0
               },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "repeated_ladder",
+                "instance_count": 1,
+                "bit_count": 255,
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 255,
+                "sha256": "bc1daccf212c60fa60ea180cd084e3e8bde71a3bf7cc1fe295ef336a5eafa761",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0,
+                    0
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    1
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    2
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    3
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    4
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    5
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    6
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    7
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0,
+                    247
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    248
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    249
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    250
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    251
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    252
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    253
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    254
+                  ]
+                ]
+              },
               "non_clifford_per_instance": 255,
               "non_clifford_total": 255,
               "notes": [
@@ -532,6 +2105,12 @@
               ]
             }
           ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
           "non_clifford_total": 255,
           "persistent_workspace_qubits": 18,
           "local_workspace_qubits": 0,
@@ -541,6 +2120,12 @@
           ]
         }
       ],
+      "primitive_counts_total": {
+        "ccx": 33447,
+        "cx": 0,
+        "x": 0,
+        "measurement": 425
+      },
       "zero_check_non_clifford": 14,
       "magnitude_prepare_non_clifford": 28,
       "compute_lookup_non_clifford": 32767,
@@ -566,8 +2151,8 @@
     }
   ],
   "notes": [
-    "This artifact lowers each named compiler-project lookup family into an explicit stage/block inventory below the contract-only layer.",
-    "The lowered families keep the signed-folded secp256k1 lookup semantics exact while exposing stage-local workspace and non-Clifford reconstruction.",
-    "This is still not a bit-for-bit primitive qRAM/QROM netlist; it is an explicit compiler-family lowering layer checked below the folded lookup contract."
+    "This artifact lowers each named compiler-project lookup family into generated primitive-operation inventories below the folded lookup contract.",
+    "The lowered families keep the signed-folded secp256k1 lookup semantics exact while exposing stage-local workspace and primitive-count reconstruction.",
+    "The lookup layer is published as explicit generated compiler-family structure over temporary logical-AND and unary QROM-style primitives."
   ]
 }

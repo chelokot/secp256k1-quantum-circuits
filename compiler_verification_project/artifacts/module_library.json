@@ -1,7 +1,7 @@
 {
   "schema": "compiler-project-arithmetic-kernels-v3",
   "name": "litinski_addsub_schoolbook_v1",
-  "summary": "Exact arithmetic-kernel family with explicit stage/block inventories for schoolbook multiplication, ripple add/sub, conditional select, and fixed multiplication by 21.",
+  "summary": "Exact arithmetic-kernel family with generated primitive-operation inventories for schoolbook multiplication, ripple add/sub, conditional select, and fixed multiplication by 21.",
   "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
   "field_mul_non_clifford": 66047,
   "field_add_non_clifford": 255,
@@ -22,10 +22,10 @@
     "select_field_if_flag": 3,
     "clear_bool_from_flag": 1
   },
-  "exact_scope": "exact non-Clifford counts and explicit stage/block inventories for the named arithmetic-kernel family; Clifford micro-counts remain outside the shipped lowering layer",
+  "exact_scope": "exact non-Clifford counts and generated primitive-operation inventories for the named arithmetic-kernel family; Clifford micro-counts remain outside the shipped lowering layer",
   "notes": [
-    "This family lowers the arithmetic side into explicit stage/block inventories instead of treating add/sub/mul/select costs as bare scalar formulas.",
-    "The lowering stays at the non-Clifford block layer. It does not yet publish bit-for-bit Clifford micro-expansions for every 256-bit kernel."
+    "Each arithmetic block carries a generated primitive-operation inventory whose totals reconstruct the published per-kernel counts.",
+    "The lowering stays at the non-Clifford and measurement layer. It does not publish bit-for-bit Clifford micro-expansions for every 256-bit kernel."
   ],
   "addition_chain_21": [
     1,

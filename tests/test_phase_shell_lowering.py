@@ -1,12 +1,19 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 from support import ensure_compiler_project_build_summary, ensure_compiler_project_verification_summary
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+COMPILER_SRC = REPO_ROOT / 'compiler_verification_project' / 'src'
+if str(COMPILER_SRC) not in sys.path:
+    sys.path.insert(0, str(COMPILER_SRC))
+
+from phase_shell_lowering import materialize_phase_operations  # noqa: E402
+
 PHASE_BITS = 512
 
 
@@ -28,6 +35,49 @@ def test_phase_shell_lowerings_match_expected_rotation_formulas() -> None:
     assert semiclassical_family['rotation_count'] == PHASE_BITS - 1
     assert semiclassical_family['single_qubit_rotation_count'] == semiclassical_family['rotation_count']
     assert semiclassical_family['rotation_depth'] == semiclassical_family['rotation_count']
+
+
+def test_phase_shell_operation_inventory_reconstructs_family_totals() -> None:
+    lowerings = _load_phase_shell_lowerings()
+    for family in lowerings['families']:
+        reconstructed_family_counts = {
+            'hadamard': 0,
+            'measurement': 0,
+            'single_qubit_rotation': 0,
+            'controlled_rotation': 0,
+            'rotation_depth': 0,
+        }
+        for stage in family['stages']:
+            reconstructed_stage_counts = {
+                'hadamard': 0,
+                'measurement': 0,
+                'single_qubit_rotation': 0,
+                'controlled_rotation': 0,
+                'rotation_depth': 0,
+            }
+            for block in stage['blocks']:
+                reconstructed_block_counts = {
+                    'hadamard': 0,
+                    'measurement': 0,
+                    'single_qubit_rotation': 0,
+                    'controlled_rotation': 0,
+                    'rotation_depth': 0,
+                }
+                for operation in materialize_phase_operations(block['phase_operation_generator']):
+                    reconstructed_block_counts[operation[0]] += 1
+                    if operation[0] in ('single_qubit_rotation', 'controlled_rotation'):
+                        reconstructed_block_counts['rotation_depth'] += 1
+                assert reconstructed_block_counts == block['count_profile_total']
+                for key in reconstructed_stage_counts:
+                    reconstructed_stage_counts[key] += reconstructed_block_counts[key]
+            assert reconstructed_stage_counts == stage['count_profile_total']
+            for key in reconstructed_family_counts:
+                reconstructed_family_counts[key] += reconstructed_stage_counts[key]
+        assert reconstructed_family_counts['hadamard'] == family['hadamard_count']
+        assert reconstructed_family_counts['measurement'] == family['measurement_count']
+        assert reconstructed_family_counts['single_qubit_rotation'] == family['single_qubit_rotation_count']
+        assert reconstructed_family_counts['controlled_rotation'] == family['controlled_rotation_count']
+        assert reconstructed_family_counts['rotation_depth'] == family['rotation_depth']
 
 
 def test_phase_shell_summary_is_derived_from_lowerings() -> None:

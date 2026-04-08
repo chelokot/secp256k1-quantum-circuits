@@ -13,10 +13,11 @@ It is intentionally separate from the repository mainline.
    classical tail elisions;
 2. fixes **named exact compiler families** for folded lookup, phase-shell, and
    schedule orchestration;
-3. lowers each named lookup family into an explicit stage/block inventory below
-   the folded lookup contract;
-4. lowers the named arithmetic-kernel family into an explicit stage/block
-   inventory instead of treating leaf arithmetic as bare scalar opcode costs;
+3. lowers each named lookup family into a generated primitive-operation
+   inventory below the folded lookup contract;
+4. lowers the named arithmetic-kernel family into a generated
+   primitive-operation inventory instead of treating leaf arithmetic as bare
+   scalar opcode costs;
 5. derives **whole-oracle non-Clifford and logical-qubit counts** for those
    families; and
 6. verifies the completed raw-32 schedule semantically on deterministic
@@ -30,14 +31,14 @@ The artifacts in `compiler_verification_project/artifacts/` are exact for the
 That is a stricter boundary than the repository's quarantined hypothesis layer,
 but still
 short of a globally optimal primitive-gate proof. In particular, the arithmetic
-lowerings stop at explicit non-Clifford stage/block inventories; this
+lowerings stop at generated non-Clifford and measurement inventories; this
 subproject still does **not** ship bit-for-bit Clifford-complete netlists for
 every 256-bit field multiplier.
 What it does ship is:
 
 - an exact whole-oracle schedule,
-- exact arithmetic-kernel stage/block inventories,
-- exact lookup-family choices with explicit lowered stage inventories,
+- exact arithmetic-kernel generated primitive-operation inventories,
+- exact lookup-family choices with generated lowered primitive-operation inventories,
 - exact leaf slot allocation,
 - exact phase-shell families, and
 - exact whole-oracle counts relative to the chosen arithmetic kernel family.
@@ -47,10 +48,10 @@ What it does ship is:
 - `family_frontier.json` — exact whole-oracle frontier for the named compiler families
 - `full_raw32_oracle.json` — exact fully quantum schedule: 1 direct seed + 31 leaf calls
 - `exact_leaf_slot_allocation.json` — exact versioned live-range allocation of the checked leaf
-- `arithmetic_lowerings.json` — explicit stage/block inventories for the named arithmetic-kernel family
+- `arithmetic_lowerings.json` — generated primitive-operation inventories for the named arithmetic-kernel family
 - `module_library.json` — arithmetic-kernel summary used by the frontier
-- `lookup_lowerings.json` — explicit stage/block inventories for the named folded lookup families
-- `phase_shell_lowerings.json` — explicit stage/block inventories for the named full-register and semiclassical inverse-QFT shells
+- `lookup_lowerings.json` — generated primitive-operation inventories for the named folded lookup families
+- `phase_shell_lowerings.json` — generated phase-operation inventories for the named full-register and semiclassical inverse-QFT shells
 - `generated_block_inventories.json` — generated whole-oracle block inventories for the supporting decomposition layer
 - `ft_ir_compositions.json` — compositional FT-style call graphs and leaf sigma reconstructions for every named compiler family
 - `whole_oracle_recount.json` — independent exact whole-oracle recount derived from the FT IR leaf sigma
@@ -84,11 +85,11 @@ Its defining exact features are:
 - exact slot allocation cuts the leaf-side arithmetic peak from 10 named field
   slots to **9 exact physical field slots**;
 - explicit arithmetic lowerings reconstruct the leaf-side non-Clifford totals
-  from stage/block inventories instead of from naked opcode formulas;
-- explicit lookup lowerings reconstruct each lookup-family count from checked
-  stage/block inventories instead of from naked family formulas;
+  from generated primitive-operation inventories instead of from naked opcode formulas;
+- explicit lookup lowerings reconstruct each lookup-family count from generated
+  primitive-operation inventories instead of from naked family formulas;
 - explicit phase-shell lowerings reconstruct Hadamard, rotation, measurement,
-  and rotation-depth counts from checked stage/block inventories instead of
+  and rotation-depth counts from generated phase-operation inventories instead of
   from shell-level placeholders;
 - FT IR compositions reconstruct each family from hierarchical bundles plus a
   traversed leaf sigma instead of only from flattened generated blocks;

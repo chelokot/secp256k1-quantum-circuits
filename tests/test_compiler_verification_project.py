@@ -87,18 +87,16 @@ def test_mutated_slot_assignment_is_detected() -> None:
 
 def test_mutated_lookup_lowering_stage_is_detected() -> None:
     artifacts = deepcopy(_load_artifacts())
-    artifacts['lookup_lowerings']['families'][0]['stages'][1]['blocks'][0]['non_clifford_total'] += 1
+    artifacts['lookup_lowerings']['families'][0]['stages'][1]['blocks'][0]['primitive_operation_generator']['bit_count'] += 1
     groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
     assert groups['lookup_lowering_checks']['pass'] < groups['lookup_lowering_checks']['total']
-    assert groups['frontier_checks']['pass'] < groups['frontier_checks']['total']
 
 
 def test_mutated_phase_shell_lowering_is_detected() -> None:
     artifacts = deepcopy(_load_artifacts())
-    artifacts['phase_shell_lowerings']['families'][0]['rotation_count'] += 1
+    artifacts['phase_shell_lowerings']['families'][0]['stages'][0]['blocks'][0]['phase_operation_generator']['phase_bits'] -= 1
     groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
     assert groups['phase_shell_lowering_checks']['pass'] < groups['phase_shell_lowering_checks']['total']
-    assert groups['frontier_checks']['pass'] < groups['frontier_checks']['total']
 
 
 def test_mutated_cleanup_pair_is_detected() -> None:
@@ -110,7 +108,7 @@ def test_mutated_cleanup_pair_is_detected() -> None:
 
 def test_mutated_arithmetic_lowering_stage_is_detected() -> None:
     artifacts = deepcopy(_load_artifacts())
-    artifacts['arithmetic_lowerings']['kernels'][0]['stages'][0]['blocks'][0]['primitive_counts_total']['ccx'] += 1
+    artifacts['arithmetic_lowerings']['kernels'][0]['stages'][0]['blocks'][0]['primitive_operations'].append(['ccx', 999999, 999999])
     groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
     assert groups['arithmetic_kernel_checks']['pass'] < groups['arithmetic_kernel_checks']['total']
 

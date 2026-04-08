@@ -7,12 +7,12 @@ repository-supported answer to each one.
 
 | Objection | Severity if hidden | Repository-supported answer | Still open? |
 |---|---:|---|---|
-| “This is not a primitive-gate circuit because lookup is abstracted.” | High | Still true at the primitive-gate layer, but the lookup stack is explicit: the folded contract is machine-readable and audited exhaustively for a canonical secp256k1 base plus deterministic multibase samples, and the compiler project lowers named lookup families below that contract. | Yes |
+| “This is not a primitive-gate circuit because lookup is abstracted.” | High | Still true at the Clifford-complete primitive-gate layer, but the lookup stack is explicit: the folded contract is machine-readable and audited exhaustively for a canonical secp256k1 base plus deterministic multibase samples, and the compiler project lowers named lookup families into generated operation inventories below that contract. | Yes |
 | “The cleanup path is still only an unchecked abstraction.” | High | False at the ISA boundary. The shipped one-bit flag cleanup pair is machine-checked on deterministic secp256k1 cases: the metadata bit is extracted into `f_lookup_inf`, used by the neutral-entry select path, and then uncomputed by replaying the same flag source. | Partly |
 | “The scaffold is metadata, not a full Shor gate list.” | High | This is true for the mainline, and the compiler subproject publishes an exact fully quantum raw-32 oracle family with explicit whole-oracle counts. It is still not a globally optimized complete Shor implementation. | Partly |
 | “The exact compiler frontier still does not reconstruct a hidden Google circuit.” | High | True. The repository compares against Google's public rounded lines, not against an unpublished circuit. | Yes |
 | “Toy-curve proofs are not universal proofs over all prime fields.” | Medium | True. They are finite-model support for the family story. | Yes |
-| “No primitive-gate qRAM or QROM is shipped.” | Medium | True. The repository ships explicit compiler-family lookup lowerings below the folded contract, but it still does not ship a bit-for-bit primitive qRAM/QROM implementation. | Yes |
+| “No primitive-gate qRAM or QROM is shipped.” | Medium | True. The repository ships generated compiler-family lookup lowerings below the folded contract, but it still does not ship a bit-for-bit Clifford-complete primitive qRAM/QROM implementation. | Yes |
 | “No end-to-end physical machine proof is shipped.” | Medium | True. The repository ships exact logicalCounts, explicit Microsoft Resource Estimator target profiles, recorded estimator outputs, and a separate Cain transfer study, but it does not ship a hardware-independent theorem-proved physical realization. | Yes |
 
 ## Statements the repository can defend directly

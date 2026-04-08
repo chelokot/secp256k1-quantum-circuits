@@ -2,7 +2,12 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 from typing import Any, Dict, List, Mapping
+
+
+PhaseOperation = List[int | str]
 
 
 def _count_profile(
@@ -21,27 +26,85 @@ def _count_profile(
     }
 
 
+def _phase_operation(gate: str, *operands: int) -> PhaseOperation:
+    return [gate, *[int(operand) for operand in operands]]
+
+
+def _count_profile_from_operations(phase_operations: List[PhaseOperation]) -> Dict[str, int]:
+    profile = _count_profile()
+    for operation in phase_operations:
+        gate = str(operation[0])
+        profile[gate] += 1
+        if gate in ('single_qubit_rotation', 'controlled_rotation'):
+            profile['rotation_depth'] += 1
+    return profile
+
+
+def _pointwise_phase_operations(instance_count: int, gate: str) -> List[PhaseOperation]:
+    return [_phase_operation(gate, instance_index) for instance_index in range(instance_count)]
+
+
+def _full_phase_rotation_operations(phase_bits: int) -> List[PhaseOperation]:
+    phase_operations: List[PhaseOperation] = []
+    sequence_index = 0
+    for target_bit in range(phase_bits):
+        for control_bit in range(target_bit + 1, phase_bits):
+            phase_operations.append(_phase_operation('controlled_rotation', control_bit, target_bit, sequence_index))
+            sequence_index += 1
+    return phase_operations
+
+
+def _semiclassical_phase_update_operations(phase_bits: int) -> List[PhaseOperation]:
+    phase_operations: List[PhaseOperation] = []
+    for target_bit in range(1, phase_bits):
+        phase_operations.append(_phase_operation('single_qubit_rotation', target_bit, target_bit))
+    return phase_operations
+
+
+def materialize_phase_operations(generator: Mapping[str, Any]) -> List[PhaseOperation]:
+    kind = str(generator['kind'])
+    if kind == 'pointwise':
+        return _pointwise_phase_operations(int(generator['instance_count']), str(generator['gate']))
+    if kind == 'full_phase_rotation_ladder':
+        return _full_phase_rotation_operations(int(generator['phase_bits']))
+    if kind == 'semiclassical_phase_updates':
+        return _semiclassical_phase_update_operations(int(generator['phase_bits']))
+    raise KeyError(f'unknown phase-operation generator: {kind}')
+
+
+def _operation_stream_summary(phase_operations: List[PhaseOperation]) -> Dict[str, Any]:
+    serialized = json.dumps(phase_operations, separators=(',', ':')).encode()
+    preview_count = min(8, len(phase_operations))
+    return {
+        'operation_count': len(phase_operations),
+        'sha256': hashlib.sha256(serialized).hexdigest(),
+        'preview_head': phase_operations[:preview_count],
+        'preview_tail': phase_operations[-preview_count:] if preview_count else [],
+    }
+
+
 def _block(
     name: str,
     summary: str,
     instance_count: int,
-    count_profile_per_instance: Mapping[str, int],
+    phase_operation_generator: Mapping[str, Any],
     notes: List[str],
 ) -> Dict[str, Any]:
-    count_profile = {
-        key: int(count_profile_per_instance.get(key, 0))
+    phase_operations = materialize_phase_operations(phase_operation_generator)
+    count_profile_total = _count_profile_from_operations(phase_operations)
+    count_profile_per_instance = {
+        key: int(count_profile_total[key] // int(instance_count))
         for key in ('hadamard', 'measurement', 'single_qubit_rotation', 'controlled_rotation', 'rotation_depth')
-    }
-    count_profile_total = {
-        key: int(instance_count) * value
-        for key, value in count_profile.items()
     }
     return {
         'name': name,
         'summary': summary,
         'instance_count': int(instance_count),
-        'count_profile_per_instance': count_profile,
+        'count_profile_per_instance': count_profile_per_instance,
         'count_profile_total': count_profile_total,
+        'phase_operation_encoding': ['gate', 'operand_0', 'operand_1', 'operand_2'],
+        'phase_operation_generator': dict(phase_operation_generator),
+        'phase_operation_stream': _operation_stream_summary(phase_operations),
         'notes': notes,
     }
 
@@ -111,7 +174,10 @@ def _full_phase_register_family(phase_bits: int) -> Dict[str, Any]:
                     name='controlled_dyadic_rotations',
                     summary='One coherent controlled dyadic phase rotation for each strict bit-order pair in the inverse-QFT ladder.',
                     instance_count=controlled_rotation_count,
-                    count_profile_per_instance=_count_profile(controlled_rotation=1, rotation_depth=1),
+                    phase_operation_generator={
+                        'kind': 'full_phase_rotation_ladder',
+                        'phase_bits': phase_bits,
+                    },
                     notes=[
                         'The lowering keeps the register coherent and counts every controlled dyadic phase separately.',
                         'The reported rotation depth follows the same serial bit-order schedule as the counted ladder blocks.',
@@ -131,7 +197,11 @@ def _full_phase_register_family(phase_bits: int) -> Dict[str, Any]:
                     name='terminal_hadamards',
                     summary='One Hadamard basis change for each live phase bit before measurement.',
                     instance_count=phase_bits,
-                    count_profile_per_instance=_count_profile(hadamard=1),
+                    phase_operation_generator={
+                        'kind': 'pointwise',
+                        'instance_count': phase_bits,
+                        'gate': 'hadamard',
+                    },
                     notes=[
                         'The Hadamards are part of the exact inverse-QFT shell rather than of the oracle core.',
                     ],
@@ -140,7 +210,11 @@ def _full_phase_register_family(phase_bits: int) -> Dict[str, Any]:
                     name='terminal_measurements',
                     summary='One computational-basis measurement for each phase bit after the inverse-QFT basis change.',
                     instance_count=phase_bits,
-                    count_profile_per_instance=_count_profile(measurement=1),
+                    phase_operation_generator={
+                        'kind': 'pointwise',
+                        'instance_count': phase_bits,
+                        'gate': 'measurement',
+                    },
                     notes=[
                         'The shell ends in terminal measurements over the full phase register.',
                     ],
@@ -181,7 +255,10 @@ def _semiclassical_qft_family(phase_bits: int) -> Dict[str, Any]:
                     name='aggregated_classical_phase_updates',
                     summary='One classically controlled dyadic Z rotation per noninitial phase bit, after aggregating all prior measurement bits into a single update angle.',
                     instance_count=adaptive_rotation_count,
-                    count_profile_per_instance=_count_profile(single_qubit_rotation=1, rotation_depth=1),
+                    phase_operation_generator={
+                        'kind': 'semiclassical_phase_updates',
+                        'phase_bits': phase_bits,
+                    },
                     notes=[
                         'This follows the Griffiths–Niu semiclassical QFT pattern in which prior measured bits determine the next one-qubit basis update.',
                         'All prior dyadic corrections for a given target bit are classically aggregated into one rotation before the Hadamard and measurement.',
@@ -201,7 +278,11 @@ def _semiclassical_qft_family(phase_bits: int) -> Dict[str, Any]:
                     name='terminal_hadamards',
                     summary='One Hadamard before each semiclassical inverse-QFT measurement.',
                     instance_count=phase_bits,
-                    count_profile_per_instance=_count_profile(hadamard=1),
+                    phase_operation_generator={
+                        'kind': 'pointwise',
+                        'instance_count': phase_bits,
+                        'gate': 'hadamard',
+                    },
                     notes=[
                         'The single live phase qubit is reused across the full bit schedule.',
                     ],
@@ -210,7 +291,11 @@ def _semiclassical_qft_family(phase_bits: int) -> Dict[str, Any]:
                     name='terminal_measurements',
                     summary='One computational-basis measurement per phase bit in the semiclassical shell.',
                     instance_count=phase_bits,
-                    count_profile_per_instance=_count_profile(measurement=1),
+                    phase_operation_generator={
+                        'kind': 'pointwise',
+                        'instance_count': phase_bits,
+                        'gate': 'measurement',
+                    },
                     notes=[
                         'Each measured bit is committed to classical state before the next adaptive basis update.',
                     ],
@@ -245,11 +330,11 @@ def phase_shell_lowering_library(phase_bits: int) -> Dict[str, Any]:
         _semiclassical_qft_family(phase_bits),
     ]
     return {
-        'schema': 'compiler-project-phase-shell-lowerings-v1',
+        'schema': 'compiler-project-phase-shell-lowerings-v2',
         'phase_register_bits': int(phase_bits),
         'families': families,
         'notes': [
-            'This artifact lowers each named phase-shell family into exact stage/block inventories over explicit pre-layout phase-shell primitives.',
+            'This artifact lowers each named phase-shell family into generated phase-operation inventories over explicit pre-layout phase-shell primitives.',
             'The shell inventory is tracked separately from the arithmetic and lookup CCX totals because Azure logicalCounts accepts rotations and measurements as separate exact pre-layout inputs.',
         ],
     }
@@ -280,4 +365,4 @@ def phase_shell_family_summary(lowerings: Mapping[str, Any]) -> Dict[str, Any]:
     }
 
 
-__all__ = ['phase_shell_family_summary', 'phase_shell_lowering_library']
+__all__ = ['materialize_phase_operations', 'phase_shell_family_summary', 'phase_shell_lowering_library']

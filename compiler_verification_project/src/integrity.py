@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+import json
 from collections import defaultdict
 from copy import deepcopy
 from pathlib import Path
@@ -24,8 +25,8 @@ from common import (
 from arithmetic_lowering import arithmetic_kernel_summary, arithmetic_lowering_library
 from ft_ir import build_ft_ir_compositions
 from generated_block_inventory import build_generated_block_inventories
-from lookup_lowering import lookup_lowering_library, lowered_lookup_semantic_summary
-from phase_shell_lowering import phase_shell_family_summary, phase_shell_lowering_library
+from lookup_lowering import lookup_lowering_library, lowered_lookup_semantic_summary, materialize_lookup_primitive_operations
+from phase_shell_lowering import materialize_phase_operations, phase_shell_family_summary, phase_shell_lowering_library
 from physical_estimator import (
     build_azure_estimator_target_payload,
     build_or_load_azure_estimator_results_payload,
@@ -59,11 +60,21 @@ from whole_oracle_recount import build_whole_oracle_recount
 
 
 def _check(name: str, passed: bool, expected: Any, observed: Any) -> Dict[str, Any]:
+    def _compact_payload(payload: Any) -> Any:
+        serialized = json.dumps(payload, sort_keys=True, separators=(',', ':'))
+        if len(serialized) <= 4096:
+            return payload
+        return {
+            'summary': 'payload omitted from verification summary because it exceeds the inline size limit',
+            'sha256': sha256_bytes(serialized.encode()),
+            'size_bytes': len(serialized.encode()),
+        }
+
     return {
         'name': name,
         'pass': int(passed),
-        'expected': expected,
-        'observed': observed,
+        'expected': _compact_payload(expected),
+        'observed': _compact_payload(observed),
     }
 
 
@@ -77,6 +88,29 @@ def _summarize_checks(checks: List[Dict[str, Any]]) -> Dict[str, Any]:
 
 def _load_artifact(path: Path) -> Dict[str, Any]:
     return load_json(path)
+
+
+def _primitive_counts_from_operations(primitive_operations: List[List[Any]]) -> Dict[str, int]:
+    counts = {'ccx': 0, 'cx': 0, 'x': 0, 'measurement': 0}
+    for operation in primitive_operations:
+        counts[str(operation[0])] += 1
+    return counts
+
+
+def _phase_counts_from_operations(phase_operations: List[List[Any]]) -> Dict[str, int]:
+    counts = {
+        'hadamard': 0,
+        'measurement': 0,
+        'single_qubit_rotation': 0,
+        'controlled_rotation': 0,
+        'rotation_depth': 0,
+    }
+    for operation in phase_operations:
+        gate = str(operation[0])
+        counts[gate] += 1
+        if gate in ('single_qubit_rotation', 'controlled_rotation'):
+            counts['rotation_depth'] += 1
+    return counts
 
 
 def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
@@ -235,10 +269,60 @@ def build_arithmetic_kernel_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
         + leaf_opcode_histogram().get('mul_const', 0) * kernel_lookup['mul_const']['exact_non_clifford_per_kernel']
         + leaf_opcode_histogram().get('select_field_if_flag', 0) * kernel_lookup['select_field_if_flag']['exact_non_clifford_per_kernel']
     )
+    block_operation_reconstruction = []
+    stage_operation_reconstruction = []
+    kernel_operation_reconstruction = []
+    for lowering_kernel in arithmetic_lowerings['kernels']:
+        for stage in lowering_kernel['stages']:
+            stage_counts = {'ccx': 0, 'cx': 0, 'x': 0, 'measurement': 0}
+            for block in stage['blocks']:
+                block_counts = _primitive_counts_from_operations(block['primitive_operations'])
+                block_operation_reconstruction.append({
+                    'kernel': lowering_kernel['opcode'],
+                    'stage': stage['name'],
+                    'block': block['name'],
+                    'expected': block['primitive_counts_total'],
+                    'reconstructed': block_counts,
+                })
+                for key in stage_counts:
+                    stage_counts[key] += int(block_counts[key])
+            stage_operation_reconstruction.append({
+                'kernel': lowering_kernel['opcode'],
+                'stage': stage['name'],
+                'expected': stage['primitive_counts_total'],
+                'reconstructed': stage_counts,
+            })
+            kernel_operation_reconstruction.append({
+                'kernel': lowering_kernel['opcode'],
+                'stage': stage['name'],
+                'primitive_counts_total': stage_counts,
+            })
+    kernel_totals_from_stages: Dict[str, Dict[str, int]] = defaultdict(lambda: {'ccx': 0, 'cx': 0, 'x': 0, 'measurement': 0})
+    for row in kernel_operation_reconstruction:
+        for key in kernel_totals_from_stages[row['kernel']]:
+            kernel_totals_from_stages[row['kernel']][key] += int(row['primitive_counts_total'][key])
     checks = [
         _check('arithmetic_lowerings_match_generator', arithmetic_lowerings == expected_lowerings, expected_lowerings, arithmetic_lowerings),
         _check('module_library_matches_lowering_summary', kernel == expected_kernel, expected_kernel, kernel),
         _check('module_library_matches_project_summary', kernel == arithmetic_kernel_library(), arithmetic_kernel_library(), kernel),
+        _check(
+            'arithmetic_block_totals_reconstruct_from_generated_operations',
+            all(row['expected'] == row['reconstructed'] for row in block_operation_reconstruction),
+            [row['expected'] for row in block_operation_reconstruction],
+            [row['reconstructed'] for row in block_operation_reconstruction],
+        ),
+        _check(
+            'arithmetic_stage_totals_reconstruct_from_block_operations',
+            all(row['expected'] == row['reconstructed'] for row in stage_operation_reconstruction),
+            [row['expected'] for row in stage_operation_reconstruction],
+            [row['reconstructed'] for row in stage_operation_reconstruction],
+        ),
+        _check(
+            'arithmetic_kernel_totals_reconstruct_from_stage_operations',
+            all(kernel_lookup[opcode]['primitive_counts_total'] == totals for opcode, totals in kernel_totals_from_stages.items()),
+            {opcode: kernel_lookup[opcode]['primitive_counts_total'] for opcode in kernel_totals_from_stages},
+            dict(kernel_totals_from_stages),
+        ),
         _check('field_add_cost_matches_lowering_kernel', kernel['field_add_non_clifford'] == kernel_lookup['field_add']['exact_non_clifford_per_kernel'], kernel_lookup['field_add']['exact_non_clifford_per_kernel'], kernel['field_add_non_clifford']),
         _check('field_mul_cost_matches_lowering_kernel', kernel['field_mul_non_clifford'] == kernel_lookup['field_mul']['exact_non_clifford_per_kernel'], kernel_lookup['field_mul']['exact_non_clifford_per_kernel'], kernel['field_mul_non_clifford']),
         _check('mul_const_cost_matches_lowering_kernel', kernel['mul_const_non_clifford'] == kernel_lookup['mul_const']['exact_non_clifford_per_kernel'], kernel_lookup['mul_const']['exact_non_clifford_per_kernel'], kernel['mul_const_non_clifford']),
@@ -306,15 +390,40 @@ def build_lookup_lowering_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]
     reconstructed_family_totals = []
     reconstructed_family_workspace = []
     semantic_pairs = []
+    block_operation_reconstruction = []
+    stage_operation_reconstruction = []
     for family in families:
         stages = family['stages']
         persistent_total = sum(int(entry['qubits']) for entry in family['persistent_workspace'])
-        reconstructed_non_clifford = sum(int(stage['non_clifford_total']) for stage in stages)
+        family_primitive_totals = {'ccx': 0, 'cx': 0, 'x': 0, 'measurement': 0}
+        for stage in stages:
+            stage_counts = {'ccx': 0, 'cx': 0, 'x': 0, 'measurement': 0}
+            for block in stage['blocks']:
+                block_counts = _primitive_counts_from_operations(materialize_lookup_primitive_operations(block['primitive_operation_generator']))
+                block_operation_reconstruction.append({
+                    'family': family['name'],
+                    'stage': stage['name'],
+                    'block': block['name'],
+                    'expected': block['primitive_counts_total'],
+                    'reconstructed': block_counts,
+                })
+                for key in stage_counts:
+                    stage_counts[key] += int(block_counts[key])
+            stage_operation_reconstruction.append({
+                'family': family['name'],
+                'stage': stage['name'],
+                'expected': stage['primitive_counts_total'],
+                'reconstructed': stage_counts,
+            })
+            for key in family_primitive_totals:
+                family_primitive_totals[key] += int(stage_counts[key])
+        reconstructed_non_clifford = family_primitive_totals['ccx']
         reconstructed_workspace = max(int(stage['total_workspace_qubits']) for stage in stages)
         reconstructed_family_totals.append({
             'name': family['name'],
             'direct_lookup_non_clifford': reconstructed_non_clifford,
             'per_leaf_lookup_non_clifford': reconstructed_non_clifford,
+            'primitive_counts_total': family_primitive_totals,
         })
         reconstructed_family_workspace.append({
             'name': family['name'],
@@ -331,6 +440,18 @@ def build_lookup_lowering_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]
         })
     checks = [
         _check('lookup_lowering_library_matches_generator', lowering == expected, expected, lowering),
+        _check(
+            'lookup_block_totals_reconstruct_from_generated_operations',
+            all(row['expected'] == row['reconstructed'] for row in block_operation_reconstruction),
+            [row['expected'] for row in block_operation_reconstruction],
+            [row['reconstructed'] for row in block_operation_reconstruction],
+        ),
+        _check(
+            'lookup_stage_totals_reconstruct_from_block_operations',
+            all(row['expected'] == row['reconstructed'] for row in stage_operation_reconstruction),
+            [row['expected'] for row in stage_operation_reconstruction],
+            [row['reconstructed'] for row in stage_operation_reconstruction],
+        ),
         _check(
             'lookup_lowering_contract_summary_matches_constants',
             contract_summary == {
@@ -358,6 +479,7 @@ def build_lookup_lowering_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]
             all(
                 family_lookup[row['name']]['direct_lookup_non_clifford'] == row['direct_lookup_non_clifford']
                 and family_lookup[row['name']]['per_leaf_lookup_non_clifford'] == row['per_leaf_lookup_non_clifford']
+                and family_lookup[row['name']]['primitive_counts_total'] == row['primitive_counts_total']
                 for row in reconstructed_family_totals
             ),
             reconstructed_family_totals,
@@ -366,6 +488,7 @@ def build_lookup_lowering_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]
                     'name': family['name'],
                     'direct_lookup_non_clifford': family['direct_lookup_non_clifford'],
                     'per_leaf_lookup_non_clifford': family['per_leaf_lookup_non_clifford'],
+                    'primitive_counts_total': family['primitive_counts_total'],
                 }
                 for family in families
             ],
@@ -419,9 +542,93 @@ def build_phase_shell_lowering_checks(artifacts: Mapping[str, Any]) -> Dict[str,
     semiclassical_family = families['semiclassical_qft_v1']
     expected_full_rotations = FULL_PHASE_REGISTER_BITS * (FULL_PHASE_REGISTER_BITS - 1) // 2
     expected_semiclassical_rotations = FULL_PHASE_REGISTER_BITS - 1
+    block_operation_reconstruction = []
+    stage_operation_reconstruction = []
+    family_operation_reconstruction = []
+    for family in lowerings['families']:
+        family_counts = {
+            'hadamard': 0,
+            'measurement': 0,
+            'single_qubit_rotation': 0,
+            'controlled_rotation': 0,
+            'rotation_depth': 0,
+        }
+        for stage in family['stages']:
+            stage_counts = {
+                'hadamard': 0,
+                'measurement': 0,
+                'single_qubit_rotation': 0,
+                'controlled_rotation': 0,
+                'rotation_depth': 0,
+            }
+            for block in stage['blocks']:
+                block_counts = _phase_counts_from_operations(materialize_phase_operations(block['phase_operation_generator']))
+                block_operation_reconstruction.append({
+                    'family': family['name'],
+                    'stage': stage['name'],
+                    'block': block['name'],
+                    'expected': block['count_profile_total'],
+                    'reconstructed': block_counts,
+                })
+                for key in stage_counts:
+                    stage_counts[key] += int(block_counts[key])
+            stage_operation_reconstruction.append({
+                'family': family['name'],
+                'stage': stage['name'],
+                'expected': stage['count_profile_total'],
+                'reconstructed': stage_counts,
+            })
+            for key in family_counts:
+                family_counts[key] += int(stage_counts[key])
+        family_operation_reconstruction.append({
+            'name': family['name'],
+            'hadamard_count': family_counts['hadamard'],
+            'measurement_count': family_counts['measurement'],
+            'rotation_count': family_counts['single_qubit_rotation'] + family_counts['controlled_rotation'],
+            'rotation_depth': family_counts['rotation_depth'],
+            'single_qubit_rotation_count': family_counts['single_qubit_rotation'],
+            'controlled_rotation_count': family_counts['controlled_rotation'],
+        })
     checks = [
         _check('phase_shell_lowerings_match_generator', lowerings == expected_lowerings, expected_lowerings, lowerings),
         _check('phase_shell_family_summary_matches_lowerings', summary == expected_summary, expected_summary, summary),
+        _check(
+            'phase_shell_block_totals_reconstruct_from_generated_operations',
+            all(row['expected'] == row['reconstructed'] for row in block_operation_reconstruction),
+            [row['expected'] for row in block_operation_reconstruction],
+            [row['reconstructed'] for row in block_operation_reconstruction],
+        ),
+        _check(
+            'phase_shell_stage_totals_reconstruct_from_block_operations',
+            all(row['expected'] == row['reconstructed'] for row in stage_operation_reconstruction),
+            [row['expected'] for row in stage_operation_reconstruction],
+            [row['reconstructed'] for row in stage_operation_reconstruction],
+        ),
+        _check(
+            'phase_shell_family_totals_reconstruct_from_generated_operations',
+            all(
+                families[row['name']]['hadamard_count'] == row['hadamard_count']
+                and families[row['name']]['measurement_count'] == row['measurement_count']
+                and families[row['name']]['rotation_count'] == row['rotation_count']
+                and families[row['name']]['rotation_depth'] == row['rotation_depth']
+                and families[row['name']]['single_qubit_rotation_count'] == row['single_qubit_rotation_count']
+                and families[row['name']]['controlled_rotation_count'] == row['controlled_rotation_count']
+                for row in family_operation_reconstruction
+            ),
+            family_operation_reconstruction,
+            [
+                {
+                    'name': family['name'],
+                    'hadamard_count': family['hadamard_count'],
+                    'measurement_count': family['measurement_count'],
+                    'rotation_count': family['rotation_count'],
+                    'rotation_depth': family['rotation_depth'],
+                    'single_qubit_rotation_count': family['single_qubit_rotation_count'],
+                    'controlled_rotation_count': family['controlled_rotation_count'],
+                }
+                for family in lowerings['families']
+            ],
+        ),
         _check(
             'full_phase_register_rotation_ladder_matches_bit_pair_count',
             full_family['rotation_count'] == expected_full_rotations and full_family['controlled_rotation_count'] == expected_full_rotations,
@@ -1080,7 +1287,7 @@ def build_primitive_multiplier_checks(artifacts: Mapping[str, Any]) -> Dict[str,
             'field_bits': FIELD_BITS,
             'exact_non_clifford': field_mul_kernel['exact_non_clifford_per_kernel'],
             'gate_set': kernel['gate_set'],
-            'stages': field_mul_kernel['stages'],
+            'arithmetic_lowering_artifact': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
         }
         for ordinal, pc in enumerate(field_mul_pcs)
     ]
@@ -1161,9 +1368,24 @@ def build_frontier_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
         _check('frontier_schedule_matches_standalone_schedule', frontier['schedule'] == schedule, schedule, frontier['schedule']),
         _check('frontier_slot_allocation_matches_standalone_slot_allocation', frontier['slot_allocation'] == slot_alloc, slot_alloc, frontier['slot_allocation']),
         _check('frontier_arithmetic_kernel_matches_module_library', frontier['arithmetic_kernel_family'] == kernel, kernel, frontier['arithmetic_kernel_family']),
-        _check('frontier_arithmetic_lowerings_match_artifact', frontier['arithmetic_lowerings'] == artifacts['arithmetic_lowerings'], artifacts['arithmetic_lowerings'], frontier['arithmetic_lowerings']),
-        _check('frontier_lookup_lowering_matches_lookup_lowering_artifact', frontier['lookup_lowerings'] == artifacts['lookup_lowerings'], artifacts['lookup_lowerings'], frontier['lookup_lowerings']),
-        _check('frontier_phase_shell_lowering_matches_artifact', frontier['phase_shell_lowerings'] == artifacts['phase_shell_lowerings'], artifacts['phase_shell_lowerings'], frontier['phase_shell_lowerings']),
+        _check(
+            'frontier_arithmetic_lowering_artifact_path_matches_expected',
+            frontier['arithmetic_lowering_artifact'] == 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
+            'compiler_verification_project/artifacts/arithmetic_lowerings.json',
+            frontier['arithmetic_lowering_artifact'],
+        ),
+        _check(
+            'frontier_lookup_lowering_artifact_path_matches_expected',
+            frontier['lookup_lowering_artifact'] == 'compiler_verification_project/artifacts/lookup_lowerings.json',
+            'compiler_verification_project/artifacts/lookup_lowerings.json',
+            frontier['lookup_lowering_artifact'],
+        ),
+        _check(
+            'frontier_phase_shell_lowering_artifact_path_matches_expected',
+            frontier['phase_shell_lowering_artifact'] == 'compiler_verification_project/artifacts/phase_shell_lowerings.json',
+            'compiler_verification_project/artifacts/phase_shell_lowerings.json',
+            frontier['phase_shell_lowering_artifact'],
+        ),
         _check(
             'frontier_generated_block_inventory_path_matches_expected',
             frontier['generated_block_inventory_artifact'] == 'compiler_verification_project/artifacts/generated_block_inventories.json',

@@ -22,6 +22,15 @@ class ArithmeticLoweringTests(unittest.TestCase):
         cls.generated = json.loads((REPO_ROOT / 'compiler_verification_project' / 'artifacts' / 'generated_block_inventories.json').read_text())
         cls.verification = json.loads((REPO_ROOT / 'compiler_verification_project' / 'artifacts' / 'verification_summary.json').read_text())
 
+    def test_block_totals_reconstruct_from_generated_operations(self):
+        for kernel in self.lowerings['kernels']:
+            for stage in kernel['stages']:
+                for block in stage['blocks']:
+                    reconstructed = {'ccx': 0, 'cx': 0, 'x': 0, 'measurement': 0}
+                    for operation in block['primitive_operations']:
+                        reconstructed[operation[0]] += 1
+                    self.assertEqual(reconstructed, block['primitive_counts_total'])
+
     def test_kernel_totals_reconstruct_from_stages(self):
         for kernel in self.lowerings['kernels']:
             stage_total = sum(stage['non_clifford_total'] for stage in kernel['stages'])
