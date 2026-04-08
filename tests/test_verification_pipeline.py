@@ -71,6 +71,7 @@ class VerificationPipelineTests(unittest.TestCase):
         self.assertEqual(verify['summary']['semantic_cases']['pass'], verify['summary']['semantic_cases']['total'])
         self.assertEqual(verify['summary']['invariant_checks']['pass'], verify['summary']['invariant_checks']['total'])
         self.assertEqual(verify['schedule_checks']['pass'], verify['schedule_checks']['total'])
+        self.assertEqual(verify['arithmetic_kernel_checks']['pass'], verify['arithmetic_kernel_checks']['total'])
         self.assertEqual(verify['cleanup_pair_checks']['pass'], verify['cleanup_pair_checks']['total'])
         self.assertEqual(verify['lookup_lowering_checks']['pass'], verify['lookup_lowering_checks']['total'])
         self.assertEqual(verify['generated_block_inventory_checks']['pass'], verify['generated_block_inventory_checks']['total'])

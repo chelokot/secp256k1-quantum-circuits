@@ -1,9 +1,10 @@
 {
-  "schema": "compiler-project-build-summary-v5",
+  "schema": "compiler-project-build-summary-v6",
   "artifacts": {
     "canonical_public_point": "compiler_verification_project/artifacts/canonical_public_point.json",
     "full_raw32_oracle": "compiler_verification_project/artifacts/full_raw32_oracle.json",
     "exact_leaf_slot_allocation": "compiler_verification_project/artifacts/exact_leaf_slot_allocation.json",
+    "arithmetic_lowerings": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
     "module_library": "compiler_verification_project/artifacts/module_library.json",
     "primitive_multiplier_library": "compiler_verification_project/artifacts/primitive_multiplier_library.json",
     "phase_shell_families": "compiler_verification_project/artifacts/phase_shell_families.json",
@@ -71,7 +72,7 @@
     }
   },
   "notes": [
-    "The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families with explicit lookup lowerings and generated block inventories.",
+    "The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families with explicit arithmetic and lookup lowerings and generated block inventories.",
     "Its qubit accounting uses exact slot allocation and an explicit semiclassical phase-shell family instead of a fixed 10-slot/512-phase policy."
   ]
 }

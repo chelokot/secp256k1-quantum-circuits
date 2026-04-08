@@ -1,5 +1,5 @@
 {
-  "schema": "compiler-project-frontier-v5",
+  "schema": "compiler-project-frontier-v6",
   "public_google_baseline": {
     "low_qubit": {
       "logical_qubits": 1200,
@@ -968,10 +968,10 @@
     ]
   },
   "arithmetic_kernel_family": {
-    "schema": "compiler-project-arithmetic-kernels-v2",
+    "schema": "compiler-project-arithmetic-kernels-v3",
     "name": "litinski_addsub_schoolbook_v1",
-    "summary": "Imported exact non-Clifford arithmetic kernel family: schoolbook multiplication via controlled add-subtract plus n-1-cost add/sub/select kernels.",
-    "gate_set": "Clifford + non-Clifford-counted arithmetic kernels",
+    "summary": "Exact arithmetic-kernel family with explicit stage/block inventories for schoolbook multiplication, ripple add/sub, conditional select, and fixed multiplication by 21.",
+    "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
     "field_mul_non_clifford": 66047,
     "field_add_non_clifford": 255,
     "field_sub_non_clifford": 255,
@@ -991,10 +991,10 @@
       "select_field_if_flag": 3,
       "clear_bool_from_flag": 1
     },
-    "exact_scope": "exact non-Clifford counts for the named arithmetic-kernel family; Clifford micro-counts are not flattened in this subproject",
+    "exact_scope": "exact non-Clifford counts and explicit stage/block inventories for the named arithmetic-kernel family; Clifford micro-counts remain outside the shipped lowering layer",
     "notes": [
-      "The multiplier cost follows the controlled add-subtract schoolbook family highlighted by Litinski 2024 for practical low-Toffoli ECC circuits.",
-      "This subproject derives arithmetic totals from a named arithmetic-kernel family, but it still does not ship a bit-for-bit primitive CX/CCX expansion for the 256-bit multiplier family."
+      "This family lowers the arithmetic side into explicit stage/block inventories instead of treating add/sub/mul/select costs as bare scalar formulas.",
+      "The lowering stays at the non-Clifford block layer. It does not yet publish bit-for-bit Clifford micro-expansions for every 256-bit kernel."
     ],
     "addition_chain_21": [
       1,
@@ -1004,7 +1004,572 @@
       16,
       20,
       21
-    ]
+    ],
+    "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
+  },
+  "arithmetic_lowerings": {
+    "schema": "compiler-project-arithmetic-lowerings-v1",
+    "family": {
+      "name": "litinski_addsub_schoolbook_v1",
+      "summary": "Exact arithmetic-kernel family with explicit stage/block inventories for schoolbook multiplication, ripple add/sub, conditional select, and fixed multiplication by 21.",
+      "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
+      "field_bits": 256,
+      "exact_scope": "exact non-Clifford counts and explicit stage/block inventories for the named arithmetic-kernel family; Clifford micro-counts remain outside the shipped lowering layer",
+      "source_references": [
+        {
+          "title": "Quantum schoolbook multiplication with fewer Toffoli gates",
+          "url": "https://arxiv.org/abs/2410.00899",
+          "reason": "Provides the controlled add-subtract schoolbook multiplier family and its n^2 + 2n - 1 Toffoli-style cost model."
+        },
+        {
+          "title": "Halving the cost of quantum addition",
+          "url": "https://arxiv.org/abs/1709.06648",
+          "reason": "Provides the temporary logical-AND adder family used for the n-1-cost add/sub/select kernels at this layer."
+        }
+      ],
+      "notes": [
+        "This family lowers the arithmetic side into explicit stage/block inventories instead of treating add/sub/mul/select costs as bare scalar formulas.",
+        "The lowering stays at the non-Clifford block layer. It does not yet publish bit-for-bit Clifford micro-expansions for every 256-bit kernel."
+      ]
+    },
+    "kernels": [
+      {
+        "opcode": "field_mul",
+        "summary": "Exact schoolbook controlled add-subtract field-multiplication kernel over the checked 256-bit field width.",
+        "stages": [
+          {
+            "name": "partial_products",
+            "summary": "Schoolbook partial-product grid.",
+            "category": "schoolbook_grid",
+            "blocks": [
+              {
+                "name": "partial_product_grid",
+                "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+                "instance_count": 65536,
+                "primitive_counts_per_instance": {
+                  "ccx": 1,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 0
+                },
+                "primitive_counts_total": {
+                  "ccx": 65536,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 0
+                },
+                "non_clifford_total": 65536,
+                "notes": [
+                  "This stage records the n^2 schoolbook bit-product interactions in the controlled add-subtract multiplier family."
+                ]
+              }
+            ],
+            "primitive_counts_total": {
+              "ccx": 65536,
+              "cx": 0,
+              "x": 0,
+              "measurement": 0
+            },
+            "non_clifford_total": 65536,
+            "notes": [
+              "The partial-product stage is the dominant n^2 contribution in the multiplier family."
+            ]
+          },
+          {
+            "name": "controlled_add_path",
+            "summary": "Carry-resolution path for the controlled-add contribution.",
+            "category": "controlled_add",
+            "blocks": [
+              {
+                "name": "controlled_add_accumulator",
+                "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+                "instance_count": 255,
+                "primitive_counts_per_instance": {
+                  "ccx": 1,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 1
+                },
+                "primitive_counts_total": {
+                  "ccx": 255,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 255
+                },
+                "non_clifford_total": 255,
+                "notes": [
+                  "This stage accounts for the n-1 carry transitions in the add half of the controlled add-subtract multiplier."
+                ]
+              }
+            ],
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            },
+            "non_clifford_total": 255,
+            "notes": [
+              "The add path follows the same temporary logical-AND interpretation used by the field-adder kernel."
+            ]
+          },
+          {
+            "name": "controlled_sub_path",
+            "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+            "category": "controlled_subtract",
+            "blocks": [
+              {
+                "name": "controlled_sub_accumulator",
+                "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+                "instance_count": 256,
+                "primitive_counts_per_instance": {
+                  "ccx": 1,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 1
+                },
+                "primitive_counts_total": {
+                  "ccx": 256,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 256
+                },
+                "non_clifford_total": 256,
+                "notes": [
+                  "This stage accounts for the residual n borrow transitions in the subtract half of the controlled add-subtract multiplier."
+                ]
+              }
+            ],
+            "primitive_counts_total": {
+              "ccx": 256,
+              "cx": 0,
+              "x": 0,
+              "measurement": 256
+            },
+            "non_clifford_total": 256,
+            "notes": [
+              "The subtract path carries the final linear correction term in the Litinski-style controlled add-subtract multiplier."
+            ]
+          }
+        ],
+        "primitive_counts_total": {
+          "ccx": 66047,
+          "cx": 0,
+          "x": 0,
+          "measurement": 511
+        },
+        "exact_non_clifford_per_kernel": 66047,
+        "notes": [
+          "The kernel reconstructs n^2 + 2n - 1 non-Clifford operations as an explicit partial-product grid plus add/sub correction paths."
+        ]
+      },
+      {
+        "opcode": "field_add",
+        "summary": "Exact n-bit ripple-carry field-adder kernel over the checked leaf register width.",
+        "stages": [
+          {
+            "name": "carry_resolution",
+            "summary": "Temporary logical-AND carry ladder for the field-adder kernel.",
+            "category": "adder",
+            "blocks": [
+              {
+                "name": "temporary_and_carry_ladder",
+                "summary": "One temporary logical-AND edge per carry transition in the ripple-carry adder.",
+                "instance_count": 255,
+                "primitive_counts_per_instance": {
+                  "ccx": 1,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 1
+                },
+                "primitive_counts_total": {
+                  "ccx": 255,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 255
+                },
+                "non_clifford_total": 255,
+                "notes": [
+                  "This stage follows the temporary logical-AND carry pattern used for n-bit addition.",
+                  "The local measurement-reset path is counted inside the same stage inventory."
+                ]
+              }
+            ],
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            },
+            "non_clifford_total": 255,
+            "notes": [
+              "The adder kernel is counted as a single carry-resolution stage because the repository only prices non-Clifford work at this layer."
+            ]
+          }
+        ],
+        "primitive_counts_total": {
+          "ccx": 255,
+          "cx": 0,
+          "x": 0,
+          "measurement": 255
+        },
+        "exact_non_clifford_per_kernel": 255,
+        "notes": [
+          "The kernel contributes n-1 non-Clifford operations for a 256-bit field addition."
+        ]
+      },
+      {
+        "opcode": "field_sub",
+        "summary": "Exact n-bit ripple-carry field-subtractor kernel over the checked leaf register width.",
+        "stages": [
+          {
+            "name": "borrow_resolution",
+            "summary": "Temporary logical-AND borrow ladder for the field-subtractor kernel.",
+            "category": "subtractor",
+            "blocks": [
+              {
+                "name": "temporary_and_borrow_ladder",
+                "summary": "One temporary logical-AND edge per borrow transition in the ripple-carry subtractor.",
+                "instance_count": 255,
+                "primitive_counts_per_instance": {
+                  "ccx": 1,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 1
+                },
+                "primitive_counts_total": {
+                  "ccx": 255,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 255
+                },
+                "non_clifford_total": 255,
+                "notes": [
+                  "The subtractor reuses the same n-1 temporary logical-AND structure as the adder, interpreted as a borrow ladder."
+                ]
+              }
+            ],
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            },
+            "non_clifford_total": 255,
+            "notes": [
+              "The subtractor kernel is counted as a single borrow-resolution stage at the non-Clifford layer."
+            ]
+          }
+        ],
+        "primitive_counts_total": {
+          "ccx": 255,
+          "cx": 0,
+          "x": 0,
+          "measurement": 255
+        },
+        "exact_non_clifford_per_kernel": 255,
+        "notes": [
+          "The kernel contributes n-1 non-Clifford operations for a 256-bit field subtraction."
+        ]
+      },
+      {
+        "opcode": "mul_const",
+        "summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+        "stages": [
+          {
+            "name": "addition_chain",
+            "summary": "Monotone addition-chain realization for multiplication by 21.",
+            "category": "mul_const",
+            "blocks": [
+              {
+                "name": "chain_step_1_to_2",
+                "summary": "One field-add kernel step in the monotone addition chain 1 -> 2.",
+                "instance_count": 1,
+                "primitive_counts_per_instance": {
+                  "ccx": 255,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 255
+                },
+                "primitive_counts_total": {
+                  "ccx": 255,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 255
+                },
+                "non_clifford_total": 255,
+                "notes": [
+                  "Each chain step reuses the checked field-add kernel cost over the same 256-bit register width."
+                ]
+              },
+              {
+                "name": "chain_step_2_to_4",
+                "summary": "One field-add kernel step in the monotone addition chain 2 -> 4.",
+                "instance_count": 1,
+                "primitive_counts_per_instance": {
+                  "ccx": 255,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 255
+                },
+                "primitive_counts_total": {
+                  "ccx": 255,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 255
+                },
+                "non_clifford_total": 255,
+                "notes": [
+                  "Each chain step reuses the checked field-add kernel cost over the same 256-bit register width."
+                ]
+              },
+              {
+                "name": "chain_step_4_to_8",
+                "summary": "One field-add kernel step in the monotone addition chain 4 -> 8.",
+                "instance_count": 1,
+                "primitive_counts_per_instance": {
+                  "ccx": 255,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 255
+                },
+                "primitive_counts_total": {
+                  "ccx": 255,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 255
+                },
+                "non_clifford_total": 255,
+                "notes": [
+                  "Each chain step reuses the checked field-add kernel cost over the same 256-bit register width."
+                ]
+              },
+              {
+                "name": "chain_step_8_to_16",
+                "summary": "One field-add kernel step in the monotone addition chain 8 -> 16.",
+                "instance_count": 1,
+                "primitive_counts_per_instance": {
+                  "ccx": 255,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 255
+                },
+                "primitive_counts_total": {
+                  "ccx": 255,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 255
+                },
+                "non_clifford_total": 255,
+                "notes": [
+                  "Each chain step reuses the checked field-add kernel cost over the same 256-bit register width."
+                ]
+              },
+              {
+                "name": "chain_step_16_to_20",
+                "summary": "One field-add kernel step in the monotone addition chain 16 -> 20.",
+                "instance_count": 1,
+                "primitive_counts_per_instance": {
+                  "ccx": 255,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 255
+                },
+                "primitive_counts_total": {
+                  "ccx": 255,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 255
+                },
+                "non_clifford_total": 255,
+                "notes": [
+                  "Each chain step reuses the checked field-add kernel cost over the same 256-bit register width."
+                ]
+              },
+              {
+                "name": "chain_step_20_to_21",
+                "summary": "One field-add kernel step in the monotone addition chain 20 -> 21.",
+                "instance_count": 1,
+                "primitive_counts_per_instance": {
+                  "ccx": 255,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 255
+                },
+                "primitive_counts_total": {
+                  "ccx": 255,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 255
+                },
+                "non_clifford_total": 255,
+                "notes": [
+                  "Each chain step reuses the checked field-add kernel cost over the same 256-bit register width."
+                ]
+              }
+            ],
+            "primitive_counts_total": {
+              "ccx": 1530,
+              "cx": 0,
+              "x": 0,
+              "measurement": 1530
+            },
+            "non_clifford_total": 1530,
+            "notes": [
+              "The checked leaf uses a fixed 3b = 21 multiplier, so the addition chain is exact and machine-readable."
+            ]
+          }
+        ],
+        "primitive_counts_total": {
+          "ccx": 1530,
+          "cx": 0,
+          "x": 0,
+          "measurement": 1530
+        },
+        "exact_non_clifford_per_kernel": 1530,
+        "notes": [
+          "The kernel uses the exact monotone addition chain [1, 2, 4, 8, 16, 20, 21] for multiplication by 21."
+        ]
+      },
+      {
+        "opcode": "select_field_if_flag",
+        "summary": "Exact field-width conditional-select kernel used by the neutral-entry bypass path.",
+        "stages": [
+          {
+            "name": "controlled_move",
+            "summary": "Bitwise conditional move under the one-bit lookup-infinity flag.",
+            "category": "select",
+            "blocks": [
+              {
+                "name": "bitwise_control_ladder",
+                "summary": "One controlled field-bit select for each nontrivial bit position in the destination register.",
+                "instance_count": 255,
+                "primitive_counts_per_instance": {
+                  "ccx": 1,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 0
+                },
+                "primitive_counts_total": {
+                  "ccx": 255,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 0
+                },
+                "non_clifford_total": 255,
+                "notes": [
+                  "The select kernel is treated as a field-width controlled move whose non-Clifford cost matches the field-add kernel at this abstraction layer."
+                ]
+              }
+            ],
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 0
+            },
+            "non_clifford_total": 255,
+            "notes": [
+              "The controlled move stays within the checked leaf register file and does not introduce a separate lookup-family dependency."
+            ]
+          }
+        ],
+        "primitive_counts_total": {
+          "ccx": 255,
+          "cx": 0,
+          "x": 0,
+          "measurement": 0
+        },
+        "exact_non_clifford_per_kernel": 255,
+        "notes": [
+          "The kernel contributes n-1 non-Clifford operations for a 256-bit conditional field select."
+        ]
+      }
+    ],
+    "leaf_reconstruction": {
+      "leaf_opcode_histogram": {
+        "load_input": 3,
+        "lookup_affine_x": 1,
+        "lookup_affine_y": 1,
+        "lookup_meta": 1,
+        "bool_from_flag": 1,
+        "field_mul": 11,
+        "field_add": 10,
+        "field_sub": 3,
+        "mul_const": 2,
+        "select_field_if_flag": 3,
+        "clear_bool_from_flag": 1
+      },
+      "per_opcode": [
+        {
+          "opcode": "field_add",
+          "per_leaf_instance_count": 10,
+          "kernel_non_clifford_per_instance": 255,
+          "kernel_non_clifford_total": 2550,
+          "primitive_totals_total": {
+            "ccx": 2550,
+            "cx": 0,
+            "x": 0,
+            "measurement": 2550
+          }
+        },
+        {
+          "opcode": "field_mul",
+          "per_leaf_instance_count": 11,
+          "kernel_non_clifford_per_instance": 66047,
+          "kernel_non_clifford_total": 726517,
+          "primitive_totals_total": {
+            "ccx": 726517,
+            "cx": 0,
+            "x": 0,
+            "measurement": 5621
+          }
+        },
+        {
+          "opcode": "field_sub",
+          "per_leaf_instance_count": 3,
+          "kernel_non_clifford_per_instance": 255,
+          "kernel_non_clifford_total": 765,
+          "primitive_totals_total": {
+            "ccx": 765,
+            "cx": 0,
+            "x": 0,
+            "measurement": 765
+          }
+        },
+        {
+          "opcode": "mul_const",
+          "per_leaf_instance_count": 2,
+          "kernel_non_clifford_per_instance": 1530,
+          "kernel_non_clifford_total": 3060,
+          "primitive_totals_total": {
+            "ccx": 3060,
+            "cx": 0,
+            "x": 0,
+            "measurement": 3060
+          }
+        },
+        {
+          "opcode": "select_field_if_flag",
+          "per_leaf_instance_count": 3,
+          "kernel_non_clifford_per_instance": 255,
+          "kernel_non_clifford_total": 765,
+          "primitive_totals_total": {
+            "ccx": 765,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          }
+        }
+      ],
+      "primitive_totals": {
+        "ccx": 733657,
+        "cx": 0,
+        "x": 0,
+        "measurement": 11996
+      },
+      "arithmetic_leaf_non_clifford": 733657
+    }
   },
   "lookup_lowerings": {
     "schema": "compiler-project-lookup-lowerings-v1",
@@ -1876,8 +2441,8 @@
     ]
   },
   "notes": [
-    "These are exact whole-oracle counts for named compiler families over a fixed arithmetic-kernel family, an explicit lookup-lowering family, a generated block-inventory layer, and a fully quantum raw-32 schedule.",
+    "These are exact whole-oracle counts for named compiler families over an explicit arithmetic-lowering family, an explicit lookup-lowering family, a generated block-inventory layer, and a fully quantum raw-32 schedule.",
     "The qubit frontier uses exact slot allocation and an explicit semiclassical phase-shell option rather than a fixed 512-bit phase-register policy.",
-    "The arithmetic kernels remain an imported exact non-Clifford family boundary; whole-oracle counts are exact relative to that family."
+    "The arithmetic kernels are lowered into explicit stage/block inventories at the non-Clifford layer; the remaining open gap is Clifford-complete micro-expansion and external equivalence checking below those blocks."
   ]
 }

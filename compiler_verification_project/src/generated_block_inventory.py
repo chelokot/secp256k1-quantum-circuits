@@ -78,37 +78,36 @@ def _count_block(
     }
 
 
-def _arithmetic_opcode_blocks(schedule: Mapping[str, Any], kernel: Mapping[str, Any]) -> List[Dict[str, Any]]:
+def _arithmetic_opcode_blocks(schedule: Mapping[str, Any], arithmetic_lowerings: Mapping[str, Any]) -> List[Dict[str, Any]]:
     leaf_calls = int(schedule['summary']['leaf_call_count_total'])
-    hist = kernel['leaf_opcode_histogram']
-    opcode_specs = [
-        ('field_mul', 'field_mul_non_clifford', 'Imported field-multiplication kernel instances across the completed raw-32 oracle.'),
-        ('field_add', 'field_add_non_clifford', 'Imported field-addition kernel instances across the completed raw-32 oracle.'),
-        ('field_sub', 'field_sub_non_clifford', 'Imported field-subtraction kernel instances across the completed raw-32 oracle.'),
-        ('mul_const', 'mul_const_non_clifford', 'Imported fixed-constant multiplication kernel instances across the completed raw-32 oracle.'),
-        ('select_field_if_flag', 'select_non_clifford', 'Imported field-select kernel instances across the completed raw-32 oracle.'),
-    ]
+    hist = arithmetic_lowerings['leaf_reconstruction']['leaf_opcode_histogram']
     blocks = []
-    for opcode, kernel_key, summary in opcode_specs:
-        per_leaf_instances = int(hist.get(opcode, 0))
+    for kernel in arithmetic_lowerings['kernels']:
+        per_leaf_instances = int(hist.get(kernel['opcode'], 0))
         if per_leaf_instances == 0:
             continue
-        blocks.append(
-            _primitive_block(
-                block_id=f'repeated_leaf_arithmetic__{opcode}',
-                summary=summary,
-                category='arithmetic_non_clifford',
-                source_artifact='compiler_verification_project/artifacts/module_library.json',
-                primitive_counts_per_instance=_primitive_counts(ccx=int(kernel[kernel_key])),
-                base_instance_count=per_leaf_instances,
-                schedule_multiplier=leaf_calls,
-                metadata={
-                    'opcode': opcode,
-                    'per_leaf_instance_count': per_leaf_instances,
-                    'arithmetic_kernel_family': kernel['name'],
-                },
-            )
-        )
+        for stage in kernel['stages']:
+            for stage_block in stage['blocks']:
+                blocks.append(
+                    _primitive_block(
+                        block_id=f'repeated_leaf_arithmetic__{kernel["opcode"]}__{stage["name"]}__{stage_block["name"]}',
+                        summary=stage_block['summary'],
+                        category='arithmetic_non_clifford',
+                        source_artifact='compiler_verification_project/artifacts/arithmetic_lowerings.json',
+                        primitive_counts_per_instance=stage_block['primitive_counts_per_instance'],
+                        base_instance_count=per_leaf_instances * int(stage_block['instance_count']),
+                        schedule_multiplier=leaf_calls,
+                        metadata={
+                            'opcode': kernel['opcode'],
+                            'kernel_summary': kernel['summary'],
+                            'kernel_non_clifford_per_instance': int(kernel['exact_non_clifford_per_kernel']),
+                            'per_leaf_instance_count': per_leaf_instances,
+                            'stage': stage['name'],
+                            'stage_category': stage['category'],
+                            'arithmetic_kernel_family': arithmetic_lowerings['family']['name'],
+                        },
+                    )
+                )
     return blocks
 
 
@@ -209,7 +208,7 @@ def _reconstruct_family(
     phase_count_blocks: List[Dict[str, Any]],
     schedule: Mapping[str, Any],
     slot_allocation: Mapping[str, Any],
-    kernel: Mapping[str, Any],
+    arithmetic_lowerings: Mapping[str, Any],
     lookup_family: Mapping[str, Any],
     phase_shell: Mapping[str, Any],
 ) -> Dict[str, Any]:
@@ -233,7 +232,7 @@ def _reconstruct_family(
     )
     total_rotations = sum(int(block['count']) for block in phase_count_blocks if block['category'] == 'phase_rotations')
     return {
-        'arithmetic_leaf_non_clifford': int(kernel['arithmetic_leaf_non_clifford']),
+        'arithmetic_leaf_non_clifford': int(arithmetic_lowerings['leaf_reconstruction']['arithmetic_leaf_non_clifford']),
         'direct_seed_non_clifford': direct_seed_non_clifford,
         'per_leaf_lookup_non_clifford': repeated_lookup_non_clifford // leaf_calls,
         'full_oracle_non_clifford': primitive_totals['ccx'],
@@ -253,12 +252,13 @@ def build_generated_block_inventories(
     schedule: Mapping[str, Any],
     slot_allocation: Mapping[str, Any],
     kernel: Mapping[str, Any],
+    arithmetic_lowerings: Mapping[str, Any],
     lookup_lowerings: Mapping[str, Any],
     phase_shells: List[Mapping[str, Any]],
     field_bits: int,
     public_google_baseline: Mapping[str, Any],
 ) -> Dict[str, Any]:
-    arithmetic_blocks = _arithmetic_opcode_blocks(schedule, kernel)
+    arithmetic_blocks = _arithmetic_opcode_blocks(schedule, arithmetic_lowerings)
     family_inventories = []
     for lookup_family in lookup_lowerings['families']:
         for phase_shell in phase_shells:
@@ -272,7 +272,7 @@ def build_generated_block_inventories(
                 phase_count_blocks=phase_count_blocks,
                 schedule=schedule,
                 slot_allocation=slot_allocation,
-                kernel=kernel,
+                arithmetic_lowerings=arithmetic_lowerings,
                 lookup_family=lookup_family,
                 phase_shell=phase_shell,
             )
@@ -307,6 +307,7 @@ def build_generated_block_inventories(
         'schema': 'compiler-project-generated-block-inventories-v1',
         'public_google_baseline': dict(public_google_baseline),
         'schedule_summary': dict(schedule['summary']),
+        'arithmetic_lowering_family': arithmetic_lowerings['family'],
         'shared_arithmetic_blocks': arithmetic_blocks,
         'families': family_inventories,
         'best_gate_family': {

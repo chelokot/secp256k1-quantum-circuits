@@ -88,6 +88,13 @@ def test_mutated_cleanup_pair_is_detected() -> None:
     assert groups['cleanup_pair_checks']['pass'] < groups['cleanup_pair_checks']['total']
 
 
+def test_mutated_arithmetic_lowering_stage_is_detected() -> None:
+    artifacts = deepcopy(_load_artifacts())
+    artifacts['arithmetic_lowerings']['kernels'][0]['stages'][0]['blocks'][0]['primitive_counts_total']['ccx'] += 1
+    groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
+    assert groups['arithmetic_kernel_checks']['pass'] < groups['arithmetic_kernel_checks']['total']
+
+
 def test_mutated_generated_block_inventory_is_detected() -> None:
     artifacts = deepcopy(_load_artifacts())
     artifacts['generated_block_inventories']['families'][0]['non_clifford_blocks'][0]['primitive_counts_total']['ccx'] += 1

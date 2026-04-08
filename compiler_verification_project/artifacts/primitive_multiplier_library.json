@@ -9,7 +9,123 @@
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
       "exact_non_clifford": 66047,
-      "gate_set": "Clifford + non-Clifford-counted arithmetic kernels"
+      "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
+      "stages": [
+        {
+          "name": "partial_products",
+          "summary": "Schoolbook partial-product grid.",
+          "category": "schoolbook_grid",
+          "blocks": [
+            {
+              "name": "partial_product_grid",
+              "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+              "instance_count": 65536,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "non_clifford_total": 65536,
+              "notes": [
+                "This stage records the n^2 schoolbook bit-product interactions in the controlled add-subtract multiplier family."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 65536,
+          "notes": [
+            "The partial-product stage is the dominant n^2 contribution in the multiplier family."
+          ]
+        },
+        {
+          "name": "controlled_add_path",
+          "summary": "Carry-resolution path for the controlled-add contribution.",
+          "category": "controlled_add",
+          "blocks": [
+            {
+              "name": "controlled_add_accumulator",
+              "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+              "instance_count": 255,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "non_clifford_total": 255,
+              "notes": [
+                "This stage accounts for the n-1 carry transitions in the add half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "non_clifford_total": 255,
+          "notes": [
+            "The add path follows the same temporary logical-AND interpretation used by the field-adder kernel."
+          ]
+        },
+        {
+          "name": "controlled_sub_path",
+          "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+          "category": "controlled_subtract",
+          "blocks": [
+            {
+              "name": "controlled_sub_accumulator",
+              "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+              "instance_count": 256,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "non_clifford_total": 256,
+              "notes": [
+                "This stage accounts for the residual n borrow transitions in the subtract half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "non_clifford_total": 256,
+          "notes": [
+            "The subtract path carries the final linear correction term in the Litinski-style controlled add-subtract multiplier."
+          ]
+        }
+      ]
     },
     {
       "leaf_multiplier_index": 1,
@@ -17,7 +133,123 @@
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
       "exact_non_clifford": 66047,
-      "gate_set": "Clifford + non-Clifford-counted arithmetic kernels"
+      "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
+      "stages": [
+        {
+          "name": "partial_products",
+          "summary": "Schoolbook partial-product grid.",
+          "category": "schoolbook_grid",
+          "blocks": [
+            {
+              "name": "partial_product_grid",
+              "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+              "instance_count": 65536,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "non_clifford_total": 65536,
+              "notes": [
+                "This stage records the n^2 schoolbook bit-product interactions in the controlled add-subtract multiplier family."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 65536,
+          "notes": [
+            "The partial-product stage is the dominant n^2 contribution in the multiplier family."
+          ]
+        },
+        {
+          "name": "controlled_add_path",
+          "summary": "Carry-resolution path for the controlled-add contribution.",
+          "category": "controlled_add",
+          "blocks": [
+            {
+              "name": "controlled_add_accumulator",
+              "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+              "instance_count": 255,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "non_clifford_total": 255,
+              "notes": [
+                "This stage accounts for the n-1 carry transitions in the add half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "non_clifford_total": 255,
+          "notes": [
+            "The add path follows the same temporary logical-AND interpretation used by the field-adder kernel."
+          ]
+        },
+        {
+          "name": "controlled_sub_path",
+          "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+          "category": "controlled_subtract",
+          "blocks": [
+            {
+              "name": "controlled_sub_accumulator",
+              "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+              "instance_count": 256,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "non_clifford_total": 256,
+              "notes": [
+                "This stage accounts for the residual n borrow transitions in the subtract half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "non_clifford_total": 256,
+          "notes": [
+            "The subtract path carries the final linear correction term in the Litinski-style controlled add-subtract multiplier."
+          ]
+        }
+      ]
     },
     {
       "leaf_multiplier_index": 2,
@@ -25,7 +257,123 @@
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
       "exact_non_clifford": 66047,
-      "gate_set": "Clifford + non-Clifford-counted arithmetic kernels"
+      "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
+      "stages": [
+        {
+          "name": "partial_products",
+          "summary": "Schoolbook partial-product grid.",
+          "category": "schoolbook_grid",
+          "blocks": [
+            {
+              "name": "partial_product_grid",
+              "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+              "instance_count": 65536,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "non_clifford_total": 65536,
+              "notes": [
+                "This stage records the n^2 schoolbook bit-product interactions in the controlled add-subtract multiplier family."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 65536,
+          "notes": [
+            "The partial-product stage is the dominant n^2 contribution in the multiplier family."
+          ]
+        },
+        {
+          "name": "controlled_add_path",
+          "summary": "Carry-resolution path for the controlled-add contribution.",
+          "category": "controlled_add",
+          "blocks": [
+            {
+              "name": "controlled_add_accumulator",
+              "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+              "instance_count": 255,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "non_clifford_total": 255,
+              "notes": [
+                "This stage accounts for the n-1 carry transitions in the add half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "non_clifford_total": 255,
+          "notes": [
+            "The add path follows the same temporary logical-AND interpretation used by the field-adder kernel."
+          ]
+        },
+        {
+          "name": "controlled_sub_path",
+          "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+          "category": "controlled_subtract",
+          "blocks": [
+            {
+              "name": "controlled_sub_accumulator",
+              "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+              "instance_count": 256,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "non_clifford_total": 256,
+              "notes": [
+                "This stage accounts for the residual n borrow transitions in the subtract half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "non_clifford_total": 256,
+          "notes": [
+            "The subtract path carries the final linear correction term in the Litinski-style controlled add-subtract multiplier."
+          ]
+        }
+      ]
     },
     {
       "leaf_multiplier_index": 3,
@@ -33,7 +381,123 @@
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
       "exact_non_clifford": 66047,
-      "gate_set": "Clifford + non-Clifford-counted arithmetic kernels"
+      "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
+      "stages": [
+        {
+          "name": "partial_products",
+          "summary": "Schoolbook partial-product grid.",
+          "category": "schoolbook_grid",
+          "blocks": [
+            {
+              "name": "partial_product_grid",
+              "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+              "instance_count": 65536,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "non_clifford_total": 65536,
+              "notes": [
+                "This stage records the n^2 schoolbook bit-product interactions in the controlled add-subtract multiplier family."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 65536,
+          "notes": [
+            "The partial-product stage is the dominant n^2 contribution in the multiplier family."
+          ]
+        },
+        {
+          "name": "controlled_add_path",
+          "summary": "Carry-resolution path for the controlled-add contribution.",
+          "category": "controlled_add",
+          "blocks": [
+            {
+              "name": "controlled_add_accumulator",
+              "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+              "instance_count": 255,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "non_clifford_total": 255,
+              "notes": [
+                "This stage accounts for the n-1 carry transitions in the add half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "non_clifford_total": 255,
+          "notes": [
+            "The add path follows the same temporary logical-AND interpretation used by the field-adder kernel."
+          ]
+        },
+        {
+          "name": "controlled_sub_path",
+          "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+          "category": "controlled_subtract",
+          "blocks": [
+            {
+              "name": "controlled_sub_accumulator",
+              "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+              "instance_count": 256,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "non_clifford_total": 256,
+              "notes": [
+                "This stage accounts for the residual n borrow transitions in the subtract half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "non_clifford_total": 256,
+          "notes": [
+            "The subtract path carries the final linear correction term in the Litinski-style controlled add-subtract multiplier."
+          ]
+        }
+      ]
     },
     {
       "leaf_multiplier_index": 4,
@@ -41,7 +505,123 @@
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
       "exact_non_clifford": 66047,
-      "gate_set": "Clifford + non-Clifford-counted arithmetic kernels"
+      "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
+      "stages": [
+        {
+          "name": "partial_products",
+          "summary": "Schoolbook partial-product grid.",
+          "category": "schoolbook_grid",
+          "blocks": [
+            {
+              "name": "partial_product_grid",
+              "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+              "instance_count": 65536,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "non_clifford_total": 65536,
+              "notes": [
+                "This stage records the n^2 schoolbook bit-product interactions in the controlled add-subtract multiplier family."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 65536,
+          "notes": [
+            "The partial-product stage is the dominant n^2 contribution in the multiplier family."
+          ]
+        },
+        {
+          "name": "controlled_add_path",
+          "summary": "Carry-resolution path for the controlled-add contribution.",
+          "category": "controlled_add",
+          "blocks": [
+            {
+              "name": "controlled_add_accumulator",
+              "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+              "instance_count": 255,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "non_clifford_total": 255,
+              "notes": [
+                "This stage accounts for the n-1 carry transitions in the add half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "non_clifford_total": 255,
+          "notes": [
+            "The add path follows the same temporary logical-AND interpretation used by the field-adder kernel."
+          ]
+        },
+        {
+          "name": "controlled_sub_path",
+          "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+          "category": "controlled_subtract",
+          "blocks": [
+            {
+              "name": "controlled_sub_accumulator",
+              "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+              "instance_count": 256,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "non_clifford_total": 256,
+              "notes": [
+                "This stage accounts for the residual n borrow transitions in the subtract half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "non_clifford_total": 256,
+          "notes": [
+            "The subtract path carries the final linear correction term in the Litinski-style controlled add-subtract multiplier."
+          ]
+        }
+      ]
     },
     {
       "leaf_multiplier_index": 5,
@@ -49,7 +629,123 @@
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
       "exact_non_clifford": 66047,
-      "gate_set": "Clifford + non-Clifford-counted arithmetic kernels"
+      "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
+      "stages": [
+        {
+          "name": "partial_products",
+          "summary": "Schoolbook partial-product grid.",
+          "category": "schoolbook_grid",
+          "blocks": [
+            {
+              "name": "partial_product_grid",
+              "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+              "instance_count": 65536,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "non_clifford_total": 65536,
+              "notes": [
+                "This stage records the n^2 schoolbook bit-product interactions in the controlled add-subtract multiplier family."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 65536,
+          "notes": [
+            "The partial-product stage is the dominant n^2 contribution in the multiplier family."
+          ]
+        },
+        {
+          "name": "controlled_add_path",
+          "summary": "Carry-resolution path for the controlled-add contribution.",
+          "category": "controlled_add",
+          "blocks": [
+            {
+              "name": "controlled_add_accumulator",
+              "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+              "instance_count": 255,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "non_clifford_total": 255,
+              "notes": [
+                "This stage accounts for the n-1 carry transitions in the add half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "non_clifford_total": 255,
+          "notes": [
+            "The add path follows the same temporary logical-AND interpretation used by the field-adder kernel."
+          ]
+        },
+        {
+          "name": "controlled_sub_path",
+          "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+          "category": "controlled_subtract",
+          "blocks": [
+            {
+              "name": "controlled_sub_accumulator",
+              "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+              "instance_count": 256,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "non_clifford_total": 256,
+              "notes": [
+                "This stage accounts for the residual n borrow transitions in the subtract half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "non_clifford_total": 256,
+          "notes": [
+            "The subtract path carries the final linear correction term in the Litinski-style controlled add-subtract multiplier."
+          ]
+        }
+      ]
     },
     {
       "leaf_multiplier_index": 6,
@@ -57,7 +753,123 @@
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
       "exact_non_clifford": 66047,
-      "gate_set": "Clifford + non-Clifford-counted arithmetic kernels"
+      "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
+      "stages": [
+        {
+          "name": "partial_products",
+          "summary": "Schoolbook partial-product grid.",
+          "category": "schoolbook_grid",
+          "blocks": [
+            {
+              "name": "partial_product_grid",
+              "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+              "instance_count": 65536,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "non_clifford_total": 65536,
+              "notes": [
+                "This stage records the n^2 schoolbook bit-product interactions in the controlled add-subtract multiplier family."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 65536,
+          "notes": [
+            "The partial-product stage is the dominant n^2 contribution in the multiplier family."
+          ]
+        },
+        {
+          "name": "controlled_add_path",
+          "summary": "Carry-resolution path for the controlled-add contribution.",
+          "category": "controlled_add",
+          "blocks": [
+            {
+              "name": "controlled_add_accumulator",
+              "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+              "instance_count": 255,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "non_clifford_total": 255,
+              "notes": [
+                "This stage accounts for the n-1 carry transitions in the add half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "non_clifford_total": 255,
+          "notes": [
+            "The add path follows the same temporary logical-AND interpretation used by the field-adder kernel."
+          ]
+        },
+        {
+          "name": "controlled_sub_path",
+          "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+          "category": "controlled_subtract",
+          "blocks": [
+            {
+              "name": "controlled_sub_accumulator",
+              "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+              "instance_count": 256,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "non_clifford_total": 256,
+              "notes": [
+                "This stage accounts for the residual n borrow transitions in the subtract half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "non_clifford_total": 256,
+          "notes": [
+            "The subtract path carries the final linear correction term in the Litinski-style controlled add-subtract multiplier."
+          ]
+        }
+      ]
     },
     {
       "leaf_multiplier_index": 7,
@@ -65,7 +877,123 @@
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
       "exact_non_clifford": 66047,
-      "gate_set": "Clifford + non-Clifford-counted arithmetic kernels"
+      "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
+      "stages": [
+        {
+          "name": "partial_products",
+          "summary": "Schoolbook partial-product grid.",
+          "category": "schoolbook_grid",
+          "blocks": [
+            {
+              "name": "partial_product_grid",
+              "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+              "instance_count": 65536,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "non_clifford_total": 65536,
+              "notes": [
+                "This stage records the n^2 schoolbook bit-product interactions in the controlled add-subtract multiplier family."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 65536,
+          "notes": [
+            "The partial-product stage is the dominant n^2 contribution in the multiplier family."
+          ]
+        },
+        {
+          "name": "controlled_add_path",
+          "summary": "Carry-resolution path for the controlled-add contribution.",
+          "category": "controlled_add",
+          "blocks": [
+            {
+              "name": "controlled_add_accumulator",
+              "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+              "instance_count": 255,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "non_clifford_total": 255,
+              "notes": [
+                "This stage accounts for the n-1 carry transitions in the add half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "non_clifford_total": 255,
+          "notes": [
+            "The add path follows the same temporary logical-AND interpretation used by the field-adder kernel."
+          ]
+        },
+        {
+          "name": "controlled_sub_path",
+          "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+          "category": "controlled_subtract",
+          "blocks": [
+            {
+              "name": "controlled_sub_accumulator",
+              "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+              "instance_count": 256,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "non_clifford_total": 256,
+              "notes": [
+                "This stage accounts for the residual n borrow transitions in the subtract half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "non_clifford_total": 256,
+          "notes": [
+            "The subtract path carries the final linear correction term in the Litinski-style controlled add-subtract multiplier."
+          ]
+        }
+      ]
     },
     {
       "leaf_multiplier_index": 8,
@@ -73,7 +1001,123 @@
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
       "exact_non_clifford": 66047,
-      "gate_set": "Clifford + non-Clifford-counted arithmetic kernels"
+      "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
+      "stages": [
+        {
+          "name": "partial_products",
+          "summary": "Schoolbook partial-product grid.",
+          "category": "schoolbook_grid",
+          "blocks": [
+            {
+              "name": "partial_product_grid",
+              "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+              "instance_count": 65536,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "non_clifford_total": 65536,
+              "notes": [
+                "This stage records the n^2 schoolbook bit-product interactions in the controlled add-subtract multiplier family."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 65536,
+          "notes": [
+            "The partial-product stage is the dominant n^2 contribution in the multiplier family."
+          ]
+        },
+        {
+          "name": "controlled_add_path",
+          "summary": "Carry-resolution path for the controlled-add contribution.",
+          "category": "controlled_add",
+          "blocks": [
+            {
+              "name": "controlled_add_accumulator",
+              "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+              "instance_count": 255,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "non_clifford_total": 255,
+              "notes": [
+                "This stage accounts for the n-1 carry transitions in the add half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "non_clifford_total": 255,
+          "notes": [
+            "The add path follows the same temporary logical-AND interpretation used by the field-adder kernel."
+          ]
+        },
+        {
+          "name": "controlled_sub_path",
+          "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+          "category": "controlled_subtract",
+          "blocks": [
+            {
+              "name": "controlled_sub_accumulator",
+              "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+              "instance_count": 256,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "non_clifford_total": 256,
+              "notes": [
+                "This stage accounts for the residual n borrow transitions in the subtract half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "non_clifford_total": 256,
+          "notes": [
+            "The subtract path carries the final linear correction term in the Litinski-style controlled add-subtract multiplier."
+          ]
+        }
+      ]
     },
     {
       "leaf_multiplier_index": 9,
@@ -81,7 +1125,123 @@
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
       "exact_non_clifford": 66047,
-      "gate_set": "Clifford + non-Clifford-counted arithmetic kernels"
+      "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
+      "stages": [
+        {
+          "name": "partial_products",
+          "summary": "Schoolbook partial-product grid.",
+          "category": "schoolbook_grid",
+          "blocks": [
+            {
+              "name": "partial_product_grid",
+              "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+              "instance_count": 65536,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "non_clifford_total": 65536,
+              "notes": [
+                "This stage records the n^2 schoolbook bit-product interactions in the controlled add-subtract multiplier family."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 65536,
+          "notes": [
+            "The partial-product stage is the dominant n^2 contribution in the multiplier family."
+          ]
+        },
+        {
+          "name": "controlled_add_path",
+          "summary": "Carry-resolution path for the controlled-add contribution.",
+          "category": "controlled_add",
+          "blocks": [
+            {
+              "name": "controlled_add_accumulator",
+              "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+              "instance_count": 255,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "non_clifford_total": 255,
+              "notes": [
+                "This stage accounts for the n-1 carry transitions in the add half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "non_clifford_total": 255,
+          "notes": [
+            "The add path follows the same temporary logical-AND interpretation used by the field-adder kernel."
+          ]
+        },
+        {
+          "name": "controlled_sub_path",
+          "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+          "category": "controlled_subtract",
+          "blocks": [
+            {
+              "name": "controlled_sub_accumulator",
+              "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+              "instance_count": 256,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "non_clifford_total": 256,
+              "notes": [
+                "This stage accounts for the residual n borrow transitions in the subtract half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "non_clifford_total": 256,
+          "notes": [
+            "The subtract path carries the final linear correction term in the Litinski-style controlled add-subtract multiplier."
+          ]
+        }
+      ]
     },
     {
       "leaf_multiplier_index": 10,
@@ -89,7 +1249,123 @@
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
       "exact_non_clifford": 66047,
-      "gate_set": "Clifford + non-Clifford-counted arithmetic kernels"
+      "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
+      "stages": [
+        {
+          "name": "partial_products",
+          "summary": "Schoolbook partial-product grid.",
+          "category": "schoolbook_grid",
+          "blocks": [
+            {
+              "name": "partial_product_grid",
+              "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+              "instance_count": 65536,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "non_clifford_total": 65536,
+              "notes": [
+                "This stage records the n^2 schoolbook bit-product interactions in the controlled add-subtract multiplier family."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 65536,
+          "notes": [
+            "The partial-product stage is the dominant n^2 contribution in the multiplier family."
+          ]
+        },
+        {
+          "name": "controlled_add_path",
+          "summary": "Carry-resolution path for the controlled-add contribution.",
+          "category": "controlled_add",
+          "blocks": [
+            {
+              "name": "controlled_add_accumulator",
+              "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+              "instance_count": 255,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "non_clifford_total": 255,
+              "notes": [
+                "This stage accounts for the n-1 carry transitions in the add half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "non_clifford_total": 255,
+          "notes": [
+            "The add path follows the same temporary logical-AND interpretation used by the field-adder kernel."
+          ]
+        },
+        {
+          "name": "controlled_sub_path",
+          "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+          "category": "controlled_subtract",
+          "blocks": [
+            {
+              "name": "controlled_sub_accumulator",
+              "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+              "instance_count": 256,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "non_clifford_total": 256,
+              "notes": [
+                "This stage accounts for the residual n borrow transitions in the subtract half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "non_clifford_total": 256,
+          "notes": [
+            "The subtract path carries the final linear correction term in the Litinski-style controlled add-subtract multiplier."
+          ]
+        }
+      ]
     }
   ],
   "whole_oracle_multiplier_instance_count": 341,
@@ -104,7 +1380,123 @@
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
       "exact_non_clifford": 66047,
-      "gate_set": "Clifford + non-Clifford-counted arithmetic kernels"
+      "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
+      "stages": [
+        {
+          "name": "partial_products",
+          "summary": "Schoolbook partial-product grid.",
+          "category": "schoolbook_grid",
+          "blocks": [
+            {
+              "name": "partial_product_grid",
+              "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+              "instance_count": 65536,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "non_clifford_total": 65536,
+              "notes": [
+                "This stage records the n^2 schoolbook bit-product interactions in the controlled add-subtract multiplier family."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 65536,
+          "notes": [
+            "The partial-product stage is the dominant n^2 contribution in the multiplier family."
+          ]
+        },
+        {
+          "name": "controlled_add_path",
+          "summary": "Carry-resolution path for the controlled-add contribution.",
+          "category": "controlled_add",
+          "blocks": [
+            {
+              "name": "controlled_add_accumulator",
+              "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+              "instance_count": 255,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "non_clifford_total": 255,
+              "notes": [
+                "This stage accounts for the n-1 carry transitions in the add half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "non_clifford_total": 255,
+          "notes": [
+            "The add path follows the same temporary logical-AND interpretation used by the field-adder kernel."
+          ]
+        },
+        {
+          "name": "controlled_sub_path",
+          "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+          "category": "controlled_subtract",
+          "blocks": [
+            {
+              "name": "controlled_sub_accumulator",
+              "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+              "instance_count": 256,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "non_clifford_total": 256,
+              "notes": [
+                "This stage accounts for the residual n borrow transitions in the subtract half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "non_clifford_total": 256,
+          "notes": [
+            "The subtract path carries the final linear correction term in the Litinski-style controlled add-subtract multiplier."
+          ]
+        }
+      ]
     },
     {
       "call_index": 0,
@@ -115,7 +1507,123 @@
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
       "exact_non_clifford": 66047,
-      "gate_set": "Clifford + non-Clifford-counted arithmetic kernels"
+      "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
+      "stages": [
+        {
+          "name": "partial_products",
+          "summary": "Schoolbook partial-product grid.",
+          "category": "schoolbook_grid",
+          "blocks": [
+            {
+              "name": "partial_product_grid",
+              "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+              "instance_count": 65536,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "non_clifford_total": 65536,
+              "notes": [
+                "This stage records the n^2 schoolbook bit-product interactions in the controlled add-subtract multiplier family."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 65536,
+          "notes": [
+            "The partial-product stage is the dominant n^2 contribution in the multiplier family."
+          ]
+        },
+        {
+          "name": "controlled_add_path",
+          "summary": "Carry-resolution path for the controlled-add contribution.",
+          "category": "controlled_add",
+          "blocks": [
+            {
+              "name": "controlled_add_accumulator",
+              "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+              "instance_count": 255,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "non_clifford_total": 255,
+              "notes": [
+                "This stage accounts for the n-1 carry transitions in the add half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "non_clifford_total": 255,
+          "notes": [
+            "The add path follows the same temporary logical-AND interpretation used by the field-adder kernel."
+          ]
+        },
+        {
+          "name": "controlled_sub_path",
+          "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+          "category": "controlled_subtract",
+          "blocks": [
+            {
+              "name": "controlled_sub_accumulator",
+              "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+              "instance_count": 256,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "non_clifford_total": 256,
+              "notes": [
+                "This stage accounts for the residual n borrow transitions in the subtract half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "non_clifford_total": 256,
+          "notes": [
+            "The subtract path carries the final linear correction term in the Litinski-style controlled add-subtract multiplier."
+          ]
+        }
+      ]
     },
     {
       "call_index": 0,
@@ -126,7 +1634,123 @@
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
       "exact_non_clifford": 66047,
-      "gate_set": "Clifford + non-Clifford-counted arithmetic kernels"
+      "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
+      "stages": [
+        {
+          "name": "partial_products",
+          "summary": "Schoolbook partial-product grid.",
+          "category": "schoolbook_grid",
+          "blocks": [
+            {
+              "name": "partial_product_grid",
+              "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+              "instance_count": 65536,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "non_clifford_total": 65536,
+              "notes": [
+                "This stage records the n^2 schoolbook bit-product interactions in the controlled add-subtract multiplier family."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 65536,
+          "notes": [
+            "The partial-product stage is the dominant n^2 contribution in the multiplier family."
+          ]
+        },
+        {
+          "name": "controlled_add_path",
+          "summary": "Carry-resolution path for the controlled-add contribution.",
+          "category": "controlled_add",
+          "blocks": [
+            {
+              "name": "controlled_add_accumulator",
+              "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+              "instance_count": 255,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "non_clifford_total": 255,
+              "notes": [
+                "This stage accounts for the n-1 carry transitions in the add half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "non_clifford_total": 255,
+          "notes": [
+            "The add path follows the same temporary logical-AND interpretation used by the field-adder kernel."
+          ]
+        },
+        {
+          "name": "controlled_sub_path",
+          "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+          "category": "controlled_subtract",
+          "blocks": [
+            {
+              "name": "controlled_sub_accumulator",
+              "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+              "instance_count": 256,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "non_clifford_total": 256,
+              "notes": [
+                "This stage accounts for the residual n borrow transitions in the subtract half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "non_clifford_total": 256,
+          "notes": [
+            "The subtract path carries the final linear correction term in the Litinski-style controlled add-subtract multiplier."
+          ]
+        }
+      ]
     },
     {
       "call_index": 0,
@@ -137,7 +1761,123 @@
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
       "exact_non_clifford": 66047,
-      "gate_set": "Clifford + non-Clifford-counted arithmetic kernels"
+      "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
+      "stages": [
+        {
+          "name": "partial_products",
+          "summary": "Schoolbook partial-product grid.",
+          "category": "schoolbook_grid",
+          "blocks": [
+            {
+              "name": "partial_product_grid",
+              "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+              "instance_count": 65536,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "non_clifford_total": 65536,
+              "notes": [
+                "This stage records the n^2 schoolbook bit-product interactions in the controlled add-subtract multiplier family."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 65536,
+          "notes": [
+            "The partial-product stage is the dominant n^2 contribution in the multiplier family."
+          ]
+        },
+        {
+          "name": "controlled_add_path",
+          "summary": "Carry-resolution path for the controlled-add contribution.",
+          "category": "controlled_add",
+          "blocks": [
+            {
+              "name": "controlled_add_accumulator",
+              "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+              "instance_count": 255,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "non_clifford_total": 255,
+              "notes": [
+                "This stage accounts for the n-1 carry transitions in the add half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "non_clifford_total": 255,
+          "notes": [
+            "The add path follows the same temporary logical-AND interpretation used by the field-adder kernel."
+          ]
+        },
+        {
+          "name": "controlled_sub_path",
+          "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+          "category": "controlled_subtract",
+          "blocks": [
+            {
+              "name": "controlled_sub_accumulator",
+              "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+              "instance_count": 256,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "non_clifford_total": 256,
+              "notes": [
+                "This stage accounts for the residual n borrow transitions in the subtract half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "non_clifford_total": 256,
+          "notes": [
+            "The subtract path carries the final linear correction term in the Litinski-style controlled add-subtract multiplier."
+          ]
+        }
+      ]
     },
     {
       "call_index": 0,
@@ -148,7 +1888,123 @@
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
       "exact_non_clifford": 66047,
-      "gate_set": "Clifford + non-Clifford-counted arithmetic kernels"
+      "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
+      "stages": [
+        {
+          "name": "partial_products",
+          "summary": "Schoolbook partial-product grid.",
+          "category": "schoolbook_grid",
+          "blocks": [
+            {
+              "name": "partial_product_grid",
+              "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+              "instance_count": 65536,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "non_clifford_total": 65536,
+              "notes": [
+                "This stage records the n^2 schoolbook bit-product interactions in the controlled add-subtract multiplier family."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 65536,
+          "notes": [
+            "The partial-product stage is the dominant n^2 contribution in the multiplier family."
+          ]
+        },
+        {
+          "name": "controlled_add_path",
+          "summary": "Carry-resolution path for the controlled-add contribution.",
+          "category": "controlled_add",
+          "blocks": [
+            {
+              "name": "controlled_add_accumulator",
+              "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+              "instance_count": 255,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "non_clifford_total": 255,
+              "notes": [
+                "This stage accounts for the n-1 carry transitions in the add half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "non_clifford_total": 255,
+          "notes": [
+            "The add path follows the same temporary logical-AND interpretation used by the field-adder kernel."
+          ]
+        },
+        {
+          "name": "controlled_sub_path",
+          "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+          "category": "controlled_subtract",
+          "blocks": [
+            {
+              "name": "controlled_sub_accumulator",
+              "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+              "instance_count": 256,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "non_clifford_total": 256,
+              "notes": [
+                "This stage accounts for the residual n borrow transitions in the subtract half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "non_clifford_total": 256,
+          "notes": [
+            "The subtract path carries the final linear correction term in the Litinski-style controlled add-subtract multiplier."
+          ]
+        }
+      ]
     },
     {
       "call_index": 0,
@@ -159,7 +2015,123 @@
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
       "exact_non_clifford": 66047,
-      "gate_set": "Clifford + non-Clifford-counted arithmetic kernels"
+      "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
+      "stages": [
+        {
+          "name": "partial_products",
+          "summary": "Schoolbook partial-product grid.",
+          "category": "schoolbook_grid",
+          "blocks": [
+            {
+              "name": "partial_product_grid",
+              "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+              "instance_count": 65536,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "non_clifford_total": 65536,
+              "notes": [
+                "This stage records the n^2 schoolbook bit-product interactions in the controlled add-subtract multiplier family."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 65536,
+          "notes": [
+            "The partial-product stage is the dominant n^2 contribution in the multiplier family."
+          ]
+        },
+        {
+          "name": "controlled_add_path",
+          "summary": "Carry-resolution path for the controlled-add contribution.",
+          "category": "controlled_add",
+          "blocks": [
+            {
+              "name": "controlled_add_accumulator",
+              "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+              "instance_count": 255,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "non_clifford_total": 255,
+              "notes": [
+                "This stage accounts for the n-1 carry transitions in the add half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "non_clifford_total": 255,
+          "notes": [
+            "The add path follows the same temporary logical-AND interpretation used by the field-adder kernel."
+          ]
+        },
+        {
+          "name": "controlled_sub_path",
+          "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+          "category": "controlled_subtract",
+          "blocks": [
+            {
+              "name": "controlled_sub_accumulator",
+              "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+              "instance_count": 256,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "non_clifford_total": 256,
+              "notes": [
+                "This stage accounts for the residual n borrow transitions in the subtract half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "non_clifford_total": 256,
+          "notes": [
+            "The subtract path carries the final linear correction term in the Litinski-style controlled add-subtract multiplier."
+          ]
+        }
+      ]
     },
     {
       "call_index": 0,
@@ -170,7 +2142,123 @@
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
       "exact_non_clifford": 66047,
-      "gate_set": "Clifford + non-Clifford-counted arithmetic kernels"
+      "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
+      "stages": [
+        {
+          "name": "partial_products",
+          "summary": "Schoolbook partial-product grid.",
+          "category": "schoolbook_grid",
+          "blocks": [
+            {
+              "name": "partial_product_grid",
+              "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+              "instance_count": 65536,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "non_clifford_total": 65536,
+              "notes": [
+                "This stage records the n^2 schoolbook bit-product interactions in the controlled add-subtract multiplier family."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 65536,
+          "notes": [
+            "The partial-product stage is the dominant n^2 contribution in the multiplier family."
+          ]
+        },
+        {
+          "name": "controlled_add_path",
+          "summary": "Carry-resolution path for the controlled-add contribution.",
+          "category": "controlled_add",
+          "blocks": [
+            {
+              "name": "controlled_add_accumulator",
+              "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+              "instance_count": 255,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "non_clifford_total": 255,
+              "notes": [
+                "This stage accounts for the n-1 carry transitions in the add half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "non_clifford_total": 255,
+          "notes": [
+            "The add path follows the same temporary logical-AND interpretation used by the field-adder kernel."
+          ]
+        },
+        {
+          "name": "controlled_sub_path",
+          "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+          "category": "controlled_subtract",
+          "blocks": [
+            {
+              "name": "controlled_sub_accumulator",
+              "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+              "instance_count": 256,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "non_clifford_total": 256,
+              "notes": [
+                "This stage accounts for the residual n borrow transitions in the subtract half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "non_clifford_total": 256,
+          "notes": [
+            "The subtract path carries the final linear correction term in the Litinski-style controlled add-subtract multiplier."
+          ]
+        }
+      ]
     },
     {
       "call_index": 0,
@@ -181,7 +2269,123 @@
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
       "exact_non_clifford": 66047,
-      "gate_set": "Clifford + non-Clifford-counted arithmetic kernels"
+      "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
+      "stages": [
+        {
+          "name": "partial_products",
+          "summary": "Schoolbook partial-product grid.",
+          "category": "schoolbook_grid",
+          "blocks": [
+            {
+              "name": "partial_product_grid",
+              "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+              "instance_count": 65536,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "non_clifford_total": 65536,
+              "notes": [
+                "This stage records the n^2 schoolbook bit-product interactions in the controlled add-subtract multiplier family."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 65536,
+          "notes": [
+            "The partial-product stage is the dominant n^2 contribution in the multiplier family."
+          ]
+        },
+        {
+          "name": "controlled_add_path",
+          "summary": "Carry-resolution path for the controlled-add contribution.",
+          "category": "controlled_add",
+          "blocks": [
+            {
+              "name": "controlled_add_accumulator",
+              "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+              "instance_count": 255,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "non_clifford_total": 255,
+              "notes": [
+                "This stage accounts for the n-1 carry transitions in the add half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "non_clifford_total": 255,
+          "notes": [
+            "The add path follows the same temporary logical-AND interpretation used by the field-adder kernel."
+          ]
+        },
+        {
+          "name": "controlled_sub_path",
+          "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+          "category": "controlled_subtract",
+          "blocks": [
+            {
+              "name": "controlled_sub_accumulator",
+              "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+              "instance_count": 256,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "non_clifford_total": 256,
+              "notes": [
+                "This stage accounts for the residual n borrow transitions in the subtract half of the controlled add-subtract multiplier."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "non_clifford_total": 256,
+          "notes": [
+            "The subtract path carries the final linear correction term in the Litinski-style controlled add-subtract multiplier."
+          ]
+        }
+      ]
     }
   ],
   "notes": [

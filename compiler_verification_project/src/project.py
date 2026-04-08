@@ -54,7 +54,7 @@ from common import (  # noqa: E402
     sha256_bytes,
     sha256_path,
 )
-from derived_resources import minimal_addition_chain  # noqa: E402
+from arithmetic_lowering import arithmetic_kernel_summary, arithmetic_lowering_library  # noqa: E402
 from generated_block_inventory import build_generated_block_inventories  # noqa: E402
 from lookup_lowering import lookup_lowering_library  # noqa: E402
 from verifier import exec_netlist  # noqa: E402
@@ -71,33 +71,6 @@ PUBLIC_GOOGLE_BASELINE = {
     'low_qubit': {'logical_qubits': 1200, 'non_clifford': 90_000_000},
     'low_gate': {'logical_qubits': 1450, 'non_clifford': 70_000_000},
 }
-
-
-@dataclass(frozen=True)
-class PrimitiveCount:
-    ccx: int = 0
-    cx: int = 0
-    x: int = 0
-    measurement: int = 0
-
-    def to_dict(self) -> Dict[str, int]:
-        return {'ccx': self.ccx, 'cx': self.cx, 'x': self.x, 'measurement': self.measurement}
-
-
-@dataclass(frozen=True)
-class ArithmeticKernelFamily:
-    name: str
-    summary: str
-    gate_set: str
-    field_mul_non_clifford: int
-    field_add_non_clifford: int
-    field_sub_non_clifford: int
-    select_non_clifford: int
-    mul_const_non_clifford: int
-    arithmetic_leaf_non_clifford: int
-    leaf_opcode_histogram: Dict[str, int]
-    exact_scope: str
-    notes: List[str]
 
 
 @dataclass(frozen=True)
@@ -454,44 +427,22 @@ def leaf_opcode_histogram() -> Dict[str, int]:
 
 
 def arithmetic_kernel_library() -> Dict[str, Any]:
-    n = FIELD_BITS
-    add_cost = n - 1
-    mul_cost = (n * n) + (2 * n) - 1
-    select_cost = n - 1
-    chain = minimal_addition_chain(21)
-    mul_const_adds = len(chain) - 1
-    mul_const_cost = mul_const_adds * add_cost
-    hist = leaf_opcode_histogram()
-    arithmetic_leaf_non_clifford = (
-        hist.get('field_mul', 0) * mul_cost
-        + hist.get('field_add', 0) * add_cost
-        + hist.get('field_sub', 0) * add_cost
-        + hist.get('mul_const', 0) * mul_const_cost
-        + hist.get('select_field_if_flag', 0) * select_cost
+    return arithmetic_kernel_summary(
+        arithmetic_lowering_library(
+            field_bits=FIELD_BITS,
+            leaf_opcode_histogram=leaf_opcode_histogram(),
+        )
     )
-    family = ArithmeticKernelFamily(
-        name='litinski_addsub_schoolbook_v1',
-        summary='Imported exact non-Clifford arithmetic kernel family: schoolbook multiplication via controlled add-subtract plus n-1-cost add/sub/select kernels.',
-        gate_set='Clifford + non-Clifford-counted arithmetic kernels',
-        field_mul_non_clifford=mul_cost,
-        field_add_non_clifford=add_cost,
-        field_sub_non_clifford=add_cost,
-        select_non_clifford=select_cost,
-        mul_const_non_clifford=mul_const_cost,
-        arithmetic_leaf_non_clifford=arithmetic_leaf_non_clifford,
-        leaf_opcode_histogram=hist,
-        exact_scope='exact non-Clifford counts for the named arithmetic-kernel family; Clifford micro-counts are not flattened in this subproject',
-        notes=[
-            'The multiplier cost follows the controlled add-subtract schoolbook family highlighted by Litinski 2024 for practical low-Toffoli ECC circuits.',
-            'This subproject derives arithmetic totals from a named arithmetic-kernel family, but it still does not ship a bit-for-bit primitive CX/CCX expansion for the 256-bit multiplier family.',
-        ],
-    )
-    return {'schema': 'compiler-project-arithmetic-kernels-v2', **asdict(family), 'addition_chain_21': chain}
 
 
 
 def primitive_multiplier_library() -> Dict[str, Any]:
     kernel = arithmetic_kernel_library()
+    arithmetic_lowerings = arithmetic_lowering_library(
+        field_bits=FIELD_BITS,
+        leaf_opcode_histogram=kernel['leaf_opcode_histogram'],
+    )
+    field_mul_kernel = next(row for row in arithmetic_lowerings['kernels'] if row['opcode'] == 'field_mul')
     leaf = _leaf()
     schedule = raw32_schedule()
     mul_pcs = [ins['pc'] for ins in leaf['instructions'] if ins['op'] == 'field_mul']
@@ -502,8 +453,9 @@ def primitive_multiplier_library() -> Dict[str, Any]:
             'leaf_pc': pc,
             'family': kernel['name'],
             'field_bits': FIELD_BITS,
-            'exact_non_clifford': kernel['field_mul_non_clifford'],
+            'exact_non_clifford': field_mul_kernel['exact_non_clifford_per_kernel'],
             'gate_set': kernel['gate_set'],
+            'stages': field_mul_kernel['stages'],
         })
     full_instances = []
     for call in schedule['leaf_calls']:
@@ -514,7 +466,7 @@ def primitive_multiplier_library() -> Dict[str, Any]:
                 'window_index_within_register': call['window_index_within_register'],
                 **entry,
             })
-    total_non_clifford = len(full_instances) * int(kernel['field_mul_non_clifford'])
+    total_non_clifford = len(full_instances) * int(field_mul_kernel['exact_non_clifford_per_kernel'])
     return {
         'schema': 'compiler-project-primitive-multiplier-library-v1',
         'family': kernel['name'],
@@ -593,6 +545,10 @@ def phase_shell_families() -> List[PhaseShellFamily]:
 def compiler_family_frontier() -> Dict[str, Any]:
     schedule = raw32_schedule()
     kernel = arithmetic_kernel_library()
+    arithmetic_lowerings = arithmetic_lowering_library(
+        field_bits=FIELD_BITS,
+        leaf_opcode_histogram=kernel['leaf_opcode_histogram'],
+    )
     slot_alloc = exact_leaf_slot_allocation()
     lookup_lowerings = lookup_lowering_library()
     phase_shell_rows = [asdict(row) for row in phase_shell_families()]
@@ -600,6 +556,7 @@ def compiler_family_frontier() -> Dict[str, Any]:
         schedule=schedule,
         slot_allocation=slot_alloc,
         kernel=kernel,
+        arithmetic_lowerings=arithmetic_lowerings,
         lookup_lowerings=lookup_lowerings,
         phase_shells=phase_shell_rows,
         field_bits=FIELD_BITS,
@@ -643,11 +600,12 @@ def compiler_family_frontier() -> Dict[str, Any]:
     best_gate = min(families, key=lambda row: (row.full_oracle_non_clifford, row.total_logical_qubits))
     best_qubit = min(families, key=lambda row: (row.total_logical_qubits, row.full_oracle_non_clifford))
     return {
-        'schema': 'compiler-project-frontier-v5',
+        'schema': 'compiler-project-frontier-v6',
         'public_google_baseline': PUBLIC_GOOGLE_BASELINE,
         'schedule': schedule,
         'slot_allocation': slot_alloc,
         'arithmetic_kernel_family': arithmetic_kernel_library(),
+        'arithmetic_lowerings': arithmetic_lowerings,
         'lookup_lowerings': lookup_lowerings,
         'generated_block_inventory_artifact': 'compiler_verification_project/artifacts/generated_block_inventories.json',
         'lookup_families': [asdict(row) for row in lookup_families()],
@@ -656,9 +614,9 @@ def compiler_family_frontier() -> Dict[str, Any]:
         'best_gate_family': asdict(best_gate),
         'best_qubit_family': asdict(best_qubit),
         'notes': [
-            'These are exact whole-oracle counts for named compiler families over a fixed arithmetic-kernel family, an explicit lookup-lowering family, a generated block-inventory layer, and a fully quantum raw-32 schedule.',
+            'These are exact whole-oracle counts for named compiler families over an explicit arithmetic-lowering family, an explicit lookup-lowering family, a generated block-inventory layer, and a fully quantum raw-32 schedule.',
             'The qubit frontier uses exact slot allocation and an explicit semiclassical phase-shell option rather than a fixed 512-bit phase-register policy.',
-            'The arithmetic kernels remain an imported exact non-Clifford family boundary; whole-oracle counts are exact relative to that family.',
+            'The arithmetic kernels are lowered into explicit stage/block inventories at the non-Clifford layer; the remaining open gap is Clifford-complete micro-expansion and external equivalence checking below those blocks.',
         ],
     }
 
@@ -724,13 +682,14 @@ def full_attack_inventory() -> Dict[str, Any]:
         schedule=schedule,
         slot_allocation=exact_leaf_slot_allocation(),
         kernel=kernel,
+        arithmetic_lowerings=frontier['arithmetic_lowerings'],
         lookup_lowerings=lookup_lowering_library(),
         phase_shells=[asdict(row) for row in phase_shell_families()],
         field_bits=FIELD_BITS,
         public_google_baseline=PUBLIC_GOOGLE_BASELINE,
     )
     return {
-        'schema': 'compiler-project-full-attack-inventory-v4',
+        'schema': 'compiler-project-full-attack-inventory-v5',
         'schedule': schedule,
         'inventory': {
             'direct_seed_count': 1,
@@ -746,6 +705,7 @@ def full_attack_inventory() -> Dict[str, Any]:
             'whole_oracle_lookup_count': schedule['summary']['lookup_invocations_total'],
         },
         'generated_block_inventory_artifact': 'compiler_verification_project/artifacts/generated_block_inventories.json',
+        'arithmetic_lowering_artifact': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
         'generated_block_inventory_summary': {
             'best_gate_family': generated_block_inventories['best_gate_family'],
             'best_qubit_family': generated_block_inventories['best_qubit_family'],
@@ -772,6 +732,7 @@ def build_azure_logical_counts_payload(frontier: Optional[Dict[str, Any]] = None
             schedule=frontier['schedule'],
             slot_allocation=frontier['slot_allocation'],
             kernel=frontier['arithmetic_kernel_family'],
+            arithmetic_lowerings=frontier['arithmetic_lowerings'],
             lookup_lowerings=frontier['lookup_lowerings'],
             phase_shells=frontier['phase_shell_families'],
             field_bits=FIELD_BITS,
@@ -810,6 +771,7 @@ def write_azure_logical_counts() -> Dict[str, Any]:
         schedule=frontier['schedule'],
         slot_allocation=frontier['slot_allocation'],
         kernel=frontier['arithmetic_kernel_family'],
+        arithmetic_lowerings=frontier['arithmetic_lowerings'],
         lookup_lowerings=frontier['lookup_lowerings'],
         phase_shells=frontier['phase_shell_families'],
         field_bits=FIELD_BITS,
@@ -960,12 +922,17 @@ def run_full_raw32_semantic_check(case_count: int = 16) -> Dict[str, Any]:
 
 
 def build_all_artifacts() -> Dict[str, Any]:
+    arithmetic_lowerings = arithmetic_lowering_library(
+        field_bits=FIELD_BITS,
+        leaf_opcode_histogram=leaf_opcode_histogram(),
+    )
     phase_shell_rows = {'schema': 'compiler-project-phase-shells-v1', 'families': [asdict(f) for f in phase_shell_families()]}
     lookup_lowerings = lookup_lowering_library()
     generated_block_inventories = build_generated_block_inventories(
         schedule=raw32_schedule(),
         slot_allocation=exact_leaf_slot_allocation(),
         kernel=arithmetic_kernel_library(),
+        arithmetic_lowerings=arithmetic_lowerings,
         lookup_lowerings=lookup_lowerings,
         phase_shells=phase_shell_rows['families'],
         field_bits=FIELD_BITS,
@@ -975,6 +942,7 @@ def build_all_artifacts() -> Dict[str, Any]:
         'canonical_public_point': canonical_public_point(),
         'raw32_schedule': raw32_schedule(),
         'slot_allocation': exact_leaf_slot_allocation(),
+        'arithmetic_lowerings': arithmetic_lowerings,
         'arithmetic_kernel_library': arithmetic_kernel_library(),
         'primitive_multiplier_library': primitive_multiplier_library(),
         'phase_shell_families': phase_shell_rows,
@@ -987,6 +955,7 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('canonical_public_point.json'), out['canonical_public_point'])
     dump_json(project_artifact_path('full_raw32_oracle.json'), out['raw32_schedule'])
     dump_json(project_artifact_path('exact_leaf_slot_allocation.json'), out['slot_allocation'])
+    dump_json(project_artifact_path('arithmetic_lowerings.json'), out['arithmetic_lowerings'])
     dump_json(project_artifact_path('module_library.json'), out['arithmetic_kernel_library'])
     dump_json(project_artifact_path('primitive_multiplier_library.json'), out['primitive_multiplier_library'])
     dump_json(project_artifact_path('phase_shell_families.json'), out['phase_shell_families'])
@@ -998,11 +967,12 @@ def build_all_artifacts() -> Dict[str, Any]:
     write_azure_logical_counts()
 
     build_summary = {
-        'schema': 'compiler-project-build-summary-v5',
+        'schema': 'compiler-project-build-summary-v6',
         'artifacts': {
             'canonical_public_point': 'compiler_verification_project/artifacts/canonical_public_point.json',
             'full_raw32_oracle': 'compiler_verification_project/artifacts/full_raw32_oracle.json',
             'exact_leaf_slot_allocation': 'compiler_verification_project/artifacts/exact_leaf_slot_allocation.json',
+            'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
             'module_library': 'compiler_verification_project/artifacts/module_library.json',
             'primitive_multiplier_library': 'compiler_verification_project/artifacts/primitive_multiplier_library.json',
             'phase_shell_families': 'compiler_verification_project/artifacts/phase_shell_families.json',
@@ -1018,7 +988,7 @@ def build_all_artifacts() -> Dict[str, Any]:
             'best_qubit_family': out['frontier']['best_qubit_family'],
         },
         'notes': [
-            'The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families with explicit lookup lowerings and generated block inventories.',
+            'The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families with explicit arithmetic and lookup lowerings and generated block inventories.',
             'Its qubit accounting uses exact slot allocation and an explicit semiclassical phase-shell family instead of a fixed 10-slot/512-phase policy.',
         ],
     }

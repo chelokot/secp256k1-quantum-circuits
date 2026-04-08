@@ -159,24 +159,28 @@
       "bytes": 28942
     },
     "compiler_verification_project/README.md": {
-      "sha256": "72f00d616cd2eea66ba36fda4b11f597f50c3e7bfe7b857201e54df817f56e47",
-      "bytes": 4499
+      "sha256": "d52d9583d1c727157b5639e305c7a49cdf3acd96b6341baaa3d005cd74bc548e",
+      "bytes": 4843
+    },
+    "compiler_verification_project/src/arithmetic_lowering.py": {
+      "sha256": "9e8079087614890a51ec95f40665ccd3485afbc5d0d0f0491df6045d82fb17f2",
+      "bytes": 15708
     },
     "compiler_verification_project/src/integrity.py": {
-      "sha256": "196a20c53567ee35fbca2be10839c52f750da646fdae597f417be63d1fde57a3",
-      "bytes": 49269
+      "sha256": "8260e9d28e5c3ccd737f31b102a88bc12fc028f5a9bf3f1ab7fa69afd7a9411b",
+      "bytes": 52136
     },
     "compiler_verification_project/src/generated_block_inventory.py": {
-      "sha256": "c3fe8069766a59fc616c84d0aa4fd5c80202a8206e959651b12ad229b16b5631",
-      "bytes": 14084
+      "sha256": "ece06f761cc430848b270b18224a9da589f1f146622f5e3a0b761d9973f1ba54",
+      "bytes": 14296
     },
     "compiler_verification_project/src/lookup_lowering.py": {
       "sha256": "00ef5d78d50c59d400b039e6dba0c11586de9e547f4dd7540fe47bc18b6e5a29",
       "bytes": 22518
     },
     "compiler_verification_project/src/project.py": {
-      "sha256": "9b5eb6f3f6a3b1ee86edf8cac095a0f6a84b8b2bcf3bdc5ad5ef8907fa5118f0",
-      "bytes": 48176
+      "sha256": "88162ab1adab91f08ee763e22b700f32bdb1780dd3efa3f3da99a39935647135",
+      "bytes": 47390
     },
     "compiler_verification_project/scripts/build.py": {
       "sha256": "be1b22f40172be2352a807ef3045ad4321c7f35992d6ce7278837a257039076b",
@@ -187,12 +191,16 @@
       "bytes": 1142
     },
     "compiler_verification_project/artifacts/build_summary.json": {
-      "sha256": "ea2c6546a4630a603b61b525aea32831f266874ec0d04a891d291c26f1fd2724",
-      "bytes": 5369
+      "sha256": "087776fcef3e81ba588794bc2782d2f5ca0b3e61afb2ec638624585744ad1da9",
+      "bytes": 5481
+    },
+    "compiler_verification_project/artifacts/arithmetic_lowerings.json": {
+      "sha256": "ec7ed59930db6aae20205f706a83da65980350f5f7978183c43a8034ad2c8353",
+      "bytes": 19156
     },
     "compiler_verification_project/artifacts/family_frontier.json": {
-      "sha256": "7500f74cd7b5dc149874e19293f795c8717042127c1c46388b3bd0ff1eaf3bea",
-      "bytes": 72012
+      "sha256": "4ccdcd50348ee5025854a78db159eb22e423f1a69ff7bfd1d713d24f56447c47",
+      "bytes": 92537
     },
     "compiler_verification_project/artifacts/lookup_lowerings.json": {
       "sha256": "a2c3c4fb785246c687eb8380d64ec9431e6f2e69cd5bb177b77b9c404a7d179f",
@@ -207,20 +215,20 @@
       "bytes": 18256
     },
     "compiler_verification_project/artifacts/primitive_multiplier_library.json": {
-      "sha256": "d92f0bd2e749c0e4462aac905dfa1f1d8aea16d3c69815971a40eee4e2f07800",
-      "bytes": 6151
+      "sha256": "5b46cb04be872d1b42bced4e0e673db14429aec55eaf86f111347594d2e978e7",
+      "bytes": 82417
     },
     "compiler_verification_project/artifacts/phase_shell_families.json": {
       "sha256": "d7b1a2cb5ebf08e8b3597d5c44f481e803066ace0000cb4c5badad61e06ee76c",
       "bytes": 1296
     },
     "compiler_verification_project/artifacts/generated_block_inventories.json": {
-      "sha256": "9f3d0f0686805374422262ce1caacde393178eb29501ab46361f20acfb27a620",
-      "bytes": 122467
+      "sha256": "9d1285a976468fca3d23c5381ec028b48cbd799161cb020a09bf95f9594eeca8",
+      "bytes": 195649
     },
     "compiler_verification_project/artifacts/verification_summary.json": {
-      "sha256": "d3ed71e8404c8e06be34acf33143ab0a0499308e50848a680df00764c60a07b7",
-      "bytes": 789414
+      "sha256": "568b0ab09bd7122c13849363579a23591947688dc9e8624f7177bb63c575ddae",
+      "bytes": 1432857
     },
     "compiler_verification_project/artifacts/cain_exact_transfer.json": {
       "sha256": "02dc5be4230f4e9224742ff1ce6f747f986fec081e7c93822a481c3830c69148",

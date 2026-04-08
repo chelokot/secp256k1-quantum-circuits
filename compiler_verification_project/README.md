@@ -15,8 +15,8 @@ It is intentionally separate from the repository mainline.
    schedule orchestration;
 3. lowers each named lookup family into an explicit stage/block inventory below
    the folded lookup contract;
-4. imports a fixed exact non-Clifford arithmetic-kernel family instead of
-   back-solving whole-leaf costs from a headline constant;
+4. lowers the named arithmetic-kernel family into an explicit stage/block
+   inventory instead of treating leaf arithmetic as bare scalar opcode costs;
 5. derives **whole-oracle non-Clifford and logical-qubit counts** for those
    families; and
 6. verifies the completed raw-32 schedule semantically on deterministic
@@ -30,11 +30,13 @@ The artifacts in `compiler_verification_project/artifacts/` are exact for the
 That is a stricter boundary than the repository's quarantined hypothesis layer,
 but still
 short of a globally optimal primitive-gate proof. In particular, the arithmetic
-kernels are imported exact subroutines; this subproject still does **not** ship
-bit-for-bit primitive CX/CCX netlists for every 256-bit field multiplier.
+lowerings stop at explicit non-Clifford stage/block inventories; this
+subproject still does **not** ship bit-for-bit Clifford-complete netlists for
+every 256-bit field multiplier.
 What it does ship is:
 
 - an exact whole-oracle schedule,
+- exact arithmetic-kernel stage/block inventories,
 - exact lookup-family choices with explicit lowered stage inventories,
 - exact leaf slot allocation,
 - exact phase-shell families, and
@@ -45,7 +47,8 @@ What it does ship is:
 - `family_frontier.json` — exact whole-oracle frontier for the named compiler families
 - `full_raw32_oracle.json` — exact fully quantum schedule: 1 direct seed + 31 leaf calls
 - `exact_leaf_slot_allocation.json` — exact versioned live-range allocation of the checked leaf
-- `module_library.json` — fixed arithmetic kernel library used by the frontier
+- `arithmetic_lowerings.json` — explicit stage/block inventories for the named arithmetic-kernel family
+- `module_library.json` — arithmetic-kernel summary used by the frontier
 - `lookup_lowerings.json` — explicit stage/block inventories for the named folded lookup families
 - `generated_block_inventories.json` — generated whole-oracle block inventories whose reconstructed totals feed the exact frontier
 - `primitive_multiplier_library.json` — auditable manifest for all 341 multiplier instances in the raw-32 oracle
@@ -59,7 +62,7 @@ What it does ship is:
 ## Current exact frontier
 
 - **best exact gate family:** `23,813,671 non-Clifford`
-- **best exact qubit family:** `2,337 logical qubits`
+- **best exact qubit family:** `2,338 logical qubits`
 
 The best exact gate family uses folded unary QROM with measurement-based
 uncompute. The best exact qubit family uses folded linear-scan lookup plus an
@@ -74,13 +77,15 @@ Its defining exact features are:
 
 - exact slot allocation cuts the leaf-side arithmetic peak from 10 named field
   slots to **9 exact physical field slots**;
+- explicit arithmetic lowerings reconstruct the leaf-side non-Clifford totals
+  from stage/block inventories instead of from naked opcode formulas;
 - explicit lookup lowerings reconstruct each lookup-family count from checked
   stage/block inventories instead of from naked family formulas;
 - generated whole-oracle block inventories reconstruct each family total from
   arithmetic blocks, lookup blocks, qubit contributors, and phase-shell counts;
 - a semiclassical-QFT phase-shell family removes the fixed **512 live phase
   qubits** assumption; and
-- those two ingredients place the best exact low-qubit family at **2,337
+- those two ingredients place the best exact low-qubit family at **2,338
   logical qubits**.
 
 ## Quick start

@@ -1,0 +1,354 @@
+#!/usr/bin/env python3
+
+from __future__ import annotations
+
+from typing import Any, Dict, List, Mapping
+
+from derived_resources import minimal_addition_chain
+
+
+def _primitive_counts(ccx: int = 0, cx: int = 0, x: int = 0, measurement: int = 0) -> Dict[str, int]:
+    return {
+        'ccx': int(ccx),
+        'cx': int(cx),
+        'x': int(x),
+        'measurement': int(measurement),
+    }
+
+
+def _block(
+    name: str,
+    summary: str,
+    instance_count: int,
+    primitive_counts_per_instance: Mapping[str, int],
+    notes: List[str],
+) -> Dict[str, Any]:
+    primitive_counts = {
+        key: int(primitive_counts_per_instance.get(key, 0))
+        for key in ('ccx', 'cx', 'x', 'measurement')
+    }
+    primitive_totals = {
+        key: int(instance_count) * value
+        for key, value in primitive_counts.items()
+    }
+    return {
+        'name': name,
+        'summary': summary,
+        'instance_count': int(instance_count),
+        'primitive_counts_per_instance': primitive_counts,
+        'primitive_counts_total': primitive_totals,
+        'non_clifford_total': primitive_totals['ccx'],
+        'notes': notes,
+    }
+
+
+def _stage(name: str, summary: str, category: str, blocks: List[Dict[str, Any]], notes: List[str]) -> Dict[str, Any]:
+    primitive_totals = {
+        key: sum(int(block['primitive_counts_total'][key]) for block in blocks)
+        for key in ('ccx', 'cx', 'x', 'measurement')
+    }
+    return {
+        'name': name,
+        'summary': summary,
+        'category': category,
+        'blocks': blocks,
+        'primitive_counts_total': primitive_totals,
+        'non_clifford_total': primitive_totals['ccx'],
+        'notes': notes,
+    }
+
+
+def _kernel(opcode: str, summary: str, stages: List[Dict[str, Any]], notes: List[str]) -> Dict[str, Any]:
+    primitive_totals = {
+        key: sum(int(stage['primitive_counts_total'][key]) for stage in stages)
+        for key in ('ccx', 'cx', 'x', 'measurement')
+    }
+    return {
+        'opcode': opcode,
+        'summary': summary,
+        'stages': stages,
+        'primitive_counts_total': primitive_totals,
+        'exact_non_clifford_per_kernel': primitive_totals['ccx'],
+        'notes': notes,
+    }
+
+
+def _field_add_kernel(field_bits: int) -> Dict[str, Any]:
+    ladder = _block(
+        name='temporary_and_carry_ladder',
+        summary='One temporary logical-AND edge per carry transition in the ripple-carry adder.',
+        instance_count=field_bits - 1,
+        primitive_counts_per_instance=_primitive_counts(ccx=1, measurement=1),
+        notes=[
+            'This stage follows the temporary logical-AND carry pattern used for n-bit addition.',
+            'The local measurement-reset path is counted inside the same stage inventory.',
+        ],
+    )
+    return _kernel(
+        opcode='field_add',
+        summary='Exact n-bit ripple-carry field-adder kernel over the checked leaf register width.',
+        stages=[
+            _stage(
+                name='carry_resolution',
+                summary='Temporary logical-AND carry ladder for the field-adder kernel.',
+                category='adder',
+                blocks=[ladder],
+                notes=['The adder kernel is counted as a single carry-resolution stage because the repository only prices non-Clifford work at this layer.'],
+            )
+        ],
+        notes=[
+            'The kernel contributes n-1 non-Clifford operations for a 256-bit field addition.',
+        ],
+    )
+
+
+def _field_sub_kernel(field_bits: int) -> Dict[str, Any]:
+    ladder = _block(
+        name='temporary_and_borrow_ladder',
+        summary='One temporary logical-AND edge per borrow transition in the ripple-carry subtractor.',
+        instance_count=field_bits - 1,
+        primitive_counts_per_instance=_primitive_counts(ccx=1, measurement=1),
+        notes=[
+            'The subtractor reuses the same n-1 temporary logical-AND structure as the adder, interpreted as a borrow ladder.',
+        ],
+    )
+    return _kernel(
+        opcode='field_sub',
+        summary='Exact n-bit ripple-carry field-subtractor kernel over the checked leaf register width.',
+        stages=[
+            _stage(
+                name='borrow_resolution',
+                summary='Temporary logical-AND borrow ladder for the field-subtractor kernel.',
+                category='subtractor',
+                blocks=[ladder],
+                notes=['The subtractor kernel is counted as a single borrow-resolution stage at the non-Clifford layer.'],
+            )
+        ],
+        notes=[
+            'The kernel contributes n-1 non-Clifford operations for a 256-bit field subtraction.',
+        ],
+    )
+
+
+def _field_select_kernel(field_bits: int) -> Dict[str, Any]:
+    selector = _block(
+        name='bitwise_control_ladder',
+        summary='One controlled field-bit select for each nontrivial bit position in the destination register.',
+        instance_count=field_bits - 1,
+        primitive_counts_per_instance=_primitive_counts(ccx=1),
+        notes=[
+            'The select kernel is treated as a field-width controlled move whose non-Clifford cost matches the field-add kernel at this abstraction layer.',
+        ],
+    )
+    return _kernel(
+        opcode='select_field_if_flag',
+        summary='Exact field-width conditional-select kernel used by the neutral-entry bypass path.',
+        stages=[
+            _stage(
+                name='controlled_move',
+                summary='Bitwise conditional move under the one-bit lookup-infinity flag.',
+                category='select',
+                blocks=[selector],
+                notes=['The controlled move stays within the checked leaf register file and does not introduce a separate lookup-family dependency.'],
+            )
+        ],
+        notes=[
+            'The kernel contributes n-1 non-Clifford operations for a 256-bit conditional field select.',
+        ],
+    )
+
+
+def _mul_const_kernel(field_bits: int, const_value: int) -> Dict[str, Any]:
+    chain = minimal_addition_chain(const_value)
+    blocks = []
+    for left, right in zip(chain, chain[1:]):
+        blocks.append(
+            _block(
+                name=f'chain_step_{left}_to_{right}',
+                summary=f'One field-add kernel step in the monotone addition chain {left} -> {right}.',
+                instance_count=1,
+                primitive_counts_per_instance=_primitive_counts(ccx=field_bits - 1, measurement=field_bits - 1),
+                notes=[
+                    'Each chain step reuses the checked field-add kernel cost over the same 256-bit register width.',
+                ],
+            )
+        )
+    return _kernel(
+        opcode='mul_const',
+        summary=f'Exact fixed-constant multiplication kernel for multiplication by {const_value}.',
+        stages=[
+            _stage(
+                name='addition_chain',
+                summary=f'Monotone addition-chain realization for multiplication by {const_value}.',
+                category='mul_const',
+                blocks=blocks,
+                notes=['The checked leaf uses a fixed 3b = 21 multiplier, so the addition chain is exact and machine-readable.'],
+            )
+        ],
+        notes=[
+            f'The kernel uses the exact monotone addition chain {chain} for multiplication by {const_value}.',
+        ],
+    )
+
+
+def _field_mul_kernel(field_bits: int) -> Dict[str, Any]:
+    partial_products = _block(
+        name='partial_product_grid',
+        summary='One schoolbook partial-product interaction for each pair of field bits.',
+        instance_count=field_bits * field_bits,
+        primitive_counts_per_instance=_primitive_counts(ccx=1),
+        notes=[
+            'This stage records the n^2 schoolbook bit-product interactions in the controlled add-subtract multiplier family.',
+        ],
+    )
+    controlled_add_path = _block(
+        name='controlled_add_accumulator',
+        summary='Carry-resolution path for the controlled-add half of the schoolbook multiplier.',
+        instance_count=field_bits - 1,
+        primitive_counts_per_instance=_primitive_counts(ccx=1, measurement=1),
+        notes=[
+            'This stage accounts for the n-1 carry transitions in the add half of the controlled add-subtract multiplier.',
+        ],
+    )
+    controlled_sub_path = _block(
+        name='controlled_sub_accumulator',
+        summary='Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.',
+        instance_count=field_bits,
+        primitive_counts_per_instance=_primitive_counts(ccx=1, measurement=1),
+        notes=[
+            'This stage accounts for the residual n borrow transitions in the subtract half of the controlled add-subtract multiplier.',
+        ],
+    )
+    return _kernel(
+        opcode='field_mul',
+        summary='Exact schoolbook controlled add-subtract field-multiplication kernel over the checked 256-bit field width.',
+        stages=[
+            _stage(
+                name='partial_products',
+                summary='Schoolbook partial-product grid.',
+                category='schoolbook_grid',
+                blocks=[partial_products],
+                notes=['The partial-product stage is the dominant n^2 contribution in the multiplier family.'],
+            ),
+            _stage(
+                name='controlled_add_path',
+                summary='Carry-resolution path for the controlled-add contribution.',
+                category='controlled_add',
+                blocks=[controlled_add_path],
+                notes=['The add path follows the same temporary logical-AND interpretation used by the field-adder kernel.'],
+            ),
+            _stage(
+                name='controlled_sub_path',
+                summary='Borrow-resolution path for the controlled-subtract contribution.',
+                category='controlled_subtract',
+                blocks=[controlled_sub_path],
+                notes=['The subtract path carries the final linear correction term in the Litinski-style controlled add-subtract multiplier.'],
+            ),
+        ],
+        notes=[
+            'The kernel reconstructs n^2 + 2n - 1 non-Clifford operations as an explicit partial-product grid plus add/sub correction paths.',
+        ],
+    )
+
+
+def _leaf_reconstruction(leaf_opcode_histogram: Mapping[str, int], kernels: List[Dict[str, Any]]) -> Dict[str, Any]:
+    kernel_lookup = {kernel['opcode']: kernel for kernel in kernels}
+    per_opcode = []
+    arithmetic_leaf_non_clifford = 0
+    primitive_totals = {'ccx': 0, 'cx': 0, 'x': 0, 'measurement': 0}
+    for opcode, count in sorted(leaf_opcode_histogram.items()):
+        if opcode not in kernel_lookup or count == 0:
+            continue
+        kernel = kernel_lookup[opcode]
+        kernel_primitive_totals = {
+            key: int(kernel['primitive_counts_total'][key]) * int(count)
+            for key in ('ccx', 'cx', 'x', 'measurement')
+        }
+        arithmetic_leaf_non_clifford += kernel_primitive_totals['ccx']
+        for key in primitive_totals:
+            primitive_totals[key] += kernel_primitive_totals[key]
+        per_opcode.append(
+            {
+                'opcode': opcode,
+                'per_leaf_instance_count': int(count),
+                'kernel_non_clifford_per_instance': int(kernel['exact_non_clifford_per_kernel']),
+                'kernel_non_clifford_total': int(kernel['exact_non_clifford_per_kernel']) * int(count),
+                'primitive_totals_total': kernel_primitive_totals,
+            }
+        )
+    return {
+        'leaf_opcode_histogram': dict(leaf_opcode_histogram),
+        'per_opcode': per_opcode,
+        'primitive_totals': primitive_totals,
+        'arithmetic_leaf_non_clifford': arithmetic_leaf_non_clifford,
+    }
+
+
+def arithmetic_lowering_library(field_bits: int, leaf_opcode_histogram: Mapping[str, int]) -> Dict[str, Any]:
+    kernels = [
+        _field_mul_kernel(field_bits),
+        _field_add_kernel(field_bits),
+        _field_sub_kernel(field_bits),
+        _mul_const_kernel(field_bits, 21),
+        _field_select_kernel(field_bits),
+    ]
+    return {
+        'schema': 'compiler-project-arithmetic-lowerings-v1',
+        'family': {
+            'name': 'litinski_addsub_schoolbook_v1',
+            'summary': 'Exact arithmetic-kernel family with explicit stage/block inventories for schoolbook multiplication, ripple add/sub, conditional select, and fixed multiplication by 21.',
+            'gate_set': 'Clifford + Toffoli-style arithmetic + measurement',
+            'field_bits': int(field_bits),
+            'exact_scope': 'exact non-Clifford counts and explicit stage/block inventories for the named arithmetic-kernel family; Clifford micro-counts remain outside the shipped lowering layer',
+            'source_references': [
+                {
+                    'title': 'Quantum schoolbook multiplication with fewer Toffoli gates',
+                    'url': 'https://arxiv.org/abs/2410.00899',
+                    'reason': 'Provides the controlled add-subtract schoolbook multiplier family and its n^2 + 2n - 1 Toffoli-style cost model.',
+                },
+                {
+                    'title': 'Halving the cost of quantum addition',
+                    'url': 'https://arxiv.org/abs/1709.06648',
+                    'reason': 'Provides the temporary logical-AND adder family used for the n-1-cost add/sub/select kernels at this layer.',
+                },
+            ],
+            'notes': [
+                'This family lowers the arithmetic side into explicit stage/block inventories instead of treating add/sub/mul/select costs as bare scalar formulas.',
+                'The lowering stays at the non-Clifford block layer. It does not yet publish bit-for-bit Clifford micro-expansions for every 256-bit kernel.',
+            ],
+        },
+        'kernels': kernels,
+        'leaf_reconstruction': _leaf_reconstruction(leaf_opcode_histogram, kernels),
+    }
+
+
+def arithmetic_kernel_summary(arithmetic_lowerings: Mapping[str, Any]) -> Dict[str, Any]:
+    family = arithmetic_lowerings['family']
+    kernel_lookup = {kernel['opcode']: kernel for kernel in arithmetic_lowerings['kernels']}
+    reconstruction = arithmetic_lowerings['leaf_reconstruction']
+    chain_stage = next(kernel for kernel in arithmetic_lowerings['kernels'] if kernel['opcode'] == 'mul_const')['stages'][0]
+    addition_chain_21 = [1]
+    for block in chain_stage['blocks']:
+        _, _, left, _, right = block['name'].split('_')
+        left_value = int(left)
+        right_value = int(right)
+        if addition_chain_21[-1] != left_value:
+            addition_chain_21.append(left_value)
+        addition_chain_21.append(right_value)
+    return {
+        'schema': 'compiler-project-arithmetic-kernels-v3',
+        'name': family['name'],
+        'summary': family['summary'],
+        'gate_set': family['gate_set'],
+        'field_mul_non_clifford': kernel_lookup['field_mul']['exact_non_clifford_per_kernel'],
+        'field_add_non_clifford': kernel_lookup['field_add']['exact_non_clifford_per_kernel'],
+        'field_sub_non_clifford': kernel_lookup['field_sub']['exact_non_clifford_per_kernel'],
+        'select_non_clifford': kernel_lookup['select_field_if_flag']['exact_non_clifford_per_kernel'],
+        'mul_const_non_clifford': kernel_lookup['mul_const']['exact_non_clifford_per_kernel'],
+        'arithmetic_leaf_non_clifford': reconstruction['arithmetic_leaf_non_clifford'],
+        'leaf_opcode_histogram': reconstruction['leaf_opcode_histogram'],
+        'exact_scope': family['exact_scope'],
+        'notes': family['notes'],
+        'addition_chain_21': addition_chain_21,
+        'arithmetic_lowering_artifact': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
+    }

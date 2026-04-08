@@ -17,129 +17,385 @@
     "classical_tail_elisions_removed": 3,
     "lookup_invocations_total": 32
   },
+  "arithmetic_lowering_family": {
+    "name": "litinski_addsub_schoolbook_v1",
+    "summary": "Exact arithmetic-kernel family with explicit stage/block inventories for schoolbook multiplication, ripple add/sub, conditional select, and fixed multiplication by 21.",
+    "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
+    "field_bits": 256,
+    "exact_scope": "exact non-Clifford counts and explicit stage/block inventories for the named arithmetic-kernel family; Clifford micro-counts remain outside the shipped lowering layer",
+    "source_references": [
+      {
+        "title": "Quantum schoolbook multiplication with fewer Toffoli gates",
+        "url": "https://arxiv.org/abs/2410.00899",
+        "reason": "Provides the controlled add-subtract schoolbook multiplier family and its n^2 + 2n - 1 Toffoli-style cost model."
+      },
+      {
+        "title": "Halving the cost of quantum addition",
+        "url": "https://arxiv.org/abs/1709.06648",
+        "reason": "Provides the temporary logical-AND adder family used for the n-1-cost add/sub/select kernels at this layer."
+      }
+    ],
+    "notes": [
+      "This family lowers the arithmetic side into explicit stage/block inventories instead of treating add/sub/mul/select costs as bare scalar formulas.",
+      "The lowering stays at the non-Clifford block layer. It does not yet publish bit-for-bit Clifford micro-expansions for every 256-bit kernel."
+    ]
+  },
   "shared_arithmetic_blocks": [
     {
-      "block_id": "repeated_leaf_arithmetic__field_mul",
-      "summary": "Imported field-multiplication kernel instances across the completed raw-32 oracle.",
+      "block_id": "repeated_leaf_arithmetic__field_mul__partial_products__partial_product_grid",
+      "summary": "One schoolbook partial-product interaction for each pair of field bits.",
       "category": "arithmetic_non_clifford",
-      "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
-        "ccx": 66047,
+        "ccx": 1,
         "cx": 0,
         "x": 0,
         "measurement": 0
       },
-      "base_instance_count": 11,
+      "base_instance_count": 720896,
       "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 341,
+      "whole_oracle_instance_count": 22347776,
       "primitive_counts_total": {
-        "ccx": 22522027,
+        "ccx": 22347776,
         "cx": 0,
         "x": 0,
         "measurement": 0
       },
-      "non_clifford_total": 22522027,
+      "non_clifford_total": 22347776,
       "metadata": {
         "opcode": "field_mul",
+        "kernel_summary": "Exact schoolbook controlled add-subtract field-multiplication kernel over the checked 256-bit field width.",
+        "kernel_non_clifford_per_instance": 66047,
         "per_leaf_instance_count": 11,
+        "stage": "partial_products",
+        "stage_category": "schoolbook_grid",
         "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__field_add",
-      "summary": "Imported field-addition kernel instances across the completed raw-32 oracle.",
+      "block_id": "repeated_leaf_arithmetic__field_mul__controlled_add_path__controlled_add_accumulator",
+      "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
       "category": "arithmetic_non_clifford",
-      "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
-        "ccx": 255,
+        "ccx": 1,
         "cx": 0,
         "x": 0,
-        "measurement": 0
+        "measurement": 1
       },
-      "base_instance_count": 10,
+      "base_instance_count": 2805,
       "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 310,
+      "whole_oracle_instance_count": 86955,
+      "primitive_counts_total": {
+        "ccx": 86955,
+        "cx": 0,
+        "x": 0,
+        "measurement": 86955
+      },
+      "non_clifford_total": 86955,
+      "metadata": {
+        "opcode": "field_mul",
+        "kernel_summary": "Exact schoolbook controlled add-subtract field-multiplication kernel over the checked 256-bit field width.",
+        "kernel_non_clifford_per_instance": 66047,
+        "per_leaf_instance_count": 11,
+        "stage": "controlled_add_path",
+        "stage_category": "controlled_add",
+        "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+      }
+    },
+    {
+      "block_id": "repeated_leaf_arithmetic__field_mul__controlled_sub_path__controlled_sub_accumulator",
+      "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+      "category": "arithmetic_non_clifford",
+      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+      "primitive_counts_per_instance": {
+        "ccx": 1,
+        "cx": 0,
+        "x": 0,
+        "measurement": 1
+      },
+      "base_instance_count": 2816,
+      "schedule_multiplier": 31,
+      "whole_oracle_instance_count": 87296,
+      "primitive_counts_total": {
+        "ccx": 87296,
+        "cx": 0,
+        "x": 0,
+        "measurement": 87296
+      },
+      "non_clifford_total": 87296,
+      "metadata": {
+        "opcode": "field_mul",
+        "kernel_summary": "Exact schoolbook controlled add-subtract field-multiplication kernel over the checked 256-bit field width.",
+        "kernel_non_clifford_per_instance": 66047,
+        "per_leaf_instance_count": 11,
+        "stage": "controlled_sub_path",
+        "stage_category": "controlled_subtract",
+        "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+      }
+    },
+    {
+      "block_id": "repeated_leaf_arithmetic__field_add__carry_resolution__temporary_and_carry_ladder",
+      "summary": "One temporary logical-AND edge per carry transition in the ripple-carry adder.",
+      "category": "arithmetic_non_clifford",
+      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+      "primitive_counts_per_instance": {
+        "ccx": 1,
+        "cx": 0,
+        "x": 0,
+        "measurement": 1
+      },
+      "base_instance_count": 2550,
+      "schedule_multiplier": 31,
+      "whole_oracle_instance_count": 79050,
       "primitive_counts_total": {
         "ccx": 79050,
         "cx": 0,
         "x": 0,
-        "measurement": 0
+        "measurement": 79050
       },
       "non_clifford_total": 79050,
       "metadata": {
         "opcode": "field_add",
+        "kernel_summary": "Exact n-bit ripple-carry field-adder kernel over the checked leaf register width.",
+        "kernel_non_clifford_per_instance": 255,
         "per_leaf_instance_count": 10,
+        "stage": "carry_resolution",
+        "stage_category": "adder",
         "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__field_sub",
-      "summary": "Imported field-subtraction kernel instances across the completed raw-32 oracle.",
+      "block_id": "repeated_leaf_arithmetic__field_sub__borrow_resolution__temporary_and_borrow_ladder",
+      "summary": "One temporary logical-AND edge per borrow transition in the ripple-carry subtractor.",
       "category": "arithmetic_non_clifford",
-      "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
-        "ccx": 255,
+        "ccx": 1,
         "cx": 0,
         "x": 0,
-        "measurement": 0
+        "measurement": 1
       },
-      "base_instance_count": 3,
+      "base_instance_count": 765,
       "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 93,
+      "whole_oracle_instance_count": 23715,
       "primitive_counts_total": {
         "ccx": 23715,
         "cx": 0,
         "x": 0,
-        "measurement": 0
+        "measurement": 23715
       },
       "non_clifford_total": 23715,
       "metadata": {
         "opcode": "field_sub",
+        "kernel_summary": "Exact n-bit ripple-carry field-subtractor kernel over the checked leaf register width.",
+        "kernel_non_clifford_per_instance": 255,
         "per_leaf_instance_count": 3,
+        "stage": "borrow_resolution",
+        "stage_category": "subtractor",
         "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__mul_const",
-      "summary": "Imported fixed-constant multiplication kernel instances across the completed raw-32 oracle.",
+      "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_1_to_2",
+      "summary": "One field-add kernel step in the monotone addition chain 1 -> 2.",
       "category": "arithmetic_non_clifford",
-      "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
-        "ccx": 1530,
+        "ccx": 255,
         "cx": 0,
         "x": 0,
-        "measurement": 0
+        "measurement": 255
       },
       "base_instance_count": 2,
       "schedule_multiplier": 31,
       "whole_oracle_instance_count": 62,
       "primitive_counts_total": {
-        "ccx": 94860,
+        "ccx": 15810,
         "cx": 0,
         "x": 0,
-        "measurement": 0
+        "measurement": 15810
       },
-      "non_clifford_total": 94860,
+      "non_clifford_total": 15810,
       "metadata": {
         "opcode": "mul_const",
+        "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+        "kernel_non_clifford_per_instance": 1530,
         "per_leaf_instance_count": 2,
+        "stage": "addition_chain",
+        "stage_category": "mul_const",
         "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__select_field_if_flag",
-      "summary": "Imported field-select kernel instances across the completed raw-32 oracle.",
+      "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_2_to_4",
+      "summary": "One field-add kernel step in the monotone addition chain 2 -> 4.",
       "category": "arithmetic_non_clifford",
-      "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
         "ccx": 255,
         "cx": 0,
         "x": 0,
+        "measurement": 255
+      },
+      "base_instance_count": 2,
+      "schedule_multiplier": 31,
+      "whole_oracle_instance_count": 62,
+      "primitive_counts_total": {
+        "ccx": 15810,
+        "cx": 0,
+        "x": 0,
+        "measurement": 15810
+      },
+      "non_clifford_total": 15810,
+      "metadata": {
+        "opcode": "mul_const",
+        "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+        "kernel_non_clifford_per_instance": 1530,
+        "per_leaf_instance_count": 2,
+        "stage": "addition_chain",
+        "stage_category": "mul_const",
+        "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+      }
+    },
+    {
+      "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_4_to_8",
+      "summary": "One field-add kernel step in the monotone addition chain 4 -> 8.",
+      "category": "arithmetic_non_clifford",
+      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+      "primitive_counts_per_instance": {
+        "ccx": 255,
+        "cx": 0,
+        "x": 0,
+        "measurement": 255
+      },
+      "base_instance_count": 2,
+      "schedule_multiplier": 31,
+      "whole_oracle_instance_count": 62,
+      "primitive_counts_total": {
+        "ccx": 15810,
+        "cx": 0,
+        "x": 0,
+        "measurement": 15810
+      },
+      "non_clifford_total": 15810,
+      "metadata": {
+        "opcode": "mul_const",
+        "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+        "kernel_non_clifford_per_instance": 1530,
+        "per_leaf_instance_count": 2,
+        "stage": "addition_chain",
+        "stage_category": "mul_const",
+        "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+      }
+    },
+    {
+      "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_8_to_16",
+      "summary": "One field-add kernel step in the monotone addition chain 8 -> 16.",
+      "category": "arithmetic_non_clifford",
+      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+      "primitive_counts_per_instance": {
+        "ccx": 255,
+        "cx": 0,
+        "x": 0,
+        "measurement": 255
+      },
+      "base_instance_count": 2,
+      "schedule_multiplier": 31,
+      "whole_oracle_instance_count": 62,
+      "primitive_counts_total": {
+        "ccx": 15810,
+        "cx": 0,
+        "x": 0,
+        "measurement": 15810
+      },
+      "non_clifford_total": 15810,
+      "metadata": {
+        "opcode": "mul_const",
+        "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+        "kernel_non_clifford_per_instance": 1530,
+        "per_leaf_instance_count": 2,
+        "stage": "addition_chain",
+        "stage_category": "mul_const",
+        "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+      }
+    },
+    {
+      "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_16_to_20",
+      "summary": "One field-add kernel step in the monotone addition chain 16 -> 20.",
+      "category": "arithmetic_non_clifford",
+      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+      "primitive_counts_per_instance": {
+        "ccx": 255,
+        "cx": 0,
+        "x": 0,
+        "measurement": 255
+      },
+      "base_instance_count": 2,
+      "schedule_multiplier": 31,
+      "whole_oracle_instance_count": 62,
+      "primitive_counts_total": {
+        "ccx": 15810,
+        "cx": 0,
+        "x": 0,
+        "measurement": 15810
+      },
+      "non_clifford_total": 15810,
+      "metadata": {
+        "opcode": "mul_const",
+        "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+        "kernel_non_clifford_per_instance": 1530,
+        "per_leaf_instance_count": 2,
+        "stage": "addition_chain",
+        "stage_category": "mul_const",
+        "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+      }
+    },
+    {
+      "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_20_to_21",
+      "summary": "One field-add kernel step in the monotone addition chain 20 -> 21.",
+      "category": "arithmetic_non_clifford",
+      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+      "primitive_counts_per_instance": {
+        "ccx": 255,
+        "cx": 0,
+        "x": 0,
+        "measurement": 255
+      },
+      "base_instance_count": 2,
+      "schedule_multiplier": 31,
+      "whole_oracle_instance_count": 62,
+      "primitive_counts_total": {
+        "ccx": 15810,
+        "cx": 0,
+        "x": 0,
+        "measurement": 15810
+      },
+      "non_clifford_total": 15810,
+      "metadata": {
+        "opcode": "mul_const",
+        "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+        "kernel_non_clifford_per_instance": 1530,
+        "per_leaf_instance_count": 2,
+        "stage": "addition_chain",
+        "stage_category": "mul_const",
+        "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+      }
+    },
+    {
+      "block_id": "repeated_leaf_arithmetic__select_field_if_flag__controlled_move__bitwise_control_ladder",
+      "summary": "One controlled field-bit select for each nontrivial bit position in the destination register.",
+      "category": "arithmetic_non_clifford",
+      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+      "primitive_counts_per_instance": {
+        "ccx": 1,
+        "cx": 0,
+        "x": 0,
         "measurement": 0
       },
-      "base_instance_count": 3,
+      "base_instance_count": 765,
       "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 93,
+      "whole_oracle_instance_count": 23715,
       "primitive_counts_total": {
         "ccx": 23715,
         "cx": 0,
@@ -149,7 +405,11 @@
       "non_clifford_total": 23715,
       "metadata": {
         "opcode": "select_field_if_flag",
+        "kernel_summary": "Exact field-width conditional-select kernel used by the neutral-entry bypass path.",
+        "kernel_non_clifford_per_instance": 255,
         "per_leaf_instance_count": 3,
+        "stage": "controlled_move",
+        "stage_category": "select",
         "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
       }
     }
@@ -163,127 +423,360 @@
       "phase_shell": "full_phase_register_v1",
       "non_clifford_blocks": [
         {
-          "block_id": "repeated_leaf_arithmetic__field_mul",
-          "summary": "Imported field-multiplication kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__field_mul__partial_products__partial_product_grid",
+          "summary": "One schoolbook partial-product interaction for each pair of field bits.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
-            "ccx": 66047,
+            "ccx": 1,
             "cx": 0,
             "x": 0,
             "measurement": 0
           },
-          "base_instance_count": 11,
+          "base_instance_count": 720896,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 341,
+          "whole_oracle_instance_count": 22347776,
           "primitive_counts_total": {
-            "ccx": 22522027,
+            "ccx": 22347776,
             "cx": 0,
             "x": 0,
             "measurement": 0
           },
-          "non_clifford_total": 22522027,
+          "non_clifford_total": 22347776,
           "metadata": {
             "opcode": "field_mul",
+            "kernel_summary": "Exact schoolbook controlled add-subtract field-multiplication kernel over the checked 256-bit field width.",
+            "kernel_non_clifford_per_instance": 66047,
             "per_leaf_instance_count": 11,
+            "stage": "partial_products",
+            "stage_category": "schoolbook_grid",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__field_add",
-          "summary": "Imported field-addition kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__field_mul__controlled_add_path__controlled_add_accumulator",
+          "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
-            "ccx": 255,
+            "ccx": 1,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 1
           },
-          "base_instance_count": 10,
+          "base_instance_count": 2805,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 310,
+          "whole_oracle_instance_count": 86955,
+          "primitive_counts_total": {
+            "ccx": 86955,
+            "cx": 0,
+            "x": 0,
+            "measurement": 86955
+          },
+          "non_clifford_total": 86955,
+          "metadata": {
+            "opcode": "field_mul",
+            "kernel_summary": "Exact schoolbook controlled add-subtract field-multiplication kernel over the checked 256-bit field width.",
+            "kernel_non_clifford_per_instance": 66047,
+            "per_leaf_instance_count": 11,
+            "stage": "controlled_add_path",
+            "stage_category": "controlled_add",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__field_mul__controlled_sub_path__controlled_sub_accumulator",
+          "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 1,
+            "cx": 0,
+            "x": 0,
+            "measurement": 1
+          },
+          "base_instance_count": 2816,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 87296,
+          "primitive_counts_total": {
+            "ccx": 87296,
+            "cx": 0,
+            "x": 0,
+            "measurement": 87296
+          },
+          "non_clifford_total": 87296,
+          "metadata": {
+            "opcode": "field_mul",
+            "kernel_summary": "Exact schoolbook controlled add-subtract field-multiplication kernel over the checked 256-bit field width.",
+            "kernel_non_clifford_per_instance": 66047,
+            "per_leaf_instance_count": 11,
+            "stage": "controlled_sub_path",
+            "stage_category": "controlled_subtract",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__field_add__carry_resolution__temporary_and_carry_ladder",
+          "summary": "One temporary logical-AND edge per carry transition in the ripple-carry adder.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 1,
+            "cx": 0,
+            "x": 0,
+            "measurement": 1
+          },
+          "base_instance_count": 2550,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 79050,
           "primitive_counts_total": {
             "ccx": 79050,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 79050
           },
           "non_clifford_total": 79050,
           "metadata": {
             "opcode": "field_add",
+            "kernel_summary": "Exact n-bit ripple-carry field-adder kernel over the checked leaf register width.",
+            "kernel_non_clifford_per_instance": 255,
             "per_leaf_instance_count": 10,
+            "stage": "carry_resolution",
+            "stage_category": "adder",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__field_sub",
-          "summary": "Imported field-subtraction kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__field_sub__borrow_resolution__temporary_and_borrow_ladder",
+          "summary": "One temporary logical-AND edge per borrow transition in the ripple-carry subtractor.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
-            "ccx": 255,
+            "ccx": 1,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 1
           },
-          "base_instance_count": 3,
+          "base_instance_count": 765,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 93,
+          "whole_oracle_instance_count": 23715,
           "primitive_counts_total": {
             "ccx": 23715,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 23715
           },
           "non_clifford_total": 23715,
           "metadata": {
             "opcode": "field_sub",
+            "kernel_summary": "Exact n-bit ripple-carry field-subtractor kernel over the checked leaf register width.",
+            "kernel_non_clifford_per_instance": 255,
             "per_leaf_instance_count": 3,
+            "stage": "borrow_resolution",
+            "stage_category": "subtractor",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__mul_const",
-          "summary": "Imported fixed-constant multiplication kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_1_to_2",
+          "summary": "One field-add kernel step in the monotone addition chain 1 -> 2.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
-            "ccx": 1530,
+            "ccx": 255,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 255
           },
           "base_instance_count": 2,
           "schedule_multiplier": 31,
           "whole_oracle_instance_count": 62,
           "primitive_counts_total": {
-            "ccx": 94860,
+            "ccx": 15810,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 15810
           },
-          "non_clifford_total": 94860,
+          "non_clifford_total": 15810,
           "metadata": {
             "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
             "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__select_field_if_flag",
-          "summary": "Imported field-select kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_2_to_4",
+          "summary": "One field-add kernel step in the monotone addition chain 2 -> 4.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
             "ccx": 255,
             "cx": 0,
             "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_4_to_8",
+          "summary": "One field-add kernel step in the monotone addition chain 4 -> 8.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_8_to_16",
+          "summary": "One field-add kernel step in the monotone addition chain 8 -> 16.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_16_to_20",
+          "summary": "One field-add kernel step in the monotone addition chain 16 -> 20.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_20_to_21",
+          "summary": "One field-add kernel step in the monotone addition chain 20 -> 21.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__select_field_if_flag__controlled_move__bitwise_control_ladder",
+          "summary": "One controlled field-bit select for each nontrivial bit position in the destination register.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 1,
+            "cx": 0,
+            "x": 0,
             "measurement": 0
           },
-          "base_instance_count": 3,
+          "base_instance_count": 765,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 93,
+          "whole_oracle_instance_count": 23715,
           "primitive_counts_total": {
             "ccx": 23715,
             "cx": 0,
@@ -293,7 +786,11 @@
           "non_clifford_total": 23715,
           "metadata": {
             "opcode": "select_field_if_flag",
+            "kernel_summary": "Exact field-width conditional-select kernel used by the neutral-entry bypass path.",
+            "kernel_non_clifford_per_instance": 255,
             "per_leaf_instance_count": 3,
+            "stage": "controlled_move",
+            "stage_category": "select",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
@@ -596,9 +1093,9 @@
           "ccx": 37432935,
           "cx": 0,
           "x": 0,
-          "measurement": 14681408
+          "measurement": 15053284
         },
-        "total_measurements": 14681920,
+        "total_measurements": 15053796,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 512,
         "arithmetic_slot_count": 9,
@@ -616,127 +1113,360 @@
       "phase_shell": "semiclassical_qft_v1",
       "non_clifford_blocks": [
         {
-          "block_id": "repeated_leaf_arithmetic__field_mul",
-          "summary": "Imported field-multiplication kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__field_mul__partial_products__partial_product_grid",
+          "summary": "One schoolbook partial-product interaction for each pair of field bits.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
-            "ccx": 66047,
+            "ccx": 1,
             "cx": 0,
             "x": 0,
             "measurement": 0
           },
-          "base_instance_count": 11,
+          "base_instance_count": 720896,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 341,
+          "whole_oracle_instance_count": 22347776,
           "primitive_counts_total": {
-            "ccx": 22522027,
+            "ccx": 22347776,
             "cx": 0,
             "x": 0,
             "measurement": 0
           },
-          "non_clifford_total": 22522027,
+          "non_clifford_total": 22347776,
           "metadata": {
             "opcode": "field_mul",
+            "kernel_summary": "Exact schoolbook controlled add-subtract field-multiplication kernel over the checked 256-bit field width.",
+            "kernel_non_clifford_per_instance": 66047,
             "per_leaf_instance_count": 11,
+            "stage": "partial_products",
+            "stage_category": "schoolbook_grid",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__field_add",
-          "summary": "Imported field-addition kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__field_mul__controlled_add_path__controlled_add_accumulator",
+          "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
-            "ccx": 255,
+            "ccx": 1,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 1
           },
-          "base_instance_count": 10,
+          "base_instance_count": 2805,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 310,
+          "whole_oracle_instance_count": 86955,
+          "primitive_counts_total": {
+            "ccx": 86955,
+            "cx": 0,
+            "x": 0,
+            "measurement": 86955
+          },
+          "non_clifford_total": 86955,
+          "metadata": {
+            "opcode": "field_mul",
+            "kernel_summary": "Exact schoolbook controlled add-subtract field-multiplication kernel over the checked 256-bit field width.",
+            "kernel_non_clifford_per_instance": 66047,
+            "per_leaf_instance_count": 11,
+            "stage": "controlled_add_path",
+            "stage_category": "controlled_add",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__field_mul__controlled_sub_path__controlled_sub_accumulator",
+          "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 1,
+            "cx": 0,
+            "x": 0,
+            "measurement": 1
+          },
+          "base_instance_count": 2816,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 87296,
+          "primitive_counts_total": {
+            "ccx": 87296,
+            "cx": 0,
+            "x": 0,
+            "measurement": 87296
+          },
+          "non_clifford_total": 87296,
+          "metadata": {
+            "opcode": "field_mul",
+            "kernel_summary": "Exact schoolbook controlled add-subtract field-multiplication kernel over the checked 256-bit field width.",
+            "kernel_non_clifford_per_instance": 66047,
+            "per_leaf_instance_count": 11,
+            "stage": "controlled_sub_path",
+            "stage_category": "controlled_subtract",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__field_add__carry_resolution__temporary_and_carry_ladder",
+          "summary": "One temporary logical-AND edge per carry transition in the ripple-carry adder.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 1,
+            "cx": 0,
+            "x": 0,
+            "measurement": 1
+          },
+          "base_instance_count": 2550,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 79050,
           "primitive_counts_total": {
             "ccx": 79050,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 79050
           },
           "non_clifford_total": 79050,
           "metadata": {
             "opcode": "field_add",
+            "kernel_summary": "Exact n-bit ripple-carry field-adder kernel over the checked leaf register width.",
+            "kernel_non_clifford_per_instance": 255,
             "per_leaf_instance_count": 10,
+            "stage": "carry_resolution",
+            "stage_category": "adder",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__field_sub",
-          "summary": "Imported field-subtraction kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__field_sub__borrow_resolution__temporary_and_borrow_ladder",
+          "summary": "One temporary logical-AND edge per borrow transition in the ripple-carry subtractor.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
-            "ccx": 255,
+            "ccx": 1,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 1
           },
-          "base_instance_count": 3,
+          "base_instance_count": 765,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 93,
+          "whole_oracle_instance_count": 23715,
           "primitive_counts_total": {
             "ccx": 23715,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 23715
           },
           "non_clifford_total": 23715,
           "metadata": {
             "opcode": "field_sub",
+            "kernel_summary": "Exact n-bit ripple-carry field-subtractor kernel over the checked leaf register width.",
+            "kernel_non_clifford_per_instance": 255,
             "per_leaf_instance_count": 3,
+            "stage": "borrow_resolution",
+            "stage_category": "subtractor",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__mul_const",
-          "summary": "Imported fixed-constant multiplication kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_1_to_2",
+          "summary": "One field-add kernel step in the monotone addition chain 1 -> 2.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
-            "ccx": 1530,
+            "ccx": 255,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 255
           },
           "base_instance_count": 2,
           "schedule_multiplier": 31,
           "whole_oracle_instance_count": 62,
           "primitive_counts_total": {
-            "ccx": 94860,
+            "ccx": 15810,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 15810
           },
-          "non_clifford_total": 94860,
+          "non_clifford_total": 15810,
           "metadata": {
             "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
             "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__select_field_if_flag",
-          "summary": "Imported field-select kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_2_to_4",
+          "summary": "One field-add kernel step in the monotone addition chain 2 -> 4.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
             "ccx": 255,
             "cx": 0,
             "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_4_to_8",
+          "summary": "One field-add kernel step in the monotone addition chain 4 -> 8.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_8_to_16",
+          "summary": "One field-add kernel step in the monotone addition chain 8 -> 16.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_16_to_20",
+          "summary": "One field-add kernel step in the monotone addition chain 16 -> 20.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_20_to_21",
+          "summary": "One field-add kernel step in the monotone addition chain 20 -> 21.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__select_field_if_flag__controlled_move__bitwise_control_ladder",
+          "summary": "One controlled field-bit select for each nontrivial bit position in the destination register.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 1,
+            "cx": 0,
+            "x": 0,
             "measurement": 0
           },
-          "base_instance_count": 3,
+          "base_instance_count": 765,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 93,
+          "whole_oracle_instance_count": 23715,
           "primitive_counts_total": {
             "ccx": 23715,
             "cx": 0,
@@ -746,7 +1476,11 @@
           "non_clifford_total": 23715,
           "metadata": {
             "opcode": "select_field_if_flag",
+            "kernel_summary": "Exact field-width conditional-select kernel used by the neutral-entry bypass path.",
+            "kernel_non_clifford_per_instance": 255,
             "per_leaf_instance_count": 3,
+            "stage": "controlled_move",
+            "stage_category": "select",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
@@ -1049,9 +1783,9 @@
           "ccx": 37432935,
           "cx": 0,
           "x": 0,
-          "measurement": 14681408
+          "measurement": 15053284
         },
-        "total_measurements": 14681920,
+        "total_measurements": 15053796,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 512,
         "arithmetic_slot_count": 9,
@@ -1069,127 +1803,360 @@
       "phase_shell": "full_phase_register_v1",
       "non_clifford_blocks": [
         {
-          "block_id": "repeated_leaf_arithmetic__field_mul",
-          "summary": "Imported field-multiplication kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__field_mul__partial_products__partial_product_grid",
+          "summary": "One schoolbook partial-product interaction for each pair of field bits.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
-            "ccx": 66047,
+            "ccx": 1,
             "cx": 0,
             "x": 0,
             "measurement": 0
           },
-          "base_instance_count": 11,
+          "base_instance_count": 720896,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 341,
+          "whole_oracle_instance_count": 22347776,
           "primitive_counts_total": {
-            "ccx": 22522027,
+            "ccx": 22347776,
             "cx": 0,
             "x": 0,
             "measurement": 0
           },
-          "non_clifford_total": 22522027,
+          "non_clifford_total": 22347776,
           "metadata": {
             "opcode": "field_mul",
+            "kernel_summary": "Exact schoolbook controlled add-subtract field-multiplication kernel over the checked 256-bit field width.",
+            "kernel_non_clifford_per_instance": 66047,
             "per_leaf_instance_count": 11,
+            "stage": "partial_products",
+            "stage_category": "schoolbook_grid",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__field_add",
-          "summary": "Imported field-addition kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__field_mul__controlled_add_path__controlled_add_accumulator",
+          "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
-            "ccx": 255,
+            "ccx": 1,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 1
           },
-          "base_instance_count": 10,
+          "base_instance_count": 2805,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 310,
+          "whole_oracle_instance_count": 86955,
+          "primitive_counts_total": {
+            "ccx": 86955,
+            "cx": 0,
+            "x": 0,
+            "measurement": 86955
+          },
+          "non_clifford_total": 86955,
+          "metadata": {
+            "opcode": "field_mul",
+            "kernel_summary": "Exact schoolbook controlled add-subtract field-multiplication kernel over the checked 256-bit field width.",
+            "kernel_non_clifford_per_instance": 66047,
+            "per_leaf_instance_count": 11,
+            "stage": "controlled_add_path",
+            "stage_category": "controlled_add",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__field_mul__controlled_sub_path__controlled_sub_accumulator",
+          "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 1,
+            "cx": 0,
+            "x": 0,
+            "measurement": 1
+          },
+          "base_instance_count": 2816,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 87296,
+          "primitive_counts_total": {
+            "ccx": 87296,
+            "cx": 0,
+            "x": 0,
+            "measurement": 87296
+          },
+          "non_clifford_total": 87296,
+          "metadata": {
+            "opcode": "field_mul",
+            "kernel_summary": "Exact schoolbook controlled add-subtract field-multiplication kernel over the checked 256-bit field width.",
+            "kernel_non_clifford_per_instance": 66047,
+            "per_leaf_instance_count": 11,
+            "stage": "controlled_sub_path",
+            "stage_category": "controlled_subtract",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__field_add__carry_resolution__temporary_and_carry_ladder",
+          "summary": "One temporary logical-AND edge per carry transition in the ripple-carry adder.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 1,
+            "cx": 0,
+            "x": 0,
+            "measurement": 1
+          },
+          "base_instance_count": 2550,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 79050,
           "primitive_counts_total": {
             "ccx": 79050,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 79050
           },
           "non_clifford_total": 79050,
           "metadata": {
             "opcode": "field_add",
+            "kernel_summary": "Exact n-bit ripple-carry field-adder kernel over the checked leaf register width.",
+            "kernel_non_clifford_per_instance": 255,
             "per_leaf_instance_count": 10,
+            "stage": "carry_resolution",
+            "stage_category": "adder",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__field_sub",
-          "summary": "Imported field-subtraction kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__field_sub__borrow_resolution__temporary_and_borrow_ladder",
+          "summary": "One temporary logical-AND edge per borrow transition in the ripple-carry subtractor.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
-            "ccx": 255,
+            "ccx": 1,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 1
           },
-          "base_instance_count": 3,
+          "base_instance_count": 765,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 93,
+          "whole_oracle_instance_count": 23715,
           "primitive_counts_total": {
             "ccx": 23715,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 23715
           },
           "non_clifford_total": 23715,
           "metadata": {
             "opcode": "field_sub",
+            "kernel_summary": "Exact n-bit ripple-carry field-subtractor kernel over the checked leaf register width.",
+            "kernel_non_clifford_per_instance": 255,
             "per_leaf_instance_count": 3,
+            "stage": "borrow_resolution",
+            "stage_category": "subtractor",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__mul_const",
-          "summary": "Imported fixed-constant multiplication kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_1_to_2",
+          "summary": "One field-add kernel step in the monotone addition chain 1 -> 2.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
-            "ccx": 1530,
+            "ccx": 255,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 255
           },
           "base_instance_count": 2,
           "schedule_multiplier": 31,
           "whole_oracle_instance_count": 62,
           "primitive_counts_total": {
-            "ccx": 94860,
+            "ccx": 15810,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 15810
           },
-          "non_clifford_total": 94860,
+          "non_clifford_total": 15810,
           "metadata": {
             "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
             "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__select_field_if_flag",
-          "summary": "Imported field-select kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_2_to_4",
+          "summary": "One field-add kernel step in the monotone addition chain 2 -> 4.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
             "ccx": 255,
             "cx": 0,
             "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_4_to_8",
+          "summary": "One field-add kernel step in the monotone addition chain 4 -> 8.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_8_to_16",
+          "summary": "One field-add kernel step in the monotone addition chain 8 -> 16.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_16_to_20",
+          "summary": "One field-add kernel step in the monotone addition chain 16 -> 20.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_20_to_21",
+          "summary": "One field-add kernel step in the monotone addition chain 20 -> 21.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__select_field_if_flag__controlled_move__bitwise_control_ladder",
+          "summary": "One controlled field-bit select for each nontrivial bit position in the destination register.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 1,
+            "cx": 0,
+            "x": 0,
             "measurement": 0
           },
-          "base_instance_count": 3,
+          "base_instance_count": 765,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 93,
+          "whole_oracle_instance_count": 23715,
           "primitive_counts_total": {
             "ccx": 23715,
             "cx": 0,
@@ -1199,7 +2166,11 @@
           "non_clifford_total": 23715,
           "metadata": {
             "opcode": "select_field_if_flag",
+            "kernel_summary": "Exact field-width conditional-select kernel used by the neutral-entry bypass path.",
+            "kernel_non_clifford_per_instance": 255,
             "per_leaf_instance_count": 3,
+            "stage": "controlled_move",
+            "stage_category": "select",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
@@ -1558,9 +2529,9 @@
           "ccx": 24849959,
           "cx": 0,
           "x": 0,
-          "measurement": 1344
+          "measurement": 373220
         },
-        "total_measurements": 1856,
+        "total_measurements": 373732,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 512,
         "arithmetic_slot_count": 9,
@@ -1578,127 +2549,360 @@
       "phase_shell": "semiclassical_qft_v1",
       "non_clifford_blocks": [
         {
-          "block_id": "repeated_leaf_arithmetic__field_mul",
-          "summary": "Imported field-multiplication kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__field_mul__partial_products__partial_product_grid",
+          "summary": "One schoolbook partial-product interaction for each pair of field bits.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
-            "ccx": 66047,
+            "ccx": 1,
             "cx": 0,
             "x": 0,
             "measurement": 0
           },
-          "base_instance_count": 11,
+          "base_instance_count": 720896,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 341,
+          "whole_oracle_instance_count": 22347776,
           "primitive_counts_total": {
-            "ccx": 22522027,
+            "ccx": 22347776,
             "cx": 0,
             "x": 0,
             "measurement": 0
           },
-          "non_clifford_total": 22522027,
+          "non_clifford_total": 22347776,
           "metadata": {
             "opcode": "field_mul",
+            "kernel_summary": "Exact schoolbook controlled add-subtract field-multiplication kernel over the checked 256-bit field width.",
+            "kernel_non_clifford_per_instance": 66047,
             "per_leaf_instance_count": 11,
+            "stage": "partial_products",
+            "stage_category": "schoolbook_grid",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__field_add",
-          "summary": "Imported field-addition kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__field_mul__controlled_add_path__controlled_add_accumulator",
+          "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
-            "ccx": 255,
+            "ccx": 1,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 1
           },
-          "base_instance_count": 10,
+          "base_instance_count": 2805,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 310,
+          "whole_oracle_instance_count": 86955,
+          "primitive_counts_total": {
+            "ccx": 86955,
+            "cx": 0,
+            "x": 0,
+            "measurement": 86955
+          },
+          "non_clifford_total": 86955,
+          "metadata": {
+            "opcode": "field_mul",
+            "kernel_summary": "Exact schoolbook controlled add-subtract field-multiplication kernel over the checked 256-bit field width.",
+            "kernel_non_clifford_per_instance": 66047,
+            "per_leaf_instance_count": 11,
+            "stage": "controlled_add_path",
+            "stage_category": "controlled_add",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__field_mul__controlled_sub_path__controlled_sub_accumulator",
+          "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 1,
+            "cx": 0,
+            "x": 0,
+            "measurement": 1
+          },
+          "base_instance_count": 2816,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 87296,
+          "primitive_counts_total": {
+            "ccx": 87296,
+            "cx": 0,
+            "x": 0,
+            "measurement": 87296
+          },
+          "non_clifford_total": 87296,
+          "metadata": {
+            "opcode": "field_mul",
+            "kernel_summary": "Exact schoolbook controlled add-subtract field-multiplication kernel over the checked 256-bit field width.",
+            "kernel_non_clifford_per_instance": 66047,
+            "per_leaf_instance_count": 11,
+            "stage": "controlled_sub_path",
+            "stage_category": "controlled_subtract",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__field_add__carry_resolution__temporary_and_carry_ladder",
+          "summary": "One temporary logical-AND edge per carry transition in the ripple-carry adder.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 1,
+            "cx": 0,
+            "x": 0,
+            "measurement": 1
+          },
+          "base_instance_count": 2550,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 79050,
           "primitive_counts_total": {
             "ccx": 79050,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 79050
           },
           "non_clifford_total": 79050,
           "metadata": {
             "opcode": "field_add",
+            "kernel_summary": "Exact n-bit ripple-carry field-adder kernel over the checked leaf register width.",
+            "kernel_non_clifford_per_instance": 255,
             "per_leaf_instance_count": 10,
+            "stage": "carry_resolution",
+            "stage_category": "adder",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__field_sub",
-          "summary": "Imported field-subtraction kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__field_sub__borrow_resolution__temporary_and_borrow_ladder",
+          "summary": "One temporary logical-AND edge per borrow transition in the ripple-carry subtractor.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
-            "ccx": 255,
+            "ccx": 1,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 1
           },
-          "base_instance_count": 3,
+          "base_instance_count": 765,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 93,
+          "whole_oracle_instance_count": 23715,
           "primitive_counts_total": {
             "ccx": 23715,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 23715
           },
           "non_clifford_total": 23715,
           "metadata": {
             "opcode": "field_sub",
+            "kernel_summary": "Exact n-bit ripple-carry field-subtractor kernel over the checked leaf register width.",
+            "kernel_non_clifford_per_instance": 255,
             "per_leaf_instance_count": 3,
+            "stage": "borrow_resolution",
+            "stage_category": "subtractor",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__mul_const",
-          "summary": "Imported fixed-constant multiplication kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_1_to_2",
+          "summary": "One field-add kernel step in the monotone addition chain 1 -> 2.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
-            "ccx": 1530,
+            "ccx": 255,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 255
           },
           "base_instance_count": 2,
           "schedule_multiplier": 31,
           "whole_oracle_instance_count": 62,
           "primitive_counts_total": {
-            "ccx": 94860,
+            "ccx": 15810,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 15810
           },
-          "non_clifford_total": 94860,
+          "non_clifford_total": 15810,
           "metadata": {
             "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
             "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__select_field_if_flag",
-          "summary": "Imported field-select kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_2_to_4",
+          "summary": "One field-add kernel step in the monotone addition chain 2 -> 4.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
             "ccx": 255,
             "cx": 0,
             "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_4_to_8",
+          "summary": "One field-add kernel step in the monotone addition chain 4 -> 8.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_8_to_16",
+          "summary": "One field-add kernel step in the monotone addition chain 8 -> 16.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_16_to_20",
+          "summary": "One field-add kernel step in the monotone addition chain 16 -> 20.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_20_to_21",
+          "summary": "One field-add kernel step in the monotone addition chain 20 -> 21.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__select_field_if_flag__controlled_move__bitwise_control_ladder",
+          "summary": "One controlled field-bit select for each nontrivial bit position in the destination register.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 1,
+            "cx": 0,
+            "x": 0,
             "measurement": 0
           },
-          "base_instance_count": 3,
+          "base_instance_count": 765,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 93,
+          "whole_oracle_instance_count": 23715,
           "primitive_counts_total": {
             "ccx": 23715,
             "cx": 0,
@@ -1708,7 +2912,11 @@
           "non_clifford_total": 23715,
           "metadata": {
             "opcode": "select_field_if_flag",
+            "kernel_summary": "Exact field-width conditional-select kernel used by the neutral-entry bypass path.",
+            "kernel_non_clifford_per_instance": 255,
             "per_leaf_instance_count": 3,
+            "stage": "controlled_move",
+            "stage_category": "select",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
@@ -2067,9 +3275,9 @@
           "ccx": 24849959,
           "cx": 0,
           "x": 0,
-          "measurement": 1344
+          "measurement": 373220
         },
-        "total_measurements": 1856,
+        "total_measurements": 373732,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 512,
         "arithmetic_slot_count": 9,
@@ -2087,127 +3295,360 @@
       "phase_shell": "full_phase_register_v1",
       "non_clifford_blocks": [
         {
-          "block_id": "repeated_leaf_arithmetic__field_mul",
-          "summary": "Imported field-multiplication kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__field_mul__partial_products__partial_product_grid",
+          "summary": "One schoolbook partial-product interaction for each pair of field bits.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
-            "ccx": 66047,
+            "ccx": 1,
             "cx": 0,
             "x": 0,
             "measurement": 0
           },
-          "base_instance_count": 11,
+          "base_instance_count": 720896,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 341,
+          "whole_oracle_instance_count": 22347776,
           "primitive_counts_total": {
-            "ccx": 22522027,
+            "ccx": 22347776,
             "cx": 0,
             "x": 0,
             "measurement": 0
           },
-          "non_clifford_total": 22522027,
+          "non_clifford_total": 22347776,
           "metadata": {
             "opcode": "field_mul",
+            "kernel_summary": "Exact schoolbook controlled add-subtract field-multiplication kernel over the checked 256-bit field width.",
+            "kernel_non_clifford_per_instance": 66047,
             "per_leaf_instance_count": 11,
+            "stage": "partial_products",
+            "stage_category": "schoolbook_grid",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__field_add",
-          "summary": "Imported field-addition kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__field_mul__controlled_add_path__controlled_add_accumulator",
+          "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
-            "ccx": 255,
+            "ccx": 1,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 1
           },
-          "base_instance_count": 10,
+          "base_instance_count": 2805,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 310,
+          "whole_oracle_instance_count": 86955,
+          "primitive_counts_total": {
+            "ccx": 86955,
+            "cx": 0,
+            "x": 0,
+            "measurement": 86955
+          },
+          "non_clifford_total": 86955,
+          "metadata": {
+            "opcode": "field_mul",
+            "kernel_summary": "Exact schoolbook controlled add-subtract field-multiplication kernel over the checked 256-bit field width.",
+            "kernel_non_clifford_per_instance": 66047,
+            "per_leaf_instance_count": 11,
+            "stage": "controlled_add_path",
+            "stage_category": "controlled_add",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__field_mul__controlled_sub_path__controlled_sub_accumulator",
+          "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 1,
+            "cx": 0,
+            "x": 0,
+            "measurement": 1
+          },
+          "base_instance_count": 2816,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 87296,
+          "primitive_counts_total": {
+            "ccx": 87296,
+            "cx": 0,
+            "x": 0,
+            "measurement": 87296
+          },
+          "non_clifford_total": 87296,
+          "metadata": {
+            "opcode": "field_mul",
+            "kernel_summary": "Exact schoolbook controlled add-subtract field-multiplication kernel over the checked 256-bit field width.",
+            "kernel_non_clifford_per_instance": 66047,
+            "per_leaf_instance_count": 11,
+            "stage": "controlled_sub_path",
+            "stage_category": "controlled_subtract",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__field_add__carry_resolution__temporary_and_carry_ladder",
+          "summary": "One temporary logical-AND edge per carry transition in the ripple-carry adder.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 1,
+            "cx": 0,
+            "x": 0,
+            "measurement": 1
+          },
+          "base_instance_count": 2550,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 79050,
           "primitive_counts_total": {
             "ccx": 79050,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 79050
           },
           "non_clifford_total": 79050,
           "metadata": {
             "opcode": "field_add",
+            "kernel_summary": "Exact n-bit ripple-carry field-adder kernel over the checked leaf register width.",
+            "kernel_non_clifford_per_instance": 255,
             "per_leaf_instance_count": 10,
+            "stage": "carry_resolution",
+            "stage_category": "adder",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__field_sub",
-          "summary": "Imported field-subtraction kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__field_sub__borrow_resolution__temporary_and_borrow_ladder",
+          "summary": "One temporary logical-AND edge per borrow transition in the ripple-carry subtractor.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
-            "ccx": 255,
+            "ccx": 1,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 1
           },
-          "base_instance_count": 3,
+          "base_instance_count": 765,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 93,
+          "whole_oracle_instance_count": 23715,
           "primitive_counts_total": {
             "ccx": 23715,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 23715
           },
           "non_clifford_total": 23715,
           "metadata": {
             "opcode": "field_sub",
+            "kernel_summary": "Exact n-bit ripple-carry field-subtractor kernel over the checked leaf register width.",
+            "kernel_non_clifford_per_instance": 255,
             "per_leaf_instance_count": 3,
+            "stage": "borrow_resolution",
+            "stage_category": "subtractor",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__mul_const",
-          "summary": "Imported fixed-constant multiplication kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_1_to_2",
+          "summary": "One field-add kernel step in the monotone addition chain 1 -> 2.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
-            "ccx": 1530,
+            "ccx": 255,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 255
           },
           "base_instance_count": 2,
           "schedule_multiplier": 31,
           "whole_oracle_instance_count": 62,
           "primitive_counts_total": {
-            "ccx": 94860,
+            "ccx": 15810,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 15810
           },
-          "non_clifford_total": 94860,
+          "non_clifford_total": 15810,
           "metadata": {
             "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
             "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__select_field_if_flag",
-          "summary": "Imported field-select kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_2_to_4",
+          "summary": "One field-add kernel step in the monotone addition chain 2 -> 4.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
             "ccx": 255,
             "cx": 0,
             "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_4_to_8",
+          "summary": "One field-add kernel step in the monotone addition chain 4 -> 8.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_8_to_16",
+          "summary": "One field-add kernel step in the monotone addition chain 8 -> 16.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_16_to_20",
+          "summary": "One field-add kernel step in the monotone addition chain 16 -> 20.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_20_to_21",
+          "summary": "One field-add kernel step in the monotone addition chain 20 -> 21.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__select_field_if_flag__controlled_move__bitwise_control_ladder",
+          "summary": "One controlled field-bit select for each nontrivial bit position in the destination register.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 1,
+            "cx": 0,
+            "x": 0,
             "measurement": 0
           },
-          "base_instance_count": 3,
+          "base_instance_count": 765,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 93,
+          "whole_oracle_instance_count": 23715,
           "primitive_counts_total": {
             "ccx": 23715,
             "cx": 0,
@@ -2217,7 +3658,11 @@
           "non_clifford_total": 23715,
           "metadata": {
             "opcode": "select_field_if_flag",
+            "kernel_summary": "Exact field-width conditional-select kernel used by the neutral-entry bypass path.",
+            "kernel_non_clifford_per_instance": 255,
             "per_leaf_instance_count": 3,
+            "stage": "controlled_move",
+            "stage_category": "select",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
@@ -2632,9 +4077,9 @@
           "ccx": 23813671,
           "cx": 0,
           "x": 0,
-          "measurement": 13600
+          "measurement": 385476
         },
-        "total_measurements": 14112,
+        "total_measurements": 385988,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 512,
         "arithmetic_slot_count": 9,
@@ -2652,127 +4097,360 @@
       "phase_shell": "semiclassical_qft_v1",
       "non_clifford_blocks": [
         {
-          "block_id": "repeated_leaf_arithmetic__field_mul",
-          "summary": "Imported field-multiplication kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__field_mul__partial_products__partial_product_grid",
+          "summary": "One schoolbook partial-product interaction for each pair of field bits.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
-            "ccx": 66047,
+            "ccx": 1,
             "cx": 0,
             "x": 0,
             "measurement": 0
           },
-          "base_instance_count": 11,
+          "base_instance_count": 720896,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 341,
+          "whole_oracle_instance_count": 22347776,
           "primitive_counts_total": {
-            "ccx": 22522027,
+            "ccx": 22347776,
             "cx": 0,
             "x": 0,
             "measurement": 0
           },
-          "non_clifford_total": 22522027,
+          "non_clifford_total": 22347776,
           "metadata": {
             "opcode": "field_mul",
+            "kernel_summary": "Exact schoolbook controlled add-subtract field-multiplication kernel over the checked 256-bit field width.",
+            "kernel_non_clifford_per_instance": 66047,
             "per_leaf_instance_count": 11,
+            "stage": "partial_products",
+            "stage_category": "schoolbook_grid",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__field_add",
-          "summary": "Imported field-addition kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__field_mul__controlled_add_path__controlled_add_accumulator",
+          "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
-            "ccx": 255,
+            "ccx": 1,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 1
           },
-          "base_instance_count": 10,
+          "base_instance_count": 2805,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 310,
+          "whole_oracle_instance_count": 86955,
+          "primitive_counts_total": {
+            "ccx": 86955,
+            "cx": 0,
+            "x": 0,
+            "measurement": 86955
+          },
+          "non_clifford_total": 86955,
+          "metadata": {
+            "opcode": "field_mul",
+            "kernel_summary": "Exact schoolbook controlled add-subtract field-multiplication kernel over the checked 256-bit field width.",
+            "kernel_non_clifford_per_instance": 66047,
+            "per_leaf_instance_count": 11,
+            "stage": "controlled_add_path",
+            "stage_category": "controlled_add",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__field_mul__controlled_sub_path__controlled_sub_accumulator",
+          "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 1,
+            "cx": 0,
+            "x": 0,
+            "measurement": 1
+          },
+          "base_instance_count": 2816,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 87296,
+          "primitive_counts_total": {
+            "ccx": 87296,
+            "cx": 0,
+            "x": 0,
+            "measurement": 87296
+          },
+          "non_clifford_total": 87296,
+          "metadata": {
+            "opcode": "field_mul",
+            "kernel_summary": "Exact schoolbook controlled add-subtract field-multiplication kernel over the checked 256-bit field width.",
+            "kernel_non_clifford_per_instance": 66047,
+            "per_leaf_instance_count": 11,
+            "stage": "controlled_sub_path",
+            "stage_category": "controlled_subtract",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__field_add__carry_resolution__temporary_and_carry_ladder",
+          "summary": "One temporary logical-AND edge per carry transition in the ripple-carry adder.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 1,
+            "cx": 0,
+            "x": 0,
+            "measurement": 1
+          },
+          "base_instance_count": 2550,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 79050,
           "primitive_counts_total": {
             "ccx": 79050,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 79050
           },
           "non_clifford_total": 79050,
           "metadata": {
             "opcode": "field_add",
+            "kernel_summary": "Exact n-bit ripple-carry field-adder kernel over the checked leaf register width.",
+            "kernel_non_clifford_per_instance": 255,
             "per_leaf_instance_count": 10,
+            "stage": "carry_resolution",
+            "stage_category": "adder",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__field_sub",
-          "summary": "Imported field-subtraction kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__field_sub__borrow_resolution__temporary_and_borrow_ladder",
+          "summary": "One temporary logical-AND edge per borrow transition in the ripple-carry subtractor.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
-            "ccx": 255,
+            "ccx": 1,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 1
           },
-          "base_instance_count": 3,
+          "base_instance_count": 765,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 93,
+          "whole_oracle_instance_count": 23715,
           "primitive_counts_total": {
             "ccx": 23715,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 23715
           },
           "non_clifford_total": 23715,
           "metadata": {
             "opcode": "field_sub",
+            "kernel_summary": "Exact n-bit ripple-carry field-subtractor kernel over the checked leaf register width.",
+            "kernel_non_clifford_per_instance": 255,
             "per_leaf_instance_count": 3,
+            "stage": "borrow_resolution",
+            "stage_category": "subtractor",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__mul_const",
-          "summary": "Imported fixed-constant multiplication kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_1_to_2",
+          "summary": "One field-add kernel step in the monotone addition chain 1 -> 2.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
-            "ccx": 1530,
+            "ccx": 255,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 255
           },
           "base_instance_count": 2,
           "schedule_multiplier": 31,
           "whole_oracle_instance_count": 62,
           "primitive_counts_total": {
-            "ccx": 94860,
+            "ccx": 15810,
             "cx": 0,
             "x": 0,
-            "measurement": 0
+            "measurement": 15810
           },
-          "non_clifford_total": 94860,
+          "non_clifford_total": 15810,
           "metadata": {
             "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
             "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__select_field_if_flag",
-          "summary": "Imported field-select kernel instances across the completed raw-32 oracle.",
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_2_to_4",
+          "summary": "One field-add kernel step in the monotone addition chain 2 -> 4.",
           "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/module_library.json",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
             "ccx": 255,
             "cx": 0,
             "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_4_to_8",
+          "summary": "One field-add kernel step in the monotone addition chain 4 -> 8.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_8_to_16",
+          "summary": "One field-add kernel step in the monotone addition chain 8 -> 16.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_16_to_20",
+          "summary": "One field-add kernel step in the monotone addition chain 16 -> 20.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__mul_const__addition_chain__chain_step_20_to_21",
+          "summary": "One field-add kernel step in the monotone addition chain 20 -> 21.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "base_instance_count": 2,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 62,
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15810
+          },
+          "non_clifford_total": 15810,
+          "metadata": {
+            "opcode": "mul_const",
+            "kernel_summary": "Exact fixed-constant multiplication kernel for multiplication by 21.",
+            "kernel_non_clifford_per_instance": 1530,
+            "per_leaf_instance_count": 2,
+            "stage": "addition_chain",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__select_field_if_flag__controlled_move__bitwise_control_ladder",
+          "summary": "One controlled field-bit select for each nontrivial bit position in the destination register.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 1,
+            "cx": 0,
+            "x": 0,
             "measurement": 0
           },
-          "base_instance_count": 3,
+          "base_instance_count": 765,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 93,
+          "whole_oracle_instance_count": 23715,
           "primitive_counts_total": {
             "ccx": 23715,
             "cx": 0,
@@ -2782,7 +4460,11 @@
           "non_clifford_total": 23715,
           "metadata": {
             "opcode": "select_field_if_flag",
+            "kernel_summary": "Exact field-width conditional-select kernel used by the neutral-entry bypass path.",
+            "kernel_non_clifford_per_instance": 255,
             "per_leaf_instance_count": 3,
+            "stage": "controlled_move",
+            "stage_category": "select",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
@@ -3197,9 +4879,9 @@
           "ccx": 23813671,
           "cx": 0,
           "x": 0,
-          "measurement": 13600
+          "measurement": 385476
         },
-        "total_measurements": 14112,
+        "total_measurements": 385988,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 512,
         "arithmetic_slot_count": 9,
@@ -3221,9 +4903,9 @@
         "ccx": 23813671,
         "cx": 0,
         "x": 0,
-        "measurement": 13600
+        "measurement": 385476
       },
-      "total_measurements": 14112,
+      "total_measurements": 385988,
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 512,
       "arithmetic_slot_count": 9,
@@ -3244,9 +4926,9 @@
         "ccx": 37432935,
         "cx": 0,
         "x": 0,
-        "measurement": 14681408
+        "measurement": 15053284
       },
-      "total_measurements": 14681920,
+      "total_measurements": 15053796,
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 512,
       "arithmetic_slot_count": 9,

@@ -21,6 +21,7 @@ from common import (
     sha256_bytes,
     sha256_path,
 )
+from arithmetic_lowering import arithmetic_kernel_summary, arithmetic_lowering_library
 from generated_block_inventory import build_generated_block_inventories
 from lookup_lowering import lookup_lowering_library, lowered_lookup_semantic_summary
 from project import (
@@ -76,6 +77,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'canonical_public_point': artifact_root / 'canonical_public_point.json',
         'full_raw32_oracle': artifact_root / 'full_raw32_oracle.json',
         'exact_leaf_slot_allocation': artifact_root / 'exact_leaf_slot_allocation.json',
+        'arithmetic_lowerings': artifact_root / 'arithmetic_lowerings.json',
         'module_library': artifact_root / 'module_library.json',
         'primitive_multiplier_library': artifact_root / 'primitive_multiplier_library.json',
         'phase_shell_families': artifact_root / 'phase_shell_families.json',
@@ -204,26 +206,32 @@ def build_table_manifest_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
 
 def build_arithmetic_kernel_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     kernel = artifacts['module_library']
-    hist = leaf_opcode_histogram()
-    add_cost = FIELD_BITS - 1
-    mul_cost = (FIELD_BITS * FIELD_BITS) + (2 * FIELD_BITS) - 1
-    mul_const_cost = (len(kernel['addition_chain_21']) - 1) * add_cost
+    arithmetic_lowerings = artifacts['arithmetic_lowerings']
+    expected_lowerings = arithmetic_lowering_library(
+        field_bits=FIELD_BITS,
+        leaf_opcode_histogram=leaf_opcode_histogram(),
+    )
+    expected_kernel = arithmetic_kernel_summary(expected_lowerings)
+    kernel_lookup = {row['opcode']: row for row in arithmetic_lowerings['kernels']}
+    reconstruction = arithmetic_lowerings['leaf_reconstruction']
     expected_leaf_non_clifford = (
-        hist.get('field_mul', 0) * mul_cost
-        + hist.get('field_add', 0) * add_cost
-        + hist.get('field_sub', 0) * add_cost
-        + hist.get('mul_const', 0) * mul_const_cost
-        + hist.get('select_field_if_flag', 0) * add_cost
+        leaf_opcode_histogram().get('field_mul', 0) * kernel_lookup['field_mul']['exact_non_clifford_per_kernel']
+        + leaf_opcode_histogram().get('field_add', 0) * kernel_lookup['field_add']['exact_non_clifford_per_kernel']
+        + leaf_opcode_histogram().get('field_sub', 0) * kernel_lookup['field_sub']['exact_non_clifford_per_kernel']
+        + leaf_opcode_histogram().get('mul_const', 0) * kernel_lookup['mul_const']['exact_non_clifford_per_kernel']
+        + leaf_opcode_histogram().get('select_field_if_flag', 0) * kernel_lookup['select_field_if_flag']['exact_non_clifford_per_kernel']
     )
     checks = [
-        _check('module_library_matches_generator', kernel == arithmetic_kernel_library(), arithmetic_kernel_library(), kernel),
-        _check('leaf_opcode_histogram_matches_leaf', kernel['leaf_opcode_histogram'] == hist, hist, kernel['leaf_opcode_histogram']),
-        _check('field_add_cost_matches_n_minus_1', kernel['field_add_non_clifford'] == add_cost, add_cost, kernel['field_add_non_clifford']),
-        _check('field_mul_cost_matches_family_formula', kernel['field_mul_non_clifford'] == mul_cost, mul_cost, kernel['field_mul_non_clifford']),
-        _check('mul_const_cost_matches_addition_chain', kernel['mul_const_non_clifford'] == mul_const_cost, mul_const_cost, kernel['mul_const_non_clifford']),
+        _check('arithmetic_lowerings_match_generator', arithmetic_lowerings == expected_lowerings, expected_lowerings, arithmetic_lowerings),
+        _check('module_library_matches_lowering_summary', kernel == expected_kernel, expected_kernel, kernel),
+        _check('module_library_matches_project_summary', kernel == arithmetic_kernel_library(), arithmetic_kernel_library(), kernel),
+        _check('field_add_cost_matches_lowering_kernel', kernel['field_add_non_clifford'] == kernel_lookup['field_add']['exact_non_clifford_per_kernel'], kernel_lookup['field_add']['exact_non_clifford_per_kernel'], kernel['field_add_non_clifford']),
+        _check('field_mul_cost_matches_lowering_kernel', kernel['field_mul_non_clifford'] == kernel_lookup['field_mul']['exact_non_clifford_per_kernel'], kernel_lookup['field_mul']['exact_non_clifford_per_kernel'], kernel['field_mul_non_clifford']),
+        _check('mul_const_cost_matches_lowering_kernel', kernel['mul_const_non_clifford'] == kernel_lookup['mul_const']['exact_non_clifford_per_kernel'], kernel_lookup['mul_const']['exact_non_clifford_per_kernel'], kernel['mul_const_non_clifford']),
+        _check('leaf_opcode_histogram_matches_lowering_reconstruction', kernel['leaf_opcode_histogram'] == reconstruction['leaf_opcode_histogram'], reconstruction['leaf_opcode_histogram'], kernel['leaf_opcode_histogram']),
         _check(
-            'arithmetic_leaf_non_clifford_matches_weighted_histogram',
-            kernel['arithmetic_leaf_non_clifford'] == expected_leaf_non_clifford,
+            'arithmetic_leaf_non_clifford_matches_lowering_reconstruction',
+            kernel['arithmetic_leaf_non_clifford'] == reconstruction['arithmetic_leaf_non_clifford'] == expected_leaf_non_clifford,
             expected_leaf_non_clifford,
             kernel['arithmetic_leaf_non_clifford'],
         ),
@@ -393,6 +401,7 @@ def build_generated_block_inventory_checks(artifacts: Mapping[str, Any]) -> Dict
         schedule=artifacts['full_raw32_oracle'],
         slot_allocation=artifacts['exact_leaf_slot_allocation'],
         kernel=artifacts['module_library'],
+        arithmetic_lowerings=artifacts['arithmetic_lowerings'],
         lookup_lowerings=artifacts['lookup_lowerings'],
         phase_shells=artifacts['phase_shell_families']['families'],
         field_bits=FIELD_BITS,
@@ -401,6 +410,10 @@ def build_generated_block_inventory_checks(artifacts: Mapping[str, Any]) -> Dict
     families = generated['families']
     frontier_lookup = {row['name']: row for row in artifacts['family_frontier']['families']}
     reconstruction_rows = []
+    arithmetic_whole_oracle_non_clifford = sum(
+        int(block['primitive_counts_total']['ccx'])
+        for block in generated['shared_arithmetic_blocks']
+    )
     for family in families:
         primitive_totals = {
             key: sum(int(block['primitive_counts_total'][key]) for block in family['non_clifford_blocks'])
@@ -438,6 +451,21 @@ def build_generated_block_inventory_checks(artifacts: Mapping[str, Any]) -> Dict
             generated['schema'] == 'compiler-project-generated-block-inventories-v1',
             'compiler-project-generated-block-inventories-v1',
             generated['schema'],
+        ),
+        _check(
+            'generated_block_inventory_arithmetic_family_matches_arithmetic_lowerings',
+            generated['arithmetic_lowering_family'] == artifacts['arithmetic_lowerings']['family'],
+            artifacts['arithmetic_lowerings']['family'],
+            generated['arithmetic_lowering_family'],
+        ),
+        _check(
+            'shared_arithmetic_blocks_match_leaf_reconstruction_times_schedule',
+            arithmetic_whole_oracle_non_clifford
+            == artifacts['arithmetic_lowerings']['leaf_reconstruction']['arithmetic_leaf_non_clifford']
+            * artifacts['full_raw32_oracle']['summary']['leaf_call_count_total'],
+            artifacts['arithmetic_lowerings']['leaf_reconstruction']['arithmetic_leaf_non_clifford']
+            * artifacts['full_raw32_oracle']['summary']['leaf_call_count_total'],
+            arithmetic_whole_oracle_non_clifford,
         ),
         _check(
             'generated_block_inventory_family_reconstruction_matches_blocks',
@@ -632,6 +660,7 @@ def build_primitive_multiplier_checks(artifacts: Mapping[str, Any]) -> Dict[str,
     primitive = artifacts['primitive_multiplier_library']
     schedule = artifacts['full_raw32_oracle']
     kernel = artifacts['module_library']
+    field_mul_kernel = next(row for row in artifacts['arithmetic_lowerings']['kernels'] if row['opcode'] == 'field_mul')
     field_mul_pcs = [instruction['pc'] for instruction in _leaf()['instructions'] if instruction['op'] == 'field_mul']
     expected_per_leaf = [
         {
@@ -639,8 +668,9 @@ def build_primitive_multiplier_checks(artifacts: Mapping[str, Any]) -> Dict[str,
             'leaf_pc': pc,
             'family': kernel['name'],
             'field_bits': FIELD_BITS,
-            'exact_non_clifford': kernel['field_mul_non_clifford'],
+            'exact_non_clifford': field_mul_kernel['exact_non_clifford_per_kernel'],
             'gate_set': kernel['gate_set'],
+            'stages': field_mul_kernel['stages'],
         }
         for ordinal, pc in enumerate(field_mul_pcs)
     ]
@@ -664,8 +694,8 @@ def build_primitive_multiplier_checks(artifacts: Mapping[str, Any]) -> Dict[str,
         ),
         _check(
             'whole_oracle_multiplier_total_matches_instance_count',
-            primitive['whole_oracle_multiplier_non_clifford_total'] == primitive['whole_oracle_multiplier_instance_count'] * kernel['field_mul_non_clifford'],
-            primitive['whole_oracle_multiplier_instance_count'] * kernel['field_mul_non_clifford'],
+            primitive['whole_oracle_multiplier_non_clifford_total'] == primitive['whole_oracle_multiplier_instance_count'] * field_mul_kernel['exact_non_clifford_per_kernel'],
+            primitive['whole_oracle_multiplier_instance_count'] * field_mul_kernel['exact_non_clifford_per_kernel'],
             primitive['whole_oracle_multiplier_non_clifford_total'],
         ),
         _check('example_instances_match_cross_product_prefix', primitive['example_instances'] == expected_examples[:8], expected_examples[:8], primitive['example_instances']),
@@ -681,18 +711,15 @@ def build_frontier_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     expected_lookup_families = [row.__dict__ for row in lookup_families()]
     expected_phase_shells = [row.__dict__ for row in phase_shell_families()]
     families = frontier['families']
-    expected_families = []
+    inventory_lookup = {row['name']: row for row in artifacts['generated_block_inventories']['families']}
     low_qubit = PUBLIC_GOOGLE_BASELINE['low_qubit']
     low_gate = PUBLIC_GOOGLE_BASELINE['low_gate']
+    expected_families = []
     for lookup in frontier['lookup_families']:
         for phase_shell in frontier['phase_shell_families']:
-            total_nc = lookup['direct_lookup_non_clifford'] + schedule['summary']['leaf_call_count_total'] * (kernel['arithmetic_leaf_non_clifford'] + lookup['per_leaf_lookup_non_clifford'])
-            total_qubits = (
-                slot_alloc['allocator_summary']['exact_arithmetic_slot_count'] * FIELD_BITS
-                + slot_alloc['allocator_summary']['exact_control_slot_count']
-                + lookup['extra_lookup_workspace_qubits']
-                + phase_shell['live_quantum_bits']
-            )
+            inventory = inventory_lookup[f"{lookup['name']}__{phase_shell['name']}"]['reconstruction']
+            total_nc = inventory['full_oracle_non_clifford']
+            total_qubits = inventory['total_logical_qubits']
             expected_families.append({
                 'name': f"{lookup['name']}__{phase_shell['name']}",
                 'summary': f"{lookup['summary']} / {phase_shell['summary']}",
@@ -700,14 +727,14 @@ def build_frontier_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
                 'phase_shell': phase_shell['name'],
                 'arithmetic_kernel_family': kernel['name'],
                 'lookup_family': lookup['name'],
-                'arithmetic_leaf_non_clifford': kernel['arithmetic_leaf_non_clifford'],
-                'direct_seed_non_clifford': lookup['direct_lookup_non_clifford'],
-                'per_leaf_lookup_non_clifford': lookup['per_leaf_lookup_non_clifford'],
+                'arithmetic_leaf_non_clifford': inventory['arithmetic_leaf_non_clifford'],
+                'direct_seed_non_clifford': inventory['direct_seed_non_clifford'],
+                'per_leaf_lookup_non_clifford': inventory['per_leaf_lookup_non_clifford'],
                 'full_oracle_non_clifford': total_nc,
-                'arithmetic_slot_count': slot_alloc['allocator_summary']['exact_arithmetic_slot_count'],
-                'control_slot_count': slot_alloc['allocator_summary']['exact_control_slot_count'],
-                'lookup_workspace_qubits': lookup['extra_lookup_workspace_qubits'],
-                'live_phase_bits': phase_shell['live_quantum_bits'],
+                'arithmetic_slot_count': inventory['arithmetic_slot_count'],
+                'control_slot_count': inventory['control_slot_count'],
+                'lookup_workspace_qubits': inventory['lookup_workspace_qubits'],
+                'live_phase_bits': inventory['live_phase_bits'],
                 'total_logical_qubits': total_qubits,
                 'improvement_vs_google_low_qubit': low_qubit['non_clifford'] / total_nc,
                 'improvement_vs_google_low_gate': low_gate['non_clifford'] / total_nc,
@@ -722,6 +749,7 @@ def build_frontier_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
         _check('frontier_schedule_matches_standalone_schedule', frontier['schedule'] == schedule, schedule, frontier['schedule']),
         _check('frontier_slot_allocation_matches_standalone_slot_allocation', frontier['slot_allocation'] == slot_alloc, slot_alloc, frontier['slot_allocation']),
         _check('frontier_arithmetic_kernel_matches_module_library', frontier['arithmetic_kernel_family'] == kernel, kernel, frontier['arithmetic_kernel_family']),
+        _check('frontier_arithmetic_lowerings_match_artifact', frontier['arithmetic_lowerings'] == artifacts['arithmetic_lowerings'], artifacts['arithmetic_lowerings'], frontier['arithmetic_lowerings']),
         _check('frontier_lookup_lowering_matches_lookup_lowering_artifact', frontier['lookup_lowerings'] == artifacts['lookup_lowerings'], artifacts['lookup_lowerings'], frontier['lookup_lowerings']),
         _check(
             'frontier_generated_block_inventory_path_matches_expected',
@@ -744,6 +772,7 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'canonical_public_point': 'compiler_verification_project/artifacts/canonical_public_point.json',
         'full_raw32_oracle': 'compiler_verification_project/artifacts/full_raw32_oracle.json',
         'exact_leaf_slot_allocation': 'compiler_verification_project/artifacts/exact_leaf_slot_allocation.json',
+        'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
         'module_library': 'compiler_verification_project/artifacts/module_library.json',
         'primitive_multiplier_library': 'compiler_verification_project/artifacts/primitive_multiplier_library.json',
         'phase_shell_families': 'compiler_verification_project/artifacts/phase_shell_families.json',
@@ -755,7 +784,7 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'azure_resource_estimator_logical_counts': 'compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json',
     }
     checks = [
-        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v5', 'compiler-project-build-summary-v5', build_summary['schema']),
+        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v6', 'compiler-project-build-summary-v6', build_summary['schema']),
         _check('build_summary_artifact_paths_match_expected_set', build_summary['artifacts'] == expected_paths, expected_paths, build_summary['artifacts']),
         _check(
             'build_summary_paths_exist_on_disk',
