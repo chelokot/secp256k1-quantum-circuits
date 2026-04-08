@@ -7,6 +7,7 @@ import argparse
 import json
 import subprocess
 import sys
+import time
 from pathlib import Path
 from typing import Any, Dict
 
@@ -89,6 +90,40 @@ class ProgressReporter:
     def done(self, step: int, total_steps: int, title: str, status: str) -> None:
         return
 
+    def spinner(self, step: int, total_steps: int, title: str, command: list[str], cwd: Path) -> None:
+        if not self.enabled:
+            subprocess.run(command, cwd=cwd, check=True, stdout=subprocess.DEVNULL)
+            return
+
+        frames = ['-', '\\', '|', '/']
+        process = subprocess.Popen(command, cwd=cwd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        index = 0
+        line = ''
+        try:
+            while True:
+                code = process.poll()
+                if code is not None:
+                    if code != 0:
+                        raise subprocess.CalledProcessError(code, command)
+                    if self.interactive:
+                        print(f'\r[{step}/{total_steps}] {title} [done]{" " * max(0, len(line) - len(title) - 11)}')
+                    else:
+                        print(f'[{step}/{total_steps}] {title} [done]', flush=True)
+                    return
+                frame = frames[index % len(frames)]
+                line = f'[{step}/{total_steps}] {title} [{frame}]'
+                if self.interactive:
+                    print(f'\r{line}', end='', flush=True)
+                else:
+                    if index % 8 == 0:
+                        print(line, flush=True)
+                index += 1
+                time.sleep(0.125)
+        finally:
+            if process.poll() is None:
+                process.kill()
+                process.wait()
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='Run the repository verification path.')
@@ -125,9 +160,9 @@ def build_extended_summary(repo_root: Path, progress: ProgressReporter, step: in
     }
 
 
-def build_compiler_project_summary(repo_root: Path) -> Dict[str, Any]:
-    subprocess.run([sys.executable, 'compiler_verification_project/scripts/build.py'], cwd=repo_root, check=True, stdout=subprocess.DEVNULL)
-    subprocess.run([sys.executable, 'compiler_verification_project/scripts/verify.py', '--cases', '16'], cwd=repo_root, check=True, stdout=subprocess.DEVNULL)
+def build_compiler_project_summary(repo_root: Path, progress: ProgressReporter, step: int, total_steps: int) -> Dict[str, Any]:
+    progress.spinner(step, total_steps, 'Running exact compiler build', [sys.executable, 'compiler_verification_project/scripts/build.py'], repo_root)
+    progress.spinner(step + 1, total_steps, 'Running exact compiler verification', [sys.executable, 'compiler_verification_project/scripts/verify.py', '--cases', '16'], repo_root)
     build_path = repo_root / 'compiler_verification_project' / 'artifacts' / 'build_summary.json'
     verify_path = repo_root / 'compiler_verification_project' / 'artifacts' / 'verification_summary.json'
     frontier_path = repo_root / 'compiler_verification_project' / 'artifacts' / 'family_frontier.json'
@@ -181,7 +216,7 @@ def build_summary(console: Console, show_progress: bool, quick: bool) -> Dict[st
     compiler_project = None
     if not quick:
         extended = build_extended_summary(REPO_ROOT, progress, 3, step_count)
-        compiler_project = build_compiler_project_summary(REPO_ROOT)
+        compiler_project = build_compiler_project_summary(REPO_ROOT, progress, 8, step_count)
     google_baseline = (
         compiler_project['frontier']['public_google_baseline']
         if compiler_project is not None
