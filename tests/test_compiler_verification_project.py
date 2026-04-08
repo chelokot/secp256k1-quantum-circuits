@@ -52,6 +52,8 @@ def test_compiler_project_verification_summary_groups_all_pass() -> None:
     assert semantic['phase_b_nonzero_cases'] > 0
     lookup_lowering = summary['lookup_lowering_checks']
     assert lookup_lowering['pass'] == lookup_lowering['total']
+    generated_block_inventory = summary['generated_block_inventory_checks']
+    assert generated_block_inventory['pass'] == generated_block_inventory['total']
 
 
 def test_mutated_frontier_family_is_detected() -> None:
@@ -75,6 +77,20 @@ def test_mutated_lookup_lowering_stage_is_detected() -> None:
     groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
     assert groups['lookup_lowering_checks']['pass'] < groups['lookup_lowering_checks']['total']
     assert groups['frontier_checks']['pass'] < groups['frontier_checks']['total']
+
+
+def test_mutated_generated_block_inventory_is_detected() -> None:
+    artifacts = deepcopy(_load_artifacts())
+    artifacts['generated_block_inventories']['families'][0]['non_clifford_blocks'][0]['primitive_counts_total']['ccx'] += 1
+    groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
+    assert groups['generated_block_inventory_checks']['pass'] < groups['generated_block_inventory_checks']['total']
+
+
+def test_mutated_full_attack_generated_summary_is_detected() -> None:
+    artifacts = deepcopy(_load_artifacts())
+    artifacts['full_attack_inventory']['generated_block_inventory_summary']['family_reconstructed_totals'][0]['full_oracle_non_clifford'] += 1
+    groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
+    assert groups['full_attack_inventory_checks']['pass'] < groups['full_attack_inventory_checks']['total']
 
 
 def test_mutated_cain_transfer_is_detected() -> None:

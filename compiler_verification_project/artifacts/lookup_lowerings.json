@@ -142,7 +142,7 @@
               "non_clifford_per_instance": 255,
               "non_clifford_total": 255,
               "notes": [
-                "This is the same exact post-lookup sign-fix assumption previously counted as a single field-width conditional negation."
+                "This stage is the exact post-lookup sign-fix assumption represented as a single field-width conditional negation."
               ]
             }
           ],
@@ -327,7 +327,7 @@
               "non_clifford_per_instance": 255,
               "non_clifford_total": 255,
               "notes": [
-                "This is the same exact post-lookup sign-fix assumption previously counted as a single field-width conditional negation."
+                "This stage is the exact post-lookup sign-fix assumption represented as a single field-width conditional negation."
               ]
             }
           ],
@@ -528,7 +528,7 @@
               "non_clifford_per_instance": 255,
               "non_clifford_total": 255,
               "notes": [
-                "This is the same exact post-lookup sign-fix assumption previously counted as a single field-width conditional negation."
+                "This stage is the exact post-lookup sign-fix assumption represented as a single field-width conditional negation."
               ]
             }
           ],

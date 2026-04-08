@@ -21,6 +21,7 @@ from common import (
     sha256_bytes,
     sha256_path,
 )
+from generated_block_inventory import build_generated_block_inventories
 from lookup_lowering import lookup_lowering_library, lowered_lookup_semantic_summary
 from project import (
     FIELD_BITS,
@@ -80,6 +81,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'phase_shell_families': artifact_root / 'phase_shell_families.json',
         'table_manifests': artifact_root / 'table_manifests.json',
         'lookup_lowerings': artifact_root / 'lookup_lowerings.json',
+        'generated_block_inventories': artifact_root / 'generated_block_inventories.json',
         'family_frontier': artifact_root / 'family_frontier.json',
         'full_attack_inventory': artifact_root / 'full_attack_inventory.json',
         'build_summary': artifact_root / 'build_summary.json',
@@ -342,6 +344,103 @@ def build_lookup_lowering_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]
     return _summarize_checks(checks)
 
 
+def build_generated_block_inventory_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    generated = artifacts['generated_block_inventories']
+    expected = build_generated_block_inventories(
+        schedule=artifacts['full_raw32_oracle'],
+        slot_allocation=artifacts['exact_leaf_slot_allocation'],
+        kernel=artifacts['module_library'],
+        lookup_lowerings=artifacts['lookup_lowerings'],
+        phase_shells=artifacts['phase_shell_families']['families'],
+        field_bits=FIELD_BITS,
+        public_google_baseline=artifacts['family_frontier']['public_google_baseline'],
+    )
+    families = generated['families']
+    frontier_lookup = {row['name']: row for row in artifacts['family_frontier']['families']}
+    reconstruction_rows = []
+    for family in families:
+        primitive_totals = {
+            key: sum(int(block['primitive_counts_total'][key]) for block in family['non_clifford_blocks'])
+            for key in ('ccx', 'cx', 'x', 'measurement')
+        }
+        qubit_total = sum(int(block['logical_qubits']) for block in family['qubit_blocks'])
+        phase_measurements = sum(int(block['count']) for block in family['phase_count_blocks'] if block['category'] == 'phase_measurements')
+        phase_rotations = sum(int(block['count']) for block in family['phase_count_blocks'] if block['category'] == 'phase_rotations')
+        direct_seed_non_clifford = sum(
+            int(block['primitive_counts_total']['ccx'])
+            for block in family['non_clifford_blocks']
+            if block['metadata'].get('invocation_scope') == 'direct_seed'
+        )
+        repeated_leaf_lookup_non_clifford = sum(
+            int(block['primitive_counts_total']['ccx'])
+            for block in family['non_clifford_blocks']
+            if block['metadata'].get('invocation_scope') == 'repeated_leaf_calls'
+            and block['category'] == 'lookup_non_clifford'
+        )
+        reconstruction_rows.append(
+            {
+                'name': family['name'],
+                'full_oracle_non_clifford': primitive_totals['ccx'],
+                'total_logical_qubits': qubit_total,
+                'direct_seed_non_clifford': direct_seed_non_clifford,
+                'per_leaf_lookup_non_clifford': repeated_leaf_lookup_non_clifford // artifacts['full_raw32_oracle']['summary']['leaf_call_count_total'],
+                'phase_shell_measurements': phase_measurements,
+                'phase_shell_rotations': phase_rotations,
+            }
+        )
+    checks = [
+        _check('generated_block_inventories_match_generator', generated == expected, expected, generated),
+        _check(
+            'generated_block_inventory_schema_matches_current_version',
+            generated['schema'] == 'compiler-project-generated-block-inventories-v1',
+            'compiler-project-generated-block-inventories-v1',
+            generated['schema'],
+        ),
+        _check(
+            'generated_block_inventory_family_reconstruction_matches_blocks',
+            all(
+                next(row for row in reconstruction_rows if row['name'] == family['name'])['full_oracle_non_clifford'] == family['reconstruction']['full_oracle_non_clifford']
+                and next(row for row in reconstruction_rows if row['name'] == family['name'])['total_logical_qubits'] == family['reconstruction']['total_logical_qubits']
+                and next(row for row in reconstruction_rows if row['name'] == family['name'])['direct_seed_non_clifford'] == family['reconstruction']['direct_seed_non_clifford']
+                and next(row for row in reconstruction_rows if row['name'] == family['name'])['per_leaf_lookup_non_clifford'] == family['reconstruction']['per_leaf_lookup_non_clifford']
+                and next(row for row in reconstruction_rows if row['name'] == family['name'])['phase_shell_measurements'] == family['reconstruction']['phase_shell_measurements']
+                and next(row for row in reconstruction_rows if row['name'] == family['name'])['phase_shell_rotations'] == family['reconstruction']['phase_shell_rotations']
+                for family in families
+            ),
+            reconstruction_rows,
+            [family['reconstruction'] for family in families],
+        ),
+        _check(
+            'frontier_family_totals_match_generated_block_reconstruction',
+            all(
+                frontier_lookup[family['name']]['full_oracle_non_clifford'] == family['reconstruction']['full_oracle_non_clifford']
+                and frontier_lookup[family['name']]['total_logical_qubits'] == family['reconstruction']['total_logical_qubits']
+                for family in families
+            ),
+            [family['reconstruction'] for family in families],
+            [
+                {
+                    'name': family['name'],
+                    'full_oracle_non_clifford': frontier_lookup[family['name']]['full_oracle_non_clifford'],
+                    'total_logical_qubits': frontier_lookup[family['name']]['total_logical_qubits'],
+                }
+                for family in families
+            ],
+        ),
+        _check(
+            'generated_block_inventory_best_families_match_frontier',
+            generated['best_gate_family']['name'] == artifacts['family_frontier']['best_gate_family']['name']
+            and generated['best_qubit_family']['name'] == artifacts['family_frontier']['best_qubit_family']['name'],
+            {
+                'best_gate_family': artifacts['family_frontier']['best_gate_family']['name'],
+                'best_qubit_family': artifacts['family_frontier']['best_qubit_family']['name'],
+            },
+            generated['best_gate_family'] | {'best_qubit_family': generated['best_qubit_family']['name']},
+        ),
+    ]
+    return _summarize_checks(checks)
+
+
 def _versions_during_write(slot_alloc: Mapping[str, Any], pc: int) -> Tuple[set[Tuple[str, int]], set[Tuple[str, int]]]:
     before = set()
     during = set()
@@ -452,6 +551,34 @@ def build_full_attack_inventory_checks(artifacts: Mapping[str, Any]) -> Dict[str
     checks = [
         _check('full_attack_inventory_matches_generator', inventory == full_attack_inventory(), full_attack_inventory(), inventory),
         _check('inventory_counts_match_schedule_and_histogram', inventory['inventory'] == expected_inventory, expected_inventory, inventory['inventory']),
+        _check(
+            'full_attack_inventory_generated_block_summary_matches_generated_block_inventory',
+            inventory['generated_block_inventory_summary'] == {
+                'best_gate_family': artifacts['generated_block_inventories']['best_gate_family'],
+                'best_qubit_family': artifacts['generated_block_inventories']['best_qubit_family'],
+                'family_reconstructed_totals': [
+                    {
+                        'name': row['name'],
+                        'full_oracle_non_clifford': row['reconstruction']['full_oracle_non_clifford'],
+                        'total_logical_qubits': row['reconstruction']['total_logical_qubits'],
+                    }
+                    for row in artifacts['generated_block_inventories']['families']
+                ],
+            },
+            {
+                'best_gate_family': artifacts['generated_block_inventories']['best_gate_family'],
+                'best_qubit_family': artifacts['generated_block_inventories']['best_qubit_family'],
+                'family_reconstructed_totals': [
+                    {
+                        'name': row['name'],
+                        'full_oracle_non_clifford': row['reconstruction']['full_oracle_non_clifford'],
+                        'total_logical_qubits': row['reconstruction']['total_logical_qubits'],
+                    }
+                    for row in artifacts['generated_block_inventories']['families']
+                ],
+            },
+            inventory['generated_block_inventory_summary'],
+        ),
         _check('inventory_best_gate_family_matches_frontier', inventory['best_gate_family'] == artifacts['family_frontier']['best_gate_family'], artifacts['family_frontier']['best_gate_family'], inventory['best_gate_family']),
         _check('inventory_best_qubit_family_matches_frontier', inventory['best_qubit_family'] == artifacts['family_frontier']['best_qubit_family'], artifacts['family_frontier']['best_qubit_family'], inventory['best_qubit_family']),
     ]
@@ -553,6 +680,12 @@ def build_frontier_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
         _check('frontier_slot_allocation_matches_standalone_slot_allocation', frontier['slot_allocation'] == slot_alloc, slot_alloc, frontier['slot_allocation']),
         _check('frontier_arithmetic_kernel_matches_module_library', frontier['arithmetic_kernel_family'] == kernel, kernel, frontier['arithmetic_kernel_family']),
         _check('frontier_lookup_lowering_matches_lookup_lowering_artifact', frontier['lookup_lowerings'] == artifacts['lookup_lowerings'], artifacts['lookup_lowerings'], frontier['lookup_lowerings']),
+        _check(
+            'frontier_generated_block_inventory_path_matches_expected',
+            frontier['generated_block_inventory_artifact'] == 'compiler_verification_project/artifacts/generated_block_inventories.json',
+            'compiler_verification_project/artifacts/generated_block_inventories.json',
+            frontier['generated_block_inventory_artifact'],
+        ),
         _check('lookup_family_library_matches_named_lookup_families', frontier['lookup_families'] == expected_lookup_families, expected_lookup_families, frontier['lookup_families']),
         _check('phase_shell_library_matches_named_phase_shells', frontier['phase_shell_families'] == expected_phase_shells, expected_phase_shells, frontier['phase_shell_families']),
         _check('frontier_family_rows_reconstruct_from_components', families == expected_families, expected_families, families),
@@ -573,12 +706,13 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'phase_shell_families': 'compiler_verification_project/artifacts/phase_shell_families.json',
         'table_manifests': 'compiler_verification_project/artifacts/table_manifests.json',
         'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
+        'generated_block_inventories': 'compiler_verification_project/artifacts/generated_block_inventories.json',
         'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
         'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
         'azure_resource_estimator_logical_counts': 'compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json',
     }
     checks = [
-        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v4', 'compiler-project-build-summary-v4', build_summary['schema']),
+        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v5', 'compiler-project-build-summary-v5', build_summary['schema']),
         _check('build_summary_artifact_paths_match_expected_set', build_summary['artifacts'] == expected_paths, expected_paths, build_summary['artifacts']),
         _check(
             'build_summary_paths_exist_on_disk',
@@ -639,6 +773,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any]) -> Dic
         'table_manifest_checks': build_table_manifest_checks(artifacts),
         'arithmetic_kernel_checks': build_arithmetic_kernel_checks(artifacts),
         'lookup_lowering_checks': build_lookup_lowering_checks(artifacts),
+        'generated_block_inventory_checks': build_generated_block_inventory_checks(artifacts),
         'slot_allocation_checks': build_slot_allocation_checks(artifacts),
         'full_attack_inventory_checks': build_full_attack_inventory_checks(artifacts),
         'primitive_multiplier_checks': build_primitive_multiplier_checks(artifacts),
@@ -662,7 +797,7 @@ def build_verification_summary(case_count: int = 16, repo_root: Path | None = No
     invariant_total = sum(group['total'] for group in invariant_groups.values())
     invariant_pass = sum(group['pass'] for group in invariant_groups.values())
     return {
-        'schema': 'compiler-project-verification-summary-v4',
+        'schema': 'compiler-project-verification-summary-v5',
         'semantic_replay': semantic,
         **invariant_groups,
         'summary': {

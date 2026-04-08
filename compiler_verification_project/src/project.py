@@ -55,6 +55,7 @@ from common import (  # noqa: E402
     sha256_path,
 )
 from derived_resources import minimal_addition_chain  # noqa: E402
+from generated_block_inventory import build_generated_block_inventories  # noqa: E402
 from lookup_lowering import lookup_lowering_library  # noqa: E402
 from verifier import exec_netlist  # noqa: E402
 
@@ -593,64 +594,69 @@ def compiler_family_frontier() -> Dict[str, Any]:
     schedule = raw32_schedule()
     kernel = arithmetic_kernel_library()
     slot_alloc = exact_leaf_slot_allocation()
-    arith_nc = int(kernel['arithmetic_leaf_non_clifford'])
-    arithmetic_slots = int(slot_alloc['allocator_summary']['exact_arithmetic_slot_count'])
-    control_slots = int(slot_alloc['allocator_summary']['exact_control_slot_count'])
+    lookup_lowerings = lookup_lowering_library()
+    phase_shell_rows = [asdict(row) for row in phase_shell_families()]
+    generated_inventories = build_generated_block_inventories(
+        schedule=schedule,
+        slot_allocation=slot_alloc,
+        kernel=kernel,
+        lookup_lowerings=lookup_lowerings,
+        phase_shells=phase_shell_rows,
+        field_bits=FIELD_BITS,
+        public_google_baseline=PUBLIC_GOOGLE_BASELINE,
+    )
     families: List[CompilerFamilyResult] = []
-    for lookup in lookup_families():
-        for phase_shell in phase_shell_families():
-            total_nc = (
-                lookup.direct_lookup_non_clifford
-                + schedule['summary']['leaf_call_count_total'] * (arith_nc + lookup.per_leaf_lookup_non_clifford)
+    lookup_rows = {row.name: row for row in lookup_families()}
+    phase_rows = {row.name: row for row in phase_shell_families()}
+    low_qubit = PUBLIC_GOOGLE_BASELINE['low_qubit']
+    low_gate = PUBLIC_GOOGLE_BASELINE['low_gate']
+    for inventory in generated_inventories['families']:
+        lookup = lookup_rows[inventory['lookup_family']]
+        phase_shell = phase_rows[inventory['phase_shell']]
+        reconstruction = inventory['reconstruction']
+        total_nc = int(reconstruction['full_oracle_non_clifford'])
+        total_qubits = int(reconstruction['total_logical_qubits'])
+        families.append(
+            CompilerFamilyResult(
+                name=inventory['name'],
+                summary=inventory['summary'],
+                gate_set=f'{lookup.gate_set}; phase shell: {phase_shell.name}',
+                phase_shell=phase_shell.name,
+                arithmetic_kernel_family=kernel['name'],
+                lookup_family=lookup.name,
+                arithmetic_leaf_non_clifford=int(reconstruction['arithmetic_leaf_non_clifford']),
+                direct_seed_non_clifford=int(reconstruction['direct_seed_non_clifford']),
+                per_leaf_lookup_non_clifford=int(reconstruction['per_leaf_lookup_non_clifford']),
+                full_oracle_non_clifford=total_nc,
+                arithmetic_slot_count=int(reconstruction['arithmetic_slot_count']),
+                control_slot_count=int(reconstruction['control_slot_count']),
+                lookup_workspace_qubits=int(reconstruction['lookup_workspace_qubits']),
+                live_phase_bits=int(reconstruction['live_phase_bits']),
+                total_logical_qubits=total_qubits,
+                improvement_vs_google_low_qubit=low_qubit['non_clifford'] / total_nc,
+                improvement_vs_google_low_gate=low_gate['non_clifford'] / total_nc,
+                qubit_ratio_vs_google_low_qubit=low_qubit['logical_qubits'] / total_qubits,
+                qubit_ratio_vs_google_low_gate=low_gate['logical_qubits'] / total_qubits,
+                notes=[*lookup.notes, *phase_shell.notes],
             )
-            total_qubits = (
-                arithmetic_slots * FIELD_BITS
-                + control_slots
-                + lookup.extra_lookup_workspace_qubits
-                + phase_shell.live_quantum_bits
-            )
-            low_qubit = PUBLIC_GOOGLE_BASELINE['low_qubit']
-            low_gate = PUBLIC_GOOGLE_BASELINE['low_gate']
-            families.append(
-                CompilerFamilyResult(
-                    name=f'{lookup.name}__{phase_shell.name}',
-                    summary=f'{lookup.summary} / {phase_shell.summary}',
-                    gate_set=f'{lookup.gate_set}; phase shell: {phase_shell.name}',
-                    phase_shell=phase_shell.name,
-                    arithmetic_kernel_family=kernel['name'],
-                    lookup_family=lookup.name,
-                    arithmetic_leaf_non_clifford=arith_nc,
-                    direct_seed_non_clifford=lookup.direct_lookup_non_clifford,
-                    per_leaf_lookup_non_clifford=lookup.per_leaf_lookup_non_clifford,
-                    full_oracle_non_clifford=total_nc,
-                    arithmetic_slot_count=arithmetic_slots,
-                    control_slot_count=control_slots,
-                    lookup_workspace_qubits=lookup.extra_lookup_workspace_qubits,
-                    live_phase_bits=phase_shell.live_quantum_bits,
-                    total_logical_qubits=total_qubits,
-                    improvement_vs_google_low_qubit=low_qubit['non_clifford'] / total_nc,
-                    improvement_vs_google_low_gate=low_gate['non_clifford'] / total_nc,
-                    qubit_ratio_vs_google_low_qubit=low_qubit['logical_qubits'] / total_qubits,
-                    qubit_ratio_vs_google_low_gate=low_gate['logical_qubits'] / total_qubits,
-                    notes=[*lookup.notes, *phase_shell.notes],
-                )
-            )
+        )
     best_gate = min(families, key=lambda row: (row.full_oracle_non_clifford, row.total_logical_qubits))
     best_qubit = min(families, key=lambda row: (row.total_logical_qubits, row.full_oracle_non_clifford))
     return {
-        'schema': 'compiler-project-frontier-v4',
+        'schema': 'compiler-project-frontier-v5',
         'public_google_baseline': PUBLIC_GOOGLE_BASELINE,
         'schedule': schedule,
         'slot_allocation': slot_alloc,
         'arithmetic_kernel_family': arithmetic_kernel_library(),
-        'lookup_lowerings': lookup_lowering_library(),
+        'lookup_lowerings': lookup_lowerings,
+        'generated_block_inventory_artifact': 'compiler_verification_project/artifacts/generated_block_inventories.json',
         'lookup_families': [asdict(row) for row in lookup_families()],
-        'phase_shell_families': [asdict(row) for row in phase_shell_families()],
+        'phase_shell_families': phase_shell_rows,
         'families': [asdict(row) for row in families],
         'best_gate_family': asdict(best_gate),
         'best_qubit_family': asdict(best_qubit),
         'notes': [
-            'These are exact whole-oracle counts for named compiler families over a fixed arithmetic-kernel family, an explicit lookup-lowering family, and a fully quantum raw-32 schedule.',
+            'These are exact whole-oracle counts for named compiler families over a fixed arithmetic-kernel family, an explicit lookup-lowering family, a generated block-inventory layer, and a fully quantum raw-32 schedule.',
             'The qubit frontier uses exact slot allocation and an explicit semiclassical phase-shell option rather than a fixed 512-bit phase-register policy.',
             'The arithmetic kernels remain an imported exact non-Clifford family boundary; whole-oracle counts are exact relative to that family.',
         ],
@@ -714,8 +720,17 @@ def full_attack_inventory() -> Dict[str, Any]:
     kernel = arithmetic_kernel_library()
     hist = kernel['leaf_opcode_histogram']
     leaf_calls = schedule['summary']['leaf_call_count_total']
+    generated_block_inventories = build_generated_block_inventories(
+        schedule=schedule,
+        slot_allocation=exact_leaf_slot_allocation(),
+        kernel=kernel,
+        lookup_lowerings=lookup_lowering_library(),
+        phase_shells=[asdict(row) for row in phase_shell_families()],
+        field_bits=FIELD_BITS,
+        public_google_baseline=PUBLIC_GOOGLE_BASELINE,
+    )
     return {
-        'schema': 'compiler-project-full-attack-inventory-v2',
+        'schema': 'compiler-project-full-attack-inventory-v4',
         'schedule': schedule,
         'inventory': {
             'direct_seed_count': 1,
@@ -730,25 +745,51 @@ def full_attack_inventory() -> Dict[str, Any]:
             'whole_oracle_select_count': leaf_calls * hist.get('select_field_if_flag', 0),
             'whole_oracle_lookup_count': schedule['summary']['lookup_invocations_total'],
         },
+        'generated_block_inventory_artifact': 'compiler_verification_project/artifacts/generated_block_inventories.json',
+        'generated_block_inventory_summary': {
+            'best_gate_family': generated_block_inventories['best_gate_family'],
+            'best_qubit_family': generated_block_inventories['best_qubit_family'],
+            'family_reconstructed_totals': [
+                {
+                    'name': row['name'],
+                    'full_oracle_non_clifford': row['reconstruction']['full_oracle_non_clifford'],
+                    'total_logical_qubits': row['reconstruction']['total_logical_qubits'],
+                }
+                for row in generated_block_inventories['families']
+            ],
+        },
         'best_gate_family': frontier['best_gate_family'],
         'best_qubit_family': frontier['best_qubit_family'],
     }
 
 
 
-def build_azure_logical_counts_payload(frontier: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+def build_azure_logical_counts_payload(frontier: Optional[Dict[str, Any]] = None, generated_block_inventories: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     if frontier is None:
         frontier = compiler_family_frontier()
+    if generated_block_inventories is None:
+        generated_block_inventories = load_json(project_artifact_path('generated_block_inventories.json')) if project_artifact_path('generated_block_inventories.json').exists() else build_generated_block_inventories(
+            schedule=frontier['schedule'],
+            slot_allocation=frontier['slot_allocation'],
+            kernel=frontier['arithmetic_kernel_family'],
+            lookup_lowerings=frontier['lookup_lowerings'],
+            phase_shells=frontier['phase_shell_families'],
+            field_bits=FIELD_BITS,
+            public_google_baseline=frontier['public_google_baseline'],
+        )
+    inventory_lookup = {row['name']: row for row in generated_block_inventories['families']}
     out = []
     for family in frontier['families']:
+        inventory = inventory_lookup[family['name']]
+        reconstruction = inventory['reconstruction']
         out.append({
             'family': family['name'],
             'logicalCounts': {
-                'numQubits': family['total_logical_qubits'],
-                'cczCount': family['full_oracle_non_clifford'],
-                'rotationCount': next(shell['adaptive_rotations'] for shell in frontier['phase_shell_families'] if shell['name'] == family['phase_shell']),
-                'rotationDepth': next(shell['adaptive_rotations'] for shell in frontier['phase_shell_families'] if shell['name'] == family['phase_shell']),
-                'measurementCount': next(shell['total_measurements'] for shell in frontier['phase_shell_families'] if shell['name'] == family['phase_shell']),
+                'numQubits': reconstruction['total_logical_qubits'],
+                'cczCount': reconstruction['full_oracle_non_clifford'],
+                'rotationCount': reconstruction['phase_shell_rotations'],
+                'rotationDepth': reconstruction['phase_shell_rotations'],
+                'measurementCount': reconstruction['phase_shell_measurements'],
             },
             'notes': 'Azure-style logicalCounts seed. The oracle non-Clifford total is exported as cczCount; phase-shell rotations remain unsynthesized.',
         })
@@ -764,7 +805,17 @@ def build_azure_logical_counts_payload(frontier: Optional[Dict[str, Any]] = None
 
 
 def write_azure_logical_counts() -> Dict[str, Any]:
-    payload = build_azure_logical_counts_payload()
+    frontier = load_json(project_artifact_path('family_frontier.json')) if project_artifact_path('family_frontier.json').exists() else compiler_family_frontier()
+    generated_block_inventories = load_json(project_artifact_path('generated_block_inventories.json')) if project_artifact_path('generated_block_inventories.json').exists() else build_generated_block_inventories(
+        schedule=frontier['schedule'],
+        slot_allocation=frontier['slot_allocation'],
+        kernel=frontier['arithmetic_kernel_family'],
+        lookup_lowerings=frontier['lookup_lowerings'],
+        phase_shells=frontier['phase_shell_families'],
+        field_bits=FIELD_BITS,
+        public_google_baseline=frontier['public_google_baseline'],
+    )
+    payload = build_azure_logical_counts_payload(frontier=frontier, generated_block_inventories=generated_block_inventories)
     dump_json(project_artifact_path('azure_resource_estimator_logical_counts.json'), payload)
     return payload
 
@@ -909,15 +960,27 @@ def run_full_raw32_semantic_check(case_count: int = 16) -> Dict[str, Any]:
 
 
 def build_all_artifacts() -> Dict[str, Any]:
+    phase_shell_rows = {'schema': 'compiler-project-phase-shells-v1', 'families': [asdict(f) for f in phase_shell_families()]}
+    lookup_lowerings = lookup_lowering_library()
+    generated_block_inventories = build_generated_block_inventories(
+        schedule=raw32_schedule(),
+        slot_allocation=exact_leaf_slot_allocation(),
+        kernel=arithmetic_kernel_library(),
+        lookup_lowerings=lookup_lowerings,
+        phase_shells=phase_shell_rows['families'],
+        field_bits=FIELD_BITS,
+        public_google_baseline=PUBLIC_GOOGLE_BASELINE,
+    )
     out = {
         'canonical_public_point': canonical_public_point(),
         'raw32_schedule': raw32_schedule(),
         'slot_allocation': exact_leaf_slot_allocation(),
         'arithmetic_kernel_library': arithmetic_kernel_library(),
         'primitive_multiplier_library': primitive_multiplier_library(),
-        'phase_shell_families': {'schema': 'compiler-project-phase-shells-v1', 'families': [asdict(f) for f in phase_shell_families()]},
+        'phase_shell_families': phase_shell_rows,
         'table_manifests': table_manifests(),
-        'lookup_lowerings': lookup_lowering_library(),
+        'lookup_lowerings': lookup_lowerings,
+        'generated_block_inventories': generated_block_inventories,
         'frontier': compiler_family_frontier(),
         'full_attack_inventory': full_attack_inventory(),
     }
@@ -929,12 +992,13 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('phase_shell_families.json'), out['phase_shell_families'])
     dump_json(project_artifact_path('table_manifests.json'), out['table_manifests'])
     dump_json(project_artifact_path('lookup_lowerings.json'), out['lookup_lowerings'])
+    dump_json(project_artifact_path('generated_block_inventories.json'), out['generated_block_inventories'])
     dump_json(project_artifact_path('family_frontier.json'), out['frontier'])
     dump_json(project_artifact_path('full_attack_inventory.json'), out['full_attack_inventory'])
     write_azure_logical_counts()
 
     build_summary = {
-        'schema': 'compiler-project-build-summary-v4',
+        'schema': 'compiler-project-build-summary-v5',
         'artifacts': {
             'canonical_public_point': 'compiler_verification_project/artifacts/canonical_public_point.json',
             'full_raw32_oracle': 'compiler_verification_project/artifacts/full_raw32_oracle.json',
@@ -944,6 +1008,7 @@ def build_all_artifacts() -> Dict[str, Any]:
             'phase_shell_families': 'compiler_verification_project/artifacts/phase_shell_families.json',
             'table_manifests': 'compiler_verification_project/artifacts/table_manifests.json',
             'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
+            'generated_block_inventories': 'compiler_verification_project/artifacts/generated_block_inventories.json',
             'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
             'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
             'azure_resource_estimator_logical_counts': 'compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json',
@@ -953,7 +1018,7 @@ def build_all_artifacts() -> Dict[str, Any]:
             'best_qubit_family': out['frontier']['best_qubit_family'],
         },
         'notes': [
-            'The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families with explicit lookup lowerings.',
+            'The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families with explicit lookup lowerings and generated block inventories.',
             'Its qubit accounting uses exact slot allocation and an explicit semiclassical phase-shell family instead of a fixed 10-slot/512-phase policy.',
         ],
     }

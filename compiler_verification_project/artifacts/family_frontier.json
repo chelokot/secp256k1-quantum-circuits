@@ -1,5 +1,5 @@
 {
-  "schema": "compiler-project-frontier-v4",
+  "schema": "compiler-project-frontier-v5",
   "public_google_baseline": {
     "low_qubit": {
       "logical_qubits": 1200,
@@ -1150,7 +1150,7 @@
                 "non_clifford_per_instance": 255,
                 "non_clifford_total": 255,
                 "notes": [
-                  "This is the same exact post-lookup sign-fix assumption previously counted as a single field-width conditional negation."
+                  "This stage is the exact post-lookup sign-fix assumption represented as a single field-width conditional negation."
                 ]
               }
             ],
@@ -1335,7 +1335,7 @@
                 "non_clifford_per_instance": 255,
                 "non_clifford_total": 255,
                 "notes": [
-                  "This is the same exact post-lookup sign-fix assumption previously counted as a single field-width conditional negation."
+                  "This stage is the exact post-lookup sign-fix assumption represented as a single field-width conditional negation."
                 ]
               }
             ],
@@ -1536,7 +1536,7 @@
                 "non_clifford_per_instance": 255,
                 "non_clifford_total": 255,
                 "notes": [
-                  "This is the same exact post-lookup sign-fix assumption previously counted as a single field-width conditional negation."
+                  "This stage is the exact post-lookup sign-fix assumption represented as a single field-width conditional negation."
                 ]
               }
             ],
@@ -1579,6 +1579,7 @@
       "This is still not a bit-for-bit primitive qRAM/QROM netlist; it is an explicit compiler-family lowering layer checked below the folded lookup contract."
     ]
   },
+  "generated_block_inventory_artifact": "compiler_verification_project/artifacts/generated_block_inventories.json",
   "lookup_families": [
     {
       "name": "folded_linear_scan_tmpand_v1",
@@ -1875,7 +1876,7 @@
     ]
   },
   "notes": [
-    "These are exact whole-oracle counts for named compiler families over a fixed arithmetic-kernel family, an explicit lookup-lowering family, and a fully quantum raw-32 schedule.",
+    "These are exact whole-oracle counts for named compiler families over a fixed arithmetic-kernel family, an explicit lookup-lowering family, a generated block-inventory layer, and a fully quantum raw-32 schedule.",
     "The qubit frontier uses exact slot allocation and an explicit semiclassical phase-shell option rather than a fixed 512-bit phase-register policy.",
     "The arithmetic kernels remain an imported exact non-Clifford family boundary; whole-oracle counts are exact relative to that family."
   ]

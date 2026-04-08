@@ -69,6 +69,7 @@ class VerificationPipelineTests(unittest.TestCase):
         self.assertEqual(verify['summary']['invariant_checks']['pass'], verify['summary']['invariant_checks']['total'])
         self.assertEqual(verify['schedule_checks']['pass'], verify['schedule_checks']['total'])
         self.assertEqual(verify['lookup_lowering_checks']['pass'], verify['lookup_lowering_checks']['total'])
+        self.assertEqual(verify['generated_block_inventory_checks']['pass'], verify['generated_block_inventory_checks']['total'])
         self.assertEqual(verify['slot_allocation_checks']['pass'], verify['slot_allocation_checks']['total'])
         self.assertEqual(verify['frontier_checks']['pass'], verify['frontier_checks']['total'])
         self.assertEqual(verify['cain_transfer_checks']['pass'], verify['cain_transfer_checks']['total'])

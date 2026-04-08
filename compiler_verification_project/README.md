@@ -47,6 +47,7 @@ What it does ship is:
 - `exact_leaf_slot_allocation.json` — exact versioned live-range allocation of the checked leaf
 - `module_library.json` — fixed arithmetic kernel library used by the frontier
 - `lookup_lowerings.json` — explicit stage/block inventories for the named folded lookup families
+- `generated_block_inventories.json` — generated whole-oracle block inventories whose reconstructed totals feed the exact frontier
 - `primitive_multiplier_library.json` — auditable manifest for all 341 multiplier instances in the raw-32 oracle
 - `phase_shell_families.json` — full-register and semiclassical-QFT shell families
 - `table_manifests.json` — exact folded-table dimensions and canonical window bases
@@ -75,6 +76,8 @@ Its defining exact features are:
   slots to **9 exact physical field slots**;
 - explicit lookup lowerings reconstruct each lookup-family count from checked
   stage/block inventories instead of from naked family formulas;
+- generated whole-oracle block inventories reconstruct each family total from
+  arithmetic blocks, lookup blocks, qubit contributors, and phase-shell counts;
 - a semiclassical-QFT phase-shell family removes the fixed **512 live phase
   qubits** assumption; and
 - those two ingredients place the best exact low-qubit family at **2,337
