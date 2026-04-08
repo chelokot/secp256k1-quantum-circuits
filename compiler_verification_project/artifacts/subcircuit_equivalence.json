@@ -494,8 +494,10 @@
           "measurement": 385476
         },
         "total_measurements": 385988,
+        "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
-        "phase_shell_rotations": 512,
+        "phase_shell_rotations": 511,
+        "phase_shell_rotation_depth": 511,
         "arithmetic_slot_count": 9,
         "control_slot_count": 2,
         "lookup_workspace_qubits": 32786,
@@ -517,8 +519,10 @@
           "measurement": 15053284
         },
         "total_measurements": 15053796,
+        "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
-        "phase_shell_rotations": 512,
+        "phase_shell_rotations": 511,
+        "phase_shell_rotation_depth": 511,
         "arithmetic_slot_count": 9,
         "control_slot_count": 2,
         "lookup_workspace_qubits": 31,

@@ -1,27 +1,40 @@
 {
-  "schema": "compiler-project-phase-shells-v1",
+  "schema": "compiler-project-phase-shells-v2",
   "families": [
     {
       "name": "full_phase_register_v1",
-      "summary": "Conservative shell that keeps the entire 512-bit phase-estimation register live.",
+      "summary": "Conservative shell that keeps the full 512-bit phase register live and lowers the inverse QFT as a coherent dyadic ladder.",
+      "gate_set": "Clifford + coherent controlled dyadic phase + measurement",
       "live_quantum_bits": 512,
+      "hadamard_count": 512,
       "total_measurements": 512,
-      "adaptive_rotations": 512,
+      "total_rotations": 130816,
+      "rotation_depth": 130816,
+      "single_qubit_rotation_count": 0,
+      "controlled_rotation_count": 130816,
       "notes": [
-        "This family mirrors the simplest exact logical accounting: both 256-bit phase registers remain live throughout the oracle inventory.",
-        "Rotation synthesis below this shell is still out of scope; the shell affects qubit inventory, not oracle non-Clifford totals."
+        "This family is exact for the chosen serial coherent inverse-QFT schedule over the live phase register.",
+        "Its rotation ladder is much heavier than the semiclassical family because quantum-controlled dyadic phases cannot be collapsed into one classical feed-forward update per bit."
       ]
     },
     {
       "name": "semiclassical_qft_v1",
       "summary": "Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
+      "gate_set": "Clifford + classically controlled dyadic phase + measurement",
       "live_quantum_bits": 1,
+      "hadamard_count": 512,
       "total_measurements": 512,
-      "adaptive_rotations": 512,
+      "total_rotations": 511,
+      "rotation_depth": 511,
+      "single_qubit_rotation_count": 511,
+      "controlled_rotation_count": 0,
       "notes": [
-        "This family treats the phase-estimation shell as a one-qubit live quantum register with classical feed-forward between measurements.",
-        "It is the strongest exact qubit-compression lever currently checked into the compiler project because it removes the 512-bit coherent phase-register requirement without changing the oracle family itself."
+        "This family is exact for the chosen semiclassical inverse-QFT schedule with one aggregated classical basis update per noninitial bit.",
+        "It preserves the oracle family while collapsing the live quantum phase register from 512 qubits to one qubit."
       ]
     }
+  ],
+  "notes": [
+    "This compact summary is derived from the exact phase-shell lowering library and is used by frontier and handoff artifacts."
   ]
 }

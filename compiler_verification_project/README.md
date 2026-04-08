@@ -50,12 +50,13 @@ What it does ship is:
 - `arithmetic_lowerings.json` — explicit stage/block inventories for the named arithmetic-kernel family
 - `module_library.json` — arithmetic-kernel summary used by the frontier
 - `lookup_lowerings.json` — explicit stage/block inventories for the named folded lookup families
+- `phase_shell_lowerings.json` — explicit stage/block inventories for the named full-register and semiclassical inverse-QFT shells
 - `generated_block_inventories.json` — generated whole-oracle block inventories for the supporting decomposition layer
 - `ft_ir_compositions.json` — compositional FT-style call graphs and leaf sigma reconstructions for every named compiler family
 - `whole_oracle_recount.json` — independent exact whole-oracle recount derived from the FT IR leaf sigma
 - `subcircuit_equivalence.json` — cross-layer equivalence witnesses for traced ISA opcodes, lowered lookup families, the coherent cleanup window, and generated whole-oracle composition
 - `primitive_multiplier_library.json` — auditable manifest for all 341 multiplier instances in the raw-32 oracle
-- `phase_shell_families.json` — full-register and semiclassical-QFT shell families
+- `phase_shell_families.json` — compact summary of the exact phase-shell lowering families
 - `table_manifests.json` — exact folded-table dimensions and canonical window bases
 - `full_attack_inventory.json` — structural inventory for the completed oracle
 - `verification_summary.json` — deterministic semantic replay plus cross-artifact integrity checks for schedule, slot allocation, FT IR composition, lowered inventories, frontier, and transfer handoffs
@@ -84,6 +85,9 @@ Its defining exact features are:
   from stage/block inventories instead of from naked opcode formulas;
 - explicit lookup lowerings reconstruct each lookup-family count from checked
   stage/block inventories instead of from naked family formulas;
+- explicit phase-shell lowerings reconstruct Hadamard, rotation, measurement,
+  and rotation-depth counts from checked stage/block inventories instead of
+  from shell-level placeholders;
 - FT IR compositions reconstruct each family from hierarchical bundles plus a
   traversed leaf sigma instead of only from flattened generated blocks;
 - whole-oracle recount reconstructs the frontier totals from the FT IR leaf
@@ -92,7 +96,8 @@ Its defining exact features are:
   lowered lookup-family semantics, the coherent cleanup window, and generated
   whole-oracle composition back to the checked source artifacts;
 - generated whole-oracle block inventories reconstruct each family total from
-  arithmetic blocks, lookup blocks, qubit contributors, and phase-shell counts;
+  arithmetic blocks, lookup blocks, qubit contributors, and explicit
+  phase-shell lowering blocks;
 - a semiclassical-QFT phase-shell family removes the fixed **512 live phase
   qubits** assumption; and
 - those two ingredients place the best exact low-qubit family at **2,338

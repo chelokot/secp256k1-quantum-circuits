@@ -40,13 +40,16 @@
         "measurement": 15053284
       },
       "total_logical_qubits": 2849,
+      "phase_shell_hadamards": 512,
+      "total_measurements": 15053796,
       "phase_shell_measurements": 512,
-      "phase_shell_rotations": 512,
+      "phase_shell_rotations": 130816,
+      "phase_shell_rotation_depth": 130816,
       "graph_summary": {
-        "node_count": 53,
-        "edge_count": 52,
-        "leaf_node_count": 26,
-        "reachable_node_count": 53,
+        "node_count": 55,
+        "edge_count": 54,
+        "leaf_node_count": 28,
+        "reachable_node_count": 55,
         "max_depth": 5,
         "root_in_degree": 0,
         "primitive_totals": {
@@ -56,8 +59,10 @@
           "measurement": 15053284
         },
         "logical_qubits_total": 2849,
+        "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
-        "phase_shell_rotations": 512
+        "phase_shell_rotations": 130816,
+        "phase_shell_rotation_depth": 130816
       },
       "improvement_vs_google_low_qubit": 2.4042998498514745,
       "improvement_vs_google_low_gate": 1.8700109943289245,
@@ -77,13 +82,16 @@
         "measurement": 15053284
       },
       "total_logical_qubits": 2338,
+      "phase_shell_hadamards": 512,
+      "total_measurements": 15053796,
       "phase_shell_measurements": 512,
-      "phase_shell_rotations": 512,
+      "phase_shell_rotations": 511,
+      "phase_shell_rotation_depth": 511,
       "graph_summary": {
-        "node_count": 53,
-        "edge_count": 52,
-        "leaf_node_count": 26,
-        "reachable_node_count": 53,
+        "node_count": 55,
+        "edge_count": 54,
+        "leaf_node_count": 28,
+        "reachable_node_count": 55,
         "max_depth": 5,
         "root_in_degree": 0,
         "primitive_totals": {
@@ -93,8 +101,10 @@
           "measurement": 15053284
         },
         "logical_qubits_total": 2338,
+        "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
-        "phase_shell_rotations": 512
+        "phase_shell_rotations": 511,
+        "phase_shell_rotation_depth": 511
       },
       "improvement_vs_google_low_qubit": 2.4042998498514745,
       "improvement_vs_google_low_gate": 1.8700109943289245,
@@ -114,13 +124,16 @@
         "measurement": 373220
       },
       "total_logical_qubits": 35604,
+      "phase_shell_hadamards": 512,
+      "total_measurements": 373732,
       "phase_shell_measurements": 512,
-      "phase_shell_rotations": 512,
+      "phase_shell_rotations": 130816,
+      "phase_shell_rotation_depth": 130816,
       "graph_summary": {
-        "node_count": 55,
-        "edge_count": 54,
-        "leaf_node_count": 28,
-        "reachable_node_count": 55,
+        "node_count": 57,
+        "edge_count": 56,
+        "leaf_node_count": 30,
+        "reachable_node_count": 57,
         "max_depth": 5,
         "root_in_degree": 0,
         "primitive_totals": {
@@ -130,8 +143,10 @@
           "measurement": 373220
         },
         "logical_qubits_total": 35604,
+        "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
-        "phase_shell_rotations": 512
+        "phase_shell_rotations": 130816,
+        "phase_shell_rotation_depth": 130816
       },
       "improvement_vs_google_low_qubit": 3.621736357794393,
       "improvement_vs_google_low_gate": 2.816906056062306,
@@ -151,13 +166,16 @@
         "measurement": 373220
       },
       "total_logical_qubits": 35093,
+      "phase_shell_hadamards": 512,
+      "total_measurements": 373732,
       "phase_shell_measurements": 512,
-      "phase_shell_rotations": 512,
+      "phase_shell_rotations": 511,
+      "phase_shell_rotation_depth": 511,
       "graph_summary": {
-        "node_count": 55,
-        "edge_count": 54,
-        "leaf_node_count": 28,
-        "reachable_node_count": 55,
+        "node_count": 57,
+        "edge_count": 56,
+        "leaf_node_count": 30,
+        "reachable_node_count": 57,
         "max_depth": 5,
         "root_in_degree": 0,
         "primitive_totals": {
@@ -167,8 +185,10 @@
           "measurement": 373220
         },
         "logical_qubits_total": 35093,
+        "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
-        "phase_shell_rotations": 512
+        "phase_shell_rotations": 511,
+        "phase_shell_rotation_depth": 511
       },
       "improvement_vs_google_low_qubit": 3.621736357794393,
       "improvement_vs_google_low_gate": 2.816906056062306,
@@ -188,13 +208,16 @@
         "measurement": 385476
       },
       "total_logical_qubits": 35604,
+      "phase_shell_hadamards": 512,
+      "total_measurements": 385988,
       "phase_shell_measurements": 512,
-      "phase_shell_rotations": 512,
+      "phase_shell_rotations": 130816,
+      "phase_shell_rotation_depth": 130816,
       "graph_summary": {
-        "node_count": 57,
-        "edge_count": 56,
-        "leaf_node_count": 30,
-        "reachable_node_count": 57,
+        "node_count": 59,
+        "edge_count": 58,
+        "leaf_node_count": 32,
+        "reachable_node_count": 59,
         "max_depth": 5,
         "root_in_degree": 0,
         "primitive_totals": {
@@ -204,8 +227,10 @@
           "measurement": 385476
         },
         "logical_qubits_total": 35604,
+        "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
-        "phase_shell_rotations": 512
+        "phase_shell_rotations": 130816,
+        "phase_shell_rotation_depth": 130816
       },
       "improvement_vs_google_low_qubit": 3.779341706702843,
       "improvement_vs_google_low_gate": 2.9394879941022114,
@@ -225,13 +250,16 @@
         "measurement": 385476
       },
       "total_logical_qubits": 35093,
+      "phase_shell_hadamards": 512,
+      "total_measurements": 385988,
       "phase_shell_measurements": 512,
-      "phase_shell_rotations": 512,
+      "phase_shell_rotations": 511,
+      "phase_shell_rotation_depth": 511,
       "graph_summary": {
-        "node_count": 57,
-        "edge_count": 56,
-        "leaf_node_count": 30,
-        "reachable_node_count": 57,
+        "node_count": 59,
+        "edge_count": 58,
+        "leaf_node_count": 32,
+        "reachable_node_count": 59,
         "max_depth": 5,
         "root_in_degree": 0,
         "primitive_totals": {
@@ -241,8 +269,10 @@
           "measurement": 385476
         },
         "logical_qubits_total": 35093,
+        "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
-        "phase_shell_rotations": 512
+        "phase_shell_rotations": 511,
+        "phase_shell_rotation_depth": 511
       },
       "improvement_vs_google_low_qubit": 3.779341706702843,
       "improvement_vs_google_low_gate": 2.9394879941022114,
@@ -263,13 +293,16 @@
       "measurement": 385476
     },
     "total_logical_qubits": 35093,
+    "phase_shell_hadamards": 512,
+    "total_measurements": 385988,
     "phase_shell_measurements": 512,
-    "phase_shell_rotations": 512,
+    "phase_shell_rotations": 511,
+    "phase_shell_rotation_depth": 511,
     "graph_summary": {
-      "node_count": 57,
-      "edge_count": 56,
-      "leaf_node_count": 30,
-      "reachable_node_count": 57,
+      "node_count": 59,
+      "edge_count": 58,
+      "leaf_node_count": 32,
+      "reachable_node_count": 59,
       "max_depth": 5,
       "root_in_degree": 0,
       "primitive_totals": {
@@ -279,8 +312,10 @@
         "measurement": 385476
       },
       "logical_qubits_total": 35093,
+      "phase_shell_hadamards": 512,
       "phase_shell_measurements": 512,
-      "phase_shell_rotations": 512
+      "phase_shell_rotations": 511,
+      "phase_shell_rotation_depth": 511
     },
     "improvement_vs_google_low_qubit": 3.779341706702843,
     "improvement_vs_google_low_gate": 2.9394879941022114,
@@ -300,13 +335,16 @@
       "measurement": 15053284
     },
     "total_logical_qubits": 2338,
+    "phase_shell_hadamards": 512,
+    "total_measurements": 15053796,
     "phase_shell_measurements": 512,
-    "phase_shell_rotations": 512,
+    "phase_shell_rotations": 511,
+    "phase_shell_rotation_depth": 511,
     "graph_summary": {
-      "node_count": 53,
-      "edge_count": 52,
-      "leaf_node_count": 26,
-      "reachable_node_count": 53,
+      "node_count": 55,
+      "edge_count": 54,
+      "leaf_node_count": 28,
+      "reachable_node_count": 55,
       "max_depth": 5,
       "root_in_degree": 0,
       "primitive_totals": {
@@ -316,8 +354,10 @@
         "measurement": 15053284
       },
       "logical_qubits_total": 2338,
+      "phase_shell_hadamards": 512,
       "phase_shell_measurements": 512,
-      "phase_shell_rotations": 512
+      "phase_shell_rotations": 511,
+      "phase_shell_rotation_depth": 511
     },
     "improvement_vs_google_low_qubit": 2.4042998498514745,
     "improvement_vs_google_low_gate": 1.8700109943289245,

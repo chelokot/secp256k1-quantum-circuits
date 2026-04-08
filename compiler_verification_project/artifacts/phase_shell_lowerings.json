@@ -1,0 +1,262 @@
+{
+  "schema": "compiler-project-phase-shell-lowerings-v1",
+  "phase_register_bits": 512,
+  "families": [
+    {
+      "name": "full_phase_register_v1",
+      "summary": "Conservative shell that keeps the full 512-bit phase register live and lowers the inverse QFT as a coherent dyadic ladder.",
+      "gate_set": "Clifford + coherent controlled dyadic phase + measurement",
+      "live_quantum_bits": 512,
+      "lowering_strategy": {
+        "phase_register_policy": "keep all phase-estimation bits live until the coherent inverse-QFT ladder finishes",
+        "phase_rotation_policy": "one explicit controlled dyadic phase per strict ordered bit pair",
+        "basis_change_policy": "one Hadamard and one terminal measurement per phase bit"
+      },
+      "stages": [
+        {
+          "name": "coherent_dyadic_rotation_ladder",
+          "summary": "Exact coherent inverse-QFT dyadic phase ladder over the full live phase register.",
+          "category": "coherent_phase_rotations",
+          "blocks": [
+            {
+              "name": "controlled_dyadic_rotations",
+              "summary": "One coherent controlled dyadic phase rotation for each strict bit-order pair in the inverse-QFT ladder.",
+              "instance_count": 130816,
+              "count_profile_per_instance": {
+                "hadamard": 0,
+                "measurement": 0,
+                "single_qubit_rotation": 0,
+                "controlled_rotation": 1,
+                "rotation_depth": 1
+              },
+              "count_profile_total": {
+                "hadamard": 0,
+                "measurement": 0,
+                "single_qubit_rotation": 0,
+                "controlled_rotation": 130816,
+                "rotation_depth": 130816
+              },
+              "notes": [
+                "The lowering keeps the register coherent and counts every controlled dyadic phase separately.",
+                "The reported rotation depth follows the same serial bit-order schedule as the counted ladder blocks."
+              ]
+            }
+          ],
+          "count_profile_total": {
+            "hadamard": 0,
+            "measurement": 0,
+            "single_qubit_rotation": 0,
+            "controlled_rotation": 130816,
+            "rotation_depth": 130816
+          },
+          "notes": [
+            "This family keeps the entire 512-bit phase register live and lowers the inverse QFT as a coherent dyadic rotation ladder."
+          ]
+        },
+        {
+          "name": "basis_change_and_measurement",
+          "summary": "Terminal Hadamard basis changes followed by one computational-basis measurement per phase bit.",
+          "category": "basis_change_and_measurement",
+          "blocks": [
+            {
+              "name": "terminal_hadamards",
+              "summary": "One Hadamard basis change for each live phase bit before measurement.",
+              "instance_count": 512,
+              "count_profile_per_instance": {
+                "hadamard": 1,
+                "measurement": 0,
+                "single_qubit_rotation": 0,
+                "controlled_rotation": 0,
+                "rotation_depth": 0
+              },
+              "count_profile_total": {
+                "hadamard": 512,
+                "measurement": 0,
+                "single_qubit_rotation": 0,
+                "controlled_rotation": 0,
+                "rotation_depth": 0
+              },
+              "notes": [
+                "The Hadamards are part of the exact inverse-QFT shell rather than of the oracle core."
+              ]
+            },
+            {
+              "name": "terminal_measurements",
+              "summary": "One computational-basis measurement for each phase bit after the inverse-QFT basis change.",
+              "instance_count": 512,
+              "count_profile_per_instance": {
+                "hadamard": 0,
+                "measurement": 1,
+                "single_qubit_rotation": 0,
+                "controlled_rotation": 0,
+                "rotation_depth": 0
+              },
+              "count_profile_total": {
+                "hadamard": 0,
+                "measurement": 512,
+                "single_qubit_rotation": 0,
+                "controlled_rotation": 0,
+                "rotation_depth": 0
+              },
+              "notes": [
+                "The shell ends in terminal measurements over the full phase register."
+              ]
+            }
+          ],
+          "count_profile_total": {
+            "hadamard": 512,
+            "measurement": 512,
+            "single_qubit_rotation": 0,
+            "controlled_rotation": 0,
+            "rotation_depth": 0
+          },
+          "notes": [
+            "The coherent shell measures only after the full inverse-QFT ladder completes."
+          ]
+        }
+      ],
+      "hadamard_count": 512,
+      "total_measurements": 512,
+      "measurement_count": 512,
+      "total_rotations": 130816,
+      "rotation_count": 130816,
+      "rotation_depth": 130816,
+      "single_qubit_rotation_count": 0,
+      "controlled_rotation_count": 130816,
+      "notes": [
+        "This family is exact for the chosen serial coherent inverse-QFT schedule over the live phase register.",
+        "Its rotation ladder is much heavier than the semiclassical family because quantum-controlled dyadic phases cannot be collapsed into one classical feed-forward update per bit."
+      ]
+    },
+    {
+      "name": "semiclassical_qft_v1",
+      "summary": "Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
+      "gate_set": "Clifford + classically controlled dyadic phase + measurement",
+      "live_quantum_bits": 1,
+      "lowering_strategy": {
+        "phase_register_policy": "reuse one live phase qubit across the full bit schedule",
+        "phase_rotation_policy": "aggregate all prior measured-bit corrections for each target into one classically controlled dyadic rotation",
+        "basis_change_policy": "one Hadamard and one terminal measurement per phase bit"
+      },
+      "stages": [
+        {
+          "name": "adaptive_basis_updates",
+          "summary": "One classically aggregated dyadic phase update before each noninitial semiclassical inverse-QFT measurement.",
+          "category": "adaptive_phase_rotations",
+          "blocks": [
+            {
+              "name": "aggregated_classical_phase_updates",
+              "summary": "One classically controlled dyadic Z rotation per noninitial phase bit, after aggregating all prior measurement bits into a single update angle.",
+              "instance_count": 511,
+              "count_profile_per_instance": {
+                "hadamard": 0,
+                "measurement": 0,
+                "single_qubit_rotation": 1,
+                "controlled_rotation": 0,
+                "rotation_depth": 1
+              },
+              "count_profile_total": {
+                "hadamard": 0,
+                "measurement": 0,
+                "single_qubit_rotation": 511,
+                "controlled_rotation": 0,
+                "rotation_depth": 511
+              },
+              "notes": [
+                "This follows the Griffiths\u2013Niu semiclassical QFT pattern in which prior measured bits determine the next one-qubit basis update.",
+                "All prior dyadic corrections for a given target bit are classically aggregated into one rotation before the Hadamard and measurement."
+              ]
+            }
+          ],
+          "count_profile_total": {
+            "hadamard": 0,
+            "measurement": 0,
+            "single_qubit_rotation": 511,
+            "controlled_rotation": 0,
+            "rotation_depth": 511
+          },
+          "notes": [
+            "The first measured bit has no prior feed-forward correction, so the explicit adaptive-rotation count is phase_bits - 1."
+          ]
+        },
+        {
+          "name": "basis_change_and_measurement",
+          "summary": "One Hadamard basis change and one terminal measurement per phase bit in the semiclassical shell.",
+          "category": "basis_change_and_measurement",
+          "blocks": [
+            {
+              "name": "terminal_hadamards",
+              "summary": "One Hadamard before each semiclassical inverse-QFT measurement.",
+              "instance_count": 512,
+              "count_profile_per_instance": {
+                "hadamard": 1,
+                "measurement": 0,
+                "single_qubit_rotation": 0,
+                "controlled_rotation": 0,
+                "rotation_depth": 0
+              },
+              "count_profile_total": {
+                "hadamard": 512,
+                "measurement": 0,
+                "single_qubit_rotation": 0,
+                "controlled_rotation": 0,
+                "rotation_depth": 0
+              },
+              "notes": [
+                "The single live phase qubit is reused across the full bit schedule."
+              ]
+            },
+            {
+              "name": "terminal_measurements",
+              "summary": "One computational-basis measurement per phase bit in the semiclassical shell.",
+              "instance_count": 512,
+              "count_profile_per_instance": {
+                "hadamard": 0,
+                "measurement": 1,
+                "single_qubit_rotation": 0,
+                "controlled_rotation": 0,
+                "rotation_depth": 0
+              },
+              "count_profile_total": {
+                "hadamard": 0,
+                "measurement": 512,
+                "single_qubit_rotation": 0,
+                "controlled_rotation": 0,
+                "rotation_depth": 0
+              },
+              "notes": [
+                "Each measured bit is committed to classical state before the next adaptive basis update."
+              ]
+            }
+          ],
+          "count_profile_total": {
+            "hadamard": 512,
+            "measurement": 512,
+            "single_qubit_rotation": 0,
+            "controlled_rotation": 0,
+            "rotation_depth": 0
+          },
+          "notes": [
+            "The shell keeps only one phase qubit live and relies on classical feed-forward between measurements."
+          ]
+        }
+      ],
+      "hadamard_count": 512,
+      "total_measurements": 512,
+      "measurement_count": 512,
+      "total_rotations": 511,
+      "rotation_count": 511,
+      "rotation_depth": 511,
+      "single_qubit_rotation_count": 511,
+      "controlled_rotation_count": 0,
+      "notes": [
+        "This family is exact for the chosen semiclassical inverse-QFT schedule with one aggregated classical basis update per noninitial bit.",
+        "It preserves the oracle family while collapsing the live quantum phase register from 512 qubits to one qubit."
+      ]
+    }
+  ],
+  "notes": [
+    "This artifact lowers each named phase-shell family into exact stage/block inventories over explicit pre-layout phase-shell primitives.",
+    "The shell inventory is tracked separately from the arithmetic and lookup CCX totals because Azure logicalCounts accepts rotations and measurements as separate exact pre-layout inputs."
+  ]
+}

@@ -24,7 +24,7 @@ repository-supported answer to each one.
 - deterministic scaffold replay for the retained-window schedule
 - exact signed folded lookup-contract semantics together with machine-readable contract-field validation
 - exact whole-oracle counts for named compiler families in the compiler subproject
-- exact qubit tightening from slot allocation and semiclassical phase-shell accounting in that subproject
+- exact qubit tightening from slot allocation and exact phase-shell lowering in that subproject
 - exact comparison of those compiler-family counts against Google's published
   2026 secp256k1 baseline lines
 

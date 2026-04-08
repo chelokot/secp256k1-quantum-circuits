@@ -159,40 +159,44 @@
       "bytes": 28942
     },
     "compiler_verification_project/README.md": {
-      "sha256": "e66e30bd19e4b416d9da2a457aff0ed31219394b8efc45f4eb0a2d934aa06b3c",
-      "bytes": 5798
+      "sha256": "000d21c79da9829ae4368f468db9fcbb8fe4007a96083acb9bc9c75153394ad8",
+      "bytes": 6146
     },
     "compiler_verification_project/src/arithmetic_lowering.py": {
       "sha256": "9e8079087614890a51ec95f40665ccd3485afbc5d0d0f0491df6045d82fb17f2",
       "bytes": 15708
     },
     "compiler_verification_project/src/ft_ir.py": {
-      "sha256": "5da6ec885a102bc3f463c10d969dca03787ef3d7a57929b3cd7fd53e91c84c0e",
-      "bytes": 23489
+      "sha256": "a98b59a8e9d212e52404f00d95470ad9ceef460d882f7c91703f6453354ea184",
+      "bytes": 25649
     },
     "compiler_verification_project/src/integrity.py": {
-      "sha256": "deffdf6a95a5915f9adc38d09669c8601e84442dd4f4ac715dd41d29e49a0fa1",
-      "bytes": 71067
+      "sha256": "2113fa25954c459aa507be678b002524c690a4db14682a6fb20c7634772ffe1b",
+      "bytes": 77620
     },
     "compiler_verification_project/src/generated_block_inventory.py": {
-      "sha256": "ece06f761cc430848b270b18224a9da589f1f146622f5e3a0b761d9973f1ba54",
-      "bytes": 14296
+      "sha256": "a64ab21105efc321cef8041d80f66b857308b59a5c3c7af06cb3dba922f9bd9b",
+      "bytes": 15866
     },
     "compiler_verification_project/src/lookup_lowering.py": {
       "sha256": "00ef5d78d50c59d400b039e6dba0c11586de9e547f4dd7540fe47bc18b6e5a29",
       "bytes": 22518
     },
+    "compiler_verification_project/src/phase_shell_lowering.py": {
+      "sha256": "3dbc16253253de05bdece85ab80b66df92783de8da335ea32c757bd8a841a9e1",
+      "bytes": 12529
+    },
     "compiler_verification_project/src/project.py": {
-      "sha256": "e1631c0d956981332722321cb3d0216290d25e489d544ffcc067a0b2aaeb49e2",
-      "bytes": 50177
+      "sha256": "d617e7d281accb642f4c0727c728afca80a0eb6dc31d7203f13f9f89da1f9ce2",
+      "bytes": 50025
     },
     "compiler_verification_project/src/subcircuit_equivalence.py": {
       "sha256": "b8621736554ed40804717f65483f78a060627aad7a3d32fcc0d474015217953f",
       "bytes": 17303
     },
     "compiler_verification_project/src/whole_oracle_recount.py": {
-      "sha256": "66ac8265f64b17917103b4a64a4a6b6e94cc3152a1f92b5532b2fa314d13483e",
-      "bytes": 4317
+      "sha256": "fcde1fa0b777ae4135fe83de34e204ecabe19e1ff8b1c9698e227844bfa8832b",
+      "bytes": 4853
     },
     "compiler_verification_project/scripts/build.py": {
       "sha256": "be1b22f40172be2352a807ef3045ad4321c7f35992d6ce7278837a257039076b",
@@ -203,16 +207,16 @@
       "bytes": 1142
     },
     "compiler_verification_project/artifacts/build_summary.json": {
-      "sha256": "d0469f8f963fbfd4840d60b6b5dc2b1ceb06f1d4f6cd8f31ad7f9b5fc2e21f32",
-      "bytes": 5874
+      "sha256": "f2aca3f43ef021e135855b72a79b0829e66275ad2e2027be1b5e4a584daeb1b5",
+      "bytes": 6216
     },
     "compiler_verification_project/artifacts/arithmetic_lowerings.json": {
       "sha256": "ec7ed59930db6aae20205f706a83da65980350f5f7978183c43a8034ad2c8353",
       "bytes": 19156
     },
     "compiler_verification_project/artifacts/family_frontier.json": {
-      "sha256": "b05b457419ae82463d62942e6ff124910e0673ef8921670fd39e0715de791642",
-      "bytes": 92876
+      "sha256": "e4825ce579e7d824626a4100e3da24ca77f95b796dc8fa08bf22d55dcf385fe5",
+      "bytes": 106428
     },
     "compiler_verification_project/artifacts/lookup_lowerings.json": {
       "sha256": "a2c3c4fb785246c687eb8380d64ec9431e6f2e69cd5bb177b77b9c404a7d179f",
@@ -230,37 +234,41 @@
       "sha256": "5b46cb04be872d1b42bced4e0e673db14429aec55eaf86f111347594d2e978e7",
       "bytes": 82417
     },
+    "compiler_verification_project/artifacts/phase_shell_lowerings.json": {
+      "sha256": "327677f6223a00892e43f33d6a33020bd2299fc5f96e12cdd9cda5f9f039fb1c",
+      "bytes": 11137
+    },
     "compiler_verification_project/artifacts/phase_shell_families.json": {
-      "sha256": "d7b1a2cb5ebf08e8b3597d5c44f481e803066ace0000cb4c5badad61e06ee76c",
-      "bytes": 1296
+      "sha256": "0ac436fbe5e4482e65452b8d337013b5ebedb5f5e7ee42a9bf698f9a0ea22649",
+      "bytes": 1851
     },
     "compiler_verification_project/artifacts/generated_block_inventories.json": {
-      "sha256": "9d1285a976468fca3d23c5381ec028b48cbd799161cb020a09bf95f9594eeca8",
-      "bytes": 195649
+      "sha256": "cb966c7d8fbe178cb40451995b433641fc6506bef76bde1ef1c95d544bd69830",
+      "bytes": 208073
     },
     "compiler_verification_project/artifacts/ft_ir_compositions.json": {
-      "sha256": "0a094ee960dab71c3c46f535931682daf219539af3debf9e31747c68aa518183",
-      "bytes": 483442
+      "sha256": "9b34bdd76f102fe2144c703b0cdef0f2d01acef83151bcbf64d9ef392304274d",
+      "bytes": 500768
     },
     "compiler_verification_project/artifacts/whole_oracle_recount.json": {
-      "sha256": "2d90aea0577c1a5ac6d42c76b14afd8720fd0acca09b090a09ff92fec0a7a94f",
-      "bytes": 11154
+      "sha256": "2f6c1184a4120990dfde6fe0d99d923e17fd27b97891cb99a07928f1d340b949",
+      "bytes": 12728
     },
     "compiler_verification_project/artifacts/subcircuit_equivalence.json": {
-      "sha256": "192fda1e53009ed9bd0da55faafe5668f3255c201a5f231191439506bed999d1",
-      "bytes": 15825
+      "sha256": "06bc83a208fdcbb421c43ec0522fe10e4527a83b61ec9f57d1fe2b5d96d51daf",
+      "bytes": 15987
     },
     "compiler_verification_project/artifacts/verification_summary.json": {
-      "sha256": "0416d8117152f7771fa04e97567a8744c7d4f242a67209636f81b844026e833c",
-      "bytes": 2702795
+      "sha256": "7aa080dc20c618f8d1375f476ddf19cd63c7f7c1a413bd5a4f8fc82287b696ac",
+      "bytes": 2848510
     },
     "compiler_verification_project/artifacts/cain_exact_transfer.json": {
       "sha256": "02dc5be4230f4e9224742ff1ce6f747f986fec081e7c93822a481c3830c69148",
       "bytes": 2735
     },
     "compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json": {
-      "sha256": "33cb53e0ed15ca967c0b71bb0e7233cfa1b38c648b042e9d93a98cb73333779d",
-      "bytes": 2896
+      "sha256": "41fa851924cc58e97f9cc27ee48c7ccc7587f3a89ce12ed284dccbfece1fb37f",
+      "bytes": 3173
     }
   }
 }

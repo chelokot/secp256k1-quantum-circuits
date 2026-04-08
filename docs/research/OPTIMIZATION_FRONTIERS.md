@@ -10,6 +10,7 @@ which implementation gaps remain open.
 - signed lookup-folding contract semantics
 - exact ISA-level coherent flag cleanup
 - exact arithmetic-kernel stage/block inventories for the named compiler family
+- exact phase-shell stage/block inventories for the named full-register and semiclassical inverse-QFT families
 - compositional FT-style call graphs and leaf sigma for the named compiler
   families
 - independent exact whole-oracle recount over the FT IR leaf sigma
@@ -17,7 +18,7 @@ which implementation gaps remain open.
   opcodes, lowered lookup families, the cleanup window, and generated
   whole-oracle composition
 - exact compiler-family raw-32 whole-oracle frontier
-- exact slot allocation and exact phase-shell family accounting
+- exact slot allocation and exact phase-shell lowering
 
 The main open directions are therefore:
 

@@ -37,5 +37,7 @@ def test_ft_ir_leaf_sigma_has_all_resource_kinds() -> None:
     semantics = {entry['resource_profile']['resource_semantics'] for entry in family['leaf_sigma']}
     assert 'additive_primitive' in semantics
     assert 'peak_live_qubits' in semantics
+    assert 'additive_phase_hadamards' in semantics
     assert 'additive_phase_measurements' in semantics
     assert 'additive_phase_rotations' in semantics
+    assert 'additive_phase_rotation_depth' in semantics

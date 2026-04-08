@@ -1,75 +1,75 @@
 {
-  "schema": "compiler-project-azure-logical-counts-v1",
+  "schema": "compiler-project-azure-logical-counts-v2",
   "families": [
     {
       "family": "folded_linear_scan_tmpand_v1__full_phase_register_v1",
       "logicalCounts": {
         "numQubits": 2849,
         "cczCount": 37432935,
-        "rotationCount": 512,
-        "rotationDepth": 512,
-        "measurementCount": 512
+        "rotationCount": 130816,
+        "rotationDepth": 130816,
+        "measurementCount": 15053796
       },
-      "notes": "Azure-style logicalCounts seed. The oracle non-Clifford total is exported as cczCount; phase-shell rotations remain unsynthesized."
+      "notes": "Azure-style logicalCounts seed. The oracle CCZ total, phase-shell rotation inventory, and total measurement inventory are all sourced from exact compiler-family artifacts."
     },
     {
       "family": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",
       "logicalCounts": {
         "numQubits": 2338,
         "cczCount": 37432935,
-        "rotationCount": 512,
-        "rotationDepth": 512,
-        "measurementCount": 512
+        "rotationCount": 511,
+        "rotationDepth": 511,
+        "measurementCount": 15053796
       },
-      "notes": "Azure-style logicalCounts seed. The oracle non-Clifford total is exported as cczCount; phase-shell rotations remain unsynthesized."
+      "notes": "Azure-style logicalCounts seed. The oracle CCZ total, phase-shell rotation inventory, and total measurement inventory are all sourced from exact compiler-family artifacts."
     },
     {
       "family": "folded_unary_qrom_v1__full_phase_register_v1",
       "logicalCounts": {
         "numQubits": 35604,
         "cczCount": 24849959,
-        "rotationCount": 512,
-        "rotationDepth": 512,
-        "measurementCount": 512
+        "rotationCount": 130816,
+        "rotationDepth": 130816,
+        "measurementCount": 373732
       },
-      "notes": "Azure-style logicalCounts seed. The oracle non-Clifford total is exported as cczCount; phase-shell rotations remain unsynthesized."
+      "notes": "Azure-style logicalCounts seed. The oracle CCZ total, phase-shell rotation inventory, and total measurement inventory are all sourced from exact compiler-family artifacts."
     },
     {
       "family": "folded_unary_qrom_v1__semiclassical_qft_v1",
       "logicalCounts": {
         "numQubits": 35093,
         "cczCount": 24849959,
-        "rotationCount": 512,
-        "rotationDepth": 512,
-        "measurementCount": 512
+        "rotationCount": 511,
+        "rotationDepth": 511,
+        "measurementCount": 373732
       },
-      "notes": "Azure-style logicalCounts seed. The oracle non-Clifford total is exported as cczCount; phase-shell rotations remain unsynthesized."
+      "notes": "Azure-style logicalCounts seed. The oracle CCZ total, phase-shell rotation inventory, and total measurement inventory are all sourced from exact compiler-family artifacts."
     },
     {
       "family": "folded_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
       "logicalCounts": {
         "numQubits": 35604,
         "cczCount": 23813671,
-        "rotationCount": 512,
-        "rotationDepth": 512,
-        "measurementCount": 512
+        "rotationCount": 130816,
+        "rotationDepth": 130816,
+        "measurementCount": 385988
       },
-      "notes": "Azure-style logicalCounts seed. The oracle non-Clifford total is exported as cczCount; phase-shell rotations remain unsynthesized."
+      "notes": "Azure-style logicalCounts seed. The oracle CCZ total, phase-shell rotation inventory, and total measurement inventory are all sourced from exact compiler-family artifacts."
     },
     {
       "family": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
       "logicalCounts": {
         "numQubits": 35093,
         "cczCount": 23813671,
-        "rotationCount": 512,
-        "rotationDepth": 512,
-        "measurementCount": 512
+        "rotationCount": 511,
+        "rotationDepth": 511,
+        "measurementCount": 385988
       },
-      "notes": "Azure-style logicalCounts seed. The oracle non-Clifford total is exported as cczCount; phase-shell rotations remain unsynthesized."
+      "notes": "Azure-style logicalCounts seed. The oracle CCZ total, phase-shell rotation inventory, and total measurement inventory are all sourced from exact compiler-family artifacts."
     }
   ],
   "notes": [
     "This file is not a claimed Azure output. It is a machine-readable logicalCounts seed suitable for exact-family handoff into a physical estimator.",
-    "The phase-shell rotation inventory is reported separately because this subproject does not synthesize inverse-QFT rotations into Clifford+T."
+    "The rotationCount and rotationDepth fields are sourced from the exact phase-shell lowering artifact for each named compiler family."
   ]
 }

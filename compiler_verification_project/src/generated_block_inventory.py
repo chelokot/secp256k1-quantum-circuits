@@ -78,6 +78,39 @@ def _count_block(
     }
 
 
+def _phase_shell_blocks(phase_shell_lowering: Mapping[str, Any]) -> List[Dict[str, Any]]:
+    category_map = {
+        'hadamard': 'phase_hadamards',
+        'measurement': 'phase_measurements',
+        'single_qubit_rotation': 'phase_single_qubit_rotations',
+        'controlled_rotation': 'phase_controlled_rotations',
+        'rotation_depth': 'phase_rotation_depth',
+    }
+    blocks = []
+    for stage in phase_shell_lowering['stages']:
+        for stage_block in stage['blocks']:
+            for key, category in category_map.items():
+                count_per_instance = int(stage_block['count_profile_per_instance'][key])
+                if count_per_instance == 0:
+                    continue
+                blocks.append(
+                    _count_block(
+                        block_id=f'phase_shell__{stage["name"]}__{stage_block["name"]}__{key}',
+                        summary=stage_block['summary'],
+                        category=category,
+                        source_artifact='compiler_verification_project/artifacts/phase_shell_lowerings.json',
+                        count=int(stage_block['instance_count']) * count_per_instance,
+                        metadata={
+                            'phase_shell': phase_shell_lowering['name'],
+                            'stage': stage['name'],
+                            'stage_category': stage['category'],
+                            'block': stage_block['name'],
+                        },
+                    )
+                )
+    return blocks
+
+
 def _arithmetic_opcode_blocks(schedule: Mapping[str, Any], arithmetic_lowerings: Mapping[str, Any]) -> List[Dict[str, Any]]:
     leaf_calls = int(schedule['summary']['leaf_call_count_total'])
     hist = arithmetic_lowerings['leaf_reconstruction']['leaf_opcode_histogram']
@@ -173,33 +206,11 @@ def _qubit_blocks(
         _qubit_block(
             block_id='phase_shell_live_register',
             summary='Live phase-shell quantum register required by the named phase-shell family.',
-            source_artifact='compiler_verification_project/artifacts/phase_shell_families.json',
+            source_artifact='compiler_verification_project/artifacts/phase_shell_lowerings.json',
             logical_qubits=int(phase_shell['live_quantum_bits']),
             metadata={'phase_shell': phase_shell['name']},
         ),
     ]
-
-
-def _phase_shell_count_blocks(phase_shell: Mapping[str, Any]) -> List[Dict[str, Any]]:
-    return [
-        _count_block(
-            block_id='phase_shell_measurements',
-            summary='Adaptive phase-shell measurements recorded by the named phase-shell family.',
-            category='phase_measurements',
-            source_artifact='compiler_verification_project/artifacts/phase_shell_families.json',
-            count=int(phase_shell['total_measurements']),
-            metadata={'phase_shell': phase_shell['name']},
-        ),
-        _count_block(
-            block_id='phase_shell_rotations',
-            summary='Adaptive phase-shell rotations recorded by the named phase-shell family.',
-            category='phase_rotations',
-            source_artifact='compiler_verification_project/artifacts/phase_shell_families.json',
-            count=int(phase_shell['adaptive_rotations']),
-            metadata={'phase_shell': phase_shell['name']},
-        ),
-    ]
-
 
 def _reconstruct_family(
     arithmetic_blocks: List[Dict[str, Any]],
@@ -230,7 +241,13 @@ def _reconstruct_family(
     total_measurements = primitive_totals['measurement'] + sum(
         int(block['count']) for block in phase_count_blocks if block['category'] == 'phase_measurements'
     )
-    total_rotations = sum(int(block['count']) for block in phase_count_blocks if block['category'] == 'phase_rotations')
+    total_rotations = sum(
+        int(block['count'])
+        for block in phase_count_blocks
+        if block['category'] in ('phase_single_qubit_rotations', 'phase_controlled_rotations')
+    )
+    total_hadamards = sum(int(block['count']) for block in phase_count_blocks if block['category'] == 'phase_hadamards')
+    total_rotation_depth = sum(int(block['count']) for block in phase_count_blocks if block['category'] == 'phase_rotation_depth')
     return {
         'arithmetic_leaf_non_clifford': int(arithmetic_lowerings['leaf_reconstruction']['arithmetic_leaf_non_clifford']),
         'direct_seed_non_clifford': direct_seed_non_clifford,
@@ -238,8 +255,10 @@ def _reconstruct_family(
         'full_oracle_non_clifford': primitive_totals['ccx'],
         'primitive_totals': primitive_totals,
         'total_measurements': total_measurements,
+        'phase_shell_hadamards': total_hadamards,
         'phase_shell_measurements': int(phase_shell['total_measurements']),
         'phase_shell_rotations': total_rotations,
+        'phase_shell_rotation_depth': total_rotation_depth,
         'arithmetic_slot_count': int(slot_allocation['allocator_summary']['exact_arithmetic_slot_count']),
         'control_slot_count': int(slot_allocation['allocator_summary']['exact_control_slot_count']),
         'lookup_workspace_qubits': int(lookup_family['extra_lookup_workspace_qubits']),
@@ -264,7 +283,7 @@ def build_generated_block_inventories(
         for phase_shell in phase_shells:
             lookup_blocks = _lookup_blocks(schedule, lookup_family)
             qubit_blocks = _qubit_blocks(slot_allocation, lookup_family, phase_shell, field_bits)
-            phase_count_blocks = _phase_shell_count_blocks(phase_shell)
+            phase_count_blocks = _phase_shell_blocks(phase_shell)
             reconstruction = _reconstruct_family(
                 arithmetic_blocks=arithmetic_blocks,
                 lookup_blocks=lookup_blocks,
@@ -305,6 +324,13 @@ def build_generated_block_inventories(
     )
     return {
         'schema': 'compiler-project-generated-block-inventories-v1',
+        'source_artifacts': {
+            'full_raw32_oracle': 'compiler_verification_project/artifacts/full_raw32_oracle.json',
+            'exact_leaf_slot_allocation': 'compiler_verification_project/artifacts/exact_leaf_slot_allocation.json',
+            'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
+            'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
+            'phase_shell_lowerings': 'compiler_verification_project/artifacts/phase_shell_lowerings.json',
+        },
         'public_google_baseline': dict(public_google_baseline),
         'schedule_summary': dict(schedule['summary']),
         'arithmetic_lowering_family': arithmetic_lowerings['family'],
@@ -320,6 +346,6 @@ def build_generated_block_inventories(
         },
         'notes': [
             'This artifact records generated whole-oracle block inventories for every named compiler family and reconstructs totals from those inventories.',
-            'The structure follows a compositional call-graph style accounting layer: shared arithmetic blocks, family-specific lookup blocks, qubit contributors, and phase-shell counts.',
+            'The structure follows a compositional call-graph style accounting layer: shared arithmetic blocks, family-specific lookup blocks, qubit contributors, and explicit phase-shell lowering blocks.',
         ],
     }

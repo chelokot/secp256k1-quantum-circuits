@@ -52,6 +52,8 @@ def test_compiler_project_verification_summary_groups_all_pass() -> None:
     assert semantic['phase_b_nonzero_cases'] > 0
     lookup_lowering = summary['lookup_lowering_checks']
     assert lookup_lowering['pass'] == lookup_lowering['total']
+    phase_shell_lowering = summary['phase_shell_lowering_checks']
+    assert phase_shell_lowering['pass'] == phase_shell_lowering['total']
     cleanup_pair = summary['cleanup_pair_checks']
     assert cleanup_pair['pass'] == cleanup_pair['total']
     generated_block_inventory = summary['generated_block_inventory_checks']
@@ -84,6 +86,14 @@ def test_mutated_lookup_lowering_stage_is_detected() -> None:
     artifacts['lookup_lowerings']['families'][0]['stages'][1]['blocks'][0]['non_clifford_total'] += 1
     groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
     assert groups['lookup_lowering_checks']['pass'] < groups['lookup_lowering_checks']['total']
+    assert groups['frontier_checks']['pass'] < groups['frontier_checks']['total']
+
+
+def test_mutated_phase_shell_lowering_is_detected() -> None:
+    artifacts = deepcopy(_load_artifacts())
+    artifacts['phase_shell_lowerings']['families'][0]['rotation_count'] += 1
+    groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
+    assert groups['phase_shell_lowering_checks']['pass'] < groups['phase_shell_lowering_checks']['total']
     assert groups['frontier_checks']['pass'] < groups['frontier_checks']['total']
 
 

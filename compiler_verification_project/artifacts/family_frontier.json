@@ -1,5 +1,5 @@
 {
-  "schema": "compiler-project-frontier-v7",
+  "schema": "compiler-project-frontier-v8",
   "public_google_baseline": {
     "low_qubit": {
       "logical_qubits": 1200,
@@ -2144,6 +2144,268 @@
       "This is still not a bit-for-bit primitive qRAM/QROM netlist; it is an explicit compiler-family lowering layer checked below the folded lookup contract."
     ]
   },
+  "phase_shell_lowerings": {
+    "schema": "compiler-project-phase-shell-lowerings-v1",
+    "phase_register_bits": 512,
+    "families": [
+      {
+        "name": "full_phase_register_v1",
+        "summary": "Conservative shell that keeps the full 512-bit phase register live and lowers the inverse QFT as a coherent dyadic ladder.",
+        "gate_set": "Clifford + coherent controlled dyadic phase + measurement",
+        "live_quantum_bits": 512,
+        "lowering_strategy": {
+          "phase_register_policy": "keep all phase-estimation bits live until the coherent inverse-QFT ladder finishes",
+          "phase_rotation_policy": "one explicit controlled dyadic phase per strict ordered bit pair",
+          "basis_change_policy": "one Hadamard and one terminal measurement per phase bit"
+        },
+        "stages": [
+          {
+            "name": "coherent_dyadic_rotation_ladder",
+            "summary": "Exact coherent inverse-QFT dyadic phase ladder over the full live phase register.",
+            "category": "coherent_phase_rotations",
+            "blocks": [
+              {
+                "name": "controlled_dyadic_rotations",
+                "summary": "One coherent controlled dyadic phase rotation for each strict bit-order pair in the inverse-QFT ladder.",
+                "instance_count": 130816,
+                "count_profile_per_instance": {
+                  "hadamard": 0,
+                  "measurement": 0,
+                  "single_qubit_rotation": 0,
+                  "controlled_rotation": 1,
+                  "rotation_depth": 1
+                },
+                "count_profile_total": {
+                  "hadamard": 0,
+                  "measurement": 0,
+                  "single_qubit_rotation": 0,
+                  "controlled_rotation": 130816,
+                  "rotation_depth": 130816
+                },
+                "notes": [
+                  "The lowering keeps the register coherent and counts every controlled dyadic phase separately.",
+                  "The reported rotation depth follows the same serial bit-order schedule as the counted ladder blocks."
+                ]
+              }
+            ],
+            "count_profile_total": {
+              "hadamard": 0,
+              "measurement": 0,
+              "single_qubit_rotation": 0,
+              "controlled_rotation": 130816,
+              "rotation_depth": 130816
+            },
+            "notes": [
+              "This family keeps the entire 512-bit phase register live and lowers the inverse QFT as a coherent dyadic rotation ladder."
+            ]
+          },
+          {
+            "name": "basis_change_and_measurement",
+            "summary": "Terminal Hadamard basis changes followed by one computational-basis measurement per phase bit.",
+            "category": "basis_change_and_measurement",
+            "blocks": [
+              {
+                "name": "terminal_hadamards",
+                "summary": "One Hadamard basis change for each live phase bit before measurement.",
+                "instance_count": 512,
+                "count_profile_per_instance": {
+                  "hadamard": 1,
+                  "measurement": 0,
+                  "single_qubit_rotation": 0,
+                  "controlled_rotation": 0,
+                  "rotation_depth": 0
+                },
+                "count_profile_total": {
+                  "hadamard": 512,
+                  "measurement": 0,
+                  "single_qubit_rotation": 0,
+                  "controlled_rotation": 0,
+                  "rotation_depth": 0
+                },
+                "notes": [
+                  "The Hadamards are part of the exact inverse-QFT shell rather than of the oracle core."
+                ]
+              },
+              {
+                "name": "terminal_measurements",
+                "summary": "One computational-basis measurement for each phase bit after the inverse-QFT basis change.",
+                "instance_count": 512,
+                "count_profile_per_instance": {
+                  "hadamard": 0,
+                  "measurement": 1,
+                  "single_qubit_rotation": 0,
+                  "controlled_rotation": 0,
+                  "rotation_depth": 0
+                },
+                "count_profile_total": {
+                  "hadamard": 0,
+                  "measurement": 512,
+                  "single_qubit_rotation": 0,
+                  "controlled_rotation": 0,
+                  "rotation_depth": 0
+                },
+                "notes": [
+                  "The shell ends in terminal measurements over the full phase register."
+                ]
+              }
+            ],
+            "count_profile_total": {
+              "hadamard": 512,
+              "measurement": 512,
+              "single_qubit_rotation": 0,
+              "controlled_rotation": 0,
+              "rotation_depth": 0
+            },
+            "notes": [
+              "The coherent shell measures only after the full inverse-QFT ladder completes."
+            ]
+          }
+        ],
+        "hadamard_count": 512,
+        "total_measurements": 512,
+        "measurement_count": 512,
+        "total_rotations": 130816,
+        "rotation_count": 130816,
+        "rotation_depth": 130816,
+        "single_qubit_rotation_count": 0,
+        "controlled_rotation_count": 130816,
+        "notes": [
+          "This family is exact for the chosen serial coherent inverse-QFT schedule over the live phase register.",
+          "Its rotation ladder is much heavier than the semiclassical family because quantum-controlled dyadic phases cannot be collapsed into one classical feed-forward update per bit."
+        ]
+      },
+      {
+        "name": "semiclassical_qft_v1",
+        "summary": "Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
+        "gate_set": "Clifford + classically controlled dyadic phase + measurement",
+        "live_quantum_bits": 1,
+        "lowering_strategy": {
+          "phase_register_policy": "reuse one live phase qubit across the full bit schedule",
+          "phase_rotation_policy": "aggregate all prior measured-bit corrections for each target into one classically controlled dyadic rotation",
+          "basis_change_policy": "one Hadamard and one terminal measurement per phase bit"
+        },
+        "stages": [
+          {
+            "name": "adaptive_basis_updates",
+            "summary": "One classically aggregated dyadic phase update before each noninitial semiclassical inverse-QFT measurement.",
+            "category": "adaptive_phase_rotations",
+            "blocks": [
+              {
+                "name": "aggregated_classical_phase_updates",
+                "summary": "One classically controlled dyadic Z rotation per noninitial phase bit, after aggregating all prior measurement bits into a single update angle.",
+                "instance_count": 511,
+                "count_profile_per_instance": {
+                  "hadamard": 0,
+                  "measurement": 0,
+                  "single_qubit_rotation": 1,
+                  "controlled_rotation": 0,
+                  "rotation_depth": 1
+                },
+                "count_profile_total": {
+                  "hadamard": 0,
+                  "measurement": 0,
+                  "single_qubit_rotation": 511,
+                  "controlled_rotation": 0,
+                  "rotation_depth": 511
+                },
+                "notes": [
+                  "This follows the Griffiths\u2013Niu semiclassical QFT pattern in which prior measured bits determine the next one-qubit basis update.",
+                  "All prior dyadic corrections for a given target bit are classically aggregated into one rotation before the Hadamard and measurement."
+                ]
+              }
+            ],
+            "count_profile_total": {
+              "hadamard": 0,
+              "measurement": 0,
+              "single_qubit_rotation": 511,
+              "controlled_rotation": 0,
+              "rotation_depth": 511
+            },
+            "notes": [
+              "The first measured bit has no prior feed-forward correction, so the explicit adaptive-rotation count is phase_bits - 1."
+            ]
+          },
+          {
+            "name": "basis_change_and_measurement",
+            "summary": "One Hadamard basis change and one terminal measurement per phase bit in the semiclassical shell.",
+            "category": "basis_change_and_measurement",
+            "blocks": [
+              {
+                "name": "terminal_hadamards",
+                "summary": "One Hadamard before each semiclassical inverse-QFT measurement.",
+                "instance_count": 512,
+                "count_profile_per_instance": {
+                  "hadamard": 1,
+                  "measurement": 0,
+                  "single_qubit_rotation": 0,
+                  "controlled_rotation": 0,
+                  "rotation_depth": 0
+                },
+                "count_profile_total": {
+                  "hadamard": 512,
+                  "measurement": 0,
+                  "single_qubit_rotation": 0,
+                  "controlled_rotation": 0,
+                  "rotation_depth": 0
+                },
+                "notes": [
+                  "The single live phase qubit is reused across the full bit schedule."
+                ]
+              },
+              {
+                "name": "terminal_measurements",
+                "summary": "One computational-basis measurement per phase bit in the semiclassical shell.",
+                "instance_count": 512,
+                "count_profile_per_instance": {
+                  "hadamard": 0,
+                  "measurement": 1,
+                  "single_qubit_rotation": 0,
+                  "controlled_rotation": 0,
+                  "rotation_depth": 0
+                },
+                "count_profile_total": {
+                  "hadamard": 0,
+                  "measurement": 512,
+                  "single_qubit_rotation": 0,
+                  "controlled_rotation": 0,
+                  "rotation_depth": 0
+                },
+                "notes": [
+                  "Each measured bit is committed to classical state before the next adaptive basis update."
+                ]
+              }
+            ],
+            "count_profile_total": {
+              "hadamard": 512,
+              "measurement": 512,
+              "single_qubit_rotation": 0,
+              "controlled_rotation": 0,
+              "rotation_depth": 0
+            },
+            "notes": [
+              "The shell keeps only one phase qubit live and relies on classical feed-forward between measurements."
+            ]
+          }
+        ],
+        "hadamard_count": 512,
+        "total_measurements": 512,
+        "measurement_count": 512,
+        "total_rotations": 511,
+        "rotation_count": 511,
+        "rotation_depth": 511,
+        "single_qubit_rotation_count": 511,
+        "controlled_rotation_count": 0,
+        "notes": [
+          "This family is exact for the chosen semiclassical inverse-QFT schedule with one aggregated classical basis update per noninitial bit.",
+          "It preserves the oracle family while collapsing the live quantum phase register from 512 qubits to one qubit."
+        ]
+      }
+    ],
+    "notes": [
+      "This artifact lowers each named phase-shell family into exact stage/block inventories over explicit pre-layout phase-shell primitives.",
+      "The shell inventory is tracked separately from the arithmetic and lookup CCX totals because Azure logicalCounts accepts rotations and measurements as separate exact pre-layout inputs."
+    ]
+  },
   "generated_block_inventory_artifact": "compiler_verification_project/artifacts/generated_block_inventories.json",
   "whole_oracle_recount_artifact": "compiler_verification_project/artifacts/whole_oracle_recount.json",
   "lookup_families": [
@@ -2202,32 +2464,42 @@
   "phase_shell_families": [
     {
       "name": "full_phase_register_v1",
-      "summary": "Conservative shell that keeps the entire 512-bit phase-estimation register live.",
+      "summary": "Conservative shell that keeps the full 512-bit phase register live and lowers the inverse QFT as a coherent dyadic ladder.",
+      "gate_set": "Clifford + coherent controlled dyadic phase + measurement",
       "live_quantum_bits": 512,
+      "hadamard_count": 512,
       "total_measurements": 512,
-      "adaptive_rotations": 512,
+      "total_rotations": 130816,
+      "rotation_depth": 130816,
+      "single_qubit_rotation_count": 0,
+      "controlled_rotation_count": 130816,
       "notes": [
-        "This family mirrors the simplest exact logical accounting: both 256-bit phase registers remain live throughout the oracle inventory.",
-        "Rotation synthesis below this shell is still out of scope; the shell affects qubit inventory, not oracle non-Clifford totals."
+        "This family is exact for the chosen serial coherent inverse-QFT schedule over the live phase register.",
+        "Its rotation ladder is much heavier than the semiclassical family because quantum-controlled dyadic phases cannot be collapsed into one classical feed-forward update per bit."
       ]
     },
     {
       "name": "semiclassical_qft_v1",
       "summary": "Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
+      "gate_set": "Clifford + classically controlled dyadic phase + measurement",
       "live_quantum_bits": 1,
+      "hadamard_count": 512,
       "total_measurements": 512,
-      "adaptive_rotations": 512,
+      "total_rotations": 511,
+      "rotation_depth": 511,
+      "single_qubit_rotation_count": 511,
+      "controlled_rotation_count": 0,
       "notes": [
-        "This family treats the phase-estimation shell as a one-qubit live quantum register with classical feed-forward between measurements.",
-        "It is the strongest exact qubit-compression lever currently checked into the compiler project because it removes the 512-bit coherent phase-register requirement without changing the oracle family itself."
+        "This family is exact for the chosen semiclassical inverse-QFT schedule with one aggregated classical basis update per noninitial bit.",
+        "It preserves the oracle family while collapsing the live quantum phase register from 512 qubits to one qubit."
       ]
     }
   ],
   "families": [
     {
       "name": "folded_linear_scan_tmpand_v1__full_phase_register_v1",
-      "summary": "Low-qubit exact lookup family using a 15-bit folded magnitude domain and temporary logical-AND equality ladders. / Conservative shell that keeps the entire 512-bit phase-estimation register live.",
-      "gate_set": "Clifford + temporary logical-AND + measurement; phase shell: full_phase_register_v1",
+      "summary": "Low-qubit exact lookup family using a 15-bit folded magnitude domain and temporary logical-AND equality ladders. / Conservative shell that keeps the full 512-bit phase register live and lowers the inverse QFT as a coherent dyadic ladder.",
+      "gate_set": "Clifford + temporary logical-AND + measurement; Clifford + coherent controlled dyadic phase + measurement",
       "phase_shell": "full_phase_register_v1",
       "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
       "lookup_family": "folded_linear_scan_tmpand_v1",
@@ -2240,6 +2512,11 @@
       "lookup_workspace_qubits": 31,
       "live_phase_bits": 512,
       "total_logical_qubits": 2849,
+      "phase_shell_hadamards": 512,
+      "phase_shell_measurements": 512,
+      "phase_shell_rotations": 130816,
+      "phase_shell_rotation_depth": 130816,
+      "total_measurements": 15053796,
       "improvement_vs_google_low_qubit": 2.4042998498514745,
       "improvement_vs_google_low_gate": 1.8700109943289245,
       "qubit_ratio_vs_google_low_qubit": 0.4212004212004212,
@@ -2247,14 +2524,14 @@
       "notes": [
         "This remains the lowest-space lookup family checked into the compiler project.",
         "Zero-word and 0x8000 routing are explicit semantic cases, but they do not allocate a separate metadata-table lookup.",
-        "This family mirrors the simplest exact logical accounting: both 256-bit phase registers remain live throughout the oracle inventory.",
-        "Rotation synthesis below this shell is still out of scope; the shell affects qubit inventory, not oracle non-Clifford totals."
+        "This family is exact for the chosen serial coherent inverse-QFT schedule over the live phase register.",
+        "Its rotation ladder is much heavier than the semiclassical family because quantum-controlled dyadic phases cannot be collapsed into one classical feed-forward update per bit."
       ]
     },
     {
       "name": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",
       "summary": "Low-qubit exact lookup family using a 15-bit folded magnitude domain and temporary logical-AND equality ladders. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
-      "gate_set": "Clifford + temporary logical-AND + measurement; phase shell: semiclassical_qft_v1",
+      "gate_set": "Clifford + temporary logical-AND + measurement; Clifford + classically controlled dyadic phase + measurement",
       "phase_shell": "semiclassical_qft_v1",
       "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
       "lookup_family": "folded_linear_scan_tmpand_v1",
@@ -2267,6 +2544,11 @@
       "lookup_workspace_qubits": 31,
       "live_phase_bits": 1,
       "total_logical_qubits": 2338,
+      "phase_shell_hadamards": 512,
+      "phase_shell_measurements": 512,
+      "phase_shell_rotations": 511,
+      "phase_shell_rotation_depth": 511,
+      "total_measurements": 15053796,
       "improvement_vs_google_low_qubit": 2.4042998498514745,
       "improvement_vs_google_low_gate": 1.8700109943289245,
       "qubit_ratio_vs_google_low_qubit": 0.5132591958939264,
@@ -2274,14 +2556,14 @@
       "notes": [
         "This remains the lowest-space lookup family checked into the compiler project.",
         "Zero-word and 0x8000 routing are explicit semantic cases, but they do not allocate a separate metadata-table lookup.",
-        "This family treats the phase-estimation shell as a one-qubit live quantum register with classical feed-forward between measurements.",
-        "It is the strongest exact qubit-compression lever currently checked into the compiler project because it removes the 512-bit coherent phase-register requirement without changing the oracle family itself."
+        "This family is exact for the chosen semiclassical inverse-QFT schedule with one aggregated classical basis update per noninitial bit.",
+        "It preserves the oracle family while collapsing the live quantum phase register from 512 qubits to one qubit."
       ]
     },
     {
       "name": "folded_unary_qrom_v1__full_phase_register_v1",
-      "summary": "Lower-gate exact lookup family using a full unary conversion register over 32768 folded magnitudes. / Conservative shell that keeps the entire 512-bit phase-estimation register live.",
-      "gate_set": "Clifford + Toffoli-style unary QROM; phase shell: full_phase_register_v1",
+      "summary": "Lower-gate exact lookup family using a full unary conversion register over 32768 folded magnitudes. / Conservative shell that keeps the full 512-bit phase register live and lowers the inverse QFT as a coherent dyadic ladder.",
+      "gate_set": "Clifford + Toffoli-style unary QROM; Clifford + coherent controlled dyadic phase + measurement",
       "phase_shell": "full_phase_register_v1",
       "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
       "lookup_family": "folded_unary_qrom_v1",
@@ -2294,6 +2576,11 @@
       "lookup_workspace_qubits": 32786,
       "live_phase_bits": 512,
       "total_logical_qubits": 35604,
+      "phase_shell_hadamards": 512,
+      "phase_shell_measurements": 512,
+      "phase_shell_rotations": 130816,
+      "phase_shell_rotation_depth": 130816,
+      "total_measurements": 373732,
       "improvement_vs_google_low_qubit": 3.621736357794393,
       "improvement_vs_google_low_gate": 2.816906056062306,
       "qubit_ratio_vs_google_low_qubit": 0.03370407819346141,
@@ -2301,14 +2588,14 @@
       "notes": [
         "This family minimizes gate count more aggressively than the linear-scan family, but uses a very large unary workspace.",
         "The compute and reverse-uncompute halves are both counted explicitly.",
-        "This family mirrors the simplest exact logical accounting: both 256-bit phase registers remain live throughout the oracle inventory.",
-        "Rotation synthesis below this shell is still out of scope; the shell affects qubit inventory, not oracle non-Clifford totals."
+        "This family is exact for the chosen serial coherent inverse-QFT schedule over the live phase register.",
+        "Its rotation ladder is much heavier than the semiclassical family because quantum-controlled dyadic phases cannot be collapsed into one classical feed-forward update per bit."
       ]
     },
     {
       "name": "folded_unary_qrom_v1__semiclassical_qft_v1",
       "summary": "Lower-gate exact lookup family using a full unary conversion register over 32768 folded magnitudes. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
-      "gate_set": "Clifford + Toffoli-style unary QROM; phase shell: semiclassical_qft_v1",
+      "gate_set": "Clifford + Toffoli-style unary QROM; Clifford + classically controlled dyadic phase + measurement",
       "phase_shell": "semiclassical_qft_v1",
       "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
       "lookup_family": "folded_unary_qrom_v1",
@@ -2321,6 +2608,11 @@
       "lookup_workspace_qubits": 32786,
       "live_phase_bits": 1,
       "total_logical_qubits": 35093,
+      "phase_shell_hadamards": 512,
+      "phase_shell_measurements": 512,
+      "phase_shell_rotations": 511,
+      "phase_shell_rotation_depth": 511,
+      "total_measurements": 373732,
       "improvement_vs_google_low_qubit": 3.621736357794393,
       "improvement_vs_google_low_gate": 2.816906056062306,
       "qubit_ratio_vs_google_low_qubit": 0.034194853674521984,
@@ -2328,14 +2620,14 @@
       "notes": [
         "This family minimizes gate count more aggressively than the linear-scan family, but uses a very large unary workspace.",
         "The compute and reverse-uncompute halves are both counted explicitly.",
-        "This family treats the phase-estimation shell as a one-qubit live quantum register with classical feed-forward between measurements.",
-        "It is the strongest exact qubit-compression lever currently checked into the compiler project because it removes the 512-bit coherent phase-register requirement without changing the oracle family itself."
+        "This family is exact for the chosen semiclassical inverse-QFT schedule with one aggregated classical basis update per noninitial bit.",
+        "It preserves the oracle family while collapsing the live quantum phase register from 512 qubits to one qubit."
       ]
     },
     {
       "name": "folded_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
-      "summary": "Best exact low-gate family currently checked in: unary folded QROM compute plus 8/7-split measurement-based uncompute. / Conservative shell that keeps the entire 512-bit phase-estimation register live.",
-      "gate_set": "Clifford + Toffoli-style unary QROM + measurement; phase shell: full_phase_register_v1",
+      "summary": "Best exact low-gate family currently checked in: unary folded QROM compute plus 8/7-split measurement-based uncompute. / Conservative shell that keeps the full 512-bit phase register live and lowers the inverse QFT as a coherent dyadic ladder.",
+      "gate_set": "Clifford + Toffoli-style unary QROM + measurement; Clifford + coherent controlled dyadic phase + measurement",
       "phase_shell": "full_phase_register_v1",
       "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
       "lookup_family": "folded_unary_qrom_measured_uncompute_v1",
@@ -2348,6 +2640,11 @@
       "lookup_workspace_qubits": 32786,
       "live_phase_bits": 512,
       "total_logical_qubits": 35604,
+      "phase_shell_hadamards": 512,
+      "phase_shell_measurements": 512,
+      "phase_shell_rotations": 130816,
+      "phase_shell_rotation_depth": 130816,
+      "total_measurements": 385988,
       "improvement_vs_google_low_qubit": 3.779341706702843,
       "improvement_vs_google_low_gate": 2.9394879941022114,
       "qubit_ratio_vs_google_low_qubit": 0.03370407819346141,
@@ -2355,14 +2652,14 @@
       "notes": [
         "This family uses the same forward unary QROM compute as folded_unary_qrom_v1 but replaces reverse uncompute by the exact 8/7-split measurement-based construction.",
         "It improves the exact gate frontier while keeping the lookup semantics identical.",
-        "This family mirrors the simplest exact logical accounting: both 256-bit phase registers remain live throughout the oracle inventory.",
-        "Rotation synthesis below this shell is still out of scope; the shell affects qubit inventory, not oracle non-Clifford totals."
+        "This family is exact for the chosen serial coherent inverse-QFT schedule over the live phase register.",
+        "Its rotation ladder is much heavier than the semiclassical family because quantum-controlled dyadic phases cannot be collapsed into one classical feed-forward update per bit."
       ]
     },
     {
       "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
       "summary": "Best exact low-gate family currently checked in: unary folded QROM compute plus 8/7-split measurement-based uncompute. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
-      "gate_set": "Clifford + Toffoli-style unary QROM + measurement; phase shell: semiclassical_qft_v1",
+      "gate_set": "Clifford + Toffoli-style unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
       "phase_shell": "semiclassical_qft_v1",
       "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
       "lookup_family": "folded_unary_qrom_measured_uncompute_v1",
@@ -2375,6 +2672,11 @@
       "lookup_workspace_qubits": 32786,
       "live_phase_bits": 1,
       "total_logical_qubits": 35093,
+      "phase_shell_hadamards": 512,
+      "phase_shell_measurements": 512,
+      "phase_shell_rotations": 511,
+      "phase_shell_rotation_depth": 511,
+      "total_measurements": 385988,
       "improvement_vs_google_low_qubit": 3.779341706702843,
       "improvement_vs_google_low_gate": 2.9394879941022114,
       "qubit_ratio_vs_google_low_qubit": 0.034194853674521984,
@@ -2382,15 +2684,15 @@
       "notes": [
         "This family uses the same forward unary QROM compute as folded_unary_qrom_v1 but replaces reverse uncompute by the exact 8/7-split measurement-based construction.",
         "It improves the exact gate frontier while keeping the lookup semantics identical.",
-        "This family treats the phase-estimation shell as a one-qubit live quantum register with classical feed-forward between measurements.",
-        "It is the strongest exact qubit-compression lever currently checked into the compiler project because it removes the 512-bit coherent phase-register requirement without changing the oracle family itself."
+        "This family is exact for the chosen semiclassical inverse-QFT schedule with one aggregated classical basis update per noninitial bit.",
+        "It preserves the oracle family while collapsing the live quantum phase register from 512 qubits to one qubit."
       ]
     }
   ],
   "best_gate_family": {
     "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
     "summary": "Best exact low-gate family currently checked in: unary folded QROM compute plus 8/7-split measurement-based uncompute. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
-    "gate_set": "Clifford + Toffoli-style unary QROM + measurement; phase shell: semiclassical_qft_v1",
+    "gate_set": "Clifford + Toffoli-style unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
     "phase_shell": "semiclassical_qft_v1",
     "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
     "lookup_family": "folded_unary_qrom_measured_uncompute_v1",
@@ -2403,6 +2705,11 @@
     "lookup_workspace_qubits": 32786,
     "live_phase_bits": 1,
     "total_logical_qubits": 35093,
+    "phase_shell_hadamards": 512,
+    "phase_shell_measurements": 512,
+    "phase_shell_rotations": 511,
+    "phase_shell_rotation_depth": 511,
+    "total_measurements": 385988,
     "improvement_vs_google_low_qubit": 3.779341706702843,
     "improvement_vs_google_low_gate": 2.9394879941022114,
     "qubit_ratio_vs_google_low_qubit": 0.034194853674521984,
@@ -2410,14 +2717,14 @@
     "notes": [
       "This family uses the same forward unary QROM compute as folded_unary_qrom_v1 but replaces reverse uncompute by the exact 8/7-split measurement-based construction.",
       "It improves the exact gate frontier while keeping the lookup semantics identical.",
-      "This family treats the phase-estimation shell as a one-qubit live quantum register with classical feed-forward between measurements.",
-      "It is the strongest exact qubit-compression lever currently checked into the compiler project because it removes the 512-bit coherent phase-register requirement without changing the oracle family itself."
+      "This family is exact for the chosen semiclassical inverse-QFT schedule with one aggregated classical basis update per noninitial bit.",
+      "It preserves the oracle family while collapsing the live quantum phase register from 512 qubits to one qubit."
     ]
   },
   "best_qubit_family": {
     "name": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",
     "summary": "Low-qubit exact lookup family using a 15-bit folded magnitude domain and temporary logical-AND equality ladders. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
-    "gate_set": "Clifford + temporary logical-AND + measurement; phase shell: semiclassical_qft_v1",
+    "gate_set": "Clifford + temporary logical-AND + measurement; Clifford + classically controlled dyadic phase + measurement",
     "phase_shell": "semiclassical_qft_v1",
     "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
     "lookup_family": "folded_linear_scan_tmpand_v1",
@@ -2430,6 +2737,11 @@
     "lookup_workspace_qubits": 31,
     "live_phase_bits": 1,
     "total_logical_qubits": 2338,
+    "phase_shell_hadamards": 512,
+    "phase_shell_measurements": 512,
+    "phase_shell_rotations": 511,
+    "phase_shell_rotation_depth": 511,
+    "total_measurements": 15053796,
     "improvement_vs_google_low_qubit": 2.4042998498514745,
     "improvement_vs_google_low_gate": 1.8700109943289245,
     "qubit_ratio_vs_google_low_qubit": 0.5132591958939264,
@@ -2437,14 +2749,14 @@
     "notes": [
       "This remains the lowest-space lookup family checked into the compiler project.",
       "Zero-word and 0x8000 routing are explicit semantic cases, but they do not allocate a separate metadata-table lookup.",
-      "This family treats the phase-estimation shell as a one-qubit live quantum register with classical feed-forward between measurements.",
-      "It is the strongest exact qubit-compression lever currently checked into the compiler project because it removes the 512-bit coherent phase-register requirement without changing the oracle family itself."
+      "This family is exact for the chosen semiclassical inverse-QFT schedule with one aggregated classical basis update per noninitial bit.",
+      "It preserves the oracle family while collapsing the live quantum phase register from 512 qubits to one qubit."
     ]
   },
   "notes": [
     "These are exact whole-oracle counts for named compiler families over an explicit arithmetic-lowering family, an explicit lookup-lowering family, a generated block-inventory layer, and a fully quantum raw-32 schedule.",
-    "The qubit frontier uses exact slot allocation and an explicit semiclassical phase-shell option rather than a fixed 512-bit phase-register policy.",
-    "The arithmetic kernels and lookup families are bound to explicit internal subcircuit-equivalence witnesses at the checked ISA and generated-inventory layers; the remaining open gap is Clifford-complete micro-expansion and external equivalence checking below the named blocks.",
+    "The qubit frontier uses exact slot allocation and an explicit phase-shell lowering layer rather than a fixed 512-bit phase-register policy plus shell-level placeholder counters.",
+    "The arithmetic kernels, lookup families, and phase-shell families are bound to explicit internal subcircuit-equivalence or lowering witnesses at the checked ISA and generated-inventory layers; the remaining open gap is external equivalence checking below the named blocks.",
     "The compiler frontier totals are sourced from the independent whole-oracle recount over the FT IR leaf sigma rather than directly from the generated block inventory."
   ]
 }

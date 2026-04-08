@@ -8,8 +8,10 @@ from typing import Any, Dict, List, Mapping
 def _recount_family_row(ft_ir_family: Mapping[str, Any], public_google_baseline: Mapping[str, Any]) -> Dict[str, Any]:
     primitive_totals = {'ccx': 0, 'cx': 0, 'x': 0, 'measurement': 0}
     total_logical_qubits = 0
+    phase_shell_hadamards = 0
     phase_shell_measurements = 0
     phase_shell_rotations = 0
+    phase_shell_rotation_depth = 0
     for entry in ft_ir_family['leaf_sigma']:
         semantics = entry['resource_profile']['resource_semantics']
         if semantics == 'additive_primitive':
@@ -17,10 +19,14 @@ def _recount_family_row(ft_ir_family: Mapping[str, Any], public_google_baseline:
                 primitive_totals[key] += int(entry['primitive_counts_total'][key])
         elif semantics == 'peak_live_qubits':
             total_logical_qubits += int(entry['logical_qubits_total'])
+        elif semantics == 'additive_phase_hadamards':
+            phase_shell_hadamards += int(entry['count_total'])
         elif semantics == 'additive_phase_measurements':
             phase_shell_measurements += int(entry['count_total'])
         elif semantics == 'additive_phase_rotations':
             phase_shell_rotations += int(entry['count_total'])
+        elif semantics == 'additive_phase_rotation_depth':
+            phase_shell_rotation_depth += int(entry['count_total'])
     low_qubit = public_google_baseline['low_qubit']
     low_gate = public_google_baseline['low_gate']
     full_oracle_non_clifford = int(primitive_totals['ccx'])
@@ -32,8 +38,11 @@ def _recount_family_row(ft_ir_family: Mapping[str, Any], public_google_baseline:
         'full_oracle_non_clifford': full_oracle_non_clifford,
         'primitive_totals': primitive_totals,
         'total_logical_qubits': int(total_logical_qubits),
+        'phase_shell_hadamards': int(phase_shell_hadamards),
+        'total_measurements': int(primitive_totals['measurement'] + phase_shell_measurements),
         'phase_shell_measurements': int(phase_shell_measurements),
         'phase_shell_rotations': int(phase_shell_rotations),
+        'phase_shell_rotation_depth': int(phase_shell_rotation_depth),
         'graph_summary': dict(ft_ir_family['graph']['summary']),
         'improvement_vs_google_low_qubit': low_qubit['non_clifford'] / full_oracle_non_clifford,
         'improvement_vs_google_low_gate': low_gate['non_clifford'] / full_oracle_non_clifford,

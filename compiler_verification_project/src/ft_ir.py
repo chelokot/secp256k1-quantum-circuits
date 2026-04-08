@@ -98,8 +98,10 @@ def _traverse_graph(nodes: List[Dict[str, Any]], edges: List[Dict[str, Any]], ro
     visit(root_id, 1, 0, tuple())
     primitive_totals = {'ccx': 0, 'cx': 0, 'x': 0, 'measurement': 0}
     logical_qubits_total = 0
+    phase_shell_hadamards = 0
     phase_shell_measurements = 0
     phase_shell_rotations = 0
+    phase_shell_rotation_depth = 0
     for entry in leaf_sigma:
         profile = entry['resource_profile']
         semantics = profile['resource_semantics']
@@ -108,10 +110,14 @@ def _traverse_graph(nodes: List[Dict[str, Any]], edges: List[Dict[str, Any]], ro
                 primitive_totals[key] += int(entry['primitive_counts_total'][key])
         elif semantics == 'peak_live_qubits':
             logical_qubits_total += int(entry['logical_qubits_total'])
+        elif semantics == 'additive_phase_hadamards':
+            phase_shell_hadamards += int(entry['count_total'])
         elif semantics == 'additive_phase_measurements':
             phase_shell_measurements += int(entry['count_total'])
         elif semantics == 'additive_phase_rotations':
             phase_shell_rotations += int(entry['count_total'])
+        elif semantics == 'additive_phase_rotation_depth':
+            phase_shell_rotation_depth += int(entry['count_total'])
     return leaf_sigma, {
         'node_count': len(nodes),
         'edge_count': len(edges),
@@ -121,8 +127,10 @@ def _traverse_graph(nodes: List[Dict[str, Any]], edges: List[Dict[str, Any]], ro
         'root_in_degree': len(incoming[root_id]),
         'primitive_totals': primitive_totals,
         'logical_qubits_total': logical_qubits_total,
+        'phase_shell_hadamards': phase_shell_hadamards,
         'phase_shell_measurements': phase_shell_measurements,
         'phase_shell_rotations': phase_shell_rotations,
+        'phase_shell_rotation_depth': phase_shell_rotation_depth,
     }
 
 
@@ -353,17 +361,27 @@ def _qubit_and_phase_branches(
             'live_qubits',
             'Live phase-shell quantum register required by the named phase-shell family.',
             {
-                'source_artifact': 'compiler_verification_project/artifacts/phase_shell_families.json',
+                'source_artifact': 'compiler_verification_project/artifacts/phase_shell_lowerings.json',
                 'resource_profile': _qubit_leaf_profile(int(phase_shell['live_quantum_bits'])),
+            },
+        ),
+        _node(
+            'phase_shell_counts__hadamards',
+            'leaf',
+            'phase_hadamards',
+            'Phase-shell Hadamard basis changes recorded by the named phase-shell family.',
+            {
+                'source_artifact': 'compiler_verification_project/artifacts/phase_shell_lowerings.json',
+                'resource_profile': _count_leaf_profile(int(phase_shell['hadamard_count']), 'phase_hadamards'),
             },
         ),
         _node(
             'phase_shell_counts__measurements',
             'leaf',
             'phase_measurements',
-            'Adaptive phase-shell measurements recorded by the named phase-shell family.',
+            'Phase-shell terminal measurements recorded by the named phase-shell family.',
             {
-                'source_artifact': 'compiler_verification_project/artifacts/phase_shell_families.json',
+                'source_artifact': 'compiler_verification_project/artifacts/phase_shell_lowerings.json',
                 'resource_profile': _count_leaf_profile(int(phase_shell['total_measurements']), 'phase_measurements'),
             },
         ),
@@ -371,10 +389,20 @@ def _qubit_and_phase_branches(
             'phase_shell_counts__rotations',
             'leaf',
             'phase_rotations',
-            'Adaptive phase-shell rotations recorded by the named phase-shell family.',
+            'Phase-shell dyadic rotations recorded by the named phase-shell family.',
             {
-                'source_artifact': 'compiler_verification_project/artifacts/phase_shell_families.json',
-                'resource_profile': _count_leaf_profile(int(phase_shell['adaptive_rotations']), 'phase_rotations'),
+                'source_artifact': 'compiler_verification_project/artifacts/phase_shell_lowerings.json',
+                'resource_profile': _count_leaf_profile(int(phase_shell['total_rotations']), 'phase_rotations'),
+            },
+        ),
+        _node(
+            'phase_shell_counts__rotation_depth',
+            'leaf',
+            'phase_rotation_depth',
+            'Phase-shell rotation-depth contribution recorded by the named phase-shell family.',
+            {
+                'source_artifact': 'compiler_verification_project/artifacts/phase_shell_lowerings.json',
+                'resource_profile': _count_leaf_profile(int(phase_shell['rotation_depth']), 'phase_rotation_depth'),
             },
         ),
     ]
@@ -385,8 +413,10 @@ def _qubit_and_phase_branches(
         _edge('live_qubit_contributors', 'live_qubit_contributors__control_slots', 1, 'live_qubit_leaf', 'Include the control slot register file once.'),
         _edge('live_qubit_contributors', 'live_qubit_contributors__lookup_workspace', 1, 'live_qubit_leaf', 'Include the lookup workspace once.'),
         _edge('live_qubit_contributors', 'live_qubit_contributors__phase_shell_live_register', 1, 'live_qubit_leaf', 'Include the live phase-shell register once.'),
+        _edge('phase_shell_counts', 'phase_shell_counts__hadamards', 1, 'phase_count_leaf', 'Emit the phase-shell Hadamard total once.'),
         _edge('phase_shell_counts', 'phase_shell_counts__measurements', 1, 'phase_count_leaf', 'Emit the phase-shell measurement total once.'),
         _edge('phase_shell_counts', 'phase_shell_counts__rotations', 1, 'phase_count_leaf', 'Emit the phase-shell rotation total once.'),
+        _edge('phase_shell_counts', 'phase_shell_counts__rotation_depth', 1, 'phase_count_leaf', 'Emit the phase-shell rotation-depth total once.'),
     ]
     return nodes, edges, ['live_qubit_contributors', 'phase_shell_counts']
 
@@ -431,8 +461,10 @@ def _family_ft_ir(
         'full_oracle_non_clifford': int(graph_summary['primitive_totals']['ccx']),
         'primitive_totals': graph_summary['primitive_totals'],
         'total_logical_qubits': int(graph_summary['logical_qubits_total']),
+        'phase_shell_hadamards': int(graph_summary['phase_shell_hadamards']),
         'phase_shell_measurements': int(graph_summary['phase_shell_measurements']),
         'phase_shell_rotations': int(graph_summary['phase_shell_rotations']),
+        'phase_shell_rotation_depth': int(graph_summary['phase_shell_rotation_depth']),
     }
     return {
         'name': generated_family['name'],
@@ -452,8 +484,10 @@ def _family_ft_ir(
             'full_oracle_non_clifford': int(generated_family['reconstruction']['full_oracle_non_clifford']),
             'primitive_totals': generated_family['reconstruction']['primitive_totals'],
             'total_logical_qubits': int(generated_family['reconstruction']['total_logical_qubits']),
+            'phase_shell_hadamards': int(generated_family['reconstruction']['phase_shell_hadamards']),
             'phase_shell_measurements': int(generated_family['reconstruction']['phase_shell_measurements']),
             'phase_shell_rotations': int(generated_family['reconstruction']['phase_shell_rotations']),
+            'phase_shell_rotation_depth': int(generated_family['reconstruction']['phase_shell_rotation_depth']),
         },
         'frontier_reconstruction': {
             'full_oracle_non_clifford': int(
@@ -506,6 +540,7 @@ def build_ft_ir_compositions(
             'exact_leaf_slot_allocation': 'compiler_verification_project/artifacts/exact_leaf_slot_allocation.json',
             'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
             'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
+            'phase_shell_lowerings': 'compiler_verification_project/artifacts/phase_shell_lowerings.json',
             'generated_block_inventories': 'compiler_verification_project/artifacts/generated_block_inventories.json',
             'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
         },
@@ -527,7 +562,7 @@ def build_ft_ir_compositions(
         'best_qubit_family': generated_block_inventories['best_qubit_family'],
         'notes': [
             'This artifact expresses each named compiler family as a compositional FT-style call graph with hierarchical bundles and a traversed leaf sigma.',
-            'The leaf sigma reconstructs primitive totals, live-qubit contributors, and phase-shell counts from the FT IR rather than from the flattened generated block inventory.',
+            'The leaf sigma reconstructs primitive totals, live-qubit contributors, and exact phase-shell lowering counts from the FT IR rather than from the flattened generated block inventory.',
         ],
     }
 

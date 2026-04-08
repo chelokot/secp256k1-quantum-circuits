@@ -20,12 +20,20 @@ def test_generated_block_inventory_reconstructs_family_totals() -> None:
     for family in inventories['families']:
         primitive_ccx = sum(block['primitive_counts_total']['ccx'] for block in family['non_clifford_blocks'])
         qubits = sum(block['logical_qubits'] for block in family['qubit_blocks'])
+        phase_hadamards = sum(block['count'] for block in family['phase_count_blocks'] if block['category'] == 'phase_hadamards')
         phase_measurements = sum(block['count'] for block in family['phase_count_blocks'] if block['category'] == 'phase_measurements')
-        phase_rotations = sum(block['count'] for block in family['phase_count_blocks'] if block['category'] == 'phase_rotations')
+        phase_rotations = sum(
+            block['count']
+            for block in family['phase_count_blocks']
+            if block['category'] in ('phase_single_qubit_rotations', 'phase_controlled_rotations')
+        )
+        phase_rotation_depth = sum(block['count'] for block in family['phase_count_blocks'] if block['category'] == 'phase_rotation_depth')
         assert family['reconstruction']['full_oracle_non_clifford'] == primitive_ccx
         assert family['reconstruction']['total_logical_qubits'] == qubits
+        assert family['reconstruction']['phase_shell_hadamards'] == phase_hadamards
         assert family['reconstruction']['phase_shell_measurements'] == phase_measurements
         assert family['reconstruction']['phase_shell_rotations'] == phase_rotations
+        assert family['reconstruction']['phase_shell_rotation_depth'] == phase_rotation_depth
 
 
 def test_generated_block_inventory_best_families_are_minima() -> None:

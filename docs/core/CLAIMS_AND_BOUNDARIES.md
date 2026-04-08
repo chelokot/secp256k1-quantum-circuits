@@ -69,6 +69,7 @@ below the ISA boundary. It publishes:
 - `compiler_verification_project/artifacts/full_raw32_oracle.json`
 - `compiler_verification_project/artifacts/family_frontier.json`
 - `compiler_verification_project/artifacts/exact_leaf_slot_allocation.json`
+- `compiler_verification_project/artifacts/phase_shell_lowerings.json`
 - `compiler_verification_project/artifacts/ft_ir_compositions.json`
 - `compiler_verification_project/artifacts/whole_oracle_recount.json`
 - `compiler_verification_project/artifacts/subcircuit_equivalence.json`
@@ -80,13 +81,14 @@ subproject. In particular, it fixes:
 - a fully quantum raw-32 schedule with no classical tail elisions,
 - explicit folded lookup families,
 - exact leaf slot allocation, and
+- explicit phase-shell lowerings for the named full-register and semiclassical inverse-QFT shells,
 - compositional FT-style call graphs plus traversed leaf sigma for the named
   compiler families,
 - independent exact whole-oracle recount derived from that FT IR leaf sigma,
 - internal subcircuit-equivalence witnesses across traced ISA opcodes, lowered
   lookup families, the coherent cleanup window, and generated whole-oracle
   composition, and
-- explicit phase-shell families, including a semiclassical-QFT shell.
+- compact phase-shell summaries derived from those exact lowerings, including a semiclassical-QFT shell.
 
 ## Modeled or non-exact layers
 
