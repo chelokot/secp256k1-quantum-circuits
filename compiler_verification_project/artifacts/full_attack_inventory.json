@@ -259,28 +259,28 @@
   "phase_shell_lowering_artifact": "compiler_verification_project/artifacts/phase_shell_lowerings.json",
   "generated_block_inventory_summary": {
     "best_gate_family": {
-      "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+      "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
       "reconstruction": {
         "arithmetic_leaf_non_clifford": 733657,
-        "direct_seed_non_clifford": 33447,
-        "per_leaf_lookup_non_clifford": 33447,
-        "full_oracle_non_clifford": 23813671,
+        "direct_seed_non_clifford": 401,
+        "per_leaf_lookup_non_clifford": 401,
+        "full_oracle_non_clifford": 22756199,
         "primitive_totals": {
-          "ccx": 23813671,
+          "ccx": 22756199,
           "cx": 0,
           "x": 0,
-          "measurement": 385476
+          "measurement": 374884
         },
-        "total_measurements": 385988,
+        "total_measurements": 375396,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
         "phase_shell_rotation_depth": 511,
         "arithmetic_slot_count": 9,
         "control_slot_count": 2,
-        "lookup_workspace_qubits": 32786,
+        "lookup_workspace_qubits": 74,
         "live_phase_bits": 1,
-        "total_logical_qubits": 35093
+        "total_logical_qubits": 2381
       }
     },
     "best_qubit_family": {
@@ -320,6 +320,26 @@
         "total_logical_qubits": 2338
       },
       {
+        "name": "folded_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+        "full_oracle_non_clifford": 22777319,
+        "total_logical_qubits": 3220
+      },
+      {
+        "name": "folded_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+        "full_oracle_non_clifford": 22777319,
+        "total_logical_qubits": 2709
+      },
+      {
+        "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+        "full_oracle_non_clifford": 22756199,
+        "total_logical_qubits": 2892
+      },
+      {
+        "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+        "full_oracle_non_clifford": 22756199,
+        "total_logical_qubits": 2381
+      },
+      {
         "name": "folded_unary_qrom_v1__full_phase_register_v1",
         "full_oracle_non_clifford": 24849959,
         "total_logical_qubits": 35604
@@ -343,33 +363,33 @@
   },
   "whole_oracle_recount_summary": {
     "best_gate_family": {
-      "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
-      "summary": "Best exact low-gate family currently checked in: unary folded QROM compute plus 8/7-split measurement-based uncompute. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
-      "gate_set": "Clifford + Toffoli-style unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
+      "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+      "summary": "Lower-gate exact lookup family using a 3/4/4/4 hierarchical banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
+      "gate_set": "Clifford + banked unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
       "phase_shell": "semiclassical_qft_v1",
       "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
-      "lookup_family": "folded_unary_qrom_measured_uncompute_v1",
+      "lookup_family": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1",
       "arithmetic_leaf_non_clifford": 733657,
-      "direct_seed_non_clifford": 33447,
-      "per_leaf_lookup_non_clifford": 33447,
-      "full_oracle_non_clifford": 23813671,
+      "direct_seed_non_clifford": 401,
+      "per_leaf_lookup_non_clifford": 401,
+      "full_oracle_non_clifford": 22756199,
       "arithmetic_slot_count": 9,
       "control_slot_count": 2,
-      "lookup_workspace_qubits": 32786,
+      "lookup_workspace_qubits": 74,
       "live_phase_bits": 1,
-      "total_logical_qubits": 35093,
+      "total_logical_qubits": 2381,
       "phase_shell_hadamards": 512,
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 511,
       "phase_shell_rotation_depth": 511,
-      "total_measurements": 385988,
-      "improvement_vs_google_low_qubit": 3.779341706702843,
-      "improvement_vs_google_low_gate": 2.9394879941022114,
-      "qubit_ratio_vs_google_low_qubit": 0.034194853674521984,
-      "qubit_ratio_vs_google_low_gate": 0.04131878152338073,
+      "total_measurements": 375396,
+      "improvement_vs_google_low_qubit": 3.9549662929208873,
+      "improvement_vs_google_low_gate": 3.0760848944940236,
+      "qubit_ratio_vs_google_low_qubit": 0.5039899202015959,
+      "qubit_ratio_vs_google_low_gate": 0.6089878202435951,
       "notes": [
-        "This family uses the same forward unary QROM compute as folded_unary_qrom_v1 but replaces reverse uncompute by the exact 8/7-split measurement-based construction.",
-        "It improves the exact gate frontier while keeping the lookup semantics identical.",
+        "This family deepens the bank hierarchy to compress both generated lookup workspace and generated lookup non-Clifford cost relative to the two-level banked family.",
+        "It keeps the folded lookup semantics exact while exposing every decode and measured-cleanup chunk as generated operation inventory.",
         "This family is exact for the chosen semiclassical inverse-QFT schedule with one aggregated classical basis update per noninitial bit.",
         "It preserves the oracle family while collapsing the live quantum phase register from 512 qubits to one qubit."
       ]
@@ -418,6 +438,26 @@
         "total_logical_qubits": 2338
       },
       {
+        "name": "folded_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+        "full_oracle_non_clifford": 22777319,
+        "total_logical_qubits": 3220
+      },
+      {
+        "name": "folded_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+        "full_oracle_non_clifford": 22777319,
+        "total_logical_qubits": 2709
+      },
+      {
+        "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+        "full_oracle_non_clifford": 22756199,
+        "total_logical_qubits": 2892
+      },
+      {
+        "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+        "full_oracle_non_clifford": 22756199,
+        "total_logical_qubits": 2381
+      },
+      {
         "name": "folded_unary_qrom_v1__full_phase_register_v1",
         "full_oracle_non_clifford": 24849959,
         "total_logical_qubits": 35604
@@ -440,33 +480,33 @@
     ]
   },
   "best_gate_family": {
-    "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
-    "summary": "Best exact low-gate family currently checked in: unary folded QROM compute plus 8/7-split measurement-based uncompute. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
-    "gate_set": "Clifford + Toffoli-style unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
+    "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+    "summary": "Lower-gate exact lookup family using a 3/4/4/4 hierarchical banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
+    "gate_set": "Clifford + banked unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
     "phase_shell": "semiclassical_qft_v1",
     "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
-    "lookup_family": "folded_unary_qrom_measured_uncompute_v1",
+    "lookup_family": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1",
     "arithmetic_leaf_non_clifford": 733657,
-    "direct_seed_non_clifford": 33447,
-    "per_leaf_lookup_non_clifford": 33447,
-    "full_oracle_non_clifford": 23813671,
+    "direct_seed_non_clifford": 401,
+    "per_leaf_lookup_non_clifford": 401,
+    "full_oracle_non_clifford": 22756199,
     "arithmetic_slot_count": 9,
     "control_slot_count": 2,
-    "lookup_workspace_qubits": 32786,
+    "lookup_workspace_qubits": 74,
     "live_phase_bits": 1,
-    "total_logical_qubits": 35093,
+    "total_logical_qubits": 2381,
     "phase_shell_hadamards": 512,
     "phase_shell_measurements": 512,
     "phase_shell_rotations": 511,
     "phase_shell_rotation_depth": 511,
-    "total_measurements": 385988,
-    "improvement_vs_google_low_qubit": 3.779341706702843,
-    "improvement_vs_google_low_gate": 2.9394879941022114,
-    "qubit_ratio_vs_google_low_qubit": 0.034194853674521984,
-    "qubit_ratio_vs_google_low_gate": 0.04131878152338073,
+    "total_measurements": 375396,
+    "improvement_vs_google_low_qubit": 3.9549662929208873,
+    "improvement_vs_google_low_gate": 3.0760848944940236,
+    "qubit_ratio_vs_google_low_qubit": 0.5039899202015959,
+    "qubit_ratio_vs_google_low_gate": 0.6089878202435951,
     "notes": [
-      "This family uses the same forward unary QROM compute as folded_unary_qrom_v1 but replaces reverse uncompute by the exact 8/7-split measurement-based construction.",
-      "It improves the exact gate frontier while keeping the lookup semantics identical.",
+      "This family deepens the bank hierarchy to compress both generated lookup workspace and generated lookup non-Clifford cost relative to the two-level banked family.",
+      "It keeps the folded lookup semantics exact while exposing every decode and measured-cleanup chunk as generated operation inventory.",
       "This family is exact for the chosen semiclassical inverse-QFT schedule with one aggregated classical basis update per noninitial bit.",
       "It preserves the oracle family while collapsing the live quantum phase register from 512 qubits to one qubit."
     ]

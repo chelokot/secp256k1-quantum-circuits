@@ -1621,13 +1621,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "628eac865e2ca59f61daec19e8239282bfd57a5e709b2313f25ac909c9fcc04a",
-          "size_bytes": 28280
+          "sha256": "427b5bbac7dfa9bd62e2ecf6599371ad44504e87bdb1a96060d6813eca8d2b00",
+          "size_bytes": 54299
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "628eac865e2ca59f61daec19e8239282bfd57a5e709b2313f25ac909c9fcc04a",
-          "size_bytes": 28280
+          "sha256": "427b5bbac7dfa9bd62e2ecf6599371ad44504e87bdb1a96060d6813eca8d2b00",
+          "size_bytes": 54299
         }
       },
       {
@@ -1651,6 +1651,114 @@
             "cx": 0,
             "x": 0,
             "measurement": 458752
+          },
+          {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          {
+            "ccx": 14,
+            "cx": 0,
+            "x": 0,
+            "measurement": 14
+          },
+          {
+            "ccx": 28,
+            "cx": 0,
+            "x": 0,
+            "measurement": 28
+          },
+          {
+            "ccx": 127,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          {
+            "ccx": 127,
+            "cx": 0,
+            "x": 0,
+            "measurement": 127
+          },
+          {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          {
+            "ccx": 14,
+            "cx": 0,
+            "x": 0,
+            "measurement": 14
+          },
+          {
+            "ccx": 28,
+            "cx": 0,
+            "x": 0,
+            "measurement": 28
+          },
+          {
+            "ccx": 7,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          {
+            "ccx": 15,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          {
+            "ccx": 15,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          {
+            "ccx": 15,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          {
+            "ccx": 7,
+            "cx": 0,
+            "x": 0,
+            "measurement": 7
+          },
+          {
+            "ccx": 15,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15
+          },
+          {
+            "ccx": 15,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15
+          },
+          {
+            "ccx": 15,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15
           },
           {
             "ccx": 255,
@@ -1743,6 +1851,114 @@
             "cx": 0,
             "x": 0,
             "measurement": 458752
+          },
+          {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          {
+            "ccx": 14,
+            "cx": 0,
+            "x": 0,
+            "measurement": 14
+          },
+          {
+            "ccx": 28,
+            "cx": 0,
+            "x": 0,
+            "measurement": 28
+          },
+          {
+            "ccx": 127,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          {
+            "ccx": 127,
+            "cx": 0,
+            "x": 0,
+            "measurement": 127
+          },
+          {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          {
+            "ccx": 14,
+            "cx": 0,
+            "x": 0,
+            "measurement": 14
+          },
+          {
+            "ccx": 28,
+            "cx": 0,
+            "x": 0,
+            "measurement": 28
+          },
+          {
+            "ccx": 7,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          {
+            "ccx": 15,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          {
+            "ccx": 15,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          {
+            "ccx": 15,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          {
+            "ccx": 7,
+            "cx": 0,
+            "x": 0,
+            "measurement": 7
+          },
+          {
+            "ccx": 15,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15
+          },
+          {
+            "ccx": 15,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15
+          },
+          {
+            "ccx": 15,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15
           },
           {
             "ccx": 255,
@@ -1853,6 +2069,54 @@
             "measurement": 42
           },
           {
+            "ccx": 382,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          {
+            "ccx": 382,
+            "cx": 0,
+            "x": 0,
+            "measurement": 382
+          },
+          {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          {
+            "ccx": 42,
+            "cx": 0,
+            "x": 0,
+            "measurement": 42
+          },
+          {
+            "ccx": 52,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          {
+            "ccx": 52,
+            "cx": 0,
+            "x": 0,
+            "measurement": 52
+          },
+          {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          {
+            "ccx": 42,
+            "cx": 0,
+            "x": 0,
+            "measurement": 42
+          },
+          {
             "ccx": 32767,
             "cx": 0,
             "x": 0,
@@ -1913,6 +2177,54 @@
             "cx": 0,
             "x": 0,
             "measurement": 0
+          },
+          {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          {
+            "ccx": 42,
+            "cx": 0,
+            "x": 0,
+            "measurement": 42
+          },
+          {
+            "ccx": 382,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          {
+            "ccx": 382,
+            "cx": 0,
+            "x": 0,
+            "measurement": 382
+          },
+          {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          {
+            "ccx": 42,
+            "cx": 0,
+            "x": 0,
+            "measurement": 42
+          },
+          {
+            "ccx": 52,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          {
+            "ccx": 52,
+            "cx": 0,
+            "x": 0,
+            "measurement": 52
           },
           {
             "ccx": 255,
@@ -2008,6 +2320,28 @@
             }
           },
           {
+            "name": "folded_banked_unary_qrom_measured_uncompute_v1",
+            "direct_lookup_non_clifford": 1061,
+            "per_leaf_lookup_non_clifford": 1061,
+            "primitive_counts_total": {
+              "ccx": 1061,
+              "cx": 0,
+              "x": 0,
+              "measurement": 424
+            }
+          },
+          {
+            "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1",
+            "direct_lookup_non_clifford": 401,
+            "per_leaf_lookup_non_clifford": 401,
+            "primitive_counts_total": {
+              "ccx": 401,
+              "cx": 0,
+              "x": 0,
+              "measurement": 94
+            }
+          },
+          {
             "name": "folded_unary_qrom_v1",
             "direct_lookup_non_clifford": 65831,
             "per_leaf_lookup_non_clifford": 65831,
@@ -2040,6 +2374,28 @@
               "cx": 0,
               "x": 0,
               "measurement": 458794
+            }
+          },
+          {
+            "name": "folded_banked_unary_qrom_measured_uncompute_v1",
+            "direct_lookup_non_clifford": 1061,
+            "per_leaf_lookup_non_clifford": 1061,
+            "primitive_counts_total": {
+              "ccx": 1061,
+              "cx": 0,
+              "x": 0,
+              "measurement": 424
+            }
+          },
+          {
+            "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1",
+            "direct_lookup_non_clifford": 401,
+            "per_leaf_lookup_non_clifford": 401,
+            "primitive_counts_total": {
+              "ccx": 401,
+              "cx": 0,
+              "x": 0,
+              "measurement": 94
             }
           },
           {
@@ -2076,6 +2432,16 @@
             "peak_total_workspace_qubits": 31
           },
           {
+            "name": "folded_banked_unary_qrom_measured_uncompute_v1",
+            "persistent_workspace_qubits": 18,
+            "peak_total_workspace_qubits": 402
+          },
+          {
+            "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1",
+            "persistent_workspace_qubits": 18,
+            "peak_total_workspace_qubits": 74
+          },
+          {
             "name": "folded_unary_qrom_v1",
             "persistent_workspace_qubits": 18,
             "peak_total_workspace_qubits": 32786
@@ -2091,6 +2457,16 @@
             "name": "folded_linear_scan_tmpand_v1",
             "persistent_workspace_qubits": 18,
             "peak_total_workspace_qubits": 31
+          },
+          {
+            "name": "folded_banked_unary_qrom_measured_uncompute_v1",
+            "persistent_workspace_qubits": 18,
+            "peak_total_workspace_qubits": 402
+          },
+          {
+            "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1",
+            "persistent_workspace_qubits": 18,
+            "peak_total_workspace_qubits": 74
           },
           {
             "name": "folded_unary_qrom_v1",
@@ -2114,6 +2490,16 @@
             "multibase_edge": 32
           },
           {
+            "name": "folded_banked_unary_qrom_measured_uncompute_v1",
+            "canonical_full_exhaustive": 65536,
+            "multibase_edge": 32
+          },
+          {
+            "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1",
+            "canonical_full_exhaustive": 65536,
+            "multibase_edge": 32
+          },
+          {
             "name": "folded_unary_qrom_v1",
             "canonical_full_exhaustive": 65536,
             "multibase_edge": 32
@@ -2127,6 +2513,20 @@
         "observed": [
           {
             "name": "folded_linear_scan_tmpand_v1",
+            "canonical_full_exhaustive_pass": 65536,
+            "canonical_full_exhaustive_total": 65536,
+            "multibase_edge_pass": 32,
+            "multibase_edge_total": 32
+          },
+          {
+            "name": "folded_banked_unary_qrom_measured_uncompute_v1",
+            "canonical_full_exhaustive_pass": 65536,
+            "canonical_full_exhaustive_total": 65536,
+            "multibase_edge_pass": 32,
+            "multibase_edge_total": 32
+          },
+          {
+            "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1",
             "canonical_full_exhaustive_pass": 65536,
             "canonical_full_exhaustive_total": 65536,
             "multibase_edge_pass": 32,
@@ -2510,13 +2910,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "2c8df9e3767c5cea7d72b6708f53e70c3e0cb551d3641b61ad1ced572ef0b437",
-          "size_bytes": 146268
+          "sha256": "38a0f0582025957efd2edaca25f9d3a58bcfa41f242bbda2490703dc695efde6",
+          "size_bytes": 257636
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "2c8df9e3767c5cea7d72b6708f53e70c3e0cb551d3641b61ad1ced572ef0b437",
-          "size_bytes": 146268
+          "sha256": "38a0f0582025957efd2edaca25f9d3a58bcfa41f242bbda2490703dc695efde6",
+          "size_bytes": 257636
         }
       },
       {
@@ -2608,6 +3008,50 @@
             "phase_shell_rotation_depth": 511
           },
           {
+            "name": "folded_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+            "full_oracle_non_clifford": 22777319,
+            "total_logical_qubits": 3220,
+            "direct_seed_non_clifford": 1061,
+            "per_leaf_lookup_non_clifford": 1061,
+            "phase_shell_hadamards": 512,
+            "phase_shell_measurements": 512,
+            "phase_shell_rotations": 130816,
+            "phase_shell_rotation_depth": 130816
+          },
+          {
+            "name": "folded_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+            "full_oracle_non_clifford": 22777319,
+            "total_logical_qubits": 2709,
+            "direct_seed_non_clifford": 1061,
+            "per_leaf_lookup_non_clifford": 1061,
+            "phase_shell_hadamards": 512,
+            "phase_shell_measurements": 512,
+            "phase_shell_rotations": 511,
+            "phase_shell_rotation_depth": 511
+          },
+          {
+            "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+            "full_oracle_non_clifford": 22756199,
+            "total_logical_qubits": 2892,
+            "direct_seed_non_clifford": 401,
+            "per_leaf_lookup_non_clifford": 401,
+            "phase_shell_hadamards": 512,
+            "phase_shell_measurements": 512,
+            "phase_shell_rotations": 130816,
+            "phase_shell_rotation_depth": 130816
+          },
+          {
+            "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+            "full_oracle_non_clifford": 22756199,
+            "total_logical_qubits": 2381,
+            "direct_seed_non_clifford": 401,
+            "per_leaf_lookup_non_clifford": 401,
+            "phase_shell_hadamards": 512,
+            "phase_shell_measurements": 512,
+            "phase_shell_rotations": 511,
+            "phase_shell_rotation_depth": 511
+          },
+          {
             "name": "folded_unary_qrom_v1__full_phase_register_v1",
             "full_oracle_non_clifford": 24849959,
             "total_logical_qubits": 35604,
@@ -2652,278 +3096,20 @@
             "phase_shell_rotation_depth": 511
           }
         ],
-        "observed": [
-          {
-            "arithmetic_leaf_non_clifford": 733657,
-            "direct_seed_non_clifford": 459049,
-            "per_leaf_lookup_non_clifford": 459049,
-            "full_oracle_non_clifford": 37432935,
-            "primitive_totals": {
-              "ccx": 37432935,
-              "cx": 0,
-              "x": 0,
-              "measurement": 15053284
-            },
-            "total_measurements": 15053796,
-            "phase_shell_hadamards": 512,
-            "phase_shell_measurements": 512,
-            "phase_shell_rotations": 130816,
-            "phase_shell_rotation_depth": 130816,
-            "arithmetic_slot_count": 9,
-            "control_slot_count": 2,
-            "lookup_workspace_qubits": 31,
-            "live_phase_bits": 512,
-            "total_logical_qubits": 2849
-          },
-          {
-            "arithmetic_leaf_non_clifford": 733657,
-            "direct_seed_non_clifford": 459049,
-            "per_leaf_lookup_non_clifford": 459049,
-            "full_oracle_non_clifford": 37432935,
-            "primitive_totals": {
-              "ccx": 37432935,
-              "cx": 0,
-              "x": 0,
-              "measurement": 15053284
-            },
-            "total_measurements": 15053796,
-            "phase_shell_hadamards": 512,
-            "phase_shell_measurements": 512,
-            "phase_shell_rotations": 511,
-            "phase_shell_rotation_depth": 511,
-            "arithmetic_slot_count": 9,
-            "control_slot_count": 2,
-            "lookup_workspace_qubits": 31,
-            "live_phase_bits": 1,
-            "total_logical_qubits": 2338
-          },
-          {
-            "arithmetic_leaf_non_clifford": 733657,
-            "direct_seed_non_clifford": 65831,
-            "per_leaf_lookup_non_clifford": 65831,
-            "full_oracle_non_clifford": 24849959,
-            "primitive_totals": {
-              "ccx": 24849959,
-              "cx": 0,
-              "x": 0,
-              "measurement": 373220
-            },
-            "total_measurements": 373732,
-            "phase_shell_hadamards": 512,
-            "phase_shell_measurements": 512,
-            "phase_shell_rotations": 130816,
-            "phase_shell_rotation_depth": 130816,
-            "arithmetic_slot_count": 9,
-            "control_slot_count": 2,
-            "lookup_workspace_qubits": 32786,
-            "live_phase_bits": 512,
-            "total_logical_qubits": 35604
-          },
-          {
-            "arithmetic_leaf_non_clifford": 733657,
-            "direct_seed_non_clifford": 65831,
-            "per_leaf_lookup_non_clifford": 65831,
-            "full_oracle_non_clifford": 24849959,
-            "primitive_totals": {
-              "ccx": 24849959,
-              "cx": 0,
-              "x": 0,
-              "measurement": 373220
-            },
-            "total_measurements": 373732,
-            "phase_shell_hadamards": 512,
-            "phase_shell_measurements": 512,
-            "phase_shell_rotations": 511,
-            "phase_shell_rotation_depth": 511,
-            "arithmetic_slot_count": 9,
-            "control_slot_count": 2,
-            "lookup_workspace_qubits": 32786,
-            "live_phase_bits": 1,
-            "total_logical_qubits": 35093
-          },
-          {
-            "arithmetic_leaf_non_clifford": 733657,
-            "direct_seed_non_clifford": 33447,
-            "per_leaf_lookup_non_clifford": 33447,
-            "full_oracle_non_clifford": 23813671,
-            "primitive_totals": {
-              "ccx": 23813671,
-              "cx": 0,
-              "x": 0,
-              "measurement": 385476
-            },
-            "total_measurements": 385988,
-            "phase_shell_hadamards": 512,
-            "phase_shell_measurements": 512,
-            "phase_shell_rotations": 130816,
-            "phase_shell_rotation_depth": 130816,
-            "arithmetic_slot_count": 9,
-            "control_slot_count": 2,
-            "lookup_workspace_qubits": 32786,
-            "live_phase_bits": 512,
-            "total_logical_qubits": 35604
-          },
-          {
-            "arithmetic_leaf_non_clifford": 733657,
-            "direct_seed_non_clifford": 33447,
-            "per_leaf_lookup_non_clifford": 33447,
-            "full_oracle_non_clifford": 23813671,
-            "primitive_totals": {
-              "ccx": 23813671,
-              "cx": 0,
-              "x": 0,
-              "measurement": 385476
-            },
-            "total_measurements": 385988,
-            "phase_shell_hadamards": 512,
-            "phase_shell_measurements": 512,
-            "phase_shell_rotations": 511,
-            "phase_shell_rotation_depth": 511,
-            "arithmetic_slot_count": 9,
-            "control_slot_count": 2,
-            "lookup_workspace_qubits": 32786,
-            "live_phase_bits": 1,
-            "total_logical_qubits": 35093
-          }
-        ]
+        "observed": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "79f0e10b1f35df4e862523a30ae615f9939afae36f724d78e811c636dce75bfa",
+          "size_bytes": 4959
+        }
       },
       {
         "name": "frontier_family_totals_match_generated_block_reconstruction",
         "pass": 1,
-        "expected": [
-          {
-            "arithmetic_leaf_non_clifford": 733657,
-            "direct_seed_non_clifford": 459049,
-            "per_leaf_lookup_non_clifford": 459049,
-            "full_oracle_non_clifford": 37432935,
-            "primitive_totals": {
-              "ccx": 37432935,
-              "cx": 0,
-              "x": 0,
-              "measurement": 15053284
-            },
-            "total_measurements": 15053796,
-            "phase_shell_hadamards": 512,
-            "phase_shell_measurements": 512,
-            "phase_shell_rotations": 130816,
-            "phase_shell_rotation_depth": 130816,
-            "arithmetic_slot_count": 9,
-            "control_slot_count": 2,
-            "lookup_workspace_qubits": 31,
-            "live_phase_bits": 512,
-            "total_logical_qubits": 2849
-          },
-          {
-            "arithmetic_leaf_non_clifford": 733657,
-            "direct_seed_non_clifford": 459049,
-            "per_leaf_lookup_non_clifford": 459049,
-            "full_oracle_non_clifford": 37432935,
-            "primitive_totals": {
-              "ccx": 37432935,
-              "cx": 0,
-              "x": 0,
-              "measurement": 15053284
-            },
-            "total_measurements": 15053796,
-            "phase_shell_hadamards": 512,
-            "phase_shell_measurements": 512,
-            "phase_shell_rotations": 511,
-            "phase_shell_rotation_depth": 511,
-            "arithmetic_slot_count": 9,
-            "control_slot_count": 2,
-            "lookup_workspace_qubits": 31,
-            "live_phase_bits": 1,
-            "total_logical_qubits": 2338
-          },
-          {
-            "arithmetic_leaf_non_clifford": 733657,
-            "direct_seed_non_clifford": 65831,
-            "per_leaf_lookup_non_clifford": 65831,
-            "full_oracle_non_clifford": 24849959,
-            "primitive_totals": {
-              "ccx": 24849959,
-              "cx": 0,
-              "x": 0,
-              "measurement": 373220
-            },
-            "total_measurements": 373732,
-            "phase_shell_hadamards": 512,
-            "phase_shell_measurements": 512,
-            "phase_shell_rotations": 130816,
-            "phase_shell_rotation_depth": 130816,
-            "arithmetic_slot_count": 9,
-            "control_slot_count": 2,
-            "lookup_workspace_qubits": 32786,
-            "live_phase_bits": 512,
-            "total_logical_qubits": 35604
-          },
-          {
-            "arithmetic_leaf_non_clifford": 733657,
-            "direct_seed_non_clifford": 65831,
-            "per_leaf_lookup_non_clifford": 65831,
-            "full_oracle_non_clifford": 24849959,
-            "primitive_totals": {
-              "ccx": 24849959,
-              "cx": 0,
-              "x": 0,
-              "measurement": 373220
-            },
-            "total_measurements": 373732,
-            "phase_shell_hadamards": 512,
-            "phase_shell_measurements": 512,
-            "phase_shell_rotations": 511,
-            "phase_shell_rotation_depth": 511,
-            "arithmetic_slot_count": 9,
-            "control_slot_count": 2,
-            "lookup_workspace_qubits": 32786,
-            "live_phase_bits": 1,
-            "total_logical_qubits": 35093
-          },
-          {
-            "arithmetic_leaf_non_clifford": 733657,
-            "direct_seed_non_clifford": 33447,
-            "per_leaf_lookup_non_clifford": 33447,
-            "full_oracle_non_clifford": 23813671,
-            "primitive_totals": {
-              "ccx": 23813671,
-              "cx": 0,
-              "x": 0,
-              "measurement": 385476
-            },
-            "total_measurements": 385988,
-            "phase_shell_hadamards": 512,
-            "phase_shell_measurements": 512,
-            "phase_shell_rotations": 130816,
-            "phase_shell_rotation_depth": 130816,
-            "arithmetic_slot_count": 9,
-            "control_slot_count": 2,
-            "lookup_workspace_qubits": 32786,
-            "live_phase_bits": 512,
-            "total_logical_qubits": 35604
-          },
-          {
-            "arithmetic_leaf_non_clifford": 733657,
-            "direct_seed_non_clifford": 33447,
-            "per_leaf_lookup_non_clifford": 33447,
-            "full_oracle_non_clifford": 23813671,
-            "primitive_totals": {
-              "ccx": 23813671,
-              "cx": 0,
-              "x": 0,
-              "measurement": 385476
-            },
-            "total_measurements": 385988,
-            "phase_shell_hadamards": 512,
-            "phase_shell_measurements": 512,
-            "phase_shell_rotations": 511,
-            "phase_shell_rotation_depth": 511,
-            "arithmetic_slot_count": 9,
-            "control_slot_count": 2,
-            "lookup_workspace_qubits": 32786,
-            "live_phase_bits": 1,
-            "total_logical_qubits": 35093
-          }
-        ],
+        "expected": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "79f0e10b1f35df4e862523a30ae615f9939afae36f724d78e811c636dce75bfa",
+          "size_bytes": 4959
+        },
         "observed": [
           {
             "name": "folded_linear_scan_tmpand_v1__full_phase_register_v1",
@@ -2934,6 +3120,26 @@
             "name": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",
             "full_oracle_non_clifford": 37432935,
             "total_logical_qubits": 2338
+          },
+          {
+            "name": "folded_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+            "full_oracle_non_clifford": 22777319,
+            "total_logical_qubits": 3220
+          },
+          {
+            "name": "folded_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+            "full_oracle_non_clifford": 22777319,
+            "total_logical_qubits": 2709
+          },
+          {
+            "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+            "full_oracle_non_clifford": 22756199,
+            "total_logical_qubits": 2892
+          },
+          {
+            "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+            "full_oracle_non_clifford": 22756199,
+            "total_logical_qubits": 2381
           },
           {
             "name": "folded_unary_qrom_v1__full_phase_register_v1",
@@ -2961,32 +3167,32 @@
         "name": "generated_block_inventory_best_families_match_frontier",
         "pass": 1,
         "expected": {
-          "best_gate_family": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+          "best_gate_family": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
           "best_qubit_family": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1"
         },
         "observed": {
-          "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+          "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
           "reconstruction": {
             "arithmetic_leaf_non_clifford": 733657,
-            "direct_seed_non_clifford": 33447,
-            "per_leaf_lookup_non_clifford": 33447,
-            "full_oracle_non_clifford": 23813671,
+            "direct_seed_non_clifford": 401,
+            "per_leaf_lookup_non_clifford": 401,
+            "full_oracle_non_clifford": 22756199,
             "primitive_totals": {
-              "ccx": 23813671,
+              "ccx": 22756199,
               "cx": 0,
               "x": 0,
-              "measurement": 385476
+              "measurement": 374884
             },
-            "total_measurements": 385988,
+            "total_measurements": 375396,
             "phase_shell_hadamards": 512,
             "phase_shell_measurements": 512,
             "phase_shell_rotations": 511,
             "phase_shell_rotation_depth": 511,
             "arithmetic_slot_count": 9,
             "control_slot_count": 2,
-            "lookup_workspace_qubits": 32786,
+            "lookup_workspace_qubits": 74,
             "live_phase_bits": 1,
-            "total_logical_qubits": 35093
+            "total_logical_qubits": 2381
           },
           "best_qubit_family": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1"
         }
@@ -3110,13 +3316,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "467b1d0b56c9d37594000a3acaf4814102c56703ade42cb350974659b96e5ce3",
-          "size_bytes": 14448
+          "sha256": "94b23a94f5caaff73728e19e541997d4123dd96faa328f10b1e9f9162b9f3799",
+          "size_bytes": 15786
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "467b1d0b56c9d37594000a3acaf4814102c56703ade42cb350974659b96e5ce3",
-          "size_bytes": 14448
+          "sha256": "94b23a94f5caaff73728e19e541997d4123dd96faa328f10b1e9f9162b9f3799",
+          "size_bytes": 15786
         }
       },
       {
@@ -3160,28 +3366,28 @@
         "pass": 1,
         "expected": {
           "best_gate_family": {
-            "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+            "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
             "reconstruction": {
               "arithmetic_leaf_non_clifford": 733657,
-              "direct_seed_non_clifford": 33447,
-              "per_leaf_lookup_non_clifford": 33447,
-              "full_oracle_non_clifford": 23813671,
+              "direct_seed_non_clifford": 401,
+              "per_leaf_lookup_non_clifford": 401,
+              "full_oracle_non_clifford": 22756199,
               "primitive_totals": {
-                "ccx": 23813671,
+                "ccx": 22756199,
                 "cx": 0,
                 "x": 0,
-                "measurement": 385476
+                "measurement": 374884
               },
-              "total_measurements": 385988,
+              "total_measurements": 375396,
               "phase_shell_hadamards": 512,
               "phase_shell_measurements": 512,
               "phase_shell_rotations": 511,
               "phase_shell_rotation_depth": 511,
               "arithmetic_slot_count": 9,
               "control_slot_count": 2,
-              "lookup_workspace_qubits": 32786,
+              "lookup_workspace_qubits": 74,
               "live_phase_bits": 1,
-              "total_logical_qubits": 35093
+              "total_logical_qubits": 2381
             }
           },
           "best_qubit_family": {
@@ -3219,6 +3425,26 @@
               "name": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",
               "full_oracle_non_clifford": 37432935,
               "total_logical_qubits": 2338
+            },
+            {
+              "name": "folded_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+              "full_oracle_non_clifford": 22777319,
+              "total_logical_qubits": 3220
+            },
+            {
+              "name": "folded_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+              "full_oracle_non_clifford": 22777319,
+              "total_logical_qubits": 2709
+            },
+            {
+              "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+              "full_oracle_non_clifford": 22756199,
+              "total_logical_qubits": 2892
+            },
+            {
+              "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+              "full_oracle_non_clifford": 22756199,
+              "total_logical_qubits": 2381
             },
             {
               "name": "folded_unary_qrom_v1__full_phase_register_v1",
@@ -3244,28 +3470,28 @@
         },
         "observed": {
           "best_gate_family": {
-            "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+            "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
             "reconstruction": {
               "arithmetic_leaf_non_clifford": 733657,
-              "direct_seed_non_clifford": 33447,
-              "per_leaf_lookup_non_clifford": 33447,
-              "full_oracle_non_clifford": 23813671,
+              "direct_seed_non_clifford": 401,
+              "per_leaf_lookup_non_clifford": 401,
+              "full_oracle_non_clifford": 22756199,
               "primitive_totals": {
-                "ccx": 23813671,
+                "ccx": 22756199,
                 "cx": 0,
                 "x": 0,
-                "measurement": 385476
+                "measurement": 374884
               },
-              "total_measurements": 385988,
+              "total_measurements": 375396,
               "phase_shell_hadamards": 512,
               "phase_shell_measurements": 512,
               "phase_shell_rotations": 511,
               "phase_shell_rotation_depth": 511,
               "arithmetic_slot_count": 9,
               "control_slot_count": 2,
-              "lookup_workspace_qubits": 32786,
+              "lookup_workspace_qubits": 74,
               "live_phase_bits": 1,
-              "total_logical_qubits": 35093
+              "total_logical_qubits": 2381
             }
           },
           "best_qubit_family": {
@@ -3303,6 +3529,26 @@
               "name": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",
               "full_oracle_non_clifford": 37432935,
               "total_logical_qubits": 2338
+            },
+            {
+              "name": "folded_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+              "full_oracle_non_clifford": 22777319,
+              "total_logical_qubits": 3220
+            },
+            {
+              "name": "folded_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+              "full_oracle_non_clifford": 22777319,
+              "total_logical_qubits": 2709
+            },
+            {
+              "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+              "full_oracle_non_clifford": 22756199,
+              "total_logical_qubits": 2892
+            },
+            {
+              "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+              "full_oracle_non_clifford": 22756199,
+              "total_logical_qubits": 2381
             },
             {
               "name": "folded_unary_qrom_v1__full_phase_register_v1",
@@ -3332,78 +3578,78 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "ae7e95c0cb910ff9b024b7ab8dc121344a5aabe4235f6fdaff7ecc457da34747",
-          "size_bytes": 4246
+          "sha256": "9fc399150b50b492b45930fff49087ed934ac0655df0ca417b06c81f121a59b9",
+          "size_bytes": 4909
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "ae7e95c0cb910ff9b024b7ab8dc121344a5aabe4235f6fdaff7ecc457da34747",
-          "size_bytes": 4246
+          "sha256": "9fc399150b50b492b45930fff49087ed934ac0655df0ca417b06c81f121a59b9",
+          "size_bytes": 4909
         }
       },
       {
         "name": "inventory_best_gate_family_matches_frontier",
         "pass": 1,
         "expected": {
-          "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
-          "summary": "Best exact low-gate family currently checked in: unary folded QROM compute plus 8/7-split measurement-based uncompute. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
-          "gate_set": "Clifford + Toffoli-style unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
+          "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+          "summary": "Lower-gate exact lookup family using a 3/4/4/4 hierarchical banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
+          "gate_set": "Clifford + banked unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
           "phase_shell": "semiclassical_qft_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
-          "lookup_family": "folded_unary_qrom_measured_uncompute_v1",
+          "lookup_family": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1",
           "arithmetic_leaf_non_clifford": 733657,
-          "direct_seed_non_clifford": 33447,
-          "per_leaf_lookup_non_clifford": 33447,
-          "full_oracle_non_clifford": 23813671,
+          "direct_seed_non_clifford": 401,
+          "per_leaf_lookup_non_clifford": 401,
+          "full_oracle_non_clifford": 22756199,
           "arithmetic_slot_count": 9,
           "control_slot_count": 2,
-          "lookup_workspace_qubits": 32786,
+          "lookup_workspace_qubits": 74,
           "live_phase_bits": 1,
-          "total_logical_qubits": 35093,
+          "total_logical_qubits": 2381,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
           "phase_shell_rotation_depth": 511,
-          "total_measurements": 385988,
-          "improvement_vs_google_low_qubit": 3.779341706702843,
-          "improvement_vs_google_low_gate": 2.9394879941022114,
-          "qubit_ratio_vs_google_low_qubit": 0.034194853674521984,
-          "qubit_ratio_vs_google_low_gate": 0.04131878152338073,
+          "total_measurements": 375396,
+          "improvement_vs_google_low_qubit": 3.9549662929208873,
+          "improvement_vs_google_low_gate": 3.0760848944940236,
+          "qubit_ratio_vs_google_low_qubit": 0.5039899202015959,
+          "qubit_ratio_vs_google_low_gate": 0.6089878202435951,
           "notes": [
-            "This family uses the same forward unary QROM compute as folded_unary_qrom_v1 but replaces reverse uncompute by the exact 8/7-split measurement-based construction.",
-            "It improves the exact gate frontier while keeping the lookup semantics identical.",
+            "This family deepens the bank hierarchy to compress both generated lookup workspace and generated lookup non-Clifford cost relative to the two-level banked family.",
+            "It keeps the folded lookup semantics exact while exposing every decode and measured-cleanup chunk as generated operation inventory.",
             "This family is exact for the chosen semiclassical inverse-QFT schedule with one aggregated classical basis update per noninitial bit.",
             "It preserves the oracle family while collapsing the live quantum phase register from 512 qubits to one qubit."
           ]
         },
         "observed": {
-          "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
-          "summary": "Best exact low-gate family currently checked in: unary folded QROM compute plus 8/7-split measurement-based uncompute. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
-          "gate_set": "Clifford + Toffoli-style unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
+          "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+          "summary": "Lower-gate exact lookup family using a 3/4/4/4 hierarchical banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
+          "gate_set": "Clifford + banked unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
           "phase_shell": "semiclassical_qft_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
-          "lookup_family": "folded_unary_qrom_measured_uncompute_v1",
+          "lookup_family": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1",
           "arithmetic_leaf_non_clifford": 733657,
-          "direct_seed_non_clifford": 33447,
-          "per_leaf_lookup_non_clifford": 33447,
-          "full_oracle_non_clifford": 23813671,
+          "direct_seed_non_clifford": 401,
+          "per_leaf_lookup_non_clifford": 401,
+          "full_oracle_non_clifford": 22756199,
           "arithmetic_slot_count": 9,
           "control_slot_count": 2,
-          "lookup_workspace_qubits": 32786,
+          "lookup_workspace_qubits": 74,
           "live_phase_bits": 1,
-          "total_logical_qubits": 35093,
+          "total_logical_qubits": 2381,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
           "phase_shell_rotation_depth": 511,
-          "total_measurements": 385988,
-          "improvement_vs_google_low_qubit": 3.779341706702843,
-          "improvement_vs_google_low_gate": 2.9394879941022114,
-          "qubit_ratio_vs_google_low_qubit": 0.034194853674521984,
-          "qubit_ratio_vs_google_low_gate": 0.04131878152338073,
+          "total_measurements": 375396,
+          "improvement_vs_google_low_qubit": 3.9549662929208873,
+          "improvement_vs_google_low_gate": 3.0760848944940236,
+          "qubit_ratio_vs_google_low_qubit": 0.5039899202015959,
+          "qubit_ratio_vs_google_low_gate": 0.6089878202435951,
           "notes": [
-            "This family uses the same forward unary QROM compute as folded_unary_qrom_v1 but replaces reverse uncompute by the exact 8/7-split measurement-based construction.",
-            "It improves the exact gate frontier while keeping the lookup semantics identical.",
+            "This family deepens the bank hierarchy to compress both generated lookup workspace and generated lookup non-Clifford cost relative to the two-level banked family.",
+            "It keeps the folded lookup semantics exact while exposing every decode and measured-cleanup chunk as generated operation inventory.",
             "This family is exact for the chosen semiclassical inverse-QFT schedule with one aggregated classical basis update per noninitial bit.",
             "It preserves the oracle family while collapsing the live quantum phase register from 512 qubits to one qubit."
           ]
@@ -3488,13 +3734,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "c38c5a77135434c38b3ecf21d4ce8c37349d158308f7d96f38ab53bc4bb95cd4",
-          "size_bytes": 327864
+          "sha256": "0ef0c271051de8b9d544f74d58ee7ce75e9b72cea504e122fb40064354194a6a",
+          "size_bytes": 595176
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "c38c5a77135434c38b3ecf21d4ce8c37349d158308f7d96f38ab53bc4bb95cd4",
-          "size_bytes": 327864
+          "sha256": "0ef0c271051de8b9d544f74d58ee7ce75e9b72cea504e122fb40064354194a6a",
+          "size_bytes": 595176
         }
       },
       {
@@ -3548,28 +3794,28 @@
         "pass": 1,
         "expected": {
           "best_gate_family": {
-            "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+            "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
             "reconstruction": {
               "arithmetic_leaf_non_clifford": 733657,
-              "direct_seed_non_clifford": 33447,
-              "per_leaf_lookup_non_clifford": 33447,
-              "full_oracle_non_clifford": 23813671,
+              "direct_seed_non_clifford": 401,
+              "per_leaf_lookup_non_clifford": 401,
+              "full_oracle_non_clifford": 22756199,
               "primitive_totals": {
-                "ccx": 23813671,
+                "ccx": 22756199,
                 "cx": 0,
                 "x": 0,
-                "measurement": 385476
+                "measurement": 374884
               },
-              "total_measurements": 385988,
+              "total_measurements": 375396,
               "phase_shell_hadamards": 512,
               "phase_shell_measurements": 512,
               "phase_shell_rotations": 511,
               "phase_shell_rotation_depth": 511,
               "arithmetic_slot_count": 9,
               "control_slot_count": 2,
-              "lookup_workspace_qubits": 32786,
+              "lookup_workspace_qubits": 74,
               "live_phase_bits": 1,
-              "total_logical_qubits": 35093
+              "total_logical_qubits": 2381
             }
           },
           "best_qubit_family": {
@@ -3600,28 +3846,28 @@
         },
         "observed": {
           "best_gate_family": {
-            "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+            "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
             "reconstruction": {
               "arithmetic_leaf_non_clifford": 733657,
-              "direct_seed_non_clifford": 33447,
-              "per_leaf_lookup_non_clifford": 33447,
-              "full_oracle_non_clifford": 23813671,
+              "direct_seed_non_clifford": 401,
+              "per_leaf_lookup_non_clifford": 401,
+              "full_oracle_non_clifford": 22756199,
               "primitive_totals": {
-                "ccx": 23813671,
+                "ccx": 22756199,
                 "cx": 0,
                 "x": 0,
-                "measurement": 385476
+                "measurement": 374884
               },
-              "total_measurements": 385988,
+              "total_measurements": 375396,
               "phase_shell_hadamards": 512,
               "phase_shell_measurements": 512,
               "phase_shell_rotations": 511,
               "phase_shell_rotation_depth": 511,
               "arithmetic_slot_count": 9,
               "control_slot_count": 2,
-              "lookup_workspace_qubits": 32786,
+              "lookup_workspace_qubits": 74,
               "live_phase_bits": 1,
-              "total_logical_qubits": 35093
+              "total_logical_qubits": 2381
             }
           },
           "best_qubit_family": {
@@ -3662,13 +3908,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "98ce4b0166fb42278f00068a7a543b88c56182004af6ef100e0818f344459747",
-          "size_bytes": 9694
+          "sha256": "83cc3897148b35fb585283e9dee36192bc8ccc023eacb2967d1c62f633ddc39c",
+          "size_bytes": 14135
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "98ce4b0166fb42278f00068a7a543b88c56182004af6ef100e0818f344459747",
-          "size_bytes": 9694
+          "sha256": "83cc3897148b35fb585283e9dee36192bc8ccc023eacb2967d1c62f633ddc39c",
+          "size_bytes": 14135
         }
       },
       {
@@ -3705,11 +3951,11 @@
         "name": "whole_oracle_recount_best_families_match_frontier",
         "pass": 1,
         "expected": {
-          "best_gate_family": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+          "best_gate_family": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
           "best_qubit_family": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1"
         },
         "observed": {
-          "best_gate_family": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+          "best_gate_family": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
           "best_qubit_family": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1"
         }
       }
@@ -3724,13 +3970,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "69e8d0ea5696e57282c4168275550e3350ad724d73e4475d1ea178d3526a0f76",
-          "size_bytes": 10459
+          "sha256": "62b38a9bc19b83a5faa9ad0339ec46b98dec5dfed9c46b8ec69d55a4f14d3598",
+          "size_bytes": 12486
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "69e8d0ea5696e57282c4168275550e3350ad724d73e4475d1ea178d3526a0f76",
-          "size_bytes": 10459
+          "sha256": "62b38a9bc19b83a5faa9ad0339ec46b98dec5dfed9c46b8ec69d55a4f14d3598",
+          "size_bytes": 12486
         }
       },
       {
@@ -3830,28 +4076,28 @@
         "pass": 1,
         "expected": {
           "best_gate_family": {
-            "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+            "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
             "reconstruction": {
               "arithmetic_leaf_non_clifford": 733657,
-              "direct_seed_non_clifford": 33447,
-              "per_leaf_lookup_non_clifford": 33447,
-              "full_oracle_non_clifford": 23813671,
+              "direct_seed_non_clifford": 401,
+              "per_leaf_lookup_non_clifford": 401,
+              "full_oracle_non_clifford": 22756199,
               "primitive_totals": {
-                "ccx": 23813671,
+                "ccx": 22756199,
                 "cx": 0,
                 "x": 0,
-                "measurement": 385476
+                "measurement": 374884
               },
-              "total_measurements": 385988,
+              "total_measurements": 375396,
               "phase_shell_hadamards": 512,
               "phase_shell_measurements": 512,
               "phase_shell_rotations": 511,
               "phase_shell_rotation_depth": 511,
               "arithmetic_slot_count": 9,
               "control_slot_count": 2,
-              "lookup_workspace_qubits": 32786,
+              "lookup_workspace_qubits": 74,
               "live_phase_bits": 1,
-              "total_logical_qubits": 35093
+              "total_logical_qubits": 2381
             }
           },
           "best_qubit_family": {
@@ -3882,28 +4128,28 @@
         },
         "observed": {
           "best_gate_family": {
-            "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+            "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
             "reconstruction": {
               "arithmetic_leaf_non_clifford": 733657,
-              "direct_seed_non_clifford": 33447,
-              "per_leaf_lookup_non_clifford": 33447,
-              "full_oracle_non_clifford": 23813671,
+              "direct_seed_non_clifford": 401,
+              "per_leaf_lookup_non_clifford": 401,
+              "full_oracle_non_clifford": 22756199,
               "primitive_totals": {
-                "ccx": 23813671,
+                "ccx": 22756199,
                 "cx": 0,
                 "x": 0,
-                "measurement": 385476
+                "measurement": 374884
               },
-              "total_measurements": 385988,
+              "total_measurements": 375396,
               "phase_shell_hadamards": 512,
               "phase_shell_measurements": 512,
               "phase_shell_rotations": 511,
               "phase_shell_rotation_depth": 511,
               "arithmetic_slot_count": 9,
               "control_slot_count": 2,
-              "lookup_workspace_qubits": 32786,
+              "lookup_workspace_qubits": 74,
               "live_phase_bits": 1,
-              "total_logical_qubits": 35093
+              "total_logical_qubits": 2381
             }
           },
           "best_qubit_family": {
@@ -5035,6 +5281,40 @@
             ]
           },
           {
+            "name": "folded_banked_unary_qrom_measured_uncompute_v1",
+            "summary": "Intermediate exact lookup family using a 7/8-split banked unary decode with measured cleanup.",
+            "gate_set": "Clifford + banked unary QROM + measurement",
+            "compute_lookup_non_clifford": 382,
+            "uncompute_lookup_non_clifford": 382,
+            "zero_check_non_clifford": 14,
+            "magnitude_prepare_non_clifford": 28,
+            "conditional_negate_y_non_clifford": 255,
+            "direct_lookup_non_clifford": 1061,
+            "per_leaf_lookup_non_clifford": 1061,
+            "extra_lookup_workspace_qubits": 402,
+            "notes": [
+              "This family sits between the linear-scan and full-unary extremes in the checked compiler frontier.",
+              "It compresses lookup workspace aggressively without falling back to a full positive-domain equality scan."
+            ]
+          },
+          {
+            "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1",
+            "summary": "Lower-gate exact lookup family using a 3/4/4/4 hierarchical banked unary decode with measured cleanup.",
+            "gate_set": "Clifford + banked unary QROM + measurement",
+            "compute_lookup_non_clifford": 52,
+            "uncompute_lookup_non_clifford": 52,
+            "zero_check_non_clifford": 14,
+            "magnitude_prepare_non_clifford": 28,
+            "conditional_negate_y_non_clifford": 255,
+            "direct_lookup_non_clifford": 401,
+            "per_leaf_lookup_non_clifford": 401,
+            "extra_lookup_workspace_qubits": 74,
+            "notes": [
+              "This family deepens the bank hierarchy to compress both generated lookup workspace and generated lookup non-Clifford cost relative to the two-level banked family.",
+              "It keeps the folded lookup semantics exact while exposing every decode and measured-cleanup chunk as generated operation inventory."
+            ]
+          },
+          {
             "name": "folded_unary_qrom_v1",
             "summary": "Lower-gate exact lookup family using a full unary conversion register over 32768 folded magnitudes.",
             "gate_set": "Clifford + Toffoli-style unary QROM",
@@ -5085,6 +5365,40 @@
             "notes": [
               "This remains the lowest-space lookup family checked into the compiler project.",
               "Zero-word and 0x8000 routing are explicit semantic cases, but they do not allocate a separate metadata-table lookup."
+            ]
+          },
+          {
+            "name": "folded_banked_unary_qrom_measured_uncompute_v1",
+            "summary": "Intermediate exact lookup family using a 7/8-split banked unary decode with measured cleanup.",
+            "gate_set": "Clifford + banked unary QROM + measurement",
+            "compute_lookup_non_clifford": 382,
+            "uncompute_lookup_non_clifford": 382,
+            "zero_check_non_clifford": 14,
+            "magnitude_prepare_non_clifford": 28,
+            "conditional_negate_y_non_clifford": 255,
+            "direct_lookup_non_clifford": 1061,
+            "per_leaf_lookup_non_clifford": 1061,
+            "extra_lookup_workspace_qubits": 402,
+            "notes": [
+              "This family sits between the linear-scan and full-unary extremes in the checked compiler frontier.",
+              "It compresses lookup workspace aggressively without falling back to a full positive-domain equality scan."
+            ]
+          },
+          {
+            "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1",
+            "summary": "Lower-gate exact lookup family using a 3/4/4/4 hierarchical banked unary decode with measured cleanup.",
+            "gate_set": "Clifford + banked unary QROM + measurement",
+            "compute_lookup_non_clifford": 52,
+            "uncompute_lookup_non_clifford": 52,
+            "zero_check_non_clifford": 14,
+            "magnitude_prepare_non_clifford": 28,
+            "conditional_negate_y_non_clifford": 255,
+            "direct_lookup_non_clifford": 401,
+            "per_leaf_lookup_non_clifford": 401,
+            "extra_lookup_workspace_qubits": 74,
+            "notes": [
+              "This family deepens the bank hierarchy to compress both generated lookup workspace and generated lookup non-Clifford cost relative to the two-level banked family.",
+              "It keeps the folded lookup semantics exact while exposing every decode and measured-cleanup chunk as generated operation inventory."
             ]
           },
           {
@@ -5200,78 +5514,78 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "c56256bcc891dc9deea26a4e628737ede8552cb9de186acb41e63872cf361bb6",
-          "size_bytes": 10191
+          "sha256": "717ad5265faaddbc1da744e475568a02bb750afcde1df1be7d8968a3e2486b45",
+          "size_bytes": 17246
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "c56256bcc891dc9deea26a4e628737ede8552cb9de186acb41e63872cf361bb6",
-          "size_bytes": 10191
+          "sha256": "717ad5265faaddbc1da744e475568a02bb750afcde1df1be7d8968a3e2486b45",
+          "size_bytes": 17246
         }
       },
       {
         "name": "best_gate_family_is_minimum_over_family_rows",
         "pass": 1,
         "expected": {
-          "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
-          "summary": "Best exact low-gate family currently checked in: unary folded QROM compute plus 8/7-split measurement-based uncompute. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
-          "gate_set": "Clifford + Toffoli-style unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
+          "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+          "summary": "Lower-gate exact lookup family using a 3/4/4/4 hierarchical banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
+          "gate_set": "Clifford + banked unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
           "phase_shell": "semiclassical_qft_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
-          "lookup_family": "folded_unary_qrom_measured_uncompute_v1",
+          "lookup_family": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1",
           "arithmetic_leaf_non_clifford": 733657,
-          "direct_seed_non_clifford": 33447,
-          "per_leaf_lookup_non_clifford": 33447,
-          "full_oracle_non_clifford": 23813671,
+          "direct_seed_non_clifford": 401,
+          "per_leaf_lookup_non_clifford": 401,
+          "full_oracle_non_clifford": 22756199,
           "arithmetic_slot_count": 9,
           "control_slot_count": 2,
-          "lookup_workspace_qubits": 32786,
+          "lookup_workspace_qubits": 74,
           "live_phase_bits": 1,
-          "total_logical_qubits": 35093,
+          "total_logical_qubits": 2381,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
           "phase_shell_rotation_depth": 511,
-          "total_measurements": 385988,
-          "improvement_vs_google_low_qubit": 3.779341706702843,
-          "improvement_vs_google_low_gate": 2.9394879941022114,
-          "qubit_ratio_vs_google_low_qubit": 0.034194853674521984,
-          "qubit_ratio_vs_google_low_gate": 0.04131878152338073,
+          "total_measurements": 375396,
+          "improvement_vs_google_low_qubit": 3.9549662929208873,
+          "improvement_vs_google_low_gate": 3.0760848944940236,
+          "qubit_ratio_vs_google_low_qubit": 0.5039899202015959,
+          "qubit_ratio_vs_google_low_gate": 0.6089878202435951,
           "notes": [
-            "This family uses the same forward unary QROM compute as folded_unary_qrom_v1 but replaces reverse uncompute by the exact 8/7-split measurement-based construction.",
-            "It improves the exact gate frontier while keeping the lookup semantics identical.",
+            "This family deepens the bank hierarchy to compress both generated lookup workspace and generated lookup non-Clifford cost relative to the two-level banked family.",
+            "It keeps the folded lookup semantics exact while exposing every decode and measured-cleanup chunk as generated operation inventory.",
             "This family is exact for the chosen semiclassical inverse-QFT schedule with one aggregated classical basis update per noninitial bit.",
             "It preserves the oracle family while collapsing the live quantum phase register from 512 qubits to one qubit."
           ]
         },
         "observed": {
-          "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
-          "summary": "Best exact low-gate family currently checked in: unary folded QROM compute plus 8/7-split measurement-based uncompute. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
-          "gate_set": "Clifford + Toffoli-style unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
+          "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+          "summary": "Lower-gate exact lookup family using a 3/4/4/4 hierarchical banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
+          "gate_set": "Clifford + banked unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
           "phase_shell": "semiclassical_qft_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
-          "lookup_family": "folded_unary_qrom_measured_uncompute_v1",
+          "lookup_family": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1",
           "arithmetic_leaf_non_clifford": 733657,
-          "direct_seed_non_clifford": 33447,
-          "per_leaf_lookup_non_clifford": 33447,
-          "full_oracle_non_clifford": 23813671,
+          "direct_seed_non_clifford": 401,
+          "per_leaf_lookup_non_clifford": 401,
+          "full_oracle_non_clifford": 22756199,
           "arithmetic_slot_count": 9,
           "control_slot_count": 2,
-          "lookup_workspace_qubits": 32786,
+          "lookup_workspace_qubits": 74,
           "live_phase_bits": 1,
-          "total_logical_qubits": 35093,
+          "total_logical_qubits": 2381,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
           "phase_shell_rotation_depth": 511,
-          "total_measurements": 385988,
-          "improvement_vs_google_low_qubit": 3.779341706702843,
-          "improvement_vs_google_low_gate": 2.9394879941022114,
-          "qubit_ratio_vs_google_low_qubit": 0.034194853674521984,
-          "qubit_ratio_vs_google_low_gate": 0.04131878152338073,
+          "total_measurements": 375396,
+          "improvement_vs_google_low_qubit": 3.9549662929208873,
+          "improvement_vs_google_low_gate": 3.0760848944940236,
+          "qubit_ratio_vs_google_low_qubit": 0.5039899202015959,
+          "qubit_ratio_vs_google_low_gate": 0.6089878202435951,
           "notes": [
-            "This family uses the same forward unary QROM compute as folded_unary_qrom_v1 but replaces reverse uncompute by the exact 8/7-split measurement-based construction.",
-            "It improves the exact gate frontier while keeping the lookup semantics identical.",
+            "This family deepens the bank hierarchy to compress both generated lookup workspace and generated lookup non-Clifford cost relative to the two-level banked family.",
+            "It keeps the folded lookup semantics exact while exposing every decode and measured-cleanup chunk as generated operation inventory.",
             "This family is exact for the chosen semiclassical inverse-QFT schedule with one aggregated classical basis update per noninitial bit.",
             "It preserves the oracle family while collapsing the live quantum phase register from 512 qubits to one qubit."
           ]
@@ -5453,65 +5767,65 @@
         "name": "build_summary_best_gate_matches_frontier",
         "pass": 1,
         "expected": {
-          "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
-          "summary": "Best exact low-gate family currently checked in: unary folded QROM compute plus 8/7-split measurement-based uncompute. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
-          "gate_set": "Clifford + Toffoli-style unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
+          "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+          "summary": "Lower-gate exact lookup family using a 3/4/4/4 hierarchical banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
+          "gate_set": "Clifford + banked unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
           "phase_shell": "semiclassical_qft_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
-          "lookup_family": "folded_unary_qrom_measured_uncompute_v1",
+          "lookup_family": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1",
           "arithmetic_leaf_non_clifford": 733657,
-          "direct_seed_non_clifford": 33447,
-          "per_leaf_lookup_non_clifford": 33447,
-          "full_oracle_non_clifford": 23813671,
+          "direct_seed_non_clifford": 401,
+          "per_leaf_lookup_non_clifford": 401,
+          "full_oracle_non_clifford": 22756199,
           "arithmetic_slot_count": 9,
           "control_slot_count": 2,
-          "lookup_workspace_qubits": 32786,
+          "lookup_workspace_qubits": 74,
           "live_phase_bits": 1,
-          "total_logical_qubits": 35093,
+          "total_logical_qubits": 2381,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
           "phase_shell_rotation_depth": 511,
-          "total_measurements": 385988,
-          "improvement_vs_google_low_qubit": 3.779341706702843,
-          "improvement_vs_google_low_gate": 2.9394879941022114,
-          "qubit_ratio_vs_google_low_qubit": 0.034194853674521984,
-          "qubit_ratio_vs_google_low_gate": 0.04131878152338073,
+          "total_measurements": 375396,
+          "improvement_vs_google_low_qubit": 3.9549662929208873,
+          "improvement_vs_google_low_gate": 3.0760848944940236,
+          "qubit_ratio_vs_google_low_qubit": 0.5039899202015959,
+          "qubit_ratio_vs_google_low_gate": 0.6089878202435951,
           "notes": [
-            "This family uses the same forward unary QROM compute as folded_unary_qrom_v1 but replaces reverse uncompute by the exact 8/7-split measurement-based construction.",
-            "It improves the exact gate frontier while keeping the lookup semantics identical.",
+            "This family deepens the bank hierarchy to compress both generated lookup workspace and generated lookup non-Clifford cost relative to the two-level banked family.",
+            "It keeps the folded lookup semantics exact while exposing every decode and measured-cleanup chunk as generated operation inventory.",
             "This family is exact for the chosen semiclassical inverse-QFT schedule with one aggregated classical basis update per noninitial bit.",
             "It preserves the oracle family while collapsing the live quantum phase register from 512 qubits to one qubit."
           ]
         },
         "observed": {
-          "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
-          "summary": "Best exact low-gate family currently checked in: unary folded QROM compute plus 8/7-split measurement-based uncompute. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
-          "gate_set": "Clifford + Toffoli-style unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
+          "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+          "summary": "Lower-gate exact lookup family using a 3/4/4/4 hierarchical banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
+          "gate_set": "Clifford + banked unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
           "phase_shell": "semiclassical_qft_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
-          "lookup_family": "folded_unary_qrom_measured_uncompute_v1",
+          "lookup_family": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1",
           "arithmetic_leaf_non_clifford": 733657,
-          "direct_seed_non_clifford": 33447,
-          "per_leaf_lookup_non_clifford": 33447,
-          "full_oracle_non_clifford": 23813671,
+          "direct_seed_non_clifford": 401,
+          "per_leaf_lookup_non_clifford": 401,
+          "full_oracle_non_clifford": 22756199,
           "arithmetic_slot_count": 9,
           "control_slot_count": 2,
-          "lookup_workspace_qubits": 32786,
+          "lookup_workspace_qubits": 74,
           "live_phase_bits": 1,
-          "total_logical_qubits": 35093,
+          "total_logical_qubits": 2381,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
           "phase_shell_rotation_depth": 511,
-          "total_measurements": 385988,
-          "improvement_vs_google_low_qubit": 3.779341706702843,
-          "improvement_vs_google_low_gate": 2.9394879941022114,
-          "qubit_ratio_vs_google_low_qubit": 0.034194853674521984,
-          "qubit_ratio_vs_google_low_gate": 0.04131878152338073,
+          "total_measurements": 375396,
+          "improvement_vs_google_low_qubit": 3.9549662929208873,
+          "improvement_vs_google_low_gate": 3.0760848944940236,
+          "qubit_ratio_vs_google_low_qubit": 0.5039899202015959,
+          "qubit_ratio_vs_google_low_gate": 0.6089878202435951,
           "notes": [
-            "This family uses the same forward unary QROM compute as folded_unary_qrom_v1 but replaces reverse uncompute by the exact 8/7-split measurement-based construction.",
-            "It improves the exact gate frontier while keeping the lookup semantics identical.",
+            "This family deepens the bank hierarchy to compress both generated lookup workspace and generated lookup non-Clifford cost relative to the two-level banked family.",
+            "It keeps the folded lookup semantics exact while exposing every decode and measured-cleanup chunk as generated operation inventory.",
             "This family is exact for the chosen semiclassical inverse-QFT schedule with one aggregated classical basis update per noninitial bit.",
             "It preserves the oracle family while collapsing the live quantum phase register from 512 qubits to one qubit."
           ]
@@ -5612,6 +5926,34 @@
               "same_density_physical_qubits_if_1450_maps_to_26k": 41922.75862068965
             },
             {
+              "family": "folded_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+              "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.530813222222222,
+              "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.253902714285714,
+              "same_density_physical_qubits_if_1200_maps_to_26k": 69766.66666666667,
+              "same_density_physical_qubits_if_1450_maps_to_26k": 57737.93103448276
+            },
+            {
+              "family": "folded_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+              "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.530813222222222,
+              "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.253902714285714,
+              "same_density_physical_qubits_if_1200_maps_to_26k": 58695.0,
+              "same_density_physical_qubits_if_1450_maps_to_26k": 48575.1724137931
+            },
+            {
+              "family": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+              "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.5284665555555557,
+              "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.2508855714285714,
+              "same_density_physical_qubits_if_1200_maps_to_26k": 62660.0,
+              "same_density_physical_qubits_if_1450_maps_to_26k": 51856.55172413793
+            },
+            {
+              "family": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+              "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.5284665555555557,
+              "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.2508855714285714,
+              "same_density_physical_qubits_if_1200_maps_to_26k": 51588.333333333336,
+              "same_density_physical_qubits_if_1450_maps_to_26k": 42693.793103448275
+            },
+            {
               "family": "folded_unary_qrom_v1__full_phase_register_v1",
               "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.7611065555555556,
               "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.549994142857143,
@@ -5664,6 +6006,34 @@
               "same_density_physical_qubits_if_1450_maps_to_26k": 41922.75862068965
             },
             {
+              "family": "folded_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+              "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.530813222222222,
+              "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.253902714285714,
+              "same_density_physical_qubits_if_1200_maps_to_26k": 69766.66666666667,
+              "same_density_physical_qubits_if_1450_maps_to_26k": 57737.93103448276
+            },
+            {
+              "family": "folded_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+              "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.530813222222222,
+              "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.253902714285714,
+              "same_density_physical_qubits_if_1200_maps_to_26k": 58695.0,
+              "same_density_physical_qubits_if_1450_maps_to_26k": 48575.1724137931
+            },
+            {
+              "family": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+              "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.5284665555555557,
+              "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.2508855714285714,
+              "same_density_physical_qubits_if_1200_maps_to_26k": 62660.0,
+              "same_density_physical_qubits_if_1450_maps_to_26k": 51856.55172413793
+            },
+            {
+              "family": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+              "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.5284665555555557,
+              "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.2508855714285714,
+              "same_density_physical_qubits_if_1200_maps_to_26k": 51588.333333333336,
+              "same_density_physical_qubits_if_1450_maps_to_26k": 42693.793103448275
+            },
+            {
               "family": "folded_unary_qrom_v1__full_phase_register_v1",
               "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.7611065555555556,
               "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.549994142857143,
@@ -5702,9 +6072,33 @@
     ]
   },
   "azure_seed_checks": {
-    "pass": 1,
-    "total": 1,
+    "pass": 2,
+    "total": 2,
     "checks": [
+      {
+        "name": "azure_seed_family_names_are_frontier_subset",
+        "pass": 1,
+        "expected": [
+          "folded_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+          "folded_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+          "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+          "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+          "folded_linear_scan_tmpand_v1__full_phase_register_v1",
+          "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",
+          "folded_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+          "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+          "folded_unary_qrom_v1__full_phase_register_v1",
+          "folded_unary_qrom_v1__semiclassical_qft_v1"
+        ],
+        "observed": [
+          "folded_linear_scan_tmpand_v1__full_phase_register_v1",
+          "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",
+          "folded_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+          "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+          "folded_unary_qrom_v1__full_phase_register_v1",
+          "folded_unary_qrom_v1__semiclassical_qft_v1"
+        ]
+      },
       {
         "name": "azure_seed_matches_frontier_projection",
         "pass": 1,
@@ -5792,7 +6186,8 @@
           ],
           "notes": [
             "This file is not a claimed Azure output. It is a machine-readable logicalCounts seed suitable for exact-family handoff into a physical estimator.",
-            "The rotationCount and rotationDepth fields are sourced from the exact phase-shell lowering artifact for each named compiler family."
+            "The rotationCount and rotationDepth fields are sourced from the exact phase-shell lowering artifact for each named compiler family.",
+            "When qsharp/qdk is unavailable, this artifact is filtered to the subset of families that have checked recorded estimator outputs in the repository."
           ]
         },
         "observed": {
@@ -5879,7 +6274,8 @@
           ],
           "notes": [
             "This file is not a claimed Azure output. It is a machine-readable logicalCounts seed suitable for exact-family handoff into a physical estimator.",
-            "The rotationCount and rotationDepth fields are sourced from the exact phase-shell lowering artifact for each named compiler family."
+            "The rotationCount and rotationDepth fields are sourced from the exact phase-shell lowering artifact for each named compiler family.",
+            "When qsharp/qdk is unavailable, this artifact is filtered to the subset of families that have checked recorded estimator outputs in the repository."
           ]
         }
       }
@@ -5918,7 +6314,7 @@
               "folded_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
               "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1"
             ],
-            "logical_counts_sha256": "6148188f8e2bad2237c01f7b64ff6f001c2ae0b706cbacba24b1d86c04aabfc8"
+            "logical_counts_sha256": "864c49e5c837bf4def65e51700c76da80378716c58bfa89b7f443af123cf1aea"
           },
           "targets": [
             {
@@ -6037,7 +6433,7 @@
               "folded_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
               "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1"
             ],
-            "logical_counts_sha256": "6148188f8e2bad2237c01f7b64ff6f001c2ae0b706cbacba24b1d86c04aabfc8"
+            "logical_counts_sha256": "864c49e5c837bf4def65e51700c76da80378716c58bfa89b7f443af123cf1aea"
           },
           "targets": [
             {
@@ -9351,10 +9747,10 @@
       "pass": 30
     },
     "invariant_checks": {
-      "total": 390,
-      "pass": 390
+      "total": 391,
+      "pass": 391
     },
-    "total": 420,
-    "pass": 420
+    "total": 421,
+    "pass": 421
   }
 }

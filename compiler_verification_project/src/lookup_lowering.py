@@ -454,6 +454,101 @@ def _unary_qrom_family(contract: Mapping[str, Any], measured_uncompute: bool) ->
     )
 
 
+def _banked_unary_qrom_measured_uncompute_family(
+    contract: Mapping[str, Any],
+    family_name: str,
+    summary: str,
+    split_bits: Tuple[int, ...],
+    strategy_summary: str,
+    notes: List[str],
+) -> Dict[str, Any]:
+    params = _contract_parameters(contract)
+    if sum(split_bits) != params['magnitude_bits']:
+        raise ValueError('banked unary family split must cover the full folded magnitude width')
+    if any(bit_count <= 0 for bit_count in split_bits):
+        raise ValueError('banked unary family split must use positive chunk widths')
+    domains = [1 << bit_count for bit_count in split_bits]
+    persistent_workspace = _persistent_workspace(params['magnitude_bits'])
+    persistent_total = sum(int(entry['qubits']) for entry in persistent_workspace)
+    local_workspace = sum(domains)
+    decode_blocks = []
+    uncompute_blocks = []
+    level_names = ['coarse', 'upper_mid', 'lower_mid', 'fine']
+    for level_index, (bit_count, domain) in enumerate(zip(split_bits, domains)):
+        level_name = level_names[level_index] if level_index < len(level_names) else f'level_{level_index + 1}'
+        decode_blocks.append(
+            _block(
+                name=f'{level_name}_bucket_decode',
+                summary=f'Unary decode for the {bit_count}-bit {level_name.replace("_", " ")} chunk.',
+                instance_count=domain - 1,
+                primitive_operation_generator={
+                    'kind': 'pointwise',
+                    'instance_count': domain - 1,
+                    'gate': 'ccx',
+                    'include_measurement': False,
+                },
+                notes=[
+                    f'This generated block materializes the {bit_count}-bit {level_name.replace("_", " ")} unary chunk inside the hierarchical banked family.',
+                ],
+            )
+        )
+        uncompute_blocks.append(
+            _block(
+                name=f'{level_name}_bucket_measured_uncompute',
+                summary=f'Measured cleanup for the {bit_count}-bit {level_name.replace("_", " ")} chunk.',
+                instance_count=domain - 1,
+                primitive_operation_generator={
+                    'kind': 'pointwise',
+                    'instance_count': domain - 1,
+                    'gate': 'ccx',
+                    'include_measurement': True,
+                },
+                notes=[
+                    f'This generated block measures and resets the {level_name.replace("_", " ")} chunk after the selected-path decode has been consumed.',
+                ],
+            )
+        )
+    stages = [
+        _classification_stage(params['magnitude_bits'], persistent_total),
+        _stage(
+            name='folded_positive_lookup_compute',
+            summary='Hierarchical banked unary address decode across the positive folded domain.',
+            category='lookup_compute',
+            blocks=decode_blocks,
+            persistent_workspace_qubits=persistent_total,
+            local_workspace_qubits=local_workspace,
+            notes=[
+                'The hierarchical family materializes one unary chunk per banking level instead of a full 32768-slot unary register.',
+            ],
+        ),
+        _stage(
+            name='folded_positive_lookup_uncompute',
+            summary='Measured cleanup for the hierarchical banked unary lookup workspace.',
+            category='lookup_uncompute',
+            blocks=uncompute_blocks,
+            persistent_workspace_qubits=persistent_total,
+            local_workspace_qubits=local_workspace,
+            notes=[
+                'Measured cleanup keeps the hierarchical banked family exact within the chosen generated operation layer without reintroducing the full reverse unary pass.',
+            ],
+        ),
+        _conditional_negation_stage(params['coordinate_bits'], persistent_total),
+    ]
+    return _family_payload(
+        name=family_name,
+        summary=summary,
+        gate_set='Clifford + banked unary QROM + measurement',
+        lowering_strategy={
+            'classification': 'shared folded sign/magnitude decomposition over the checked signed-folded lookup contract',
+            'lookup_compute': strategy_summary,
+            'lookup_uncompute': 'measured cleanup of every generated banked unary chunk register',
+        },
+        persistent_workspace=persistent_workspace,
+        stages=stages,
+        notes=notes,
+    )
+
+
 def _family_payload(
     name: str,
     summary: str,
@@ -508,11 +603,33 @@ def lookup_lowering_library() -> Dict[str, Any]:
     params = _contract_parameters(contract)
     families = [
         _linear_scan_family(contract),
+        _banked_unary_qrom_measured_uncompute_family(
+            contract,
+            family_name='folded_banked_unary_qrom_measured_uncompute_v1',
+            summary='Intermediate exact lookup family using a 7/8-split banked unary decode with measured cleanup.',
+            split_bits=(7, 8),
+            strategy_summary='7/8-split banked unary decode over the 32768-entry positive folded domain',
+            notes=[
+                'This family sits between the linear-scan and full-unary extremes in the checked compiler frontier.',
+                'It compresses lookup workspace aggressively without falling back to a full positive-domain equality scan.',
+            ],
+        ),
+        _banked_unary_qrom_measured_uncompute_family(
+            contract,
+            family_name='folded_hierarchical_banked_unary_qrom_measured_uncompute_v1',
+            summary='Lower-gate exact lookup family using a 3/4/4/4 hierarchical banked unary decode with measured cleanup.',
+            split_bits=(3, 4, 4, 4),
+            strategy_summary='3/4/4/4 hierarchical banked unary decode over the 32768-entry positive folded domain',
+            notes=[
+                'This family deepens the bank hierarchy to compress both generated lookup workspace and generated lookup non-Clifford cost relative to the two-level banked family.',
+                'It keeps the folded lookup semantics exact while exposing every decode and measured-cleanup chunk as generated operation inventory.',
+            ],
+        ),
         _unary_qrom_family(contract, measured_uncompute=False),
         _unary_qrom_family(contract, measured_uncompute=True),
     ]
     return {
-        'schema': 'compiler-project-lookup-lowerings-v2',
+        'schema': 'compiler-project-lookup-lowerings-v4',
         'lookup_contract_path': 'artifacts/lookup/lookup_signed_fold_contract.json',
         'lookup_contract_sha256': sha256_path(_lookup_contract_path()),
         'lookup_contract_summary': {

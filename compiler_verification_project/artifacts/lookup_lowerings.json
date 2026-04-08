@@ -1,5 +1,5 @@
 {
-  "schema": "compiler-project-lookup-lowerings-v2",
+  "schema": "compiler-project-lookup-lowerings-v4",
   "lookup_contract_path": "artifacts/lookup/lookup_signed_fold_contract.json",
   "lookup_contract_sha256": "c3b6cc711aa323951a580f6a54a027d84bf84d6a5ad66965751db865553b635d",
   "lookup_contract_summary": {
@@ -626,6 +626,2254 @@
       "notes": [
         "This remains the lowest-space lookup family checked into the compiler project.",
         "Zero-word and 0x8000 routing are explicit semantic cases, but they do not allocate a separate metadata-table lookup."
+      ]
+    },
+    {
+      "name": "folded_banked_unary_qrom_measured_uncompute_v1",
+      "summary": "Intermediate exact lookup family using a 7/8-split banked unary decode with measured cleanup.",
+      "gate_set": "Clifford + banked unary QROM + measurement",
+      "lookup_contract_sha256": "c3b6cc711aa323951a580f6a54a027d84bf84d6a5ad66965751db865553b635d",
+      "lowering_strategy": {
+        "classification": "shared folded sign/magnitude decomposition over the checked signed-folded lookup contract",
+        "lookup_compute": "7/8-split banked unary decode over the 32768-entry positive folded domain",
+        "lookup_uncompute": "measured cleanup of every generated banked unary chunk register"
+      },
+      "persistent_workspace": [
+        {
+          "name": "folded_magnitude_register",
+          "qubits": 15,
+          "summary": "Stores the shared absolute-value magnitude 0..32767 used by every lookup family."
+        },
+        {
+          "name": "lookup_control_predicates",
+          "qubits": 3,
+          "summary": "Tracks zero/min-word routing and the Y-negation enable predicate without allocating a full metadata table."
+        }
+      ],
+      "stages": [
+        {
+          "name": "folded_word_classification",
+          "summary": "Shared sign/magnitude classification for the 16-bit signed folded contract.",
+          "category": "classification",
+          "blocks": [
+            {
+              "name": "magnitude_all_zero_tree",
+              "summary": "Temporary logical-AND ladder over the 15 magnitude bits.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 14,
+                "cx": 0,
+                "x": 0,
+                "measurement": 14
+              },
+              "primitive_counts_total": {
+                "ccx": 14,
+                "cx": 0,
+                "x": 0,
+                "measurement": 14
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "repeated_ladder",
+                "instance_count": 1,
+                "bit_count": 14,
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 28,
+                "sha256": "1dcb7cf81673b233c026134572f13c256993d0627c72191bad19f2d61367ab79",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0,
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    0
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    1
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    1
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    2
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    2
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    3
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    3
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0,
+                    10
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    10
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    11
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    11
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    12
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    12
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    13
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    13
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 14,
+              "non_clifford_total": 14,
+              "notes": [
+                "The all-zero predicate is shared by zero-word bypass and 0x8000 special-word routing.",
+                "The temporary logical-AND ladder is uncomputed by local measurements inside the stage."
+              ]
+            },
+            {
+              "name": "signed_absolute_value_prepare",
+              "summary": "Two mirrored temporary logical-AND ladders prepare the folded absolute value for the positive lookup domain.",
+              "instance_count": 2,
+              "primitive_counts_per_instance": {
+                "ccx": 14,
+                "cx": 0,
+                "x": 0,
+                "measurement": 14
+              },
+              "primitive_counts_total": {
+                "ccx": 28,
+                "cx": 0,
+                "x": 0,
+                "measurement": 28
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "repeated_ladder",
+                "instance_count": 2,
+                "bit_count": 14,
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 56,
+                "sha256": "e3f4add9394f9d8f6f8b5a08535202a6b3919b582c973ee87fd36d7d96dd0bd6",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0,
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    0
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    1
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    1
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    2
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    2
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    3
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    3
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    1,
+                    10
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    10
+                  ],
+                  [
+                    "ccx",
+                    1,
+                    11
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    11
+                  ],
+                  [
+                    "ccx",
+                    1,
+                    12
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    12
+                  ],
+                  [
+                    "ccx",
+                    1,
+                    13
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    13
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 14,
+              "non_clifford_total": 28,
+              "notes": [
+                "This stage implements the explicit absolute-value preparation used by all checked lookup families.",
+                "Separate zero/min routing is driven from the shared all-zero predicate and the raw sign bit, so no additional non-Clifford flag-materialization block is counted here."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 42,
+            "cx": 0,
+            "x": 0,
+            "measurement": 42
+          },
+          "non_clifford_total": 42,
+          "persistent_workspace_qubits": 18,
+          "local_workspace_qubits": 13,
+          "total_workspace_qubits": 31,
+          "notes": [
+            "The classification stage is family-independent and implements the same signed-folded contract used by the main repository lookup audit."
+          ]
+        },
+        {
+          "name": "folded_positive_lookup_compute",
+          "summary": "Hierarchical banked unary address decode across the positive folded domain.",
+          "category": "lookup_compute",
+          "blocks": [
+            {
+              "name": "coarse_bucket_decode",
+              "summary": "Unary decode for the 7-bit coarse chunk.",
+              "instance_count": 127,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 127,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 127,
+                "gate": "ccx",
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 127,
+                "sha256": "8e4519a474a714999a29fd6a25b38a15f644f6434007f5256d5e12a9de3f6744",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "ccx",
+                    1
+                  ],
+                  [
+                    "ccx",
+                    2
+                  ],
+                  [
+                    "ccx",
+                    3
+                  ],
+                  [
+                    "ccx",
+                    4
+                  ],
+                  [
+                    "ccx",
+                    5
+                  ],
+                  [
+                    "ccx",
+                    6
+                  ],
+                  [
+                    "ccx",
+                    7
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    119
+                  ],
+                  [
+                    "ccx",
+                    120
+                  ],
+                  [
+                    "ccx",
+                    121
+                  ],
+                  [
+                    "ccx",
+                    122
+                  ],
+                  [
+                    "ccx",
+                    123
+                  ],
+                  [
+                    "ccx",
+                    124
+                  ],
+                  [
+                    "ccx",
+                    125
+                  ],
+                  [
+                    "ccx",
+                    126
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 127,
+              "notes": [
+                "This generated block materializes the 7-bit coarse unary chunk inside the hierarchical banked family."
+              ]
+            },
+            {
+              "name": "upper_mid_bucket_decode",
+              "summary": "Unary decode for the 8-bit upper mid chunk.",
+              "instance_count": 255,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 255,
+                "gate": "ccx",
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 255,
+                "sha256": "6b489f58b420fed8538b206b948339343311ab0828d621731b9c492cc0ce2ec9",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "ccx",
+                    1
+                  ],
+                  [
+                    "ccx",
+                    2
+                  ],
+                  [
+                    "ccx",
+                    3
+                  ],
+                  [
+                    "ccx",
+                    4
+                  ],
+                  [
+                    "ccx",
+                    5
+                  ],
+                  [
+                    "ccx",
+                    6
+                  ],
+                  [
+                    "ccx",
+                    7
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    247
+                  ],
+                  [
+                    "ccx",
+                    248
+                  ],
+                  [
+                    "ccx",
+                    249
+                  ],
+                  [
+                    "ccx",
+                    250
+                  ],
+                  [
+                    "ccx",
+                    251
+                  ],
+                  [
+                    "ccx",
+                    252
+                  ],
+                  [
+                    "ccx",
+                    253
+                  ],
+                  [
+                    "ccx",
+                    254
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 255,
+              "notes": [
+                "This generated block materializes the 8-bit upper mid unary chunk inside the hierarchical banked family."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 382,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 382,
+          "persistent_workspace_qubits": 18,
+          "local_workspace_qubits": 384,
+          "total_workspace_qubits": 402,
+          "notes": [
+            "The hierarchical family materializes one unary chunk per banking level instead of a full 32768-slot unary register."
+          ]
+        },
+        {
+          "name": "folded_positive_lookup_uncompute",
+          "summary": "Measured cleanup for the hierarchical banked unary lookup workspace.",
+          "category": "lookup_uncompute",
+          "blocks": [
+            {
+              "name": "coarse_bucket_measured_uncompute",
+              "summary": "Measured cleanup for the 7-bit coarse chunk.",
+              "instance_count": 127,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 127,
+                "cx": 0,
+                "x": 0,
+                "measurement": 127
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 127,
+                "gate": "ccx",
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 254,
+                "sha256": "166fc66672649584dbced27358032bc9519977f569e992d05c655462cbd831fa",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ],
+                  [
+                    "ccx",
+                    1
+                  ],
+                  [
+                    "measurement",
+                    1
+                  ],
+                  [
+                    "ccx",
+                    2
+                  ],
+                  [
+                    "measurement",
+                    2
+                  ],
+                  [
+                    "ccx",
+                    3
+                  ],
+                  [
+                    "measurement",
+                    3
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    123
+                  ],
+                  [
+                    "measurement",
+                    123
+                  ],
+                  [
+                    "ccx",
+                    124
+                  ],
+                  [
+                    "measurement",
+                    124
+                  ],
+                  [
+                    "ccx",
+                    125
+                  ],
+                  [
+                    "measurement",
+                    125
+                  ],
+                  [
+                    "ccx",
+                    126
+                  ],
+                  [
+                    "measurement",
+                    126
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 127,
+              "notes": [
+                "This generated block measures and resets the coarse chunk after the selected-path decode has been consumed."
+              ]
+            },
+            {
+              "name": "upper_mid_bucket_measured_uncompute",
+              "summary": "Measured cleanup for the 8-bit upper mid chunk.",
+              "instance_count": 255,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 255,
+                "gate": "ccx",
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 510,
+                "sha256": "dc337e175ff096af603dbb27d7f39e07ecc902b177f71c792308a92a190a82d7",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ],
+                  [
+                    "ccx",
+                    1
+                  ],
+                  [
+                    "measurement",
+                    1
+                  ],
+                  [
+                    "ccx",
+                    2
+                  ],
+                  [
+                    "measurement",
+                    2
+                  ],
+                  [
+                    "ccx",
+                    3
+                  ],
+                  [
+                    "measurement",
+                    3
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    251
+                  ],
+                  [
+                    "measurement",
+                    251
+                  ],
+                  [
+                    "ccx",
+                    252
+                  ],
+                  [
+                    "measurement",
+                    252
+                  ],
+                  [
+                    "ccx",
+                    253
+                  ],
+                  [
+                    "measurement",
+                    253
+                  ],
+                  [
+                    "ccx",
+                    254
+                  ],
+                  [
+                    "measurement",
+                    254
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 255,
+              "notes": [
+                "This generated block measures and resets the upper mid chunk after the selected-path decode has been consumed."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 382,
+            "cx": 0,
+            "x": 0,
+            "measurement": 382
+          },
+          "non_clifford_total": 382,
+          "persistent_workspace_qubits": 18,
+          "local_workspace_qubits": 384,
+          "total_workspace_qubits": 402,
+          "notes": [
+            "Measured cleanup keeps the hierarchical banked family exact within the chosen generated operation layer without reintroducing the full reverse unary pass."
+          ]
+        },
+        {
+          "name": "conditional_y_negation",
+          "summary": "Applies the post-lookup Y negation required by negative raw words in the folded contract.",
+          "category": "post_lookup_fixup",
+          "blocks": [
+            {
+              "name": "conditional_field_negation",
+              "summary": "Field-width conditional subtraction/select network over the Y coordinate.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "repeated_ladder",
+                "instance_count": 1,
+                "bit_count": 255,
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 255,
+                "sha256": "bc1daccf212c60fa60ea180cd084e3e8bde71a3bf7cc1fe295ef336a5eafa761",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0,
+                    0
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    1
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    2
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    3
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    4
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    5
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    6
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    7
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0,
+                    247
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    248
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    249
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    250
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    251
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    252
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    253
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    254
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 255,
+              "non_clifford_total": 255,
+              "notes": [
+                "This stage is the exact post-lookup sign-fix assumption represented as a single field-width conditional negation."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 255,
+          "persistent_workspace_qubits": 18,
+          "local_workspace_qubits": 0,
+          "total_workspace_qubits": 18,
+          "notes": [
+            "The X coordinate remains unchanged under negation; only the Y coordinate path carries non-Clifford cost."
+          ]
+        }
+      ],
+      "primitive_counts_total": {
+        "ccx": 1061,
+        "cx": 0,
+        "x": 0,
+        "measurement": 424
+      },
+      "zero_check_non_clifford": 14,
+      "magnitude_prepare_non_clifford": 28,
+      "compute_lookup_non_clifford": 382,
+      "uncompute_lookup_non_clifford": 382,
+      "conditional_negate_y_non_clifford": 255,
+      "direct_lookup_non_clifford": 1061,
+      "per_leaf_lookup_non_clifford": 1061,
+      "extra_lookup_workspace_qubits": 402,
+      "workspace_reconstruction": {
+        "persistent_workspace_qubits": 18,
+        "peak_stage": "folded_positive_lookup_compute",
+        "peak_total_workspace_qubits": 402
+      },
+      "semantic_profile": {
+        "zero_maps_to_infinity": true,
+        "special_case_word_hex": "0x8000",
+        "negative_words_negate_y_after_positive_lookup": true
+      },
+      "notes": [
+        "This family sits between the linear-scan and full-unary extremes in the checked compiler frontier.",
+        "It compresses lookup workspace aggressively without falling back to a full positive-domain equality scan."
+      ]
+    },
+    {
+      "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1",
+      "summary": "Lower-gate exact lookup family using a 3/4/4/4 hierarchical banked unary decode with measured cleanup.",
+      "gate_set": "Clifford + banked unary QROM + measurement",
+      "lookup_contract_sha256": "c3b6cc711aa323951a580f6a54a027d84bf84d6a5ad66965751db865553b635d",
+      "lowering_strategy": {
+        "classification": "shared folded sign/magnitude decomposition over the checked signed-folded lookup contract",
+        "lookup_compute": "3/4/4/4 hierarchical banked unary decode over the 32768-entry positive folded domain",
+        "lookup_uncompute": "measured cleanup of every generated banked unary chunk register"
+      },
+      "persistent_workspace": [
+        {
+          "name": "folded_magnitude_register",
+          "qubits": 15,
+          "summary": "Stores the shared absolute-value magnitude 0..32767 used by every lookup family."
+        },
+        {
+          "name": "lookup_control_predicates",
+          "qubits": 3,
+          "summary": "Tracks zero/min-word routing and the Y-negation enable predicate without allocating a full metadata table."
+        }
+      ],
+      "stages": [
+        {
+          "name": "folded_word_classification",
+          "summary": "Shared sign/magnitude classification for the 16-bit signed folded contract.",
+          "category": "classification",
+          "blocks": [
+            {
+              "name": "magnitude_all_zero_tree",
+              "summary": "Temporary logical-AND ladder over the 15 magnitude bits.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 14,
+                "cx": 0,
+                "x": 0,
+                "measurement": 14
+              },
+              "primitive_counts_total": {
+                "ccx": 14,
+                "cx": 0,
+                "x": 0,
+                "measurement": 14
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "repeated_ladder",
+                "instance_count": 1,
+                "bit_count": 14,
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 28,
+                "sha256": "1dcb7cf81673b233c026134572f13c256993d0627c72191bad19f2d61367ab79",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0,
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    0
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    1
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    1
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    2
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    2
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    3
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    3
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0,
+                    10
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    10
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    11
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    11
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    12
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    12
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    13
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    13
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 14,
+              "non_clifford_total": 14,
+              "notes": [
+                "The all-zero predicate is shared by zero-word bypass and 0x8000 special-word routing.",
+                "The temporary logical-AND ladder is uncomputed by local measurements inside the stage."
+              ]
+            },
+            {
+              "name": "signed_absolute_value_prepare",
+              "summary": "Two mirrored temporary logical-AND ladders prepare the folded absolute value for the positive lookup domain.",
+              "instance_count": 2,
+              "primitive_counts_per_instance": {
+                "ccx": 14,
+                "cx": 0,
+                "x": 0,
+                "measurement": 14
+              },
+              "primitive_counts_total": {
+                "ccx": 28,
+                "cx": 0,
+                "x": 0,
+                "measurement": 28
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "repeated_ladder",
+                "instance_count": 2,
+                "bit_count": 14,
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 56,
+                "sha256": "e3f4add9394f9d8f6f8b5a08535202a6b3919b582c973ee87fd36d7d96dd0bd6",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0,
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    0
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    1
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    1
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    2
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    2
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    3
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    3
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    1,
+                    10
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    10
+                  ],
+                  [
+                    "ccx",
+                    1,
+                    11
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    11
+                  ],
+                  [
+                    "ccx",
+                    1,
+                    12
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    12
+                  ],
+                  [
+                    "ccx",
+                    1,
+                    13
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    13
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 14,
+              "non_clifford_total": 28,
+              "notes": [
+                "This stage implements the explicit absolute-value preparation used by all checked lookup families.",
+                "Separate zero/min routing is driven from the shared all-zero predicate and the raw sign bit, so no additional non-Clifford flag-materialization block is counted here."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 42,
+            "cx": 0,
+            "x": 0,
+            "measurement": 42
+          },
+          "non_clifford_total": 42,
+          "persistent_workspace_qubits": 18,
+          "local_workspace_qubits": 13,
+          "total_workspace_qubits": 31,
+          "notes": [
+            "The classification stage is family-independent and implements the same signed-folded contract used by the main repository lookup audit."
+          ]
+        },
+        {
+          "name": "folded_positive_lookup_compute",
+          "summary": "Hierarchical banked unary address decode across the positive folded domain.",
+          "category": "lookup_compute",
+          "blocks": [
+            {
+              "name": "coarse_bucket_decode",
+              "summary": "Unary decode for the 3-bit coarse chunk.",
+              "instance_count": 7,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 7,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 7,
+                "gate": "ccx",
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 7,
+                "sha256": "5efaa476dadce9ec20c8e4fb45b0c959c272a545b71b441fda51d45a6ee7e03f",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "ccx",
+                    1
+                  ],
+                  [
+                    "ccx",
+                    2
+                  ],
+                  [
+                    "ccx",
+                    3
+                  ],
+                  [
+                    "ccx",
+                    4
+                  ],
+                  [
+                    "ccx",
+                    5
+                  ],
+                  [
+                    "ccx",
+                    6
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "ccx",
+                    1
+                  ],
+                  [
+                    "ccx",
+                    2
+                  ],
+                  [
+                    "ccx",
+                    3
+                  ],
+                  [
+                    "ccx",
+                    4
+                  ],
+                  [
+                    "ccx",
+                    5
+                  ],
+                  [
+                    "ccx",
+                    6
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 7,
+              "notes": [
+                "This generated block materializes the 3-bit coarse unary chunk inside the hierarchical banked family."
+              ]
+            },
+            {
+              "name": "upper_mid_bucket_decode",
+              "summary": "Unary decode for the 4-bit upper mid chunk.",
+              "instance_count": 15,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 15,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 15,
+                "gate": "ccx",
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 15,
+                "sha256": "5dea91fd55287c42798d5a16a94917ea92ebf5403af87abbe8e392bc6c280099",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "ccx",
+                    1
+                  ],
+                  [
+                    "ccx",
+                    2
+                  ],
+                  [
+                    "ccx",
+                    3
+                  ],
+                  [
+                    "ccx",
+                    4
+                  ],
+                  [
+                    "ccx",
+                    5
+                  ],
+                  [
+                    "ccx",
+                    6
+                  ],
+                  [
+                    "ccx",
+                    7
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    7
+                  ],
+                  [
+                    "ccx",
+                    8
+                  ],
+                  [
+                    "ccx",
+                    9
+                  ],
+                  [
+                    "ccx",
+                    10
+                  ],
+                  [
+                    "ccx",
+                    11
+                  ],
+                  [
+                    "ccx",
+                    12
+                  ],
+                  [
+                    "ccx",
+                    13
+                  ],
+                  [
+                    "ccx",
+                    14
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 15,
+              "notes": [
+                "This generated block materializes the 4-bit upper mid unary chunk inside the hierarchical banked family."
+              ]
+            },
+            {
+              "name": "lower_mid_bucket_decode",
+              "summary": "Unary decode for the 4-bit lower mid chunk.",
+              "instance_count": 15,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 15,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 15,
+                "gate": "ccx",
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 15,
+                "sha256": "5dea91fd55287c42798d5a16a94917ea92ebf5403af87abbe8e392bc6c280099",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "ccx",
+                    1
+                  ],
+                  [
+                    "ccx",
+                    2
+                  ],
+                  [
+                    "ccx",
+                    3
+                  ],
+                  [
+                    "ccx",
+                    4
+                  ],
+                  [
+                    "ccx",
+                    5
+                  ],
+                  [
+                    "ccx",
+                    6
+                  ],
+                  [
+                    "ccx",
+                    7
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    7
+                  ],
+                  [
+                    "ccx",
+                    8
+                  ],
+                  [
+                    "ccx",
+                    9
+                  ],
+                  [
+                    "ccx",
+                    10
+                  ],
+                  [
+                    "ccx",
+                    11
+                  ],
+                  [
+                    "ccx",
+                    12
+                  ],
+                  [
+                    "ccx",
+                    13
+                  ],
+                  [
+                    "ccx",
+                    14
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 15,
+              "notes": [
+                "This generated block materializes the 4-bit lower mid unary chunk inside the hierarchical banked family."
+              ]
+            },
+            {
+              "name": "fine_bucket_decode",
+              "summary": "Unary decode for the 4-bit fine chunk.",
+              "instance_count": 15,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 15,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 15,
+                "gate": "ccx",
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 15,
+                "sha256": "5dea91fd55287c42798d5a16a94917ea92ebf5403af87abbe8e392bc6c280099",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "ccx",
+                    1
+                  ],
+                  [
+                    "ccx",
+                    2
+                  ],
+                  [
+                    "ccx",
+                    3
+                  ],
+                  [
+                    "ccx",
+                    4
+                  ],
+                  [
+                    "ccx",
+                    5
+                  ],
+                  [
+                    "ccx",
+                    6
+                  ],
+                  [
+                    "ccx",
+                    7
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    7
+                  ],
+                  [
+                    "ccx",
+                    8
+                  ],
+                  [
+                    "ccx",
+                    9
+                  ],
+                  [
+                    "ccx",
+                    10
+                  ],
+                  [
+                    "ccx",
+                    11
+                  ],
+                  [
+                    "ccx",
+                    12
+                  ],
+                  [
+                    "ccx",
+                    13
+                  ],
+                  [
+                    "ccx",
+                    14
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 15,
+              "notes": [
+                "This generated block materializes the 4-bit fine unary chunk inside the hierarchical banked family."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 52,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 52,
+          "persistent_workspace_qubits": 18,
+          "local_workspace_qubits": 56,
+          "total_workspace_qubits": 74,
+          "notes": [
+            "The hierarchical family materializes one unary chunk per banking level instead of a full 32768-slot unary register."
+          ]
+        },
+        {
+          "name": "folded_positive_lookup_uncompute",
+          "summary": "Measured cleanup for the hierarchical banked unary lookup workspace.",
+          "category": "lookup_uncompute",
+          "blocks": [
+            {
+              "name": "coarse_bucket_measured_uncompute",
+              "summary": "Measured cleanup for the 3-bit coarse chunk.",
+              "instance_count": 7,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 7,
+                "cx": 0,
+                "x": 0,
+                "measurement": 7
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 7,
+                "gate": "ccx",
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 14,
+                "sha256": "f13a28ad50d3a969168c23dd1c72ffd6e1332a6fde60758298f51dd06b0aa71d",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ],
+                  [
+                    "ccx",
+                    1
+                  ],
+                  [
+                    "measurement",
+                    1
+                  ],
+                  [
+                    "ccx",
+                    2
+                  ],
+                  [
+                    "measurement",
+                    2
+                  ],
+                  [
+                    "ccx",
+                    3
+                  ],
+                  [
+                    "measurement",
+                    3
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    3
+                  ],
+                  [
+                    "measurement",
+                    3
+                  ],
+                  [
+                    "ccx",
+                    4
+                  ],
+                  [
+                    "measurement",
+                    4
+                  ],
+                  [
+                    "ccx",
+                    5
+                  ],
+                  [
+                    "measurement",
+                    5
+                  ],
+                  [
+                    "ccx",
+                    6
+                  ],
+                  [
+                    "measurement",
+                    6
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 7,
+              "notes": [
+                "This generated block measures and resets the coarse chunk after the selected-path decode has been consumed."
+              ]
+            },
+            {
+              "name": "upper_mid_bucket_measured_uncompute",
+              "summary": "Measured cleanup for the 4-bit upper mid chunk.",
+              "instance_count": 15,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 15,
+                "cx": 0,
+                "x": 0,
+                "measurement": 15
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 15,
+                "gate": "ccx",
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 30,
+                "sha256": "5529c51ea56862167abed7b91472367d1ae1e72f654d7e07c2b357194694858f",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ],
+                  [
+                    "ccx",
+                    1
+                  ],
+                  [
+                    "measurement",
+                    1
+                  ],
+                  [
+                    "ccx",
+                    2
+                  ],
+                  [
+                    "measurement",
+                    2
+                  ],
+                  [
+                    "ccx",
+                    3
+                  ],
+                  [
+                    "measurement",
+                    3
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    11
+                  ],
+                  [
+                    "measurement",
+                    11
+                  ],
+                  [
+                    "ccx",
+                    12
+                  ],
+                  [
+                    "measurement",
+                    12
+                  ],
+                  [
+                    "ccx",
+                    13
+                  ],
+                  [
+                    "measurement",
+                    13
+                  ],
+                  [
+                    "ccx",
+                    14
+                  ],
+                  [
+                    "measurement",
+                    14
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 15,
+              "notes": [
+                "This generated block measures and resets the upper mid chunk after the selected-path decode has been consumed."
+              ]
+            },
+            {
+              "name": "lower_mid_bucket_measured_uncompute",
+              "summary": "Measured cleanup for the 4-bit lower mid chunk.",
+              "instance_count": 15,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 15,
+                "cx": 0,
+                "x": 0,
+                "measurement": 15
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 15,
+                "gate": "ccx",
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 30,
+                "sha256": "5529c51ea56862167abed7b91472367d1ae1e72f654d7e07c2b357194694858f",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ],
+                  [
+                    "ccx",
+                    1
+                  ],
+                  [
+                    "measurement",
+                    1
+                  ],
+                  [
+                    "ccx",
+                    2
+                  ],
+                  [
+                    "measurement",
+                    2
+                  ],
+                  [
+                    "ccx",
+                    3
+                  ],
+                  [
+                    "measurement",
+                    3
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    11
+                  ],
+                  [
+                    "measurement",
+                    11
+                  ],
+                  [
+                    "ccx",
+                    12
+                  ],
+                  [
+                    "measurement",
+                    12
+                  ],
+                  [
+                    "ccx",
+                    13
+                  ],
+                  [
+                    "measurement",
+                    13
+                  ],
+                  [
+                    "ccx",
+                    14
+                  ],
+                  [
+                    "measurement",
+                    14
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 15,
+              "notes": [
+                "This generated block measures and resets the lower mid chunk after the selected-path decode has been consumed."
+              ]
+            },
+            {
+              "name": "fine_bucket_measured_uncompute",
+              "summary": "Measured cleanup for the 4-bit fine chunk.",
+              "instance_count": 15,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 15,
+                "cx": 0,
+                "x": 0,
+                "measurement": 15
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 15,
+                "gate": "ccx",
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 30,
+                "sha256": "5529c51ea56862167abed7b91472367d1ae1e72f654d7e07c2b357194694858f",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ],
+                  [
+                    "ccx",
+                    1
+                  ],
+                  [
+                    "measurement",
+                    1
+                  ],
+                  [
+                    "ccx",
+                    2
+                  ],
+                  [
+                    "measurement",
+                    2
+                  ],
+                  [
+                    "ccx",
+                    3
+                  ],
+                  [
+                    "measurement",
+                    3
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    11
+                  ],
+                  [
+                    "measurement",
+                    11
+                  ],
+                  [
+                    "ccx",
+                    12
+                  ],
+                  [
+                    "measurement",
+                    12
+                  ],
+                  [
+                    "ccx",
+                    13
+                  ],
+                  [
+                    "measurement",
+                    13
+                  ],
+                  [
+                    "ccx",
+                    14
+                  ],
+                  [
+                    "measurement",
+                    14
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 15,
+              "notes": [
+                "This generated block measures and resets the fine chunk after the selected-path decode has been consumed."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 52,
+            "cx": 0,
+            "x": 0,
+            "measurement": 52
+          },
+          "non_clifford_total": 52,
+          "persistent_workspace_qubits": 18,
+          "local_workspace_qubits": 56,
+          "total_workspace_qubits": 74,
+          "notes": [
+            "Measured cleanup keeps the hierarchical banked family exact within the chosen generated operation layer without reintroducing the full reverse unary pass."
+          ]
+        },
+        {
+          "name": "conditional_y_negation",
+          "summary": "Applies the post-lookup Y negation required by negative raw words in the folded contract.",
+          "category": "post_lookup_fixup",
+          "blocks": [
+            {
+              "name": "conditional_field_negation",
+              "summary": "Field-width conditional subtraction/select network over the Y coordinate.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "repeated_ladder",
+                "instance_count": 1,
+                "bit_count": 255,
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 255,
+                "sha256": "bc1daccf212c60fa60ea180cd084e3e8bde71a3bf7cc1fe295ef336a5eafa761",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0,
+                    0
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    1
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    2
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    3
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    4
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    5
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    6
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    7
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0,
+                    247
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    248
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    249
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    250
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    251
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    252
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    253
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    254
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 255,
+              "non_clifford_total": 255,
+              "notes": [
+                "This stage is the exact post-lookup sign-fix assumption represented as a single field-width conditional negation."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 255,
+          "persistent_workspace_qubits": 18,
+          "local_workspace_qubits": 0,
+          "total_workspace_qubits": 18,
+          "notes": [
+            "The X coordinate remains unchanged under negation; only the Y coordinate path carries non-Clifford cost."
+          ]
+        }
+      ],
+      "primitive_counts_total": {
+        "ccx": 401,
+        "cx": 0,
+        "x": 0,
+        "measurement": 94
+      },
+      "zero_check_non_clifford": 14,
+      "magnitude_prepare_non_clifford": 28,
+      "compute_lookup_non_clifford": 52,
+      "uncompute_lookup_non_clifford": 52,
+      "conditional_negate_y_non_clifford": 255,
+      "direct_lookup_non_clifford": 401,
+      "per_leaf_lookup_non_clifford": 401,
+      "extra_lookup_workspace_qubits": 74,
+      "workspace_reconstruction": {
+        "persistent_workspace_qubits": 18,
+        "peak_stage": "folded_positive_lookup_compute",
+        "peak_total_workspace_qubits": 74
+      },
+      "semantic_profile": {
+        "zero_maps_to_infinity": true,
+        "special_case_word_hex": "0x8000",
+        "negative_words_negate_y_after_positive_lookup": true
+      },
+      "notes": [
+        "This family deepens the bank hierarchy to compress both generated lookup workspace and generated lookup non-Clifford cost relative to the two-level banked family.",
+        "It keeps the folded lookup semantics exact while exposing every decode and measured-cleanup chunk as generated operation inventory."
       ]
     },
     {

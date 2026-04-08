@@ -48,3 +48,16 @@ def test_lookup_lowering_semantics_match_contract() -> None:
     for family in summary['families']:
         assert family['canonical_full_exhaustive_pass'] == family['canonical_full_exhaustive_total']
         assert family['multibase_edge_pass'] == family['multibase_edge_total']
+
+
+def test_banked_lookup_family_sits_between_linear_and_full_unary_extremes() -> None:
+    lookup_lowerings = _load_lookup_lowerings()
+    family_lookup = {family['name']: family for family in lookup_lowerings['families']}
+    linear_family = family_lookup['folded_linear_scan_tmpand_v1']
+    banked_family = family_lookup['folded_banked_unary_qrom_measured_uncompute_v1']
+    hierarchical_family = family_lookup['folded_hierarchical_banked_unary_qrom_measured_uncompute_v1']
+    unary_family = family_lookup['folded_unary_qrom_measured_uncompute_v1']
+    assert linear_family['extra_lookup_workspace_qubits'] < banked_family['extra_lookup_workspace_qubits'] < unary_family['extra_lookup_workspace_qubits']
+    assert banked_family['per_leaf_lookup_non_clifford'] < linear_family['per_leaf_lookup_non_clifford']
+    assert linear_family['extra_lookup_workspace_qubits'] < hierarchical_family['extra_lookup_workspace_qubits'] < banked_family['extra_lookup_workspace_qubits']
+    assert hierarchical_family['per_leaf_lookup_non_clifford'] < banked_family['per_leaf_lookup_non_clifford']

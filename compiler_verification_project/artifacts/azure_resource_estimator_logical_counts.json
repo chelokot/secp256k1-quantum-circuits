@@ -82,6 +82,7 @@
   ],
   "notes": [
     "This file is not a claimed Azure output. It is a machine-readable logicalCounts seed suitable for exact-family handoff into a physical estimator.",
-    "The rotationCount and rotationDepth fields are sourced from the exact phase-shell lowering artifact for each named compiler family."
+    "The rotationCount and rotationDepth fields are sourced from the exact phase-shell lowering artifact for each named compiler family.",
+    "When qsharp/qdk is unavailable, this artifact is filtered to the subset of families that have checked recorded estimator outputs in the repository."
   ]
 }

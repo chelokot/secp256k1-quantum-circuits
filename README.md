@@ -55,19 +55,19 @@ and explicit phase-shell families.
 The root-level `compiler_verification_project/` is the repository's strongest
 exact layer below the ISA boundary. Its checked-in whole-oracle frontier is:
 
-- **best exact gate family:** `23,813,671 non-Clifford`
+- **best exact gate family:** `22,756,199 non-Clifford`
 - **best exact qubit family:** `2,338 logical qubits`
 
 Those numbers are exact for the chosen compiler families, not claims of global
-optimality. The best-gate family uses folded unary QROM with measurement-based
-uncompute; the best-qubit family uses folded linear-scan lookup plus an exact
-semiclassical-QFT phase shell and exact live-range slot allocation.
+optimality. The best-gate family uses a hierarchical banked unary QROM decode
+with measured uncompute; the best-qubit family uses folded linear-scan lookup
+plus an exact semiclassical-QFT phase shell and exact live-range slot allocation.
 
 Against Google's published 2026 secp256k1 baseline, the exact compiler frontier
 supports two separate comparisons:
 
-- the **best exact gate family** is **3.7793x** lower in non-Clifford cost than
-  the public low-qubit line and **2.9395x** lower than the public low-gate line
+- the **best exact gate family** is **3.9550x** lower in non-Clifford cost than
+  the public low-qubit line and **3.0761x** lower than the public low-gate line
 - the **best exact qubit family** still uses **2,338 logical qubits**, which is
   above both public Google qubit lines, while reducing non-Clifford cost by
   **2.4043x** and **1.8700x** respectively

@@ -28,6 +28,7 @@ import json
 import sys
 from collections import Counter, defaultdict
 from dataclasses import asdict, dataclass
+from importlib import import_module
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
@@ -811,9 +812,43 @@ def build_azure_logical_counts_payload(frontier: Optional[Dict[str, Any]] = None
     return payload
 
 
+def _physical_estimator_runtime_available() -> bool:
+    try:
+        import_module('qsharp.estimator')
+    except ModuleNotFoundError:
+        return False
+    return True
+
+
+def _recorded_physical_estimator_family_names() -> List[str]:
+    path = project_artifact_path('azure_resource_estimator_results.json')
+    if not path.exists():
+        return []
+    payload = load_json(path)
+    return [str(row['family']) for row in payload.get('families', [])]
+
+
+def _filter_azure_logical_counts_payload(payload: Dict[str, Any], family_names: Sequence[str]) -> Dict[str, Any]:
+    family_name_set = set(family_names)
+    filtered_rows = [row for row in payload['families'] if row['family'] in family_name_set]
+    filtered_payload = {
+        **payload,
+        'families': filtered_rows,
+        'notes': [
+            *payload['notes'],
+            'When qsharp/qdk is unavailable, this artifact is filtered to the subset of families that have checked recorded estimator outputs in the repository.',
+        ],
+    }
+    return filtered_payload
+
+
 def write_azure_logical_counts() -> Dict[str, Any]:
     frontier = load_json(project_artifact_path('family_frontier.json')) if project_artifact_path('family_frontier.json').exists() else compiler_family_frontier()
     payload = build_azure_logical_counts_payload(frontier=frontier)
+    if not _physical_estimator_runtime_available():
+        recorded_family_names = _recorded_physical_estimator_family_names()
+        if recorded_family_names:
+            payload = _filter_azure_logical_counts_payload(payload, recorded_family_names)
     dump_json(project_artifact_path('azure_resource_estimator_logical_counts.json'), payload)
     return payload
 

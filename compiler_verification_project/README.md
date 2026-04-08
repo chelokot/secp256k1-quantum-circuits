@@ -68,12 +68,12 @@ What it does ship is:
 
 ## Current exact frontier
 
-- **best exact gate family:** `23,813,671 non-Clifford`
+- **best exact gate family:** `22,756,199 non-Clifford`
 - **best exact qubit family:** `2,338 logical qubits`
 
-The best exact gate family uses folded unary QROM with measurement-based
-uncompute. The best exact qubit family uses folded linear-scan lookup plus an
-exact semiclassical-QFT phase shell and an exact 9-slot leaf allocation.
+The best exact gate family uses a hierarchical banked unary QROM decode with
+measured uncompute. The best exact qubit family uses folded linear-scan lookup
+plus an exact semiclassical-QFT phase shell and an exact 9-slot leaf allocation.
 
 ## Interpreting the results
 
