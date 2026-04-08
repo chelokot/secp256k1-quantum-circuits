@@ -91,9 +91,13 @@ primitive qRAM/QROM netlist.
 
 ### B. Primitive-gate cleanup
 
-The `mbuc_*` cleanup operations are represented as abstract cleanup contracts.
-The verifier checks basis-state functional behavior, not a coherent
-phase-accurate primitive-gate implementation.
+The shipped no-op control cleanup is exact at the ISA boundary: the same
+metadata bit that populates `f_lookup_inf` is applied again to uncompute that
+one-bit control after the neutral-entry select path. The repository audits that
+coherent flag-cleanup pair directly on deterministic secp256k1 cases.
+
+The repository still does not lower that cleanup pair into a primitive-gate
+subcircuit.
 
 ### C. Fully flattened Shor gate list
 

@@ -4,15 +4,15 @@
   "full_exhaustive_csv": "lookup_signed_fold_exhaustive_g.csv",
   "full_exhaustive_sha256": "92f26d6e24cadeab48733dd12ab88a689411dfda261606e8b0209f525c6e93c7",
   "multibase_sample_csv": "lookup_signed_fold_multibase_sampled.csv",
-  "multibase_sample_sha256": "f47ca91450f45059841a609395c23682db5aaa2e304a333a33a9bd1c939479d2",
+  "multibase_sample_sha256": "c9ccfe14829d83902dba71819243380c454b7f79b00a8bac07185d2ae7cb5366",
   "summary": {
     "word_domain_size": 65536,
     "folded_table_entries_per_coordinate": 32768,
     "full_exhaustive_base": "g_window_0",
     "full_exhaustive_cases": 65536,
     "full_exhaustive_pass": 65536,
-    "direct_semantic_samples": 15906,
-    "direct_semantic_pass": 15906,
+    "direct_semantic_samples": 15922,
+    "direct_semantic_pass": 15922,
     "bases": {
       "g_window_0": {
         "mode": "full_exhaustive",
@@ -24,27 +24,27 @@
           "x": 33602655200186679430886431101373729519010186911116350037909320311808627496821,
           "y": 78431985975581104334567304158274906298973828211678835725129967778118270854594
         },
-        "direct_sample_cases": 3975,
-        "direct_sample_pass": 3975
+        "direct_sample_cases": 3995,
+        "direct_sample_pass": 3995
       },
       "g_window_5": {
         "mode": "sampled_direct_semantics",
-        "cases": 3984,
-        "pass": 3984,
+        "cases": 3974,
+        "pass": 3974,
         "kind": "window_base",
         "window_index": 5
       },
       "g_window_10": {
         "mode": "sampled_direct_semantics",
-        "cases": 3986,
-        "pass": 3986,
+        "cases": 3981,
+        "pass": 3981,
         "kind": "window_base",
         "window_index": 10
       },
       "g_window_15": {
         "mode": "sampled_direct_semantics",
-        "cases": 3961,
-        "pass": 3961,
+        "cases": 3972,
+        "pass": 3972,
         "kind": "window_base",
         "window_index": 15
       }

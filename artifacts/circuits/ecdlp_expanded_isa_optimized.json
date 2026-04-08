@@ -3,7 +3,7 @@
   "curve": "secp256k1",
   "leaf_source": {
     "path": "artifacts/circuits/optimized_pointadd_secp256k1.json",
-    "sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74"
+    "sha256": "0281442bdea1ae1cb1871ca64638536b72717d9b1a4b381a42609051ca88aad1"
   },
   "scaffold_source": {
     "path": "artifacts/circuits/ecdlp_scaffold_optimized.json",
@@ -36,7 +36,7 @@
     "field_sub": 84,
     "mul_const": 56,
     "select_field_if_flag": 84,
-    "mbuc_clear_bool": 28
+    "clear_bool_from_flag": 28
   },
   "expanded_instructions": [
     {
@@ -689,9 +689,13 @@
     },
     {
       "pc": 37,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 0,
       "phase_register": "phase_a",
@@ -1341,9 +1345,13 @@
     },
     {
       "pc": 74,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 1,
       "phase_register": "phase_a",
@@ -1993,9 +2001,13 @@
     },
     {
       "pc": 111,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 2,
       "phase_register": "phase_a",
@@ -2645,9 +2657,13 @@
     },
     {
       "pc": 148,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 3,
       "phase_register": "phase_a",
@@ -3297,9 +3313,13 @@
     },
     {
       "pc": 185,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 4,
       "phase_register": "phase_a",
@@ -3949,9 +3969,13 @@
     },
     {
       "pc": 222,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 5,
       "phase_register": "phase_a",
@@ -4601,9 +4625,13 @@
     },
     {
       "pc": 259,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 6,
       "phase_register": "phase_a",
@@ -5253,9 +5281,13 @@
     },
     {
       "pc": 296,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 7,
       "phase_register": "phase_a",
@@ -5905,9 +5937,13 @@
     },
     {
       "pc": 333,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 8,
       "phase_register": "phase_a",
@@ -6557,9 +6593,13 @@
     },
     {
       "pc": 370,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 9,
       "phase_register": "phase_a",
@@ -7209,9 +7249,13 @@
     },
     {
       "pc": 407,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 10,
       "phase_register": "phase_a",
@@ -7861,9 +7905,13 @@
     },
     {
       "pc": 444,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 11,
       "phase_register": "phase_a",
@@ -8513,9 +8561,13 @@
     },
     {
       "pc": 481,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 12,
       "phase_register": "phase_a",
@@ -9165,9 +9217,13 @@
     },
     {
       "pc": 518,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 13,
       "phase_register": "phase_a",
@@ -9817,9 +9873,13 @@
     },
     {
       "pc": 555,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 14,
       "phase_register": "phase_a",
@@ -10469,9 +10529,13 @@
     },
     {
       "pc": 592,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 15,
       "phase_register": "phase_b",
@@ -11121,9 +11185,13 @@
     },
     {
       "pc": 629,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 16,
       "phase_register": "phase_b",
@@ -11773,9 +11841,13 @@
     },
     {
       "pc": 666,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 17,
       "phase_register": "phase_b",
@@ -12425,9 +12497,13 @@
     },
     {
       "pc": 703,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 18,
       "phase_register": "phase_b",
@@ -13077,9 +13153,13 @@
     },
     {
       "pc": 740,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 19,
       "phase_register": "phase_b",
@@ -13729,9 +13809,13 @@
     },
     {
       "pc": 777,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 20,
       "phase_register": "phase_b",
@@ -14381,9 +14465,13 @@
     },
     {
       "pc": 814,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 21,
       "phase_register": "phase_b",
@@ -15033,9 +15121,13 @@
     },
     {
       "pc": 851,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 22,
       "phase_register": "phase_b",
@@ -15685,9 +15777,13 @@
     },
     {
       "pc": 888,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 23,
       "phase_register": "phase_b",
@@ -16337,9 +16433,13 @@
     },
     {
       "pc": 925,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 24,
       "phase_register": "phase_b",
@@ -16989,9 +17089,13 @@
     },
     {
       "pc": 962,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 25,
       "phase_register": "phase_b",
@@ -17641,9 +17745,13 @@
     },
     {
       "pc": 999,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 26,
       "phase_register": "phase_b",
@@ -18293,9 +18401,13 @@
     },
     {
       "pc": 1036,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection.",
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register.",
       "kind": "leaf_op",
       "call_index": 27,
       "phase_register": "phase_b",

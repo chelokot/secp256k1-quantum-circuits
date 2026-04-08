@@ -8,6 +8,7 @@ which implementation gaps remain open.
 - ISA-level secp256k1 point-add leaf semantics
 - retained-window scaffold metadata and replay
 - signed lookup-folding contract semantics
+- exact ISA-level coherent flag cleanup
 - exact compiler-family raw-32 whole-oracle frontier
 - exact slot allocation and exact phase-shell family accounting
 
@@ -15,8 +16,7 @@ The main open directions are therefore:
 
 1. explicit primitive-gate lookup realization for the named compiler families
 2. explicit primitive-gate arithmetic-kernel lowering for the named multiplier family
-3. coherent cleanup for the `mbuc_*` boundary
-4. flatter end-to-end Shor fragments with external equivalence checking
+3. flatter end-to-end Shor fragments with external equivalence checking
 
 ## What would be overclaim
 

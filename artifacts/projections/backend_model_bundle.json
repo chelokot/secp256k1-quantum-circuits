@@ -61,9 +61,10 @@
           "kind": "clifford_or_classical_extract",
           "non_clifford": 0
         },
-        "mbuc_clear_bool": {
-          "kind": "abstract_cleanup_contract",
-          "non_clifford": 0
+        "clear_bool_from_flag": {
+          "kind": "exact_isa_flag_uncompute",
+          "non_clifford": 0,
+          "comment": "The shipped leaf clears the one-bit no-op flag by XORing the same metadata bit back out of the control slot."
         },
         "lookup_affine_x": {
           "kind": "lookup_channel",
@@ -146,9 +147,10 @@
           "kind": "clifford_or_classical_extract",
           "non_clifford": 0
         },
-        "mbuc_clear_bool": {
-          "kind": "abstract_cleanup_contract",
-          "non_clifford": 0
+        "clear_bool_from_flag": {
+          "kind": "exact_isa_flag_uncompute",
+          "non_clifford": 0,
+          "comment": "The shipped leaf clears the one-bit no-op flag by XORing the same metadata bit back out of the control slot."
         },
         "lookup_affine_x": {
           "kind": "lookup_channel",

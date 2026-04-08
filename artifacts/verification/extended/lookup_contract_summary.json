@@ -1,6 +1,6 @@
 {
   "contract_sha256": "c3b6cc711aa323951a580f6a54a027d84bf84d6a5ad66965751db865553b635d",
-  "lookup_research_summary_sha256": "f3cdbad240d69c8dd87aa26dfb59686aa39d209fde3b48309bfb10f33fa2f990",
+  "lookup_research_summary_sha256": "e00b3073f3fee5aee425105c4d476f10e38f69b1f3a4f3f535900b1d53326b33",
   "summary": {
     "parameter_checks": {
       "total": 9,
@@ -24,11 +24,11 @@
     },
     "multibase_direct_samples": {
       "base_count": 4,
-      "total": 15906,
-      "pass": 15906
+      "total": 15922,
+      "pass": 15922
     },
-    "total": 81451,
-    "pass": 81451
+    "total": 81467,
+    "pass": 81467
   },
   "artifacts": {
     "contract": "artifacts/lookup/lookup_signed_fold_contract.json",

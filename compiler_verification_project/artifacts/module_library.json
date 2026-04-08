@@ -20,7 +20,7 @@
     "field_sub": 3,
     "mul_const": 2,
     "select_field_if_flag": 3,
-    "mbuc_clear_bool": 1
+    "clear_bool_from_flag": 1
   },
   "exact_scope": "exact non-Clifford counts for the named arithmetic-kernel family; Clifford micro-counts are not flattened in this subproject",
   "notes": [

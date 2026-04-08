@@ -5,8 +5,9 @@ The core verifier in `src/verifier.py` proves the arithmetic leaf on secp256k1 a
 two toy curves. This module adds stronger, slower checks:
 1. lookup-contract audit
 2. scaffold schedule audit
-3. extended toy-family verification
-4. projection sensitivity and claim-boundary reports
+3. coherent cleanup audit
+4. extended toy-family verification
+5. projection sensitivity and claim-boundary reports
 """
 
 from __future__ import annotations
@@ -41,7 +42,7 @@ from common import (
     sha256_path,
 )
 from lookup_research import contract_parameter_checks, load_lookup_folded_contract, run_lookup_folding_audit
-from verifier import exec_netlist, specialize_family_netlist
+from verifier import exec_netlist, exec_netlist_with_trace, make_audit_cases, specialize_family_netlist
 
 
 PointAffine = Optional[Tuple[int, int]]
@@ -173,6 +174,123 @@ def run_lookup_contract(
         "notes": [
             "This summary validates the checked-in folded lookup contract fields and then points at the exhaustive and sampled semantic audits generated under artifacts/lookup/.",
             "The lookup contract is exact at the arithmetic interface layer, and the compiler project lowers named lookup families below that contract. The repository still does not ship a bit-for-bit primitive qRAM or QROM realization.",
+        ],
+    }
+    dump_json(out_json, result)
+    result["sha256"] = sha256_path(out_json)
+    return result
+
+
+def run_coherent_cleanup(
+    repo_root: Path,
+    progress: Callable[[int, int], None] | None = None,
+) -> Dict[str, Any]:
+    package_root = repo_root / "artifacts"
+    leaf_path = artifact_circuits_path(package_root, "optimized_pointadd_secp256k1.json")
+    leaf = load_json(leaf_path)
+    leaf_sha = sha256_path(leaf_path)
+    cases = make_audit_cases(leaf_sha)
+    tables = precompute_window_tables(SECP_G, SECP_P, SECP_B, width=8, bits=256)
+    trace_pcs = {6, 35, 36}
+    out_csv = artifact_extended_verification_path(package_root, "coherent_cleanup_audit_16384.csv")
+    summary: Dict[str, Any] = {"total": 0, "pass": 0, "categories": {}}
+
+    with out_csv.open("w", newline="") as handle:
+        writer = csv.writer(handle)
+        writer.writerow([
+            "case_id",
+            "category",
+            "a_scalar_hex",
+            "b_scalar_hex",
+            "lookup_meta_bit",
+            "flag_after_extract",
+            "flag_before_cleanup",
+            "flag_after_cleanup",
+            "meta_before_cleanup",
+            "meta_after_cleanup",
+            "pre_cleanup_x",
+            "pre_cleanup_y",
+            "pre_cleanup_z",
+            "post_cleanup_x",
+            "post_cleanup_y",
+            "post_cleanup_z",
+            "expected_x",
+            "expected_y",
+            "final_x",
+            "final_y",
+            "status",
+        ])
+        for idx, (category, a_scalar, b_scalar) in enumerate(cases):
+            accumulator = mul_fixed_window(a_scalar, tables, SECP_P, SECP_B, width=8, order=SECP_N)
+            lookup = mul_fixed_window(b_scalar, tables, SECP_P, SECP_B, width=8, order=SECP_N)
+            accumulator_proj = affine_to_proj(accumulator, SECP_P)
+            key = 0 if lookup is None else 1
+            final_proj, trace = exec_netlist_with_trace(leaf["instructions"], SECP_P, accumulator_proj, lookup, key, trace_pcs)
+            final_aff = proj_to_affine(final_proj, SECP_P)
+            expected_aff = add_affine(accumulator, lookup, SECP_P, SECP_B)
+
+            meta_bit = 1 if lookup is None else 0
+            extract_state = trace[6]
+            pre_cleanup_state = trace[35]
+            post_cleanup_state = trace[36]
+            pre_cleanup_proj = (
+                pre_cleanup_state["qx"] % SECP_P,
+                pre_cleanup_state["qy"] % SECP_P,
+                pre_cleanup_state["qz"] % SECP_P,
+            )
+            post_cleanup_proj = (
+                post_cleanup_state["qx"] % SECP_P,
+                post_cleanup_state["qy"] % SECP_P,
+                post_cleanup_state["qz"] % SECP_P,
+            )
+
+            ok = (
+                final_aff == expected_aff
+                and extract_state["f_lookup_inf"] == meta_bit
+                and pre_cleanup_state["f_lookup_inf"] == meta_bit
+                and post_cleanup_state["f_lookup_inf"] == 0
+                and pre_cleanup_state["meta"] == meta_bit
+                and post_cleanup_state["meta"] == meta_bit
+                and pre_cleanup_proj == post_cleanup_proj == final_proj
+            )
+            summary["total"] += 1
+            summary["pass"] += int(ok)
+            summary["categories"].setdefault(category, {"total": 0, "pass": 0})
+            summary["categories"][category]["total"] += 1
+            summary["categories"][category]["pass"] += int(ok)
+            if progress is not None and (summary["total"] % 256 == 0 or summary["total"] == len(cases)):
+                progress(summary["total"], len(cases))
+            writer.writerow([
+                idx,
+                category,
+                format(a_scalar, "064x"),
+                format(b_scalar, "064x"),
+                meta_bit,
+                extract_state["f_lookup_inf"],
+                pre_cleanup_state["f_lookup_inf"],
+                post_cleanup_state["f_lookup_inf"],
+                pre_cleanup_state["meta"],
+                post_cleanup_state["meta"],
+                format(pre_cleanup_proj[0], "064x"),
+                format(pre_cleanup_proj[1], "064x"),
+                format(pre_cleanup_proj[2], "064x"),
+                format(post_cleanup_proj[0], "064x"),
+                format(post_cleanup_proj[1], "064x"),
+                format(post_cleanup_proj[2], "064x"),
+                *hex_or_inf(expected_aff),
+                *hex_or_inf(final_aff),
+                "PASS" if ok else "FAIL",
+            ])
+
+    out_json = artifact_extended_verification_path(package_root, "coherent_cleanup_summary.json")
+    result = {
+        "csv_sha256": sha256_path(out_csv),
+        "csv": out_csv.name,
+        "leaf_sha256": leaf_sha,
+        "summary": summary,
+        "notes": [
+            "This audit checks the shipped one-bit cleanup pair exactly at the ISA boundary: the metadata flag is extracted into f_lookup_inf, used by the neutral-entry select path, and uncomputed by applying the same flag source again.",
+            "The audit verifies that the cleanup step clears the control slot, leaves the selected projective output unchanged, and preserves the loaded metadata bit. It does not claim a primitive-gate lowering of that pair.",
         ],
     }
     dump_json(out_json, result)
@@ -458,9 +576,9 @@ def run_claim_boundary_matrix(repo_root: Path) -> Dict[str, Any]:
             },
             {
                 "layer": "mbuc_cleanup",
-                "status": "abstract_contract_only",
-                "evidence": ["optimized_pointadd_secp256k1.json"],
-                "notes": "Cleanup remains an abstraction layer. The verifier only checks basis-state functional semantics, not primitive reversible cleanup.",
+                "status": "exact_isa_coherent_pair_machine_checked_not_flattened",
+                "evidence": ["optimized_pointadd_secp256k1.json", "coherent_cleanup_audit_16384.csv", "coherent_cleanup_summary.json"],
+                "notes": "The shipped one-bit cleanup pair is exact and machine-checked at the ISA boundary: the same metadata bit that sets the neutral-entry control is applied again to uncompute it after selection. The repository still does not ship a primitive-gate lowering of that pair.",
             },
             {
                 "layer": "backend_resource_projection",
@@ -478,13 +596,15 @@ def run_claim_boundary_matrix(repo_root: Path) -> Dict[str, Any]:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run extended verification and publication-readiness checks.")
     parser.add_argument("--repo-root", default=".", help="Repository root.")
-    parser.add_argument("--mode", choices=["lookup", "scaffold", "toy_extended", "sensitivity", "meta", "boundaries", "all"], default="all", help="Verification mode.")
+    parser.add_argument("--mode", choices=["lookup", "cleanup", "scaffold", "toy_extended", "sensitivity", "meta", "boundaries", "all"], default="all", help="Verification mode.")
     args = parser.parse_args()
     repo_root = Path(args.repo_root).resolve()
 
     overall: Dict[str, Any] = {}
     if args.mode in ("lookup", "all"):
         overall["lookup_contract"] = run_lookup_contract(repo_root)
+    if args.mode in ("cleanup", "all"):
+        overall["coherent_cleanup"] = run_coherent_cleanup(repo_root)
     if args.mode in ("scaffold", "all"):
         overall["scaffold_schedule"] = run_scaffold_schedule(repo_root)
     if args.mode in ("toy_extended", "all"):

@@ -48,10 +48,13 @@ class VerificationPipelineTests(unittest.TestCase):
     def test_extended_supporting_checks_are_recorded(self):
         extended = self.summary['extended']
         lookup = extended['lookup_contract']['summary']
+        cleanup = extended['coherent_cleanup']['summary']
         self.assertEqual(lookup['parameter_checks']['pass'], lookup['parameter_checks']['total'])
         self.assertEqual(lookup['canonical_full_exhaustive']['total'], 65_536)
         self.assertEqual(lookup['canonical_full_exhaustive']['pass'], 65_536)
         self.assertEqual(lookup['multibase_direct_samples']['pass'], lookup['multibase_direct_samples']['total'])
+        self.assertEqual(cleanup['pass'], cleanup['total'])
+        self.assertEqual(cleanup['categories']['random']['pass'], cleanup['categories']['random']['total'])
         self.assertEqual(extended['scaffold_schedule']['summary']['pass'], 256)
         self.assertEqual(extended['toy_extended']['summary']['pass'], 110692)
         self.assertEqual(extended['challenge_ladder']['summary']['curve_count'], 7)
@@ -68,6 +71,7 @@ class VerificationPipelineTests(unittest.TestCase):
         self.assertEqual(verify['summary']['semantic_cases']['pass'], verify['summary']['semantic_cases']['total'])
         self.assertEqual(verify['summary']['invariant_checks']['pass'], verify['summary']['invariant_checks']['total'])
         self.assertEqual(verify['schedule_checks']['pass'], verify['schedule_checks']['total'])
+        self.assertEqual(verify['cleanup_pair_checks']['pass'], verify['cleanup_pair_checks']['total'])
         self.assertEqual(verify['lookup_lowering_checks']['pass'], verify['lookup_lowering_checks']['total'])
         self.assertEqual(verify['generated_block_inventory_checks']['pass'], verify['generated_block_inventory_checks']['total'])
         self.assertEqual(verify['slot_allocation_checks']['pass'], verify['slot_allocation_checks']['total'])

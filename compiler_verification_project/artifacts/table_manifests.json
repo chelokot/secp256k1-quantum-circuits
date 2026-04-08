@@ -2,12 +2,12 @@
   "schema": "compiler-project-table-manifests-v1",
   "canonical_public_point": {
     "derivation": "first deterministic public-point base from the checked-in leaf/scaffold hash stream",
-    "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+    "leaf_sha256": "0281442bdea1ae1cb1871ca64638536b72717d9b1a4b381a42609051ca88aad1",
     "scaffold_sha256": "6f444c332728cde3ccfb9fd532012aaaa9c777a1b0f949573a3910602126cc03",
-    "h_scalar_hex": "67187ebf5e103907b421422ac84cdce3df49863a1a00c445df5bacfb48cdea52",
+    "h_scalar_hex": "c7f733460fb3fa371c9b6afa62a102d8856f9e8c16301f42ea56beb53a1e4d0f",
     "point": {
-      "x_hex": "84b18b4548bd18cd1371f3c1a9b69b7353bec9b8458ca3da0c78132adb4a9287",
-      "y_hex": "e6fbb05ac34d4d44b6f0c75994f51d03904b13d14cfcbbc91ea698cf3933f574"
+      "x_hex": "ba38249a896f65de9a8243fec5d6de753a7de5ba9617dddb2a5e25509ea0b2e6",
+      "y_hex": "d6386bce157bd1dcc888b8212ea34568854a4977c0edbdfd7826261b1b63b1e1"
     }
   },
   "folded_contract": {
@@ -166,8 +166,8 @@
     {
       "phase_register": "phase_b",
       "window_index_within_register": 0,
-      "base_x_hex": "84b18b4548bd18cd1371f3c1a9b69b7353bec9b8458ca3da0c78132adb4a9287",
-      "base_y_hex": "e6fbb05ac34d4d44b6f0c75994f51d03904b13d14cfcbbc91ea698cf3933f574",
+      "base_x_hex": "ba38249a896f65de9a8243fec5d6de753a7de5ba9617dddb2a5e25509ea0b2e6",
+      "base_y_hex": "d6386bce157bd1dcc888b8212ea34568854a4977c0edbdfd7826261b1b63b1e1",
       "folded_positive_entries": 32768,
       "special_min_entry": "[-2^15]U",
       "record_coordinate_bits": 512
@@ -175,8 +175,8 @@
     {
       "phase_register": "phase_b",
       "window_index_within_register": 1,
-      "base_x_hex": "1c669edc5eecfcd46d10103f2fedb73d47749f298134815d254e716830cf4d24",
-      "base_y_hex": "a108be12c585823b07a87f9d127bebeb707450f77d481a189ae8419fb64d4c83",
+      "base_x_hex": "8c9fc24fa768d0c9b9395f2744ae96ebbd8fed787247a881be688edad863e14f",
+      "base_y_hex": "0a19880574464001897f84ac6474434cac7d8492e424d4373889100b7f6ec4b5",
       "folded_positive_entries": 32768,
       "special_min_entry": "[-2^15]U",
       "record_coordinate_bits": 512
@@ -184,8 +184,8 @@
     {
       "phase_register": "phase_b",
       "window_index_within_register": 2,
-      "base_x_hex": "19c4d9e4ae3125e77f70869a1b9d26246f3b5e285f640ce65824ceed22857be0",
-      "base_y_hex": "1a1cf26745970c59eebb04acc0032a2464c2d678b150984c4f2e99204ec15b42",
+      "base_x_hex": "c5060dbe7be4e92cc12f383e4c41cd3ed8147a1f649da9c92862f1e4d94ed4e4",
+      "base_y_hex": "b59eda86f90584c57d0d9e3fb6781f683dacdc8dc09017691f8385c1083a36dc",
       "folded_positive_entries": 32768,
       "special_min_entry": "[-2^15]U",
       "record_coordinate_bits": 512
@@ -193,8 +193,8 @@
     {
       "phase_register": "phase_b",
       "window_index_within_register": 3,
-      "base_x_hex": "e4e83bcef5ef4f9008a9afcb8f7dc97860172c5743ba153cc1ade832068534c8",
-      "base_y_hex": "895f837fd81d508f137119d6790bd9a076efb8bf242ae17ebc7abaa26da55516",
+      "base_x_hex": "a5aaa23de3e2319f98a50433bd1c5eed5e228cf30b7dde618c529119622dc873",
+      "base_y_hex": "46c3b349a66d05194fc232e123c8a16623d1d9300f223a7bee8cfcc0c39abcc6",
       "folded_positive_entries": 32768,
       "special_min_entry": "[-2^15]U",
       "record_coordinate_bits": 512
@@ -202,8 +202,8 @@
     {
       "phase_register": "phase_b",
       "window_index_within_register": 4,
-      "base_x_hex": "c189c1e39c40c7bf22e081e628aa3da90b64461cb0047b27f4919c11facfa22a",
-      "base_y_hex": "3fc5340f7089d106c51a530db55f1995d28c16a0177599c9c1356ff50d42fa1f",
+      "base_x_hex": "67f87f08e4430b4f3adcfc967aca7c16dbf2e3f5bec4ad983adb27e938acb80a",
+      "base_y_hex": "d187d94bc0568ea374a1b91908a414d118af53c754b1e11c8d985c6c52fe6732",
       "folded_positive_entries": 32768,
       "special_min_entry": "[-2^15]U",
       "record_coordinate_bits": 512
@@ -211,8 +211,8 @@
     {
       "phase_register": "phase_b",
       "window_index_within_register": 5,
-      "base_x_hex": "682df732954844373ccd27201a90ce14b59f3c7c5ef4c42838e96bc065855577",
-      "base_y_hex": "3222a8f82380f1072b709a64c6baa548304d900087b7a7fab9e6c8694aea72be",
+      "base_x_hex": "85b98f9654fef0f445017aa86c07931e7ca79b83218446a8c4fa4ef8fcd2da8d",
+      "base_y_hex": "ebe8931e995ff80ab202a7e9e979d19b988acc62d34c8994612dc521b5ab5ad6",
       "folded_positive_entries": 32768,
       "special_min_entry": "[-2^15]U",
       "record_coordinate_bits": 512
@@ -220,8 +220,8 @@
     {
       "phase_register": "phase_b",
       "window_index_within_register": 6,
-      "base_x_hex": "3a6657379639124f4ca2e7d2d5b9d98ddf82a35ba74af1b728f42ddf05657175",
-      "base_y_hex": "3b4306cade05816ed46badf9f8b2653a07cbb785cd151e135df815b520b7d2de",
+      "base_x_hex": "7b3a9896b30a4057abd5bd7101796da1999aff8312bfbd510b3a9b8248cf514d",
+      "base_y_hex": "107726e3acaecde888fa6f4a607fcf1298ccda77c09ba3ee9fa6b354c9cc6a13",
       "folded_positive_entries": 32768,
       "special_min_entry": "[-2^15]U",
       "record_coordinate_bits": 512
@@ -229,8 +229,8 @@
     {
       "phase_register": "phase_b",
       "window_index_within_register": 7,
-      "base_x_hex": "00ede87685a41c9bc622ec9d44a77229654fa970ee558cec738a3b35c2e9674d",
-      "base_y_hex": "09bbe00347c5596649448b9ecce6da8e56ecfa542d6eedbb6e2231b2d15cf81f",
+      "base_x_hex": "37052536b2d63cc273f18cc6a588f6212e35d3cb525a24de05c76c2ee399f0f0",
+      "base_y_hex": "7496d616daef930b407f417a947ee2403850d9ebba5c005b063d276d013f04ea",
       "folded_positive_entries": 32768,
       "special_min_entry": "[-2^15]U",
       "record_coordinate_bits": 512
@@ -238,8 +238,8 @@
     {
       "phase_register": "phase_b",
       "window_index_within_register": 8,
-      "base_x_hex": "856d5966b347812b55bf90b9f7ca7d5f61bdc1458ed90414dbb0f3724d2915d8",
-      "base_y_hex": "21d6ff486ad6b5612c4195eaadef64af16bd49e940967ea1afd7d3da6a445f60",
+      "base_x_hex": "a73071250fbf1c085856f1a6cd8caa53caa69b644bd720488e2bf08764a5dd8e",
+      "base_y_hex": "ce7b3d490c2edb0495d4bbee95ae9f2360328769ee9cf6e5c293012d9d8ed916",
       "folded_positive_entries": 32768,
       "special_min_entry": "[-2^15]U",
       "record_coordinate_bits": 512
@@ -247,8 +247,8 @@
     {
       "phase_register": "phase_b",
       "window_index_within_register": 9,
-      "base_x_hex": "b7098d412a5ac690a836ead79f700f235368c0138bd3ab424e90b550a10aade9",
-      "base_y_hex": "79b197f8d0a1f50cbb5256e9430b93d0338809eae9d18648262da101948c67af",
+      "base_x_hex": "02b40705560f73ec8b3dac695683b73a7ec982a8c67a8927ed87e453f01b3122",
+      "base_y_hex": "534c02b71ece549068b506ae7643ea5cf36a6704bd80ea61c53a0ead2d6109b9",
       "folded_positive_entries": 32768,
       "special_min_entry": "[-2^15]U",
       "record_coordinate_bits": 512
@@ -256,8 +256,8 @@
     {
       "phase_register": "phase_b",
       "window_index_within_register": 10,
-      "base_x_hex": "d363b82b38981893f4b5cc0b06287567b0ac5f40306b52c8e727842ba72003a0",
-      "base_y_hex": "cced178cb8a4fec082e87d52bc9453c7b9f2b588f2e99d5fab66709a1add34d2",
+      "base_x_hex": "849d8e5cfc9a64a7e669dd180f9b61c2c2473f2a685e801d1d6a13c599efa4a1",
+      "base_y_hex": "e845929a8293ecc4b44aab414af897567a7281294d0dc6f9112c5d24c1db587b",
       "folded_positive_entries": 32768,
       "special_min_entry": "[-2^15]U",
       "record_coordinate_bits": 512
@@ -265,8 +265,8 @@
     {
       "phase_register": "phase_b",
       "window_index_within_register": 11,
-      "base_x_hex": "f43aba3800efb0fded0487d7598ecdc425795f30871ccb10ce5debb22c3393dd",
-      "base_y_hex": "06872b8cc6e39a53cbbe54cadf6bd2f0dacc289cf497c617e39d7f0740021ccf",
+      "base_x_hex": "bd7340c071c7d2148b4fa3afd9fe615ac4e1aeff2b8553defc1117f3a98ff922",
+      "base_y_hex": "6b2c57d6d58d6f98c07a93aeb83c8d927494b50a390038258ed4279dede45914",
       "folded_positive_entries": 32768,
       "special_min_entry": "[-2^15]U",
       "record_coordinate_bits": 512
@@ -274,8 +274,8 @@
     {
       "phase_register": "phase_b",
       "window_index_within_register": 12,
-      "base_x_hex": "891dd9b1a06d5658733e8ea1137de4c58a72b6dab61578971980ce177b2291a6",
-      "base_y_hex": "20c6e968b124d462ab7eef5bb70e1a9819065c8baa6a3ba38a26ca3a2daa11b8",
+      "base_x_hex": "3ca543aae9a59211abef30d1c2df018d5b4f91080026d0f8bd82e8141fc5b886",
+      "base_y_hex": "2196ee79c5471036035415ae38853fe3644282bc99d283e358bae67f493caabc",
       "folded_positive_entries": 32768,
       "special_min_entry": "[-2^15]U",
       "record_coordinate_bits": 512
@@ -283,8 +283,8 @@
     {
       "phase_register": "phase_b",
       "window_index_within_register": 13,
-      "base_x_hex": "e6104fa7e9bd86edf571d963ca681e1c9fa58b1778a46988907dd43367147003",
-      "base_y_hex": "ad85a324d9d9e02f9d308057ffeceda74962935460d222292924ac659fcfdd74",
+      "base_x_hex": "3d87eab972f5dbba0252ed656128da27c6fdaa175ae2e369f2c2ee2410f6286f",
+      "base_y_hex": "a7c8a25e0d747c26bde3038d01a0a0c5f33b2a1e4bb9385bde0116cc61815952",
       "folded_positive_entries": 32768,
       "special_min_entry": "[-2^15]U",
       "record_coordinate_bits": 512
@@ -292,8 +292,8 @@
     {
       "phase_register": "phase_b",
       "window_index_within_register": 14,
-      "base_x_hex": "f4e973ffecbbc763aef4ed8b4cc0a606a08f2c65969696c904722c961794a090",
-      "base_y_hex": "9e7623cc498c1f433ec6394ee787d811ae02ada195ac7fd1a85c691742852649",
+      "base_x_hex": "8bc6d6d79d5c5c2c85f0d2eab643014cf5477c2f46f9a766a0b1805b4b9840db",
+      "base_y_hex": "6dfc16fa7f929f19cf406e0f76af4a6f66bb2c0ac7e7232e541a163013902183",
       "folded_positive_entries": 32768,
       "special_min_entry": "[-2^15]U",
       "record_coordinate_bits": 512
@@ -301,8 +301,8 @@
     {
       "phase_register": "phase_b",
       "window_index_within_register": 15,
-      "base_x_hex": "7572ed9c883d0e4adf488539e66f19f9dd76c517ccb559fab1111c45ac5f06d5",
-      "base_y_hex": "db01e1667c2e2f0306205def2115476f46eb868552f389ba336449bcff2968ea",
+      "base_x_hex": "af9ad07cf3cc0839f2cd384f079bfbb495ef10d88d4a398a3fb1ff842143e4f7",
+      "base_y_hex": "907c89aeeff836d9eda07620dac1fd83d99af9afde0fb149ebe85e0cb6d31c04",
       "folded_positive_entries": 32768,
       "special_min_entry": "[-2^15]U",
       "record_coordinate_bits": 512

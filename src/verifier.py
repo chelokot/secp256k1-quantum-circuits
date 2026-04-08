@@ -12,7 +12,7 @@ import argparse
 import csv
 import json
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Mapping, Optional
 
 from common import (
     SECP_B,
@@ -51,14 +51,8 @@ def specialize_family_netlist(netlist_obj: Dict[str, Any], b3_value: int) -> Dic
     return out
 
 
-def exec_netlist(netlist: List[Dict[str, Any]], p: int, q_proj, table_entry, key: int):
-    """Execute the optimized ISA netlist on computational-basis inputs.
-
-    The optimized leaf is intentionally branch-free in its hot path.  The only
-    conditional behavior is the exact no-op semantics for the canonical `k = 0`
-    table entry, implemented with explicit select instructions.
-    """
-    env: Dict[str, Any] = {
+def _initial_environment(p: int, q_proj, table_entry, key: int) -> Dict[str, Any]:
+    return {
         'Q.X': q_proj[0] % p,
         'Q.Y': q_proj[1] % p,
         'Q.Z': q_proj[2] % p,
@@ -67,40 +61,84 @@ def exec_netlist(netlist: List[Dict[str, Any]], p: int, q_proj, table_entry, key
         'T.y': {key: 0 if table_entry is None else table_entry[1] % p},
         'T.meta': {key: 1 if table_entry is None else 0},
     }
+
+
+def _flag_bit(env: Dict[str, Any], src: Mapping[str, Any]) -> int:
+    return int((env[src['flags']] >> src['bit']) & 1)
+
+
+def _apply_instruction(env: Dict[str, Any], ins: Dict[str, Any], p: int) -> None:
+    op = ins['op']
+    dst = ins.get('dst')
+    if op == 'load_input':
+        env[dst] = env[ins['src']]
+    elif op == 'lookup_affine_x':
+        env[dst] = env['T.x'][env['k']] % p
+    elif op == 'lookup_affine_y':
+        env[dst] = env['T.y'][env['k']] % p
+    elif op == 'lookup_meta':
+        env[dst] = env['T.meta'][env['k']]
+    elif op == 'bool_from_flag':
+        env[dst] = _flag_bit(env, ins['src'])
+    elif op == 'clear_bool_from_flag':
+        env[dst] = int(env[dst]) ^ _flag_bit(env, ins['src'])
+    elif op == 'field_mul':
+        a, b = ins['src']
+        env[dst] = (env[a] * env[b]) % p
+    elif op == 'field_add':
+        a, b = ins['src']
+        env[dst] = (env[a] + env[b]) % p
+    elif op == 'field_sub':
+        a, b = ins['src']
+        env[dst] = (env[a] - env[b]) % p
+    elif op == 'mul_const':
+        c = ins['const']
+        env[dst] = (int(c) * env[ins['src']]) % p
+    elif op == 'select_field_if_flag':
+        old_src, new_src = ins['src']
+        env[dst] = env[old_src] if env[ins['flag']] else env[new_src]
+    else:
+        raise ValueError(f'Unsupported optimized opcode: {op}')
+
+
+def _exec_netlist_with_trace(
+    netlist: List[Dict[str, Any]],
+    p: int,
+    q_proj,
+    table_entry,
+    key: int,
+    trace_pcs: set[int] | None = None,
+):
+    """Execute the optimized ISA netlist on computational-basis inputs.
+
+    The optimized leaf is intentionally branch-free in its hot path.  The only
+    conditional behavior is the exact no-op semantics for the canonical `k = 0`
+    table entry, implemented with explicit select instructions.
+    """
+    env = _initial_environment(p, q_proj, table_entry, key)
+    trace: Dict[int, Dict[str, Any]] = {}
     for ins in netlist:
-        op = ins['op']
-        dst = ins.get('dst')
-        if op == 'load_input':
-            env[dst] = env[ins['src']]
-        elif op == 'lookup_affine_x':
-            env[dst] = env['T.x'][env['k']] % p
-        elif op == 'lookup_affine_y':
-            env[dst] = env['T.y'][env['k']] % p
-        elif op == 'lookup_meta':
-            env[dst] = env['T.meta'][env['k']]
-        elif op == 'bool_from_flag':
-            bit = ins['src']['bit']
-            env[dst] = int((env['meta'] >> bit) & 1)
-        elif op == 'field_mul':
-            a, b = ins['src']
-            env[dst] = (env[a] * env[b]) % p
-        elif op == 'field_add':
-            a, b = ins['src']
-            env[dst] = (env[a] + env[b]) % p
-        elif op == 'field_sub':
-            a, b = ins['src']
-            env[dst] = (env[a] - env[b]) % p
-        elif op == 'mul_const':
-            c = ins['const']
-            env[dst] = (int(c) * env[ins['src']]) % p
-        elif op == 'select_field_if_flag':
-            old_src, new_src = ins['src']
-            env[dst] = env[old_src] if env[ins['flag']] else env[new_src]
-        elif op == 'mbuc_clear_bool':
-            env[dst] = 0
-        else:
-            raise ValueError(f'Unsupported optimized opcode: {op}')
-    return (env['qx'] % p, env['qy'] % p, env['qz'] % p)
+        _apply_instruction(env, ins, p)
+        if trace_pcs is not None and ins['pc'] in trace_pcs:
+            trace[ins['pc']] = dict(env)
+    return (env['qx'] % p, env['qy'] % p, env['qz'] % p), trace
+
+
+def exec_netlist(netlist: List[Dict[str, Any]], p: int, q_proj, table_entry, key: int):
+    final_proj, _ = _exec_netlist_with_trace(netlist, p, q_proj, table_entry, key)
+    return final_proj
+
+
+def exec_netlist_with_trace(
+    netlist: List[Dict[str, Any]],
+    p: int,
+    q_proj,
+    table_entry,
+    key: int,
+    trace_pcs: set[int],
+):
+    final_proj, trace = _exec_netlist_with_trace(netlist, p, q_proj, table_entry, key, trace_pcs=trace_pcs)
+    return final_proj, trace
 
 
 def make_audit_cases(netlist_sha: str):

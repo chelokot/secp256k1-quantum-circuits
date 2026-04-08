@@ -26,6 +26,8 @@ class ExtendedArtifactTests(unittest.TestCase):
         cls.frontier = cls.compiler['frontier']
         cls.boundaries = json.loads((REPO_ROOT / 'artifacts' / 'projections' / 'claim_boundary_matrix.json').read_text())
         cls.lookup_summary_json = REPO_ROOT / 'artifacts' / 'verification' / 'extended' / 'lookup_contract_summary.json'
+        cls.cleanup_summary_json = REPO_ROOT / 'artifacts' / 'verification' / 'extended' / 'coherent_cleanup_summary.json'
+        cls.cleanup_csv = REPO_ROOT / 'artifacts' / 'verification' / 'extended' / 'coherent_cleanup_audit_16384.csv'
         cls.lookup_contract = REPO_ROOT / 'artifacts' / 'lookup' / 'lookup_signed_fold_contract.json'
         cls.lookup_research_summary = REPO_ROOT / 'artifacts' / 'lookup' / 'lookup_signed_fold_summary.json'
         cls.scaffold_csv = REPO_ROOT / 'artifacts' / 'verification' / 'extended' / 'scaffold_schedule_audit_256.csv'
@@ -48,6 +50,15 @@ class ExtendedArtifactTests(unittest.TestCase):
         self.assertEqual(scaffold['summary']['pass'], 256)
         self.assertEqual(scaffold['summary']['phase_b_base_variants'], 256)
         self.assertEqual(scaffold['sha256'], sha256_path(self.scaffold_csv))
+
+    def test_coherent_cleanup_passes(self):
+        cleanup = self.extended['coherent_cleanup']
+        summary = cleanup['summary']
+        self.assertEqual(summary['total'], 16_384)
+        self.assertEqual(summary['pass'], 16_384)
+        self.assertEqual(summary['categories']['lookup_infinity']['pass'], summary['categories']['lookup_infinity']['total'])
+        self.assertEqual(cleanup['csv_sha256'], sha256_path(self.cleanup_csv))
+        self.assertEqual(cleanup['sha256'], sha256_path(self.cleanup_summary_json))
 
     def test_extended_toy_family_passes(self):
         toy = self.extended['toy_extended']
@@ -78,7 +89,7 @@ class ExtendedArtifactTests(unittest.TestCase):
         statuses = {layer['layer']: layer['status'] for layer in self.boundaries['layers']}
         self.assertEqual(statuses['optimized_leaf_arithmetic'], 'exact_machine_checked')
         self.assertEqual(statuses['lookup_table_contract'], 'exact_contract_semantics_machine_checked_not_flattened')
-        self.assertEqual(statuses['mbuc_cleanup'], 'abstract_contract_only')
+        self.assertEqual(statuses['mbuc_cleanup'], 'exact_isa_coherent_pair_machine_checked_not_flattened')
 
 
 if __name__ == '__main__':

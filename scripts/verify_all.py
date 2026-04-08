@@ -18,6 +18,7 @@ if str(SRC_DIR) not in sys.path:
 from common import artifact_core_verification_path, dump_json, load_json, sha256_path  # noqa: E402
 from extended_verifier import (  # noqa: E402
     run_claim_boundary_matrix,
+    run_coherent_cleanup,
     run_extended_toy_family,
     run_lookup_contract,
     run_scaffold_schedule,
@@ -103,19 +104,23 @@ def build_extended_summary(repo_root: Path, progress: ProgressReporter, step: in
             repo_root,
             progress=lambda completed, total: progress.advance(step, total_steps, 'Running lookup-contract audit', completed, total, completed),
         ),
+        'coherent_cleanup': run_coherent_cleanup(
+            repo_root,
+            progress=lambda completed, total: progress.advance(step + 1, total_steps, 'Running coherent cleanup audit', completed, total, completed),
+        ),
         'scaffold_schedule': run_scaffold_schedule(
             repo_root,
-            progress=lambda completed, total: progress.advance(step + 1, total_steps, 'Running scaffold replay audit', completed, total, completed),
+            progress=lambda completed, total: progress.advance(step + 2, total_steps, 'Running scaffold replay audit', completed, total, completed),
         ),
         'toy_extended': run_extended_toy_family(
             repo_root,
-            progress=lambda completed, total: progress.advance(step + 2, total_steps, 'Running extended toy-family check', completed, total, completed),
+            progress=lambda completed, total: progress.advance(step + 3, total_steps, 'Running extended toy-family check', completed, total, completed),
         ),
         'claim_boundaries': run_claim_boundary_matrix(repo_root),
         'challenge_ladder': run_challenge_ladder_audit(
             repo_root,
             build_challenge_ladder(),
-            progress=lambda completed, total: progress.advance(step + 3, total_steps, 'Running challenge-ladder replay', completed, total, completed),
+            progress=lambda completed, total: progress.advance(step + 4, total_steps, 'Running challenge-ladder replay', completed, total, completed),
         ),
     }
 
@@ -141,7 +146,7 @@ def build_compiler_project_summary(repo_root: Path) -> Dict[str, Any]:
 
 def build_summary(console: Console, show_progress: bool, quick: bool) -> Dict[str, Any]:
     optimized_root = REPO_ROOT / 'artifacts'
-    step_count = 2 if quick else 8
+    step_count = 2 if quick else 9
     progress = ProgressReporter(console, enabled=show_progress)
     write_resource_projection(REPO_ROOT)
 
@@ -197,10 +202,12 @@ def build_summary(console: Console, show_progress: bool, quick: bool) -> Dict[st
     if extended is not None:
         summary['extended'] = extended
         lookup = extended['lookup_contract']['summary']
+        cleanup = extended['coherent_cleanup']['summary']
         summary['headline_checks']['extended_checks_pass'] = (
             lookup['parameter_checks']['pass'] == lookup['parameter_checks']['total']
             and lookup['canonical_full_exhaustive']['pass'] == lookup['canonical_full_exhaustive']['total']
             and lookup['multibase_direct_samples']['pass'] == lookup['multibase_direct_samples']['total']
+            and cleanup['pass'] == cleanup['total']
             and extended['scaffold_schedule']['summary']['pass'] == extended['scaffold_schedule']['summary']['total']
             and extended['toy_extended']['summary']['pass'] == extended['toy_extended']['summary']['total']
             and extended['challenge_ladder']['summary']['pass'] == extended['challenge_ladder']['summary']['total']
@@ -223,7 +230,7 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
     optimized = summary['optimized']
     extended = summary.get('extended')
     compiler_project = summary.get('compiler_project')
-    total_sections = 2 + (4 if extended is not None else 0) + (2 if compiler_project is not None else 0)
+    total_sections = 2 + (5 if extended is not None else 0) + (2 if compiler_project is not None else 0)
     audit = optimized['audit']['summary']
     toy = optimized['toy']['summary']
     baseline = summary['google_baseline']
@@ -263,6 +270,7 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
 
     if extended is not None:
         lookup = extended['lookup_contract']['summary']
+        cleanup = extended['coherent_cleanup']['summary']
         scaffold = extended['scaffold_schedule']['summary']
         toy_extended = extended['toy_extended']['summary']
         lookup_pass = (
@@ -282,6 +290,16 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
             f"      multibase samples: {lookup['multibase_direct_samples']['pass']:,} / {lookup['multibase_direct_samples']['total']:,} across {lookup['multibase_direct_samples']['base_count']} bases"
         ))
         print(console.detail(f"      lookup summary sha256: {extended['lookup_contract']['sha256']}"))
+        print()
+
+        section += 1
+        print(f"[{section}/{total_sections}] Coherent cleanup audit     {console.ok('PASS') if cleanup['pass'] == cleanup['total'] else console.fail('FAIL')}")
+        print(console.detail(f"      cleanup replay: {cleanup['pass']:,} / {cleanup['total']:,} cases cleared the flag and preserved the selected projective state"))
+        for category in ('random', 'doubling', 'inverse', 'accumulator_infinity', 'lookup_infinity'):
+            category_summary = cleanup['categories'][category]
+            description = AUDIT_CATEGORY_DESCRIPTIONS[category]
+            print(console.detail(f"      - {category}: {category_summary['pass']:,} / {category_summary['total']:,}  {description}"))
+        print(console.detail(f"      cleanup summary sha256: {extended['coherent_cleanup']['sha256']}"))
         print()
 
         section += 1

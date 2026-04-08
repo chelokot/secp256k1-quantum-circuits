@@ -52,6 +52,8 @@ def test_compiler_project_verification_summary_groups_all_pass() -> None:
     assert semantic['phase_b_nonzero_cases'] > 0
     lookup_lowering = summary['lookup_lowering_checks']
     assert lookup_lowering['pass'] == lookup_lowering['total']
+    cleanup_pair = summary['cleanup_pair_checks']
+    assert cleanup_pair['pass'] == cleanup_pair['total']
     generated_block_inventory = summary['generated_block_inventory_checks']
     assert generated_block_inventory['pass'] == generated_block_inventory['total']
 
@@ -77,6 +79,13 @@ def test_mutated_lookup_lowering_stage_is_detected() -> None:
     groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
     assert groups['lookup_lowering_checks']['pass'] < groups['lookup_lowering_checks']['total']
     assert groups['frontier_checks']['pass'] < groups['frontier_checks']['total']
+
+
+def test_mutated_cleanup_pair_is_detected() -> None:
+    artifacts = deepcopy(_load_artifacts())
+    artifacts['module_library']['leaf_opcode_histogram']['clear_bool_from_flag'] = 0
+    groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
+    assert groups['cleanup_pair_checks']['pass'] < groups['cleanup_pair_checks']['total']
 
 
 def test_mutated_generated_block_inventory_is_detected() -> None:

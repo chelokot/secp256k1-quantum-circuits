@@ -64,6 +64,8 @@ class ReleaseInventoryTests(unittest.TestCase):
             'artifacts/projections/backend_model_bundle.json',
             'artifacts/package/proof_manifest.json',
             'artifacts/verification/extended/lookup_contract_summary.json',
+            'artifacts/verification/extended/coherent_cleanup_audit_16384.csv',
+            'artifacts/verification/extended/coherent_cleanup_summary.json',
             'artifacts/verification/extended/scaffold_schedule_audit_256.csv',
             'artifacts/verification/extended/scaffold_schedule_summary.json',
             'artifacts/verification/core/toy_curve_exhaustive_19850.csv',

@@ -2,7 +2,7 @@
   "schema": "kickmix-structural-accounting-v1",
   "sources": {
     "leaf_path": "artifacts/circuits/optimized_pointadd_secp256k1.json",
-    "leaf_sha256": "48363319f1efabc24b4adf78ff2b9c1a80585e676c7c6ad5a917d0bbf8227a74",
+    "leaf_sha256": "0281442bdea1ae1cb1871ca64638536b72717d9b1a4b381a42609051ca88aad1",
     "scaffold_path": "artifacts/circuits/ecdlp_scaffold_optimized.json",
     "scaffold_sha256": "6f444c332728cde3ccfb9fd532012aaaa9c777a1b0f949573a3910602126cc03",
     "folded_scaffold_path": "artifacts/circuits/ecdlp_scaffold_lookup_folded.json",
@@ -12,7 +12,7 @@
     "lookup_contract_path": "artifacts/lookup/lookup_signed_fold_contract.json",
     "lookup_contract_sha256": "c3b6cc711aa323951a580f6a54a027d84bf84d6a5ad66965751db865553b635d",
     "expanded_isa_path": "artifacts/circuits/ecdlp_expanded_isa_optimized.json",
-    "expanded_isa_sha256": "99c80cf0ba4d9e0d58f63f78ead4da50ce88f20d15a8d2105f597d71de7fb941"
+    "expanded_isa_sha256": "e0361b1408d83636bfd603ebbbb5f401c22ee617b36c62e36ca3dcacd41e2987"
   },
   "field_bits": 256,
   "window_bits": 16,
@@ -30,7 +30,7 @@
       "field_sub": 3,
       "mul_const": 2,
       "select_field_if_flag": 3,
-      "mbuc_clear_bool": 1
+      "clear_bool_from_flag": 1
     },
     "arithmetic_signature": {
       "field_mul": 11,
@@ -81,7 +81,7 @@
         },
         "meta": {
           "first_pc": 5,
-          "last_pc": 6
+          "last_pc": 36
         },
         "f_lookup_inf": {
           "first_pc": 6,
@@ -258,6 +258,7 @@
             "f_lookup_inf",
             "lx",
             "ly",
+            "meta",
             "qx",
             "qy",
             "qz",
@@ -272,11 +273,12 @@
             "t0"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 7,
+          "active_slot_count": 8,
           "active_arithmetic_slot_count": 6,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 8,
@@ -284,6 +286,7 @@
             "f_lookup_inf",
             "lx",
             "ly",
+            "meta",
             "qx",
             "qy",
             "qz",
@@ -300,11 +303,12 @@
             "t1"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 8,
+          "active_slot_count": 9,
           "active_arithmetic_slot_count": 7,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 9,
@@ -312,6 +316,7 @@
             "f_lookup_inf",
             "lx",
             "ly",
+            "meta",
             "qx",
             "qy",
             "qz",
@@ -330,11 +335,12 @@
             "t3"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 9,
+          "active_slot_count": 10,
           "active_arithmetic_slot_count": 8,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 10,
@@ -342,6 +348,7 @@
             "f_lookup_inf",
             "lx",
             "ly",
+            "meta",
             "qx",
             "qy",
             "qz",
@@ -362,11 +369,12 @@
             "t4"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 10,
+          "active_slot_count": 11,
           "active_arithmetic_slot_count": 9,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 11,
@@ -374,6 +382,7 @@
             "f_lookup_inf",
             "lx",
             "ly",
+            "meta",
             "qx",
             "qy",
             "qz",
@@ -394,11 +403,12 @@
             "t4"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 10,
+          "active_slot_count": 11,
           "active_arithmetic_slot_count": 9,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 12,
@@ -406,6 +416,7 @@
             "f_lookup_inf",
             "lx",
             "ly",
+            "meta",
             "qx",
             "qy",
             "qz",
@@ -426,11 +437,12 @@
             "t4"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 10,
+          "active_slot_count": 11,
           "active_arithmetic_slot_count": 9,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 13,
@@ -438,6 +450,7 @@
             "f_lookup_inf",
             "lx",
             "ly",
+            "meta",
             "qx",
             "qy",
             "qz",
@@ -458,11 +471,12 @@
             "t4"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 10,
+          "active_slot_count": 11,
           "active_arithmetic_slot_count": 9,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 14,
@@ -470,6 +484,7 @@
             "f_lookup_inf",
             "lx",
             "ly",
+            "meta",
             "qx",
             "qy",
             "qz",
@@ -490,17 +505,19 @@
             "t4"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 10,
+          "active_slot_count": 11,
           "active_arithmetic_slot_count": 9,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 15,
           "active_slots": [
             "f_lookup_inf",
             "lx",
+            "meta",
             "qx",
             "qy",
             "qz",
@@ -520,17 +537,19 @@
             "t4"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 9,
+          "active_slot_count": 10,
           "active_arithmetic_slot_count": 8,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 16,
           "active_slots": [
             "f_lookup_inf",
             "lx",
+            "meta",
             "o2",
             "qx",
             "qy",
@@ -552,16 +571,18 @@
             "t4"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 10,
+          "active_slot_count": 11,
           "active_arithmetic_slot_count": 9,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 17,
           "active_slots": [
             "f_lookup_inf",
+            "meta",
             "o2",
             "qx",
             "qy",
@@ -582,16 +603,18 @@
             "t4"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 9,
+          "active_slot_count": 10,
           "active_arithmetic_slot_count": 8,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 18,
           "active_slots": [
             "f_lookup_inf",
+            "meta",
             "o1",
             "o2",
             "qx",
@@ -614,16 +637,18 @@
             "t4"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 10,
+          "active_slot_count": 11,
           "active_arithmetic_slot_count": 9,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 19,
           "active_slots": [
             "f_lookup_inf",
+            "meta",
             "o1",
             "o2",
             "qx",
@@ -646,16 +671,18 @@
             "t4"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 10,
+          "active_slot_count": 11,
           "active_arithmetic_slot_count": 9,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 20,
           "active_slots": [
             "f_lookup_inf",
+            "meta",
             "o1",
             "o2",
             "qx",
@@ -680,16 +707,18 @@
             "t4"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 11,
+          "active_slot_count": 12,
           "active_arithmetic_slot_count": 10,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 21,
           "active_slots": [
             "f_lookup_inf",
+            "meta",
             "o1",
             "o2",
             "qx",
@@ -714,16 +743,18 @@
             "t4"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 11,
+          "active_slot_count": 12,
           "active_arithmetic_slot_count": 10,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 22,
           "active_slots": [
             "f_lookup_inf",
+            "meta",
             "o1",
             "o2",
             "qx",
@@ -748,16 +779,18 @@
             "t4"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 11,
+          "active_slot_count": 12,
           "active_arithmetic_slot_count": 10,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 23,
           "active_slots": [
             "f_lookup_inf",
+            "meta",
             "o1",
             "o2",
             "qx",
@@ -782,16 +815,18 @@
             "t4"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 11,
+          "active_slot_count": 12,
           "active_arithmetic_slot_count": 10,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 24,
           "active_slots": [
             "f_lookup_inf",
+            "meta",
             "o1",
             "o2",
             "qx",
@@ -816,16 +851,18 @@
             "t4"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 11,
+          "active_slot_count": 12,
           "active_arithmetic_slot_count": 10,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 25,
           "active_slots": [
             "f_lookup_inf",
+            "meta",
             "o1",
             "o2",
             "qx",
@@ -850,16 +887,18 @@
             "t4"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 11,
+          "active_slot_count": 12,
           "active_arithmetic_slot_count": 10,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 26,
           "active_slots": [
             "f_lookup_inf",
+            "meta",
             "o1",
             "o2",
             "qx",
@@ -884,16 +923,18 @@
             "t4"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 11,
+          "active_slot_count": 12,
           "active_arithmetic_slot_count": 10,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 27,
           "active_slots": [
             "f_lookup_inf",
+            "meta",
             "o2",
             "qx",
             "qy",
@@ -914,16 +955,18 @@
             "t4"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 9,
+          "active_slot_count": 10,
           "active_arithmetic_slot_count": 8,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 28,
           "active_slots": [
             "f_lookup_inf",
+            "meta",
             "o2",
             "qx",
             "qy",
@@ -944,16 +987,18 @@
             "t4"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 9,
+          "active_slot_count": 10,
           "active_arithmetic_slot_count": 8,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 29,
           "active_slots": [
             "f_lookup_inf",
+            "meta",
             "o2",
             "qx",
             "qy",
@@ -974,16 +1019,18 @@
             "t4"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 9,
+          "active_slot_count": 10,
           "active_arithmetic_slot_count": 8,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 30,
           "active_slots": [
             "f_lookup_inf",
+            "meta",
             "qx",
             "qy",
             "qz",
@@ -1000,16 +1047,18 @@
             "t4"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 7,
+          "active_slot_count": 8,
           "active_arithmetic_slot_count": 6,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 31,
           "active_slots": [
             "f_lookup_inf",
+            "meta",
             "qx",
             "qy",
             "qz",
@@ -1024,16 +1073,18 @@
             "t4"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 6,
+          "active_slot_count": 7,
           "active_arithmetic_slot_count": 5,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 32,
           "active_slots": [
             "f_lookup_inf",
+            "meta",
             "qx",
             "qy",
             "qz",
@@ -1046,16 +1097,18 @@
             "t0"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 5,
+          "active_slot_count": 6,
           "active_arithmetic_slot_count": 4,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 33,
           "active_slots": [
             "f_lookup_inf",
+            "meta",
             "qx",
             "qy",
             "qz"
@@ -1066,16 +1119,18 @@
             "qz"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 4,
+          "active_slot_count": 5,
           "active_arithmetic_slot_count": 3,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 34,
           "active_slots": [
             "f_lookup_inf",
+            "meta",
             "qy",
             "qz"
           ],
@@ -1084,46 +1139,52 @@
             "qz"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 3,
+          "active_slot_count": 4,
           "active_arithmetic_slot_count": 2,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 35,
           "active_slots": [
             "f_lookup_inf",
+            "meta",
             "qz"
           ],
           "active_arithmetic_slots": [
             "qz"
           ],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 2,
+          "active_slot_count": 3,
           "active_arithmetic_slot_count": 1,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         },
         {
           "pc": 36,
           "active_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
           "active_arithmetic_slots": [],
           "active_control_slots": [
-            "f_lookup_inf"
+            "f_lookup_inf",
+            "meta"
           ],
-          "active_slot_count": 1,
+          "active_slot_count": 2,
           "active_arithmetic_slot_count": 0,
-          "active_control_slot_count": 1
+          "active_control_slot_count": 2
         }
       ],
       "peak_total_slots": {
         "pc": 20,
         "active_slots": [
           "f_lookup_inf",
+          "meta",
           "o1",
           "o2",
           "qx",
@@ -1148,16 +1209,18 @@
           "t4"
         ],
         "active_control_slots": [
-          "f_lookup_inf"
+          "f_lookup_inf",
+          "meta"
         ],
-        "active_slot_count": 11,
+        "active_slot_count": 12,
         "active_arithmetic_slot_count": 10,
-        "active_control_slot_count": 1
+        "active_control_slot_count": 2
       },
       "peak_arithmetic_slots": {
         "pc": 20,
         "active_slots": [
           "f_lookup_inf",
+          "meta",
           "o1",
           "o2",
           "qx",
@@ -1182,11 +1245,12 @@
           "t4"
         ],
         "active_control_slots": [
-          "f_lookup_inf"
+          "f_lookup_inf",
+          "meta"
         ],
-        "active_slot_count": 11,
+        "active_slot_count": 12,
         "active_arithmetic_slot_count": 10,
-        "active_control_slot_count": 1
+        "active_control_slot_count": 2
       },
       "peak_control_slots": {
         "pc": 6,
@@ -1235,7 +1299,7 @@
       "field_sub": 84,
       "mul_const": 56,
       "select_field_if_flag": 84,
-      "mbuc_clear_bool": 28
+      "clear_bool_from_flag": 28
     }
   },
   "lookup_contract": {

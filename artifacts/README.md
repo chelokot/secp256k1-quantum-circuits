@@ -21,6 +21,8 @@ This directory contains the primary release artifact of the repository.
 
 - `verification/core/optimized_pointadd_audit_16384.csv`
 - `verification/core/toy_curve_exhaustive_19850.csv`
+- `verification/extended/coherent_cleanup_audit_16384.csv`
+- `verification/extended/coherent_cleanup_summary.json`
 - `verification/extended/toy_curve_family_extended_110692.csv`
 - `verification/extended/lookup_contract_audit_8192.csv`
 - `verification/extended/scaffold_schedule_audit_256.csv`
@@ -36,5 +38,7 @@ This directory contains the primary release artifact of the repository.
 
 ## Boundary
 
-This artifact is exact at the arithmetic ISA boundary. Lookup realization,
-cleanup realization, and backend totals remain explicit lower layers.
+This artifact is exact at the arithmetic ISA boundary, including the shipped
+one-bit flag-cleanup pair. Lookup realization below the folded contract,
+primitive-gate lowering of the cleanup pair, and backend totals remain lower
+layers.

@@ -381,9 +381,13 @@
     },
     {
       "pc": 36,
-      "op": "mbuc_clear_bool",
+      "op": "clear_bool_from_flag",
       "dst": "f_lookup_inf",
-      "comment": "Explicitly clear the one-bit classical control after deterministic selection."
+      "src": {
+        "flags": "meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register."
     }
   ]
 }

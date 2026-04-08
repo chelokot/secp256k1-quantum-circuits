@@ -4,7 +4,7 @@
     {
       "family": "folded_linear_scan_tmpand_v1__full_phase_register_v1",
       "logicalCounts": {
-        "numQubits": 2848,
+        "numQubits": 2849,
         "cczCount": 37432935,
         "rotationCount": 512,
         "rotationDepth": 512,
@@ -15,7 +15,7 @@
     {
       "family": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",
       "logicalCounts": {
-        "numQubits": 2337,
+        "numQubits": 2338,
         "cczCount": 37432935,
         "rotationCount": 512,
         "rotationDepth": 512,
@@ -26,7 +26,7 @@
     {
       "family": "folded_unary_qrom_v1__full_phase_register_v1",
       "logicalCounts": {
-        "numQubits": 35603,
+        "numQubits": 35604,
         "cczCount": 24849959,
         "rotationCount": 512,
         "rotationDepth": 512,
@@ -37,7 +37,7 @@
     {
       "family": "folded_unary_qrom_v1__semiclassical_qft_v1",
       "logicalCounts": {
-        "numQubits": 35092,
+        "numQubits": 35093,
         "cczCount": 24849959,
         "rotationCount": 512,
         "rotationDepth": 512,
@@ -48,7 +48,7 @@
     {
       "family": "folded_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
       "logicalCounts": {
-        "numQubits": 35603,
+        "numQubits": 35604,
         "cczCount": 23813671,
         "rotationCount": 512,
         "rotationDepth": 512,
@@ -59,7 +59,7 @@
     {
       "family": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
       "logicalCounts": {
-        "numQubits": 35092,
+        "numQubits": 35093,
         "cczCount": 23813671,
         "rotationCount": 512,
         "rotationDepth": 512,

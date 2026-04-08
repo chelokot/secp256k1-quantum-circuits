@@ -32,11 +32,13 @@
     },
     {
       "layer": "mbuc_cleanup",
-      "status": "abstract_contract_only",
+      "status": "exact_isa_coherent_pair_machine_checked_not_flattened",
       "evidence": [
-        "optimized_pointadd_secp256k1.json"
+        "optimized_pointadd_secp256k1.json",
+        "coherent_cleanup_audit_16384.csv",
+        "coherent_cleanup_summary.json"
       ],
-      "notes": "Cleanup remains an abstraction layer. The verifier only checks basis-state functional semantics, not primitive reversible cleanup."
+      "notes": "The shipped one-bit cleanup pair is exact and machine-checked at the ISA boundary: the same metadata bit that sets the neutral-entry control is applied again to uncompute it after selection. The repository still does not ship a primitive-gate lowering of that pair."
     },
     {
       "layer": "backend_resource_projection",

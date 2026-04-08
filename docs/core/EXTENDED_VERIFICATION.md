@@ -25,7 +25,22 @@ Purpose:
 - exhaustively check the canonical 16-bit secp256k1 base over the full word domain
 - check deterministic multibase semantic samples used at the ISA boundary
 
-### 2. Scaffold replay
+### 2. Coherent cleanup audit
+
+Files:
+
+- `artifacts/verification/extended/coherent_cleanup_audit_16384.csv`
+- `artifacts/verification/extended/coherent_cleanup_summary.json`
+
+Purpose:
+
+- check the shipped one-bit no-op control cleanup pair on deterministic
+  secp256k1 cases
+- verify that the cleanup step clears `f_lookup_inf`
+- verify that cleanup preserves the selected projective output and the loaded
+  metadata bit
+
+### 3. Scaffold replay
 
 Files:
 
@@ -38,7 +53,7 @@ Purpose:
 - verify that the scaffold metadata is internally coherent on deterministic
   secp256k1 instances
 
-### 3. Extended toy-family proof
+### 4. Extended toy-family proof
 
 Files:
 
@@ -54,5 +69,5 @@ Purpose:
 The extended verifier still does not:
 
 - primitive-lower lookup memory
-- primitive-verify `mbuc_*` cleanup
+- primitive-lower the shipped flag-cleanup pair
 - emit a single flat gate list for the whole Shor stack

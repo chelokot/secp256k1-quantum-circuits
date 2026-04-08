@@ -29,7 +29,7 @@ from common import artifact_circuits_path, artifact_lookup_path, artifact_projec
 
 FIELD_ARITH_OPS = {'field_mul', 'field_add', 'field_sub', 'mul_const', 'select_field_if_flag'}
 LOOKUP_OPS = {'lookup_affine_x', 'lookup_affine_y', 'lookup_meta'}
-CONTROL_OPS = {'bool_from_flag', 'mbuc_clear_bool'}
+CONTROL_OPS = {'bool_from_flag', 'clear_bool_from_flag'}
 ZERO_COST_OPS = {'load_input'}
 
 
@@ -278,7 +278,11 @@ def build_backend_model_bundle(repo_root: Path) -> Dict[str, Any]:
                 'non_clifford': mul_const_cost,
             },
             'bool_from_flag': {'kind': 'clifford_or_classical_extract', 'non_clifford': 0},
-            'mbuc_clear_bool': {'kind': 'abstract_cleanup_contract', 'non_clifford': 0},
+            'clear_bool_from_flag': {
+                'kind': 'exact_isa_flag_uncompute',
+                'non_clifford': 0,
+                'comment': 'The shipped leaf clears the one-bit no-op flag by XORing the same metadata bit back out of the control slot.',
+            },
             'lookup_affine_x': {'kind': 'lookup_channel', 'non_clifford': 0},
             'lookup_affine_y': {'kind': 'lookup_channel', 'non_clifford': 0},
             'lookup_meta': {'kind': 'lookup_channel', 'non_clifford': 0},

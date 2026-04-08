@@ -25,20 +25,20 @@
     "opcode": "field_add"
   },
   "peak_control_slots": {
-    "count": 1,
-    "pc": 5,
-    "opcode": "lookup_meta"
+    "count": 2,
+    "pc": 6,
+    "opcode": "bool_from_flag"
   },
   "peak_total_slots": {
-    "count": 10,
+    "count": 11,
     "pc": 10,
     "opcode": "field_add"
   },
   "allocator_summary": {
     "exact_arithmetic_slot_count": 9,
-    "exact_control_slot_count": 1,
+    "exact_control_slot_count": 2,
     "arithmetic_bits": 2304,
-    "control_bits": 1
+    "control_bits": 2
   },
   "per_pc": [
     {
@@ -107,17 +107,17 @@
       "arithmetic_slots_live_before_write": 5,
       "control_slots_live_before_write": 1,
       "arithmetic_slots_needed_during_write": 5,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "f_lookup_inf",
-      "reuses_existing_slot": true
+      "reuses_existing_slot": false
     },
     {
       "pc": 7,
       "opcode": "field_mul",
       "arithmetic_slots_live_before_write": 5,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 6,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "t0",
       "reuses_existing_slot": false
     },
@@ -125,9 +125,9 @@
       "pc": 8,
       "opcode": "field_mul",
       "arithmetic_slots_live_before_write": 6,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 7,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "t1",
       "reuses_existing_slot": false
     },
@@ -135,9 +135,9 @@
       "pc": 9,
       "opcode": "field_add",
       "arithmetic_slots_live_before_write": 7,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 8,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "t3",
       "reuses_existing_slot": false
     },
@@ -145,9 +145,9 @@
       "pc": 10,
       "opcode": "field_add",
       "arithmetic_slots_live_before_write": 8,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 9,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "t4",
       "reuses_existing_slot": false
     },
@@ -155,9 +155,9 @@
       "pc": 11,
       "opcode": "field_mul",
       "arithmetic_slots_live_before_write": 9,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 9,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "t3",
       "reuses_existing_slot": true
     },
@@ -165,9 +165,9 @@
       "pc": 12,
       "opcode": "field_add",
       "arithmetic_slots_live_before_write": 8,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 9,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "t4",
       "reuses_existing_slot": false
     },
@@ -175,9 +175,9 @@
       "pc": 13,
       "opcode": "field_sub",
       "arithmetic_slots_live_before_write": 9,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 9,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "t3",
       "reuses_existing_slot": true
     },
@@ -185,9 +185,9 @@
       "pc": 14,
       "opcode": "field_mul",
       "arithmetic_slots_live_before_write": 8,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 8,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "t4",
       "reuses_existing_slot": true
     },
@@ -195,9 +195,9 @@
       "pc": 15,
       "opcode": "field_add",
       "arithmetic_slots_live_before_write": 8,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 8,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "t4",
       "reuses_existing_slot": true
     },
@@ -205,9 +205,9 @@
       "pc": 16,
       "opcode": "field_mul",
       "arithmetic_slots_live_before_write": 7,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 7,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "o2",
       "reuses_existing_slot": true
     },
@@ -215,9 +215,9 @@
       "pc": 17,
       "opcode": "field_add",
       "arithmetic_slots_live_before_write": 7,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 7,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "o2",
       "reuses_existing_slot": true
     },
@@ -225,9 +225,9 @@
       "pc": 18,
       "opcode": "field_add",
       "arithmetic_slots_live_before_write": 6,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 7,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "o1",
       "reuses_existing_slot": false
     },
@@ -235,9 +235,9 @@
       "pc": 19,
       "opcode": "field_add",
       "arithmetic_slots_live_before_write": 7,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 7,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "t0",
       "reuses_existing_slot": true
     },
@@ -245,9 +245,9 @@
       "pc": 20,
       "opcode": "mul_const",
       "arithmetic_slots_live_before_write": 6,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 6,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "t2",
       "reuses_existing_slot": true
     },
@@ -255,9 +255,9 @@
       "pc": 21,
       "opcode": "field_add",
       "arithmetic_slots_live_before_write": 6,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 7,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "qz",
       "reuses_existing_slot": false
     },
@@ -265,9 +265,9 @@
       "pc": 22,
       "opcode": "field_sub",
       "arithmetic_slots_live_before_write": 7,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 7,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "t1",
       "reuses_existing_slot": true
     },
@@ -275,9 +275,9 @@
       "pc": 23,
       "opcode": "mul_const",
       "arithmetic_slots_live_before_write": 6,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 6,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "o2",
       "reuses_existing_slot": true
     },
@@ -285,9 +285,9 @@
       "pc": 24,
       "opcode": "field_mul",
       "arithmetic_slots_live_before_write": 6,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 7,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "o1",
       "reuses_existing_slot": false
     },
@@ -295,9 +295,9 @@
       "pc": 25,
       "opcode": "field_mul",
       "arithmetic_slots_live_before_write": 7,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 8,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "t2",
       "reuses_existing_slot": false
     },
@@ -305,9 +305,9 @@
       "pc": 26,
       "opcode": "field_sub",
       "arithmetic_slots_live_before_write": 8,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 8,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "qx",
       "reuses_existing_slot": true
     },
@@ -315,9 +315,9 @@
       "pc": 27,
       "opcode": "field_mul",
       "arithmetic_slots_live_before_write": 7,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 7,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "o2",
       "reuses_existing_slot": true
     },
@@ -325,9 +325,9 @@
       "pc": 28,
       "opcode": "field_mul",
       "arithmetic_slots_live_before_write": 7,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 7,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "t1",
       "reuses_existing_slot": true
     },
@@ -335,9 +335,9 @@
       "pc": 29,
       "opcode": "field_add",
       "arithmetic_slots_live_before_write": 7,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 7,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "qy",
       "reuses_existing_slot": true
     },
@@ -345,9 +345,9 @@
       "pc": 30,
       "opcode": "field_mul",
       "arithmetic_slots_live_before_write": 6,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 6,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "t0",
       "reuses_existing_slot": true
     },
@@ -355,9 +355,9 @@
       "pc": 31,
       "opcode": "field_mul",
       "arithmetic_slots_live_before_write": 5,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 5,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "qz",
       "reuses_existing_slot": true
     },
@@ -365,9 +365,9 @@
       "pc": 32,
       "opcode": "field_add",
       "arithmetic_slots_live_before_write": 4,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 4,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "qz",
       "reuses_existing_slot": true
     },
@@ -375,9 +375,9 @@
       "pc": 33,
       "opcode": "select_field_if_flag",
       "arithmetic_slots_live_before_write": 3,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 3,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "qx",
       "reuses_existing_slot": true
     },
@@ -385,9 +385,9 @@
       "pc": 34,
       "opcode": "select_field_if_flag",
       "arithmetic_slots_live_before_write": 2,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 2,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "qy",
       "reuses_existing_slot": true
     },
@@ -395,21 +395,21 @@
       "pc": 35,
       "opcode": "select_field_if_flag",
       "arithmetic_slots_live_before_write": 1,
-      "control_slots_live_before_write": 1,
+      "control_slots_live_before_write": 2,
       "arithmetic_slots_needed_during_write": 1,
-      "control_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 2,
       "dst": "qz",
       "reuses_existing_slot": true
     },
     {
       "pc": 36,
-      "opcode": "mbuc_clear_bool",
+      "opcode": "clear_bool_from_flag",
       "arithmetic_slots_live_before_write": 0,
-      "control_slots_live_before_write": 0,
+      "control_slots_live_before_write": 1,
       "arithmetic_slots_needed_during_write": 0,
       "control_slots_needed_during_write": 1,
       "dst": "f_lookup_inf",
-      "reuses_existing_slot": false
+      "reuses_existing_slot": true
     }
   ],
   "versions": [
@@ -458,7 +458,7 @@
       "register": "meta",
       "reg_type": "control",
       "def_pc": 5,
-      "last_use_pc": 6,
+      "last_use_pc": 36,
       "assigned_slot": 0
     },
     {
@@ -467,7 +467,7 @@
       "reg_type": "control",
       "def_pc": 6,
       "last_use_pc": 35,
-      "assigned_slot": 0
+      "assigned_slot": 1
     },
     {
       "version_id": 7,

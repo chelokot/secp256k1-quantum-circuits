@@ -1,0 +1,35 @@
+{
+  "csv_sha256": "458585cff6b3b9069010716cf787b1f5ae05015f06f8691de6bf35ef89da4f98",
+  "csv": "coherent_cleanup_audit_16384.csv",
+  "leaf_sha256": "0281442bdea1ae1cb1871ca64638536b72717d9b1a4b381a42609051ca88aad1",
+  "summary": {
+    "total": 16384,
+    "pass": 16384,
+    "categories": {
+      "random": {
+        "total": 12288,
+        "pass": 12288
+      },
+      "doubling": {
+        "total": 1024,
+        "pass": 1024
+      },
+      "inverse": {
+        "total": 1024,
+        "pass": 1024
+      },
+      "accumulator_infinity": {
+        "total": 1024,
+        "pass": 1024
+      },
+      "lookup_infinity": {
+        "total": 1024,
+        "pass": 1024
+      }
+    }
+  },
+  "notes": [
+    "This audit checks the shipped one-bit cleanup pair exactly at the ISA boundary: the metadata flag is extracted into f_lookup_inf, used by the neutral-entry select path, and uncomputed by applying the same flag source again.",
+    "The audit verifies that the cleanup step clears the control slot, leaves the selected projective output unchanged, and preserves the loaded metadata bit. It does not claim a primitive-gate lowering of that pair."
+  ]
+}

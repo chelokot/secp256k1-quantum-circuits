@@ -231,6 +231,49 @@ def build_arithmetic_kernel_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
     return _summarize_checks(checks)
 
 
+def build_cleanup_pair_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    leaf = _leaf()
+    hist = artifacts['module_library']['leaf_opcode_histogram']
+    extract_ops = [ins for ins in leaf['instructions'] if ins['op'] == 'bool_from_flag']
+    cleanup_ops = [ins for ins in leaf['instructions'] if ins['op'] == 'clear_bool_from_flag']
+    select_ops = [ins for ins in leaf['instructions'] if ins['op'] == 'select_field_if_flag' and ins.get('flag') == 'f_lookup_inf']
+    extract = extract_ops[0] if extract_ops else None
+    cleanup = cleanup_ops[0] if cleanup_ops else None
+    cleanup_window = (
+        [extract['pc'], cleanup['pc']]
+        if extract is not None and cleanup is not None
+        else None
+    )
+    expected_select_pcs = [33, 34, 35]
+    observed_select_pcs = [ins['pc'] for ins in select_ops]
+    checks = [
+        _check('single_flag_extract_exists', len(extract_ops) == 1, 1, len(extract_ops)),
+        _check('single_flag_cleanup_exists', len(cleanup_ops) == 1, 1, len(cleanup_ops)),
+        _check(
+            'cleanup_reuses_same_flag_source_and_destination',
+            extract is not None and cleanup is not None and extract['dst'] == cleanup['dst'] and extract['src'] == cleanup['src'],
+            {
+                'dst': extract['dst'] if extract is not None else None,
+                'src': extract['src'] if extract is not None else None,
+            },
+            {
+                'dst': cleanup['dst'] if cleanup is not None else None,
+                'src': cleanup['src'] if cleanup is not None else None,
+            },
+        ),
+        _check('neutral_entry_selects_cover_xyz', observed_select_pcs == expected_select_pcs, expected_select_pcs, observed_select_pcs),
+        _check(
+            'cleanup_brackets_only_the_neutral_entry_select_window',
+            extract is not None and cleanup is not None and all(extract['pc'] < ins['pc'] < cleanup['pc'] for ins in select_ops),
+            'extract pc < select pcs < cleanup pc',
+            cleanup_window,
+        ),
+        _check('leaf_histogram_uses_explicit_cleanup_opcode', hist.get('clear_bool_from_flag', 0) == 1, 1, hist.get('clear_bool_from_flag', 0)),
+        _check('legacy_cleanup_opcode_is_absent', 'mbuc_clear_bool' not in hist, False, 'mbuc_clear_bool' in hist),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_lookup_lowering_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     lowering = artifacts['lookup_lowerings']
     expected = lookup_lowering_library()
@@ -772,6 +815,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any]) -> Dic
         'schedule_checks': build_schedule_checks(artifacts),
         'table_manifest_checks': build_table_manifest_checks(artifacts),
         'arithmetic_kernel_checks': build_arithmetic_kernel_checks(artifacts),
+        'cleanup_pair_checks': build_cleanup_pair_checks(artifacts),
         'lookup_lowering_checks': build_lookup_lowering_checks(artifacts),
         'generated_block_inventory_checks': build_generated_block_inventory_checks(artifacts),
         'slot_allocation_checks': build_slot_allocation_checks(artifacts),
