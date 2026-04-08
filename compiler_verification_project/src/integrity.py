@@ -22,6 +22,7 @@ from common import (
     sha256_path,
 )
 from arithmetic_lowering import arithmetic_kernel_summary, arithmetic_lowering_library
+from ft_ir import build_ft_ir_compositions
 from generated_block_inventory import build_generated_block_inventories
 from lookup_lowering import lookup_lowering_library, lowered_lookup_semantic_summary
 from project import (
@@ -87,6 +88,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'generated_block_inventories': artifact_root / 'generated_block_inventories.json',
         'family_frontier': artifact_root / 'family_frontier.json',
         'full_attack_inventory': artifact_root / 'full_attack_inventory.json',
+        'ft_ir_compositions': artifact_root / 'ft_ir_compositions.json',
         'subcircuit_equivalence': artifact_root / 'subcircuit_equivalence.json',
         'build_summary': artifact_root / 'build_summary.json',
         'cain_exact_transfer': artifact_root / 'cain_exact_transfer.json',
@@ -658,6 +660,109 @@ def build_full_attack_inventory_checks(artifacts: Mapping[str, Any]) -> Dict[str
     return _summarize_checks(checks)
 
 
+def build_ft_ir_checks(artifacts: Mapping[str, Any], repo_root: Path) -> Dict[str, Any]:
+    ft_ir = artifacts['ft_ir_compositions']
+    expected = build_ft_ir_compositions(
+        schedule=artifacts['full_raw32_oracle'],
+        slot_allocation=artifacts['exact_leaf_slot_allocation'],
+        arithmetic_lowerings=artifacts['arithmetic_lowerings'],
+        lookup_lowerings=artifacts['lookup_lowerings'],
+        phase_shells=artifacts['family_frontier']['phase_shell_families'],
+        generated_block_inventories=artifacts['generated_block_inventories'],
+        frontier=artifacts['family_frontier'],
+        field_bits=FIELD_BITS,
+    )
+    family_failures = []
+    root_failures = []
+    source_path_failures = []
+    for path in ft_ir['source_artifacts'].values():
+        if not (repo_root / path).exists():
+            source_path_failures.append(path)
+    for family in ft_ir['families']:
+        graph = family['graph']
+        summary = graph['summary']
+        leaf_sigma = family['leaf_sigma']
+        if not (
+            graph['root'] == 'full_oracle'
+            and summary['root_in_degree'] == 0
+            and summary['reachable_node_count'] == summary['node_count']
+        ):
+            root_failures.append(family['name'])
+        primitive_from_sigma = {'ccx': 0, 'cx': 0, 'x': 0, 'measurement': 0}
+        logical_qubits_from_sigma = 0
+        phase_measurements_from_sigma = 0
+        phase_rotations_from_sigma = 0
+        for entry in leaf_sigma:
+            semantics = entry['resource_profile']['resource_semantics']
+            if semantics == 'additive_primitive':
+                for key in primitive_from_sigma:
+                    primitive_from_sigma[key] += int(entry['primitive_counts_total'][key])
+            elif semantics == 'peak_live_qubits':
+                logical_qubits_from_sigma += int(entry['logical_qubits_total'])
+            elif semantics == 'additive_phase_measurements':
+                phase_measurements_from_sigma += int(entry['count_total'])
+            elif semantics == 'additive_phase_rotations':
+                phase_rotations_from_sigma += int(entry['count_total'])
+        reconstruction = family['reconstruction']
+        if not (
+            primitive_from_sigma == reconstruction['primitive_totals']
+            and primitive_from_sigma['ccx'] == reconstruction['full_oracle_non_clifford']
+            and logical_qubits_from_sigma == reconstruction['total_logical_qubits']
+            and phase_measurements_from_sigma == reconstruction['phase_shell_measurements']
+            and phase_rotations_from_sigma == reconstruction['phase_shell_rotations']
+            and reconstruction == family['generated_block_inventory_reconstruction']
+            and reconstruction['full_oracle_non_clifford'] == family['frontier_reconstruction']['full_oracle_non_clifford']
+            and reconstruction['total_logical_qubits'] == family['frontier_reconstruction']['total_logical_qubits']
+        ):
+            family_failures.append(family['name'])
+    checks = [
+        _check('ft_ir_compositions_match_generator', ft_ir == expected, expected, ft_ir),
+        _check(
+            'ft_ir_schema_matches_current_version',
+            ft_ir['schema'] == 'compiler-project-ft-ir-v1',
+            'compiler-project-ft-ir-v1',
+            ft_ir['schema'],
+        ),
+        _check(
+            'ft_ir_source_paths_match_expected',
+            ft_ir['source_artifacts'] == {
+                'full_raw32_oracle': 'compiler_verification_project/artifacts/full_raw32_oracle.json',
+                'exact_leaf_slot_allocation': 'compiler_verification_project/artifacts/exact_leaf_slot_allocation.json',
+                'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
+                'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
+                'generated_block_inventories': 'compiler_verification_project/artifacts/generated_block_inventories.json',
+                'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
+            },
+            {
+                'full_raw32_oracle': 'compiler_verification_project/artifacts/full_raw32_oracle.json',
+                'exact_leaf_slot_allocation': 'compiler_verification_project/artifacts/exact_leaf_slot_allocation.json',
+                'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
+                'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
+                'generated_block_inventories': 'compiler_verification_project/artifacts/generated_block_inventories.json',
+                'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
+            },
+            ft_ir['source_artifacts'],
+        ),
+        _check('ft_ir_source_paths_exist_on_disk', len(source_path_failures) == 0, [], source_path_failures),
+        _check('ft_ir_family_graphs_are_rooted_and_reachable', len(root_failures) == 0, [], root_failures),
+        _check('ft_ir_leaf_sigma_reconstructs_generated_totals', len(family_failures) == 0, [], family_failures),
+        _check(
+            'ft_ir_best_families_match_generated_inventory',
+            ft_ir['best_gate_family'] == artifacts['generated_block_inventories']['best_gate_family']
+            and ft_ir['best_qubit_family'] == artifacts['generated_block_inventories']['best_qubit_family'],
+            {
+                'best_gate_family': artifacts['generated_block_inventories']['best_gate_family'],
+                'best_qubit_family': artifacts['generated_block_inventories']['best_qubit_family'],
+            },
+            {
+                'best_gate_family': ft_ir['best_gate_family'],
+                'best_qubit_family': ft_ir['best_qubit_family'],
+            },
+        ),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_subcircuit_equivalence_checks(artifacts: Mapping[str, Any], repo_root: Path) -> Dict[str, Any]:
     equivalence = artifacts['subcircuit_equivalence']
     expected = build_subcircuit_equivalence_artifact(
@@ -890,11 +995,12 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'generated_block_inventories': 'compiler_verification_project/artifacts/generated_block_inventories.json',
         'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
         'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
+        'ft_ir_compositions': 'compiler_verification_project/artifacts/ft_ir_compositions.json',
         'subcircuit_equivalence': 'compiler_verification_project/artifacts/subcircuit_equivalence.json',
         'azure_resource_estimator_logical_counts': 'compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json',
     }
     checks = [
-        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v7', 'compiler-project-build-summary-v7', build_summary['schema']),
+        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v8', 'compiler-project-build-summary-v8', build_summary['schema']),
         _check('build_summary_artifact_paths_match_expected_set', build_summary['artifacts'] == expected_paths, expected_paths, build_summary['artifacts']),
         _check(
             'build_summary_paths_exist_on_disk',
@@ -959,6 +1065,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any]) -> Dic
         'generated_block_inventory_checks': build_generated_block_inventory_checks(artifacts),
         'slot_allocation_checks': build_slot_allocation_checks(artifacts),
         'full_attack_inventory_checks': build_full_attack_inventory_checks(artifacts),
+        'ft_ir_checks': build_ft_ir_checks(artifacts, repo_root),
         'subcircuit_equivalence_checks': build_subcircuit_equivalence_checks(artifacts, repo_root),
         'primitive_multiplier_checks': build_primitive_multiplier_checks(artifacts),
         'frontier_checks': build_frontier_checks(artifacts),
@@ -981,7 +1088,7 @@ def build_verification_summary(case_count: int = 16, repo_root: Path | None = No
     invariant_total = sum(group['total'] for group in invariant_groups.values())
     invariant_pass = sum(group['pass'] for group in invariant_groups.values())
     return {
-        'schema': 'compiler-project-verification-summary-v6',
+        'schema': 'compiler-project-verification-summary-v7',
         'semantic_replay': semantic,
         **invariant_groups,
         'summary': {

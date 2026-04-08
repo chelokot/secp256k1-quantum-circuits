@@ -10,6 +10,8 @@ which implementation gaps remain open.
 - signed lookup-folding contract semantics
 - exact ISA-level coherent flag cleanup
 - exact arithmetic-kernel stage/block inventories for the named compiler family
+- compositional FT-style call graphs and leaf sigma for the named compiler
+  families
 - internal subcircuit-equivalence witnesses for traced ISA arithmetic/flag
   opcodes, lowered lookup families, the cleanup window, and generated
   whole-oracle composition

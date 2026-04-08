@@ -51,12 +51,13 @@ What it does ship is:
 - `module_library.json` — arithmetic-kernel summary used by the frontier
 - `lookup_lowerings.json` — explicit stage/block inventories for the named folded lookup families
 - `generated_block_inventories.json` — generated whole-oracle block inventories whose reconstructed totals feed the exact frontier
+- `ft_ir_compositions.json` — compositional FT-style call graphs and leaf sigma reconstructions for every named compiler family
 - `subcircuit_equivalence.json` — cross-layer equivalence witnesses for traced ISA opcodes, lowered lookup families, the coherent cleanup window, and generated whole-oracle composition
 - `primitive_multiplier_library.json` — auditable manifest for all 341 multiplier instances in the raw-32 oracle
 - `phase_shell_families.json` — full-register and semiclassical-QFT shell families
 - `table_manifests.json` — exact folded-table dimensions and canonical window bases
 - `full_attack_inventory.json` — structural inventory for the completed oracle
-- `verification_summary.json` — deterministic semantic replay plus cross-artifact integrity checks for schedule, slot allocation, inventories, frontier, and transfer handoffs
+- `verification_summary.json` — deterministic semantic replay plus cross-artifact integrity checks for schedule, slot allocation, FT IR composition, lowered inventories, frontier, and transfer handoffs
 - `cain_exact_transfer.json` — heuristic physical transfer for the exact families
 - `azure_resource_estimator_logical_counts.json` — logicalCounts-style handoff artifact for physical estimators
 
@@ -82,6 +83,8 @@ Its defining exact features are:
   from stage/block inventories instead of from naked opcode formulas;
 - explicit lookup lowerings reconstruct each lookup-family count from checked
   stage/block inventories instead of from naked family formulas;
+- FT IR compositions reconstruct each family from hierarchical bundles plus a
+  traversed leaf sigma instead of only from flattened generated blocks;
 - subcircuit-equivalence witnesses bind traced ISA arithmetic/flag opcodes,
   lowered lookup-family semantics, the coherent cleanup window, and generated
   whole-oracle composition back to the checked source artifacts;

@@ -56,6 +56,8 @@ def test_compiler_project_verification_summary_groups_all_pass() -> None:
     assert cleanup_pair['pass'] == cleanup_pair['total']
     generated_block_inventory = summary['generated_block_inventory_checks']
     assert generated_block_inventory['pass'] == generated_block_inventory['total']
+    ft_ir = summary['ft_ir_checks']
+    assert ft_ir['pass'] == ft_ir['total']
     subcircuit_equivalence = summary['subcircuit_equivalence_checks']
     assert subcircuit_equivalence['pass'] == subcircuit_equivalence['total']
 
@@ -102,6 +104,13 @@ def test_mutated_generated_block_inventory_is_detected() -> None:
     artifacts['generated_block_inventories']['families'][0]['non_clifford_blocks'][0]['primitive_counts_total']['ccx'] += 1
     groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
     assert groups['generated_block_inventory_checks']['pass'] < groups['generated_block_inventory_checks']['total']
+
+
+def test_mutated_ft_ir_edge_is_detected() -> None:
+    artifacts = deepcopy(_load_artifacts())
+    artifacts['ft_ir_compositions']['families'][0]['graph']['edges'][0]['count'] += 1
+    groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
+    assert groups['ft_ir_checks']['pass'] < groups['ft_ir_checks']['total']
 
 
 def test_mutated_full_attack_generated_summary_is_detected() -> None:

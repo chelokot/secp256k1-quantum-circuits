@@ -55,6 +55,7 @@ from common import (  # noqa: E402
     sha256_path,
 )
 from arithmetic_lowering import arithmetic_kernel_summary, arithmetic_lowering_library  # noqa: E402
+from ft_ir import build_ft_ir_compositions  # noqa: E402
 from generated_block_inventory import build_generated_block_inventories  # noqa: E402
 from lookup_lowering import lookup_lowering_library  # noqa: E402
 from subcircuit_equivalence import build_subcircuit_equivalence_artifact  # noqa: E402
@@ -953,6 +954,16 @@ def build_all_artifacts() -> Dict[str, Any]:
         'frontier': compiler_family_frontier(),
         'full_attack_inventory': full_attack_inventory(),
     }
+    out['ft_ir_compositions'] = build_ft_ir_compositions(
+        schedule=out['raw32_schedule'],
+        slot_allocation=out['slot_allocation'],
+        arithmetic_lowerings=out['arithmetic_lowerings'],
+        lookup_lowerings=out['lookup_lowerings'],
+        phase_shells=out['phase_shell_families']['families'],
+        generated_block_inventories=out['generated_block_inventories'],
+        frontier=out['frontier'],
+        field_bits=FIELD_BITS,
+    )
     out['subcircuit_equivalence'] = build_subcircuit_equivalence_artifact(
         arithmetic_lowerings=out['arithmetic_lowerings'],
         lookup_lowerings=out['lookup_lowerings'],
@@ -972,11 +983,12 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('generated_block_inventories.json'), out['generated_block_inventories'])
     dump_json(project_artifact_path('family_frontier.json'), out['frontier'])
     dump_json(project_artifact_path('full_attack_inventory.json'), out['full_attack_inventory'])
+    dump_json(project_artifact_path('ft_ir_compositions.json'), out['ft_ir_compositions'])
     dump_json(project_artifact_path('subcircuit_equivalence.json'), out['subcircuit_equivalence'])
     write_azure_logical_counts()
 
     build_summary = {
-        'schema': 'compiler-project-build-summary-v7',
+        'schema': 'compiler-project-build-summary-v8',
         'artifacts': {
             'canonical_public_point': 'compiler_verification_project/artifacts/canonical_public_point.json',
             'full_raw32_oracle': 'compiler_verification_project/artifacts/full_raw32_oracle.json',
@@ -990,6 +1002,7 @@ def build_all_artifacts() -> Dict[str, Any]:
             'generated_block_inventories': 'compiler_verification_project/artifacts/generated_block_inventories.json',
             'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
             'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
+            'ft_ir_compositions': 'compiler_verification_project/artifacts/ft_ir_compositions.json',
             'subcircuit_equivalence': 'compiler_verification_project/artifacts/subcircuit_equivalence.json',
             'azure_resource_estimator_logical_counts': 'compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json',
         },
@@ -998,7 +1011,7 @@ def build_all_artifacts() -> Dict[str, Any]:
             'best_qubit_family': out['frontier']['best_qubit_family'],
         },
         'notes': [
-            'The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families with explicit arithmetic and lookup lowerings, generated block inventories, and internal subcircuit-equivalence witnesses.',
+            'The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families with explicit arithmetic and lookup lowerings, generated block inventories, a compositional FT IR layer, and internal subcircuit-equivalence witnesses.',
             'Its qubit accounting uses exact slot allocation and an explicit semiclassical phase-shell family instead of a fixed 10-slot/512-phase policy.',
         ],
     }
