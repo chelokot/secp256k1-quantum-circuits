@@ -16,21 +16,21 @@
   },
   "source_artifacts": {
     "leaf_path": "artifacts/circuits/optimized_pointadd_secp256k1.json",
-    "leaf_sha256": "0281442bdea1ae1cb1871ca64638536b72717d9b1a4b381a42609051ca88aad1",
+    "leaf_sha256": "251ac789d2b8e9251ac967757b5190aa4216f3380e829404b1acb1608f8bede0",
     "scaffold_path": "artifacts/circuits/ecdlp_scaffold_optimized.json",
     "scaffold_sha256": "6f444c332728cde3ccfb9fd532012aaaa9c777a1b0f949573a3910602126cc03",
     "folded_scaffold_path": "artifacts/circuits/ecdlp_scaffold_lookup_folded.json",
     "folded_scaffold_sha256": "dea4d9d209f42734fb70cee6b5a2d968f4c4f0bf61c4d1646a554fcd9518f3d4",
     "register_map_path": "artifacts/circuits/register_map.json",
-    "register_map_sha256": "f57b679f66d6758107e2a6ac249cc10e7eca548cc54a946435b4e0ea7ca96703",
+    "register_map_sha256": "3a39988bb9a4473b130630aaaeeeeeccbb8e7a104f13428aa4dd8f8726652633",
     "lookup_contract_path": "artifacts/lookup/lookup_signed_fold_contract.json",
     "lookup_contract_sha256": "c3b6cc711aa323951a580f6a54a027d84bf84d6a5ad66965751db865553b635d",
     "expanded_isa_path": "artifacts/circuits/ecdlp_expanded_isa_optimized.json",
-    "expanded_isa_sha256": "e0361b1408d83636bfd603ebbbb5f401c22ee617b36c62e36ca3dcacd41e2987"
+    "expanded_isa_sha256": "ff3033beef5d4238187678a757c665d737bc838c4fbd725145832bfa2188841a"
   },
   "expanded_isa_schedule": {
     "path": "artifacts/circuits/ecdlp_expanded_isa_optimized.json",
-    "sha256": "e0361b1408d83636bfd603ebbbb5f401c22ee617b36c62e36ca3dcacd41e2987",
+    "sha256": "ff3033beef5d4238187678a757c665d737bc838c4fbd725145832bfa2188841a",
     "expanded_leaf_instruction_count": 1036,
     "expanded_instruction_count_total": 1040
   },
@@ -54,13 +54,13 @@
       "bool_from_flag": 1,
       "field_mul": 11,
       "field_add": 10,
-      "field_sub": 3,
       "mul_const": 2,
+      "field_sub": 3,
       "select_field_if_flag": 3,
       "clear_bool_from_flag": 1
     },
-    "allocated_field_slots": 12,
-    "peak_live_field_slots": 10
+    "allocated_field_slots": 8,
+    "peak_live_field_slots": 7
   },
   "optimized_leaf_projection": {
     "field_bits": 256,
@@ -74,16 +74,16 @@
       "select_field_if_flag": 3,
       "lookup_ops": 3
     },
-    "scratch_logical_qubits": 864,
-    "allocated_field_slots": 12,
-    "effective_field_slots": 12,
-    "peak_live_field_slots": 10,
+    "scratch_logical_qubits": 576,
+    "allocated_field_slots": 8,
+    "effective_field_slots": 8,
+    "peak_live_field_slots": 7,
     "peak_live_control_slots": 2,
     "modeled_non_clifford_excluding_lookup": 733657
   },
   "optimized_ecdlp_projection": {
     "retained_window_additions": 28,
-    "logical_qubits_total": 880,
+    "logical_qubits_total": 592,
     "lookup_model_2channel": {
       "lookup_channels": 2,
       "per_window_lookup_cost": 65536,
@@ -121,8 +121,8 @@
       "bool_from_flag": 0,
       "field_mul": 66047,
       "field_add": 255,
-      "field_sub": 255,
       "mul_const": 1530,
+      "field_sub": 255,
       "select_field_if_flag": 255,
       "clear_bool_from_flag": 0
     }
@@ -156,8 +156,8 @@
         "bool_from_flag": 0,
         "field_mul": 66047,
         "field_add": 255,
-        "field_sub": 255,
         "mul_const": 1530,
+        "field_sub": 255,
         "select_field_if_flag": 255,
         "clear_bool_from_flag": 0
       },
@@ -173,16 +173,16 @@
           "select_field_if_flag": 3,
           "lookup_ops": 3
         },
-        "scratch_logical_qubits": 720,
-        "allocated_field_slots": 12,
-        "effective_field_slots": 10,
-        "peak_live_field_slots": 10,
+        "scratch_logical_qubits": 504,
+        "allocated_field_slots": 8,
+        "effective_field_slots": 7,
+        "peak_live_field_slots": 7,
         "peak_live_control_slots": 2,
         "modeled_non_clifford_excluding_lookup": 733657
       },
       "ecdlp": {
         "retained_window_additions": 28,
-        "logical_qubits_total": 736,
+        "logical_qubits_total": 520,
         "lookup_model_2channel": {
           "lookup_channels": 2,
           "per_window_lookup_cost": 65536,
@@ -196,12 +196,12 @@
       },
       "improvement_vs_google": {
         "versus_low_qubit": {
-          "qubit_gain": 1.6304347826086956,
+          "qubit_gain": 2.3076923076923075,
           "toffoli_gain_2lookup": 4.021914248855676,
           "toffoli_gain_3lookup": 3.863505277634065
         },
         "versus_low_gate": {
-          "qubit_gain": 1.9701086956521738,
+          "qubit_gain": 2.7884615384615383,
           "toffoli_gain_2lookup": 3.128155526887748,
           "toffoli_gain_3lookup": 3.0049485492709396
         }
@@ -210,12 +210,12 @@
   ],
   "improvement_vs_google": {
     "versus_low_qubit": {
-      "qubit_gain": 1.3636363636363635,
+      "qubit_gain": 2.027027027027027,
       "toffoli_gain_2lookup": 4.021914248855676,
       "toffoli_gain_3lookup": 3.863505277634065
     },
     "versus_low_gate": {
-      "qubit_gain": 1.6477272727272727,
+      "qubit_gain": 2.449324324324324,
       "toffoli_gain_2lookup": 3.128155526887748,
       "toffoli_gain_3lookup": 3.0049485492709396
     }

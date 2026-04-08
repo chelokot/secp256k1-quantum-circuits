@@ -1,6 +1,6 @@
 {
   "audit": {
-    "sha256": "f43463ab71b6b4d3937817ed8ce186ab6d7eab31c2ad2bbefe2d9e7fd349a6a0",
+    "sha256": "ea6ed0658aea8c43bf58f5482df37924aaa55baea6b39eae1dc1209780fcec89",
     "summary": {
       "total": 16384,
       "pass": 16384,
@@ -28,7 +28,7 @@
       }
     },
     "csv": "optimized_pointadd_audit_16384.csv",
-    "netlist_sha256": "0281442bdea1ae1cb1871ca64638536b72717d9b1a4b381a42609051ca88aad1"
+    "netlist_sha256": "251ac789d2b8e9251ac967757b5190aa4216f3380e829404b1acb1608f8bede0"
   },
   "toy": {
     "sha256": "70235a7be65ecbdd1a69583d12be3ab8ec0d39cf148f9dae1c36bd9c2e71b6e1",

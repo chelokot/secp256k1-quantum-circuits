@@ -1,6 +1,6 @@
 {
   "baseline_headline": {
-    "logical_qubits": 880,
+    "logical_qubits": 592,
     "total_non_clifford_2lookup": 22377404,
     "total_non_clifford_3lookup": 23294908
   },

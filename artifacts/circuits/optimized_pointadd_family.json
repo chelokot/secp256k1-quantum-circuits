@@ -13,11 +13,7 @@
     "ly",
     "t0",
     "t1",
-    "t2",
-    "t3",
-    "t4",
-    "o1",
-    "o2"
+    "t2"
   ],
   "interface_wires": [
     "Q.X",
@@ -102,18 +98,8 @@
     },
     {
       "pc": 8,
-      "op": "field_mul",
-      "dst": "t1",
-      "src": [
-        "qy",
-        "ly"
-      ],
-      "comment": "t1 = Y1 * Y2"
-    },
-    {
-      "pc": 9,
       "op": "field_add",
-      "dst": "t3",
+      "dst": "t1",
       "src": [
         "lx",
         "ly"
@@ -121,69 +107,9 @@
       "comment": "t3 = X2 + Y2"
     },
     {
-      "pc": 10,
-      "op": "field_add",
-      "dst": "t4",
-      "src": [
-        "qx",
-        "qy"
-      ],
-      "comment": "t4 = X1 + Y1"
-    },
-    {
-      "pc": 11,
+      "pc": 9,
       "op": "field_mul",
-      "dst": "t3",
-      "src": [
-        "t3",
-        "t4"
-      ],
-      "comment": "t3 = (X2 + Y2)(X1 + Y1)"
-    },
-    {
-      "pc": 12,
-      "op": "field_add",
-      "dst": "t4",
-      "src": [
-        "t0",
-        "t1"
-      ],
-      "comment": "t4 = t0 + t1"
-    },
-    {
-      "pc": 13,
-      "op": "field_sub",
-      "dst": "t3",
-      "src": [
-        "t3",
-        "t4"
-      ],
-      "comment": "t3 = X1Y2 + X2Y1"
-    },
-    {
-      "pc": 14,
-      "op": "field_mul",
-      "dst": "t4",
-      "src": [
-        "ly",
-        "qz"
-      ],
-      "comment": "t4 = Y2 * Z1"
-    },
-    {
-      "pc": 15,
-      "op": "field_add",
-      "dst": "t4",
-      "src": [
-        "t4",
-        "qy"
-      ],
-      "comment": "t4 = Y1 + Y2Z1"
-    },
-    {
-      "pc": 16,
-      "op": "field_mul",
-      "dst": "o2",
+      "dst": "lx",
       "src": [
         "lx",
         "qz"
@@ -191,19 +117,105 @@
       "comment": "o2 = X2 * Z1"
     },
     {
-      "pc": 17,
+      "pc": 10,
       "op": "field_add",
-      "dst": "o2",
+      "dst": "lx",
       "src": [
-        "o2",
+        "lx",
         "qx"
       ],
       "comment": "o2 = X1 + X2Z1"
     },
     {
+      "pc": 11,
+      "op": "field_add",
+      "dst": "qx",
+      "src": [
+        "qx",
+        "qy"
+      ],
+      "comment": "t4 = X1 + Y1"
+    },
+    {
+      "pc": 12,
+      "op": "field_mul",
+      "dst": "t1",
+      "src": [
+        "t1",
+        "qx"
+      ],
+      "comment": "t3 = (X2 + Y2)(X1 + Y1)"
+    },
+    {
+      "pc": 13,
+      "op": "mul_const",
+      "dst": "lx",
+      "src": "lx",
+      "const": "b3",
+      "comment": "o2 = 3b(X1 + X2Z1) The family netlist becomes secp256k1-specialized when b3 = 21."
+    },
+    {
+      "pc": 14,
+      "op": "field_mul",
+      "dst": "qx",
+      "src": [
+        "qy",
+        "ly"
+      ],
+      "comment": "t1 = Y1 * Y2"
+    },
+    {
+      "pc": 15,
+      "op": "field_mul",
+      "dst": "ly",
+      "src": [
+        "ly",
+        "qz"
+      ],
+      "comment": "t4 = Y2 * Z1"
+    },
+    {
+      "pc": 16,
+      "op": "field_add",
+      "dst": "ly",
+      "src": [
+        "ly",
+        "qy"
+      ],
+      "comment": "t4 = Y1 + Y2Z1"
+    },
+    {
+      "pc": 17,
+      "op": "mul_const",
+      "dst": "qz",
+      "src": "qz",
+      "const": "b3",
+      "comment": "t2 = 3b * Z1 = b3 * Z1 for secp256k1. The family netlist becomes secp256k1-specialized when b3 = 21."
+    },
+    {
       "pc": 18,
       "op": "field_add",
-      "dst": "o1",
+      "dst": "qy",
+      "src": [
+        "t0",
+        "qx"
+      ],
+      "comment": "t4 = t0 + t1"
+    },
+    {
+      "pc": 19,
+      "op": "field_sub",
+      "dst": "t1",
+      "src": [
+        "t1",
+        "qy"
+      ],
+      "comment": "t3 = X1Y2 + X2Y1"
+    },
+    {
+      "pc": 20,
+      "op": "field_add",
+      "dst": "qy",
       "src": [
         "t0",
         "t0"
@@ -211,138 +223,122 @@
       "comment": "o1 = 2 * t0"
     },
     {
-      "pc": 19,
+      "pc": 21,
       "op": "field_add",
-      "dst": "t0",
+      "dst": "qy",
       "src": [
-        "o1",
+        "qy",
         "t0"
       ],
       "comment": "t0 = 3 * X1X2"
     },
     {
-      "pc": 20,
-      "op": "mul_const",
-      "dst": "t2",
-      "src": "qz",
-      "const": "b3",
-      "comment": "t2 = 3b * Z1 = b3 * Z1 for secp256k1. The family netlist becomes secp256k1-specialized when b3 = 21."
-    },
-    {
-      "pc": 21,
+      "pc": 22,
       "op": "field_add",
-      "dst": "qz",
+      "dst": "t0",
       "src": [
-        "t1",
-        "t2"
+        "qx",
+        "qz"
       ],
       "comment": "qz = Y1Y2 + 3bZ1"
     },
     {
-      "pc": 22,
+      "pc": 23,
       "op": "field_sub",
-      "dst": "t1",
+      "dst": "qx",
       "src": [
-        "t1",
-        "t2"
+        "qx",
+        "qz"
       ],
       "comment": "t1 = Y1Y2 - 3bZ1"
     },
     {
-      "pc": 23,
-      "op": "mul_const",
-      "dst": "o2",
-      "src": "o2",
-      "const": "b3",
-      "comment": "o2 = 3b(X1 + X2Z1) The family netlist becomes secp256k1-specialized when b3 = 21."
-    },
-    {
       "pc": 24,
       "op": "field_mul",
-      "dst": "o1",
+      "dst": "qz",
       "src": [
-        "t4",
-        "o2"
+        "ly",
+        "lx"
       ],
       "comment": "o1 = 3b(Y1 + Y2Z1)(X1 + X2Z1)"
     },
     {
       "pc": 25,
       "op": "field_mul",
-      "dst": "t2",
+      "dst": "lx",
       "src": [
-        "t3",
-        "t1"
-      ],
-      "comment": "t2 = (X1Y2 + X2Y1)(Y1Y2 - 3bZ1)"
-    },
-    {
-      "pc": 26,
-      "op": "field_sub",
-      "dst": "qx",
-      "src": [
-        "t2",
-        "o1"
-      ],
-      "comment": "qx = X3"
-    },
-    {
-      "pc": 27,
-      "op": "field_mul",
-      "dst": "o2",
-      "src": [
-        "o2",
-        "t0"
+        "lx",
+        "qy"
       ],
       "comment": "o2 = 9b X1X2 (X1 + X2Z1)"
     },
     {
-      "pc": 28,
+      "pc": 26,
       "op": "field_mul",
+      "dst": "qy",
+      "src": [
+        "qy",
+        "t1"
+      ],
+      "comment": "t0 = 3X1X2(X1Y2 + X2Y1)"
+    },
+    {
+      "pc": 27,
+      "op": "field_mul",
+      "dst": "t1",
+      "src": [
+        "t1",
+        "qx"
+      ],
+      "comment": "t2 = (X1Y2 + X2Y1)(Y1Y2 - 3bZ1)"
+    },
+    {
+      "pc": 28,
+      "op": "field_sub",
       "dst": "t1",
       "src": [
         "t1",
         "qz"
       ],
-      "comment": "t1 = (Y1Y2 - 3bZ1)(Y1Y2 + 3bZ1)"
+      "comment": "qx = X3"
     },
     {
       "pc": 29,
-      "op": "field_add",
-      "dst": "qy",
+      "op": "field_mul",
+      "dst": "qx",
       "src": [
-        "t1",
-        "o2"
+        "qx",
+        "t0"
+      ],
+      "comment": "t1 = (Y1Y2 - 3bZ1)(Y1Y2 + 3bZ1)"
+    },
+    {
+      "pc": 30,
+      "op": "field_add",
+      "dst": "lx",
+      "src": [
+        "qx",
+        "lx"
       ],
       "comment": "qy = Y3"
     },
     {
-      "pc": 30,
+      "pc": 31,
       "op": "field_mul",
       "dst": "t0",
       "src": [
         "t0",
-        "t3"
-      ],
-      "comment": "t0 = 3X1X2(X1Y2 + X2Y1)"
-    },
-    {
-      "pc": 31,
-      "op": "field_mul",
-      "dst": "qz",
-      "src": [
-        "qz",
-        "t4"
+        "ly"
       ],
       "comment": "qz = (Y1Y2 + 3bZ1)(Y1 + Y2Z1)"
     },
     {
       "pc": 32,
       "op": "field_add",
-      "dst": "qz",
+      "dst": "t0",
       "src": [
-        "qz",
-        "t0"
+        "t0",
+        "qy"
       ],
       "comment": "qz = Z3"
     },
@@ -352,7 +348,7 @@
       "dst": "qx",
       "src": [
         "Q.X",
-        "qx"
+        "t1"
       ],
       "flag": "f_lookup_inf",
       "comment": "Neutral table entry keeps the original accumulator X."
@@ -363,7 +359,7 @@
       "dst": "qy",
       "src": [
         "Q.Y",
-        "qy"
+        "lx"
       ],
       "flag": "f_lookup_inf",
       "comment": "Neutral table entry keeps the original accumulator Y."
@@ -374,7 +370,7 @@
       "dst": "qz",
       "src": [
         "Q.Z",
-        "qz"
+        "t0"
       ],
       "flag": "f_lookup_inf",
       "comment": "Neutral table entry keeps the original accumulator Z."

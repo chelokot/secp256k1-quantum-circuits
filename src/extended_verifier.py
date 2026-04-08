@@ -537,7 +537,7 @@ def run_meta_analysis(repo_root: Path) -> Dict[str, Any]:
         "resource_projection_headline": proj["improvement_vs_google"],
         "main_reason_codes": [
             {"code": "COMPLETE_MIXED_J0", "description": "The optimized leaf uses a secp256k1-specialized complete mixed j=0 formula with a narrow, branch-free hot path."},
-            {"code": "WORKING_WIDTH_CONTROL", "description": "The optimized arithmetic schedule keeps the working state compact at 12 arithmetic slots while preserving exact ISA-level basis-state semantics."},
+            {"code": "WORKING_WIDTH_CONTROL", "description": f"The optimized arithmetic schedule keeps the working state compact at {len(opt['arithmetic_slots'])} arithmetic slots while preserving exact ISA-level basis-state semantics."},
             {"code": "WINDOW_RETENTION_DISCIPLINE", "description": "The repository keeps the public retained-window structure explicit instead of hiding schedule changes inside headline totals."},
             {"code": "BOUNDARY_HONESTY", "description": "The mainline resource win is reported as a backend projection against cited rounded Google estimates, while exact checked artifacts extend through ISA arithmetic, the folded lookup contract, and the compiler project's explicit lookup-lowering layer."},
         ],

@@ -1,6 +1,6 @@
 {
   "schema": "lookup-folded-projection-v1",
-  "base_projection_sha256": "3a8df752f602b987145c8e7e414a9b8210e8cf9f125d097a1f9709ef9df4f594",
+  "base_projection_sha256": "00f5173fc77dcda8f0b77efe669a6a1ad559253d10466d7b727fcd7d7a061ef6",
   "assumptions": [
     "The exact arithmetic leaf cost is unchanged from the repository's published optimized leaf.",
     "Each signed 16-bit coordinate table is folded from 65536 entries to 32768 entries plus one special constant for 0x8000.",

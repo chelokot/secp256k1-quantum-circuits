@@ -769,7 +769,7 @@
               "source_artifact": "compiler_verification_project/artifacts/exact_leaf_slot_allocation.json",
               "resource_profile": {
                 "resource_semantics": "peak_live_qubits",
-                "logical_qubits": 2304
+                "logical_qubits": 2048
               }
             }
           },
@@ -1258,7 +1258,7 @@
             "x": 0,
             "measurement": 15053284
           },
-          "logical_qubits_total": 2849,
+          "logical_qubits_total": 2593,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 130816,
@@ -1865,9 +1865,9 @@
           "path_multiplicity": 1,
           "resource_profile": {
             "resource_semantics": "peak_live_qubits",
-            "logical_qubits": 2304
+            "logical_qubits": 2048
           },
-          "logical_qubits_total": 2304
+          "logical_qubits_total": 2048
         },
         {
           "leaf_id": "live_qubit_contributors__control_slots",
@@ -1983,7 +1983,7 @@
           "x": 0,
           "measurement": 15053284
         },
-        "total_logical_qubits": 2849,
+        "total_logical_qubits": 2593,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 130816,
@@ -1997,7 +1997,7 @@
           "x": 0,
           "measurement": 15053284
         },
-        "total_logical_qubits": 2849,
+        "total_logical_qubits": 2593,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 130816,
@@ -2005,7 +2005,7 @@
       },
       "frontier_reconstruction": {
         "full_oracle_non_clifford": 37432935,
-        "total_logical_qubits": 2849
+        "total_logical_qubits": 2593
       }
     },
     {
@@ -2748,7 +2748,7 @@
               "source_artifact": "compiler_verification_project/artifacts/exact_leaf_slot_allocation.json",
               "resource_profile": {
                 "resource_semantics": "peak_live_qubits",
-                "logical_qubits": 2304
+                "logical_qubits": 2048
               }
             }
           },
@@ -3237,7 +3237,7 @@
             "x": 0,
             "measurement": 15053284
           },
-          "logical_qubits_total": 2338,
+          "logical_qubits_total": 2082,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -3844,9 +3844,9 @@
           "path_multiplicity": 1,
           "resource_profile": {
             "resource_semantics": "peak_live_qubits",
-            "logical_qubits": 2304
+            "logical_qubits": 2048
           },
-          "logical_qubits_total": 2304
+          "logical_qubits_total": 2048
         },
         {
           "leaf_id": "live_qubit_contributors__control_slots",
@@ -3962,7 +3962,7 @@
           "x": 0,
           "measurement": 15053284
         },
-        "total_logical_qubits": 2338,
+        "total_logical_qubits": 2082,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -3976,7 +3976,7 @@
           "x": 0,
           "measurement": 15053284
         },
-        "total_logical_qubits": 2338,
+        "total_logical_qubits": 2082,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -3984,7 +3984,7 @@
       },
       "frontier_reconstruction": {
         "full_oracle_non_clifford": 37432935,
-        "total_logical_qubits": 2338
+        "total_logical_qubits": 2082
       }
     },
     {
@@ -4859,7 +4859,7 @@
               "source_artifact": "compiler_verification_project/artifacts/exact_leaf_slot_allocation.json",
               "resource_profile": {
                 "resource_semantics": "peak_live_qubits",
-                "logical_qubits": 2304
+                "logical_qubits": 2048
               }
             }
           },
@@ -5390,7 +5390,7 @@
             "x": 0,
             "measurement": 385444
           },
-          "logical_qubits_total": 3220,
+          "logical_qubits_total": 2964,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 130816,
@@ -6168,9 +6168,9 @@
           "path_multiplicity": 1,
           "resource_profile": {
             "resource_semantics": "peak_live_qubits",
-            "logical_qubits": 2304
+            "logical_qubits": 2048
           },
-          "logical_qubits_total": 2304
+          "logical_qubits_total": 2048
         },
         {
           "leaf_id": "live_qubit_contributors__control_slots",
@@ -6286,7 +6286,7 @@
           "x": 0,
           "measurement": 385444
         },
-        "total_logical_qubits": 3220,
+        "total_logical_qubits": 2964,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 130816,
@@ -6300,7 +6300,7 @@
           "x": 0,
           "measurement": 385444
         },
-        "total_logical_qubits": 3220,
+        "total_logical_qubits": 2964,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 130816,
@@ -6308,7 +6308,7 @@
       },
       "frontier_reconstruction": {
         "full_oracle_non_clifford": 22777319,
-        "total_logical_qubits": 3220
+        "total_logical_qubits": 2964
       }
     },
     {
@@ -7183,7 +7183,7 @@
               "source_artifact": "compiler_verification_project/artifacts/exact_leaf_slot_allocation.json",
               "resource_profile": {
                 "resource_semantics": "peak_live_qubits",
-                "logical_qubits": 2304
+                "logical_qubits": 2048
               }
             }
           },
@@ -7714,7 +7714,7 @@
             "x": 0,
             "measurement": 385444
           },
-          "logical_qubits_total": 2709,
+          "logical_qubits_total": 2453,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -8492,9 +8492,9 @@
           "path_multiplicity": 1,
           "resource_profile": {
             "resource_semantics": "peak_live_qubits",
-            "logical_qubits": 2304
+            "logical_qubits": 2048
           },
-          "logical_qubits_total": 2304
+          "logical_qubits_total": 2048
         },
         {
           "leaf_id": "live_qubit_contributors__control_slots",
@@ -8610,7 +8610,7 @@
           "x": 0,
           "measurement": 385444
         },
-        "total_logical_qubits": 2709,
+        "total_logical_qubits": 2453,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -8624,7 +8624,7 @@
           "x": 0,
           "measurement": 385444
         },
-        "total_logical_qubits": 2709,
+        "total_logical_qubits": 2453,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -8632,7 +8632,7 @@
       },
       "frontier_reconstruction": {
         "full_oracle_non_clifford": 22777319,
-        "total_logical_qubits": 2709
+        "total_logical_qubits": 2453
       }
     },
     {
@@ -9683,7 +9683,7 @@
               "source_artifact": "compiler_verification_project/artifacts/exact_leaf_slot_allocation.json",
               "resource_profile": {
                 "resource_semantics": "peak_live_qubits",
-                "logical_qubits": 2304
+                "logical_qubits": 2048
               }
             }
           },
@@ -10270,7 +10270,7 @@
             "x": 0,
             "measurement": 374884
           },
-          "logical_qubits_total": 2892,
+          "logical_qubits_total": 2636,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 130816,
@@ -11276,9 +11276,9 @@
           "path_multiplicity": 1,
           "resource_profile": {
             "resource_semantics": "peak_live_qubits",
-            "logical_qubits": 2304
+            "logical_qubits": 2048
           },
-          "logical_qubits_total": 2304
+          "logical_qubits_total": 2048
         },
         {
           "leaf_id": "live_qubit_contributors__control_slots",
@@ -11394,7 +11394,7 @@
           "x": 0,
           "measurement": 374884
         },
-        "total_logical_qubits": 2892,
+        "total_logical_qubits": 2636,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 130816,
@@ -11408,7 +11408,7 @@
           "x": 0,
           "measurement": 374884
         },
-        "total_logical_qubits": 2892,
+        "total_logical_qubits": 2636,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 130816,
@@ -11416,7 +11416,7 @@
       },
       "frontier_reconstruction": {
         "full_oracle_non_clifford": 22756199,
-        "total_logical_qubits": 2892
+        "total_logical_qubits": 2636
       }
     },
     {
@@ -12467,7 +12467,7 @@
               "source_artifact": "compiler_verification_project/artifacts/exact_leaf_slot_allocation.json",
               "resource_profile": {
                 "resource_semantics": "peak_live_qubits",
-                "logical_qubits": 2304
+                "logical_qubits": 2048
               }
             }
           },
@@ -13054,7 +13054,7 @@
             "x": 0,
             "measurement": 374884
           },
-          "logical_qubits_total": 2381,
+          "logical_qubits_total": 2125,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -14060,9 +14060,9 @@
           "path_multiplicity": 1,
           "resource_profile": {
             "resource_semantics": "peak_live_qubits",
-            "logical_qubits": 2304
+            "logical_qubits": 2048
           },
-          "logical_qubits_total": 2304
+          "logical_qubits_total": 2048
         },
         {
           "leaf_id": "live_qubit_contributors__control_slots",
@@ -14178,7 +14178,7 @@
           "x": 0,
           "measurement": 374884
         },
-        "total_logical_qubits": 2381,
+        "total_logical_qubits": 2125,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -14192,7 +14192,7 @@
           "x": 0,
           "measurement": 374884
         },
-        "total_logical_qubits": 2381,
+        "total_logical_qubits": 2125,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -14200,7 +14200,7 @@
       },
       "frontier_reconstruction": {
         "full_oracle_non_clifford": 22756199,
-        "total_logical_qubits": 2381
+        "total_logical_qubits": 2125
       }
     },
     {
@@ -14987,7 +14987,7 @@
               "source_artifact": "compiler_verification_project/artifacts/exact_leaf_slot_allocation.json",
               "resource_profile": {
                 "resource_semantics": "peak_live_qubits",
-                "logical_qubits": 2304
+                "logical_qubits": 2048
               }
             }
           },
@@ -15490,7 +15490,7 @@
             "x": 0,
             "measurement": 373220
           },
-          "logical_qubits_total": 35604,
+          "logical_qubits_total": 35348,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 130816,
@@ -16154,9 +16154,9 @@
           "path_multiplicity": 1,
           "resource_profile": {
             "resource_semantics": "peak_live_qubits",
-            "logical_qubits": 2304
+            "logical_qubits": 2048
           },
-          "logical_qubits_total": 2304
+          "logical_qubits_total": 2048
         },
         {
           "leaf_id": "live_qubit_contributors__control_slots",
@@ -16272,7 +16272,7 @@
           "x": 0,
           "measurement": 373220
         },
-        "total_logical_qubits": 35604,
+        "total_logical_qubits": 35348,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 130816,
@@ -16286,7 +16286,7 @@
           "x": 0,
           "measurement": 373220
         },
-        "total_logical_qubits": 35604,
+        "total_logical_qubits": 35348,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 130816,
@@ -16294,7 +16294,7 @@
       },
       "frontier_reconstruction": {
         "full_oracle_non_clifford": 24849959,
-        "total_logical_qubits": 35604
+        "total_logical_qubits": 35348
       }
     },
     {
@@ -17081,7 +17081,7 @@
               "source_artifact": "compiler_verification_project/artifacts/exact_leaf_slot_allocation.json",
               "resource_profile": {
                 "resource_semantics": "peak_live_qubits",
-                "logical_qubits": 2304
+                "logical_qubits": 2048
               }
             }
           },
@@ -17584,7 +17584,7 @@
             "x": 0,
             "measurement": 373220
           },
-          "logical_qubits_total": 35093,
+          "logical_qubits_total": 34837,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -18248,9 +18248,9 @@
           "path_multiplicity": 1,
           "resource_profile": {
             "resource_semantics": "peak_live_qubits",
-            "logical_qubits": 2304
+            "logical_qubits": 2048
           },
-          "logical_qubits_total": 2304
+          "logical_qubits_total": 2048
         },
         {
           "leaf_id": "live_qubit_contributors__control_slots",
@@ -18366,7 +18366,7 @@
           "x": 0,
           "measurement": 373220
         },
-        "total_logical_qubits": 35093,
+        "total_logical_qubits": 34837,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -18380,7 +18380,7 @@
           "x": 0,
           "measurement": 373220
         },
-        "total_logical_qubits": 35093,
+        "total_logical_qubits": 34837,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -18388,7 +18388,7 @@
       },
       "frontier_reconstruction": {
         "full_oracle_non_clifford": 24849959,
-        "total_logical_qubits": 35093
+        "total_logical_qubits": 34837
       }
     },
     {
@@ -19219,7 +19219,7 @@
               "source_artifact": "compiler_verification_project/artifacts/exact_leaf_slot_allocation.json",
               "resource_profile": {
                 "resource_semantics": "peak_live_qubits",
-                "logical_qubits": 2304
+                "logical_qubits": 2048
               }
             }
           },
@@ -19736,7 +19736,7 @@
             "x": 0,
             "measurement": 385476
           },
-          "logical_qubits_total": 35604,
+          "logical_qubits_total": 35348,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 130816,
@@ -20457,9 +20457,9 @@
           "path_multiplicity": 1,
           "resource_profile": {
             "resource_semantics": "peak_live_qubits",
-            "logical_qubits": 2304
+            "logical_qubits": 2048
           },
-          "logical_qubits_total": 2304
+          "logical_qubits_total": 2048
         },
         {
           "leaf_id": "live_qubit_contributors__control_slots",
@@ -20575,7 +20575,7 @@
           "x": 0,
           "measurement": 385476
         },
-        "total_logical_qubits": 35604,
+        "total_logical_qubits": 35348,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 130816,
@@ -20589,7 +20589,7 @@
           "x": 0,
           "measurement": 385476
         },
-        "total_logical_qubits": 35604,
+        "total_logical_qubits": 35348,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 130816,
@@ -20597,7 +20597,7 @@
       },
       "frontier_reconstruction": {
         "full_oracle_non_clifford": 23813671,
-        "total_logical_qubits": 35604
+        "total_logical_qubits": 35348
       }
     },
     {
@@ -21428,7 +21428,7 @@
               "source_artifact": "compiler_verification_project/artifacts/exact_leaf_slot_allocation.json",
               "resource_profile": {
                 "resource_semantics": "peak_live_qubits",
-                "logical_qubits": 2304
+                "logical_qubits": 2048
               }
             }
           },
@@ -21945,7 +21945,7 @@
             "x": 0,
             "measurement": 385476
           },
-          "logical_qubits_total": 35093,
+          "logical_qubits_total": 34837,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -22666,9 +22666,9 @@
           "path_multiplicity": 1,
           "resource_profile": {
             "resource_semantics": "peak_live_qubits",
-            "logical_qubits": 2304
+            "logical_qubits": 2048
           },
-          "logical_qubits_total": 2304
+          "logical_qubits_total": 2048
         },
         {
           "leaf_id": "live_qubit_contributors__control_slots",
@@ -22784,7 +22784,7 @@
           "x": 0,
           "measurement": 385476
         },
-        "total_logical_qubits": 35093,
+        "total_logical_qubits": 34837,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -22798,7 +22798,7 @@
           "x": 0,
           "measurement": 385476
         },
-        "total_logical_qubits": 35093,
+        "total_logical_qubits": 34837,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -22806,7 +22806,7 @@
       },
       "frontier_reconstruction": {
         "full_oracle_non_clifford": 23813671,
-        "total_logical_qubits": 35093
+        "total_logical_qubits": 34837
       }
     }
   ],
@@ -22828,11 +22828,11 @@
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 511,
       "phase_shell_rotation_depth": 511,
-      "arithmetic_slot_count": 9,
+      "arithmetic_slot_count": 8,
       "control_slot_count": 2,
       "lookup_workspace_qubits": 74,
       "live_phase_bits": 1,
-      "total_logical_qubits": 2381
+      "total_logical_qubits": 2125
     }
   },
   "best_qubit_family": {
@@ -22853,11 +22853,11 @@
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 511,
       "phase_shell_rotation_depth": 511,
-      "arithmetic_slot_count": 9,
+      "arithmetic_slot_count": 8,
       "control_slot_count": 2,
       "lookup_workspace_qubits": 31,
       "live_phase_bits": 1,
-      "total_logical_qubits": 2338
+      "total_logical_qubits": 2082
     }
   },
   "notes": [

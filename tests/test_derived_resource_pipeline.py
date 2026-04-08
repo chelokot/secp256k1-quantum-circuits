@@ -46,12 +46,12 @@ class DerivedResourcePipelineTests(unittest.TestCase):
         self.assertEqual(self.structural['expanded_scaffold']['leaf_instruction_count'], 1036)
 
     def test_liveness_and_named_slot_models_are_both_exposed(self):
-        self.assertEqual(self.structural['leaf']['allocated_field_slot_count'], 12)
-        self.assertEqual(self.structural['leaf']['liveness']['peak_arithmetic_slots']['active_arithmetic_slot_count'], 10)
+        self.assertEqual(self.structural['leaf']['allocated_field_slot_count'], 8)
+        self.assertEqual(self.structural['leaf']['liveness']['peak_arithmetic_slots']['active_arithmetic_slot_count'], 7)
         default = self.projection['optimized_ecdlp_projection']
-        self.assertEqual(default['logical_qubits_total'], 880)
+        self.assertEqual(default['logical_qubits_total'], 592)
         alt = {entry['model_name']: entry for entry in self.projection['alternative_backend_scenarios']}
-        self.assertEqual(alt['addsub_modmul_liveness_v2']['ecdlp']['logical_qubits_total'], 736)
+        self.assertEqual(alt['addsub_modmul_liveness_v2']['ecdlp']['logical_qubits_total'], 520)
 
     def test_default_lookup_cost_comes_from_folded_contract(self):
         positive_entries = self.lookup['table_shape']['x_coordinate_table_entries']

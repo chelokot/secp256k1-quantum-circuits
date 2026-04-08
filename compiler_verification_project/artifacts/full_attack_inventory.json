@@ -276,11 +276,11 @@
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
         "phase_shell_rotation_depth": 511,
-        "arithmetic_slot_count": 9,
+        "arithmetic_slot_count": 8,
         "control_slot_count": 2,
         "lookup_workspace_qubits": 74,
         "live_phase_bits": 1,
-        "total_logical_qubits": 2381
+        "total_logical_qubits": 2125
       }
     },
     "best_qubit_family": {
@@ -301,63 +301,63 @@
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
         "phase_shell_rotation_depth": 511,
-        "arithmetic_slot_count": 9,
+        "arithmetic_slot_count": 8,
         "control_slot_count": 2,
         "lookup_workspace_qubits": 31,
         "live_phase_bits": 1,
-        "total_logical_qubits": 2338
+        "total_logical_qubits": 2082
       }
     },
     "family_reconstructed_totals": [
       {
         "name": "folded_linear_scan_tmpand_v1__full_phase_register_v1",
         "full_oracle_non_clifford": 37432935,
-        "total_logical_qubits": 2849
+        "total_logical_qubits": 2593
       },
       {
         "name": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",
         "full_oracle_non_clifford": 37432935,
-        "total_logical_qubits": 2338
+        "total_logical_qubits": 2082
       },
       {
         "name": "folded_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
         "full_oracle_non_clifford": 22777319,
-        "total_logical_qubits": 3220
+        "total_logical_qubits": 2964
       },
       {
         "name": "folded_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
         "full_oracle_non_clifford": 22777319,
-        "total_logical_qubits": 2709
+        "total_logical_qubits": 2453
       },
       {
         "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
         "full_oracle_non_clifford": 22756199,
-        "total_logical_qubits": 2892
+        "total_logical_qubits": 2636
       },
       {
         "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
         "full_oracle_non_clifford": 22756199,
-        "total_logical_qubits": 2381
+        "total_logical_qubits": 2125
       },
       {
         "name": "folded_unary_qrom_v1__full_phase_register_v1",
         "full_oracle_non_clifford": 24849959,
-        "total_logical_qubits": 35604
+        "total_logical_qubits": 35348
       },
       {
         "name": "folded_unary_qrom_v1__semiclassical_qft_v1",
         "full_oracle_non_clifford": 24849959,
-        "total_logical_qubits": 35093
+        "total_logical_qubits": 34837
       },
       {
         "name": "folded_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
         "full_oracle_non_clifford": 23813671,
-        "total_logical_qubits": 35604
+        "total_logical_qubits": 35348
       },
       {
         "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
         "full_oracle_non_clifford": 23813671,
-        "total_logical_qubits": 35093
+        "total_logical_qubits": 34837
       }
     ]
   },
@@ -373,11 +373,11 @@
       "direct_seed_non_clifford": 401,
       "per_leaf_lookup_non_clifford": 401,
       "full_oracle_non_clifford": 22756199,
-      "arithmetic_slot_count": 9,
+      "arithmetic_slot_count": 8,
       "control_slot_count": 2,
       "lookup_workspace_qubits": 74,
       "live_phase_bits": 1,
-      "total_logical_qubits": 2381,
+      "total_logical_qubits": 2125,
       "phase_shell_hadamards": 512,
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 511,
@@ -385,8 +385,8 @@
       "total_measurements": 375396,
       "improvement_vs_google_low_qubit": 3.9549662929208873,
       "improvement_vs_google_low_gate": 3.0760848944940236,
-      "qubit_ratio_vs_google_low_qubit": 0.5039899202015959,
-      "qubit_ratio_vs_google_low_gate": 0.6089878202435951,
+      "qubit_ratio_vs_google_low_qubit": 0.5647058823529412,
+      "qubit_ratio_vs_google_low_gate": 0.6823529411764706,
       "notes": [
         "This family deepens the bank hierarchy to compress both generated lookup workspace and generated lookup non-Clifford cost relative to the two-level banked family.",
         "It keeps the folded lookup semantics exact while exposing every decode and measured-cleanup chunk as generated operation inventory.",
@@ -405,11 +405,11 @@
       "direct_seed_non_clifford": 459049,
       "per_leaf_lookup_non_clifford": 459049,
       "full_oracle_non_clifford": 37432935,
-      "arithmetic_slot_count": 9,
+      "arithmetic_slot_count": 8,
       "control_slot_count": 2,
       "lookup_workspace_qubits": 31,
       "live_phase_bits": 1,
-      "total_logical_qubits": 2338,
+      "total_logical_qubits": 2082,
       "phase_shell_hadamards": 512,
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 511,
@@ -417,8 +417,8 @@
       "total_measurements": 15053796,
       "improvement_vs_google_low_qubit": 2.4042998498514745,
       "improvement_vs_google_low_gate": 1.8700109943289245,
-      "qubit_ratio_vs_google_low_qubit": 0.5132591958939264,
-      "qubit_ratio_vs_google_low_gate": 0.6201881950384944,
+      "qubit_ratio_vs_google_low_qubit": 0.5763688760806917,
+      "qubit_ratio_vs_google_low_gate": 0.696445725264169,
       "notes": [
         "This remains the lowest-space lookup family checked into the compiler project.",
         "Zero-word and 0x8000 routing are explicit semantic cases, but they do not allocate a separate metadata-table lookup.",
@@ -430,52 +430,52 @@
       {
         "name": "folded_linear_scan_tmpand_v1__full_phase_register_v1",
         "full_oracle_non_clifford": 37432935,
-        "total_logical_qubits": 2849
+        "total_logical_qubits": 2593
       },
       {
         "name": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",
         "full_oracle_non_clifford": 37432935,
-        "total_logical_qubits": 2338
+        "total_logical_qubits": 2082
       },
       {
         "name": "folded_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
         "full_oracle_non_clifford": 22777319,
-        "total_logical_qubits": 3220
+        "total_logical_qubits": 2964
       },
       {
         "name": "folded_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
         "full_oracle_non_clifford": 22777319,
-        "total_logical_qubits": 2709
+        "total_logical_qubits": 2453
       },
       {
         "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
         "full_oracle_non_clifford": 22756199,
-        "total_logical_qubits": 2892
+        "total_logical_qubits": 2636
       },
       {
         "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
         "full_oracle_non_clifford": 22756199,
-        "total_logical_qubits": 2381
+        "total_logical_qubits": 2125
       },
       {
         "name": "folded_unary_qrom_v1__full_phase_register_v1",
         "full_oracle_non_clifford": 24849959,
-        "total_logical_qubits": 35604
+        "total_logical_qubits": 35348
       },
       {
         "name": "folded_unary_qrom_v1__semiclassical_qft_v1",
         "full_oracle_non_clifford": 24849959,
-        "total_logical_qubits": 35093
+        "total_logical_qubits": 34837
       },
       {
         "name": "folded_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
         "full_oracle_non_clifford": 23813671,
-        "total_logical_qubits": 35604
+        "total_logical_qubits": 35348
       },
       {
         "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
         "full_oracle_non_clifford": 23813671,
-        "total_logical_qubits": 35093
+        "total_logical_qubits": 34837
       }
     ]
   },
@@ -490,11 +490,11 @@
     "direct_seed_non_clifford": 401,
     "per_leaf_lookup_non_clifford": 401,
     "full_oracle_non_clifford": 22756199,
-    "arithmetic_slot_count": 9,
+    "arithmetic_slot_count": 8,
     "control_slot_count": 2,
     "lookup_workspace_qubits": 74,
     "live_phase_bits": 1,
-    "total_logical_qubits": 2381,
+    "total_logical_qubits": 2125,
     "phase_shell_hadamards": 512,
     "phase_shell_measurements": 512,
     "phase_shell_rotations": 511,
@@ -502,8 +502,8 @@
     "total_measurements": 375396,
     "improvement_vs_google_low_qubit": 3.9549662929208873,
     "improvement_vs_google_low_gate": 3.0760848944940236,
-    "qubit_ratio_vs_google_low_qubit": 0.5039899202015959,
-    "qubit_ratio_vs_google_low_gate": 0.6089878202435951,
+    "qubit_ratio_vs_google_low_qubit": 0.5647058823529412,
+    "qubit_ratio_vs_google_low_gate": 0.6823529411764706,
     "notes": [
       "This family deepens the bank hierarchy to compress both generated lookup workspace and generated lookup non-Clifford cost relative to the two-level banked family.",
       "It keeps the folded lookup semantics exact while exposing every decode and measured-cleanup chunk as generated operation inventory.",
@@ -522,11 +522,11 @@
     "direct_seed_non_clifford": 459049,
     "per_leaf_lookup_non_clifford": 459049,
     "full_oracle_non_clifford": 37432935,
-    "arithmetic_slot_count": 9,
+    "arithmetic_slot_count": 8,
     "control_slot_count": 2,
     "lookup_workspace_qubits": 31,
     "live_phase_bits": 1,
-    "total_logical_qubits": 2338,
+    "total_logical_qubits": 2082,
     "phase_shell_hadamards": 512,
     "phase_shell_measurements": 512,
     "phase_shell_rotations": 511,
@@ -534,8 +534,8 @@
     "total_measurements": 15053796,
     "improvement_vs_google_low_qubit": 2.4042998498514745,
     "improvement_vs_google_low_gate": 1.8700109943289245,
-    "qubit_ratio_vs_google_low_qubit": 0.5132591958939264,
-    "qubit_ratio_vs_google_low_gate": 0.6201881950384944,
+    "qubit_ratio_vs_google_low_qubit": 0.5763688760806917,
+    "qubit_ratio_vs_google_low_gate": 0.696445725264169,
     "notes": [
       "This remains the lowest-space lookup family checked into the compiler project.",
       "Zero-word and 0x8000 routing are explicit semantic cases, but they do not allocate a separate metadata-table lookup.",

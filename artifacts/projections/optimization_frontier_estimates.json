@@ -1,6 +1,6 @@
 {
   "current_headline": {
-    "logical_qubits": 880,
+    "logical_qubits": 592,
     "non_clifford_2lookup": 22377404,
     "non_clifford_3lookup": 23294908,
     "source_model": "addsub_modmul_named_slots_v2"
@@ -19,7 +19,7 @@
         1.0
       ],
       "derived_headline": {
-        "logical_qubits": 880,
+        "logical_qubits": 592,
         "non_clifford_2lookup": 22377404,
         "non_clifford_3lookup": 23294908
       },
@@ -35,11 +35,11 @@
         1.0
       ],
       "estimated_total_qubit_multiplier_range": [
-        0.8363636363636363,
-        0.8363636363636363
+        0.8783783783783784,
+        0.8783783783783784
       ],
       "derived_headline": {
-        "logical_qubits": 736,
+        "logical_qubits": 520,
         "non_clifford_2lookup": 22377404,
         "non_clifford_3lookup": 23294908
       },
@@ -59,7 +59,7 @@
         1.01
       ],
       "derived_headline": {
-        "logical_qubits": 880,
+        "logical_qubits": 592,
         "non_clifford_2lookup": 22377404,
         "non_clifford_3lookup": 23294908
       },

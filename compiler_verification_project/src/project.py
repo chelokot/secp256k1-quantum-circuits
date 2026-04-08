@@ -427,7 +427,7 @@ def exact_leaf_slot_allocation() -> Dict[str, Any]:
         'versions': version_table,
         'notes': [
             'This artifact allocates versioned leaf values to physical slots using exact live ranges plus same-register overwrite reuse.',
-            'It is stricter than the mainline first-reference/last-reference interval approximation and reduces the exact arithmetic-slot peak from 10 named slots to 9 physical slots for the checked-in leaf.',
+            f'It is stricter than the mainline first-reference/last-reference interval approximation and reduces the exact arithmetic-slot peak from {len(arithmetic_slots)} named slots to {int(next_arithmetic)} physical slots for the checked-in leaf.',
         ],
     }
 

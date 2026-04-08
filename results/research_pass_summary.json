@@ -12,8 +12,8 @@
     "folded_scaffold_sha256": "dea4d9d209f42734fb70cee6b5a2d968f4c4f0bf61c4d1646a554fcd9518f3d4",
     "exhaustive_cases": 65536,
     "exhaustive_pass": 65536,
-    "multibase_samples": 15922,
-    "multibase_pass": 15922,
+    "multibase_samples": 15916,
+    "multibase_pass": 15916,
     "pad0_total_non_clifford_2channel_folded": 22377404,
     "pad0_total_non_clifford_3channel_folded_conservative": 23294908,
     "pad0_gain_vs_google_low_qubit_2channel": 4.021914248855676,
@@ -32,7 +32,7 @@
   "optimization_frontier": {
     "frontier_count": 5,
     "current_headline": {
-      "logical_qubits": 880,
+      "logical_qubits": 592,
       "non_clifford_2lookup": 22377404,
       "non_clifford_3lookup": 23294908,
       "source_model": "addsub_modmul_named_slots_v2"

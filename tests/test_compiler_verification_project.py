@@ -49,10 +49,10 @@ def test_qubit_breakthrough_analysis_thresholds_are_self_consistent() -> None:
     assert analysis['exact_component_breakdown']['fixed_non_arithmetic_overhead_qubits'] == fixed_overhead
     assert analysis['baseline_thresholds']['low_gate']['max_arithmetic_slots_at_current_field_width'] == 5
     assert analysis['baseline_thresholds']['low_qubit']['max_arithmetic_slots_at_current_field_width'] == 4
-    assert analysis['baseline_thresholds']['low_gate']['max_field_slot_logical_qubits_at_current_exact_slot_count'] == 157
-    assert analysis['baseline_thresholds']['low_qubit']['max_field_slot_logical_qubits_at_current_exact_slot_count'] == 129
-    assert analysis['modeled_reference_points']['addsub_modmul_named_slots_v2']['logical_qubits_total'] == 880
-    assert analysis['modeled_reference_points']['addsub_modmul_liveness_v2']['logical_qubits_total'] == 736
+    assert analysis['baseline_thresholds']['low_gate']['max_field_slot_logical_qubits_at_current_exact_slot_count'] == 177
+    assert analysis['baseline_thresholds']['low_qubit']['max_field_slot_logical_qubits_at_current_exact_slot_count'] == 145
+    assert analysis['modeled_reference_points']['addsub_modmul_named_slots_v2']['logical_qubits_total'] == 592
+    assert analysis['modeled_reference_points']['addsub_modmul_liveness_v2']['logical_qubits_total'] == 520
 
 
 def test_compiler_project_verification_summary_groups_all_pass() -> None:

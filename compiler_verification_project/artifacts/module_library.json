@@ -17,8 +17,8 @@
     "bool_from_flag": 1,
     "field_mul": 11,
     "field_add": 10,
-    "field_sub": 3,
     "mul_const": 2,
+    "field_sub": 3,
     "select_field_if_flag": 3,
     "clear_bool_from_flag": 1
   },

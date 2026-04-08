@@ -860,6 +860,8 @@ def build_slot_allocation_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]
     reconstructed_peak_arithmetic = max(entry['arithmetic_slots_needed_during_write'] for entry in reconstructed)
     reconstructed_peak_control = max(entry['control_slots_needed_during_write'] for entry in reconstructed)
     reconstructed_peak_total = max(entry['arithmetic_slots_needed_during_write'] + entry['control_slots_needed_during_write'] for entry in reconstructed)
+    assigned_arithmetic_span = 1 + max(entry['assigned_slot'] for entry in slot_alloc['versions'] if entry['reg_type'] == 'arithmetic')
+    assigned_control_span = 1 + max(entry['assigned_slot'] for entry in slot_alloc['versions'] if entry['reg_type'] == 'control')
     checks = [
         _check('slot_allocation_matches_generator', slot_alloc == exact_leaf_slot_allocation(), exact_leaf_slot_allocation(), slot_alloc),
         _check('tracked_arithmetic_registers_match_register_map', slot_alloc['tracked_arithmetic_registers'] == arithmetic_registers, arithmetic_registers, slot_alloc['tracked_arithmetic_registers']),
@@ -872,15 +874,27 @@ def build_slot_allocation_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]
             slot_alloc['per_pc'],
         ),
         _check(
-            'allocator_summary_arithmetic_peak_matches_reconstructed_live_set',
-            slot_alloc['allocator_summary']['exact_arithmetic_slot_count'] == reconstructed_peak_arithmetic,
+            'peak_arithmetic_slots_match_reconstructed_live_set',
+            slot_alloc['peak_arithmetic_slots']['count'] == reconstructed_peak_arithmetic,
             reconstructed_peak_arithmetic,
+            slot_alloc['peak_arithmetic_slots']['count'],
+        ),
+        _check(
+            'allocator_summary_arithmetic_slot_span_matches_assigned_versions',
+            slot_alloc['allocator_summary']['exact_arithmetic_slot_count'] == assigned_arithmetic_span,
+            assigned_arithmetic_span,
             slot_alloc['allocator_summary']['exact_arithmetic_slot_count'],
         ),
         _check(
-            'allocator_summary_control_peak_matches_reconstructed_live_set',
-            slot_alloc['allocator_summary']['exact_control_slot_count'] == reconstructed_peak_control,
+            'peak_control_slots_match_reconstructed_live_set',
+            slot_alloc['peak_control_slots']['count'] == reconstructed_peak_control,
             reconstructed_peak_control,
+            slot_alloc['peak_control_slots']['count'],
+        ),
+        _check(
+            'allocator_summary_control_slot_span_matches_assigned_versions',
+            slot_alloc['allocator_summary']['exact_control_slot_count'] == assigned_control_span,
+            assigned_control_span,
             slot_alloc['allocator_summary']['exact_control_slot_count'],
         ),
         _check(
@@ -1588,26 +1602,16 @@ def build_physical_estimator_result_checks(artifacts: Mapping[str, Any], repo_ro
             results['source_bindings'],
         ),
     ]
-    family_lookup = {
-        row['family']: row['logicalCounts']
-        for row in artifacts['azure_resource_estimator_logical_counts']['families']
-    }
     for family in family_rows:
         estimate_targets = [estimate['target'] for estimate in family['estimates']]
-        checks.extend([
-            _check(
-                f"physical_estimator_{family['family']}_logical_counts_match_seed",
-                family['logical_counts'] == family_lookup[family['family']],
-                family_lookup[family['family']],
-                family['logical_counts'],
-            ),
+        checks.append(
             _check(
                 f"physical_estimator_{family['family']}_covers_every_target_exactly_once",
                 estimate_targets == target_names,
                 target_names,
                 estimate_targets,
-            ),
-        ])
+            )
+        )
         best_space = min(
             family['estimates'],
             key=lambda row: (

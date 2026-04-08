@@ -39,16 +39,16 @@
     "time_efficient_days_if_90M_max": 4.159215,
     "time_efficient_days_if_70M_min": 3.2508855714285714,
     "time_efficient_days_if_70M_max": 5.347562142857143,
-    "same_density_physical_qubits_if_1200_min": 50656.666666666664,
-    "same_density_physical_qubits_if_1200_max": 771420.0,
-    "same_density_physical_qubits_if_1450_min": 41922.75862068965,
-    "same_density_physical_qubits_if_1450_max": 638416.551724138
+    "same_density_physical_qubits_if_1200_min": 45110.0,
+    "same_density_physical_qubits_if_1200_max": 765873.3333333334,
+    "same_density_physical_qubits_if_1450_min": 37332.41379310345,
+    "same_density_physical_qubits_if_1450_max": 633826.2068965518
   },
   "cases": [
     {
       "family": "folded_linear_scan_tmpand_v1__full_phase_register_v1",
       "exact_non_clifford": 37432935,
-      "exact_logical_qubits": 2849,
+      "exact_logical_qubits": 2593,
       "runtime_transfer": {
         "assumption": "Fixed physical architecture, cycle time, and parallelization regime; runtime scales with exact-family non-Clifford ratio.",
         "time_efficient_days_if_90M_maps_to_10d": 4.159215,
@@ -56,14 +56,14 @@
       },
       "space_transfer": {
         "assumption": "Logical-to-physical density is inherited from the cited Cain reference line.",
-        "same_density_physical_qubits_if_1200_maps_to_26k": 61728.333333333336,
-        "same_density_physical_qubits_if_1450_maps_to_26k": 51085.51724137931
+        "same_density_physical_qubits_if_1200_maps_to_26k": 56181.666666666664,
+        "same_density_physical_qubits_if_1450_maps_to_26k": 46495.1724137931
       }
     },
     {
       "family": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",
       "exact_non_clifford": 37432935,
-      "exact_logical_qubits": 2338,
+      "exact_logical_qubits": 2082,
       "runtime_transfer": {
         "assumption": "Fixed physical architecture, cycle time, and parallelization regime; runtime scales with exact-family non-Clifford ratio.",
         "time_efficient_days_if_90M_maps_to_10d": 4.159215,
@@ -71,14 +71,14 @@
       },
       "space_transfer": {
         "assumption": "Logical-to-physical density is inherited from the cited Cain reference line.",
-        "same_density_physical_qubits_if_1200_maps_to_26k": 50656.666666666664,
-        "same_density_physical_qubits_if_1450_maps_to_26k": 41922.75862068965
+        "same_density_physical_qubits_if_1200_maps_to_26k": 45110.0,
+        "same_density_physical_qubits_if_1450_maps_to_26k": 37332.41379310345
       }
     },
     {
       "family": "folded_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
       "exact_non_clifford": 22777319,
-      "exact_logical_qubits": 3220,
+      "exact_logical_qubits": 2964,
       "runtime_transfer": {
         "assumption": "Fixed physical architecture, cycle time, and parallelization regime; runtime scales with exact-family non-Clifford ratio.",
         "time_efficient_days_if_90M_maps_to_10d": 2.530813222222222,
@@ -86,14 +86,14 @@
       },
       "space_transfer": {
         "assumption": "Logical-to-physical density is inherited from the cited Cain reference line.",
-        "same_density_physical_qubits_if_1200_maps_to_26k": 69766.66666666667,
-        "same_density_physical_qubits_if_1450_maps_to_26k": 57737.93103448276
+        "same_density_physical_qubits_if_1200_maps_to_26k": 64220.0,
+        "same_density_physical_qubits_if_1450_maps_to_26k": 53147.58620689655
       }
     },
     {
       "family": "folded_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
       "exact_non_clifford": 22777319,
-      "exact_logical_qubits": 2709,
+      "exact_logical_qubits": 2453,
       "runtime_transfer": {
         "assumption": "Fixed physical architecture, cycle time, and parallelization regime; runtime scales with exact-family non-Clifford ratio.",
         "time_efficient_days_if_90M_maps_to_10d": 2.530813222222222,
@@ -101,14 +101,14 @@
       },
       "space_transfer": {
         "assumption": "Logical-to-physical density is inherited from the cited Cain reference line.",
-        "same_density_physical_qubits_if_1200_maps_to_26k": 58695.0,
-        "same_density_physical_qubits_if_1450_maps_to_26k": 48575.1724137931
+        "same_density_physical_qubits_if_1200_maps_to_26k": 53148.333333333336,
+        "same_density_physical_qubits_if_1450_maps_to_26k": 43984.8275862069
       }
     },
     {
       "family": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
       "exact_non_clifford": 22756199,
-      "exact_logical_qubits": 2892,
+      "exact_logical_qubits": 2636,
       "runtime_transfer": {
         "assumption": "Fixed physical architecture, cycle time, and parallelization regime; runtime scales with exact-family non-Clifford ratio.",
         "time_efficient_days_if_90M_maps_to_10d": 2.5284665555555557,
@@ -116,14 +116,14 @@
       },
       "space_transfer": {
         "assumption": "Logical-to-physical density is inherited from the cited Cain reference line.",
-        "same_density_physical_qubits_if_1200_maps_to_26k": 62660.0,
-        "same_density_physical_qubits_if_1450_maps_to_26k": 51856.55172413793
+        "same_density_physical_qubits_if_1200_maps_to_26k": 57113.333333333336,
+        "same_density_physical_qubits_if_1450_maps_to_26k": 47266.206896551725
       }
     },
     {
       "family": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
       "exact_non_clifford": 22756199,
-      "exact_logical_qubits": 2381,
+      "exact_logical_qubits": 2125,
       "runtime_transfer": {
         "assumption": "Fixed physical architecture, cycle time, and parallelization regime; runtime scales with exact-family non-Clifford ratio.",
         "time_efficient_days_if_90M_maps_to_10d": 2.5284665555555557,
@@ -131,14 +131,14 @@
       },
       "space_transfer": {
         "assumption": "Logical-to-physical density is inherited from the cited Cain reference line.",
-        "same_density_physical_qubits_if_1200_maps_to_26k": 51588.333333333336,
-        "same_density_physical_qubits_if_1450_maps_to_26k": 42693.793103448275
+        "same_density_physical_qubits_if_1200_maps_to_26k": 46041.666666666664,
+        "same_density_physical_qubits_if_1450_maps_to_26k": 38103.44827586207
       }
     },
     {
       "family": "folded_unary_qrom_v1__full_phase_register_v1",
       "exact_non_clifford": 24849959,
-      "exact_logical_qubits": 35604,
+      "exact_logical_qubits": 35348,
       "runtime_transfer": {
         "assumption": "Fixed physical architecture, cycle time, and parallelization regime; runtime scales with exact-family non-Clifford ratio.",
         "time_efficient_days_if_90M_maps_to_10d": 2.7611065555555556,
@@ -146,14 +146,14 @@
       },
       "space_transfer": {
         "assumption": "Logical-to-physical density is inherited from the cited Cain reference line.",
-        "same_density_physical_qubits_if_1200_maps_to_26k": 771420.0,
-        "same_density_physical_qubits_if_1450_maps_to_26k": 638416.551724138
+        "same_density_physical_qubits_if_1200_maps_to_26k": 765873.3333333334,
+        "same_density_physical_qubits_if_1450_maps_to_26k": 633826.2068965518
       }
     },
     {
       "family": "folded_unary_qrom_v1__semiclassical_qft_v1",
       "exact_non_clifford": 24849959,
-      "exact_logical_qubits": 35093,
+      "exact_logical_qubits": 34837,
       "runtime_transfer": {
         "assumption": "Fixed physical architecture, cycle time, and parallelization regime; runtime scales with exact-family non-Clifford ratio.",
         "time_efficient_days_if_90M_maps_to_10d": 2.7611065555555556,
@@ -161,14 +161,14 @@
       },
       "space_transfer": {
         "assumption": "Logical-to-physical density is inherited from the cited Cain reference line.",
-        "same_density_physical_qubits_if_1200_maps_to_26k": 760348.3333333334,
-        "same_density_physical_qubits_if_1450_maps_to_26k": 629253.7931034482
+        "same_density_physical_qubits_if_1200_maps_to_26k": 754801.6666666666,
+        "same_density_physical_qubits_if_1450_maps_to_26k": 624663.448275862
       }
     },
     {
       "family": "folded_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
       "exact_non_clifford": 23813671,
-      "exact_logical_qubits": 35604,
+      "exact_logical_qubits": 35348,
       "runtime_transfer": {
         "assumption": "Fixed physical architecture, cycle time, and parallelization regime; runtime scales with exact-family non-Clifford ratio.",
         "time_efficient_days_if_90M_maps_to_10d": 2.6459634444444444,
@@ -176,14 +176,14 @@
       },
       "space_transfer": {
         "assumption": "Logical-to-physical density is inherited from the cited Cain reference line.",
-        "same_density_physical_qubits_if_1200_maps_to_26k": 771420.0,
-        "same_density_physical_qubits_if_1450_maps_to_26k": 638416.551724138
+        "same_density_physical_qubits_if_1200_maps_to_26k": 765873.3333333334,
+        "same_density_physical_qubits_if_1450_maps_to_26k": 633826.2068965518
       }
     },
     {
       "family": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
       "exact_non_clifford": 23813671,
-      "exact_logical_qubits": 35093,
+      "exact_logical_qubits": 34837,
       "runtime_transfer": {
         "assumption": "Fixed physical architecture, cycle time, and parallelization regime; runtime scales with exact-family non-Clifford ratio.",
         "time_efficient_days_if_90M_maps_to_10d": 2.6459634444444444,
@@ -191,8 +191,8 @@
       },
       "space_transfer": {
         "assumption": "Logical-to-physical density is inherited from the cited Cain reference line.",
-        "same_density_physical_qubits_if_1200_maps_to_26k": 760348.3333333334,
-        "same_density_physical_qubits_if_1450_maps_to_26k": 629253.7931034482
+        "same_density_physical_qubits_if_1200_maps_to_26k": 754801.6666666666,
+        "same_density_physical_qubits_if_1450_maps_to_26k": 624663.448275862
       }
     }
   ],

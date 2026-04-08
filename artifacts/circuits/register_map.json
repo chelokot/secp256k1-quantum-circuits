@@ -7,13 +7,9 @@
     "ly",
     "t0",
     "t1",
-    "t2",
-    "t3",
-    "t4",
-    "o1",
-    "o2"
+    "t2"
   ],
-  "scratch_slot_count": 12,
+  "scratch_slot_count": 8,
   "auxiliary_control_slots": [
     "meta",
     "f_lookup_inf"

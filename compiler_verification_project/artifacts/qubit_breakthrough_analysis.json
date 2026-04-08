@@ -21,11 +21,11 @@
     "direct_seed_non_clifford": 459049,
     "per_leaf_lookup_non_clifford": 459049,
     "full_oracle_non_clifford": 37432935,
-    "arithmetic_slot_count": 9,
+    "arithmetic_slot_count": 8,
     "control_slot_count": 2,
     "lookup_workspace_qubits": 31,
     "live_phase_bits": 1,
-    "total_logical_qubits": 2338,
+    "total_logical_qubits": 2082,
     "phase_shell_hadamards": 512,
     "phase_shell_measurements": 512,
     "phase_shell_rotations": 511,
@@ -33,8 +33,8 @@
     "total_measurements": 15053796,
     "improvement_vs_google_low_qubit": 2.4042998498514745,
     "improvement_vs_google_low_gate": 1.8700109943289245,
-    "qubit_ratio_vs_google_low_qubit": 0.5132591958939264,
-    "qubit_ratio_vs_google_low_gate": 0.6201881950384944,
+    "qubit_ratio_vs_google_low_qubit": 0.5763688760806917,
+    "qubit_ratio_vs_google_low_gate": 0.696445725264169,
     "notes": [
       "This remains the lowest-space lookup family checked into the compiler project.",
       "Zero-word and 0x8000 routing are explicit semantic cases, but they do not allocate a separate metadata-table lookup.",
@@ -43,72 +43,64 @@
     ]
   },
   "exact_component_breakdown": {
-    "arithmetic_register_file_qubits": 2304,
+    "arithmetic_register_file_qubits": 2048,
     "lookup_workspace_qubits": 31,
     "control_slot_qubits": 2,
     "live_phase_qubits": 1,
     "fixed_non_arithmetic_overhead_qubits": 34,
-    "arithmetic_register_file_share_fraction": 0.9854576561163387,
-    "fixed_non_arithmetic_overhead_share_fraction": 0.01454234388366125
+    "arithmetic_register_file_share_fraction": 0.983669548511047,
+    "fixed_non_arithmetic_overhead_share_fraction": 0.01633045148895293
   },
   "baseline_thresholds": {
     "low_qubit": {
       "baseline_logical_qubits": 1200,
       "max_arithmetic_slots_at_current_field_width": 4,
-      "max_field_slot_logical_qubits_at_current_exact_slot_count": 129
+      "max_field_slot_logical_qubits_at_current_exact_slot_count": 145
     },
     "low_gate": {
       "baseline_logical_qubits": 1450,
       "max_arithmetic_slots_at_current_field_width": 5,
-      "max_field_slot_logical_qubits_at_current_exact_slot_count": 157
+      "max_field_slot_logical_qubits_at_current_exact_slot_count": 177
     }
   },
   "counterfactual_slot_sweep": [
     {
-      "arithmetic_slot_count": 9,
-      "derived_total_logical_qubits": 2338,
+      "arithmetic_slot_count": 8,
+      "derived_total_logical_qubits": 2082,
       "qubit_reduction_vs_current": 0,
       "qubit_reduction_fraction_vs_current": 0.0,
       "beats_google_low_qubit": false,
       "beats_google_low_gate": false
     },
     {
-      "arithmetic_slot_count": 8,
-      "derived_total_logical_qubits": 2082,
-      "qubit_reduction_vs_current": 256,
-      "qubit_reduction_fraction_vs_current": 0.10949529512403763,
-      "beats_google_low_qubit": false,
-      "beats_google_low_gate": false
-    },
-    {
       "arithmetic_slot_count": 7,
       "derived_total_logical_qubits": 1826,
-      "qubit_reduction_vs_current": 512,
-      "qubit_reduction_fraction_vs_current": 0.21899059024807527,
+      "qubit_reduction_vs_current": 256,
+      "qubit_reduction_fraction_vs_current": 0.12295869356388088,
       "beats_google_low_qubit": false,
       "beats_google_low_gate": false
     },
     {
       "arithmetic_slot_count": 6,
       "derived_total_logical_qubits": 1570,
-      "qubit_reduction_vs_current": 768,
-      "qubit_reduction_fraction_vs_current": 0.32848588537211293,
+      "qubit_reduction_vs_current": 512,
+      "qubit_reduction_fraction_vs_current": 0.24591738712776176,
       "beats_google_low_qubit": false,
       "beats_google_low_gate": false
     },
     {
       "arithmetic_slot_count": 5,
       "derived_total_logical_qubits": 1314,
-      "qubit_reduction_vs_current": 1024,
-      "qubit_reduction_fraction_vs_current": 0.43798118049615054,
+      "qubit_reduction_vs_current": 768,
+      "qubit_reduction_fraction_vs_current": 0.3688760806916426,
       "beats_google_low_qubit": false,
       "beats_google_low_gate": true
     },
     {
       "arithmetic_slot_count": 4,
       "derived_total_logical_qubits": 1058,
-      "qubit_reduction_vs_current": 1280,
-      "qubit_reduction_fraction_vs_current": 0.5474764756201882,
+      "qubit_reduction_vs_current": 1024,
+      "qubit_reduction_fraction_vs_current": 0.4918347742555235,
       "beats_google_low_qubit": true,
       "beats_google_low_gate": true
     }
@@ -116,7 +108,7 @@
   "counterfactual_field_width_sweep": [
     {
       "field_slot_logical_qubits": 256,
-      "derived_total_logical_qubits": 2338,
+      "derived_total_logical_qubits": 2082,
       "qubit_reduction_vs_current": 0,
       "qubit_reduction_fraction_vs_current": 0.0,
       "beats_google_low_qubit": false,
@@ -124,81 +116,81 @@
     },
     {
       "field_slot_logical_qubits": 192,
-      "derived_total_logical_qubits": 1762,
-      "qubit_reduction_vs_current": 576,
-      "qubit_reduction_fraction_vs_current": 0.24636441402908468,
+      "derived_total_logical_qubits": 1570,
+      "qubit_reduction_vs_current": 512,
+      "qubit_reduction_fraction_vs_current": 0.24591738712776176,
       "beats_google_low_qubit": false,
       "beats_google_low_gate": false
     },
     {
       "field_slot_logical_qubits": 160,
-      "derived_total_logical_qubits": 1474,
-      "qubit_reduction_vs_current": 864,
-      "qubit_reduction_fraction_vs_current": 0.369546621043627,
+      "derived_total_logical_qubits": 1314,
+      "qubit_reduction_vs_current": 768,
+      "qubit_reduction_fraction_vs_current": 0.3688760806916426,
       "beats_google_low_qubit": false,
-      "beats_google_low_gate": false
+      "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 157,
-      "derived_total_logical_qubits": 1447,
-      "qubit_reduction_vs_current": 891,
-      "qubit_reduction_fraction_vs_current": 0.38109495295124035,
+      "derived_total_logical_qubits": 1290,
+      "qubit_reduction_vs_current": 792,
+      "qubit_reduction_fraction_vs_current": 0.3804034582132565,
       "beats_google_low_qubit": false,
       "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 144,
-      "derived_total_logical_qubits": 1330,
-      "qubit_reduction_vs_current": 1008,
-      "qubit_reduction_fraction_vs_current": 0.4311377245508982,
-      "beats_google_low_qubit": false,
+      "derived_total_logical_qubits": 1186,
+      "qubit_reduction_vs_current": 896,
+      "qubit_reduction_fraction_vs_current": 0.4303554274735831,
+      "beats_google_low_qubit": true,
       "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 129,
-      "derived_total_logical_qubits": 1195,
-      "qubit_reduction_vs_current": 1143,
-      "qubit_reduction_fraction_vs_current": 0.4888793840889649,
+      "derived_total_logical_qubits": 1066,
+      "qubit_reduction_vs_current": 1016,
+      "qubit_reduction_fraction_vs_current": 0.48799231508165225,
       "beats_google_low_qubit": true,
       "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 128,
-      "derived_total_logical_qubits": 1186,
-      "qubit_reduction_vs_current": 1152,
-      "qubit_reduction_fraction_vs_current": 0.49272882805816937,
+      "derived_total_logical_qubits": 1058,
+      "qubit_reduction_vs_current": 1024,
+      "qubit_reduction_fraction_vs_current": 0.4918347742555235,
       "beats_google_low_qubit": true,
       "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 112,
-      "derived_total_logical_qubits": 1042,
-      "qubit_reduction_vs_current": 1296,
-      "qubit_reduction_fraction_vs_current": 0.5543199315654406,
+      "derived_total_logical_qubits": 930,
+      "qubit_reduction_vs_current": 1152,
+      "qubit_reduction_fraction_vs_current": 0.553314121037464,
       "beats_google_low_qubit": true,
       "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 96,
-      "derived_total_logical_qubits": 898,
-      "qubit_reduction_vs_current": 1440,
-      "qubit_reduction_fraction_vs_current": 0.6159110350727117,
+      "derived_total_logical_qubits": 802,
+      "qubit_reduction_vs_current": 1280,
+      "qubit_reduction_fraction_vs_current": 0.6147934678194045,
       "beats_google_low_qubit": true,
       "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 80,
-      "derived_total_logical_qubits": 754,
-      "qubit_reduction_vs_current": 1584,
-      "qubit_reduction_fraction_vs_current": 0.6775021385799829,
+      "derived_total_logical_qubits": 674,
+      "qubit_reduction_vs_current": 1408,
+      "qubit_reduction_fraction_vs_current": 0.6762728146013448,
       "beats_google_low_qubit": true,
       "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 72,
-      "derived_total_logical_qubits": 682,
-      "qubit_reduction_vs_current": 1656,
-      "qubit_reduction_fraction_vs_current": 0.7082976903336184,
+      "derived_total_logical_qubits": 610,
+      "qubit_reduction_vs_current": 1472,
+      "qubit_reduction_fraction_vs_current": 0.7070124879923151,
       "beats_google_low_qubit": true,
       "beats_google_low_gate": true
     }
@@ -208,15 +200,15 @@
       "model_name": "addsub_modmul_named_slots_v2",
       "slot_accounting_mode": "allocated_named_slots",
       "field_slot_logical_qubits": 72,
-      "logical_qubits_total": 880,
-      "scratch_logical_qubits": 864
+      "logical_qubits_total": 592,
+      "scratch_logical_qubits": 576
     },
     "addsub_modmul_liveness_v2": {
       "model_name": "addsub_modmul_liveness_v2",
       "slot_accounting_mode": "peak_live_isa_slots",
       "field_slot_logical_qubits": 72,
-      "logical_qubits_total": 736,
-      "scratch_logical_qubits": 720
+      "logical_qubits_total": 520,
+      "scratch_logical_qubits": 504
     }
   },
   "semiclassical_lookup_tradeoffs": [
@@ -224,7 +216,7 @@
       "name": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",
       "lookup_family": "folded_linear_scan_tmpand_v1",
       "lookup_workspace_qubits": 31,
-      "total_logical_qubits": 2338,
+      "total_logical_qubits": 2082,
       "full_oracle_non_clifford": 37432935,
       "delta_qubits_vs_best_qubit": 0,
       "delta_non_clifford_vs_best_qubit": 0
@@ -233,7 +225,7 @@
       "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
       "lookup_family": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1",
       "lookup_workspace_qubits": 74,
-      "total_logical_qubits": 2381,
+      "total_logical_qubits": 2125,
       "full_oracle_non_clifford": 22756199,
       "delta_qubits_vs_best_qubit": 43,
       "delta_non_clifford_vs_best_qubit": -14676736
@@ -242,7 +234,7 @@
       "name": "folded_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
       "lookup_family": "folded_banked_unary_qrom_measured_uncompute_v1",
       "lookup_workspace_qubits": 402,
-      "total_logical_qubits": 2709,
+      "total_logical_qubits": 2453,
       "full_oracle_non_clifford": 22777319,
       "delta_qubits_vs_best_qubit": 371,
       "delta_non_clifford_vs_best_qubit": -14655616
@@ -251,7 +243,7 @@
       "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
       "lookup_family": "folded_unary_qrom_measured_uncompute_v1",
       "lookup_workspace_qubits": 32786,
-      "total_logical_qubits": 35093,
+      "total_logical_qubits": 34837,
       "full_oracle_non_clifford": 23813671,
       "delta_qubits_vs_best_qubit": 32755,
       "delta_non_clifford_vs_best_qubit": -13619264
@@ -260,23 +252,23 @@
       "name": "folded_unary_qrom_v1__semiclassical_qft_v1",
       "lookup_family": "folded_unary_qrom_v1",
       "lookup_workspace_qubits": 32786,
-      "total_logical_qubits": 35093,
+      "total_logical_qubits": 34837,
       "full_oracle_non_clifford": 24849959,
       "delta_qubits_vs_best_qubit": 32755,
       "delta_non_clifford_vs_best_qubit": -12582976
     }
   ],
   "peak_live_hotspot": {
-    "peak_pc": 10,
+    "peak_pc": 8,
     "peak_opcode": "field_add",
-    "peak_arithmetic_slot_count": 9,
+    "peak_arithmetic_slot_count": 7,
     "active_arithmetic_versions": [
       {
         "version_id": 0,
         "register": "qx",
         "reg_type": "arithmetic",
         "def_pc": 0,
-        "last_use_pc": 17,
+        "last_use_pc": 11,
         "assigned_slot": 0
       },
       {
@@ -284,7 +276,7 @@
         "register": "qy",
         "reg_type": "arithmetic",
         "def_pc": 1,
-        "last_use_pc": 15,
+        "last_use_pc": 16,
         "assigned_slot": 1
       },
       {
@@ -292,7 +284,7 @@
         "register": "qz",
         "reg_type": "arithmetic",
         "def_pc": 2,
-        "last_use_pc": 20,
+        "last_use_pc": 17,
         "assigned_slot": 2
       },
       {
@@ -300,7 +292,7 @@
         "register": "lx",
         "reg_type": "arithmetic",
         "def_pc": 3,
-        "last_use_pc": 16,
+        "last_use_pc": 9,
         "assigned_slot": 3
       },
       {
@@ -308,7 +300,7 @@
         "register": "ly",
         "reg_type": "arithmetic",
         "def_pc": 4,
-        "last_use_pc": 14,
+        "last_use_pc": 15,
         "assigned_slot": 4
       },
       {
@@ -316,7 +308,7 @@
         "register": "t0",
         "reg_type": "arithmetic",
         "def_pc": 7,
-        "last_use_pc": 19,
+        "last_use_pc": 21,
         "assigned_slot": 5
       },
       {
@@ -324,27 +316,33 @@
         "register": "t1",
         "reg_type": "arithmetic",
         "def_pc": 8,
-        "last_use_pc": 22,
+        "last_use_pc": 12,
         "assigned_slot": 6
-      },
-      {
-        "version_id": 9,
-        "register": "t3",
-        "reg_type": "arithmetic",
-        "def_pc": 9,
-        "last_use_pc": 11,
-        "assigned_slot": 7
-      },
-      {
-        "version_id": 10,
-        "register": "t4",
-        "reg_type": "arithmetic",
-        "def_pc": 10,
-        "last_use_pc": 11,
-        "assigned_slot": 8
       }
     ],
     "instruction_window": [
+      {
+        "pc": 5,
+        "op": "lookup_meta",
+        "dst": "meta",
+        "src": {
+          "table": "T.meta",
+          "key": "k"
+        },
+        "flag": null,
+        "comment": "Metadata bit0 marks the neutral lookup entry used for k = 0."
+      },
+      {
+        "pc": 6,
+        "op": "bool_from_flag",
+        "dst": "f_lookup_inf",
+        "src": {
+          "flags": "meta",
+          "bit": 0
+        },
+        "flag": null,
+        "comment": "Set control bit for the no-op path when the lookup point is infinity."
+      },
       {
         "pc": 7,
         "op": "field_mul",
@@ -358,19 +356,8 @@
       },
       {
         "pc": 8,
-        "op": "field_mul",
-        "dst": "t1",
-        "src": [
-          "qy",
-          "ly"
-        ],
-        "flag": null,
-        "comment": "t1 = Y1 * Y2"
-      },
-      {
-        "pc": 9,
         "op": "field_add",
-        "dst": "t3",
+        "dst": "t1",
         "src": [
           "lx",
           "ly"
@@ -379,48 +366,37 @@
         "comment": "t3 = X2 + Y2"
       },
       {
+        "pc": 9,
+        "op": "field_mul",
+        "dst": "lx",
+        "src": [
+          "lx",
+          "qz"
+        ],
+        "flag": null,
+        "comment": "o2 = X2 * Z1"
+      },
+      {
         "pc": 10,
         "op": "field_add",
-        "dst": "t4",
+        "dst": "lx",
+        "src": [
+          "lx",
+          "qx"
+        ],
+        "flag": null,
+        "comment": "o2 = X1 + X2Z1"
+      },
+      {
+        "pc": 11,
+        "op": "field_add",
+        "dst": "qx",
         "src": [
           "qx",
           "qy"
         ],
         "flag": null,
         "comment": "t4 = X1 + Y1"
-      },
-      {
-        "pc": 11,
-        "op": "field_mul",
-        "dst": "t3",
-        "src": [
-          "t3",
-          "t4"
-        ],
-        "flag": null,
-        "comment": "t3 = (X2 + Y2)(X1 + Y1)"
-      },
-      {
-        "pc": 12,
-        "op": "field_add",
-        "dst": "t4",
-        "src": [
-          "t0",
-          "t1"
-        ],
-        "flag": null,
-        "comment": "t4 = t0 + t1"
-      },
-      {
-        "pc": 13,
-        "op": "field_sub",
-        "dst": "t3",
-        "src": [
-          "t3",
-          "t4"
-        ],
-        "flag": null,
-        "comment": "t3 = X1Y2 + X2Y1"
       }
     ]
   },
