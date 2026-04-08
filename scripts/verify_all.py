@@ -434,7 +434,7 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
                 else ''
             )
             return (
-                f"  {label:<27} "
+                f"  {label:<27}"
                 f"{non_clifford:>11,} non-Clifford {non_clifford_cmp}"
                 f" / {logical_qubits:>7,} q"
                 + (f" {logical_qubit_cmp}" if logical_qubit_cmp else '')
