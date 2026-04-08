@@ -397,6 +397,13 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
         best_exact_qubit = compiler_project['frontier']['best_qubit_family']
         gate_baseline = baseline['low_gate']
         qubit_baseline = baseline['low_qubit']
+        labels = [
+            'google baseline best gate:',
+            'our exact best gate:',
+            'google baseline best qubits:',
+            'our exact best qubits:',
+        ]
+        label_width = max(len(label) for label in labels)
 
         def comparison_text(observed: int, reference: int) -> tuple[str, str]:
             if observed < reference:
@@ -434,7 +441,7 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
                 else ''
             )
             return (
-                f"  {label:<27}"
+                f"  {label:<{label_width}}"
                 f"{non_clifford:>11,} non-Clifford {non_clifford_cmp}"
                 f" / {logical_qubits:>7,} q"
                 + (f" {logical_qubit_cmp}" if logical_qubit_cmp else '')
