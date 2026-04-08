@@ -1,5 +1,5 @@
 {
-  "schema": "compiler-project-frontier-v3",
+  "schema": "compiler-project-frontier-v4",
   "public_google_baseline": {
     "low_qubit": {
       "logical_qubits": 1200,
@@ -1006,6 +1006,579 @@
       21
     ]
   },
+  "lookup_lowerings": {
+    "schema": "compiler-project-lookup-lowerings-v1",
+    "lookup_contract_path": "artifacts/lookup/lookup_signed_fold_contract.json",
+    "lookup_contract_sha256": "c3b6cc711aa323951a580f6a54a027d84bf84d6a5ad66965751db865553b635d",
+    "lookup_contract_summary": {
+      "word_bits": 16,
+      "magnitude_bits": 15,
+      "positive_domain_size": 32768,
+      "coordinate_bits": 256
+    },
+    "families": [
+      {
+        "name": "folded_linear_scan_tmpand_v1",
+        "summary": "Low-qubit exact lookup family using a 15-bit folded magnitude domain and temporary logical-AND equality ladders.",
+        "gate_set": "Clifford + temporary logical-AND + measurement",
+        "lookup_contract_sha256": "c3b6cc711aa323951a580f6a54a027d84bf84d6a5ad66965751db865553b635d",
+        "lowering_strategy": {
+          "classification": "shared folded sign/magnitude decomposition over the checked signed-folded lookup contract",
+          "lookup_compute": "temporary logical-AND equality ladders over the full positive folded domain",
+          "lookup_uncompute": "measurement-reset internal to the temporary logical-AND family"
+        },
+        "persistent_workspace": [
+          {
+            "name": "folded_magnitude_register",
+            "qubits": 15,
+            "summary": "Stores the shared absolute-value magnitude 0..32767 used by every lookup family."
+          },
+          {
+            "name": "lookup_control_predicates",
+            "qubits": 3,
+            "summary": "Tracks zero/min-word routing and the Y-negation enable predicate without allocating a full metadata table."
+          }
+        ],
+        "stages": [
+          {
+            "name": "folded_word_classification",
+            "summary": "Shared sign/magnitude classification for the 16-bit signed folded contract.",
+            "category": "classification",
+            "blocks": [
+              {
+                "name": "magnitude_all_zero_tree",
+                "summary": "Temporary logical-AND ladder over the 15 magnitude bits.",
+                "instance_count": 1,
+                "primitive_counts_per_instance": {
+                  "ccx": 14,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 14
+                },
+                "non_clifford_per_instance": 14,
+                "non_clifford_total": 14,
+                "notes": [
+                  "The all-zero predicate is shared by zero-word bypass and 0x8000 special-word routing.",
+                  "The temporary logical-AND ladder is uncomputed by local measurements inside the stage."
+                ]
+              },
+              {
+                "name": "signed_absolute_value_prepare",
+                "summary": "Two mirrored temporary logical-AND ladders prepare the folded absolute value for the positive lookup domain.",
+                "instance_count": 2,
+                "primitive_counts_per_instance": {
+                  "ccx": 14,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 14
+                },
+                "non_clifford_per_instance": 14,
+                "non_clifford_total": 28,
+                "notes": [
+                  "This stage implements the explicit absolute-value preparation used by all checked lookup families.",
+                  "Separate zero/min routing is driven from the shared all-zero predicate and the raw sign bit, so no additional non-Clifford flag-materialization block is counted here."
+                ]
+              }
+            ],
+            "non_clifford_total": 42,
+            "persistent_workspace_qubits": 18,
+            "local_workspace_qubits": 13,
+            "total_workspace_qubits": 31,
+            "notes": [
+              "The classification stage is family-independent and implements the same signed-folded contract used by the main repository lookup audit."
+            ]
+          },
+          {
+            "name": "folded_positive_lookup_compute",
+            "summary": "Linear scan across the folded positive-magnitude table using temporary logical-AND equality ladders.",
+            "category": "lookup_compute",
+            "blocks": [
+              {
+                "name": "magnitude_equality_scan",
+                "summary": "One equality ladder for each positive folded-table address.",
+                "instance_count": 32768,
+                "primitive_counts_per_instance": {
+                  "ccx": 14,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 14
+                },
+                "non_clifford_per_instance": 14,
+                "non_clifford_total": 458752,
+                "notes": [
+                  "Every positive-domain table entry 0..32767 is matched coherently against the folded magnitude register.",
+                  "The ladder family matches the low-space temporary logical-AND approach described in the family name."
+                ]
+              }
+            ],
+            "non_clifford_total": 458752,
+            "persistent_workspace_qubits": 18,
+            "local_workspace_qubits": 13,
+            "total_workspace_qubits": 31,
+            "notes": [
+              "The linear-scan family minimizes extra live workspace by reusing a single equality-ladder scratch region across the full positive domain."
+            ]
+          },
+          {
+            "name": "folded_positive_lookup_uncompute",
+            "summary": "Measurement-reset is internal to the temporary logical-AND equality scan and does not add non-Clifford cost beyond the compute stage.",
+            "category": "lookup_uncompute",
+            "blocks": [],
+            "non_clifford_total": 0,
+            "persistent_workspace_qubits": 18,
+            "local_workspace_qubits": 0,
+            "total_workspace_qubits": 18,
+            "notes": [
+              "The equality ladders are temporary logical-AND blocks whose measurement-reset path is already represented in the compute-stage primitive inventory."
+            ]
+          },
+          {
+            "name": "conditional_y_negation",
+            "summary": "Applies the post-lookup Y negation required by negative raw words in the folded contract.",
+            "category": "post_lookup_fixup",
+            "blocks": [
+              {
+                "name": "conditional_field_negation",
+                "summary": "Field-width conditional subtraction/select network over the Y coordinate.",
+                "instance_count": 1,
+                "primitive_counts_per_instance": {
+                  "ccx": 255,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 0
+                },
+                "non_clifford_per_instance": 255,
+                "non_clifford_total": 255,
+                "notes": [
+                  "This is the same exact post-lookup sign-fix assumption previously counted as a single field-width conditional negation."
+                ]
+              }
+            ],
+            "non_clifford_total": 255,
+            "persistent_workspace_qubits": 18,
+            "local_workspace_qubits": 0,
+            "total_workspace_qubits": 18,
+            "notes": [
+              "The X coordinate remains unchanged under negation; only the Y coordinate path carries non-Clifford cost."
+            ]
+          }
+        ],
+        "zero_check_non_clifford": 14,
+        "magnitude_prepare_non_clifford": 28,
+        "compute_lookup_non_clifford": 458752,
+        "uncompute_lookup_non_clifford": 0,
+        "conditional_negate_y_non_clifford": 255,
+        "direct_lookup_non_clifford": 459049,
+        "per_leaf_lookup_non_clifford": 459049,
+        "extra_lookup_workspace_qubits": 31,
+        "workspace_reconstruction": {
+          "persistent_workspace_qubits": 18,
+          "peak_stage": "folded_word_classification",
+          "peak_total_workspace_qubits": 31
+        },
+        "semantic_profile": {
+          "zero_maps_to_infinity": true,
+          "special_case_word_hex": "0x8000",
+          "negative_words_negate_y_after_positive_lookup": true
+        },
+        "notes": [
+          "This remains the lowest-space lookup family checked into the compiler project.",
+          "Zero-word and 0x8000 routing are explicit semantic cases, but they do not allocate a separate metadata-table lookup."
+        ]
+      },
+      {
+        "name": "folded_unary_qrom_v1",
+        "summary": "Lower-gate exact lookup family using a full unary conversion register over 32768 folded magnitudes.",
+        "gate_set": "Clifford + Toffoli-style unary QROM",
+        "lookup_contract_sha256": "c3b6cc711aa323951a580f6a54a027d84bf84d6a5ad66965751db865553b635d",
+        "lowering_strategy": {
+          "classification": "shared folded sign/magnitude decomposition over the checked signed-folded lookup contract",
+          "lookup_compute": "full unary address decode over the 32768-entry positive folded domain",
+          "lookup_uncompute": "exact reverse unary cleanup"
+        },
+        "persistent_workspace": [
+          {
+            "name": "folded_magnitude_register",
+            "qubits": 15,
+            "summary": "Stores the shared absolute-value magnitude 0..32767 used by every lookup family."
+          },
+          {
+            "name": "lookup_control_predicates",
+            "qubits": 3,
+            "summary": "Tracks zero/min-word routing and the Y-negation enable predicate without allocating a full metadata table."
+          }
+        ],
+        "stages": [
+          {
+            "name": "folded_word_classification",
+            "summary": "Shared sign/magnitude classification for the 16-bit signed folded contract.",
+            "category": "classification",
+            "blocks": [
+              {
+                "name": "magnitude_all_zero_tree",
+                "summary": "Temporary logical-AND ladder over the 15 magnitude bits.",
+                "instance_count": 1,
+                "primitive_counts_per_instance": {
+                  "ccx": 14,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 14
+                },
+                "non_clifford_per_instance": 14,
+                "non_clifford_total": 14,
+                "notes": [
+                  "The all-zero predicate is shared by zero-word bypass and 0x8000 special-word routing.",
+                  "The temporary logical-AND ladder is uncomputed by local measurements inside the stage."
+                ]
+              },
+              {
+                "name": "signed_absolute_value_prepare",
+                "summary": "Two mirrored temporary logical-AND ladders prepare the folded absolute value for the positive lookup domain.",
+                "instance_count": 2,
+                "primitive_counts_per_instance": {
+                  "ccx": 14,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 14
+                },
+                "non_clifford_per_instance": 14,
+                "non_clifford_total": 28,
+                "notes": [
+                  "This stage implements the explicit absolute-value preparation used by all checked lookup families.",
+                  "Separate zero/min routing is driven from the shared all-zero predicate and the raw sign bit, so no additional non-Clifford flag-materialization block is counted here."
+                ]
+              }
+            ],
+            "non_clifford_total": 42,
+            "persistent_workspace_qubits": 18,
+            "local_workspace_qubits": 13,
+            "total_workspace_qubits": 31,
+            "notes": [
+              "The classification stage is family-independent and implements the same signed-folded contract used by the main repository lookup audit."
+            ]
+          },
+          {
+            "name": "folded_positive_lookup_compute",
+            "summary": "Unary address decode across the positive folded domain.",
+            "category": "lookup_compute",
+            "blocks": [
+              {
+                "name": "unary_address_decode",
+                "summary": "One coherent unary activation edge for each nonzero folded magnitude transition.",
+                "instance_count": 32767,
+                "primitive_counts_per_instance": {
+                  "ccx": 1,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 0
+                },
+                "non_clifford_per_instance": 1,
+                "non_clifford_total": 32767,
+                "notes": [
+                  "This stage materializes a full unary address register spanning the 32768-entry folded positive domain."
+                ]
+              }
+            ],
+            "non_clifford_total": 32767,
+            "persistent_workspace_qubits": 18,
+            "local_workspace_qubits": 32768,
+            "total_workspace_qubits": 32786,
+            "notes": [
+              "The unary register is the dominant live workspace cost in this family."
+            ]
+          },
+          {
+            "name": "folded_positive_lookup_uncompute",
+            "summary": "Exact reverse unary cleanup across the full folded unary address register.",
+            "category": "lookup_uncompute",
+            "blocks": [
+              {
+                "name": "unary_address_uncompute",
+                "summary": "Reverse unary QROM cleanup across the full folded positive domain.",
+                "instance_count": 32767,
+                "primitive_counts_per_instance": {
+                  "ccx": 1,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 0
+                },
+                "non_clifford_per_instance": 1,
+                "non_clifford_total": 32767,
+                "notes": [
+                  "This is the exact reverse path of the unary address decode."
+                ]
+              }
+            ],
+            "non_clifford_total": 32767,
+            "persistent_workspace_qubits": 18,
+            "local_workspace_qubits": 32768,
+            "total_workspace_qubits": 32786,
+            "notes": [
+              "The unary workspace remains live for the reverse pass."
+            ]
+          },
+          {
+            "name": "conditional_y_negation",
+            "summary": "Applies the post-lookup Y negation required by negative raw words in the folded contract.",
+            "category": "post_lookup_fixup",
+            "blocks": [
+              {
+                "name": "conditional_field_negation",
+                "summary": "Field-width conditional subtraction/select network over the Y coordinate.",
+                "instance_count": 1,
+                "primitive_counts_per_instance": {
+                  "ccx": 255,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 0
+                },
+                "non_clifford_per_instance": 255,
+                "non_clifford_total": 255,
+                "notes": [
+                  "This is the same exact post-lookup sign-fix assumption previously counted as a single field-width conditional negation."
+                ]
+              }
+            ],
+            "non_clifford_total": 255,
+            "persistent_workspace_qubits": 18,
+            "local_workspace_qubits": 0,
+            "total_workspace_qubits": 18,
+            "notes": [
+              "The X coordinate remains unchanged under negation; only the Y coordinate path carries non-Clifford cost."
+            ]
+          }
+        ],
+        "zero_check_non_clifford": 14,
+        "magnitude_prepare_non_clifford": 28,
+        "compute_lookup_non_clifford": 32767,
+        "uncompute_lookup_non_clifford": 32767,
+        "conditional_negate_y_non_clifford": 255,
+        "direct_lookup_non_clifford": 65831,
+        "per_leaf_lookup_non_clifford": 65831,
+        "extra_lookup_workspace_qubits": 32786,
+        "workspace_reconstruction": {
+          "persistent_workspace_qubits": 18,
+          "peak_stage": "folded_positive_lookup_compute",
+          "peak_total_workspace_qubits": 32786
+        },
+        "semantic_profile": {
+          "zero_maps_to_infinity": true,
+          "special_case_word_hex": "0x8000",
+          "negative_words_negate_y_after_positive_lookup": true
+        },
+        "notes": [
+          "This family minimizes gate count more aggressively than the linear-scan family, but uses a very large unary workspace.",
+          "The compute and reverse-uncompute halves are both counted explicitly."
+        ]
+      },
+      {
+        "name": "folded_unary_qrom_measured_uncompute_v1",
+        "summary": "Best exact low-gate family currently checked in: unary folded QROM compute plus 8/7-split measurement-based uncompute.",
+        "gate_set": "Clifford + Toffoli-style unary QROM + measurement",
+        "lookup_contract_sha256": "c3b6cc711aa323951a580f6a54a027d84bf84d6a5ad66965751db865553b635d",
+        "lowering_strategy": {
+          "classification": "shared folded sign/magnitude decomposition over the checked signed-folded lookup contract",
+          "lookup_compute": "full unary address decode over the 32768-entry positive folded domain",
+          "lookup_uncompute": "8/7-split measurement-based unary cleanup"
+        },
+        "persistent_workspace": [
+          {
+            "name": "folded_magnitude_register",
+            "qubits": 15,
+            "summary": "Stores the shared absolute-value magnitude 0..32767 used by every lookup family."
+          },
+          {
+            "name": "lookup_control_predicates",
+            "qubits": 3,
+            "summary": "Tracks zero/min-word routing and the Y-negation enable predicate without allocating a full metadata table."
+          }
+        ],
+        "stages": [
+          {
+            "name": "folded_word_classification",
+            "summary": "Shared sign/magnitude classification for the 16-bit signed folded contract.",
+            "category": "classification",
+            "blocks": [
+              {
+                "name": "magnitude_all_zero_tree",
+                "summary": "Temporary logical-AND ladder over the 15 magnitude bits.",
+                "instance_count": 1,
+                "primitive_counts_per_instance": {
+                  "ccx": 14,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 14
+                },
+                "non_clifford_per_instance": 14,
+                "non_clifford_total": 14,
+                "notes": [
+                  "The all-zero predicate is shared by zero-word bypass and 0x8000 special-word routing.",
+                  "The temporary logical-AND ladder is uncomputed by local measurements inside the stage."
+                ]
+              },
+              {
+                "name": "signed_absolute_value_prepare",
+                "summary": "Two mirrored temporary logical-AND ladders prepare the folded absolute value for the positive lookup domain.",
+                "instance_count": 2,
+                "primitive_counts_per_instance": {
+                  "ccx": 14,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 14
+                },
+                "non_clifford_per_instance": 14,
+                "non_clifford_total": 28,
+                "notes": [
+                  "This stage implements the explicit absolute-value preparation used by all checked lookup families.",
+                  "Separate zero/min routing is driven from the shared all-zero predicate and the raw sign bit, so no additional non-Clifford flag-materialization block is counted here."
+                ]
+              }
+            ],
+            "non_clifford_total": 42,
+            "persistent_workspace_qubits": 18,
+            "local_workspace_qubits": 13,
+            "total_workspace_qubits": 31,
+            "notes": [
+              "The classification stage is family-independent and implements the same signed-folded contract used by the main repository lookup audit."
+            ]
+          },
+          {
+            "name": "folded_positive_lookup_compute",
+            "summary": "Unary address decode across the positive folded domain.",
+            "category": "lookup_compute",
+            "blocks": [
+              {
+                "name": "unary_address_decode",
+                "summary": "One coherent unary activation edge for each nonzero folded magnitude transition.",
+                "instance_count": 32767,
+                "primitive_counts_per_instance": {
+                  "ccx": 1,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 0
+                },
+                "non_clifford_per_instance": 1,
+                "non_clifford_total": 32767,
+                "notes": [
+                  "This stage materializes a full unary address register spanning the 32768-entry folded positive domain."
+                ]
+              }
+            ],
+            "non_clifford_total": 32767,
+            "persistent_workspace_qubits": 18,
+            "local_workspace_qubits": 32768,
+            "total_workspace_qubits": 32786,
+            "notes": [
+              "The unary register is the dominant live workspace cost in this family."
+            ]
+          },
+          {
+            "name": "folded_positive_lookup_uncompute",
+            "summary": "Measured 8/7-split cleanup for the unary lookup workspace.",
+            "category": "lookup_uncompute",
+            "blocks": [
+              {
+                "name": "coarse_bucket_measured_uncompute",
+                "summary": "Measured cleanup of the coarse 8-bit bucket structure.",
+                "instance_count": 256,
+                "primitive_counts_per_instance": {
+                  "ccx": 1,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 1
+                },
+                "non_clifford_per_instance": 1,
+                "non_clifford_total": 256,
+                "notes": [
+                  "The measured cleanup is split into a coarse bucket layer and a fine residual tree."
+                ]
+              },
+              {
+                "name": "fine_tree_measured_uncompute",
+                "summary": "Measured cleanup of the residual 7-bit tree inside each coarse bucket.",
+                "instance_count": 127,
+                "primitive_counts_per_instance": {
+                  "ccx": 1,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 1
+                },
+                "non_clifford_per_instance": 1,
+                "non_clifford_total": 127,
+                "notes": [
+                  "The 8/7 split matches the checked family definition used by the compiler frontier."
+                ]
+              }
+            ],
+            "non_clifford_total": 383,
+            "persistent_workspace_qubits": 18,
+            "local_workspace_qubits": 256,
+            "total_workspace_qubits": 274,
+            "notes": [
+              "The measured cleanup reduces non-Clifford cost relative to the full reverse unary pass."
+            ]
+          },
+          {
+            "name": "conditional_y_negation",
+            "summary": "Applies the post-lookup Y negation required by negative raw words in the folded contract.",
+            "category": "post_lookup_fixup",
+            "blocks": [
+              {
+                "name": "conditional_field_negation",
+                "summary": "Field-width conditional subtraction/select network over the Y coordinate.",
+                "instance_count": 1,
+                "primitive_counts_per_instance": {
+                  "ccx": 255,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 0
+                },
+                "non_clifford_per_instance": 255,
+                "non_clifford_total": 255,
+                "notes": [
+                  "This is the same exact post-lookup sign-fix assumption previously counted as a single field-width conditional negation."
+                ]
+              }
+            ],
+            "non_clifford_total": 255,
+            "persistent_workspace_qubits": 18,
+            "local_workspace_qubits": 0,
+            "total_workspace_qubits": 18,
+            "notes": [
+              "The X coordinate remains unchanged under negation; only the Y coordinate path carries non-Clifford cost."
+            ]
+          }
+        ],
+        "zero_check_non_clifford": 14,
+        "magnitude_prepare_non_clifford": 28,
+        "compute_lookup_non_clifford": 32767,
+        "uncompute_lookup_non_clifford": 383,
+        "conditional_negate_y_non_clifford": 255,
+        "direct_lookup_non_clifford": 33447,
+        "per_leaf_lookup_non_clifford": 33447,
+        "extra_lookup_workspace_qubits": 32786,
+        "workspace_reconstruction": {
+          "persistent_workspace_qubits": 18,
+          "peak_stage": "folded_positive_lookup_compute",
+          "peak_total_workspace_qubits": 32786
+        },
+        "semantic_profile": {
+          "zero_maps_to_infinity": true,
+          "special_case_word_hex": "0x8000",
+          "negative_words_negate_y_after_positive_lookup": true
+        },
+        "notes": [
+          "This family uses the same forward unary QROM compute as folded_unary_qrom_v1 but replaces reverse uncompute by the exact 8/7-split measurement-based construction.",
+          "It improves the exact gate frontier while keeping the lookup semantics identical."
+        ]
+      }
+    ],
+    "notes": [
+      "This artifact lowers each named compiler-project lookup family into an explicit stage/block inventory below the contract-only layer.",
+      "The lowered families keep the signed-folded secp256k1 lookup semantics exact while exposing stage-local workspace and non-Clifford reconstruction.",
+      "This is still not a bit-for-bit primitive qRAM/QROM netlist; it is an explicit compiler-family lowering layer checked below the folded lookup contract."
+    ]
+  },
   "lookup_families": [
     {
       "name": "folded_linear_scan_tmpand_v1",
@@ -1020,8 +1593,8 @@
       "per_leaf_lookup_non_clifford": 459049,
       "extra_lookup_workspace_qubits": 31,
       "notes": [
-        "Scans only positive magnitudes 0..32767. The sign bit is handled separately via exact conditional y-negation.",
-        "This remains the lowest-space exact lookup family checked into the compiler project."
+        "This remains the lowest-space lookup family checked into the compiler project.",
+        "Zero-word and 0x8000 routing are explicit semantic cases, but they do not allocate a separate metadata-table lookup."
       ]
     },
     {
@@ -1052,7 +1625,7 @@
       "conditional_negate_y_non_clifford": 255,
       "direct_lookup_non_clifford": 33447,
       "per_leaf_lookup_non_clifford": 33447,
-      "extra_lookup_workspace_qubits": 33042,
+      "extra_lookup_workspace_qubits": 32786,
       "notes": [
         "This family uses the same forward unary QROM compute as folded_unary_qrom_v1 but replaces reverse uncompute by the exact 8/7-split measurement-based construction.",
         "It improves the exact gate frontier while keeping the lookup semantics identical."
@@ -1105,8 +1678,8 @@
       "qubit_ratio_vs_google_low_qubit": 0.42134831460674155,
       "qubit_ratio_vs_google_low_gate": 0.5091292134831461,
       "notes": [
-        "Scans only positive magnitudes 0..32767. The sign bit is handled separately via exact conditional y-negation.",
-        "This remains the lowest-space exact lookup family checked into the compiler project.",
+        "This remains the lowest-space lookup family checked into the compiler project.",
+        "Zero-word and 0x8000 routing are explicit semantic cases, but they do not allocate a separate metadata-table lookup.",
         "This family mirrors the simplest exact logical accounting: both 256-bit phase registers remain live throughout the oracle inventory.",
         "Rotation synthesis below this shell is still out of scope; the shell affects qubit inventory, not oracle non-Clifford totals."
       ]
@@ -1132,8 +1705,8 @@
       "qubit_ratio_vs_google_low_qubit": 0.5134788189987163,
       "qubit_ratio_vs_google_low_gate": 0.6204535729567822,
       "notes": [
-        "Scans only positive magnitudes 0..32767. The sign bit is handled separately via exact conditional y-negation.",
-        "This remains the lowest-space exact lookup family checked into the compiler project.",
+        "This remains the lowest-space lookup family checked into the compiler project.",
+        "Zero-word and 0x8000 routing are explicit semantic cases, but they do not allocate a separate metadata-table lookup.",
         "This family treats the phase-estimation shell as a one-qubit live quantum register with classical feed-forward between measurements.",
         "It is the strongest exact qubit-compression lever currently checked into the compiler project because it removes the 512-bit coherent phase-register requirement without changing the oracle family itself."
       ]
@@ -1205,13 +1778,13 @@
       "full_oracle_non_clifford": 23813671,
       "arithmetic_slot_count": 9,
       "control_slot_count": 1,
-      "lookup_workspace_qubits": 33042,
+      "lookup_workspace_qubits": 32786,
       "live_phase_bits": 512,
-      "total_logical_qubits": 35859,
+      "total_logical_qubits": 35603,
       "improvement_vs_google_low_qubit": 3.779341706702843,
       "improvement_vs_google_low_gate": 2.9394879941022114,
-      "qubit_ratio_vs_google_low_qubit": 0.03346440224211495,
-      "qubit_ratio_vs_google_low_gate": 0.04043615270922223,
+      "qubit_ratio_vs_google_low_qubit": 0.033705024857455836,
+      "qubit_ratio_vs_google_low_gate": 0.04072690503609246,
       "notes": [
         "This family uses the same forward unary QROM compute as folded_unary_qrom_v1 but replaces reverse uncompute by the exact 8/7-split measurement-based construction.",
         "It improves the exact gate frontier while keeping the lookup semantics identical.",
@@ -1232,13 +1805,13 @@
       "full_oracle_non_clifford": 23813671,
       "arithmetic_slot_count": 9,
       "control_slot_count": 1,
-      "lookup_workspace_qubits": 33042,
+      "lookup_workspace_qubits": 32786,
       "live_phase_bits": 1,
-      "total_logical_qubits": 35348,
+      "total_logical_qubits": 35092,
       "improvement_vs_google_low_qubit": 3.779341706702843,
       "improvement_vs_google_low_gate": 2.9394879941022114,
-      "qubit_ratio_vs_google_low_qubit": 0.03394817245671608,
-      "qubit_ratio_vs_google_low_gate": 0.0410207083851986,
+      "qubit_ratio_vs_google_low_qubit": 0.034195828108970705,
+      "qubit_ratio_vs_google_low_gate": 0.041319958965006266,
       "notes": [
         "This family uses the same forward unary QROM compute as folded_unary_qrom_v1 but replaces reverse uncompute by the exact 8/7-split measurement-based construction.",
         "It improves the exact gate frontier while keeping the lookup semantics identical.",
@@ -1260,13 +1833,13 @@
     "full_oracle_non_clifford": 23813671,
     "arithmetic_slot_count": 9,
     "control_slot_count": 1,
-    "lookup_workspace_qubits": 33042,
+    "lookup_workspace_qubits": 32786,
     "live_phase_bits": 1,
-    "total_logical_qubits": 35348,
+    "total_logical_qubits": 35092,
     "improvement_vs_google_low_qubit": 3.779341706702843,
     "improvement_vs_google_low_gate": 2.9394879941022114,
-    "qubit_ratio_vs_google_low_qubit": 0.03394817245671608,
-    "qubit_ratio_vs_google_low_gate": 0.0410207083851986,
+    "qubit_ratio_vs_google_low_qubit": 0.034195828108970705,
+    "qubit_ratio_vs_google_low_gate": 0.041319958965006266,
     "notes": [
       "This family uses the same forward unary QROM compute as folded_unary_qrom_v1 but replaces reverse uncompute by the exact 8/7-split measurement-based construction.",
       "It improves the exact gate frontier while keeping the lookup semantics identical.",
@@ -1295,14 +1868,14 @@
     "qubit_ratio_vs_google_low_qubit": 0.5134788189987163,
     "qubit_ratio_vs_google_low_gate": 0.6204535729567822,
     "notes": [
-      "Scans only positive magnitudes 0..32767. The sign bit is handled separately via exact conditional y-negation.",
-      "This remains the lowest-space exact lookup family checked into the compiler project.",
+      "This remains the lowest-space lookup family checked into the compiler project.",
+      "Zero-word and 0x8000 routing are explicit semantic cases, but they do not allocate a separate metadata-table lookup.",
       "This family treats the phase-estimation shell as a one-qubit live quantum register with classical feed-forward between measurements.",
       "It is the strongest exact qubit-compression lever currently checked into the compiler project because it removes the 512-bit coherent phase-register requirement without changing the oracle family itself."
     ]
   },
   "notes": [
-    "These are exact whole-oracle counts for named compiler families over a fixed kernel family and a fully quantum raw-32 schedule.",
+    "These are exact whole-oracle counts for named compiler families over a fixed arithmetic-kernel family, an explicit lookup-lowering family, and a fully quantum raw-32 schedule.",
     "The qubit frontier uses exact slot allocation and an explicit semiclassical phase-shell option rather than a fixed 512-bit phase-register policy.",
     "The arithmetic kernels remain an imported exact non-Clifford family boundary; whole-oracle counts are exact relative to that family."
   ]

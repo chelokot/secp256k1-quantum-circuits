@@ -33,15 +33,15 @@
       "family": "folded_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
       "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.6459634444444444,
       "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.401953,
-      "same_density_physical_qubits_if_1200_maps_to_26k": 776945.0,
-      "same_density_physical_qubits_if_1450_maps_to_26k": 642988.9655172414
+      "same_density_physical_qubits_if_1200_maps_to_26k": 771398.3333333334,
+      "same_density_physical_qubits_if_1450_maps_to_26k": 638398.6206896552
     },
     {
       "family": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
       "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.6459634444444444,
       "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.401953,
-      "same_density_physical_qubits_if_1200_maps_to_26k": 765873.3333333334,
-      "same_density_physical_qubits_if_1450_maps_to_26k": 633826.2068965518
+      "same_density_physical_qubits_if_1200_maps_to_26k": 760326.6666666666,
+      "same_density_physical_qubits_if_1450_maps_to_26k": 629235.8620689656
     }
   ],
   "notes": [

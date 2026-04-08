@@ -84,8 +84,10 @@ subproject. In particular, it fixes:
 ### A. Primitive-gate lookup realization
 
 The repository does not lower lookup memory into a primitive-gate qRAM or QROM
-construction. It validates the checked-in folded contract fields and proves the
-contract semantics assumed at the ISA boundary.
+construction. It validates the checked-in folded contract fields, ships explicit
+compiler-family lookup lowerings below that contract, and proves the lookup
+semantics assumed at the ISA boundary. It still stops short of a bit-for-bit
+primitive qRAM/QROM netlist.
 
 ### B. Primitive-gate cleanup
 

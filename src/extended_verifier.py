@@ -172,7 +172,7 @@ def run_lookup_contract(
         },
         "notes": [
             "This summary validates the checked-in folded lookup contract fields and then points at the exhaustive and sampled semantic audits generated under artifacts/lookup/.",
-            "The lookup contract is exact at the arithmetic interface layer, but the repository still does not ship a primitive-gate qRAM or QROM realization.",
+            "The lookup contract is exact at the arithmetic interface layer, and the compiler project lowers named lookup families below that contract. The repository still does not ship a bit-for-bit primitive qRAM or QROM realization.",
         ],
     }
     dump_json(out_json, result)
@@ -421,7 +421,7 @@ def run_meta_analysis(repo_root: Path) -> Dict[str, Any]:
             {"code": "COMPLETE_MIXED_J0", "description": "The optimized leaf uses a secp256k1-specialized complete mixed j=0 formula with a narrow, branch-free hot path."},
             {"code": "WORKING_WIDTH_CONTROL", "description": "The optimized arithmetic schedule keeps the working state compact at 12 arithmetic slots while preserving exact ISA-level basis-state semantics."},
             {"code": "WINDOW_RETENTION_DISCIPLINE", "description": "The repository keeps the public retained-window structure explicit instead of hiding schedule changes inside headline totals."},
-            {"code": "BOUNDARY_HONESTY", "description": "The resource win is reported as a backend projection against cited rounded Google estimates, with exactness claims kept at the ISA and lookup-contract boundary."},
+            {"code": "BOUNDARY_HONESTY", "description": "The mainline resource win is reported as a backend projection against cited rounded Google estimates, while exact checked artifacts extend through ISA arithmetic, the folded lookup contract, and the compiler project's explicit lookup-lowering layer."},
         ],
         "notes": [
             "This file compares the primary optimized artifact against cited rounded Google estimates stored in the projection file.",

@@ -7,12 +7,12 @@ repository-supported answer to each one.
 
 | Objection | Severity if hidden | Repository-supported answer | Still open? |
 |---|---:|---|---|
-| “This is not a primitive-gate circuit because lookup is abstracted.” | High | Still true at the primitive-gate layer, but the lookup boundary is explicit: the folded contract is machine-readable and audited exhaustively for a canonical secp256k1 base plus deterministic multibase samples. | Yes |
+| “This is not a primitive-gate circuit because lookup is abstracted.” | High | Still true at the primitive-gate layer, but the lookup stack is explicit: the folded contract is machine-readable and audited exhaustively for a canonical secp256k1 base plus deterministic multibase samples, and the compiler project lowers named lookup families below that contract. | Yes |
 | “`mbuc_*` cleanup is not a primitive-gate verified coherent subcircuit.” | High | True. The repository checks basis-state semantics at the ISA boundary. | Yes |
 | “The scaffold is metadata, not a full Shor gate list.” | High | This is true for the mainline, and the compiler subproject publishes an exact fully quantum raw-32 oracle family with explicit whole-oracle counts. It is still not a globally optimized complete Shor implementation. | Partly |
 | “The exact compiler frontier still does not reconstruct a hidden Google circuit.” | High | True. The repository compares against Google's public rounded lines, not against an unpublished circuit. | Yes |
 | “Toy-curve proofs are not universal proofs over all prime fields.” | Medium | True. They are finite-model support for the family story. | Yes |
-| “No primitive-gate qRAM or QROM is shipped.” | Medium | True. The repository keeps lookup as an explicit contract boundary. | Yes |
+| “No primitive-gate qRAM or QROM is shipped.” | Medium | True. The repository ships explicit compiler-family lookup lowerings below the folded contract, but it still does not ship a bit-for-bit primitive qRAM/QROM implementation. | Yes |
 | “No end-to-end physical machine proof is shipped.” | Medium | True. Physical studies are separate transfer analyses. | Yes |
 
 ## Statements the repository can defend directly

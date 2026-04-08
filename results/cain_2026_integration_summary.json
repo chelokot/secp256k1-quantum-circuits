@@ -37,9 +37,9 @@
     "time_efficient_days_if_70M_min": 3.401953,
     "time_efficient_days_if_70M_max": 5.347562142857143,
     "same_density_physical_qubits_if_1200_min": 50635.0,
-    "same_density_physical_qubits_if_1200_max": 776945.0,
+    "same_density_physical_qubits_if_1200_max": 771398.3333333334,
     "same_density_physical_qubits_if_1450_min": 41904.8275862069,
-    "same_density_physical_qubits_if_1450_max": 642988.9655172414
+    "same_density_physical_qubits_if_1450_max": 638398.6206896552
   },
   "cases": [
     {
@@ -105,7 +105,7 @@
     {
       "family": "folded_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
       "exact_non_clifford": 23813671,
-      "exact_logical_qubits": 35859,
+      "exact_logical_qubits": 35603,
       "runtime_transfer": {
         "assumption": "Fixed physical architecture, cycle time, and parallelization regime; runtime scales with exact-family non-Clifford ratio.",
         "time_efficient_days_if_90M_maps_to_10d": 2.6459634444444444,
@@ -113,14 +113,14 @@
       },
       "space_transfer": {
         "assumption": "Logical-to-physical density is inherited from the cited Cain reference line.",
-        "same_density_physical_qubits_if_1200_maps_to_26k": 776945.0,
-        "same_density_physical_qubits_if_1450_maps_to_26k": 642988.9655172414
+        "same_density_physical_qubits_if_1200_maps_to_26k": 771398.3333333334,
+        "same_density_physical_qubits_if_1450_maps_to_26k": 638398.6206896552
       }
     },
     {
       "family": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
       "exact_non_clifford": 23813671,
-      "exact_logical_qubits": 35348,
+      "exact_logical_qubits": 35092,
       "runtime_transfer": {
         "assumption": "Fixed physical architecture, cycle time, and parallelization regime; runtime scales with exact-family non-Clifford ratio.",
         "time_efficient_days_if_90M_maps_to_10d": 2.6459634444444444,
@@ -128,8 +128,8 @@
       },
       "space_transfer": {
         "assumption": "Logical-to-physical density is inherited from the cited Cain reference line.",
-        "same_density_physical_qubits_if_1200_maps_to_26k": 765873.3333333334,
-        "same_density_physical_qubits_if_1450_maps_to_26k": 633826.2068965518
+        "same_density_physical_qubits_if_1200_maps_to_26k": 760326.6666666666,
+        "same_density_physical_qubits_if_1450_maps_to_26k": 629235.8620689656
       }
     }
   ],

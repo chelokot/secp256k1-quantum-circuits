@@ -21,6 +21,7 @@ from common import (
     sha256_bytes,
     sha256_path,
 )
+from lookup_lowering import lookup_lowering_library, lowered_lookup_semantic_summary
 from project import (
     FIELD_BITS,
     FOLDED_MAG_BITS,
@@ -78,6 +79,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'primitive_multiplier_library': artifact_root / 'primitive_multiplier_library.json',
         'phase_shell_families': artifact_root / 'phase_shell_families.json',
         'table_manifests': artifact_root / 'table_manifests.json',
+        'lookup_lowerings': artifact_root / 'lookup_lowerings.json',
         'family_frontier': artifact_root / 'family_frontier.json',
         'full_attack_inventory': artifact_root / 'full_attack_inventory.json',
         'build_summary': artifact_root / 'build_summary.json',
@@ -222,6 +224,119 @@ def build_arithmetic_kernel_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
             kernel['arithmetic_leaf_non_clifford'] == expected_leaf_non_clifford,
             expected_leaf_non_clifford,
             kernel['arithmetic_leaf_non_clifford'],
+        ),
+    ]
+    return _summarize_checks(checks)
+
+
+def build_lookup_lowering_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    lowering = artifacts['lookup_lowerings']
+    expected = lookup_lowering_library()
+    semantic = lowered_lookup_semantic_summary()
+    contract_summary = lowering['lookup_contract_summary']
+    families = lowering['families']
+    family_lookup = {family['name']: family for family in families}
+    reconstructed_family_totals = []
+    reconstructed_family_workspace = []
+    semantic_pairs = []
+    for family in families:
+        stages = family['stages']
+        persistent_total = sum(int(entry['qubits']) for entry in family['persistent_workspace'])
+        reconstructed_non_clifford = sum(int(stage['non_clifford_total']) for stage in stages)
+        reconstructed_workspace = max(int(stage['total_workspace_qubits']) for stage in stages)
+        reconstructed_family_totals.append({
+            'name': family['name'],
+            'direct_lookup_non_clifford': reconstructed_non_clifford,
+            'per_leaf_lookup_non_clifford': reconstructed_non_clifford,
+        })
+        reconstructed_family_workspace.append({
+            'name': family['name'],
+            'persistent_workspace_qubits': persistent_total,
+            'peak_total_workspace_qubits': reconstructed_workspace,
+        })
+        semantic_row = next(row for row in semantic['families'] if row['name'] == family['name'])
+        semantic_pairs.append({
+            'name': family['name'],
+            'canonical_full_exhaustive_pass': semantic_row['canonical_full_exhaustive_pass'],
+            'canonical_full_exhaustive_total': semantic_row['canonical_full_exhaustive_total'],
+            'multibase_edge_pass': semantic_row['multibase_edge_pass'],
+            'multibase_edge_total': semantic_row['multibase_edge_total'],
+        })
+    checks = [
+        _check('lookup_lowering_library_matches_generator', lowering == expected, expected, lowering),
+        _check(
+            'lookup_lowering_contract_summary_matches_constants',
+            contract_summary == {
+                'word_bits': RAW_WINDOW_BITS,
+                'magnitude_bits': FOLDED_MAG_BITS,
+                'positive_domain_size': FOLDED_MAG_DOMAIN,
+                'coordinate_bits': FIELD_BITS,
+            },
+            {
+                'word_bits': RAW_WINDOW_BITS,
+                'magnitude_bits': FOLDED_MAG_BITS,
+                'positive_domain_size': FOLDED_MAG_DOMAIN,
+                'coordinate_bits': FIELD_BITS,
+            },
+            contract_summary,
+        ),
+        _check(
+            'lookup_lowering_contract_hash_matches_main_lookup_contract',
+            lowering['lookup_contract_sha256'] == sha256_path(PROJECT_ROOT / 'artifacts' / 'lookup' / 'lookup_signed_fold_contract.json'),
+            sha256_path(PROJECT_ROOT / 'artifacts' / 'lookup' / 'lookup_signed_fold_contract.json'),
+            lowering['lookup_contract_sha256'],
+        ),
+        _check(
+            'lookup_lowering_totals_reconstruct_from_stage_inventory',
+            all(
+                family_lookup[row['name']]['direct_lookup_non_clifford'] == row['direct_lookup_non_clifford']
+                and family_lookup[row['name']]['per_leaf_lookup_non_clifford'] == row['per_leaf_lookup_non_clifford']
+                for row in reconstructed_family_totals
+            ),
+            reconstructed_family_totals,
+            [
+                {
+                    'name': family['name'],
+                    'direct_lookup_non_clifford': family['direct_lookup_non_clifford'],
+                    'per_leaf_lookup_non_clifford': family['per_leaf_lookup_non_clifford'],
+                }
+                for family in families
+            ],
+        ),
+        _check(
+            'lookup_lowering_workspace_reconstructs_from_persistent_plus_peak_stage',
+            all(
+                family_lookup[row['name']]['workspace_reconstruction']['persistent_workspace_qubits'] == row['persistent_workspace_qubits']
+                and family_lookup[row['name']]['workspace_reconstruction']['peak_total_workspace_qubits'] == row['peak_total_workspace_qubits']
+                and family_lookup[row['name']]['extra_lookup_workspace_qubits'] == row['peak_total_workspace_qubits']
+                for row in reconstructed_family_workspace
+            ),
+            reconstructed_family_workspace,
+            [
+                {
+                    'name': family['name'],
+                    'persistent_workspace_qubits': family['workspace_reconstruction']['persistent_workspace_qubits'],
+                    'peak_total_workspace_qubits': family['workspace_reconstruction']['peak_total_workspace_qubits'],
+                }
+                for family in families
+            ],
+        ),
+        _check(
+            'lookup_lowering_semantics_match_contract',
+            all(
+                row['canonical_full_exhaustive_pass'] == row['canonical_full_exhaustive_total']
+                and row['multibase_edge_pass'] == row['multibase_edge_total']
+                for row in semantic_pairs
+            ),
+            [
+                {
+                    'name': row['name'],
+                    'canonical_full_exhaustive': row['canonical_full_exhaustive_total'],
+                    'multibase_edge': row['multibase_edge_total'],
+                }
+                for row in semantic_pairs
+            ],
+            semantic_pairs,
         ),
     ]
     return _summarize_checks(checks)
@@ -437,6 +552,7 @@ def build_frontier_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
         _check('frontier_schedule_matches_standalone_schedule', frontier['schedule'] == schedule, schedule, frontier['schedule']),
         _check('frontier_slot_allocation_matches_standalone_slot_allocation', frontier['slot_allocation'] == slot_alloc, slot_alloc, frontier['slot_allocation']),
         _check('frontier_arithmetic_kernel_matches_module_library', frontier['arithmetic_kernel_family'] == kernel, kernel, frontier['arithmetic_kernel_family']),
+        _check('frontier_lookup_lowering_matches_lookup_lowering_artifact', frontier['lookup_lowerings'] == artifacts['lookup_lowerings'], artifacts['lookup_lowerings'], frontier['lookup_lowerings']),
         _check('lookup_family_library_matches_named_lookup_families', frontier['lookup_families'] == expected_lookup_families, expected_lookup_families, frontier['lookup_families']),
         _check('phase_shell_library_matches_named_phase_shells', frontier['phase_shell_families'] == expected_phase_shells, expected_phase_shells, frontier['phase_shell_families']),
         _check('frontier_family_rows_reconstruct_from_components', families == expected_families, expected_families, families),
@@ -456,12 +572,13 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'primitive_multiplier_library': 'compiler_verification_project/artifacts/primitive_multiplier_library.json',
         'phase_shell_families': 'compiler_verification_project/artifacts/phase_shell_families.json',
         'table_manifests': 'compiler_verification_project/artifacts/table_manifests.json',
+        'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
         'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
         'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
         'azure_resource_estimator_logical_counts': 'compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json',
     }
     checks = [
-        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v3', 'compiler-project-build-summary-v3', build_summary['schema']),
+        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v4', 'compiler-project-build-summary-v4', build_summary['schema']),
         _check('build_summary_artifact_paths_match_expected_set', build_summary['artifacts'] == expected_paths, expected_paths, build_summary['artifacts']),
         _check(
             'build_summary_paths_exist_on_disk',
@@ -521,6 +638,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any]) -> Dic
         'schedule_checks': build_schedule_checks(artifacts),
         'table_manifest_checks': build_table_manifest_checks(artifacts),
         'arithmetic_kernel_checks': build_arithmetic_kernel_checks(artifacts),
+        'lookup_lowering_checks': build_lookup_lowering_checks(artifacts),
         'slot_allocation_checks': build_slot_allocation_checks(artifacts),
         'full_attack_inventory_checks': build_full_attack_inventory_checks(artifacts),
         'primitive_multiplier_checks': build_primitive_multiplier_checks(artifacts),
@@ -544,7 +662,7 @@ def build_verification_summary(case_count: int = 16, repo_root: Path | None = No
     invariant_total = sum(group['total'] for group in invariant_groups.values())
     invariant_pass = sum(group['pass'] for group in invariant_groups.values())
     return {
-        'schema': 'compiler-project-verification-summary-v3',
+        'schema': 'compiler-project-verification-summary-v4',
         'semantic_replay': semantic,
         **invariant_groups,
         'summary': {

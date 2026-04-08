@@ -38,6 +38,6 @@
   },
   "notes": [
     "This summary validates the checked-in folded lookup contract fields and then points at the exhaustive and sampled semantic audits generated under artifacts/lookup/.",
-    "The lookup contract is exact at the arithmetic interface layer, but the repository still does not ship a primitive-gate qRAM or QROM realization."
+    "The lookup contract is exact at the arithmetic interface layer, and the compiler project lowers named lookup families below that contract. The repository still does not ship a bit-for-bit primitive qRAM or QROM realization."
   ]
 }

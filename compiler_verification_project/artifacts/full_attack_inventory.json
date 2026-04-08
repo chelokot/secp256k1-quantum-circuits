@@ -266,13 +266,13 @@
     "full_oracle_non_clifford": 23813671,
     "arithmetic_slot_count": 9,
     "control_slot_count": 1,
-    "lookup_workspace_qubits": 33042,
+    "lookup_workspace_qubits": 32786,
     "live_phase_bits": 1,
-    "total_logical_qubits": 35348,
+    "total_logical_qubits": 35092,
     "improvement_vs_google_low_qubit": 3.779341706702843,
     "improvement_vs_google_low_gate": 2.9394879941022114,
-    "qubit_ratio_vs_google_low_qubit": 0.03394817245671608,
-    "qubit_ratio_vs_google_low_gate": 0.0410207083851986,
+    "qubit_ratio_vs_google_low_qubit": 0.034195828108970705,
+    "qubit_ratio_vs_google_low_gate": 0.041319958965006266,
     "notes": [
       "This family uses the same forward unary QROM compute as folded_unary_qrom_v1 but replaces reverse uncompute by the exact 8/7-split measurement-based construction.",
       "It improves the exact gate frontier while keeping the lookup semantics identical.",
@@ -301,8 +301,8 @@
     "qubit_ratio_vs_google_low_qubit": 0.5134788189987163,
     "qubit_ratio_vs_google_low_gate": 0.6204535729567822,
     "notes": [
-      "Scans only positive magnitudes 0..32767. The sign bit is handled separately via exact conditional y-negation.",
-      "This remains the lowest-space exact lookup family checked into the compiler project.",
+      "This remains the lowest-space lookup family checked into the compiler project.",
+      "Zero-word and 0x8000 routing are explicit semantic cases, but they do not allocate a separate metadata-table lookup.",
       "This family treats the phase-estimation shell as a one-qubit live quantum register with classical feed-forward between measurements.",
       "It is the strongest exact qubit-compression lever currently checked into the compiler project because it removes the 512-bit coherent phase-register requirement without changing the oracle family itself."
     ]

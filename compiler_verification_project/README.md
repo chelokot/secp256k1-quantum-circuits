@@ -13,11 +13,13 @@ It is intentionally separate from the repository mainline.
    classical tail elisions;
 2. fixes **named exact compiler families** for folded lookup, phase-shell, and
    schedule orchestration;
-3. imports a fixed exact non-Clifford arithmetic-kernel family instead of
+3. lowers each named lookup family into an explicit stage/block inventory below
+   the folded lookup contract;
+4. imports a fixed exact non-Clifford arithmetic-kernel family instead of
    back-solving whole-leaf costs from a headline constant;
-4. derives **whole-oracle non-Clifford and logical-qubit counts** for those
+5. derives **whole-oracle non-Clifford and logical-qubit counts** for those
    families; and
-5. verifies the completed raw-32 schedule semantically on deterministic
+6. verifies the completed raw-32 schedule semantically on deterministic
    secp256k1 basis-state cases.
 
 ## Strongest exact claim here
@@ -33,7 +35,7 @@ bit-for-bit primitive CX/CCX netlists for every 256-bit field multiplier.
 What it does ship is:
 
 - an exact whole-oracle schedule,
-- exact lookup-family choices,
+- exact lookup-family choices with explicit lowered stage inventories,
 - exact leaf slot allocation,
 - exact phase-shell families, and
 - exact whole-oracle counts relative to the chosen arithmetic kernel family.
@@ -44,6 +46,7 @@ What it does ship is:
 - `full_raw32_oracle.json` — exact fully quantum schedule: 1 direct seed + 31 leaf calls
 - `exact_leaf_slot_allocation.json` — exact versioned live-range allocation of the checked leaf
 - `module_library.json` — fixed arithmetic kernel library used by the frontier
+- `lookup_lowerings.json` — explicit stage/block inventories for the named folded lookup families
 - `primitive_multiplier_library.json` — auditable manifest for all 341 multiplier instances in the raw-32 oracle
 - `phase_shell_families.json` — full-register and semiclassical-QFT shell families
 - `table_manifests.json` — exact folded-table dimensions and canonical window bases
@@ -70,6 +73,8 @@ Its defining exact features are:
 
 - exact slot allocation cuts the leaf-side arithmetic peak from 10 named field
   slots to **9 exact physical field slots**;
+- explicit lookup lowerings reconstruct each lookup-family count from checked
+  stage/block inventories instead of from naked family formulas;
 - a semiclassical-QFT phase-shell family removes the fixed **512 live phase
   qubits** assumption; and
 - those two ingredients place the best exact low-qubit family at **2,337

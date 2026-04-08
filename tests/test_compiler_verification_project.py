@@ -50,6 +50,8 @@ def test_compiler_project_verification_summary_groups_all_pass() -> None:
     assert semantic['random_cases'] == 16
     assert semantic['phase_b_zero_cases'] > 0
     assert semantic['phase_b_nonzero_cases'] > 0
+    lookup_lowering = summary['lookup_lowering_checks']
+    assert lookup_lowering['pass'] == lookup_lowering['total']
 
 
 def test_mutated_frontier_family_is_detected() -> None:
@@ -65,6 +67,14 @@ def test_mutated_slot_assignment_is_detected() -> None:
     artifacts['exact_leaf_slot_allocation']['versions'][21]['assigned_slot'] = artifacts['exact_leaf_slot_allocation']['versions'][20]['assigned_slot']
     groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
     assert groups['slot_allocation_checks']['pass'] < groups['slot_allocation_checks']['total']
+
+
+def test_mutated_lookup_lowering_stage_is_detected() -> None:
+    artifacts = deepcopy(_load_artifacts())
+    artifacts['lookup_lowerings']['families'][0]['stages'][1]['blocks'][0]['non_clifford_total'] += 1
+    groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
+    assert groups['lookup_lowering_checks']['pass'] < groups['lookup_lowering_checks']['total']
+    assert groups['frontier_checks']['pass'] < groups['frontier_checks']['total']
 
 
 def test_mutated_cain_transfer_is_detected() -> None:

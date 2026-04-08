@@ -48,7 +48,7 @@
     {
       "family": "folded_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
       "logicalCounts": {
-        "numQubits": 35859,
+        "numQubits": 35603,
         "cczCount": 23813671,
         "rotationCount": 512,
         "rotationDepth": 512,
@@ -59,7 +59,7 @@
     {
       "family": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
       "logicalCounts": {
-        "numQubits": 35348,
+        "numQubits": 35092,
         "cczCount": 23813671,
         "rotationCount": 512,
         "rotationDepth": 512,

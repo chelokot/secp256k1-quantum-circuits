@@ -55,6 +55,7 @@ from common import (  # noqa: E402
     sha256_path,
 )
 from derived_resources import minimal_addition_chain  # noqa: E402
+from lookup_lowering import lookup_lowering_library  # noqa: E402
 from verifier import exec_netlist  # noqa: E402
 
 PointAffine = Optional[Tuple[int, int]]
@@ -534,70 +535,25 @@ def primitive_multiplier_library() -> Dict[str, Any]:
 
 
 def lookup_families() -> List[LookupFamily]:
-    zero_check = FOLDED_MAG_BITS - 1
-    magnitude_prepare = 2 * (FOLDED_MAG_BITS - 1)
-    conditional_negate_y = FIELD_BITS - 1
-
-    and_equality_cost = FOLDED_MAG_BITS - 1
-    linear_scan_compute = FOLDED_MAG_DOMAIN * and_equality_cost
-    linear_scan_uncompute = 0
-    linear_scan = LookupFamily(
-        name='folded_linear_scan_tmpand_v1',
-        summary='Low-qubit exact lookup family using a 15-bit folded magnitude domain and temporary logical-AND equality ladders.',
-        gate_set='Clifford + temporary logical-AND + measurement',
-        compute_lookup_non_clifford=linear_scan_compute,
-        uncompute_lookup_non_clifford=linear_scan_uncompute,
-        zero_check_non_clifford=zero_check,
-        magnitude_prepare_non_clifford=magnitude_prepare,
-        conditional_negate_y_non_clifford=conditional_negate_y,
-        direct_lookup_non_clifford=linear_scan_compute + linear_scan_uncompute + zero_check + magnitude_prepare + conditional_negate_y,
-        per_leaf_lookup_non_clifford=linear_scan_compute + linear_scan_uncompute + zero_check + magnitude_prepare + conditional_negate_y,
-        extra_lookup_workspace_qubits=FOLDED_MAG_BITS + (FOLDED_MAG_BITS - 2) + 3,
-        notes=[
-            'Scans only positive magnitudes 0..32767. The sign bit is handled separately via exact conditional y-negation.',
-            'This remains the lowest-space exact lookup family checked into the compiler project.',
-        ],
-    )
-
-    unary_compute = FOLDED_MAG_DOMAIN - 1
-    unary_full_uncompute = FOLDED_MAG_DOMAIN - 1
-    unary = LookupFamily(
-        name='folded_unary_qrom_v1',
-        summary='Lower-gate exact lookup family using a full unary conversion register over 32768 folded magnitudes.',
-        gate_set='Clifford + Toffoli-style unary QROM',
-        compute_lookup_non_clifford=unary_compute,
-        uncompute_lookup_non_clifford=unary_full_uncompute,
-        zero_check_non_clifford=zero_check,
-        magnitude_prepare_non_clifford=magnitude_prepare,
-        conditional_negate_y_non_clifford=conditional_negate_y,
-        direct_lookup_non_clifford=unary_compute + unary_full_uncompute + zero_check + magnitude_prepare + conditional_negate_y,
-        per_leaf_lookup_non_clifford=unary_compute + unary_full_uncompute + zero_check + magnitude_prepare + conditional_negate_y,
-        extra_lookup_workspace_qubits=FOLDED_MAG_DOMAIN + FOLDED_MAG_BITS + 3,
-        notes=[
-            'This family minimizes gate count more aggressively than the linear-scan family, but uses a very large unary workspace.',
-            'The compute and reverse-uncompute halves are both counted explicitly.',
-        ],
-    )
-
-    unary_measured_uncompute = (1 << 8) + ((1 << 7) - 1)
-    unary_measured = LookupFamily(
-        name='folded_unary_qrom_measured_uncompute_v1',
-        summary='Best exact low-gate family currently checked in: unary folded QROM compute plus 8/7-split measurement-based uncompute.',
-        gate_set='Clifford + Toffoli-style unary QROM + measurement',
-        compute_lookup_non_clifford=unary_compute,
-        uncompute_lookup_non_clifford=unary_measured_uncompute,
-        zero_check_non_clifford=zero_check,
-        magnitude_prepare_non_clifford=magnitude_prepare,
-        conditional_negate_y_non_clifford=conditional_negate_y,
-        direct_lookup_non_clifford=unary_compute + unary_measured_uncompute + zero_check + magnitude_prepare + conditional_negate_y,
-        per_leaf_lookup_non_clifford=unary_compute + unary_measured_uncompute + zero_check + magnitude_prepare + conditional_negate_y,
-        extra_lookup_workspace_qubits=FOLDED_MAG_DOMAIN + FOLDED_MAG_BITS + (1 << 8) + 3,
-        notes=[
-            'This family uses the same forward unary QROM compute as folded_unary_qrom_v1 but replaces reverse uncompute by the exact 8/7-split measurement-based construction.',
-            'It improves the exact gate frontier while keeping the lookup semantics identical.',
-        ],
-    )
-    return [linear_scan, unary, unary_measured]
+    rows = []
+    for row in lookup_lowering_library()['families']:
+        rows.append(
+            LookupFamily(
+                name=row['name'],
+                summary=row['summary'],
+                gate_set=row['gate_set'],
+                compute_lookup_non_clifford=row['compute_lookup_non_clifford'],
+                uncompute_lookup_non_clifford=row['uncompute_lookup_non_clifford'],
+                zero_check_non_clifford=row['zero_check_non_clifford'],
+                magnitude_prepare_non_clifford=row['magnitude_prepare_non_clifford'],
+                conditional_negate_y_non_clifford=row['conditional_negate_y_non_clifford'],
+                direct_lookup_non_clifford=row['direct_lookup_non_clifford'],
+                per_leaf_lookup_non_clifford=row['per_leaf_lookup_non_clifford'],
+                extra_lookup_workspace_qubits=row['extra_lookup_workspace_qubits'],
+                notes=row['notes'],
+            )
+        )
+    return rows
 
 
 
@@ -682,18 +638,19 @@ def compiler_family_frontier() -> Dict[str, Any]:
     best_gate = min(families, key=lambda row: (row.full_oracle_non_clifford, row.total_logical_qubits))
     best_qubit = min(families, key=lambda row: (row.total_logical_qubits, row.full_oracle_non_clifford))
     return {
-        'schema': 'compiler-project-frontier-v3',
+        'schema': 'compiler-project-frontier-v4',
         'public_google_baseline': PUBLIC_GOOGLE_BASELINE,
         'schedule': schedule,
         'slot_allocation': slot_alloc,
         'arithmetic_kernel_family': arithmetic_kernel_library(),
+        'lookup_lowerings': lookup_lowering_library(),
         'lookup_families': [asdict(row) for row in lookup_families()],
         'phase_shell_families': [asdict(row) for row in phase_shell_families()],
         'families': [asdict(row) for row in families],
         'best_gate_family': asdict(best_gate),
         'best_qubit_family': asdict(best_qubit),
         'notes': [
-            'These are exact whole-oracle counts for named compiler families over a fixed kernel family and a fully quantum raw-32 schedule.',
+            'These are exact whole-oracle counts for named compiler families over a fixed arithmetic-kernel family, an explicit lookup-lowering family, and a fully quantum raw-32 schedule.',
             'The qubit frontier uses exact slot allocation and an explicit semiclassical phase-shell option rather than a fixed 512-bit phase-register policy.',
             'The arithmetic kernels remain an imported exact non-Clifford family boundary; whole-oracle counts are exact relative to that family.',
         ],
@@ -960,6 +917,7 @@ def build_all_artifacts() -> Dict[str, Any]:
         'primitive_multiplier_library': primitive_multiplier_library(),
         'phase_shell_families': {'schema': 'compiler-project-phase-shells-v1', 'families': [asdict(f) for f in phase_shell_families()]},
         'table_manifests': table_manifests(),
+        'lookup_lowerings': lookup_lowering_library(),
         'frontier': compiler_family_frontier(),
         'full_attack_inventory': full_attack_inventory(),
     }
@@ -970,12 +928,13 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('primitive_multiplier_library.json'), out['primitive_multiplier_library'])
     dump_json(project_artifact_path('phase_shell_families.json'), out['phase_shell_families'])
     dump_json(project_artifact_path('table_manifests.json'), out['table_manifests'])
+    dump_json(project_artifact_path('lookup_lowerings.json'), out['lookup_lowerings'])
     dump_json(project_artifact_path('family_frontier.json'), out['frontier'])
     dump_json(project_artifact_path('full_attack_inventory.json'), out['full_attack_inventory'])
     write_azure_logical_counts()
 
     build_summary = {
-        'schema': 'compiler-project-build-summary-v3',
+        'schema': 'compiler-project-build-summary-v4',
         'artifacts': {
             'canonical_public_point': 'compiler_verification_project/artifacts/canonical_public_point.json',
             'full_raw32_oracle': 'compiler_verification_project/artifacts/full_raw32_oracle.json',
@@ -984,6 +943,7 @@ def build_all_artifacts() -> Dict[str, Any]:
             'primitive_multiplier_library': 'compiler_verification_project/artifacts/primitive_multiplier_library.json',
             'phase_shell_families': 'compiler_verification_project/artifacts/phase_shell_families.json',
             'table_manifests': 'compiler_verification_project/artifacts/table_manifests.json',
+            'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
             'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
             'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
             'azure_resource_estimator_logical_counts': 'compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json',
@@ -993,7 +953,7 @@ def build_all_artifacts() -> Dict[str, Any]:
             'best_qubit_family': out['frontier']['best_qubit_family'],
         },
         'notes': [
-            'The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families.',
+            'The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families with explicit lookup lowerings.',
             'Its qubit accounting uses exact slot allocation and an explicit semiclassical phase-shell family instead of a fixed 10-slot/512-phase policy.',
         ],
     }
