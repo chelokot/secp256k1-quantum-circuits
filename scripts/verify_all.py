@@ -343,7 +343,7 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
             f"      semantic replay: {compiler_verify['summary']['semantic_cases']['pass']:,} / {compiler_verify['summary']['semantic_cases']['total']:,} cases"
         ))
         print(console.detail(
-            f"      integrity checks: {compiler_verify['summary']['invariant_checks']['pass']:,} / {compiler_verify['summary']['invariant_checks']['total']:,} (canonical point + schedule + slot allocation + lowered arithmetic/lookup + generated inventories + FT IR + subcircuit equivalence + frontier + transfer handoffs)"
+            f"      integrity checks: {compiler_verify['summary']['invariant_checks']['pass']:,} / {compiler_verify['summary']['invariant_checks']['total']:,} (canonical point + schedule + slot allocation + lowered arithmetic/lookup + generated inventories + FT IR + whole-oracle recount + subcircuit equivalence + frontier + transfer handoffs)"
         ))
         print(console.detail(f"      verification sha256: {compiler_project['verification_summary_sha256']}"))
         print()

@@ -50,8 +50,9 @@ What it does ship is:
 - `arithmetic_lowerings.json` — explicit stage/block inventories for the named arithmetic-kernel family
 - `module_library.json` — arithmetic-kernel summary used by the frontier
 - `lookup_lowerings.json` — explicit stage/block inventories for the named folded lookup families
-- `generated_block_inventories.json` — generated whole-oracle block inventories whose reconstructed totals feed the exact frontier
+- `generated_block_inventories.json` — generated whole-oracle block inventories for the supporting decomposition layer
 - `ft_ir_compositions.json` — compositional FT-style call graphs and leaf sigma reconstructions for every named compiler family
+- `whole_oracle_recount.json` — independent exact whole-oracle recount derived from the FT IR leaf sigma
 - `subcircuit_equivalence.json` — cross-layer equivalence witnesses for traced ISA opcodes, lowered lookup families, the coherent cleanup window, and generated whole-oracle composition
 - `primitive_multiplier_library.json` — auditable manifest for all 341 multiplier instances in the raw-32 oracle
 - `phase_shell_families.json` — full-register and semiclassical-QFT shell families
@@ -85,6 +86,8 @@ Its defining exact features are:
   stage/block inventories instead of from naked family formulas;
 - FT IR compositions reconstruct each family from hierarchical bundles plus a
   traversed leaf sigma instead of only from flattened generated blocks;
+- whole-oracle recount reconstructs the frontier totals from the FT IR leaf
+  sigma rather than directly from the generated block inventory layer;
 - subcircuit-equivalence witnesses bind traced ISA arithmetic/flag opcodes,
   lowered lookup-family semantics, the coherent cleanup window, and generated
   whole-oracle composition back to the checked source artifacts;

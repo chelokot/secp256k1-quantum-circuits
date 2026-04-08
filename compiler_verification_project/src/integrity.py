@@ -50,6 +50,7 @@ from project import (
     table_manifests,
 )
 from subcircuit_equivalence import build_subcircuit_equivalence_artifact
+from whole_oracle_recount import build_whole_oracle_recount
 
 
 def _check(name: str, passed: bool, expected: Any, observed: Any) -> Dict[str, Any]:
@@ -89,6 +90,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'family_frontier': artifact_root / 'family_frontier.json',
         'full_attack_inventory': artifact_root / 'full_attack_inventory.json',
         'ft_ir_compositions': artifact_root / 'ft_ir_compositions.json',
+        'whole_oracle_recount': artifact_root / 'whole_oracle_recount.json',
         'subcircuit_equivalence': artifact_root / 'subcircuit_equivalence.json',
         'build_summary': artifact_root / 'build_summary.json',
         'cain_exact_transfer': artifact_root / 'cain_exact_transfer.json',
@@ -654,6 +656,34 @@ def build_full_attack_inventory_checks(artifacts: Mapping[str, Any]) -> Dict[str
             },
             inventory['generated_block_inventory_summary'],
         ),
+        _check(
+            'full_attack_inventory_recount_summary_matches_frontier',
+            inventory['whole_oracle_recount_summary'] == {
+                'best_gate_family': artifacts['family_frontier']['best_gate_family'],
+                'best_qubit_family': artifacts['family_frontier']['best_qubit_family'],
+                'family_recount_totals': [
+                    {
+                        'name': row['name'],
+                        'full_oracle_non_clifford': row['full_oracle_non_clifford'],
+                        'total_logical_qubits': row['total_logical_qubits'],
+                    }
+                    for row in artifacts['family_frontier']['families']
+                ],
+            },
+            {
+                'best_gate_family': artifacts['family_frontier']['best_gate_family'],
+                'best_qubit_family': artifacts['family_frontier']['best_qubit_family'],
+                'family_recount_totals': [
+                    {
+                        'name': row['name'],
+                        'full_oracle_non_clifford': row['full_oracle_non_clifford'],
+                        'total_logical_qubits': row['total_logical_qubits'],
+                    }
+                    for row in artifacts['family_frontier']['families']
+                ],
+            },
+            inventory['whole_oracle_recount_summary'],
+        ),
         _check('inventory_best_gate_family_matches_frontier', inventory['best_gate_family'] == artifacts['family_frontier']['best_gate_family'], artifacts['family_frontier']['best_gate_family'], inventory['best_gate_family']),
         _check('inventory_best_qubit_family_matches_frontier', inventory['best_qubit_family'] == artifacts['family_frontier']['best_qubit_family'], artifacts['family_frontier']['best_qubit_family'], inventory['best_qubit_family']),
     ]
@@ -757,6 +787,70 @@ def build_ft_ir_checks(artifacts: Mapping[str, Any], repo_root: Path) -> Dict[st
             {
                 'best_gate_family': ft_ir['best_gate_family'],
                 'best_qubit_family': ft_ir['best_qubit_family'],
+            },
+        ),
+    ]
+    return _summarize_checks(checks)
+
+
+def build_whole_oracle_recount_checks(artifacts: Mapping[str, Any], repo_root: Path) -> Dict[str, Any]:
+    recount = artifacts['whole_oracle_recount']
+    expected = build_whole_oracle_recount(
+        ft_ir_compositions=artifacts['ft_ir_compositions'],
+        public_google_baseline=artifacts['family_frontier']['public_google_baseline'],
+    )
+    source_path_failures = [
+        path
+        for path in recount['source_artifacts'].values()
+        if not (repo_root / path).exists()
+    ]
+    ft_ir_lookup = {row['name']: row for row in artifacts['ft_ir_compositions']['families']}
+    frontier_lookup = {row['name']: row for row in artifacts['family_frontier']['families']}
+    family_failures = []
+    for family in recount['families']:
+        ft_ir_row = ft_ir_lookup[family['name']]
+        frontier_row = frontier_lookup[family['name']]
+        if not (
+            family['primitive_totals'] == ft_ir_row['reconstruction']['primitive_totals']
+            and family['full_oracle_non_clifford'] == ft_ir_row['reconstruction']['full_oracle_non_clifford'] == frontier_row['full_oracle_non_clifford']
+            and family['total_logical_qubits'] == ft_ir_row['reconstruction']['total_logical_qubits'] == frontier_row['total_logical_qubits']
+            and family['phase_shell_measurements'] == ft_ir_row['reconstruction']['phase_shell_measurements']
+            and family['phase_shell_rotations'] == ft_ir_row['reconstruction']['phase_shell_rotations']
+        ):
+            family_failures.append(family['name'])
+    checks = [
+        _check('whole_oracle_recount_matches_generator', recount == expected, expected, recount),
+        _check(
+            'whole_oracle_recount_schema_matches_current_version',
+            recount['schema'] == 'compiler-project-whole-oracle-recount-v1',
+            'compiler-project-whole-oracle-recount-v1',
+            recount['schema'],
+        ),
+        _check(
+            'whole_oracle_recount_source_paths_match_expected',
+            recount['source_artifacts'] == {
+                'ft_ir_compositions': 'compiler_verification_project/artifacts/ft_ir_compositions.json',
+                'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
+            },
+            {
+                'ft_ir_compositions': 'compiler_verification_project/artifacts/ft_ir_compositions.json',
+                'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
+            },
+            recount['source_artifacts'],
+        ),
+        _check('whole_oracle_recount_source_paths_exist_on_disk', len(source_path_failures) == 0, [], source_path_failures),
+        _check('whole_oracle_recount_rows_match_ft_ir_and_frontier', len(family_failures) == 0, [], family_failures),
+        _check(
+            'whole_oracle_recount_best_families_match_frontier',
+            recount['best_gate_family']['name'] == artifacts['family_frontier']['best_gate_family']['name']
+            and recount['best_qubit_family']['name'] == artifacts['family_frontier']['best_qubit_family']['name'],
+            {
+                'best_gate_family': artifacts['family_frontier']['best_gate_family']['name'],
+                'best_qubit_family': artifacts['family_frontier']['best_qubit_family']['name'],
+            },
+            {
+                'best_gate_family': recount['best_gate_family']['name'],
+                'best_qubit_family': recount['best_qubit_family']['name'],
             },
         ),
     ]
@@ -971,6 +1065,12 @@ def build_frontier_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
             'compiler_verification_project/artifacts/generated_block_inventories.json',
             frontier['generated_block_inventory_artifact'],
         ),
+        _check(
+            'frontier_whole_oracle_recount_path_matches_expected',
+            frontier['whole_oracle_recount_artifact'] == 'compiler_verification_project/artifacts/whole_oracle_recount.json',
+            'compiler_verification_project/artifacts/whole_oracle_recount.json',
+            frontier['whole_oracle_recount_artifact'],
+        ),
         _check('lookup_family_library_matches_named_lookup_families', frontier['lookup_families'] == expected_lookup_families, expected_lookup_families, frontier['lookup_families']),
         _check('phase_shell_library_matches_named_phase_shells', frontier['phase_shell_families'] == expected_phase_shells, expected_phase_shells, frontier['phase_shell_families']),
         _check('frontier_family_rows_reconstruct_from_components', families == expected_families, expected_families, families),
@@ -996,11 +1096,12 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
         'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
         'ft_ir_compositions': 'compiler_verification_project/artifacts/ft_ir_compositions.json',
+        'whole_oracle_recount': 'compiler_verification_project/artifacts/whole_oracle_recount.json',
         'subcircuit_equivalence': 'compiler_verification_project/artifacts/subcircuit_equivalence.json',
         'azure_resource_estimator_logical_counts': 'compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json',
     }
     checks = [
-        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v8', 'compiler-project-build-summary-v8', build_summary['schema']),
+        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v9', 'compiler-project-build-summary-v9', build_summary['schema']),
         _check('build_summary_artifact_paths_match_expected_set', build_summary['artifacts'] == expected_paths, expected_paths, build_summary['artifacts']),
         _check(
             'build_summary_paths_exist_on_disk',
@@ -1066,6 +1167,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any]) -> Dic
         'slot_allocation_checks': build_slot_allocation_checks(artifacts),
         'full_attack_inventory_checks': build_full_attack_inventory_checks(artifacts),
         'ft_ir_checks': build_ft_ir_checks(artifacts, repo_root),
+        'whole_oracle_recount_checks': build_whole_oracle_recount_checks(artifacts, repo_root),
         'subcircuit_equivalence_checks': build_subcircuit_equivalence_checks(artifacts, repo_root),
         'primitive_multiplier_checks': build_primitive_multiplier_checks(artifacts),
         'frontier_checks': build_frontier_checks(artifacts),
@@ -1088,7 +1190,7 @@ def build_verification_summary(case_count: int = 16, repo_root: Path | None = No
     invariant_total = sum(group['total'] for group in invariant_groups.values())
     invariant_pass = sum(group['pass'] for group in invariant_groups.values())
     return {
-        'schema': 'compiler-project-verification-summary-v7',
+        'schema': 'compiler-project-verification-summary-v8',
         'semantic_replay': semantic,
         **invariant_groups,
         'summary': {

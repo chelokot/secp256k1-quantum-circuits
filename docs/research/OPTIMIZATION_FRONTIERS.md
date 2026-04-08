@@ -12,6 +12,7 @@ which implementation gaps remain open.
 - exact arithmetic-kernel stage/block inventories for the named compiler family
 - compositional FT-style call graphs and leaf sigma for the named compiler
   families
+- independent exact whole-oracle recount over the FT IR leaf sigma
 - internal subcircuit-equivalence witnesses for traced ISA arithmetic/flag
   opcodes, lowered lookup families, the cleanup window, and generated
   whole-oracle composition

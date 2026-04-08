@@ -77,6 +77,7 @@ class VerificationPipelineTests(unittest.TestCase):
         self.assertEqual(verify['generated_block_inventory_checks']['pass'], verify['generated_block_inventory_checks']['total'])
         self.assertEqual(verify['slot_allocation_checks']['pass'], verify['slot_allocation_checks']['total'])
         self.assertEqual(verify['ft_ir_checks']['pass'], verify['ft_ir_checks']['total'])
+        self.assertEqual(verify['whole_oracle_recount_checks']['pass'], verify['whole_oracle_recount_checks']['total'])
         self.assertEqual(verify['subcircuit_equivalence_checks']['pass'], verify['subcircuit_equivalence_checks']['total'])
         self.assertEqual(verify['frontier_checks']['pass'], verify['frontier_checks']['total'])
         self.assertEqual(verify['cain_transfer_checks']['pass'], verify['cain_transfer_checks']['total'])

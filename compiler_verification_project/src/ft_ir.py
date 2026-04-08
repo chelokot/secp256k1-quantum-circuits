@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from typing import Any, Dict, List, Mapping, Tuple
+from typing import Any, Dict, List, Mapping, Optional, Tuple
 
 
 def _node(node_id: str, kind: str, category: str, summary: str, metadata: Mapping[str, Any]) -> Dict[str, Any]:
@@ -398,7 +398,7 @@ def _family_ft_ir(
     lookup_family: Mapping[str, Any],
     phase_shell: Mapping[str, Any],
     generated_family: Mapping[str, Any],
-    frontier_family: Mapping[str, Any],
+    frontier_family: Optional[Mapping[str, Any]],
     field_bits: int,
 ) -> Dict[str, Any]:
     leaf_call_count = int(schedule['summary']['leaf_call_count_total'])
@@ -456,8 +456,16 @@ def _family_ft_ir(
             'phase_shell_rotations': int(generated_family['reconstruction']['phase_shell_rotations']),
         },
         'frontier_reconstruction': {
-            'full_oracle_non_clifford': int(frontier_family['full_oracle_non_clifford']),
-            'total_logical_qubits': int(frontier_family['total_logical_qubits']),
+            'full_oracle_non_clifford': int(
+                generated_family['reconstruction']['full_oracle_non_clifford']
+                if frontier_family is None
+                else frontier_family['full_oracle_non_clifford']
+            ),
+            'total_logical_qubits': int(
+                generated_family['reconstruction']['total_logical_qubits']
+                if frontier_family is None
+                else frontier_family['total_logical_qubits']
+            ),
         },
     }
 
@@ -469,12 +477,12 @@ def build_ft_ir_compositions(
     lookup_lowerings: Mapping[str, Any],
     phase_shells: List[Mapping[str, Any]],
     generated_block_inventories: Mapping[str, Any],
-    frontier: Mapping[str, Any],
+    frontier: Optional[Mapping[str, Any]],
     field_bits: int,
 ) -> Dict[str, Any]:
     lookup_family_rows = {row['name']: row for row in lookup_lowerings['families']}
     phase_shell_rows = {row['name']: row for row in phase_shells}
-    frontier_rows = {row['name']: row for row in frontier['families']}
+    frontier_rows = {} if frontier is None else {row['name']: row for row in frontier['families']}
     families = []
     for generated_family in generated_block_inventories['families']:
         lookup_family = lookup_family_rows[generated_family['lookup_family']]
@@ -487,7 +495,7 @@ def build_ft_ir_compositions(
                 lookup_family=lookup_family,
                 phase_shell=phase_shell,
                 generated_family=generated_family,
-                frontier_family=frontier_rows[generated_family['name']],
+                frontier_family=frontier_rows.get(generated_family['name']),
                 field_bits=field_bits,
             )
         )

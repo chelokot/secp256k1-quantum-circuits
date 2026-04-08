@@ -254,6 +254,7 @@
     "whole_oracle_lookup_count": 32
   },
   "generated_block_inventory_artifact": "compiler_verification_project/artifacts/generated_block_inventories.json",
+  "whole_oracle_recount_artifact": "compiler_verification_project/artifacts/whole_oracle_recount.json",
   "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
   "generated_block_inventory_summary": {
     "best_gate_family": {
@@ -303,6 +304,94 @@
       }
     },
     "family_reconstructed_totals": [
+      {
+        "name": "folded_linear_scan_tmpand_v1__full_phase_register_v1",
+        "full_oracle_non_clifford": 37432935,
+        "total_logical_qubits": 2849
+      },
+      {
+        "name": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",
+        "full_oracle_non_clifford": 37432935,
+        "total_logical_qubits": 2338
+      },
+      {
+        "name": "folded_unary_qrom_v1__full_phase_register_v1",
+        "full_oracle_non_clifford": 24849959,
+        "total_logical_qubits": 35604
+      },
+      {
+        "name": "folded_unary_qrom_v1__semiclassical_qft_v1",
+        "full_oracle_non_clifford": 24849959,
+        "total_logical_qubits": 35093
+      },
+      {
+        "name": "folded_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+        "full_oracle_non_clifford": 23813671,
+        "total_logical_qubits": 35604
+      },
+      {
+        "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+        "full_oracle_non_clifford": 23813671,
+        "total_logical_qubits": 35093
+      }
+    ]
+  },
+  "whole_oracle_recount_summary": {
+    "best_gate_family": {
+      "name": "folded_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+      "summary": "Best exact low-gate family currently checked in: unary folded QROM compute plus 8/7-split measurement-based uncompute. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
+      "gate_set": "Clifford + Toffoli-style unary QROM + measurement; phase shell: semiclassical_qft_v1",
+      "phase_shell": "semiclassical_qft_v1",
+      "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
+      "lookup_family": "folded_unary_qrom_measured_uncompute_v1",
+      "arithmetic_leaf_non_clifford": 733657,
+      "direct_seed_non_clifford": 33447,
+      "per_leaf_lookup_non_clifford": 33447,
+      "full_oracle_non_clifford": 23813671,
+      "arithmetic_slot_count": 9,
+      "control_slot_count": 2,
+      "lookup_workspace_qubits": 32786,
+      "live_phase_bits": 1,
+      "total_logical_qubits": 35093,
+      "improvement_vs_google_low_qubit": 3.779341706702843,
+      "improvement_vs_google_low_gate": 2.9394879941022114,
+      "qubit_ratio_vs_google_low_qubit": 0.034194853674521984,
+      "qubit_ratio_vs_google_low_gate": 0.04131878152338073,
+      "notes": [
+        "This family uses the same forward unary QROM compute as folded_unary_qrom_v1 but replaces reverse uncompute by the exact 8/7-split measurement-based construction.",
+        "It improves the exact gate frontier while keeping the lookup semantics identical.",
+        "This family treats the phase-estimation shell as a one-qubit live quantum register with classical feed-forward between measurements.",
+        "It is the strongest exact qubit-compression lever currently checked into the compiler project because it removes the 512-bit coherent phase-register requirement without changing the oracle family itself."
+      ]
+    },
+    "best_qubit_family": {
+      "name": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",
+      "summary": "Low-qubit exact lookup family using a 15-bit folded magnitude domain and temporary logical-AND equality ladders. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit.",
+      "gate_set": "Clifford + temporary logical-AND + measurement; phase shell: semiclassical_qft_v1",
+      "phase_shell": "semiclassical_qft_v1",
+      "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
+      "lookup_family": "folded_linear_scan_tmpand_v1",
+      "arithmetic_leaf_non_clifford": 733657,
+      "direct_seed_non_clifford": 459049,
+      "per_leaf_lookup_non_clifford": 459049,
+      "full_oracle_non_clifford": 37432935,
+      "arithmetic_slot_count": 9,
+      "control_slot_count": 2,
+      "lookup_workspace_qubits": 31,
+      "live_phase_bits": 1,
+      "total_logical_qubits": 2338,
+      "improvement_vs_google_low_qubit": 2.4042998498514745,
+      "improvement_vs_google_low_gate": 1.8700109943289245,
+      "qubit_ratio_vs_google_low_qubit": 0.5132591958939264,
+      "qubit_ratio_vs_google_low_gate": 0.6201881950384944,
+      "notes": [
+        "This remains the lowest-space lookup family checked into the compiler project.",
+        "Zero-word and 0x8000 routing are explicit semantic cases, but they do not allocate a separate metadata-table lookup.",
+        "This family treats the phase-estimation shell as a one-qubit live quantum register with classical feed-forward between measurements.",
+        "It is the strongest exact qubit-compression lever currently checked into the compiler project because it removes the 512-bit coherent phase-register requirement without changing the oracle family itself."
+      ]
+    },
+    "family_recount_totals": [
       {
         "name": "folded_linear_scan_tmpand_v1__full_phase_register_v1",
         "full_oracle_non_clifford": 37432935,

@@ -1,5 +1,5 @@
 {
-  "schema": "compiler-project-frontier-v6",
+  "schema": "compiler-project-frontier-v7",
   "public_google_baseline": {
     "low_qubit": {
       "logical_qubits": 1200,
@@ -2145,6 +2145,7 @@
     ]
   },
   "generated_block_inventory_artifact": "compiler_verification_project/artifacts/generated_block_inventories.json",
+  "whole_oracle_recount_artifact": "compiler_verification_project/artifacts/whole_oracle_recount.json",
   "lookup_families": [
     {
       "name": "folded_linear_scan_tmpand_v1",
@@ -2443,6 +2444,7 @@
   "notes": [
     "These are exact whole-oracle counts for named compiler families over an explicit arithmetic-lowering family, an explicit lookup-lowering family, a generated block-inventory layer, and a fully quantum raw-32 schedule.",
     "The qubit frontier uses exact slot allocation and an explicit semiclassical phase-shell option rather than a fixed 512-bit phase-register policy.",
-    "The arithmetic kernels and lookup families are bound to explicit internal subcircuit-equivalence witnesses at the checked ISA and generated-inventory layers; the remaining open gap is Clifford-complete micro-expansion and external equivalence checking below the named blocks."
+    "The arithmetic kernels and lookup families are bound to explicit internal subcircuit-equivalence witnesses at the checked ISA and generated-inventory layers; the remaining open gap is Clifford-complete micro-expansion and external equivalence checking below the named blocks.",
+    "The compiler frontier totals are sourced from the independent whole-oracle recount over the FT IR leaf sigma rather than directly from the generated block inventory."
   ]
 }

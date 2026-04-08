@@ -1,5 +1,5 @@
 {
-  "schema": "compiler-project-build-summary-v8",
+  "schema": "compiler-project-build-summary-v9",
   "artifacts": {
     "canonical_public_point": "compiler_verification_project/artifacts/canonical_public_point.json",
     "full_raw32_oracle": "compiler_verification_project/artifacts/full_raw32_oracle.json",
@@ -11,9 +11,10 @@
     "table_manifests": "compiler_verification_project/artifacts/table_manifests.json",
     "lookup_lowerings": "compiler_verification_project/artifacts/lookup_lowerings.json",
     "generated_block_inventories": "compiler_verification_project/artifacts/generated_block_inventories.json",
+    "ft_ir_compositions": "compiler_verification_project/artifacts/ft_ir_compositions.json",
+    "whole_oracle_recount": "compiler_verification_project/artifacts/whole_oracle_recount.json",
     "family_frontier": "compiler_verification_project/artifacts/family_frontier.json",
     "full_attack_inventory": "compiler_verification_project/artifacts/full_attack_inventory.json",
-    "ft_ir_compositions": "compiler_verification_project/artifacts/ft_ir_compositions.json",
     "subcircuit_equivalence": "compiler_verification_project/artifacts/subcircuit_equivalence.json",
     "azure_resource_estimator_logical_counts": "compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json"
   },
@@ -74,7 +75,7 @@
     }
   },
   "notes": [
-    "The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families with explicit arithmetic and lookup lowerings, generated block inventories, a compositional FT IR layer, and internal subcircuit-equivalence witnesses.",
+    "The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families with explicit arithmetic and lookup lowerings, generated block inventories, a compositional FT IR layer, a full whole-oracle recount, and internal subcircuit-equivalence witnesses.",
     "Its qubit accounting uses exact slot allocation and an explicit semiclassical phase-shell family instead of a fixed 10-slot/512-phase policy."
   ]
 }
