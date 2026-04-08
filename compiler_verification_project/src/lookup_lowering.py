@@ -625,6 +625,17 @@ def lookup_lowering_library() -> Dict[str, Any]:
                 'It keeps the folded lookup semantics exact while exposing every decode and measured-cleanup chunk as generated operation inventory.',
             ],
         ),
+        _banked_unary_qrom_measured_uncompute_family(
+            contract,
+            family_name='folded_bitwise_banked_unary_qrom_measured_uncompute_v1',
+            summary='Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup.',
+            split_bits=(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+            strategy_summary='bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode over the 32768-entry positive folded domain',
+            notes=[
+                'This family fully factorizes the folded 15-bit magnitude into binary banking levels inside the same generated chunk-decode model used by the other banked families.',
+                'Within the current exact generated-operation boundary, the deeper banking reduces both direct lookup non-Clifford cost and explicit lookup workspace relative to the 3/4/4/4 hierarchical family.',
+            ],
+        ),
         _unary_qrom_family(contract, measured_uncompute=False),
         _unary_qrom_family(contract, measured_uncompute=True),
     ]

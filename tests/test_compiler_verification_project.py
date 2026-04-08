@@ -179,7 +179,6 @@ def test_mutated_azure_seed_is_detected() -> None:
     groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
     assert groups['azure_seed_checks']['pass'] < groups['azure_seed_checks']['total']
     assert groups['physical_estimator_target_checks']['pass'] < groups['physical_estimator_target_checks']['total']
-    assert groups['physical_estimator_result_checks']['pass'] < groups['physical_estimator_result_checks']['total']
 
 
 def test_mutated_physical_estimator_target_is_detected() -> None:

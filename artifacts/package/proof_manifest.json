@@ -74,6 +74,22 @@
       "sha256": "f6edc1684f5ca526d9723435f2640d0b4146d3af57f7fe8eb284d61c43e06c5c",
       "bytes": 3868
     },
+    "artifacts/projections/ultra_low_qubit_branch_estimates.json": {
+      "sha256": "efe9a48be40ccef5ba4e79db566a7fef2b5e9a47ca6e9223ba3b8e21135a270d",
+      "bytes": 3374
+    },
+    "artifacts/projections/gate_capped_qubit_frontier.json": {
+      "sha256": "563bf70c0a2bf2bbdfb73eb582ce4a0811b84ee025b49d0fdcafb5a6d426bdb7",
+      "bytes": 3783
+    },
+    "artifacts/projections/cap_constrained_branch_search.json": {
+      "sha256": "a5ceffa6c93e31be3038740b5984b0ad1e8bd328ffbc9be1fa2beffd6e85a0e5",
+      "bytes": 4981
+    },
+    "artifacts/projections/compressed_width_branch_sweep.json": {
+      "sha256": "1a556db36a996d8185dfb5d17da2e563c752249c0404e4d247f16e52305b2492",
+      "bytes": 6292
+    },
     "artifacts/verification/core/verification_summary.json": {
       "sha256": "c46930368a038fcae439cfad401623d238cdc644d004175829d91be22d1135bb",
       "bytes": 1470
@@ -138,6 +154,10 @@
       "sha256": "64accc6620104df8071bc791c98c5756b5a35aec80646ffa97dc9dfcb5a90baf",
       "bytes": 69396
     },
+    "figures/research/ultra_low_qubit_branches.png": {
+      "sha256": "b293ca177842331fcee42871f0bddce9b080e6b128e2405c33bc8e595eb6f2c5",
+      "bytes": 107379
+    },
     "src/verifier.py": {
       "sha256": "d668412c446f1b753dcfa5519fcd3c51585fe8f07a8efce66202614abe24c6c2",
       "bytes": 12238
@@ -147,8 +167,8 @@
       "bytes": 30530
     },
     "src/figure_generation.py": {
-      "sha256": "ef2903505ea2256f07accda78f64b8085001260c881a33f59ed88d2be38f919e",
-      "bytes": 12017
+      "sha256": "aed4db53d68506feb2ec1656b5c1a1b757861dbffd6a72024073ec3401f78b22",
+      "bytes": 13061
     },
     "src/resource_projection.py": {
       "sha256": "05ae32f7286474a6d8a9a6b4e061304a950e59fc1a406ad7ce4846e1993b283e",
@@ -179,8 +199,8 @@
       "bytes": 15866
     },
     "compiler_verification_project/src/lookup_lowering.py": {
-      "sha256": "032b1a7d54c1276fdfe552582ed13b11db90f0e597a7be1309100c229119b490",
-      "bytes": 33184
+      "sha256": "d7189b098275d0fe023c21f421e887f535363604bcc40d1df2785ca541464a8c",
+      "bytes": 34137
     },
     "compiler_verification_project/src/phase_shell_lowering.py": {
       "sha256": "d234a21db633c1178e2d2cf8ce6fe7b436a0bda68121e04e50093aa26270dbc4",
@@ -211,20 +231,20 @@
       "bytes": 1142
     },
     "compiler_verification_project/artifacts/build_summary.json": {
-      "sha256": "48111e5b3d75cec67621d563163406949d72e7f9445d697066f36d992f344e46",
-      "bytes": 6783
+      "sha256": "3f98185164ab33e10c81b055230883be69e6cc6e062351a8348ce374783ed5c4",
+      "bytes": 6858
     },
     "compiler_verification_project/artifacts/arithmetic_lowerings.json": {
       "sha256": "d4667cf24666fbc4e23f7c5fc66d37fcbc5de563560219342765bc5a93ff29b6",
       "bytes": 7445705
     },
     "compiler_verification_project/artifacts/family_frontier.json": {
-      "sha256": "6ae4b1bdbd9ca3f266d4de05154417609136ff743966944ff38e5837978636eb",
-      "bytes": 58742
+      "sha256": "558dffa80e6a0ca08ef3f80581601522c2075a3dd3918fba1aa6cc3012cbea1b",
+      "bytes": 64164
     },
     "compiler_verification_project/artifacts/lookup_lowerings.json": {
-      "sha256": "2ba2c552fb9fc3a60c54ea6ab4c2513b8b0b318317c246f379f689054e9bc860",
-      "bytes": 131645
+      "sha256": "c8687c737e3abce833d258338cd676a0898a40237351efcea6e3d45b5bd8fdf6",
+      "bytes": 198941
     },
     "compiler_verification_project/artifacts/full_raw32_oracle.json": {
       "sha256": "944d5f5a13d7256f2134d3f11ae2d8832aacb8d446590ea3f1d2ccc73ca8939a",
@@ -247,32 +267,32 @@
       "bytes": 1851
     },
     "compiler_verification_project/artifacts/generated_block_inventories.json": {
-      "sha256": "d241d8dd472a5131f65ba53ca95b42ee7fa7aabeef6b7b979871ead4c1e715a7",
-      "bytes": 369260
+      "sha256": "4664355007a842d8dfbee9db8c2719d5b3ff34f8a05617737ddb1b28163196e7",
+      "bytes": 551160
     },
     "compiler_verification_project/artifacts/ft_ir_compositions.json": {
-      "sha256": "ee17ec54883ae3b1304ac8dde0654e93b306fdb860de84846838dc3dce6f5070",
-      "bytes": 908936
+      "sha256": "2ed802ccdeafaa1313ddb79a89fdd62012680898cf7fa55209d6e2d51f603cb7",
+      "bytes": 1337981
     },
     "compiler_verification_project/artifacts/whole_oracle_recount.json": {
-      "sha256": "8de1aae54d7b980a63a0a8788e60d3e0b8c9bdbf40e68e696e4ee364dd0cff55",
-      "bytes": 18669
+      "sha256": "fce7b024cfed8ab47f9518d65a244b8b46f4a821d53d20bc0c9f9fa768b184ba",
+      "bytes": 21630
     },
     "compiler_verification_project/artifacts/qubit_breakthrough_analysis.json": {
-      "sha256": "53ff073924577c51822c41f54c885926afb69488127d5e1420fe52b81cb92559",
-      "bytes": 13278
+      "sha256": "aa8e8a9320efa98d2029fc9e71b535059ddbde150951e06d441dccad44970473",
+      "bytes": 13675
     },
     "compiler_verification_project/artifacts/subcircuit_equivalence.json": {
-      "sha256": "632f087ddb585516f5a2714778bfc6977780f291da84e1b3996c1e5f7ed81c74",
-      "bytes": 18558
+      "sha256": "91545d0a487596df20ac615b1c11b1929e853488cc797ec99d7396bb5e4d95b7",
+      "bytes": 19835
     },
     "compiler_verification_project/artifacts/verification_summary.json": {
-      "sha256": "511466507a74bae7d6ad35f9a403b20d90e637591a1ac541a1132eadbfb06d85",
-      "bytes": 353035
+      "sha256": "1c623f92e34195a57dfaaf88e9bc0740f1488cf67a25a68ee1b56cd2425d60a2",
+      "bytes": 347239
     },
     "compiler_verification_project/artifacts/cain_exact_transfer.json": {
-      "sha256": "c449311e68481f448d322cad4b7753a90514b4ab13f5a2df666e0e6ef26015f6",
-      "bytes": 4400
+      "sha256": "213213958d320a2e4c306e64bf4e1166509d2c3f239211f28988aa44a624ef0f",
+      "bytes": 5219
     },
     "compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json": {
       "sha256": "c2fe7ba93a8a1e25f3235d4264bd63374835ba71545fe650b24897d3b57110f5",

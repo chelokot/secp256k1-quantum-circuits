@@ -280,6 +280,90 @@
       "qubit_ratio_vs_google_low_gate": 0.6823529411764706
     },
     {
+      "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__full_phase_register_v1",
+      "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
+      "phase_shell": "full_phase_register_v1",
+      "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
+      "full_oracle_non_clifford": 22753831,
+      "primitive_totals": {
+        "ccx": 22753831,
+        "cx": 0,
+        "x": 0,
+        "measurement": 373700
+      },
+      "total_logical_qubits": 2610,
+      "phase_shell_hadamards": 512,
+      "total_measurements": 374212,
+      "phase_shell_measurements": 512,
+      "phase_shell_rotations": 130816,
+      "phase_shell_rotation_depth": 130816,
+      "graph_summary": {
+        "node_count": 113,
+        "edge_count": 112,
+        "leaf_node_count": 86,
+        "reachable_node_count": 113,
+        "max_depth": 5,
+        "root_in_degree": 0,
+        "primitive_totals": {
+          "ccx": 22753831,
+          "cx": 0,
+          "x": 0,
+          "measurement": 373700
+        },
+        "logical_qubits_total": 2610,
+        "phase_shell_hadamards": 512,
+        "phase_shell_measurements": 512,
+        "phase_shell_rotations": 130816,
+        "phase_shell_rotation_depth": 130816
+      },
+      "improvement_vs_google_low_qubit": 3.955377887793928,
+      "improvement_vs_google_low_gate": 3.0764050238397216,
+      "qubit_ratio_vs_google_low_qubit": 0.45977011494252873,
+      "qubit_ratio_vs_google_low_gate": 0.5555555555555556
+    },
+    {
+      "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+      "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
+      "phase_shell": "semiclassical_qft_v1",
+      "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
+      "full_oracle_non_clifford": 22753831,
+      "primitive_totals": {
+        "ccx": 22753831,
+        "cx": 0,
+        "x": 0,
+        "measurement": 373700
+      },
+      "total_logical_qubits": 2099,
+      "phase_shell_hadamards": 512,
+      "total_measurements": 374212,
+      "phase_shell_measurements": 512,
+      "phase_shell_rotations": 511,
+      "phase_shell_rotation_depth": 511,
+      "graph_summary": {
+        "node_count": 113,
+        "edge_count": 112,
+        "leaf_node_count": 86,
+        "reachable_node_count": 113,
+        "max_depth": 5,
+        "root_in_degree": 0,
+        "primitive_totals": {
+          "ccx": 22753831,
+          "cx": 0,
+          "x": 0,
+          "measurement": 373700
+        },
+        "logical_qubits_total": 2099,
+        "phase_shell_hadamards": 512,
+        "phase_shell_measurements": 512,
+        "phase_shell_rotations": 511,
+        "phase_shell_rotation_depth": 511
+      },
+      "improvement_vs_google_low_qubit": 3.955377887793928,
+      "improvement_vs_google_low_gate": 3.0764050238397216,
+      "qubit_ratio_vs_google_low_qubit": 0.5717008099094807,
+      "qubit_ratio_vs_google_low_gate": 0.6908051453072892
+    },
+    {
       "name": "folded_unary_qrom_v1__full_phase_register_v1",
       "lookup_family": "folded_unary_qrom_v1",
       "phase_shell": "full_phase_register_v1",
@@ -449,46 +533,46 @@
     }
   ],
   "best_gate_family": {
-    "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
-    "lookup_family": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1",
+    "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+    "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
     "phase_shell": "semiclassical_qft_v1",
     "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
-    "full_oracle_non_clifford": 22756199,
+    "full_oracle_non_clifford": 22753831,
     "primitive_totals": {
-      "ccx": 22756199,
+      "ccx": 22753831,
       "cx": 0,
       "x": 0,
-      "measurement": 374884
+      "measurement": 373700
     },
-    "total_logical_qubits": 2125,
+    "total_logical_qubits": 2099,
     "phase_shell_hadamards": 512,
-    "total_measurements": 375396,
+    "total_measurements": 374212,
     "phase_shell_measurements": 512,
     "phase_shell_rotations": 511,
     "phase_shell_rotation_depth": 511,
     "graph_summary": {
-      "node_count": 69,
-      "edge_count": 68,
-      "leaf_node_count": 42,
-      "reachable_node_count": 69,
+      "node_count": 113,
+      "edge_count": 112,
+      "leaf_node_count": 86,
+      "reachable_node_count": 113,
       "max_depth": 5,
       "root_in_degree": 0,
       "primitive_totals": {
-        "ccx": 22756199,
+        "ccx": 22753831,
         "cx": 0,
         "x": 0,
-        "measurement": 374884
+        "measurement": 373700
       },
-      "logical_qubits_total": 2125,
+      "logical_qubits_total": 2099,
       "phase_shell_hadamards": 512,
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 511,
       "phase_shell_rotation_depth": 511
     },
-    "improvement_vs_google_low_qubit": 3.9549662929208873,
-    "improvement_vs_google_low_gate": 3.0760848944940236,
-    "qubit_ratio_vs_google_low_qubit": 0.5647058823529412,
-    "qubit_ratio_vs_google_low_gate": 0.6823529411764706
+    "improvement_vs_google_low_qubit": 3.955377887793928,
+    "improvement_vs_google_low_gate": 3.0764050238397216,
+    "qubit_ratio_vs_google_low_qubit": 0.5717008099094807,
+    "qubit_ratio_vs_google_low_gate": 0.6908051453072892
   },
   "best_qubit_family": {
     "name": "folded_linear_scan_tmpand_v1__semiclassical_qft_v1",

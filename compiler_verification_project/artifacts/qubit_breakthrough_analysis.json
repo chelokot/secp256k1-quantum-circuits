@@ -222,6 +222,15 @@
       "delta_non_clifford_vs_best_qubit": 0
     },
     {
+      "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
+      "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
+      "lookup_workspace_qubits": 48,
+      "total_logical_qubits": 2099,
+      "full_oracle_non_clifford": 22753831,
+      "delta_qubits_vs_best_qubit": 17,
+      "delta_non_clifford_vs_best_qubit": -14679104
+    },
+    {
       "name": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1",
       "lookup_family": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1",
       "lookup_workspace_qubits": 74,

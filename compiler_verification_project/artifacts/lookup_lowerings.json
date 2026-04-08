@@ -2877,6 +2877,2094 @@
       ]
     },
     {
+      "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
+      "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup.",
+      "gate_set": "Clifford + banked unary QROM + measurement",
+      "lookup_contract_sha256": "c3b6cc711aa323951a580f6a54a027d84bf84d6a5ad66965751db865553b635d",
+      "lowering_strategy": {
+        "classification": "shared folded sign/magnitude decomposition over the checked signed-folded lookup contract",
+        "lookup_compute": "bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode over the 32768-entry positive folded domain",
+        "lookup_uncompute": "measured cleanup of every generated banked unary chunk register"
+      },
+      "persistent_workspace": [
+        {
+          "name": "folded_magnitude_register",
+          "qubits": 15,
+          "summary": "Stores the shared absolute-value magnitude 0..32767 used by every lookup family."
+        },
+        {
+          "name": "lookup_control_predicates",
+          "qubits": 3,
+          "summary": "Tracks zero/min-word routing and the Y-negation enable predicate without allocating a full metadata table."
+        }
+      ],
+      "stages": [
+        {
+          "name": "folded_word_classification",
+          "summary": "Shared sign/magnitude classification for the 16-bit signed folded contract.",
+          "category": "classification",
+          "blocks": [
+            {
+              "name": "magnitude_all_zero_tree",
+              "summary": "Temporary logical-AND ladder over the 15 magnitude bits.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 14,
+                "cx": 0,
+                "x": 0,
+                "measurement": 14
+              },
+              "primitive_counts_total": {
+                "ccx": 14,
+                "cx": 0,
+                "x": 0,
+                "measurement": 14
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "repeated_ladder",
+                "instance_count": 1,
+                "bit_count": 14,
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 28,
+                "sha256": "1dcb7cf81673b233c026134572f13c256993d0627c72191bad19f2d61367ab79",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0,
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    0
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    1
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    1
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    2
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    2
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    3
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    3
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0,
+                    10
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    10
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    11
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    11
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    12
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    12
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    13
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    13
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 14,
+              "non_clifford_total": 14,
+              "notes": [
+                "The all-zero predicate is shared by zero-word bypass and 0x8000 special-word routing.",
+                "The temporary logical-AND ladder is uncomputed by local measurements inside the stage."
+              ]
+            },
+            {
+              "name": "signed_absolute_value_prepare",
+              "summary": "Two mirrored temporary logical-AND ladders prepare the folded absolute value for the positive lookup domain.",
+              "instance_count": 2,
+              "primitive_counts_per_instance": {
+                "ccx": 14,
+                "cx": 0,
+                "x": 0,
+                "measurement": 14
+              },
+              "primitive_counts_total": {
+                "ccx": 28,
+                "cx": 0,
+                "x": 0,
+                "measurement": 28
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "repeated_ladder",
+                "instance_count": 2,
+                "bit_count": 14,
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 56,
+                "sha256": "e3f4add9394f9d8f6f8b5a08535202a6b3919b582c973ee87fd36d7d96dd0bd6",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0,
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    0
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    1
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    1
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    2
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    2
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    3
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    3
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    1,
+                    10
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    10
+                  ],
+                  [
+                    "ccx",
+                    1,
+                    11
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    11
+                  ],
+                  [
+                    "ccx",
+                    1,
+                    12
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    12
+                  ],
+                  [
+                    "ccx",
+                    1,
+                    13
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    13
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 14,
+              "non_clifford_total": 28,
+              "notes": [
+                "This stage implements the explicit absolute-value preparation used by all checked lookup families.",
+                "Separate zero/min routing is driven from the shared all-zero predicate and the raw sign bit, so no additional non-Clifford flag-materialization block is counted here."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 42,
+            "cx": 0,
+            "x": 0,
+            "measurement": 42
+          },
+          "non_clifford_total": 42,
+          "persistent_workspace_qubits": 18,
+          "local_workspace_qubits": 13,
+          "total_workspace_qubits": 31,
+          "notes": [
+            "The classification stage is family-independent and implements the same signed-folded contract used by the main repository lookup audit."
+          ]
+        },
+        {
+          "name": "folded_positive_lookup_compute",
+          "summary": "Hierarchical banked unary address decode across the positive folded domain.",
+          "category": "lookup_compute",
+          "blocks": [
+            {
+              "name": "coarse_bucket_decode",
+              "summary": "Unary decode for the 1-bit coarse chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 1,
+                "sha256": "7bce5b968ba1998231aace434c3bebdbf8d27fd93192056bba369690ad7166ea",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block materializes the 1-bit coarse unary chunk inside the hierarchical banked family."
+              ]
+            },
+            {
+              "name": "upper_mid_bucket_decode",
+              "summary": "Unary decode for the 1-bit upper mid chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 1,
+                "sha256": "7bce5b968ba1998231aace434c3bebdbf8d27fd93192056bba369690ad7166ea",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block materializes the 1-bit upper mid unary chunk inside the hierarchical banked family."
+              ]
+            },
+            {
+              "name": "lower_mid_bucket_decode",
+              "summary": "Unary decode for the 1-bit lower mid chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 1,
+                "sha256": "7bce5b968ba1998231aace434c3bebdbf8d27fd93192056bba369690ad7166ea",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block materializes the 1-bit lower mid unary chunk inside the hierarchical banked family."
+              ]
+            },
+            {
+              "name": "fine_bucket_decode",
+              "summary": "Unary decode for the 1-bit fine chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 1,
+                "sha256": "7bce5b968ba1998231aace434c3bebdbf8d27fd93192056bba369690ad7166ea",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block materializes the 1-bit fine unary chunk inside the hierarchical banked family."
+              ]
+            },
+            {
+              "name": "level_5_bucket_decode",
+              "summary": "Unary decode for the 1-bit level 5 chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 1,
+                "sha256": "7bce5b968ba1998231aace434c3bebdbf8d27fd93192056bba369690ad7166ea",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block materializes the 1-bit level 5 unary chunk inside the hierarchical banked family."
+              ]
+            },
+            {
+              "name": "level_6_bucket_decode",
+              "summary": "Unary decode for the 1-bit level 6 chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 1,
+                "sha256": "7bce5b968ba1998231aace434c3bebdbf8d27fd93192056bba369690ad7166ea",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block materializes the 1-bit level 6 unary chunk inside the hierarchical banked family."
+              ]
+            },
+            {
+              "name": "level_7_bucket_decode",
+              "summary": "Unary decode for the 1-bit level 7 chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 1,
+                "sha256": "7bce5b968ba1998231aace434c3bebdbf8d27fd93192056bba369690ad7166ea",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block materializes the 1-bit level 7 unary chunk inside the hierarchical banked family."
+              ]
+            },
+            {
+              "name": "level_8_bucket_decode",
+              "summary": "Unary decode for the 1-bit level 8 chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 1,
+                "sha256": "7bce5b968ba1998231aace434c3bebdbf8d27fd93192056bba369690ad7166ea",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block materializes the 1-bit level 8 unary chunk inside the hierarchical banked family."
+              ]
+            },
+            {
+              "name": "level_9_bucket_decode",
+              "summary": "Unary decode for the 1-bit level 9 chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 1,
+                "sha256": "7bce5b968ba1998231aace434c3bebdbf8d27fd93192056bba369690ad7166ea",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block materializes the 1-bit level 9 unary chunk inside the hierarchical banked family."
+              ]
+            },
+            {
+              "name": "level_10_bucket_decode",
+              "summary": "Unary decode for the 1-bit level 10 chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 1,
+                "sha256": "7bce5b968ba1998231aace434c3bebdbf8d27fd93192056bba369690ad7166ea",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block materializes the 1-bit level 10 unary chunk inside the hierarchical banked family."
+              ]
+            },
+            {
+              "name": "level_11_bucket_decode",
+              "summary": "Unary decode for the 1-bit level 11 chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 1,
+                "sha256": "7bce5b968ba1998231aace434c3bebdbf8d27fd93192056bba369690ad7166ea",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block materializes the 1-bit level 11 unary chunk inside the hierarchical banked family."
+              ]
+            },
+            {
+              "name": "level_12_bucket_decode",
+              "summary": "Unary decode for the 1-bit level 12 chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 1,
+                "sha256": "7bce5b968ba1998231aace434c3bebdbf8d27fd93192056bba369690ad7166ea",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block materializes the 1-bit level 12 unary chunk inside the hierarchical banked family."
+              ]
+            },
+            {
+              "name": "level_13_bucket_decode",
+              "summary": "Unary decode for the 1-bit level 13 chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 1,
+                "sha256": "7bce5b968ba1998231aace434c3bebdbf8d27fd93192056bba369690ad7166ea",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block materializes the 1-bit level 13 unary chunk inside the hierarchical banked family."
+              ]
+            },
+            {
+              "name": "level_14_bucket_decode",
+              "summary": "Unary decode for the 1-bit level 14 chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 1,
+                "sha256": "7bce5b968ba1998231aace434c3bebdbf8d27fd93192056bba369690ad7166ea",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block materializes the 1-bit level 14 unary chunk inside the hierarchical banked family."
+              ]
+            },
+            {
+              "name": "level_15_bucket_decode",
+              "summary": "Unary decode for the 1-bit level 15 chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 1,
+                "sha256": "7bce5b968ba1998231aace434c3bebdbf8d27fd93192056bba369690ad7166ea",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block materializes the 1-bit level 15 unary chunk inside the hierarchical banked family."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 15,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 15,
+          "persistent_workspace_qubits": 18,
+          "local_workspace_qubits": 30,
+          "total_workspace_qubits": 48,
+          "notes": [
+            "The hierarchical family materializes one unary chunk per banking level instead of a full 32768-slot unary register."
+          ]
+        },
+        {
+          "name": "folded_positive_lookup_uncompute",
+          "summary": "Measured cleanup for the hierarchical banked unary lookup workspace.",
+          "category": "lookup_uncompute",
+          "blocks": [
+            {
+              "name": "coarse_bucket_measured_uncompute",
+              "summary": "Measured cleanup for the 1-bit coarse chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 2,
+                "sha256": "e193c484a9bbfa81f621f5f143af369ce540ba22e35398693801befd01f28b83",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block measures and resets the coarse chunk after the selected-path decode has been consumed."
+              ]
+            },
+            {
+              "name": "upper_mid_bucket_measured_uncompute",
+              "summary": "Measured cleanup for the 1-bit upper mid chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 2,
+                "sha256": "e193c484a9bbfa81f621f5f143af369ce540ba22e35398693801befd01f28b83",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block measures and resets the upper mid chunk after the selected-path decode has been consumed."
+              ]
+            },
+            {
+              "name": "lower_mid_bucket_measured_uncompute",
+              "summary": "Measured cleanup for the 1-bit lower mid chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 2,
+                "sha256": "e193c484a9bbfa81f621f5f143af369ce540ba22e35398693801befd01f28b83",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block measures and resets the lower mid chunk after the selected-path decode has been consumed."
+              ]
+            },
+            {
+              "name": "fine_bucket_measured_uncompute",
+              "summary": "Measured cleanup for the 1-bit fine chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 2,
+                "sha256": "e193c484a9bbfa81f621f5f143af369ce540ba22e35398693801befd01f28b83",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block measures and resets the fine chunk after the selected-path decode has been consumed."
+              ]
+            },
+            {
+              "name": "level_5_bucket_measured_uncompute",
+              "summary": "Measured cleanup for the 1-bit level 5 chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 2,
+                "sha256": "e193c484a9bbfa81f621f5f143af369ce540ba22e35398693801befd01f28b83",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block measures and resets the level 5 chunk after the selected-path decode has been consumed."
+              ]
+            },
+            {
+              "name": "level_6_bucket_measured_uncompute",
+              "summary": "Measured cleanup for the 1-bit level 6 chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 2,
+                "sha256": "e193c484a9bbfa81f621f5f143af369ce540ba22e35398693801befd01f28b83",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block measures and resets the level 6 chunk after the selected-path decode has been consumed."
+              ]
+            },
+            {
+              "name": "level_7_bucket_measured_uncompute",
+              "summary": "Measured cleanup for the 1-bit level 7 chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 2,
+                "sha256": "e193c484a9bbfa81f621f5f143af369ce540ba22e35398693801befd01f28b83",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block measures and resets the level 7 chunk after the selected-path decode has been consumed."
+              ]
+            },
+            {
+              "name": "level_8_bucket_measured_uncompute",
+              "summary": "Measured cleanup for the 1-bit level 8 chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 2,
+                "sha256": "e193c484a9bbfa81f621f5f143af369ce540ba22e35398693801befd01f28b83",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block measures and resets the level 8 chunk after the selected-path decode has been consumed."
+              ]
+            },
+            {
+              "name": "level_9_bucket_measured_uncompute",
+              "summary": "Measured cleanup for the 1-bit level 9 chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 2,
+                "sha256": "e193c484a9bbfa81f621f5f143af369ce540ba22e35398693801befd01f28b83",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block measures and resets the level 9 chunk after the selected-path decode has been consumed."
+              ]
+            },
+            {
+              "name": "level_10_bucket_measured_uncompute",
+              "summary": "Measured cleanup for the 1-bit level 10 chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 2,
+                "sha256": "e193c484a9bbfa81f621f5f143af369ce540ba22e35398693801befd01f28b83",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block measures and resets the level 10 chunk after the selected-path decode has been consumed."
+              ]
+            },
+            {
+              "name": "level_11_bucket_measured_uncompute",
+              "summary": "Measured cleanup for the 1-bit level 11 chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 2,
+                "sha256": "e193c484a9bbfa81f621f5f143af369ce540ba22e35398693801befd01f28b83",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block measures and resets the level 11 chunk after the selected-path decode has been consumed."
+              ]
+            },
+            {
+              "name": "level_12_bucket_measured_uncompute",
+              "summary": "Measured cleanup for the 1-bit level 12 chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 2,
+                "sha256": "e193c484a9bbfa81f621f5f143af369ce540ba22e35398693801befd01f28b83",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block measures and resets the level 12 chunk after the selected-path decode has been consumed."
+              ]
+            },
+            {
+              "name": "level_13_bucket_measured_uncompute",
+              "summary": "Measured cleanup for the 1-bit level 13 chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 2,
+                "sha256": "e193c484a9bbfa81f621f5f143af369ce540ba22e35398693801befd01f28b83",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block measures and resets the level 13 chunk after the selected-path decode has been consumed."
+              ]
+            },
+            {
+              "name": "level_14_bucket_measured_uncompute",
+              "summary": "Measured cleanup for the 1-bit level 14 chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 2,
+                "sha256": "e193c484a9bbfa81f621f5f143af369ce540ba22e35398693801befd01f28b83",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block measures and resets the level 14 chunk after the selected-path decode has been consumed."
+              ]
+            },
+            {
+              "name": "level_15_bucket_measured_uncompute",
+              "summary": "Measured cleanup for the 1-bit level 15 chunk.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_counts_total": {
+                "ccx": 1,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "pointwise",
+                "instance_count": 1,
+                "gate": "ccx",
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 2,
+                "sha256": "e193c484a9bbfa81f621f5f143af369ce540ba22e35398693801befd01f28b83",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 1,
+              "non_clifford_total": 1,
+              "notes": [
+                "This generated block measures and resets the level 15 chunk after the selected-path decode has been consumed."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 15,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15
+          },
+          "non_clifford_total": 15,
+          "persistent_workspace_qubits": 18,
+          "local_workspace_qubits": 30,
+          "total_workspace_qubits": 48,
+          "notes": [
+            "Measured cleanup keeps the hierarchical banked family exact within the chosen generated operation layer without reintroducing the full reverse unary pass."
+          ]
+        },
+        {
+          "name": "conditional_y_negation",
+          "summary": "Applies the post-lookup Y negation required by negative raw words in the folded contract.",
+          "category": "post_lookup_fixup",
+          "blocks": [
+            {
+              "name": "conditional_field_negation",
+              "summary": "Field-width conditional subtraction/select network over the Y coordinate.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "repeated_ladder",
+                "instance_count": 1,
+                "bit_count": 255,
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 255,
+                "sha256": "bc1daccf212c60fa60ea180cd084e3e8bde71a3bf7cc1fe295ef336a5eafa761",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0,
+                    0
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    1
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    2
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    3
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    4
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    5
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    6
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    7
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0,
+                    247
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    248
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    249
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    250
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    251
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    252
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    253
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    254
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 255,
+              "non_clifford_total": 255,
+              "notes": [
+                "This stage is the exact post-lookup sign-fix assumption represented as a single field-width conditional negation."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 255,
+          "persistent_workspace_qubits": 18,
+          "local_workspace_qubits": 0,
+          "total_workspace_qubits": 18,
+          "notes": [
+            "The X coordinate remains unchanged under negation; only the Y coordinate path carries non-Clifford cost."
+          ]
+        }
+      ],
+      "primitive_counts_total": {
+        "ccx": 327,
+        "cx": 0,
+        "x": 0,
+        "measurement": 57
+      },
+      "zero_check_non_clifford": 14,
+      "magnitude_prepare_non_clifford": 28,
+      "compute_lookup_non_clifford": 15,
+      "uncompute_lookup_non_clifford": 15,
+      "conditional_negate_y_non_clifford": 255,
+      "direct_lookup_non_clifford": 327,
+      "per_leaf_lookup_non_clifford": 327,
+      "extra_lookup_workspace_qubits": 48,
+      "workspace_reconstruction": {
+        "persistent_workspace_qubits": 18,
+        "peak_stage": "folded_positive_lookup_compute",
+        "peak_total_workspace_qubits": 48
+      },
+      "semantic_profile": {
+        "zero_maps_to_infinity": true,
+        "special_case_word_hex": "0x8000",
+        "negative_words_negate_y_after_positive_lookup": true
+      },
+      "notes": [
+        "This family fully factorizes the folded 15-bit magnitude into binary banking levels inside the same generated chunk-decode model used by the other banked families.",
+        "Within the current exact generated-operation boundary, the deeper banking reduces both direct lookup non-Clifford cost and explicit lookup workspace relative to the 3/4/4/4 hierarchical family."
+      ]
+    },
+    {
       "name": "folded_unary_qrom_v1",
       "summary": "Lower-gate exact lookup family using a full unary conversion register over 32768 folded magnitudes.",
       "gate_set": "Clifford + Toffoli-style unary QROM",
