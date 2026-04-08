@@ -280,6 +280,8 @@ def relative_file_manifest(root: Path) -> Dict[str, Dict[str, Any]]:
         rel = path.relative_to(root).as_posix()
         if rel.startswith('.git/'):
             continue
+        if rel.startswith('.pytest_cache/'):
+            continue
         if '/__pycache__/' in f'/{rel}/' or rel.endswith('.pyc'):
             continue
         if rel == 'MANIFEST.sha256' or rel.endswith('.zip'):
