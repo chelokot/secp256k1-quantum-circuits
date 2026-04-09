@@ -33,8 +33,10 @@ def test_compiler_project_frontier_and_schedule() -> None:
     best_qubit = min(frontier['families'], key=lambda row: (row['total_logical_qubits'], row['full_oracle_non_clifford']))
     assert summary['headline']['best_gate_family'] == frontier['best_gate_family'] == best_gate
     assert summary['headline']['best_qubit_family'] == frontier['best_qubit_family'] == best_qubit
+    assert summary['headline']['best_sub30m_qubit_family'] == frontier['best_sub30m_qubit_family']
     assert frontier['best_gate_family']['phase_shell'] == 'semiclassical_qft_v1'
     assert frontier['best_qubit_family']['phase_shell'] == 'semiclassical_qft_v1'
+    assert frontier['best_sub30m_qubit_family']['full_oracle_non_clifford'] < 30_000_000
 
 
 def test_qubit_breakthrough_analysis_thresholds_are_self_consistent() -> None:
@@ -47,10 +49,10 @@ def test_qubit_breakthrough_analysis_thresholds_are_self_consistent() -> None:
     assert analysis['best_exact_qubit_family'] == best_qubit
     assert analysis['exact_component_breakdown']['arithmetic_register_file_qubits'] == best_qubit['arithmetic_slot_count'] * 256
     assert analysis['exact_component_breakdown']['fixed_non_arithmetic_overhead_qubits'] == fixed_overhead
-    assert analysis['baseline_thresholds']['low_gate']['max_arithmetic_slots_at_current_field_width'] == 5
-    assert analysis['baseline_thresholds']['low_qubit']['max_arithmetic_slots_at_current_field_width'] == 4
-    assert analysis['baseline_thresholds']['low_gate']['max_field_slot_logical_qubits_at_current_exact_slot_count'] == 177
-    assert analysis['baseline_thresholds']['low_qubit']['max_field_slot_logical_qubits_at_current_exact_slot_count'] == 145
+    assert analysis['baseline_thresholds']['low_gate']['max_arithmetic_slots_at_current_field_width'] == (1450 - fixed_overhead) // 256
+    assert analysis['baseline_thresholds']['low_qubit']['max_arithmetic_slots_at_current_field_width'] == (1200 - fixed_overhead) // 256
+    assert analysis['baseline_thresholds']['low_gate']['max_field_slot_logical_qubits_at_current_exact_slot_count'] == (1450 - fixed_overhead) // best_qubit['arithmetic_slot_count']
+    assert analysis['baseline_thresholds']['low_qubit']['max_field_slot_logical_qubits_at_current_exact_slot_count'] == (1200 - fixed_overhead) // best_qubit['arithmetic_slot_count']
     assert analysis['modeled_reference_points']['addsub_modmul_named_slots_v2']['logical_qubits_total'] == 592
     assert analysis['modeled_reference_points']['addsub_modmul_liveness_v2']['logical_qubits_total'] == 520
 
@@ -78,6 +80,8 @@ def test_compiler_project_verification_summary_groups_all_pass() -> None:
     assert generated_block_inventory['pass'] == generated_block_inventory['total']
     ft_ir = summary['ft_ir_checks']
     assert ft_ir['pass'] == ft_ir['total']
+    lookup_fed_slot_allocation = summary['lookup_fed_slot_allocation_checks']
+    assert lookup_fed_slot_allocation['pass'] == lookup_fed_slot_allocation['total']
     recount = summary['whole_oracle_recount_checks']
     assert recount['pass'] == recount['total']
     subcircuit_equivalence = summary['subcircuit_equivalence_checks']

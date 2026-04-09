@@ -181,18 +181,21 @@ def _qubit_blocks(
 ) -> List[Dict[str, Any]]:
     arithmetic_slots = int(slot_allocation['allocator_summary']['exact_arithmetic_slot_count'])
     control_slots = int(slot_allocation['allocator_summary']['exact_control_slot_count'])
+    slot_source_artifact = str(
+        slot_allocation.get('source_artifact', 'compiler_verification_project/artifacts/exact_leaf_slot_allocation.json')
+    )
     return [
         _qubit_block(
             block_id='arithmetic_slot_register_file',
             summary='Exact live arithmetic slot register file for the checked ISA leaf.',
-            source_artifact='compiler_verification_project/artifacts/exact_leaf_slot_allocation.json',
+            source_artifact=slot_source_artifact,
             logical_qubits=arithmetic_slots * int(field_bits),
             metadata={'arithmetic_slot_count': arithmetic_slots, 'field_bits': int(field_bits)},
         ),
         _qubit_block(
             block_id='control_slot_register_file',
             summary='Exact live control-slot register file for the checked ISA leaf.',
-            source_artifact='compiler_verification_project/artifacts/exact_leaf_slot_allocation.json',
+            source_artifact=slot_source_artifact,
             logical_qubits=control_slots,
             metadata={'control_slot_count': control_slots},
         ),
@@ -326,7 +329,9 @@ def build_generated_block_inventories(
         'schema': 'compiler-project-generated-block-inventories-v1',
         'source_artifacts': {
             'full_raw32_oracle': 'compiler_verification_project/artifacts/full_raw32_oracle.json',
-            'exact_leaf_slot_allocation': 'compiler_verification_project/artifacts/exact_leaf_slot_allocation.json',
+            'exact_leaf_slot_allocation': str(
+                slot_allocation.get('source_artifact', 'compiler_verification_project/artifacts/exact_leaf_slot_allocation.json')
+            ),
             'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
             'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
             'phase_shell_lowerings': 'compiler_verification_project/artifacts/phase_shell_lowerings.json',

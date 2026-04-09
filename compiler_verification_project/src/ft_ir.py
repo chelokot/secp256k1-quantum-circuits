@@ -310,6 +310,9 @@ def _qubit_and_phase_branches(
 ) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]], List[str]]:
     arithmetic_slots = int(slot_allocation['allocator_summary']['exact_arithmetic_slot_count'])
     control_slots = int(slot_allocation['allocator_summary']['exact_control_slot_count'])
+    slot_source_artifact = str(
+        slot_allocation.get('source_artifact', 'compiler_verification_project/artifacts/exact_leaf_slot_allocation.json')
+    )
     nodes = [
         _node(
             'live_qubit_contributors',
@@ -331,7 +334,7 @@ def _qubit_and_phase_branches(
             'live_qubits',
             'Exact live arithmetic slot register file for the checked ISA leaf.',
             {
-                'source_artifact': 'compiler_verification_project/artifacts/exact_leaf_slot_allocation.json',
+                'source_artifact': slot_source_artifact,
                 'resource_profile': _qubit_leaf_profile(arithmetic_slots * int(field_bits)),
             },
         ),
@@ -341,7 +344,7 @@ def _qubit_and_phase_branches(
             'live_qubits',
             'Exact live control-slot register file for the checked ISA leaf.',
             {
-                'source_artifact': 'compiler_verification_project/artifacts/exact_leaf_slot_allocation.json',
+                'source_artifact': slot_source_artifact,
                 'resource_profile': _qubit_leaf_profile(control_slots),
             },
         ),
@@ -537,7 +540,9 @@ def build_ft_ir_compositions(
         'schema': 'compiler-project-ft-ir-v1',
         'source_artifacts': {
             'full_raw32_oracle': 'compiler_verification_project/artifacts/full_raw32_oracle.json',
-            'exact_leaf_slot_allocation': 'compiler_verification_project/artifacts/exact_leaf_slot_allocation.json',
+            'exact_leaf_slot_allocation': str(
+                slot_allocation.get('source_artifact', 'compiler_verification_project/artifacts/exact_leaf_slot_allocation.json')
+            ),
             'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
             'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
             'phase_shell_lowerings': 'compiler_verification_project/artifacts/phase_shell_lowerings.json',

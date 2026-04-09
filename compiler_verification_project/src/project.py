@@ -56,8 +56,14 @@ from common import (  # noqa: E402
     sha256_path,
 )
 from arithmetic_lowering import arithmetic_kernel_summary, arithmetic_lowering_library  # noqa: E402
-from ft_ir import build_ft_ir_compositions  # noqa: E402
-from generated_block_inventory import build_generated_block_inventories  # noqa: E402
+from ft_ir import build_ft_ir_compositions as build_ft_ir_compositions_single  # noqa: E402
+from generated_block_inventory import build_generated_block_inventories as build_generated_block_inventories_single  # noqa: E402
+from lookup_fed_leaf import (  # noqa: E402
+    LOOKUP_FED_ARITHMETIC_SLOTS,
+    LOOKUP_FED_CONTROL_SLOTS,
+    build_lookup_fed_leaf,
+    build_lookup_fed_leaf_equivalence,
+)
 from lookup_lowering import lookup_lowering_library  # noqa: E402
 from phase_shell_lowering import phase_shell_family_summary, phase_shell_lowering_library  # noqa: E402
 from physical_estimator import (  # noqa: E402
@@ -65,7 +71,7 @@ from physical_estimator import (  # noqa: E402
     build_or_load_azure_estimator_results_payload,
 )
 from subcircuit_equivalence import build_subcircuit_equivalence_artifact  # noqa: E402
-from whole_oracle_recount import build_whole_oracle_recount  # noqa: E402
+from whole_oracle_recount import build_whole_oracle_recount as build_whole_oracle_recount_single  # noqa: E402
 from verifier import exec_netlist  # noqa: E402
 
 PointAffine = Optional[Tuple[int, int]]
@@ -114,11 +120,22 @@ class PhaseShellFamily:
 
 
 @dataclass(frozen=True)
+class SlotAllocationFamily:
+    name: str
+    summary: str
+    source_artifact: str
+    leaf_source_artifact: str
+    slot_allocation: Dict[str, Any]
+    notes: List[str]
+
+
+@dataclass(frozen=True)
 class CompilerFamilyResult:
     name: str
     summary: str
     gate_set: str
     phase_shell: str
+    slot_allocation_family: str
     arithmetic_kernel_family: str
     lookup_family: str
     arithmetic_leaf_non_clifford: int
@@ -275,18 +292,19 @@ def _iter_register_references(ins: Mapping[str, Any], tracked: set[str]) -> Iter
         yield flag
 
 
-
-def exact_leaf_slot_allocation() -> Dict[str, Any]:
-    leaf = _leaf()
-    register_map = _register_map()
-    arithmetic_slots = set(register_map.get('arithmetic_slots', []))
-    control_slots = set(register_map.get('auxiliary_control_slots', []))
-    tracked = arithmetic_slots | control_slots
-
+def _slot_allocation_for_leaf(
+    leaf: Mapping[str, Any],
+    arithmetic_slots: Sequence[str],
+    control_slots: Sequence[str],
+    source_artifact: str,
+    notes: Sequence[str],
+) -> Dict[str, Any]:
+    arithmetic_slot_set = set(arithmetic_slots)
+    control_slot_set = set(control_slots)
+    tracked = arithmetic_slot_set | control_slot_set
     versions: List[Dict[str, Any]] = []
     current: Dict[str, int] = {}
     uses: Dict[int, List[int]] = defaultdict(list)
-
     for pc, ins in enumerate(leaf['instructions']):
         for name in _iter_register_references(ins, tracked):
             if name in current:
@@ -296,7 +314,6 @@ def exact_leaf_slot_allocation() -> Dict[str, Any]:
             vid = len(versions)
             current[dst] = vid
             versions.append({'id': vid, 'reg': dst, 'def_pc': pc})
-
     for version in versions:
         version['last_use'] = max(uses[version['id']]) if uses[version['id']] else version['def_pc']
 
@@ -307,36 +324,31 @@ def exact_leaf_slot_allocation() -> Dict[str, Any]:
     assigned: Dict[int, int] = {}
     live: set[int] = set()
     per_pc: List[Dict[str, Any]] = []
-
-    def reg_type(name: str) -> str:
-        return 'arithmetic' if name in arithmetic_slots else 'control'
-
     for pc, ins in enumerate(leaf['instructions']):
         dst = ins.get('dst') if ins.get('dst') in tracked else None
         new_vid = None
         reuse_slot = None
         if isinstance(dst, str):
-            matches = [v['id'] for v in versions if v['def_pc'] == pc and v['reg'] == dst]
+            matches = [version['id'] for version in versions if version['def_pc'] == pc and version['reg'] == dst]
             if matches:
                 new_vid = matches[0]
                 dying_same_type = [
                     old_vid
                     for old_vid in list(live)
                     if versions[old_vid]['last_use'] == pc
-                    and ((versions[old_vid]['reg'] in arithmetic_slots) == (dst in arithmetic_slots))
+                    and ((versions[old_vid]['reg'] in arithmetic_slot_set) == (dst in arithmetic_slot_set))
                 ]
                 if dying_same_type:
                     reuse_slot = assigned[dying_same_type[0]]
 
-        live_arithmetic = sorted({assigned[vid] for vid in live if versions[vid]['reg'] in arithmetic_slots})
-        live_control = sorted({assigned[vid] for vid in live if versions[vid]['reg'] in control_slots})
-        arithmetic_during = len(live_arithmetic) + (1 if dst in arithmetic_slots else 0)
-        control_during = len(live_control) + (1 if dst in control_slots else 0)
-        if reuse_slot is not None and dst in arithmetic_slots:
+        live_arithmetic = sorted({assigned[vid] for vid in live if versions[vid]['reg'] in arithmetic_slot_set})
+        live_control = sorted({assigned[vid] for vid in live if versions[vid]['reg'] in control_slot_set})
+        arithmetic_during = len(live_arithmetic) + (1 if dst in arithmetic_slot_set else 0)
+        control_during = len(live_control) + (1 if dst in control_slot_set else 0)
+        if reuse_slot is not None and dst in arithmetic_slot_set:
             arithmetic_during -= 1
-        if reuse_slot is not None and dst in control_slots:
+        if reuse_slot is not None and dst in control_slot_set:
             control_during -= 1
-
         per_pc.append({
             'pc': pc,
             'opcode': ins['op'],
@@ -351,7 +363,7 @@ def exact_leaf_slot_allocation() -> Dict[str, Any]:
         if new_vid is not None:
             if reuse_slot is not None:
                 slot = reuse_slot
-            elif dst in arithmetic_slots:
+            elif dst in arithmetic_slot_set:
                 slot = min(free_arithmetic) if free_arithmetic else next_arithmetic
                 if slot == next_arithmetic:
                     next_arithmetic += 1
@@ -372,36 +384,35 @@ def exact_leaf_slot_allocation() -> Dict[str, Any]:
             live.remove(vid)
             if any(assigned[other_vid] == slot for other_vid in live):
                 continue
-            if versions[vid]['reg'] in arithmetic_slots:
+            if versions[vid]['reg'] in arithmetic_slot_set:
                 free_arithmetic.add(slot)
             else:
                 free_control.add(slot)
 
-        live_arithmetic_slots = [assigned[vid] for vid in live if versions[vid]['reg'] in arithmetic_slots]
-        live_control_slots = [assigned[vid] for vid in live if versions[vid]['reg'] in control_slots]
+        live_arithmetic_slots = [assigned[vid] for vid in live if versions[vid]['reg'] in arithmetic_slot_set]
+        live_control_slots = [assigned[vid] for vid in live if versions[vid]['reg'] in control_slot_set]
         assert len(live_arithmetic_slots) == len(set(live_arithmetic_slots))
         assert len(live_control_slots) == len(set(live_control_slots))
 
     peak_arithmetic = max(per_pc, key=lambda row: row['arithmetic_slots_needed_during_write'])
     peak_control = max(per_pc, key=lambda row: row['control_slots_needed_during_write'])
     peak_total = max(per_pc, key=lambda row: row['arithmetic_slots_needed_during_write'] + row['control_slots_needed_during_write'])
-
     version_table = []
     for version in versions:
         version_table.append({
             'version_id': version['id'],
             'register': version['reg'],
-            'reg_type': reg_type(version['reg']),
+            'reg_type': 'arithmetic' if version['reg'] in arithmetic_slot_set else 'control',
             'def_pc': version['def_pc'],
             'last_use_pc': version['last_use'],
             'assigned_slot': assigned[version['id']],
         })
-
     return {
         'schema': 'compiler-project-slot-allocation-v1',
         'field_bits': FIELD_BITS,
-        'tracked_arithmetic_registers': sorted(arithmetic_slots),
-        'tracked_control_registers': sorted(control_slots),
+        'source_artifact': source_artifact,
+        'tracked_arithmetic_registers': sorted(arithmetic_slot_set),
+        'tracked_control_registers': sorted(control_slot_set),
         'peak_arithmetic_slots': {
             'count': int(peak_arithmetic['arithmetic_slots_needed_during_write']),
             'pc': int(peak_arithmetic['pc']),
@@ -425,11 +436,64 @@ def exact_leaf_slot_allocation() -> Dict[str, Any]:
         },
         'per_pc': per_pc,
         'versions': version_table,
-        'notes': [
-            'This artifact allocates versioned leaf values to physical slots using exact live ranges plus same-register overwrite reuse.',
-            f'It is stricter than the mainline first-reference/last-reference interval approximation and reduces the exact arithmetic-slot peak from {len(arithmetic_slots)} named slots to {int(next_arithmetic)} physical slots for the checked-in leaf.',
-        ],
+        'notes': list(notes),
     }
+
+
+
+def exact_leaf_slot_allocation() -> Dict[str, Any]:
+    leaf = _leaf()
+    register_map = _register_map()
+    arithmetic_slots = register_map.get('arithmetic_slots', [])
+    control_slots = register_map.get('auxiliary_control_slots', [])
+    return _slot_allocation_for_leaf(
+        leaf=leaf,
+        arithmetic_slots=arithmetic_slots,
+        control_slots=control_slots,
+        source_artifact='compiler_verification_project/artifacts/exact_leaf_slot_allocation.json',
+        notes=[
+            'This artifact allocates versioned leaf values to physical slots using exact live ranges plus same-register overwrite reuse.',
+            f'It is stricter than the mainline first-reference/last-reference interval approximation and reduces the exact arithmetic-slot peak from {len(arithmetic_slots)} named slots to 8 physical slots for the checked-in materialized-lookup leaf.',
+        ],
+    )
+
+
+def lookup_fed_leaf_slot_allocation() -> Dict[str, Any]:
+    return _slot_allocation_for_leaf(
+        leaf=build_lookup_fed_leaf(),
+        arithmetic_slots=LOOKUP_FED_ARITHMETIC_SLOTS,
+        control_slots=LOOKUP_FED_CONTROL_SLOTS,
+        source_artifact='compiler_verification_project/artifacts/lookup_fed_leaf_slot_allocation.json',
+        notes=[
+            'This artifact allocates the compiler-project lookup-fed leaf interface, where the initial lookup outputs are carried on explicit lookup wires instead of occupying persistent arithmetic slots.',
+            'The reordered lookup-fed leaf preserves the checked point-add semantics while reducing the persistent arithmetic register file to seven field slots and the live control register file to one bit.',
+        ],
+    )
+
+
+def slot_allocation_families() -> List[SlotAllocationFamily]:
+    return [
+        SlotAllocationFamily(
+            name='materialized_lookup_leaf_v1',
+            summary='Checked materialized-lookup ISA leaf used by the repository mainline and the original compiler-project frontier.',
+            source_artifact='compiler_verification_project/artifacts/exact_leaf_slot_allocation.json',
+            leaf_source_artifact='artifacts/circuits/optimized_pointadd_secp256k1.json',
+            slot_allocation=exact_leaf_slot_allocation(),
+            notes=[
+                'This is the default checked leaf interface: the lookup coordinates and metadata are materialized into named leaf registers.',
+            ],
+        ),
+        SlotAllocationFamily(
+            name='lookup_fed_leaf_v1',
+            summary='Compiler-project lookup-fed leaf interface with reordered execution and explicit lookup wires for the initial x/y/meta values.',
+            source_artifact='compiler_verification_project/artifacts/lookup_fed_leaf_slot_allocation.json',
+            leaf_source_artifact='compiler_verification_project/artifacts/lookup_fed_leaf.json',
+            slot_allocation=lookup_fed_leaf_slot_allocation(),
+            notes=[
+                'This interface keeps the checked point-add semantics but shifts the initial lookup outputs behind an explicit lookup-fed boundary.',
+            ],
+        ),
+    ]
 
 
 # ---------------------------------------------------------------------------
@@ -549,6 +613,214 @@ def phase_shell_families() -> List[PhaseShellFamily]:
     ]
 
 
+def _rename_family_payload_name(payload: Dict[str, Any], slot_family: SlotAllocationFamily) -> Dict[str, Any]:
+    renamed = json.loads(json.dumps(payload))
+    for family in renamed['families']:
+        family['slot_allocation_family'] = slot_family.name
+        family['name'] = f"{family['lookup_family']}__{slot_family.name}__{family['phase_shell']}"
+        family['summary'] = f"{family['summary']} / {slot_family.summary}"
+    renamed['source_artifacts']['exact_leaf_slot_allocation'] = slot_family.source_artifact
+    best_gate = min(
+        renamed['families'],
+        key=lambda row: (
+            int(row['reconstruction']['full_oracle_non_clifford']),
+            int(row['reconstruction']['total_logical_qubits']),
+        ),
+    )
+    best_qubit = min(
+        renamed['families'],
+        key=lambda row: (
+            int(row['reconstruction']['total_logical_qubits']),
+            int(row['reconstruction']['full_oracle_non_clifford']),
+        ),
+    )
+    renamed['best_gate_family'] = {
+        'name': best_gate['name'],
+        'reconstruction': best_gate['reconstruction'],
+    }
+    renamed['best_qubit_family'] = {
+        'name': best_qubit['name'],
+        'reconstruction': best_qubit['reconstruction'],
+    }
+    return renamed
+
+
+def build_generated_block_inventories_payload(
+    schedule: Mapping[str, Any],
+    kernel: Mapping[str, Any],
+    arithmetic_lowerings: Mapping[str, Any],
+    lookup_lowerings: Mapping[str, Any],
+    phase_shells: List[Mapping[str, Any]],
+    field_bits: int,
+    public_google_baseline: Mapping[str, Any],
+) -> Dict[str, Any]:
+    partial_payloads = [
+        _rename_family_payload_name(
+            build_generated_block_inventories_single(
+                schedule=schedule,
+                slot_allocation={**slot_family.slot_allocation, 'source_artifact': slot_family.source_artifact},
+                kernel=kernel,
+                arithmetic_lowerings=arithmetic_lowerings,
+                lookup_lowerings=lookup_lowerings,
+                phase_shells=phase_shells,
+                field_bits=field_bits,
+                public_google_baseline=public_google_baseline,
+            ),
+            slot_family,
+        )
+        for slot_family in slot_allocation_families()
+    ]
+    families = [family for payload in partial_payloads for family in payload['families']]
+    best_gate = min(
+        families,
+        key=lambda row: (
+            int(row['reconstruction']['full_oracle_non_clifford']),
+            int(row['reconstruction']['total_logical_qubits']),
+        ),
+    )
+    best_qubit = min(
+        families,
+        key=lambda row: (
+            int(row['reconstruction']['total_logical_qubits']),
+            int(row['reconstruction']['full_oracle_non_clifford']),
+        ),
+    )
+    return {
+        'schema': 'compiler-project-generated-block-inventories-v2',
+        'source_artifacts': {
+            'full_raw32_oracle': 'compiler_verification_project/artifacts/full_raw32_oracle.json',
+            'slot_allocations': [slot_family.source_artifact for slot_family in slot_allocation_families()],
+            'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
+            'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
+            'phase_shell_lowerings': 'compiler_verification_project/artifacts/phase_shell_lowerings.json',
+        },
+        'public_google_baseline': dict(public_google_baseline),
+        'schedule_summary': dict(schedule['summary']),
+        'arithmetic_lowering_family': arithmetic_lowerings['family'],
+        'shared_arithmetic_blocks': partial_payloads[0]['shared_arithmetic_blocks'],
+        'families': families,
+        'best_gate_family': {
+            'name': best_gate['name'],
+            'reconstruction': best_gate['reconstruction'],
+        },
+        'best_qubit_family': {
+            'name': best_qubit['name'],
+            'reconstruction': best_qubit['reconstruction'],
+        },
+        'notes': [
+            'This artifact records generated whole-oracle block inventories for every named compiler family across both the materialized-lookup leaf interface and the lookup-fed leaf interface.',
+            'The structure follows a compositional call-graph style accounting layer: shared arithmetic blocks, family-specific lookup blocks, qubit contributors, and explicit phase-shell lowering blocks.',
+        ],
+    }
+
+
+def build_ft_ir_compositions_payload(
+    schedule: Mapping[str, Any],
+    arithmetic_lowerings: Mapping[str, Any],
+    lookup_lowerings: Mapping[str, Any],
+    phase_shells: List[Mapping[str, Any]],
+    generated_block_inventories: Mapping[str, Any],
+    frontier: Optional[Mapping[str, Any]],
+    field_bits: int,
+) -> Dict[str, Any]:
+    generated_lookup = {family['slot_allocation_family']: [] for family in generated_block_inventories['families']}
+    for family in generated_block_inventories['families']:
+        generated_lookup[family['slot_allocation_family']].append(family)
+    frontier_lookup = None if frontier is None else {'families': [dict(row) for row in frontier['families']]}
+    payloads = []
+    for slot_family in slot_allocation_families():
+        partial_generated = {
+            'families': generated_lookup[slot_family.name],
+            'best_gate_family': min(
+                generated_lookup[slot_family.name],
+                key=lambda row: (
+                    int(row['reconstruction']['full_oracle_non_clifford']),
+                    int(row['reconstruction']['total_logical_qubits']),
+                ),
+            ),
+            'best_qubit_family': min(
+                generated_lookup[slot_family.name],
+                key=lambda row: (
+                    int(row['reconstruction']['total_logical_qubits']),
+                    int(row['reconstruction']['full_oracle_non_clifford']),
+                ),
+            ),
+        }
+        partial = build_ft_ir_compositions_single(
+            schedule=schedule,
+            slot_allocation={**slot_family.slot_allocation, 'source_artifact': slot_family.source_artifact},
+            arithmetic_lowerings=arithmetic_lowerings,
+            lookup_lowerings=lookup_lowerings,
+            phase_shells=phase_shells,
+            generated_block_inventories=partial_generated,
+            frontier=frontier_lookup,
+            field_bits=field_bits,
+        )
+        payloads.append(partial)
+    families = [family for payload in payloads for family in payload['families']]
+    best_gate = min(
+        families,
+        key=lambda row: (
+            int(row['reconstruction']['full_oracle_non_clifford']),
+            int(row['reconstruction']['total_logical_qubits']),
+        ),
+    )
+    best_qubit = min(
+        families,
+        key=lambda row: (
+            int(row['reconstruction']['total_logical_qubits']),
+            int(row['reconstruction']['full_oracle_non_clifford']),
+        ),
+    )
+    return {
+        'schema': 'compiler-project-ft-ir-v2',
+        'source_artifacts': {
+            'full_raw32_oracle': 'compiler_verification_project/artifacts/full_raw32_oracle.json',
+            'slot_allocations': [slot_family.source_artifact for slot_family in slot_allocation_families()],
+            'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
+            'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
+            'phase_shell_lowerings': 'compiler_verification_project/artifacts/phase_shell_lowerings.json',
+            'generated_block_inventories': 'compiler_verification_project/artifacts/generated_block_inventories.json',
+            'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
+        },
+        'source_references': payloads[0]['source_references'],
+        'schedule_summary': dict(schedule['summary']),
+        'families': families,
+        'best_gate_family': {
+            'name': best_gate['name'],
+            'reconstruction': best_gate['reconstruction'],
+        },
+        'best_qubit_family': {
+            'name': best_qubit['name'],
+            'reconstruction': best_qubit['reconstruction'],
+        },
+        'notes': [
+            'This artifact expresses each named compiler family as a compositional FT-style call graph with hierarchical bundles and a traversed leaf sigma.',
+            'The FT IR now spans both exact leaf interfaces checked into the compiler project.',
+        ],
+    }
+
+
+def build_whole_oracle_recount_payload(
+    ft_ir_compositions: Mapping[str, Any],
+    public_google_baseline: Mapping[str, Any],
+) -> Dict[str, Any]:
+    recount = build_whole_oracle_recount_single(
+        ft_ir_compositions=ft_ir_compositions,
+        public_google_baseline=public_google_baseline,
+    )
+    recount['schema'] = 'compiler-project-whole-oracle-recount-v2'
+    recount['source_artifacts'] = {
+        'ft_ir_compositions': 'compiler_verification_project/artifacts/ft_ir_compositions.json',
+        'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
+    }
+    recount['notes'] = [
+        'This artifact performs a full exact whole-oracle recount by aggregating the FT IR leaf sigma for each named compiler family.',
+        'The recount is independent of the flattened generated block inventory totals and serves as the primary exact total source for the compiler frontier across both exact leaf interfaces.',
+    ]
+    return recount
+
+
 # ---------------------------------------------------------------------------
 # Whole-oracle frontier and physical transfers
 # ---------------------------------------------------------------------------
@@ -561,13 +833,11 @@ def compiler_family_frontier() -> Dict[str, Any]:
         field_bits=FIELD_BITS,
         leaf_opcode_histogram=kernel['leaf_opcode_histogram'],
     )
-    slot_alloc = exact_leaf_slot_allocation()
     lookup_lowerings = lookup_lowering_library()
     phase_shell_lowerings = phase_shell_lowering_library(FULL_PHASE_REGISTER_BITS)
     phase_shell_rows = phase_shell_family_summary(phase_shell_lowerings)['families']
-    generated_inventories = build_generated_block_inventories(
+    generated_inventories = build_generated_block_inventories_payload(
         schedule=schedule,
-        slot_allocation=slot_alloc,
         kernel=kernel,
         arithmetic_lowerings=arithmetic_lowerings,
         lookup_lowerings=lookup_lowerings,
@@ -575,9 +845,8 @@ def compiler_family_frontier() -> Dict[str, Any]:
         field_bits=FIELD_BITS,
         public_google_baseline=PUBLIC_GOOGLE_BASELINE,
     )
-    ft_ir = build_ft_ir_compositions(
+    ft_ir = build_ft_ir_compositions_payload(
         schedule=schedule,
-        slot_allocation=slot_alloc,
         arithmetic_lowerings=arithmetic_lowerings,
         lookup_lowerings=lookup_lowerings,
         phase_shells=phase_shell_lowerings['families'],
@@ -585,7 +854,7 @@ def compiler_family_frontier() -> Dict[str, Any]:
         frontier=None,
         field_bits=FIELD_BITS,
     )
-    recount = build_whole_oracle_recount(
+    recount = build_whole_oracle_recount_payload(
         ft_ir_compositions=ft_ir,
         public_google_baseline=PUBLIC_GOOGLE_BASELINE,
     )
@@ -606,6 +875,7 @@ def compiler_family_frontier() -> Dict[str, Any]:
                 summary=inventory['summary'],
                 gate_set=f'{lookup.gate_set}; {phase_shell.gate_set}',
                 phase_shell=phase_shell.name,
+                slot_allocation_family=inventory['slot_allocation_family'],
                 arithmetic_kernel_family=kernel['name'],
                 lookup_family=lookup.name,
                 arithmetic_leaf_non_clifford=int(reconstruction['arithmetic_leaf_non_clifford']),
@@ -631,11 +901,26 @@ def compiler_family_frontier() -> Dict[str, Any]:
         )
     best_gate = min(families, key=lambda row: (row.full_oracle_non_clifford, row.total_logical_qubits))
     best_qubit = min(families, key=lambda row: (row.total_logical_qubits, row.full_oracle_non_clifford))
+    best_sub30m_qubit = min(
+        (row for row in families if row.full_oracle_non_clifford < 30_000_000),
+        key=lambda row: (row.total_logical_qubits, row.full_oracle_non_clifford),
+    )
     return {
-        'schema': 'compiler-project-frontier-v9',
+        'schema': 'compiler-project-frontier-v10',
         'public_google_baseline': PUBLIC_GOOGLE_BASELINE,
         'schedule': schedule,
-        'slot_allocation': slot_alloc,
+        'slot_allocation': exact_leaf_slot_allocation(),
+        'slot_allocation_families': [
+            {
+                'name': slot_family.name,
+                'summary': slot_family.summary,
+                'source_artifact': slot_family.source_artifact,
+                'leaf_source_artifact': slot_family.leaf_source_artifact,
+                'slot_allocation': slot_family.slot_allocation,
+                'notes': slot_family.notes,
+            }
+            for slot_family in slot_allocation_families()
+        ],
         'arithmetic_kernel_family': arithmetic_kernel_library(),
         'arithmetic_lowering_artifact': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
         'lookup_lowering_artifact': 'compiler_verification_project/artifacts/lookup_lowerings.json',
@@ -647,8 +932,9 @@ def compiler_family_frontier() -> Dict[str, Any]:
         'families': [asdict(row) for row in families],
         'best_gate_family': asdict(best_gate),
         'best_qubit_family': asdict(best_qubit),
+        'best_sub30m_qubit_family': asdict(best_sub30m_qubit),
         'notes': [
-            'These are exact whole-oracle counts for named compiler families over an explicit arithmetic-lowering family, an explicit lookup-lowering family, a generated block-inventory layer, and a fully quantum raw-32 schedule.',
+            'These are exact whole-oracle counts for named compiler families over an explicit arithmetic-lowering family, an explicit lookup-lowering family, two explicit leaf-interface families, a generated block-inventory layer, and a fully quantum raw-32 schedule.',
             'The qubit frontier uses exact slot allocation and an explicit phase-shell lowering layer rather than a fixed 512-bit phase-register policy plus shell-level placeholder counters.',
             'The arithmetic kernels, lookup families, and phase-shell families are bound to explicit internal subcircuit-equivalence or lowering witnesses at the checked ISA and generated-inventory layers; the remaining open gap is external equivalence checking below the named blocks.',
             'The compiler frontier totals are sourced from the independent whole-oracle recount over the FT IR leaf sigma rather than directly from the generated block inventory.',
@@ -666,8 +952,16 @@ def build_qubit_breakthrough_analysis(
     slot_allocation: Optional[Mapping[str, Any]] = None,
 ) -> Dict[str, Any]:
     effective_frontier = dict(frontier) if frontier is not None else compiler_family_frontier()
-    effective_slot_allocation = dict(slot_allocation) if slot_allocation is not None else exact_leaf_slot_allocation()
     best_qubit = dict(effective_frontier['best_qubit_family'])
+    if slot_allocation is not None:
+        effective_slot_allocation = dict(slot_allocation)
+    else:
+        slot_family_name = str(best_qubit['slot_allocation_family'])
+        effective_slot_allocation = next(
+            dict(row['slot_allocation'])
+            for row in effective_frontier['slot_allocation_families']
+            if row['name'] == slot_family_name
+        )
     arithmetic_slot_count = int(best_qubit['arithmetic_slot_count'])
     control_slot_count = int(best_qubit['control_slot_count'])
     lookup_workspace_qubits = int(best_qubit['lookup_workspace_qubits'])
@@ -882,9 +1176,8 @@ def full_attack_inventory() -> Dict[str, Any]:
         leaf_opcode_histogram=kernel['leaf_opcode_histogram'],
     )
     phase_shell_lowerings = phase_shell_lowering_library(FULL_PHASE_REGISTER_BITS)
-    generated_block_inventories = build_generated_block_inventories(
+    generated_block_inventories = build_generated_block_inventories_payload(
         schedule=schedule,
-        slot_allocation=exact_leaf_slot_allocation(),
         kernel=kernel,
         arithmetic_lowerings=arithmetic_lowerings,
         lookup_lowerings=lookup_lowering_library(),
@@ -1198,9 +1491,8 @@ def build_all_artifacts() -> Dict[str, Any]:
     phase_shell_lowerings = phase_shell_lowering_library(FULL_PHASE_REGISTER_BITS)
     phase_shell_rows = phase_shell_family_summary(phase_shell_lowerings)
     lookup_lowerings = lookup_lowering_library()
-    generated_block_inventories = build_generated_block_inventories(
+    generated_block_inventories = build_generated_block_inventories_payload(
         schedule=raw32_schedule(),
-        slot_allocation=exact_leaf_slot_allocation(),
         kernel=arithmetic_kernel_library(),
         arithmetic_lowerings=arithmetic_lowerings,
         lookup_lowerings=lookup_lowerings,
@@ -1208,9 +1500,8 @@ def build_all_artifacts() -> Dict[str, Any]:
         field_bits=FIELD_BITS,
         public_google_baseline=PUBLIC_GOOGLE_BASELINE,
     )
-    ft_ir_compositions = build_ft_ir_compositions(
+    ft_ir_compositions = build_ft_ir_compositions_payload(
         schedule=raw32_schedule(),
-        slot_allocation=exact_leaf_slot_allocation(),
         arithmetic_lowerings=arithmetic_lowerings,
         lookup_lowerings=lookup_lowerings,
         phase_shells=phase_shell_lowerings['families'],
@@ -1218,7 +1509,7 @@ def build_all_artifacts() -> Dict[str, Any]:
         frontier=None,
         field_bits=FIELD_BITS,
     )
-    whole_oracle_recount = build_whole_oracle_recount(
+    whole_oracle_recount = build_whole_oracle_recount_payload(
         ft_ir_compositions=ft_ir_compositions,
         public_google_baseline=PUBLIC_GOOGLE_BASELINE,
     )
@@ -1226,6 +1517,9 @@ def build_all_artifacts() -> Dict[str, Any]:
         'canonical_public_point': canonical_public_point(),
         'raw32_schedule': raw32_schedule(),
         'slot_allocation': exact_leaf_slot_allocation(),
+        'lookup_fed_leaf': build_lookup_fed_leaf(),
+        'lookup_fed_leaf_equivalence': build_lookup_fed_leaf_equivalence(),
+        'lookup_fed_slot_allocation': lookup_fed_leaf_slot_allocation(),
         'arithmetic_lowerings': arithmetic_lowerings,
         'arithmetic_kernel_library': arithmetic_kernel_library(),
         'primitive_multiplier_library': primitive_multiplier_library(),
@@ -1238,10 +1532,7 @@ def build_all_artifacts() -> Dict[str, Any]:
         'whole_oracle_recount': whole_oracle_recount,
     }
     out['frontier'] = compiler_family_frontier()
-    out['qubit_breakthrough_analysis'] = build_qubit_breakthrough_analysis(
-        frontier=out['frontier'],
-        slot_allocation=out['slot_allocation'],
-    )
+    out['qubit_breakthrough_analysis'] = build_qubit_breakthrough_analysis(frontier=out['frontier'])
     out['full_attack_inventory'] = full_attack_inventory()
     out['subcircuit_equivalence'] = build_subcircuit_equivalence_artifact(
         arithmetic_lowerings=out['arithmetic_lowerings'],
@@ -1253,6 +1544,9 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('canonical_public_point.json'), out['canonical_public_point'])
     dump_json(project_artifact_path('full_raw32_oracle.json'), out['raw32_schedule'])
     dump_json(project_artifact_path('exact_leaf_slot_allocation.json'), out['slot_allocation'])
+    dump_json(project_artifact_path('lookup_fed_leaf.json'), out['lookup_fed_leaf'])
+    dump_json(project_artifact_path('lookup_fed_leaf_equivalence.json'), out['lookup_fed_leaf_equivalence'])
+    dump_json(project_artifact_path('lookup_fed_leaf_slot_allocation.json'), out['lookup_fed_slot_allocation'])
     dump_json(project_artifact_path('arithmetic_lowerings.json'), out['arithmetic_lowerings'])
     dump_json(project_artifact_path('module_library.json'), out['arithmetic_kernel_library'])
     dump_json(project_artifact_path('primitive_multiplier_library.json'), out['primitive_multiplier_library'])
@@ -1277,11 +1571,14 @@ def build_all_artifacts() -> Dict[str, Any]:
     )
 
     build_summary = {
-        'schema': 'compiler-project-build-summary-v12',
+        'schema': 'compiler-project-build-summary-v13',
         'artifacts': {
             'canonical_public_point': 'compiler_verification_project/artifacts/canonical_public_point.json',
             'full_raw32_oracle': 'compiler_verification_project/artifacts/full_raw32_oracle.json',
             'exact_leaf_slot_allocation': 'compiler_verification_project/artifacts/exact_leaf_slot_allocation.json',
+            'lookup_fed_leaf': 'compiler_verification_project/artifacts/lookup_fed_leaf.json',
+            'lookup_fed_leaf_equivalence': 'compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json',
+            'lookup_fed_leaf_slot_allocation': 'compiler_verification_project/artifacts/lookup_fed_leaf_slot_allocation.json',
             'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
             'module_library': 'compiler_verification_project/artifacts/module_library.json',
             'primitive_multiplier_library': 'compiler_verification_project/artifacts/primitive_multiplier_library.json',
@@ -1303,9 +1600,10 @@ def build_all_artifacts() -> Dict[str, Any]:
         'headline': {
             'best_gate_family': out['frontier']['best_gate_family'],
             'best_qubit_family': out['frontier']['best_qubit_family'],
+            'best_sub30m_qubit_family': out['frontier']['best_sub30m_qubit_family'],
         },
         'notes': [
-            'The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families with explicit arithmetic, lookup, and phase-shell lowerings, generated block inventories, a compositional FT IR layer, a full whole-oracle recount, and internal subcircuit-equivalence witnesses.',
+            'The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families with explicit arithmetic, lookup, and phase-shell lowerings, generated block inventories, a compositional FT IR layer, a full whole-oracle recount, internal subcircuit-equivalence witnesses, and two exact leaf-interface families.',
             'Its qubit accounting uses exact slot allocation and exact phase-shell lowering instead of a fixed 10-slot/512-phase policy.',
             'The physical-estimator layer binds those exact logical counts to explicit Microsoft Resource Estimator target profiles and recorded estimator outputs.',
         ],
@@ -1354,7 +1652,12 @@ __all__ = [
     'build_azure_logical_counts_payload',
     'write_azure_estimator_targets',
     'write_azure_estimator_results',
+    'build_ft_ir_compositions_payload',
+    'build_generated_block_inventories_payload',
+    'build_whole_oracle_recount_payload',
     'structured_raw32_cases',
     'compiler_family_frontier',
+    'lookup_fed_leaf_slot_allocation',
+    'slot_allocation_families',
     'raw32_schedule',
 ]
