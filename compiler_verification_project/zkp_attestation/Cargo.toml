@@ -1,0 +1,16 @@
+[workspace]
+members = ["lib", "program", "script"]
+resolver = "2"
+
+[workspace.dependencies]
+clap = { version = "4.5.38", features = ["derive", "env"] }
+dotenv = "0.15.0"
+hex = "0.4.3"
+num-bigint = "0.4.6"
+num-traits = "0.2.19"
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.145"
+sha2 = "0.10.9"
+
+[patch.crates-io]
+sp1-recursion-gnark-ffi = { path = "vendor/sp1-recursion-gnark-ffi" }

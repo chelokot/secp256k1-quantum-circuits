@@ -1,0 +1,400 @@
+{
+  "schema": "compiler-project-zkp-attestation-input-v3",
+  "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
+  "selected_family_name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+  "claim_sha256": "7a9c33b48a691766c6e8f021c58943e298d441664d8c1caa01378cb7110acdbf",
+  "leaf_sha256": "0680eabf66514b53284b6e76d007f7d097cd421c415c68fb69f6e017b827ff15",
+  "family_sha256": "d742daa97e384a3601b996cfefe1c69a451d0b94fb7bb470dc711aad68157a3a",
+  "case_corpus_sha256": "06d46dcfbdc4025c5c8dc3e7f4179747eca60854f3232f5161bac7b5a0bb1a60",
+  "claim_summary": {
+    "field_bits": 256,
+    "leaf_call_count_total": 31,
+    "expected_full_oracle_non_clifford": 22753831,
+    "expected_total_logical_qubits": 1842,
+    "expected_case_count": 8,
+    "non_clifford_formula": {
+      "arithmetic_leaf_non_clifford": 733657,
+      "per_leaf_lookup_non_clifford": 327,
+      "direct_seed_non_clifford": 327,
+      "leaf_call_count_total": 31,
+      "arithmetic_component": 22743367,
+      "lookup_component": 10137,
+      "reconstructed_total": 22753831
+    },
+    "logical_qubit_formula": {
+      "field_bits": 256,
+      "arithmetic_slot_count": 7,
+      "control_slot_count": 1,
+      "lookup_workspace_qubits": 48,
+      "live_phase_bits": 1,
+      "arithmetic_component": 1792,
+      "reconstructed_total": 1842
+    }
+  },
+  "family_summary": {
+    "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+    "arithmetic_leaf_non_clifford": 733657,
+    "direct_seed_non_clifford": 327,
+    "per_leaf_lookup_non_clifford": 327,
+    "full_oracle_non_clifford": 22753831,
+    "arithmetic_slot_count": 7,
+    "control_slot_count": 1,
+    "lookup_workspace_qubits": 48,
+    "live_phase_bits": 1,
+    "total_logical_qubits": 1842
+  },
+  "prepared_leaf": {
+    "register_count": 15,
+    "input_qx": 0,
+    "input_qy": 1,
+    "input_qz": 2,
+    "input_k": 3,
+    "input_lookup_x": 4,
+    "input_lookup_y": 5,
+    "input_lookup_meta": 6,
+    "output_qx": 7,
+    "output_qy": 8,
+    "output_qz": 9,
+    "instructions": [
+      {
+        "kind": "copy",
+        "dst": 6,
+        "src": 6
+      },
+      {
+        "kind": "copy",
+        "dst": 4,
+        "src": 4
+      },
+      {
+        "kind": "copy",
+        "dst": 5,
+        "src": 5
+      },
+      {
+        "kind": "bool_from_flag",
+        "dst": 10,
+        "flags": 6,
+        "bit": 0
+      },
+      {
+        "kind": "field_add",
+        "dst": 11,
+        "left": 4,
+        "right": 5
+      },
+      {
+        "kind": "copy",
+        "dst": 7,
+        "src": 0
+      },
+      {
+        "kind": "copy",
+        "dst": 8,
+        "src": 1
+      },
+      {
+        "kind": "copy",
+        "dst": 9,
+        "src": 2
+      },
+      {
+        "kind": "field_mul",
+        "dst": 12,
+        "left": 4,
+        "right": 9
+      },
+      {
+        "kind": "field_add",
+        "dst": 12,
+        "left": 12,
+        "right": 7
+      },
+      {
+        "kind": "mul_const",
+        "dst": 12,
+        "src": 12,
+        "constant": 21
+      },
+      {
+        "kind": "field_mul",
+        "dst": 13,
+        "left": 5,
+        "right": 9
+      },
+      {
+        "kind": "field_add",
+        "dst": 13,
+        "left": 13,
+        "right": 8
+      },
+      {
+        "kind": "mul_const",
+        "dst": 9,
+        "src": 9,
+        "constant": 21
+      },
+      {
+        "kind": "field_mul",
+        "dst": 14,
+        "left": 7,
+        "right": 4
+      },
+      {
+        "kind": "field_add",
+        "dst": 7,
+        "left": 7,
+        "right": 8
+      },
+      {
+        "kind": "field_mul",
+        "dst": 11,
+        "left": 11,
+        "right": 7
+      },
+      {
+        "kind": "field_mul",
+        "dst": 7,
+        "left": 8,
+        "right": 5
+      },
+      {
+        "kind": "field_add",
+        "dst": 8,
+        "left": 14,
+        "right": 7
+      },
+      {
+        "kind": "field_sub",
+        "dst": 11,
+        "left": 11,
+        "right": 8
+      },
+      {
+        "kind": "field_add",
+        "dst": 8,
+        "left": 14,
+        "right": 14
+      },
+      {
+        "kind": "field_add",
+        "dst": 8,
+        "left": 8,
+        "right": 14
+      },
+      {
+        "kind": "field_add",
+        "dst": 14,
+        "left": 7,
+        "right": 9
+      },
+      {
+        "kind": "field_sub",
+        "dst": 7,
+        "left": 7,
+        "right": 9
+      },
+      {
+        "kind": "field_mul",
+        "dst": 9,
+        "left": 13,
+        "right": 12
+      },
+      {
+        "kind": "field_mul",
+        "dst": 12,
+        "left": 12,
+        "right": 8
+      },
+      {
+        "kind": "field_mul",
+        "dst": 8,
+        "left": 8,
+        "right": 11
+      },
+      {
+        "kind": "field_mul",
+        "dst": 11,
+        "left": 11,
+        "right": 7
+      },
+      {
+        "kind": "field_sub",
+        "dst": 11,
+        "left": 11,
+        "right": 9
+      },
+      {
+        "kind": "field_mul",
+        "dst": 7,
+        "left": 7,
+        "right": 14
+      },
+      {
+        "kind": "field_add",
+        "dst": 12,
+        "left": 7,
+        "right": 12
+      },
+      {
+        "kind": "field_mul",
+        "dst": 14,
+        "left": 14,
+        "right": 13
+      },
+      {
+        "kind": "field_add",
+        "dst": 14,
+        "left": 14,
+        "right": 8
+      },
+      {
+        "kind": "select_field_if_flag",
+        "dst": 7,
+        "flag": 10,
+        "when_nonzero": 0,
+        "when_zero": 11
+      },
+      {
+        "kind": "select_field_if_flag",
+        "dst": 8,
+        "flag": 10,
+        "when_nonzero": 1,
+        "when_zero": 12
+      },
+      {
+        "kind": "select_field_if_flag",
+        "dst": 9,
+        "flag": 10,
+        "when_nonzero": 2,
+        "when_zero": 14
+      },
+      {
+        "kind": "clear_bool_from_flag",
+        "dst": 10,
+        "flags": 6,
+        "bit": 0
+      }
+    ]
+  },
+  "prepared_case_corpus": {
+    "field_modulus_hex": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
+    "case_count": 8,
+    "cases": [
+      {
+        "case_id": "zero_zero_0000",
+        "category": "zero_zero",
+        "accumulator": null,
+        "lookup": null,
+        "expected": null
+      },
+      {
+        "case_id": "accumulator_infinity_0001",
+        "category": "accumulator_infinity",
+        "accumulator": null,
+        "lookup": {
+          "x_hex": "0ea143e14683790d94734af067cef5884315641e34615ef619723644f9a8d399",
+          "y_hex": "1157a700e3d999551d94590c2aab272878060af9ac606f0370f87c547af7e89d"
+        },
+        "expected": {
+          "x_hex": "0ea143e14683790d94734af067cef5884315641e34615ef619723644f9a8d399",
+          "y_hex": "1157a700e3d999551d94590c2aab272878060af9ac606f0370f87c547af7e89d"
+        }
+      },
+      {
+        "case_id": "lookup_infinity_0002",
+        "category": "lookup_infinity",
+        "accumulator": {
+          "x_hex": "38bf0e5a8a1471210da70f7a919a3b0259cb71273166ed1f298fa48ffa1dd82c",
+          "y_hex": "5c4b7b6367d122774e25f442d6c9e80a8f9d9c21bf59f7c0248e8379aff191d7"
+        },
+        "lookup": null,
+        "expected": {
+          "x_hex": "38bf0e5a8a1471210da70f7a919a3b0259cb71273166ed1f298fa48ffa1dd82c",
+          "y_hex": "5c4b7b6367d122774e25f442d6c9e80a8f9d9c21bf59f7c0248e8379aff191d7"
+        }
+      },
+      {
+        "case_id": "doubling_0003",
+        "category": "doubling",
+        "accumulator": {
+          "x_hex": "0db326a6f1d18ebc4d7db8201d6ceaf993b5b31e88d1473128703b3ef4600e0f",
+          "y_hex": "d3060eebb1737cff994b232a76828027e83d1c22f7b1efc6687e1ba216ac121e"
+        },
+        "lookup": {
+          "x_hex": "0db326a6f1d18ebc4d7db8201d6ceaf993b5b31e88d1473128703b3ef4600e0f",
+          "y_hex": "d3060eebb1737cff994b232a76828027e83d1c22f7b1efc6687e1ba216ac121e"
+        },
+        "expected": {
+          "x_hex": "7719f4da13430a51794cf163629c18069ea54e027445c1ae11e8ccb16502ea08",
+          "y_hex": "106a9960a557081614f00a0f72e25417978455c9f605579efecbabaa6ec61e18"
+        }
+      },
+      {
+        "case_id": "inverse_0004",
+        "category": "inverse",
+        "accumulator": {
+          "x_hex": "ddf1e0f93413df64060e3056a18d0fcdb2aea31eb3d98279af446b4a054c1e58",
+          "y_hex": "3e8e68c818a0b95d127430f4a71849f88767de7eba239f9aab8e1f4156311971"
+        },
+        "lookup": {
+          "x_hex": "ddf1e0f93413df64060e3056a18d0fcdb2aea31eb3d98279af446b4a054c1e58",
+          "y_hex": "c1719737e75f46a2ed8bcf0b58e7b6077898218145dc60655471e0bda9cee2be"
+        },
+        "expected": null
+      },
+      {
+        "case_id": "random_0005",
+        "category": "random",
+        "accumulator": {
+          "x_hex": "614c75814604d87262f42ee542e2eb1197a9ff095a91a1fec09d1108d651d139",
+          "y_hex": "fa880de5e26dcf3cb0a5163112c50ad1356fed5d1202c707765b126d66b7f228"
+        },
+        "lookup": {
+          "x_hex": "ea5b3b616376ae6630d87fa3a893be68bb02415bfef4160f4760ac5a37cda5cf",
+          "y_hex": "abda4a477f35c715b5d740cd293b8660fcf57979d5b1fc0c60ac6f55a25991bb"
+        },
+        "expected": {
+          "x_hex": "f8618cdf339fd6da55bfe37c4b508f88f4f645c89ef914feb32d15fb12b31eba",
+          "y_hex": "90f58b6777645f5b1558e919bc5d474a81c8f18ed1dff8c1a9ca0351d5c5bf2d"
+        }
+      },
+      {
+        "case_id": "random_0006",
+        "category": "random",
+        "accumulator": {
+          "x_hex": "7a64bfd3e552a52bc614f9af43fb00d77123ed91a12f44654e601d8a826f0e1e",
+          "y_hex": "2ce477d34f6ff68f7181b4d2b44e4b0ea99bdb2bf7d44c6dde7f09e5d803b1db"
+        },
+        "lookup": {
+          "x_hex": "5d6288a95ca78113dd0a909516ed8feb89ae497f16e22a7aa74fc631106b1ce6",
+          "y_hex": "9624fcae0cd3ed4221fbe07ce2154854e514711aa909ad1752d41c8245be497a"
+        },
+        "expected": {
+          "x_hex": "f8202bd2879f5af16671d8d24750d2ecb3632287043a7b2472867a7d90a5bdbc",
+          "y_hex": "ad5c68ef40138d3babb5e97cb6d35a612ba31f3c5ca45ef06aadb89b40120a24"
+        }
+      },
+      {
+        "case_id": "random_0007",
+        "category": "random",
+        "accumulator": {
+          "x_hex": "fa429647a5b8fff4bdd7f6c3c7cd12791c108cdb763aabfe1d040d5f5b09cd45",
+          "y_hex": "4e92c905f1256461e878f58f043fbe7e7783ef6781e03f4924a2703108333e3e"
+        },
+        "lookup": {
+          "x_hex": "0aab9d8d35e801c26cd06bfb2b8b3145725a3f15aa128cfd0b8316c33ce281bb",
+          "y_hex": "1578461072c051caefc62f7931e06b9734725ab3d1d5949364e6eab13353be78"
+        },
+        "expected": {
+          "x_hex": "69704c3890df95dfbbfcbe885587bee47e2d7380538d9de169347f82837a4808",
+          "y_hex": "058d5dd42287267f275bdef17639039abc11d151151ab19e9cf78540df429fa2"
+        }
+      }
+    ]
+  },
+  "notes": [
+    "The proof input is a prepared attestation bundle: it carries the public document digests plus a proof-ready compiled leaf and deterministic public cases.",
+    "The checked JSON claim, family summary, and case corpus remain the source-of-truth sidecars for audit and regeneration."
+  ]
+}

@@ -6,4 +6,5 @@ __pycache__/
 .pytest_cache/
 results/repo_verification_summary.json
 compiler_verification_project/generated_circuits/
+compiler_verification_project/zkp_attestation/target/
 .tmp_qubit_iteration_log.csv

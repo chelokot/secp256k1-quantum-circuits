@@ -1,0 +1,13 @@
+{
+  "schema": "compiler-project-zkp-attestation-public-v2",
+  "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
+  "selected_family_name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+  "claim_sha256": "7a9c33b48a691766c6e8f021c58943e298d441664d8c1caa01378cb7110acdbf",
+  "leaf_sha256": "0680eabf66514b53284b6e76d007f7d097cd421c415c68fb69f6e017b827ff15",
+  "family_sha256": "d742daa97e384a3601b996cfefe1c69a451d0b94fb7bb470dc711aad68157a3a",
+  "case_corpus_sha256": "06d46dcfbdc4025c5c8dc3e7f4179747eca60854f3232f5161bac7b5a0bb1a60",
+  "expected_full_oracle_non_clifford": 22753831,
+  "expected_total_logical_qubits": 1842,
+  "case_count": 8,
+  "passed_case_count": 8
+}

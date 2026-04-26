@@ -8,7 +8,9 @@ The repository publishes exact kickmix-ISA arithmetic schedules for a
 secp256k1-specialized point-add leaf and explicit retained-window scaffold
 metadata, together with deterministic audits, finite-model checks, and a
 separate exact compiler-family oracle subproject that closes the
-classical-tail-elision gap for a fully quantum raw-32 schedule.
+classical-tail-elision gap for a fully quantum raw-32 schedule. It now also
+ships an SP1 attestation bundle for one selected exact-family claim at that
+same boundary.
 
 ## Exact layers
 
@@ -91,6 +93,41 @@ subproject. In particular, it fixes:
   composition, and
 - compact phase-shell summaries derived from those exact lowerings, including a semiclassical-QFT shell.
 
+### 5. Exact SP1 attestation at the compiler-family boundary
+
+The repository also ships a checked SP1 attestation bundle:
+
+- `compiler_verification_project/artifacts/zkp_attestation_input.json`
+- `compiler_verification_project/artifacts/zkp_attestation_claim.json`
+- `compiler_verification_project/artifacts/zkp_attestation_family.json`
+- `compiler_verification_project/artifacts/zkp_attestation_cases.json`
+- `compiler_verification_project/artifacts/zkp_attestation_public_values.json`
+- `compiler_verification_project/artifacts/zkp_attestation_fixture_core.json`
+- `compiler_verification_project/artifacts/zkp_attestation_fixture_compressed.json`
+- `compiler_verification_project/artifacts/zkp_attestation_fixture_groth16.json`
+- `compiler_verification_project/artifacts/zkp_attestation_proof_groth16.bin`
+- `compiler_verification_project/artifacts/zkp_attestation_groth16_verifier/groth16_vk.bin`
+
+That bundle is exact at the same boundary as the selected compiler-family
+summary and lookup-fed point-add leaf. The guest:
+
+- re-hashes the public claim, leaf document, selected family summary, and
+  deterministic case corpus,
+- replays the exact lookup-fed point-add leaf on every public case,
+- checks the affine group law for every case, and
+- reconstructs the claimed full-oracle non-Clifford and logical-qubit totals
+  from the selected family summary before committing public values.
+
+The checked JSON sidecars remain the audit-friendly source-of-truth inputs for
+that bundle. The core, compressed, and Groth16 fixtures are checked proof-layer
+outputs for the same public claim, and the shipped Groth16 proof bundle plus
+verifying key allow cheap local re-verification from the repository without
+rebuilding the large vk-specific dev artifact tree.
+
+This is similar in shape to Google's disclosure model, but it proves a public
+deterministic point-add corpus at the repository exact-family boundary rather
+than a hidden primitive-gate Shor circuit.
+
 ## Modeled or non-exact layers
 
 ### A. Primitive-gate lookup realization
@@ -145,5 +182,7 @@ Exact lookup-contract semantics: yes.
 Mainline exact primitive-gate lookup, cleanup, and full Shor flattening: no.
 
 Exact compiler-family whole-oracle counts: yes, in `compiler_verification_project/`, but only for the named compiler families checked into that subproject.
+
+Exact compiler-family SP1 attestation for one selected family claim and public deterministic point-add corpus: yes.
 
 Exact compiler-family comparison against the public Google baseline: yes.

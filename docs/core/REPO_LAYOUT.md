@@ -7,7 +7,8 @@
   inputs
 - `LICENSE` — repository license
 - `CITATION.cff` — citation metadata
-- `MANIFEST.sha256` — whole-tree hash manifest
+- `MANIFEST.sha256` — versioned-tree hash manifest
+- `.github/workflows/ci.yml` — Python matrix plus checked attestation Rust/Go CI
 
 ## Artifact layer
 
@@ -40,10 +41,18 @@ Key files:
 
 - `compiler_verification_project/README.md`
 - `compiler_verification_project/scripts/build.py`
+- `compiler_verification_project/scripts/build_zkp_attestation_input.py`
+- `compiler_verification_project/scripts/run_zkp_attestation_guarded.py`
 - `compiler_verification_project/scripts/verify.py`
 - `compiler_verification_project/src/project.py`
+- `compiler_verification_project/src/zkp_attestation.py`
 - `compiler_verification_project/artifacts/family_frontier.json`
 - `compiler_verification_project/artifacts/verification_summary.json`
+- `compiler_verification_project/artifacts/zkp_attestation_family.json`
+- `compiler_verification_project/artifacts/zkp_attestation_fixture_groth16.json`
+- `compiler_verification_project/artifacts/zkp_attestation_proof_groth16.bin`
+- `compiler_verification_project/artifacts/zkp_attestation_groth16_verifier/groth16_vk.bin`
+- `compiler_verification_project/zkp_attestation/`
 
 ## Source code
 
