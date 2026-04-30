@@ -168,6 +168,90 @@
       "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.401953,
       "same_density_physical_qubits_if_1200_maps_to_26k": 749233.3333333334,
       "same_density_physical_qubits_if_1450_maps_to_26k": 620055.1724137932
+    },
+    {
+      "family": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1",
+      "heuristic_time_efficient_days_if_90M_maps_to_10d": 4.159215,
+      "heuristic_time_efficient_days_if_70M_maps_to_10d": 5.347562142857143,
+      "same_density_physical_qubits_if_1200_maps_to_26k": 45066.666666666664,
+      "same_density_physical_qubits_if_1450_maps_to_26k": 37296.55172413793
+    },
+    {
+      "family": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+      "heuristic_time_efficient_days_if_90M_maps_to_10d": 4.159215,
+      "heuristic_time_efficient_days_if_70M_maps_to_10d": 5.347562142857143,
+      "same_density_physical_qubits_if_1200_maps_to_26k": 33995.0,
+      "same_density_physical_qubits_if_1450_maps_to_26k": 28133.793103448275
+    },
+    {
+      "family": "folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1",
+      "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.530813222222222,
+      "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.253902714285714,
+      "same_density_physical_qubits_if_1200_maps_to_26k": 53105.0,
+      "same_density_physical_qubits_if_1450_maps_to_26k": 43948.96551724138
+    },
+    {
+      "family": "folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+      "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.530813222222222,
+      "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.253902714285714,
+      "same_density_physical_qubits_if_1200_maps_to_26k": 42033.333333333336,
+      "same_density_physical_qubits_if_1450_maps_to_26k": 34786.206896551725
+    },
+    {
+      "family": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1",
+      "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.5284665555555557,
+      "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.2508855714285714,
+      "same_density_physical_qubits_if_1200_maps_to_26k": 45998.333333333336,
+      "same_density_physical_qubits_if_1450_maps_to_26k": 38067.58620689655
+    },
+    {
+      "family": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+      "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.5284665555555557,
+      "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.2508855714285714,
+      "same_density_physical_qubits_if_1200_maps_to_26k": 34926.666666666664,
+      "same_density_physical_qubits_if_1450_maps_to_26k": 28904.827586206895
+    },
+    {
+      "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1",
+      "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.5282034444444443,
+      "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.2505472857142856,
+      "same_density_physical_qubits_if_1200_maps_to_26k": 45435.0,
+      "same_density_physical_qubits_if_1450_maps_to_26k": 37601.379310344826
+    },
+    {
+      "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+      "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.5282034444444443,
+      "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.2505472857142856,
+      "same_density_physical_qubits_if_1200_maps_to_26k": 34363.333333333336,
+      "same_density_physical_qubits_if_1450_maps_to_26k": 28438.620689655174
+    },
+    {
+      "family": "folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1",
+      "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.7611065555555556,
+      "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.549994142857143,
+      "same_density_physical_qubits_if_1200_maps_to_26k": 754758.3333333334,
+      "same_density_physical_qubits_if_1450_maps_to_26k": 624627.5862068966
+    },
+    {
+      "family": "folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+      "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.7611065555555556,
+      "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.549994142857143,
+      "same_density_physical_qubits_if_1200_maps_to_26k": 743686.6666666666,
+      "same_density_physical_qubits_if_1450_maps_to_26k": 615464.8275862068
+    },
+    {
+      "family": "folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1",
+      "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.6459634444444444,
+      "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.401953,
+      "same_density_physical_qubits_if_1200_maps_to_26k": 754758.3333333334,
+      "same_density_physical_qubits_if_1450_maps_to_26k": 624627.5862068966
+    },
+    {
+      "family": "folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+      "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.6459634444444444,
+      "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.401953,
+      "same_density_physical_qubits_if_1200_maps_to_26k": 743686.6666666666,
+      "same_density_physical_qubits_if_1450_maps_to_26k": 615464.8275862068
     }
   ],
   "notes": [

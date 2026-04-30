@@ -1,0 +1,400 @@
+{
+  "schema": "compiler-project-interface-borrowed-leaf-v1",
+  "variant": "a0_complete_mixed_secp256k1",
+  "curve": "secp256k1",
+  "field_modulus_hex": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
+  "curve_b": 7,
+  "b3": 21,
+  "arithmetic_slots": [
+    "qx",
+    "qy",
+    "qz",
+    "lx",
+    "ly",
+    "t1"
+  ],
+  "interface_wires": [
+    "Q.X",
+    "Q.Y",
+    "Q.Z",
+    "k",
+    "T.x",
+    "T.y",
+    "T.meta"
+  ],
+  "instructions": [
+    {
+      "pc": 0,
+      "op": "lookup_meta",
+      "dst": "lookup_meta",
+      "src": {
+        "table": "T.meta",
+        "key": "k"
+      },
+      "comment": "Metadata bit0 marks the neutral lookup entry used for k = 0."
+    },
+    {
+      "pc": 1,
+      "op": "lookup_affine_x",
+      "dst": "lookup_x",
+      "src": {
+        "table": "T.x",
+        "key": "k"
+      },
+      "comment": "Load affine x coordinate for the selected window point."
+    },
+    {
+      "pc": 2,
+      "op": "lookup_affine_y",
+      "dst": "lookup_y",
+      "src": {
+        "table": "T.y",
+        "key": "k"
+      },
+      "comment": "Load affine y coordinate for the selected window point."
+    },
+    {
+      "pc": 3,
+      "op": "bool_from_flag",
+      "dst": "f_lookup_inf",
+      "src": {
+        "flags": "lookup_meta",
+        "bit": 0
+      },
+      "comment": "Set control bit for the no-op path when the lookup point is infinity."
+    },
+    {
+      "pc": 4,
+      "op": "field_add",
+      "dst": "t1",
+      "src": [
+        "lookup_x",
+        "lookup_y"
+      ],
+      "comment": "t3 = X2 + Y2"
+    },
+    {
+      "pc": 5,
+      "op": "load_input",
+      "dst": "qx",
+      "src": "Q.X",
+      "comment": "Accumulator X interface wire enters scratch slot qx."
+    },
+    {
+      "pc": 6,
+      "op": "load_input",
+      "dst": "qy",
+      "src": "Q.Y",
+      "comment": "Accumulator Y interface wire enters scratch slot qy."
+    },
+    {
+      "pc": 7,
+      "op": "load_input",
+      "dst": "qz",
+      "src": "Q.Z",
+      "comment": "Accumulator Z interface wire enters scratch slot qz."
+    },
+    {
+      "pc": 8,
+      "op": "field_mul",
+      "dst": "lx",
+      "src": [
+        "lookup_x",
+        "qz"
+      ],
+      "comment": "o2 = X2 * Z1"
+    },
+    {
+      "pc": 9,
+      "op": "field_add",
+      "dst": "lx",
+      "src": [
+        "lx",
+        "qx"
+      ],
+      "comment": "o2 = X1 + X2Z1"
+    },
+    {
+      "pc": 10,
+      "op": "mul_const",
+      "dst": "lx",
+      "src": "lx",
+      "const": 21,
+      "comment": "o2 = 3b(X1 + X2Z1)"
+    },
+    {
+      "pc": 11,
+      "op": "field_mul",
+      "dst": "ly",
+      "src": [
+        "lookup_y",
+        "qz"
+      ],
+      "comment": "t4 = Y2 * Z1"
+    },
+    {
+      "pc": 12,
+      "op": "field_add",
+      "dst": "ly",
+      "src": [
+        "ly",
+        "qy"
+      ],
+      "comment": "t4 = Y1 + Y2Z1"
+    },
+    {
+      "pc": 13,
+      "op": "mul_const",
+      "dst": "qz",
+      "src": "qz",
+      "const": 21,
+      "comment": "t2 = 3b * Z1 = 21 * Z1 for secp256k1."
+    },
+    {
+      "pc": 14,
+      "op": "field_mul",
+      "dst": "lookup_x",
+      "src": [
+        "qx",
+        "lookup_x"
+      ],
+      "comment": "t0 = X1 * X2"
+    },
+    {
+      "pc": 15,
+      "op": "field_add",
+      "dst": "qx",
+      "src": [
+        "qx",
+        "qy"
+      ],
+      "comment": "t4 = X1 + Y1"
+    },
+    {
+      "pc": 16,
+      "op": "field_mul",
+      "dst": "t1",
+      "src": [
+        "t1",
+        "qx"
+      ],
+      "comment": "t3 = (X2 + Y2)(X1 + Y1)"
+    },
+    {
+      "pc": 17,
+      "op": "field_mul",
+      "dst": "qx",
+      "src": [
+        "qy",
+        "lookup_y"
+      ],
+      "comment": "t1 = Y1 * Y2"
+    },
+    {
+      "pc": 18,
+      "op": "field_add",
+      "dst": "qy",
+      "src": [
+        "lookup_x",
+        "qx"
+      ],
+      "comment": "t4 = t0 + t1"
+    },
+    {
+      "pc": 19,
+      "op": "field_sub",
+      "dst": "t1",
+      "src": [
+        "t1",
+        "qy"
+      ],
+      "comment": "t3 = X1Y2 + X2Y1"
+    },
+    {
+      "pc": 20,
+      "op": "field_add",
+      "dst": "qy",
+      "src": [
+        "lookup_x",
+        "lookup_x"
+      ],
+      "comment": "o1 = 2 * t0"
+    },
+    {
+      "pc": 21,
+      "op": "field_add",
+      "dst": "qy",
+      "src": [
+        "qy",
+        "lookup_x"
+      ],
+      "comment": "t0 = 3 * X1X2"
+    },
+    {
+      "pc": 22,
+      "op": "field_add",
+      "dst": "lookup_x",
+      "src": [
+        "qx",
+        "qz"
+      ],
+      "comment": "qz = Y1Y2 + 3bZ1"
+    },
+    {
+      "pc": 23,
+      "op": "field_sub",
+      "dst": "qx",
+      "src": [
+        "qx",
+        "qz"
+      ],
+      "comment": "t1 = Y1Y2 - 3bZ1"
+    },
+    {
+      "pc": 24,
+      "op": "field_mul",
+      "dst": "qz",
+      "src": [
+        "ly",
+        "lx"
+      ],
+      "comment": "o1 = 3b(Y1 + Y2Z1)(X1 + X2Z1)"
+    },
+    {
+      "pc": 25,
+      "op": "field_mul",
+      "dst": "lx",
+      "src": [
+        "lx",
+        "qy"
+      ],
+      "comment": "o2 = 9b X1X2 (X1 + X2Z1)"
+    },
+    {
+      "pc": 26,
+      "op": "field_mul",
+      "dst": "qy",
+      "src": [
+        "qy",
+        "t1"
+      ],
+      "comment": "t0 = 3X1X2(X1Y2 + X2Y1)"
+    },
+    {
+      "pc": 27,
+      "op": "field_mul",
+      "dst": "t1",
+      "src": [
+        "t1",
+        "qx"
+      ],
+      "comment": "t2 = (X1Y2 + X2Y1)(Y1Y2 - 3bZ1)"
+    },
+    {
+      "pc": 28,
+      "op": "field_sub",
+      "dst": "t1",
+      "src": [
+        "t1",
+        "qz"
+      ],
+      "comment": "qx = X3"
+    },
+    {
+      "pc": 29,
+      "op": "field_mul",
+      "dst": "qx",
+      "src": [
+        "qx",
+        "lookup_x"
+      ],
+      "comment": "t1 = (Y1Y2 - 3bZ1)(Y1Y2 + 3bZ1)"
+    },
+    {
+      "pc": 30,
+      "op": "field_add",
+      "dst": "lx",
+      "src": [
+        "qx",
+        "lx"
+      ],
+      "comment": "qy = Y3"
+    },
+    {
+      "pc": 31,
+      "op": "field_mul",
+      "dst": "lookup_x",
+      "src": [
+        "lookup_x",
+        "ly"
+      ],
+      "comment": "qz = (Y1Y2 + 3bZ1)(Y1 + Y2Z1)"
+    },
+    {
+      "pc": 32,
+      "op": "field_add",
+      "dst": "lookup_x",
+      "src": [
+        "lookup_x",
+        "qy"
+      ],
+      "comment": "qz = Z3"
+    },
+    {
+      "pc": 33,
+      "op": "select_field_if_flag",
+      "dst": "qx",
+      "src": [
+        "Q.X",
+        "t1"
+      ],
+      "flag": "f_lookup_inf",
+      "comment": "Neutral table entry keeps the original accumulator X."
+    },
+    {
+      "pc": 34,
+      "op": "select_field_if_flag",
+      "dst": "qy",
+      "src": [
+        "Q.Y",
+        "lx"
+      ],
+      "flag": "f_lookup_inf",
+      "comment": "Neutral table entry keeps the original accumulator Y."
+    },
+    {
+      "pc": 35,
+      "op": "select_field_if_flag",
+      "dst": "qz",
+      "src": [
+        "Q.Z",
+        "lookup_x"
+      ],
+      "flag": "f_lookup_inf",
+      "comment": "Neutral table entry keeps the original accumulator Z."
+    },
+    {
+      "pc": 36,
+      "op": "clear_bool_from_flag",
+      "dst": "f_lookup_inf",
+      "src": {
+        "flags": "lookup_meta",
+        "bit": 0
+      },
+      "comment": "Uncompute the one-bit no-op control by toggling the same metadata bit back out of the flag register."
+    }
+  ],
+  "lookup_interface_slots": [
+    "lookup_x",
+    "lookup_y",
+    "lookup_meta"
+  ],
+  "notes": [
+    "This compiler-project leaf keeps the lookup-fed point-add semantics and borrows lookup_x as a scratch field slot after its final coordinate read.",
+    "The borrowed lookup_x wire carries the two t0 live ranges, so the persistent arithmetic register file drops to six field slots without changing arithmetic or lookup non-Clifford counts.",
+    "The contract is valid only when the lookup interface keeps lookup_x available until the point-add leaf releases it; the semantic and ZKP attestations execute that exact register reuse."
+  ],
+  "borrowed_lookup_interface_slots": [
+    "lookup_x"
+  ]
+}

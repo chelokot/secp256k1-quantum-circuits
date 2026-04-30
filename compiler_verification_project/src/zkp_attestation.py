@@ -26,7 +26,7 @@ from common import (  # noqa: E402
     proj_to_affine,
     sha256_bytes,
 )
-from lookup_fed_leaf import build_lookup_fed_leaf  # noqa: E402
+from lookup_fed_leaf import build_interface_borrowed_leaf, build_lookup_fed_leaf  # noqa: E402
 from project import compiler_family_frontier, project_artifact_path, raw32_schedule  # noqa: E402
 from verifier import exec_netlist  # noqa: E402
 
@@ -142,6 +142,28 @@ def _family_proof_payload(family: Mapping[str, Any]) -> Dict[str, Any]:
         'total_measurements': int(family['total_measurements']),
         'notes': list(family['notes']),
     }
+
+
+def _leaf_for_family(family: Mapping[str, Any]) -> Dict[str, Any]:
+    slot_family = str(family['slot_allocation_family'])
+    if slot_family == 'interface_borrowed_lookup_x_v1':
+        return build_interface_borrowed_leaf()
+    if slot_family == 'lookup_fed_leaf_v1':
+        return build_lookup_fed_leaf()
+    if slot_family == 'materialized_lookup_leaf_v1':
+        return build_lookup_fed_leaf()
+    raise KeyError(f'unsupported attested leaf slot family: {slot_family}')
+
+
+def _leaf_commitment_metadata(family: Mapping[str, Any]) -> tuple[str, str]:
+    slot_family = str(family['slot_allocation_family'])
+    if slot_family == 'interface_borrowed_lookup_x_v1':
+        return 'interface_borrowed_leaf', 'compiler_verification_project/artifacts/interface_borrowed_leaf.json'
+    if slot_family == 'lookup_fed_leaf_v1':
+        return 'lookup_fed_leaf', 'compiler_verification_project/artifacts/lookup_fed_leaf.json'
+    if slot_family == 'materialized_lookup_leaf_v1':
+        return 'lookup_fed_leaf', 'compiler_verification_project/artifacts/lookup_fed_leaf.json'
+    raise KeyError(f'unsupported attested leaf slot family: {slot_family}')
 
 
 def _point_payload(point: Optional[tuple[int, int]]) -> Optional[Dict[str, str]]:
@@ -415,12 +437,13 @@ def _build_zkp_attestation_materials(
     frontier = compiler_family_frontier()
     family = _resolve_family(frontier, family_name)
     family_payload = _family_proof_payload(family)
-    leaf = build_lookup_fed_leaf()
+    leaf = _leaf_for_family(family)
+    leaf_document_type, leaf_artifact_path = _leaf_commitment_metadata(family)
     schedule = raw32_schedule()
     leaf_case_seed_sha256 = sha256_bytes(_canonical_json(leaf).encode())
     leaf_blob = _committed_payload(
-        document_type='lookup_fed_leaf',
-        artifact_path='compiler_verification_project/artifacts/lookup_fed_leaf.json',
+        document_type=leaf_document_type,
+        artifact_path=leaf_artifact_path,
         payload=leaf,
     )
     case_corpus = build_pointadd_case_corpus(

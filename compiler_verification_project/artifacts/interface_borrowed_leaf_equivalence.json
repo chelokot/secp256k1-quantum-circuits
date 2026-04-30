@@ -1,5 +1,5 @@
 {
-  "schema": "compiler-project-lookup-fed-leaf-equivalence-v2",
+  "schema": "compiler-project-interface-borrowed-leaf-equivalence-v1",
   "lookup_fed_leaf_order": [
     5,
     3,
@@ -50,7 +50,6 @@
     "qz",
     "lx",
     "ly",
-    "t0",
     "t1"
   ],
   "summary": {

@@ -1414,7 +1414,10 @@ fn execute_leaf(leaf: &CompiledLeaf, accumulator: PointAffine, lookup: PointAffi
 pub fn run_attestation(input: &AttestationInput) -> PublicValues {
     assert_eq!(input.schema, "compiler-project-zkp-attestation-input-v2");
     assert_eq!(input.claim.document_type, "attestation_claim");
-    assert_eq!(input.leaf_document.document_type, "lookup_fed_leaf");
+    assert!(
+        input.leaf_document.document_type == "lookup_fed_leaf"
+            || input.leaf_document.document_type == "interface_borrowed_leaf"
+    );
     assert_eq!(input.family_document.document_type, "compiler_family_summary");
     assert_eq!(input.case_corpus_document.document_type, "pointadd_case_corpus");
     assert_eq!(input.claim.digest_scheme, DIGEST_SCHEME);

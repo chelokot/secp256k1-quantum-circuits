@@ -49,5 +49,9 @@ def test_materialized_circuit_script_lists_available_families() -> None:
     assert payload['best_gate_family']
     assert payload['best_qubit_family']
     frontier = _frontier()
-    expected_family_count = len(frontier['lookup_families']) * len(frontier['phase_shell_families'])
+    expected_family_count = (
+        len(frontier['lookup_families'])
+        * len(frontier['phase_shell_families'])
+        * len(frontier['slot_allocation_families'])
+    )
     assert len(payload['available_families']) == expected_family_count

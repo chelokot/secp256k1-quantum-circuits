@@ -1,0 +1,656 @@
+{
+  "schema": "compiler-project-slot-allocation-v1",
+  "field_bits": 256,
+  "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
+  "tracked_arithmetic_registers": [
+    "lx",
+    "ly",
+    "qx",
+    "qy",
+    "qz",
+    "t1"
+  ],
+  "tracked_control_registers": [
+    "f_lookup_inf"
+  ],
+  "peak_arithmetic_slots": {
+    "count": 6,
+    "pc": 11,
+    "opcode": "field_mul"
+  },
+  "peak_control_slots": {
+    "count": 1,
+    "pc": 3,
+    "opcode": "bool_from_flag"
+  },
+  "peak_total_slots": {
+    "count": 7,
+    "pc": 11,
+    "opcode": "field_mul"
+  },
+  "allocator_summary": {
+    "exact_arithmetic_slot_count": 6,
+    "exact_control_slot_count": 1,
+    "arithmetic_bits": 1536,
+    "control_bits": 1
+  },
+  "per_pc": [
+    {
+      "pc": 0,
+      "opcode": "lookup_meta",
+      "arithmetic_slots_live_before_write": 0,
+      "control_slots_live_before_write": 0,
+      "arithmetic_slots_needed_during_write": 0,
+      "control_slots_needed_during_write": 0,
+      "dst": null,
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 1,
+      "opcode": "lookup_affine_x",
+      "arithmetic_slots_live_before_write": 0,
+      "control_slots_live_before_write": 0,
+      "arithmetic_slots_needed_during_write": 0,
+      "control_slots_needed_during_write": 0,
+      "dst": null,
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 2,
+      "opcode": "lookup_affine_y",
+      "arithmetic_slots_live_before_write": 0,
+      "control_slots_live_before_write": 0,
+      "arithmetic_slots_needed_during_write": 0,
+      "control_slots_needed_during_write": 0,
+      "dst": null,
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 3,
+      "opcode": "bool_from_flag",
+      "arithmetic_slots_live_before_write": 0,
+      "control_slots_live_before_write": 0,
+      "arithmetic_slots_needed_during_write": 0,
+      "control_slots_needed_during_write": 1,
+      "dst": "f_lookup_inf",
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 4,
+      "opcode": "field_add",
+      "arithmetic_slots_live_before_write": 0,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 1,
+      "dst": "t1",
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 5,
+      "opcode": "load_input",
+      "arithmetic_slots_live_before_write": 1,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 2,
+      "control_slots_needed_during_write": 1,
+      "dst": "qx",
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 6,
+      "opcode": "load_input",
+      "arithmetic_slots_live_before_write": 2,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 3,
+      "control_slots_needed_during_write": 1,
+      "dst": "qy",
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 7,
+      "opcode": "load_input",
+      "arithmetic_slots_live_before_write": 3,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 4,
+      "control_slots_needed_during_write": 1,
+      "dst": "qz",
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 8,
+      "opcode": "field_mul",
+      "arithmetic_slots_live_before_write": 4,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 5,
+      "control_slots_needed_during_write": 1,
+      "dst": "lx",
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 9,
+      "opcode": "field_add",
+      "arithmetic_slots_live_before_write": 5,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 5,
+      "control_slots_needed_during_write": 1,
+      "dst": "lx",
+      "reuses_existing_slot": true
+    },
+    {
+      "pc": 10,
+      "opcode": "mul_const",
+      "arithmetic_slots_live_before_write": 5,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 5,
+      "control_slots_needed_during_write": 1,
+      "dst": "lx",
+      "reuses_existing_slot": true
+    },
+    {
+      "pc": 11,
+      "opcode": "field_mul",
+      "arithmetic_slots_live_before_write": 5,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 6,
+      "control_slots_needed_during_write": 1,
+      "dst": "ly",
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 12,
+      "opcode": "field_add",
+      "arithmetic_slots_live_before_write": 6,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 6,
+      "control_slots_needed_during_write": 1,
+      "dst": "ly",
+      "reuses_existing_slot": true
+    },
+    {
+      "pc": 13,
+      "opcode": "mul_const",
+      "arithmetic_slots_live_before_write": 6,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 6,
+      "control_slots_needed_during_write": 1,
+      "dst": "qz",
+      "reuses_existing_slot": true
+    },
+    {
+      "pc": 14,
+      "opcode": "field_mul",
+      "arithmetic_slots_live_before_write": 6,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 6,
+      "control_slots_needed_during_write": 1,
+      "dst": null,
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 15,
+      "opcode": "field_add",
+      "arithmetic_slots_live_before_write": 6,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 6,
+      "control_slots_needed_during_write": 1,
+      "dst": "qx",
+      "reuses_existing_slot": true
+    },
+    {
+      "pc": 16,
+      "opcode": "field_mul",
+      "arithmetic_slots_live_before_write": 6,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 6,
+      "control_slots_needed_during_write": 1,
+      "dst": "t1",
+      "reuses_existing_slot": true
+    },
+    {
+      "pc": 17,
+      "opcode": "field_mul",
+      "arithmetic_slots_live_before_write": 5,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 5,
+      "control_slots_needed_during_write": 1,
+      "dst": "qx",
+      "reuses_existing_slot": true
+    },
+    {
+      "pc": 18,
+      "opcode": "field_add",
+      "arithmetic_slots_live_before_write": 5,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 6,
+      "control_slots_needed_during_write": 1,
+      "dst": "qy",
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 19,
+      "opcode": "field_sub",
+      "arithmetic_slots_live_before_write": 6,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 6,
+      "control_slots_needed_during_write": 1,
+      "dst": "t1",
+      "reuses_existing_slot": true
+    },
+    {
+      "pc": 20,
+      "opcode": "field_add",
+      "arithmetic_slots_live_before_write": 5,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 6,
+      "control_slots_needed_during_write": 1,
+      "dst": "qy",
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 21,
+      "opcode": "field_add",
+      "arithmetic_slots_live_before_write": 6,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 6,
+      "control_slots_needed_during_write": 1,
+      "dst": "qy",
+      "reuses_existing_slot": true
+    },
+    {
+      "pc": 22,
+      "opcode": "field_add",
+      "arithmetic_slots_live_before_write": 6,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 6,
+      "control_slots_needed_during_write": 1,
+      "dst": null,
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 23,
+      "opcode": "field_sub",
+      "arithmetic_slots_live_before_write": 6,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 6,
+      "control_slots_needed_during_write": 1,
+      "dst": "qx",
+      "reuses_existing_slot": true
+    },
+    {
+      "pc": 24,
+      "opcode": "field_mul",
+      "arithmetic_slots_live_before_write": 5,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 6,
+      "control_slots_needed_during_write": 1,
+      "dst": "qz",
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 25,
+      "opcode": "field_mul",
+      "arithmetic_slots_live_before_write": 6,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 6,
+      "control_slots_needed_during_write": 1,
+      "dst": "lx",
+      "reuses_existing_slot": true
+    },
+    {
+      "pc": 26,
+      "opcode": "field_mul",
+      "arithmetic_slots_live_before_write": 6,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 6,
+      "control_slots_needed_during_write": 1,
+      "dst": "qy",
+      "reuses_existing_slot": true
+    },
+    {
+      "pc": 27,
+      "opcode": "field_mul",
+      "arithmetic_slots_live_before_write": 6,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 6,
+      "control_slots_needed_during_write": 1,
+      "dst": "t1",
+      "reuses_existing_slot": true
+    },
+    {
+      "pc": 28,
+      "opcode": "field_sub",
+      "arithmetic_slots_live_before_write": 6,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 6,
+      "control_slots_needed_during_write": 1,
+      "dst": "t1",
+      "reuses_existing_slot": true
+    },
+    {
+      "pc": 29,
+      "opcode": "field_mul",
+      "arithmetic_slots_live_before_write": 5,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 5,
+      "control_slots_needed_during_write": 1,
+      "dst": "qx",
+      "reuses_existing_slot": true
+    },
+    {
+      "pc": 30,
+      "opcode": "field_add",
+      "arithmetic_slots_live_before_write": 5,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 5,
+      "control_slots_needed_during_write": 1,
+      "dst": "lx",
+      "reuses_existing_slot": true
+    },
+    {
+      "pc": 31,
+      "opcode": "field_mul",
+      "arithmetic_slots_live_before_write": 4,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 4,
+      "control_slots_needed_during_write": 1,
+      "dst": null,
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 32,
+      "opcode": "field_add",
+      "arithmetic_slots_live_before_write": 3,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 3,
+      "control_slots_needed_during_write": 1,
+      "dst": null,
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 33,
+      "opcode": "select_field_if_flag",
+      "arithmetic_slots_live_before_write": 2,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 2,
+      "control_slots_needed_during_write": 1,
+      "dst": "qx",
+      "reuses_existing_slot": true
+    },
+    {
+      "pc": 34,
+      "opcode": "select_field_if_flag",
+      "arithmetic_slots_live_before_write": 1,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 1,
+      "dst": "qy",
+      "reuses_existing_slot": true
+    },
+    {
+      "pc": 35,
+      "opcode": "select_field_if_flag",
+      "arithmetic_slots_live_before_write": 0,
+      "control_slots_live_before_write": 1,
+      "arithmetic_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 1,
+      "dst": "qz",
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 36,
+      "opcode": "clear_bool_from_flag",
+      "arithmetic_slots_live_before_write": 0,
+      "control_slots_live_before_write": 0,
+      "arithmetic_slots_needed_during_write": 0,
+      "control_slots_needed_during_write": 1,
+      "dst": "f_lookup_inf",
+      "reuses_existing_slot": false
+    }
+  ],
+  "versions": [
+    {
+      "version_id": 0,
+      "register": "f_lookup_inf",
+      "reg_type": "control",
+      "def_pc": 3,
+      "last_use_pc": 35,
+      "assigned_slot": 0
+    },
+    {
+      "version_id": 1,
+      "register": "t1",
+      "reg_type": "arithmetic",
+      "def_pc": 4,
+      "last_use_pc": 16,
+      "assigned_slot": 0
+    },
+    {
+      "version_id": 2,
+      "register": "qx",
+      "reg_type": "arithmetic",
+      "def_pc": 5,
+      "last_use_pc": 15,
+      "assigned_slot": 1
+    },
+    {
+      "version_id": 3,
+      "register": "qy",
+      "reg_type": "arithmetic",
+      "def_pc": 6,
+      "last_use_pc": 17,
+      "assigned_slot": 2
+    },
+    {
+      "version_id": 4,
+      "register": "qz",
+      "reg_type": "arithmetic",
+      "def_pc": 7,
+      "last_use_pc": 13,
+      "assigned_slot": 3
+    },
+    {
+      "version_id": 5,
+      "register": "lx",
+      "reg_type": "arithmetic",
+      "def_pc": 8,
+      "last_use_pc": 9,
+      "assigned_slot": 4
+    },
+    {
+      "version_id": 6,
+      "register": "lx",
+      "reg_type": "arithmetic",
+      "def_pc": 9,
+      "last_use_pc": 10,
+      "assigned_slot": 4
+    },
+    {
+      "version_id": 7,
+      "register": "lx",
+      "reg_type": "arithmetic",
+      "def_pc": 10,
+      "last_use_pc": 25,
+      "assigned_slot": 4
+    },
+    {
+      "version_id": 8,
+      "register": "ly",
+      "reg_type": "arithmetic",
+      "def_pc": 11,
+      "last_use_pc": 12,
+      "assigned_slot": 5
+    },
+    {
+      "version_id": 9,
+      "register": "ly",
+      "reg_type": "arithmetic",
+      "def_pc": 12,
+      "last_use_pc": 31,
+      "assigned_slot": 5
+    },
+    {
+      "version_id": 10,
+      "register": "qz",
+      "reg_type": "arithmetic",
+      "def_pc": 13,
+      "last_use_pc": 23,
+      "assigned_slot": 3
+    },
+    {
+      "version_id": 11,
+      "register": "qx",
+      "reg_type": "arithmetic",
+      "def_pc": 15,
+      "last_use_pc": 16,
+      "assigned_slot": 1
+    },
+    {
+      "version_id": 12,
+      "register": "t1",
+      "reg_type": "arithmetic",
+      "def_pc": 16,
+      "last_use_pc": 19,
+      "assigned_slot": 0
+    },
+    {
+      "version_id": 13,
+      "register": "qx",
+      "reg_type": "arithmetic",
+      "def_pc": 17,
+      "last_use_pc": 23,
+      "assigned_slot": 2
+    },
+    {
+      "version_id": 14,
+      "register": "qy",
+      "reg_type": "arithmetic",
+      "def_pc": 18,
+      "last_use_pc": 19,
+      "assigned_slot": 1
+    },
+    {
+      "version_id": 15,
+      "register": "t1",
+      "reg_type": "arithmetic",
+      "def_pc": 19,
+      "last_use_pc": 27,
+      "assigned_slot": 0
+    },
+    {
+      "version_id": 16,
+      "register": "qy",
+      "reg_type": "arithmetic",
+      "def_pc": 20,
+      "last_use_pc": 21,
+      "assigned_slot": 1
+    },
+    {
+      "version_id": 17,
+      "register": "qy",
+      "reg_type": "arithmetic",
+      "def_pc": 21,
+      "last_use_pc": 26,
+      "assigned_slot": 1
+    },
+    {
+      "version_id": 18,
+      "register": "qx",
+      "reg_type": "arithmetic",
+      "def_pc": 23,
+      "last_use_pc": 29,
+      "assigned_slot": 3
+    },
+    {
+      "version_id": 19,
+      "register": "qz",
+      "reg_type": "arithmetic",
+      "def_pc": 24,
+      "last_use_pc": 28,
+      "assigned_slot": 2
+    },
+    {
+      "version_id": 20,
+      "register": "lx",
+      "reg_type": "arithmetic",
+      "def_pc": 25,
+      "last_use_pc": 30,
+      "assigned_slot": 4
+    },
+    {
+      "version_id": 21,
+      "register": "qy",
+      "reg_type": "arithmetic",
+      "def_pc": 26,
+      "last_use_pc": 32,
+      "assigned_slot": 1
+    },
+    {
+      "version_id": 22,
+      "register": "t1",
+      "reg_type": "arithmetic",
+      "def_pc": 27,
+      "last_use_pc": 28,
+      "assigned_slot": 0
+    },
+    {
+      "version_id": 23,
+      "register": "t1",
+      "reg_type": "arithmetic",
+      "def_pc": 28,
+      "last_use_pc": 33,
+      "assigned_slot": 2
+    },
+    {
+      "version_id": 24,
+      "register": "qx",
+      "reg_type": "arithmetic",
+      "def_pc": 29,
+      "last_use_pc": 30,
+      "assigned_slot": 3
+    },
+    {
+      "version_id": 25,
+      "register": "lx",
+      "reg_type": "arithmetic",
+      "def_pc": 30,
+      "last_use_pc": 34,
+      "assigned_slot": 4
+    },
+    {
+      "version_id": 26,
+      "register": "qx",
+      "reg_type": "arithmetic",
+      "def_pc": 33,
+      "last_use_pc": 33,
+      "assigned_slot": 2
+    },
+    {
+      "version_id": 27,
+      "register": "qy",
+      "reg_type": "arithmetic",
+      "def_pc": 34,
+      "last_use_pc": 34,
+      "assigned_slot": 4
+    },
+    {
+      "version_id": 28,
+      "register": "qz",
+      "reg_type": "arithmetic",
+      "def_pc": 35,
+      "last_use_pc": 35,
+      "assigned_slot": 1
+    },
+    {
+      "version_id": 29,
+      "register": "f_lookup_inf",
+      "reg_type": "control",
+      "def_pc": 36,
+      "last_use_pc": 36,
+      "assigned_slot": 0
+    }
+  ],
+  "notes": [
+    "This artifact allocates the compiler-project interface-borrowed leaf contract, where lookup_x becomes scratch after its last coordinate read.",
+    "The borrowed lookup interface wire carries t0 values outside the persistent arithmetic register file; the same leaf is executed by semantic replay and ZKP attestation.",
+    "The persistent arithmetic register file is 6 field slots plus borrowed lookup scratch ['lookup_x']."
+  ]
+}

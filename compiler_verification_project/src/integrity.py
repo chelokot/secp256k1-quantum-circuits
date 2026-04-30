@@ -125,6 +125,9 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'lookup_fed_leaf': artifact_root / 'lookup_fed_leaf.json',
         'lookup_fed_leaf_equivalence': artifact_root / 'lookup_fed_leaf_equivalence.json',
         'lookup_fed_leaf_slot_allocation': artifact_root / 'lookup_fed_leaf_slot_allocation.json',
+        'interface_borrowed_leaf': artifact_root / 'interface_borrowed_leaf.json',
+        'interface_borrowed_leaf_equivalence': artifact_root / 'interface_borrowed_leaf_equivalence.json',
+        'interface_borrowed_leaf_slot_allocation': artifact_root / 'interface_borrowed_leaf_slot_allocation.json',
         'arithmetic_lowerings': artifact_root / 'arithmetic_lowerings.json',
         'module_library': artifact_root / 'module_library.json',
         'primitive_multiplier_library': artifact_root / 'primitive_multiplier_library.json',
@@ -1332,28 +1335,23 @@ def build_subcircuit_equivalence_checks(artifacts: Mapping[str, Any], repo_root:
     ]
     arithmetic_per_pc_failures = [row['pc'] for row in arithmetic['per_pc'] if row['pass'] != row['total']]
     arithmetic_per_opcode_failures = [row['opcode'] for row in arithmetic['per_opcode'] if row['pass'] != row['total']]
+    expected_source_artifacts = {
+        'leaf': 'compiler_verification_project/artifacts/interface_borrowed_leaf.json',
+        'lookup_fed_leaf_equivalence': 'compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json',
+        'interface_borrowed_leaf_equivalence': 'compiler_verification_project/artifacts/interface_borrowed_leaf_equivalence.json',
+        'cleanup_summary': 'artifacts/verification/extended/coherent_cleanup_summary.json',
+        'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
+        'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
+        'generated_block_inventories': 'compiler_verification_project/artifacts/generated_block_inventories.json',
+        'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
+        'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
+    }
     checks = [
         _check('subcircuit_equivalence_artifact_matches_generator', equivalence == expected, expected, equivalence),
         _check(
             'subcircuit_equivalence_source_paths_match_expected',
-            equivalence['source_artifacts'] == {
-                'leaf': 'artifacts/circuits/optimized_pointadd_secp256k1.json',
-                'cleanup_summary': 'artifacts/verification/extended/coherent_cleanup_summary.json',
-                'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
-                'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
-                'generated_block_inventories': 'compiler_verification_project/artifacts/generated_block_inventories.json',
-                'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
-                'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
-            },
-            {
-                'leaf': 'artifacts/circuits/optimized_pointadd_secp256k1.json',
-                'cleanup_summary': 'artifacts/verification/extended/coherent_cleanup_summary.json',
-                'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
-                'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
-                'generated_block_inventories': 'compiler_verification_project/artifacts/generated_block_inventories.json',
-                'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
-                'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
-            },
+            equivalence['source_artifacts'] == expected_source_artifacts,
+            expected_source_artifacts,
             equivalence['source_artifacts'],
         ),
         _check(
@@ -1574,6 +1572,9 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'lookup_fed_leaf': 'compiler_verification_project/artifacts/lookup_fed_leaf.json',
         'lookup_fed_leaf_equivalence': 'compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json',
         'lookup_fed_leaf_slot_allocation': 'compiler_verification_project/artifacts/lookup_fed_leaf_slot_allocation.json',
+        'interface_borrowed_leaf': 'compiler_verification_project/artifacts/interface_borrowed_leaf.json',
+        'interface_borrowed_leaf_equivalence': 'compiler_verification_project/artifacts/interface_borrowed_leaf_equivalence.json',
+        'interface_borrowed_leaf_slot_allocation': 'compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json',
         'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
         'module_library': 'compiler_verification_project/artifacts/module_library.json',
         'primitive_multiplier_library': 'compiler_verification_project/artifacts/primitive_multiplier_library.json',
@@ -1593,7 +1594,7 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'azure_resource_estimator_results': 'compiler_verification_project/artifacts/azure_resource_estimator_results.json',
     }
     checks = [
-        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v13', 'compiler-project-build-summary-v13', build_summary['schema']),
+        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v14', 'compiler-project-build-summary-v14', build_summary['schema']),
         _check('build_summary_artifact_paths_match_expected_set', build_summary['artifacts'] == expected_paths, expected_paths, build_summary['artifacts']),
         _check(
             'build_summary_paths_exist_on_disk',

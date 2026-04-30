@@ -14,13 +14,13 @@ lookup, and scaffold semantics.
 
 ## Current exact baseline
 
-As of the current `main` branch, the repository's best exact gate point is:
+As of the current exact compiler frontier, the repository's central exact point is:
 
 - `22,753,831` non-Clifford
-- `2,099` logical qubits
+- `1,586` logical qubits
 
 This is the family
-`folded_bitwise_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1`
+`folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1`
 in `compiler_verification_project/artifacts/family_frontier.json`.
 
 The current arithmetic leaf is a complete mixed-add formula over the
@@ -285,7 +285,7 @@ Result:
 
 - the valid complete projective full-add body fits in `9` arithmetic slots, not
   in `8`,
-- this already exceeds the current exact best-gate frontier's `8` arithmetic
+- this already exceeds the current central exact frontier's `6` arithmetic
   slots before counting any lookup workspace or phase-shell bits.
 
 Interpretation:
@@ -694,10 +694,10 @@ Result for `n = 256`:
 
 Whole-oracle implication:
 
-- the current exact best-gate point is `2099` logical qubits, which decomposes
-  as `8 * 256 + 48 + 1 + 2`,
+- the current central exact point is `1586` logical qubits, which decomposes as
+  `6 * 256 + 48 + 1 + 1`,
 - a hypothetical `7`-slot arithmetic leaf with sequential tmpand-style zero
-  tests lands at about `7 * 256 + 255 + 48 + 1 + 2 = 2098` logical qubits
+  tests lands at about `7 * 256 + 255 + 48 + 1 + 1 = 2097` logical qubits
   before any extra branch-control bookkeeping,
 - the same candidate with parallel zero-test scratch rises to about `2352`
   logical qubits,
@@ -759,7 +759,7 @@ Repository implication at `n = 256`:
   non-Clifford per retained addition,
 - across the current `28` retained additions this is about `43,036`
   non-Clifford total,
-- that is still tiny relative to the current exact best-gate point,
+- that is still tiny relative to the current central exact point,
 - if the ancilla demand really stays in the `O(log*(n))` or minimal-qubit
   regime, a `7`-slot candidate could plausibly remain in roughly the
   mid-`1800`s logical-qubit range instead of collapsing back to `~2100`.
@@ -791,8 +791,8 @@ Status:
 What was checked locally:
 
 - translated the comparator-based predicate screen into whole-oracle headline
-  numbers using the current exact best-gate decomposition
-  `slots * 256 + 48 + 1 + 2`,
+  numbers using the current central exact decomposition
+  `slots * 256 + 48 + 1 + 1`,
 - modeled the doubling predicate as two `3n`-style comparators plus one final
   one-bit conjunction at `n = 256`,
 - swept a small ancilla range `1..8` for the predicate layer.
@@ -861,8 +861,8 @@ Status:
 What was checked locally:
 
 - converted the `7`-slot floor into required effective field widths under the
-  current best-gate whole-oracle overhead model
-  `slots * width + 48 + 1 + 2 + predicate_ancilla`,
+  current central exact whole-oracle overhead model
+  `slots * width + 48 + 1 + 1 + predicate_ancilla`,
 - swept a small predicate-ancilla range `1..8`.
 
 Result:
@@ -1039,8 +1039,8 @@ Important limitation:
 - the carried-flag update rule has not yet been transcribed into a checked ISA
   lowering,
 - it may require one additional persistent control qubit relative to the
-  current best-gate family, although that qubit impact is negligible compared to
-  arithmetic-slot changes.
+  current central exact family, although that qubit impact is negligible
+  compared to arithmetic-slot changes.
 
 Status:
 
@@ -1250,7 +1250,7 @@ Status:
 
 What was checked locally:
 
-- started from the current exact best-gate point `22,753,831`,
+- started from the current central exact point `22,753,831`,
 - added the corrected comparator-predicate estimate for the current
   `28` retained additions, about `43,036` non-Clifford total,
 - measured the remaining slack against the repository's practical gate caps.
@@ -1677,7 +1677,7 @@ Simple gate screen:
   non-Clifford,
 - across `28` retained additions this contributes about `57,344`
   non-Clifford total,
-- adding that to the current exact best-gate point gives about
+- adding that to the current central exact point gives about
   `22,811,175` non-Clifford before any further shell simplifications.
 
 Qubit implication:
@@ -1730,7 +1730,7 @@ What was checked locally:
 
 - priced the qubit effect of carrying explicit shell-state controls on top of a
   hypothetical `7`-slot retained-add leaf,
-- kept the current best-gate family's fixed non-arithmetic budget:
+- kept the current central exact family's fixed non-arithmetic budget:
   `48` lookup workspace qubits and `1` live phase bit.
 
 Result:
@@ -1755,8 +1755,8 @@ What was checked locally:
 
 - priced the qubit effect of rescuing torsion-based alternative models by moving
   from `Fp` arithmetic to `Fp^d` arithmetic,
-- kept the same optimistic `7` arithmetic-slot target and the current best-gate
-  family's fixed non-arithmetic budget.
+- kept the same optimistic `7` arithmetic-slot target and the current central
+  exact family's fixed non-arithmetic budget.
 
 Result:
 
@@ -1914,14 +1914,14 @@ Interpretation:
 
 What was checked locally:
 
-- combined the current exact best-gate point with:
+- combined the current central exact point with:
   - the `phase_a` pruning screen,
   - the earlier zero-test proxy,
   - the arithmetic headline of the Rondepierre `a = 0` core.
 
 Arithmetic-only proxy:
 
-- current exact best-gate point:
+- current central exact point:
   `22,753,831` non-Clifford,
 - current complete leaf: `11` multiplication-equivalent field products,
 - Rondepierre `a = 0` core: `9`,
@@ -2030,7 +2030,7 @@ Refined optimistic proxy:
 Interpretation:
 
 - even a concrete staged-shell selection network keeps the Jacobian-shell line
-  far below the current exact best-gate point in this rough proxy,
+  far below the current central exact point in this rough proxy,
 - this makes the remaining uncertainty overwhelmingly semantic rather than
   arithmetic-cost-driven.
 

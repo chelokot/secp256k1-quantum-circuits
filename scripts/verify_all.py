@@ -368,9 +368,12 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
         frontier = compiler_project['frontier']
         section += 1
         print(f"[{section}/{total_sections}] Exact compiler build        {console.ok('PASS')}")
-        print(console.detail(f"      best exact gate family: {frontier['best_gate_family']['full_oracle_non_clifford']:,} non-Clifford"))
-        print(console.detail(f"      best exact qubit family: {frontier['best_qubit_family']['total_logical_qubits']:,} logical qubits"))
-        print(console.detail(f"      best exact qubit family name: {frontier['best_qubit_family']['name']}"))
+        central_family = frontier['best_sub30m_qubit_family']
+        print(console.detail(
+            f"      central exact family: {central_family['full_oracle_non_clifford']:,} non-Clifford / "
+            f"{central_family['total_logical_qubits']:,} logical qubits"
+        ))
+        print(console.detail(f"      central exact family name: {central_family['name']}"))
         print(console.detail(f"      frontier sha256: {compiler_project['frontier_sha256']}"))
         print()
 
@@ -393,15 +396,13 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
         print()
 
     if compiler_project is not None:
-        best_exact_gate = compiler_project['frontier']['best_gate_family']
-        best_exact_qubit = compiler_project['frontier']['best_qubit_family']
+        central_exact = compiler_project['frontier']['best_sub30m_qubit_family']
         gate_baseline = baseline['low_gate']
         qubit_baseline = baseline['low_qubit']
         labels = [
             'google baseline best gate:',
-            'our exact best gate:',
+            'our central exact:',
             'google baseline best qubits:',
-            'our exact best qubits:',
         ]
         label_width = max(len(label) for label in labels)
 
@@ -449,9 +450,8 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
 
         print(console.heading('Exact compiler-project frontier and comparison to Google 2026 baseline'))
         print(format_row('google baseline best gate:', gate_baseline['non_clifford'], None, gate_baseline['logical_qubits'], None))
-        print(format_row('our exact best gate:', best_exact_gate['full_oracle_non_clifford'], gate_baseline['non_clifford'], best_exact_gate['total_logical_qubits'], gate_baseline['logical_qubits']))
+        print(format_row('our central exact:', central_exact['full_oracle_non_clifford'], gate_baseline['non_clifford'], central_exact['total_logical_qubits'], gate_baseline['logical_qubits']))
         print(format_row('google baseline best qubits:', qubit_baseline['non_clifford'], None, qubit_baseline['logical_qubits'], None))
-        print(format_row('our exact best qubits:', best_exact_qubit['full_oracle_non_clifford'], qubit_baseline['non_clifford'], best_exact_qubit['total_logical_qubits'], qubit_baseline['logical_qubits']))
 
 
 def main() -> None:
