@@ -1,11 +1,11 @@
 {
   "schema": "compiler-project-zkp-attestation-claim-v1",
   "selected_family_alias": "best-gate",
-  "selected_family_name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+  "selected_family_name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
   "field_bits": 256,
   "leaf_call_count_total": 31,
   "expected_full_oracle_non_clifford": 22753831,
-  "expected_total_logical_qubits": 1586,
+  "expected_total_logical_qubits": 1842,
   "expected_case_count": 8,
   "non_clifford_formula": {
     "arithmetic_leaf_non_clifford": 733657,
@@ -18,13 +18,13 @@
   },
   "logical_qubit_formula": {
     "field_bits": 256,
-    "arithmetic_slot_count": 6,
+    "arithmetic_slot_count": 7,
     "control_slot_count": 1,
     "borrowed_interface_qubits": 0,
     "lookup_workspace_qubits": 48,
     "live_phase_bits": 1,
-    "arithmetic_component": 1536,
-    "reconstructed_total": 1586
+    "arithmetic_component": 1792,
+    "reconstructed_total": 1842
   },
   "notes": [
     "This claim intentionally stays at the repository exact-family boundary: exact point-add witness semantics plus exact compiler-family resource derivation.",

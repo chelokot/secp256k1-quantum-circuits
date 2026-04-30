@@ -82,8 +82,6 @@ def test_compiler_project_verification_summary_groups_all_pass() -> None:
     assert ft_ir['pass'] == ft_ir['total']
     lookup_fed_slot_allocation = summary['lookup_fed_slot_allocation_checks']
     assert lookup_fed_slot_allocation['pass'] == lookup_fed_slot_allocation['total']
-    interface_borrowed_slot_allocation = summary['interface_borrowed_slot_allocation_checks']
-    assert interface_borrowed_slot_allocation['pass'] == interface_borrowed_slot_allocation['total']
     recount = summary['whole_oracle_recount_checks']
     assert recount['pass'] == recount['total']
     subcircuit_equivalence = summary['subcircuit_equivalence_checks']

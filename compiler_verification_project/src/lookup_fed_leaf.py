@@ -156,29 +156,6 @@ def build_interface_borrowed_leaf(leaf: Optional[Mapping[str, Any]] = None) -> D
             'The borrowed lookup_x wire carries the two t0 live ranges, so the persistent arithmetic register file drops to six field slots without changing arithmetic or lookup non-Clifford counts.',
             'The contract is valid only when the lookup interface keeps lookup_x available until the point-add leaf releases it; the semantic and ZKP attestations execute that exact register reuse.',
         ],
-        'interface_resource_contract': {
-            'schema': 'compiler-project-interface-resource-contract-v1',
-            'field_lanes': [
-                {
-                    'register': 'lookup_x',
-                    'owner': 'lookup_workspace_qubits',
-                    'role': 'borrowed_coordinate_lane',
-                    'coordinate_last_use_pc': 14,
-                    'scratch_first_write_pc': 14,
-                    'scratch_last_use_pc': 35,
-                    'counting_rule': 'same physical lookup-output lane; no additional arithmetic-field slot is allocated',
-                },
-                {
-                    'register': 'lookup_y',
-                    'owner': 'lookup_workspace_qubits',
-                    'role': 'readonly_coordinate_lane',
-                    'coordinate_last_use_pc': 17,
-                    'scratch_first_write_pc': None,
-                    'scratch_last_use_pc': None,
-                    'counting_rule': 'lookup-output lane is read by the executable leaf and not reused as arithmetic scratch',
-                },
-            ],
-        },
     }
 
 

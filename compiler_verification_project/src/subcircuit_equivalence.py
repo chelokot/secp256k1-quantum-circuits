@@ -383,8 +383,8 @@ def build_subcircuit_equivalence_artifact(
     frontier: Mapping[str, Any],
     full_attack_inventory: Mapping[str, Any],
 ) -> Dict[str, Any]:
-    selected_leaf = build_interface_borrowed_leaf()
-    selected_leaf_source = 'compiler_verification_project/artifacts/interface_borrowed_leaf.json'
+    selected_leaf = build_lookup_fed_leaf()
+    selected_leaf_source = 'compiler_verification_project/artifacts/lookup_fed_leaf.json'
     arithmetic_trace = _arithmetic_opcode_equivalence(
         arithmetic_lowerings,
         leaf=selected_leaf,
@@ -420,7 +420,7 @@ def build_subcircuit_equivalence_artifact(
             full_attack_inventory,
         ),
         'notes': [
-            'This artifact binds the exact compiler-family summaries back to checked lower layers: traced ISA arithmetic/flag opcodes on the selected interface-borrowed leaf, leaf-interface equivalence, lowered lookup-family semantics, the coherent cleanup window, and generated whole-oracle block composition.',
+            'This artifact binds the exact compiler-family summaries back to checked lower layers: traced ISA arithmetic/flag opcodes on the selected lookup-fed leaf, leaf-interface equivalence, lowered lookup-family semantics, the coherent cleanup window, and generated whole-oracle block composition.',
             'It does not claim external primitive-gate equivalence below the named arithmetic or lookup blocks.',
         ],
     }

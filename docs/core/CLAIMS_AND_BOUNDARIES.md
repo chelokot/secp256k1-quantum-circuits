@@ -110,11 +110,11 @@ The repository also ships a checked SP1 attestation bundle:
 - `compiler_verification_project/artifacts/zkp_attestation_groth16_verifier/groth16_vk.bin`
 
 That bundle is exact at the same boundary as the selected compiler-family
-summary and interface-borrowed point-add leaf. The guest:
+summary and lookup-fed point-add leaf. The guest:
 
 - re-hashes the public claim, leaf document, selected family summary, and
   deterministic case corpus,
-- replays the exact interface-borrowed point-add leaf on every public case,
+- replays the exact lookup-fed point-add leaf on every public case,
 - checks the affine group law for every case, and
 - reconstructs the claimed full-oracle non-Clifford and logical-qubit totals
   from the selected family summary before committing public values.

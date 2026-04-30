@@ -3398,13 +3398,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "b6322308287f11d2d0872aefa9a2359aac09b9fa88cae73044f822f1d21abc04",
-          "size_bytes": 1123173
+          "sha256": "c876af78c5270fa123c50f37e61b5db1642a16297173c7ee961dce1e8686cda3",
+          "size_bytes": 1127481
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "b6322308287f11d2d0872aefa9a2359aac09b9fa88cae73044f822f1d21abc04",
-          "size_bytes": 1123173
+          "sha256": "c876af78c5270fa123c50f37e61b5db1642a16297173c7ee961dce1e8686cda3",
+          "size_bytes": 1127481
         }
       },
       {
@@ -3500,13 +3500,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "c9a86684178b5c1ebeb743cbc9c0b221f49ff51db6814335d4a23421840ccb04",
+          "sha256": "ba86e1784e595f2bf047dfc5e8a2af7e72230e1d8b345d6b697cca5b3dce8133",
           "size_bytes": 12925
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "a569816219af0b73b8d385ade450c84b9394fce465c50d9cc0ccdd7178345448",
-          "size_bytes": 18895
+          "sha256": "81eef7976036933bca45bb3b0dee9522c5c2ddc84dff574991ebcc70945da5f1",
+          "size_bytes": 18919
         }
       },
       {
@@ -3514,12 +3514,12 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "a569816219af0b73b8d385ade450c84b9394fce465c50d9cc0ccdd7178345448",
-          "size_bytes": 18895
+          "sha256": "81eef7976036933bca45bb3b0dee9522c5c2ddc84dff574991ebcc70945da5f1",
+          "size_bytes": 18919
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "7e6e541592dc260281125c0ee456e4ae1cc5c9914e0fcbf67d56f4bbd7353740",
+          "sha256": "e71032c5eb1cfb641dedc51430e9d52956c1062f872165d2e976c4f82f2b5a94",
           "size_bytes": 6025
         }
       },
@@ -3527,11 +3527,11 @@
         "name": "generated_block_inventory_best_families_match_frontier",
         "pass": 1,
         "expected": {
-          "best_gate_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "best_qubit_family": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1"
+          "best_gate_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "best_qubit_family": "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1"
         },
         "observed": {
-          "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+          "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
           "reconstruction": {
             "arithmetic_leaf_non_clifford": 733657,
             "direct_seed_non_clifford": 327,
@@ -3548,14 +3548,14 @@
             "phase_shell_measurements": 512,
             "phase_shell_rotations": 511,
             "phase_shell_rotation_depth": 511,
-            "arithmetic_slot_count": 6,
+            "arithmetic_slot_count": 7,
             "control_slot_count": 1,
             "borrowed_interface_qubits": 0,
             "lookup_workspace_qubits": 48,
             "live_phase_bits": 1,
-            "total_logical_qubits": 1586
+            "total_logical_qubits": 1842
           },
-          "best_qubit_family": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1"
+          "best_qubit_family": "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1"
         }
       }
     ]
@@ -3780,373 +3780,6 @@
       }
     ]
   },
-  "interface_borrowed_slot_allocation_checks": {
-    "schema": "compiler-project-interface-borrowed-slot-and-ownership-checks-v1",
-    "slot_allocation": {
-      "pass": 11,
-      "total": 11,
-      "checks": [
-        {
-          "name": "slot_allocation_matches_generator",
-          "pass": 1,
-          "expected": {
-            "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-            "sha256": "82c84a2c57e62c12d83dfdc193fce1b753fef5e63d82afeb04690b5648674cdd",
-            "size_bytes": 12695
-          },
-          "observed": {
-            "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-            "sha256": "82c84a2c57e62c12d83dfdc193fce1b753fef5e63d82afeb04690b5648674cdd",
-            "size_bytes": 12695
-          }
-        },
-        {
-          "name": "tracked_arithmetic_registers_match_register_map",
-          "pass": 1,
-          "expected": [
-            "lx",
-            "ly",
-            "qx",
-            "qy",
-            "qz",
-            "t1"
-          ],
-          "observed": [
-            "lx",
-            "ly",
-            "qx",
-            "qy",
-            "qz",
-            "t1"
-          ]
-        },
-        {
-          "name": "tracked_control_registers_match_register_map",
-          "pass": 1,
-          "expected": [
-            "f_lookup_inf"
-          ],
-          "observed": [
-            "f_lookup_inf"
-          ]
-        },
-        {
-          "name": "version_intervals_do_not_overlap_on_same_slot",
-          "pass": 1,
-          "expected": [],
-          "observed": []
-        },
-        {
-          "name": "per_pc_live_counts_match_assigned_intervals",
-          "pass": 1,
-          "expected": {
-            "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-            "sha256": "272422a93ceb72458377f0ff8df4b25f95d3bb997d4c6407208326b2e8a49ccc",
-            "size_bytes": 8384
-          },
-          "observed": {
-            "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-            "sha256": "272422a93ceb72458377f0ff8df4b25f95d3bb997d4c6407208326b2e8a49ccc",
-            "size_bytes": 8384
-          }
-        },
-        {
-          "name": "peak_arithmetic_slots_match_reconstructed_live_set",
-          "pass": 1,
-          "expected": 6,
-          "observed": 6
-        },
-        {
-          "name": "allocator_summary_arithmetic_slot_span_matches_assigned_versions",
-          "pass": 1,
-          "expected": 6,
-          "observed": 6
-        },
-        {
-          "name": "peak_control_slots_match_reconstructed_live_set",
-          "pass": 1,
-          "expected": 1,
-          "observed": 1
-        },
-        {
-          "name": "allocator_summary_control_slot_span_matches_assigned_versions",
-          "pass": 1,
-          "expected": 1,
-          "observed": 1
-        },
-        {
-          "name": "peak_total_matches_reconstructed_live_set",
-          "pass": 1,
-          "expected": 7,
-          "observed": 7
-        },
-        {
-          "name": "per_pc_rows_cover_leaf_instruction_count",
-          "pass": 1,
-          "expected": 37,
-          "observed": 37
-        }
-      ]
-    },
-    "resource_ownership": {
-      "pass": 6,
-      "total": 6,
-      "checks": [
-        {
-          "name": "interface_field_lanes_cover_lookup_coordinate_outputs",
-          "pass": 1,
-          "expected": [
-            "lookup_x",
-            "lookup_y"
-          ],
-          "observed": [
-            "lookup_x",
-            "lookup_y"
-          ]
-        },
-        {
-          "name": "interface_field_lanes_have_single_resource_owner",
-          "pass": 1,
-          "expected": "one non-empty owner per interface field lane",
-          "observed": [
-            [
-              "lookup_x",
-              "lookup_workspace_qubits"
-            ],
-            [
-              "lookup_y",
-              "lookup_workspace_qubits"
-            ]
-          ]
-        },
-        {
-          "name": "borrowed_lookup_lanes_are_declared_by_leaf",
-          "pass": 1,
-          "expected": [
-            "lookup_x"
-          ],
-          "observed": [
-            "lookup_x",
-            "lookup_y"
-          ]
-        },
-        {
-          "name": "lookup_x_resource_contract_matches_executable_liveness",
-          "pass": 1,
-          "expected": {
-            "coordinate_last_use_pc": 14,
-            "scratch_first_write_pc": 14,
-            "scratch_last_use_pc": 35
-          },
-          "observed": {
-            "coordinate_last_use_pc": 14,
-            "scratch_first_write_pc": 14,
-            "scratch_last_use_pc": 35
-          }
-        },
-        {
-          "name": "lookup_x_borrow_handoff_starts_at_final_coordinate_read",
-          "pass": 1,
-          "expected": 14,
-          "observed": 14
-        },
-        {
-          "name": "lookup_y_resource_contract_matches_executable_liveness",
-          "pass": 1,
-          "expected": {
-            "coordinate_last_use_pc": 17,
-            "scratch_first_write_pc": null,
-            "scratch_last_use_pc": null
-          },
-          "observed": {
-            "coordinate_last_use_pc": 17,
-            "scratch_first_write_pc": null,
-            "scratch_last_use_pc": null
-          }
-        }
-      ]
-    },
-    "summary": {
-      "total": 17,
-      "pass": 17
-    },
-    "checks": [
-      {
-        "name": "slot_allocation::slot_allocation_matches_generator",
-        "pass": 1,
-        "expected": {
-          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "82c84a2c57e62c12d83dfdc193fce1b753fef5e63d82afeb04690b5648674cdd",
-          "size_bytes": 12695
-        },
-        "observed": {
-          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "82c84a2c57e62c12d83dfdc193fce1b753fef5e63d82afeb04690b5648674cdd",
-          "size_bytes": 12695
-        }
-      },
-      {
-        "name": "slot_allocation::tracked_arithmetic_registers_match_register_map",
-        "pass": 1,
-        "expected": [
-          "lx",
-          "ly",
-          "qx",
-          "qy",
-          "qz",
-          "t1"
-        ],
-        "observed": [
-          "lx",
-          "ly",
-          "qx",
-          "qy",
-          "qz",
-          "t1"
-        ]
-      },
-      {
-        "name": "slot_allocation::tracked_control_registers_match_register_map",
-        "pass": 1,
-        "expected": [
-          "f_lookup_inf"
-        ],
-        "observed": [
-          "f_lookup_inf"
-        ]
-      },
-      {
-        "name": "slot_allocation::version_intervals_do_not_overlap_on_same_slot",
-        "pass": 1,
-        "expected": [],
-        "observed": []
-      },
-      {
-        "name": "slot_allocation::per_pc_live_counts_match_assigned_intervals",
-        "pass": 1,
-        "expected": {
-          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "272422a93ceb72458377f0ff8df4b25f95d3bb997d4c6407208326b2e8a49ccc",
-          "size_bytes": 8384
-        },
-        "observed": {
-          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "272422a93ceb72458377f0ff8df4b25f95d3bb997d4c6407208326b2e8a49ccc",
-          "size_bytes": 8384
-        }
-      },
-      {
-        "name": "slot_allocation::peak_arithmetic_slots_match_reconstructed_live_set",
-        "pass": 1,
-        "expected": 6,
-        "observed": 6
-      },
-      {
-        "name": "slot_allocation::allocator_summary_arithmetic_slot_span_matches_assigned_versions",
-        "pass": 1,
-        "expected": 6,
-        "observed": 6
-      },
-      {
-        "name": "slot_allocation::peak_control_slots_match_reconstructed_live_set",
-        "pass": 1,
-        "expected": 1,
-        "observed": 1
-      },
-      {
-        "name": "slot_allocation::allocator_summary_control_slot_span_matches_assigned_versions",
-        "pass": 1,
-        "expected": 1,
-        "observed": 1
-      },
-      {
-        "name": "slot_allocation::peak_total_matches_reconstructed_live_set",
-        "pass": 1,
-        "expected": 7,
-        "observed": 7
-      },
-      {
-        "name": "slot_allocation::per_pc_rows_cover_leaf_instruction_count",
-        "pass": 1,
-        "expected": 37,
-        "observed": 37
-      },
-      {
-        "name": "resource_ownership::interface_field_lanes_cover_lookup_coordinate_outputs",
-        "pass": 1,
-        "expected": [
-          "lookup_x",
-          "lookup_y"
-        ],
-        "observed": [
-          "lookup_x",
-          "lookup_y"
-        ]
-      },
-      {
-        "name": "resource_ownership::interface_field_lanes_have_single_resource_owner",
-        "pass": 1,
-        "expected": "one non-empty owner per interface field lane",
-        "observed": [
-          [
-            "lookup_x",
-            "lookup_workspace_qubits"
-          ],
-          [
-            "lookup_y",
-            "lookup_workspace_qubits"
-          ]
-        ]
-      },
-      {
-        "name": "resource_ownership::borrowed_lookup_lanes_are_declared_by_leaf",
-        "pass": 1,
-        "expected": [
-          "lookup_x"
-        ],
-        "observed": [
-          "lookup_x",
-          "lookup_y"
-        ]
-      },
-      {
-        "name": "resource_ownership::lookup_x_resource_contract_matches_executable_liveness",
-        "pass": 1,
-        "expected": {
-          "coordinate_last_use_pc": 14,
-          "scratch_first_write_pc": 14,
-          "scratch_last_use_pc": 35
-        },
-        "observed": {
-          "coordinate_last_use_pc": 14,
-          "scratch_first_write_pc": 14,
-          "scratch_last_use_pc": 35
-        }
-      },
-      {
-        "name": "resource_ownership::lookup_x_borrow_handoff_starts_at_final_coordinate_read",
-        "pass": 1,
-        "expected": 14,
-        "observed": 14
-      },
-      {
-        "name": "resource_ownership::lookup_y_resource_contract_matches_executable_liveness",
-        "pass": 1,
-        "expected": {
-          "coordinate_last_use_pc": 17,
-          "scratch_first_write_pc": null,
-          "scratch_last_use_pc": null
-        },
-        "observed": {
-          "coordinate_last_use_pc": 17,
-          "scratch_first_write_pc": null,
-          "scratch_last_use_pc": null
-        }
-      }
-    ],
-    "pass": 17,
-    "total": 17
-  },
   "qubit_breakthrough_checks": {
     "pass": 3,
     "total": 3,
@@ -4156,24 +3789,24 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "d2e1b31e6eb1d4a0d14f3b883a16fc391fd88fd82a955f848ef15806494d313e",
-          "size_bytes": 14224
+          "sha256": "222978453d25e780d5e20258c00557452fb7cae3bc008bfb5df9cc4c1b5fda07",
+          "size_bytes": 14570
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "d2e1b31e6eb1d4a0d14f3b883a16fc391fd88fd82a955f848ef15806494d313e",
-          "size_bytes": 14224
+          "sha256": "222978453d25e780d5e20258c00557452fb7cae3bc008bfb5df9cc4c1b5fda07",
+          "size_bytes": 14570
         }
       },
       {
         "name": "qubit_breakthrough_exact_breakdown_matches_frontier_best_qubit_family",
         "pass": 1,
         "expected": {
-          "arithmetic_register_file_qubits": 1536,
+          "arithmetic_register_file_qubits": 1792,
           "fixed_non_arithmetic_overhead_qubits": 33
         },
         "observed": {
-          "arithmetic_register_file_qubits": 1536,
+          "arithmetic_register_file_qubits": 1792,
           "fixed_non_arithmetic_overhead_qubits": 33
         }
       },
@@ -4184,24 +3817,24 @@
           "low_qubit": {
             "baseline_logical_qubits": 1200,
             "max_arithmetic_slots_at_current_field_width": 4,
-            "max_field_slot_logical_qubits_at_current_exact_slot_count": 194
+            "max_field_slot_logical_qubits_at_current_exact_slot_count": 166
           },
           "low_gate": {
             "baseline_logical_qubits": 1450,
             "max_arithmetic_slots_at_current_field_width": 5,
-            "max_field_slot_logical_qubits_at_current_exact_slot_count": 236
+            "max_field_slot_logical_qubits_at_current_exact_slot_count": 202
           }
         },
         "observed": {
           "low_qubit": {
             "baseline_logical_qubits": 1200,
             "max_arithmetic_slots_at_current_field_width": 4,
-            "max_field_slot_logical_qubits_at_current_exact_slot_count": 194
+            "max_field_slot_logical_qubits_at_current_exact_slot_count": 166
           },
           "low_gate": {
             "baseline_logical_qubits": 1450,
             "max_arithmetic_slots_at_current_field_width": 5,
-            "max_field_slot_logical_qubits_at_current_exact_slot_count": 236
+            "max_field_slot_logical_qubits_at_current_exact_slot_count": 202
           }
         }
       }
@@ -4216,13 +3849,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "b5cdcdb6282ae69191633ed72ba5dff12aac3b86a8b026037925f169932f61bf",
-          "size_bytes": 26257
+          "sha256": "d07ab4a1c6e7e2c8e1d60d31a7c827edc4bbb10b9d4d40f12e6d6162b107a417",
+          "size_bytes": 26223
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "b5cdcdb6282ae69191633ed72ba5dff12aac3b86a8b026037925f169932f61bf",
-          "size_bytes": 26257
+          "sha256": "d07ab4a1c6e7e2c8e1d60d31a7c827edc4bbb10b9d4d40f12e6d6162b107a417",
+          "size_bytes": 26223
         }
       },
       {
@@ -4266,13 +3899,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "a2deb4e423b9ac959d4f9b5160f4ec864c5830baeb18a886810d2956745a3cc0",
-          "size_bytes": 7386
+          "sha256": "43aaeeb2338b6ef7d636e21818208b7648f55fa2cde9fc16a51417c2dbaf57ed",
+          "size_bytes": 7362
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "a2deb4e423b9ac959d4f9b5160f4ec864c5830baeb18a886810d2956745a3cc0",
-          "size_bytes": 7386
+          "sha256": "43aaeeb2338b6ef7d636e21818208b7648f55fa2cde9fc16a51417c2dbaf57ed",
+          "size_bytes": 7362
         }
       },
       {
@@ -4280,36 +3913,36 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "dc5df7af007a5a3d4d314e52ea46dd9daaf7cb97562fb44b29c233d65fe608af",
-          "size_bytes": 10085
+          "sha256": "56b1550455bf65b9edacb4742ce84c97749e01b3e508ac67185e004bd7bf1780",
+          "size_bytes": 10080
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "dc5df7af007a5a3d4d314e52ea46dd9daaf7cb97562fb44b29c233d65fe608af",
-          "size_bytes": 10085
+          "sha256": "56b1550455bf65b9edacb4742ce84c97749e01b3e508ac67185e004bd7bf1780",
+          "size_bytes": 10080
         }
       },
       {
         "name": "inventory_best_gate_family_matches_frontier",
         "pass": 1,
         "expected": {
-          "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Lookup-fed leaf interface that borrows lookup_x as scratch after the lookup coordinate has been consumed.",
+          "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Compiler-project lookup-fed leaf interface with reordered execution and explicit lookup wires for the initial x/y/meta values.",
           "gate_set": "Clifford + banked unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
           "phase_shell": "semiclassical_qft_v1",
-          "slot_allocation_family": "interface_borrowed_lookup_x_v1",
+          "slot_allocation_family": "lookup_fed_leaf_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
           "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
           "arithmetic_leaf_non_clifford": 733657,
           "direct_seed_non_clifford": 327,
           "per_leaf_lookup_non_clifford": 327,
           "full_oracle_non_clifford": 22753831,
-          "arithmetic_slot_count": 6,
+          "arithmetic_slot_count": 7,
           "control_slot_count": 1,
           "borrowed_interface_qubits": 0,
           "lookup_workspace_qubits": 48,
           "live_phase_bits": 1,
-          "total_logical_qubits": 1586,
+          "total_logical_qubits": 1842,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -4317,8 +3950,8 @@
           "total_measurements": 374212,
           "improvement_vs_google_low_qubit": 3.955377887793928,
           "improvement_vs_google_low_gate": 3.0764050238397216,
-          "qubit_ratio_vs_google_low_qubit": 0.7566204287515763,
-          "qubit_ratio_vs_google_low_gate": 0.914249684741488,
+          "qubit_ratio_vs_google_low_qubit": 0.6514657980456026,
+          "qubit_ratio_vs_google_low_gate": 0.7871878393051032,
           "notes": [
             "This family fully factorizes the folded 15-bit magnitude into binary banking levels inside the same generated chunk-decode model used by the other banked families.",
             "Within the current exact generated-operation boundary, the deeper banking reduces both direct lookup non-Clifford cost and explicit lookup workspace relative to the 3/4/4/4 hierarchical family.",
@@ -4327,23 +3960,23 @@
           ]
         },
         "observed": {
-          "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Lookup-fed leaf interface that borrows lookup_x as scratch after the lookup coordinate has been consumed.",
+          "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Compiler-project lookup-fed leaf interface with reordered execution and explicit lookup wires for the initial x/y/meta values.",
           "gate_set": "Clifford + banked unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
           "phase_shell": "semiclassical_qft_v1",
-          "slot_allocation_family": "interface_borrowed_lookup_x_v1",
+          "slot_allocation_family": "lookup_fed_leaf_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
           "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
           "arithmetic_leaf_non_clifford": 733657,
           "direct_seed_non_clifford": 327,
           "per_leaf_lookup_non_clifford": 327,
           "full_oracle_non_clifford": 22753831,
-          "arithmetic_slot_count": 6,
+          "arithmetic_slot_count": 7,
           "control_slot_count": 1,
           "borrowed_interface_qubits": 0,
           "lookup_workspace_qubits": 48,
           "live_phase_bits": 1,
-          "total_logical_qubits": 1586,
+          "total_logical_qubits": 1842,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -4351,8 +3984,8 @@
           "total_measurements": 374212,
           "improvement_vs_google_low_qubit": 3.955377887793928,
           "improvement_vs_google_low_gate": 3.0764050238397216,
-          "qubit_ratio_vs_google_low_qubit": 0.7566204287515763,
-          "qubit_ratio_vs_google_low_gate": 0.914249684741488,
+          "qubit_ratio_vs_google_low_qubit": 0.6514657980456026,
+          "qubit_ratio_vs_google_low_gate": 0.7871878393051032,
           "notes": [
             "This family fully factorizes the folded 15-bit magnitude into binary banking levels inside the same generated chunk-decode model used by the other banked families.",
             "Within the current exact generated-operation boundary, the deeper banking reduces both direct lookup non-Clifford cost and explicit lookup workspace relative to the 3/4/4/4 hierarchical family.",
@@ -4365,23 +3998,23 @@
         "name": "inventory_best_qubit_family_matches_frontier",
         "pass": 1,
         "expected": {
-          "name": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "summary": "Low-qubit exact lookup family using a 15-bit folded magnitude domain and temporary logical-AND equality ladders. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Lookup-fed leaf interface that borrows lookup_x as scratch after the lookup coordinate has been consumed.",
+          "name": "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "summary": "Low-qubit exact lookup family using a 15-bit folded magnitude domain and temporary logical-AND equality ladders. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Compiler-project lookup-fed leaf interface with reordered execution and explicit lookup wires for the initial x/y/meta values.",
           "gate_set": "Clifford + temporary logical-AND + measurement; Clifford + classically controlled dyadic phase + measurement",
           "phase_shell": "semiclassical_qft_v1",
-          "slot_allocation_family": "interface_borrowed_lookup_x_v1",
+          "slot_allocation_family": "lookup_fed_leaf_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
           "lookup_family": "folded_linear_scan_tmpand_v1",
           "arithmetic_leaf_non_clifford": 733657,
           "direct_seed_non_clifford": 459049,
           "per_leaf_lookup_non_clifford": 459049,
           "full_oracle_non_clifford": 37432935,
-          "arithmetic_slot_count": 6,
+          "arithmetic_slot_count": 7,
           "control_slot_count": 1,
           "borrowed_interface_qubits": 0,
           "lookup_workspace_qubits": 31,
           "live_phase_bits": 1,
-          "total_logical_qubits": 1569,
+          "total_logical_qubits": 1825,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -4389,8 +4022,8 @@
           "total_measurements": 15053796,
           "improvement_vs_google_low_qubit": 2.4042998498514745,
           "improvement_vs_google_low_gate": 1.8700109943289245,
-          "qubit_ratio_vs_google_low_qubit": 0.7648183556405354,
-          "qubit_ratio_vs_google_low_gate": 0.9241555130656469,
+          "qubit_ratio_vs_google_low_qubit": 0.6575342465753424,
+          "qubit_ratio_vs_google_low_gate": 0.7945205479452054,
           "notes": [
             "This remains the lowest-space lookup family checked into the compiler project.",
             "Zero-word and 0x8000 routing are explicit semantic cases, but they do not allocate a separate metadata-table lookup.",
@@ -4399,23 +4032,23 @@
           ]
         },
         "observed": {
-          "name": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "summary": "Low-qubit exact lookup family using a 15-bit folded magnitude domain and temporary logical-AND equality ladders. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Lookup-fed leaf interface that borrows lookup_x as scratch after the lookup coordinate has been consumed.",
+          "name": "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "summary": "Low-qubit exact lookup family using a 15-bit folded magnitude domain and temporary logical-AND equality ladders. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Compiler-project lookup-fed leaf interface with reordered execution and explicit lookup wires for the initial x/y/meta values.",
           "gate_set": "Clifford + temporary logical-AND + measurement; Clifford + classically controlled dyadic phase + measurement",
           "phase_shell": "semiclassical_qft_v1",
-          "slot_allocation_family": "interface_borrowed_lookup_x_v1",
+          "slot_allocation_family": "lookup_fed_leaf_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
           "lookup_family": "folded_linear_scan_tmpand_v1",
           "arithmetic_leaf_non_clifford": 733657,
           "direct_seed_non_clifford": 459049,
           "per_leaf_lookup_non_clifford": 459049,
           "full_oracle_non_clifford": 37432935,
-          "arithmetic_slot_count": 6,
+          "arithmetic_slot_count": 7,
           "control_slot_count": 1,
           "borrowed_interface_qubits": 0,
           "lookup_workspace_qubits": 31,
           "live_phase_bits": 1,
-          "total_logical_qubits": 1569,
+          "total_logical_qubits": 1825,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -4423,8 +4056,8 @@
           "total_measurements": 15053796,
           "improvement_vs_google_low_qubit": 2.4042998498514745,
           "improvement_vs_google_low_gate": 1.8700109943289245,
-          "qubit_ratio_vs_google_low_qubit": 0.7648183556405354,
-          "qubit_ratio_vs_google_low_gate": 0.9241555130656469,
+          "qubit_ratio_vs_google_low_qubit": 0.6575342465753424,
+          "qubit_ratio_vs_google_low_gate": 0.7945205479452054,
           "notes": [
             "This remains the lowest-space lookup family checked into the compiler project.",
             "Zero-word and 0x8000 routing are explicit semantic cases, but they do not allocate a separate metadata-table lookup.",
@@ -4444,13 +4077,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "e8b74b3f45c50b5c1c64c88af132aaa4f8490f1b150698a11fa8b59c64133985",
-          "size_bytes": 2632436
+          "sha256": "0d11aacb2b2f68673394815695b516d5ae7f511d5795b2808a5e6e0da8a5b47c",
+          "size_bytes": 2644040
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "e8b74b3f45c50b5c1c64c88af132aaa4f8490f1b150698a11fa8b59c64133985",
-          "size_bytes": 2632436
+          "sha256": "0d11aacb2b2f68673394815695b516d5ae7f511d5795b2808a5e6e0da8a5b47c",
+          "size_bytes": 2644040
         }
       },
       {
@@ -4512,7 +4145,7 @@
         "pass": 1,
         "expected": {
           "best_gate_family": {
-            "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+            "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
             "reconstruction": {
               "arithmetic_leaf_non_clifford": 733657,
               "direct_seed_non_clifford": 327,
@@ -4529,16 +4162,16 @@
               "phase_shell_measurements": 512,
               "phase_shell_rotations": 511,
               "phase_shell_rotation_depth": 511,
-              "arithmetic_slot_count": 6,
+              "arithmetic_slot_count": 7,
               "control_slot_count": 1,
               "borrowed_interface_qubits": 0,
               "lookup_workspace_qubits": 48,
               "live_phase_bits": 1,
-              "total_logical_qubits": 1586
+              "total_logical_qubits": 1842
             }
           },
           "best_qubit_family": {
-            "name": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+            "name": "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
             "reconstruction": {
               "arithmetic_leaf_non_clifford": 733657,
               "direct_seed_non_clifford": 459049,
@@ -4555,18 +4188,18 @@
               "phase_shell_measurements": 512,
               "phase_shell_rotations": 511,
               "phase_shell_rotation_depth": 511,
-              "arithmetic_slot_count": 6,
+              "arithmetic_slot_count": 7,
               "control_slot_count": 1,
               "borrowed_interface_qubits": 0,
               "lookup_workspace_qubits": 31,
               "live_phase_bits": 1,
-              "total_logical_qubits": 1569
+              "total_logical_qubits": 1825
             }
           }
         },
         "observed": {
           "best_gate_family": {
-            "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+            "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
             "reconstruction": {
               "full_oracle_non_clifford": 22753831,
               "primitive_totals": {
@@ -4575,7 +4208,7 @@
                 "x": 0,
                 "measurement": 373700
               },
-              "total_logical_qubits": 1586,
+              "total_logical_qubits": 1842,
               "phase_shell_hadamards": 512,
               "phase_shell_measurements": 512,
               "phase_shell_rotations": 511,
@@ -4583,7 +4216,7 @@
             }
           },
           "best_qubit_family": {
-            "name": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+            "name": "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
             "reconstruction": {
               "full_oracle_non_clifford": 37432935,
               "primitive_totals": {
@@ -4592,7 +4225,7 @@
                 "x": 0,
                 "measurement": 15053284
               },
-              "total_logical_qubits": 1569,
+              "total_logical_qubits": 1825,
               "phase_shell_hadamards": 512,
               "phase_shell_measurements": 512,
               "phase_shell_rotations": 511,
@@ -4612,13 +4245,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "1a88c555d229f685e08c92117d320f84098ec04d3b451865d285f069237faf59",
-          "size_bytes": 43338
+          "sha256": "a453dde055090ef5f369c58f80d3341d74a01dac1b3ae0b825e97f86c48ff615",
+          "size_bytes": 43314
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "1a88c555d229f685e08c92117d320f84098ec04d3b451865d285f069237faf59",
-          "size_bytes": 43338
+          "sha256": "a453dde055090ef5f369c58f80d3341d74a01dac1b3ae0b825e97f86c48ff615",
+          "size_bytes": 43314
         }
       },
       {
@@ -4655,12 +4288,12 @@
         "name": "whole_oracle_recount_best_families_match_frontier",
         "pass": 1,
         "expected": {
-          "best_gate_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "best_qubit_family": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1"
+          "best_gate_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "best_qubit_family": "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1"
         },
         "observed": {
-          "best_gate_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "best_qubit_family": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1"
+          "best_gate_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "best_qubit_family": "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1"
         }
       }
     ]
@@ -4674,20 +4307,20 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "daa057d53f6b5da6a0bbd0ac1fe9c00c3cf28c0933ae400d60acaa152b12cac8",
-          "size_bytes": 24036
+          "sha256": "05b3e7da1c7d54f145620c7f972e109794858229be5ad91b03ea33cd4bcae992",
+          "size_bytes": 23956
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "daa057d53f6b5da6a0bbd0ac1fe9c00c3cf28c0933ae400d60acaa152b12cac8",
-          "size_bytes": 24036
+          "sha256": "05b3e7da1c7d54f145620c7f972e109794858229be5ad91b03ea33cd4bcae992",
+          "size_bytes": 23956
         }
       },
       {
         "name": "subcircuit_equivalence_source_paths_match_expected",
         "pass": 1,
         "expected": {
-          "leaf": "compiler_verification_project/artifacts/interface_borrowed_leaf.json",
+          "leaf": "compiler_verification_project/artifacts/lookup_fed_leaf.json",
           "lookup_fed_leaf_equivalence": "compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json",
           "interface_borrowed_leaf_equivalence": "compiler_verification_project/artifacts/interface_borrowed_leaf_equivalence.json",
           "cleanup_summary": "artifacts/verification/extended/coherent_cleanup_summary.json",
@@ -4698,7 +4331,7 @@
           "full_attack_inventory": "compiler_verification_project/artifacts/full_attack_inventory.json"
         },
         "observed": {
-          "leaf": "compiler_verification_project/artifacts/interface_borrowed_leaf.json",
+          "leaf": "compiler_verification_project/artifacts/lookup_fed_leaf.json",
           "lookup_fed_leaf_equivalence": "compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json",
           "interface_borrowed_leaf_equivalence": "compiler_verification_project/artifacts/interface_borrowed_leaf_equivalence.json",
           "cleanup_summary": "artifacts/verification/extended/coherent_cleanup_summary.json",
@@ -4718,8 +4351,8 @@
           "compiler_verification_project/artifacts/family_frontier.json",
           "compiler_verification_project/artifacts/full_attack_inventory.json",
           "compiler_verification_project/artifacts/generated_block_inventories.json",
-          "compiler_verification_project/artifacts/interface_borrowed_leaf.json",
           "compiler_verification_project/artifacts/interface_borrowed_leaf_equivalence.json",
+          "compiler_verification_project/artifacts/lookup_fed_leaf.json",
           "compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json",
           "compiler_verification_project/artifacts/lookup_lowerings.json"
         ],
@@ -4729,8 +4362,8 @@
           "compiler_verification_project/artifacts/family_frontier.json",
           "compiler_verification_project/artifacts/full_attack_inventory.json",
           "compiler_verification_project/artifacts/generated_block_inventories.json",
-          "compiler_verification_project/artifacts/interface_borrowed_leaf.json",
           "compiler_verification_project/artifacts/interface_borrowed_leaf_equivalence.json",
+          "compiler_verification_project/artifacts/lookup_fed_leaf.json",
           "compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json",
           "compiler_verification_project/artifacts/lookup_lowerings.json"
         ]
@@ -4788,7 +4421,7 @@
         "pass": 1,
         "expected": {
           "best_gate_family": {
-            "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+            "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
             "reconstruction": {
               "arithmetic_leaf_non_clifford": 733657,
               "direct_seed_non_clifford": 327,
@@ -4805,16 +4438,16 @@
               "phase_shell_measurements": 512,
               "phase_shell_rotations": 511,
               "phase_shell_rotation_depth": 511,
-              "arithmetic_slot_count": 6,
+              "arithmetic_slot_count": 7,
               "control_slot_count": 1,
               "borrowed_interface_qubits": 0,
               "lookup_workspace_qubits": 48,
               "live_phase_bits": 1,
-              "total_logical_qubits": 1586
+              "total_logical_qubits": 1842
             }
           },
           "best_qubit_family": {
-            "name": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+            "name": "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
             "reconstruction": {
               "arithmetic_leaf_non_clifford": 733657,
               "direct_seed_non_clifford": 459049,
@@ -4831,18 +4464,18 @@
               "phase_shell_measurements": 512,
               "phase_shell_rotations": 511,
               "phase_shell_rotation_depth": 511,
-              "arithmetic_slot_count": 6,
+              "arithmetic_slot_count": 7,
               "control_slot_count": 1,
               "borrowed_interface_qubits": 0,
               "lookup_workspace_qubits": 31,
               "live_phase_bits": 1,
-              "total_logical_qubits": 1569
+              "total_logical_qubits": 1825
             }
           }
         },
         "observed": {
           "best_gate_family": {
-            "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+            "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
             "reconstruction": {
               "arithmetic_leaf_non_clifford": 733657,
               "direct_seed_non_clifford": 327,
@@ -4859,16 +4492,16 @@
               "phase_shell_measurements": 512,
               "phase_shell_rotations": 511,
               "phase_shell_rotation_depth": 511,
-              "arithmetic_slot_count": 6,
+              "arithmetic_slot_count": 7,
               "control_slot_count": 1,
               "borrowed_interface_qubits": 0,
               "lookup_workspace_qubits": 48,
               "live_phase_bits": 1,
-              "total_logical_qubits": 1586
+              "total_logical_qubits": 1842
             }
           },
           "best_qubit_family": {
-            "name": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+            "name": "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
             "reconstruction": {
               "arithmetic_leaf_non_clifford": 733657,
               "direct_seed_non_clifford": 459049,
@@ -4885,12 +4518,12 @@
               "phase_shell_measurements": 512,
               "phase_shell_rotations": 511,
               "phase_shell_rotation_depth": 511,
-              "arithmetic_slot_count": 6,
+              "arithmetic_slot_count": 7,
               "control_slot_count": 1,
               "borrowed_interface_qubits": 0,
               "lookup_workspace_qubits": 31,
               "live_phase_bits": 1,
-              "total_logical_qubits": 1569
+              "total_logical_qubits": 1825
             }
           }
         }
@@ -5866,13 +5499,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "92ca2fdcb3cb58d76a354d284ea49b7b473e15646df0e876dd8d1dc0f1316ef5",
-          "size_bytes": 40739
+          "sha256": "6e8e0b71dc07b8d6d733c5991b6d6a14abdd3628773720ddb41038222d17e8c9",
+          "size_bytes": 40767
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "92ca2fdcb3cb58d76a354d284ea49b7b473e15646df0e876dd8d1dc0f1316ef5",
-          "size_bytes": 40739
+          "sha256": "6e8e0b71dc07b8d6d733c5991b6d6a14abdd3628773720ddb41038222d17e8c9",
+          "size_bytes": 40767
         }
       },
       {
@@ -6080,36 +5713,36 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "710b5c10d3beaa0881ca9f505980adf0518eaa7c05a0c16d19c74b96aa0c80b5",
-          "size_bytes": 71304
+          "sha256": "2a34335a5060afb9d5c5bb81edba544848c1f98f2f4c1b1375b3bd38d6dccad4",
+          "size_bytes": 71327
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "710b5c10d3beaa0881ca9f505980adf0518eaa7c05a0c16d19c74b96aa0c80b5",
-          "size_bytes": 71304
+          "sha256": "2a34335a5060afb9d5c5bb81edba544848c1f98f2f4c1b1375b3bd38d6dccad4",
+          "size_bytes": 71327
         }
       },
       {
         "name": "best_gate_family_is_minimum_over_family_rows",
         "pass": 1,
         "expected": {
-          "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Lookup-fed leaf interface that borrows lookup_x as scratch after the lookup coordinate has been consumed.",
+          "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Compiler-project lookup-fed leaf interface with reordered execution and explicit lookup wires for the initial x/y/meta values.",
           "gate_set": "Clifford + banked unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
           "phase_shell": "semiclassical_qft_v1",
-          "slot_allocation_family": "interface_borrowed_lookup_x_v1",
+          "slot_allocation_family": "lookup_fed_leaf_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
           "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
           "arithmetic_leaf_non_clifford": 733657,
           "direct_seed_non_clifford": 327,
           "per_leaf_lookup_non_clifford": 327,
           "full_oracle_non_clifford": 22753831,
-          "arithmetic_slot_count": 6,
+          "arithmetic_slot_count": 7,
           "control_slot_count": 1,
           "borrowed_interface_qubits": 0,
           "lookup_workspace_qubits": 48,
           "live_phase_bits": 1,
-          "total_logical_qubits": 1586,
+          "total_logical_qubits": 1842,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -6117,8 +5750,8 @@
           "total_measurements": 374212,
           "improvement_vs_google_low_qubit": 3.955377887793928,
           "improvement_vs_google_low_gate": 3.0764050238397216,
-          "qubit_ratio_vs_google_low_qubit": 0.7566204287515763,
-          "qubit_ratio_vs_google_low_gate": 0.914249684741488,
+          "qubit_ratio_vs_google_low_qubit": 0.6514657980456026,
+          "qubit_ratio_vs_google_low_gate": 0.7871878393051032,
           "notes": [
             "This family fully factorizes the folded 15-bit magnitude into binary banking levels inside the same generated chunk-decode model used by the other banked families.",
             "Within the current exact generated-operation boundary, the deeper banking reduces both direct lookup non-Clifford cost and explicit lookup workspace relative to the 3/4/4/4 hierarchical family.",
@@ -6127,23 +5760,23 @@
           ]
         },
         "observed": {
-          "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Lookup-fed leaf interface that borrows lookup_x as scratch after the lookup coordinate has been consumed.",
+          "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Compiler-project lookup-fed leaf interface with reordered execution and explicit lookup wires for the initial x/y/meta values.",
           "gate_set": "Clifford + banked unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
           "phase_shell": "semiclassical_qft_v1",
-          "slot_allocation_family": "interface_borrowed_lookup_x_v1",
+          "slot_allocation_family": "lookup_fed_leaf_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
           "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
           "arithmetic_leaf_non_clifford": 733657,
           "direct_seed_non_clifford": 327,
           "per_leaf_lookup_non_clifford": 327,
           "full_oracle_non_clifford": 22753831,
-          "arithmetic_slot_count": 6,
+          "arithmetic_slot_count": 7,
           "control_slot_count": 1,
           "borrowed_interface_qubits": 0,
           "lookup_workspace_qubits": 48,
           "live_phase_bits": 1,
-          "total_logical_qubits": 1586,
+          "total_logical_qubits": 1842,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -6151,8 +5784,8 @@
           "total_measurements": 374212,
           "improvement_vs_google_low_qubit": 3.955377887793928,
           "improvement_vs_google_low_gate": 3.0764050238397216,
-          "qubit_ratio_vs_google_low_qubit": 0.7566204287515763,
-          "qubit_ratio_vs_google_low_gate": 0.914249684741488,
+          "qubit_ratio_vs_google_low_qubit": 0.6514657980456026,
+          "qubit_ratio_vs_google_low_gate": 0.7871878393051032,
           "notes": [
             "This family fully factorizes the folded 15-bit magnitude into binary banking levels inside the same generated chunk-decode model used by the other banked families.",
             "Within the current exact generated-operation boundary, the deeper banking reduces both direct lookup non-Clifford cost and explicit lookup workspace relative to the 3/4/4/4 hierarchical family.",
@@ -6165,23 +5798,23 @@
         "name": "best_qubit_family_is_minimum_over_family_rows",
         "pass": 1,
         "expected": {
-          "name": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "summary": "Low-qubit exact lookup family using a 15-bit folded magnitude domain and temporary logical-AND equality ladders. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Lookup-fed leaf interface that borrows lookup_x as scratch after the lookup coordinate has been consumed.",
+          "name": "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "summary": "Low-qubit exact lookup family using a 15-bit folded magnitude domain and temporary logical-AND equality ladders. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Compiler-project lookup-fed leaf interface with reordered execution and explicit lookup wires for the initial x/y/meta values.",
           "gate_set": "Clifford + temporary logical-AND + measurement; Clifford + classically controlled dyadic phase + measurement",
           "phase_shell": "semiclassical_qft_v1",
-          "slot_allocation_family": "interface_borrowed_lookup_x_v1",
+          "slot_allocation_family": "lookup_fed_leaf_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
           "lookup_family": "folded_linear_scan_tmpand_v1",
           "arithmetic_leaf_non_clifford": 733657,
           "direct_seed_non_clifford": 459049,
           "per_leaf_lookup_non_clifford": 459049,
           "full_oracle_non_clifford": 37432935,
-          "arithmetic_slot_count": 6,
+          "arithmetic_slot_count": 7,
           "control_slot_count": 1,
           "borrowed_interface_qubits": 0,
           "lookup_workspace_qubits": 31,
           "live_phase_bits": 1,
-          "total_logical_qubits": 1569,
+          "total_logical_qubits": 1825,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -6189,8 +5822,8 @@
           "total_measurements": 15053796,
           "improvement_vs_google_low_qubit": 2.4042998498514745,
           "improvement_vs_google_low_gate": 1.8700109943289245,
-          "qubit_ratio_vs_google_low_qubit": 0.7648183556405354,
-          "qubit_ratio_vs_google_low_gate": 0.9241555130656469,
+          "qubit_ratio_vs_google_low_qubit": 0.6575342465753424,
+          "qubit_ratio_vs_google_low_gate": 0.7945205479452054,
           "notes": [
             "This remains the lowest-space lookup family checked into the compiler project.",
             "Zero-word and 0x8000 routing are explicit semantic cases, but they do not allocate a separate metadata-table lookup.",
@@ -6199,23 +5832,23 @@
           ]
         },
         "observed": {
-          "name": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "summary": "Low-qubit exact lookup family using a 15-bit folded magnitude domain and temporary logical-AND equality ladders. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Lookup-fed leaf interface that borrows lookup_x as scratch after the lookup coordinate has been consumed.",
+          "name": "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "summary": "Low-qubit exact lookup family using a 15-bit folded magnitude domain and temporary logical-AND equality ladders. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Compiler-project lookup-fed leaf interface with reordered execution and explicit lookup wires for the initial x/y/meta values.",
           "gate_set": "Clifford + temporary logical-AND + measurement; Clifford + classically controlled dyadic phase + measurement",
           "phase_shell": "semiclassical_qft_v1",
-          "slot_allocation_family": "interface_borrowed_lookup_x_v1",
+          "slot_allocation_family": "lookup_fed_leaf_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
           "lookup_family": "folded_linear_scan_tmpand_v1",
           "arithmetic_leaf_non_clifford": 733657,
           "direct_seed_non_clifford": 459049,
           "per_leaf_lookup_non_clifford": 459049,
           "full_oracle_non_clifford": 37432935,
-          "arithmetic_slot_count": 6,
+          "arithmetic_slot_count": 7,
           "control_slot_count": 1,
           "borrowed_interface_qubits": 0,
           "lookup_workspace_qubits": 31,
           "live_phase_bits": 1,
-          "total_logical_qubits": 1569,
+          "total_logical_qubits": 1825,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -6223,8 +5856,8 @@
           "total_measurements": 15053796,
           "improvement_vs_google_low_qubit": 2.4042998498514745,
           "improvement_vs_google_low_gate": 1.8700109943289245,
-          "qubit_ratio_vs_google_low_qubit": 0.7648183556405354,
-          "qubit_ratio_vs_google_low_gate": 0.9241555130656469,
+          "qubit_ratio_vs_google_low_qubit": 0.6575342465753424,
+          "qubit_ratio_vs_google_low_gate": 0.7945205479452054,
           "notes": [
             "This remains the lowest-space lookup family checked into the compiler project.",
             "Zero-word and 0x8000 routing are explicit semantic cases, but they do not allocate a separate metadata-table lookup.",
@@ -6237,23 +5870,23 @@
         "name": "best_sub30m_qubit_family_is_minimum_over_sub30m_rows",
         "pass": 1,
         "expected": {
-          "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Lookup-fed leaf interface that borrows lookup_x as scratch after the lookup coordinate has been consumed.",
+          "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Compiler-project lookup-fed leaf interface with reordered execution and explicit lookup wires for the initial x/y/meta values.",
           "gate_set": "Clifford + banked unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
           "phase_shell": "semiclassical_qft_v1",
-          "slot_allocation_family": "interface_borrowed_lookup_x_v1",
+          "slot_allocation_family": "lookup_fed_leaf_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
           "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
           "arithmetic_leaf_non_clifford": 733657,
           "direct_seed_non_clifford": 327,
           "per_leaf_lookup_non_clifford": 327,
           "full_oracle_non_clifford": 22753831,
-          "arithmetic_slot_count": 6,
+          "arithmetic_slot_count": 7,
           "control_slot_count": 1,
           "borrowed_interface_qubits": 0,
           "lookup_workspace_qubits": 48,
           "live_phase_bits": 1,
-          "total_logical_qubits": 1586,
+          "total_logical_qubits": 1842,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -6261,8 +5894,8 @@
           "total_measurements": 374212,
           "improvement_vs_google_low_qubit": 3.955377887793928,
           "improvement_vs_google_low_gate": 3.0764050238397216,
-          "qubit_ratio_vs_google_low_qubit": 0.7566204287515763,
-          "qubit_ratio_vs_google_low_gate": 0.914249684741488,
+          "qubit_ratio_vs_google_low_qubit": 0.6514657980456026,
+          "qubit_ratio_vs_google_low_gate": 0.7871878393051032,
           "notes": [
             "This family fully factorizes the folded 15-bit magnitude into binary banking levels inside the same generated chunk-decode model used by the other banked families.",
             "Within the current exact generated-operation boundary, the deeper banking reduces both direct lookup non-Clifford cost and explicit lookup workspace relative to the 3/4/4/4 hierarchical family.",
@@ -6271,23 +5904,23 @@
           ]
         },
         "observed": {
-          "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Lookup-fed leaf interface that borrows lookup_x as scratch after the lookup coordinate has been consumed.",
+          "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Compiler-project lookup-fed leaf interface with reordered execution and explicit lookup wires for the initial x/y/meta values.",
           "gate_set": "Clifford + banked unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
           "phase_shell": "semiclassical_qft_v1",
-          "slot_allocation_family": "interface_borrowed_lookup_x_v1",
+          "slot_allocation_family": "lookup_fed_leaf_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
           "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
           "arithmetic_leaf_non_clifford": 733657,
           "direct_seed_non_clifford": 327,
           "per_leaf_lookup_non_clifford": 327,
           "full_oracle_non_clifford": 22753831,
-          "arithmetic_slot_count": 6,
+          "arithmetic_slot_count": 7,
           "control_slot_count": 1,
           "borrowed_interface_qubits": 0,
           "lookup_workspace_qubits": 48,
           "live_phase_bits": 1,
-          "total_logical_qubits": 1586,
+          "total_logical_qubits": 1842,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -6295,8 +5928,8 @@
           "total_measurements": 374212,
           "improvement_vs_google_low_qubit": 3.955377887793928,
           "improvement_vs_google_low_gate": 3.0764050238397216,
-          "qubit_ratio_vs_google_low_qubit": 0.7566204287515763,
-          "qubit_ratio_vs_google_low_gate": 0.914249684741488,
+          "qubit_ratio_vs_google_low_qubit": 0.6514657980456026,
+          "qubit_ratio_vs_google_low_gate": 0.7871878393051032,
           "notes": [
             "This family fully factorizes the folded 15-bit magnitude into binary banking levels inside the same generated chunk-decode model used by the other banked families.",
             "Within the current exact generated-operation boundary, the deeper banking reduces both direct lookup non-Clifford cost and explicit lookup workspace relative to the 3/4/4/4 hierarchical family.",
@@ -6441,23 +6074,23 @@
         "name": "build_summary_best_gate_matches_frontier",
         "pass": 1,
         "expected": {
-          "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Lookup-fed leaf interface that borrows lookup_x as scratch after the lookup coordinate has been consumed.",
+          "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Compiler-project lookup-fed leaf interface with reordered execution and explicit lookup wires for the initial x/y/meta values.",
           "gate_set": "Clifford + banked unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
           "phase_shell": "semiclassical_qft_v1",
-          "slot_allocation_family": "interface_borrowed_lookup_x_v1",
+          "slot_allocation_family": "lookup_fed_leaf_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
           "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
           "arithmetic_leaf_non_clifford": 733657,
           "direct_seed_non_clifford": 327,
           "per_leaf_lookup_non_clifford": 327,
           "full_oracle_non_clifford": 22753831,
-          "arithmetic_slot_count": 6,
+          "arithmetic_slot_count": 7,
           "control_slot_count": 1,
           "borrowed_interface_qubits": 0,
           "lookup_workspace_qubits": 48,
           "live_phase_bits": 1,
-          "total_logical_qubits": 1586,
+          "total_logical_qubits": 1842,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -6465,8 +6098,8 @@
           "total_measurements": 374212,
           "improvement_vs_google_low_qubit": 3.955377887793928,
           "improvement_vs_google_low_gate": 3.0764050238397216,
-          "qubit_ratio_vs_google_low_qubit": 0.7566204287515763,
-          "qubit_ratio_vs_google_low_gate": 0.914249684741488,
+          "qubit_ratio_vs_google_low_qubit": 0.6514657980456026,
+          "qubit_ratio_vs_google_low_gate": 0.7871878393051032,
           "notes": [
             "This family fully factorizes the folded 15-bit magnitude into binary banking levels inside the same generated chunk-decode model used by the other banked families.",
             "Within the current exact generated-operation boundary, the deeper banking reduces both direct lookup non-Clifford cost and explicit lookup workspace relative to the 3/4/4/4 hierarchical family.",
@@ -6475,23 +6108,23 @@
           ]
         },
         "observed": {
-          "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Lookup-fed leaf interface that borrows lookup_x as scratch after the lookup coordinate has been consumed.",
+          "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Compiler-project lookup-fed leaf interface with reordered execution and explicit lookup wires for the initial x/y/meta values.",
           "gate_set": "Clifford + banked unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
           "phase_shell": "semiclassical_qft_v1",
-          "slot_allocation_family": "interface_borrowed_lookup_x_v1",
+          "slot_allocation_family": "lookup_fed_leaf_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
           "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
           "arithmetic_leaf_non_clifford": 733657,
           "direct_seed_non_clifford": 327,
           "per_leaf_lookup_non_clifford": 327,
           "full_oracle_non_clifford": 22753831,
-          "arithmetic_slot_count": 6,
+          "arithmetic_slot_count": 7,
           "control_slot_count": 1,
           "borrowed_interface_qubits": 0,
           "lookup_workspace_qubits": 48,
           "live_phase_bits": 1,
-          "total_logical_qubits": 1586,
+          "total_logical_qubits": 1842,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -6499,8 +6132,8 @@
           "total_measurements": 374212,
           "improvement_vs_google_low_qubit": 3.955377887793928,
           "improvement_vs_google_low_gate": 3.0764050238397216,
-          "qubit_ratio_vs_google_low_qubit": 0.7566204287515763,
-          "qubit_ratio_vs_google_low_gate": 0.914249684741488,
+          "qubit_ratio_vs_google_low_qubit": 0.6514657980456026,
+          "qubit_ratio_vs_google_low_gate": 0.7871878393051032,
           "notes": [
             "This family fully factorizes the folded 15-bit magnitude into binary banking levels inside the same generated chunk-decode model used by the other banked families.",
             "Within the current exact generated-operation boundary, the deeper banking reduces both direct lookup non-Clifford cost and explicit lookup workspace relative to the 3/4/4/4 hierarchical family.",
@@ -6513,23 +6146,23 @@
         "name": "build_summary_best_qubit_matches_frontier",
         "pass": 1,
         "expected": {
-          "name": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "summary": "Low-qubit exact lookup family using a 15-bit folded magnitude domain and temporary logical-AND equality ladders. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Lookup-fed leaf interface that borrows lookup_x as scratch after the lookup coordinate has been consumed.",
+          "name": "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "summary": "Low-qubit exact lookup family using a 15-bit folded magnitude domain and temporary logical-AND equality ladders. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Compiler-project lookup-fed leaf interface with reordered execution and explicit lookup wires for the initial x/y/meta values.",
           "gate_set": "Clifford + temporary logical-AND + measurement; Clifford + classically controlled dyadic phase + measurement",
           "phase_shell": "semiclassical_qft_v1",
-          "slot_allocation_family": "interface_borrowed_lookup_x_v1",
+          "slot_allocation_family": "lookup_fed_leaf_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
           "lookup_family": "folded_linear_scan_tmpand_v1",
           "arithmetic_leaf_non_clifford": 733657,
           "direct_seed_non_clifford": 459049,
           "per_leaf_lookup_non_clifford": 459049,
           "full_oracle_non_clifford": 37432935,
-          "arithmetic_slot_count": 6,
+          "arithmetic_slot_count": 7,
           "control_slot_count": 1,
           "borrowed_interface_qubits": 0,
           "lookup_workspace_qubits": 31,
           "live_phase_bits": 1,
-          "total_logical_qubits": 1569,
+          "total_logical_qubits": 1825,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -6537,8 +6170,8 @@
           "total_measurements": 15053796,
           "improvement_vs_google_low_qubit": 2.4042998498514745,
           "improvement_vs_google_low_gate": 1.8700109943289245,
-          "qubit_ratio_vs_google_low_qubit": 0.7648183556405354,
-          "qubit_ratio_vs_google_low_gate": 0.9241555130656469,
+          "qubit_ratio_vs_google_low_qubit": 0.6575342465753424,
+          "qubit_ratio_vs_google_low_gate": 0.7945205479452054,
           "notes": [
             "This remains the lowest-space lookup family checked into the compiler project.",
             "Zero-word and 0x8000 routing are explicit semantic cases, but they do not allocate a separate metadata-table lookup.",
@@ -6547,23 +6180,23 @@
           ]
         },
         "observed": {
-          "name": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "summary": "Low-qubit exact lookup family using a 15-bit folded magnitude domain and temporary logical-AND equality ladders. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Lookup-fed leaf interface that borrows lookup_x as scratch after the lookup coordinate has been consumed.",
+          "name": "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "summary": "Low-qubit exact lookup family using a 15-bit folded magnitude domain and temporary logical-AND equality ladders. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Compiler-project lookup-fed leaf interface with reordered execution and explicit lookup wires for the initial x/y/meta values.",
           "gate_set": "Clifford + temporary logical-AND + measurement; Clifford + classically controlled dyadic phase + measurement",
           "phase_shell": "semiclassical_qft_v1",
-          "slot_allocation_family": "interface_borrowed_lookup_x_v1",
+          "slot_allocation_family": "lookup_fed_leaf_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
           "lookup_family": "folded_linear_scan_tmpand_v1",
           "arithmetic_leaf_non_clifford": 733657,
           "direct_seed_non_clifford": 459049,
           "per_leaf_lookup_non_clifford": 459049,
           "full_oracle_non_clifford": 37432935,
-          "arithmetic_slot_count": 6,
+          "arithmetic_slot_count": 7,
           "control_slot_count": 1,
           "borrowed_interface_qubits": 0,
           "lookup_workspace_qubits": 31,
           "live_phase_bits": 1,
-          "total_logical_qubits": 1569,
+          "total_logical_qubits": 1825,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -6571,8 +6204,8 @@
           "total_measurements": 15053796,
           "improvement_vs_google_low_qubit": 2.4042998498514745,
           "improvement_vs_google_low_gate": 1.8700109943289245,
-          "qubit_ratio_vs_google_low_qubit": 0.7648183556405354,
-          "qubit_ratio_vs_google_low_gate": 0.9241555130656469,
+          "qubit_ratio_vs_google_low_qubit": 0.6575342465753424,
+          "qubit_ratio_vs_google_low_gate": 0.7945205479452054,
           "notes": [
             "This remains the lowest-space lookup family checked into the compiler project.",
             "Zero-word and 0x8000 routing are explicit semantic cases, but they do not allocate a separate metadata-table lookup.",
@@ -6585,23 +6218,23 @@
         "name": "build_summary_best_sub30m_qubit_matches_frontier",
         "pass": 1,
         "expected": {
-          "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Lookup-fed leaf interface that borrows lookup_x as scratch after the lookup coordinate has been consumed.",
+          "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Compiler-project lookup-fed leaf interface with reordered execution and explicit lookup wires for the initial x/y/meta values.",
           "gate_set": "Clifford + banked unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
           "phase_shell": "semiclassical_qft_v1",
-          "slot_allocation_family": "interface_borrowed_lookup_x_v1",
+          "slot_allocation_family": "lookup_fed_leaf_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
           "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
           "arithmetic_leaf_non_clifford": 733657,
           "direct_seed_non_clifford": 327,
           "per_leaf_lookup_non_clifford": 327,
           "full_oracle_non_clifford": 22753831,
-          "arithmetic_slot_count": 6,
+          "arithmetic_slot_count": 7,
           "control_slot_count": 1,
           "borrowed_interface_qubits": 0,
           "lookup_workspace_qubits": 48,
           "live_phase_bits": 1,
-          "total_logical_qubits": 1586,
+          "total_logical_qubits": 1842,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -6609,8 +6242,8 @@
           "total_measurements": 374212,
           "improvement_vs_google_low_qubit": 3.955377887793928,
           "improvement_vs_google_low_gate": 3.0764050238397216,
-          "qubit_ratio_vs_google_low_qubit": 0.7566204287515763,
-          "qubit_ratio_vs_google_low_gate": 0.914249684741488,
+          "qubit_ratio_vs_google_low_qubit": 0.6514657980456026,
+          "qubit_ratio_vs_google_low_gate": 0.7871878393051032,
           "notes": [
             "This family fully factorizes the folded 15-bit magnitude into binary banking levels inside the same generated chunk-decode model used by the other banked families.",
             "Within the current exact generated-operation boundary, the deeper banking reduces both direct lookup non-Clifford cost and explicit lookup workspace relative to the 3/4/4/4 hierarchical family.",
@@ -6619,23 +6252,23 @@
           ]
         },
         "observed": {
-          "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Lookup-fed leaf interface that borrows lookup_x as scratch after the lookup coordinate has been consumed.",
+          "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Compiler-project lookup-fed leaf interface with reordered execution and explicit lookup wires for the initial x/y/meta values.",
           "gate_set": "Clifford + banked unary QROM + measurement; Clifford + classically controlled dyadic phase + measurement",
           "phase_shell": "semiclassical_qft_v1",
-          "slot_allocation_family": "interface_borrowed_lookup_x_v1",
+          "slot_allocation_family": "lookup_fed_leaf_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
           "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
           "arithmetic_leaf_non_clifford": 733657,
           "direct_seed_non_clifford": 327,
           "per_leaf_lookup_non_clifford": 327,
           "full_oracle_non_clifford": 22753831,
-          "arithmetic_slot_count": 6,
+          "arithmetic_slot_count": 7,
           "control_slot_count": 1,
           "borrowed_interface_qubits": 0,
           "lookup_workspace_qubits": 48,
           "live_phase_bits": 1,
-          "total_logical_qubits": 1586,
+          "total_logical_qubits": 1842,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -6643,8 +6276,8 @@
           "total_measurements": 374212,
           "improvement_vs_google_low_qubit": 3.955377887793928,
           "improvement_vs_google_low_gate": 3.0764050238397216,
-          "qubit_ratio_vs_google_low_qubit": 0.7566204287515763,
-          "qubit_ratio_vs_google_low_gate": 0.914249684741488,
+          "qubit_ratio_vs_google_low_qubit": 0.6514657980456026,
+          "qubit_ratio_vs_google_low_gate": 0.7871878393051032,
           "notes": [
             "This family fully factorizes the folded 15-bit magnitude into binary banking levels inside the same generated chunk-decode model used by the other banked families.",
             "Within the current exact generated-operation boundary, the deeper banking reduces both direct lookup non-Clifford cost and explicit lookup workspace relative to the 3/4/4/4 hierarchical family.",
@@ -6664,13 +6297,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "c9cd4b6b2d3eadb7e24944206e9e589856d1ac451cd791e1d56809bdfa1a5c65",
-          "size_bytes": 13943
+          "sha256": "f218365b7073d8bc1a7aaa99b1e182a1b6078347c87bad2eff635a8b0b77964c",
+          "size_bytes": 13921
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "c9cd4b6b2d3eadb7e24944206e9e589856d1ac451cd791e1d56809bdfa1a5c65",
-          "size_bytes": 13943
+          "sha256": "f218365b7073d8bc1a7aaa99b1e182a1b6078347c87bad2eff635a8b0b77964c",
+          "size_bytes": 13921
         }
       }
     ]
@@ -6764,12 +6397,12 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "e40eb01aa9f17d06321571309e22b2001b2be166d9890fca6c6487691b76814a",
+          "sha256": "7ea69d8e5e777fc04b17102175e51c6fb7ed78ce799ce01c8cb05af342c1b51c",
           "size_bytes": 16078
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "e40eb01aa9f17d06321571309e22b2001b2be166d9890fca6c6487691b76814a",
+          "sha256": "7ea69d8e5e777fc04b17102175e51c6fb7ed78ce799ce01c8cb05af342c1b51c",
           "size_bytes": 16078
         }
       }
@@ -6784,12 +6417,12 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "ce147b9317b0d4b09374a17d00f3d08bcb9c6d3d7cb3583fb60aeae9472042b4",
+          "sha256": "e0e9df735bd5c8c8bb42f9b646a82bdf1900bd172d98bc2e7eda85e1f3ab900e",
           "size_bytes": 6100
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "ce147b9317b0d4b09374a17d00f3d08bcb9c6d3d7cb3583fb60aeae9472042b4",
+          "sha256": "e0e9df735bd5c8c8bb42f9b646a82bdf1900bd172d98bc2e7eda85e1f3ab900e",
           "size_bytes": 6100
         }
       }
@@ -6804,13 +6437,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "561d862f57acbca187a3cb5dd45ea1c7a184b4a410014415bee6f3aeea9cf2fb",
-          "size_bytes": 863235
+          "sha256": "394febc191356ac1fd7a240008d11e656757f656d8449e2f3138f1b34ef0a3dd",
+          "size_bytes": 863106
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "561d862f57acbca187a3cb5dd45ea1c7a184b4a410014415bee6f3aeea9cf2fb",
-          "size_bytes": 863235
+          "sha256": "394febc191356ac1fd7a240008d11e656757f656d8449e2f3138f1b34ef0a3dd",
+          "size_bytes": 863106
         }
       },
       {
@@ -6903,12 +6536,12 @@
         "name": "physical_estimator_source_bindings_match_input_hashes",
         "pass": 1,
         "expected": {
-          "logical_counts_sha256": "e40eb01aa9f17d06321571309e22b2001b2be166d9890fca6c6487691b76814a",
-          "target_profiles_sha256": "ce147b9317b0d4b09374a17d00f3d08bcb9c6d3d7cb3583fb60aeae9472042b4"
+          "logical_counts_sha256": "7ea69d8e5e777fc04b17102175e51c6fb7ed78ce799ce01c8cb05af342c1b51c",
+          "target_profiles_sha256": "e0e9df735bd5c8c8bb42f9b646a82bdf1900bd172d98bc2e7eda85e1f3ab900e"
         },
         "observed": {
-          "logical_counts_sha256": "e40eb01aa9f17d06321571309e22b2001b2be166d9890fca6c6487691b76814a",
-          "target_profiles_sha256": "ce147b9317b0d4b09374a17d00f3d08bcb9c6d3d7cb3583fb60aeae9472042b4"
+          "logical_counts_sha256": "7ea69d8e5e777fc04b17102175e51c6fb7ed78ce799ce01c8cb05af342c1b51c",
+          "target_profiles_sha256": "e0e9df735bd5c8c8bb42f9b646a82bdf1900bd172d98bc2e7eda85e1f3ab900e"
         }
       },
       {
@@ -18168,12 +17801,12 @@
         "pass": 1,
         "expected": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 1346280,
+          "physical_qubits": 1473160,
           "runtime": 273209447700
         },
         "observed": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 1346280,
+          "physical_qubits": 1473160,
           "runtime": 273209447700
         }
       },
@@ -18183,12 +17816,12 @@
         "expected": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 273209447700,
-          "physical_qubits": 1346280
+          "physical_qubits": 1473160
         },
         "observed": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 273209447700,
-          "physical_qubits": 1346280
+          "physical_qubits": 1473160
         }
       },
       {
@@ -18219,7 +17852,7 @@
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e3_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 2080,
+          "numQubits": 2336,
           "tCount": 0,
           "cczCount": 37432935,
           "ccixCount": 0,
@@ -18228,7 +17861,7 @@
           "measurementCount": 15053796
         },
         "observed": {
-          "numQubits": 2080,
+          "numQubits": 2336,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -18241,7 +17874,7 @@
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e3_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 6466500
+        "observed": 7224660
       },
       {
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e3_surface_code_runtime_positive",
@@ -18289,7 +17922,7 @@
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e4_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 2080,
+          "numQubits": 2336,
           "tCount": 0,
           "cczCount": 37432935,
           "ccixCount": 0,
@@ -18298,7 +17931,7 @@
           "measurementCount": 15053796
         },
         "observed": {
-          "numQubits": 2080,
+          "numQubits": 2336,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -18311,7 +17944,7 @@
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e4_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 1512940
+        "observed": 1688700
       },
       {
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e4_surface_code_runtime_positive",
@@ -18359,7 +17992,7 @@
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e3_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 2080,
+          "numQubits": 2336,
           "tCount": 0,
           "cczCount": 37432935,
           "ccixCount": 0,
@@ -18368,7 +18001,7 @@
           "measurementCount": 15053796
         },
         "observed": {
-          "numQubits": 2080,
+          "numQubits": 2336,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -18381,7 +18014,7 @@
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e3_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 6754620
+        "observed": 7512780
       },
       {
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e3_surface_code_runtime_positive",
@@ -18429,7 +18062,7 @@
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e4_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 2080,
+          "numQubits": 2336,
           "tCount": 0,
           "cczCount": 37432935,
           "ccixCount": 0,
@@ -18438,7 +18071,7 @@
           "measurementCount": 15053796
         },
         "observed": {
-          "numQubits": 2080,
+          "numQubits": 2336,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -18451,7 +18084,7 @@
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e4_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 1547940
+        "observed": 1723700
       },
       {
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e4_surface_code_runtime_positive",
@@ -18499,7 +18132,7 @@
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e4_floquet_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 2080,
+          "numQubits": 2336,
           "tCount": 0,
           "cczCount": 37432935,
           "ccixCount": 0,
@@ -18508,7 +18141,7 @@
           "measurementCount": 15053796
         },
         "observed": {
-          "numQubits": 2080,
+          "numQubits": 2336,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -18521,7 +18154,7 @@
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e4_floquet_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 5186280
+        "observed": 5712520
       },
       {
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e4_floquet_code_runtime_positive",
@@ -18569,7 +18202,7 @@
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e6_floquet_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 2080,
+          "numQubits": 2336,
           "tCount": 0,
           "cczCount": 37432935,
           "ccixCount": 0,
@@ -18578,7 +18211,7 @@
           "measurementCount": 15053796
         },
         "observed": {
-          "numQubits": 2080,
+          "numQubits": 2336,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -18591,7 +18224,7 @@
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e6_floquet_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 1346280
+        "observed": 1473160
       },
       {
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e6_floquet_code_runtime_positive",
@@ -18636,12 +18269,12 @@
         "pass": 1,
         "expected": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 1093008,
+          "physical_qubits": 1219888,
           "runtime": 267458704800
         },
         "observed": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 1093008,
+          "physical_qubits": 1219888,
           "runtime": 267458704800
         }
       },
@@ -18651,12 +18284,12 @@
         "expected": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 267458704800,
-          "physical_qubits": 1093008
+          "physical_qubits": 1219888
         },
         "observed": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 267458704800,
-          "physical_qubits": 1093008
+          "physical_qubits": 1219888
         }
       },
       {
@@ -18687,7 +18320,7 @@
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e3_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 1569,
+          "numQubits": 1825,
           "tCount": 0,
           "cczCount": 37432935,
           "ccixCount": 0,
@@ -18696,7 +18329,7 @@
           "measurementCount": 15053796
         },
         "observed": {
-          "numQubits": 1569,
+          "numQubits": 1825,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -18709,7 +18342,7 @@
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e3_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 4953096
+        "observed": 5711256
       },
       {
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e3_surface_code_runtime_positive",
@@ -18757,7 +18390,7 @@
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e4_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 1569,
+          "numQubits": 1825,
           "tCount": 0,
           "cczCount": 37432935,
           "ccixCount": 0,
@@ -18766,7 +18399,7 @@
           "measurementCount": 15053796
         },
         "observed": {
-          "numQubits": 1569,
+          "numQubits": 1825,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -18779,7 +18412,7 @@
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e4_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 1162096
+        "observed": 1337856
       },
       {
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e4_surface_code_runtime_positive",
@@ -18827,7 +18460,7 @@
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e3_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 1569,
+          "numQubits": 1825,
           "tCount": 0,
           "cczCount": 37432935,
           "ccixCount": 0,
@@ -18836,7 +18469,7 @@
           "measurementCount": 15053796
         },
         "observed": {
-          "numQubits": 1569,
+          "numQubits": 1825,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -18849,7 +18482,7 @@
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e3_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 5241216
+        "observed": 5999376
       },
       {
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e3_surface_code_runtime_positive",
@@ -18897,7 +18530,7 @@
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e4_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 1569,
+          "numQubits": 1825,
           "tCount": 0,
           "cczCount": 37432935,
           "ccixCount": 0,
@@ -18906,7 +18539,7 @@
           "measurementCount": 15053796
         },
         "observed": {
-          "numQubits": 1569,
+          "numQubits": 1825,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -18919,7 +18552,7 @@
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e4_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 1197096
+        "observed": 1372856
       },
       {
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e4_surface_code_runtime_positive",
@@ -18967,7 +18600,7 @@
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e4_floquet_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 1569,
+          "numQubits": 1825,
           "tCount": 0,
           "cczCount": 37432935,
           "ccixCount": 0,
@@ -18976,7 +18609,7 @@
           "measurementCount": 15053796
         },
         "observed": {
-          "numQubits": 1569,
+          "numQubits": 1825,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -18989,13 +18622,13 @@
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e4_floquet_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 3460944
+        "observed": 4662064
       },
       {
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e4_floquet_code_runtime_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 496709023200
+        "observed": 573125796000
       },
       {
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e4_floquet_code_job_params_qubit_model_matches_target",
@@ -19037,7 +18670,7 @@
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e6_floquet_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 1569,
+          "numQubits": 1825,
           "tCount": 0,
           "cczCount": 37432935,
           "ccixCount": 0,
@@ -19046,7 +18679,7 @@
           "measurementCount": 15053796
         },
         "observed": {
-          "numQubits": 1569,
+          "numQubits": 1825,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -19059,7 +18692,7 @@
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e6_floquet_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 1093008
+        "observed": 1219888
       },
       {
         "name": "physical_estimator_folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e6_floquet_code_runtime_positive",
@@ -19104,12 +18737,12 @@
         "pass": 1,
         "expected": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 1267696,
+          "physical_qubits": 1394332,
           "runtime": 150076602900
         },
         "observed": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 1267696,
+          "physical_qubits": 1394332,
           "runtime": 150076602900
         }
       },
@@ -19119,12 +18752,12 @@
         "expected": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 150076602900,
-          "physical_qubits": 1267696
+          "physical_qubits": 1394332
         },
         "observed": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 150076602900,
-          "physical_qubits": 1267696
+          "physical_qubits": 1394332
         }
       },
       {
@@ -19155,7 +18788,7 @@
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e3_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 2451,
+          "numQubits": 2707,
           "tCount": 0,
           "cczCount": 22777319,
           "ccixCount": 0,
@@ -19164,7 +18797,7 @@
           "measurementCount": 385956
         },
         "observed": {
-          "numQubits": 2451,
+          "numQubits": 2707,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -19177,7 +18810,7 @@
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e3_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 7601112
+        "observed": 8357814
       },
       {
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e3_surface_code_runtime_positive",
@@ -19225,7 +18858,7 @@
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e4_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 2451,
+          "numQubits": 2707,
           "tCount": 0,
           "cczCount": 22777319,
           "ccixCount": 0,
@@ -19234,7 +18867,7 @@
           "measurementCount": 385956
         },
         "observed": {
-          "numQubits": 2451,
+          "numQubits": 2707,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -19247,7 +18880,7 @@
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e4_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 1777472
+        "observed": 1952894
       },
       {
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e4_surface_code_runtime_positive",
@@ -19295,7 +18928,7 @@
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e3_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 2451,
+          "numQubits": 2707,
           "tCount": 0,
           "cczCount": 22777319,
           "ccixCount": 0,
@@ -19304,7 +18937,7 @@
           "measurementCount": 385956
         },
         "observed": {
-          "numQubits": 2451,
+          "numQubits": 2707,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -19317,7 +18950,7 @@
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e3_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 7887272
+        "observed": 8643974
       },
       {
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e3_surface_code_runtime_positive",
@@ -19365,7 +18998,7 @@
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e4_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 2451,
+          "numQubits": 2707,
           "tCount": 0,
           "cczCount": 22777319,
           "ccixCount": 0,
@@ -19374,7 +19007,7 @@
           "measurementCount": 385956
         },
         "observed": {
-          "numQubits": 2451,
+          "numQubits": 2707,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -19387,7 +19020,7 @@
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e4_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 1814312
+        "observed": 1989734
       },
       {
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e4_surface_code_runtime_positive",
@@ -19435,7 +19068,7 @@
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e4_floquet_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 2451,
+          "numQubits": 2707,
           "tCount": 0,
           "cczCount": 22777319,
           "ccixCount": 0,
@@ -19444,7 +19077,7 @@
           "measurementCount": 385956
         },
         "observed": {
-          "numQubits": 2451,
+          "numQubits": 2707,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -19457,7 +19090,7 @@
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e4_floquet_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 4949968
+        "observed": 5350636
       },
       {
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e4_floquet_code_runtime_positive",
@@ -19505,7 +19138,7 @@
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e6_floquet_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 2451,
+          "numQubits": 2707,
           "tCount": 0,
           "cczCount": 22777319,
           "ccixCount": 0,
@@ -19514,7 +19147,7 @@
           "measurementCount": 385956
         },
         "observed": {
-          "numQubits": 2451,
+          "numQubits": 2707,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -19527,7 +19160,7 @@
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e6_floquet_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 1267696
+        "observed": 1394332
       },
       {
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e6_floquet_code_runtime_positive",
@@ -19572,12 +19205,12 @@
         "pass": 1,
         "expected": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 1014424,
+          "physical_qubits": 1141304,
           "runtime": 144325860000
         },
         "observed": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 1014424,
+          "physical_qubits": 1141304,
           "runtime": 144325860000
         }
       },
@@ -19587,12 +19220,12 @@
         "expected": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 144325860000,
-          "physical_qubits": 1014424
+          "physical_qubits": 1141304
         },
         "observed": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 144325860000,
-          "physical_qubits": 1014424
+          "physical_qubits": 1141304
         }
       },
       {
@@ -19623,7 +19256,7 @@
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e3_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 1940,
+          "numQubits": 2196,
           "tCount": 0,
           "cczCount": 22777319,
           "ccixCount": 0,
@@ -19632,7 +19265,7 @@
           "measurementCount": 385956
         },
         "observed": {
-          "numQubits": 1940,
+          "numQubits": 2196,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -19645,7 +19278,7 @@
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e3_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 6087708
+        "observed": 6845868
       },
       {
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e3_surface_code_runtime_positive",
@@ -19693,7 +19326,7 @@
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e4_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 1940,
+          "numQubits": 2196,
           "tCount": 0,
           "cczCount": 22777319,
           "ccixCount": 0,
@@ -19702,7 +19335,7 @@
           "measurementCount": 385956
         },
         "observed": {
-          "numQubits": 1940,
+          "numQubits": 2196,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -19715,7 +19348,7 @@
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e4_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 1426628
+        "observed": 1602388
       },
       {
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e4_surface_code_runtime_positive",
@@ -19763,7 +19396,7 @@
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e3_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 1940,
+          "numQubits": 2196,
           "tCount": 0,
           "cczCount": 22777319,
           "ccixCount": 0,
@@ -19772,7 +19405,7 @@
           "measurementCount": 385956
         },
         "observed": {
-          "numQubits": 1940,
+          "numQubits": 2196,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -19785,7 +19418,7 @@
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e3_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 6373868
+        "observed": 7132028
       },
       {
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e3_surface_code_runtime_positive",
@@ -19833,7 +19466,7 @@
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e4_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 1940,
+          "numQubits": 2196,
           "tCount": 0,
           "cczCount": 22777319,
           "ccixCount": 0,
@@ -19842,7 +19475,7 @@
           "measurementCount": 385956
         },
         "observed": {
-          "numQubits": 1940,
+          "numQubits": 2196,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -19855,7 +19488,7 @@
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e4_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 1463468
+        "observed": 1639228
       },
       {
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e4_surface_code_runtime_positive",
@@ -19903,7 +19536,7 @@
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e4_floquet_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 1940,
+          "numQubits": 2196,
           "tCount": 0,
           "cczCount": 22777319,
           "ccixCount": 0,
@@ -19912,7 +19545,7 @@
           "measurementCount": 385956
         },
         "observed": {
-          "numQubits": 1940,
+          "numQubits": 2196,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -19925,7 +19558,7 @@
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e4_floquet_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 4148632
+        "observed": 4550072
       },
       {
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e4_floquet_code_runtime_positive",
@@ -19973,7 +19606,7 @@
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e6_floquet_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 1940,
+          "numQubits": 2196,
           "tCount": 0,
           "cczCount": 22777319,
           "ccixCount": 0,
@@ -19982,7 +19615,7 @@
           "measurementCount": 385956
         },
         "observed": {
-          "numQubits": 1940,
+          "numQubits": 2196,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -19995,7 +19628,7 @@
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e6_floquet_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 1014424
+        "observed": 1141304
       },
       {
         "name": "physical_estimator_folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e6_floquet_code_runtime_positive",
@@ -20040,12 +19673,12 @@
         "pass": 1,
         "expected": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 1105192,
+          "physical_qubits": 1231828,
           "runtime": 149921370900
         },
         "observed": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 1105192,
+          "physical_qubits": 1231828,
           "runtime": 149921370900
         }
       },
@@ -20055,12 +19688,12 @@
         "expected": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 149921370900,
-          "physical_qubits": 1105192
+          "physical_qubits": 1231828
         },
         "observed": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 149921370900,
-          "physical_qubits": 1105192
+          "physical_qubits": 1231828
         }
       },
       {
@@ -20091,7 +19724,7 @@
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e3_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 2123,
+          "numQubits": 2379,
           "tCount": 0,
           "cczCount": 22756199,
           "ccixCount": 0,
@@ -20100,7 +19733,7 @@
           "measurementCount": 375396
         },
         "observed": {
-          "numQubits": 2123,
+          "numQubits": 2379,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -20113,7 +19746,7 @@
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e3_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 6630084
+        "observed": 7386786
       },
       {
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e3_surface_code_runtime_positive",
@@ -20161,7 +19794,7 @@
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e4_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 2123,
+          "numQubits": 2379,
           "tCount": 0,
           "cczCount": 22756199,
           "ccixCount": 0,
@@ -20170,7 +19803,7 @@
           "measurementCount": 375396
         },
         "observed": {
-          "numQubits": 2123,
+          "numQubits": 2379,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -20183,7 +19816,7 @@
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e4_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 1552364
+        "observed": 1727786
       },
       {
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e4_surface_code_runtime_positive",
@@ -20231,7 +19864,7 @@
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e3_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 2123,
+          "numQubits": 2379,
           "tCount": 0,
           "cczCount": 22756199,
           "ccixCount": 0,
@@ -20240,7 +19873,7 @@
           "measurementCount": 375396
         },
         "observed": {
-          "numQubits": 2123,
+          "numQubits": 2379,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -20253,7 +19886,7 @@
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e3_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 6916244
+        "observed": 7672946
       },
       {
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e3_surface_code_runtime_positive",
@@ -20301,7 +19934,7 @@
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e4_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 2123,
+          "numQubits": 2379,
           "tCount": 0,
           "cczCount": 22756199,
           "ccixCount": 0,
@@ -20310,7 +19943,7 @@
           "measurementCount": 375396
         },
         "observed": {
-          "numQubits": 2123,
+          "numQubits": 2379,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -20323,7 +19956,7 @@
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e4_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 1589204
+        "observed": 1764626
       },
       {
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e4_surface_code_runtime_positive",
@@ -20371,7 +20004,7 @@
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e4_floquet_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 2123,
+          "numQubits": 2379,
           "tCount": 0,
           "cczCount": 22756199,
           "ccixCount": 0,
@@ -20380,7 +20013,7 @@
           "measurementCount": 375396
         },
         "observed": {
-          "numQubits": 2123,
+          "numQubits": 2379,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -20393,7 +20026,7 @@
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e4_floquet_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 4435816
+        "observed": 4836484
       },
       {
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e4_floquet_code_runtime_positive",
@@ -20441,7 +20074,7 @@
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e6_floquet_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 2123,
+          "numQubits": 2379,
           "tCount": 0,
           "cczCount": 22756199,
           "ccixCount": 0,
@@ -20450,7 +20083,7 @@
           "measurementCount": 375396
         },
         "observed": {
-          "numQubits": 2123,
+          "numQubits": 2379,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -20463,7 +20096,7 @@
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e6_floquet_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 1105192
+        "observed": 1231828
       },
       {
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e6_floquet_code_runtime_positive",
@@ -20508,12 +20141,12 @@
         "pass": 1,
         "expected": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 851676,
+          "physical_qubits": 978800,
           "runtime": 144170628000
         },
         "observed": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 851676,
+          "physical_qubits": 978800,
           "runtime": 144170628000
         }
       },
@@ -20523,12 +20156,12 @@
         "expected": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 144170628000,
-          "physical_qubits": 851676
+          "physical_qubits": 978800
         },
         "observed": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 144170628000,
-          "physical_qubits": 851676
+          "physical_qubits": 978800
         }
       },
       {
@@ -20559,7 +20192,7 @@
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e3_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 1612,
+          "numQubits": 1868,
           "tCount": 0,
           "cczCount": 22756199,
           "ccixCount": 0,
@@ -20568,7 +20201,7 @@
           "measurementCount": 375396
         },
         "observed": {
-          "numQubits": 1612,
+          "numQubits": 1868,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -20581,7 +20214,7 @@
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e3_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 5115222
+        "observed": 5874840
       },
       {
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e3_surface_code_runtime_positive",
@@ -20629,7 +20262,7 @@
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e4_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 1612,
+          "numQubits": 1868,
           "tCount": 0,
           "cczCount": 22756199,
           "ccixCount": 0,
@@ -20638,7 +20271,7 @@
           "measurementCount": 375396
         },
         "observed": {
-          "numQubits": 1612,
+          "numQubits": 1868,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -20651,7 +20284,7 @@
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e4_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 1201182
+        "observed": 1377280
       },
       {
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e4_surface_code_runtime_positive",
@@ -20699,7 +20332,7 @@
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e3_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 1612,
+          "numQubits": 1868,
           "tCount": 0,
           "cczCount": 22756199,
           "ccixCount": 0,
@@ -20708,7 +20341,7 @@
           "measurementCount": 375396
         },
         "observed": {
-          "numQubits": 1612,
+          "numQubits": 1868,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -20721,7 +20354,7 @@
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e3_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 5401382
+        "observed": 6161000
       },
       {
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e3_surface_code_runtime_positive",
@@ -20769,7 +20402,7 @@
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e4_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 1612,
+          "numQubits": 1868,
           "tCount": 0,
           "cczCount": 22756199,
           "ccixCount": 0,
@@ -20778,7 +20411,7 @@
           "measurementCount": 375396
         },
         "observed": {
-          "numQubits": 1612,
+          "numQubits": 1868,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -20791,7 +20424,7 @@
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e4_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 1238022
+        "observed": 1414120
       },
       {
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e4_surface_code_runtime_positive",
@@ -20839,7 +20472,7 @@
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e4_floquet_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 1612,
+          "numQubits": 1868,
           "tCount": 0,
           "cczCount": 22756199,
           "ccixCount": 0,
@@ -20848,7 +20481,7 @@
           "measurementCount": 375396
         },
         "observed": {
-          "numQubits": 1612,
+          "numQubits": 1868,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -20861,7 +20494,7 @@
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e4_floquet_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 3633708
+        "observed": 4035920
       },
       {
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e4_floquet_code_runtime_positive",
@@ -20909,7 +20542,7 @@
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e6_floquet_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 1612,
+          "numQubits": 1868,
           "tCount": 0,
           "cczCount": 22756199,
           "ccixCount": 0,
@@ -20918,7 +20551,7 @@
           "measurementCount": 375396
         },
         "observed": {
-          "numQubits": 1612,
+          "numQubits": 1868,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -20931,7 +20564,7 @@
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e6_floquet_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 851676
+        "observed": 978800
       },
       {
         "name": "physical_estimator_folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e6_floquet_code_runtime_positive",
@@ -20976,12 +20609,12 @@
         "pass": 1,
         "expected": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 1092260,
+          "physical_qubits": 1219140,
           "runtime": 149903966100
         },
         "observed": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 1092260,
+          "physical_qubits": 1219140,
           "runtime": 149903966100
         }
       },
@@ -20991,12 +20624,12 @@
         "expected": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 149903966100,
-          "physical_qubits": 1092260
+          "physical_qubits": 1219140
         },
         "observed": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 149903966100,
-          "physical_qubits": 1092260
+          "physical_qubits": 1219140
         }
       },
       {
@@ -21027,7 +20660,7 @@
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e3_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 2097,
+          "numQubits": 2353,
           "tCount": 0,
           "cczCount": 22753831,
           "ccixCount": 0,
@@ -21036,7 +20669,7 @@
           "measurementCount": 374212
         },
         "observed": {
-          "numQubits": 2097,
+          "numQubits": 2353,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -21049,7 +20682,7 @@
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e3_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 6552810
+        "observed": 7310970
       },
       {
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e3_surface_code_runtime_positive",
@@ -21097,7 +20730,7 @@
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e4_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 2097,
+          "numQubits": 2353,
           "tCount": 0,
           "cczCount": 22753831,
           "ccixCount": 0,
@@ -21106,7 +20739,7 @@
           "measurementCount": 374212
         },
         "observed": {
-          "numQubits": 2097,
+          "numQubits": 2353,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -21119,7 +20752,7 @@
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e4_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 1534450
+        "observed": 1710210
       },
       {
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e4_surface_code_runtime_positive",
@@ -21167,7 +20800,7 @@
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e3_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 2097,
+          "numQubits": 2353,
           "tCount": 0,
           "cczCount": 22753831,
           "ccixCount": 0,
@@ -21176,7 +20809,7 @@
           "measurementCount": 374212
         },
         "observed": {
-          "numQubits": 2097,
+          "numQubits": 2353,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -21189,7 +20822,7 @@
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e3_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 6838970
+        "observed": 7597130
       },
       {
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e3_surface_code_runtime_positive",
@@ -21237,7 +20870,7 @@
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e4_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 2097,
+          "numQubits": 2353,
           "tCount": 0,
           "cczCount": 22753831,
           "ccixCount": 0,
@@ -21246,7 +20879,7 @@
           "measurementCount": 374212
         },
         "observed": {
-          "numQubits": 2097,
+          "numQubits": 2353,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -21259,7 +20892,7 @@
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e4_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 1571290
+        "observed": 1747050
       },
       {
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e4_surface_code_runtime_positive",
@@ -21307,7 +20940,7 @@
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e4_floquet_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 2097,
+          "numQubits": 2353,
           "tCount": 0,
           "cczCount": 22753831,
           "ccixCount": 0,
@@ -21316,7 +20949,7 @@
           "measurementCount": 374212
         },
         "observed": {
-          "numQubits": 2097,
+          "numQubits": 2353,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -21329,7 +20962,7 @@
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e4_floquet_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 4394900
+        "observed": 4796340
       },
       {
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e4_floquet_code_runtime_positive",
@@ -21377,7 +21010,7 @@
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e6_floquet_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 2097,
+          "numQubits": 2353,
           "tCount": 0,
           "cczCount": 22753831,
           "ccixCount": 0,
@@ -21386,7 +21019,7 @@
           "measurementCount": 374212
         },
         "observed": {
-          "numQubits": 2097,
+          "numQubits": 2353,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -21399,7 +21032,7 @@
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e6_floquet_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 1092260
+        "observed": 1219140
       },
       {
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e6_floquet_code_runtime_positive",
@@ -21444,12 +21077,12 @@
         "pass": 1,
         "expected": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 838744,
+          "physical_qubits": 965868,
           "runtime": 144153223200
         },
         "observed": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 838744,
+          "physical_qubits": 965868,
           "runtime": 144153223200
         }
       },
@@ -21459,12 +21092,12 @@
         "expected": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 144153223200,
-          "physical_qubits": 838744
+          "physical_qubits": 965868
         },
         "observed": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 144153223200,
-          "physical_qubits": 838744
+          "physical_qubits": 965868
         }
       },
       {
@@ -21495,7 +21128,7 @@
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e3_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 1586,
+          "numQubits": 1842,
           "tCount": 0,
           "cczCount": 22753831,
           "ccixCount": 0,
@@ -21504,7 +21137,7 @@
           "measurementCount": 374212
         },
         "observed": {
-          "numQubits": 1586,
+          "numQubits": 1842,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -21517,7 +21150,7 @@
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e3_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 5037948
+        "observed": 5797566
       },
       {
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e3_surface_code_runtime_positive",
@@ -21565,7 +21198,7 @@
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e4_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 1586,
+          "numQubits": 1842,
           "tCount": 0,
           "cczCount": 22753831,
           "ccixCount": 0,
@@ -21574,7 +21207,7 @@
           "measurementCount": 374212
         },
         "observed": {
-          "numQubits": 1586,
+          "numQubits": 1842,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -21587,7 +21220,7 @@
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e4_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 1183268
+        "observed": 1359366
       },
       {
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e4_surface_code_runtime_positive",
@@ -21635,7 +21268,7 @@
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e3_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 1586,
+          "numQubits": 1842,
           "tCount": 0,
           "cczCount": 22753831,
           "ccixCount": 0,
@@ -21644,7 +21277,7 @@
           "measurementCount": 374212
         },
         "observed": {
-          "numQubits": 1586,
+          "numQubits": 1842,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -21657,7 +21290,7 @@
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e3_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 5324108
+        "observed": 6083726
       },
       {
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e3_surface_code_runtime_positive",
@@ -21705,7 +21338,7 @@
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e4_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 1586,
+          "numQubits": 1842,
           "tCount": 0,
           "cczCount": 22753831,
           "ccixCount": 0,
@@ -21714,7 +21347,7 @@
           "measurementCount": 374212
         },
         "observed": {
-          "numQubits": 1586,
+          "numQubits": 1842,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -21727,7 +21360,7 @@
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e4_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 1220108
+        "observed": 1396206
       },
       {
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e4_surface_code_runtime_positive",
@@ -21775,7 +21408,7 @@
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e4_floquet_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 1586,
+          "numQubits": 1842,
           "tCount": 0,
           "cczCount": 22753831,
           "ccixCount": 0,
@@ -21784,7 +21417,7 @@
           "measurementCount": 374212
         },
         "observed": {
-          "numQubits": 1586,
+          "numQubits": 1842,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -21797,7 +21430,7 @@
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e4_floquet_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 3592792
+        "observed": 3995004
       },
       {
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e4_floquet_code_runtime_positive",
@@ -21845,7 +21478,7 @@
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e6_floquet_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 1586,
+          "numQubits": 1842,
           "tCount": 0,
           "cczCount": 22753831,
           "ccixCount": 0,
@@ -21854,7 +21487,7 @@
           "measurementCount": 374212
         },
         "observed": {
-          "numQubits": 1586,
+          "numQubits": 1842,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -21867,7 +21500,7 @@
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e6_floquet_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 838744
+        "observed": 965868
       },
       {
         "name": "physical_estimator_folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e6_floquet_code_runtime_positive",
@@ -21912,12 +21545,12 @@
         "pass": 1,
         "expected": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 17165516,
+          "physical_qubits": 17290932,
           "runtime": 163108564500
         },
         "observed": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 17165516,
+          "physical_qubits": 17290932,
           "runtime": 163108564500
         }
       },
@@ -21927,12 +21560,12 @@
         "expected": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 163108564500,
-          "physical_qubits": 17165516
+          "physical_qubits": 17290932
         },
         "observed": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 163108564500,
-          "physical_qubits": 17165516
+          "physical_qubits": 17290932
         }
       },
       {
@@ -21963,7 +21596,7 @@
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e3_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 34835,
+          "numQubits": 35091,
           "tCount": 0,
           "cczCount": 24849959,
           "ccixCount": 0,
@@ -21972,7 +21605,7 @@
           "measurementCount": 373732
         },
         "observed": {
-          "numQubits": 34835,
+          "numQubits": 35091,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -21985,7 +21618,7 @@
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e3_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 118304038
+        "observed": 119168586
       },
       {
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e3_surface_code_runtime_positive",
@@ -22033,7 +21666,7 @@
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e4_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 34835,
+          "numQubits": 35091,
           "tCount": 0,
           "cczCount": 24849959,
           "ccixCount": 0,
@@ -22042,7 +21675,7 @@
           "measurementCount": 373732
         },
         "observed": {
-          "numQubits": 34835,
+          "numQubits": 35091,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -22055,7 +21688,7 @@
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e4_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 31652470
+        "observed": 31883770
       },
       {
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e4_surface_code_runtime_positive",
@@ -22103,7 +21736,7 @@
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e3_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 34835,
+          "numQubits": 35091,
           "tCount": 0,
           "cczCount": 24849959,
           "ccixCount": 0,
@@ -22112,7 +21745,7 @@
           "measurementCount": 373732
         },
         "observed": {
-          "numQubits": 34835,
+          "numQubits": 35091,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -22125,7 +21758,7 @@
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e3_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 118574518
+        "observed": 119439066
       },
       {
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e3_surface_code_runtime_positive",
@@ -22173,7 +21806,7 @@
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e4_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 34835,
+          "numQubits": 35091,
           "tCount": 0,
           "cczCount": 24849959,
           "ccixCount": 0,
@@ -22182,7 +21815,7 @@
           "measurementCount": 373732
         },
         "observed": {
-          "numQubits": 34835,
+          "numQubits": 35091,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -22195,7 +21828,7 @@
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e4_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 31681710
+        "observed": 31913010
       },
       {
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e4_surface_code_runtime_positive",
@@ -22243,7 +21876,7 @@
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e4_floquet_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 34835,
+          "numQubits": 35091,
           "tCount": 0,
           "cczCount": 24849959,
           "ccixCount": 0,
@@ -22252,7 +21885,7 @@
           "measurementCount": 373732
         },
         "observed": {
-          "numQubits": 34835,
+          "numQubits": 35091,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -22265,7 +21898,7 @@
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e4_floquet_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 71938988
+        "observed": 72459156
       },
       {
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e4_floquet_code_runtime_positive",
@@ -22313,7 +21946,7 @@
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e6_floquet_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 34835,
+          "numQubits": 35091,
           "tCount": 0,
           "cczCount": 24849959,
           "ccixCount": 0,
@@ -22322,7 +21955,7 @@
           "measurementCount": 373732
         },
         "observed": {
-          "numQubits": 34835,
+          "numQubits": 35091,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -22335,7 +21968,7 @@
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e6_floquet_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 17165516
+        "observed": 17290932
       },
       {
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e6_floquet_code_runtime_positive",
@@ -22380,12 +22013,12 @@
         "pass": 1,
         "expected": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 16915416,
+          "physical_qubits": 17040588,
           "runtime": 157357821600
         },
         "observed": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 16915416,
+          "physical_qubits": 17040588,
           "runtime": 157357821600
         }
       },
@@ -22395,12 +22028,12 @@
         "expected": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 157357821600,
-          "physical_qubits": 16915416
+          "physical_qubits": 17040588
         },
         "observed": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 157357821600,
-          "physical_qubits": 16915416
+          "physical_qubits": 17040588
         }
       },
       {
@@ -22431,7 +22064,7 @@
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e3_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 34324,
+          "numQubits": 34580,
           "tCount": 0,
           "cczCount": 24849959,
           "ccixCount": 0,
@@ -22440,7 +22073,7 @@
           "measurementCount": 373732
         },
         "observed": {
-          "numQubits": 34324,
+          "numQubits": 34580,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -22453,7 +22086,7 @@
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e3_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 116579988
+        "observed": 117442854
       },
       {
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e3_surface_code_runtime_positive",
@@ -22501,7 +22134,7 @@
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e4_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 34324,
+          "numQubits": 34580,
           "tCount": 0,
           "cczCount": 24849959,
           "ccixCount": 0,
@@ -22510,7 +22143,7 @@
           "measurementCount": 373732
         },
         "observed": {
-          "numQubits": 34324,
+          "numQubits": 34580,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -22523,7 +22156,7 @@
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e4_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 31191220
+        "observed": 31422070
       },
       {
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e4_surface_code_runtime_positive",
@@ -22571,7 +22204,7 @@
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e3_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 34324,
+          "numQubits": 34580,
           "tCount": 0,
           "cczCount": 24849959,
           "ccixCount": 0,
@@ -22580,7 +22213,7 @@
           "measurementCount": 373732
         },
         "observed": {
-          "numQubits": 34324,
+          "numQubits": 34580,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -22593,7 +22226,7 @@
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e3_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 116850468
+        "observed": 117713334
       },
       {
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e3_surface_code_runtime_positive",
@@ -22641,7 +22274,7 @@
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e4_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 34324,
+          "numQubits": 34580,
           "tCount": 0,
           "cczCount": 24849959,
           "ccixCount": 0,
@@ -22650,7 +22283,7 @@
           "measurementCount": 373732
         },
         "observed": {
-          "numQubits": 34324,
+          "numQubits": 34580,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -22663,7 +22296,7 @@
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e4_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 31226220
+        "observed": 31457070
       },
       {
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e4_surface_code_runtime_positive",
@@ -22711,7 +22344,7 @@
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e4_floquet_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 34324,
+          "numQubits": 34580,
           "tCount": 0,
           "cczCount": 24849959,
           "ccixCount": 0,
@@ -22720,7 +22353,7 @@
           "measurementCount": 373732
         },
         "observed": {
-          "numQubits": 34324,
+          "numQubits": 34580,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -22733,7 +22366,7 @@
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e4_floquet_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 70954488
+        "observed": 71473644
       },
       {
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e4_floquet_code_runtime_positive",
@@ -22781,7 +22414,7 @@
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e6_floquet_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 34324,
+          "numQubits": 34580,
           "tCount": 0,
           "cczCount": 24849959,
           "ccixCount": 0,
@@ -22790,7 +22423,7 @@
           "measurementCount": 373732
         },
         "observed": {
-          "numQubits": 34324,
+          "numQubits": 34580,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -22803,7 +22436,7 @@
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e6_floquet_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 16915416
+        "observed": 17040588
       },
       {
         "name": "physical_estimator_folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e6_floquet_code_runtime_positive",
@@ -22848,12 +22481,12 @@
         "pass": 1,
         "expected": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 17165516,
+          "physical_qubits": 17290932,
           "runtime": 156605687700
         },
         "observed": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 17165516,
+          "physical_qubits": 17290932,
           "runtime": 156605687700
         }
       },
@@ -22863,12 +22496,12 @@
         "expected": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 156605687700,
-          "physical_qubits": 17165516
+          "physical_qubits": 17290932
         },
         "observed": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 156605687700,
-          "physical_qubits": 17165516
+          "physical_qubits": 17290932
         }
       },
       {
@@ -22899,7 +22532,7 @@
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e3_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 34835,
+          "numQubits": 35091,
           "tCount": 0,
           "cczCount": 23813671,
           "ccixCount": 0,
@@ -22908,7 +22541,7 @@
           "measurementCount": 385988
         },
         "observed": {
-          "numQubits": 34835,
+          "numQubits": 35091,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -22921,7 +22554,7 @@
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e3_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 118304038
+        "observed": 119168586
       },
       {
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e3_surface_code_runtime_positive",
@@ -22969,7 +22602,7 @@
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e4_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 34835,
+          "numQubits": 35091,
           "tCount": 0,
           "cczCount": 23813671,
           "ccixCount": 0,
@@ -22978,7 +22611,7 @@
           "measurementCount": 385988
         },
         "observed": {
-          "numQubits": 34835,
+          "numQubits": 35091,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -22991,7 +22624,7 @@
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e4_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 31652470
+        "observed": 31883770
       },
       {
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_us_e4_surface_code_runtime_positive",
@@ -23039,7 +22672,7 @@
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e3_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 34835,
+          "numQubits": 35091,
           "tCount": 0,
           "cczCount": 23813671,
           "ccixCount": 0,
@@ -23048,7 +22681,7 @@
           "measurementCount": 385988
         },
         "observed": {
-          "numQubits": 34835,
+          "numQubits": 35091,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -23061,7 +22694,7 @@
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e3_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 118574518
+        "observed": 119439066
       },
       {
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e3_surface_code_runtime_positive",
@@ -23109,7 +22742,7 @@
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e4_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 34835,
+          "numQubits": 35091,
           "tCount": 0,
           "cczCount": 23813671,
           "ccixCount": 0,
@@ -23118,7 +22751,7 @@
           "measurementCount": 385988
         },
         "observed": {
-          "numQubits": 34835,
+          "numQubits": 35091,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -23131,7 +22764,7 @@
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e4_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 31681710
+        "observed": 31913010
       },
       {
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_gate_ns_e4_surface_code_runtime_positive",
@@ -23179,7 +22812,7 @@
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e4_floquet_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 34835,
+          "numQubits": 35091,
           "tCount": 0,
           "cczCount": 23813671,
           "ccixCount": 0,
@@ -23188,7 +22821,7 @@
           "measurementCount": 385988
         },
         "observed": {
-          "numQubits": 34835,
+          "numQubits": 35091,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -23201,7 +22834,7 @@
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e4_floquet_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 71938988
+        "observed": 72459156
       },
       {
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e4_floquet_code_runtime_positive",
@@ -23249,7 +22882,7 @@
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e6_floquet_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 34835,
+          "numQubits": 35091,
           "tCount": 0,
           "cczCount": 23813671,
           "ccixCount": 0,
@@ -23258,7 +22891,7 @@
           "measurementCount": 385988
         },
         "observed": {
-          "numQubits": 34835,
+          "numQubits": 35091,
           "tCount": 0,
           "rotationCount": 130816,
           "rotationDepth": 130816,
@@ -23271,7 +22904,7 @@
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e6_floquet_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 17165516
+        "observed": 17290932
       },
       {
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1_maj_ns_e6_floquet_code_runtime_positive",
@@ -23316,12 +22949,12 @@
         "pass": 1,
         "expected": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 16915416,
+          "physical_qubits": 17040588,
           "runtime": 150854944800
         },
         "observed": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 16915416,
+          "physical_qubits": 17040588,
           "runtime": 150854944800
         }
       },
@@ -23331,12 +22964,12 @@
         "expected": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 150854944800,
-          "physical_qubits": 16915416
+          "physical_qubits": 17040588
         },
         "observed": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 150854944800,
-          "physical_qubits": 16915416
+          "physical_qubits": 17040588
         }
       },
       {
@@ -23367,7 +23000,7 @@
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e3_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 34324,
+          "numQubits": 34580,
           "tCount": 0,
           "cczCount": 23813671,
           "ccixCount": 0,
@@ -23376,7 +23009,7 @@
           "measurementCount": 385988
         },
         "observed": {
-          "numQubits": 34324,
+          "numQubits": 34580,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -23389,7 +23022,7 @@
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e3_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 116579988
+        "observed": 117442854
       },
       {
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e3_surface_code_runtime_positive",
@@ -23437,7 +23070,7 @@
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e4_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 34324,
+          "numQubits": 34580,
           "tCount": 0,
           "cczCount": 23813671,
           "ccixCount": 0,
@@ -23446,7 +23079,7 @@
           "measurementCount": 385988
         },
         "observed": {
-          "numQubits": 34324,
+          "numQubits": 34580,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -23459,7 +23092,7 @@
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e4_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 31191220
+        "observed": 31422070
       },
       {
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_us_e4_surface_code_runtime_positive",
@@ -23507,7 +23140,7 @@
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e3_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 34324,
+          "numQubits": 34580,
           "tCount": 0,
           "cczCount": 23813671,
           "ccixCount": 0,
@@ -23516,7 +23149,7 @@
           "measurementCount": 385988
         },
         "observed": {
-          "numQubits": 34324,
+          "numQubits": 34580,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -23529,7 +23162,7 @@
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e3_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 116850468
+        "observed": 117713334
       },
       {
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e3_surface_code_runtime_positive",
@@ -23577,7 +23210,7 @@
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e4_surface_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 34324,
+          "numQubits": 34580,
           "tCount": 0,
           "cczCount": 23813671,
           "ccixCount": 0,
@@ -23586,7 +23219,7 @@
           "measurementCount": 385988
         },
         "observed": {
-          "numQubits": 34324,
+          "numQubits": 34580,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -23599,7 +23232,7 @@
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e4_surface_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 31226220
+        "observed": 31457070
       },
       {
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_gate_ns_e4_surface_code_runtime_positive",
@@ -23647,7 +23280,7 @@
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e4_floquet_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 34324,
+          "numQubits": 34580,
           "tCount": 0,
           "cczCount": 23813671,
           "ccixCount": 0,
@@ -23656,7 +23289,7 @@
           "measurementCount": 385988
         },
         "observed": {
-          "numQubits": 34324,
+          "numQubits": 34580,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -23669,7 +23302,7 @@
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e4_floquet_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 70954488
+        "observed": 71473644
       },
       {
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e4_floquet_code_runtime_positive",
@@ -23717,7 +23350,7 @@
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e6_floquet_code_reported_logical_counts_match_input",
         "pass": 1,
         "expected": {
-          "numQubits": 34324,
+          "numQubits": 34580,
           "tCount": 0,
           "cczCount": 23813671,
           "ccixCount": 0,
@@ -23726,7 +23359,7 @@
           "measurementCount": 385988
         },
         "observed": {
-          "numQubits": 34324,
+          "numQubits": 34580,
           "tCount": 0,
           "rotationCount": 511,
           "rotationDepth": 511,
@@ -23739,7 +23372,7 @@
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e6_floquet_code_physical_qubits_positive",
         "pass": 1,
         "expected": "> 0",
-        "observed": 16915416
+        "observed": 17040588
       },
       {
         "name": "physical_estimator_folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1_maj_ns_e6_floquet_code_runtime_positive",
@@ -23763,13 +23396,13 @@
         "name": "physical_estimator_target_gate_us_e3_surface_code_summary_best_space_matches_families",
         "pass": 1,
         "expected": {
-          "family": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "physical_qubits": 4953096,
+          "family": "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "physical_qubits": 5711256,
           "runtime": 2063252865600000
         },
         "observed": {
-          "family": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "physical_qubits": 4953096,
+          "family": "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "physical_qubits": 5711256,
           "runtime": 2063252865600000
         }
       },
@@ -23777,27 +23410,27 @@
         "name": "physical_estimator_target_gate_us_e3_surface_code_summary_best_runtime_matches_families",
         "pass": 1,
         "expected": {
-          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
           "runtime": 1112039150400000,
-          "physical_qubits": 5037948
+          "physical_qubits": 5797566
         },
         "observed": {
-          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
           "runtime": 1112039150400000,
-          "physical_qubits": 5037948
+          "physical_qubits": 5797566
         }
       },
       {
         "name": "physical_estimator_target_gate_us_e4_surface_code_summary_best_space_matches_families",
         "pass": 1,
         "expected": {
-          "family": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "physical_qubits": 1162096,
+          "family": "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "physical_qubits": 1337856,
           "runtime": 993418046400000
         },
         "observed": {
-          "family": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "physical_qubits": 1162096,
+          "family": "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "physical_qubits": 1337856,
           "runtime": 993418046400000
         }
       },
@@ -23805,27 +23438,27 @@
         "name": "physical_estimator_target_gate_us_e4_surface_code_summary_best_runtime_matches_families",
         "pass": 1,
         "expected": {
-          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
           "runtime": 535426257600000,
-          "physical_qubits": 1183268
+          "physical_qubits": 1359366
         },
         "observed": {
-          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
           "runtime": 535426257600000,
-          "physical_qubits": 1183268
+          "physical_qubits": 1359366
         }
       },
       {
         "name": "physical_estimator_target_gate_ns_e3_surface_code_summary_best_space_matches_families",
         "pass": 1,
         "expected": {
-          "family": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "physical_qubits": 5241216,
+          "family": "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "physical_qubits": 5999376,
           "runtime": 1375501910400
         },
         "observed": {
-          "family": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "physical_qubits": 5241216,
+          "family": "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "physical_qubits": 5999376,
           "runtime": 1375501910400
         }
       },
@@ -23833,27 +23466,27 @@
         "name": "physical_estimator_target_gate_ns_e3_surface_code_summary_best_runtime_matches_families",
         "pass": 1,
         "expected": {
-          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
           "runtime": 741359433600,
-          "physical_qubits": 5324108
+          "physical_qubits": 6083726
         },
         "observed": {
-          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
           "runtime": 741359433600,
-          "physical_qubits": 5324108
+          "physical_qubits": 6083726
         }
       },
       {
         "name": "physical_estimator_target_gate_ns_e4_surface_code_summary_best_space_matches_families",
         "pass": 1,
         "expected": {
-          "family": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "physical_qubits": 1197096,
+          "family": "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "physical_qubits": 1372856,
           "runtime": 662278697600
         },
         "observed": {
-          "family": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "physical_qubits": 1197096,
+          "family": "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "physical_qubits": 1372856,
           "runtime": 662278697600
         }
       },
@@ -23861,55 +23494,55 @@
         "name": "physical_estimator_target_gate_ns_e4_surface_code_summary_best_runtime_matches_families",
         "pass": 1,
         "expected": {
-          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
           "runtime": 356950838400,
-          "physical_qubits": 1220108
+          "physical_qubits": 1396206
         },
         "observed": {
-          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
           "runtime": 356950838400,
-          "physical_qubits": 1220108
+          "physical_qubits": 1396206
         }
       },
       {
         "name": "physical_estimator_target_maj_ns_e4_floquet_code_summary_best_space_matches_families",
         "pass": 1,
         "expected": {
-          "family": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "physical_qubits": 3460944,
-          "runtime": 496709023200
+          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "physical_qubits": 3995004,
+          "runtime": 267713128800
         },
         "observed": {
-          "family": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "physical_qubits": 3460944,
-          "runtime": 496709023200
+          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "physical_qubits": 3995004,
+          "runtime": 267713128800
         }
       },
       {
         "name": "physical_estimator_target_maj_ns_e4_floquet_code_summary_best_runtime_matches_families",
         "pass": 1,
         "expected": {
-          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
           "runtime": 267713128800,
-          "physical_qubits": 3592792
+          "physical_qubits": 3995004
         },
         "observed": {
-          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
           "runtime": 267713128800,
-          "physical_qubits": 3592792
+          "physical_qubits": 3995004
         }
       },
       {
         "name": "physical_estimator_target_maj_ns_e6_floquet_code_summary_best_space_matches_families",
         "pass": 1,
         "expected": {
-          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "physical_qubits": 838744,
+          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "physical_qubits": 965868,
           "runtime": 144153223200
         },
         "observed": {
-          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-          "physical_qubits": 838744,
+          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+          "physical_qubits": 965868,
           "runtime": 144153223200
         }
       },
@@ -23917,14 +23550,14 @@
         "name": "physical_estimator_target_maj_ns_e6_floquet_code_summary_best_runtime_matches_families",
         "pass": 1,
         "expected": {
-          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
           "runtime": 144153223200,
-          "physical_qubits": 838744
+          "physical_qubits": 965868
         },
         "observed": {
-          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+          "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
           "runtime": 144153223200,
-          "physical_qubits": 838744
+          "physical_qubits": 965868
         }
       }
     ]
@@ -23995,10 +23628,10 @@
       "pass": 30
     },
     "invariant_checks": {
-      "total": 1592,
-      "pass": 1592
+      "total": 1575,
+      "pass": 1575
     },
-    "total": 1622,
-    "pass": 1622
+    "total": 1605,
+    "pass": 1605
   }
 }

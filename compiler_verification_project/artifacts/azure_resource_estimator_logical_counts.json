@@ -316,7 +316,7 @@
     {
       "family": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1",
       "logicalCounts": {
-        "numQubits": 2080,
+        "numQubits": 2336,
         "tCount": 0,
         "cczCount": 37432935,
         "ccixCount": 0,
@@ -329,7 +329,7 @@
     {
       "family": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
       "logicalCounts": {
-        "numQubits": 1569,
+        "numQubits": 1825,
         "tCount": 0,
         "cczCount": 37432935,
         "ccixCount": 0,
@@ -342,7 +342,7 @@
     {
       "family": "folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1",
       "logicalCounts": {
-        "numQubits": 2451,
+        "numQubits": 2707,
         "tCount": 0,
         "cczCount": 22777319,
         "ccixCount": 0,
@@ -355,7 +355,7 @@
     {
       "family": "folded_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
       "logicalCounts": {
-        "numQubits": 1940,
+        "numQubits": 2196,
         "tCount": 0,
         "cczCount": 22777319,
         "ccixCount": 0,
@@ -368,7 +368,7 @@
     {
       "family": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1",
       "logicalCounts": {
-        "numQubits": 2123,
+        "numQubits": 2379,
         "tCount": 0,
         "cczCount": 22756199,
         "ccixCount": 0,
@@ -381,7 +381,7 @@
     {
       "family": "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
       "logicalCounts": {
-        "numQubits": 1612,
+        "numQubits": 1868,
         "tCount": 0,
         "cczCount": 22756199,
         "ccixCount": 0,
@@ -394,7 +394,7 @@
     {
       "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1",
       "logicalCounts": {
-        "numQubits": 2097,
+        "numQubits": 2353,
         "tCount": 0,
         "cczCount": 22753831,
         "ccixCount": 0,
@@ -407,7 +407,7 @@
     {
       "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
       "logicalCounts": {
-        "numQubits": 1586,
+        "numQubits": 1842,
         "tCount": 0,
         "cczCount": 22753831,
         "ccixCount": 0,
@@ -420,7 +420,7 @@
     {
       "family": "folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1",
       "logicalCounts": {
-        "numQubits": 34835,
+        "numQubits": 35091,
         "tCount": 0,
         "cczCount": 24849959,
         "ccixCount": 0,
@@ -433,7 +433,7 @@
     {
       "family": "folded_unary_qrom_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
       "logicalCounts": {
-        "numQubits": 34324,
+        "numQubits": 34580,
         "tCount": 0,
         "cczCount": 24849959,
         "ccixCount": 0,
@@ -446,7 +446,7 @@
     {
       "family": "folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1",
       "logicalCounts": {
-        "numQubits": 34835,
+        "numQubits": 35091,
         "tCount": 0,
         "cczCount": 23813671,
         "ccixCount": 0,
@@ -459,7 +459,7 @@
     {
       "family": "folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
       "logicalCounts": {
-        "numQubits": 34324,
+        "numQubits": 34580,
         "tCount": 0,
         "cczCount": 23813671,
         "ccixCount": 0,

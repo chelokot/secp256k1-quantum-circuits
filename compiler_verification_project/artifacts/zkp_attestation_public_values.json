@@ -1,13 +1,13 @@
 {
   "schema": "compiler-project-zkp-attestation-public-v2",
   "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
-  "selected_family_name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
-  "claim_sha256": "05fafcddcc1b1e8d3006bbdfe151b716ace2fd9cd764c7d723a00014eb8072d1",
-  "leaf_sha256": "928c25056eb8127cf1bb13aea5853436c38be5b27cbf19bf0bda12b16abcefc0",
-  "family_sha256": "eb7beb07af4fd78bad7ac06b94841cab43fe715410fe23502d159c5af7288e7a",
-  "case_corpus_sha256": "4cf15fe92491624e13bafc62e91d37b1872607fc5d90d0e1c6bd358083b4d201",
+  "selected_family_name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+  "claim_sha256": "358b7d3e46c1aa62040d76f20a2a4e8585204c6864fa906939f3c4df03b47921",
+  "leaf_sha256": "0680eabf66514b53284b6e76d007f7d097cd421c415c68fb69f6e017b827ff15",
+  "family_sha256": "124a62731f46c3642596541c9773a1c45d4fb12c5414fee79b586268ea4fd3a1",
+  "case_corpus_sha256": "06d46dcfbdc4025c5c8dc3e7f4179747eca60854f3232f5161bac7b5a0bb1a60",
   "expected_full_oracle_non_clifford": 22753831,
-  "expected_total_logical_qubits": 1586,
+  "expected_total_logical_qubits": 1842,
   "case_count": 8,
   "passed_case_count": 8
 }
