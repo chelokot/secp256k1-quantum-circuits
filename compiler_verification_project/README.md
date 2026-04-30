@@ -105,9 +105,6 @@ Its defining exact features are:
 
 - exact slot allocation cuts the checked lookup-fed leaf from **8 tracked
   arithmetic registers** to a **7-slot physical arithmetic peak**;
-- the interface-borrowed contract remains executable and checked, but its
-  borrowed `lookup_x` field lane is counted conservatively, so it is not used
-  to lower the public headline below the lookup-fed 7-slot result;
 - explicit arithmetic lowerings reconstruct the leaf-side non-Clifford totals
   from generated primitive-operation inventories instead of from naked opcode formulas;
 - explicit lookup lowerings reconstruct each lookup-family count from generated

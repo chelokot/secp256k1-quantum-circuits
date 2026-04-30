@@ -24,8 +24,6 @@ from common import (  # noqa: E402
     sha256_path,
 )
 from lookup_fed_leaf import (  # noqa: E402
-    build_interface_borrowed_leaf,
-    build_interface_borrowed_leaf_equivalence,
     build_lookup_fed_leaf,
     build_lookup_fed_leaf_equivalence,
 )
@@ -395,7 +393,6 @@ def build_subcircuit_equivalence_artifact(
         'source_artifacts': {
             'leaf': selected_leaf_source,
             'lookup_fed_leaf_equivalence': 'compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json',
-            'interface_borrowed_leaf_equivalence': 'compiler_verification_project/artifacts/interface_borrowed_leaf_equivalence.json',
             'cleanup_summary': 'artifacts/verification/extended/coherent_cleanup_summary.json',
             'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
             'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
@@ -406,7 +403,6 @@ def build_subcircuit_equivalence_artifact(
         'arithmetic_opcode_equivalence': arithmetic_trace,
         'leaf_interface_equivalence': {
             'lookup_fed_leaf': build_lookup_fed_leaf_equivalence(),
-            'interface_borrowed_leaf': build_interface_borrowed_leaf_equivalence(),
         },
         'lookup_family_equivalence': _lookup_family_equivalence(lookup_lowerings),
         'cleanup_window_equivalence': _cleanup_window_equivalence(

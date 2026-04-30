@@ -31,13 +31,11 @@ def test_subcircuit_equivalence_arithmetic_trace_passes() -> None:
 
 def test_subcircuit_equivalence_leaf_interfaces_cover_edge_cases() -> None:
     equivalence = _load_equivalence()
-    interfaces = equivalence['leaf_interface_equivalence']
-    for name in ('lookup_fed_leaf', 'interface_borrowed_leaf'):
-        summary = interfaces[name]['summary']
-        assert summary['pass'] == summary['total'], name
-        for category in ('random', 'doubling', 'inverse', 'accumulator_infinity', 'lookup_infinity'):
-            assert summary['categories'][category]['total'] > 0, (name, category)
-            assert summary['categories'][category]['pass'] == summary['categories'][category]['total'], (name, category)
+    summary = equivalence['leaf_interface_equivalence']['lookup_fed_leaf']['summary']
+    assert summary['pass'] == summary['total'], 'lookup_fed_leaf'
+    for category in ('random', 'doubling', 'inverse', 'accumulator_infinity', 'lookup_infinity'):
+        assert summary['categories'][category]['total'] > 0, category
+        assert summary['categories'][category]['pass'] == summary['categories'][category]['total'], category
 
 
 def test_subcircuit_equivalence_reduced_width_witnesses_pass() -> None:

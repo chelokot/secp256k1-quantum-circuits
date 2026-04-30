@@ -68,8 +68,6 @@ LOOKUP_FED_LEAF_ORDER = (
 )
 LOOKUP_FED_ARITHMETIC_SLOTS = ['qx', 'qy', 'qz', 'lx', 'ly', 't0', 't1']
 LOOKUP_FED_CONTROL_SLOTS = ['f_lookup_inf']
-INTERFACE_BORROWED_ARITHMETIC_SLOTS = ['qx', 'qy', 'qz', 'lx', 'ly', 't1']
-INTERFACE_BORROWED_SCRATCH_SLOTS = ['lookup_x']
 
 
 def _base_leaf() -> Dict[str, Any]:
@@ -100,22 +98,6 @@ def _lookup_fed_instruction(old_pc: int, instruction: Dict[str, Any]) -> Dict[st
     return instruction
 
 
-def _replace_register(value: Any, old: str, new: str) -> Any:
-    if value == old:
-        return new
-    if isinstance(value, list):
-        return [new if item == old else item for item in value]
-    return value
-
-
-def _borrow_lookup_x_for_t0(instruction: Dict[str, Any]) -> Dict[str, Any]:
-    if instruction.get('dst') == 't0':
-        instruction['dst'] = 'lookup_x'
-    if 'src' in instruction:
-        instruction['src'] = _replace_register(instruction['src'], 't0', 'lookup_x')
-    return instruction
-
-
 def build_lookup_fed_leaf(leaf: Optional[Mapping[str, Any]] = None) -> Dict[str, Any]:
     base_leaf = json.loads(json.dumps(leaf if leaf is not None else _base_leaf()))
     inst_map = {int(instruction['pc']): dict(instruction) for instruction in base_leaf['instructions']}
@@ -137,25 +119,6 @@ def build_lookup_fed_leaf(leaf: Optional[Mapping[str, Any]] = None) -> Dict[str,
                 'The leaf body is reordered under exact dependency constraints so the persistent arithmetic register file drops to seven field slots while the no-op control path keeps a single live control bit.',
             ],
         }.items()
-    }
-
-
-def build_interface_borrowed_leaf(leaf: Optional[Mapping[str, Any]] = None) -> Dict[str, Any]:
-    borrowed = build_lookup_fed_leaf(leaf)
-    instructions = []
-    for instruction in borrowed['instructions']:
-        instructions.append(_borrow_lookup_x_for_t0(dict(instruction)))
-    return {
-        **borrowed,
-        'schema': 'compiler-project-interface-borrowed-leaf-v1',
-        'arithmetic_slots': list(INTERFACE_BORROWED_ARITHMETIC_SLOTS),
-        'borrowed_lookup_interface_slots': list(INTERFACE_BORROWED_SCRATCH_SLOTS),
-        'instructions': instructions,
-        'notes': [
-            'This compiler-project leaf keeps the lookup-fed point-add semantics and borrows lookup_x as a scratch field slot after its final coordinate read.',
-            'The borrowed lookup_x wire carries the two t0 live ranges, so the persistent arithmetic register file drops to six field slots without changing arithmetic or lookup non-Clifford counts.',
-            'The contract is valid only when the lookup interface keeps lookup_x available until the point-add leaf releases it; the semantic and ZKP attestations execute that exact register reuse.',
-        ],
     }
 
 
@@ -218,22 +181,10 @@ def build_lookup_fed_leaf_equivalence(case_count: int = 80) -> Dict[str, Any]:
     )
 
 
-def build_interface_borrowed_leaf_equivalence(case_count: int = 80) -> Dict[str, Any]:
-    return _build_leaf_equivalence(
-        candidate_leaf=build_interface_borrowed_leaf(_base_leaf()),
-        schema='compiler-project-interface-borrowed-leaf-equivalence-v1',
-        case_count=case_count,
-    )
-
-
 __all__ = [
     'LOOKUP_FED_ARITHMETIC_SLOTS',
     'LOOKUP_FED_CONTROL_SLOTS',
     'LOOKUP_FED_LEAF_ORDER',
-    'INTERFACE_BORROWED_ARITHMETIC_SLOTS',
-    'INTERFACE_BORROWED_SCRATCH_SLOTS',
-    'build_interface_borrowed_leaf',
-    'build_interface_borrowed_leaf_equivalence',
     'build_lookup_fed_leaf',
     'build_lookup_fed_leaf_equivalence',
 ]

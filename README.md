@@ -68,9 +68,7 @@ is:
 Those numbers are exact for the chosen compiler family, not a claim of global
 optimality. The family uses a fully bitwise banked unary QROM decode with
 measured uncompute, an exact semiclassical-QFT phase shell, and the executable
-lookup-fed point-add leaf. The stricter interface-borrowed variant remains in
-the checked internal frontier, but its borrowed `lookup_x` field lane is counted
-conservatively rather than treated as a free qubit reduction.
+lookup-fed point-add leaf.
 
 Against Google's published 2026 secp256k1 baseline, the central exact result is:
 

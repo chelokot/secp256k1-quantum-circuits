@@ -26,7 +26,7 @@ from common import (  # noqa: E402
     proj_to_affine,
     sha256_bytes,
 )
-from lookup_fed_leaf import build_interface_borrowed_leaf, build_lookup_fed_leaf  # noqa: E402
+from lookup_fed_leaf import build_lookup_fed_leaf  # noqa: E402
 from project import compiler_family_frontier, project_artifact_path, raw32_schedule  # noqa: E402
 from verifier import exec_netlist  # noqa: E402
 
@@ -147,8 +147,6 @@ def _family_proof_payload(family: Mapping[str, Any]) -> Dict[str, Any]:
 
 def _leaf_for_family(family: Mapping[str, Any]) -> Dict[str, Any]:
     slot_family = str(family['slot_allocation_family'])
-    if slot_family == 'interface_borrowed_lookup_x_v1':
-        return build_interface_borrowed_leaf()
     if slot_family == 'lookup_fed_leaf_v1':
         return build_lookup_fed_leaf()
     if slot_family == 'materialized_lookup_leaf_v1':
@@ -158,8 +156,6 @@ def _leaf_for_family(family: Mapping[str, Any]) -> Dict[str, Any]:
 
 def _leaf_commitment_metadata(family: Mapping[str, Any]) -> tuple[str, str]:
     slot_family = str(family['slot_allocation_family'])
-    if slot_family == 'interface_borrowed_lookup_x_v1':
-        return 'interface_borrowed_leaf', 'compiler_verification_project/artifacts/interface_borrowed_leaf.json'
     if slot_family == 'lookup_fed_leaf_v1':
         return 'lookup_fed_leaf', 'compiler_verification_project/artifacts/lookup_fed_leaf.json'
     if slot_family == 'materialized_lookup_leaf_v1':
