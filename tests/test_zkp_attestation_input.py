@@ -14,7 +14,7 @@ if str(ROOT_SRC) not in sys.path:
     sys.path.insert(0, str(ROOT_SRC))
 
 from common import SECP_P, add_affine, affine_to_proj, proj_to_affine  # noqa: E402
-from lookup_fed_leaf import build_interface_borrowed_leaf  # noqa: E402
+from lookup_fed_leaf import build_lookup_fed_leaf  # noqa: E402
 from verifier import exec_netlist  # noqa: E402
 from zkp_attestation import DIGEST_SCHEME, build_zkp_attestation_input, write_zkp_attestation_inputs  # noqa: E402
 
@@ -29,14 +29,14 @@ def test_zkp_attestation_input_reconstructs_public_claim() -> None:
     assert claim['expected_full_oracle_non_clifford'] == family['full_oracle_non_clifford']
     assert qubits['reconstructed_total'] == family['total_logical_qubits']
     assert claim['expected_total_logical_qubits'] == family['total_logical_qubits']
-    assert family['name'].endswith('__interface_borrowed_lookup_x_v1__semiclassical_qft_v1')
+    assert family['name'].endswith('__lookup_fed_leaf_v1__semiclassical_qft_v1')
     assert family['full_oracle_non_clifford'] == 22_753_831
-    assert family['total_logical_qubits'] == 1_586
+    assert family['total_logical_qubits'] == 1_842
 
 
 def test_zkp_attestation_cases_match_leaf_and_group_law() -> None:
     payload = build_zkp_attestation_input(case_count=8)
-    leaf = build_interface_borrowed_leaf()
+    leaf = build_lookup_fed_leaf()
     case_corpus = payload['prepared_case_corpus']
     for case in case_corpus['cases']:
         accumulator = None if case['accumulator'] is None else (

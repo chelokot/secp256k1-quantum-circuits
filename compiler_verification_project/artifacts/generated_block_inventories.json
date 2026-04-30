@@ -1145,6 +1145,7 @@
         "phase_shell_rotation_depth": 130816,
         "arithmetic_slot_count": 8,
         "control_slot_count": 2,
+        "borrowed_interface_qubits": 0,
         "lookup_workspace_qubits": 31,
         "live_phase_bits": 512,
         "total_logical_qubits": 2593
@@ -1870,6 +1871,7 @@
         "phase_shell_rotation_depth": 511,
         "arithmetic_slot_count": 8,
         "control_slot_count": 2,
+        "borrowed_interface_qubits": 0,
         "lookup_workspace_qubits": 31,
         "live_phase_bits": 1,
         "total_logical_qubits": 2082
@@ -2763,6 +2765,7 @@
         "phase_shell_rotation_depth": 130816,
         "arithmetic_slot_count": 8,
         "control_slot_count": 2,
+        "borrowed_interface_qubits": 0,
         "lookup_workspace_qubits": 402,
         "live_phase_bits": 512,
         "total_logical_qubits": 2964
@@ -3656,6 +3659,7 @@
         "phase_shell_rotation_depth": 511,
         "arithmetic_slot_count": 8,
         "control_slot_count": 2,
+        "borrowed_interface_qubits": 0,
         "lookup_workspace_qubits": 402,
         "live_phase_bits": 1,
         "total_logical_qubits": 2453
@@ -4773,6 +4777,7 @@
         "phase_shell_rotation_depth": 130816,
         "arithmetic_slot_count": 8,
         "control_slot_count": 2,
+        "borrowed_interface_qubits": 0,
         "lookup_workspace_qubits": 74,
         "live_phase_bits": 512,
         "total_logical_qubits": 2636
@@ -5890,6 +5895,7 @@
         "phase_shell_rotation_depth": 511,
         "arithmetic_slot_count": 8,
         "control_slot_count": 2,
+        "borrowed_interface_qubits": 0,
         "lookup_workspace_qubits": 74,
         "live_phase_bits": 1,
         "total_logical_qubits": 2125
@@ -8239,6 +8245,7 @@
         "phase_shell_rotation_depth": 130816,
         "arithmetic_slot_count": 8,
         "control_slot_count": 2,
+        "borrowed_interface_qubits": 0,
         "lookup_workspace_qubits": 48,
         "live_phase_bits": 512,
         "total_logical_qubits": 2610
@@ -10588,6 +10595,7 @@
         "phase_shell_rotation_depth": 511,
         "arithmetic_slot_count": 8,
         "control_slot_count": 2,
+        "borrowed_interface_qubits": 0,
         "lookup_workspace_qubits": 48,
         "live_phase_bits": 1,
         "total_logical_qubits": 2099
@@ -11369,6 +11377,7 @@
         "phase_shell_rotation_depth": 130816,
         "arithmetic_slot_count": 8,
         "control_slot_count": 2,
+        "borrowed_interface_qubits": 0,
         "lookup_workspace_qubits": 32786,
         "live_phase_bits": 512,
         "total_logical_qubits": 35348
@@ -12150,6 +12159,7 @@
         "phase_shell_rotation_depth": 511,
         "arithmetic_slot_count": 8,
         "control_slot_count": 2,
+        "borrowed_interface_qubits": 0,
         "lookup_workspace_qubits": 32786,
         "live_phase_bits": 1,
         "total_logical_qubits": 34837
@@ -12987,6 +12997,7 @@
         "phase_shell_rotation_depth": 130816,
         "arithmetic_slot_count": 8,
         "control_slot_count": 2,
+        "borrowed_interface_qubits": 0,
         "lookup_workspace_qubits": 32786,
         "live_phase_bits": 512,
         "total_logical_qubits": 35348
@@ -13824,6 +13835,7 @@
         "phase_shell_rotation_depth": 511,
         "arithmetic_slot_count": 8,
         "control_slot_count": 2,
+        "borrowed_interface_qubits": 0,
         "lookup_workspace_qubits": 32786,
         "live_phase_bits": 1,
         "total_logical_qubits": 34837
@@ -14549,6 +14561,7 @@
         "phase_shell_rotation_depth": 130816,
         "arithmetic_slot_count": 7,
         "control_slot_count": 1,
+        "borrowed_interface_qubits": 0,
         "lookup_workspace_qubits": 31,
         "live_phase_bits": 512,
         "total_logical_qubits": 2336
@@ -15274,6 +15287,7 @@
         "phase_shell_rotation_depth": 511,
         "arithmetic_slot_count": 7,
         "control_slot_count": 1,
+        "borrowed_interface_qubits": 0,
         "lookup_workspace_qubits": 31,
         "live_phase_bits": 1,
         "total_logical_qubits": 1825
@@ -16167,6 +16181,7 @@
         "phase_shell_rotation_depth": 130816,
         "arithmetic_slot_count": 7,
         "control_slot_count": 1,
+        "borrowed_interface_qubits": 0,
         "lookup_workspace_qubits": 402,
         "live_phase_bits": 512,
         "total_logical_qubits": 2707
@@ -17060,6 +17075,7 @@
         "phase_shell_rotation_depth": 511,
         "arithmetic_slot_count": 7,
         "control_slot_count": 1,
+        "borrowed_interface_qubits": 0,
         "lookup_workspace_qubits": 402,
         "live_phase_bits": 1,
         "total_logical_qubits": 2196
@@ -18177,6 +18193,7 @@
         "phase_shell_rotation_depth": 130816,
         "arithmetic_slot_count": 7,
         "control_slot_count": 1,
+        "borrowed_interface_qubits": 0,
         "lookup_workspace_qubits": 74,
         "live_phase_bits": 512,
         "total_logical_qubits": 2379
@@ -19294,6 +19311,7 @@
         "phase_shell_rotation_depth": 511,
         "arithmetic_slot_count": 7,
         "control_slot_count": 1,
+        "borrowed_interface_qubits": 0,
         "lookup_workspace_qubits": 74,
         "live_phase_bits": 1,
         "total_logical_qubits": 1868
@@ -21643,6 +21661,7 @@
         "phase_shell_rotation_depth": 130816,
         "arithmetic_slot_count": 7,
         "control_slot_count": 1,
+        "borrowed_interface_qubits": 0,
         "lookup_workspace_qubits": 48,
         "live_phase_bits": 512,
         "total_logical_qubits": 2353
@@ -23992,6 +24011,7 @@
         "phase_shell_rotation_depth": 511,
         "arithmetic_slot_count": 7,
         "control_slot_count": 1,
+        "borrowed_interface_qubits": 0,
         "lookup_workspace_qubits": 48,
         "live_phase_bits": 1,
         "total_logical_qubits": 1842
@@ -24773,6 +24793,7 @@
         "phase_shell_rotation_depth": 130816,
         "arithmetic_slot_count": 7,
         "control_slot_count": 1,
+        "borrowed_interface_qubits": 0,
         "lookup_workspace_qubits": 32786,
         "live_phase_bits": 512,
         "total_logical_qubits": 35091
@@ -25554,6 +25575,7 @@
         "phase_shell_rotation_depth": 511,
         "arithmetic_slot_count": 7,
         "control_slot_count": 1,
+        "borrowed_interface_qubits": 0,
         "lookup_workspace_qubits": 32786,
         "live_phase_bits": 1,
         "total_logical_qubits": 34580
@@ -26391,6 +26413,7 @@
         "phase_shell_rotation_depth": 130816,
         "arithmetic_slot_count": 7,
         "control_slot_count": 1,
+        "borrowed_interface_qubits": 0,
         "lookup_workspace_qubits": 32786,
         "live_phase_bits": 512,
         "total_logical_qubits": 35091
@@ -27228,6 +27251,7 @@
         "phase_shell_rotation_depth": 511,
         "arithmetic_slot_count": 7,
         "control_slot_count": 1,
+        "borrowed_interface_qubits": 0,
         "lookup_workspace_qubits": 32786,
         "live_phase_bits": 1,
         "total_logical_qubits": 34580
@@ -27861,6 +27885,17 @@
           }
         },
         {
+          "block_id": "borrowed_lookup_interface_field_lanes",
+          "summary": "Counted field-width lookup interface lanes borrowed by the selected leaf contract.",
+          "category": "live_qubits",
+          "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
+          "logical_qubits": 256,
+          "metadata": {
+            "borrowed_field_slot_count": 1,
+            "field_bits": 256
+          }
+        },
+        {
           "block_id": "lookup_workspace",
           "summary": "Peak explicit lookup workspace required by the named lowered lookup family.",
           "category": "live_qubits",
@@ -27953,9 +27988,10 @@
         "phase_shell_rotation_depth": 130816,
         "arithmetic_slot_count": 6,
         "control_slot_count": 1,
+        "borrowed_interface_qubits": 256,
         "lookup_workspace_qubits": 31,
         "live_phase_bits": 512,
-        "total_logical_qubits": 2080
+        "total_logical_qubits": 2336
       },
       "slot_allocation_family": "interface_borrowed_lookup_x_v1"
     },
@@ -28586,6 +28622,17 @@
           }
         },
         {
+          "block_id": "borrowed_lookup_interface_field_lanes",
+          "summary": "Counted field-width lookup interface lanes borrowed by the selected leaf contract.",
+          "category": "live_qubits",
+          "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
+          "logical_qubits": 256,
+          "metadata": {
+            "borrowed_field_slot_count": 1,
+            "field_bits": 256
+          }
+        },
+        {
           "block_id": "lookup_workspace",
           "summary": "Peak explicit lookup workspace required by the named lowered lookup family.",
           "category": "live_qubits",
@@ -28678,9 +28725,10 @@
         "phase_shell_rotation_depth": 511,
         "arithmetic_slot_count": 6,
         "control_slot_count": 1,
+        "borrowed_interface_qubits": 256,
         "lookup_workspace_qubits": 31,
         "live_phase_bits": 1,
-        "total_logical_qubits": 1569
+        "total_logical_qubits": 1825
       },
       "slot_allocation_family": "interface_borrowed_lookup_x_v1"
     },
@@ -29479,6 +29527,17 @@
           }
         },
         {
+          "block_id": "borrowed_lookup_interface_field_lanes",
+          "summary": "Counted field-width lookup interface lanes borrowed by the selected leaf contract.",
+          "category": "live_qubits",
+          "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
+          "logical_qubits": 256,
+          "metadata": {
+            "borrowed_field_slot_count": 1,
+            "field_bits": 256
+          }
+        },
+        {
           "block_id": "lookup_workspace",
           "summary": "Peak explicit lookup workspace required by the named lowered lookup family.",
           "category": "live_qubits",
@@ -29571,9 +29630,10 @@
         "phase_shell_rotation_depth": 130816,
         "arithmetic_slot_count": 6,
         "control_slot_count": 1,
+        "borrowed_interface_qubits": 256,
         "lookup_workspace_qubits": 402,
         "live_phase_bits": 512,
-        "total_logical_qubits": 2451
+        "total_logical_qubits": 2707
       },
       "slot_allocation_family": "interface_borrowed_lookup_x_v1"
     },
@@ -30372,6 +30432,17 @@
           }
         },
         {
+          "block_id": "borrowed_lookup_interface_field_lanes",
+          "summary": "Counted field-width lookup interface lanes borrowed by the selected leaf contract.",
+          "category": "live_qubits",
+          "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
+          "logical_qubits": 256,
+          "metadata": {
+            "borrowed_field_slot_count": 1,
+            "field_bits": 256
+          }
+        },
+        {
           "block_id": "lookup_workspace",
           "summary": "Peak explicit lookup workspace required by the named lowered lookup family.",
           "category": "live_qubits",
@@ -30464,9 +30535,10 @@
         "phase_shell_rotation_depth": 511,
         "arithmetic_slot_count": 6,
         "control_slot_count": 1,
+        "borrowed_interface_qubits": 256,
         "lookup_workspace_qubits": 402,
         "live_phase_bits": 1,
-        "total_logical_qubits": 1940
+        "total_logical_qubits": 2196
       },
       "slot_allocation_family": "interface_borrowed_lookup_x_v1"
     },
@@ -31489,6 +31561,17 @@
           }
         },
         {
+          "block_id": "borrowed_lookup_interface_field_lanes",
+          "summary": "Counted field-width lookup interface lanes borrowed by the selected leaf contract.",
+          "category": "live_qubits",
+          "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
+          "logical_qubits": 256,
+          "metadata": {
+            "borrowed_field_slot_count": 1,
+            "field_bits": 256
+          }
+        },
+        {
           "block_id": "lookup_workspace",
           "summary": "Peak explicit lookup workspace required by the named lowered lookup family.",
           "category": "live_qubits",
@@ -31581,9 +31664,10 @@
         "phase_shell_rotation_depth": 130816,
         "arithmetic_slot_count": 6,
         "control_slot_count": 1,
+        "borrowed_interface_qubits": 256,
         "lookup_workspace_qubits": 74,
         "live_phase_bits": 512,
-        "total_logical_qubits": 2123
+        "total_logical_qubits": 2379
       },
       "slot_allocation_family": "interface_borrowed_lookup_x_v1"
     },
@@ -32606,6 +32690,17 @@
           }
         },
         {
+          "block_id": "borrowed_lookup_interface_field_lanes",
+          "summary": "Counted field-width lookup interface lanes borrowed by the selected leaf contract.",
+          "category": "live_qubits",
+          "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
+          "logical_qubits": 256,
+          "metadata": {
+            "borrowed_field_slot_count": 1,
+            "field_bits": 256
+          }
+        },
+        {
           "block_id": "lookup_workspace",
           "summary": "Peak explicit lookup workspace required by the named lowered lookup family.",
           "category": "live_qubits",
@@ -32698,9 +32793,10 @@
         "phase_shell_rotation_depth": 511,
         "arithmetic_slot_count": 6,
         "control_slot_count": 1,
+        "borrowed_interface_qubits": 256,
         "lookup_workspace_qubits": 74,
         "live_phase_bits": 1,
-        "total_logical_qubits": 1612
+        "total_logical_qubits": 1868
       },
       "slot_allocation_family": "interface_borrowed_lookup_x_v1"
     },
@@ -34955,6 +35051,17 @@
           }
         },
         {
+          "block_id": "borrowed_lookup_interface_field_lanes",
+          "summary": "Counted field-width lookup interface lanes borrowed by the selected leaf contract.",
+          "category": "live_qubits",
+          "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
+          "logical_qubits": 256,
+          "metadata": {
+            "borrowed_field_slot_count": 1,
+            "field_bits": 256
+          }
+        },
+        {
           "block_id": "lookup_workspace",
           "summary": "Peak explicit lookup workspace required by the named lowered lookup family.",
           "category": "live_qubits",
@@ -35047,9 +35154,10 @@
         "phase_shell_rotation_depth": 130816,
         "arithmetic_slot_count": 6,
         "control_slot_count": 1,
+        "borrowed_interface_qubits": 256,
         "lookup_workspace_qubits": 48,
         "live_phase_bits": 512,
-        "total_logical_qubits": 2097
+        "total_logical_qubits": 2353
       },
       "slot_allocation_family": "interface_borrowed_lookup_x_v1"
     },
@@ -37304,6 +37412,17 @@
           }
         },
         {
+          "block_id": "borrowed_lookup_interface_field_lanes",
+          "summary": "Counted field-width lookup interface lanes borrowed by the selected leaf contract.",
+          "category": "live_qubits",
+          "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
+          "logical_qubits": 256,
+          "metadata": {
+            "borrowed_field_slot_count": 1,
+            "field_bits": 256
+          }
+        },
+        {
           "block_id": "lookup_workspace",
           "summary": "Peak explicit lookup workspace required by the named lowered lookup family.",
           "category": "live_qubits",
@@ -37396,9 +37515,10 @@
         "phase_shell_rotation_depth": 511,
         "arithmetic_slot_count": 6,
         "control_slot_count": 1,
+        "borrowed_interface_qubits": 256,
         "lookup_workspace_qubits": 48,
         "live_phase_bits": 1,
-        "total_logical_qubits": 1586
+        "total_logical_qubits": 1842
       },
       "slot_allocation_family": "interface_borrowed_lookup_x_v1"
     },
@@ -38085,6 +38205,17 @@
           }
         },
         {
+          "block_id": "borrowed_lookup_interface_field_lanes",
+          "summary": "Counted field-width lookup interface lanes borrowed by the selected leaf contract.",
+          "category": "live_qubits",
+          "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
+          "logical_qubits": 256,
+          "metadata": {
+            "borrowed_field_slot_count": 1,
+            "field_bits": 256
+          }
+        },
+        {
           "block_id": "lookup_workspace",
           "summary": "Peak explicit lookup workspace required by the named lowered lookup family.",
           "category": "live_qubits",
@@ -38177,9 +38308,10 @@
         "phase_shell_rotation_depth": 130816,
         "arithmetic_slot_count": 6,
         "control_slot_count": 1,
+        "borrowed_interface_qubits": 256,
         "lookup_workspace_qubits": 32786,
         "live_phase_bits": 512,
-        "total_logical_qubits": 34835
+        "total_logical_qubits": 35091
       },
       "slot_allocation_family": "interface_borrowed_lookup_x_v1"
     },
@@ -38866,6 +38998,17 @@
           }
         },
         {
+          "block_id": "borrowed_lookup_interface_field_lanes",
+          "summary": "Counted field-width lookup interface lanes borrowed by the selected leaf contract.",
+          "category": "live_qubits",
+          "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
+          "logical_qubits": 256,
+          "metadata": {
+            "borrowed_field_slot_count": 1,
+            "field_bits": 256
+          }
+        },
+        {
           "block_id": "lookup_workspace",
           "summary": "Peak explicit lookup workspace required by the named lowered lookup family.",
           "category": "live_qubits",
@@ -38958,9 +39101,10 @@
         "phase_shell_rotation_depth": 511,
         "arithmetic_slot_count": 6,
         "control_slot_count": 1,
+        "borrowed_interface_qubits": 256,
         "lookup_workspace_qubits": 32786,
         "live_phase_bits": 1,
-        "total_logical_qubits": 34324
+        "total_logical_qubits": 34580
       },
       "slot_allocation_family": "interface_borrowed_lookup_x_v1"
     },
@@ -39703,6 +39847,17 @@
           }
         },
         {
+          "block_id": "borrowed_lookup_interface_field_lanes",
+          "summary": "Counted field-width lookup interface lanes borrowed by the selected leaf contract.",
+          "category": "live_qubits",
+          "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
+          "logical_qubits": 256,
+          "metadata": {
+            "borrowed_field_slot_count": 1,
+            "field_bits": 256
+          }
+        },
+        {
           "block_id": "lookup_workspace",
           "summary": "Peak explicit lookup workspace required by the named lowered lookup family.",
           "category": "live_qubits",
@@ -39795,9 +39950,10 @@
         "phase_shell_rotation_depth": 130816,
         "arithmetic_slot_count": 6,
         "control_slot_count": 1,
+        "borrowed_interface_qubits": 256,
         "lookup_workspace_qubits": 32786,
         "live_phase_bits": 512,
-        "total_logical_qubits": 34835
+        "total_logical_qubits": 35091
       },
       "slot_allocation_family": "interface_borrowed_lookup_x_v1"
     },
@@ -40540,6 +40696,17 @@
           }
         },
         {
+          "block_id": "borrowed_lookup_interface_field_lanes",
+          "summary": "Counted field-width lookup interface lanes borrowed by the selected leaf contract.",
+          "category": "live_qubits",
+          "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
+          "logical_qubits": 256,
+          "metadata": {
+            "borrowed_field_slot_count": 1,
+            "field_bits": 256
+          }
+        },
+        {
           "block_id": "lookup_workspace",
           "summary": "Peak explicit lookup workspace required by the named lowered lookup family.",
           "category": "live_qubits",
@@ -40632,15 +40799,16 @@
         "phase_shell_rotation_depth": 511,
         "arithmetic_slot_count": 6,
         "control_slot_count": 1,
+        "borrowed_interface_qubits": 256,
         "lookup_workspace_qubits": 32786,
         "live_phase_bits": 1,
-        "total_logical_qubits": 34324
+        "total_logical_qubits": 34580
       },
       "slot_allocation_family": "interface_borrowed_lookup_x_v1"
     }
   ],
   "best_gate_family": {
-    "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+    "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
     "reconstruction": {
       "arithmetic_leaf_non_clifford": 733657,
       "direct_seed_non_clifford": 327,
@@ -40657,15 +40825,16 @@
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 511,
       "phase_shell_rotation_depth": 511,
-      "arithmetic_slot_count": 6,
+      "arithmetic_slot_count": 7,
       "control_slot_count": 1,
+      "borrowed_interface_qubits": 0,
       "lookup_workspace_qubits": 48,
       "live_phase_bits": 1,
-      "total_logical_qubits": 1586
+      "total_logical_qubits": 1842
     }
   },
   "best_qubit_family": {
-    "name": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+    "name": "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
     "reconstruction": {
       "arithmetic_leaf_non_clifford": 733657,
       "direct_seed_non_clifford": 459049,
@@ -40682,11 +40851,12 @@
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 511,
       "phase_shell_rotation_depth": 511,
-      "arithmetic_slot_count": 6,
+      "arithmetic_slot_count": 7,
       "control_slot_count": 1,
+      "borrowed_interface_qubits": 0,
       "lookup_workspace_qubits": 31,
       "live_phase_bits": 1,
-      "total_logical_qubits": 1569
+      "total_logical_qubits": 1825
     }
   },
   "notes": [

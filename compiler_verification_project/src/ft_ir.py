@@ -310,6 +310,7 @@ def _qubit_and_phase_branches(
 ) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]], List[str]]:
     arithmetic_slots = int(slot_allocation['allocator_summary']['exact_arithmetic_slot_count'])
     control_slots = int(slot_allocation['allocator_summary']['exact_control_slot_count'])
+    borrowed_field_slots = int(slot_allocation['allocator_summary'].get('exact_borrowed_field_slot_count', 0))
     slot_source_artifact = str(
         slot_allocation.get('source_artifact', 'compiler_verification_project/artifacts/exact_leaf_slot_allocation.json')
     )
@@ -347,6 +348,22 @@ def _qubit_and_phase_branches(
                 'source_artifact': slot_source_artifact,
                 'resource_profile': _qubit_leaf_profile(control_slots),
             },
+        ),
+        *(
+            [
+                _node(
+                    'live_qubit_contributors__borrowed_lookup_interface_field_lanes',
+                    'leaf',
+                    'live_qubits',
+                    'Counted field-width lookup interface lanes borrowed by the selected leaf contract.',
+                    {
+                        'source_artifact': slot_source_artifact,
+                        'resource_profile': _qubit_leaf_profile(borrowed_field_slots * int(field_bits)),
+                    },
+                )
+            ]
+            if borrowed_field_slots
+            else []
         ),
         _node(
             'live_qubit_contributors__lookup_workspace',
@@ -414,6 +431,19 @@ def _qubit_and_phase_branches(
         _edge('full_oracle', 'phase_shell_counts', 1, 'phase_count_bundle', 'Collect the additive phase-shell counters for the named compiler family.'),
         _edge('live_qubit_contributors', 'live_qubit_contributors__arithmetic_slots', 1, 'live_qubit_leaf', 'Include the arithmetic slot register file once.'),
         _edge('live_qubit_contributors', 'live_qubit_contributors__control_slots', 1, 'live_qubit_leaf', 'Include the control slot register file once.'),
+        *(
+            [
+                _edge(
+                    'live_qubit_contributors',
+                    'live_qubit_contributors__borrowed_lookup_interface_field_lanes',
+                    1,
+                    'live_qubit_leaf',
+                    'Include counted borrowed lookup interface field lanes once.',
+                )
+            ]
+            if borrowed_field_slots
+            else []
+        ),
         _edge('live_qubit_contributors', 'live_qubit_contributors__lookup_workspace', 1, 'live_qubit_leaf', 'Include the lookup workspace once.'),
         _edge('live_qubit_contributors', 'live_qubit_contributors__phase_shell_live_register', 1, 'live_qubit_leaf', 'Include the live phase-shell register once.'),
         _edge('phase_shell_counts', 'phase_shell_counts__hadamards', 1, 'phase_count_leaf', 'Emit the phase-shell Hadamard total once.'),

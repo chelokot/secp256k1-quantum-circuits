@@ -132,6 +132,7 @@ def _family_proof_payload(family: Mapping[str, Any]) -> Dict[str, Any]:
         'full_oracle_non_clifford': int(family['full_oracle_non_clifford']),
         'arithmetic_slot_count': int(family['arithmetic_slot_count']),
         'control_slot_count': int(family['control_slot_count']),
+        'borrowed_interface_qubits': int(family.get('borrowed_interface_qubits', 0)),
         'lookup_workspace_qubits': int(family['lookup_workspace_qubits']),
         'live_phase_bits': int(family['live_phase_bits']),
         'total_logical_qubits': int(family['total_logical_qubits']),
@@ -467,9 +468,11 @@ def _build_zkp_attestation_materials(
     lookup_component = int(family['per_leaf_lookup_non_clifford']) * leaf_call_count_total
     full_oracle_non_clifford = arithmetic_component + lookup_component + int(family['direct_seed_non_clifford'])
     arithmetic_qubits = int(family['arithmetic_slot_count']) * 256
+    borrowed_interface_qubits = int(family_payload.get('borrowed_interface_qubits', 0))
     total_logical_qubits = (
         arithmetic_qubits
         + int(family['control_slot_count'])
+        + borrowed_interface_qubits
         + int(family['lookup_workspace_qubits'])
         + int(family['live_phase_bits'])
     )
@@ -495,6 +498,7 @@ def _build_zkp_attestation_materials(
             'field_bits': 256,
             'arithmetic_slot_count': int(family_payload['arithmetic_slot_count']),
             'control_slot_count': int(family_payload['control_slot_count']),
+            'borrowed_interface_qubits': borrowed_interface_qubits,
             'lookup_workspace_qubits': int(family_payload['lookup_workspace_qubits']),
             'live_phase_bits': int(family_payload['live_phase_bits']),
             'arithmetic_component': arithmetic_qubits,
@@ -538,6 +542,7 @@ def _build_zkp_attestation_materials(
                 'full_oracle_non_clifford': int(family_payload['full_oracle_non_clifford']),
                 'arithmetic_slot_count': int(family_payload['arithmetic_slot_count']),
                 'control_slot_count': int(family_payload['control_slot_count']),
+                'borrowed_interface_qubits': borrowed_interface_qubits,
                 'lookup_workspace_qubits': int(family_payload['lookup_workspace_qubits']),
                 'live_phase_bits': int(family_payload['live_phase_bits']),
                 'total_logical_qubits': int(family_payload['total_logical_qubits']),

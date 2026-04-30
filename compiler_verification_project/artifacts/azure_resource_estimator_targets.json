@@ -54,7 +54,7 @@
       "folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__full_phase_register_v1",
       "folded_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1"
     ],
-    "logical_counts_sha256": "e40eb01aa9f17d06321571309e22b2001b2be166d9890fca6c6487691b76814a"
+    "logical_counts_sha256": "7ea69d8e5e777fc04b17102175e51c6fb7ed78ce799ce01c8cb05af342c1b51c"
   },
   "targets": [
     {

@@ -60,6 +60,7 @@ pub struct LogicalQubitFormula {
     pub field_bits: u32,
     pub arithmetic_slot_count: u32,
     pub control_slot_count: u32,
+    pub borrowed_interface_qubits: u32,
     pub lookup_workspace_qubits: u32,
     pub live_phase_bits: u32,
     pub arithmetic_component: u64,
@@ -312,6 +313,7 @@ pub struct FamilyDocument {
     pub full_oracle_non_clifford: u64,
     pub arithmetic_slot_count: u32,
     pub control_slot_count: u32,
+    pub borrowed_interface_qubits: u32,
     pub lookup_workspace_qubits: u32,
     pub live_phase_bits: u32,
     pub total_logical_qubits: u64,
@@ -503,6 +505,7 @@ pub struct PreparedFamilySummary {
     pub full_oracle_non_clifford: u64,
     pub arithmetic_slot_count: u32,
     pub control_slot_count: u32,
+    pub borrowed_interface_qubits: u32,
     pub lookup_workspace_qubits: u32,
     pub live_phase_bits: u32,
     pub total_logical_qubits: u64,
@@ -899,9 +902,10 @@ impl SemanticHash for NonCliffordFormula {
 
 impl SemanticHash for LogicalQubitFormula {
     fn semantic_hash(&self, hasher: &mut Sha256) {
-        semantic_hash_object_start(hasher, 7);
+        semantic_hash_object_start(hasher, 8);
         semantic_hash_field(hasher, "arithmetic_component", &self.arithmetic_component);
         semantic_hash_field(hasher, "arithmetic_slot_count", &self.arithmetic_slot_count);
+        semantic_hash_field(hasher, "borrowed_interface_qubits", &self.borrowed_interface_qubits);
         semantic_hash_field(hasher, "control_slot_count", &self.control_slot_count);
         semantic_hash_field(hasher, "field_bits", &self.field_bits);
         semantic_hash_field(hasher, "live_phase_bits", &self.live_phase_bits);
@@ -975,10 +979,11 @@ impl SemanticHash for LeafDocument {
 
 impl SemanticHash for FamilyDocument {
     fn semantic_hash(&self, hasher: &mut Sha256) {
-        semantic_hash_object_start(hasher, 22);
+        semantic_hash_object_start(hasher, 23);
         semantic_hash_field(hasher, "arithmetic_kernel_family", &self.arithmetic_kernel_family);
         semantic_hash_field(hasher, "arithmetic_leaf_non_clifford", &self.arithmetic_leaf_non_clifford);
         semantic_hash_field(hasher, "arithmetic_slot_count", &self.arithmetic_slot_count);
+        semantic_hash_field(hasher, "borrowed_interface_qubits", &self.borrowed_interface_qubits);
         semantic_hash_field(hasher, "control_slot_count", &self.control_slot_count);
         semantic_hash_field(hasher, "direct_seed_non_clifford", &self.direct_seed_non_clifford);
         semantic_hash_field(hasher, "full_oracle_non_clifford", &self.full_oracle_non_clifford);
@@ -1469,6 +1474,7 @@ pub fn run_attestation(input: &AttestationInput) -> PublicValues {
     assert_eq!(claim.logical_qubit_formula.field_bits, claim.field_bits);
     assert_eq!(claim.logical_qubit_formula.arithmetic_slot_count, family.arithmetic_slot_count);
     assert_eq!(claim.logical_qubit_formula.control_slot_count, family.control_slot_count);
+    assert_eq!(claim.logical_qubit_formula.borrowed_interface_qubits, family.borrowed_interface_qubits);
     assert_eq!(claim.logical_qubit_formula.lookup_workspace_qubits, family.lookup_workspace_qubits);
     assert_eq!(claim.logical_qubit_formula.live_phase_bits, family.live_phase_bits);
     assert_eq!(
@@ -1479,6 +1485,7 @@ pub fn run_attestation(input: &AttestationInput) -> PublicValues {
         claim.logical_qubit_formula.reconstructed_total,
         claim.logical_qubit_formula.arithmetic_component
             + family.control_slot_count as u64
+            + family.borrowed_interface_qubits as u64
             + family.lookup_workspace_qubits as u64
             + family.live_phase_bits as u64
     );
@@ -1555,6 +1562,7 @@ pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValue
     assert_eq!(claim.logical_qubit_formula.field_bits, claim.field_bits);
     assert_eq!(claim.logical_qubit_formula.arithmetic_slot_count, family.arithmetic_slot_count);
     assert_eq!(claim.logical_qubit_formula.control_slot_count, family.control_slot_count);
+    assert_eq!(claim.logical_qubit_formula.borrowed_interface_qubits, family.borrowed_interface_qubits);
     assert_eq!(claim.logical_qubit_formula.lookup_workspace_qubits, family.lookup_workspace_qubits);
     assert_eq!(claim.logical_qubit_formula.live_phase_bits, family.live_phase_bits);
     assert_eq!(
@@ -1565,6 +1573,7 @@ pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValue
         claim.logical_qubit_formula.reconstructed_total,
         claim.logical_qubit_formula.arithmetic_component
             + family.control_slot_count as u64
+            + family.borrowed_interface_qubits as u64
             + family.lookup_workspace_qubits as u64
             + family.live_phase_bits as u64
     );

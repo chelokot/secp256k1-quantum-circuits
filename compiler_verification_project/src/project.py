@@ -148,6 +148,7 @@ class CompilerFamilyResult:
     full_oracle_non_clifford: int
     arithmetic_slot_count: int
     control_slot_count: int
+    borrowed_interface_qubits: int
     lookup_workspace_qubits: int
     live_phase_bits: int
     total_logical_qubits: int
@@ -302,6 +303,7 @@ def _slot_allocation_for_leaf(
     control_slots: Sequence[str],
     source_artifact: str,
     notes: Sequence[str],
+    borrowed_field_slots: Sequence[str] = (),
 ) -> Dict[str, Any]:
     arithmetic_slot_set = set(arithmetic_slots)
     control_slot_set = set(control_slots)
@@ -417,6 +419,7 @@ def _slot_allocation_for_leaf(
         'source_artifact': source_artifact,
         'tracked_arithmetic_registers': sorted(arithmetic_slot_set),
         'tracked_control_registers': sorted(control_slot_set),
+        'borrowed_field_registers': sorted(borrowed_field_slots),
         'peak_arithmetic_slots': {
             'count': int(peak_arithmetic['arithmetic_slots_needed_during_write']),
             'pc': int(peak_arithmetic['pc']),
@@ -435,8 +438,10 @@ def _slot_allocation_for_leaf(
         'allocator_summary': {
             'exact_arithmetic_slot_count': int(next_arithmetic),
             'exact_control_slot_count': int(next_control),
+            'exact_borrowed_field_slot_count': len(borrowed_field_slots),
             'arithmetic_bits': int(next_arithmetic * FIELD_BITS),
             'control_bits': int(next_control),
+            'borrowed_field_bits': int(len(borrowed_field_slots) * FIELD_BITS),
         },
         'per_pc': per_pc,
         'versions': version_table,
@@ -483,9 +488,10 @@ def interface_borrowed_leaf_slot_allocation() -> Dict[str, Any]:
         source_artifact='compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json',
         notes=[
             'This artifact allocates the compiler-project interface-borrowed leaf contract, where lookup_x becomes scratch after its last coordinate read.',
-            'The borrowed lookup interface wire carries t0 values outside the persistent arithmetic register file; the same leaf is executed by semantic replay and ZKP attestation.',
-            f'The persistent arithmetic register file is {len(INTERFACE_BORROWED_ARITHMETIC_SLOTS)} field slots plus borrowed lookup scratch {INTERFACE_BORROWED_SCRATCH_SLOTS}.',
+            'The borrowed lookup interface wire carries t0 values outside the persistent arithmetic register file, so it is counted as an additional live field lane in the conservative headline qubit formula.',
+            f'The persistent arithmetic register file is {len(INTERFACE_BORROWED_ARITHMETIC_SLOTS)} field slots plus counted borrowed lookup scratch {INTERFACE_BORROWED_SCRATCH_SLOTS}.',
         ],
+        borrowed_field_slots=INTERFACE_BORROWED_SCRATCH_SLOTS,
     )
 
 
@@ -519,7 +525,7 @@ def slot_allocation_families() -> List[SlotAllocationFamily]:
             slot_allocation=interface_borrowed_leaf_slot_allocation(),
             notes=[
                 'This interface keeps the point-add boundary executable while reusing the lookup_x interface wire for the t0 live ranges.',
-                'The resource contract is valid only for lookup lowerings whose coordinate output wire remains available for leaf-local reuse after its final lookup-coordinate read.',
+                'The borrowed coordinate output is counted as a live field lane unless a future lookup lowering proves that the same lane is already included elsewhere in the resource model.',
             ],
         ),
     ]
@@ -913,6 +919,7 @@ def compiler_family_frontier() -> Dict[str, Any]:
                 full_oracle_non_clifford=total_nc,
                 arithmetic_slot_count=int(reconstruction['arithmetic_slot_count']),
                 control_slot_count=int(reconstruction['control_slot_count']),
+                borrowed_interface_qubits=int(reconstruction.get('borrowed_interface_qubits', 0)),
                 lookup_workspace_qubits=int(reconstruction['lookup_workspace_qubits']),
                 live_phase_bits=int(reconstruction['live_phase_bits']),
                 total_logical_qubits=total_qubits,
@@ -994,9 +1001,12 @@ def build_qubit_breakthrough_analysis(
     arithmetic_slot_count = int(best_qubit['arithmetic_slot_count'])
     control_slot_count = int(best_qubit['control_slot_count'])
     lookup_workspace_qubits = int(best_qubit['lookup_workspace_qubits'])
+    borrowed_interface_qubits = int(best_qubit.get('borrowed_interface_qubits', 0))
     live_phase_bits = int(best_qubit['live_phase_bits'])
     arithmetic_register_file_qubits = arithmetic_slot_count * FIELD_BITS
-    fixed_non_arithmetic_overhead_qubits = control_slot_count + lookup_workspace_qubits + live_phase_bits
+    fixed_non_arithmetic_overhead_qubits = (
+        control_slot_count + borrowed_interface_qubits + lookup_workspace_qubits + live_phase_bits
+    )
     total_logical_qubits = int(best_qubit['total_logical_qubits'])
     public_google_baseline = dict(effective_frontier['public_google_baseline'])
 

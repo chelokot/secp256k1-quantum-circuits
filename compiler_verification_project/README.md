@@ -82,14 +82,13 @@ What it does ship is:
 
 ## Current central exact result
 
-- **central exact family:** `22,753,831 non-Clifford`, `1,586 logical qubits`
+- **central exact family:** `22,753,831 non-Clifford`, `1,842 logical qubits`
 
 The central family uses a fully bitwise banked unary QROM decode with measured
-uncompute, an exact semiclassical-QFT phase shell, and an interface-borrowed
-leaf contract that reuses `lookup_x` as scratch after its final lookup-coordinate
-read. The resulting live-qubit formula is:
+uncompute, an exact semiclassical-QFT phase shell, and the executable
+lookup-fed point-add leaf. The resulting live-qubit formula is:
 
-`6 * 256 + 1 control + 48 lookup workspace + 1 phase = 1,586 logical qubits`
+`7 * 256 + 1 control + 48 lookup workspace + 1 phase = 1,842 logical qubits`
 
 The lower-space linear-scan family remains in the internal frontier table, but
 it is not the public headline because it is above the 24M non-Clifford target.
@@ -105,9 +104,9 @@ Its defining exact features are:
 
 - exact slot allocation cuts the checked lookup-fed leaf from **8 tracked
   arithmetic registers** to a **7-slot physical arithmetic peak**;
-- the interface-borrowed contract reuses the consumed `lookup_x` coordinate
-  wire as scratch, cutting the public headline family to a **6-slot persistent
-  arithmetic register file**;
+- the interface-borrowed contract remains executable and checked, but its
+  borrowed `lookup_x` field lane is counted conservatively, so it is not used
+  to lower the public headline below the lookup-fed 7-slot result;
 - explicit arithmetic lowerings reconstruct the leaf-side non-Clifford totals
   from generated primitive-operation inventories instead of from naked opcode formulas;
 - explicit lookup lowerings reconstruct each lookup-family count from generated
@@ -130,7 +129,7 @@ Its defining exact features are:
   phase-shell lowering blocks;
 - a semiclassical-QFT phase-shell family removes the fixed **512 live phase
   qubits** assumption; and
-- those ingredients place the central exact family at **1,586 logical qubits**
+- those ingredients place the central exact family at **1,842 logical qubits**
   while keeping **22,753,831 non-Clifford**.
 
 ## SP1 attestation layer

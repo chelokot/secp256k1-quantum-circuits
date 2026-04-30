@@ -1336,7 +1336,7 @@ def build_subcircuit_equivalence_checks(artifacts: Mapping[str, Any], repo_root:
     arithmetic_per_pc_failures = [row['pc'] for row in arithmetic['per_pc'] if row['pass'] != row['total']]
     arithmetic_per_opcode_failures = [row['opcode'] for row in arithmetic['per_opcode'] if row['pass'] != row['total']]
     expected_source_artifacts = {
-        'leaf': 'compiler_verification_project/artifacts/interface_borrowed_leaf.json',
+        'leaf': 'compiler_verification_project/artifacts/lookup_fed_leaf.json',
         'lookup_fed_leaf_equivalence': 'compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json',
         'interface_borrowed_leaf_equivalence': 'compiler_verification_project/artifacts/interface_borrowed_leaf_equivalence.json',
         'cleanup_summary': 'artifacts/verification/extended/coherent_cleanup_summary.json',
@@ -1492,6 +1492,7 @@ def build_frontier_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
                     'full_oracle_non_clifford': recount['full_oracle_non_clifford'],
                     'arithmetic_slot_count': inventory['arithmetic_slot_count'],
                     'control_slot_count': inventory['control_slot_count'],
+                    'borrowed_interface_qubits': inventory.get('borrowed_interface_qubits', 0),
                     'lookup_workspace_qubits': inventory['lookup_workspace_qubits'],
                     'live_phase_bits': inventory['live_phase_bits'],
                     'total_logical_qubits': recount['total_logical_qubits'],
