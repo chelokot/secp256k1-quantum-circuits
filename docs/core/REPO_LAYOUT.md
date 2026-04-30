@@ -31,8 +31,8 @@ Primary optimized release with:
 Separate exact-oracle layer with:
 
 - fully quantum raw-32 schedule artifacts
-- exact whole-oracle frontier for named compiler families
-- exact leaf slot allocation
+- exact whole-oracle frontier for the central compiler family
+- exact streamed lookup tail leaf slot allocation
 - explicit phase-shell families
 - exact-family physical-estimator targets and recorded estimator outputs
 - exact-family Cain transfer artifacts
@@ -48,6 +48,8 @@ Key files:
 - `compiler_verification_project/src/zkp_attestation.py`
 - `compiler_verification_project/artifacts/family_frontier.json`
 - `compiler_verification_project/artifacts/verification_summary.json`
+- `compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json`
+- `compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json`
 - `compiler_verification_project/artifacts/zkp_attestation_family.json`
 - `compiler_verification_project/artifacts/zkp_attestation_fixture_groth16.json`
 - `compiler_verification_project/artifacts/zkp_attestation_proof_groth16.bin`

@@ -55,8 +55,13 @@ def build_cain_integration_summary(repo_root: Path) -> Dict[str, Any]:
             },
         })
 
+    runtime_values = runtime_90m_values + runtime_70m_values
+    space_values = time_efficient_space_values + low_gate_space_values
+    publication_runtime_range = f'{min(runtime_values):.1f}-{max(runtime_values):.1f} days'
+    publication_space_range = f'{min(space_values) / 1000:.1f}k-{max(space_values) / 1000:.1f}k physical qubits'
+
     return {
-        'integration_name': 'cain_2026_neutral_atom_transfer_exact_families_v1',
+        'integration_name': 'cain_2026_neutral_atom_transfer_exact_family_v2',
         'warning': 'This file combines a secp256k1 exact compiler-family frontier with a P-256 physical architecture paper. Runtime and space remain approximate transfer studies.',
         'source_artifacts': {
             'exact_frontier': {'path': 'compiler_verification_project/artifacts/family_frontier.json'},
@@ -79,10 +84,10 @@ def build_cain_integration_summary(repo_root: Path) -> Dict[str, Any]:
         },
         'cases': cases,
         'publication_safe_summary': {
-            'single_sentence': "If the repository's exact compiler-family frontier is transferred into the neutral-atom architecture of Cain et al. under fixed cycle-time and parallelism assumptions, the checked exact families span roughly 2.6-5.3 days and about 41.9k-776.9k physical qubits under the stored same-density reference lines.",
+            'single_sentence': f"If the repository's central exact compiler family is transferred into the neutral-atom architecture of Cain et al. under fixed cycle-time and parallelism assumptions, the checked result maps to roughly {publication_runtime_range} and about {publication_space_range} under the stored reference-line transfers.",
             'do_not_say': [
                 'Do not say the paper is beaten on its own P-256 target without recompiling for P-256.',
-                'Do not say any single runtime or physical-qubit number is exact; the file intentionally reports an exact-family transfer range.',
+                'Do not say the transferred runtime or physical-qubit range is exact; it is still a cross-paper architecture transfer.',
                 'Do not say the transfer is theorem-proved end-to-end.',
             ],
         },

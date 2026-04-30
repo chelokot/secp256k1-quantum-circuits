@@ -17,32 +17,9 @@
   },
   "logical_counts_binding": {
     "family_names": [
-      "folded_linear_scan_tmpand_v1__materialized_lookup_leaf_v1__full_phase_register_v1",
-      "folded_linear_scan_tmpand_v1__materialized_lookup_leaf_v1__semiclassical_qft_v1",
-      "folded_banked_unary_qrom_measured_uncompute_v1__materialized_lookup_leaf_v1__full_phase_register_v1",
-      "folded_banked_unary_qrom_measured_uncompute_v1__materialized_lookup_leaf_v1__semiclassical_qft_v1",
-      "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__materialized_lookup_leaf_v1__full_phase_register_v1",
-      "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__materialized_lookup_leaf_v1__semiclassical_qft_v1",
-      "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__materialized_lookup_leaf_v1__full_phase_register_v1",
-      "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__materialized_lookup_leaf_v1__semiclassical_qft_v1",
-      "folded_unary_qrom_v1__materialized_lookup_leaf_v1__full_phase_register_v1",
-      "folded_unary_qrom_v1__materialized_lookup_leaf_v1__semiclassical_qft_v1",
-      "folded_unary_qrom_measured_uncompute_v1__materialized_lookup_leaf_v1__full_phase_register_v1",
-      "folded_unary_qrom_measured_uncompute_v1__materialized_lookup_leaf_v1__semiclassical_qft_v1",
-      "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__full_phase_register_v1",
-      "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
-      "folded_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__full_phase_register_v1",
-      "folded_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
-      "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__full_phase_register_v1",
-      "folded_hierarchical_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
-      "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__full_phase_register_v1",
-      "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
-      "folded_unary_qrom_v1__lookup_fed_leaf_v1__full_phase_register_v1",
-      "folded_unary_qrom_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
-      "folded_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__full_phase_register_v1",
-      "folded_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1"
+      "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1"
     ],
-    "logical_counts_sha256": "6814744f9d597779027393689518d0e2dcf5e7e05230d891378443e1f1df7677"
+    "logical_counts_sha256": "a4bf8f9a08b31c509227cc2470726f6c5b30e055481a85a1b5ac9f583700bdb3"
   },
   "targets": [
     {

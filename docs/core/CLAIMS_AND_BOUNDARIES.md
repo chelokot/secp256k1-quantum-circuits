@@ -84,13 +84,13 @@ subproject. In particular, it fixes:
 - generated folded lookup-family operation inventories,
 - generated arithmetic-kernel operation inventories,
 - exact leaf slot allocation, and
-- generated phase-shell operation inventories for the named full-register and semiclassical inverse-QFT shells,
+- generated phase-shell operation inventories for the selected semiclassical inverse-QFT shell,
 - compositional FT-style call graphs plus traversed leaf sigma for the named
   compiler families,
 - independent exact whole-oracle recount derived from that FT IR leaf sigma,
 - internal subcircuit-equivalence witnesses across traced ISA opcodes, lowered
-  lookup families, the coherent cleanup window, and generated whole-oracle
-  composition, and
+  lookup families, boundary no-op semantics, no-free-wire ownership, and
+  generated whole-oracle composition, and
 - compact phase-shell summaries derived from those exact lowerings, including a semiclassical-QFT shell.
 
 ### 5. Exact SP1 attestation at the compiler-family boundary
@@ -110,11 +110,11 @@ The repository also ships a checked SP1 attestation bundle:
 - `compiler_verification_project/artifacts/zkp_attestation_groth16_verifier/groth16_vk.bin`
 
 That bundle is exact at the same boundary as the selected compiler-family
-summary and lookup-fed point-add leaf. The guest:
+summary and streamed lookup tail point-add leaf. The guest:
 
 - re-hashes the public claim, leaf document, selected family summary, and
   deterministic case corpus,
-- replays the exact lookup-fed point-add leaf on every public case,
+- replays the exact streamed lookup tail point-add contract on every public case,
 - checks the affine group law for every case, and
 - reconstructs the claimed full-oracle non-Clifford and logical-qubit totals
   from the selected family summary before committing public values.
@@ -139,15 +139,16 @@ generated compiler-family lookup operation inventories below that contract, and
 proves the lookup semantics assumed at the ISA boundary. It still stops short
 of a bit-for-bit Clifford-complete qRAM/QROM netlist.
 
-### B. Primitive-gate cleanup
+### B. Boundary no-op and cleanup
 
-The shipped no-op control cleanup is exact at the ISA boundary: the same
-metadata bit that populates `f_lookup_inf` is applied again to uncompute that
-one-bit control after the neutral-entry select path. The repository audits that
-coherent flag-cleanup pair directly on deterministic secp256k1 cases.
+The central streamed lookup tail family handles the neutral lookup entry as a
+boundary no-op instead of a leaf-internal XYZ select window. The hot leaf still
+binds and traces the lookup-infinity predicate, and the public equivalence
+corpus covers random, doubling, inverse, accumulator-infinity, and
+lookup-infinity cases.
 
-The repository still does not lower that cleanup pair into a primitive-gate
-subcircuit.
+The repository still does not claim a primitive-gate proof below the named
+boundary no-op and arithmetic macro contracts.
 
 ### C. Fully flattened Shor gate list
 

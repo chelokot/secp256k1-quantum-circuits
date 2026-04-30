@@ -26,7 +26,7 @@ from common import (  # noqa: E402
     proj_to_affine,
     sha256_bytes,
 )
-from lookup_fed_leaf import build_lookup_fed_leaf  # noqa: E402
+from lookup_fed_leaf import build_streamed_lookup_tail_leaf, execute_leaf_contract  # noqa: E402
 from project import compiler_family_frontier, project_artifact_path, raw32_schedule  # noqa: E402
 from verifier import exec_netlist  # noqa: E402
 
@@ -147,19 +147,15 @@ def _family_proof_payload(family: Mapping[str, Any]) -> Dict[str, Any]:
 
 def _leaf_for_family(family: Mapping[str, Any]) -> Dict[str, Any]:
     slot_family = str(family['slot_allocation_family'])
-    if slot_family == 'lookup_fed_leaf_v1':
-        return build_lookup_fed_leaf()
-    if slot_family == 'materialized_lookup_leaf_v1':
-        return build_lookup_fed_leaf()
+    if slot_family == 'streamed_lookup_tail_leaf_v1':
+        return build_streamed_lookup_tail_leaf()
     raise KeyError(f'unsupported attested leaf slot family: {slot_family}')
 
 
 def _leaf_commitment_metadata(family: Mapping[str, Any]) -> tuple[str, str]:
     slot_family = str(family['slot_allocation_family'])
-    if slot_family == 'lookup_fed_leaf_v1':
-        return 'lookup_fed_leaf', 'compiler_verification_project/artifacts/lookup_fed_leaf.json'
-    if slot_family == 'materialized_lookup_leaf_v1':
-        return 'lookup_fed_leaf', 'compiler_verification_project/artifacts/lookup_fed_leaf.json'
+    if slot_family == 'streamed_lookup_tail_leaf_v1':
+        return 'streamed_lookup_tail_leaf', 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json'
     raise KeyError(f'unsupported attested leaf slot family: {slot_family}')
 
 
@@ -196,6 +192,13 @@ def _source_as_lookup(source: Any) -> tuple[str, str]:
     raise TypeError(f'expected lookup source, got {source!r}')
 
 
+def _source_as_streamed_tail(source: Any) -> Dict[str, str]:
+    expected = {'c', 'k', 'l', 'i', 'y', 'z'}
+    if isinstance(source, dict) and set(source) == expected and all(isinstance(value, str) for value in source.values()):
+        return {key: str(value) for key, value in source.items()}
+    raise TypeError(f'expected streamed tail source, got {source!r}')
+
+
 def _ensure_defined_register(
     register_ids: Dict[str, int],
     defined: set[str],
@@ -217,10 +220,30 @@ def _compile_leaf_for_proof(leaf: Mapping[str, Any]) -> Dict[str, Any]:
     defined = {'Q.X', 'Q.Y', 'Q.Z', 'k', 'lookup_x', 'lookup_y', 'lookup_meta'}
     compiled_instructions: List[Dict[str, Any]] = []
     for instruction in sorted(leaf['instructions'], key=lambda row: int(row['pc'])):
-        dst_name = str(instruction['dst'])
-        dst = register_ids.setdefault(dst_name, len(register_ids))
         op = str(instruction['op'])
         source = instruction.get('src')
+        if op == 'complete_a0_streamed_tail':
+            dst_names = instruction['dst']
+            if not isinstance(dst_names, list) or len(dst_names) != 3:
+                raise TypeError(f'expected three output registers for complete_a0_streamed_tail, got {dst_names!r}')
+            output_ids = [register_ids.setdefault(str(name), len(register_ids)) for name in dst_names]
+            tail_source = _source_as_streamed_tail(source)
+            compiled_instructions.append({
+                'kind': 'complete_a0_streamed_tail',
+                'out_x': output_ids[0],
+                'out_y': output_ids[1],
+                'out_z': output_ids[2],
+                'c': _ensure_defined_register(register_ids, defined, tail_source['c'], 'complete_a0_streamed_tail C'),
+                'k': _ensure_defined_register(register_ids, defined, tail_source['k'], 'complete_a0_streamed_tail K'),
+                'l': _ensure_defined_register(register_ids, defined, tail_source['l'], 'complete_a0_streamed_tail L'),
+                'i': _ensure_defined_register(register_ids, defined, tail_source['i'], 'complete_a0_streamed_tail I'),
+                'y': _ensure_defined_register(register_ids, defined, tail_source['y'], 'complete_a0_streamed_tail Y'),
+                'z': _ensure_defined_register(register_ids, defined, tail_source['z'], 'complete_a0_streamed_tail Z'),
+            })
+            defined.update(str(name) for name in dst_names)
+            continue
+        dst_name = str(instruction['dst'])
+        dst = register_ids.setdefault(dst_name, len(register_ids))
         if op == 'load_input':
             src_name = _source_as_register(source)
             compiled_instructions.append({
@@ -281,6 +304,13 @@ def _compile_leaf_for_proof(leaf: Mapping[str, Any]) -> Dict[str, Any]:
                 'left': _ensure_defined_register(register_ids, defined, left_name, 'field_mul lhs'),
                 'right': _ensure_defined_register(register_ids, defined, right_name, 'field_mul rhs'),
             })
+        elif op in {'field_mul_lookup_x', 'field_mul_lookup_y', 'field_mul_lookup_sum'}:
+            src_name = _source_as_register(source)
+            compiled_instructions.append({
+                'kind': op,
+                'dst': dst,
+                'src': _ensure_defined_register(register_ids, defined, src_name, f'{op} source'),
+            })
         elif op == 'field_add':
             left_name, right_name = _source_as_pair(source)
             compiled_instructions.append({
@@ -296,6 +326,22 @@ def _compile_leaf_for_proof(leaf: Mapping[str, Any]) -> Dict[str, Any]:
                 'dst': dst,
                 'left': _ensure_defined_register(register_ids, defined, left_name, 'field_sub lhs'),
                 'right': _ensure_defined_register(register_ids, defined, right_name, 'field_sub rhs'),
+            })
+        elif op == 'field_sub_sum':
+            minuend_name, subtrahend_a_name, subtrahend_b_name = source
+            compiled_instructions.append({
+                'kind': 'field_sub_sum',
+                'dst': dst,
+                'minuend': _ensure_defined_register(register_ids, defined, minuend_name, 'field_sub_sum minuend'),
+                'subtrahend_a': _ensure_defined_register(register_ids, defined, subtrahend_a_name, 'field_sub_sum subtrahend_a'),
+                'subtrahend_b': _ensure_defined_register(register_ids, defined, subtrahend_b_name, 'field_sub_sum subtrahend_b'),
+            })
+        elif op == 'field_triple':
+            src_name = _source_as_register(source)
+            compiled_instructions.append({
+                'kind': 'field_triple',
+                'dst': dst,
+                'src': _ensure_defined_register(register_ids, defined, src_name, 'field_triple source'),
             })
         elif op == 'mul_const':
             src_name = _source_as_register(source)
@@ -337,6 +383,7 @@ def _compile_leaf_for_proof(leaf: Mapping[str, Any]) -> Dict[str, Any]:
         'output_qx': register_ids['qx'],
         'output_qy': register_ids['qy'],
         'output_qz': register_ids['qz'],
+        'skip_on_lookup_infinity': leaf.get('lookup_infinity_policy') == 'boundary_noop',
         'instructions': compiled_instructions,
     }
 
@@ -388,8 +435,8 @@ def build_pointadd_case_corpus(
         accumulator = mul_fixed_window(accumulator_scalar, tables, SECP_P, SECP_B, width=8, order=SECP_N)
         lookup = mul_fixed_window(lookup_scalar, tables, SECP_P, SECP_B, width=8, order=SECP_N)
         observed = proj_to_affine(
-            exec_netlist(
-                list(leaf['instructions']),
+            execute_leaf_contract(
+                leaf,
                 SECP_P,
                 affine_to_proj(accumulator, SECP_P),
                 lookup,
@@ -416,7 +463,7 @@ def build_pointadd_case_corpus(
         'category_counts': category_counts,
         'cases': cases,
         'notes': [
-            'These point-add challenge cases are deterministic and public, derived from the lookup-fed leaf hash stream.',
+            'These point-add challenge cases are deterministic and public, derived from the streamed lookup tail leaf hash stream.',
             'The categories intentionally force neutral-entry, doubling, inverse, and ordinary mixed-add paths.',
         ],
     }
@@ -514,7 +561,7 @@ def _build_zkp_attestation_materials(
     prepared_case_corpus = _prepared_case_corpus(case_corpus)
     return {
         'input': {
-            'schema': 'compiler-project-zkp-attestation-input-v3',
+            'schema': 'compiler-project-zkp-attestation-input-v4',
             'document_digest_scheme': DIGEST_SCHEME,
             'selected_family_name': family_payload['name'],
             'claim_sha256': claim_blob['sha256'],

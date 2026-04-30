@@ -63,26 +63,26 @@ The root-level `compiler_verification_project/` is the repository's strongest
 exact layer below the ISA boundary. Its checked-in central whole-oracle result
 is:
 
-- **central exact family:** `22,753,831 non-Clifford`, `1,842 logical qubits`
+- **central exact family:** `22,722,211 non-Clifford`, `1,586 logical qubits`
 
 Those numbers are exact for the chosen compiler family, not a claim of global
 optimality. The family uses a fully bitwise banked unary QROM decode with
 measured uncompute, an exact semiclassical-QFT phase shell, and the executable
-lookup-fed point-add leaf.
+streamed lookup tail point-add leaf.
 
 Against Google's published 2026 secp256k1 baseline, the central exact result is:
 
-- **3.9554x** lower in non-Clifford cost than the public low-qubit line
-- **3.0764x** lower in non-Clifford cost than the public low-gate line
-- **642 qubits above** the public low-qubit line
-- **392 qubits above** the public low-gate line
+- **3.9609x** lower in non-Clifford cost than the public low-qubit line
+- **3.0807x** lower in non-Clifford cost than the public low-gate line
+- **386 qubits above** the public low-qubit line
+- **136 qubits above** the public low-gate line
 
 ### SP1 attestation layer
 
 The repository now also ships a Google-like attestation at the exact
 compiler-family boundary. The checked artifacts bind:
 
-- a hashed `lookup_fed_leaf.json` witness leaf
+- a hashed `streamed_lookup_tail_leaf.json` witness leaf
 - a hashed selected family summary in
   `compiler_verification_project/artifacts/zkp_attestation_family.json`
 - a hashed deterministic public point-add case corpus in
@@ -147,7 +147,7 @@ That contract is exact at the lookup-contract level and audited by:
 - explicit lookup-contract semantics, including the signed folded variant
 - retained-window scaffold metadata and deterministic scaffold replay
 - exact whole-oracle counts for named compiler families in `compiler_verification_project/`
-- exact leaf slot allocation for the checked-in mixed-add leaf
+- exact leaf slot allocation for the streamed lookup tail leaf
 - exact phase-shell family accounting for full-register vs semiclassical-QFT shells
 - exact SP1 attestation of one selected compiler-family claim against a public deterministic point-add corpus
 

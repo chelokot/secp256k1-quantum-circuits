@@ -58,7 +58,7 @@ What it does ship is:
 - `ft_ir_compositions.json` — compositional FT-style call graphs and leaf sigma reconstructions for every named compiler family
 - `whole_oracle_recount.json` — independent exact whole-oracle recount derived from the FT IR leaf sigma
 - `qubit_breakthrough_analysis.json` — exact qubit bottleneck decomposition, Google break-even thresholds, and counterfactual slot/field-width sweeps around the internal lowest-qubit family
-- `subcircuit_equivalence.json` — cross-layer equivalence witnesses for traced ISA opcodes, lowered lookup families, the coherent cleanup window, and generated whole-oracle composition
+- `subcircuit_equivalence.json` — cross-layer equivalence witnesses for traced ISA opcodes, lowered lookup families, boundary no-op semantics, resource ownership, and generated whole-oracle composition
 - `primitive_multiplier_library.json` — auditable manifest for all 341 multiplier instances in the raw-32 oracle
 - `phase_shell_families.json` — compact summary of the exact phase-shell lowering families
 - `table_manifests.json` — exact folded-table dimensions and canonical window bases
@@ -83,18 +83,18 @@ What it does ship is:
 
 ## Current central exact result
 
-- **central exact family:** `22,753,831 non-Clifford`, `1,842 logical qubits`
+- **central exact family:** `22,722,211 non-Clifford`, `1,586 logical qubits`
 
 The central family uses a fully bitwise banked unary QROM decode with measured
-uncompute, an exact semiclassical-QFT phase shell, and the executable
-lookup-fed point-add leaf. The resulting live-qubit formula is:
+uncompute, an exact semiclassical-QFT phase shell, and the executable streamed
+lookup tail point-add leaf. The resulting live-qubit formula is:
 
-`7 * 256 + 1 control + 48 lookup workspace + 1 phase = 1,842 logical qubits`
+`6 * 256 + 1 control + 48 lookup workspace + 1 phase = 1,586 logical qubits`
 
-The lower-space linear-scan family remains in the internal frontier table, but
-it is not the public headline because it is above the 24M non-Clifford target.
-`qubit_breakthrough_analysis.json` isolates the remaining break-even thresholds
-against the cited Google qubit lines.
+The compiler frontier intentionally publishes one repository result here rather
+than separate low-qubit and low-gate branches. Historical family lowerings
+remain auditable in the lowering artifacts, but the checked frontier, proof
+input, public values, and docs are centered on this one executable contract.
 
 ## Interpreting the results
 
@@ -103,8 +103,8 @@ not as a claim of hidden-Google reconstruction or global optimality.
 
 Its defining exact features are:
 
-- exact slot allocation cuts the checked lookup-fed leaf from **8 tracked
-  arithmetic registers** to a **7-slot physical arithmetic peak**;
+- exact slot allocation cuts the checked streamed lookup tail leaf to a
+  **6-slot physical arithmetic peak**;
 - explicit arithmetic lowerings reconstruct the leaf-side non-Clifford totals
   from generated primitive-operation inventories instead of from naked opcode formulas;
 - explicit lookup lowerings reconstruct each lookup-family count from generated
@@ -117,7 +117,7 @@ Its defining exact features are:
 - whole-oracle recount reconstructs the frontier totals from the FT IR leaf
   sigma rather than directly from the generated block inventory layer;
 - subcircuit-equivalence witnesses bind traced ISA arithmetic/flag opcodes,
-  lowered lookup-family semantics, the coherent cleanup window, and generated
+  lowered lookup-family semantics, boundary no-op behavior, and generated
   whole-oracle composition back to the checked source artifacts;
 - exact logicalCounts are bound to explicit Microsoft Resource Estimator target
   profiles and recorded estimator outputs instead of stopping at a seed-only
@@ -127,8 +127,10 @@ Its defining exact features are:
   phase-shell lowering blocks;
 - a semiclassical-QFT phase-shell family removes the fixed **512 live phase
   qubits** assumption; and
-- those ingredients place the central exact family at **1,842 logical qubits**
-  while keeping **22,753,831 non-Clifford**.
+- the no-free-wire resource contract proves every live field value is assigned
+  to a counted owner, with zero borrowed lookup coordinate field lanes; and
+- those ingredients place the central exact family at **1,586 logical qubits**
+  while keeping **22,722,211 non-Clifford**.
 
 ## SP1 attestation layer
 

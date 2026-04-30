@@ -2,18 +2,18 @@
   "proof": null,
   "proof_system": "compressed",
   "public_values": {
-    "case_corpus_sha256": "06d46dcfbdc4025c5c8dc3e7f4179747eca60854f3232f5161bac7b5a0bb1a60",
+    "case_corpus_sha256": "f65a746e29092442f2814378eeb266e5f688a44b71e23065b9218a5f9b660ad4",
     "case_count": 8,
-    "claim_sha256": "358b7d3e46c1aa62040d76f20a2a4e8585204c6864fa906939f3c4df03b47921",
+    "claim_sha256": "8bb90abf0451893d2aa70579209f97133bf8db04c7009fd769cf89f81eb836ee",
     "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "expected_full_oracle_non_clifford": 22753831,
-    "expected_total_logical_qubits": 1842,
-    "family_sha256": "124a62731f46c3642596541c9773a1c45d4fb12c5414fee79b586268ea4fd3a1",
-    "leaf_sha256": "0680eabf66514b53284b6e76d007f7d097cd421c415c68fb69f6e017b827ff15",
+    "expected_full_oracle_non_clifford": 22722211,
+    "expected_total_logical_qubits": 1586,
+    "family_sha256": "2d57059bb2b47a575deaa948d446179c4ff896ebf1d0c21ebd572aa6638a4622",
+    "leaf_sha256": "a3ee8b140868da8e3e32801ac0e8c734c51409038d2ee5493fee19f8f7bb8eee",
     "passed_case_count": 8,
     "schema": "compiler-project-zkp-attestation-public-v2",
-    "selected_family_name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1"
+    "selected_family_name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1"
   },
   "schema": "compiler-project-zkp-attestation-fixture-v1",
-  "verification_key": "0x00e93e4b220082e7d74195bee08eedb948fc423f31252022b6101f4aa50fdf35"
+  "verification_key": "0x0007671434d568ece085db58e5fa489384df8fd7ab9a833497b32d8f702553ac"
 }

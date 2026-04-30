@@ -45,7 +45,12 @@ def test_qubit_breakthrough_analysis_thresholds_are_self_consistent() -> None:
     frontier = json.loads((REPO_ROOT / 'compiler_verification_project' / 'artifacts' / 'family_frontier.json').read_text())
     analysis = json.loads((REPO_ROOT / 'compiler_verification_project' / 'artifacts' / 'qubit_breakthrough_analysis.json').read_text())
     best_qubit = frontier['best_qubit_family']
-    fixed_overhead = best_qubit['lookup_workspace_qubits'] + best_qubit['control_slot_count'] + best_qubit['live_phase_bits']
+    fixed_overhead = (
+        best_qubit['lookup_workspace_qubits']
+        + best_qubit['control_slot_count']
+        + best_qubit.get('borrowed_interface_qubits', 0)
+        + best_qubit['live_phase_bits']
+    )
     assert analysis['best_exact_qubit_family'] == best_qubit
     assert analysis['exact_component_breakdown']['arithmetic_register_file_qubits'] == best_qubit['arithmetic_slot_count'] * 256
     assert analysis['exact_component_breakdown']['fixed_non_arithmetic_overhead_qubits'] == fixed_overhead
@@ -82,6 +87,8 @@ def test_compiler_project_verification_summary_groups_all_pass() -> None:
     assert ft_ir['pass'] == ft_ir['total']
     lookup_fed_slot_allocation = summary['lookup_fed_slot_allocation_checks']
     assert lookup_fed_slot_allocation['pass'] == lookup_fed_slot_allocation['total']
+    streamed_lookup_tail_slot_allocation = summary['streamed_lookup_tail_slot_allocation_checks']
+    assert streamed_lookup_tail_slot_allocation['pass'] == streamed_lookup_tail_slot_allocation['total']
     recount = summary['whole_oracle_recount_checks']
     assert recount['pass'] == recount['total']
     subcircuit_equivalence = summary['subcircuit_equivalence_checks']
@@ -102,7 +109,7 @@ def test_mutated_frontier_family_is_detected() -> None:
 
 def test_mutated_slot_assignment_is_detected() -> None:
     artifacts = deepcopy(_load_artifacts())
-    artifacts['exact_leaf_slot_allocation']['versions'][21]['assigned_slot'] = artifacts['exact_leaf_slot_allocation']['versions'][20]['assigned_slot']
+    artifacts['exact_leaf_slot_allocation']['versions'][1]['assigned_slot'] = artifacts['exact_leaf_slot_allocation']['versions'][0]['assigned_slot']
     groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
     assert groups['slot_allocation_checks']['pass'] < groups['slot_allocation_checks']['total']
 
@@ -130,7 +137,7 @@ def test_mutated_phase_shell_lowering_is_detected() -> None:
 
 def test_mutated_cleanup_pair_is_detected() -> None:
     artifacts = deepcopy(_load_artifacts())
-    artifacts['module_library']['leaf_opcode_histogram']['clear_bool_from_flag'] = 0
+    artifacts['module_library']['leaf_opcode_histogram']['select_field_if_flag'] = 1
     groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
     assert groups['cleanup_pair_checks']['pass'] < groups['cleanup_pair_checks']['total']
 

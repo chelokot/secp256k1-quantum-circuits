@@ -1,52 +1,52 @@
 {
-  "schema": "compiler-project-zkp-attestation-input-v3",
+  "schema": "compiler-project-zkp-attestation-input-v4",
   "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
-  "selected_family_name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
-  "claim_sha256": "358b7d3e46c1aa62040d76f20a2a4e8585204c6864fa906939f3c4df03b47921",
-  "leaf_sha256": "0680eabf66514b53284b6e76d007f7d097cd421c415c68fb69f6e017b827ff15",
-  "family_sha256": "124a62731f46c3642596541c9773a1c45d4fb12c5414fee79b586268ea4fd3a1",
-  "case_corpus_sha256": "06d46dcfbdc4025c5c8dc3e7f4179747eca60854f3232f5161bac7b5a0bb1a60",
+  "selected_family_name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
+  "claim_sha256": "8bb90abf0451893d2aa70579209f97133bf8db04c7009fd769cf89f81eb836ee",
+  "leaf_sha256": "a3ee8b140868da8e3e32801ac0e8c734c51409038d2ee5493fee19f8f7bb8eee",
+  "family_sha256": "2d57059bb2b47a575deaa948d446179c4ff896ebf1d0c21ebd572aa6638a4622",
+  "case_corpus_sha256": "f65a746e29092442f2814378eeb266e5f688a44b71e23065b9218a5f9b660ad4",
   "claim_summary": {
     "field_bits": 256,
     "leaf_call_count_total": 31,
-    "expected_full_oracle_non_clifford": 22753831,
-    "expected_total_logical_qubits": 1842,
+    "expected_full_oracle_non_clifford": 22722211,
+    "expected_total_logical_qubits": 1586,
     "expected_case_count": 8,
     "non_clifford_formula": {
-      "arithmetic_leaf_non_clifford": 733657,
+      "arithmetic_leaf_non_clifford": 732637,
       "per_leaf_lookup_non_clifford": 327,
       "direct_seed_non_clifford": 327,
       "leaf_call_count_total": 31,
-      "arithmetic_component": 22743367,
+      "arithmetic_component": 22711747,
       "lookup_component": 10137,
-      "reconstructed_total": 22753831
+      "reconstructed_total": 22722211
     },
     "logical_qubit_formula": {
       "field_bits": 256,
-      "arithmetic_slot_count": 7,
+      "arithmetic_slot_count": 6,
       "control_slot_count": 1,
       "borrowed_interface_qubits": 0,
       "lookup_workspace_qubits": 48,
       "live_phase_bits": 1,
-      "arithmetic_component": 1792,
-      "reconstructed_total": 1842
+      "arithmetic_component": 1536,
+      "reconstructed_total": 1586
     }
   },
   "family_summary": {
-    "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
-    "arithmetic_leaf_non_clifford": 733657,
+    "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
+    "arithmetic_leaf_non_clifford": 732637,
     "direct_seed_non_clifford": 327,
     "per_leaf_lookup_non_clifford": 327,
-    "full_oracle_non_clifford": 22753831,
-    "arithmetic_slot_count": 7,
+    "full_oracle_non_clifford": 22722211,
+    "arithmetic_slot_count": 6,
     "control_slot_count": 1,
     "borrowed_interface_qubits": 0,
     "lookup_workspace_qubits": 48,
     "live_phase_bits": 1,
-    "total_logical_qubits": 1842
+    "total_logical_qubits": 1586
   },
   "prepared_leaf": {
-    "register_count": 15,
+    "register_count": 14,
     "input_qx": 0,
     "input_qy": 1,
     "input_qz": 2,
@@ -57,34 +57,8 @@
     "output_qx": 7,
     "output_qy": 8,
     "output_qz": 9,
+    "skip_on_lookup_infinity": true,
     "instructions": [
-      {
-        "kind": "copy",
-        "dst": 6,
-        "src": 6
-      },
-      {
-        "kind": "copy",
-        "dst": 4,
-        "src": 4
-      },
-      {
-        "kind": "copy",
-        "dst": 5,
-        "src": 5
-      },
-      {
-        "kind": "bool_from_flag",
-        "dst": 10,
-        "flags": 6,
-        "bit": 0
-      },
-      {
-        "kind": "field_add",
-        "dst": 11,
-        "left": 4,
-        "right": 5
-      },
       {
         "kind": "copy",
         "dst": 7,
@@ -101,16 +75,42 @@
         "src": 2
       },
       {
-        "kind": "field_mul",
+        "kind": "copy",
+        "dst": 6,
+        "src": 6
+      },
+      {
+        "kind": "bool_from_flag",
+        "dst": 10,
+        "flags": 6,
+        "bit": 0
+      },
+      {
+        "kind": "field_mul_lookup_x",
+        "dst": 11,
+        "src": 7
+      },
+      {
+        "kind": "field_mul_lookup_x",
         "dst": 12,
-        "left": 4,
-        "right": 9
+        "src": 9
       },
       {
         "kind": "field_add",
         "dst": 12,
         "left": 12,
         "right": 7
+      },
+      {
+        "kind": "field_add",
+        "dst": 7,
+        "left": 7,
+        "right": 8
+      },
+      {
+        "kind": "field_mul_lookup_sum",
+        "dst": 13,
+        "src": 7
       },
       {
         "kind": "mul_const",
@@ -119,163 +119,33 @@
         "constant": 21
       },
       {
-        "kind": "field_mul",
+        "kind": "field_mul_lookup_y",
+        "dst": 7,
+        "src": 8
+      },
+      {
+        "kind": "field_sub_sum",
         "dst": 13,
-        "left": 5,
-        "right": 9
+        "minuend": 13,
+        "subtrahend_a": 11,
+        "subtrahend_b": 7
       },
       {
-        "kind": "field_add",
-        "dst": 13,
-        "left": 13,
-        "right": 8
-      },
-      {
-        "kind": "mul_const",
-        "dst": 9,
-        "src": 9,
-        "constant": 21
-      },
-      {
-        "kind": "field_mul",
-        "dst": 14,
-        "left": 7,
-        "right": 4
-      },
-      {
-        "kind": "field_add",
-        "dst": 7,
-        "left": 7,
-        "right": 8
-      },
-      {
-        "kind": "field_mul",
+        "kind": "field_triple",
         "dst": 11,
-        "left": 11,
-        "right": 7
+        "src": 11
       },
       {
-        "kind": "field_mul",
-        "dst": 7,
-        "left": 8,
-        "right": 5
-      },
-      {
-        "kind": "field_add",
-        "dst": 8,
-        "left": 14,
-        "right": 7
-      },
-      {
-        "kind": "field_sub",
-        "dst": 11,
-        "left": 11,
-        "right": 8
-      },
-      {
-        "kind": "field_add",
-        "dst": 8,
-        "left": 14,
-        "right": 14
-      },
-      {
-        "kind": "field_add",
-        "dst": 8,
-        "left": 8,
-        "right": 14
-      },
-      {
-        "kind": "field_add",
-        "dst": 14,
-        "left": 7,
-        "right": 9
-      },
-      {
-        "kind": "field_sub",
-        "dst": 7,
-        "left": 7,
-        "right": 9
-      },
-      {
-        "kind": "field_mul",
-        "dst": 9,
-        "left": 13,
-        "right": 12
-      },
-      {
-        "kind": "field_mul",
-        "dst": 12,
-        "left": 12,
-        "right": 8
-      },
-      {
-        "kind": "field_mul",
-        "dst": 8,
-        "left": 8,
-        "right": 11
-      },
-      {
-        "kind": "field_mul",
-        "dst": 11,
-        "left": 11,
-        "right": 7
-      },
-      {
-        "kind": "field_sub",
-        "dst": 11,
-        "left": 11,
-        "right": 9
-      },
-      {
-        "kind": "field_mul",
-        "dst": 7,
-        "left": 7,
-        "right": 14
-      },
-      {
-        "kind": "field_add",
-        "dst": 12,
-        "left": 7,
-        "right": 12
-      },
-      {
-        "kind": "field_mul",
-        "dst": 14,
-        "left": 14,
-        "right": 13
-      },
-      {
-        "kind": "field_add",
-        "dst": 14,
-        "left": 14,
-        "right": 8
-      },
-      {
-        "kind": "select_field_if_flag",
-        "dst": 7,
-        "flag": 10,
-        "when_nonzero": 0,
-        "when_zero": 11
-      },
-      {
-        "kind": "select_field_if_flag",
-        "dst": 8,
-        "flag": 10,
-        "when_nonzero": 1,
-        "when_zero": 12
-      },
-      {
-        "kind": "select_field_if_flag",
-        "dst": 9,
-        "flag": 10,
-        "when_nonzero": 2,
-        "when_zero": 14
-      },
-      {
-        "kind": "clear_bool_from_flag",
-        "dst": 10,
-        "flags": 6,
-        "bit": 0
+        "kind": "complete_a0_streamed_tail",
+        "out_x": 7,
+        "out_y": 8,
+        "out_z": 9,
+        "c": 12,
+        "k": 13,
+        "l": 11,
+        "i": 7,
+        "y": 8,
+        "z": 9
       }
     ]
   },
@@ -295,53 +165,53 @@
         "category": "accumulator_infinity",
         "accumulator": null,
         "lookup": {
-          "x_hex": "0ea143e14683790d94734af067cef5884315641e34615ef619723644f9a8d399",
-          "y_hex": "1157a700e3d999551d94590c2aab272878060af9ac606f0370f87c547af7e89d"
+          "x_hex": "127003053903b1bb31ba619718f06cf5831e0947870e300691182d9c926983e6",
+          "y_hex": "0f9a818c42f8c817de80533aadb63cb6e80a71748eb8a2834c8cb73d8a3e439b"
         },
         "expected": {
-          "x_hex": "0ea143e14683790d94734af067cef5884315641e34615ef619723644f9a8d399",
-          "y_hex": "1157a700e3d999551d94590c2aab272878060af9ac606f0370f87c547af7e89d"
+          "x_hex": "127003053903b1bb31ba619718f06cf5831e0947870e300691182d9c926983e6",
+          "y_hex": "0f9a818c42f8c817de80533aadb63cb6e80a71748eb8a2834c8cb73d8a3e439b"
         }
       },
       {
         "case_id": "lookup_infinity_0002",
         "category": "lookup_infinity",
         "accumulator": {
-          "x_hex": "38bf0e5a8a1471210da70f7a919a3b0259cb71273166ed1f298fa48ffa1dd82c",
-          "y_hex": "5c4b7b6367d122774e25f442d6c9e80a8f9d9c21bf59f7c0248e8379aff191d7"
+          "x_hex": "a88f84949c0581fda43bdf5e77525ed608bf35941961449ffd30247e170c53a1",
+          "y_hex": "71ad24ae51d48fb5413c584a0c182d752c71f07556164ba9efbfd0a637ce78bc"
         },
         "lookup": null,
         "expected": {
-          "x_hex": "38bf0e5a8a1471210da70f7a919a3b0259cb71273166ed1f298fa48ffa1dd82c",
-          "y_hex": "5c4b7b6367d122774e25f442d6c9e80a8f9d9c21bf59f7c0248e8379aff191d7"
+          "x_hex": "a88f84949c0581fda43bdf5e77525ed608bf35941961449ffd30247e170c53a1",
+          "y_hex": "71ad24ae51d48fb5413c584a0c182d752c71f07556164ba9efbfd0a637ce78bc"
         }
       },
       {
         "case_id": "doubling_0003",
         "category": "doubling",
         "accumulator": {
-          "x_hex": "0db326a6f1d18ebc4d7db8201d6ceaf993b5b31e88d1473128703b3ef4600e0f",
-          "y_hex": "d3060eebb1737cff994b232a76828027e83d1c22f7b1efc6687e1ba216ac121e"
+          "x_hex": "e051feb8495e80170d3bb75dd703b0eef27432305fe6506b4cce9d9754647109",
+          "y_hex": "618b978a40f53376b79650b9fb0004c79c299a9771392b74efca139b49bcacba"
         },
         "lookup": {
-          "x_hex": "0db326a6f1d18ebc4d7db8201d6ceaf993b5b31e88d1473128703b3ef4600e0f",
-          "y_hex": "d3060eebb1737cff994b232a76828027e83d1c22f7b1efc6687e1ba216ac121e"
+          "x_hex": "e051feb8495e80170d3bb75dd703b0eef27432305fe6506b4cce9d9754647109",
+          "y_hex": "618b978a40f53376b79650b9fb0004c79c299a9771392b74efca139b49bcacba"
         },
         "expected": {
-          "x_hex": "7719f4da13430a51794cf163629c18069ea54e027445c1ae11e8ccb16502ea08",
-          "y_hex": "106a9960a557081614f00a0f72e25417978455c9f605579efecbabaa6ec61e18"
+          "x_hex": "fd52da847fea2d1f41a7a6c81ba26aeb3af5d5e3ad2a7e5a3a4d546a1267cd61",
+          "y_hex": "9ed8ab1f554a7a6b5d4534c61acb754a7948f5fe1e019dfe07b822f761c3730d"
         }
       },
       {
         "case_id": "inverse_0004",
         "category": "inverse",
         "accumulator": {
-          "x_hex": "ddf1e0f93413df64060e3056a18d0fcdb2aea31eb3d98279af446b4a054c1e58",
-          "y_hex": "3e8e68c818a0b95d127430f4a71849f88767de7eba239f9aab8e1f4156311971"
+          "x_hex": "4ed88cf9fcfbff96a63a3f10930de95fc1312f94511815420fcdba231ff1b467",
+          "y_hex": "f9831ea91e7aeaa30e4a719b1203f18b4f08dcb78eb2bbbd7f7113400438bfc1"
         },
         "lookup": {
-          "x_hex": "ddf1e0f93413df64060e3056a18d0fcdb2aea31eb3d98279af446b4a054c1e58",
-          "y_hex": "c1719737e75f46a2ed8bcf0b58e7b6077898218145dc60655471e0bda9cee2be"
+          "x_hex": "4ed88cf9fcfbff96a63a3f10930de95fc1312f94511815420fcdba231ff1b467",
+          "y_hex": "067ce156e185155cf1b58e64edfc0e74b0f72348714d4442808eecbefbc73c6e"
         },
         "expected": null
       },
@@ -349,48 +219,48 @@
         "case_id": "random_0005",
         "category": "random",
         "accumulator": {
-          "x_hex": "614c75814604d87262f42ee542e2eb1197a9ff095a91a1fec09d1108d651d139",
-          "y_hex": "fa880de5e26dcf3cb0a5163112c50ad1356fed5d1202c707765b126d66b7f228"
+          "x_hex": "baef94330c6f5f256c98a71702508aebe29d1cac04c089e5f1211992649a9c3f",
+          "y_hex": "0e9a910e31ed518aedea5386e77256811a81ea02876bf4fc536a0b65b6bb0c13"
         },
         "lookup": {
-          "x_hex": "ea5b3b616376ae6630d87fa3a893be68bb02415bfef4160f4760ac5a37cda5cf",
-          "y_hex": "abda4a477f35c715b5d740cd293b8660fcf57979d5b1fc0c60ac6f55a25991bb"
+          "x_hex": "bf5d170c55047076d4d1de62154cb7bc8b1d0dd65ebc277490d9aeadffaf4d30",
+          "y_hex": "ef030355c8158f6fac795d06d3294297cc2e80edd61a987fbf8ed20193d3a355"
         },
         "expected": {
-          "x_hex": "f8618cdf339fd6da55bfe37c4b508f88f4f645c89ef914feb32d15fb12b31eba",
-          "y_hex": "90f58b6777645f5b1558e919bc5d474a81c8f18ed1dff8c1a9ca0351d5c5bf2d"
+          "x_hex": "4414560cffbf9023f16571d2747c5d026ededd7897d0af3de5b589f2bc8e48c0",
+          "y_hex": "dc339574a785595139b31f70f21c20f51c7ba38016e6a17b9faecfb471ea4102"
         }
       },
       {
         "case_id": "random_0006",
         "category": "random",
         "accumulator": {
-          "x_hex": "7a64bfd3e552a52bc614f9af43fb00d77123ed91a12f44654e601d8a826f0e1e",
-          "y_hex": "2ce477d34f6ff68f7181b4d2b44e4b0ea99bdb2bf7d44c6dde7f09e5d803b1db"
+          "x_hex": "74f59e5dbfa55dc9169453003c945a6be7d1d463172b620c44cc8859e301725c",
+          "y_hex": "a2117c384ed9b0ee976b06fc4d7168aa90de7ff15cdd2e7d05eac69d2ccb8b16"
         },
         "lookup": {
-          "x_hex": "5d6288a95ca78113dd0a909516ed8feb89ae497f16e22a7aa74fc631106b1ce6",
-          "y_hex": "9624fcae0cd3ed4221fbe07ce2154854e514711aa909ad1752d41c8245be497a"
+          "x_hex": "f487832894cea5c2606427cfa97974efaa85cfe4d07d57c3f4207cc37c224870",
+          "y_hex": "9cf440316d3632ec62f079242b27efe00cbbd8b6f03206747303077b0a35cf55"
         },
         "expected": {
-          "x_hex": "f8202bd2879f5af16671d8d24750d2ecb3632287043a7b2472867a7d90a5bdbc",
-          "y_hex": "ad5c68ef40138d3babb5e97cb6d35a612ba31f3c5ca45ef06aadb89b40120a24"
+          "x_hex": "c63810265741458c371cdcb63b2a8a481cdb900c6be1ca85917ff5062c80fc05",
+          "y_hex": "f18071b5e312f6212b979b305d0b7460fcef741cc2c862568b5c03e197d731f0"
         }
       },
       {
         "case_id": "random_0007",
         "category": "random",
         "accumulator": {
-          "x_hex": "fa429647a5b8fff4bdd7f6c3c7cd12791c108cdb763aabfe1d040d5f5b09cd45",
-          "y_hex": "4e92c905f1256461e878f58f043fbe7e7783ef6781e03f4924a2703108333e3e"
+          "x_hex": "53c1e0635c10fb028d0e568c6824a212ca8ac40fc7ede08bcd90bfb34698c602",
+          "y_hex": "9cb9beefc412fdbbb44c56a0c8a8d4bf0b4c33f8af9067619668621e7c7e3fb9"
         },
         "lookup": {
-          "x_hex": "0aab9d8d35e801c26cd06bfb2b8b3145725a3f15aa128cfd0b8316c33ce281bb",
-          "y_hex": "1578461072c051caefc62f7931e06b9734725ab3d1d5949364e6eab13353be78"
+          "x_hex": "6ca812b8f469c951bb9c561a1785a11eb343246b831fe13ab149f0de45afb762",
+          "y_hex": "4c8af10fc67e76e3769289dd51d9e1c3b4112d0c58d244ab9fdea0e3c7749b6c"
         },
         "expected": {
-          "x_hex": "69704c3890df95dfbbfcbe885587bee47e2d7380538d9de169347f82837a4808",
-          "y_hex": "058d5dd42287267f275bdef17639039abc11d151151ab19e9cf78540df429fa2"
+          "x_hex": "d60c4dc53ac7c6e36bdde48a5092719a60c0d6e9f7938e569e71256bdd04b4ed",
+          "y_hex": "1f97161a3686a6eb6723cd95091c1611812b19672acf466e1dc1aca2efb07b69"
         }
       }
     ]

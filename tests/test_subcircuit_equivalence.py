@@ -23,16 +23,17 @@ def test_subcircuit_equivalence_arithmetic_trace_passes() -> None:
         assert row['pass'] == row['total'], row['pc']
     for row in arithmetic['per_opcode']:
         assert row['pass'] == row['total'], row['opcode']
-    assert arithmetic['cleanup_zero_after_clear']['pass'] == arithmetic['cleanup_zero_after_clear']['total']
-    assert arithmetic['infinity_select_keeps_original_accumulator']['pass'] == arithmetic['infinity_select_keeps_original_accumulator']['total']
     assert arithmetic['bool_flag_value_partition']['flag_one_cases'] > 0
     assert arithmetic['bool_flag_value_partition']['flag_zero_cases'] > 0
+    boundary_noop = equivalence['boundary_noop_equivalence']
+    assert boundary_noop['policy'] == 'boundary_noop'
+    assert boundary_noop['no_leaf_select_or_cleanup_pcs']
 
 
 def test_subcircuit_equivalence_leaf_interfaces_cover_edge_cases() -> None:
     equivalence = _load_equivalence()
-    summary = equivalence['leaf_interface_equivalence']['lookup_fed_leaf']['summary']
-    assert summary['pass'] == summary['total'], 'lookup_fed_leaf'
+    summary = equivalence['leaf_interface_equivalence']['streamed_lookup_tail_leaf']['summary']
+    assert summary['pass'] == summary['total'], 'streamed_lookup_tail_leaf'
     for category in ('random', 'doubling', 'inverse', 'accumulator_infinity', 'lookup_infinity'):
         assert summary['categories'][category]['total'] > 0, category
         assert summary['categories'][category]['pass'] == summary['categories'][category]['total'], category
@@ -47,18 +48,17 @@ def test_subcircuit_equivalence_reduced_width_witnesses_pass() -> None:
             assert row[opcode]['pass'] == row[opcode]['total'], (row['field_bits'], opcode)
 
 
-def test_subcircuit_equivalence_lookup_cleanup_and_composition_pass() -> None:
+def test_subcircuit_equivalence_lookup_boundary_and_composition_pass() -> None:
     equivalence = _load_equivalence()
     for family in equivalence['lookup_family_equivalence']['families']:
         assert family['direct_lookup_non_clifford'] == family['stage_reconstructed_non_clifford']
         assert family['workspace_qubits'] == family['stage_reconstructed_workspace_qubits']
         assert family['canonical_full_exhaustive_pass'] == family['canonical_full_exhaustive_total']
         assert family['multibase_edge_pass'] == family['multibase_edge_total']
-    cleanup = equivalence['cleanup_window_equivalence']
-    assert cleanup['trace_extract_pass'] == cleanup['trace_extract_total']
-    assert cleanup['trace_clear_pass'] == cleanup['trace_clear_total']
-    assert cleanup['trace_cleanup_zero_pass'] == cleanup['trace_cleanup_zero_total']
-    assert cleanup['imported_cleanup_audit']['pass'] == cleanup['imported_cleanup_audit']['total']
+    boundary = equivalence['boundary_noop_equivalence']
+    assert boundary['trace_extract_pass'] == boundary['trace_extract_total']
+    assert boundary['lookup_infinity_cases_seen'] > 0
+    assert boundary['ordinary_cases_seen'] > 0
     for family in equivalence['whole_oracle_composition_equivalence']['families']:
         assert family['generated_full_oracle_non_clifford'] == family['frontier_full_oracle_non_clifford'] == family['inventory_full_oracle_non_clifford']
         assert family['generated_total_logical_qubits'] == family['frontier_total_logical_qubits'] == family['inventory_total_logical_qubits']

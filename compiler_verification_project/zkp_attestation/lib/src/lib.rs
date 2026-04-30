@@ -257,7 +257,9 @@ impl Serialize for InstructionSource {
             }
         } else {
             match self {
-                InstructionSource::Register(register) => BinaryInstructionSource::Register(register.clone()),
+                InstructionSource::Register(register) => {
+                    BinaryInstructionSource::Register(register.clone())
+                }
                 InstructionSource::Pair(pair) => BinaryInstructionSource::Pair(pair.clone()),
                 InstructionSource::FlagBit { flags, bit } => BinaryInstructionSource::FlagBit {
                     flags: flags.clone(),
@@ -283,16 +285,26 @@ impl<'de> Deserialize<'de> for InstructionSource {
             Ok(match source {
                 HumanInstructionSource::Register(register) => InstructionSource::Register(register),
                 HumanInstructionSource::Pair(pair) => InstructionSource::Pair(pair),
-                HumanInstructionSource::FlagBit { flags, bit } => InstructionSource::FlagBit { flags, bit },
-                HumanInstructionSource::Lookup { table, key } => InstructionSource::Lookup { table, key },
+                HumanInstructionSource::FlagBit { flags, bit } => {
+                    InstructionSource::FlagBit { flags, bit }
+                }
+                HumanInstructionSource::Lookup { table, key } => {
+                    InstructionSource::Lookup { table, key }
+                }
             })
         } else {
             let source = BinaryInstructionSource::deserialize(deserializer)?;
             Ok(match source {
-                BinaryInstructionSource::Register(register) => InstructionSource::Register(register),
+                BinaryInstructionSource::Register(register) => {
+                    InstructionSource::Register(register)
+                }
                 BinaryInstructionSource::Pair(pair) => InstructionSource::Pair(pair),
-                BinaryInstructionSource::FlagBit { flags, bit } => InstructionSource::FlagBit { flags, bit },
-                BinaryInstructionSource::Lookup { table, key } => InstructionSource::Lookup { table, key },
+                BinaryInstructionSource::FlagBit { flags, bit } => {
+                    InstructionSource::FlagBit { flags, bit }
+                }
+                BinaryInstructionSource::Lookup { table, key } => {
+                    InstructionSource::Lookup { table, key }
+                }
             })
         }
     }
@@ -551,65 +563,249 @@ pub struct CompiledLeaf {
     output_qx: RegisterId,
     output_qy: RegisterId,
     output_qz: RegisterId,
+    skip_on_lookup_infinity: bool,
     instructions: Vec<CompiledInstruction>,
 }
 
 #[derive(Debug, Clone)]
 pub enum CompiledInstruction {
-    Copy { dst: RegisterId, src: RegisterId },
-    BoolFromFlag { dst: RegisterId, flags: RegisterId, bit: u64 },
-    ClearBoolFromFlag { dst: RegisterId, flags: RegisterId, bit: u64 },
-    FieldMul { dst: RegisterId, left: RegisterId, right: RegisterId },
-    FieldAdd { dst: RegisterId, left: RegisterId, right: RegisterId },
-    FieldSub { dst: RegisterId, left: RegisterId, right: RegisterId },
-    MulConst { dst: RegisterId, src: RegisterId, constant: u64 },
+    Copy {
+        dst: RegisterId,
+        src: RegisterId,
+    },
+    BoolFromFlag {
+        dst: RegisterId,
+        flags: RegisterId,
+        bit: u64,
+    },
+    ClearBoolFromFlag {
+        dst: RegisterId,
+        flags: RegisterId,
+        bit: u64,
+    },
+    FieldMul {
+        dst: RegisterId,
+        left: RegisterId,
+        right: RegisterId,
+    },
+    FieldMulLookupX {
+        dst: RegisterId,
+        src: RegisterId,
+    },
+    FieldMulLookupY {
+        dst: RegisterId,
+        src: RegisterId,
+    },
+    FieldMulLookupSum {
+        dst: RegisterId,
+        src: RegisterId,
+    },
+    FieldAdd {
+        dst: RegisterId,
+        left: RegisterId,
+        right: RegisterId,
+    },
+    FieldSub {
+        dst: RegisterId,
+        left: RegisterId,
+        right: RegisterId,
+    },
+    FieldSubSum {
+        dst: RegisterId,
+        minuend: RegisterId,
+        subtrahend_a: RegisterId,
+        subtrahend_b: RegisterId,
+    },
+    FieldTriple {
+        dst: RegisterId,
+        src: RegisterId,
+    },
+    MulConst {
+        dst: RegisterId,
+        src: RegisterId,
+        constant: u64,
+    },
     SelectFieldIfFlag {
         dst: RegisterId,
         flag: RegisterId,
         when_nonzero: RegisterId,
         when_zero: RegisterId,
+    },
+    CompleteA0StreamedTail {
+        out_x: RegisterId,
+        out_y: RegisterId,
+        out_z: RegisterId,
+        c: RegisterId,
+        k: RegisterId,
+        l: RegisterId,
+        i: RegisterId,
+        y: RegisterId,
+        z: RegisterId,
     },
 }
 
 #[derive(Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case")]
 enum HumanCompiledInstruction {
-    Copy { dst: RegisterId, src: RegisterId },
-    BoolFromFlag { dst: RegisterId, flags: RegisterId, bit: u64 },
-    ClearBoolFromFlag { dst: RegisterId, flags: RegisterId, bit: u64 },
-    FieldMul { dst: RegisterId, left: RegisterId, right: RegisterId },
-    FieldAdd { dst: RegisterId, left: RegisterId, right: RegisterId },
-    FieldSub { dst: RegisterId, left: RegisterId, right: RegisterId },
-    MulConst { dst: RegisterId, src: RegisterId, constant: u64 },
+    Copy {
+        dst: RegisterId,
+        src: RegisterId,
+    },
+    BoolFromFlag {
+        dst: RegisterId,
+        flags: RegisterId,
+        bit: u64,
+    },
+    ClearBoolFromFlag {
+        dst: RegisterId,
+        flags: RegisterId,
+        bit: u64,
+    },
+    FieldMul {
+        dst: RegisterId,
+        left: RegisterId,
+        right: RegisterId,
+    },
+    FieldMulLookupX {
+        dst: RegisterId,
+        src: RegisterId,
+    },
+    FieldMulLookupY {
+        dst: RegisterId,
+        src: RegisterId,
+    },
+    FieldMulLookupSum {
+        dst: RegisterId,
+        src: RegisterId,
+    },
+    FieldAdd {
+        dst: RegisterId,
+        left: RegisterId,
+        right: RegisterId,
+    },
+    FieldSub {
+        dst: RegisterId,
+        left: RegisterId,
+        right: RegisterId,
+    },
+    FieldSubSum {
+        dst: RegisterId,
+        minuend: RegisterId,
+        subtrahend_a: RegisterId,
+        subtrahend_b: RegisterId,
+    },
+    FieldTriple {
+        dst: RegisterId,
+        src: RegisterId,
+    },
+    MulConst {
+        dst: RegisterId,
+        src: RegisterId,
+        constant: u64,
+    },
     SelectFieldIfFlag {
         dst: RegisterId,
         flag: RegisterId,
         when_nonzero: RegisterId,
         when_zero: RegisterId,
     },
+    CompleteA0StreamedTail {
+        out_x: RegisterId,
+        out_y: RegisterId,
+        out_z: RegisterId,
+        c: RegisterId,
+        k: RegisterId,
+        l: RegisterId,
+        i: RegisterId,
+        y: RegisterId,
+        z: RegisterId,
+    },
 }
 
 #[derive(Serialize, Deserialize)]
 enum BinaryCompiledInstruction {
-    Copy { dst: RegisterId, src: RegisterId },
-    BoolFromFlag { dst: RegisterId, flags: RegisterId, bit: u64 },
-    ClearBoolFromFlag { dst: RegisterId, flags: RegisterId, bit: u64 },
-    FieldMul { dst: RegisterId, left: RegisterId, right: RegisterId },
-    FieldAdd { dst: RegisterId, left: RegisterId, right: RegisterId },
-    FieldSub { dst: RegisterId, left: RegisterId, right: RegisterId },
-    MulConst { dst: RegisterId, src: RegisterId, constant: u64 },
+    Copy {
+        dst: RegisterId,
+        src: RegisterId,
+    },
+    BoolFromFlag {
+        dst: RegisterId,
+        flags: RegisterId,
+        bit: u64,
+    },
+    ClearBoolFromFlag {
+        dst: RegisterId,
+        flags: RegisterId,
+        bit: u64,
+    },
+    FieldMul {
+        dst: RegisterId,
+        left: RegisterId,
+        right: RegisterId,
+    },
+    FieldMulLookupX {
+        dst: RegisterId,
+        src: RegisterId,
+    },
+    FieldMulLookupY {
+        dst: RegisterId,
+        src: RegisterId,
+    },
+    FieldMulLookupSum {
+        dst: RegisterId,
+        src: RegisterId,
+    },
+    FieldAdd {
+        dst: RegisterId,
+        left: RegisterId,
+        right: RegisterId,
+    },
+    FieldSub {
+        dst: RegisterId,
+        left: RegisterId,
+        right: RegisterId,
+    },
+    FieldSubSum {
+        dst: RegisterId,
+        minuend: RegisterId,
+        subtrahend_a: RegisterId,
+        subtrahend_b: RegisterId,
+    },
+    FieldTriple {
+        dst: RegisterId,
+        src: RegisterId,
+    },
+    MulConst {
+        dst: RegisterId,
+        src: RegisterId,
+        constant: u64,
+    },
     SelectFieldIfFlag {
         dst: RegisterId,
         flag: RegisterId,
         when_nonzero: RegisterId,
         when_zero: RegisterId,
+    },
+    CompleteA0StreamedTail {
+        out_x: RegisterId,
+        out_y: RegisterId,
+        out_z: RegisterId,
+        c: RegisterId,
+        k: RegisterId,
+        l: RegisterId,
+        i: RegisterId,
+        y: RegisterId,
+        z: RegisterId,
     },
 }
 
 impl From<&CompiledInstruction> for HumanCompiledInstruction {
     fn from(value: &CompiledInstruction) -> Self {
         match value {
-            CompiledInstruction::Copy { dst, src } => Self::Copy { dst: *dst, src: *src },
+            CompiledInstruction::Copy { dst, src } => Self::Copy {
+                dst: *dst,
+                src: *src,
+            },
             CompiledInstruction::BoolFromFlag { dst, flags, bit } => Self::BoolFromFlag {
                 dst: *dst,
                 flags: *flags,
@@ -625,6 +821,18 @@ impl From<&CompiledInstruction> for HumanCompiledInstruction {
                 left: *left,
                 right: *right,
             },
+            CompiledInstruction::FieldMulLookupX { dst, src } => Self::FieldMulLookupX {
+                dst: *dst,
+                src: *src,
+            },
+            CompiledInstruction::FieldMulLookupY { dst, src } => Self::FieldMulLookupY {
+                dst: *dst,
+                src: *src,
+            },
+            CompiledInstruction::FieldMulLookupSum { dst, src } => Self::FieldMulLookupSum {
+                dst: *dst,
+                src: *src,
+            },
             CompiledInstruction::FieldAdd { dst, left, right } => Self::FieldAdd {
                 dst: *dst,
                 left: *left,
@@ -634,6 +842,21 @@ impl From<&CompiledInstruction> for HumanCompiledInstruction {
                 dst: *dst,
                 left: *left,
                 right: *right,
+            },
+            CompiledInstruction::FieldSubSum {
+                dst,
+                minuend,
+                subtrahend_a,
+                subtrahend_b,
+            } => Self::FieldSubSum {
+                dst: *dst,
+                minuend: *minuend,
+                subtrahend_a: *subtrahend_a,
+                subtrahend_b: *subtrahend_b,
+            },
+            CompiledInstruction::FieldTriple { dst, src } => Self::FieldTriple {
+                dst: *dst,
+                src: *src,
             },
             CompiledInstruction::MulConst { dst, src, constant } => Self::MulConst {
                 dst: *dst,
@@ -651,6 +874,27 @@ impl From<&CompiledInstruction> for HumanCompiledInstruction {
                 when_nonzero: *when_nonzero,
                 when_zero: *when_zero,
             },
+            CompiledInstruction::CompleteA0StreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                c,
+                k,
+                l,
+                i,
+                y,
+                z,
+            } => Self::CompleteA0StreamedTail {
+                out_x: *out_x,
+                out_y: *out_y,
+                out_z: *out_z,
+                c: *c,
+                k: *k,
+                l: *l,
+                i: *i,
+                y: *y,
+                z: *z,
+            },
         }
     }
 }
@@ -659,14 +903,45 @@ impl From<HumanCompiledInstruction> for CompiledInstruction {
     fn from(value: HumanCompiledInstruction) -> Self {
         match value {
             HumanCompiledInstruction::Copy { dst, src } => Self::Copy { dst, src },
-            HumanCompiledInstruction::BoolFromFlag { dst, flags, bit } => Self::BoolFromFlag { dst, flags, bit },
+            HumanCompiledInstruction::BoolFromFlag { dst, flags, bit } => {
+                Self::BoolFromFlag { dst, flags, bit }
+            }
             HumanCompiledInstruction::ClearBoolFromFlag { dst, flags, bit } => {
                 Self::ClearBoolFromFlag { dst, flags, bit }
             }
-            HumanCompiledInstruction::FieldMul { dst, left, right } => Self::FieldMul { dst, left, right },
-            HumanCompiledInstruction::FieldAdd { dst, left, right } => Self::FieldAdd { dst, left, right },
-            HumanCompiledInstruction::FieldSub { dst, left, right } => Self::FieldSub { dst, left, right },
-            HumanCompiledInstruction::MulConst { dst, src, constant } => Self::MulConst { dst, src, constant },
+            HumanCompiledInstruction::FieldMul { dst, left, right } => {
+                Self::FieldMul { dst, left, right }
+            }
+            HumanCompiledInstruction::FieldMulLookupX { dst, src } => {
+                Self::FieldMulLookupX { dst, src }
+            }
+            HumanCompiledInstruction::FieldMulLookupY { dst, src } => {
+                Self::FieldMulLookupY { dst, src }
+            }
+            HumanCompiledInstruction::FieldMulLookupSum { dst, src } => {
+                Self::FieldMulLookupSum { dst, src }
+            }
+            HumanCompiledInstruction::FieldAdd { dst, left, right } => {
+                Self::FieldAdd { dst, left, right }
+            }
+            HumanCompiledInstruction::FieldSub { dst, left, right } => {
+                Self::FieldSub { dst, left, right }
+            }
+            HumanCompiledInstruction::FieldSubSum {
+                dst,
+                minuend,
+                subtrahend_a,
+                subtrahend_b,
+            } => Self::FieldSubSum {
+                dst,
+                minuend,
+                subtrahend_a,
+                subtrahend_b,
+            },
+            HumanCompiledInstruction::FieldTriple { dst, src } => Self::FieldTriple { dst, src },
+            HumanCompiledInstruction::MulConst { dst, src, constant } => {
+                Self::MulConst { dst, src, constant }
+            }
             HumanCompiledInstruction::SelectFieldIfFlag {
                 dst,
                 flag,
@@ -677,6 +952,27 @@ impl From<HumanCompiledInstruction> for CompiledInstruction {
                 flag,
                 when_nonzero,
                 when_zero,
+            },
+            HumanCompiledInstruction::CompleteA0StreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                c,
+                k,
+                l,
+                i,
+                y,
+                z,
+            } => Self::CompleteA0StreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                c,
+                k,
+                l,
+                i,
+                y,
+                z,
             },
         }
     }
@@ -686,14 +982,45 @@ impl From<&CompiledInstruction> for BinaryCompiledInstruction {
     fn from(value: &CompiledInstruction) -> Self {
         match HumanCompiledInstruction::from(value) {
             HumanCompiledInstruction::Copy { dst, src } => Self::Copy { dst, src },
-            HumanCompiledInstruction::BoolFromFlag { dst, flags, bit } => Self::BoolFromFlag { dst, flags, bit },
+            HumanCompiledInstruction::BoolFromFlag { dst, flags, bit } => {
+                Self::BoolFromFlag { dst, flags, bit }
+            }
             HumanCompiledInstruction::ClearBoolFromFlag { dst, flags, bit } => {
                 Self::ClearBoolFromFlag { dst, flags, bit }
             }
-            HumanCompiledInstruction::FieldMul { dst, left, right } => Self::FieldMul { dst, left, right },
-            HumanCompiledInstruction::FieldAdd { dst, left, right } => Self::FieldAdd { dst, left, right },
-            HumanCompiledInstruction::FieldSub { dst, left, right } => Self::FieldSub { dst, left, right },
-            HumanCompiledInstruction::MulConst { dst, src, constant } => Self::MulConst { dst, src, constant },
+            HumanCompiledInstruction::FieldMul { dst, left, right } => {
+                Self::FieldMul { dst, left, right }
+            }
+            HumanCompiledInstruction::FieldMulLookupX { dst, src } => {
+                Self::FieldMulLookupX { dst, src }
+            }
+            HumanCompiledInstruction::FieldMulLookupY { dst, src } => {
+                Self::FieldMulLookupY { dst, src }
+            }
+            HumanCompiledInstruction::FieldMulLookupSum { dst, src } => {
+                Self::FieldMulLookupSum { dst, src }
+            }
+            HumanCompiledInstruction::FieldAdd { dst, left, right } => {
+                Self::FieldAdd { dst, left, right }
+            }
+            HumanCompiledInstruction::FieldSub { dst, left, right } => {
+                Self::FieldSub { dst, left, right }
+            }
+            HumanCompiledInstruction::FieldSubSum {
+                dst,
+                minuend,
+                subtrahend_a,
+                subtrahend_b,
+            } => Self::FieldSubSum {
+                dst,
+                minuend,
+                subtrahend_a,
+                subtrahend_b,
+            },
+            HumanCompiledInstruction::FieldTriple { dst, src } => Self::FieldTriple { dst, src },
+            HumanCompiledInstruction::MulConst { dst, src, constant } => {
+                Self::MulConst { dst, src, constant }
+            }
             HumanCompiledInstruction::SelectFieldIfFlag {
                 dst,
                 flag,
@@ -705,6 +1032,27 @@ impl From<&CompiledInstruction> for BinaryCompiledInstruction {
                 when_nonzero,
                 when_zero,
             },
+            HumanCompiledInstruction::CompleteA0StreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                c,
+                k,
+                l,
+                i,
+                y,
+                z,
+            } => Self::CompleteA0StreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                c,
+                k,
+                l,
+                i,
+                y,
+                z,
+            },
         }
     }
 }
@@ -713,14 +1061,45 @@ impl From<BinaryCompiledInstruction> for CompiledInstruction {
     fn from(value: BinaryCompiledInstruction) -> Self {
         match value {
             BinaryCompiledInstruction::Copy { dst, src } => Self::Copy { dst, src },
-            BinaryCompiledInstruction::BoolFromFlag { dst, flags, bit } => Self::BoolFromFlag { dst, flags, bit },
+            BinaryCompiledInstruction::BoolFromFlag { dst, flags, bit } => {
+                Self::BoolFromFlag { dst, flags, bit }
+            }
             BinaryCompiledInstruction::ClearBoolFromFlag { dst, flags, bit } => {
                 Self::ClearBoolFromFlag { dst, flags, bit }
             }
-            BinaryCompiledInstruction::FieldMul { dst, left, right } => Self::FieldMul { dst, left, right },
-            BinaryCompiledInstruction::FieldAdd { dst, left, right } => Self::FieldAdd { dst, left, right },
-            BinaryCompiledInstruction::FieldSub { dst, left, right } => Self::FieldSub { dst, left, right },
-            BinaryCompiledInstruction::MulConst { dst, src, constant } => Self::MulConst { dst, src, constant },
+            BinaryCompiledInstruction::FieldMul { dst, left, right } => {
+                Self::FieldMul { dst, left, right }
+            }
+            BinaryCompiledInstruction::FieldMulLookupX { dst, src } => {
+                Self::FieldMulLookupX { dst, src }
+            }
+            BinaryCompiledInstruction::FieldMulLookupY { dst, src } => {
+                Self::FieldMulLookupY { dst, src }
+            }
+            BinaryCompiledInstruction::FieldMulLookupSum { dst, src } => {
+                Self::FieldMulLookupSum { dst, src }
+            }
+            BinaryCompiledInstruction::FieldAdd { dst, left, right } => {
+                Self::FieldAdd { dst, left, right }
+            }
+            BinaryCompiledInstruction::FieldSub { dst, left, right } => {
+                Self::FieldSub { dst, left, right }
+            }
+            BinaryCompiledInstruction::FieldSubSum {
+                dst,
+                minuend,
+                subtrahend_a,
+                subtrahend_b,
+            } => Self::FieldSubSum {
+                dst,
+                minuend,
+                subtrahend_a,
+                subtrahend_b,
+            },
+            BinaryCompiledInstruction::FieldTriple { dst, src } => Self::FieldTriple { dst, src },
+            BinaryCompiledInstruction::MulConst { dst, src, constant } => {
+                Self::MulConst { dst, src, constant }
+            }
             BinaryCompiledInstruction::SelectFieldIfFlag {
                 dst,
                 flag,
@@ -731,6 +1110,27 @@ impl From<BinaryCompiledInstruction> for CompiledInstruction {
                 flag,
                 when_nonzero,
                 when_zero,
+            },
+            BinaryCompiledInstruction::CompleteA0StreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                c,
+                k,
+                l,
+                i,
+                y,
+                z,
+            } => Self::CompleteA0StreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                c,
+                k,
+                l,
+                i,
+                y,
+                z,
             },
         }
     }
@@ -891,11 +1291,23 @@ impl SemanticHash for NonCliffordFormula {
     fn semantic_hash(&self, hasher: &mut Sha256) {
         semantic_hash_object_start(hasher, 7);
         semantic_hash_field(hasher, "arithmetic_component", &self.arithmetic_component);
-        semantic_hash_field(hasher, "arithmetic_leaf_non_clifford", &self.arithmetic_leaf_non_clifford);
-        semantic_hash_field(hasher, "direct_seed_non_clifford", &self.direct_seed_non_clifford);
+        semantic_hash_field(
+            hasher,
+            "arithmetic_leaf_non_clifford",
+            &self.arithmetic_leaf_non_clifford,
+        );
+        semantic_hash_field(
+            hasher,
+            "direct_seed_non_clifford",
+            &self.direct_seed_non_clifford,
+        );
         semantic_hash_field(hasher, "leaf_call_count_total", &self.leaf_call_count_total);
         semantic_hash_field(hasher, "lookup_component", &self.lookup_component);
-        semantic_hash_field(hasher, "per_leaf_lookup_non_clifford", &self.per_leaf_lookup_non_clifford);
+        semantic_hash_field(
+            hasher,
+            "per_leaf_lookup_non_clifford",
+            &self.per_leaf_lookup_non_clifford,
+        );
         semantic_hash_field(hasher, "reconstructed_total", &self.reconstructed_total);
     }
 }
@@ -905,11 +1317,19 @@ impl SemanticHash for LogicalQubitFormula {
         semantic_hash_object_start(hasher, 8);
         semantic_hash_field(hasher, "arithmetic_component", &self.arithmetic_component);
         semantic_hash_field(hasher, "arithmetic_slot_count", &self.arithmetic_slot_count);
-        semantic_hash_field(hasher, "borrowed_interface_qubits", &self.borrowed_interface_qubits);
+        semantic_hash_field(
+            hasher,
+            "borrowed_interface_qubits",
+            &self.borrowed_interface_qubits,
+        );
         semantic_hash_field(hasher, "control_slot_count", &self.control_slot_count);
         semantic_hash_field(hasher, "field_bits", &self.field_bits);
         semantic_hash_field(hasher, "live_phase_bits", &self.live_phase_bits);
-        semantic_hash_field(hasher, "lookup_workspace_qubits", &self.lookup_workspace_qubits);
+        semantic_hash_field(
+            hasher,
+            "lookup_workspace_qubits",
+            &self.lookup_workspace_qubits,
+        );
         semantic_hash_field(hasher, "reconstructed_total", &self.reconstructed_total);
     }
 }
@@ -918,8 +1338,16 @@ impl SemanticHash for ClaimDocument {
     fn semantic_hash(&self, hasher: &mut Sha256) {
         semantic_hash_object_start(hasher, 11);
         semantic_hash_field(hasher, "expected_case_count", &self.expected_case_count);
-        semantic_hash_field(hasher, "expected_full_oracle_non_clifford", &self.expected_full_oracle_non_clifford);
-        semantic_hash_field(hasher, "expected_total_logical_qubits", &self.expected_total_logical_qubits);
+        semantic_hash_field(
+            hasher,
+            "expected_full_oracle_non_clifford",
+            &self.expected_full_oracle_non_clifford,
+        );
+        semantic_hash_field(
+            hasher,
+            "expected_total_logical_qubits",
+            &self.expected_total_logical_qubits,
+        );
         semantic_hash_field(hasher, "field_bits", &self.field_bits);
         semantic_hash_field(hasher, "leaf_call_count_total", &self.leaf_call_count_total);
         semantic_hash_field(hasher, "logical_qubit_formula", &self.logical_qubit_formula);
@@ -970,7 +1398,11 @@ impl SemanticHash for LeafDocument {
         semantic_hash_field(hasher, "field_modulus_hex", &self.field_modulus_hex);
         semantic_hash_field(hasher, "instructions", &self.instructions);
         semantic_hash_field(hasher, "interface_wires", &self.interface_wires);
-        semantic_hash_field(hasher, "lookup_interface_slots", &self.lookup_interface_slots);
+        semantic_hash_field(
+            hasher,
+            "lookup_interface_slots",
+            &self.lookup_interface_slots,
+        );
         semantic_hash_field(hasher, "notes", &self.notes);
         semantic_hash_field(hasher, "schema", &self.schema);
         semantic_hash_field(hasher, "variant", &self.variant);
@@ -980,26 +1412,66 @@ impl SemanticHash for LeafDocument {
 impl SemanticHash for FamilyDocument {
     fn semantic_hash(&self, hasher: &mut Sha256) {
         semantic_hash_object_start(hasher, 23);
-        semantic_hash_field(hasher, "arithmetic_kernel_family", &self.arithmetic_kernel_family);
-        semantic_hash_field(hasher, "arithmetic_leaf_non_clifford", &self.arithmetic_leaf_non_clifford);
+        semantic_hash_field(
+            hasher,
+            "arithmetic_kernel_family",
+            &self.arithmetic_kernel_family,
+        );
+        semantic_hash_field(
+            hasher,
+            "arithmetic_leaf_non_clifford",
+            &self.arithmetic_leaf_non_clifford,
+        );
         semantic_hash_field(hasher, "arithmetic_slot_count", &self.arithmetic_slot_count);
-        semantic_hash_field(hasher, "borrowed_interface_qubits", &self.borrowed_interface_qubits);
+        semantic_hash_field(
+            hasher,
+            "borrowed_interface_qubits",
+            &self.borrowed_interface_qubits,
+        );
         semantic_hash_field(hasher, "control_slot_count", &self.control_slot_count);
-        semantic_hash_field(hasher, "direct_seed_non_clifford", &self.direct_seed_non_clifford);
-        semantic_hash_field(hasher, "full_oracle_non_clifford", &self.full_oracle_non_clifford);
+        semantic_hash_field(
+            hasher,
+            "direct_seed_non_clifford",
+            &self.direct_seed_non_clifford,
+        );
+        semantic_hash_field(
+            hasher,
+            "full_oracle_non_clifford",
+            &self.full_oracle_non_clifford,
+        );
         semantic_hash_field(hasher, "gate_set", &self.gate_set);
         semantic_hash_field(hasher, "live_phase_bits", &self.live_phase_bits);
         semantic_hash_field(hasher, "lookup_family", &self.lookup_family);
-        semantic_hash_field(hasher, "lookup_workspace_qubits", &self.lookup_workspace_qubits);
+        semantic_hash_field(
+            hasher,
+            "lookup_workspace_qubits",
+            &self.lookup_workspace_qubits,
+        );
         semantic_hash_field(hasher, "name", &self.name);
         semantic_hash_field(hasher, "notes", &self.notes);
-        semantic_hash_field(hasher, "per_leaf_lookup_non_clifford", &self.per_leaf_lookup_non_clifford);
+        semantic_hash_field(
+            hasher,
+            "per_leaf_lookup_non_clifford",
+            &self.per_leaf_lookup_non_clifford,
+        );
         semantic_hash_field(hasher, "phase_shell", &self.phase_shell);
         semantic_hash_field(hasher, "phase_shell_hadamards", &self.phase_shell_hadamards);
-        semantic_hash_field(hasher, "phase_shell_measurements", &self.phase_shell_measurements);
-        semantic_hash_field(hasher, "phase_shell_rotation_depth", &self.phase_shell_rotation_depth);
+        semantic_hash_field(
+            hasher,
+            "phase_shell_measurements",
+            &self.phase_shell_measurements,
+        );
+        semantic_hash_field(
+            hasher,
+            "phase_shell_rotation_depth",
+            &self.phase_shell_rotation_depth,
+        );
         semantic_hash_field(hasher, "phase_shell_rotations", &self.phase_shell_rotations);
-        semantic_hash_field(hasher, "slot_allocation_family", &self.slot_allocation_family);
+        semantic_hash_field(
+            hasher,
+            "slot_allocation_family",
+            &self.slot_allocation_family,
+        );
         semantic_hash_field(hasher, "summary", &self.summary);
         semantic_hash_field(hasher, "total_logical_qubits", &self.total_logical_qubits);
         semantic_hash_field(hasher, "total_measurements", &self.total_measurements);
@@ -1074,7 +1546,9 @@ fn parse_hex_uint(value: &str) -> BigUint {
 }
 
 fn decode_point(point: &Option<AffineEncoding>) -> PointAffine {
-    point.as_ref().map(|value| (parse_hex_uint(&value.x_hex), parse_hex_uint(&value.y_hex)))
+    point
+        .as_ref()
+        .map(|value| (parse_hex_uint(&value.x_hex), parse_hex_uint(&value.y_hex)))
 }
 
 fn mod_sub(lhs: &BigUint, rhs: &BigUint, modulus: &BigUint) -> BigUint {
@@ -1114,7 +1588,9 @@ fn add_affine_projective(lhs: PointAffine, rhs: PointAffine, modulus: &BigUint) 
                 );
                 let denominator_cu = (&denominator_sq * &denominator) % modulus;
                 let y3 = mod_sub(
-                    &((&numerator * mod_sub(&((&x1 * &denominator_sq) % modulus), &x3_numer, modulus)) % modulus),
+                    &((&numerator
+                        * mod_sub(&((&x1 * &denominator_sq) % modulus), &x3_numer, modulus))
+                        % modulus),
                     &((&y1 * &denominator_cu) % modulus),
                     modulus,
                 );
@@ -1130,7 +1606,8 @@ fn add_affine_projective(lhs: PointAffine, rhs: PointAffine, modulus: &BigUint) 
                 );
                 let delta_x_cu = (&delta_x_sq * &delta_x) % modulus;
                 let y3 = mod_sub(
-                    &((&delta_y * mod_sub(&((&x1 * &delta_x_sq) % modulus), &x3_numer, modulus)) % modulus),
+                    &((&delta_y * mod_sub(&((&x1 * &delta_x_sq) % modulus), &x3_numer, modulus))
+                        % modulus),
                     &((&y1 * &delta_x_cu) % modulus),
                     modulus,
                 );
@@ -1193,19 +1670,41 @@ fn ensure_defined_register(
 
 fn compile_leaf(leaf: &LeafDocument) -> CompiledLeaf {
     let mut register_ids = BTreeMap::new();
-    for name in ["Q.X", "Q.Y", "Q.Z", "k", "lookup_x", "lookup_y", "lookup_meta", "qx", "qy", "qz"] {
+    for name in [
+        "Q.X",
+        "Q.Y",
+        "Q.Z",
+        "k",
+        "lookup_x",
+        "lookup_y",
+        "lookup_meta",
+        "qx",
+        "qy",
+        "qz",
+    ] {
         let next_id = register_ids.len();
         register_ids.insert(name.to_owned(), next_id);
     }
     let mut defined = BTreeSet::new();
-    for name in ["Q.X", "Q.Y", "Q.Z", "k", "lookup_x", "lookup_y", "lookup_meta"] {
+    for name in [
+        "Q.X",
+        "Q.Y",
+        "Q.Z",
+        "k",
+        "lookup_x",
+        "lookup_y",
+        "lookup_meta",
+    ] {
         defined.insert(name.to_owned());
     }
     let mut sorted_instructions = leaf.instructions.clone();
     sorted_instructions.sort_by_key(|instruction| instruction.pc);
     let mut compiled = Vec::with_capacity(sorted_instructions.len());
     for instruction in sorted_instructions {
-        let dst_name = instruction.dst.as_ref().expect("missing instruction destination");
+        let dst_name = instruction
+            .dst
+            .as_ref()
+            .expect("missing instruction destination");
         let dst = if let Some(existing) = register_ids.get(dst_name) {
             *existing
         } else {
@@ -1215,12 +1714,24 @@ fn compile_leaf(leaf: &LeafDocument) -> CompiledLeaf {
         };
         let compiled_instruction = match instruction.op.as_str() {
             "load_input" => {
-                let src_name = source_as_register(instruction.src.as_ref().expect("missing load_input source"));
-                let src = ensure_defined_register(&mut register_ids, &defined, src_name, "load_input source");
+                let src_name = source_as_register(
+                    instruction.src.as_ref().expect("missing load_input source"),
+                );
+                let src = ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    src_name,
+                    "load_input source",
+                );
                 CompiledInstruction::Copy { dst, src }
             }
             "lookup_affine_x" => {
-                let (table, key) = source_as_lookup(instruction.src.as_ref().expect("missing lookup_affine_x source"));
+                let (table, key) = source_as_lookup(
+                    instruction
+                        .src
+                        .as_ref()
+                        .expect("missing lookup_affine_x source"),
+                );
                 assert_eq!(table, "T.x");
                 assert_eq!(key, "k");
                 CompiledInstruction::Copy {
@@ -1229,7 +1740,12 @@ fn compile_leaf(leaf: &LeafDocument) -> CompiledLeaf {
                 }
             }
             "lookup_affine_y" => {
-                let (table, key) = source_as_lookup(instruction.src.as_ref().expect("missing lookup_affine_y source"));
+                let (table, key) = source_as_lookup(
+                    instruction
+                        .src
+                        .as_ref()
+                        .expect("missing lookup_affine_y source"),
+                );
                 assert_eq!(table, "T.y");
                 assert_eq!(key, "k");
                 CompiledInstruction::Copy {
@@ -1238,7 +1754,12 @@ fn compile_leaf(leaf: &LeafDocument) -> CompiledLeaf {
                 }
             }
             "lookup_meta" => {
-                let (table, key) = source_as_lookup(instruction.src.as_ref().expect("missing lookup_meta source"));
+                let (table, key) = source_as_lookup(
+                    instruction
+                        .src
+                        .as_ref()
+                        .expect("missing lookup_meta source"),
+                );
                 assert_eq!(table, "T.meta");
                 assert_eq!(key, "k");
                 CompiledInstruction::Copy {
@@ -1247,49 +1768,131 @@ fn compile_leaf(leaf: &LeafDocument) -> CompiledLeaf {
                 }
             }
             "bool_from_flag" => {
-                let (flags_name, bit) = source_as_flag(instruction.src.as_ref().expect("missing bool_from_flag source"));
-                let flags = ensure_defined_register(&mut register_ids, &defined, flags_name, "bool_from_flag flags");
+                let (flags_name, bit) = source_as_flag(
+                    instruction
+                        .src
+                        .as_ref()
+                        .expect("missing bool_from_flag source"),
+                );
+                let flags = ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    flags_name,
+                    "bool_from_flag flags",
+                );
                 CompiledInstruction::BoolFromFlag { dst, flags, bit }
             }
             "clear_bool_from_flag" => {
-                assert!(defined.contains(dst_name), "missing clear_bool_from_flag destination register: {dst_name}");
-                let (flags_name, bit) = source_as_flag(instruction.src.as_ref().expect("missing clear_bool_from_flag source"));
-                let flags = ensure_defined_register(&mut register_ids, &defined, flags_name, "clear_bool_from_flag flags");
+                assert!(
+                    defined.contains(dst_name),
+                    "missing clear_bool_from_flag destination register: {dst_name}"
+                );
+                let (flags_name, bit) = source_as_flag(
+                    instruction
+                        .src
+                        .as_ref()
+                        .expect("missing clear_bool_from_flag source"),
+                );
+                let flags = ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    flags_name,
+                    "clear_bool_from_flag flags",
+                );
                 CompiledInstruction::ClearBoolFromFlag { dst, flags, bit }
             }
             "field_mul" => {
-                let (left_name, right_name) = source_as_pair(instruction.src.as_ref().expect("missing field_mul source"));
-                let left = ensure_defined_register(&mut register_ids, &defined, left_name, "field_mul lhs");
-                let right = ensure_defined_register(&mut register_ids, &defined, right_name, "field_mul rhs");
+                let (left_name, right_name) =
+                    source_as_pair(instruction.src.as_ref().expect("missing field_mul source"));
+                let left = ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    left_name,
+                    "field_mul lhs",
+                );
+                let right = ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    right_name,
+                    "field_mul rhs",
+                );
                 CompiledInstruction::FieldMul { dst, left, right }
             }
             "field_add" => {
-                let (left_name, right_name) = source_as_pair(instruction.src.as_ref().expect("missing field_add source"));
-                let left = ensure_defined_register(&mut register_ids, &defined, left_name, "field_add lhs");
-                let right = ensure_defined_register(&mut register_ids, &defined, right_name, "field_add rhs");
+                let (left_name, right_name) =
+                    source_as_pair(instruction.src.as_ref().expect("missing field_add source"));
+                let left = ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    left_name,
+                    "field_add lhs",
+                );
+                let right = ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    right_name,
+                    "field_add rhs",
+                );
                 CompiledInstruction::FieldAdd { dst, left, right }
             }
             "field_sub" => {
-                let (left_name, right_name) = source_as_pair(instruction.src.as_ref().expect("missing field_sub source"));
-                let left = ensure_defined_register(&mut register_ids, &defined, left_name, "field_sub lhs");
-                let right = ensure_defined_register(&mut register_ids, &defined, right_name, "field_sub rhs");
+                let (left_name, right_name) =
+                    source_as_pair(instruction.src.as_ref().expect("missing field_sub source"));
+                let left = ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    left_name,
+                    "field_sub lhs",
+                );
+                let right = ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    right_name,
+                    "field_sub rhs",
+                );
                 CompiledInstruction::FieldSub { dst, left, right }
             }
             "mul_const" => {
-                let src_name = source_as_register(instruction.src.as_ref().expect("missing mul_const source"));
-                let src = ensure_defined_register(&mut register_ids, &defined, src_name, "mul_const source");
+                let src_name =
+                    source_as_register(instruction.src.as_ref().expect("missing mul_const source"));
+                let src = ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    src_name,
+                    "mul_const source",
+                );
                 let constant = instruction.const_value.expect("missing mul_const constant");
                 CompiledInstruction::MulConst { dst, src, constant }
             }
             "select_field_if_flag" => {
-                let flag_name = instruction.flag.as_ref().expect("missing select_field_if_flag flag");
-                let flag = ensure_defined_register(&mut register_ids, &defined, flag_name, "select_field_if_flag flag");
-                let (when_nonzero_name, when_zero_name) =
-                    source_as_pair(instruction.src.as_ref().expect("missing select_field_if_flag source"));
-                let when_nonzero =
-                    ensure_defined_register(&mut register_ids, &defined, when_nonzero_name, "select_field_if_flag nonzero source");
-                let when_zero =
-                    ensure_defined_register(&mut register_ids, &defined, when_zero_name, "select_field_if_flag zero source");
+                let flag_name = instruction
+                    .flag
+                    .as_ref()
+                    .expect("missing select_field_if_flag flag");
+                let flag = ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    flag_name,
+                    "select_field_if_flag flag",
+                );
+                let (when_nonzero_name, when_zero_name) = source_as_pair(
+                    instruction
+                        .src
+                        .as_ref()
+                        .expect("missing select_field_if_flag source"),
+                );
+                let when_nonzero = ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    when_nonzero_name,
+                    "select_field_if_flag nonzero source",
+                );
+                let when_zero = ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    when_zero_name,
+                    "select_field_if_flag zero source",
+                );
                 CompiledInstruction::SelectFieldIfFlag {
                     dst,
                     flag,
@@ -1303,7 +1906,10 @@ fn compile_leaf(leaf: &LeafDocument) -> CompiledLeaf {
         defined.insert(dst_name.clone());
     }
     for output in ["qx", "qy", "qz"] {
-        assert!(defined.contains(output), "missing output register: {output}");
+        assert!(
+            defined.contains(output),
+            "missing output register: {output}"
+        );
     }
     CompiledLeaf {
         register_count: register_ids.len(),
@@ -1317,6 +1923,7 @@ fn compile_leaf(leaf: &LeafDocument) -> CompiledLeaf {
         output_qx: register_id(&register_ids, "qx"),
         output_qy: register_id(&register_ids, "qy"),
         output_qz: register_id(&register_ids, "qz"),
+        skip_on_lookup_infinity: false,
         instructions: compiled,
     }
 }
@@ -1357,18 +1964,40 @@ fn projective_matches_affine(point: &PointProj, expected: &PointAffine, modulus:
     }
 }
 
-fn execute_leaf(leaf: &CompiledLeaf, accumulator: PointAffine, lookup: PointAffine, modulus: &BigUint) -> PointProj {
+fn execute_leaf(
+    leaf: &CompiledLeaf,
+    accumulator: PointAffine,
+    lookup: PointAffine,
+    modulus: &BigUint,
+) -> PointProj {
     let (qx, qy, qz) = affine_to_proj(accumulator);
-    let lookup_x = lookup.as_ref().map(|(x, _)| x.clone()).unwrap_or_else(BigUint::zero);
-    let lookup_y = lookup.as_ref().map(|(_, y)| y.clone()).unwrap_or_else(BigUint::zero);
-    let lookup_meta = if lookup.is_none() { BigUint::one() } else { BigUint::zero() };
+    if leaf.skip_on_lookup_infinity && lookup.is_none() {
+        return (qx, qy, qz);
+    }
+    let lookup_x = lookup
+        .as_ref()
+        .map(|(x, _)| x.clone())
+        .unwrap_or_else(BigUint::zero);
+    let lookup_y = lookup
+        .as_ref()
+        .map(|(_, y)| y.clone())
+        .unwrap_or_else(BigUint::zero);
+    let lookup_meta = if lookup.is_none() {
+        BigUint::one()
+    } else {
+        BigUint::zero()
+    };
     let mut registers = vec![BigUint::zero(); leaf.register_count];
     registers[leaf.input_qx] = qx;
     registers[leaf.input_qy] = qy;
     registers[leaf.input_qz] = qz;
-    registers[leaf.input_k] = if lookup.is_none() { BigUint::zero() } else { BigUint::one() };
-    registers[leaf.input_lookup_x] = lookup_x;
-    registers[leaf.input_lookup_y] = lookup_y;
+    registers[leaf.input_k] = if lookup.is_none() {
+        BigUint::zero()
+    } else {
+        BigUint::one()
+    };
+    registers[leaf.input_lookup_x] = lookup_x.clone();
+    registers[leaf.input_lookup_y] = lookup_y.clone();
     registers[leaf.input_lookup_meta] = lookup_meta;
     for instruction in &leaf.instructions {
         match instruction {
@@ -1385,11 +2014,33 @@ fn execute_leaf(leaf: &CompiledLeaf, accumulator: PointAffine, lookup: PointAffi
             CompiledInstruction::FieldMul { dst, left, right } => {
                 registers[*dst] = (&registers[*left] * &registers[*right]) % modulus;
             }
+            CompiledInstruction::FieldMulLookupX { dst, src } => {
+                registers[*dst] = (&registers[*src] * &lookup_x) % modulus;
+            }
+            CompiledInstruction::FieldMulLookupY { dst, src } => {
+                registers[*dst] = (&registers[*src] * &lookup_y) % modulus;
+            }
+            CompiledInstruction::FieldMulLookupSum { dst, src } => {
+                registers[*dst] =
+                    (&registers[*src] * ((&lookup_x + &lookup_y) % modulus)) % modulus;
+            }
             CompiledInstruction::FieldAdd { dst, left, right } => {
                 registers[*dst] = (&registers[*left] + &registers[*right]) % modulus;
             }
             CompiledInstruction::FieldSub { dst, left, right } => {
                 registers[*dst] = mod_sub(&registers[*left], &registers[*right], modulus);
+            }
+            CompiledInstruction::FieldSubSum {
+                dst,
+                minuend,
+                subtrahend_a,
+                subtrahend_b,
+            } => {
+                let first = mod_sub(&registers[*minuend], &registers[*subtrahend_a], modulus);
+                registers[*dst] = mod_sub(&first, &registers[*subtrahend_b], modulus);
+            }
+            CompiledInstruction::FieldTriple { dst, src } => {
+                registers[*dst] = (BigUint::from(3u32) * &registers[*src]) % modulus;
             }
             CompiledInstruction::MulConst { dst, src, constant } => {
                 registers[*dst] = (BigUint::from(*constant) * &registers[*src]) % modulus;
@@ -1407,6 +2058,30 @@ fn execute_leaf(leaf: &CompiledLeaf, accumulator: PointAffine, lookup: PointAffi
                 };
                 registers[*dst] = registers[source].clone();
             }
+            CompiledInstruction::CompleteA0StreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                c,
+                k,
+                l,
+                i,
+                y,
+                z,
+            } => {
+                let yz = (&lookup_y * &registers[*z]) % modulus;
+                let e = (&registers[*y] + yz) % modulus;
+                let f = (BigUint::from(21u32) * &registers[*z]) % modulus;
+                let m = (&registers[*i] + &f) % modulus;
+                let n = mod_sub(&registers[*i], &f, modulus);
+                registers[*out_x] = mod_sub(
+                    &((&registers[*k] * &n) % modulus),
+                    &((&e * &registers[*c]) % modulus),
+                    modulus,
+                );
+                registers[*out_y] = ((&n * &m) + (&registers[*c] * &registers[*l])) % modulus;
+                registers[*out_z] = ((&m * &e) + (&registers[*l] * &registers[*k])) % modulus;
+            }
         }
     }
     (
@@ -1423,8 +2098,14 @@ pub fn run_attestation(input: &AttestationInput) -> PublicValues {
         input.leaf_document.document_type == "lookup_fed_leaf"
             || input.leaf_document.document_type == "interface_borrowed_leaf"
     );
-    assert_eq!(input.family_document.document_type, "compiler_family_summary");
-    assert_eq!(input.case_corpus_document.document_type, "pointadd_case_corpus");
+    assert_eq!(
+        input.family_document.document_type,
+        "compiler_family_summary"
+    );
+    assert_eq!(
+        input.case_corpus_document.document_type,
+        "pointadd_case_corpus"
+    );
     assert_eq!(input.claim.digest_scheme, DIGEST_SCHEME);
     assert_eq!(input.leaf_document.digest_scheme, DIGEST_SCHEME);
     assert_eq!(input.family_document.digest_scheme, DIGEST_SCHEME);
@@ -1434,15 +2115,24 @@ pub fn run_attestation(input: &AttestationInput) -> PublicValues {
         input.claim.sha256
     );
     assert_eq!(
-        semantic_payload_sha256(&input.leaf_document.document_type, &input.leaf_document.payload),
+        semantic_payload_sha256(
+            &input.leaf_document.document_type,
+            &input.leaf_document.payload
+        ),
         input.leaf_document.sha256
     );
     assert_eq!(
-        semantic_payload_sha256(&input.family_document.document_type, &input.family_document.payload),
+        semantic_payload_sha256(
+            &input.family_document.document_type,
+            &input.family_document.payload
+        ),
         input.family_document.sha256
     );
     assert_eq!(
-        semantic_payload_sha256(&input.case_corpus_document.document_type, &input.case_corpus_document.payload),
+        semantic_payload_sha256(
+            &input.case_corpus_document.document_type,
+            &input.case_corpus_document.payload
+        ),
         input.case_corpus_document.sha256
     );
 
@@ -1456,27 +2146,66 @@ pub fn run_attestation(input: &AttestationInput) -> PublicValues {
     assert_eq!(claim.selected_family_name, family.name);
     assert_eq!(claim.expected_case_count, case_corpus.case_count);
 
-    assert_eq!(claim.non_clifford_formula.arithmetic_leaf_non_clifford, family.arithmetic_leaf_non_clifford);
-    assert_eq!(claim.non_clifford_formula.per_leaf_lookup_non_clifford, family.per_leaf_lookup_non_clifford);
-    assert_eq!(claim.non_clifford_formula.direct_seed_non_clifford, family.direct_seed_non_clifford);
-    assert_eq!(claim.non_clifford_formula.leaf_call_count_total, claim.leaf_call_count_total);
-    assert_eq!(claim.non_clifford_formula.arithmetic_component, family.arithmetic_leaf_non_clifford * claim.leaf_call_count_total as u64);
-    assert_eq!(claim.non_clifford_formula.lookup_component, family.per_leaf_lookup_non_clifford * claim.leaf_call_count_total as u64);
+    assert_eq!(
+        claim.non_clifford_formula.arithmetic_leaf_non_clifford,
+        family.arithmetic_leaf_non_clifford
+    );
+    assert_eq!(
+        claim.non_clifford_formula.per_leaf_lookup_non_clifford,
+        family.per_leaf_lookup_non_clifford
+    );
+    assert_eq!(
+        claim.non_clifford_formula.direct_seed_non_clifford,
+        family.direct_seed_non_clifford
+    );
+    assert_eq!(
+        claim.non_clifford_formula.leaf_call_count_total,
+        claim.leaf_call_count_total
+    );
+    assert_eq!(
+        claim.non_clifford_formula.arithmetic_component,
+        family.arithmetic_leaf_non_clifford * claim.leaf_call_count_total as u64
+    );
+    assert_eq!(
+        claim.non_clifford_formula.lookup_component,
+        family.per_leaf_lookup_non_clifford * claim.leaf_call_count_total as u64
+    );
     assert_eq!(
         claim.non_clifford_formula.reconstructed_total,
         claim.non_clifford_formula.arithmetic_component
             + claim.non_clifford_formula.lookup_component
             + family.direct_seed_non_clifford
     );
-    assert_eq!(claim.non_clifford_formula.reconstructed_total, family.full_oracle_non_clifford);
-    assert_eq!(claim.expected_full_oracle_non_clifford, family.full_oracle_non_clifford);
+    assert_eq!(
+        claim.non_clifford_formula.reconstructed_total,
+        family.full_oracle_non_clifford
+    );
+    assert_eq!(
+        claim.expected_full_oracle_non_clifford,
+        family.full_oracle_non_clifford
+    );
 
     assert_eq!(claim.logical_qubit_formula.field_bits, claim.field_bits);
-    assert_eq!(claim.logical_qubit_formula.arithmetic_slot_count, family.arithmetic_slot_count);
-    assert_eq!(claim.logical_qubit_formula.control_slot_count, family.control_slot_count);
-    assert_eq!(claim.logical_qubit_formula.borrowed_interface_qubits, family.borrowed_interface_qubits);
-    assert_eq!(claim.logical_qubit_formula.lookup_workspace_qubits, family.lookup_workspace_qubits);
-    assert_eq!(claim.logical_qubit_formula.live_phase_bits, family.live_phase_bits);
+    assert_eq!(
+        claim.logical_qubit_formula.arithmetic_slot_count,
+        family.arithmetic_slot_count
+    );
+    assert_eq!(
+        claim.logical_qubit_formula.control_slot_count,
+        family.control_slot_count
+    );
+    assert_eq!(
+        claim.logical_qubit_formula.borrowed_interface_qubits,
+        family.borrowed_interface_qubits
+    );
+    assert_eq!(
+        claim.logical_qubit_formula.lookup_workspace_qubits,
+        family.lookup_workspace_qubits
+    );
+    assert_eq!(
+        claim.logical_qubit_formula.live_phase_bits,
+        family.live_phase_bits
+    );
     assert_eq!(
         claim.logical_qubit_formula.arithmetic_component,
         claim.field_bits as u64 * family.arithmetic_slot_count as u64
@@ -1489,14 +2218,26 @@ pub fn run_attestation(input: &AttestationInput) -> PublicValues {
             + family.lookup_workspace_qubits as u64
             + family.live_phase_bits as u64
     );
-    assert_eq!(claim.logical_qubit_formula.reconstructed_total, family.total_logical_qubits);
-    assert_eq!(claim.expected_total_logical_qubits, family.total_logical_qubits);
+    assert_eq!(
+        claim.logical_qubit_formula.reconstructed_total,
+        family.total_logical_qubits
+    );
+    assert_eq!(
+        claim.expected_total_logical_qubits,
+        family.total_logical_qubits
+    );
 
     let modulus = parse_hex_uint(&case_corpus.field_modulus_hex);
     let mut passed_case_count = 0u32;
     for case in &compiled_cases {
-        let observed = execute_leaf(&compiled_leaf, case.accumulator.clone(), case.lookup.clone(), &modulus);
-        let reference = add_affine_projective(case.accumulator.clone(), case.lookup.clone(), &modulus);
+        let observed = execute_leaf(
+            &compiled_leaf,
+            case.accumulator.clone(),
+            case.lookup.clone(),
+            &modulus,
+        );
+        let reference =
+            add_affine_projective(case.accumulator.clone(), case.lookup.clone(), &modulus);
         assert!(
             projective_matches_affine(&reference, &case.expected, &modulus),
             "expected group-law output mismatch on {}",
@@ -1527,7 +2268,7 @@ pub fn run_attestation(input: &AttestationInput) -> PublicValues {
 }
 
 pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValues {
-    assert_eq!(input.schema, "compiler-project-zkp-attestation-input-v3");
+    assert_eq!(input.schema, "compiler-project-zkp-attestation-input-v4");
     assert_eq!(input.document_digest_scheme, DIGEST_SCHEME);
 
     let claim = &input.claim_summary;
@@ -1538,10 +2279,22 @@ pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValue
     assert_eq!(input.selected_family_name, family.name);
     assert_eq!(claim.expected_case_count, case_corpus.case_count);
 
-    assert_eq!(claim.non_clifford_formula.arithmetic_leaf_non_clifford, family.arithmetic_leaf_non_clifford);
-    assert_eq!(claim.non_clifford_formula.per_leaf_lookup_non_clifford, family.per_leaf_lookup_non_clifford);
-    assert_eq!(claim.non_clifford_formula.direct_seed_non_clifford, family.direct_seed_non_clifford);
-    assert_eq!(claim.non_clifford_formula.leaf_call_count_total, claim.leaf_call_count_total);
+    assert_eq!(
+        claim.non_clifford_formula.arithmetic_leaf_non_clifford,
+        family.arithmetic_leaf_non_clifford
+    );
+    assert_eq!(
+        claim.non_clifford_formula.per_leaf_lookup_non_clifford,
+        family.per_leaf_lookup_non_clifford
+    );
+    assert_eq!(
+        claim.non_clifford_formula.direct_seed_non_clifford,
+        family.direct_seed_non_clifford
+    );
+    assert_eq!(
+        claim.non_clifford_formula.leaf_call_count_total,
+        claim.leaf_call_count_total
+    );
     assert_eq!(
         claim.non_clifford_formula.arithmetic_component,
         family.arithmetic_leaf_non_clifford * claim.leaf_call_count_total as u64
@@ -1556,15 +2309,36 @@ pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValue
             + claim.non_clifford_formula.lookup_component
             + family.direct_seed_non_clifford
     );
-    assert_eq!(claim.non_clifford_formula.reconstructed_total, family.full_oracle_non_clifford);
-    assert_eq!(claim.expected_full_oracle_non_clifford, family.full_oracle_non_clifford);
+    assert_eq!(
+        claim.non_clifford_formula.reconstructed_total,
+        family.full_oracle_non_clifford
+    );
+    assert_eq!(
+        claim.expected_full_oracle_non_clifford,
+        family.full_oracle_non_clifford
+    );
 
     assert_eq!(claim.logical_qubit_formula.field_bits, claim.field_bits);
-    assert_eq!(claim.logical_qubit_formula.arithmetic_slot_count, family.arithmetic_slot_count);
-    assert_eq!(claim.logical_qubit_formula.control_slot_count, family.control_slot_count);
-    assert_eq!(claim.logical_qubit_formula.borrowed_interface_qubits, family.borrowed_interface_qubits);
-    assert_eq!(claim.logical_qubit_formula.lookup_workspace_qubits, family.lookup_workspace_qubits);
-    assert_eq!(claim.logical_qubit_formula.live_phase_bits, family.live_phase_bits);
+    assert_eq!(
+        claim.logical_qubit_formula.arithmetic_slot_count,
+        family.arithmetic_slot_count
+    );
+    assert_eq!(
+        claim.logical_qubit_formula.control_slot_count,
+        family.control_slot_count
+    );
+    assert_eq!(
+        claim.logical_qubit_formula.borrowed_interface_qubits,
+        family.borrowed_interface_qubits
+    );
+    assert_eq!(
+        claim.logical_qubit_formula.lookup_workspace_qubits,
+        family.lookup_workspace_qubits
+    );
+    assert_eq!(
+        claim.logical_qubit_formula.live_phase_bits,
+        family.live_phase_bits
+    );
     assert_eq!(
         claim.logical_qubit_formula.arithmetic_component,
         claim.field_bits as u64 * family.arithmetic_slot_count as u64
@@ -1577,8 +2351,14 @@ pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValue
             + family.lookup_workspace_qubits as u64
             + family.live_phase_bits as u64
     );
-    assert_eq!(claim.logical_qubit_formula.reconstructed_total, family.total_logical_qubits);
-    assert_eq!(claim.expected_total_logical_qubits, family.total_logical_qubits);
+    assert_eq!(
+        claim.logical_qubit_formula.reconstructed_total,
+        family.total_logical_qubits
+    );
+    assert_eq!(
+        claim.expected_total_logical_qubits,
+        family.total_logical_qubits
+    );
 
     let modulus = parse_hex_uint(&case_corpus.field_modulus_hex);
     let mut passed_case_count = 0u32;
@@ -1589,7 +2369,8 @@ pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValue
             case.lookup.clone(),
             &modulus,
         );
-        let reference = add_affine_projective(case.accumulator.clone(), case.lookup.clone(), &modulus);
+        let reference =
+            add_affine_projective(case.accumulator.clone(), case.lookup.clone(), &modulus);
         assert!(
             projective_matches_affine(&reference, &case.expected, &modulus),
             "expected group-law output mismatch on {}",
@@ -1649,37 +2430,47 @@ mod tests {
 
     #[test]
     fn native_run_prepared_attestation_matches_checked_in_input_shape() {
-        let input: PreparedAttestationInput =
-            serde_json::from_str(include_str!("../../../artifacts/zkp_attestation_input.json"))
-                .expect("failed to parse checked-in prepared attestation input");
+        let input: PreparedAttestationInput = serde_json::from_str(include_str!(
+            "../../../artifacts/zkp_attestation_input.json"
+        ))
+        .expect("failed to parse checked-in prepared attestation input");
         let public_values = run_prepared_attestation(&input);
-        assert_eq!(public_values.schema, "compiler-project-zkp-attestation-public-v2");
+        assert_eq!(
+            public_values.schema,
+            "compiler-project-zkp-attestation-public-v2"
+        );
         assert_eq!(public_values.case_count, 8);
         assert_eq!(public_values.passed_case_count, 8);
     }
 
     #[test]
     fn bincode_roundtrip_checked_in_prepared_input_preserves_attestation_behavior() {
-        let input: PreparedAttestationInput =
-            serde_json::from_str(include_str!("../../../artifacts/zkp_attestation_input.json"))
-                .expect("failed to parse checked-in prepared attestation input");
-        let bytes = bincode::serialize(&input).expect("failed to bincode-serialize prepared attestation input");
-        let roundtrip: PreparedAttestationInput =
-            bincode::deserialize(&bytes).expect("failed to bincode-deserialize prepared attestation input");
+        let input: PreparedAttestationInput = serde_json::from_str(include_str!(
+            "../../../artifacts/zkp_attestation_input.json"
+        ))
+        .expect("failed to parse checked-in prepared attestation input");
+        let bytes = bincode::serialize(&input)
+            .expect("failed to bincode-serialize prepared attestation input");
+        let roundtrip: PreparedAttestationInput = bincode::deserialize(&bytes)
+            .expect("failed to bincode-deserialize prepared attestation input");
         let original_public_values = run_prepared_attestation(&input);
         let roundtrip_public_values = run_prepared_attestation(&roundtrip);
         assert_eq!(
-            serde_json::to_value(original_public_values).expect("failed to serialize original public values"),
-            serde_json::to_value(roundtrip_public_values).expect("failed to serialize roundtrip public values"),
+            serde_json::to_value(original_public_values)
+                .expect("failed to serialize original public values"),
+            serde_json::to_value(roundtrip_public_values)
+                .expect("failed to serialize roundtrip public values"),
         );
     }
 
     #[test]
     fn json_roundtrip_checked_in_prepared_input_preserves_shape() {
-        let input: PreparedAttestationInput =
-            serde_json::from_str(include_str!("../../../artifacts/zkp_attestation_input.json"))
-                .expect("failed to parse checked-in prepared attestation input");
-        let json = serde_json::to_string(&input).expect("failed to serialize prepared attestation input");
+        let input: PreparedAttestationInput = serde_json::from_str(include_str!(
+            "../../../artifacts/zkp_attestation_input.json"
+        ))
+        .expect("failed to parse checked-in prepared attestation input");
+        let json =
+            serde_json::to_string(&input).expect("failed to serialize prepared attestation input");
         let roundtrip: PreparedAttestationInput =
             serde_json::from_str(&json).expect("failed to deserialize prepared attestation input");
         assert_eq!(

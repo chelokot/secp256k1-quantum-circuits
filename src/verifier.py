@@ -85,18 +85,58 @@ def _apply_instruction(env: Dict[str, Any], ins: Dict[str, Any], p: int) -> None
     elif op == 'field_mul':
         a, b = ins['src']
         env[dst] = (env[a] * env[b]) % p
+    elif op == 'field_mul_lookup_x':
+        env[dst] = (env[ins['src']] * env['T.x'][env['k']]) % p
+    elif op == 'field_mul_lookup_y':
+        env[dst] = (env[ins['src']] * env['T.y'][env['k']]) % p
+    elif op == 'field_mul_lookup_sum':
+        env[dst] = (env[ins['src']] * ((env['T.x'][env['k']] + env['T.y'][env['k']]) % p)) % p
     elif op == 'field_add':
         a, b = ins['src']
         env[dst] = (env[a] + env[b]) % p
     elif op == 'field_sub':
         a, b = ins['src']
         env[dst] = (env[a] - env[b]) % p
+    elif op == 'field_sub_sum':
+        minuend, subtrahend_a, subtrahend_b = ins['src']
+        env[dst] = (env[minuend] - env[subtrahend_a] - env[subtrahend_b]) % p
+    elif op == 'field_triple':
+        env[dst] = (3 * env[ins['src']]) % p
     elif op == 'mul_const':
         c = ins['const']
         env[dst] = (int(c) * env[ins['src']]) % p
     elif op == 'select_field_if_flag':
         old_src, new_src = ins['src']
         env[dst] = env[old_src] if env[ins['flag']] else env[new_src]
+    elif op == 'complete_a0_tail':
+        src = ins['src']
+        c = env[src['c']]
+        e = env[src['e']]
+        k = env[src['k']]
+        l = env[src['l']]
+        m = env[src['m']]
+        n = env[src['n']]
+        out_x, out_y, out_z = ins['dst']
+        env[out_x] = (k * n - e * c) % p
+        env[out_y] = (n * m + c * l) % p
+        env[out_z] = (m * e + l * k) % p
+    elif op == 'complete_a0_streamed_tail':
+        src = ins['src']
+        c = env[src['c']]
+        k = env[src['k']]
+        l = env[src['l']]
+        i = env[src['i']]
+        y = env[src['y']]
+        z = env[src['z']]
+        yz = (env['T.y'][env['k']] * z) % p
+        e = (y + yz) % p
+        f = (21 * z) % p
+        m = (i + f) % p
+        n = (i - f) % p
+        out_x, out_y, out_z = ins['dst']
+        env[out_x] = (k * n - e * c) % p
+        env[out_y] = (n * m + c * l) % p
+        env[out_z] = (m * e + l * k) % p
     else:
         raise ValueError(f'Unsupported optimized opcode: {op}')
 

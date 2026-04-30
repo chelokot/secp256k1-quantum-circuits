@@ -1,0 +1,379 @@
+{
+  "schema": "compiler-project-slot-allocation-v1",
+  "field_bits": 256,
+  "source_artifact": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json",
+  "tracked_arithmetic_registers": [
+    "lx",
+    "qx",
+    "qy",
+    "qz",
+    "t0",
+    "t1"
+  ],
+  "tracked_control_registers": [
+    "f_lookup_inf"
+  ],
+  "borrowed_field_registers": [],
+  "peak_arithmetic_slots": {
+    "count": 6,
+    "pc": 11,
+    "opcode": "field_mul_lookup_y"
+  },
+  "peak_control_slots": {
+    "count": 1,
+    "pc": 4,
+    "opcode": "bool_from_flag"
+  },
+  "peak_total_slots": {
+    "count": 6,
+    "pc": 11,
+    "opcode": "field_mul_lookup_y"
+  },
+  "allocator_summary": {
+    "exact_arithmetic_slot_count": 6,
+    "exact_control_slot_count": 1,
+    "exact_borrowed_field_slot_count": 0,
+    "arithmetic_bits": 1536,
+    "control_bits": 1,
+    "borrowed_field_bits": 0
+  },
+  "per_pc": [
+    {
+      "pc": 0,
+      "opcode": "load_input",
+      "arithmetic_slots_live_before_write": 0,
+      "control_slots_live_before_write": 0,
+      "arithmetic_slots_needed_during_write": 1,
+      "control_slots_needed_during_write": 0,
+      "dst": "qx",
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 1,
+      "opcode": "load_input",
+      "arithmetic_slots_live_before_write": 1,
+      "control_slots_live_before_write": 0,
+      "arithmetic_slots_needed_during_write": 2,
+      "control_slots_needed_during_write": 0,
+      "dst": "qy",
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 2,
+      "opcode": "load_input",
+      "arithmetic_slots_live_before_write": 2,
+      "control_slots_live_before_write": 0,
+      "arithmetic_slots_needed_during_write": 3,
+      "control_slots_needed_during_write": 0,
+      "dst": "qz",
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 3,
+      "opcode": "lookup_meta",
+      "arithmetic_slots_live_before_write": 3,
+      "control_slots_live_before_write": 0,
+      "arithmetic_slots_needed_during_write": 3,
+      "control_slots_needed_during_write": 0,
+      "dst": [],
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 4,
+      "opcode": "bool_from_flag",
+      "arithmetic_slots_live_before_write": 3,
+      "control_slots_live_before_write": 0,
+      "arithmetic_slots_needed_during_write": 3,
+      "control_slots_needed_during_write": 1,
+      "dst": "f_lookup_inf",
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 5,
+      "opcode": "field_mul_lookup_x",
+      "arithmetic_slots_live_before_write": 3,
+      "control_slots_live_before_write": 0,
+      "arithmetic_slots_needed_during_write": 4,
+      "control_slots_needed_during_write": 0,
+      "dst": "t0",
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 6,
+      "opcode": "field_mul_lookup_x",
+      "arithmetic_slots_live_before_write": 4,
+      "control_slots_live_before_write": 0,
+      "arithmetic_slots_needed_during_write": 5,
+      "control_slots_needed_during_write": 0,
+      "dst": "lx",
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 7,
+      "opcode": "field_add",
+      "arithmetic_slots_live_before_write": 5,
+      "control_slots_live_before_write": 0,
+      "arithmetic_slots_needed_during_write": 5,
+      "control_slots_needed_during_write": 0,
+      "dst": "lx",
+      "reuses_existing_slot": true
+    },
+    {
+      "pc": 8,
+      "opcode": "field_add",
+      "arithmetic_slots_live_before_write": 5,
+      "control_slots_live_before_write": 0,
+      "arithmetic_slots_needed_during_write": 5,
+      "control_slots_needed_during_write": 0,
+      "dst": "qx",
+      "reuses_existing_slot": true
+    },
+    {
+      "pc": 9,
+      "opcode": "field_mul_lookup_sum",
+      "arithmetic_slots_live_before_write": 5,
+      "control_slots_live_before_write": 0,
+      "arithmetic_slots_needed_during_write": 5,
+      "control_slots_needed_during_write": 0,
+      "dst": "t1",
+      "reuses_existing_slot": true
+    },
+    {
+      "pc": 10,
+      "opcode": "mul_const",
+      "arithmetic_slots_live_before_write": 5,
+      "control_slots_live_before_write": 0,
+      "arithmetic_slots_needed_during_write": 5,
+      "control_slots_needed_during_write": 0,
+      "dst": "lx",
+      "reuses_existing_slot": true
+    },
+    {
+      "pc": 11,
+      "opcode": "field_mul_lookup_y",
+      "arithmetic_slots_live_before_write": 5,
+      "control_slots_live_before_write": 0,
+      "arithmetic_slots_needed_during_write": 6,
+      "control_slots_needed_during_write": 0,
+      "dst": "qx",
+      "reuses_existing_slot": false
+    },
+    {
+      "pc": 12,
+      "opcode": "field_sub_sum",
+      "arithmetic_slots_live_before_write": 6,
+      "control_slots_live_before_write": 0,
+      "arithmetic_slots_needed_during_write": 6,
+      "control_slots_needed_during_write": 0,
+      "dst": "t1",
+      "reuses_existing_slot": true
+    },
+    {
+      "pc": 13,
+      "opcode": "field_triple",
+      "arithmetic_slots_live_before_write": 6,
+      "control_slots_live_before_write": 0,
+      "arithmetic_slots_needed_during_write": 6,
+      "control_slots_needed_during_write": 0,
+      "dst": "t0",
+      "reuses_existing_slot": true
+    },
+    {
+      "pc": 14,
+      "opcode": "complete_a0_streamed_tail",
+      "arithmetic_slots_live_before_write": 6,
+      "control_slots_live_before_write": 0,
+      "arithmetic_slots_needed_during_write": 6,
+      "control_slots_needed_during_write": 0,
+      "dst": [
+        "qx",
+        "qy",
+        "qz"
+      ],
+      "reuses_existing_slot": true
+    }
+  ],
+  "versions": [
+    {
+      "version_id": 0,
+      "register": "qx",
+      "reg_type": "arithmetic",
+      "def_pc": 0,
+      "last_use_pc": 8,
+      "assigned_slot": 0
+    },
+    {
+      "version_id": 1,
+      "register": "qy",
+      "reg_type": "arithmetic",
+      "def_pc": 1,
+      "last_use_pc": 14,
+      "assigned_slot": 1
+    },
+    {
+      "version_id": 2,
+      "register": "qz",
+      "reg_type": "arithmetic",
+      "def_pc": 2,
+      "last_use_pc": 14,
+      "assigned_slot": 2
+    },
+    {
+      "version_id": 3,
+      "register": "f_lookup_inf",
+      "reg_type": "control",
+      "def_pc": 4,
+      "last_use_pc": 4,
+      "assigned_slot": 0
+    },
+    {
+      "version_id": 4,
+      "register": "t0",
+      "reg_type": "arithmetic",
+      "def_pc": 5,
+      "last_use_pc": 13,
+      "assigned_slot": 3
+    },
+    {
+      "version_id": 5,
+      "register": "lx",
+      "reg_type": "arithmetic",
+      "def_pc": 6,
+      "last_use_pc": 7,
+      "assigned_slot": 4
+    },
+    {
+      "version_id": 6,
+      "register": "lx",
+      "reg_type": "arithmetic",
+      "def_pc": 7,
+      "last_use_pc": 10,
+      "assigned_slot": 4
+    },
+    {
+      "version_id": 7,
+      "register": "qx",
+      "reg_type": "arithmetic",
+      "def_pc": 8,
+      "last_use_pc": 9,
+      "assigned_slot": 0
+    },
+    {
+      "version_id": 8,
+      "register": "t1",
+      "reg_type": "arithmetic",
+      "def_pc": 9,
+      "last_use_pc": 12,
+      "assigned_slot": 0
+    },
+    {
+      "version_id": 9,
+      "register": "lx",
+      "reg_type": "arithmetic",
+      "def_pc": 10,
+      "last_use_pc": 14,
+      "assigned_slot": 4
+    },
+    {
+      "version_id": 10,
+      "register": "qx",
+      "reg_type": "arithmetic",
+      "def_pc": 11,
+      "last_use_pc": 14,
+      "assigned_slot": 5
+    },
+    {
+      "version_id": 11,
+      "register": "t1",
+      "reg_type": "arithmetic",
+      "def_pc": 12,
+      "last_use_pc": 14,
+      "assigned_slot": 0
+    },
+    {
+      "version_id": 12,
+      "register": "t0",
+      "reg_type": "arithmetic",
+      "def_pc": 13,
+      "last_use_pc": 14,
+      "assigned_slot": 3
+    },
+    {
+      "version_id": 13,
+      "register": "qx",
+      "reg_type": "arithmetic",
+      "def_pc": 14,
+      "last_use_pc": 14,
+      "assigned_slot": 1
+    },
+    {
+      "version_id": 14,
+      "register": "qy",
+      "reg_type": "arithmetic",
+      "def_pc": 14,
+      "last_use_pc": 14,
+      "assigned_slot": 2
+    },
+    {
+      "version_id": 15,
+      "register": "qz",
+      "reg_type": "arithmetic",
+      "def_pc": 14,
+      "last_use_pc": 14,
+      "assigned_slot": 4
+    }
+  ],
+  "resource_ownership": {
+    "schema": "compiler-project-resource-ownership-v1",
+    "field_bits": 256,
+    "derived_from": "executable leaf instruction liveness and assigned register versions",
+    "owners": [
+      {
+        "owner": "arithmetic_slot_register_file",
+        "wire_class": "field",
+        "logical_qubit_budget": 1536,
+        "required_logical_qubits": 1536,
+        "live_wire_peak": 6,
+        "assigned_register_versions": 15,
+        "source_artifact": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json"
+      },
+      {
+        "owner": "control_slot_register_file",
+        "wire_class": "control",
+        "logical_qubit_budget": 1,
+        "required_logical_qubits": 1,
+        "live_wire_peak": 1,
+        "assigned_register_versions": 1,
+        "source_artifact": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json"
+      },
+      {
+        "owner": "borrowed_lookup_interface_field_lanes",
+        "wire_class": "field",
+        "logical_qubit_budget": 0,
+        "required_logical_qubits": 0,
+        "live_wire_peak": 0,
+        "assigned_register_versions": 0,
+        "source_artifact": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json"
+      }
+    ],
+    "lookup_interface_policy": {
+      "coordinate_field_lanes_materialized_by_leaf": 0,
+      "coordinate_field_lanes_counted_in_lookup_workspace": 0,
+      "table_fed_coordinate_operands": [
+        "lookup_x",
+        "lookup_y",
+        "lookup_x_plus_y"
+      ],
+      "statement": "The streamed lookup contract consumes table coordinates as constants inside table-fed arithmetic kernels; it does not borrow or omit a field-sized lookup output lane."
+    },
+    "no_free_quantum_wire_invariant": {
+      "passes": true,
+      "capacity_rule": "Each counted owner budget must cover the peak live wires assigned to that owner; lookup coordinate output lanes are not part of lookup_workspace_qubits unless explicitly materialized."
+    }
+  },
+  "notes": [
+    "This artifact allocates the streamed lookup tail contract directly from executable leaf liveness.",
+    "Lookup x/y coordinates are not materialized as field-sized interface lanes; table-fed arithmetic kernels consume them as constants, and the resource ownership contract records zero borrowed lookup field lanes.",
+    "The complete_a0_streamed_tail multi-output instruction consumes C/K/L/I/Y/Z and derives E/F/M/N internally, so the peak arithmetic register file is six field slots."
+  ]
+}

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 from typing import Any, Dict, List, Mapping
 
 from derived_resources import minimal_addition_chain
@@ -281,6 +282,213 @@ def _field_mul_kernel(field_bits: int) -> Dict[str, Any]:
     )
 
 
+def _renamed_field_mul_kernel(field_bits: int, opcode: str, summary: str, note: str) -> Dict[str, Any]:
+    kernel = deepcopy(_field_mul_kernel(field_bits))
+    kernel['opcode'] = opcode
+    kernel['summary'] = summary
+    kernel['notes'] = [*kernel['notes'], note]
+    return kernel
+
+
+def _field_sub_sum_kernel(field_bits: int) -> Dict[str, Any]:
+    two_subtractors = _block(
+        name='two_borrow_ladders',
+        summary='Two 256-bit borrow ladders for a - b - c inside one field register.',
+        instance_count=2 * (field_bits - 1),
+        primitive_operations=_ladder_operations(field_bits - 1, include_measurement=True)
+        + _ladder_operations(field_bits - 1, include_measurement=True),
+        notes=[
+            'The streamed lookup tail uses this fused opcode for K = H - A - I.',
+            'It is counted as exactly two field-subtractor kernels over the same field width.',
+        ],
+    )
+    return _kernel(
+        opcode='field_sub_sum',
+        summary='Exact fused two-subtraction field kernel for a - b - c.',
+        stages=[
+            _stage(
+                name='borrow_resolution_pair',
+                summary='Two sequential temporary logical-AND borrow ladders.',
+                category='subtractor',
+                blocks=[two_subtractors],
+                notes=['The fused instruction is a scheduling contract; its non-Clifford count is the sum of two ordinary subtractor kernels.'],
+            )
+        ],
+        notes=[
+            'The kernel contributes 2(n-1) non-Clifford operations for a 256-bit field value.',
+        ],
+    )
+
+
+def _field_triple_kernel(field_bits: int) -> Dict[str, Any]:
+    two_adders = _block(
+        name='two_carry_ladders',
+        summary='Two 256-bit carry ladders for 3a = a + a + a inside one field register.',
+        instance_count=2 * (field_bits - 1),
+        primitive_operations=_ladder_operations(field_bits - 1, include_measurement=True)
+        + _ladder_operations(field_bits - 1, include_measurement=True),
+        notes=[
+            'The streamed lookup tail uses this fused opcode for L = 3A.',
+            'It is counted as exactly two field-adder kernels over the same field width.',
+        ],
+    )
+    return _kernel(
+        opcode='field_triple',
+        summary='Exact fused two-addition field kernel for multiplication by 3.',
+        stages=[
+            _stage(
+                name='carry_resolution_pair',
+                summary='Two sequential temporary logical-AND carry ladders.',
+                category='adder',
+                blocks=[two_adders],
+                notes=['The fused instruction is a scheduling contract; its non-Clifford count is the sum of two ordinary adder kernels.'],
+            )
+        ],
+        notes=[
+            'The kernel contributes 2(n-1) non-Clifford operations for a 256-bit field value.',
+        ],
+    )
+
+
+def _complete_a0_streamed_tail_kernel(field_bits: int) -> Dict[str, Any]:
+    streamed_yz = deepcopy(_renamed_field_mul_kernel(
+        field_bits,
+        'field_mul_lookup_y',
+        'Internal streamed yZ multiplication used by the complete-add tail macro.',
+        'This stage is counted inside the macro because yZ is not materialized as a standalone leaf field value.',
+    )['stages'])
+    fixed_f = _block(
+        name='fixed_21z_chain',
+        summary='Fixed multiplication F = 21Z inside the streamed tail macro.',
+        instance_count=6 * (field_bits - 1),
+        primitive_operations=[
+            operation
+            for _ in range(6)
+            for operation in _ladder_operations(field_bits - 1, include_measurement=True)
+        ],
+        notes=[
+            'The checked field constant is 3b = 21, whose monotone addition chain has six field-add steps.',
+        ],
+    )
+    internal_combines = _block(
+        name='three_internal_combine_ladders',
+        summary='Three field add/sub combines for E = Y + yZ, M = I + F, and N = I - F.',
+        instance_count=3 * (field_bits - 1),
+        primitive_operations=[
+            operation
+            for _ in range(3)
+            for operation in _ladder_operations(field_bits - 1, include_measurement=True)
+        ],
+        notes=[
+            'These combines are inside the macro boundary because E, M, and N are never standalone counted field wires.',
+        ],
+    )
+    partial_products = _block(
+        name='six_partial_product_grids',
+        summary='Six schoolbook partial-product grids for KN, EC, NM, CL, ME, and LK.',
+        instance_count=6 * field_bits * field_bits,
+        primitive_operations=[
+            operation
+            for _ in range(6)
+            for operation in _field_mul_partial_product_operations(field_bits)
+        ],
+        notes=[
+            'The multi-output tail has six field-multiplication products and no materialized intermediate field lane outside the macro boundary.',
+        ],
+    )
+    controlled_add_path = _block(
+        name='six_controlled_add_accumulators',
+        summary='Six controlled-add accumulator paths, one for each tail multiplication.',
+        instance_count=6 * (field_bits - 1),
+        primitive_operations=[
+            operation
+            for _ in range(6)
+            for operation in _ladder_operations(field_bits - 1, include_measurement=True)
+        ],
+        notes=[
+            'This block preserves the same controlled add-subtract multiplier cost used by field_mul.',
+        ],
+    )
+    controlled_sub_path = _block(
+        name='six_controlled_sub_accumulators',
+        summary='Six controlled-subtract accumulator paths, one for each tail multiplication.',
+        instance_count=6 * field_bits,
+        primitive_operations=[
+            operation
+            for _ in range(6)
+            for operation in _ladder_operations(field_bits, include_measurement=True)
+        ],
+        notes=[
+            'This block preserves the same controlled add-subtract multiplier cost used by field_mul.',
+        ],
+    )
+    output_combine = _block(
+        name='three_output_combine_ladders',
+        summary='Three field add/sub combine ladders for X3, Y3, and Z3 after the six products.',
+        instance_count=3 * (field_bits - 1),
+        primitive_operations=[
+            operation
+            for _ in range(3)
+            for operation in _ladder_operations(field_bits - 1, include_measurement=True)
+        ],
+        notes=[
+            'The output combines are counted as three ordinary field add/sub kernels.',
+        ],
+    )
+    return _kernel(
+        opcode='complete_a0_streamed_tail',
+        summary='Exact multi-output complete-add tail kernel from C, K, L, I, Y, and Z.',
+        stages=[
+            *streamed_yz,
+            _stage(
+                name='tail_fixed_21z',
+                summary='Internal fixed multiplication F = 21Z.',
+                category='mul_const',
+                blocks=[fixed_f],
+                notes=['This is the same six-addition-chain cost used by the standalone mul_const-by-21 kernel.'],
+            ),
+            _stage(
+                name='tail_internal_combines',
+                summary='Internal construction of E, M, and N.',
+                category='tail_combine',
+                blocks=[internal_combines],
+                notes=['These three add/sub kernels avoid materializing E, M, and N as leaf-owned field wires.'],
+            ),
+            _stage(
+                name='tail_partial_products',
+                summary='Six schoolbook partial-product grids for the complete-add tail.',
+                category='schoolbook_grid',
+                blocks=[partial_products],
+                notes=['This is the dominant part of the tail macro and corresponds to six field multiplications.'],
+            ),
+            _stage(
+                name='tail_controlled_add_path',
+                summary='Controlled-add paths for the six tail multiplications.',
+                category='controlled_add',
+                blocks=[controlled_add_path],
+                notes=['Counted exactly as six field-mul add paths.'],
+            ),
+            _stage(
+                name='tail_controlled_sub_path',
+                summary='Controlled-subtract paths for the six tail multiplications.',
+                category='controlled_subtract',
+                blocks=[controlled_sub_path],
+                notes=['Counted exactly as six field-mul subtract paths.'],
+            ),
+            _stage(
+                name='tail_output_combine',
+                summary='Three add/sub combines that write X3, Y3, and Z3.',
+                category='tail_combine',
+                blocks=[output_combine],
+                notes=['Counted exactly as three field add/sub kernels.'],
+            ),
+        ],
+        notes=[
+            'The macro is a liveness contract, not a free arithmetic operation: its non-Clifford count includes yZ, 21Z, E/M/N, six output multipliers, and three output add/sub combines.',
+        ],
+    )
+
+
 def _leaf_reconstruction(leaf_opcode_histogram: Mapping[str, int], kernels: List[Dict[str, Any]]) -> Dict[str, Any]:
     kernel_lookup = {kernel['opcode']: kernel for kernel in kernels}
     per_opcode = []
@@ -317,8 +525,29 @@ def _leaf_reconstruction(leaf_opcode_histogram: Mapping[str, int], kernels: List
 def arithmetic_lowering_library(field_bits: int, leaf_opcode_histogram: Mapping[str, int]) -> Dict[str, Any]:
     kernels = [
         _field_mul_kernel(field_bits),
+        _renamed_field_mul_kernel(
+            field_bits,
+            'field_mul_lookup_x',
+            'Exact table-fed x-coordinate field multiplication kernel with no materialized lookup-output field lane.',
+            'The streamed lookup coordinate is a table-controlled constant input and is not counted as a leaf field wire.',
+        ),
+        _renamed_field_mul_kernel(
+            field_bits,
+            'field_mul_lookup_y',
+            'Exact table-fed y-coordinate field multiplication kernel with no materialized lookup-output field lane.',
+            'The streamed lookup coordinate is a table-controlled constant input and is not counted as a leaf field wire.',
+        ),
+        _renamed_field_mul_kernel(
+            field_bits,
+            'field_mul_lookup_sum',
+            'Exact table-fed (x+y)-coordinate field multiplication kernel with no materialized lookup-output field lane.',
+            'The streamed lookup sum is a table-controlled constant input and is not counted as a leaf field wire.',
+        ),
         _field_add_kernel(field_bits),
         _field_sub_kernel(field_bits),
+        _field_sub_sum_kernel(field_bits),
+        _field_triple_kernel(field_bits),
+        _complete_a0_streamed_tail_kernel(field_bits),
         _mul_const_kernel(field_bits, 21),
         _field_select_kernel(field_bits),
     ]
@@ -326,7 +555,7 @@ def arithmetic_lowering_library(field_bits: int, leaf_opcode_histogram: Mapping[
         'schema': 'compiler-project-arithmetic-lowerings-v2',
         'family': {
             'name': 'litinski_addsub_schoolbook_v1',
-            'summary': 'Exact arithmetic-kernel family with generated primitive-operation inventories for schoolbook multiplication, ripple add/sub, conditional select, and fixed multiplication by 21.',
+            'summary': 'Exact arithmetic-kernel family with generated primitive-operation inventories for schoolbook multiplication, table-fed multiplication, fused add/sub tail kernels, conditional select, and fixed multiplication by 21.',
             'gate_set': 'Clifford + Toffoli-style arithmetic + measurement',
             'field_bits': int(field_bits),
             'exact_scope': 'exact non-Clifford counts and generated primitive-operation inventories for the named arithmetic-kernel family; Clifford micro-counts remain outside the shipped lowering layer',
@@ -375,6 +604,10 @@ def arithmetic_kernel_summary(arithmetic_lowerings: Mapping[str, Any]) -> Dict[s
         'field_sub_non_clifford': kernel_lookup['field_sub']['exact_non_clifford_per_kernel'],
         'select_non_clifford': kernel_lookup['select_field_if_flag']['exact_non_clifford_per_kernel'],
         'mul_const_non_clifford': kernel_lookup['mul_const']['exact_non_clifford_per_kernel'],
+        'field_mul_lookup_non_clifford': kernel_lookup['field_mul_lookup_x']['exact_non_clifford_per_kernel'],
+        'field_sub_sum_non_clifford': kernel_lookup['field_sub_sum']['exact_non_clifford_per_kernel'],
+        'field_triple_non_clifford': kernel_lookup['field_triple']['exact_non_clifford_per_kernel'],
+        'complete_a0_streamed_tail_non_clifford': kernel_lookup['complete_a0_streamed_tail']['exact_non_clifford_per_kernel'],
         'arithmetic_leaf_non_clifford': reconstruction['arithmetic_leaf_non_clifford'],
         'leaf_opcode_histogram': reconstruction['leaf_opcode_histogram'],
         'exact_scope': family['exact_scope'],

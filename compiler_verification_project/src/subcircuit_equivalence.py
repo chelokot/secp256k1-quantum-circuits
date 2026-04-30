@@ -18,14 +18,14 @@ from common import (  # noqa: E402
     SECP_N,
     SECP_P,
     affine_to_proj,
-    load_json,
     precompute_window_tables,
     mul_fixed_window,
     sha256_path,
 )
 from lookup_fed_leaf import (  # noqa: E402
-    build_lookup_fed_leaf,
     build_lookup_fed_leaf_equivalence,
+    build_streamed_lookup_tail_leaf,
+    build_streamed_lookup_tail_leaf_equivalence,
 )
 from lookup_lowering import lowered_lookup_semantic_summary  # noqa: E402
 from verifier import exec_netlist_with_state_trace, make_audit_cases  # noqa: E402
@@ -42,10 +42,6 @@ LEAF_TRACE_SAMPLE_COUNTS = {
 
 def _leaf_path() -> Path:
     return PROJECT_ROOT / 'artifacts' / 'circuits' / 'optimized_pointadd_secp256k1.json'
-
-
-def _cleanup_summary_path() -> Path:
-    return PROJECT_ROOT / 'artifacts' / 'verification' / 'extended' / 'coherent_cleanup_summary.json'
 
 
 def _selected_leaf_trace_cases() -> List[Dict[str, Any]]:
@@ -74,26 +70,57 @@ def _flag_bit(before: Mapping[str, Any], src: Mapping[str, Any]) -> int:
     return int((int(before[src['flags']]) >> int(src['bit'])) & 1)
 
 
-def _expected_instruction_result(before: Mapping[str, Any], ins: Mapping[str, Any], p: int) -> int:
+def _expected_instruction_results(before: Mapping[str, Any], ins: Mapping[str, Any], p: int) -> Dict[str, int]:
     opcode = str(ins['op'])
     if opcode == 'bool_from_flag':
-        return _flag_bit(before, ins['src'])
+        return {str(ins['dst']): _flag_bit(before, ins['src'])}
     if opcode == 'clear_bool_from_flag':
-        return int(before[ins['dst']]) ^ _flag_bit(before, ins['src'])
+        return {str(ins['dst']): int(before[ins['dst']]) ^ _flag_bit(before, ins['src'])}
     if opcode == 'field_mul':
         left, right = ins['src']
-        return (int(before[left]) * int(before[right])) % p
+        return {str(ins['dst']): (int(before[left]) * int(before[right])) % p}
+    if opcode == 'field_mul_lookup_x':
+        return {str(ins['dst']): (int(before[ins['src']]) * int(before['T.x'][before['k']])) % p}
+    if opcode == 'field_mul_lookup_y':
+        return {str(ins['dst']): (int(before[ins['src']]) * int(before['T.y'][before['k']])) % p}
+    if opcode == 'field_mul_lookup_sum':
+        lookup_sum = (int(before['T.x'][before['k']]) + int(before['T.y'][before['k']])) % p
+        return {str(ins['dst']): (int(before[ins['src']]) * lookup_sum) % p}
     if opcode == 'field_add':
         left, right = ins['src']
-        return (int(before[left]) + int(before[right])) % p
+        return {str(ins['dst']): (int(before[left]) + int(before[right])) % p}
     if opcode == 'field_sub':
         left, right = ins['src']
-        return (int(before[left]) - int(before[right])) % p
+        return {str(ins['dst']): (int(before[left]) - int(before[right])) % p}
+    if opcode == 'field_sub_sum':
+        minuend, subtrahend_a, subtrahend_b = ins['src']
+        return {str(ins['dst']): (int(before[minuend]) - int(before[subtrahend_a]) - int(before[subtrahend_b])) % p}
+    if opcode == 'field_triple':
+        return {str(ins['dst']): (3 * int(before[ins['src']])) % p}
     if opcode == 'mul_const':
-        return (int(ins['const']) * int(before[ins['src']])) % p
+        return {str(ins['dst']): (int(ins['const']) * int(before[ins['src']])) % p}
     if opcode == 'select_field_if_flag':
         keep_src, update_src = ins['src']
-        return int(before[keep_src]) if int(before[ins['flag']]) else int(before[update_src])
+        return {str(ins['dst']): int(before[keep_src]) if int(before[ins['flag']]) else int(before[update_src])}
+    if opcode == 'complete_a0_streamed_tail':
+        src = ins['src']
+        c = int(before[src['c']])
+        k = int(before[src['k']])
+        l = int(before[src['l']])
+        i = int(before[src['i']])
+        y = int(before[src['y']])
+        z = int(before[src['z']])
+        lookup_y = int(before['T.y'][before['k']])
+        e = (y + lookup_y * z) % p
+        f = (21 * z) % p
+        m = (i + f) % p
+        n = (i - f) % p
+        out_x, out_y, out_z = ins['dst']
+        return {
+            out_x: (k * n - e * c) % p,
+            out_y: (n * m + c * l) % p,
+            out_z: (m * e + l * k) % p,
+        }
     raise KeyError(f'unsupported traced opcode: {opcode}')
 
 
@@ -189,10 +216,16 @@ def _arithmetic_opcode_equivalence(
         'bool_from_flag',
         'clear_bool_from_flag',
         'field_mul',
+        'field_mul_lookup_x',
+        'field_mul_lookup_y',
+        'field_mul_lookup_sum',
         'field_add',
         'field_sub',
+        'field_sub_sum',
+        'field_triple',
         'mul_const',
         'select_field_if_flag',
+        'complete_a0_streamed_tail',
     }
     trace_pcs = {int(ins['pc']) for ins in leaf['instructions'] if ins['op'] in traced_opcodes}
     per_pc_stats: Dict[int, Dict[str, Any]] = {
@@ -233,13 +266,14 @@ def _arithmetic_opcode_equivalence(
             before = row['before']
             after = row['after']
             opcode = str(instruction['op'])
-            expected = _expected_instruction_result(before, instruction, SECP_P)
-            passed = int(int(after[instruction['dst']]) == int(expected))
+            expected_values = _expected_instruction_results(before, instruction, SECP_P)
+            passed = int(all(int(after[name]) == int(expected) for name, expected in expected_values.items()))
             per_pc_stats[pc]['total'] += 1
             per_pc_stats[pc]['pass'] += passed
             per_opcode_stats[opcode]['total'] += 1
             per_opcode_stats[opcode]['pass'] += passed
             if opcode == 'bool_from_flag':
+                expected = next(iter(expected_values.values()))
                 bool_flag_one_cases += int(expected == 1)
                 bool_flag_zero_cases += int(expected == 0)
             if opcode == 'clear_bool_from_flag':
@@ -318,26 +352,26 @@ def _lookup_family_equivalence(lookup_lowerings: Mapping[str, Any]) -> Dict[str,
     }
 
 
-def _cleanup_window_equivalence(arithmetic_trace: Mapping[str, Any], leaf: Mapping[str, Any], leaf_source_artifact: str) -> Dict[str, Any]:
-    cleanup_summary = load_json(_cleanup_summary_path())
+def _boundary_noop_equivalence(arithmetic_trace: Mapping[str, Any], leaf: Mapping[str, Any], leaf_source_artifact: str) -> Dict[str, Any]:
     per_pc = {int(row['pc']): row for row in arithmetic_trace['per_pc']}
     extract_pc = next(int(ins['pc']) for ins in leaf['instructions'] if ins['op'] == 'bool_from_flag')
-    clear_pc = next(int(ins['pc']) for ins in leaf['instructions'] if ins['op'] == 'clear_bool_from_flag')
     select_pcs = [int(ins['pc']) for ins in leaf['instructions'] if ins['op'] == 'select_field_if_flag']
+    clear_pcs = [int(ins['pc']) for ins in leaf['instructions'] if ins['op'] == 'clear_bool_from_flag']
     return {
         'leaf_source_artifact': leaf_source_artifact,
-        'cleanup_summary_path': 'artifacts/verification/extended/coherent_cleanup_summary.json',
-        'cleanup_summary_sha256': sha256_path(_cleanup_summary_path()),
+        'policy': str(leaf.get('lookup_infinity_policy')),
         'extract_pc': extract_pc,
         'select_pcs': select_pcs,
-        'clear_pc': clear_pc,
+        'clear_pcs': clear_pcs,
         'trace_extract_pass': int(per_pc[extract_pc]['pass']),
         'trace_extract_total': int(per_pc[extract_pc]['total']),
-        'trace_clear_pass': int(per_pc[clear_pc]['pass']),
-        'trace_clear_total': int(per_pc[clear_pc]['total']),
-        'trace_cleanup_zero_pass': int(arithmetic_trace['cleanup_zero_after_clear']['pass']),
-        'trace_cleanup_zero_total': int(arithmetic_trace['cleanup_zero_after_clear']['total']),
-        'imported_cleanup_audit': cleanup_summary['summary'],
+        'lookup_infinity_cases_seen': int(arithmetic_trace['bool_flag_value_partition']['flag_one_cases']),
+        'ordinary_cases_seen': int(arithmetic_trace['bool_flag_value_partition']['flag_zero_cases']),
+        'no_leaf_select_or_cleanup_pcs': len(select_pcs) == 0 and len(clear_pcs) == 0,
+        'notes': [
+            'The streamed lookup contract implements k = 0 as a boundary no-op rather than a leaf-internal XYZ select window.',
+            'The hot leaf still exposes and traces the lookup-infinity predicate so the proof input binds the same public edge-case contract.',
+        ],
     }
 
 
@@ -381,19 +415,19 @@ def build_subcircuit_equivalence_artifact(
     frontier: Mapping[str, Any],
     full_attack_inventory: Mapping[str, Any],
 ) -> Dict[str, Any]:
-    selected_leaf = build_lookup_fed_leaf()
-    selected_leaf_source = 'compiler_verification_project/artifacts/lookup_fed_leaf.json'
+    selected_leaf = build_streamed_lookup_tail_leaf()
+    selected_leaf_source = 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json'
     arithmetic_trace = _arithmetic_opcode_equivalence(
         arithmetic_lowerings,
         leaf=selected_leaf,
         leaf_source_artifact=selected_leaf_source,
     )
     return {
-        'schema': 'compiler-project-subcircuit-equivalence-v2',
+        'schema': 'compiler-project-subcircuit-equivalence-v3',
         'source_artifacts': {
             'leaf': selected_leaf_source,
             'lookup_fed_leaf_equivalence': 'compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json',
-            'cleanup_summary': 'artifacts/verification/extended/coherent_cleanup_summary.json',
+            'streamed_lookup_tail_leaf_equivalence': 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json',
             'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
             'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
             'generated_block_inventories': 'compiler_verification_project/artifacts/generated_block_inventories.json',
@@ -403,9 +437,10 @@ def build_subcircuit_equivalence_artifact(
         'arithmetic_opcode_equivalence': arithmetic_trace,
         'leaf_interface_equivalence': {
             'lookup_fed_leaf': build_lookup_fed_leaf_equivalence(),
+            'streamed_lookup_tail_leaf': build_streamed_lookup_tail_leaf_equivalence(),
         },
         'lookup_family_equivalence': _lookup_family_equivalence(lookup_lowerings),
-        'cleanup_window_equivalence': _cleanup_window_equivalence(
+        'boundary_noop_equivalence': _boundary_noop_equivalence(
             arithmetic_trace,
             leaf=selected_leaf,
             leaf_source_artifact=selected_leaf_source,
@@ -416,7 +451,7 @@ def build_subcircuit_equivalence_artifact(
             full_attack_inventory,
         ),
         'notes': [
-            'This artifact binds the exact compiler-family summaries back to checked lower layers: traced ISA arithmetic/flag opcodes on the selected lookup-fed leaf, leaf-interface equivalence, lowered lookup-family semantics, the coherent cleanup window, and generated whole-oracle block composition.',
+            'This artifact binds the exact compiler-family summaries back to checked lower layers: traced ISA arithmetic/flag opcodes on the selected streamed lookup tail leaf, leaf-interface equivalence, lowered lookup-family semantics, boundary no-op semantics, and generated whole-oracle block composition.',
             'It does not claim external primitive-gate equivalence below the named arithmetic or lookup blocks.',
         ],
     }
