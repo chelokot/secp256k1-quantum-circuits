@@ -29,6 +29,17 @@ def test_subcircuit_equivalence_arithmetic_trace_passes() -> None:
     assert arithmetic['bool_flag_value_partition']['flag_zero_cases'] > 0
 
 
+def test_subcircuit_equivalence_leaf_interfaces_cover_edge_cases() -> None:
+    equivalence = _load_equivalence()
+    interfaces = equivalence['leaf_interface_equivalence']
+    for name in ('lookup_fed_leaf', 'interface_borrowed_leaf'):
+        summary = interfaces[name]['summary']
+        assert summary['pass'] == summary['total'], name
+        for category in ('random', 'doubling', 'inverse', 'accumulator_infinity', 'lookup_infinity'):
+            assert summary['categories'][category]['total'] > 0, (name, category)
+            assert summary['categories'][category]['pass'] == summary['categories'][category]['total'], (name, category)
+
+
 def test_subcircuit_equivalence_reduced_width_witnesses_pass() -> None:
     equivalence = _load_equivalence()
     widths = equivalence['arithmetic_opcode_equivalence']['reduced_width_family_shape_witnesses']['widths']

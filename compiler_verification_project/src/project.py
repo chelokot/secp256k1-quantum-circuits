@@ -59,8 +59,12 @@ from arithmetic_lowering import arithmetic_kernel_summary, arithmetic_lowering_l
 from ft_ir import build_ft_ir_compositions as build_ft_ir_compositions_single  # noqa: E402
 from generated_block_inventory import build_generated_block_inventories as build_generated_block_inventories_single  # noqa: E402
 from lookup_fed_leaf import (  # noqa: E402
+    INTERFACE_BORROWED_ARITHMETIC_SLOTS,
+    INTERFACE_BORROWED_SCRATCH_SLOTS,
     LOOKUP_FED_ARITHMETIC_SLOTS,
     LOOKUP_FED_CONTROL_SLOTS,
+    build_interface_borrowed_leaf,
+    build_interface_borrowed_leaf_equivalence,
     build_lookup_fed_leaf,
     build_lookup_fed_leaf_equivalence,
 )
@@ -144,6 +148,7 @@ class CompilerFamilyResult:
     full_oracle_non_clifford: int
     arithmetic_slot_count: int
     control_slot_count: int
+    borrowed_interface_qubits: int
     lookup_workspace_qubits: int
     live_phase_bits: int
     total_logical_qubits: int
@@ -298,6 +303,7 @@ def _slot_allocation_for_leaf(
     control_slots: Sequence[str],
     source_artifact: str,
     notes: Sequence[str],
+    borrowed_field_slots: Sequence[str] = (),
 ) -> Dict[str, Any]:
     arithmetic_slot_set = set(arithmetic_slots)
     control_slot_set = set(control_slots)
@@ -413,6 +419,7 @@ def _slot_allocation_for_leaf(
         'source_artifact': source_artifact,
         'tracked_arithmetic_registers': sorted(arithmetic_slot_set),
         'tracked_control_registers': sorted(control_slot_set),
+        'borrowed_field_registers': sorted(borrowed_field_slots),
         'peak_arithmetic_slots': {
             'count': int(peak_arithmetic['arithmetic_slots_needed_during_write']),
             'pc': int(peak_arithmetic['pc']),
@@ -431,8 +438,10 @@ def _slot_allocation_for_leaf(
         'allocator_summary': {
             'exact_arithmetic_slot_count': int(next_arithmetic),
             'exact_control_slot_count': int(next_control),
+            'exact_borrowed_field_slot_count': len(borrowed_field_slots),
             'arithmetic_bits': int(next_arithmetic * FIELD_BITS),
             'control_bits': int(next_control),
+            'borrowed_field_bits': int(len(borrowed_field_slots) * FIELD_BITS),
         },
         'per_pc': per_pc,
         'versions': version_table,
@@ -471,6 +480,21 @@ def lookup_fed_leaf_slot_allocation() -> Dict[str, Any]:
     )
 
 
+def interface_borrowed_leaf_slot_allocation() -> Dict[str, Any]:
+    return _slot_allocation_for_leaf(
+        leaf=build_interface_borrowed_leaf(),
+        arithmetic_slots=INTERFACE_BORROWED_ARITHMETIC_SLOTS,
+        control_slots=LOOKUP_FED_CONTROL_SLOTS,
+        source_artifact='compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json',
+        notes=[
+            'This artifact allocates the compiler-project interface-borrowed leaf contract, where lookup_x becomes scratch after its last coordinate read.',
+            'The borrowed lookup interface wire carries t0 values outside the persistent arithmetic register file, so it is counted as an additional live field lane in the conservative headline qubit formula.',
+            f'The persistent arithmetic register file is {len(INTERFACE_BORROWED_ARITHMETIC_SLOTS)} field slots plus counted borrowed lookup scratch {INTERFACE_BORROWED_SCRATCH_SLOTS}.',
+        ],
+        borrowed_field_slots=INTERFACE_BORROWED_SCRATCH_SLOTS,
+    )
+
+
 def slot_allocation_families() -> List[SlotAllocationFamily]:
     return [
         SlotAllocationFamily(
@@ -491,6 +515,17 @@ def slot_allocation_families() -> List[SlotAllocationFamily]:
             slot_allocation=lookup_fed_leaf_slot_allocation(),
             notes=[
                 'This interface keeps the checked point-add semantics but shifts the initial lookup outputs behind an explicit lookup-fed boundary.',
+            ],
+        ),
+        SlotAllocationFamily(
+            name='interface_borrowed_lookup_x_v1',
+            summary='Lookup-fed leaf interface that borrows lookup_x as scratch after the lookup coordinate has been consumed.',
+            source_artifact='compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json',
+            leaf_source_artifact='compiler_verification_project/artifacts/interface_borrowed_leaf.json',
+            slot_allocation=interface_borrowed_leaf_slot_allocation(),
+            notes=[
+                'This interface keeps the point-add boundary executable while reusing the lookup_x interface wire for the t0 live ranges.',
+                'The borrowed coordinate output is counted as a live field lane unless a future lookup lowering proves that the same lane is already included elsewhere in the resource model.',
             ],
         ),
     ]
@@ -708,7 +743,7 @@ def build_generated_block_inventories_payload(
             'reconstruction': best_qubit['reconstruction'],
         },
         'notes': [
-            'This artifact records generated whole-oracle block inventories for every named compiler family across both the materialized-lookup leaf interface and the lookup-fed leaf interface.',
+            'This artifact records generated whole-oracle block inventories for every named compiler family across the materialized, lookup-fed, and interface-borrowed leaf interfaces.',
             'The structure follows a compositional call-graph style accounting layer: shared arithmetic blocks, family-specific lookup blocks, qubit contributors, and explicit phase-shell lowering blocks.',
         ],
     }
@@ -796,7 +831,7 @@ def build_ft_ir_compositions_payload(
         },
         'notes': [
             'This artifact expresses each named compiler family as a compositional FT-style call graph with hierarchical bundles and a traversed leaf sigma.',
-            'The FT IR now spans both exact leaf interfaces checked into the compiler project.',
+            'The FT IR spans the exact leaf interfaces checked into the compiler project, including the borrowed lookup-interface contract.',
         ],
     }
 
@@ -816,7 +851,7 @@ def build_whole_oracle_recount_payload(
     }
     recount['notes'] = [
         'This artifact performs a full exact whole-oracle recount by aggregating the FT IR leaf sigma for each named compiler family.',
-        'The recount is independent of the flattened generated block inventory totals and serves as the primary exact total source for the compiler frontier across both exact leaf interfaces.',
+        'The recount is independent of the flattened generated block inventory totals and serves as the primary exact total source for the compiler frontier across all exact leaf interfaces.',
     ]
     return recount
 
@@ -884,6 +919,7 @@ def compiler_family_frontier() -> Dict[str, Any]:
                 full_oracle_non_clifford=total_nc,
                 arithmetic_slot_count=int(reconstruction['arithmetic_slot_count']),
                 control_slot_count=int(reconstruction['control_slot_count']),
+                borrowed_interface_qubits=int(reconstruction.get('borrowed_interface_qubits', 0)),
                 lookup_workspace_qubits=int(reconstruction['lookup_workspace_qubits']),
                 live_phase_bits=int(reconstruction['live_phase_bits']),
                 total_logical_qubits=total_qubits,
@@ -965,9 +1001,12 @@ def build_qubit_breakthrough_analysis(
     arithmetic_slot_count = int(best_qubit['arithmetic_slot_count'])
     control_slot_count = int(best_qubit['control_slot_count'])
     lookup_workspace_qubits = int(best_qubit['lookup_workspace_qubits'])
+    borrowed_interface_qubits = int(best_qubit.get('borrowed_interface_qubits', 0))
     live_phase_bits = int(best_qubit['live_phase_bits'])
     arithmetic_register_file_qubits = arithmetic_slot_count * FIELD_BITS
-    fixed_non_arithmetic_overhead_qubits = control_slot_count + lookup_workspace_qubits + live_phase_bits
+    fixed_non_arithmetic_overhead_qubits = (
+        control_slot_count + borrowed_interface_qubits + lookup_workspace_qubits + live_phase_bits
+    )
     total_logical_qubits = int(best_qubit['total_logical_qubits'])
     public_google_baseline = dict(effective_frontier['public_google_baseline'])
 
@@ -1520,6 +1559,9 @@ def build_all_artifacts() -> Dict[str, Any]:
         'lookup_fed_leaf': build_lookup_fed_leaf(),
         'lookup_fed_leaf_equivalence': build_lookup_fed_leaf_equivalence(),
         'lookup_fed_slot_allocation': lookup_fed_leaf_slot_allocation(),
+        'interface_borrowed_leaf': build_interface_borrowed_leaf(),
+        'interface_borrowed_leaf_equivalence': build_interface_borrowed_leaf_equivalence(),
+        'interface_borrowed_slot_allocation': interface_borrowed_leaf_slot_allocation(),
         'arithmetic_lowerings': arithmetic_lowerings,
         'arithmetic_kernel_library': arithmetic_kernel_library(),
         'primitive_multiplier_library': primitive_multiplier_library(),
@@ -1547,6 +1589,9 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('lookup_fed_leaf.json'), out['lookup_fed_leaf'])
     dump_json(project_artifact_path('lookup_fed_leaf_equivalence.json'), out['lookup_fed_leaf_equivalence'])
     dump_json(project_artifact_path('lookup_fed_leaf_slot_allocation.json'), out['lookup_fed_slot_allocation'])
+    dump_json(project_artifact_path('interface_borrowed_leaf.json'), out['interface_borrowed_leaf'])
+    dump_json(project_artifact_path('interface_borrowed_leaf_equivalence.json'), out['interface_borrowed_leaf_equivalence'])
+    dump_json(project_artifact_path('interface_borrowed_leaf_slot_allocation.json'), out['interface_borrowed_slot_allocation'])
     dump_json(project_artifact_path('arithmetic_lowerings.json'), out['arithmetic_lowerings'])
     dump_json(project_artifact_path('module_library.json'), out['arithmetic_kernel_library'])
     dump_json(project_artifact_path('primitive_multiplier_library.json'), out['primitive_multiplier_library'])
@@ -1571,7 +1616,7 @@ def build_all_artifacts() -> Dict[str, Any]:
     )
 
     build_summary = {
-        'schema': 'compiler-project-build-summary-v13',
+        'schema': 'compiler-project-build-summary-v14',
         'artifacts': {
             'canonical_public_point': 'compiler_verification_project/artifacts/canonical_public_point.json',
             'full_raw32_oracle': 'compiler_verification_project/artifacts/full_raw32_oracle.json',
@@ -1579,6 +1624,9 @@ def build_all_artifacts() -> Dict[str, Any]:
             'lookup_fed_leaf': 'compiler_verification_project/artifacts/lookup_fed_leaf.json',
             'lookup_fed_leaf_equivalence': 'compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json',
             'lookup_fed_leaf_slot_allocation': 'compiler_verification_project/artifacts/lookup_fed_leaf_slot_allocation.json',
+            'interface_borrowed_leaf': 'compiler_verification_project/artifacts/interface_borrowed_leaf.json',
+            'interface_borrowed_leaf_equivalence': 'compiler_verification_project/artifacts/interface_borrowed_leaf_equivalence.json',
+            'interface_borrowed_leaf_slot_allocation': 'compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json',
             'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
             'module_library': 'compiler_verification_project/artifacts/module_library.json',
             'primitive_multiplier_library': 'compiler_verification_project/artifacts/primitive_multiplier_library.json',
@@ -1603,7 +1651,7 @@ def build_all_artifacts() -> Dict[str, Any]:
             'best_sub30m_qubit_family': out['frontier']['best_sub30m_qubit_family'],
         },
         'notes': [
-            'The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families with explicit arithmetic, lookup, and phase-shell lowerings, generated block inventories, a compositional FT IR layer, a full whole-oracle recount, internal subcircuit-equivalence witnesses, and two exact leaf-interface families.',
+            'The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families with explicit arithmetic, lookup, and phase-shell lowerings, generated block inventories, a compositional FT IR layer, a full whole-oracle recount, internal subcircuit-equivalence witnesses, and exact leaf-interface families.',
             'Its qubit accounting uses exact slot allocation and exact phase-shell lowering instead of a fixed 10-slot/512-phase policy.',
             'The physical-estimator layer binds those exact logical counts to explicit Microsoft Resource Estimator target profiles and recorded estimator outputs.',
         ],

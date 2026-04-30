@@ -1,5 +1,5 @@
 {
-  "schema": "compiler-project-build-summary-v13",
+  "schema": "compiler-project-build-summary-v14",
   "artifacts": {
     "canonical_public_point": "compiler_verification_project/artifacts/canonical_public_point.json",
     "full_raw32_oracle": "compiler_verification_project/artifacts/full_raw32_oracle.json",
@@ -7,6 +7,9 @@
     "lookup_fed_leaf": "compiler_verification_project/artifacts/lookup_fed_leaf.json",
     "lookup_fed_leaf_equivalence": "compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json",
     "lookup_fed_leaf_slot_allocation": "compiler_verification_project/artifacts/lookup_fed_leaf_slot_allocation.json",
+    "interface_borrowed_leaf": "compiler_verification_project/artifacts/interface_borrowed_leaf.json",
+    "interface_borrowed_leaf_equivalence": "compiler_verification_project/artifacts/interface_borrowed_leaf_equivalence.json",
+    "interface_borrowed_leaf_slot_allocation": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
     "arithmetic_lowerings": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
     "module_library": "compiler_verification_project/artifacts/module_library.json",
     "primitive_multiplier_library": "compiler_verification_project/artifacts/primitive_multiplier_library.json",
@@ -40,6 +43,7 @@
       "full_oracle_non_clifford": 22753831,
       "arithmetic_slot_count": 7,
       "control_slot_count": 1,
+      "borrowed_interface_qubits": 0,
       "lookup_workspace_qubits": 48,
       "live_phase_bits": 1,
       "total_logical_qubits": 1842,
@@ -73,6 +77,7 @@
       "full_oracle_non_clifford": 37432935,
       "arithmetic_slot_count": 7,
       "control_slot_count": 1,
+      "borrowed_interface_qubits": 0,
       "lookup_workspace_qubits": 31,
       "live_phase_bits": 1,
       "total_logical_qubits": 1825,
@@ -106,6 +111,7 @@
       "full_oracle_non_clifford": 22753831,
       "arithmetic_slot_count": 7,
       "control_slot_count": 1,
+      "borrowed_interface_qubits": 0,
       "lookup_workspace_qubits": 48,
       "live_phase_bits": 1,
       "total_logical_qubits": 1842,
@@ -127,7 +133,7 @@
     }
   },
   "notes": [
-    "The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families with explicit arithmetic, lookup, and phase-shell lowerings, generated block inventories, a compositional FT IR layer, a full whole-oracle recount, internal subcircuit-equivalence witnesses, and two exact leaf-interface families.",
+    "The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families with explicit arithmetic, lookup, and phase-shell lowerings, generated block inventories, a compositional FT IR layer, a full whole-oracle recount, internal subcircuit-equivalence witnesses, and exact leaf-interface families.",
     "Its qubit accounting uses exact slot allocation and exact phase-shell lowering instead of a fixed 10-slot/512-phase policy.",
     "The physical-estimator layer binds those exact logical counts to explicit Microsoft Resource Estimator target profiles and recorded estimator outputs."
   ]

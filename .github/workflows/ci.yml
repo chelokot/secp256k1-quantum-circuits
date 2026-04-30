@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  test:
+  python-tests:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -33,3 +33,45 @@ jobs:
 
       - name: Run test suite
         run: make test
+
+  attestation-rust:
+    runs-on: ubuntu-latest
+    env:
+      CARGO_BUILD_JOBS: '1'
+      GOFLAGS: -p=1
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: compiler_verification_project/zkp_attestation/vendor/sp1-recursion-gnark-ffi/go/go.mod
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang libclang-dev llvm-dev protobuf-compiler
+
+      - name: Install SP1 toolchain
+        run: |
+          curl -L https://sp1.succinct.xyz | bash
+          export PATH="$HOME/.sp1/bin:$PATH"
+          sp1up
+          echo "$HOME/.sp1/bin" >> "$GITHUB_PATH"
+          echo "LIBCLANG_PATH=$(llvm-config --libdir)" >> "$GITHUB_ENV"
+          echo "BINDGEN_EXTRA_CLANG_ARGS=-I$(gcc -print-file-name=include) -I/usr/include" >> "$GITHUB_ENV"
+
+      - name: Check prover toolchain
+        run: |
+          cargo prove --version
+          rustc +succinct --version
+
+      - name: Run checked attestation Rust tests
+        run: |
+          cargo test -p secp256k1-zkp-attestation-lib --manifest-path compiler_verification_project/zkp_attestation/Cargo.toml
+          cargo test -p secp256k1-zkp-attestation-script --release --manifest-path compiler_verification_project/zkp_attestation/Cargo.toml checked_groth16_bundle_matches_checked_fixture

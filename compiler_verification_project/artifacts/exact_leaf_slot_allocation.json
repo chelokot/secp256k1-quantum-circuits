@@ -16,6 +16,7 @@
     "f_lookup_inf",
     "meta"
   ],
+  "borrowed_field_registers": [],
   "peak_arithmetic_slots": {
     "count": 7,
     "pc": 8,
@@ -34,8 +35,10 @@
   "allocator_summary": {
     "exact_arithmetic_slot_count": 8,
     "exact_control_slot_count": 2,
+    "exact_borrowed_field_slot_count": 0,
     "arithmetic_bits": 2048,
-    "control_bits": 2
+    "control_bits": 2,
+    "borrowed_field_bits": 0
   },
   "per_pc": [
     {

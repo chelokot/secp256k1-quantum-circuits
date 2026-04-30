@@ -1,5 +1,5 @@
 {
-  "schema": "compiler-project-lookup-fed-leaf-equivalence-v1",
+  "schema": "compiler-project-lookup-fed-leaf-equivalence-v2",
   "lookup_fed_leaf_order": [
     5,
     3,
@@ -44,21 +44,38 @@
     "lookup_y",
     "lookup_meta"
   ],
+  "arithmetic_slots": [
+    "qx",
+    "qy",
+    "qz",
+    "lx",
+    "ly",
+    "t0",
+    "t1"
+  ],
   "summary": {
-    "total": 64,
-    "pass": 64,
+    "total": 80,
+    "pass": 80,
     "categories": {
       "random": {
-        "total": 48,
-        "pass": 48
+        "total": 16,
+        "pass": 16
+      },
+      "doubling": {
+        "total": 16,
+        "pass": 16
+      },
+      "inverse": {
+        "total": 16,
+        "pass": 16
       },
       "accumulator_infinity": {
-        "total": 8,
-        "pass": 8
+        "total": 16,
+        "pass": 16
       },
       "lookup_infinity": {
-        "total": 8,
-        "pass": 8
+        "total": 16,
+        "pass": 16
       }
     }
   }

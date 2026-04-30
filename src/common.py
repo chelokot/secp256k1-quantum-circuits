@@ -11,6 +11,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 from typing import Any, Dict, Iterable, Iterator, List, Optional, Tuple
 
@@ -272,22 +273,55 @@ def iter_csv_dicts(path: Path) -> Iterator[Dict[str, str]]:
         yield from csv.DictReader(handle)
 
 
+def _skip_manifest_relpath(rel: str) -> bool:
+    if rel.startswith('.git/'):
+        return True
+    if rel.startswith('.pytest_cache/'):
+        return True
+    if rel.startswith('compiler_verification_project/generated_circuits/'):
+        return True
+    if rel.startswith('compiler_verification_project/zkp_attestation/target/'):
+        return True
+    if '/__pycache__/' in f'/{rel}/' or rel.endswith('.pyc'):
+        return True
+    if rel == 'MANIFEST.sha256' or rel.endswith('.zip'):
+        return True
+    if rel == 'results/repo_verification_summary.json':
+        return True
+    return False
+
+
+def _git_tracked_manifest_paths(root: Path) -> Optional[List[str]]:
+    try:
+        result = subprocess.run(
+            ['git', 'ls-files', '-z', '--cached'],
+            cwd=root,
+            capture_output=True,
+            check=True,
+        )
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    return sorted(
+        rel
+        for rel in result.stdout.decode().split('\0')
+        if rel and not _skip_manifest_relpath(rel)
+    )
+
+
 def relative_file_manifest(root: Path) -> Dict[str, Dict[str, Any]]:
     manifest: Dict[str, Dict[str, Any]] = {}
-    for path in sorted(root.rglob('*')):
-        if not path.is_file():
-            continue
-        rel = path.relative_to(root).as_posix()
-        if rel.startswith('.git/'):
-            continue
-        if rel.startswith('.pytest_cache/'):
-            continue
-        if '/__pycache__/' in f'/{rel}/' or rel.endswith('.pyc'):
-            continue
-        if rel == 'MANIFEST.sha256' or rel.endswith('.zip'):
-            continue
-        if rel == 'results/repo_verification_summary.json':
-            continue
+    manifest_paths = _git_tracked_manifest_paths(root)
+    if manifest_paths is None:
+        manifest_paths = []
+        for path in sorted(root.rglob('*')):
+            if not path.is_file():
+                continue
+            rel = path.relative_to(root).as_posix()
+            if _skip_manifest_relpath(rel):
+                continue
+            manifest_paths.append(rel)
+    for rel in manifest_paths:
+        path = root / rel
         manifest[rel] = {
             'sha256': sha256_path(path),
             'bytes': path.stat().st_size,

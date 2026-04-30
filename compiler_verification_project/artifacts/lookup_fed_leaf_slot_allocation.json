@@ -14,6 +14,7 @@
   "tracked_control_registers": [
     "f_lookup_inf"
   ],
+  "borrowed_field_registers": [],
   "peak_arithmetic_slots": {
     "count": 7,
     "pc": 14,
@@ -32,8 +33,10 @@
   "allocator_summary": {
     "exact_arithmetic_slot_count": 7,
     "exact_control_slot_count": 1,
+    "exact_borrowed_field_slot_count": 0,
     "arithmetic_bits": 1792,
-    "control_bits": 1
+    "control_bits": 1,
+    "borrowed_field_bits": 0
   },
   "per_pc": [
     {

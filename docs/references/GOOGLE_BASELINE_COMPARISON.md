@@ -22,29 +22,23 @@ The repository's exact comparison layer is the compiler-family frontier in:
 
 - `compiler_verification_project/artifacts/family_frontier.json`
 
-Its two checked headline points are:
+Its checked public headline is one central exact family:
 
-- **best exact gate family:** `22,756,199 non-Clifford / 2,381 q`
-- **best exact qubit family:** `2,338 q / 37,432,935 non-Clifford`
+- **central exact family:** `22,753,831 non-Clifford / 1,842 q`
 
 ## Exact non-Clifford comparison
 
-For the **best exact gate family**:
+For the **central exact family**:
 
-- **3.9550x** lower non-Clifford than the public low-qubit line
-- **3.0761x** lower non-Clifford than the public low-gate line
-
-For the **best exact qubit family**:
-
-- **2.4043x** lower non-Clifford than the public low-qubit line
-- **1.8700x** lower non-Clifford than the public low-gate line
+- **3.9554x** lower non-Clifford than the public low-qubit line
+- **3.0764x** lower non-Clifford than the public low-gate line
 
 ## Exact qubit comparison
 
 The exact frontier does **not** currently beat Google's published qubit lines:
 
-- the best exact qubit family is **1,138 qubits above** the public low-qubit line
-- the best exact qubit family is **888 qubits above** the public low-gate line
+- the central exact family is **642 qubits above** the public low-qubit line
+- the central exact family is **392 qubits above** the public low-gate line
 
 Lower-exact modeled hypotheses are intentionally separated into
 `docs/research/MODELED_IMPLEMENTATION_HYPOTHESES.md`.
