@@ -67607,19 +67607,6 @@
             }
           },
           {
-            "id": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-            "kind": "leaf",
-            "category": "live_qubits",
-            "summary": "Counted field-width lookup interface lanes borrowed by the selected leaf contract.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
-              "resource_profile": {
-                "resource_semantics": "peak_live_qubits",
-                "logical_qubits": 256
-              }
-            }
-          },
-          {
             "id": "live_qubit_contributors__lookup_workspace",
             "kind": "leaf",
             "category": "live_qubits",
@@ -68037,13 +68024,6 @@
           },
           {
             "src": "live_qubit_contributors",
-            "dst": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-            "count": 1,
-            "category": "live_qubit_leaf",
-            "summary": "Include counted borrowed lookup interface field lanes once."
-          },
-          {
-            "src": "live_qubit_contributors",
             "dst": "live_qubit_contributors__lookup_workspace",
             "count": 1,
             "category": "live_qubit_leaf",
@@ -68086,10 +68066,10 @@
           }
         ],
         "summary": {
-          "node_count": 56,
-          "edge_count": 55,
-          "leaf_node_count": 29,
-          "reachable_node_count": 56,
+          "node_count": 55,
+          "edge_count": 54,
+          "leaf_node_count": 28,
+          "reachable_node_count": 55,
           "max_depth": 5,
           "root_in_degree": 0,
           "primitive_totals": {
@@ -68098,7 +68078,7 @@
             "x": 0,
             "measurement": 15053284
           },
-          "logical_qubits_total": 2336,
+          "logical_qubits_total": 2080,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 130816,
@@ -68725,21 +68705,6 @@
           "logical_qubits_total": 1
         },
         {
-          "leaf_id": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-          "category": "live_qubits",
-          "path": [
-            "full_oracle",
-            "live_qubit_contributors",
-            "live_qubit_contributors__borrowed_lookup_interface_field_lanes"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "peak_live_qubits",
-            "logical_qubits": 256
-          },
-          "logical_qubits_total": 256
-        },
-        {
           "leaf_id": "live_qubit_contributors__lookup_workspace",
           "category": "live_qubits",
           "path": [
@@ -68838,7 +68803,7 @@
           "x": 0,
           "measurement": 15053284
         },
-        "total_logical_qubits": 2336,
+        "total_logical_qubits": 2080,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 130816,
@@ -68852,7 +68817,7 @@
           "x": 0,
           "measurement": 15053284
         },
-        "total_logical_qubits": 2336,
+        "total_logical_qubits": 2080,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 130816,
@@ -68860,7 +68825,7 @@
       },
       "frontier_reconstruction": {
         "full_oracle_non_clifford": 37432935,
-        "total_logical_qubits": 2336
+        "total_logical_qubits": 2080
       }
     },
     {
@@ -69621,19 +69586,6 @@
             }
           },
           {
-            "id": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-            "kind": "leaf",
-            "category": "live_qubits",
-            "summary": "Counted field-width lookup interface lanes borrowed by the selected leaf contract.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
-              "resource_profile": {
-                "resource_semantics": "peak_live_qubits",
-                "logical_qubits": 256
-              }
-            }
-          },
-          {
             "id": "live_qubit_contributors__lookup_workspace",
             "kind": "leaf",
             "category": "live_qubits",
@@ -70051,13 +70003,6 @@
           },
           {
             "src": "live_qubit_contributors",
-            "dst": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-            "count": 1,
-            "category": "live_qubit_leaf",
-            "summary": "Include counted borrowed lookup interface field lanes once."
-          },
-          {
-            "src": "live_qubit_contributors",
             "dst": "live_qubit_contributors__lookup_workspace",
             "count": 1,
             "category": "live_qubit_leaf",
@@ -70100,10 +70045,10 @@
           }
         ],
         "summary": {
-          "node_count": 56,
-          "edge_count": 55,
-          "leaf_node_count": 29,
-          "reachable_node_count": 56,
+          "node_count": 55,
+          "edge_count": 54,
+          "leaf_node_count": 28,
+          "reachable_node_count": 55,
           "max_depth": 5,
           "root_in_degree": 0,
           "primitive_totals": {
@@ -70112,7 +70057,7 @@
             "x": 0,
             "measurement": 15053284
           },
-          "logical_qubits_total": 1825,
+          "logical_qubits_total": 1569,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -70739,21 +70684,6 @@
           "logical_qubits_total": 1
         },
         {
-          "leaf_id": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-          "category": "live_qubits",
-          "path": [
-            "full_oracle",
-            "live_qubit_contributors",
-            "live_qubit_contributors__borrowed_lookup_interface_field_lanes"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "peak_live_qubits",
-            "logical_qubits": 256
-          },
-          "logical_qubits_total": 256
-        },
-        {
           "leaf_id": "live_qubit_contributors__lookup_workspace",
           "category": "live_qubits",
           "path": [
@@ -70852,7 +70782,7 @@
           "x": 0,
           "measurement": 15053284
         },
-        "total_logical_qubits": 1825,
+        "total_logical_qubits": 1569,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -70866,7 +70796,7 @@
           "x": 0,
           "measurement": 15053284
         },
-        "total_logical_qubits": 1825,
+        "total_logical_qubits": 1569,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -70874,7 +70804,7 @@
       },
       "frontier_reconstruction": {
         "full_oracle_non_clifford": 37432935,
-        "total_logical_qubits": 1825
+        "total_logical_qubits": 1569
       }
     },
     {
@@ -71767,19 +71697,6 @@
             }
           },
           {
-            "id": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-            "kind": "leaf",
-            "category": "live_qubits",
-            "summary": "Counted field-width lookup interface lanes borrowed by the selected leaf contract.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
-              "resource_profile": {
-                "resource_semantics": "peak_live_qubits",
-                "logical_qubits": 256
-              }
-            }
-          },
-          {
             "id": "live_qubit_contributors__lookup_workspace",
             "kind": "leaf",
             "category": "live_qubits",
@@ -72239,13 +72156,6 @@
           },
           {
             "src": "live_qubit_contributors",
-            "dst": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-            "count": 1,
-            "category": "live_qubit_leaf",
-            "summary": "Include counted borrowed lookup interface field lanes once."
-          },
-          {
-            "src": "live_qubit_contributors",
             "dst": "live_qubit_contributors__lookup_workspace",
             "count": 1,
             "category": "live_qubit_leaf",
@@ -72288,10 +72198,10 @@
           }
         ],
         "summary": {
-          "node_count": 62,
-          "edge_count": 61,
-          "leaf_node_count": 35,
-          "reachable_node_count": 62,
+          "node_count": 61,
+          "edge_count": 60,
+          "leaf_node_count": 34,
+          "reachable_node_count": 61,
           "max_depth": 5,
           "root_in_degree": 0,
           "primitive_totals": {
@@ -72300,7 +72210,7 @@
             "x": 0,
             "measurement": 385444
           },
-          "logical_qubits_total": 2707,
+          "logical_qubits_total": 2451,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 130816,
@@ -73098,21 +73008,6 @@
           "logical_qubits_total": 1
         },
         {
-          "leaf_id": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-          "category": "live_qubits",
-          "path": [
-            "full_oracle",
-            "live_qubit_contributors",
-            "live_qubit_contributors__borrowed_lookup_interface_field_lanes"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "peak_live_qubits",
-            "logical_qubits": 256
-          },
-          "logical_qubits_total": 256
-        },
-        {
           "leaf_id": "live_qubit_contributors__lookup_workspace",
           "category": "live_qubits",
           "path": [
@@ -73211,7 +73106,7 @@
           "x": 0,
           "measurement": 385444
         },
-        "total_logical_qubits": 2707,
+        "total_logical_qubits": 2451,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 130816,
@@ -73225,7 +73120,7 @@
           "x": 0,
           "measurement": 385444
         },
-        "total_logical_qubits": 2707,
+        "total_logical_qubits": 2451,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 130816,
@@ -73233,7 +73128,7 @@
       },
       "frontier_reconstruction": {
         "full_oracle_non_clifford": 22777319,
-        "total_logical_qubits": 2707
+        "total_logical_qubits": 2451
       }
     },
     {
@@ -74126,19 +74021,6 @@
             }
           },
           {
-            "id": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-            "kind": "leaf",
-            "category": "live_qubits",
-            "summary": "Counted field-width lookup interface lanes borrowed by the selected leaf contract.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
-              "resource_profile": {
-                "resource_semantics": "peak_live_qubits",
-                "logical_qubits": 256
-              }
-            }
-          },
-          {
             "id": "live_qubit_contributors__lookup_workspace",
             "kind": "leaf",
             "category": "live_qubits",
@@ -74598,13 +74480,6 @@
           },
           {
             "src": "live_qubit_contributors",
-            "dst": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-            "count": 1,
-            "category": "live_qubit_leaf",
-            "summary": "Include counted borrowed lookup interface field lanes once."
-          },
-          {
-            "src": "live_qubit_contributors",
             "dst": "live_qubit_contributors__lookup_workspace",
             "count": 1,
             "category": "live_qubit_leaf",
@@ -74647,10 +74522,10 @@
           }
         ],
         "summary": {
-          "node_count": 62,
-          "edge_count": 61,
-          "leaf_node_count": 35,
-          "reachable_node_count": 62,
+          "node_count": 61,
+          "edge_count": 60,
+          "leaf_node_count": 34,
+          "reachable_node_count": 61,
           "max_depth": 5,
           "root_in_degree": 0,
           "primitive_totals": {
@@ -74659,7 +74534,7 @@
             "x": 0,
             "measurement": 385444
           },
-          "logical_qubits_total": 2196,
+          "logical_qubits_total": 1940,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -75457,21 +75332,6 @@
           "logical_qubits_total": 1
         },
         {
-          "leaf_id": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-          "category": "live_qubits",
-          "path": [
-            "full_oracle",
-            "live_qubit_contributors",
-            "live_qubit_contributors__borrowed_lookup_interface_field_lanes"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "peak_live_qubits",
-            "logical_qubits": 256
-          },
-          "logical_qubits_total": 256
-        },
-        {
           "leaf_id": "live_qubit_contributors__lookup_workspace",
           "category": "live_qubits",
           "path": [
@@ -75570,7 +75430,7 @@
           "x": 0,
           "measurement": 385444
         },
-        "total_logical_qubits": 2196,
+        "total_logical_qubits": 1940,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -75584,7 +75444,7 @@
           "x": 0,
           "measurement": 385444
         },
-        "total_logical_qubits": 2196,
+        "total_logical_qubits": 1940,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -75592,7 +75452,7 @@
       },
       "frontier_reconstruction": {
         "full_oracle_non_clifford": 22777319,
-        "total_logical_qubits": 2196
+        "total_logical_qubits": 1940
       }
     },
     {
@@ -76661,19 +76521,6 @@
             }
           },
           {
-            "id": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-            "kind": "leaf",
-            "category": "live_qubits",
-            "summary": "Counted field-width lookup interface lanes borrowed by the selected leaf contract.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
-              "resource_profile": {
-                "resource_semantics": "peak_live_qubits",
-                "logical_qubits": 256
-              }
-            }
-          },
-          {
             "id": "live_qubit_contributors__lookup_workspace",
             "kind": "leaf",
             "category": "live_qubits",
@@ -77189,13 +77036,6 @@
           },
           {
             "src": "live_qubit_contributors",
-            "dst": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-            "count": 1,
-            "category": "live_qubit_leaf",
-            "summary": "Include counted borrowed lookup interface field lanes once."
-          },
-          {
-            "src": "live_qubit_contributors",
             "dst": "live_qubit_contributors__lookup_workspace",
             "count": 1,
             "category": "live_qubit_leaf",
@@ -77238,10 +77078,10 @@
           }
         ],
         "summary": {
-          "node_count": 70,
-          "edge_count": 69,
-          "leaf_node_count": 43,
-          "reachable_node_count": 70,
+          "node_count": 69,
+          "edge_count": 68,
+          "leaf_node_count": 42,
+          "reachable_node_count": 69,
           "max_depth": 5,
           "root_in_degree": 0,
           "primitive_totals": {
@@ -77250,7 +77090,7 @@
             "x": 0,
             "measurement": 374884
           },
-          "logical_qubits_total": 2379,
+          "logical_qubits_total": 2123,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 130816,
@@ -78276,21 +78116,6 @@
           "logical_qubits_total": 1
         },
         {
-          "leaf_id": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-          "category": "live_qubits",
-          "path": [
-            "full_oracle",
-            "live_qubit_contributors",
-            "live_qubit_contributors__borrowed_lookup_interface_field_lanes"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "peak_live_qubits",
-            "logical_qubits": 256
-          },
-          "logical_qubits_total": 256
-        },
-        {
           "leaf_id": "live_qubit_contributors__lookup_workspace",
           "category": "live_qubits",
           "path": [
@@ -78389,7 +78214,7 @@
           "x": 0,
           "measurement": 374884
         },
-        "total_logical_qubits": 2379,
+        "total_logical_qubits": 2123,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 130816,
@@ -78403,7 +78228,7 @@
           "x": 0,
           "measurement": 374884
         },
-        "total_logical_qubits": 2379,
+        "total_logical_qubits": 2123,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 130816,
@@ -78411,7 +78236,7 @@
       },
       "frontier_reconstruction": {
         "full_oracle_non_clifford": 22756199,
-        "total_logical_qubits": 2379
+        "total_logical_qubits": 2123
       }
     },
     {
@@ -79480,19 +79305,6 @@
             }
           },
           {
-            "id": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-            "kind": "leaf",
-            "category": "live_qubits",
-            "summary": "Counted field-width lookup interface lanes borrowed by the selected leaf contract.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
-              "resource_profile": {
-                "resource_semantics": "peak_live_qubits",
-                "logical_qubits": 256
-              }
-            }
-          },
-          {
             "id": "live_qubit_contributors__lookup_workspace",
             "kind": "leaf",
             "category": "live_qubits",
@@ -80008,13 +79820,6 @@
           },
           {
             "src": "live_qubit_contributors",
-            "dst": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-            "count": 1,
-            "category": "live_qubit_leaf",
-            "summary": "Include counted borrowed lookup interface field lanes once."
-          },
-          {
-            "src": "live_qubit_contributors",
             "dst": "live_qubit_contributors__lookup_workspace",
             "count": 1,
             "category": "live_qubit_leaf",
@@ -80057,10 +79862,10 @@
           }
         ],
         "summary": {
-          "node_count": 70,
-          "edge_count": 69,
-          "leaf_node_count": 43,
-          "reachable_node_count": 70,
+          "node_count": 69,
+          "edge_count": 68,
+          "leaf_node_count": 42,
+          "reachable_node_count": 69,
           "max_depth": 5,
           "root_in_degree": 0,
           "primitive_totals": {
@@ -80069,7 +79874,7 @@
             "x": 0,
             "measurement": 374884
           },
-          "logical_qubits_total": 1868,
+          "logical_qubits_total": 1612,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -81095,21 +80900,6 @@
           "logical_qubits_total": 1
         },
         {
-          "leaf_id": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-          "category": "live_qubits",
-          "path": [
-            "full_oracle",
-            "live_qubit_contributors",
-            "live_qubit_contributors__borrowed_lookup_interface_field_lanes"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "peak_live_qubits",
-            "logical_qubits": 256
-          },
-          "logical_qubits_total": 256
-        },
-        {
           "leaf_id": "live_qubit_contributors__lookup_workspace",
           "category": "live_qubits",
           "path": [
@@ -81208,7 +80998,7 @@
           "x": 0,
           "measurement": 374884
         },
-        "total_logical_qubits": 1868,
+        "total_logical_qubits": 1612,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -81222,7 +81012,7 @@
           "x": 0,
           "measurement": 374884
         },
-        "total_logical_qubits": 1868,
+        "total_logical_qubits": 1612,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -81230,7 +81020,7 @@
       },
       "frontier_reconstruction": {
         "full_oracle_non_clifford": 22756199,
-        "total_logical_qubits": 1868
+        "total_logical_qubits": 1612
       }
     },
     {
@@ -83267,19 +83057,6 @@
             }
           },
           {
-            "id": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-            "kind": "leaf",
-            "category": "live_qubits",
-            "summary": "Counted field-width lookup interface lanes borrowed by the selected leaf contract.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
-              "resource_profile": {
-                "resource_semantics": "peak_live_qubits",
-                "logical_qubits": 256
-              }
-            }
-          },
-          {
             "id": "live_qubit_contributors__lookup_workspace",
             "kind": "leaf",
             "category": "live_qubits",
@@ -84103,13 +83880,6 @@
           },
           {
             "src": "live_qubit_contributors",
-            "dst": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-            "count": 1,
-            "category": "live_qubit_leaf",
-            "summary": "Include counted borrowed lookup interface field lanes once."
-          },
-          {
-            "src": "live_qubit_contributors",
             "dst": "live_qubit_contributors__lookup_workspace",
             "count": 1,
             "category": "live_qubit_leaf",
@@ -84152,10 +83922,10 @@
           }
         ],
         "summary": {
-          "node_count": 114,
-          "edge_count": 113,
-          "leaf_node_count": 87,
-          "reachable_node_count": 114,
+          "node_count": 113,
+          "edge_count": 112,
+          "leaf_node_count": 86,
+          "reachable_node_count": 113,
           "max_depth": 5,
           "root_in_degree": 0,
           "primitive_totals": {
@@ -84164,7 +83934,7 @@
             "x": 0,
             "measurement": 373700
           },
-          "logical_qubits_total": 2353,
+          "logical_qubits_total": 2097,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 130816,
@@ -86444,21 +86214,6 @@
           "logical_qubits_total": 1
         },
         {
-          "leaf_id": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-          "category": "live_qubits",
-          "path": [
-            "full_oracle",
-            "live_qubit_contributors",
-            "live_qubit_contributors__borrowed_lookup_interface_field_lanes"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "peak_live_qubits",
-            "logical_qubits": 256
-          },
-          "logical_qubits_total": 256
-        },
-        {
           "leaf_id": "live_qubit_contributors__lookup_workspace",
           "category": "live_qubits",
           "path": [
@@ -86557,7 +86312,7 @@
           "x": 0,
           "measurement": 373700
         },
-        "total_logical_qubits": 2353,
+        "total_logical_qubits": 2097,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 130816,
@@ -86571,7 +86326,7 @@
           "x": 0,
           "measurement": 373700
         },
-        "total_logical_qubits": 2353,
+        "total_logical_qubits": 2097,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 130816,
@@ -86579,7 +86334,7 @@
       },
       "frontier_reconstruction": {
         "full_oracle_non_clifford": 22753831,
-        "total_logical_qubits": 2353
+        "total_logical_qubits": 2097
       }
     },
     {
@@ -88616,19 +88371,6 @@
             }
           },
           {
-            "id": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-            "kind": "leaf",
-            "category": "live_qubits",
-            "summary": "Counted field-width lookup interface lanes borrowed by the selected leaf contract.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
-              "resource_profile": {
-                "resource_semantics": "peak_live_qubits",
-                "logical_qubits": 256
-              }
-            }
-          },
-          {
             "id": "live_qubit_contributors__lookup_workspace",
             "kind": "leaf",
             "category": "live_qubits",
@@ -89452,13 +89194,6 @@
           },
           {
             "src": "live_qubit_contributors",
-            "dst": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-            "count": 1,
-            "category": "live_qubit_leaf",
-            "summary": "Include counted borrowed lookup interface field lanes once."
-          },
-          {
-            "src": "live_qubit_contributors",
             "dst": "live_qubit_contributors__lookup_workspace",
             "count": 1,
             "category": "live_qubit_leaf",
@@ -89501,10 +89236,10 @@
           }
         ],
         "summary": {
-          "node_count": 114,
-          "edge_count": 113,
-          "leaf_node_count": 87,
-          "reachable_node_count": 114,
+          "node_count": 113,
+          "edge_count": 112,
+          "leaf_node_count": 86,
+          "reachable_node_count": 113,
           "max_depth": 5,
           "root_in_degree": 0,
           "primitive_totals": {
@@ -89513,7 +89248,7 @@
             "x": 0,
             "measurement": 373700
           },
-          "logical_qubits_total": 1842,
+          "logical_qubits_total": 1586,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -91793,21 +91528,6 @@
           "logical_qubits_total": 1
         },
         {
-          "leaf_id": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-          "category": "live_qubits",
-          "path": [
-            "full_oracle",
-            "live_qubit_contributors",
-            "live_qubit_contributors__borrowed_lookup_interface_field_lanes"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "peak_live_qubits",
-            "logical_qubits": 256
-          },
-          "logical_qubits_total": 256
-        },
-        {
           "leaf_id": "live_qubit_contributors__lookup_workspace",
           "category": "live_qubits",
           "path": [
@@ -91906,7 +91626,7 @@
           "x": 0,
           "measurement": 373700
         },
-        "total_logical_qubits": 1842,
+        "total_logical_qubits": 1586,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -91920,7 +91640,7 @@
           "x": 0,
           "measurement": 373700
         },
-        "total_logical_qubits": 1842,
+        "total_logical_qubits": 1586,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -91928,7 +91648,7 @@
       },
       "frontier_reconstruction": {
         "full_oracle_non_clifford": 22753831,
-        "total_logical_qubits": 1842
+        "total_logical_qubits": 1586
       }
     },
     {
@@ -92733,19 +92453,6 @@
             }
           },
           {
-            "id": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-            "kind": "leaf",
-            "category": "live_qubits",
-            "summary": "Counted field-width lookup interface lanes borrowed by the selected leaf contract.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
-              "resource_profile": {
-                "resource_semantics": "peak_live_qubits",
-                "logical_qubits": 256
-              }
-            }
-          },
-          {
             "id": "live_qubit_contributors__lookup_workspace",
             "kind": "leaf",
             "category": "live_qubits",
@@ -93177,13 +92884,6 @@
           },
           {
             "src": "live_qubit_contributors",
-            "dst": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-            "count": 1,
-            "category": "live_qubit_leaf",
-            "summary": "Include counted borrowed lookup interface field lanes once."
-          },
-          {
-            "src": "live_qubit_contributors",
             "dst": "live_qubit_contributors__lookup_workspace",
             "count": 1,
             "category": "live_qubit_leaf",
@@ -93226,10 +92926,10 @@
           }
         ],
         "summary": {
-          "node_count": 58,
-          "edge_count": 57,
-          "leaf_node_count": 31,
-          "reachable_node_count": 58,
+          "node_count": 57,
+          "edge_count": 56,
+          "leaf_node_count": 30,
+          "reachable_node_count": 57,
           "max_depth": 5,
           "root_in_degree": 0,
           "primitive_totals": {
@@ -93238,7 +92938,7 @@
             "x": 0,
             "measurement": 373220
           },
-          "logical_qubits_total": 35091,
+          "logical_qubits_total": 34835,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 130816,
@@ -93922,21 +93622,6 @@
           "logical_qubits_total": 1
         },
         {
-          "leaf_id": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-          "category": "live_qubits",
-          "path": [
-            "full_oracle",
-            "live_qubit_contributors",
-            "live_qubit_contributors__borrowed_lookup_interface_field_lanes"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "peak_live_qubits",
-            "logical_qubits": 256
-          },
-          "logical_qubits_total": 256
-        },
-        {
           "leaf_id": "live_qubit_contributors__lookup_workspace",
           "category": "live_qubits",
           "path": [
@@ -94035,7 +93720,7 @@
           "x": 0,
           "measurement": 373220
         },
-        "total_logical_qubits": 35091,
+        "total_logical_qubits": 34835,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 130816,
@@ -94049,7 +93734,7 @@
           "x": 0,
           "measurement": 373220
         },
-        "total_logical_qubits": 35091,
+        "total_logical_qubits": 34835,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 130816,
@@ -94057,7 +93742,7 @@
       },
       "frontier_reconstruction": {
         "full_oracle_non_clifford": 24849959,
-        "total_logical_qubits": 35091
+        "total_logical_qubits": 34835
       }
     },
     {
@@ -94862,19 +94547,6 @@
             }
           },
           {
-            "id": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-            "kind": "leaf",
-            "category": "live_qubits",
-            "summary": "Counted field-width lookup interface lanes borrowed by the selected leaf contract.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
-              "resource_profile": {
-                "resource_semantics": "peak_live_qubits",
-                "logical_qubits": 256
-              }
-            }
-          },
-          {
             "id": "live_qubit_contributors__lookup_workspace",
             "kind": "leaf",
             "category": "live_qubits",
@@ -95306,13 +94978,6 @@
           },
           {
             "src": "live_qubit_contributors",
-            "dst": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-            "count": 1,
-            "category": "live_qubit_leaf",
-            "summary": "Include counted borrowed lookup interface field lanes once."
-          },
-          {
-            "src": "live_qubit_contributors",
             "dst": "live_qubit_contributors__lookup_workspace",
             "count": 1,
             "category": "live_qubit_leaf",
@@ -95355,10 +95020,10 @@
           }
         ],
         "summary": {
-          "node_count": 58,
-          "edge_count": 57,
-          "leaf_node_count": 31,
-          "reachable_node_count": 58,
+          "node_count": 57,
+          "edge_count": 56,
+          "leaf_node_count": 30,
+          "reachable_node_count": 57,
           "max_depth": 5,
           "root_in_degree": 0,
           "primitive_totals": {
@@ -95367,7 +95032,7 @@
             "x": 0,
             "measurement": 373220
           },
-          "logical_qubits_total": 34580,
+          "logical_qubits_total": 34324,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -96051,21 +95716,6 @@
           "logical_qubits_total": 1
         },
         {
-          "leaf_id": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-          "category": "live_qubits",
-          "path": [
-            "full_oracle",
-            "live_qubit_contributors",
-            "live_qubit_contributors__borrowed_lookup_interface_field_lanes"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "peak_live_qubits",
-            "logical_qubits": 256
-          },
-          "logical_qubits_total": 256
-        },
-        {
           "leaf_id": "live_qubit_contributors__lookup_workspace",
           "category": "live_qubits",
           "path": [
@@ -96164,7 +95814,7 @@
           "x": 0,
           "measurement": 373220
         },
-        "total_logical_qubits": 34580,
+        "total_logical_qubits": 34324,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -96178,7 +95828,7 @@
           "x": 0,
           "measurement": 373220
         },
-        "total_logical_qubits": 34580,
+        "total_logical_qubits": 34324,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -96186,7 +95836,7 @@
       },
       "frontier_reconstruction": {
         "full_oracle_non_clifford": 24849959,
-        "total_logical_qubits": 34580
+        "total_logical_qubits": 34324
       }
     },
     {
@@ -97035,19 +96685,6 @@
             }
           },
           {
-            "id": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-            "kind": "leaf",
-            "category": "live_qubits",
-            "summary": "Counted field-width lookup interface lanes borrowed by the selected leaf contract.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
-              "resource_profile": {
-                "resource_semantics": "peak_live_qubits",
-                "logical_qubits": 256
-              }
-            }
-          },
-          {
             "id": "live_qubit_contributors__lookup_workspace",
             "kind": "leaf",
             "category": "live_qubits",
@@ -97493,13 +97130,6 @@
           },
           {
             "src": "live_qubit_contributors",
-            "dst": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-            "count": 1,
-            "category": "live_qubit_leaf",
-            "summary": "Include counted borrowed lookup interface field lanes once."
-          },
-          {
-            "src": "live_qubit_contributors",
             "dst": "live_qubit_contributors__lookup_workspace",
             "count": 1,
             "category": "live_qubit_leaf",
@@ -97542,10 +97172,10 @@
           }
         ],
         "summary": {
-          "node_count": 60,
-          "edge_count": 59,
-          "leaf_node_count": 33,
-          "reachable_node_count": 60,
+          "node_count": 59,
+          "edge_count": 58,
+          "leaf_node_count": 32,
+          "reachable_node_count": 59,
           "max_depth": 5,
           "root_in_degree": 0,
           "primitive_totals": {
@@ -97554,7 +97184,7 @@
             "x": 0,
             "measurement": 385476
           },
-          "logical_qubits_total": 35091,
+          "logical_qubits_total": 34835,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 130816,
@@ -98295,21 +97925,6 @@
           "logical_qubits_total": 1
         },
         {
-          "leaf_id": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-          "category": "live_qubits",
-          "path": [
-            "full_oracle",
-            "live_qubit_contributors",
-            "live_qubit_contributors__borrowed_lookup_interface_field_lanes"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "peak_live_qubits",
-            "logical_qubits": 256
-          },
-          "logical_qubits_total": 256
-        },
-        {
           "leaf_id": "live_qubit_contributors__lookup_workspace",
           "category": "live_qubits",
           "path": [
@@ -98408,7 +98023,7 @@
           "x": 0,
           "measurement": 385476
         },
-        "total_logical_qubits": 35091,
+        "total_logical_qubits": 34835,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 130816,
@@ -98422,7 +98037,7 @@
           "x": 0,
           "measurement": 385476
         },
-        "total_logical_qubits": 35091,
+        "total_logical_qubits": 34835,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 130816,
@@ -98430,7 +98045,7 @@
       },
       "frontier_reconstruction": {
         "full_oracle_non_clifford": 23813671,
-        "total_logical_qubits": 35091
+        "total_logical_qubits": 34835
       }
     },
     {
@@ -99279,19 +98894,6 @@
             }
           },
           {
-            "id": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-            "kind": "leaf",
-            "category": "live_qubits",
-            "summary": "Counted field-width lookup interface lanes borrowed by the selected leaf contract.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json",
-              "resource_profile": {
-                "resource_semantics": "peak_live_qubits",
-                "logical_qubits": 256
-              }
-            }
-          },
-          {
             "id": "live_qubit_contributors__lookup_workspace",
             "kind": "leaf",
             "category": "live_qubits",
@@ -99737,13 +99339,6 @@
           },
           {
             "src": "live_qubit_contributors",
-            "dst": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-            "count": 1,
-            "category": "live_qubit_leaf",
-            "summary": "Include counted borrowed lookup interface field lanes once."
-          },
-          {
-            "src": "live_qubit_contributors",
             "dst": "live_qubit_contributors__lookup_workspace",
             "count": 1,
             "category": "live_qubit_leaf",
@@ -99786,10 +99381,10 @@
           }
         ],
         "summary": {
-          "node_count": 60,
-          "edge_count": 59,
-          "leaf_node_count": 33,
-          "reachable_node_count": 60,
+          "node_count": 59,
+          "edge_count": 58,
+          "leaf_node_count": 32,
+          "reachable_node_count": 59,
           "max_depth": 5,
           "root_in_degree": 0,
           "primitive_totals": {
@@ -99798,7 +99393,7 @@
             "x": 0,
             "measurement": 385476
           },
-          "logical_qubits_total": 34580,
+          "logical_qubits_total": 34324,
           "phase_shell_hadamards": 512,
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
@@ -100539,21 +100134,6 @@
           "logical_qubits_total": 1
         },
         {
-          "leaf_id": "live_qubit_contributors__borrowed_lookup_interface_field_lanes",
-          "category": "live_qubits",
-          "path": [
-            "full_oracle",
-            "live_qubit_contributors",
-            "live_qubit_contributors__borrowed_lookup_interface_field_lanes"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "peak_live_qubits",
-            "logical_qubits": 256
-          },
-          "logical_qubits_total": 256
-        },
-        {
           "leaf_id": "live_qubit_contributors__lookup_workspace",
           "category": "live_qubits",
           "path": [
@@ -100652,7 +100232,7 @@
           "x": 0,
           "measurement": 385476
         },
-        "total_logical_qubits": 34580,
+        "total_logical_qubits": 34324,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -100666,7 +100246,7 @@
           "x": 0,
           "measurement": 385476
         },
-        "total_logical_qubits": 34580,
+        "total_logical_qubits": 34324,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -100674,12 +100254,12 @@
       },
       "frontier_reconstruction": {
         "full_oracle_non_clifford": 23813671,
-        "total_logical_qubits": 34580
+        "total_logical_qubits": 34324
       }
     }
   ],
   "best_gate_family": {
-    "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+    "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
     "reconstruction": {
       "full_oracle_non_clifford": 22753831,
       "primitive_totals": {
@@ -100688,7 +100268,7 @@
         "x": 0,
         "measurement": 373700
       },
-      "total_logical_qubits": 1842,
+      "total_logical_qubits": 1586,
       "phase_shell_hadamards": 512,
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 511,
@@ -100696,7 +100276,7 @@
     }
   },
   "best_qubit_family": {
-    "name": "folded_linear_scan_tmpand_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+    "name": "folded_linear_scan_tmpand_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
     "reconstruction": {
       "full_oracle_non_clifford": 37432935,
       "primitive_totals": {
@@ -100705,7 +100285,7 @@
         "x": 0,
         "measurement": 15053284
       },
-      "total_logical_qubits": 1825,
+      "total_logical_qubits": 1569,
       "phase_shell_hadamards": 512,
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 511,

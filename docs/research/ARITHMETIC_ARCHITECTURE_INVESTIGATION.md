@@ -17,10 +17,10 @@ lookup, and scaffold semantics.
 As of the current exact compiler frontier, the repository's central exact point is:
 
 - `22,753,831` non-Clifford
-- `1,842` logical qubits
+- `1,586` logical qubits
 
 This is the family
-`folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1`
+`folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1`
 in `compiler_verification_project/artifacts/family_frontier.json`.
 
 The current arithmetic leaf is a complete mixed-add formula over the
@@ -694,8 +694,8 @@ Result for `n = 256`:
 
 Whole-oracle implication:
 
-- the current central exact point is `1842` logical qubits, which decomposes as
-  `7 * 256 + 48 + 1 + 1`,
+- the current central exact point is `1586` logical qubits, which decomposes as
+  `6 * 256 + 48 + 1 + 1`,
 - a hypothetical `7`-slot arithmetic leaf with sequential tmpand-style zero
   tests lands at about `7 * 256 + 255 + 48 + 1 + 1 = 2097` logical qubits
   before any extra branch-control bookkeeping,

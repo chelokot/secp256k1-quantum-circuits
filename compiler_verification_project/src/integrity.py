@@ -46,6 +46,7 @@ from project import (
     build_qubit_breakthrough_analysis,
     exact_leaf_slot_allocation,
     full_attack_inventory,
+    interface_borrowed_leaf_slot_allocation,
     leaf_opcode_histogram,
     lookup_fed_leaf_slot_allocation,
     phase_shell_families,
@@ -961,6 +962,157 @@ def build_lookup_fed_slot_allocation_checks(artifacts: Mapping[str, Any]) -> Dic
     )
 
 
+def _instruction_source_mentions(instruction: Mapping[str, Any], register: str) -> bool:
+    src = instruction.get('src')
+    if isinstance(src, list):
+        return register in src
+    if isinstance(src, dict):
+        return any(value == register for value in src.values())
+    return src == register
+
+
+def _interface_field_lane_facts(leaf: Mapping[str, Any], register: str) -> Dict[str, Any]:
+    source_pcs = [
+        int(instruction['pc'])
+        for instruction in leaf['instructions']
+        if _instruction_source_mentions(instruction, register)
+    ]
+    non_lookup_write_pcs = [
+        int(instruction['pc'])
+        for instruction in leaf['instructions']
+        if instruction.get('dst') == register and instruction['op'] not in ('lookup_affine_x', 'lookup_affine_y')
+    ]
+    lookup_write_pcs = [
+        int(instruction['pc'])
+        for instruction in leaf['instructions']
+        if instruction.get('dst') == register and instruction['op'] in ('lookup_affine_x', 'lookup_affine_y')
+    ]
+    scratch_first_write_pc = min(non_lookup_write_pcs) if non_lookup_write_pcs else None
+    coordinate_sources = [
+        pc
+        for pc in source_pcs
+        if scratch_first_write_pc is None or pc <= scratch_first_write_pc
+    ]
+    scratch_sources = [
+        pc
+        for pc in source_pcs
+        if scratch_first_write_pc is not None and pc > scratch_first_write_pc
+    ]
+    return {
+        'register': register,
+        'lookup_write_pcs': lookup_write_pcs,
+        'source_pcs': source_pcs,
+        'coordinate_last_use_pc': max(coordinate_sources) if coordinate_sources else None,
+        'scratch_first_write_pc': scratch_first_write_pc,
+        'scratch_last_use_pc': max(scratch_sources) if scratch_sources else None,
+    }
+
+
+def build_interface_borrowed_slot_allocation_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    slot_alloc = artifacts['interface_borrowed_leaf_slot_allocation']
+    leaf = artifacts['interface_borrowed_leaf']
+    allocation = _build_slot_allocation_checks(
+        slot_alloc=slot_alloc,
+        expected_slot_alloc=interface_borrowed_leaf_slot_allocation(),
+        leaf=leaf,
+        arithmetic_registers=sorted(slot_alloc['tracked_arithmetic_registers']),
+        control_registers=sorted(slot_alloc['tracked_control_registers']),
+    )
+    contract = leaf['interface_resource_contract']
+    declared = {
+        row['register']: row
+        for row in contract['field_lanes']
+    }
+    facts = {
+        register: _interface_field_lane_facts(leaf, register)
+        for register in declared
+    }
+    borrowed_registers = set(leaf.get('borrowed_lookup_interface_slots', []))
+    field_lookup_slots = {
+        slot
+        for slot in leaf['lookup_interface_slots']
+        if slot.startswith('lookup_') and slot != 'lookup_meta'
+    }
+    owner_pairs = [(row['register'], row['owner']) for row in contract['field_lanes']]
+    checks = [
+        _check(
+            'interface_field_lanes_cover_lookup_coordinate_outputs',
+            set(declared) == field_lookup_slots,
+            sorted(field_lookup_slots),
+            sorted(declared),
+        ),
+        _check(
+            'interface_field_lanes_have_single_resource_owner',
+            len(owner_pairs) == len(set(register for register, _ in owner_pairs)) and all(owner for _, owner in owner_pairs),
+            'one non-empty owner per interface field lane',
+            owner_pairs,
+        ),
+        _check(
+            'borrowed_lookup_lanes_are_declared_by_leaf',
+            borrowed_registers <= set(declared),
+            sorted(borrowed_registers),
+            sorted(set(declared)),
+        ),
+    ]
+    for register, row in declared.items():
+        fact = facts[register]
+        checks.append(
+            _check(
+                f'{register}_resource_contract_matches_executable_liveness',
+                row['coordinate_last_use_pc'] == fact['coordinate_last_use_pc']
+                and row['scratch_first_write_pc'] == fact['scratch_first_write_pc']
+                and row['scratch_last_use_pc'] == fact['scratch_last_use_pc'],
+                {
+                    'coordinate_last_use_pc': fact['coordinate_last_use_pc'],
+                    'scratch_first_write_pc': fact['scratch_first_write_pc'],
+                    'scratch_last_use_pc': fact['scratch_last_use_pc'],
+                },
+                {
+                    'coordinate_last_use_pc': row['coordinate_last_use_pc'],
+                    'scratch_first_write_pc': row['scratch_first_write_pc'],
+                    'scratch_last_use_pc': row['scratch_last_use_pc'],
+                },
+            )
+        )
+        if register in borrowed_registers:
+            checks.append(
+                _check(
+                    f'{register}_borrow_handoff_starts_at_final_coordinate_read',
+                    row['scratch_first_write_pc'] == row['coordinate_last_use_pc'],
+                    row['coordinate_last_use_pc'],
+                    row['scratch_first_write_pc'],
+                )
+            )
+    ownership = _summarize_checks(checks)
+    return {
+        'schema': 'compiler-project-interface-borrowed-slot-and-ownership-checks-v1',
+        'slot_allocation': allocation,
+        'resource_ownership': ownership,
+        'summary': {
+            'total': allocation['total'] + ownership['total'],
+            'pass': allocation['pass'] + ownership['pass'],
+        },
+        'checks': [
+            *[
+                {
+                    **check,
+                    'name': f'slot_allocation::{check["name"]}',
+                }
+                for check in allocation['checks']
+            ],
+            *[
+                {
+                    **check,
+                    'name': f'resource_ownership::{check["name"]}',
+                }
+                for check in ownership['checks']
+            ],
+        ],
+        'pass': allocation['pass'] + ownership['pass'],
+        'total': allocation['total'] + ownership['total'],
+    }
+
+
 def build_qubit_breakthrough_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     analysis = artifacts['qubit_breakthrough_analysis']
     best_qubit = artifacts['family_frontier']['best_qubit_family']
@@ -1336,7 +1488,7 @@ def build_subcircuit_equivalence_checks(artifacts: Mapping[str, Any], repo_root:
     arithmetic_per_pc_failures = [row['pc'] for row in arithmetic['per_pc'] if row['pass'] != row['total']]
     arithmetic_per_opcode_failures = [row['opcode'] for row in arithmetic['per_opcode'] if row['pass'] != row['total']]
     expected_source_artifacts = {
-        'leaf': 'compiler_verification_project/artifacts/lookup_fed_leaf.json',
+        'leaf': 'compiler_verification_project/artifacts/interface_borrowed_leaf.json',
         'lookup_fed_leaf_equivalence': 'compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json',
         'interface_borrowed_leaf_equivalence': 'compiler_verification_project/artifacts/interface_borrowed_leaf_equivalence.json',
         'cleanup_summary': 'artifacts/verification/extended/coherent_cleanup_summary.json',
@@ -1890,6 +2042,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any]) -> Dic
         'generated_block_inventory_checks': build_generated_block_inventory_checks(artifacts),
         'slot_allocation_checks': build_slot_allocation_checks(artifacts),
         'lookup_fed_slot_allocation_checks': build_lookup_fed_slot_allocation_checks(artifacts),
+        'interface_borrowed_slot_allocation_checks': build_interface_borrowed_slot_allocation_checks(artifacts),
         'qubit_breakthrough_checks': build_qubit_breakthrough_checks(artifacts),
         'full_attack_inventory_checks': build_full_attack_inventory_checks(artifacts),
         'ft_ir_checks': build_ft_ir_checks(artifacts, repo_root),

@@ -134,6 +134,7 @@ class ReleaseInventoryTests(unittest.TestCase):
             'compiler_verification_project/artifacts/zkp_attestation_fixture_core.json',
             'compiler_verification_project/artifacts/zkp_attestation_fixture_compressed.json',
             'compiler_verification_project/artifacts/zkp_attestation_fixture_groth16.json',
+            'compiler_verification_project/artifacts/zkp_attestation_proof_compressed.bin',
             'compiler_verification_project/artifacts/zkp_attestation_proof_groth16.bin',
             'compiler_verification_project/artifacts/zkp_attestation_groth16_verifier/groth16_vk.bin',
             'compiler_verification_project/scripts/build_zkp_attestation_input.py',

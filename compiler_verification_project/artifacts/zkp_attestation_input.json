@@ -1,16 +1,16 @@
 {
   "schema": "compiler-project-zkp-attestation-input-v3",
   "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
-  "selected_family_name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
-  "claim_sha256": "358b7d3e46c1aa62040d76f20a2a4e8585204c6864fa906939f3c4df03b47921",
-  "leaf_sha256": "0680eabf66514b53284b6e76d007f7d097cd421c415c68fb69f6e017b827ff15",
-  "family_sha256": "124a62731f46c3642596541c9773a1c45d4fb12c5414fee79b586268ea4fd3a1",
-  "case_corpus_sha256": "06d46dcfbdc4025c5c8dc3e7f4179747eca60854f3232f5161bac7b5a0bb1a60",
+  "selected_family_name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
+  "claim_sha256": "05fafcddcc1b1e8d3006bbdfe151b716ace2fd9cd764c7d723a00014eb8072d1",
+  "leaf_sha256": "928c25056eb8127cf1bb13aea5853436c38be5b27cbf19bf0bda12b16abcefc0",
+  "family_sha256": "eb7beb07af4fd78bad7ac06b94841cab43fe715410fe23502d159c5af7288e7a",
+  "case_corpus_sha256": "4cf15fe92491624e13bafc62e91d37b1872607fc5d90d0e1c6bd358083b4d201",
   "claim_summary": {
     "field_bits": 256,
     "leaf_call_count_total": 31,
     "expected_full_oracle_non_clifford": 22753831,
-    "expected_total_logical_qubits": 1842,
+    "expected_total_logical_qubits": 1586,
     "expected_case_count": 8,
     "non_clifford_formula": {
       "arithmetic_leaf_non_clifford": 733657,
@@ -23,30 +23,30 @@
     },
     "logical_qubit_formula": {
       "field_bits": 256,
-      "arithmetic_slot_count": 7,
+      "arithmetic_slot_count": 6,
       "control_slot_count": 1,
       "borrowed_interface_qubits": 0,
       "lookup_workspace_qubits": 48,
       "live_phase_bits": 1,
-      "arithmetic_component": 1792,
-      "reconstructed_total": 1842
+      "arithmetic_component": 1536,
+      "reconstructed_total": 1586
     }
   },
   "family_summary": {
-    "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__lookup_fed_leaf_v1__semiclassical_qft_v1",
+    "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__interface_borrowed_lookup_x_v1__semiclassical_qft_v1",
     "arithmetic_leaf_non_clifford": 733657,
     "direct_seed_non_clifford": 327,
     "per_leaf_lookup_non_clifford": 327,
     "full_oracle_non_clifford": 22753831,
-    "arithmetic_slot_count": 7,
+    "arithmetic_slot_count": 6,
     "control_slot_count": 1,
     "borrowed_interface_qubits": 0,
     "lookup_workspace_qubits": 48,
     "live_phase_bits": 1,
-    "total_logical_qubits": 1842
+    "total_logical_qubits": 1586
   },
   "prepared_leaf": {
-    "register_count": 15,
+    "register_count": 14,
     "input_qx": 0,
     "input_qy": 1,
     "input_qz": 2,
@@ -138,7 +138,7 @@
       },
       {
         "kind": "field_mul",
-        "dst": 14,
+        "dst": 4,
         "left": 7,
         "right": 4
       },
@@ -163,7 +163,7 @@
       {
         "kind": "field_add",
         "dst": 8,
-        "left": 14,
+        "left": 4,
         "right": 7
       },
       {
@@ -175,18 +175,18 @@
       {
         "kind": "field_add",
         "dst": 8,
-        "left": 14,
-        "right": 14
+        "left": 4,
+        "right": 4
       },
       {
         "kind": "field_add",
         "dst": 8,
         "left": 8,
-        "right": 14
+        "right": 4
       },
       {
         "kind": "field_add",
-        "dst": 14,
+        "dst": 4,
         "left": 7,
         "right": 9
       },
@@ -230,7 +230,7 @@
         "kind": "field_mul",
         "dst": 7,
         "left": 7,
-        "right": 14
+        "right": 4
       },
       {
         "kind": "field_add",
@@ -240,14 +240,14 @@
       },
       {
         "kind": "field_mul",
-        "dst": 14,
-        "left": 14,
+        "dst": 4,
+        "left": 4,
         "right": 13
       },
       {
         "kind": "field_add",
-        "dst": 14,
-        "left": 14,
+        "dst": 4,
+        "left": 4,
         "right": 8
       },
       {
@@ -269,7 +269,7 @@
         "dst": 9,
         "flag": 10,
         "when_nonzero": 2,
-        "when_zero": 14
+        "when_zero": 4
       },
       {
         "kind": "clear_bool_from_flag",
@@ -295,53 +295,53 @@
         "category": "accumulator_infinity",
         "accumulator": null,
         "lookup": {
-          "x_hex": "0ea143e14683790d94734af067cef5884315641e34615ef619723644f9a8d399",
-          "y_hex": "1157a700e3d999551d94590c2aab272878060af9ac606f0370f87c547af7e89d"
+          "x_hex": "769405b4d768a31a044c9ed39c42dd3ae04509233401c8e3502ca846bbf00557",
+          "y_hex": "f3cb18819d2b19024b8491b6c26c106386b9bf2386a9b0b6dabd07877837bc43"
         },
         "expected": {
-          "x_hex": "0ea143e14683790d94734af067cef5884315641e34615ef619723644f9a8d399",
-          "y_hex": "1157a700e3d999551d94590c2aab272878060af9ac606f0370f87c547af7e89d"
+          "x_hex": "769405b4d768a31a044c9ed39c42dd3ae04509233401c8e3502ca846bbf00557",
+          "y_hex": "f3cb18819d2b19024b8491b6c26c106386b9bf2386a9b0b6dabd07877837bc43"
         }
       },
       {
         "case_id": "lookup_infinity_0002",
         "category": "lookup_infinity",
         "accumulator": {
-          "x_hex": "38bf0e5a8a1471210da70f7a919a3b0259cb71273166ed1f298fa48ffa1dd82c",
-          "y_hex": "5c4b7b6367d122774e25f442d6c9e80a8f9d9c21bf59f7c0248e8379aff191d7"
+          "x_hex": "b796b76c3465238eef78742c8bcd503f1a7c95a55a603c3d54a2d71d31a5b30b",
+          "y_hex": "3211d20d55935127dd966d1bbd7cc31d461ef1418068319a778f57d248a2c323"
         },
         "lookup": null,
         "expected": {
-          "x_hex": "38bf0e5a8a1471210da70f7a919a3b0259cb71273166ed1f298fa48ffa1dd82c",
-          "y_hex": "5c4b7b6367d122774e25f442d6c9e80a8f9d9c21bf59f7c0248e8379aff191d7"
+          "x_hex": "b796b76c3465238eef78742c8bcd503f1a7c95a55a603c3d54a2d71d31a5b30b",
+          "y_hex": "3211d20d55935127dd966d1bbd7cc31d461ef1418068319a778f57d248a2c323"
         }
       },
       {
         "case_id": "doubling_0003",
         "category": "doubling",
         "accumulator": {
-          "x_hex": "0db326a6f1d18ebc4d7db8201d6ceaf993b5b31e88d1473128703b3ef4600e0f",
-          "y_hex": "d3060eebb1737cff994b232a76828027e83d1c22f7b1efc6687e1ba216ac121e"
+          "x_hex": "f2fc6222d99991fe87997777427c4a008189d15954c3adb73dc1ade17397f22e",
+          "y_hex": "57b0f5ec6f50d544188b5959c9ef5ee7bddc29b80747096b4fd54ec9df597d89"
         },
         "lookup": {
-          "x_hex": "0db326a6f1d18ebc4d7db8201d6ceaf993b5b31e88d1473128703b3ef4600e0f",
-          "y_hex": "d3060eebb1737cff994b232a76828027e83d1c22f7b1efc6687e1ba216ac121e"
+          "x_hex": "f2fc6222d99991fe87997777427c4a008189d15954c3adb73dc1ade17397f22e",
+          "y_hex": "57b0f5ec6f50d544188b5959c9ef5ee7bddc29b80747096b4fd54ec9df597d89"
         },
         "expected": {
-          "x_hex": "7719f4da13430a51794cf163629c18069ea54e027445c1ae11e8ccb16502ea08",
-          "y_hex": "106a9960a557081614f00a0f72e25417978455c9f605579efecbabaa6ec61e18"
+          "x_hex": "c15debd062fc91ee753fb87d8335468c52fb96c2cbaa19505868ae0d6767e60e",
+          "y_hex": "b6e4051fbdc3d6dd6c7417f93a1a95949396e4579d3353ec01cfec5bd41cbcd7"
         }
       },
       {
         "case_id": "inverse_0004",
         "category": "inverse",
         "accumulator": {
-          "x_hex": "ddf1e0f93413df64060e3056a18d0fcdb2aea31eb3d98279af446b4a054c1e58",
-          "y_hex": "3e8e68c818a0b95d127430f4a71849f88767de7eba239f9aab8e1f4156311971"
+          "x_hex": "60bcacc01e8dccdbda93201bd69dddea9c3c443f734e77e55cae2d59b397c319",
+          "y_hex": "1fbe89e7a1ef03d50dcc8bc17866445872ce594f87fc249d4488a5158b6e1cdd"
         },
         "lookup": {
-          "x_hex": "ddf1e0f93413df64060e3056a18d0fcdb2aea31eb3d98279af446b4a054c1e58",
-          "y_hex": "c1719737e75f46a2ed8bcf0b58e7b6077898218145dc60655471e0bda9cee2be"
+          "x_hex": "60bcacc01e8dccdbda93201bd69dddea9c3c443f734e77e55cae2d59b397c319",
+          "y_hex": "e04176185e10fc2af233743e8799bba78d31a6b07803db62bb775ae97491df52"
         },
         "expected": null
       },
@@ -349,48 +349,48 @@
         "case_id": "random_0005",
         "category": "random",
         "accumulator": {
-          "x_hex": "614c75814604d87262f42ee542e2eb1197a9ff095a91a1fec09d1108d651d139",
-          "y_hex": "fa880de5e26dcf3cb0a5163112c50ad1356fed5d1202c707765b126d66b7f228"
+          "x_hex": "45dc4dfcc086100db58e9daacacb3207a31f2991321f7f9e31892a3c1574aae5",
+          "y_hex": "2a440c5963f02f5f459aaa1fca926f36af32b19817e41f6abf1022dca5d563e3"
         },
         "lookup": {
-          "x_hex": "ea5b3b616376ae6630d87fa3a893be68bb02415bfef4160f4760ac5a37cda5cf",
-          "y_hex": "abda4a477f35c715b5d740cd293b8660fcf57979d5b1fc0c60ac6f55a25991bb"
+          "x_hex": "e31b6524f866cb1dcf970ba88a4a032bc24623aac0e99cb71a9148c91f8fe3bb",
+          "y_hex": "04438260c7fc6c1b394ebd01320ce899b83c1da3c60893756fcaa13b4dc6778a"
         },
         "expected": {
-          "x_hex": "f8618cdf339fd6da55bfe37c4b508f88f4f645c89ef914feb32d15fb12b31eba",
-          "y_hex": "90f58b6777645f5b1558e919bc5d474a81c8f18ed1dff8c1a9ca0351d5c5bf2d"
+          "x_hex": "faf2a5fa24ff94e5096e01f7c6b91dfab32e4a008c5ecc5450c6b7077aafcdfe",
+          "y_hex": "06c13ba0b5bf8285a86a30ba38f96413ebf62ada30775486baccb819dbd8921e"
         }
       },
       {
         "case_id": "random_0006",
         "category": "random",
         "accumulator": {
-          "x_hex": "7a64bfd3e552a52bc614f9af43fb00d77123ed91a12f44654e601d8a826f0e1e",
-          "y_hex": "2ce477d34f6ff68f7181b4d2b44e4b0ea99bdb2bf7d44c6dde7f09e5d803b1db"
+          "x_hex": "04be140ad0a5dd15145329929690b60da7b2d973b261f29265149699974627af",
+          "y_hex": "9d0f26e800824979c4adcc61ba4a435e8bbc244209ebbfb19ceaa79a38e088fd"
         },
         "lookup": {
-          "x_hex": "5d6288a95ca78113dd0a909516ed8feb89ae497f16e22a7aa74fc631106b1ce6",
-          "y_hex": "9624fcae0cd3ed4221fbe07ce2154854e514711aa909ad1752d41c8245be497a"
+          "x_hex": "eb46a0d62f5e3e307340f6f31f3474201eb91278297f4276180a1eaa961757c2",
+          "y_hex": "02a63d969f64c6fe808fa233af610915733bfa4f17e43620d6642746d9073cf5"
         },
         "expected": {
-          "x_hex": "f8202bd2879f5af16671d8d24750d2ecb3632287043a7b2472867a7d90a5bdbc",
-          "y_hex": "ad5c68ef40138d3babb5e97cb6d35a612ba31f3c5ca45ef06aadb89b40120a24"
+          "x_hex": "c8e5d6d6cf743b7b4197e36cc187290df0c936c995e37ae7cd8c2a7e1e10544a",
+          "y_hex": "787a914921bcfd0c2d8b63c1d5914d0cdcaa5b4fa6d724508a5c2caa370d969e"
         }
       },
       {
         "case_id": "random_0007",
         "category": "random",
         "accumulator": {
-          "x_hex": "fa429647a5b8fff4bdd7f6c3c7cd12791c108cdb763aabfe1d040d5f5b09cd45",
-          "y_hex": "4e92c905f1256461e878f58f043fbe7e7783ef6781e03f4924a2703108333e3e"
+          "x_hex": "585b9e370d3e8fec5c187ec4915152c47de2087a2d8e907cba63da82f11e1a59",
+          "y_hex": "72ec789c3e6e5c454af4707c816af8eb1cedf402d4f6f051ab963a73ac1df547"
         },
         "lookup": {
-          "x_hex": "0aab9d8d35e801c26cd06bfb2b8b3145725a3f15aa128cfd0b8316c33ce281bb",
-          "y_hex": "1578461072c051caefc62f7931e06b9734725ab3d1d5949364e6eab13353be78"
+          "x_hex": "a33e85fb659e74fb039b6a530c459696b8ecca3d6eb1a0ba8d0aa664758380d2",
+          "y_hex": "50673bcc476a806238bdffccaa9fa412a993d6672d56b3160a3ff2bff08696bd"
         },
         "expected": {
-          "x_hex": "69704c3890df95dfbbfcbe885587bee47e2d7380538d9de169347f82837a4808",
-          "y_hex": "058d5dd42287267f275bdef17639039abc11d151151ab19e9cf78540df429fa2"
+          "x_hex": "39ef7cfd1cadb8f135758d58ae31e4ef6486f1335cbd6709293b9a4ab968e277",
+          "y_hex": "48fa5acd73624e7ae0017ffcba8747df1935327d93932f173fc8963d6f3c380b"
         }
       }
     ]

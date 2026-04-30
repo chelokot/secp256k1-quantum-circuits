@@ -76,19 +76,20 @@ What it does ship is:
 - `zkp_attestation_fixture_core.json` — checked SP1 core fixture for the attested bundle
 - `zkp_attestation_fixture_compressed.json` — checked SP1 compressed fixture for the attested bundle
 - `zkp_attestation_fixture_groth16.json` — checked SP1 Groth16 fixture for the attested bundle
+- `zkp_attestation_proof_compressed.bin` — checked compressed SP1 proof bundle for local re-verification
 - `zkp_attestation_proof_groth16.bin` — checked binary Groth16 proof bundle for the attested bundle
 - `zkp_attestation_groth16_verifier/groth16_vk.bin` — checked Groth16 verifying key for cheap local re-verification of the checked proof bundle
 - local proof runs also emit reusable binary proof bundles such as `zkp_attestation_proof_compressed.bin`, `zkp_attestation_wrap_proof.bin`, and `zkp_attestation_proof_groth16.bin` into the selected output directory
 
 ## Current central exact result
 
-- **central exact family:** `22,753,831 non-Clifford`, `1,842 logical qubits`
+- **central exact family:** `22,753,831 non-Clifford`, `1,586 logical qubits`
 
 The central family uses a fully bitwise banked unary QROM decode with measured
 uncompute, an exact semiclassical-QFT phase shell, and the executable
-lookup-fed point-add leaf. The resulting live-qubit formula is:
+interface-borrowed point-add leaf. The resulting live-qubit formula is:
 
-`7 * 256 + 1 control + 48 lookup workspace + 1 phase = 1,842 logical qubits`
+`6 * 256 + 1 control + 48 lookup workspace + 1 phase = 1,586 logical qubits`
 
 The lower-space linear-scan family remains in the internal frontier table, but
 it is not the public headline because it is above the 24M non-Clifford target.
@@ -102,11 +103,11 @@ not as a claim of hidden-Google reconstruction or global optimality.
 
 Its defining exact features are:
 
-- exact slot allocation cuts the checked lookup-fed leaf from **8 tracked
-  arithmetic registers** to a **7-slot physical arithmetic peak**;
-- the interface-borrowed contract remains executable and checked, but its
-  borrowed `lookup_x` field lane is counted conservatively, so it is not used
-  to lower the public headline below the lookup-fed 7-slot result;
+- exact slot allocation cuts the checked interface-borrowed leaf to a
+  **6-slot physical arithmetic peak**;
+- the interface resource-ownership checks derive the `lookup_x` borrow handoff
+  from the executable leaf and require the borrowed coordinate lane to be
+  consumed before it is reused as arithmetic scratch;
 - explicit arithmetic lowerings reconstruct the leaf-side non-Clifford totals
   from generated primitive-operation inventories instead of from naked opcode formulas;
 - explicit lookup lowerings reconstruct each lookup-family count from generated
@@ -129,7 +130,7 @@ Its defining exact features are:
   phase-shell lowering blocks;
 - a semiclassical-QFT phase-shell family removes the fixed **512 live phase
   qubits** assumption; and
-- those ingredients place the central exact family at **1,842 logical qubits**
+- those ingredients place the central exact family at **1,586 logical qubits**
   while keeping **22,753,831 non-Clifford**.
 
 ## SP1 attestation layer
@@ -154,6 +155,8 @@ The checked compressed fixture is
 `compiler_verification_project/artifacts/zkp_attestation_fixture_compressed.json`.
 The checked Groth16 fixture is
 `compiler_verification_project/artifacts/zkp_attestation_fixture_groth16.json`.
+The checked compressed proof bundle is
+`compiler_verification_project/artifacts/zkp_attestation_proof_compressed.bin`.
 The checked Groth16 proof bundle is
 `compiler_verification_project/artifacts/zkp_attestation_proof_groth16.bin`,
 and the repo ships the matching verifying key at

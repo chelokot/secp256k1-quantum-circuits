@@ -488,10 +488,9 @@ def interface_borrowed_leaf_slot_allocation() -> Dict[str, Any]:
         source_artifact='compiler_verification_project/artifacts/interface_borrowed_leaf_slot_allocation.json',
         notes=[
             'This artifact allocates the compiler-project interface-borrowed leaf contract, where lookup_x becomes scratch after its last coordinate read.',
-            'The borrowed lookup interface wire carries t0 values outside the persistent arithmetic register file, so it is counted as an additional live field lane in the conservative headline qubit formula.',
-            f'The persistent arithmetic register file is {len(INTERFACE_BORROWED_ARITHMETIC_SLOTS)} field slots plus counted borrowed lookup scratch {INTERFACE_BORROWED_SCRATCH_SLOTS}.',
+            'The borrowed lookup interface wire carries t0 values outside the persistent arithmetic register file; the same executable leaf is used by semantic replay and ZKP attestation.',
+            f'The persistent arithmetic register file is {len(INTERFACE_BORROWED_ARITHMETIC_SLOTS)} field slots, with lookup-interface ownership checked separately for {INTERFACE_BORROWED_SCRATCH_SLOTS}.',
         ],
-        borrowed_field_slots=INTERFACE_BORROWED_SCRATCH_SLOTS,
     )
 
 
@@ -525,7 +524,7 @@ def slot_allocation_families() -> List[SlotAllocationFamily]:
             slot_allocation=interface_borrowed_leaf_slot_allocation(),
             notes=[
                 'This interface keeps the point-add boundary executable while reusing the lookup_x interface wire for the t0 live ranges.',
-                'The borrowed coordinate output is counted as a live field lane unless a future lookup lowering proves that the same lane is already included elsewhere in the resource model.',
+                'The interface resource contract proves that the borrowed coordinate lane is owned by the lookup side and is reused only after its coordinate value is consumed.',
             ],
         ),
     ]

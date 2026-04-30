@@ -13,9 +13,7 @@
   "tracked_control_registers": [
     "f_lookup_inf"
   ],
-  "borrowed_field_registers": [
-    "lookup_x"
-  ],
+  "borrowed_field_registers": [],
   "peak_arithmetic_slots": {
     "count": 6,
     "pc": 11,
@@ -34,10 +32,10 @@
   "allocator_summary": {
     "exact_arithmetic_slot_count": 6,
     "exact_control_slot_count": 1,
-    "exact_borrowed_field_slot_count": 1,
+    "exact_borrowed_field_slot_count": 0,
     "arithmetic_bits": 1536,
     "control_bits": 1,
-    "borrowed_field_bits": 256
+    "borrowed_field_bits": 0
   },
   "per_pc": [
     {
@@ -655,7 +653,7 @@
   ],
   "notes": [
     "This artifact allocates the compiler-project interface-borrowed leaf contract, where lookup_x becomes scratch after its last coordinate read.",
-    "The borrowed lookup interface wire carries t0 values outside the persistent arithmetic register file, so it is counted as an additional live field lane in the conservative headline qubit formula.",
-    "The persistent arithmetic register file is 6 field slots plus counted borrowed lookup scratch ['lookup_x']."
+    "The borrowed lookup interface wire carries t0 values outside the persistent arithmetic register file; the same executable leaf is used by semantic replay and ZKP attestation.",
+    "The persistent arithmetic register file is 6 field slots, with lookup-interface ownership checked separately for ['lookup_x']."
   ]
 }
