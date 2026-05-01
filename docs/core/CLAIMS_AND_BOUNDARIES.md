@@ -9,9 +9,9 @@ secp256k1-specialized point-add leaf and explicit retained-window scaffold
 metadata, together with deterministic audits, finite-model checks, and a
 separate exact compiler-family oracle subproject that closes the
 classical-tail-elision gap for a fully quantum raw-32 schedule. It now also
-ships an SP1 attestation bundle for one selected named-boundary family claim at that
-same boundary. The current `23,912,611 / 1,587` result is a named-boundary
-compiler-family result, not a proven standard-QROM primitive-circuit result.
+ships an SP1 attestation bundle for one selected standard-QROM family claim at
+that same boundary. The current `23,953,656 / 1,587` result is a standard-QROM
+compiler-family result at the counted lookup boundary.
 
 ## Exact layers
 
@@ -85,10 +85,11 @@ subproject. In particular, it fixes:
 - a fully quantum raw-32 schedule with no classical tail elisions,
 - generated folded lookup-family operation inventories,
 - generated arithmetic-kernel operation inventories,
-- explicit streamed table-controlled multiplier data-selection inventories,
-- a checked standard-QROM lookup assessment that marks the current bitwise
-  banked lookup lowering as a boundary model rather than a proven arbitrary
-  32768-entry table-select primitive,
+- explicit standard-QROAM streamed table-controlled multiplier data-selection
+  inventories,
+- a checked standard-QROM lookup assessment that binds the selected family to a
+  full 32768-entry coordinate-stream QROAM primitive instead of the rejected
+  bitwise-banked path-select boundary,
 - exact leaf slot allocation, and
 - generated phase-shell operation inventories for the selected semiclassical inverse-QFT shell,
 - compositional FT-style call graphs plus traversed leaf sigma for the named
@@ -140,21 +141,17 @@ than a hidden primitive-gate Shor circuit.
 ### A. Primitive-gate lookup realization
 
 The repository does not lower lookup memory into a bit-for-bit
-Clifford-complete qRAM or QROM construction. It validates the checked-in folded
-contract fields, ships generated compiler-family lookup operation inventories
-below that contract, and proves the lookup semantics assumed at the ISA
-boundary.
+Clifford-complete qRAM or full Shor circuit. It does now bind the counted
+lookup-data path to a standard QROAM coordinate-stream primitive over the
+32768-entry folded coordinate domain.
 
 For the streamed lookup tail result, the table-controlled arithmetic boundary
-is no longer free: `streamed_lookup_table_multiplier_resource.json` counts one
-streamed coordinate-bit latch in lookup workspace and adds explicit per-bit
-data-selection non-Clifford cost to every `field_mul_lookup_*` consumer. The
-remaining boundary is the named folded-path data-selection primitive itself,
-not a materialized field-sized lookup-output lane.
-`standard_qrom_lookup_assessment.json` records the deeper open issue: the
-current lowering proves independent address-bit chunk decoding, not a full
-standard-QROM arbitrary coordinate-table select. Until that artifact changes,
-the public low-qubit number must be read as named-boundary accounting only.
+is no longer free: `streamed_lookup_table_multiplier_resource.json` counts the
+QROAM local workspace and one streamed coordinate-bit latch in lookup workspace
+and adds `7,951` non-Clifford operations for every 256-bit coordinate stream
+consumed by `field_mul_lookup_*` or the streamed tail. The remaining boundary is
+that the repository does not ship a Clifford-complete flattened netlist for
+every arithmetic and lookup block.
 
 ### B. Boundary no-op and cleanup
 
@@ -200,10 +197,10 @@ Exact lookup-contract semantics: yes.
 
 Mainline exact primitive-gate lookup, cleanup, and full Shor flattening: no.
 
-Exact compiler-family whole-oracle boundary counts: yes, in `compiler_verification_project/`, but only for the named compiler families checked into that subproject.
+Exact compiler-family whole-oracle standard-QROM counts: yes, in `compiler_verification_project/`, but only for the named compiler families checked into that subproject.
 
 Exact compiler-family SP1 attestation for one selected family claim and public deterministic point-add corpus: yes.
 
-Named-boundary compiler-family comparison against the public Google baseline: yes.
+Standard-QROM compiler-family comparison against the public Google baseline: yes.
 
-Standard-QROM primitive-circuit comparison against the public Google baseline: no.
+Clifford-complete full-Shor primitive-gate comparison against the public Google baseline: no.

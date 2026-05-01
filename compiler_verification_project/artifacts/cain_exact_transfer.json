@@ -2,9 +2,9 @@
   "schema": "compiler-project-cain-transfer-v2",
   "families": [
     {
-      "family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
-      "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.656956777777778,
-      "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.4160872857142857,
+      "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
+      "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.6615173333333333,
+      "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.421950857142857,
       "same_density_physical_qubits_if_1200_maps_to_26k": 34385.0,
       "same_density_physical_qubits_if_1450_maps_to_26k": 28456.55172413793
     }

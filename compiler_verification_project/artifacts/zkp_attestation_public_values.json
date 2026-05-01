@@ -1,12 +1,12 @@
 {
   "schema": "compiler-project-zkp-attestation-public-v2",
   "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
-  "selected_family_name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
-  "claim_sha256": "d9a4a7bd94385bc5d48c5c4ecf81a764a1a2352fb2625ccacd362692e929698f",
+  "selected_family_name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
+  "claim_sha256": "a1d50c88fd6d8000a3f9b92620ca8bd9a1326883960ba96161c55545384ec391",
   "leaf_sha256": "a3ee8b140868da8e3e32801ac0e8c734c51409038d2ee5493fee19f8f7bb8eee",
-  "family_sha256": "8691c48a56342c4f75d313ffe0231a9bac23f1caedf7209301410a955750aaac",
+  "family_sha256": "6b4bcea397ac22e0d0e3dabb70e35d8b4535d49cd448f9bf45fcb8336cc58162",
   "case_corpus_sha256": "f65a746e29092442f2814378eeb266e5f688a44b71e23065b9218a5f9b660ad4",
-  "expected_full_oracle_non_clifford": 23912611,
+  "expected_full_oracle_non_clifford": 23953656,
   "expected_total_logical_qubits": 1587,
   "case_count": 8,
   "passed_case_count": 8

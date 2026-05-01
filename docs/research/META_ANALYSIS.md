@@ -41,6 +41,6 @@ optimized artifact family includes:
 ## Main interpretation
 
 The repository's strongest current result comes from pairing the optimized
-retained point-add leaf with a named-boundary compiler-family whole-oracle
+retained point-add leaf with a standard-QROM compiler-family whole-oracle
 frontier while keeping the public comparison baseline explicit. It is not a
 standard-QROM primitive-circuit comparison.

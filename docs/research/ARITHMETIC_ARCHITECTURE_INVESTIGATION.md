@@ -12,20 +12,20 @@ It does not promote modeled numbers to headline results. A direction is treated
 as promising here only if it survives the repository's actual accumulator,
 lookup, and scaffold semantics.
 
-## Current named-boundary baseline
+## Current standard-QROM baseline
 
-As of the current compiler frontier, the repository's central named-boundary
+As of the current compiler frontier, the repository's central standard-QROM
 point is:
 
-- `23,912,611` non-Clifford
+- `23,953,656` non-Clifford
 - `1,587` logical qubits
 
 This is the family
 `folded_bitwise_banked_unary_qrom_measured_uncompute_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1`
 in `compiler_verification_project/artifacts/family_frontier.json`.
-The lookup side of this point remains a named boundary model; see
+The lookup side of this point is now bound to the standard-QROAM coordinate-stream model; see
 `compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json`
-for the checked standard-QROM gap.
+for the checked standard-QROM status.
 
 The current arithmetic leaf is a complete mixed-add formula over the
 homogeneous short-Weierstrass embedding used in `src/common.py`, where affine
@@ -289,7 +289,7 @@ Result:
 
 - the valid complete projective full-add body fits in `9` arithmetic slots, not
   in `8`,
-- this already exceeds the current central named-boundary frontier's `6` arithmetic
+- this already exceeds the current central standard-QROM frontier's `6` arithmetic
   slots before counting any lookup workspace or phase-shell bits.
 
 Interpretation:
@@ -698,7 +698,7 @@ Result for `n = 256`:
 
 Whole-oracle implication:
 
-- the current central named-boundary point is `1587` logical qubits, which decomposes as
+- the current central standard-QROM point is `1587` logical qubits, which decomposes as
   `6 * 256 + 49 + 1 + 1`,
 - a hypothetical `7`-slot arithmetic leaf with sequential tmpand-style zero
   tests lands at about `7 * 256 + 255 + 49 + 1 + 1 = 2098` logical qubits
@@ -763,7 +763,7 @@ Repository implication at `n = 256`:
   non-Clifford per retained addition,
 - across the current `28` retained additions this is about `43,036`
   non-Clifford total,
-- that is still tiny relative to the current central named-boundary point,
+- that is still tiny relative to the current central standard-QROM point,
 - if the ancilla demand really stays in the `O(log*(n))` or minimal-qubit
   regime, a `7`-slot candidate could plausibly remain in roughly the
   mid-`1800`s logical-qubit range instead of collapsing back to `~2100`.
@@ -795,7 +795,7 @@ Status:
 What was checked locally:
 
 - translated the comparator-based predicate screen into whole-oracle headline
-  numbers using the current central named-boundary decomposition
+  numbers using the current central standard-QROM decomposition
   `slots * 256 + 49 + 1 + 1`,
 - modeled the doubling predicate as two `3n`-style comparators plus one final
   one-bit conjunction at `n = 256`,
@@ -865,7 +865,7 @@ Status:
 What was checked locally:
 
 - converted the `7`-slot floor into required effective field widths under the
-  current central named-boundary whole-oracle overhead model
+  current central standard-QROM whole-oracle overhead model
   `slots * width + 49 + 1 + 1 + predicate_ancilla`,
 - swept a small predicate-ancilla range `1..8`.
 
@@ -1043,7 +1043,7 @@ Important limitation:
 - the carried-flag update rule has not yet been transcribed into a checked ISA
   lowering,
 - it may require one additional persistent control qubit relative to the
-  current central named-boundary family, although that qubit impact is negligible
+  current central standard-QROM family, although that qubit impact is negligible
   compared to arithmetic-slot changes.
 
 Status:
@@ -1681,7 +1681,7 @@ Simple gate screen:
   non-Clifford,
 - across `28` retained additions this contributes about `57,344`
   non-Clifford total,
-- adding that to the current central named-boundary point gives about
+- adding that to the current central standard-QROM point gives about
   `22,811,175` non-Clifford before any further shell simplifications.
 
 Qubit implication:
@@ -1734,7 +1734,7 @@ What was checked locally:
 
 - priced the qubit effect of carrying explicit shell-state controls on top of a
   hypothetical `7`-slot retained-add leaf,
-- kept the current central named-boundary family's fixed non-arithmetic budget:
+- kept the current central standard-QROM family's fixed non-arithmetic budget:
   `49` lookup workspace qubits and `1` live phase bit.
 
 Result:
@@ -1760,7 +1760,7 @@ What was checked locally:
 - priced the qubit effect of rescuing torsion-based alternative models by moving
   from `Fp` arithmetic to `Fp^d` arithmetic,
 - kept the same optimistic `7` arithmetic-slot target and the current central
-  named-boundary family's fixed non-arithmetic budget.
+  standard-QROM family's fixed non-arithmetic budget.
 
 Result:
 
@@ -2034,7 +2034,7 @@ Refined optimistic proxy:
 Interpretation:
 
 - even a concrete staged-shell selection network keeps the Jacobian-shell line
-  far below the current central named-boundary point in this rough proxy,
+  far below the current central standard-QROM point in this rough proxy,
 - this makes the remaining uncertainty overwhelmingly semantic rather than
   arithmetic-cost-driven.
 

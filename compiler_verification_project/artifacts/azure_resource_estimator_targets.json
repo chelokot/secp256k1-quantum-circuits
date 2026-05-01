@@ -17,9 +17,9 @@
   },
   "logical_counts_binding": {
     "family_names": [
-      "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1"
+      "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1"
     ],
-    "logical_counts_sha256": "edf470daf7f02bae856712d963161f18dcae76e3286664feb2f76a07d09643ed"
+    "logical_counts_sha256": "ea4c4cdd616ab9214b652d716cce04a62e5fba7e2e5c27674d048e2f5d44e0e4"
   },
   "targets": [
     {

@@ -1023,11 +1023,12 @@ def build_streamed_lookup_table_multiplier_resource_checks(artifacts: Mapping[st
     complete_tail = arithmetic_lookup['complete_a0_streamed_tail']
     checks = [
         _check('streamed_lookup_table_multiplier_resource_matches_generator', resource == expected_resource, expected_resource, resource),
-        _check('streamed_lookup_table_multiplier_schema_is_current', resource['schema'] == 'compiler-project-streamed-lookup-table-multiplier-resource-v1', 'compiler-project-streamed-lookup-table-multiplier-resource-v1', resource['schema']),
+        _check('streamed_lookup_table_multiplier_schema_is_current', resource['schema'] == 'compiler-project-standard-qroam-streamed-lookup-table-resource-v1', 'compiler-project-standard-qroam-streamed-lookup-table-resource-v1', resource['schema']),
         _check('streamed_lookup_table_multiplier_uses_15_bit_folded_path', model['folded_magnitude_bits'] == 15, 15, model['folded_magnitude_bits']),
-        _check('streamed_lookup_table_multiplier_counts_data_select_per_bit', model['non_clifford_per_streamed_coordinate_bit'] == 30, 30, model['non_clifford_per_streamed_coordinate_bit']),
+        _check('streamed_lookup_table_multiplier_is_standard_qroam', model['standard_qrom_equivalent'] is True and model['primitive'] == 'standard_qroam_coordinate_stream', {'standard_qrom_equivalent': True, 'primitive': 'standard_qroam_coordinate_stream'}, {'standard_qrom_equivalent': model['standard_qrom_equivalent'], 'primitive': model['primitive']}),
+        _check('streamed_lookup_table_multiplier_counts_qroam_coordinate_stream', model['per_kernel_non_clifford'] == 7951 and model['decomposition']['lookup_compute_non_clifford'] == 5888 and model['decomposition']['measured_uncompute_non_clifford'] == 2063, {'per_kernel_non_clifford': 7951, 'lookup_compute_non_clifford': 5888, 'measured_uncompute_non_clifford': 2063}, model),
         _check('streamed_lookup_table_multiplier_counts_five_leaf_kernels', model['per_leaf_streamed_kernel_count'] == 5, 5, model['per_leaf_streamed_kernel_count']),
-        _check('streamed_lookup_table_multiplier_per_leaf_cost_is_explicit', model['per_leaf_data_select_non_clifford'] == 5 * FIELD_BITS * 30, 5 * FIELD_BITS * 30, model['per_leaf_data_select_non_clifford']),
+        _check('streamed_lookup_table_multiplier_per_leaf_cost_is_explicit', model['per_leaf_data_select_non_clifford'] == 5 * 7951, 5 * 7951, model['per_leaf_data_select_non_clifford']),
         _check('streamed_lookup_table_multiplier_source_rows_have_data_select_stages', not source_failures, [], source_failures),
         _check('streamed_lookup_table_multiplier_top_level_kernels_have_data_select_stage', not table_kernel_failures, [], table_kernel_failures),
         _check(
@@ -1037,8 +1038,9 @@ def build_streamed_lookup_table_multiplier_resource_checks(artifacts: Mapping[st
             [stage['category'] for stage in complete_tail['stages']],
         ),
         _check('streamed_lookup_table_multiplier_workspace_contract_passes', workspace['passes'], True, workspace),
-        _check('streamed_lookup_table_multiplier_counts_one_latch_in_lookup_workspace', workspace['lookup_workspace_qubits'] == 49 and workspace['decode_and_control_workspace_qubits'] == 48 and workspace['streamed_coordinate_bit_latch_qubits'] == 1, {'lookup_workspace_qubits': 49, 'decode_and_control_workspace_qubits': 48, 'streamed_coordinate_bit_latch_qubits': 1}, workspace),
+        _check('streamed_lookup_table_multiplier_counts_qroam_workspace', workspace['lookup_workspace_qubits'] == 49 and workspace['folded_control_workspace_qubits'] == 18 and workspace['standard_qroam_local_workspace_qubits'] == 31 and workspace['streamed_coordinate_bit_latch_qubits'] == 1, {'lookup_workspace_qubits': 49, 'folded_control_workspace_qubits': 18, 'standard_qroam_local_workspace_qubits': 31, 'streamed_coordinate_bit_latch_qubits': 1}, workspace),
         _check('streamed_lookup_table_multiplier_materializes_no_coordinate_field_lanes', workspace['coordinate_field_lanes_materialized'] == 0 and workspace['coordinate_field_lane_qubits_materialized'] == 0, 0, workspace),
+        _check('streamed_lookup_table_multiplier_all_streams_use_standard_qroam_cost', resource['capacity_check']['all_coordinate_streams_use_standard_qroam_cost'], True, resource['capacity_check']),
     ]
     return _summarize_checks(checks)
 
@@ -1055,11 +1057,11 @@ def build_standard_qrom_lookup_assessment_checks(artifacts: Mapping[str, Any]) -
     implications = assessment['conservative_implications']
     checks = [
         _check('standard_qrom_lookup_assessment_matches_generator', assessment == expected, expected, assessment),
-        _check('standard_qrom_lookup_assessment_schema_is_current', assessment['schema'] == 'compiler-project-standard-qrom-lookup-assessment-v1', 'compiler-project-standard-qrom-lookup-assessment-v1', assessment['schema']),
-        _check('standard_qrom_lookup_assessment_status_is_not_proven', assessment['status'] == 'boundary_model_not_standard_qrom_proven', 'boundary_model_not_standard_qrom_proven', assessment['status']),
+        _check('standard_qrom_lookup_assessment_schema_is_current', assessment['schema'] == 'compiler-project-standard-qrom-lookup-assessment-v2', 'compiler-project-standard-qrom-lookup-assessment-v2', assessment['schema']),
+        _check('standard_qrom_lookup_assessment_status_is_proven', assessment['status'] == 'standard_qrom_primitive_circuit_proven_for_counted_family', 'standard_qrom_primitive_circuit_proven_for_counted_family', assessment['status']),
         _check('standard_qrom_lookup_assessment_uses_full_selection_space', gap['standard_unary_qrom_compute_toffoli_for_full_table'] == 32767, 32767, gap['standard_unary_qrom_compute_toffoli_for_full_table']),
-        _check('standard_qrom_lookup_assessment_rejects_bitwise_chunk_as_full_select', gap['standard_qrom_equivalent'] is False and current['compute_lookup_non_clifford'] == 15, {'standard_qrom_equivalent': False, 'compute_lookup_non_clifford': 15}, {'standard_qrom_equivalent': gap['standard_qrom_equivalent'], 'compute_lookup_non_clifford': current['compute_lookup_non_clifford']}),
-        _check('standard_qrom_lookup_assessment_records_streaming_gap', gap['current_streamed_bit_toffoli_shortfall'] == 32737, 32737, gap['current_streamed_bit_toffoli_shortfall']),
+        _check('standard_qrom_lookup_assessment_accepts_standard_qroam_stream', gap['standard_qrom_equivalent'] is True and gap['standard_qroam_coordinate_stream_toffoli'] == 7951, {'standard_qrom_equivalent': True, 'standard_qroam_coordinate_stream_toffoli': 7951}, {'standard_qrom_equivalent': gap['standard_qrom_equivalent'], 'standard_qroam_coordinate_stream_toffoli': gap['standard_qroam_coordinate_stream_toffoli']}),
+        _check('standard_qrom_lookup_assessment_has_no_streaming_gap', gap['current_streamed_bit_toffoli_shortfall'] == 0 and gap['current_compute_toffoli_shortfall'] == 0, {'current_streamed_bit_toffoli_shortfall': 0, 'current_compute_toffoli_shortfall': 0}, {'current_streamed_bit_toffoli_shortfall': gap['current_streamed_bit_toffoli_shortfall'], 'current_compute_toffoli_shortfall': gap['current_compute_toffoli_shortfall']}),
         _check('standard_qrom_lookup_assessment_materialized_lane_proxy_exceeds_1700', implications['materialize_x_y_with_standard_full_coordinate_qrom_logical_qubit_proxy'] > 1700, '> 1700', implications['materialize_x_y_with_standard_full_coordinate_qrom_logical_qubit_proxy']),
     ]
     return _summarize_checks(checks)

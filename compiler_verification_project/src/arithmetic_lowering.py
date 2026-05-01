@@ -282,31 +282,58 @@ def _field_mul_kernel(field_bits: int) -> Dict[str, Any]:
     )
 
 
+def _standard_qroam_coordinate_stream_cost(field_bits: int, domain_size: int = 32768, block_size: int = 16) -> Dict[str, int]:
+    lookup_compute = (domain_size + block_size - 1) // block_size + (block_size - 1) * field_bits
+    measured_uncompute = (domain_size + block_size - 1) // block_size + (block_size - 1)
+    return {
+        'domain_size': domain_size,
+        'block_size': block_size,
+        'field_bits': field_bits,
+        'lookup_compute_non_clifford': lookup_compute,
+        'measured_uncompute_non_clifford': measured_uncompute,
+        'total_non_clifford': lookup_compute + measured_uncompute,
+    }
+
+
 def _streamed_lookup_bit_oracle_stage(field_bits: int, bit_source: str) -> Dict[str, Any]:
-    operations: List[PrimitiveOperation] = []
-    for output_bit in range(field_bits):
-        for decode_bit in range(15):
-            operations.append(_primitive_operation('ccx', output_bit, decode_bit))
-        for decode_bit in range(15):
-            operations.append(_primitive_operation('ccx', output_bit, decode_bit))
-            operations.append(_primitive_operation('measurement', output_bit, decode_bit))
-    block = _block(
-        name=f'streamed_{bit_source}_bit_select',
-        summary=f'Stream one selected {bit_source} bit at a time into the counted lookup data latch.',
-        instance_count=field_bits,
-        primitive_operations=operations,
+    cost = _standard_qroam_coordinate_stream_cost(field_bits)
+    compute_operations = [
+        _primitive_operation('ccx', index)
+        for index in range(cost['lookup_compute_non_clifford'])
+    ]
+    uncompute_operations = [
+        operation
+        for index in range(cost['measured_uncompute_non_clifford'])
+        for operation in (_primitive_operation('ccx', index), _primitive_operation('measurement', index))
+    ]
+    compute_block = _block(
+        name=f'streamed_{bit_source}_standard_qroam_compute',
+        summary=f'Standard QROAM compute for one selected {bit_source} coordinate stream.',
+        instance_count=1,
+        primitive_operations=compute_operations,
         notes=[
-            'Each streamed coordinate bit is selected from the folded 15-bit lookup path, used as the constant-side multiplier control, and then uncomputed before the next bit.',
-            'The per-bit cost is 15 Toffoli-style path-decode controls plus 15 Toffoli-style measured-uncompute controls; Clifford fanout over the arithmetic source bits remains outside the non-Clifford count.',
+            f"The block uses the standard QROAM cost N/K + (K - 1)b with N={cost['domain_size']}, K={cost['block_size']}, and b={field_bits}.",
+            'The selected coordinate bits are emitted through the counted one-bit stream latch rather than a field-sized lookup-output lane.',
+        ],
+    )
+    uncompute_block = _block(
+        name=f'streamed_{bit_source}_standard_qroam_measured_uncompute',
+        summary=f'Measured standard-QROAM cleanup for one selected {bit_source} coordinate stream.',
+        instance_count=1,
+        primitive_operations=uncompute_operations,
+        notes=[
+            f"The measured cleanup uses the standard QROAM adjoint cost N/K + (K - 1) with N={cost['domain_size']} and K={cost['block_size']}.",
+            'The cleanup is paired with the same coordinate stream before the next lookup-controlled arithmetic kernel starts.',
         ],
     )
     return _stage(
-        name=f'streamed_{bit_source}_bit_oracle',
-        summary=f'Generated table-data selection for all {field_bits} streamed {bit_source} bits.',
+        name=f'streamed_{bit_source}_standard_qroam_oracle',
+        summary=f'Standard QROAM table-data selection for one {field_bits}-bit streamed {bit_source} coordinate.',
         category='streamed_lookup_data_select',
-        blocks=[block],
+        blocks=[compute_block, uncompute_block],
         notes=[
-            'This stage is the explicit resource contract for table-controlled lookup multiplication; the lookup coordinate is not a materialized field lane, but its selected bits are not free.',
+            'This stage replaces the rejected bitwise-banked path-select model with a standard QROAM primitive-circuit data stream.',
+            'The lookup coordinate is not a materialized field lane, but the full coordinate-stream table select is counted as a standard QROAM compute plus measured uncompute.',
         ],
     )
 

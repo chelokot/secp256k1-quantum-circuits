@@ -22,7 +22,7 @@ It is intentionally separate from the repository mainline.
    families; and
 6. verifies the completed raw-32 schedule semantically on deterministic
    secp256k1 basis-state cases; and
-7. packages one selected named-boundary family claim into an SP1 attestation bundle
+7. packages one selected standard-QROM family claim into an SP1 attestation bundle
    backed by a deterministic public point-add corpus.
 
 ## Strongest exact claim here
@@ -52,7 +52,7 @@ What it does ship is:
 - `exact_leaf_slot_allocation.json` — exact versioned live-range allocation of the checked leaf
 - `arithmetic_lowerings.json` — generated primitive-operation inventories for the named arithmetic-kernel family
 - `streamed_lookup_table_multiplier_resource.json` — explicit table-controlled multiplier resource contract for streamed lookup coordinate bits
-- `standard_qrom_lookup_assessment.json` — machine-checked assessment showing that the current bitwise-banked lookup lowering is a named boundary model, not a proven standard-QROM arbitrary table select
+- `standard_qrom_lookup_assessment.json` — machine-checked assessment showing that the selected lookup/resource contract is a standard-QROM primitive-circuit result
 - `module_library.json` — arithmetic-kernel summary used by the frontier
 - `lookup_lowerings.json` — generated primitive-operation inventories for the named folded lookup families
 - `phase_shell_lowerings.json` — generated phase-operation inventories for the named full-register and semiclassical inverse-QFT shells
@@ -70,9 +70,9 @@ What it does ship is:
 - `azure_resource_estimator_results.json` — recorded Microsoft Resource Estimator outputs for every exact family under every checked target profile
 - `cain_exact_transfer.json` — heuristic physical transfer for the exact families
 - `azure_resource_estimator_logical_counts.json` — logicalCounts-style handoff artifact for physical estimators
-- `zkp_attestation_input.json` — prepared SP1 attestation bundle carrying the public document digests, a compiled point-add leaf, and the deterministic public cases for the selected named-boundary family claim
+- `zkp_attestation_input.json` — prepared SP1 attestation bundle carrying the public document digests, a compiled point-add leaf, and the deterministic public cases for the selected standard-QROM family claim
 - `zkp_attestation_claim.json` — standalone public claim derived from the selected exact family
-- `zkp_attestation_family.json` — selected named-boundary family summary bound by the checked SP1 guest
+- `zkp_attestation_family.json` — selected standard-QROM family summary bound by the checked SP1 guest
 - `zkp_attestation_cases.json` — deterministic public point-add cases used by the checked SP1 guest
 - `zkp_attestation_public_values.json` — committed public values from the checked SP1 run
 - `zkp_attestation_fixture_core.json` — checked SP1 core fixture for the attested bundle
@@ -85,27 +85,24 @@ What it does ship is:
 
 ## Current central boundary result
 
-- **central named-boundary family:** `23,912,611 non-Clifford`, `1,587 logical qubits`
+- **central standard-QROM family:** `23,953,656 non-Clifford`, `1,587 logical qubits`
 
-The central family uses a fully bitwise banked unary lookup decode with measured
-uncompute, an exact semiclassical-QFT phase shell, and the executable streamed
-lookup tail point-add leaf. The resulting boundary live-qubit formula is:
+The central family uses a standard QROAM coordinate-stream lookup boundary, an
+exact semiclassical-QFT phase shell, and the executable streamed lookup tail
+point-add leaf. The resulting live-qubit formula is:
 
 `6 * 256 + 1 control + 49 lookup workspace + 1 phase = 1,587 logical qubits`
 
-The `49` lookup-workspace term is `48` decode/control qubits plus one counted
-streamed coordinate-bit latch. The table-controlled `field_mul_lookup_*`
-kernels also pay explicit data-select cost: every streamed coordinate bit pays
-15 folded path-decode controls plus 15 measured-uncompute controls before the
-next bit is selected.
+The `49` lookup-workspace term is `18` folded-control qubits plus `31` local
+standard-QROAM/latch qubits. The table-controlled `field_mul_lookup_*` kernels
+pay `7,951` non-Clifford operations per 256-bit coordinate stream: `5,888` for
+standard QROAM compute and `2,063` for measured uncompute. No field-sized
+lookup x/y output lane is counted as lookup workspace or borrowed from the
+interface.
 
-This is not published as a standard-QROM primitive-circuit result. The artifact
-`standard_qrom_lookup_assessment.json` records the open lowering gap: the
-current 15-control compute plus 15-control uncompute model proves independent
-address-bit chunk decoding, not a full arbitrary 32768-entry coordinate-table
-select. Under the standard unary-iteration QROM reference model, a full
-32768-entry lookup compute costs `32767` Toffoli-class operations at this
-abstraction layer.
+`standard_qrom_lookup_assessment.json` records the standard-QROM status and
+rejects the old bitwise-banked path-select boundary as a public standard-QROM
+claim.
 
 The compiler frontier intentionally publishes one repository result here rather
 than separate low-qubit and low-gate branches. Historical family lowerings
@@ -116,8 +113,8 @@ contract.
 ## Interpreting the results
 
 This subproject is strongest when read as a **compiler-family exact oracle**,
-not as a claim of hidden-Google reconstruction, global optimality, or completed
-standard-QROM primitive-circuit synthesis.
+not as a claim of hidden-Google reconstruction, global optimality, or a
+Clifford-complete full-Shor primitive-gate netlist.
 
 Its defining exact features are:
 
@@ -149,10 +146,10 @@ Its defining exact features are:
   to a counted owner, with zero borrowed lookup coordinate field lanes; and
 - the streamed table-multiplier resource contract proves that lookup coordinate
   bits are streamed through a counted one-bit latch and that the corresponding
-  named-boundary table-data selection gates are included in the arithmetic leaf
+  standard-QROAM table-data selection gates are included in the arithmetic leaf
   total; and
-- the standard-QROM lookup assessment prevents those same numbers from being
-  presented as a full arbitrary table-select primitive-circuit result.
+- the standard-QROM lookup assessment binds those same numbers to the selected
+  standard-QROAM primitive-circuit resource contract.
 
 ## SP1 attestation layer
 
@@ -189,7 +186,7 @@ values.
 The checked Groth16 proving path is pinned to the vendored
 `compiler_verification_project/zkp_attestation/vendor/sp1-recursion-gnark-ffi`
 patch set, which is also part of the curated proof manifest.
-Its public values bind the current central named-boundary family claim and the `8 / 8`
+Its public values bind the current central standard-QROM family claim and the `8 / 8`
 deterministic public cases in
 `compiler_verification_project/artifacts/zkp_attestation_cases.json`.
 
@@ -210,7 +207,7 @@ python compiler_verification_project/scripts/materialize_exact_circuits.py
 `materialize_exact_circuits.py` writes ignored whole-oracle operation streams
 for the selected exact compiler families under
 `compiler_verification_project/generated_circuits/`. With no family arguments it
-materializes the central public named-boundary family and the internal minimum-qubit
+materializes the central public standard-QROM family and the internal minimum-qubit
 comparison family; use `--all-families` to dump every checked exact family or
 `--list-families` to inspect the available names.
 

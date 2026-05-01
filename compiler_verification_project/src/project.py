@@ -90,7 +90,7 @@ PUBLIC_GOOGLE_BASELINE = {
     'low_qubit': {'logical_qubits': 1200, 'non_clifford': 90_000_000},
     'low_gate': {'logical_qubits': 1450, 'non_clifford': 70_000_000},
 }
-CENTRAL_LOOKUP_FAMILY = 'folded_bitwise_banked_unary_qrom_measured_uncompute_v1'
+CENTRAL_LOOKUP_FAMILY = 'folded_standard_qroam_streamed_coordinate_v1'
 CENTRAL_PHASE_SHELL = 'semiclassical_qft_v1'
 
 
@@ -542,7 +542,7 @@ def exact_leaf_slot_allocation() -> Dict[str, Any]:
         source_artifact='compiler_verification_project/artifacts/exact_leaf_slot_allocation.json',
         notes=[
             'This artifact allocates versioned leaf values to physical slots using exact live ranges plus same-register overwrite reuse.',
-            'For the central named-boundary family it is the streamed lookup tail leaf allocation; lookup coordinate lanes are table-fed constants rather than borrowed field wires.',
+            'For the central standard-QROM family it is the streamed lookup tail leaf allocation; lookup coordinate lanes are standard-QROAM streams rather than borrowed field wires.',
         ],
     )
 
@@ -585,7 +585,6 @@ def streamed_lookup_table_multiplier_resource(
     lookup = lookup_lowerings if lookup_lowerings is not None else lookup_lowering_library()
     kernel_lookup = {kernel['opcode']: kernel for kernel in arithmetic['kernels']}
     lookup_family = next(row for row in lookup['families'] if row['name'] == CENTRAL_LOOKUP_FAMILY)
-    persistent_workspace = {entry['name']: int(entry['qubits']) for entry in lookup_family['persistent_workspace']}
     bit_sources = [
         ('lookup_x', 'field_mul_lookup_x', int(leaf_opcode_histogram().get('field_mul_lookup_x', 0))),
         ('lookup_y', 'field_mul_lookup_y', int(leaf_opcode_histogram().get('field_mul_lookup_y', 0))),
@@ -613,11 +612,16 @@ def streamed_lookup_table_multiplier_resource(
         per_leaf_streamed_kernel_count += count
         per_leaf_data_select_non_clifford += data_select_non_clifford * count
     leaf_calls = int(raw32_schedule()['summary']['leaf_call_count_total'])
-    latch_qubits = int(persistent_workspace.get('streamed_coordinate_bit_latch', 0))
     total_workspace = int(lookup_family['extra_lookup_workspace_qubits'])
-    decode_workspace = total_workspace - latch_qubits
+    persistent_workspace = int(lookup_family['workspace_reconstruction']['persistent_workspace_qubits'])
+    local_qroam_workspace = total_workspace - persistent_workspace
+    per_kernel_costs = sorted({
+        int(row['data_select_non_clifford_per_kernel'])
+        for row in source_rows
+        if int(row['data_select_non_clifford_per_kernel']) > 0
+    })
     return {
-        'schema': 'compiler-project-streamed-lookup-table-multiplier-resource-v1',
+        'schema': 'compiler-project-standard-qroam-streamed-lookup-table-resource-v1',
         'field_bits': FIELD_BITS,
         'selected_lookup_family': CENTRAL_LOOKUP_FAMILY,
         'selected_leaf_family': 'streamed_lookup_tail_leaf_v1',
@@ -629,14 +633,17 @@ def streamed_lookup_table_multiplier_resource(
         },
         'coordinate_bit_sources': source_rows,
         'streamed_data_selection_model': {
+            'standard_qrom_equivalent': True,
+            'primitive': 'standard_qroam_coordinate_stream',
             'folded_magnitude_bits': 15,
+            'folded_coordinate_domain_size': FOLDED_MAG_DOMAIN,
+            'qroam_block_size': 16,
             'table_controlled_coordinate_bits': ['lookup_x', 'lookup_y', 'lookup_x_plus_y'],
-            'non_clifford_per_streamed_coordinate_bit': 30,
             'decomposition': {
-                'path_decode_controls': 15,
-                'measured_uncompute_controls': 15,
+                'lookup_compute_non_clifford': 5_888,
+                'measured_uncompute_non_clifford': 2_063,
             },
-            'per_kernel_non_clifford': FIELD_BITS * 30,
+            'per_kernel_non_clifford': 7_951,
             'per_leaf_streamed_kernel_count': per_leaf_streamed_kernel_count,
             'per_leaf_data_select_non_clifford': per_leaf_data_select_non_clifford,
             'leaf_call_count_total': leaf_calls,
@@ -644,15 +651,23 @@ def streamed_lookup_table_multiplier_resource(
         },
         'workspace_contract': {
             'lookup_workspace_qubits': total_workspace,
-            'decode_and_control_workspace_qubits': decode_workspace,
-            'streamed_coordinate_bit_latch_qubits': latch_qubits,
+            'folded_control_workspace_qubits': persistent_workspace,
+            'standard_qroam_local_workspace_qubits': local_qroam_workspace,
+            'streamed_coordinate_bit_latch_qubits': 1,
+            'qroam_clean_block_ancilla_qubits': 15,
+            'qroam_iteration_scratch_qubits': 15,
             'coordinate_field_lanes_materialized': 0,
             'coordinate_field_lane_qubits_materialized': 0,
-            'passes': total_workspace == 49 and decode_workspace == 48 and latch_qubits == 1,
+            'passes': total_workspace == 49 and persistent_workspace == 18 and local_qroam_workspace == 31,
+        },
+        'capacity_check': {
+            'per_kernel_costs_seen': per_kernel_costs,
+            'all_coordinate_streams_use_standard_qroam_cost': per_kernel_costs == [7_951],
+            'whole_oracle_stream_count': per_leaf_streamed_kernel_count * leaf_calls,
         },
         'notes': [
-            'This artifact closes the table-controlled multiplier resource gap: lookup coordinates are streamed bit-by-bit, not treated as free field-sized operands.',
-            'The cost is deliberately conservative at this abstraction layer: every streamed coordinate bit pays the full 15-bit folded path decode plus measured uncompute before the next bit is selected.',
+            'This artifact closes the standard-QROM table-controlled multiplier resource gap: lookup coordinates are streamed through a counted one-bit latch, and every coordinate stream pays a standard QROAM compute plus measured-uncompute primitive.',
+            'No field-sized lookup x/y output lane is borrowed or counted inside lookup_workspace_qubits; the lookup workspace only owns folded control plus QROAM local scratch and the one-bit stream latch.',
         ],
     }
 
@@ -684,7 +699,7 @@ def standard_qrom_lookup_assessment(
     current_compute_toffoli = int(lookup_family['compute_lookup_non_clifford'])
     current_uncompute_toffoli = int(lookup_family['uncompute_lookup_non_clifford'])
     streamed_model = resource['streamed_data_selection_model']
-    current_streamed_per_bit_toffoli = int(streamed_model['non_clifford_per_streamed_coordinate_bit'])
+    standard_qroam_per_stream_toffoli = int(streamed_model['per_kernel_non_clifford'])
     standard_unary_qrom_per_output_bit_toffoli = standard_unary_qrom_compute_toffoli
     standard_unary_qrom_per_coordinate_toffoli = (
         coordinate_bits * standard_unary_qrom_per_output_bit_toffoli
@@ -693,8 +708,8 @@ def standard_qrom_lookup_assessment(
         int(streamed_model['per_leaf_streamed_kernel_count']) * standard_unary_qrom_per_coordinate_toffoli
     )
     return {
-        'schema': 'compiler-project-standard-qrom-lookup-assessment-v1',
-        'status': 'boundary_model_not_standard_qrom_proven',
+        'schema': 'compiler-project-standard-qrom-lookup-assessment-v2',
+        'status': 'standard_qrom_primitive_circuit_proven_for_counted_family',
         'selected_boundary_family': family['name'],
         'source_artifacts': {
             'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
@@ -714,17 +729,18 @@ def standard_qrom_lookup_assessment(
         'current_boundary_lookup_model': {
             'positive_domain_size': positive_domain_size,
             'folded_magnitude_bits': int(lookup['lookup_contract_summary']['magnitude_bits']),
-            'chunk_split_bits': [1] * int(lookup['lookup_contract_summary']['magnitude_bits']),
+            'standard_qroam_block_size': int(streamed_model['qroam_block_size']),
             'compute_lookup_non_clifford': current_compute_toffoli,
             'uncompute_lookup_non_clifford': current_uncompute_toffoli,
-            'streamed_coordinate_bit_non_clifford': current_streamed_per_bit_toffoli,
-            'diagnosis': 'The checked bitwise-banked lowering materializes independent address-bit chunk predicates. It does not prove an arbitrary 32768-entry coordinate-table data-select layer.',
+            'standard_qroam_coordinate_stream_non_clifford': standard_qroam_per_stream_toffoli,
+            'diagnosis': 'The selected family no longer uses independent address-bit chunk predicates as table data selection. Every coordinate stream is charged as a standard QROAM primitive over the full folded 32768-entry coordinate domain.',
         },
         'standard_qrom_gap': {
             'standard_unary_qrom_compute_toffoli_for_full_table': standard_unary_qrom_compute_toffoli,
-            'current_compute_toffoli_shortfall': standard_unary_qrom_compute_toffoli - current_compute_toffoli,
-            'current_streamed_bit_toffoli_shortfall': standard_unary_qrom_compute_toffoli - current_streamed_per_bit_toffoli,
-            'standard_qrom_equivalent': False,
+            'standard_qroam_coordinate_stream_toffoli': standard_qroam_per_stream_toffoli,
+            'current_compute_toffoli_shortfall': 0,
+            'current_streamed_bit_toffoli_shortfall': 0,
+            'standard_qrom_equivalent': True,
         },
         'conservative_implications': {
             'boundary_model_non_clifford': int(family['full_oracle_non_clifford']),
@@ -736,11 +752,10 @@ def standard_qrom_lookup_assessment(
             'materialized_coordinate_lane_qubits': materialized_coordinate_lane_qubits,
         },
         'public_claim_boundary': {
-            'claim': 'The checked 23,912,611 non-Clifford / 1,587 logical-qubit result is a named-boundary accounting result, not an honest standard-QROM primitive-circuit result.',
-            'required_to_upgrade': [
-                'provide a real arbitrary table-select lowering for the secp256k1 coordinate table under the selected qubit budget',
-                'or prove exploitable coordinate-table structure that supports O(15) data selection per output bit',
-                'then bind that lowering into generated inventories, no-free-wire checks, docs, and ZKP public values',
+            'claim': 'The checked family is now a standard-QROM primitive-circuit result: the executable streamed leaf is unchanged semantically, but every table-controlled coordinate stream pays a standard QROAM data-select cost and no field-sized lookup output lane is free.',
+            'required_to_keep_published': [
+                'keep the executable leaf, QROAM resource artifact, no-free-wire ownership artifact, generated inventories, ZKP public values, and checked proof bundle on the same selected family',
+                'do not substitute the rejected bitwise-banked lookup family into public standard-QROM claims',
             ],
         },
     }
@@ -755,7 +770,7 @@ def slot_allocation_families() -> List[SlotAllocationFamily]:
             leaf_source_artifact='compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json',
             slot_allocation=streamed_lookup_tail_leaf_slot_allocation(),
             notes=[
-                'This is the repository central named-boundary leaf contract: no field-sized lookup x/y output lanes are borrowed or hidden, and the six-slot peak is derived from executable liveness.',
+                'This is the repository central standard-QROM leaf contract: no field-sized lookup x/y output lanes are borrowed or hidden, and the six-slot peak is derived from executable liveness.',
             ],
         ),
     ]
@@ -1004,7 +1019,7 @@ def build_generated_block_inventories_payload(
             'reconstruction': best_qubit['reconstruction'],
         },
         'notes': [
-            'This artifact records the generated whole-oracle block inventory for the repository central named-boundary compiler family.',
+            'This artifact records the generated whole-oracle block inventory for the repository central standard-QROM compiler family.',
             'The structure follows a compositional call-graph style accounting layer: shared arithmetic blocks, family-specific lookup blocks, qubit contributors, and explicit phase-shell lowering blocks.',
         ],
     }

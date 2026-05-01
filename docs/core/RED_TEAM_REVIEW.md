@@ -12,8 +12,8 @@ repository-supported answer to each one.
 | “The scaffold is metadata, not a full Shor gate list.” | High | This is true for the mainline, and the compiler subproject publishes an exact fully quantum raw-32 oracle family with explicit whole-oracle counts. It is still not a globally optimized complete Shor implementation. | Partly |
 | “The exact compiler frontier still does not reconstruct a hidden Google circuit.” | High | True. The repository compares against Google's public rounded lines, not against an unpublished circuit. | Yes |
 | “Toy-curve proofs are not universal proofs over all prime fields.” | Medium | True. They are finite-model support for the family story. | Yes |
-| “No primitive-gate qRAM or QROM is shipped.” | Medium | True. The repository ships generated compiler-family lookup lowerings below the folded contract, but it still does not ship a bit-for-bit Clifford-complete primitive qRAM/QROM implementation. | Yes |
-| “The streamed lookup result is not a standard-QROM arbitrary table-select result.” | High | True. `standard_qrom_lookup_assessment.json` records that the current bitwise-banked lowering proves independent address-bit chunk decoding, not a full 32768-entry coordinate-table select. | Yes |
+| “No primitive-gate qRAM or QROM is shipped.” | Medium | Partly. The repository now binds the counted lookup-data path to a standard QROAM coordinate-stream primitive, but it still does not ship a bit-for-bit Clifford-complete full-oracle netlist. | Partly |
+| “The previous streamed lookup model only counted bitwise path controls.” | High | Closed for the counted family. `standard_qrom_lookup_assessment.json` records the selected standard-QROAM coordinate-stream primitive and rejects the old bitwise-banked path-select model. | No |
 | “No end-to-end physical machine proof is shipped.” | Medium | True. The repository ships exact logicalCounts, explicit Microsoft Resource Estimator target profiles, recorded estimator outputs, and a separate Cain transfer study, but it does not ship a hardware-independent theorem-proved physical realization. | Yes |
 
 ## Statements the repository can defend directly
@@ -24,7 +24,7 @@ repository-supported answer to each one.
 - exhaustive finite-model family checks on the toy-curve set
 - deterministic scaffold replay for the retained-window schedule
 - exact signed folded lookup-contract semantics together with machine-readable contract-field validation
-- exact whole-oracle counts for named compiler families in the compiler subproject
+- exact standard-QROM whole-oracle counts for named compiler families in the compiler subproject
 - exact qubit tightening from slot allocation and exact phase-shell lowering in that subproject
 - exact comparison of those compiler-family counts against Google's published
   2026 secp256k1 baseline lines
@@ -34,7 +34,7 @@ repository-supported answer to each one.
 - “fully verified globally optimal primitive-gate quantum circuit”
 - “reconstruction of an unpublished Google circuit”
 - “exact final physical machine cost”
-- “primitive-gate qRAM already proved for every compiler family”
+- “Clifford-complete qRAM/full-Shor netlist already proved for every compiler family”
 
 ## Publication-safe wording
 

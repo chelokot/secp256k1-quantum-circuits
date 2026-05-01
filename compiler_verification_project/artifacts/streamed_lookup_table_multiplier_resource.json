@@ -1,7 +1,7 @@
 {
-  "schema": "compiler-project-streamed-lookup-table-multiplier-resource-v1",
+  "schema": "compiler-project-standard-qroam-streamed-lookup-table-resource-v1",
   "field_bits": 256,
-  "selected_lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
+  "selected_lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
   "selected_leaf_family": "streamed_lookup_tail_leaf_v1",
   "source_artifacts": {
     "arithmetic_lowerings": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
@@ -15,10 +15,10 @@
       "consumer_opcode": "field_mul_lookup_x",
       "per_leaf_kernel_count": 2,
       "field_bits_streamed_per_kernel": 256,
-      "data_select_non_clifford_per_kernel": 7680,
-      "data_select_non_clifford_per_leaf": 15360,
+      "data_select_non_clifford_per_kernel": 7951,
+      "data_select_non_clifford_per_leaf": 15902,
       "stage_names": [
-        "streamed_lookup_x_bit_oracle"
+        "streamed_lookup_x_standard_qroam_oracle"
       ]
     },
     {
@@ -26,10 +26,10 @@
       "consumer_opcode": "field_mul_lookup_y",
       "per_leaf_kernel_count": 1,
       "field_bits_streamed_per_kernel": 256,
-      "data_select_non_clifford_per_kernel": 7680,
-      "data_select_non_clifford_per_leaf": 7680,
+      "data_select_non_clifford_per_kernel": 7951,
+      "data_select_non_clifford_per_leaf": 7951,
       "stage_names": [
-        "streamed_lookup_y_bit_oracle"
+        "streamed_lookup_y_standard_qroam_oracle"
       ]
     },
     {
@@ -37,10 +37,10 @@
       "consumer_opcode": "field_mul_lookup_sum",
       "per_leaf_kernel_count": 1,
       "field_bits_streamed_per_kernel": 256,
-      "data_select_non_clifford_per_kernel": 7680,
-      "data_select_non_clifford_per_leaf": 7680,
+      "data_select_non_clifford_per_kernel": 7951,
+      "data_select_non_clifford_per_leaf": 7951,
       "stage_names": [
-        "streamed_lookup_x_plus_y_bit_oracle"
+        "streamed_lookup_x_plus_y_standard_qroam_oracle"
       ]
     },
     {
@@ -48,41 +48,54 @@
       "consumer_opcode": "complete_a0_streamed_tail",
       "per_leaf_kernel_count": 1,
       "field_bits_streamed_per_kernel": 256,
-      "data_select_non_clifford_per_kernel": 7680,
-      "data_select_non_clifford_per_leaf": 7680,
+      "data_select_non_clifford_per_kernel": 7951,
+      "data_select_non_clifford_per_leaf": 7951,
       "stage_names": [
-        "streamed_lookup_y_bit_oracle"
+        "streamed_lookup_y_standard_qroam_oracle"
       ]
     }
   ],
   "streamed_data_selection_model": {
+    "standard_qrom_equivalent": true,
+    "primitive": "standard_qroam_coordinate_stream",
     "folded_magnitude_bits": 15,
+    "folded_coordinate_domain_size": 32768,
+    "qroam_block_size": 16,
     "table_controlled_coordinate_bits": [
       "lookup_x",
       "lookup_y",
       "lookup_x_plus_y"
     ],
-    "non_clifford_per_streamed_coordinate_bit": 30,
     "decomposition": {
-      "path_decode_controls": 15,
-      "measured_uncompute_controls": 15
+      "lookup_compute_non_clifford": 5888,
+      "measured_uncompute_non_clifford": 2063
     },
-    "per_kernel_non_clifford": 7680,
+    "per_kernel_non_clifford": 7951,
     "per_leaf_streamed_kernel_count": 5,
-    "per_leaf_data_select_non_clifford": 38400,
+    "per_leaf_data_select_non_clifford": 39755,
     "leaf_call_count_total": 31,
-    "whole_oracle_data_select_non_clifford": 1190400
+    "whole_oracle_data_select_non_clifford": 1232405
   },
   "workspace_contract": {
     "lookup_workspace_qubits": 49,
-    "decode_and_control_workspace_qubits": 48,
+    "folded_control_workspace_qubits": 18,
+    "standard_qroam_local_workspace_qubits": 31,
     "streamed_coordinate_bit_latch_qubits": 1,
+    "qroam_clean_block_ancilla_qubits": 15,
+    "qroam_iteration_scratch_qubits": 15,
     "coordinate_field_lanes_materialized": 0,
     "coordinate_field_lane_qubits_materialized": 0,
     "passes": true
   },
+  "capacity_check": {
+    "per_kernel_costs_seen": [
+      7951
+    ],
+    "all_coordinate_streams_use_standard_qroam_cost": true,
+    "whole_oracle_stream_count": 155
+  },
   "notes": [
-    "This artifact closes the table-controlled multiplier resource gap: lookup coordinates are streamed bit-by-bit, not treated as free field-sized operands.",
-    "The cost is deliberately conservative at this abstraction layer: every streamed coordinate bit pays the full 15-bit folded path decode plus measured uncompute before the next bit is selected."
+    "This artifact closes the standard-QROM table-controlled multiplier resource gap: lookup coordinates are streamed through a counted one-bit latch, and every coordinate stream pays a standard QROAM compute plus measured-uncompute primitive.",
+    "No field-sized lookup x/y output lane is borrowed or counted inside lookup_workspace_qubits; the lookup workspace only owns folded control plus QROAM local scratch and the one-bit stream latch."
   ]
 }

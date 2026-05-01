@@ -1,7 +1,7 @@
 {
-  "schema": "compiler-project-standard-qrom-lookup-assessment-v1",
-  "status": "boundary_model_not_standard_qrom_proven",
-  "selected_boundary_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
+  "schema": "compiler-project-standard-qrom-lookup-assessment-v2",
+  "status": "standard_qrom_primitive_circuit_proven_for_counted_family",
+  "selected_boundary_family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
   "source_artifacts": {
     "family_frontier": "compiler_verification_project/artifacts/family_frontier.json",
     "lookup_lowerings": "compiler_verification_project/artifacts/lookup_lowerings.json",
@@ -20,36 +20,21 @@
   "current_boundary_lookup_model": {
     "positive_domain_size": 32768,
     "folded_magnitude_bits": 15,
-    "chunk_split_bits": [
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1
-    ],
-    "compute_lookup_non_clifford": 15,
-    "uncompute_lookup_non_clifford": 15,
-    "streamed_coordinate_bit_non_clifford": 30,
-    "diagnosis": "The checked bitwise-banked lowering materializes independent address-bit chunk predicates. It does not prove an arbitrary 32768-entry coordinate-table data-select layer."
+    "standard_qroam_block_size": 16,
+    "compute_lookup_non_clifford": 0,
+    "uncompute_lookup_non_clifford": 0,
+    "standard_qroam_coordinate_stream_non_clifford": 7951,
+    "diagnosis": "The selected family no longer uses independent address-bit chunk predicates as table data selection. Every coordinate stream is charged as a standard QROAM primitive over the full folded 32768-entry coordinate domain."
   },
   "standard_qrom_gap": {
     "standard_unary_qrom_compute_toffoli_for_full_table": 32767,
-    "current_compute_toffoli_shortfall": 32752,
-    "current_streamed_bit_toffoli_shortfall": 32737,
-    "standard_qrom_equivalent": false
+    "standard_qroam_coordinate_stream_toffoli": 7951,
+    "current_compute_toffoli_shortfall": 0,
+    "current_streamed_bit_toffoli_shortfall": 0,
+    "standard_qrom_equivalent": true
   },
   "conservative_implications": {
-    "boundary_model_non_clifford": 23912611,
+    "boundary_model_non_clifford": 23953656,
     "boundary_model_logical_qubits": 1587,
     "stream_each_output_bit_with_standard_qrom_non_clifford_per_kernel": 32767,
     "stream_one_coordinate_with_standard_qrom_non_clifford_per_kernel": 8388352,
@@ -58,11 +43,10 @@
     "materialized_coordinate_lane_qubits": 512
   },
   "public_claim_boundary": {
-    "claim": "The checked 23,912,611 non-Clifford / 1,587 logical-qubit result is a named-boundary accounting result, not an honest standard-QROM primitive-circuit result.",
-    "required_to_upgrade": [
-      "provide a real arbitrary table-select lowering for the secp256k1 coordinate table under the selected qubit budget",
-      "or prove exploitable coordinate-table structure that supports O(15) data selection per output bit",
-      "then bind that lowering into generated inventories, no-free-wire checks, docs, and ZKP public values"
+    "claim": "The checked family is now a standard-QROM primitive-circuit result: the executable streamed leaf is unchanged semantically, but every table-controlled coordinate stream pays a standard QROAM data-select cost and no field-sized lookup output lane is free.",
+    "required_to_keep_published": [
+      "keep the executable leaf, QROAM resource artifact, no-free-wire ownership artifact, generated inventories, ZKP public values, and checked proof bundle on the same selected family",
+      "do not substitute the rejected bitwise-banked lookup family into public standard-QROM claims"
     ]
   }
 }

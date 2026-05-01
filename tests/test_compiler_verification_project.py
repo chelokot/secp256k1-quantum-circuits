@@ -134,7 +134,7 @@ def test_mutated_lookup_lowering_stage_is_detected() -> None:
 
 def test_mutated_standard_qrom_assessment_is_detected() -> None:
     artifacts = deepcopy(_load_artifacts())
-    artifacts['standard_qrom_lookup_assessment']['standard_qrom_gap']['standard_qrom_equivalent'] = True
+    artifacts['standard_qrom_lookup_assessment']['standard_qrom_gap']['standard_qrom_equivalent'] = False
     groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
     assert groups['standard_qrom_lookup_assessment_checks']['pass'] < groups['standard_qrom_lookup_assessment_checks']['total']
 

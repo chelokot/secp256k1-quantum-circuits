@@ -32,9 +32,9 @@
   },
   "families": [
     {
-      "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
-      "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Executable streamed lookup leaf with table-fed coordinate multipliers, boundary no-op semantics, and a counted multi-output complete-add tail.",
-      "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
+      "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
+      "summary": "Central standard-QROAM lookup family: folded lookup control with standard QROAM coordinate streams consumed by table-controlled arithmetic kernels. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Executable streamed lookup leaf with table-fed coordinate multipliers, boundary no-op semantics, and a counted multi-output complete-add tail.",
+      "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
       "phase_shell": "semiclassical_qft_v1",
       "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
       "graph": {
@@ -44,10 +44,10 @@
             "id": "full_oracle",
             "kind": "composite",
             "category": "oracle_root",
-            "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Executable streamed lookup leaf with table-fed coordinate multipliers, boundary no-op semantics, and a counted multi-output complete-add tail.",
+            "summary": "Central standard-QROAM lookup family: folded lookup control with standard QROAM coordinate streams consumed by table-controlled arithmetic kernels. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Executable streamed lookup leaf with table-fed coordinate multipliers, boundary no-op semantics, and a counted multi-output complete-add tail.",
             "metadata": {
-              "family_name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
+              "family_name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
+              "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
               "phase_shell": "semiclassical_qft_v1",
               "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
             }
@@ -78,38 +78,59 @@
             "metadata": {
               "opcode": "field_mul_lookup_x",
               "per_leaf_instance_count": 2,
-              "exact_non_clifford_per_kernel": 73727
+              "exact_non_clifford_per_kernel": 73998
             }
           },
           {
-            "id": "arithmetic_opcode__field_mul_lookup_x__stage__streamed_lookup_x_bit_oracle",
+            "id": "arithmetic_opcode__field_mul_lookup_x__stage__streamed_lookup_x_standard_qroam_oracle",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Generated table-data selection for all 256 streamed lookup_x bits.",
+            "summary": "Standard QROAM table-data selection for one 256-bit streamed lookup_x coordinate.",
             "metadata": {
               "opcode": "field_mul_lookup_x",
-              "stage": "streamed_lookup_x_bit_oracle",
+              "stage": "streamed_lookup_x_standard_qroam_oracle",
               "stage_category": "streamed_lookup_data_select"
             }
           },
           {
-            "id": "arithmetic_opcode__field_mul_lookup_x__stage__streamed_lookup_x_bit_oracle__leaf__streamed_lookup_x_bit_select",
+            "id": "arithmetic_opcode__field_mul_lookup_x__stage__streamed_lookup_x_standard_qroam_oracle__leaf__streamed_lookup_x_standard_qroam_compute",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Stream one selected lookup_x bit at a time into the counted lookup data latch.",
+            "summary": "Standard QROAM compute for one selected lookup_x coordinate stream.",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "field_mul_lookup_x",
-              "stage": "streamed_lookup_x_bit_oracle",
+              "stage": "streamed_lookup_x_standard_qroam_oracle",
               "resource_profile": {
                 "resource_semantics": "additive_primitive",
                 "primitive_counts_per_instance": {
-                  "ccx": 30,
+                  "ccx": 5888,
                   "cx": 0,
                   "x": 0,
-                  "measurement": 15
+                  "measurement": 0
                 },
-                "base_instance_count": 256
+                "base_instance_count": 1
+              }
+            }
+          },
+          {
+            "id": "arithmetic_opcode__field_mul_lookup_x__stage__streamed_lookup_x_standard_qroam_oracle__leaf__streamed_lookup_x_standard_qroam_measured_uncompute",
+            "kind": "leaf",
+            "category": "primitive_block",
+            "summary": "Measured standard-QROAM cleanup for one selected lookup_x coordinate stream.",
+            "metadata": {
+              "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+              "opcode": "field_mul_lookup_x",
+              "stage": "streamed_lookup_x_standard_qroam_oracle",
+              "resource_profile": {
+                "resource_semantics": "additive_primitive",
+                "primitive_counts_per_instance": {
+                  "ccx": 2063,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 2063
+                },
+                "base_instance_count": 1
               }
             }
           },
@@ -217,38 +238,59 @@
             "metadata": {
               "opcode": "field_mul_lookup_y",
               "per_leaf_instance_count": 1,
-              "exact_non_clifford_per_kernel": 73727
+              "exact_non_clifford_per_kernel": 73998
             }
           },
           {
-            "id": "arithmetic_opcode__field_mul_lookup_y__stage__streamed_lookup_y_bit_oracle",
+            "id": "arithmetic_opcode__field_mul_lookup_y__stage__streamed_lookup_y_standard_qroam_oracle",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Generated table-data selection for all 256 streamed lookup_y bits.",
+            "summary": "Standard QROAM table-data selection for one 256-bit streamed lookup_y coordinate.",
             "metadata": {
               "opcode": "field_mul_lookup_y",
-              "stage": "streamed_lookup_y_bit_oracle",
+              "stage": "streamed_lookup_y_standard_qroam_oracle",
               "stage_category": "streamed_lookup_data_select"
             }
           },
           {
-            "id": "arithmetic_opcode__field_mul_lookup_y__stage__streamed_lookup_y_bit_oracle__leaf__streamed_lookup_y_bit_select",
+            "id": "arithmetic_opcode__field_mul_lookup_y__stage__streamed_lookup_y_standard_qroam_oracle__leaf__streamed_lookup_y_standard_qroam_compute",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Stream one selected lookup_y bit at a time into the counted lookup data latch.",
+            "summary": "Standard QROAM compute for one selected lookup_y coordinate stream.",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "field_mul_lookup_y",
-              "stage": "streamed_lookup_y_bit_oracle",
+              "stage": "streamed_lookup_y_standard_qroam_oracle",
               "resource_profile": {
                 "resource_semantics": "additive_primitive",
                 "primitive_counts_per_instance": {
-                  "ccx": 30,
+                  "ccx": 5888,
                   "cx": 0,
                   "x": 0,
-                  "measurement": 15
+                  "measurement": 0
                 },
-                "base_instance_count": 256
+                "base_instance_count": 1
+              }
+            }
+          },
+          {
+            "id": "arithmetic_opcode__field_mul_lookup_y__stage__streamed_lookup_y_standard_qroam_oracle__leaf__streamed_lookup_y_standard_qroam_measured_uncompute",
+            "kind": "leaf",
+            "category": "primitive_block",
+            "summary": "Measured standard-QROAM cleanup for one selected lookup_y coordinate stream.",
+            "metadata": {
+              "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+              "opcode": "field_mul_lookup_y",
+              "stage": "streamed_lookup_y_standard_qroam_oracle",
+              "resource_profile": {
+                "resource_semantics": "additive_primitive",
+                "primitive_counts_per_instance": {
+                  "ccx": 2063,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 2063
+                },
+                "base_instance_count": 1
               }
             }
           },
@@ -356,38 +398,59 @@
             "metadata": {
               "opcode": "field_mul_lookup_sum",
               "per_leaf_instance_count": 1,
-              "exact_non_clifford_per_kernel": 73727
+              "exact_non_clifford_per_kernel": 73998
             }
           },
           {
-            "id": "arithmetic_opcode__field_mul_lookup_sum__stage__streamed_lookup_x_plus_y_bit_oracle",
+            "id": "arithmetic_opcode__field_mul_lookup_sum__stage__streamed_lookup_x_plus_y_standard_qroam_oracle",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Generated table-data selection for all 256 streamed lookup_x_plus_y bits.",
+            "summary": "Standard QROAM table-data selection for one 256-bit streamed lookup_x_plus_y coordinate.",
             "metadata": {
               "opcode": "field_mul_lookup_sum",
-              "stage": "streamed_lookup_x_plus_y_bit_oracle",
+              "stage": "streamed_lookup_x_plus_y_standard_qroam_oracle",
               "stage_category": "streamed_lookup_data_select"
             }
           },
           {
-            "id": "arithmetic_opcode__field_mul_lookup_sum__stage__streamed_lookup_x_plus_y_bit_oracle__leaf__streamed_lookup_x_plus_y_bit_select",
+            "id": "arithmetic_opcode__field_mul_lookup_sum__stage__streamed_lookup_x_plus_y_standard_qroam_oracle__leaf__streamed_lookup_x_plus_y_standard_qroam_compute",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Stream one selected lookup_x_plus_y bit at a time into the counted lookup data latch.",
+            "summary": "Standard QROAM compute for one selected lookup_x_plus_y coordinate stream.",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "field_mul_lookup_sum",
-              "stage": "streamed_lookup_x_plus_y_bit_oracle",
+              "stage": "streamed_lookup_x_plus_y_standard_qroam_oracle",
               "resource_profile": {
                 "resource_semantics": "additive_primitive",
                 "primitive_counts_per_instance": {
-                  "ccx": 30,
+                  "ccx": 5888,
                   "cx": 0,
                   "x": 0,
-                  "measurement": 15
+                  "measurement": 0
                 },
-                "base_instance_count": 256
+                "base_instance_count": 1
+              }
+            }
+          },
+          {
+            "id": "arithmetic_opcode__field_mul_lookup_sum__stage__streamed_lookup_x_plus_y_standard_qroam_oracle__leaf__streamed_lookup_x_plus_y_standard_qroam_measured_uncompute",
+            "kind": "leaf",
+            "category": "primitive_block",
+            "summary": "Measured standard-QROAM cleanup for one selected lookup_x_plus_y coordinate stream.",
+            "metadata": {
+              "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+              "opcode": "field_mul_lookup_sum",
+              "stage": "streamed_lookup_x_plus_y_standard_qroam_oracle",
+              "resource_profile": {
+                "resource_semantics": "additive_primitive",
+                "primitive_counts_per_instance": {
+                  "ccx": 2063,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 2063
+                },
+                "base_instance_count": 1
               }
             }
           },
@@ -624,38 +687,59 @@
             "metadata": {
               "opcode": "complete_a0_streamed_tail",
               "per_leaf_instance_count": 1,
-              "exact_non_clifford_per_kernel": 473069
+              "exact_non_clifford_per_kernel": 473340
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_streamed_tail__stage__streamed_lookup_y_bit_oracle",
+            "id": "arithmetic_opcode__complete_a0_streamed_tail__stage__streamed_lookup_y_standard_qroam_oracle",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Generated table-data selection for all 256 streamed lookup_y bits.",
+            "summary": "Standard QROAM table-data selection for one 256-bit streamed lookup_y coordinate.",
             "metadata": {
               "opcode": "complete_a0_streamed_tail",
-              "stage": "streamed_lookup_y_bit_oracle",
+              "stage": "streamed_lookup_y_standard_qroam_oracle",
               "stage_category": "streamed_lookup_data_select"
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_streamed_tail__stage__streamed_lookup_y_bit_oracle__leaf__streamed_lookup_y_bit_select",
+            "id": "arithmetic_opcode__complete_a0_streamed_tail__stage__streamed_lookup_y_standard_qroam_oracle__leaf__streamed_lookup_y_standard_qroam_compute",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Stream one selected lookup_y bit at a time into the counted lookup data latch.",
+            "summary": "Standard QROAM compute for one selected lookup_y coordinate stream.",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_streamed_tail",
-              "stage": "streamed_lookup_y_bit_oracle",
+              "stage": "streamed_lookup_y_standard_qroam_oracle",
               "resource_profile": {
                 "resource_semantics": "additive_primitive",
                 "primitive_counts_per_instance": {
-                  "ccx": 30,
+                  "ccx": 5888,
                   "cx": 0,
                   "x": 0,
-                  "measurement": 15
+                  "measurement": 0
                 },
-                "base_instance_count": 256
+                "base_instance_count": 1
+              }
+            }
+          },
+          {
+            "id": "arithmetic_opcode__complete_a0_streamed_tail__stage__streamed_lookup_y_standard_qroam_oracle__leaf__streamed_lookup_y_standard_qroam_measured_uncompute",
+            "kind": "leaf",
+            "category": "primitive_block",
+            "summary": "Measured standard-QROAM cleanup for one selected lookup_y coordinate stream.",
+            "metadata": {
+              "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+              "opcode": "complete_a0_streamed_tail",
+              "stage": "streamed_lookup_y_standard_qroam_oracle",
+              "resource_profile": {
+                "resource_semantics": "additive_primitive",
+                "primitive_counts_per_instance": {
+                  "ccx": 2063,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 2063
+                },
+                "base_instance_count": 1
               }
             }
           },
@@ -1099,9 +1183,9 @@
             "id": "direct_seed_lookup",
             "kind": "composite",
             "category": "lookup_scope",
-            "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup. for the direct_seed invocation scope.",
+            "summary": "Central standard-QROAM lookup family: folded lookup control with standard QROAM coordinate streams consumed by table-controlled arithmetic kernels. for the direct_seed invocation scope.",
             "metadata": {
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
+              "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
               "invocation_scope": "direct_seed"
             }
           },
@@ -1111,7 +1195,7 @@
             "category": "stage_bundle",
             "summary": "Shared sign/magnitude classification for the 16-bit signed folded contract.",
             "metadata": {
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
+              "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
               "invocation_scope": "direct_seed",
               "stage": "folded_word_classification",
               "stage_category": "classification"
@@ -1124,7 +1208,7 @@
             "summary": "Temporary logical-AND ladder over the 15 magnitude bits.",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
+              "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
               "invocation_scope": "direct_seed",
               "stage": "folded_word_classification",
               "resource_profile": {
@@ -1146,7 +1230,7 @@
             "summary": "Two mirrored temporary logical-AND ladders prepare the folded absolute value for the positive lookup domain.",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
+              "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
               "invocation_scope": "direct_seed",
               "stage": "folded_word_classification",
               "resource_profile": {
@@ -1162,687 +1246,27 @@
             }
           },
           {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_compute",
+            "id": "direct_seed_lookup__stage__standard_qroam_coordinate_stream_compute",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Hierarchical banked unary address decode across the positive folded domain.",
+            "summary": "Standard QROAM coordinate-stream compute is charged at the consuming arithmetic kernel.",
             "metadata": {
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
+              "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
               "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_compute",
+              "stage": "standard_qroam_coordinate_stream_compute",
               "stage_category": "lookup_compute"
             }
           },
           {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__coarse_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit coarse chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__upper_mid_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit upper mid chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__lower_mid_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit lower mid chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__fine_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit fine chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_5_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit level 5 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_6_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit level 6 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_7_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit level 7 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_8_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit level 8 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_9_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit level 9 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_10_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit level 10 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_11_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit level 11 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_12_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit level 12 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_13_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit level 13 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_14_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit level 14 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_15_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit level 15 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
+            "id": "direct_seed_lookup__stage__standard_qroam_coordinate_stream_measured_uncompute",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Measured cleanup for the hierarchical banked unary lookup workspace.",
+            "summary": "Measured QROAM cleanup is charged at the consuming arithmetic kernel.",
             "metadata": {
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
+              "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
               "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_uncompute",
+              "stage": "standard_qroam_coordinate_stream_measured_uncompute",
               "stage_category": "lookup_uncompute"
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__coarse_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit coarse chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__upper_mid_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit upper mid chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__lower_mid_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit lower mid chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__fine_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit fine chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_5_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit level 5 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_6_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit level 6 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_7_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit level 7 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_8_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit level 8 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_9_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit level 9 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_10_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit level 10 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_11_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit level 11 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_12_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit level 12 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_13_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit level 13 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_14_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit level 14 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_15_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit level 15 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "direct_seed",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
             }
           },
           {
@@ -1851,7 +1275,7 @@
             "category": "stage_bundle",
             "summary": "Applies the post-lookup Y negation required by negative raw words in the folded contract.",
             "metadata": {
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
+              "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
               "invocation_scope": "direct_seed",
               "stage": "conditional_y_negation",
               "stage_category": "post_lookup_fixup"
@@ -1864,7 +1288,7 @@
             "summary": "Field-width conditional subtraction/select network over the Y coordinate.",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
+              "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
               "invocation_scope": "direct_seed",
               "stage": "conditional_y_negation",
               "resource_profile": {
@@ -1883,9 +1307,9 @@
             "id": "repeated_lookup_cluster",
             "kind": "composite",
             "category": "lookup_scope",
-            "summary": "Lower-gate exact lookup family using a fully bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode with measured cleanup. for the repeated_leaf_calls invocation scope.",
+            "summary": "Central standard-QROAM lookup family: folded lookup control with standard QROAM coordinate streams consumed by table-controlled arithmetic kernels. for the repeated_leaf_calls invocation scope.",
             "metadata": {
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
+              "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
               "invocation_scope": "repeated_leaf_calls"
             }
           },
@@ -1895,7 +1319,7 @@
             "category": "stage_bundle",
             "summary": "Shared sign/magnitude classification for the 16-bit signed folded contract.",
             "metadata": {
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
+              "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
               "invocation_scope": "repeated_leaf_calls",
               "stage": "folded_word_classification",
               "stage_category": "classification"
@@ -1908,7 +1332,7 @@
             "summary": "Temporary logical-AND ladder over the 15 magnitude bits.",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
+              "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
               "invocation_scope": "repeated_leaf_calls",
               "stage": "folded_word_classification",
               "resource_profile": {
@@ -1930,7 +1354,7 @@
             "summary": "Two mirrored temporary logical-AND ladders prepare the folded absolute value for the positive lookup domain.",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
+              "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
               "invocation_scope": "repeated_leaf_calls",
               "stage": "folded_word_classification",
               "resource_profile": {
@@ -1946,687 +1370,27 @@
             }
           },
           {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
+            "id": "repeated_lookup_cluster__stage__standard_qroam_coordinate_stream_compute",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Hierarchical banked unary address decode across the positive folded domain.",
+            "summary": "Standard QROAM coordinate-stream compute is charged at the consuming arithmetic kernel.",
             "metadata": {
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
+              "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
               "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_compute",
+              "stage": "standard_qroam_coordinate_stream_compute",
               "stage_category": "lookup_compute"
             }
           },
           {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__coarse_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit coarse chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__upper_mid_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit upper mid chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__lower_mid_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit lower mid chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__fine_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit fine chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_5_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit level 5 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_6_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit level 6 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_7_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit level 7 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_8_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit level 8 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_9_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit level 9 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_10_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit level 10 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_11_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit level 11 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_12_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit level 12 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_13_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit level 13 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_14_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit level 14 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_15_bucket_decode",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Unary decode for the 1-bit level 15 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_compute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 0
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
+            "id": "repeated_lookup_cluster__stage__standard_qroam_coordinate_stream_measured_uncompute",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Measured cleanup for the hierarchical banked unary lookup workspace.",
+            "summary": "Measured QROAM cleanup is charged at the consuming arithmetic kernel.",
             "metadata": {
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
+              "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
               "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_uncompute",
+              "stage": "standard_qroam_coordinate_stream_measured_uncompute",
               "stage_category": "lookup_uncompute"
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__coarse_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit coarse chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__upper_mid_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit upper mid chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__lower_mid_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit lower mid chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__fine_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit fine chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_5_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit level 5 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_6_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit level 6 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_7_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit level 7 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_8_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit level 8 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_9_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit level 9 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_10_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit level 10 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_11_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit level 11 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_12_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit level 12 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_13_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit level 13 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_14_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit level 14 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
-            }
-          },
-          {
-            "id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_15_bucket_measured_uncompute",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Measured cleanup for the 1-bit level 15 chunk.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
-              "invocation_scope": "repeated_leaf_calls",
-              "stage": "folded_positive_lookup_uncompute",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 1
-              }
             }
           },
           {
@@ -2635,7 +1399,7 @@
             "category": "stage_bundle",
             "summary": "Applies the post-lookup Y negation required by negative raw words in the folded contract.",
             "metadata": {
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
+              "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
               "invocation_scope": "repeated_leaf_calls",
               "stage": "conditional_y_negation",
               "stage_category": "post_lookup_fixup"
@@ -2648,7 +1412,7 @@
             "summary": "Field-width conditional subtraction/select network over the Y coordinate.",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-              "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
+              "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
               "invocation_scope": "repeated_leaf_calls",
               "stage": "conditional_y_negation",
               "resource_profile": {
@@ -2808,14 +1572,21 @@
           },
           {
             "src": "arithmetic_opcode__field_mul_lookup_x",
-            "dst": "arithmetic_opcode__field_mul_lookup_x__stage__streamed_lookup_x_bit_oracle",
+            "dst": "arithmetic_opcode__field_mul_lookup_x__stage__streamed_lookup_x_standard_qroam_oracle",
             "count": 1,
             "category": "stage_call",
             "summary": "Invoke the stage once inside each kernel instance."
           },
           {
-            "src": "arithmetic_opcode__field_mul_lookup_x__stage__streamed_lookup_x_bit_oracle",
-            "dst": "arithmetic_opcode__field_mul_lookup_x__stage__streamed_lookup_x_bit_oracle__leaf__streamed_lookup_x_bit_select",
+            "src": "arithmetic_opcode__field_mul_lookup_x__stage__streamed_lookup_x_standard_qroam_oracle",
+            "dst": "arithmetic_opcode__field_mul_lookup_x__stage__streamed_lookup_x_standard_qroam_oracle__leaf__streamed_lookup_x_standard_qroam_compute",
+            "count": 1,
+            "category": "leaf_block",
+            "summary": "Emit the primitive counted leaf block for this lowered stage."
+          },
+          {
+            "src": "arithmetic_opcode__field_mul_lookup_x__stage__streamed_lookup_x_standard_qroam_oracle",
+            "dst": "arithmetic_opcode__field_mul_lookup_x__stage__streamed_lookup_x_standard_qroam_oracle__leaf__streamed_lookup_x_standard_qroam_measured_uncompute",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2871,14 +1642,21 @@
           },
           {
             "src": "arithmetic_opcode__field_mul_lookup_y",
-            "dst": "arithmetic_opcode__field_mul_lookup_y__stage__streamed_lookup_y_bit_oracle",
+            "dst": "arithmetic_opcode__field_mul_lookup_y__stage__streamed_lookup_y_standard_qroam_oracle",
             "count": 1,
             "category": "stage_call",
             "summary": "Invoke the stage once inside each kernel instance."
           },
           {
-            "src": "arithmetic_opcode__field_mul_lookup_y__stage__streamed_lookup_y_bit_oracle",
-            "dst": "arithmetic_opcode__field_mul_lookup_y__stage__streamed_lookup_y_bit_oracle__leaf__streamed_lookup_y_bit_select",
+            "src": "arithmetic_opcode__field_mul_lookup_y__stage__streamed_lookup_y_standard_qroam_oracle",
+            "dst": "arithmetic_opcode__field_mul_lookup_y__stage__streamed_lookup_y_standard_qroam_oracle__leaf__streamed_lookup_y_standard_qroam_compute",
+            "count": 1,
+            "category": "leaf_block",
+            "summary": "Emit the primitive counted leaf block for this lowered stage."
+          },
+          {
+            "src": "arithmetic_opcode__field_mul_lookup_y__stage__streamed_lookup_y_standard_qroam_oracle",
+            "dst": "arithmetic_opcode__field_mul_lookup_y__stage__streamed_lookup_y_standard_qroam_oracle__leaf__streamed_lookup_y_standard_qroam_measured_uncompute",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2934,14 +1712,21 @@
           },
           {
             "src": "arithmetic_opcode__field_mul_lookup_sum",
-            "dst": "arithmetic_opcode__field_mul_lookup_sum__stage__streamed_lookup_x_plus_y_bit_oracle",
+            "dst": "arithmetic_opcode__field_mul_lookup_sum__stage__streamed_lookup_x_plus_y_standard_qroam_oracle",
             "count": 1,
             "category": "stage_call",
             "summary": "Invoke the stage once inside each kernel instance."
           },
           {
-            "src": "arithmetic_opcode__field_mul_lookup_sum__stage__streamed_lookup_x_plus_y_bit_oracle",
-            "dst": "arithmetic_opcode__field_mul_lookup_sum__stage__streamed_lookup_x_plus_y_bit_oracle__leaf__streamed_lookup_x_plus_y_bit_select",
+            "src": "arithmetic_opcode__field_mul_lookup_sum__stage__streamed_lookup_x_plus_y_standard_qroam_oracle",
+            "dst": "arithmetic_opcode__field_mul_lookup_sum__stage__streamed_lookup_x_plus_y_standard_qroam_oracle__leaf__streamed_lookup_x_plus_y_standard_qroam_compute",
+            "count": 1,
+            "category": "leaf_block",
+            "summary": "Emit the primitive counted leaf block for this lowered stage."
+          },
+          {
+            "src": "arithmetic_opcode__field_mul_lookup_sum__stage__streamed_lookup_x_plus_y_standard_qroam_oracle",
+            "dst": "arithmetic_opcode__field_mul_lookup_sum__stage__streamed_lookup_x_plus_y_standard_qroam_oracle__leaf__streamed_lookup_x_plus_y_standard_qroam_measured_uncompute",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -3060,14 +1845,21 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_streamed_tail",
-            "dst": "arithmetic_opcode__complete_a0_streamed_tail__stage__streamed_lookup_y_bit_oracle",
+            "dst": "arithmetic_opcode__complete_a0_streamed_tail__stage__streamed_lookup_y_standard_qroam_oracle",
             "count": 1,
             "category": "stage_call",
             "summary": "Invoke the stage once inside each kernel instance."
           },
           {
-            "src": "arithmetic_opcode__complete_a0_streamed_tail__stage__streamed_lookup_y_bit_oracle",
-            "dst": "arithmetic_opcode__complete_a0_streamed_tail__stage__streamed_lookup_y_bit_oracle__leaf__streamed_lookup_y_bit_select",
+            "src": "arithmetic_opcode__complete_a0_streamed_tail__stage__streamed_lookup_y_standard_qroam_oracle",
+            "dst": "arithmetic_opcode__complete_a0_streamed_tail__stage__streamed_lookup_y_standard_qroam_oracle__leaf__streamed_lookup_y_standard_qroam_compute",
+            "count": 1,
+            "category": "leaf_block",
+            "summary": "Emit the primitive counted leaf block for this lowered stage."
+          },
+          {
+            "src": "arithmetic_opcode__complete_a0_streamed_tail__stage__streamed_lookup_y_standard_qroam_oracle",
+            "dst": "arithmetic_opcode__complete_a0_streamed_tail__stage__streamed_lookup_y_standard_qroam_oracle__leaf__streamed_lookup_y_standard_qroam_measured_uncompute",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -3284,227 +2076,17 @@
           },
           {
             "src": "direct_seed_lookup",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_compute",
+            "dst": "direct_seed_lookup__stage__standard_qroam_coordinate_stream_compute",
             "count": 1,
             "category": "stage_call",
             "summary": "Invoke the stage once per lookup invocation in this scope."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__coarse_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__upper_mid_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__lower_mid_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__fine_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_5_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_6_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_7_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_8_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_9_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_10_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_11_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_12_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_13_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_14_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_15_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
           },
           {
             "src": "direct_seed_lookup",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
+            "dst": "direct_seed_lookup__stage__standard_qroam_coordinate_stream_measured_uncompute",
             "count": 1,
             "category": "stage_call",
             "summary": "Invoke the stage once per lookup invocation in this scope."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__coarse_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__upper_mid_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__lower_mid_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__fine_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_5_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_6_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_7_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_8_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_9_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_10_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_11_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_12_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_13_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_14_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "dst": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_15_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
           },
           {
             "src": "direct_seed_lookup",
@@ -3550,227 +2132,17 @@
           },
           {
             "src": "repeated_lookup_cluster",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
+            "dst": "repeated_lookup_cluster__stage__standard_qroam_coordinate_stream_compute",
             "count": 1,
             "category": "stage_call",
             "summary": "Invoke the stage once per lookup invocation in this scope."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__coarse_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__upper_mid_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__lower_mid_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__fine_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_5_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_6_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_7_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_8_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_9_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_10_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_11_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_12_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_13_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_14_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_15_bucket_decode",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
           },
           {
             "src": "repeated_lookup_cluster",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
+            "dst": "repeated_lookup_cluster__stage__standard_qroam_coordinate_stream_measured_uncompute",
             "count": 1,
             "category": "stage_call",
             "summary": "Invoke the stage once per lookup invocation in this scope."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__coarse_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__upper_mid_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__lower_mid_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__fine_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_5_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_6_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_7_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_8_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_9_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_10_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_11_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_12_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_13_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_14_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
-          },
-          {
-            "src": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "dst": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_15_bucket_measured_uncompute",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered lookup stage."
           },
           {
             "src": "repeated_lookup_cluster",
@@ -3858,17 +2230,17 @@
           }
         ],
         "summary": {
-          "node_count": 154,
-          "edge_count": 153,
-          "leaf_node_count": 105,
-          "reachable_node_count": 154,
+          "node_count": 98,
+          "edge_count": 97,
+          "leaf_node_count": 49,
+          "reachable_node_count": 98,
           "max_depth": 5,
           "root_in_degree": 0,
           "primitive_totals": {
-            "ccx": 23912611,
+            "ccx": 23953656,
             "cx": 0,
             "x": 0,
-            "measurement": 960995
+            "measurement": 685080
           },
           "logical_qubits_total": 1587,
           "phase_shell_hadamards": 512,
@@ -3879,34 +2251,64 @@
       },
       "leaf_sigma": [
         {
-          "leaf_id": "arithmetic_opcode__field_mul_lookup_x__stage__streamed_lookup_x_bit_oracle__leaf__streamed_lookup_x_bit_select",
+          "leaf_id": "arithmetic_opcode__field_mul_lookup_x__stage__streamed_lookup_x_standard_qroam_oracle__leaf__streamed_lookup_x_standard_qroam_compute",
           "category": "primitive_block",
           "path": [
             "full_oracle",
             "repeated_leaf_calls",
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__field_mul_lookup_x",
-            "arithmetic_opcode__field_mul_lookup_x__stage__streamed_lookup_x_bit_oracle",
-            "arithmetic_opcode__field_mul_lookup_x__stage__streamed_lookup_x_bit_oracle__leaf__streamed_lookup_x_bit_select"
+            "arithmetic_opcode__field_mul_lookup_x__stage__streamed_lookup_x_standard_qroam_oracle",
+            "arithmetic_opcode__field_mul_lookup_x__stage__streamed_lookup_x_standard_qroam_oracle__leaf__streamed_lookup_x_standard_qroam_compute"
           ],
           "path_multiplicity": 62,
           "resource_profile": {
             "resource_semantics": "additive_primitive",
             "primitive_counts_per_instance": {
-              "ccx": 30,
+              "ccx": 5888,
               "cx": 0,
               "x": 0,
-              "measurement": 15
+              "measurement": 0
             },
-            "base_instance_count": 256
+            "base_instance_count": 1
           },
           "primitive_counts_total": {
-            "ccx": 476160,
+            "ccx": 365056,
             "cx": 0,
             "x": 0,
-            "measurement": 238080
+            "measurement": 0
           },
-          "non_clifford_total": 476160
+          "non_clifford_total": 365056
+        },
+        {
+          "leaf_id": "arithmetic_opcode__field_mul_lookup_x__stage__streamed_lookup_x_standard_qroam_oracle__leaf__streamed_lookup_x_standard_qroam_measured_uncompute",
+          "category": "primitive_block",
+          "path": [
+            "full_oracle",
+            "repeated_leaf_calls",
+            "leaf_arithmetic_cluster",
+            "arithmetic_opcode__field_mul_lookup_x",
+            "arithmetic_opcode__field_mul_lookup_x__stage__streamed_lookup_x_standard_qroam_oracle",
+            "arithmetic_opcode__field_mul_lookup_x__stage__streamed_lookup_x_standard_qroam_oracle__leaf__streamed_lookup_x_standard_qroam_measured_uncompute"
+          ],
+          "path_multiplicity": 62,
+          "resource_profile": {
+            "resource_semantics": "additive_primitive",
+            "primitive_counts_per_instance": {
+              "ccx": 2063,
+              "cx": 0,
+              "x": 0,
+              "measurement": 2063
+            },
+            "base_instance_count": 1
+          },
+          "primitive_counts_total": {
+            "ccx": 127906,
+            "cx": 0,
+            "x": 0,
+            "measurement": 127906
+          },
+          "non_clifford_total": 127906
         },
         {
           "leaf_id": "arithmetic_opcode__field_mul_lookup_x__stage__partial_products__leaf__partial_product_grid",
@@ -3999,34 +2401,64 @@
           "non_clifford_total": 15872
         },
         {
-          "leaf_id": "arithmetic_opcode__field_mul_lookup_y__stage__streamed_lookup_y_bit_oracle__leaf__streamed_lookup_y_bit_select",
+          "leaf_id": "arithmetic_opcode__field_mul_lookup_y__stage__streamed_lookup_y_standard_qroam_oracle__leaf__streamed_lookup_y_standard_qroam_compute",
           "category": "primitive_block",
           "path": [
             "full_oracle",
             "repeated_leaf_calls",
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__field_mul_lookup_y",
-            "arithmetic_opcode__field_mul_lookup_y__stage__streamed_lookup_y_bit_oracle",
-            "arithmetic_opcode__field_mul_lookup_y__stage__streamed_lookup_y_bit_oracle__leaf__streamed_lookup_y_bit_select"
+            "arithmetic_opcode__field_mul_lookup_y__stage__streamed_lookup_y_standard_qroam_oracle",
+            "arithmetic_opcode__field_mul_lookup_y__stage__streamed_lookup_y_standard_qroam_oracle__leaf__streamed_lookup_y_standard_qroam_compute"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
             "resource_semantics": "additive_primitive",
             "primitive_counts_per_instance": {
-              "ccx": 30,
+              "ccx": 5888,
               "cx": 0,
               "x": 0,
-              "measurement": 15
+              "measurement": 0
             },
-            "base_instance_count": 256
+            "base_instance_count": 1
           },
           "primitive_counts_total": {
-            "ccx": 238080,
+            "ccx": 182528,
             "cx": 0,
             "x": 0,
-            "measurement": 119040
+            "measurement": 0
           },
-          "non_clifford_total": 238080
+          "non_clifford_total": 182528
+        },
+        {
+          "leaf_id": "arithmetic_opcode__field_mul_lookup_y__stage__streamed_lookup_y_standard_qroam_oracle__leaf__streamed_lookup_y_standard_qroam_measured_uncompute",
+          "category": "primitive_block",
+          "path": [
+            "full_oracle",
+            "repeated_leaf_calls",
+            "leaf_arithmetic_cluster",
+            "arithmetic_opcode__field_mul_lookup_y",
+            "arithmetic_opcode__field_mul_lookup_y__stage__streamed_lookup_y_standard_qroam_oracle",
+            "arithmetic_opcode__field_mul_lookup_y__stage__streamed_lookup_y_standard_qroam_oracle__leaf__streamed_lookup_y_standard_qroam_measured_uncompute"
+          ],
+          "path_multiplicity": 31,
+          "resource_profile": {
+            "resource_semantics": "additive_primitive",
+            "primitive_counts_per_instance": {
+              "ccx": 2063,
+              "cx": 0,
+              "x": 0,
+              "measurement": 2063
+            },
+            "base_instance_count": 1
+          },
+          "primitive_counts_total": {
+            "ccx": 63953,
+            "cx": 0,
+            "x": 0,
+            "measurement": 63953
+          },
+          "non_clifford_total": 63953
         },
         {
           "leaf_id": "arithmetic_opcode__field_mul_lookup_y__stage__partial_products__leaf__partial_product_grid",
@@ -4119,34 +2551,64 @@
           "non_clifford_total": 7936
         },
         {
-          "leaf_id": "arithmetic_opcode__field_mul_lookup_sum__stage__streamed_lookup_x_plus_y_bit_oracle__leaf__streamed_lookup_x_plus_y_bit_select",
+          "leaf_id": "arithmetic_opcode__field_mul_lookup_sum__stage__streamed_lookup_x_plus_y_standard_qroam_oracle__leaf__streamed_lookup_x_plus_y_standard_qroam_compute",
           "category": "primitive_block",
           "path": [
             "full_oracle",
             "repeated_leaf_calls",
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__field_mul_lookup_sum",
-            "arithmetic_opcode__field_mul_lookup_sum__stage__streamed_lookup_x_plus_y_bit_oracle",
-            "arithmetic_opcode__field_mul_lookup_sum__stage__streamed_lookup_x_plus_y_bit_oracle__leaf__streamed_lookup_x_plus_y_bit_select"
+            "arithmetic_opcode__field_mul_lookup_sum__stage__streamed_lookup_x_plus_y_standard_qroam_oracle",
+            "arithmetic_opcode__field_mul_lookup_sum__stage__streamed_lookup_x_plus_y_standard_qroam_oracle__leaf__streamed_lookup_x_plus_y_standard_qroam_compute"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
             "resource_semantics": "additive_primitive",
             "primitive_counts_per_instance": {
-              "ccx": 30,
+              "ccx": 5888,
               "cx": 0,
               "x": 0,
-              "measurement": 15
+              "measurement": 0
             },
-            "base_instance_count": 256
+            "base_instance_count": 1
           },
           "primitive_counts_total": {
-            "ccx": 238080,
+            "ccx": 182528,
             "cx": 0,
             "x": 0,
-            "measurement": 119040
+            "measurement": 0
           },
-          "non_clifford_total": 238080
+          "non_clifford_total": 182528
+        },
+        {
+          "leaf_id": "arithmetic_opcode__field_mul_lookup_sum__stage__streamed_lookup_x_plus_y_standard_qroam_oracle__leaf__streamed_lookup_x_plus_y_standard_qroam_measured_uncompute",
+          "category": "primitive_block",
+          "path": [
+            "full_oracle",
+            "repeated_leaf_calls",
+            "leaf_arithmetic_cluster",
+            "arithmetic_opcode__field_mul_lookup_sum",
+            "arithmetic_opcode__field_mul_lookup_sum__stage__streamed_lookup_x_plus_y_standard_qroam_oracle",
+            "arithmetic_opcode__field_mul_lookup_sum__stage__streamed_lookup_x_plus_y_standard_qroam_oracle__leaf__streamed_lookup_x_plus_y_standard_qroam_measured_uncompute"
+          ],
+          "path_multiplicity": 31,
+          "resource_profile": {
+            "resource_semantics": "additive_primitive",
+            "primitive_counts_per_instance": {
+              "ccx": 2063,
+              "cx": 0,
+              "x": 0,
+              "measurement": 2063
+            },
+            "base_instance_count": 1
+          },
+          "primitive_counts_total": {
+            "ccx": 63953,
+            "cx": 0,
+            "x": 0,
+            "measurement": 63953
+          },
+          "non_clifford_total": 63953
         },
         {
           "leaf_id": "arithmetic_opcode__field_mul_lookup_sum__stage__partial_products__leaf__partial_product_grid",
@@ -4329,34 +2791,64 @@
           "non_clifford_total": 15810
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_streamed_tail__stage__streamed_lookup_y_bit_oracle__leaf__streamed_lookup_y_bit_select",
+          "leaf_id": "arithmetic_opcode__complete_a0_streamed_tail__stage__streamed_lookup_y_standard_qroam_oracle__leaf__streamed_lookup_y_standard_qroam_compute",
           "category": "primitive_block",
           "path": [
             "full_oracle",
             "repeated_leaf_calls",
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_streamed_tail",
-            "arithmetic_opcode__complete_a0_streamed_tail__stage__streamed_lookup_y_bit_oracle",
-            "arithmetic_opcode__complete_a0_streamed_tail__stage__streamed_lookup_y_bit_oracle__leaf__streamed_lookup_y_bit_select"
+            "arithmetic_opcode__complete_a0_streamed_tail__stage__streamed_lookup_y_standard_qroam_oracle",
+            "arithmetic_opcode__complete_a0_streamed_tail__stage__streamed_lookup_y_standard_qroam_oracle__leaf__streamed_lookup_y_standard_qroam_compute"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
             "resource_semantics": "additive_primitive",
             "primitive_counts_per_instance": {
-              "ccx": 30,
+              "ccx": 5888,
               "cx": 0,
               "x": 0,
-              "measurement": 15
+              "measurement": 0
             },
-            "base_instance_count": 256
+            "base_instance_count": 1
           },
           "primitive_counts_total": {
-            "ccx": 238080,
+            "ccx": 182528,
             "cx": 0,
             "x": 0,
-            "measurement": 119040
+            "measurement": 0
           },
-          "non_clifford_total": 238080
+          "non_clifford_total": 182528
+        },
+        {
+          "leaf_id": "arithmetic_opcode__complete_a0_streamed_tail__stage__streamed_lookup_y_standard_qroam_oracle__leaf__streamed_lookup_y_standard_qroam_measured_uncompute",
+          "category": "primitive_block",
+          "path": [
+            "full_oracle",
+            "repeated_leaf_calls",
+            "leaf_arithmetic_cluster",
+            "arithmetic_opcode__complete_a0_streamed_tail",
+            "arithmetic_opcode__complete_a0_streamed_tail__stage__streamed_lookup_y_standard_qroam_oracle",
+            "arithmetic_opcode__complete_a0_streamed_tail__stage__streamed_lookup_y_standard_qroam_oracle__leaf__streamed_lookup_y_standard_qroam_measured_uncompute"
+          ],
+          "path_multiplicity": 31,
+          "resource_profile": {
+            "resource_semantics": "additive_primitive",
+            "primitive_counts_per_instance": {
+              "ccx": 2063,
+              "cx": 0,
+              "x": 0,
+              "measurement": 2063
+            },
+            "base_instance_count": 1
+          },
+          "primitive_counts_total": {
+            "ccx": 63953,
+            "cx": 0,
+            "x": 0,
+            "measurement": 63953
+          },
+          "non_clifford_total": 63953
         },
         {
           "leaf_id": "arithmetic_opcode__complete_a0_streamed_tail__stage__partial_products__leaf__partial_product_grid",
@@ -4867,876 +3359,6 @@
           "non_clifford_total": 868
         },
         {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__coarse_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__coarse_bucket_decode"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__upper_mid_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__upper_mid_bucket_decode"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__lower_mid_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__lower_mid_bucket_decode"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__fine_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__fine_bucket_decode"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_5_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_5_bucket_decode"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_6_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_6_bucket_decode"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_7_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_7_bucket_decode"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_8_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_8_bucket_decode"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_9_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_9_bucket_decode"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_10_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_10_bucket_decode"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_11_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_11_bucket_decode"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_12_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_12_bucket_decode"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_13_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_13_bucket_decode"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_14_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_14_bucket_decode"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_15_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_compute__leaf__level_15_bucket_decode"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__coarse_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__coarse_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 31
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__upper_mid_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__upper_mid_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 31
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__lower_mid_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__lower_mid_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 31
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__fine_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__fine_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 31
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_5_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_5_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 31
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_6_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_6_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 31
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_7_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_7_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 31
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_8_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_8_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 31
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_9_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_9_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 31
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_10_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_10_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 31
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_11_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_11_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 31
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_12_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_12_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 31
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_13_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_13_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 31
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_14_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_14_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 31
-          },
-          "non_clifford_total": 31
-        },
-        {
-          "leaf_id": "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_15_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "repeated_lookup_cluster",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute",
-            "repeated_lookup_cluster__stage__folded_positive_lookup_uncompute__leaf__level_15_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 31,
-            "cx": 0,
-            "x": 0,
-            "measurement": 31
-          },
-          "non_clifford_total": 31
-        },
-        {
           "leaf_id": "repeated_lookup_cluster__stage__conditional_y_negation__leaf__conditional_field_negation",
           "category": "primitive_block",
           "path": [
@@ -5820,846 +3442,6 @@
             "measurement": 28
           },
           "non_clifford_total": 28
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__coarse_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__coarse_bucket_decode"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__upper_mid_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__upper_mid_bucket_decode"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__lower_mid_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__lower_mid_bucket_decode"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__fine_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__fine_bucket_decode"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_5_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_5_bucket_decode"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_6_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_6_bucket_decode"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_7_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_7_bucket_decode"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_8_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_8_bucket_decode"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_9_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_9_bucket_decode"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_10_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_10_bucket_decode"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_11_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_11_bucket_decode"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_12_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_12_bucket_decode"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_13_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_13_bucket_decode"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_14_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_14_bucket_decode"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_15_bucket_decode",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute",
-            "direct_seed_lookup__stage__folded_positive_lookup_compute__leaf__level_15_bucket_decode"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 0
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__coarse_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__coarse_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__upper_mid_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__upper_mid_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__lower_mid_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__lower_mid_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__fine_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__fine_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_5_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_5_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_6_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_6_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_7_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_7_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_8_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_8_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_9_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_9_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_10_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_10_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_11_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_11_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_12_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_12_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_13_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_13_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_14_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_14_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "non_clifford_total": 1
-        },
-        {
-          "leaf_id": "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_15_bucket_measured_uncompute",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "direct_seed_lookup",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute",
-            "direct_seed_lookup__stage__folded_positive_lookup_uncompute__leaf__level_15_bucket_measured_uncompute"
-          ],
-          "path_multiplicity": 1,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 1
-          },
-          "primitive_counts_total": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "non_clifford_total": 1
         },
         {
           "leaf_id": "direct_seed_lookup__stage__conditional_y_negation__leaf__conditional_field_negation",
@@ -6811,12 +3593,12 @@
         }
       ],
       "reconstruction": {
-        "full_oracle_non_clifford": 23912611,
+        "full_oracle_non_clifford": 23953656,
         "primitive_totals": {
-          "ccx": 23912611,
+          "ccx": 23953656,
           "cx": 0,
           "x": 0,
-          "measurement": 960995
+          "measurement": 685080
         },
         "total_logical_qubits": 1587,
         "phase_shell_hadamards": 512,
@@ -6825,12 +3607,12 @@
         "phase_shell_rotation_depth": 511
       },
       "generated_block_inventory_reconstruction": {
-        "full_oracle_non_clifford": 23912611,
+        "full_oracle_non_clifford": 23953656,
         "primitive_totals": {
-          "ccx": 23912611,
+          "ccx": 23953656,
           "cx": 0,
           "x": 0,
-          "measurement": 960995
+          "measurement": 685080
         },
         "total_logical_qubits": 1587,
         "phase_shell_hadamards": 512,
@@ -6839,20 +3621,20 @@
         "phase_shell_rotation_depth": 511
       },
       "frontier_reconstruction": {
-        "full_oracle_non_clifford": 23912611,
+        "full_oracle_non_clifford": 23953656,
         "total_logical_qubits": 1587
       }
     }
   ],
   "best_gate_family": {
-    "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
+    "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
     "reconstruction": {
-      "full_oracle_non_clifford": 23912611,
+      "full_oracle_non_clifford": 23953656,
       "primitive_totals": {
-        "ccx": 23912611,
+        "ccx": 23953656,
         "cx": 0,
         "x": 0,
-        "measurement": 960995
+        "measurement": 685080
       },
       "total_logical_qubits": 1587,
       "phase_shell_hadamards": 512,
@@ -6862,14 +3644,14 @@
     }
   },
   "best_qubit_family": {
-    "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
+    "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
     "reconstruction": {
-      "full_oracle_non_clifford": 23912611,
+      "full_oracle_non_clifford": 23953656,
       "primitive_totals": {
-        "ccx": 23912611,
+        "ccx": 23953656,
         "cx": 0,
         "x": 0,
-        "measurement": 960995
+        "measurement": 685080
       },
       "total_logical_qubits": 1587,
       "phase_shell_hadamards": 512,
