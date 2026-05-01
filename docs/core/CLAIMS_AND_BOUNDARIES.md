@@ -83,6 +83,7 @@ subproject. In particular, it fixes:
 - a fully quantum raw-32 schedule with no classical tail elisions,
 - generated folded lookup-family operation inventories,
 - generated arithmetic-kernel operation inventories,
+- explicit streamed table-controlled multiplier data-selection inventories,
 - exact leaf slot allocation, and
 - generated phase-shell operation inventories for the selected semiclassical inverse-QFT shell,
 - compositional FT-style call graphs plus traversed leaf sigma for the named
@@ -133,11 +134,18 @@ than a hidden primitive-gate Shor circuit.
 
 ### A. Primitive-gate lookup realization
 
-The repository does not lower lookup memory into a primitive-gate qRAM or QROM
-construction. It validates the checked-in folded contract fields, ships
-generated compiler-family lookup operation inventories below that contract, and
-proves the lookup semantics assumed at the ISA boundary. It still stops short
-of a bit-for-bit Clifford-complete qRAM/QROM netlist.
+The repository does not lower lookup memory into a bit-for-bit
+Clifford-complete qRAM or QROM construction. It validates the checked-in folded
+contract fields, ships generated compiler-family lookup operation inventories
+below that contract, and proves the lookup semantics assumed at the ISA
+boundary.
+
+For the streamed lookup tail result, the table-controlled arithmetic boundary
+is no longer free: `streamed_lookup_table_multiplier_resource.json` counts one
+streamed coordinate-bit latch in lookup workspace and adds explicit per-bit
+data-selection non-Clifford cost to every `field_mul_lookup_*` consumer. The
+remaining boundary is the named folded-path data-selection primitive itself,
+not a materialized field-sized lookup-output lane.
 
 ### B. Boundary no-op and cleanup
 

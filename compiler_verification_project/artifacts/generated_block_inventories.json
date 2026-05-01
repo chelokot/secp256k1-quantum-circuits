@@ -51,6 +51,37 @@
   },
   "shared_arithmetic_blocks": [
     {
+      "block_id": "repeated_leaf_arithmetic__field_mul_lookup_x__streamed_lookup_x_bit_oracle__streamed_lookup_x_bit_select",
+      "summary": "Stream one selected lookup_x bit at a time into the counted lookup data latch.",
+      "category": "arithmetic_non_clifford",
+      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+      "primitive_counts_per_instance": {
+        "ccx": 30,
+        "cx": 0,
+        "x": 0,
+        "measurement": 15
+      },
+      "base_instance_count": 512,
+      "schedule_multiplier": 31,
+      "whole_oracle_instance_count": 15872,
+      "primitive_counts_total": {
+        "ccx": 476160,
+        "cx": 0,
+        "x": 0,
+        "measurement": 238080
+      },
+      "non_clifford_total": 476160,
+      "metadata": {
+        "opcode": "field_mul_lookup_x",
+        "kernel_summary": "Exact table-fed x-coordinate field multiplication kernel with no materialized lookup-output field lane.",
+        "kernel_non_clifford_per_instance": 73727,
+        "per_leaf_instance_count": 2,
+        "stage": "streamed_lookup_x_bit_oracle",
+        "stage_category": "streamed_lookup_data_select",
+        "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+      }
+    },
+    {
       "block_id": "repeated_leaf_arithmetic__field_mul_lookup_x__partial_products__partial_product_grid",
       "summary": "One schoolbook partial-product interaction for each pair of field bits.",
       "category": "arithmetic_non_clifford",
@@ -74,7 +105,7 @@
       "metadata": {
         "opcode": "field_mul_lookup_x",
         "kernel_summary": "Exact table-fed x-coordinate field multiplication kernel with no materialized lookup-output field lane.",
-        "kernel_non_clifford_per_instance": 66047,
+        "kernel_non_clifford_per_instance": 73727,
         "per_leaf_instance_count": 2,
         "stage": "partial_products",
         "stage_category": "schoolbook_grid",
@@ -105,7 +136,7 @@
       "metadata": {
         "opcode": "field_mul_lookup_x",
         "kernel_summary": "Exact table-fed x-coordinate field multiplication kernel with no materialized lookup-output field lane.",
-        "kernel_non_clifford_per_instance": 66047,
+        "kernel_non_clifford_per_instance": 73727,
         "per_leaf_instance_count": 2,
         "stage": "controlled_add_path",
         "stage_category": "controlled_add",
@@ -136,10 +167,41 @@
       "metadata": {
         "opcode": "field_mul_lookup_x",
         "kernel_summary": "Exact table-fed x-coordinate field multiplication kernel with no materialized lookup-output field lane.",
-        "kernel_non_clifford_per_instance": 66047,
+        "kernel_non_clifford_per_instance": 73727,
         "per_leaf_instance_count": 2,
         "stage": "controlled_sub_path",
         "stage_category": "controlled_subtract",
+        "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+      }
+    },
+    {
+      "block_id": "repeated_leaf_arithmetic__field_mul_lookup_y__streamed_lookup_y_bit_oracle__streamed_lookup_y_bit_select",
+      "summary": "Stream one selected lookup_y bit at a time into the counted lookup data latch.",
+      "category": "arithmetic_non_clifford",
+      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+      "primitive_counts_per_instance": {
+        "ccx": 30,
+        "cx": 0,
+        "x": 0,
+        "measurement": 15
+      },
+      "base_instance_count": 256,
+      "schedule_multiplier": 31,
+      "whole_oracle_instance_count": 7936,
+      "primitive_counts_total": {
+        "ccx": 238080,
+        "cx": 0,
+        "x": 0,
+        "measurement": 119040
+      },
+      "non_clifford_total": 238080,
+      "metadata": {
+        "opcode": "field_mul_lookup_y",
+        "kernel_summary": "Exact table-fed y-coordinate field multiplication kernel with no materialized lookup-output field lane.",
+        "kernel_non_clifford_per_instance": 73727,
+        "per_leaf_instance_count": 1,
+        "stage": "streamed_lookup_y_bit_oracle",
+        "stage_category": "streamed_lookup_data_select",
         "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
       }
     },
@@ -167,7 +229,7 @@
       "metadata": {
         "opcode": "field_mul_lookup_y",
         "kernel_summary": "Exact table-fed y-coordinate field multiplication kernel with no materialized lookup-output field lane.",
-        "kernel_non_clifford_per_instance": 66047,
+        "kernel_non_clifford_per_instance": 73727,
         "per_leaf_instance_count": 1,
         "stage": "partial_products",
         "stage_category": "schoolbook_grid",
@@ -198,7 +260,7 @@
       "metadata": {
         "opcode": "field_mul_lookup_y",
         "kernel_summary": "Exact table-fed y-coordinate field multiplication kernel with no materialized lookup-output field lane.",
-        "kernel_non_clifford_per_instance": 66047,
+        "kernel_non_clifford_per_instance": 73727,
         "per_leaf_instance_count": 1,
         "stage": "controlled_add_path",
         "stage_category": "controlled_add",
@@ -229,10 +291,41 @@
       "metadata": {
         "opcode": "field_mul_lookup_y",
         "kernel_summary": "Exact table-fed y-coordinate field multiplication kernel with no materialized lookup-output field lane.",
-        "kernel_non_clifford_per_instance": 66047,
+        "kernel_non_clifford_per_instance": 73727,
         "per_leaf_instance_count": 1,
         "stage": "controlled_sub_path",
         "stage_category": "controlled_subtract",
+        "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+      }
+    },
+    {
+      "block_id": "repeated_leaf_arithmetic__field_mul_lookup_sum__streamed_lookup_x_plus_y_bit_oracle__streamed_lookup_x_plus_y_bit_select",
+      "summary": "Stream one selected lookup_x_plus_y bit at a time into the counted lookup data latch.",
+      "category": "arithmetic_non_clifford",
+      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+      "primitive_counts_per_instance": {
+        "ccx": 30,
+        "cx": 0,
+        "x": 0,
+        "measurement": 15
+      },
+      "base_instance_count": 256,
+      "schedule_multiplier": 31,
+      "whole_oracle_instance_count": 7936,
+      "primitive_counts_total": {
+        "ccx": 238080,
+        "cx": 0,
+        "x": 0,
+        "measurement": 119040
+      },
+      "non_clifford_total": 238080,
+      "metadata": {
+        "opcode": "field_mul_lookup_sum",
+        "kernel_summary": "Exact table-fed (x+y)-coordinate field multiplication kernel with no materialized lookup-output field lane.",
+        "kernel_non_clifford_per_instance": 73727,
+        "per_leaf_instance_count": 1,
+        "stage": "streamed_lookup_x_plus_y_bit_oracle",
+        "stage_category": "streamed_lookup_data_select",
         "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
       }
     },
@@ -260,7 +353,7 @@
       "metadata": {
         "opcode": "field_mul_lookup_sum",
         "kernel_summary": "Exact table-fed (x+y)-coordinate field multiplication kernel with no materialized lookup-output field lane.",
-        "kernel_non_clifford_per_instance": 66047,
+        "kernel_non_clifford_per_instance": 73727,
         "per_leaf_instance_count": 1,
         "stage": "partial_products",
         "stage_category": "schoolbook_grid",
@@ -291,7 +384,7 @@
       "metadata": {
         "opcode": "field_mul_lookup_sum",
         "kernel_summary": "Exact table-fed (x+y)-coordinate field multiplication kernel with no materialized lookup-output field lane.",
-        "kernel_non_clifford_per_instance": 66047,
+        "kernel_non_clifford_per_instance": 73727,
         "per_leaf_instance_count": 1,
         "stage": "controlled_add_path",
         "stage_category": "controlled_add",
@@ -322,7 +415,7 @@
       "metadata": {
         "opcode": "field_mul_lookup_sum",
         "kernel_summary": "Exact table-fed (x+y)-coordinate field multiplication kernel with no materialized lookup-output field lane.",
-        "kernel_non_clifford_per_instance": 66047,
+        "kernel_non_clifford_per_instance": 73727,
         "per_leaf_instance_count": 1,
         "stage": "controlled_sub_path",
         "stage_category": "controlled_subtract",
@@ -423,6 +516,37 @@
       }
     },
     {
+      "block_id": "repeated_leaf_arithmetic__complete_a0_streamed_tail__streamed_lookup_y_bit_oracle__streamed_lookup_y_bit_select",
+      "summary": "Stream one selected lookup_y bit at a time into the counted lookup data latch.",
+      "category": "arithmetic_non_clifford",
+      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+      "primitive_counts_per_instance": {
+        "ccx": 30,
+        "cx": 0,
+        "x": 0,
+        "measurement": 15
+      },
+      "base_instance_count": 256,
+      "schedule_multiplier": 31,
+      "whole_oracle_instance_count": 7936,
+      "primitive_counts_total": {
+        "ccx": 238080,
+        "cx": 0,
+        "x": 0,
+        "measurement": 119040
+      },
+      "non_clifford_total": 238080,
+      "metadata": {
+        "opcode": "complete_a0_streamed_tail",
+        "kernel_summary": "Exact multi-output complete-add tail kernel from C, K, L, I, Y, and Z.",
+        "kernel_non_clifford_per_instance": 473069,
+        "per_leaf_instance_count": 1,
+        "stage": "streamed_lookup_y_bit_oracle",
+        "stage_category": "streamed_lookup_data_select",
+        "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+      }
+    },
+    {
       "block_id": "repeated_leaf_arithmetic__complete_a0_streamed_tail__partial_products__partial_product_grid",
       "summary": "One schoolbook partial-product interaction for each pair of field bits.",
       "category": "arithmetic_non_clifford",
@@ -446,7 +570,7 @@
       "metadata": {
         "opcode": "complete_a0_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from C, K, L, I, Y, and Z.",
-        "kernel_non_clifford_per_instance": 465389,
+        "kernel_non_clifford_per_instance": 473069,
         "per_leaf_instance_count": 1,
         "stage": "partial_products",
         "stage_category": "schoolbook_grid",
@@ -477,7 +601,7 @@
       "metadata": {
         "opcode": "complete_a0_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from C, K, L, I, Y, and Z.",
-        "kernel_non_clifford_per_instance": 465389,
+        "kernel_non_clifford_per_instance": 473069,
         "per_leaf_instance_count": 1,
         "stage": "controlled_add_path",
         "stage_category": "controlled_add",
@@ -508,7 +632,7 @@
       "metadata": {
         "opcode": "complete_a0_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from C, K, L, I, Y, and Z.",
-        "kernel_non_clifford_per_instance": 465389,
+        "kernel_non_clifford_per_instance": 473069,
         "per_leaf_instance_count": 1,
         "stage": "controlled_sub_path",
         "stage_category": "controlled_subtract",
@@ -539,7 +663,7 @@
       "metadata": {
         "opcode": "complete_a0_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from C, K, L, I, Y, and Z.",
-        "kernel_non_clifford_per_instance": 465389,
+        "kernel_non_clifford_per_instance": 473069,
         "per_leaf_instance_count": 1,
         "stage": "tail_fixed_21z",
         "stage_category": "mul_const",
@@ -570,7 +694,7 @@
       "metadata": {
         "opcode": "complete_a0_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from C, K, L, I, Y, and Z.",
-        "kernel_non_clifford_per_instance": 465389,
+        "kernel_non_clifford_per_instance": 473069,
         "per_leaf_instance_count": 1,
         "stage": "tail_internal_combines",
         "stage_category": "tail_combine",
@@ -601,7 +725,7 @@
       "metadata": {
         "opcode": "complete_a0_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from C, K, L, I, Y, and Z.",
-        "kernel_non_clifford_per_instance": 465389,
+        "kernel_non_clifford_per_instance": 473069,
         "per_leaf_instance_count": 1,
         "stage": "tail_partial_products",
         "stage_category": "schoolbook_grid",
@@ -632,7 +756,7 @@
       "metadata": {
         "opcode": "complete_a0_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from C, K, L, I, Y, and Z.",
-        "kernel_non_clifford_per_instance": 465389,
+        "kernel_non_clifford_per_instance": 473069,
         "per_leaf_instance_count": 1,
         "stage": "tail_controlled_add_path",
         "stage_category": "controlled_add",
@@ -663,7 +787,7 @@
       "metadata": {
         "opcode": "complete_a0_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from C, K, L, I, Y, and Z.",
-        "kernel_non_clifford_per_instance": 465389,
+        "kernel_non_clifford_per_instance": 473069,
         "per_leaf_instance_count": 1,
         "stage": "tail_controlled_sub_path",
         "stage_category": "controlled_subtract",
@@ -694,7 +818,7 @@
       "metadata": {
         "opcode": "complete_a0_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from C, K, L, I, Y, and Z.",
-        "kernel_non_clifford_per_instance": 465389,
+        "kernel_non_clifford_per_instance": 473069,
         "per_leaf_instance_count": 1,
         "stage": "tail_output_combine",
         "stage_category": "tail_combine",
@@ -897,6 +1021,37 @@
       "phase_shell": "semiclassical_qft_v1",
       "non_clifford_blocks": [
         {
+          "block_id": "repeated_leaf_arithmetic__field_mul_lookup_x__streamed_lookup_x_bit_oracle__streamed_lookup_x_bit_select",
+          "summary": "Stream one selected lookup_x bit at a time into the counted lookup data latch.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 30,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15
+          },
+          "base_instance_count": 512,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 15872,
+          "primitive_counts_total": {
+            "ccx": 476160,
+            "cx": 0,
+            "x": 0,
+            "measurement": 238080
+          },
+          "non_clifford_total": 476160,
+          "metadata": {
+            "opcode": "field_mul_lookup_x",
+            "kernel_summary": "Exact table-fed x-coordinate field multiplication kernel with no materialized lookup-output field lane.",
+            "kernel_non_clifford_per_instance": 73727,
+            "per_leaf_instance_count": 2,
+            "stage": "streamed_lookup_x_bit_oracle",
+            "stage_category": "streamed_lookup_data_select",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
           "block_id": "repeated_leaf_arithmetic__field_mul_lookup_x__partial_products__partial_product_grid",
           "summary": "One schoolbook partial-product interaction for each pair of field bits.",
           "category": "arithmetic_non_clifford",
@@ -920,7 +1075,7 @@
           "metadata": {
             "opcode": "field_mul_lookup_x",
             "kernel_summary": "Exact table-fed x-coordinate field multiplication kernel with no materialized lookup-output field lane.",
-            "kernel_non_clifford_per_instance": 66047,
+            "kernel_non_clifford_per_instance": 73727,
             "per_leaf_instance_count": 2,
             "stage": "partial_products",
             "stage_category": "schoolbook_grid",
@@ -951,7 +1106,7 @@
           "metadata": {
             "opcode": "field_mul_lookup_x",
             "kernel_summary": "Exact table-fed x-coordinate field multiplication kernel with no materialized lookup-output field lane.",
-            "kernel_non_clifford_per_instance": 66047,
+            "kernel_non_clifford_per_instance": 73727,
             "per_leaf_instance_count": 2,
             "stage": "controlled_add_path",
             "stage_category": "controlled_add",
@@ -982,10 +1137,41 @@
           "metadata": {
             "opcode": "field_mul_lookup_x",
             "kernel_summary": "Exact table-fed x-coordinate field multiplication kernel with no materialized lookup-output field lane.",
-            "kernel_non_clifford_per_instance": 66047,
+            "kernel_non_clifford_per_instance": 73727,
             "per_leaf_instance_count": 2,
             "stage": "controlled_sub_path",
             "stage_category": "controlled_subtract",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__field_mul_lookup_y__streamed_lookup_y_bit_oracle__streamed_lookup_y_bit_select",
+          "summary": "Stream one selected lookup_y bit at a time into the counted lookup data latch.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 30,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15
+          },
+          "base_instance_count": 256,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 7936,
+          "primitive_counts_total": {
+            "ccx": 238080,
+            "cx": 0,
+            "x": 0,
+            "measurement": 119040
+          },
+          "non_clifford_total": 238080,
+          "metadata": {
+            "opcode": "field_mul_lookup_y",
+            "kernel_summary": "Exact table-fed y-coordinate field multiplication kernel with no materialized lookup-output field lane.",
+            "kernel_non_clifford_per_instance": 73727,
+            "per_leaf_instance_count": 1,
+            "stage": "streamed_lookup_y_bit_oracle",
+            "stage_category": "streamed_lookup_data_select",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
@@ -1013,7 +1199,7 @@
           "metadata": {
             "opcode": "field_mul_lookup_y",
             "kernel_summary": "Exact table-fed y-coordinate field multiplication kernel with no materialized lookup-output field lane.",
-            "kernel_non_clifford_per_instance": 66047,
+            "kernel_non_clifford_per_instance": 73727,
             "per_leaf_instance_count": 1,
             "stage": "partial_products",
             "stage_category": "schoolbook_grid",
@@ -1044,7 +1230,7 @@
           "metadata": {
             "opcode": "field_mul_lookup_y",
             "kernel_summary": "Exact table-fed y-coordinate field multiplication kernel with no materialized lookup-output field lane.",
-            "kernel_non_clifford_per_instance": 66047,
+            "kernel_non_clifford_per_instance": 73727,
             "per_leaf_instance_count": 1,
             "stage": "controlled_add_path",
             "stage_category": "controlled_add",
@@ -1075,10 +1261,41 @@
           "metadata": {
             "opcode": "field_mul_lookup_y",
             "kernel_summary": "Exact table-fed y-coordinate field multiplication kernel with no materialized lookup-output field lane.",
-            "kernel_non_clifford_per_instance": 66047,
+            "kernel_non_clifford_per_instance": 73727,
             "per_leaf_instance_count": 1,
             "stage": "controlled_sub_path",
             "stage_category": "controlled_subtract",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__field_mul_lookup_sum__streamed_lookup_x_plus_y_bit_oracle__streamed_lookup_x_plus_y_bit_select",
+          "summary": "Stream one selected lookup_x_plus_y bit at a time into the counted lookup data latch.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 30,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15
+          },
+          "base_instance_count": 256,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 7936,
+          "primitive_counts_total": {
+            "ccx": 238080,
+            "cx": 0,
+            "x": 0,
+            "measurement": 119040
+          },
+          "non_clifford_total": 238080,
+          "metadata": {
+            "opcode": "field_mul_lookup_sum",
+            "kernel_summary": "Exact table-fed (x+y)-coordinate field multiplication kernel with no materialized lookup-output field lane.",
+            "kernel_non_clifford_per_instance": 73727,
+            "per_leaf_instance_count": 1,
+            "stage": "streamed_lookup_x_plus_y_bit_oracle",
+            "stage_category": "streamed_lookup_data_select",
             "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
           }
         },
@@ -1106,7 +1323,7 @@
           "metadata": {
             "opcode": "field_mul_lookup_sum",
             "kernel_summary": "Exact table-fed (x+y)-coordinate field multiplication kernel with no materialized lookup-output field lane.",
-            "kernel_non_clifford_per_instance": 66047,
+            "kernel_non_clifford_per_instance": 73727,
             "per_leaf_instance_count": 1,
             "stage": "partial_products",
             "stage_category": "schoolbook_grid",
@@ -1137,7 +1354,7 @@
           "metadata": {
             "opcode": "field_mul_lookup_sum",
             "kernel_summary": "Exact table-fed (x+y)-coordinate field multiplication kernel with no materialized lookup-output field lane.",
-            "kernel_non_clifford_per_instance": 66047,
+            "kernel_non_clifford_per_instance": 73727,
             "per_leaf_instance_count": 1,
             "stage": "controlled_add_path",
             "stage_category": "controlled_add",
@@ -1168,7 +1385,7 @@
           "metadata": {
             "opcode": "field_mul_lookup_sum",
             "kernel_summary": "Exact table-fed (x+y)-coordinate field multiplication kernel with no materialized lookup-output field lane.",
-            "kernel_non_clifford_per_instance": 66047,
+            "kernel_non_clifford_per_instance": 73727,
             "per_leaf_instance_count": 1,
             "stage": "controlled_sub_path",
             "stage_category": "controlled_subtract",
@@ -1269,6 +1486,37 @@
           }
         },
         {
+          "block_id": "repeated_leaf_arithmetic__complete_a0_streamed_tail__streamed_lookup_y_bit_oracle__streamed_lookup_y_bit_select",
+          "summary": "Stream one selected lookup_y bit at a time into the counted lookup data latch.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 30,
+            "cx": 0,
+            "x": 0,
+            "measurement": 15
+          },
+          "base_instance_count": 256,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 7936,
+          "primitive_counts_total": {
+            "ccx": 238080,
+            "cx": 0,
+            "x": 0,
+            "measurement": 119040
+          },
+          "non_clifford_total": 238080,
+          "metadata": {
+            "opcode": "complete_a0_streamed_tail",
+            "kernel_summary": "Exact multi-output complete-add tail kernel from C, K, L, I, Y, and Z.",
+            "kernel_non_clifford_per_instance": 473069,
+            "per_leaf_instance_count": 1,
+            "stage": "streamed_lookup_y_bit_oracle",
+            "stage_category": "streamed_lookup_data_select",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
           "block_id": "repeated_leaf_arithmetic__complete_a0_streamed_tail__partial_products__partial_product_grid",
           "summary": "One schoolbook partial-product interaction for each pair of field bits.",
           "category": "arithmetic_non_clifford",
@@ -1292,7 +1540,7 @@
           "metadata": {
             "opcode": "complete_a0_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from C, K, L, I, Y, and Z.",
-            "kernel_non_clifford_per_instance": 465389,
+            "kernel_non_clifford_per_instance": 473069,
             "per_leaf_instance_count": 1,
             "stage": "partial_products",
             "stage_category": "schoolbook_grid",
@@ -1323,7 +1571,7 @@
           "metadata": {
             "opcode": "complete_a0_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from C, K, L, I, Y, and Z.",
-            "kernel_non_clifford_per_instance": 465389,
+            "kernel_non_clifford_per_instance": 473069,
             "per_leaf_instance_count": 1,
             "stage": "controlled_add_path",
             "stage_category": "controlled_add",
@@ -1354,7 +1602,7 @@
           "metadata": {
             "opcode": "complete_a0_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from C, K, L, I, Y, and Z.",
-            "kernel_non_clifford_per_instance": 465389,
+            "kernel_non_clifford_per_instance": 473069,
             "per_leaf_instance_count": 1,
             "stage": "controlled_sub_path",
             "stage_category": "controlled_subtract",
@@ -1385,7 +1633,7 @@
           "metadata": {
             "opcode": "complete_a0_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from C, K, L, I, Y, and Z.",
-            "kernel_non_clifford_per_instance": 465389,
+            "kernel_non_clifford_per_instance": 473069,
             "per_leaf_instance_count": 1,
             "stage": "tail_fixed_21z",
             "stage_category": "mul_const",
@@ -1416,7 +1664,7 @@
           "metadata": {
             "opcode": "complete_a0_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from C, K, L, I, Y, and Z.",
-            "kernel_non_clifford_per_instance": 465389,
+            "kernel_non_clifford_per_instance": 473069,
             "per_leaf_instance_count": 1,
             "stage": "tail_internal_combines",
             "stage_category": "tail_combine",
@@ -1447,7 +1695,7 @@
           "metadata": {
             "opcode": "complete_a0_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from C, K, L, I, Y, and Z.",
-            "kernel_non_clifford_per_instance": 465389,
+            "kernel_non_clifford_per_instance": 473069,
             "per_leaf_instance_count": 1,
             "stage": "tail_partial_products",
             "stage_category": "schoolbook_grid",
@@ -1478,7 +1726,7 @@
           "metadata": {
             "opcode": "complete_a0_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from C, K, L, I, Y, and Z.",
-            "kernel_non_clifford_per_instance": 465389,
+            "kernel_non_clifford_per_instance": 473069,
             "per_leaf_instance_count": 1,
             "stage": "tail_controlled_add_path",
             "stage_category": "controlled_add",
@@ -1509,7 +1757,7 @@
           "metadata": {
             "opcode": "complete_a0_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from C, K, L, I, Y, and Z.",
-            "kernel_non_clifford_per_instance": 465389,
+            "kernel_non_clifford_per_instance": 473069,
             "per_leaf_instance_count": 1,
             "stage": "tail_controlled_sub_path",
             "stage_category": "controlled_subtract",
@@ -1540,7 +1788,7 @@
           "metadata": {
             "opcode": "complete_a0_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from C, K, L, I, Y, and Z.",
-            "kernel_non_clifford_per_instance": 465389,
+            "kernel_non_clifford_per_instance": 473069,
             "per_leaf_instance_count": 1,
             "stage": "tail_output_combine",
             "stage_category": "tail_combine",
@@ -3609,7 +3857,7 @@
           "summary": "Peak explicit lookup workspace required by the named lowered lookup family.",
           "category": "live_qubits",
           "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-          "logical_qubits": 48,
+          "logical_qubits": 49,
           "metadata": {
             "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1"
           }
@@ -3680,17 +3928,17 @@
         }
       ],
       "reconstruction": {
-        "arithmetic_leaf_non_clifford": 732637,
+        "arithmetic_leaf_non_clifford": 771037,
         "direct_seed_non_clifford": 327,
         "per_leaf_lookup_non_clifford": 327,
-        "full_oracle_non_clifford": 22722211,
+        "full_oracle_non_clifford": 23912611,
         "primitive_totals": {
-          "ccx": 22722211,
+          "ccx": 23912611,
           "cx": 0,
           "x": 0,
-          "measurement": 365795
+          "measurement": 960995
         },
-        "total_measurements": 366307,
+        "total_measurements": 961507,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -3698,9 +3946,9 @@
         "arithmetic_slot_count": 6,
         "control_slot_count": 1,
         "borrowed_interface_qubits": 0,
-        "lookup_workspace_qubits": 48,
+        "lookup_workspace_qubits": 49,
         "live_phase_bits": 1,
-        "total_logical_qubits": 1586
+        "total_logical_qubits": 1587
       },
       "slot_allocation_family": "streamed_lookup_tail_leaf_v1"
     }
@@ -3708,17 +3956,17 @@
   "best_gate_family": {
     "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
     "reconstruction": {
-      "arithmetic_leaf_non_clifford": 732637,
+      "arithmetic_leaf_non_clifford": 771037,
       "direct_seed_non_clifford": 327,
       "per_leaf_lookup_non_clifford": 327,
-      "full_oracle_non_clifford": 22722211,
+      "full_oracle_non_clifford": 23912611,
       "primitive_totals": {
-        "ccx": 22722211,
+        "ccx": 23912611,
         "cx": 0,
         "x": 0,
-        "measurement": 365795
+        "measurement": 960995
       },
-      "total_measurements": 366307,
+      "total_measurements": 961507,
       "phase_shell_hadamards": 512,
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 511,
@@ -3726,25 +3974,25 @@
       "arithmetic_slot_count": 6,
       "control_slot_count": 1,
       "borrowed_interface_qubits": 0,
-      "lookup_workspace_qubits": 48,
+      "lookup_workspace_qubits": 49,
       "live_phase_bits": 1,
-      "total_logical_qubits": 1586
+      "total_logical_qubits": 1587
     }
   },
   "best_qubit_family": {
     "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
     "reconstruction": {
-      "arithmetic_leaf_non_clifford": 732637,
+      "arithmetic_leaf_non_clifford": 771037,
       "direct_seed_non_clifford": 327,
       "per_leaf_lookup_non_clifford": 327,
-      "full_oracle_non_clifford": 22722211,
+      "full_oracle_non_clifford": 23912611,
       "primitive_totals": {
-        "ccx": 22722211,
+        "ccx": 23912611,
         "cx": 0,
         "x": 0,
-        "measurement": 365795
+        "measurement": 960995
       },
-      "total_measurements": 366307,
+      "total_measurements": 961507,
       "phase_shell_hadamards": 512,
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 511,
@@ -3752,9 +4000,9 @@
       "arithmetic_slot_count": 6,
       "control_slot_count": 1,
       "borrowed_interface_qubits": 0,
-      "lookup_workspace_qubits": 48,
+      "lookup_workspace_qubits": 49,
       "live_phase_bits": 1,
-      "total_logical_qubits": 1586
+      "total_logical_qubits": 1587
     }
   },
   "notes": [

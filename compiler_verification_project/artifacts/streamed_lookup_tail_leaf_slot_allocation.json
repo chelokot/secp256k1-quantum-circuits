@@ -359,12 +359,13 @@
     "lookup_interface_policy": {
       "coordinate_field_lanes_materialized_by_leaf": 0,
       "coordinate_field_lanes_counted_in_lookup_workspace": 0,
+      "streamed_coordinate_bit_latch_counted_in_lookup_workspace": 1,
       "table_fed_coordinate_operands": [
         "lookup_x",
         "lookup_y",
         "lookup_x_plus_y"
       ],
-      "statement": "The streamed lookup contract consumes table coordinates as constants inside table-fed arithmetic kernels; it does not borrow or omit a field-sized lookup output lane."
+      "statement": "The streamed lookup contract consumes table coordinates one bit at a time inside table-fed arithmetic kernels; it counts the single bit latch in lookup workspace and does not borrow or omit a field-sized lookup output lane."
     },
     "no_free_quantum_wire_invariant": {
       "passes": true,

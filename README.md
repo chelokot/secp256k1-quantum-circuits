@@ -63,19 +63,22 @@ The root-level `compiler_verification_project/` is the repository's strongest
 exact layer below the ISA boundary. Its checked-in central whole-oracle result
 is:
 
-- **central exact family:** `22,722,211 non-Clifford`, `1,586 logical qubits`
+- **central exact family:** `23,912,611 non-Clifford`, `1,587 logical qubits`
 
 Those numbers are exact for the chosen compiler family, not a claim of global
 optimality. The family uses a fully bitwise banked unary QROM decode with
 measured uncompute, an exact semiclassical-QFT phase shell, and the executable
 streamed lookup tail point-add leaf.
+The lookup workspace now includes a counted one-bit streamed coordinate latch,
+and the table-controlled multiplier kernels include explicit per-bit
+data-selection cost instead of treating lookup coordinates as free operands.
 
 Against Google's published 2026 secp256k1 baseline, the central exact result is:
 
-- **3.9609x** lower in non-Clifford cost than the public low-qubit line
-- **3.0807x** lower in non-Clifford cost than the public low-gate line
-- **386 qubits above** the public low-qubit line
-- **136 qubits above** the public low-gate line
+- **3.7637x** lower in non-Clifford cost than the public low-qubit line
+- **2.9273x** lower in non-Clifford cost than the public low-gate line
+- **387 qubits above** the public low-qubit line
+- **137 qubits above** the public low-gate line
 
 ### SP1 attestation layer
 

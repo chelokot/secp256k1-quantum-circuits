@@ -89,6 +89,8 @@ def test_compiler_project_verification_summary_groups_all_pass() -> None:
     assert lookup_fed_slot_allocation['pass'] == lookup_fed_slot_allocation['total']
     streamed_lookup_tail_slot_allocation = summary['streamed_lookup_tail_slot_allocation_checks']
     assert streamed_lookup_tail_slot_allocation['pass'] == streamed_lookup_tail_slot_allocation['total']
+    streamed_lookup_table_multiplier_resource = summary['streamed_lookup_table_multiplier_resource_checks']
+    assert streamed_lookup_table_multiplier_resource['pass'] == streamed_lookup_table_multiplier_resource['total']
     recount = summary['whole_oracle_recount_checks']
     assert recount['pass'] == recount['total']
     subcircuit_equivalence = summary['subcircuit_equivalence_checks']

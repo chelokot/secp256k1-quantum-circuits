@@ -282,10 +282,53 @@ def _field_mul_kernel(field_bits: int) -> Dict[str, Any]:
     )
 
 
-def _renamed_field_mul_kernel(field_bits: int, opcode: str, summary: str, note: str) -> Dict[str, Any]:
+def _streamed_lookup_bit_oracle_stage(field_bits: int, bit_source: str) -> Dict[str, Any]:
+    operations: List[PrimitiveOperation] = []
+    for output_bit in range(field_bits):
+        for decode_bit in range(15):
+            operations.append(_primitive_operation('ccx', output_bit, decode_bit))
+        for decode_bit in range(15):
+            operations.append(_primitive_operation('ccx', output_bit, decode_bit))
+            operations.append(_primitive_operation('measurement', output_bit, decode_bit))
+    block = _block(
+        name=f'streamed_{bit_source}_bit_select',
+        summary=f'Stream one selected {bit_source} bit at a time into the counted lookup data latch.',
+        instance_count=field_bits,
+        primitive_operations=operations,
+        notes=[
+            'Each streamed coordinate bit is selected from the folded 15-bit lookup path, used as the constant-side multiplier control, and then uncomputed before the next bit.',
+            'The per-bit cost is 15 Toffoli-style path-decode controls plus 15 Toffoli-style measured-uncompute controls; Clifford fanout over the arithmetic source bits remains outside the non-Clifford count.',
+        ],
+    )
+    return _stage(
+        name=f'streamed_{bit_source}_bit_oracle',
+        summary=f'Generated table-data selection for all {field_bits} streamed {bit_source} bits.',
+        category='streamed_lookup_data_select',
+        blocks=[block],
+        notes=[
+            'This stage is the explicit resource contract for table-controlled lookup multiplication; the lookup coordinate is not a materialized field lane, but its selected bits are not free.',
+        ],
+    )
+
+
+def _renamed_field_mul_kernel(
+    field_bits: int,
+    opcode: str,
+    summary: str,
+    note: str,
+    lookup_bit_source: str | None = None,
+) -> Dict[str, Any]:
     kernel = deepcopy(_field_mul_kernel(field_bits))
     kernel['opcode'] = opcode
     kernel['summary'] = summary
+    if lookup_bit_source is not None:
+        kernel['stages'].insert(0, _streamed_lookup_bit_oracle_stage(field_bits, lookup_bit_source))
+        primitive_totals = {
+            key: sum(int(stage['primitive_counts_total'][key]) for stage in kernel['stages'])
+            for key in ('ccx', 'cx', 'x', 'measurement')
+        }
+        kernel['primitive_counts_total'] = primitive_totals
+        kernel['exact_non_clifford_per_kernel'] = primitive_totals['ccx']
     kernel['notes'] = [*kernel['notes'], note]
     return kernel
 
@@ -356,6 +399,7 @@ def _complete_a0_streamed_tail_kernel(field_bits: int) -> Dict[str, Any]:
         'field_mul_lookup_y',
         'Internal streamed yZ multiplication used by the complete-add tail macro.',
         'This stage is counted inside the macro because yZ is not materialized as a standalone leaf field value.',
+        lookup_bit_source='lookup_y',
     )['stages'])
     fixed_f = _block(
         name='fixed_21z_chain',
@@ -530,18 +574,21 @@ def arithmetic_lowering_library(field_bits: int, leaf_opcode_histogram: Mapping[
             'field_mul_lookup_x',
             'Exact table-fed x-coordinate field multiplication kernel with no materialized lookup-output field lane.',
             'The streamed lookup coordinate is a table-controlled constant input and is not counted as a leaf field wire.',
+            lookup_bit_source='lookup_x',
         ),
         _renamed_field_mul_kernel(
             field_bits,
             'field_mul_lookup_y',
             'Exact table-fed y-coordinate field multiplication kernel with no materialized lookup-output field lane.',
             'The streamed lookup coordinate is a table-controlled constant input and is not counted as a leaf field wire.',
+            lookup_bit_source='lookup_y',
         ),
         _renamed_field_mul_kernel(
             field_bits,
             'field_mul_lookup_sum',
             'Exact table-fed (x+y)-coordinate field multiplication kernel with no materialized lookup-output field lane.',
             'The streamed lookup sum is a table-controlled constant input and is not counted as a leaf field wire.',
+            lookup_bit_source='lookup_x_plus_y',
         ),
         _field_add_kernel(field_bits),
         _field_sub_kernel(field_bits),

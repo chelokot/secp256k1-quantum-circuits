@@ -2884,7 +2884,8 @@
       "lowering_strategy": {
         "classification": "shared folded sign/magnitude decomposition over the checked signed-folded lookup contract",
         "lookup_compute": "bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode over the 32768-entry positive folded domain",
-        "lookup_uncompute": "measured cleanup of every generated banked unary chunk register"
+        "lookup_uncompute": "measured cleanup of every generated banked unary chunk register",
+        "streamed_table_data": "one counted coordinate-bit latch; every field-sized table coordinate is streamed bit-by-bit into arithmetic kernels instead of materializing lookup x/y field lanes"
       },
       "persistent_workspace": [
         {
@@ -2896,6 +2897,11 @@
           "name": "lookup_control_predicates",
           "qubits": 3,
           "summary": "Tracks zero/min-word routing and the Y-negation enable predicate without allocating a full metadata table."
+        },
+        {
+          "name": "streamed_coordinate_bit_latch",
+          "qubits": 1,
+          "summary": "Single counted data-bit latch used by streamed table-controlled multiplication."
         }
       ],
       "stages": [
@@ -3156,9 +3162,9 @@
             "measurement": 42
           },
           "non_clifford_total": 42,
-          "persistent_workspace_qubits": 18,
+          "persistent_workspace_qubits": 19,
           "local_workspace_qubits": 13,
-          "total_workspace_qubits": 31,
+          "total_workspace_qubits": 32,
           "notes": [
             "The classification stage is family-independent and implements the same signed-folded contract used by the main repository lookup audit."
           ]
@@ -3911,9 +3917,9 @@
             "measurement": 0
           },
           "non_clifford_total": 15,
-          "persistent_workspace_qubits": 18,
+          "persistent_workspace_qubits": 19,
           "local_workspace_qubits": 30,
-          "total_workspace_qubits": 48,
+          "total_workspace_qubits": 49,
           "notes": [
             "The hierarchical family materializes one unary chunk per banking level instead of a full 32768-slot unary register."
           ]
@@ -4786,9 +4792,9 @@
             "measurement": 15
           },
           "non_clifford_total": 15,
-          "persistent_workspace_qubits": 18,
+          "persistent_workspace_qubits": 19,
           "local_workspace_qubits": 30,
-          "total_workspace_qubits": 48,
+          "total_workspace_qubits": 49,
           "notes": [
             "Measured cleanup keeps the hierarchical banked family exact within the chosen generated operation layer without reintroducing the full reverse unary pass."
           ]
@@ -4927,9 +4933,9 @@
             "measurement": 0
           },
           "non_clifford_total": 255,
-          "persistent_workspace_qubits": 18,
+          "persistent_workspace_qubits": 19,
           "local_workspace_qubits": 0,
-          "total_workspace_qubits": 18,
+          "total_workspace_qubits": 19,
           "notes": [
             "The X coordinate remains unchanged under negation; only the Y coordinate path carries non-Clifford cost."
           ]
@@ -4948,11 +4954,11 @@
       "conditional_negate_y_non_clifford": 255,
       "direct_lookup_non_clifford": 327,
       "per_leaf_lookup_non_clifford": 327,
-      "extra_lookup_workspace_qubits": 48,
+      "extra_lookup_workspace_qubits": 49,
       "workspace_reconstruction": {
-        "persistent_workspace_qubits": 18,
+        "persistent_workspace_qubits": 19,
         "peak_stage": "folded_positive_lookup_compute",
-        "peak_total_workspace_qubits": 48
+        "peak_total_workspace_qubits": 49
       },
       "semantic_profile": {
         "zero_maps_to_infinity": true,
@@ -4961,7 +4967,8 @@
       },
       "notes": [
         "This family fully factorizes the folded 15-bit magnitude into binary banking levels inside the same generated chunk-decode model used by the other banked families.",
-        "Within the current exact generated-operation boundary, the deeper banking reduces both direct lookup non-Clifford cost and explicit lookup workspace relative to the 3/4/4/4 hierarchical family."
+        "Within the current exact generated-operation boundary, the deeper banking reduces both direct lookup non-Clifford cost and explicit lookup workspace relative to the 3/4/4/4 hierarchical family.",
+        "For the streamed lookup tail family, this lookup workspace also counts the single coordinate-bit latch used by table-controlled arithmetic kernels."
       ]
     },
     {

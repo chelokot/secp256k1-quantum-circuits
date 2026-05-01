@@ -4,27 +4,27 @@
   "selected_family_name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
   "field_bits": 256,
   "leaf_call_count_total": 31,
-  "expected_full_oracle_non_clifford": 22722211,
-  "expected_total_logical_qubits": 1586,
+  "expected_full_oracle_non_clifford": 23912611,
+  "expected_total_logical_qubits": 1587,
   "expected_case_count": 8,
   "non_clifford_formula": {
-    "arithmetic_leaf_non_clifford": 732637,
+    "arithmetic_leaf_non_clifford": 771037,
     "per_leaf_lookup_non_clifford": 327,
     "direct_seed_non_clifford": 327,
     "leaf_call_count_total": 31,
-    "arithmetic_component": 22711747,
+    "arithmetic_component": 23902147,
     "lookup_component": 10137,
-    "reconstructed_total": 22722211
+    "reconstructed_total": 23912611
   },
   "logical_qubit_formula": {
     "field_bits": 256,
     "arithmetic_slot_count": 6,
     "control_slot_count": 1,
     "borrowed_interface_qubits": 0,
-    "lookup_workspace_qubits": 48,
+    "lookup_workspace_qubits": 49,
     "live_phase_bits": 1,
     "arithmetic_component": 1536,
-    "reconstructed_total": 1586
+    "reconstructed_total": 1587
   },
   "notes": [
     "This claim intentionally stays at the repository exact-family boundary: exact point-add witness semantics plus exact compiler-family resource derivation.",

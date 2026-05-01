@@ -461,6 +461,7 @@ def _banked_unary_qrom_measured_uncompute_family(
     split_bits: Tuple[int, ...],
     strategy_summary: str,
     notes: List[str],
+    streamed_coordinate_bit_latch_qubits: int = 0,
 ) -> Dict[str, Any]:
     params = _contract_parameters(contract)
     if sum(split_bits) != params['magnitude_bits']:
@@ -469,6 +470,15 @@ def _banked_unary_qrom_measured_uncompute_family(
         raise ValueError('banked unary family split must use positive chunk widths')
     domains = [1 << bit_count for bit_count in split_bits]
     persistent_workspace = _persistent_workspace(params['magnitude_bits'])
+    if streamed_coordinate_bit_latch_qubits:
+        persistent_workspace = [
+            *persistent_workspace,
+            {
+                'name': 'streamed_coordinate_bit_latch',
+                'qubits': int(streamed_coordinate_bit_latch_qubits),
+                'summary': 'Single counted data-bit latch used by streamed table-controlled multiplication.',
+            },
+        ]
     persistent_total = sum(int(entry['qubits']) for entry in persistent_workspace)
     local_workspace = sum(domains)
     decode_blocks = []
@@ -534,15 +544,18 @@ def _banked_unary_qrom_measured_uncompute_family(
         ),
         _conditional_negation_stage(params['coordinate_bits'], persistent_total),
     ]
+    lowering_strategy = {
+        'classification': 'shared folded sign/magnitude decomposition over the checked signed-folded lookup contract',
+        'lookup_compute': strategy_summary,
+        'lookup_uncompute': 'measured cleanup of every generated banked unary chunk register',
+    }
+    if streamed_coordinate_bit_latch_qubits:
+        lowering_strategy['streamed_table_data'] = 'one counted coordinate-bit latch; every field-sized table coordinate is streamed bit-by-bit into arithmetic kernels instead of materializing lookup x/y field lanes'
     return _family_payload(
         name=family_name,
         summary=summary,
         gate_set='Clifford + banked unary QROM + measurement',
-        lowering_strategy={
-            'classification': 'shared folded sign/magnitude decomposition over the checked signed-folded lookup contract',
-            'lookup_compute': strategy_summary,
-            'lookup_uncompute': 'measured cleanup of every generated banked unary chunk register',
-        },
+        lowering_strategy=lowering_strategy,
         persistent_workspace=persistent_workspace,
         stages=stages,
         notes=notes,
@@ -634,7 +647,9 @@ def lookup_lowering_library() -> Dict[str, Any]:
             notes=[
                 'This family fully factorizes the folded 15-bit magnitude into binary banking levels inside the same generated chunk-decode model used by the other banked families.',
                 'Within the current exact generated-operation boundary, the deeper banking reduces both direct lookup non-Clifford cost and explicit lookup workspace relative to the 3/4/4/4 hierarchical family.',
+                'For the streamed lookup tail family, this lookup workspace also counts the single coordinate-bit latch used by table-controlled arithmetic kernels.',
             ],
+            streamed_coordinate_bit_latch_qubits=1,
         ),
         _unary_qrom_family(contract, measured_uncompute=False),
         _unary_qrom_family(contract, measured_uncompute=True),

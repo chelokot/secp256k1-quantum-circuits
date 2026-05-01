@@ -80,6 +80,7 @@ class VerificationPipelineTests(unittest.TestCase):
         self.assertEqual(verify['slot_allocation_checks']['pass'], verify['slot_allocation_checks']['total'])
         self.assertEqual(verify['lookup_fed_slot_allocation_checks']['pass'], verify['lookup_fed_slot_allocation_checks']['total'])
         self.assertEqual(verify['streamed_lookup_tail_slot_allocation_checks']['pass'], verify['streamed_lookup_tail_slot_allocation_checks']['total'])
+        self.assertEqual(verify['streamed_lookup_table_multiplier_resource_checks']['pass'], verify['streamed_lookup_table_multiplier_resource_checks']['total'])
         self.assertEqual(verify['ft_ir_checks']['pass'], verify['ft_ir_checks']['total'])
         self.assertEqual(verify['whole_oracle_recount_checks']['pass'], verify['whole_oracle_recount_checks']['total'])
         self.assertEqual(verify['subcircuit_equivalence_checks']['pass'], verify['subcircuit_equivalence_checks']['total'])

@@ -1,0 +1,88 @@
+{
+  "schema": "compiler-project-streamed-lookup-table-multiplier-resource-v1",
+  "field_bits": 256,
+  "selected_lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
+  "selected_leaf_family": "streamed_lookup_tail_leaf_v1",
+  "source_artifacts": {
+    "arithmetic_lowerings": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+    "lookup_lowerings": "compiler_verification_project/artifacts/lookup_lowerings.json",
+    "streamed_lookup_tail_leaf": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json",
+    "streamed_lookup_tail_leaf_slot_allocation": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json"
+  },
+  "coordinate_bit_sources": [
+    {
+      "bit_source": "lookup_x",
+      "consumer_opcode": "field_mul_lookup_x",
+      "per_leaf_kernel_count": 2,
+      "field_bits_streamed_per_kernel": 256,
+      "data_select_non_clifford_per_kernel": 7680,
+      "data_select_non_clifford_per_leaf": 15360,
+      "stage_names": [
+        "streamed_lookup_x_bit_oracle"
+      ]
+    },
+    {
+      "bit_source": "lookup_y",
+      "consumer_opcode": "field_mul_lookup_y",
+      "per_leaf_kernel_count": 1,
+      "field_bits_streamed_per_kernel": 256,
+      "data_select_non_clifford_per_kernel": 7680,
+      "data_select_non_clifford_per_leaf": 7680,
+      "stage_names": [
+        "streamed_lookup_y_bit_oracle"
+      ]
+    },
+    {
+      "bit_source": "lookup_x_plus_y",
+      "consumer_opcode": "field_mul_lookup_sum",
+      "per_leaf_kernel_count": 1,
+      "field_bits_streamed_per_kernel": 256,
+      "data_select_non_clifford_per_kernel": 7680,
+      "data_select_non_clifford_per_leaf": 7680,
+      "stage_names": [
+        "streamed_lookup_x_plus_y_bit_oracle"
+      ]
+    },
+    {
+      "bit_source": "lookup_y",
+      "consumer_opcode": "complete_a0_streamed_tail",
+      "per_leaf_kernel_count": 1,
+      "field_bits_streamed_per_kernel": 256,
+      "data_select_non_clifford_per_kernel": 7680,
+      "data_select_non_clifford_per_leaf": 7680,
+      "stage_names": [
+        "streamed_lookup_y_bit_oracle"
+      ]
+    }
+  ],
+  "streamed_data_selection_model": {
+    "folded_magnitude_bits": 15,
+    "table_controlled_coordinate_bits": [
+      "lookup_x",
+      "lookup_y",
+      "lookup_x_plus_y"
+    ],
+    "non_clifford_per_streamed_coordinate_bit": 30,
+    "decomposition": {
+      "path_decode_controls": 15,
+      "measured_uncompute_controls": 15
+    },
+    "per_kernel_non_clifford": 7680,
+    "per_leaf_streamed_kernel_count": 5,
+    "per_leaf_data_select_non_clifford": 38400,
+    "leaf_call_count_total": 31,
+    "whole_oracle_data_select_non_clifford": 1190400
+  },
+  "workspace_contract": {
+    "lookup_workspace_qubits": 49,
+    "decode_and_control_workspace_qubits": 48,
+    "streamed_coordinate_bit_latch_qubits": 1,
+    "coordinate_field_lanes_materialized": 0,
+    "coordinate_field_lane_qubits_materialized": 0,
+    "passes": true
+  },
+  "notes": [
+    "This artifact closes the table-controlled multiplier resource gap: lookup coordinates are streamed bit-by-bit, not treated as free field-sized operands.",
+    "The cost is deliberately conservative at this abstraction layer: every streamed coordinate bit pays the full 15-bit folded path decode plus measured uncompute before the next bit is selected."
+  ]
+}

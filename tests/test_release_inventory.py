@@ -119,6 +119,7 @@ class ReleaseInventoryTests(unittest.TestCase):
             'compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json',
             'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json',
             'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json',
+            'compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json',
             'compiler_verification_project/artifacts/primitive_multiplier_library.json',
             'compiler_verification_project/artifacts/phase_shell_lowerings.json',
             'compiler_verification_project/artifacts/phase_shell_families.json',

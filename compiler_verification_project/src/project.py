@@ -353,8 +353,9 @@ def _resource_ownership_contract(
         'lookup_interface_policy': {
             'coordinate_field_lanes_materialized_by_leaf': 0,
             'coordinate_field_lanes_counted_in_lookup_workspace': 0,
+            'streamed_coordinate_bit_latch_counted_in_lookup_workspace': 1,
             'table_fed_coordinate_operands': ['lookup_x', 'lookup_y', 'lookup_x_plus_y'],
-            'statement': 'The streamed lookup contract consumes table coordinates as constants inside table-fed arithmetic kernels; it does not borrow or omit a field-sized lookup output lane.',
+            'statement': 'The streamed lookup contract consumes table coordinates one bit at a time inside table-fed arithmetic kernels; it counts the single bit latch in lookup workspace and does not borrow or omit a field-sized lookup output lane.',
         },
         'no_free_quantum_wire_invariant': {
             'passes': all(owner['logical_qubit_budget'] >= owner['required_logical_qubits'] for owner in owners),
@@ -571,6 +572,89 @@ def streamed_lookup_tail_leaf_slot_allocation() -> Dict[str, Any]:
             'The complete_a0_streamed_tail multi-output instruction consumes C/K/L/I/Y/Z and derives E/F/M/N internally, so the peak arithmetic register file is six field slots.',
         ],
     )
+
+
+def streamed_lookup_table_multiplier_resource(
+    arithmetic_lowerings: Optional[Mapping[str, Any]] = None,
+    lookup_lowerings: Optional[Mapping[str, Any]] = None,
+) -> Dict[str, Any]:
+    arithmetic = arithmetic_lowerings if arithmetic_lowerings is not None else arithmetic_lowering_library(
+        FIELD_BITS,
+        leaf_opcode_histogram(),
+    )
+    lookup = lookup_lowerings if lookup_lowerings is not None else lookup_lowering_library()
+    kernel_lookup = {kernel['opcode']: kernel for kernel in arithmetic['kernels']}
+    lookup_family = next(row for row in lookup['families'] if row['name'] == CENTRAL_LOOKUP_FAMILY)
+    persistent_workspace = {entry['name']: int(entry['qubits']) for entry in lookup_family['persistent_workspace']}
+    bit_sources = [
+        ('lookup_x', 'field_mul_lookup_x', int(leaf_opcode_histogram().get('field_mul_lookup_x', 0))),
+        ('lookup_y', 'field_mul_lookup_y', int(leaf_opcode_histogram().get('field_mul_lookup_y', 0))),
+        ('lookup_x_plus_y', 'field_mul_lookup_sum', int(leaf_opcode_histogram().get('field_mul_lookup_sum', 0))),
+        ('lookup_y', 'complete_a0_streamed_tail', int(leaf_opcode_histogram().get('complete_a0_streamed_tail', 0))),
+    ]
+    source_rows = []
+    per_leaf_streamed_kernel_count = 0
+    per_leaf_data_select_non_clifford = 0
+    for bit_source, opcode, count in bit_sources:
+        kernel = kernel_lookup[opcode]
+        data_select_stages = [
+            stage for stage in kernel['stages'] if stage['category'] == 'streamed_lookup_data_select'
+        ]
+        data_select_non_clifford = sum(int(stage['non_clifford_total']) for stage in data_select_stages)
+        source_rows.append({
+            'bit_source': bit_source,
+            'consumer_opcode': opcode,
+            'per_leaf_kernel_count': count,
+            'field_bits_streamed_per_kernel': FIELD_BITS,
+            'data_select_non_clifford_per_kernel': data_select_non_clifford,
+            'data_select_non_clifford_per_leaf': data_select_non_clifford * count,
+            'stage_names': [stage['name'] for stage in data_select_stages],
+        })
+        per_leaf_streamed_kernel_count += count
+        per_leaf_data_select_non_clifford += data_select_non_clifford * count
+    leaf_calls = int(raw32_schedule()['summary']['leaf_call_count_total'])
+    latch_qubits = int(persistent_workspace.get('streamed_coordinate_bit_latch', 0))
+    total_workspace = int(lookup_family['extra_lookup_workspace_qubits'])
+    decode_workspace = total_workspace - latch_qubits
+    return {
+        'schema': 'compiler-project-streamed-lookup-table-multiplier-resource-v1',
+        'field_bits': FIELD_BITS,
+        'selected_lookup_family': CENTRAL_LOOKUP_FAMILY,
+        'selected_leaf_family': 'streamed_lookup_tail_leaf_v1',
+        'source_artifacts': {
+            'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
+            'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
+            'streamed_lookup_tail_leaf': 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json',
+            'streamed_lookup_tail_leaf_slot_allocation': 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json',
+        },
+        'coordinate_bit_sources': source_rows,
+        'streamed_data_selection_model': {
+            'folded_magnitude_bits': 15,
+            'table_controlled_coordinate_bits': ['lookup_x', 'lookup_y', 'lookup_x_plus_y'],
+            'non_clifford_per_streamed_coordinate_bit': 30,
+            'decomposition': {
+                'path_decode_controls': 15,
+                'measured_uncompute_controls': 15,
+            },
+            'per_kernel_non_clifford': FIELD_BITS * 30,
+            'per_leaf_streamed_kernel_count': per_leaf_streamed_kernel_count,
+            'per_leaf_data_select_non_clifford': per_leaf_data_select_non_clifford,
+            'leaf_call_count_total': leaf_calls,
+            'whole_oracle_data_select_non_clifford': per_leaf_data_select_non_clifford * leaf_calls,
+        },
+        'workspace_contract': {
+            'lookup_workspace_qubits': total_workspace,
+            'decode_and_control_workspace_qubits': decode_workspace,
+            'streamed_coordinate_bit_latch_qubits': latch_qubits,
+            'coordinate_field_lanes_materialized': 0,
+            'coordinate_field_lane_qubits_materialized': 0,
+            'passes': total_workspace == 49 and decode_workspace == 48 and latch_qubits == 1,
+        },
+        'notes': [
+            'This artifact closes the table-controlled multiplier resource gap: lookup coordinates are streamed bit-by-bit, not treated as free field-sized operands.',
+            'The cost is deliberately conservative at this abstraction layer: every streamed coordinate bit pays the full 15-bit folded path decode plus measured uncompute before the next bit is selected.',
+        ],
+    }
 
 
 def slot_allocation_families() -> List[SlotAllocationFamily]:
@@ -1659,6 +1743,10 @@ def build_all_artifacts() -> Dict[str, Any]:
         'streamed_lookup_tail_leaf_equivalence': build_streamed_lookup_tail_leaf_equivalence(),
         'streamed_lookup_tail_slot_allocation': streamed_lookup_tail_leaf_slot_allocation(),
         'arithmetic_lowerings': arithmetic_lowerings,
+        'streamed_lookup_table_multiplier_resource': streamed_lookup_table_multiplier_resource(
+            arithmetic_lowerings=arithmetic_lowerings,
+            lookup_lowerings=lookup_lowerings,
+        ),
         'arithmetic_kernel_library': arithmetic_kernel_library(),
         'primitive_multiplier_library': primitive_multiplier_library(),
         'phase_shell_lowerings': phase_shell_lowerings,
@@ -1689,6 +1777,7 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('streamed_lookup_tail_leaf_equivalence.json'), out['streamed_lookup_tail_leaf_equivalence'])
     dump_json(project_artifact_path('streamed_lookup_tail_leaf_slot_allocation.json'), out['streamed_lookup_tail_slot_allocation'])
     dump_json(project_artifact_path('arithmetic_lowerings.json'), out['arithmetic_lowerings'])
+    dump_json(project_artifact_path('streamed_lookup_table_multiplier_resource.json'), out['streamed_lookup_table_multiplier_resource'])
     dump_json(project_artifact_path('module_library.json'), out['arithmetic_kernel_library'])
     dump_json(project_artifact_path('primitive_multiplier_library.json'), out['primitive_multiplier_library'])
     dump_json(project_artifact_path('phase_shell_lowerings.json'), out['phase_shell_lowerings'])
@@ -1712,7 +1801,7 @@ def build_all_artifacts() -> Dict[str, Any]:
     )
 
     build_summary = {
-        'schema': 'compiler-project-build-summary-v15',
+        'schema': 'compiler-project-build-summary-v16',
         'artifacts': {
             'canonical_public_point': 'compiler_verification_project/artifacts/canonical_public_point.json',
             'full_raw32_oracle': 'compiler_verification_project/artifacts/full_raw32_oracle.json',
@@ -1724,6 +1813,7 @@ def build_all_artifacts() -> Dict[str, Any]:
             'streamed_lookup_tail_leaf_equivalence': 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json',
             'streamed_lookup_tail_leaf_slot_allocation': 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json',
             'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
+            'streamed_lookup_table_multiplier_resource': 'compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json',
             'module_library': 'compiler_verification_project/artifacts/module_library.json',
             'primitive_multiplier_library': 'compiler_verification_project/artifacts/primitive_multiplier_library.json',
             'phase_shell_lowerings': 'compiler_verification_project/artifacts/phase_shell_lowerings.json',
@@ -1804,6 +1894,7 @@ __all__ = [
     'central_executable_leaf',
     'lookup_fed_leaf_slot_allocation',
     'streamed_lookup_tail_leaf_slot_allocation',
+    'streamed_lookup_table_multiplier_resource',
     'slot_allocation_families',
     'raw32_schedule',
 ]

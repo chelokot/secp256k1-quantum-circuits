@@ -16,8 +16,8 @@ lookup, and scaffold semantics.
 
 As of the current exact compiler frontier, the repository's central exact point is:
 
-- `22,722,211` non-Clifford
-- `1,586` logical qubits
+- `23,912,611` non-Clifford
+- `1,587` logical qubits
 
 This is the family
 `folded_bitwise_banked_unary_qrom_measured_uncompute_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1`
@@ -694,10 +694,10 @@ Result for `n = 256`:
 
 Whole-oracle implication:
 
-- the current central exact point is `1586` logical qubits, which decomposes as
-  `6 * 256 + 48 + 1 + 1`,
+- the current central exact point is `1587` logical qubits, which decomposes as
+  `6 * 256 + 49 + 1 + 1`,
 - a hypothetical `7`-slot arithmetic leaf with sequential tmpand-style zero
-  tests lands at about `7 * 256 + 255 + 48 + 1 + 1 = 2097` logical qubits
+  tests lands at about `7 * 256 + 255 + 49 + 1 + 1 = 2098` logical qubits
   before any extra branch-control bookkeeping,
 - the same candidate with parallel zero-test scratch rises to about `2352`
   logical qubits,
@@ -792,7 +792,7 @@ What was checked locally:
 
 - translated the comparator-based predicate screen into whole-oracle headline
   numbers using the current central exact decomposition
-  `slots * 256 + 48 + 1 + 1`,
+  `slots * 256 + 49 + 1 + 1`,
 - modeled the doubling predicate as two `3n`-style comparators plus one final
   one-bit conjunction at `n = 256`,
 - swept a small ancilla range `1..8` for the predicate layer.
@@ -862,7 +862,7 @@ What was checked locally:
 
 - converted the `7`-slot floor into required effective field widths under the
   current central exact whole-oracle overhead model
-  `slots * width + 48 + 1 + 1 + predicate_ancilla`,
+  `slots * width + 49 + 1 + 1 + predicate_ancilla`,
 - swept a small predicate-ancilla range `1..8`.
 
 Result:
@@ -1731,7 +1731,7 @@ What was checked locally:
 - priced the qubit effect of carrying explicit shell-state controls on top of a
   hypothetical `7`-slot retained-add leaf,
 - kept the current central exact family's fixed non-arithmetic budget:
-  `48` lookup workspace qubits and `1` live phase bit.
+  `49` lookup workspace qubits and `1` live phase bit.
 
 Result:
 
@@ -1921,8 +1921,8 @@ What was checked locally:
 
 Arithmetic-only proxy:
 
-- current central exact point:
-  `22,722,211` non-Clifford,
+- then-current central exact point:
+  `22,753,831` non-Clifford,
 - current complete leaf: `11` multiplication-equivalent field products,
 - Rondepierre `a = 0` core: `9`,
 - over `28` retained calls this is a gross saving of `56`

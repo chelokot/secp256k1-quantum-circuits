@@ -51,6 +51,7 @@ What it does ship is:
 - `full_raw32_oracle.json` — exact fully quantum schedule: 1 direct seed + 31 leaf calls
 - `exact_leaf_slot_allocation.json` — exact versioned live-range allocation of the checked leaf
 - `arithmetic_lowerings.json` — generated primitive-operation inventories for the named arithmetic-kernel family
+- `streamed_lookup_table_multiplier_resource.json` — explicit table-controlled multiplier resource contract for streamed lookup coordinate bits
 - `module_library.json` — arithmetic-kernel summary used by the frontier
 - `lookup_lowerings.json` — generated primitive-operation inventories for the named folded lookup families
 - `phase_shell_lowerings.json` — generated phase-operation inventories for the named full-register and semiclassical inverse-QFT shells
@@ -83,13 +84,19 @@ What it does ship is:
 
 ## Current central exact result
 
-- **central exact family:** `22,722,211 non-Clifford`, `1,586 logical qubits`
+- **central exact family:** `23,912,611 non-Clifford`, `1,587 logical qubits`
 
 The central family uses a fully bitwise banked unary QROM decode with measured
 uncompute, an exact semiclassical-QFT phase shell, and the executable streamed
 lookup tail point-add leaf. The resulting live-qubit formula is:
 
-`6 * 256 + 1 control + 48 lookup workspace + 1 phase = 1,586 logical qubits`
+`6 * 256 + 1 control + 49 lookup workspace + 1 phase = 1,587 logical qubits`
+
+The `49` lookup-workspace term is `48` decode/control qubits plus one counted
+streamed coordinate-bit latch. The table-controlled `field_mul_lookup_*`
+kernels also pay explicit data-select cost: every streamed coordinate bit pays
+15 folded path-decode controls plus 15 measured-uncompute controls before the
+next bit is selected.
 
 The compiler frontier intentionally publishes one repository result here rather
 than separate low-qubit and low-gate branches. Historical family lowerings
@@ -129,8 +136,11 @@ Its defining exact features are:
   qubits** assumption; and
 - the no-free-wire resource contract proves every live field value is assigned
   to a counted owner, with zero borrowed lookup coordinate field lanes; and
-- those ingredients place the central exact family at **1,586 logical qubits**
-  while keeping **22,722,211 non-Clifford**.
+- the streamed table-multiplier resource contract proves that lookup coordinate
+  bits are streamed through a counted one-bit latch and that the corresponding
+  table-data selection gates are included in the arithmetic leaf total; and
+- those ingredients place the central exact family at **1,587 logical qubits**
+  while keeping **23,912,611 non-Clifford**.
 
 ## SP1 attestation layer
 

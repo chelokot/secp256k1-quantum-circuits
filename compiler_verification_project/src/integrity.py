@@ -53,6 +53,7 @@ from project import (
     raw32_schedule,
     slot_allocation_families,
     streamed_lookup_tail_leaf_slot_allocation,
+    streamed_lookup_table_multiplier_resource,
     run_full_raw32_semantic_check,
     arithmetic_kernel_library,
     lookup_families,
@@ -130,6 +131,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'streamed_lookup_tail_leaf_equivalence': artifact_root / 'streamed_lookup_tail_leaf_equivalence.json',
         'streamed_lookup_tail_leaf_slot_allocation': artifact_root / 'streamed_lookup_tail_leaf_slot_allocation.json',
         'arithmetic_lowerings': artifact_root / 'arithmetic_lowerings.json',
+        'streamed_lookup_table_multiplier_resource': artifact_root / 'streamed_lookup_table_multiplier_resource.json',
         'module_library': artifact_root / 'module_library.json',
         'primitive_multiplier_library': artifact_root / 'primitive_multiplier_library.json',
         'phase_shell_lowerings': artifact_root / 'phase_shell_lowerings.json',
@@ -996,6 +998,49 @@ def build_streamed_lookup_tail_slot_allocation_checks(artifacts: Mapping[str, An
     }
 
 
+def build_streamed_lookup_table_multiplier_resource_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    resource = artifacts['streamed_lookup_table_multiplier_resource']
+    expected_resource = streamed_lookup_table_multiplier_resource(
+        arithmetic_lowerings=artifacts['arithmetic_lowerings'],
+        lookup_lowerings=artifacts['lookup_lowerings'],
+    )
+    model = resource['streamed_data_selection_model']
+    workspace = resource['workspace_contract']
+    source_failures = [
+        row
+        for row in resource['coordinate_bit_sources']
+        if int(row['data_select_non_clifford_per_kernel']) != int(model['per_kernel_non_clifford'])
+        or not row['stage_names']
+    ]
+    arithmetic_lookup = {kernel['opcode']: kernel for kernel in artifacts['arithmetic_lowerings']['kernels']}
+    table_kernel_failures = [
+        opcode
+        for opcode in ('field_mul_lookup_x', 'field_mul_lookup_y', 'field_mul_lookup_sum')
+        if not any(stage['category'] == 'streamed_lookup_data_select' for stage in arithmetic_lookup[opcode]['stages'])
+    ]
+    complete_tail = arithmetic_lookup['complete_a0_streamed_tail']
+    checks = [
+        _check('streamed_lookup_table_multiplier_resource_matches_generator', resource == expected_resource, expected_resource, resource),
+        _check('streamed_lookup_table_multiplier_schema_is_current', resource['schema'] == 'compiler-project-streamed-lookup-table-multiplier-resource-v1', 'compiler-project-streamed-lookup-table-multiplier-resource-v1', resource['schema']),
+        _check('streamed_lookup_table_multiplier_uses_15_bit_folded_path', model['folded_magnitude_bits'] == 15, 15, model['folded_magnitude_bits']),
+        _check('streamed_lookup_table_multiplier_counts_data_select_per_bit', model['non_clifford_per_streamed_coordinate_bit'] == 30, 30, model['non_clifford_per_streamed_coordinate_bit']),
+        _check('streamed_lookup_table_multiplier_counts_five_leaf_kernels', model['per_leaf_streamed_kernel_count'] == 5, 5, model['per_leaf_streamed_kernel_count']),
+        _check('streamed_lookup_table_multiplier_per_leaf_cost_is_explicit', model['per_leaf_data_select_non_clifford'] == 5 * FIELD_BITS * 30, 5 * FIELD_BITS * 30, model['per_leaf_data_select_non_clifford']),
+        _check('streamed_lookup_table_multiplier_source_rows_have_data_select_stages', not source_failures, [], source_failures),
+        _check('streamed_lookup_table_multiplier_top_level_kernels_have_data_select_stage', not table_kernel_failures, [], table_kernel_failures),
+        _check(
+            'streamed_lookup_table_multiplier_complete_tail_internal_y_has_data_select_stage',
+            any(stage['category'] == 'streamed_lookup_data_select' for stage in complete_tail['stages']),
+            True,
+            [stage['category'] for stage in complete_tail['stages']],
+        ),
+        _check('streamed_lookup_table_multiplier_workspace_contract_passes', workspace['passes'], True, workspace),
+        _check('streamed_lookup_table_multiplier_counts_one_latch_in_lookup_workspace', workspace['lookup_workspace_qubits'] == 49 and workspace['decode_and_control_workspace_qubits'] == 48 and workspace['streamed_coordinate_bit_latch_qubits'] == 1, {'lookup_workspace_qubits': 49, 'decode_and_control_workspace_qubits': 48, 'streamed_coordinate_bit_latch_qubits': 1}, workspace),
+        _check('streamed_lookup_table_multiplier_materializes_no_coordinate_field_lanes', workspace['coordinate_field_lanes_materialized'] == 0 and workspace['coordinate_field_lane_qubits_materialized'] == 0, 0, workspace),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_qubit_breakthrough_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     analysis = artifacts['qubit_breakthrough_analysis']
     best_qubit = artifacts['family_frontier']['best_qubit_family']
@@ -1640,6 +1685,7 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'streamed_lookup_tail_leaf_equivalence': 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json',
         'streamed_lookup_tail_leaf_slot_allocation': 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json',
         'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
+        'streamed_lookup_table_multiplier_resource': 'compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json',
         'module_library': 'compiler_verification_project/artifacts/module_library.json',
         'primitive_multiplier_library': 'compiler_verification_project/artifacts/primitive_multiplier_library.json',
         'phase_shell_lowerings': 'compiler_verification_project/artifacts/phase_shell_lowerings.json',
@@ -1658,7 +1704,7 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'azure_resource_estimator_results': 'compiler_verification_project/artifacts/azure_resource_estimator_results.json',
     }
     checks = [
-        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v15', 'compiler-project-build-summary-v15', build_summary['schema']),
+        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v16', 'compiler-project-build-summary-v16', build_summary['schema']),
         _check('build_summary_artifact_paths_match_expected_set', build_summary['artifacts'] == expected_paths, expected_paths, build_summary['artifacts']),
         _check(
             'build_summary_paths_exist_on_disk',
@@ -1954,6 +2000,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any]) -> Dic
         'slot_allocation_checks': build_slot_allocation_checks(artifacts),
         'lookup_fed_slot_allocation_checks': build_lookup_fed_slot_allocation_checks(artifacts),
         'streamed_lookup_tail_slot_allocation_checks': build_streamed_lookup_tail_slot_allocation_checks(artifacts),
+        'streamed_lookup_table_multiplier_resource_checks': build_streamed_lookup_table_multiplier_resource_checks(artifacts),
         'qubit_breakthrough_checks': build_qubit_breakthrough_checks(artifacts),
         'full_attack_inventory_checks': build_full_attack_inventory_checks(artifacts),
         'ft_ir_checks': build_ft_ir_checks(artifacts, repo_root),

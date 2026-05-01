@@ -32,42 +32,42 @@
       "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
       "phase_shell": "semiclassical_qft_v1",
       "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
-      "full_oracle_non_clifford": 22722211,
+      "full_oracle_non_clifford": 23912611,
       "primitive_totals": {
-        "ccx": 22722211,
+        "ccx": 23912611,
         "cx": 0,
         "x": 0,
-        "measurement": 365795
+        "measurement": 960995
       },
-      "total_logical_qubits": 1586,
+      "total_logical_qubits": 1587,
       "phase_shell_hadamards": 512,
-      "total_measurements": 366307,
+      "total_measurements": 961507,
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 511,
       "phase_shell_rotation_depth": 511,
       "graph_summary": {
-        "node_count": 146,
-        "edge_count": 145,
-        "leaf_node_count": 101,
-        "reachable_node_count": 146,
+        "node_count": 154,
+        "edge_count": 153,
+        "leaf_node_count": 105,
+        "reachable_node_count": 154,
         "max_depth": 5,
         "root_in_degree": 0,
         "primitive_totals": {
-          "ccx": 22722211,
+          "ccx": 23912611,
           "cx": 0,
           "x": 0,
-          "measurement": 365795
+          "measurement": 960995
         },
-        "logical_qubits_total": 1586,
+        "logical_qubits_total": 1587,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
         "phase_shell_rotation_depth": 511
       },
-      "improvement_vs_google_low_qubit": 3.9608821518293267,
-      "improvement_vs_google_low_gate": 3.0806861180894765,
-      "qubit_ratio_vs_google_low_qubit": 0.7566204287515763,
-      "qubit_ratio_vs_google_low_gate": 0.914249684741488
+      "improvement_vs_google_low_qubit": 3.76370443194179,
+      "improvement_vs_google_low_gate": 2.927325669288059,
+      "qubit_ratio_vs_google_low_qubit": 0.7561436672967864,
+      "qubit_ratio_vs_google_low_gate": 0.9136735979836169
     }
   ],
   "best_gate_family": {
@@ -75,84 +75,84 @@
     "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
     "phase_shell": "semiclassical_qft_v1",
     "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
-    "full_oracle_non_clifford": 22722211,
+    "full_oracle_non_clifford": 23912611,
     "primitive_totals": {
-      "ccx": 22722211,
+      "ccx": 23912611,
       "cx": 0,
       "x": 0,
-      "measurement": 365795
+      "measurement": 960995
     },
-    "total_logical_qubits": 1586,
+    "total_logical_qubits": 1587,
     "phase_shell_hadamards": 512,
-    "total_measurements": 366307,
+    "total_measurements": 961507,
     "phase_shell_measurements": 512,
     "phase_shell_rotations": 511,
     "phase_shell_rotation_depth": 511,
     "graph_summary": {
-      "node_count": 146,
-      "edge_count": 145,
-      "leaf_node_count": 101,
-      "reachable_node_count": 146,
+      "node_count": 154,
+      "edge_count": 153,
+      "leaf_node_count": 105,
+      "reachable_node_count": 154,
       "max_depth": 5,
       "root_in_degree": 0,
       "primitive_totals": {
-        "ccx": 22722211,
+        "ccx": 23912611,
         "cx": 0,
         "x": 0,
-        "measurement": 365795
+        "measurement": 960995
       },
-      "logical_qubits_total": 1586,
+      "logical_qubits_total": 1587,
       "phase_shell_hadamards": 512,
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 511,
       "phase_shell_rotation_depth": 511
     },
-    "improvement_vs_google_low_qubit": 3.9608821518293267,
-    "improvement_vs_google_low_gate": 3.0806861180894765,
-    "qubit_ratio_vs_google_low_qubit": 0.7566204287515763,
-    "qubit_ratio_vs_google_low_gate": 0.914249684741488
+    "improvement_vs_google_low_qubit": 3.76370443194179,
+    "improvement_vs_google_low_gate": 2.927325669288059,
+    "qubit_ratio_vs_google_low_qubit": 0.7561436672967864,
+    "qubit_ratio_vs_google_low_gate": 0.9136735979836169
   },
   "best_qubit_family": {
     "name": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
     "lookup_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1",
     "phase_shell": "semiclassical_qft_v1",
     "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
-    "full_oracle_non_clifford": 22722211,
+    "full_oracle_non_clifford": 23912611,
     "primitive_totals": {
-      "ccx": 22722211,
+      "ccx": 23912611,
       "cx": 0,
       "x": 0,
-      "measurement": 365795
+      "measurement": 960995
     },
-    "total_logical_qubits": 1586,
+    "total_logical_qubits": 1587,
     "phase_shell_hadamards": 512,
-    "total_measurements": 366307,
+    "total_measurements": 961507,
     "phase_shell_measurements": 512,
     "phase_shell_rotations": 511,
     "phase_shell_rotation_depth": 511,
     "graph_summary": {
-      "node_count": 146,
-      "edge_count": 145,
-      "leaf_node_count": 101,
-      "reachable_node_count": 146,
+      "node_count": 154,
+      "edge_count": 153,
+      "leaf_node_count": 105,
+      "reachable_node_count": 154,
       "max_depth": 5,
       "root_in_degree": 0,
       "primitive_totals": {
-        "ccx": 22722211,
+        "ccx": 23912611,
         "cx": 0,
         "x": 0,
-        "measurement": 365795
+        "measurement": 960995
       },
-      "logical_qubits_total": 1586,
+      "logical_qubits_total": 1587,
       "phase_shell_hadamards": 512,
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 511,
       "phase_shell_rotation_depth": 511
     },
-    "improvement_vs_google_low_qubit": 3.9608821518293267,
-    "improvement_vs_google_low_gate": 3.0806861180894765,
-    "qubit_ratio_vs_google_low_qubit": 0.7566204287515763,
-    "qubit_ratio_vs_google_low_gate": 0.914249684741488
+    "improvement_vs_google_low_qubit": 3.76370443194179,
+    "improvement_vs_google_low_gate": 2.927325669288059,
+    "qubit_ratio_vs_google_low_qubit": 0.7561436672967864,
+    "qubit_ratio_vs_google_low_gate": 0.9136735979836169
   },
   "notes": [
     "This artifact performs a full exact whole-oracle recount by aggregating the FT IR leaf sigma for each named compiler family.",
