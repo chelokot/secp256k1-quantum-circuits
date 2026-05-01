@@ -61,7 +61,7 @@ class CainIntegrationTests(unittest.TestCase):
 
     def test_publication_safe_summary_exists(self):
         pub = self.summary['publication_safe_summary']
-        self.assertIn('central exact compiler family', pub['single_sentence'])
+        self.assertIn('central named-boundary compiler family', pub['single_sentence'])
         self.assertIn('2.7-3.4 days', pub['single_sentence'])
         self.assertEqual(len(pub['do_not_say']), 3)
 

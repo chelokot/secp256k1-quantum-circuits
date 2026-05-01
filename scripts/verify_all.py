@@ -370,10 +370,10 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
         print(f"[{section}/{total_sections}] Exact compiler build        {console.ok('PASS')}")
         central_family = frontier['best_sub30m_qubit_family']
         print(console.detail(
-            f"      central exact family: {central_family['full_oracle_non_clifford']:,} non-Clifford / "
+            f"      central named-boundary family: {central_family['full_oracle_non_clifford']:,} non-Clifford / "
             f"{central_family['total_logical_qubits']:,} logical qubits"
         ))
-        print(console.detail(f"      central exact family name: {central_family['name']}"))
+        print(console.detail(f"      central named-boundary family name: {central_family['name']}"))
         print(console.detail(f"      frontier sha256: {compiler_project['frontier_sha256']}"))
         print()
 
@@ -387,7 +387,7 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
             f"      semantic replay: {compiler_verify['summary']['semantic_cases']['pass']:,} / {compiler_verify['summary']['semantic_cases']['total']:,} cases"
         ))
         print(console.detail(
-            f"      integrity checks: {compiler_verify['summary']['invariant_checks']['pass']:,} / {compiler_verify['summary']['invariant_checks']['total']:,} (canonical point + schedule + slot allocation + lowered arithmetic/lookup/phase shell + generated inventories + FT IR + whole-oracle recount + subcircuit equivalence + frontier + physical-estimator handoffs + transfer handoffs)"
+            f"      integrity checks: {compiler_verify['summary']['invariant_checks']['pass']:,} / {compiler_verify['summary']['invariant_checks']['total']:,} (canonical point + schedule + slot allocation + lowered arithmetic/lookup/phase shell + standard-QROM gap assessment + generated inventories + FT IR + whole-oracle recount + subcircuit equivalence + frontier + physical-estimator handoffs + transfer handoffs)"
         ))
         print(console.detail(f"      verification sha256: {compiler_project['verification_summary_sha256']}"))
         print(console.detail(
@@ -401,7 +401,7 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
         qubit_baseline = baseline['low_qubit']
         labels = [
             'google baseline best gate:',
-            'our central exact:',
+            'our named boundary:',
             'google baseline best qubits:',
         ]
         label_width = max(len(label) for label in labels)
@@ -448,9 +448,9 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
                 + (f" {logical_qubit_cmp}" if logical_qubit_cmp else '')
             )
 
-        print(console.heading('Exact compiler-project frontier and comparison to Google 2026 baseline'))
+        print(console.heading('Named-boundary compiler-project frontier and comparison to Google 2026 baseline'))
         print(format_row('google baseline best gate:', gate_baseline['non_clifford'], None, gate_baseline['logical_qubits'], None))
-        print(format_row('our central exact:', central_exact['full_oracle_non_clifford'], gate_baseline['non_clifford'], central_exact['total_logical_qubits'], gate_baseline['logical_qubits']))
+        print(format_row('our named boundary:', central_exact['full_oracle_non_clifford'], gate_baseline['non_clifford'], central_exact['total_logical_qubits'], gate_baseline['logical_qubits']))
         print(format_row('google baseline best qubits:', qubit_baseline['non_clifford'], None, qubit_baseline['logical_qubits'], None))
 
 

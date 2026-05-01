@@ -91,6 +91,8 @@ def test_compiler_project_verification_summary_groups_all_pass() -> None:
     assert streamed_lookup_tail_slot_allocation['pass'] == streamed_lookup_tail_slot_allocation['total']
     streamed_lookup_table_multiplier_resource = summary['streamed_lookup_table_multiplier_resource_checks']
     assert streamed_lookup_table_multiplier_resource['pass'] == streamed_lookup_table_multiplier_resource['total']
+    standard_qrom_lookup_assessment = summary['standard_qrom_lookup_assessment_checks']
+    assert standard_qrom_lookup_assessment['pass'] == standard_qrom_lookup_assessment['total']
     recount = summary['whole_oracle_recount_checks']
     assert recount['pass'] == recount['total']
     subcircuit_equivalence = summary['subcircuit_equivalence_checks']
@@ -128,6 +130,13 @@ def test_mutated_lookup_lowering_stage_is_detected() -> None:
     artifacts['lookup_lowerings']['families'][0]['stages'][1]['blocks'][0]['primitive_operation_generator']['bit_count'] += 1
     groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
     assert groups['lookup_lowering_checks']['pass'] < groups['lookup_lowering_checks']['total']
+
+
+def test_mutated_standard_qrom_assessment_is_detected() -> None:
+    artifacts = deepcopy(_load_artifacts())
+    artifacts['standard_qrom_lookup_assessment']['standard_qrom_gap']['standard_qrom_equivalent'] = True
+    groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
+    assert groups['standard_qrom_lookup_assessment_checks']['pass'] < groups['standard_qrom_lookup_assessment_checks']['total']
 
 
 def test_mutated_phase_shell_lowering_is_detected() -> None:

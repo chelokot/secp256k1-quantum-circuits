@@ -62,7 +62,7 @@
     }
   ],
   "publication_safe_summary": {
-    "single_sentence": "If the repository's central exact compiler family is transferred into the neutral-atom architecture of Cain et al. under fixed cycle-time and parallelism assumptions, the checked result maps to roughly 2.7-3.4 days and about 28.5k-34.4k physical qubits under the stored reference-line transfers.",
+    "single_sentence": "If the repository's central named-boundary compiler family is transferred into the neutral-atom architecture of Cain et al. under fixed cycle-time and parallelism assumptions, the checked result maps to roughly 2.7-3.4 days and about 28.5k-34.4k physical qubits under the stored reference-line transfers.",
     "do_not_say": [
       "Do not say the paper is beaten on its own P-256 target without recompiling for P-256.",
       "Do not say the transferred runtime or physical-qubit range is exact; it is still a cross-paper architecture transfer.",

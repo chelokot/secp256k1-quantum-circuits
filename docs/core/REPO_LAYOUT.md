@@ -33,6 +33,7 @@ Separate exact-oracle layer with:
 - fully quantum raw-32 schedule artifacts
 - exact whole-oracle frontier for the central compiler family
 - exact streamed lookup tail leaf slot allocation
+- standard-QROM lookup assessment for the current lookup-lowering boundary
 - explicit phase-shell families
 - exact-family physical-estimator targets and recorded estimator outputs
 - exact-family Cain transfer artifacts
@@ -47,6 +48,7 @@ Key files:
 - `compiler_verification_project/src/project.py`
 - `compiler_verification_project/src/zkp_attestation.py`
 - `compiler_verification_project/artifacts/family_frontier.json`
+- `compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json`
 - `compiler_verification_project/artifacts/verification_summary.json`
 - `compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json`
 - `compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json`

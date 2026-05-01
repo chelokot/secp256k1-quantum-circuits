@@ -39,7 +39,7 @@ hypothesis note.
    schedule into a fully quantum raw-32 oracle and publishes exact whole-oracle
    counts for named compiler families.
 3. The checked-in `compiler_verification_project/zkp_attestation/` workspace
-   packages one selected exact-family claim into an SP1 attestation bundle with
+   packages one selected named-boundary family claim into an SP1 attestation bundle with
    hashed input documents, a deterministic public point-add corpus, checked
    core/compressed/Groth16 fixtures, and a repo-contained Groth16 verifier
    bundle.
@@ -52,7 +52,7 @@ project tightens one important gap by turning
 “leaf + scaffold + contract” into a checked exact compiler-family oracle with
 exact schedule completion, exact lookup-family choice, exact slot allocation,
 and explicit phase-shell families. The attestation layer then turns one
-selected exact-family claim into a machine-checked proof artifact without
+selected named-boundary family claim into a machine-checked proof artifact without
 claiming a primitive-gate full-Shor witness.
 
 ## Main results
@@ -63,17 +63,24 @@ The root-level `compiler_verification_project/` is the repository's strongest
 exact layer below the ISA boundary. Its checked-in central whole-oracle result
 is:
 
-- **central exact family:** `23,912,611 non-Clifford`, `1,587 logical qubits`
+- **central named-boundary family:** `23,912,611 non-Clifford`, `1,587 logical qubits`
 
-Those numbers are exact for the chosen compiler family, not a claim of global
-optimality. The family uses a fully bitwise banked unary QROM decode with
-measured uncompute, an exact semiclassical-QFT phase shell, and the executable
-streamed lookup tail point-add leaf.
+Those numbers are exact for the chosen compiler-family boundary, not a claim of
+global optimality and not a standard-QROM primitive-circuit result. The family
+uses a fully bitwise banked unary lookup decode with measured uncompute, an
+exact semiclassical-QFT phase shell, and the executable streamed lookup tail
+point-add leaf.
 The lookup workspace now includes a counted one-bit streamed coordinate latch,
 and the table-controlled multiplier kernels include explicit per-bit
 data-selection cost instead of treating lookup coordinates as free operands.
+The repository also checks
+`compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json`,
+which records that the current bitwise-banked lookup lowering does not prove a
+full 32768-entry arbitrary coordinate-table select under the standard QROM
+model.
 
-Against Google's published 2026 secp256k1 baseline, the central exact result is:
+Against Google's published 2026 secp256k1 baseline, the central
+named-boundary result is:
 
 - **3.7637x** lower in non-Clifford cost than the public low-qubit line
 - **2.9273x** lower in non-Clifford cost than the public low-gate line
@@ -108,7 +115,7 @@ plus the matching verifying key at
 `compiler_verification_project/artifacts/zkp_attestation_groth16_verifier/groth16_vk.bin`,
 so the checked proof can be re-verified locally without rebuilding the large
 vk-specific dev artifacts. Together these artifacts bind the current central
-exact-family claim and `8 / 8` public cases.
+named-boundary family claim and `8 / 8` public cases.
 This is similar in shape to Google's disclosure model, but it is still not a
 primitive-gate full-Shor proof.
 
@@ -225,7 +232,7 @@ python scripts/compare_cain_2026.py
 `compiler_verification_project/scripts/materialize_exact_circuits.py` writes
 ignored exact whole-oracle operation streams under
 `compiler_verification_project/generated_circuits/`. With no family arguments
-it materializes the central public exact family and the internal minimum-qubit
+it materializes the central public named-boundary family and the internal minimum-qubit
 comparison family; use `--all-families` to dump every checked exact compiler
 family.
 

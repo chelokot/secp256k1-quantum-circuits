@@ -4039,13 +4039,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "29401dd4c65d2cbb6299c1c9d6cff2b483fd414de1d1da065ff5fac314941904",
-          "size_bytes": 111867
+          "sha256": "3e2bcb574a2f042546dc978714b3f6b45e2b5d697734e00a151584eaf712be87",
+          "size_bytes": 111876
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "29401dd4c65d2cbb6299c1c9d6cff2b483fd414de1d1da065ff5fac314941904",
-          "size_bytes": 111867
+          "sha256": "3e2bcb574a2f042546dc978714b3f6b45e2b5d697734e00a151584eaf712be87",
+          "size_bytes": 111876
         }
       },
       {
@@ -4256,13 +4256,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "92b79cc082a0c62a4ef58e9bcb1baa961236b059a10b7406deadfd6d9ca2d786",
-          "size_bytes": 7851
+          "sha256": "52e15d6ed055f29bc3b8aaafa892c4aabc762fc438e59ed3a16819b94b7512c2",
+          "size_bytes": 7860
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "92b79cc082a0c62a4ef58e9bcb1baa961236b059a10b7406deadfd6d9ca2d786",
-          "size_bytes": 7851
+          "sha256": "52e15d6ed055f29bc3b8aaafa892c4aabc762fc438e59ed3a16819b94b7512c2",
+          "size_bytes": 7860
         }
       },
       {
@@ -5483,6 +5483,194 @@
           "coordinate_field_lane_qubits_materialized": 0,
           "passes": true
         }
+      }
+    ]
+  },
+  "standard_qrom_lookup_assessment_checks": {
+    "pass": 7,
+    "total": 7,
+    "checks": [
+      {
+        "name": "standard_qrom_lookup_assessment_matches_generator",
+        "pass": 1,
+        "expected": {
+          "schema": "compiler-project-standard-qrom-lookup-assessment-v1",
+          "status": "boundary_model_not_standard_qrom_proven",
+          "selected_boundary_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
+          "source_artifacts": {
+            "family_frontier": "compiler_verification_project/artifacts/family_frontier.json",
+            "lookup_lowerings": "compiler_verification_project/artifacts/lookup_lowerings.json",
+            "streamed_lookup_table_multiplier_resource": "compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json"
+          },
+          "external_reference_model": {
+            "gidney_2019_windowed_quantum_arithmetic": {
+              "url": "https://arxiv.org/abs/1905.07682",
+              "lookup_compute_rule": "table lookup over L classical entries has Toffoli count L - 1, independent of output width at this abstraction layer"
+            },
+            "qualtran_unary_iteration_qrom": {
+              "url": "https://qualtran.readthedocs.io/en/latest/bloqs/data_loading/qrom.html",
+              "lookup_compute_rule": "T/Toffoli cost scales linearly with the product of selection-space iteration lengths"
+            }
+          },
+          "current_boundary_lookup_model": {
+            "positive_domain_size": 32768,
+            "folded_magnitude_bits": 15,
+            "chunk_split_bits": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "compute_lookup_non_clifford": 15,
+            "uncompute_lookup_non_clifford": 15,
+            "streamed_coordinate_bit_non_clifford": 30,
+            "diagnosis": "The checked bitwise-banked lowering materializes independent address-bit chunk predicates. It does not prove an arbitrary 32768-entry coordinate-table data-select layer."
+          },
+          "standard_qrom_gap": {
+            "standard_unary_qrom_compute_toffoli_for_full_table": 32767,
+            "current_compute_toffoli_shortfall": 32752,
+            "current_streamed_bit_toffoli_shortfall": 32737,
+            "standard_qrom_equivalent": false
+          },
+          "conservative_implications": {
+            "boundary_model_non_clifford": 23912611,
+            "boundary_model_logical_qubits": 1587,
+            "stream_each_output_bit_with_standard_qrom_non_clifford_per_kernel": 32767,
+            "stream_one_coordinate_with_standard_qrom_non_clifford_per_kernel": 8388352,
+            "stream_all_leaf_coordinate_streams_with_standard_qrom_non_clifford_per_leaf": 41941760,
+            "materialize_x_y_with_standard_full_coordinate_qrom_logical_qubit_proxy": 2099,
+            "materialized_coordinate_lane_qubits": 512
+          },
+          "public_claim_boundary": {
+            "claim": "The checked 23,912,611 non-Clifford / 1,587 logical-qubit result is a named-boundary accounting result, not an honest standard-QROM primitive-circuit result.",
+            "required_to_upgrade": [
+              "provide a real arbitrary table-select lowering for the secp256k1 coordinate table under the selected qubit budget",
+              "or prove exploitable coordinate-table structure that supports O(15) data selection per output bit",
+              "then bind that lowering into generated inventories, no-free-wire checks, docs, and ZKP public values"
+            ]
+          }
+        },
+        "observed": {
+          "schema": "compiler-project-standard-qrom-lookup-assessment-v1",
+          "status": "boundary_model_not_standard_qrom_proven",
+          "selected_boundary_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
+          "source_artifacts": {
+            "family_frontier": "compiler_verification_project/artifacts/family_frontier.json",
+            "lookup_lowerings": "compiler_verification_project/artifacts/lookup_lowerings.json",
+            "streamed_lookup_table_multiplier_resource": "compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json"
+          },
+          "external_reference_model": {
+            "gidney_2019_windowed_quantum_arithmetic": {
+              "url": "https://arxiv.org/abs/1905.07682",
+              "lookup_compute_rule": "table lookup over L classical entries has Toffoli count L - 1, independent of output width at this abstraction layer"
+            },
+            "qualtran_unary_iteration_qrom": {
+              "url": "https://qualtran.readthedocs.io/en/latest/bloqs/data_loading/qrom.html",
+              "lookup_compute_rule": "T/Toffoli cost scales linearly with the product of selection-space iteration lengths"
+            }
+          },
+          "current_boundary_lookup_model": {
+            "positive_domain_size": 32768,
+            "folded_magnitude_bits": 15,
+            "chunk_split_bits": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "compute_lookup_non_clifford": 15,
+            "uncompute_lookup_non_clifford": 15,
+            "streamed_coordinate_bit_non_clifford": 30,
+            "diagnosis": "The checked bitwise-banked lowering materializes independent address-bit chunk predicates. It does not prove an arbitrary 32768-entry coordinate-table data-select layer."
+          },
+          "standard_qrom_gap": {
+            "standard_unary_qrom_compute_toffoli_for_full_table": 32767,
+            "current_compute_toffoli_shortfall": 32752,
+            "current_streamed_bit_toffoli_shortfall": 32737,
+            "standard_qrom_equivalent": false
+          },
+          "conservative_implications": {
+            "boundary_model_non_clifford": 23912611,
+            "boundary_model_logical_qubits": 1587,
+            "stream_each_output_bit_with_standard_qrom_non_clifford_per_kernel": 32767,
+            "stream_one_coordinate_with_standard_qrom_non_clifford_per_kernel": 8388352,
+            "stream_all_leaf_coordinate_streams_with_standard_qrom_non_clifford_per_leaf": 41941760,
+            "materialize_x_y_with_standard_full_coordinate_qrom_logical_qubit_proxy": 2099,
+            "materialized_coordinate_lane_qubits": 512
+          },
+          "public_claim_boundary": {
+            "claim": "The checked 23,912,611 non-Clifford / 1,587 logical-qubit result is a named-boundary accounting result, not an honest standard-QROM primitive-circuit result.",
+            "required_to_upgrade": [
+              "provide a real arbitrary table-select lowering for the secp256k1 coordinate table under the selected qubit budget",
+              "or prove exploitable coordinate-table structure that supports O(15) data selection per output bit",
+              "then bind that lowering into generated inventories, no-free-wire checks, docs, and ZKP public values"
+            ]
+          }
+        }
+      },
+      {
+        "name": "standard_qrom_lookup_assessment_schema_is_current",
+        "pass": 1,
+        "expected": "compiler-project-standard-qrom-lookup-assessment-v1",
+        "observed": "compiler-project-standard-qrom-lookup-assessment-v1"
+      },
+      {
+        "name": "standard_qrom_lookup_assessment_status_is_not_proven",
+        "pass": 1,
+        "expected": "boundary_model_not_standard_qrom_proven",
+        "observed": "boundary_model_not_standard_qrom_proven"
+      },
+      {
+        "name": "standard_qrom_lookup_assessment_uses_full_selection_space",
+        "pass": 1,
+        "expected": 32767,
+        "observed": 32767
+      },
+      {
+        "name": "standard_qrom_lookup_assessment_rejects_bitwise_chunk_as_full_select",
+        "pass": 1,
+        "expected": {
+          "standard_qrom_equivalent": false,
+          "compute_lookup_non_clifford": 15
+        },
+        "observed": {
+          "standard_qrom_equivalent": false,
+          "compute_lookup_non_clifford": 15
+        }
+      },
+      {
+        "name": "standard_qrom_lookup_assessment_records_streaming_gap",
+        "pass": 1,
+        "expected": 32737,
+        "observed": 32737
+      },
+      {
+        "name": "standard_qrom_lookup_assessment_materialized_lane_proxy_exceeds_1700",
+        "pass": 1,
+        "expected": "> 1700",
+        "observed": 2099
       }
     ]
   },
@@ -7353,13 +7541,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "92b79cc082a0c62a4ef58e9bcb1baa961236b059a10b7406deadfd6d9ca2d786",
-          "size_bytes": 7851
+          "sha256": "52e15d6ed055f29bc3b8aaafa892c4aabc762fc438e59ed3a16819b94b7512c2",
+          "size_bytes": 7860
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "92b79cc082a0c62a4ef58e9bcb1baa961236b059a10b7406deadfd6d9ca2d786",
-          "size_bytes": 7851
+          "sha256": "52e15d6ed055f29bc3b8aaafa892c4aabc762fc438e59ed3a16819b94b7512c2",
+          "size_bytes": 7860
         }
       },
       {
@@ -7367,13 +7555,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "b0e70312a98b5d05a448e4183c487ea122025ded193780736c7c95b18936c3d2",
-          "size_bytes": 8714
+          "sha256": "7c9a185615c9ba99f4af80c702d973b788efc1fa169d307f46c08e983c2e87b8",
+          "size_bytes": 8716
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "b0e70312a98b5d05a448e4183c487ea122025ded193780736c7c95b18936c3d2",
-          "size_bytes": 8714
+          "sha256": "7c9a185615c9ba99f4af80c702d973b788efc1fa169d307f46c08e983c2e87b8",
+          "size_bytes": 8716
         }
       },
       {
@@ -7891,8 +8079,8 @@
       {
         "name": "build_summary_schema_matches_current_version",
         "pass": 1,
-        "expected": "compiler-project-build-summary-v16",
-        "observed": "compiler-project-build-summary-v16"
+        "expected": "compiler-project-build-summary-v17",
+        "observed": "compiler-project-build-summary-v17"
       },
       {
         "name": "build_summary_artifact_paths_match_expected_set",
@@ -7917,6 +8105,7 @@
           "lookup_lowerings": "compiler_verification_project/artifacts/lookup_lowerings.json",
           "generated_block_inventories": "compiler_verification_project/artifacts/generated_block_inventories.json",
           "family_frontier": "compiler_verification_project/artifacts/family_frontier.json",
+          "standard_qrom_lookup_assessment": "compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json",
           "qubit_breakthrough_analysis": "compiler_verification_project/artifacts/qubit_breakthrough_analysis.json",
           "full_attack_inventory": "compiler_verification_project/artifacts/full_attack_inventory.json",
           "ft_ir_compositions": "compiler_verification_project/artifacts/ft_ir_compositions.json",
@@ -7948,6 +8137,7 @@
           "ft_ir_compositions": "compiler_verification_project/artifacts/ft_ir_compositions.json",
           "whole_oracle_recount": "compiler_verification_project/artifacts/whole_oracle_recount.json",
           "family_frontier": "compiler_verification_project/artifacts/family_frontier.json",
+          "standard_qrom_lookup_assessment": "compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json",
           "qubit_breakthrough_analysis": "compiler_verification_project/artifacts/qubit_breakthrough_analysis.json",
           "full_attack_inventory": "compiler_verification_project/artifacts/full_attack_inventory.json",
           "subcircuit_equivalence": "compiler_verification_project/artifacts/subcircuit_equivalence.json",
@@ -7980,6 +8170,7 @@
           "compiler_verification_project/artifacts/phase_shell_lowerings.json",
           "compiler_verification_project/artifacts/primitive_multiplier_library.json",
           "compiler_verification_project/artifacts/qubit_breakthrough_analysis.json",
+          "compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json",
           "compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json",
           "compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json",
           "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json",
@@ -8009,6 +8200,7 @@
           "compiler_verification_project/artifacts/phase_shell_lowerings.json",
           "compiler_verification_project/artifacts/primitive_multiplier_library.json",
           "compiler_verification_project/artifacts/qubit_breakthrough_analysis.json",
+          "compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json",
           "compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json",
           "compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json",
           "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json",
@@ -9338,10 +9530,10 @@
       "pass": 30
     },
     "invariant_checks": {
-      "total": 235,
-      "pass": 235
+      "total": 242,
+      "pass": 242
     },
-    "total": 265,
-    "pass": 265
+    "total": 272,
+    "pass": 272
   }
 }

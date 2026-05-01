@@ -4006,7 +4006,7 @@
     }
   },
   "notes": [
-    "This artifact records the generated whole-oracle block inventory for the repository central exact compiler family.",
+    "This artifact records the generated whole-oracle block inventory for the repository central named-boundary compiler family.",
     "The structure follows a compositional call-graph style accounting layer: shared arithmetic blocks, family-specific lookup blocks, qubit contributors, and explicit phase-shell lowering blocks."
   ]
 }

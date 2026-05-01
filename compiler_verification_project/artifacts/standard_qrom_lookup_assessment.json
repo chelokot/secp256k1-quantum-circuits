@@ -1,0 +1,68 @@
+{
+  "schema": "compiler-project-standard-qrom-lookup-assessment-v1",
+  "status": "boundary_model_not_standard_qrom_proven",
+  "selected_boundary_family": "folded_bitwise_banked_unary_qrom_measured_uncompute_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
+  "source_artifacts": {
+    "family_frontier": "compiler_verification_project/artifacts/family_frontier.json",
+    "lookup_lowerings": "compiler_verification_project/artifacts/lookup_lowerings.json",
+    "streamed_lookup_table_multiplier_resource": "compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json"
+  },
+  "external_reference_model": {
+    "gidney_2019_windowed_quantum_arithmetic": {
+      "url": "https://arxiv.org/abs/1905.07682",
+      "lookup_compute_rule": "table lookup over L classical entries has Toffoli count L - 1, independent of output width at this abstraction layer"
+    },
+    "qualtran_unary_iteration_qrom": {
+      "url": "https://qualtran.readthedocs.io/en/latest/bloqs/data_loading/qrom.html",
+      "lookup_compute_rule": "T/Toffoli cost scales linearly with the product of selection-space iteration lengths"
+    }
+  },
+  "current_boundary_lookup_model": {
+    "positive_domain_size": 32768,
+    "folded_magnitude_bits": 15,
+    "chunk_split_bits": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "compute_lookup_non_clifford": 15,
+    "uncompute_lookup_non_clifford": 15,
+    "streamed_coordinate_bit_non_clifford": 30,
+    "diagnosis": "The checked bitwise-banked lowering materializes independent address-bit chunk predicates. It does not prove an arbitrary 32768-entry coordinate-table data-select layer."
+  },
+  "standard_qrom_gap": {
+    "standard_unary_qrom_compute_toffoli_for_full_table": 32767,
+    "current_compute_toffoli_shortfall": 32752,
+    "current_streamed_bit_toffoli_shortfall": 32737,
+    "standard_qrom_equivalent": false
+  },
+  "conservative_implications": {
+    "boundary_model_non_clifford": 23912611,
+    "boundary_model_logical_qubits": 1587,
+    "stream_each_output_bit_with_standard_qrom_non_clifford_per_kernel": 32767,
+    "stream_one_coordinate_with_standard_qrom_non_clifford_per_kernel": 8388352,
+    "stream_all_leaf_coordinate_streams_with_standard_qrom_non_clifford_per_leaf": 41941760,
+    "materialize_x_y_with_standard_full_coordinate_qrom_logical_qubit_proxy": 2099,
+    "materialized_coordinate_lane_qubits": 512
+  },
+  "public_claim_boundary": {
+    "claim": "The checked 23,912,611 non-Clifford / 1,587 logical-qubit result is a named-boundary accounting result, not an honest standard-QROM primitive-circuit result.",
+    "required_to_upgrade": [
+      "provide a real arbitrary table-select lowering for the secp256k1 coordinate table under the selected qubit budget",
+      "or prove exploitable coordinate-table structure that supports O(15) data selection per output bit",
+      "then bind that lowering into generated inventories, no-free-wire checks, docs, and ZKP public values"
+    ]
+  }
+}

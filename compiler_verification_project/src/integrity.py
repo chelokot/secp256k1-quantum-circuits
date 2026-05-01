@@ -52,6 +52,7 @@ from project import (
     primitive_multiplier_library,
     raw32_schedule,
     slot_allocation_families,
+    standard_qrom_lookup_assessment,
     streamed_lookup_tail_leaf_slot_allocation,
     streamed_lookup_table_multiplier_resource,
     run_full_raw32_semantic_check,
@@ -140,6 +141,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'lookup_lowerings': artifact_root / 'lookup_lowerings.json',
         'generated_block_inventories': artifact_root / 'generated_block_inventories.json',
         'family_frontier': artifact_root / 'family_frontier.json',
+        'standard_qrom_lookup_assessment': artifact_root / 'standard_qrom_lookup_assessment.json',
         'qubit_breakthrough_analysis': artifact_root / 'qubit_breakthrough_analysis.json',
         'full_attack_inventory': artifact_root / 'full_attack_inventory.json',
         'ft_ir_compositions': artifact_root / 'ft_ir_compositions.json',
@@ -1041,6 +1043,28 @@ def build_streamed_lookup_table_multiplier_resource_checks(artifacts: Mapping[st
     return _summarize_checks(checks)
 
 
+def build_standard_qrom_lookup_assessment_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    assessment = artifacts['standard_qrom_lookup_assessment']
+    expected = standard_qrom_lookup_assessment(
+        frontier=artifacts['family_frontier'],
+        lookup_lowerings=artifacts['lookup_lowerings'],
+        streamed_resource=artifacts['streamed_lookup_table_multiplier_resource'],
+    )
+    gap = assessment['standard_qrom_gap']
+    current = assessment['current_boundary_lookup_model']
+    implications = assessment['conservative_implications']
+    checks = [
+        _check('standard_qrom_lookup_assessment_matches_generator', assessment == expected, expected, assessment),
+        _check('standard_qrom_lookup_assessment_schema_is_current', assessment['schema'] == 'compiler-project-standard-qrom-lookup-assessment-v1', 'compiler-project-standard-qrom-lookup-assessment-v1', assessment['schema']),
+        _check('standard_qrom_lookup_assessment_status_is_not_proven', assessment['status'] == 'boundary_model_not_standard_qrom_proven', 'boundary_model_not_standard_qrom_proven', assessment['status']),
+        _check('standard_qrom_lookup_assessment_uses_full_selection_space', gap['standard_unary_qrom_compute_toffoli_for_full_table'] == 32767, 32767, gap['standard_unary_qrom_compute_toffoli_for_full_table']),
+        _check('standard_qrom_lookup_assessment_rejects_bitwise_chunk_as_full_select', gap['standard_qrom_equivalent'] is False and current['compute_lookup_non_clifford'] == 15, {'standard_qrom_equivalent': False, 'compute_lookup_non_clifford': 15}, {'standard_qrom_equivalent': gap['standard_qrom_equivalent'], 'compute_lookup_non_clifford': current['compute_lookup_non_clifford']}),
+        _check('standard_qrom_lookup_assessment_records_streaming_gap', gap['current_streamed_bit_toffoli_shortfall'] == 32737, 32737, gap['current_streamed_bit_toffoli_shortfall']),
+        _check('standard_qrom_lookup_assessment_materialized_lane_proxy_exceeds_1700', implications['materialize_x_y_with_standard_full_coordinate_qrom_logical_qubit_proxy'] > 1700, '> 1700', implications['materialize_x_y_with_standard_full_coordinate_qrom_logical_qubit_proxy']),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_qubit_breakthrough_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     analysis = artifacts['qubit_breakthrough_analysis']
     best_qubit = artifacts['family_frontier']['best_qubit_family']
@@ -1694,6 +1718,7 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
         'generated_block_inventories': 'compiler_verification_project/artifacts/generated_block_inventories.json',
         'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
+        'standard_qrom_lookup_assessment': 'compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json',
         'qubit_breakthrough_analysis': 'compiler_verification_project/artifacts/qubit_breakthrough_analysis.json',
         'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
         'ft_ir_compositions': 'compiler_verification_project/artifacts/ft_ir_compositions.json',
@@ -1704,7 +1729,7 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'azure_resource_estimator_results': 'compiler_verification_project/artifacts/azure_resource_estimator_results.json',
     }
     checks = [
-        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v16', 'compiler-project-build-summary-v16', build_summary['schema']),
+        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v17', 'compiler-project-build-summary-v17', build_summary['schema']),
         _check('build_summary_artifact_paths_match_expected_set', build_summary['artifacts'] == expected_paths, expected_paths, build_summary['artifacts']),
         _check(
             'build_summary_paths_exist_on_disk',
@@ -2001,6 +2026,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any]) -> Dic
         'lookup_fed_slot_allocation_checks': build_lookup_fed_slot_allocation_checks(artifacts),
         'streamed_lookup_tail_slot_allocation_checks': build_streamed_lookup_tail_slot_allocation_checks(artifacts),
         'streamed_lookup_table_multiplier_resource_checks': build_streamed_lookup_table_multiplier_resource_checks(artifacts),
+        'standard_qrom_lookup_assessment_checks': build_standard_qrom_lookup_assessment_checks(artifacts),
         'qubit_breakthrough_checks': build_qubit_breakthrough_checks(artifacts),
         'full_attack_inventory_checks': build_full_attack_inventory_checks(artifacts),
         'ft_ir_checks': build_ft_ir_checks(artifacts, repo_root),

@@ -542,7 +542,7 @@ def exact_leaf_slot_allocation() -> Dict[str, Any]:
         source_artifact='compiler_verification_project/artifacts/exact_leaf_slot_allocation.json',
         notes=[
             'This artifact allocates versioned leaf values to physical slots using exact live ranges plus same-register overwrite reuse.',
-            'For the central exact family it is the streamed lookup tail leaf allocation; lookup coordinate lanes are table-fed constants rather than borrowed field wires.',
+            'For the central named-boundary family it is the streamed lookup tail leaf allocation; lookup coordinate lanes are table-fed constants rather than borrowed field wires.',
         ],
     )
 
@@ -657,6 +657,95 @@ def streamed_lookup_table_multiplier_resource(
     }
 
 
+def standard_qrom_lookup_assessment(
+    frontier: Optional[Mapping[str, Any]] = None,
+    lookup_lowerings: Optional[Mapping[str, Any]] = None,
+    streamed_resource: Optional[Mapping[str, Any]] = None,
+) -> Dict[str, Any]:
+    effective_frontier = frontier if frontier is not None else compiler_family_frontier()
+    lookup = lookup_lowerings if lookup_lowerings is not None else lookup_lowering_library()
+    resource = streamed_resource if streamed_resource is not None else streamed_lookup_table_multiplier_resource(
+        lookup_lowerings=lookup,
+    )
+    family = dict(effective_frontier['best_qubit_family'])
+    lookup_family = next(row for row in lookup['families'] if row['name'] == CENTRAL_LOOKUP_FAMILY)
+    positive_domain_size = int(lookup['lookup_contract_summary']['positive_domain_size'])
+    coordinate_bits = int(lookup['lookup_contract_summary']['coordinate_bits'])
+    materialized_coordinate_lane_qubits = 2 * coordinate_bits
+    current_total_qubits = int(family['total_logical_qubits'])
+    current_lookup_workspace = int(family['lookup_workspace_qubits'])
+    full_coordinate_qrom_qubit_proxy = (
+        current_total_qubits
+        - current_lookup_workspace
+        + int(lookup_family['extra_lookup_workspace_qubits'])
+        + materialized_coordinate_lane_qubits
+    )
+    standard_unary_qrom_compute_toffoli = positive_domain_size - 1
+    current_compute_toffoli = int(lookup_family['compute_lookup_non_clifford'])
+    current_uncompute_toffoli = int(lookup_family['uncompute_lookup_non_clifford'])
+    streamed_model = resource['streamed_data_selection_model']
+    current_streamed_per_bit_toffoli = int(streamed_model['non_clifford_per_streamed_coordinate_bit'])
+    standard_unary_qrom_per_output_bit_toffoli = standard_unary_qrom_compute_toffoli
+    standard_unary_qrom_per_coordinate_toffoli = (
+        coordinate_bits * standard_unary_qrom_per_output_bit_toffoli
+    )
+    streamed_bit_standard_lower_bound_per_leaf = (
+        int(streamed_model['per_leaf_streamed_kernel_count']) * standard_unary_qrom_per_coordinate_toffoli
+    )
+    return {
+        'schema': 'compiler-project-standard-qrom-lookup-assessment-v1',
+        'status': 'boundary_model_not_standard_qrom_proven',
+        'selected_boundary_family': family['name'],
+        'source_artifacts': {
+            'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
+            'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
+            'streamed_lookup_table_multiplier_resource': 'compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json',
+        },
+        'external_reference_model': {
+            'gidney_2019_windowed_quantum_arithmetic': {
+                'url': 'https://arxiv.org/abs/1905.07682',
+                'lookup_compute_rule': 'table lookup over L classical entries has Toffoli count L - 1, independent of output width at this abstraction layer',
+            },
+            'qualtran_unary_iteration_qrom': {
+                'url': 'https://qualtran.readthedocs.io/en/latest/bloqs/data_loading/qrom.html',
+                'lookup_compute_rule': 'T/Toffoli cost scales linearly with the product of selection-space iteration lengths',
+            },
+        },
+        'current_boundary_lookup_model': {
+            'positive_domain_size': positive_domain_size,
+            'folded_magnitude_bits': int(lookup['lookup_contract_summary']['magnitude_bits']),
+            'chunk_split_bits': [1] * int(lookup['lookup_contract_summary']['magnitude_bits']),
+            'compute_lookup_non_clifford': current_compute_toffoli,
+            'uncompute_lookup_non_clifford': current_uncompute_toffoli,
+            'streamed_coordinate_bit_non_clifford': current_streamed_per_bit_toffoli,
+            'diagnosis': 'The checked bitwise-banked lowering materializes independent address-bit chunk predicates. It does not prove an arbitrary 32768-entry coordinate-table data-select layer.',
+        },
+        'standard_qrom_gap': {
+            'standard_unary_qrom_compute_toffoli_for_full_table': standard_unary_qrom_compute_toffoli,
+            'current_compute_toffoli_shortfall': standard_unary_qrom_compute_toffoli - current_compute_toffoli,
+            'current_streamed_bit_toffoli_shortfall': standard_unary_qrom_compute_toffoli - current_streamed_per_bit_toffoli,
+            'standard_qrom_equivalent': False,
+        },
+        'conservative_implications': {
+            'boundary_model_non_clifford': int(family['full_oracle_non_clifford']),
+            'boundary_model_logical_qubits': current_total_qubits,
+            'stream_each_output_bit_with_standard_qrom_non_clifford_per_kernel': standard_unary_qrom_per_output_bit_toffoli,
+            'stream_one_coordinate_with_standard_qrom_non_clifford_per_kernel': standard_unary_qrom_per_coordinate_toffoli,
+            'stream_all_leaf_coordinate_streams_with_standard_qrom_non_clifford_per_leaf': streamed_bit_standard_lower_bound_per_leaf,
+            'materialize_x_y_with_standard_full_coordinate_qrom_logical_qubit_proxy': full_coordinate_qrom_qubit_proxy,
+            'materialized_coordinate_lane_qubits': materialized_coordinate_lane_qubits,
+        },
+        'public_claim_boundary': {
+            'claim': 'The checked 23,912,611 non-Clifford / 1,587 logical-qubit result is a named-boundary accounting result, not an honest standard-QROM primitive-circuit result.',
+            'required_to_upgrade': [
+                'provide a real arbitrary table-select lowering for the secp256k1 coordinate table under the selected qubit budget',
+                'or prove exploitable coordinate-table structure that supports O(15) data selection per output bit',
+                'then bind that lowering into generated inventories, no-free-wire checks, docs, and ZKP public values',
+            ],
+        },
+    }
+
+
 def slot_allocation_families() -> List[SlotAllocationFamily]:
     return [
         SlotAllocationFamily(
@@ -666,7 +755,7 @@ def slot_allocation_families() -> List[SlotAllocationFamily]:
             leaf_source_artifact='compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json',
             slot_allocation=streamed_lookup_tail_leaf_slot_allocation(),
             notes=[
-                'This is the repository central exact-family leaf contract: no field-sized lookup x/y output lanes are borrowed or hidden, and the six-slot peak is derived from executable liveness.',
+                'This is the repository central named-boundary leaf contract: no field-sized lookup x/y output lanes are borrowed or hidden, and the six-slot peak is derived from executable liveness.',
             ],
         ),
     ]
@@ -915,7 +1004,7 @@ def build_generated_block_inventories_payload(
             'reconstruction': best_qubit['reconstruction'],
         },
         'notes': [
-            'This artifact records the generated whole-oracle block inventory for the repository central exact compiler family.',
+            'This artifact records the generated whole-oracle block inventory for the repository central named-boundary compiler family.',
             'The structure follows a compositional call-graph style accounting layer: shared arithmetic blocks, family-specific lookup blocks, qubit contributors, and explicit phase-shell lowering blocks.',
         ],
     }
@@ -1758,6 +1847,11 @@ def build_all_artifacts() -> Dict[str, Any]:
         'whole_oracle_recount': whole_oracle_recount,
     }
     out['frontier'] = compiler_family_frontier()
+    out['standard_qrom_lookup_assessment'] = standard_qrom_lookup_assessment(
+        frontier=out['frontier'],
+        lookup_lowerings=out['lookup_lowerings'],
+        streamed_resource=out['streamed_lookup_table_multiplier_resource'],
+    )
     out['qubit_breakthrough_analysis'] = build_qubit_breakthrough_analysis(frontier=out['frontier'])
     out['full_attack_inventory'] = full_attack_inventory()
     out['subcircuit_equivalence'] = build_subcircuit_equivalence_artifact(
@@ -1788,6 +1882,7 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('ft_ir_compositions.json'), out['ft_ir_compositions'])
     dump_json(project_artifact_path('whole_oracle_recount.json'), out['whole_oracle_recount'])
     dump_json(project_artifact_path('family_frontier.json'), out['frontier'])
+    dump_json(project_artifact_path('standard_qrom_lookup_assessment.json'), out['standard_qrom_lookup_assessment'])
     dump_json(project_artifact_path('qubit_breakthrough_analysis.json'), out['qubit_breakthrough_analysis'])
     dump_json(project_artifact_path('full_attack_inventory.json'), out['full_attack_inventory'])
     dump_json(project_artifact_path('subcircuit_equivalence.json'), out['subcircuit_equivalence'])
@@ -1801,7 +1896,7 @@ def build_all_artifacts() -> Dict[str, Any]:
     )
 
     build_summary = {
-        'schema': 'compiler-project-build-summary-v16',
+        'schema': 'compiler-project-build-summary-v17',
         'artifacts': {
             'canonical_public_point': 'compiler_verification_project/artifacts/canonical_public_point.json',
             'full_raw32_oracle': 'compiler_verification_project/artifacts/full_raw32_oracle.json',
@@ -1824,6 +1919,7 @@ def build_all_artifacts() -> Dict[str, Any]:
             'ft_ir_compositions': 'compiler_verification_project/artifacts/ft_ir_compositions.json',
             'whole_oracle_recount': 'compiler_verification_project/artifacts/whole_oracle_recount.json',
             'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
+            'standard_qrom_lookup_assessment': 'compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json',
             'qubit_breakthrough_analysis': 'compiler_verification_project/artifacts/qubit_breakthrough_analysis.json',
             'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
             'subcircuit_equivalence': 'compiler_verification_project/artifacts/subcircuit_equivalence.json',
@@ -1895,6 +1991,7 @@ __all__ = [
     'lookup_fed_leaf_slot_allocation',
     'streamed_lookup_tail_leaf_slot_allocation',
     'streamed_lookup_table_multiplier_resource',
+    'standard_qrom_lookup_assessment',
     'slot_allocation_families',
     'raw32_schedule',
 ]

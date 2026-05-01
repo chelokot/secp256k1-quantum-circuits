@@ -374,6 +374,6 @@
   },
   "notes": [
     "This artifact allocates versioned leaf values to physical slots using exact live ranges plus same-register overwrite reuse.",
-    "For the central exact family it is the streamed lookup tail leaf allocation; lookup coordinate lanes are table-fed constants rather than borrowed field wires."
+    "For the central named-boundary family it is the streamed lookup tail leaf allocation; lookup coordinate lanes are table-fed constants rather than borrowed field wires."
   ]
 }

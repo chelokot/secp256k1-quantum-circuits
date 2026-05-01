@@ -9,8 +9,9 @@ secp256k1-specialized point-add leaf and explicit retained-window scaffold
 metadata, together with deterministic audits, finite-model checks, and a
 separate exact compiler-family oracle subproject that closes the
 classical-tail-elision gap for a fully quantum raw-32 schedule. It now also
-ships an SP1 attestation bundle for one selected exact-family claim at that
-same boundary.
+ships an SP1 attestation bundle for one selected named-boundary family claim at that
+same boundary. The current `23,912,611 / 1,587` result is a named-boundary
+compiler-family result, not a proven standard-QROM primitive-circuit result.
 
 ## Exact layers
 
@@ -70,6 +71,7 @@ below the ISA boundary. It publishes:
 
 - `compiler_verification_project/artifacts/full_raw32_oracle.json`
 - `compiler_verification_project/artifacts/family_frontier.json`
+- `compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json`
 - `compiler_verification_project/artifacts/exact_leaf_slot_allocation.json`
 - `compiler_verification_project/artifacts/phase_shell_lowerings.json`
 - `compiler_verification_project/artifacts/ft_ir_compositions.json`
@@ -84,6 +86,9 @@ subproject. In particular, it fixes:
 - generated folded lookup-family operation inventories,
 - generated arithmetic-kernel operation inventories,
 - explicit streamed table-controlled multiplier data-selection inventories,
+- a checked standard-QROM lookup assessment that marks the current bitwise
+  banked lookup lowering as a boundary model rather than a proven arbitrary
+  32768-entry table-select primitive,
 - exact leaf slot allocation, and
 - generated phase-shell operation inventories for the selected semiclassical inverse-QFT shell,
 - compositional FT-style call graphs plus traversed leaf sigma for the named
@@ -146,6 +151,10 @@ streamed coordinate-bit latch in lookup workspace and adds explicit per-bit
 data-selection non-Clifford cost to every `field_mul_lookup_*` consumer. The
 remaining boundary is the named folded-path data-selection primitive itself,
 not a materialized field-sized lookup-output lane.
+`standard_qrom_lookup_assessment.json` records the deeper open issue: the
+current lowering proves independent address-bit chunk decoding, not a full
+standard-QROM arbitrary coordinate-table select. Until that artifact changes,
+the public low-qubit number must be read as named-boundary accounting only.
 
 ### B. Boundary no-op and cleanup
 
@@ -191,8 +200,10 @@ Exact lookup-contract semantics: yes.
 
 Mainline exact primitive-gate lookup, cleanup, and full Shor flattening: no.
 
-Exact compiler-family whole-oracle counts: yes, in `compiler_verification_project/`, but only for the named compiler families checked into that subproject.
+Exact compiler-family whole-oracle boundary counts: yes, in `compiler_verification_project/`, but only for the named compiler families checked into that subproject.
 
 Exact compiler-family SP1 attestation for one selected family claim and public deterministic point-add corpus: yes.
 
-Exact compiler-family comparison against the public Google baseline: yes.
+Named-boundary compiler-family comparison against the public Google baseline: yes.
+
+Standard-QROM primitive-circuit comparison against the public Google baseline: no.

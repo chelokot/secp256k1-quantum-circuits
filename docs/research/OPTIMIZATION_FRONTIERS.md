@@ -20,18 +20,24 @@ which implementation gaps remain open.
   whole-oracle composition
 - exact compiler-family raw-32 whole-oracle frontier
 - exact slot allocation and exact phase-shell lowering
+- checked standard-QROM lookup assessment marking the current bitwise-banked
+  lookup lowering as a named boundary model rather than a proven arbitrary
+  table-select primitive
 
 The main open directions are therefore:
 
-1. Clifford-complete arithmetic and lookup micro-expansion below the shipped generated compiler-family operation inventories
-2. external equivalence checking below the named arithmetic, lookup, and phase-shell blocks
-3. flatter end-to-end Shor fragments with external equivalence checking
+1. real arbitrary-table QROM/select lowering for the secp256k1 coordinate tables, or a proof of exploitable table structure
+2. Clifford-complete arithmetic and lookup micro-expansion below the shipped generated compiler-family operation inventories
+3. external equivalence checking below the named arithmetic, lookup, and phase-shell blocks
+4. flatter end-to-end Shor fragments with external equivalence checking
 
 ## What would be overclaim
 
 It would be inaccurate to describe the repository as already having:
 
 - a Clifford-complete primitive-gate lookup implementation,
+- a standard-QROM primitive-circuit realization of the `23,912,611 / 1,587`
+  named-boundary result,
 - a primitive-gate cleanup proof,
 - a fully flattened Shor circuit,
 - a globally optimal primitive-gate total.

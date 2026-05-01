@@ -13,6 +13,7 @@ repository-supported answer to each one.
 | “The exact compiler frontier still does not reconstruct a hidden Google circuit.” | High | True. The repository compares against Google's public rounded lines, not against an unpublished circuit. | Yes |
 | “Toy-curve proofs are not universal proofs over all prime fields.” | Medium | True. They are finite-model support for the family story. | Yes |
 | “No primitive-gate qRAM or QROM is shipped.” | Medium | True. The repository ships generated compiler-family lookup lowerings below the folded contract, but it still does not ship a bit-for-bit Clifford-complete primitive qRAM/QROM implementation. | Yes |
+| “The streamed lookup result is not a standard-QROM arbitrary table-select result.” | High | True. `standard_qrom_lookup_assessment.json` records that the current bitwise-banked lowering proves independent address-bit chunk decoding, not a full 32768-entry coordinate-table select. | Yes |
 | “No end-to-end physical machine proof is shipped.” | Medium | True. The repository ships exact logicalCounts, explicit Microsoft Resource Estimator target profiles, recorded estimator outputs, and a separate Cain transfer study, but it does not ship a hardware-independent theorem-proved physical realization. | Yes |
 
 ## Statements the repository can defend directly

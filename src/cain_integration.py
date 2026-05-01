@@ -84,7 +84,7 @@ def build_cain_integration_summary(repo_root: Path) -> Dict[str, Any]:
         },
         'cases': cases,
         'publication_safe_summary': {
-            'single_sentence': f"If the repository's central exact compiler family is transferred into the neutral-atom architecture of Cain et al. under fixed cycle-time and parallelism assumptions, the checked result maps to roughly {publication_runtime_range} and about {publication_space_range} under the stored reference-line transfers.",
+            'single_sentence': f"If the repository's central named-boundary compiler family is transferred into the neutral-atom architecture of Cain et al. under fixed cycle-time and parallelism assumptions, the checked result maps to roughly {publication_runtime_range} and about {publication_space_range} under the stored reference-line transfers.",
             'do_not_say': [
                 'Do not say the paper is beaten on its own P-256 target without recompiling for P-256.',
                 'Do not say the transferred runtime or physical-qubit range is exact; it is still a cross-paper architecture transfer.',
