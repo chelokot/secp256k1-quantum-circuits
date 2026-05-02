@@ -353,9 +353,11 @@ def _resource_ownership_contract(
         'lookup_interface_policy': {
             'coordinate_field_lanes_materialized_by_leaf': 0,
             'coordinate_field_lanes_counted_in_lookup_workspace': 0,
-            'streamed_coordinate_bit_latch_counted_in_lookup_workspace': 1,
+            'qroam_coordinate_target_and_junk_counted_in_lookup_workspace': True,
+            'qroam_clean_target_register_qubits_per_live_stream': FIELD_BITS,
+            'qroam_clean_junk_register_qubits_per_live_stream': 15 * FIELD_BITS,
             'table_fed_coordinate_operands': ['lookup_x', 'lookup_y', 'lookup_x_plus_y'],
-            'statement': 'The streamed lookup contract consumes table coordinates one bit at a time inside table-fed arithmetic kernels; it counts the single bit latch in lookup workspace and does not borrow or omit a field-sized lookup output lane.',
+            'statement': 'The streamed lookup contract consumes table coordinates inside table-fed arithmetic kernels; for the standard-QROAM counted family the full coordinate target and required QROAMClean junk registers are assigned to lookup workspace rather than treated as free borrowed field lanes.',
         },
         'no_free_quantum_wire_invariant': {
             'passes': all(owner['logical_qubit_budget'] >= owner['required_logical_qubits'] for owner in owners),
@@ -634,10 +636,11 @@ def streamed_lookup_table_multiplier_resource(
         'coordinate_bit_sources': source_rows,
         'streamed_data_selection_model': {
             'standard_qrom_equivalent': True,
-            'primitive': 'standard_qroam_coordinate_stream',
+            'primitive': 'standard_qroam_clean_full_coordinate_stream',
             'folded_magnitude_bits': 15,
             'folded_coordinate_domain_size': FOLDED_MAG_DOMAIN,
             'qroam_block_size': 16,
+            'qroam_target_bitsize': FIELD_BITS,
             'table_controlled_coordinate_bits': ['lookup_x', 'lookup_y', 'lookup_x_plus_y'],
             'decomposition': {
                 'lookup_compute_non_clifford': 5_888,
@@ -653,21 +656,28 @@ def streamed_lookup_table_multiplier_resource(
             'lookup_workspace_qubits': total_workspace,
             'folded_control_workspace_qubits': persistent_workspace,
             'standard_qroam_local_workspace_qubits': local_qroam_workspace,
-            'streamed_coordinate_bit_latch_qubits': 1,
-            'qroam_clean_block_ancilla_qubits': 15,
-            'qroam_iteration_scratch_qubits': 15,
+            'qroam_clean_target_register_qubits': FIELD_BITS,
+            'qroam_clean_junk_register_count': 15,
+            'qroam_clean_junk_register_bitsize': FIELD_BITS,
+            'qroam_clean_junk_register_qubits': 15 * FIELD_BITS,
+            'qroam_clean_target_plus_junk_qubits': 16 * FIELD_BITS,
             'coordinate_field_lanes_materialized': 0,
             'coordinate_field_lane_qubits_materialized': 0,
-            'passes': total_workspace == 49 and persistent_workspace == 18 and local_qroam_workspace == 31,
+            'passes': (
+                total_workspace == persistent_workspace + 16 * FIELD_BITS
+                and persistent_workspace == 18
+                and local_qroam_workspace == 16 * FIELD_BITS
+            ),
         },
         'capacity_check': {
             'per_kernel_costs_seen': per_kernel_costs,
             'all_coordinate_streams_use_standard_qroam_cost': per_kernel_costs == [7_951],
+            'qroam_clean_capacity_matches_cost_model': local_qroam_workspace == 16 * FIELD_BITS,
             'whole_oracle_stream_count': per_leaf_streamed_kernel_count * leaf_calls,
         },
         'notes': [
-            'This artifact closes the standard-QROM table-controlled multiplier resource gap: lookup coordinates are streamed through a counted one-bit latch, and every coordinate stream pays a standard QROAM compute plus measured-uncompute primitive.',
-            'No field-sized lookup x/y output lane is borrowed or counted inside lookup_workspace_qubits; the lookup workspace only owns folded control plus QROAM local scratch and the one-bit stream latch.',
+            'This artifact keeps the standard-QROM table-controlled multiplier resource model consistent: every coordinate stream pays a standard QROAMClean compute plus measured-uncompute primitive and the workspace counts the matching full-coordinate target plus junk registers.',
+            'No field-sized lookup x/y output lane is free; the coordinate target and QROAMClean junk capacity are explicitly assigned to lookup_workspace_qubits while the consuming arithmetic kernel runs.',
         ],
     }
 
@@ -709,7 +719,7 @@ def standard_qrom_lookup_assessment(
     )
     return {
         'schema': 'compiler-project-standard-qrom-lookup-assessment-v2',
-        'status': 'standard_qrom_primitive_circuit_proven_for_counted_family',
+        'status': 'standard_qrom_primitive_circuit_proven_for_counted_family_with_high_workspace',
         'selected_boundary_family': family['name'],
         'source_artifacts': {
             'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
@@ -725,21 +735,29 @@ def standard_qrom_lookup_assessment(
                 'url': 'https://qualtran.readthedocs.io/en/latest/bloqs/data_loading/qrom.html',
                 'lookup_compute_rule': 'T/Toffoli cost scales linearly with the product of selection-space iteration lengths',
             },
+            'qualtran_qroam_clean': {
+                'url': 'https://qualtran.readthedocs.io/en/latest/bloqs/data_loading/qroam_clean.html',
+                'lookup_compute_rule': 'QROAMClean uses N/K + (K - 1)b Toffoli gates and requires (K - 1) junk registers of bitsize b, in addition to the b-bit target register.',
+            },
         },
         'current_boundary_lookup_model': {
             'positive_domain_size': positive_domain_size,
             'folded_magnitude_bits': int(lookup['lookup_contract_summary']['magnitude_bits']),
             'standard_qroam_block_size': int(streamed_model['qroam_block_size']),
+            'standard_qroam_target_bitsize': int(streamed_model['qroam_target_bitsize']),
             'compute_lookup_non_clifford': current_compute_toffoli,
             'uncompute_lookup_non_clifford': current_uncompute_toffoli,
             'standard_qroam_coordinate_stream_non_clifford': standard_qroam_per_stream_toffoli,
-            'diagnosis': 'The selected family no longer uses independent address-bit chunk predicates as table data selection. Every coordinate stream is charged as a standard QROAM primitive over the full folded 32768-entry coordinate domain.',
+            'standard_qroam_target_plus_junk_qubits': int(resource['workspace_contract']['qroam_clean_target_plus_junk_qubits']),
+            'diagnosis': 'The selected family no longer uses independent address-bit chunk predicates as table data selection. Every coordinate stream is charged as a standard QROAMClean primitive over the full folded 32768-entry coordinate domain, and the matching full-coordinate target plus junk-register workspace is counted.',
         },
         'standard_qrom_gap': {
             'standard_unary_qrom_compute_toffoli_for_full_table': standard_unary_qrom_compute_toffoli,
             'standard_qroam_coordinate_stream_toffoli': standard_qroam_per_stream_toffoli,
+            'standard_qroam_coordinate_stream_target_plus_junk_qubits': int(resource['workspace_contract']['qroam_clean_target_plus_junk_qubits']),
             'current_compute_toffoli_shortfall': 0,
             'current_streamed_bit_toffoli_shortfall': 0,
+            'current_qroam_workspace_shortfall': 0,
             'standard_qrom_equivalent': True,
         },
         'conservative_implications': {
@@ -752,10 +770,11 @@ def standard_qrom_lookup_assessment(
             'materialized_coordinate_lane_qubits': materialized_coordinate_lane_qubits,
         },
         'public_claim_boundary': {
-            'claim': 'The checked family is now a standard-QROM primitive-circuit result: the executable streamed leaf is unchanged semantically, but every table-controlled coordinate stream pays a standard QROAM data-select cost and no field-sized lookup output lane is free.',
+            'claim': 'The checked family is a standard-QROM primitive-circuit result only with the high QROAMClean workspace included: every table-controlled coordinate stream pays the standard QROAM data-select cost and the matching target plus junk registers are counted in peak live qubits.',
             'required_to_keep_published': [
                 'keep the executable leaf, QROAM resource artifact, no-free-wire ownership artifact, generated inventories, ZKP public values, and checked proof bundle on the same selected family',
                 'do not substitute the rejected bitwise-banked lookup family into public standard-QROM claims',
+                'do not publish a below-1700-qubit standard-QROAM claim unless a different primitive proves both the lower workspace and its data-selection cost',
             ],
         },
     }
@@ -770,7 +789,7 @@ def slot_allocation_families() -> List[SlotAllocationFamily]:
             leaf_source_artifact='compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json',
             slot_allocation=streamed_lookup_tail_leaf_slot_allocation(),
             notes=[
-                'This is the repository central standard-QROM leaf contract: no field-sized lookup x/y output lanes are borrowed or hidden, and the six-slot peak is derived from executable liveness.',
+                'This is the repository central standard-QROM leaf contract: no field-sized lookup x/y output lanes are free, and the six-slot arithmetic peak is derived from executable liveness while QROAM target/junk capacity is counted separately in lookup workspace.',
             ],
         ),
     ]

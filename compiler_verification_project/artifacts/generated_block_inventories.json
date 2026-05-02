@@ -2425,7 +2425,7 @@
           "summary": "Peak explicit lookup workspace required by the named lowered lookup family.",
           "category": "live_qubits",
           "source_artifact": "compiler_verification_project/artifacts/lookup_lowerings.json",
-          "logical_qubits": 49,
+          "logical_qubits": 4114,
           "metadata": {
             "lookup_family": "folded_standard_qroam_streamed_coordinate_v1"
           }
@@ -2514,9 +2514,9 @@
         "arithmetic_slot_count": 6,
         "control_slot_count": 1,
         "borrowed_interface_qubits": 0,
-        "lookup_workspace_qubits": 49,
+        "lookup_workspace_qubits": 4114,
         "live_phase_bits": 1,
-        "total_logical_qubits": 1587
+        "total_logical_qubits": 5652
       },
       "slot_allocation_family": "streamed_lookup_tail_leaf_v1"
     }
@@ -2542,9 +2542,9 @@
       "arithmetic_slot_count": 6,
       "control_slot_count": 1,
       "borrowed_interface_qubits": 0,
-      "lookup_workspace_qubits": 49,
+      "lookup_workspace_qubits": 4114,
       "live_phase_bits": 1,
-      "total_logical_qubits": 1587
+      "total_logical_qubits": 5652
     }
   },
   "best_qubit_family": {
@@ -2568,9 +2568,9 @@
       "arithmetic_slot_count": 6,
       "control_slot_count": 1,
       "borrowed_interface_qubits": 0,
-      "lookup_workspace_qubits": 49,
+      "lookup_workspace_qubits": 4114,
       "live_phase_bits": 1,
-      "total_logical_qubits": 1587
+      "total_logical_qubits": 5652
     }
   },
   "notes": [

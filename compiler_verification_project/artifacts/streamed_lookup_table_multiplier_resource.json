@@ -57,10 +57,11 @@
   ],
   "streamed_data_selection_model": {
     "standard_qrom_equivalent": true,
-    "primitive": "standard_qroam_coordinate_stream",
+    "primitive": "standard_qroam_clean_full_coordinate_stream",
     "folded_magnitude_bits": 15,
     "folded_coordinate_domain_size": 32768,
     "qroam_block_size": 16,
+    "qroam_target_bitsize": 256,
     "table_controlled_coordinate_bits": [
       "lookup_x",
       "lookup_y",
@@ -77,12 +78,14 @@
     "whole_oracle_data_select_non_clifford": 1232405
   },
   "workspace_contract": {
-    "lookup_workspace_qubits": 49,
+    "lookup_workspace_qubits": 4114,
     "folded_control_workspace_qubits": 18,
-    "standard_qroam_local_workspace_qubits": 31,
-    "streamed_coordinate_bit_latch_qubits": 1,
-    "qroam_clean_block_ancilla_qubits": 15,
-    "qroam_iteration_scratch_qubits": 15,
+    "standard_qroam_local_workspace_qubits": 4096,
+    "qroam_clean_target_register_qubits": 256,
+    "qroam_clean_junk_register_count": 15,
+    "qroam_clean_junk_register_bitsize": 256,
+    "qroam_clean_junk_register_qubits": 3840,
+    "qroam_clean_target_plus_junk_qubits": 4096,
     "coordinate_field_lanes_materialized": 0,
     "coordinate_field_lane_qubits_materialized": 0,
     "passes": true
@@ -92,10 +95,11 @@
       7951
     ],
     "all_coordinate_streams_use_standard_qroam_cost": true,
+    "qroam_clean_capacity_matches_cost_model": true,
     "whole_oracle_stream_count": 155
   },
   "notes": [
-    "This artifact closes the standard-QROM table-controlled multiplier resource gap: lookup coordinates are streamed through a counted one-bit latch, and every coordinate stream pays a standard QROAM compute plus measured-uncompute primitive.",
-    "No field-sized lookup x/y output lane is borrowed or counted inside lookup_workspace_qubits; the lookup workspace only owns folded control plus QROAM local scratch and the one-bit stream latch."
+    "This artifact keeps the standard-QROM table-controlled multiplier resource model consistent: every coordinate stream pays a standard QROAMClean compute plus measured-uncompute primitive and the workspace counts the matching full-coordinate target plus junk registers.",
+    "No field-sized lookup x/y output lane is free; the coordinate target and QROAMClean junk capacity are explicitly assigned to lookup_workspace_qubits while the consuming arithmetic kernel runs."
   ]
 }

@@ -566,7 +566,9 @@ def _standard_qroam_streamed_coordinate_family(contract: Mapping[str, Any]) -> D
     params = _contract_parameters(contract)
     persistent_workspace = _persistent_workspace(params['magnitude_bits'])
     persistent_total = sum(int(entry['qubits']) for entry in persistent_workspace)
-    stream_workspace = 31
+    block_size = 16
+    coordinate_bits = int(params['coordinate_bits'])
+    stream_workspace = block_size * coordinate_bits
     stages = [
         _classification_stage(params['magnitude_bits'], persistent_total),
         _stage(
@@ -578,7 +580,7 @@ def _standard_qroam_streamed_coordinate_family(contract: Mapping[str, Any]) -> D
             local_workspace_qubits=stream_workspace,
             notes=[
                 'The standard-QROAM table-data select is not the old bitwise chunk decode. It is bound in arithmetic_lowerings.json at each table-controlled coordinate-stream consumer because the stream is consumed by the multiplier latch immediately.',
-                'The stage local workspace reserves the clean QROAM block ancillae, unary-iteration scratch, and one streamed coordinate-bit latch used by the consuming kernel.',
+                f"The stage local workspace reserves the {coordinate_bits}-qubit QROAM target plus {block_size - 1} junk registers of {coordinate_bits} qubits each.",
             ],
         ),
         _stage(
@@ -589,7 +591,7 @@ def _standard_qroam_streamed_coordinate_family(contract: Mapping[str, Any]) -> D
             persistent_workspace_qubits=persistent_total,
             local_workspace_qubits=stream_workspace,
             notes=[
-                'Measured cleanup is paired with each coordinate stream in arithmetic_lowerings.json; this lookup-family row only owns the peak workspace capacity.',
+                'Measured cleanup is paired with each coordinate target and its junk registers in arithmetic_lowerings.json; this lookup-family row owns the peak workspace capacity.',
             ],
         ),
         _conditional_negation_stage(params['coordinate_bits'], persistent_total),
@@ -602,14 +604,14 @@ def _standard_qroam_streamed_coordinate_family(contract: Mapping[str, Any]) -> D
             'classification': 'shared folded sign/magnitude decomposition over the checked signed-folded lookup contract',
             'lookup_compute': 'standard QROAM coordinate-stream compute charged at each consuming arithmetic data-select stage',
             'lookup_uncompute': 'standard QROAM measured cleanup charged at each consuming arithmetic data-select stage',
-            'streamed_table_data': 'one counted coordinate-bit latch plus standard QROAM block/iteration scratch; no field-sized lookup-output lane is borrowed or hidden',
+            'streamed_table_data': 'one counted full-coordinate QROAM target plus the QROAMClean junk registers required by the selected block size; no field-sized lookup-output lane is borrowed or hidden',
         },
         persistent_workspace=persistent_workspace,
         stages=stages,
         notes=[
             'This is the repository standard-QROM primitive-circuit lookup boundary. Unlike the rejected bitwise-banked family, it does not treat the 32768-entry coordinate table as 15 independent 2-way decodes.',
             'The selected coordinate stream pays the standard QROAM compute and measured-uncompute costs in arithmetic_lowerings.json for every table-controlled arithmetic consumer.',
-            'The peak lookup workspace is 49 qubits: 18 folded-control qubits plus 31 local QROAM/latch qubits, with no field-sized x/y output lane counted as lookup workspace.',
+            'The peak lookup workspace counts the folded-control qubits plus the full QROAMClean target and junk-register capacity required by the coordinate-stream cost model.',
         ],
     )
 

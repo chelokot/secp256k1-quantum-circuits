@@ -637,7 +637,7 @@
         "classification": "shared folded sign/magnitude decomposition over the checked signed-folded lookup contract",
         "lookup_compute": "standard QROAM coordinate-stream compute charged at each consuming arithmetic data-select stage",
         "lookup_uncompute": "standard QROAM measured cleanup charged at each consuming arithmetic data-select stage",
-        "streamed_table_data": "one counted coordinate-bit latch plus standard QROAM block/iteration scratch; no field-sized lookup-output lane is borrowed or hidden"
+        "streamed_table_data": "one counted full-coordinate QROAM target plus the QROAMClean junk registers required by the selected block size; no field-sized lookup-output lane is borrowed or hidden"
       },
       "persistent_workspace": [
         {
@@ -929,11 +929,11 @@
           },
           "non_clifford_total": 0,
           "persistent_workspace_qubits": 18,
-          "local_workspace_qubits": 31,
-          "total_workspace_qubits": 49,
+          "local_workspace_qubits": 4096,
+          "total_workspace_qubits": 4114,
           "notes": [
             "The standard-QROAM table-data select is not the old bitwise chunk decode. It is bound in arithmetic_lowerings.json at each table-controlled coordinate-stream consumer because the stream is consumed by the multiplier latch immediately.",
-            "The stage local workspace reserves the clean QROAM block ancillae, unary-iteration scratch, and one streamed coordinate-bit latch used by the consuming kernel."
+            "The stage local workspace reserves the 256-qubit QROAM target plus 15 junk registers of 256 qubits each."
           ]
         },
         {
@@ -949,10 +949,10 @@
           },
           "non_clifford_total": 0,
           "persistent_workspace_qubits": 18,
-          "local_workspace_qubits": 31,
-          "total_workspace_qubits": 49,
+          "local_workspace_qubits": 4096,
+          "total_workspace_qubits": 4114,
           "notes": [
-            "Measured cleanup is paired with each coordinate stream in arithmetic_lowerings.json; this lookup-family row only owns the peak workspace capacity."
+            "Measured cleanup is paired with each coordinate target and its junk registers in arithmetic_lowerings.json; this lookup-family row owns the peak workspace capacity."
           ]
         },
         {
@@ -1110,11 +1110,11 @@
       "conditional_negate_y_non_clifford": 255,
       "direct_lookup_non_clifford": 297,
       "per_leaf_lookup_non_clifford": 297,
-      "extra_lookup_workspace_qubits": 49,
+      "extra_lookup_workspace_qubits": 4114,
       "workspace_reconstruction": {
         "persistent_workspace_qubits": 18,
         "peak_stage": "standard_qroam_coordinate_stream_compute",
-        "peak_total_workspace_qubits": 49
+        "peak_total_workspace_qubits": 4114
       },
       "semantic_profile": {
         "zero_maps_to_infinity": true,
@@ -1124,7 +1124,7 @@
       "notes": [
         "This is the repository standard-QROM primitive-circuit lookup boundary. Unlike the rejected bitwise-banked family, it does not treat the 32768-entry coordinate table as 15 independent 2-way decodes.",
         "The selected coordinate stream pays the standard QROAM compute and measured-uncompute costs in arithmetic_lowerings.json for every table-controlled arithmetic consumer.",
-        "The peak lookup workspace is 49 qubits: 18 folded-control qubits plus 31 local QROAM/latch qubits, with no field-sized x/y output lane counted as lookup workspace."
+        "The peak lookup workspace counts the folded-control qubits plus the full QROAMClean target and junk-register capacity required by the coordinate-stream cost model."
       ]
     },
     {

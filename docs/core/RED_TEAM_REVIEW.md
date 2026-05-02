@@ -13,7 +13,7 @@ repository-supported answer to each one.
 | “The exact compiler frontier still does not reconstruct a hidden Google circuit.” | High | True. The repository compares against Google's public rounded lines, not against an unpublished circuit. | Yes |
 | “Toy-curve proofs are not universal proofs over all prime fields.” | Medium | True. They are finite-model support for the family story. | Yes |
 | “No primitive-gate qRAM or QROM is shipped.” | Medium | Partly. The repository now binds the counted lookup-data path to a standard QROAM coordinate-stream primitive, but it still does not ship a bit-for-bit Clifford-complete full-oracle netlist. | Partly |
-| “The previous streamed lookup model only counted bitwise path controls.” | High | Closed for the counted family. `standard_qrom_lookup_assessment.json` records the selected standard-QROAM coordinate-stream primitive and rejects the old bitwise-banked path-select model. | No |
+| “The previous streamed lookup model mixed full-coordinate QROAM gates with one-bit workspace.” | High | Closed for the counted family. `standard_qrom_lookup_assessment.json` records the selected standard-QROAM coordinate-stream primitive and the `4,096`-qubit target-plus-junk capacity required by `K = 16`, raising the standard-QROM central point to `5,652` logical qubits. | No |
 | “No end-to-end physical machine proof is shipped.” | Medium | True. The repository ships exact logicalCounts, explicit Microsoft Resource Estimator target profiles, recorded estimator outputs, and a separate Cain transfer study, but it does not ship a hardware-independent theorem-proved physical realization. | Yes |
 
 ## Statements the repository can defend directly

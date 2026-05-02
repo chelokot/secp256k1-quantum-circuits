@@ -85,19 +85,20 @@ What it does ship is:
 
 ## Current central boundary result
 
-- **central standard-QROM family:** `23,953,656 non-Clifford`, `1,587 logical qubits`
+- **central standard-QROM family:** `23,953,656 non-Clifford`, `5,652 logical qubits`
 
 The central family uses a standard QROAM coordinate-stream lookup boundary, an
 exact semiclassical-QFT phase shell, and the executable streamed lookup tail
 point-add leaf. The resulting live-qubit formula is:
 
-`6 * 256 + 1 control + 49 lookup workspace + 1 phase = 1,587 logical qubits`
+`6 * 256 + 1 control + 4,114 lookup workspace + 1 phase = 5,652 logical qubits`
 
-The `49` lookup-workspace term is `18` folded-control qubits plus `31` local
-standard-QROAM/latch qubits. The table-controlled `field_mul_lookup_*` kernels
-pay `7,951` non-Clifford operations per 256-bit coordinate stream: `5,888` for
-standard QROAM compute and `2,063` for measured uncompute. No field-sized
-lookup x/y output lane is counted as lookup workspace or borrowed from the
+The `4,114` lookup-workspace term is `18` folded-control qubits plus a
+`4,096`-qubit QROAMClean data region: one 256-bit coordinate target and fifteen
+256-bit junk registers for `K = 16`. The table-controlled
+`field_mul_lookup_*` kernels pay `7,951` non-Clifford operations per 256-bit
+coordinate stream: `5,888` for standard QROAM compute and `2,063` for measured
+uncompute. No field-sized lookup x/y output lane is free or borrowed from the
 interface.
 
 `standard_qrom_lookup_assessment.json` records the standard-QROM status and
@@ -145,9 +146,9 @@ Its defining exact features are:
 - the no-free-wire resource contract proves every live field value is assigned
   to a counted owner, with zero borrowed lookup coordinate field lanes; and
 - the streamed table-multiplier resource contract proves that lookup coordinate
-  bits are streamed through a counted one-bit latch and that the corresponding
-  standard-QROAM table-data selection gates are included in the arithmetic leaf
-  total; and
+  targets and QROAMClean junk registers are counted together with the
+  corresponding standard-QROAM table-data selection gates included in the
+  arithmetic leaf total; and
 - the standard-QROM lookup assessment binds those same numbers to the selected
   standard-QROAM primitive-circuit resource contract.
 
@@ -207,8 +208,7 @@ python compiler_verification_project/scripts/materialize_exact_circuits.py
 `materialize_exact_circuits.py` writes ignored whole-oracle operation streams
 for the selected exact compiler families under
 `compiler_verification_project/generated_circuits/`. With no family arguments it
-materializes the central public standard-QROM family and the internal minimum-qubit
-comparison family; use `--all-families` to dump every checked exact family or
+materializes the central public standard-QROM family; use `--all-families` to dump every checked exact family or
 `--list-families` to inspect the available names.
 
 The SP1 workspace requires `sp1up` or `cargo-prove`, plus `protoc` and a

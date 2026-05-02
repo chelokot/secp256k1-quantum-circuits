@@ -63,15 +63,15 @@ The root-level `compiler_verification_project/` is the repository's strongest
 exact layer below the ISA boundary. Its checked-in central whole-oracle result
 is:
 
-- **central standard-QROM family:** `23,953,656 non-Clifford`, `1,587 logical qubits`
+- **central standard-QROM family:** `23,953,656 non-Clifford`, `5,652 logical qubits`
 
 Those numbers are exact for the chosen compiler family, not a claim of global
 optimality or a Clifford-complete full-Shor netlist. The family uses standard
 QROAM coordinate streams over the full 32768-entry folded coordinate domain, an
 exact semiclassical-QFT phase shell, and the executable streamed lookup tail
-point-add leaf. The lookup workspace includes folded-control qubits, QROAM
-local scratch, and a counted one-bit streamed coordinate latch; no field-sized
-lookup x/y lane is borrowed or hidden. The repository also checks
+point-add leaf. The lookup workspace includes folded-control qubits plus the
+full QROAMClean coordinate target and junk-register capacity required by the
+selected block size; no field-sized lookup x/y lane is free or hidden. The repository also checks
 `compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json`,
 which records that the current central family is a standard-QROM primitive
 circuit at the counted lookup boundary.
@@ -81,8 +81,8 @@ result is:
 
 - **3.7573x** lower in non-Clifford cost than the public low-qubit line
 - **2.9223x** lower in non-Clifford cost than the public low-gate line
-- **387 qubits above** the public low-qubit line
-- **137 qubits above** the public low-gate line
+- **4,452 qubits above** the public low-qubit line
+- **4,202 qubits above** the public low-gate line
 
 ### SP1 attestation layer
 

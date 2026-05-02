@@ -39,7 +39,7 @@
         "x": 0,
         "measurement": 685080
       },
-      "total_logical_qubits": 1587,
+      "total_logical_qubits": 5652,
       "phase_shell_hadamards": 512,
       "total_measurements": 685592,
       "phase_shell_measurements": 512,
@@ -58,7 +58,7 @@
           "x": 0,
           "measurement": 685080
         },
-        "logical_qubits_total": 1587,
+        "logical_qubits_total": 5652,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -66,8 +66,8 @@
       },
       "improvement_vs_google_low_qubit": 3.7572552599068803,
       "improvement_vs_google_low_gate": 2.92230964659424,
-      "qubit_ratio_vs_google_low_qubit": 0.7561436672967864,
-      "qubit_ratio_vs_google_low_gate": 0.9136735979836169
+      "qubit_ratio_vs_google_low_qubit": 0.21231422505307856,
+      "qubit_ratio_vs_google_low_gate": 0.25654635527246994
     }
   ],
   "best_gate_family": {
@@ -82,7 +82,7 @@
       "x": 0,
       "measurement": 685080
     },
-    "total_logical_qubits": 1587,
+    "total_logical_qubits": 5652,
     "phase_shell_hadamards": 512,
     "total_measurements": 685592,
     "phase_shell_measurements": 512,
@@ -101,7 +101,7 @@
         "x": 0,
         "measurement": 685080
       },
-      "logical_qubits_total": 1587,
+      "logical_qubits_total": 5652,
       "phase_shell_hadamards": 512,
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 511,
@@ -109,8 +109,8 @@
     },
     "improvement_vs_google_low_qubit": 3.7572552599068803,
     "improvement_vs_google_low_gate": 2.92230964659424,
-    "qubit_ratio_vs_google_low_qubit": 0.7561436672967864,
-    "qubit_ratio_vs_google_low_gate": 0.9136735979836169
+    "qubit_ratio_vs_google_low_qubit": 0.21231422505307856,
+    "qubit_ratio_vs_google_low_gate": 0.25654635527246994
   },
   "best_qubit_family": {
     "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
@@ -124,7 +124,7 @@
       "x": 0,
       "measurement": 685080
     },
-    "total_logical_qubits": 1587,
+    "total_logical_qubits": 5652,
     "phase_shell_hadamards": 512,
     "total_measurements": 685592,
     "phase_shell_measurements": 512,
@@ -143,7 +143,7 @@
         "x": 0,
         "measurement": 685080
       },
-      "logical_qubits_total": 1587,
+      "logical_qubits_total": 5652,
       "phase_shell_hadamards": 512,
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 511,
@@ -151,8 +151,8 @@
     },
     "improvement_vs_google_low_qubit": 3.7572552599068803,
     "improvement_vs_google_low_gate": 2.92230964659424,
-    "qubit_ratio_vs_google_low_qubit": 0.7561436672967864,
-    "qubit_ratio_vs_google_low_gate": 0.9136735979836169
+    "qubit_ratio_vs_google_low_qubit": 0.21231422505307856,
+    "qubit_ratio_vs_google_low_gate": 0.25654635527246994
   },
   "notes": [
     "This artifact performs a full exact whole-oracle recount by aggregating the FT IR leaf sigma for each named compiler family.",

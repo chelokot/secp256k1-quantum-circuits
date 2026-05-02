@@ -359,13 +359,15 @@
     "lookup_interface_policy": {
       "coordinate_field_lanes_materialized_by_leaf": 0,
       "coordinate_field_lanes_counted_in_lookup_workspace": 0,
-      "streamed_coordinate_bit_latch_counted_in_lookup_workspace": 1,
+      "qroam_coordinate_target_and_junk_counted_in_lookup_workspace": true,
+      "qroam_clean_target_register_qubits_per_live_stream": 256,
+      "qroam_clean_junk_register_qubits_per_live_stream": 3840,
       "table_fed_coordinate_operands": [
         "lookup_x",
         "lookup_y",
         "lookup_x_plus_y"
       ],
-      "statement": "The streamed lookup contract consumes table coordinates one bit at a time inside table-fed arithmetic kernels; it counts the single bit latch in lookup workspace and does not borrow or omit a field-sized lookup output lane."
+      "statement": "The streamed lookup contract consumes table coordinates inside table-fed arithmetic kernels; for the standard-QROAM counted family the full coordinate target and required QROAMClean junk registers are assigned to lookup workspace rather than treated as free borrowed field lanes."
     },
     "no_free_quantum_wire_invariant": {
       "passes": true,

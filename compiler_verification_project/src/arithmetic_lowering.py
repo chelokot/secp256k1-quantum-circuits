@@ -285,10 +285,18 @@ def _field_mul_kernel(field_bits: int) -> Dict[str, Any]:
 def _standard_qroam_coordinate_stream_cost(field_bits: int, domain_size: int = 32768, block_size: int = 16) -> Dict[str, int]:
     lookup_compute = (domain_size + block_size - 1) // block_size + (block_size - 1) * field_bits
     measured_uncompute = (domain_size + block_size - 1) // block_size + (block_size - 1)
+    junk_register_count = block_size - 1
+    junk_register_qubits = junk_register_count * field_bits
+    target_register_qubits = field_bits
     return {
         'domain_size': domain_size,
         'block_size': block_size,
         'field_bits': field_bits,
+        'target_register_qubits': target_register_qubits,
+        'junk_register_count': junk_register_count,
+        'junk_register_bitsize': field_bits,
+        'junk_register_qubits': junk_register_qubits,
+        'peak_qroam_data_qubits': target_register_qubits + junk_register_qubits,
         'lookup_compute_non_clifford': lookup_compute,
         'measured_uncompute_non_clifford': measured_uncompute,
         'total_non_clifford': lookup_compute + measured_uncompute,
@@ -313,7 +321,7 @@ def _streamed_lookup_bit_oracle_stage(field_bits: int, bit_source: str) -> Dict[
         primitive_operations=compute_operations,
         notes=[
             f"The block uses the standard QROAM cost N/K + (K - 1)b with N={cost['domain_size']}, K={cost['block_size']}, and b={field_bits}.",
-            'The selected coordinate bits are emitted through the counted one-bit stream latch rather than a field-sized lookup-output lane.',
+            f"The matching workspace contract must count the {field_bits}-qubit target register plus {cost['junk_register_count']} junk registers of {field_bits} qubits each.",
         ],
     )
     uncompute_block = _block(
@@ -323,7 +331,7 @@ def _streamed_lookup_bit_oracle_stage(field_bits: int, bit_source: str) -> Dict[
         primitive_operations=uncompute_operations,
         notes=[
             f"The measured cleanup uses the standard QROAM adjoint cost N/K + (K - 1) with N={cost['domain_size']} and K={cost['block_size']}.",
-            'The cleanup is paired with the same coordinate stream before the next lookup-controlled arithmetic kernel starts.',
+            'The cleanup is paired with the same coordinate target and junk registers before the next lookup-controlled arithmetic kernel starts.',
         ],
     )
     return _stage(
@@ -333,7 +341,7 @@ def _streamed_lookup_bit_oracle_stage(field_bits: int, bit_source: str) -> Dict[
         blocks=[compute_block, uncompute_block],
         notes=[
             'This stage replaces the rejected bitwise-banked path-select model with a standard QROAM primitive-circuit data stream.',
-            'The lookup coordinate is not a materialized field lane, but the full coordinate-stream table select is counted as a standard QROAM compute plus measured uncompute.',
+            'The lookup coordinate target and its QROAMClean junk registers are counted by the lookup workspace contract while the consuming arithmetic kernel runs.',
         ],
     )
 

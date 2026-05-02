@@ -480,8 +480,8 @@
         "name": "folded_standard_qroam_streamed_coordinate_v1",
         "direct_lookup_non_clifford": 297,
         "stage_reconstructed_non_clifford": 297,
-        "workspace_qubits": 49,
-        "stage_reconstructed_workspace_qubits": 49,
+        "workspace_qubits": 4114,
+        "stage_reconstructed_workspace_qubits": 4114,
         "canonical_full_exhaustive_total": 65536,
         "canonical_full_exhaustive_pass": 65536,
         "multibase_edge_total": 32,
@@ -582,9 +582,9 @@
         "arithmetic_slot_count": 6,
         "control_slot_count": 1,
         "borrowed_interface_qubits": 0,
-        "lookup_workspace_qubits": 49,
+        "lookup_workspace_qubits": 4114,
         "live_phase_bits": 1,
-        "total_logical_qubits": 1587
+        "total_logical_qubits": 5652
       }
     },
     "best_qubit_family": {
@@ -608,20 +608,20 @@
         "arithmetic_slot_count": 6,
         "control_slot_count": 1,
         "borrowed_interface_qubits": 0,
-        "lookup_workspace_qubits": 49,
+        "lookup_workspace_qubits": 4114,
         "live_phase_bits": 1,
-        "total_logical_qubits": 1587
+        "total_logical_qubits": 5652
       }
     },
     "families": [
       {
         "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
         "generated_full_oracle_non_clifford": 23953656,
-        "generated_total_logical_qubits": 1587,
+        "generated_total_logical_qubits": 5652,
         "frontier_full_oracle_non_clifford": 23953656,
-        "frontier_total_logical_qubits": 1587,
+        "frontier_total_logical_qubits": 5652,
         "inventory_full_oracle_non_clifford": 23953656,
-        "inventory_total_logical_qubits": 1587
+        "inventory_total_logical_qubits": 5652
       }
     ]
   },

@@ -285,9 +285,9 @@
         "arithmetic_slot_count": 6,
         "control_slot_count": 1,
         "borrowed_interface_qubits": 0,
-        "lookup_workspace_qubits": 49,
+        "lookup_workspace_qubits": 4114,
         "live_phase_bits": 1,
-        "total_logical_qubits": 1587
+        "total_logical_qubits": 5652
       }
     },
     "best_qubit_family": {
@@ -311,16 +311,16 @@
         "arithmetic_slot_count": 6,
         "control_slot_count": 1,
         "borrowed_interface_qubits": 0,
-        "lookup_workspace_qubits": 49,
+        "lookup_workspace_qubits": 4114,
         "live_phase_bits": 1,
-        "total_logical_qubits": 1587
+        "total_logical_qubits": 5652
       }
     },
     "family_reconstructed_totals": [
       {
         "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
         "full_oracle_non_clifford": 23953656,
-        "total_logical_qubits": 1587
+        "total_logical_qubits": 5652
       }
     ]
   },
@@ -340,9 +340,9 @@
       "arithmetic_slot_count": 6,
       "control_slot_count": 1,
       "borrowed_interface_qubits": 0,
-      "lookup_workspace_qubits": 49,
+      "lookup_workspace_qubits": 4114,
       "live_phase_bits": 1,
-      "total_logical_qubits": 1587,
+      "total_logical_qubits": 5652,
       "phase_shell_hadamards": 512,
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 511,
@@ -350,12 +350,12 @@
       "total_measurements": 685592,
       "improvement_vs_google_low_qubit": 3.7572552599068803,
       "improvement_vs_google_low_gate": 2.92230964659424,
-      "qubit_ratio_vs_google_low_qubit": 0.7561436672967864,
-      "qubit_ratio_vs_google_low_gate": 0.9136735979836169,
+      "qubit_ratio_vs_google_low_qubit": 0.21231422505307856,
+      "qubit_ratio_vs_google_low_gate": 0.25654635527246994,
       "notes": [
         "This is the repository standard-QROM primitive-circuit lookup boundary. Unlike the rejected bitwise-banked family, it does not treat the 32768-entry coordinate table as 15 independent 2-way decodes.",
         "The selected coordinate stream pays the standard QROAM compute and measured-uncompute costs in arithmetic_lowerings.json for every table-controlled arithmetic consumer.",
-        "The peak lookup workspace is 49 qubits: 18 folded-control qubits plus 31 local QROAM/latch qubits, with no field-sized x/y output lane counted as lookup workspace.",
+        "The peak lookup workspace counts the folded-control qubits plus the full QROAMClean target and junk-register capacity required by the coordinate-stream cost model.",
         "This family is exact for the chosen semiclassical inverse-QFT schedule with one aggregated classical basis update per noninitial bit.",
         "It preserves the oracle family while collapsing the live quantum phase register from 512 qubits to one qubit."
       ]
@@ -375,9 +375,9 @@
       "arithmetic_slot_count": 6,
       "control_slot_count": 1,
       "borrowed_interface_qubits": 0,
-      "lookup_workspace_qubits": 49,
+      "lookup_workspace_qubits": 4114,
       "live_phase_bits": 1,
-      "total_logical_qubits": 1587,
+      "total_logical_qubits": 5652,
       "phase_shell_hadamards": 512,
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 511,
@@ -385,12 +385,12 @@
       "total_measurements": 685592,
       "improvement_vs_google_low_qubit": 3.7572552599068803,
       "improvement_vs_google_low_gate": 2.92230964659424,
-      "qubit_ratio_vs_google_low_qubit": 0.7561436672967864,
-      "qubit_ratio_vs_google_low_gate": 0.9136735979836169,
+      "qubit_ratio_vs_google_low_qubit": 0.21231422505307856,
+      "qubit_ratio_vs_google_low_gate": 0.25654635527246994,
       "notes": [
         "This is the repository standard-QROM primitive-circuit lookup boundary. Unlike the rejected bitwise-banked family, it does not treat the 32768-entry coordinate table as 15 independent 2-way decodes.",
         "The selected coordinate stream pays the standard QROAM compute and measured-uncompute costs in arithmetic_lowerings.json for every table-controlled arithmetic consumer.",
-        "The peak lookup workspace is 49 qubits: 18 folded-control qubits plus 31 local QROAM/latch qubits, with no field-sized x/y output lane counted as lookup workspace.",
+        "The peak lookup workspace counts the folded-control qubits plus the full QROAMClean target and junk-register capacity required by the coordinate-stream cost model.",
         "This family is exact for the chosen semiclassical inverse-QFT schedule with one aggregated classical basis update per noninitial bit.",
         "It preserves the oracle family while collapsing the live quantum phase register from 512 qubits to one qubit."
       ]
@@ -399,7 +399,7 @@
       {
         "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
         "full_oracle_non_clifford": 23953656,
-        "total_logical_qubits": 1587
+        "total_logical_qubits": 5652
       }
     ]
   },
@@ -418,9 +418,9 @@
     "arithmetic_slot_count": 6,
     "control_slot_count": 1,
     "borrowed_interface_qubits": 0,
-    "lookup_workspace_qubits": 49,
+    "lookup_workspace_qubits": 4114,
     "live_phase_bits": 1,
-    "total_logical_qubits": 1587,
+    "total_logical_qubits": 5652,
     "phase_shell_hadamards": 512,
     "phase_shell_measurements": 512,
     "phase_shell_rotations": 511,
@@ -428,12 +428,12 @@
     "total_measurements": 685592,
     "improvement_vs_google_low_qubit": 3.7572552599068803,
     "improvement_vs_google_low_gate": 2.92230964659424,
-    "qubit_ratio_vs_google_low_qubit": 0.7561436672967864,
-    "qubit_ratio_vs_google_low_gate": 0.9136735979836169,
+    "qubit_ratio_vs_google_low_qubit": 0.21231422505307856,
+    "qubit_ratio_vs_google_low_gate": 0.25654635527246994,
     "notes": [
       "This is the repository standard-QROM primitive-circuit lookup boundary. Unlike the rejected bitwise-banked family, it does not treat the 32768-entry coordinate table as 15 independent 2-way decodes.",
       "The selected coordinate stream pays the standard QROAM compute and measured-uncompute costs in arithmetic_lowerings.json for every table-controlled arithmetic consumer.",
-      "The peak lookup workspace is 49 qubits: 18 folded-control qubits plus 31 local QROAM/latch qubits, with no field-sized x/y output lane counted as lookup workspace.",
+      "The peak lookup workspace counts the folded-control qubits plus the full QROAMClean target and junk-register capacity required by the coordinate-stream cost model.",
       "This family is exact for the chosen semiclassical inverse-QFT schedule with one aggregated classical basis update per noninitial bit.",
       "It preserves the oracle family while collapsing the live quantum phase register from 512 qubits to one qubit."
     ]
@@ -453,9 +453,9 @@
     "arithmetic_slot_count": 6,
     "control_slot_count": 1,
     "borrowed_interface_qubits": 0,
-    "lookup_workspace_qubits": 49,
+    "lookup_workspace_qubits": 4114,
     "live_phase_bits": 1,
-    "total_logical_qubits": 1587,
+    "total_logical_qubits": 5652,
     "phase_shell_hadamards": 512,
     "phase_shell_measurements": 512,
     "phase_shell_rotations": 511,
@@ -463,12 +463,12 @@
     "total_measurements": 685592,
     "improvement_vs_google_low_qubit": 3.7572552599068803,
     "improvement_vs_google_low_gate": 2.92230964659424,
-    "qubit_ratio_vs_google_low_qubit": 0.7561436672967864,
-    "qubit_ratio_vs_google_low_gate": 0.9136735979836169,
+    "qubit_ratio_vs_google_low_qubit": 0.21231422505307856,
+    "qubit_ratio_vs_google_low_gate": 0.25654635527246994,
     "notes": [
       "This is the repository standard-QROM primitive-circuit lookup boundary. Unlike the rejected bitwise-banked family, it does not treat the 32768-entry coordinate table as 15 independent 2-way decodes.",
       "The selected coordinate stream pays the standard QROAM compute and measured-uncompute costs in arithmetic_lowerings.json for every table-controlled arithmetic consumer.",
-      "The peak lookup workspace is 49 qubits: 18 folded-control qubits plus 31 local QROAM/latch qubits, with no field-sized x/y output lane counted as lookup workspace.",
+      "The peak lookup workspace counts the folded-control qubits plus the full QROAMClean target and junk-register capacity required by the coordinate-stream cost model.",
       "This family is exact for the chosen semiclassical inverse-QFT schedule with one aggregated classical basis update per noninitial bit.",
       "It preserves the oracle family while collapsing the live quantum phase register from 512 qubits to one qubit."
     ]

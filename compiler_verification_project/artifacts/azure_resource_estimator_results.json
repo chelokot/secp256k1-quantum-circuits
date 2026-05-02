@@ -6,8 +6,8 @@
     "family_frontier": "compiler_verification_project/artifacts/family_frontier.json"
   },
   "source_bindings": {
-    "logical_counts_sha256": "ea4c4cdd616ab9214b652d716cce04a62e5fba7e2e5c27674d048e2f5d44e0e4",
-    "target_profiles_sha256": "1827ba4a562e26716cdcd4ac2b89734fedd1270c2a718397fff1ffa71191bf3e"
+    "logical_counts_sha256": "6ef3477d8ef97ac4099d6b422d7f2702a660d640d3001c5eb5c7daa890de5cd6",
+    "target_profiles_sha256": "51e1e589f3de40db23286dfbb47224bfbba84145ddd394d6f324e5186c614a15"
   },
   "estimator_backend": {
     "engine": "Microsoft Quantum Resource Estimator",
@@ -28,7 +28,7 @@
     {
       "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
       "logical_counts": {
-        "numQubits": 1587,
+        "numQubits": 5652,
         "tCount": 0,
         "cczCount": 23953656,
         "ccixCount": 0,
@@ -81,7 +81,7 @@
             "estimateType": "singlePoint"
           },
           "reported_logical_counts": {
-            "numQubits": 1587,
+            "numQubits": 5652,
             "tCount": 0,
             "rotationCount": 511,
             "rotationDepth": 511,
@@ -90,11 +90,11 @@
             "measurementCount": 685592
           },
           "physical_counts": {
-            "physicalQubits": 5040864,
+            "physicalQubits": 17040204,
             "runtime": 1175395001400000,
-            "rqops": 202963,
+            "rqops": 710988,
             "breakdown": {
-              "algorithmicLogicalQubits": 3288,
+              "algorithmicLogicalQubits": 11518,
               "algorithmicLogicalDepth": 72555247,
               "logicalDepth": 72555247,
               "numTstates": 95822800,
@@ -102,8 +102,8 @@
               "numTfactories": 14,
               "numTfactoryRuns": 6844486,
               "physicalQubitsForTfactories": 246960,
-              "physicalQubitsForAlgorithm": 4793904,
-              "requiredLogicalQubitErrorRate": 1.3972628473553058e-15,
+              "physicalQubitsForAlgorithm": 16793244,
+              "requiredLogicalQubitErrorRate": 3.988713528480852e-16,
               "requiredLogicalTstateErrorRate": 3.4786432178284637e-12,
               "numTsPerRotation": 16,
               "cliffordErrorRate": 0.001
@@ -111,18 +111,18 @@
           },
           "physical_counts_formatted": {
             "runtime": "14 days",
-            "rqops": "202.96k",
-            "physicalQubits": "5.04M",
-            "algorithmicLogicalQubits": "3.29k",
+            "rqops": "710.99k",
+            "physicalQubits": "17.04M",
+            "algorithmicLogicalQubits": "11.52k",
             "algorithmicLogicalDepth": "72.56M",
             "logicalDepth": "72.56M",
             "numTstates": "95.82M",
             "numTfactories": "14",
             "numTfactoryRuns": "6.84M",
-            "physicalQubitsForAlgorithm": "4.79M",
+            "physicalQubitsForAlgorithm": "16.79M",
             "physicalQubitsForTfactories": "246.96k",
-            "physicalQubitsForTfactoriesPercentage": "4.90 %",
-            "requiredLogicalQubitErrorRate": "1.40e-15",
+            "physicalQubitsForTfactoriesPercentage": "1.45 %",
+            "requiredLogicalQubitErrorRate": "3.99e-16",
             "requiredLogicalTstateErrorRate": "3.48e-12",
             "physicalQubitsPerLogicalQubit": "1.46k",
             "logicalCycleTime": "16 millisecs",
@@ -137,7 +137,7 @@
             "physicalQubitsPerRound": "17.64k",
             "tfactoryRuntimePerRound": "164 millisecs",
             "tstateLogicalErrorRate": "2.13e-12",
-            "logicalCountsNumQubits": "1.59k",
+            "logicalCountsNumQubits": "5.65k",
             "logicalCountsTCount": "0",
             "logicalCountsRotationCount": "511",
             "logicalCountsRotationDepth": "511",
@@ -184,7 +184,7 @@
             "logicalErrorRate": 2.130035000000002e-12
           },
           "bindings": {
-            "input_logical_counts_sha256": "4c7656f8d78df75a8b0f6df77c843da8cd595b162a961e0e9e6cb358aa98fd31",
+            "input_logical_counts_sha256": "2607baaa122d2edf8fedf2a150192e8c4d19a5309cbb840d6d37eeb0680ea0d1",
             "target_params_sha256": "a79ba8dfabd606c8064c6d6d05c3e7a4a28b9ecf8dbd269d50c99f500841c436"
           }
         },
@@ -231,7 +231,7 @@
             "estimateType": "singlePoint"
           },
           "reported_logical_counts": {
-            "numQubits": 1587,
+            "numQubits": 5652,
             "tCount": 0,
             "rotationCount": 511,
             "rotationDepth": 511,
@@ -240,11 +240,11 @@
             "measurementCount": 685592
           },
           "physical_counts": {
-            "physicalQubits": 1183944,
+            "physicalQubits": 3965684,
             "runtime": 565930926600000,
-            "rqops": 421539,
+            "rqops": 1476667,
             "breakdown": {
-              "algorithmicLogicalQubits": 3288,
+              "algorithmicLogicalQubits": 11518,
               "algorithmicLogicalDepth": 72555247,
               "logicalDepth": 72555247,
               "numTstates": 95822800,
@@ -252,8 +252,8 @@
               "numTfactories": 15,
               "numTfactoryRuns": 6388187,
               "physicalQubitsForTfactories": 72600,
-              "physicalQubitsForAlgorithm": 1111344,
-              "requiredLogicalQubitErrorRate": 1.3972628473553058e-15,
+              "physicalQubitsForAlgorithm": 3893084,
+              "requiredLogicalQubitErrorRate": 3.988713528480852e-16,
               "requiredLogicalTstateErrorRate": 3.4786432178284637e-12,
               "numTsPerRotation": 16,
               "cliffordErrorRate": 0.0001
@@ -261,18 +261,18 @@
           },
           "physical_counts_formatted": {
             "runtime": "7 days",
-            "rqops": "421.54k",
-            "physicalQubits": "1.18M",
-            "algorithmicLogicalQubits": "3.29k",
+            "rqops": "1.48M",
+            "physicalQubits": "3.97M",
+            "algorithmicLogicalQubits": "11.52k",
             "algorithmicLogicalDepth": "72.56M",
             "logicalDepth": "72.56M",
             "numTstates": "95.82M",
             "numTfactories": "15",
             "numTfactoryRuns": "6.39M",
-            "physicalQubitsForAlgorithm": "1.11M",
+            "physicalQubitsForAlgorithm": "3.89M",
             "physicalQubitsForTfactories": "72.60k",
-            "physicalQubitsForTfactoriesPercentage": "6.13 %",
-            "requiredLogicalQubitErrorRate": "1.40e-15",
+            "physicalQubitsForTfactoriesPercentage": "1.83 %",
+            "requiredLogicalQubitErrorRate": "3.99e-16",
             "requiredLogicalTstateErrorRate": "3.48e-12",
             "physicalQubitsPerLogicalQubit": "338",
             "logicalCycleTime": "8 millisecs",
@@ -287,7 +287,7 @@
             "physicalQubitsPerRound": "4.84k",
             "tfactoryRuntimePerRound": "86 millisecs",
             "tstateLogicalErrorRate": "2.13e-13",
-            "logicalCountsNumQubits": "1.59k",
+            "logicalCountsNumQubits": "5.65k",
             "logicalCountsTCount": "0",
             "logicalCountsRotationCount": "511",
             "logicalCountsRotationDepth": "511",
@@ -334,7 +334,7 @@
             "logicalErrorRate": 2.1303499999999999e-13
           },
           "bindings": {
-            "input_logical_counts_sha256": "4c7656f8d78df75a8b0f6df77c843da8cd595b162a961e0e9e6cb358aa98fd31",
+            "input_logical_counts_sha256": "2607baaa122d2edf8fedf2a150192e8c4d19a5309cbb840d6d37eeb0680ea0d1",
             "target_params_sha256": "6c096d0bae53db3194ea4362c296bb18a6f79363de32815e376bbcaa68691c9c"
           }
         },
@@ -381,7 +381,7 @@
             "estimateType": "singlePoint"
           },
           "reported_logical_counts": {
-            "numQubits": 1587,
+            "numQubits": 5652,
             "tCount": 0,
             "rotationCount": 511,
             "rotationDepth": 511,
@@ -390,11 +390,11 @@
             "measurementCount": 685592
           },
           "physical_counts": {
-            "physicalQubits": 5327024,
+            "physicalQubits": 17326364,
             "runtime": 783596667600,
-            "rqops": 304444445,
+            "rqops": 1066481482,
             "breakdown": {
-              "algorithmicLogicalQubits": 3288,
+              "algorithmicLogicalQubits": 11518,
               "algorithmicLogicalDepth": 72555247,
               "logicalDepth": 72555247,
               "numTstates": 95822800,
@@ -402,8 +402,8 @@
               "numTfactories": 16,
               "numTfactoryRuns": 5988925,
               "physicalQubitsForTfactories": 533120,
-              "physicalQubitsForAlgorithm": 4793904,
-              "requiredLogicalQubitErrorRate": 1.3972628473553058e-15,
+              "physicalQubitsForAlgorithm": 16793244,
+              "requiredLogicalQubitErrorRate": 3.988713528480852e-16,
               "requiredLogicalTstateErrorRate": 3.4786432178284637e-12,
               "numTsPerRotation": 16,
               "cliffordErrorRate": 0.001
@@ -411,18 +411,18 @@
           },
           "physical_counts_formatted": {
             "runtime": "13 mins",
-            "rqops": "304.44M",
-            "physicalQubits": "5.33M",
-            "algorithmicLogicalQubits": "3.29k",
+            "rqops": "1.07G",
+            "physicalQubits": "17.33M",
+            "algorithmicLogicalQubits": "11.52k",
             "algorithmicLogicalDepth": "72.56M",
             "logicalDepth": "72.56M",
             "numTstates": "95.82M",
             "numTfactories": "16",
             "numTfactoryRuns": "5.99M",
-            "physicalQubitsForAlgorithm": "4.79M",
+            "physicalQubitsForAlgorithm": "16.79M",
             "physicalQubitsForTfactories": "533.12k",
-            "physicalQubitsForTfactoriesPercentage": "10.01 %",
-            "requiredLogicalQubitErrorRate": "1.40e-15",
+            "physicalQubitsForTfactoriesPercentage": "3.08 %",
+            "requiredLogicalQubitErrorRate": "3.99e-16",
             "requiredLogicalTstateErrorRate": "3.48e-12",
             "physicalQubitsPerLogicalQubit": "1.46k",
             "logicalCycleTime": "11 microsecs",
@@ -437,7 +437,7 @@
             "physicalQubitsPerRound": "33.32k, 27.34k",
             "tfactoryRuntimePerRound": "36 microsecs, 92 microsecs",
             "tstateLogicalErrorRate": "2.47e-12",
-            "logicalCountsNumQubits": "1.59k",
+            "logicalCountsNumQubits": "5.65k",
             "logicalCountsTCount": "0",
             "logicalCountsRotationCount": "511",
             "logicalCountsRotationDepth": "511",
@@ -489,7 +489,7 @@
             "logicalErrorRate": 2.4698959469631274e-12
           },
           "bindings": {
-            "input_logical_counts_sha256": "4c7656f8d78df75a8b0f6df77c843da8cd595b162a961e0e9e6cb358aa98fd31",
+            "input_logical_counts_sha256": "2607baaa122d2edf8fedf2a150192e8c4d19a5309cbb840d6d37eeb0680ea0d1",
             "target_params_sha256": "04ec9d2bf7a16589d7d00037973167317026006978a54c60e2d28895cdd7ed1f"
           }
         },
@@ -536,7 +536,7 @@
             "estimateType": "singlePoint"
           },
           "reported_logical_counts": {
-            "numQubits": 1587,
+            "numQubits": 5652,
             "tCount": 0,
             "rotationCount": 511,
             "rotationDepth": 511,
@@ -545,11 +545,11 @@
             "measurementCount": 685592
           },
           "physical_counts": {
-            "physicalQubits": 1220784,
+            "physicalQubits": 4002524,
             "runtime": 377287284400,
-            "rqops": 632307693,
+            "rqops": 2215000000,
             "breakdown": {
-              "algorithmicLogicalQubits": 3288,
+              "algorithmicLogicalQubits": 11518,
               "algorithmicLogicalDepth": 72555247,
               "logicalDepth": 72555247,
               "numTstates": 95822800,
@@ -557,8 +557,8 @@
               "numTfactories": 19,
               "numTfactoryRuns": 5043306,
               "physicalQubitsForTfactories": 109440,
-              "physicalQubitsForAlgorithm": 1111344,
-              "requiredLogicalQubitErrorRate": 1.3972628473553058e-15,
+              "physicalQubitsForAlgorithm": 3893084,
+              "requiredLogicalQubitErrorRate": 3.988713528480852e-16,
               "requiredLogicalTstateErrorRate": 3.4786432178284637e-12,
               "numTsPerRotation": 16,
               "cliffordErrorRate": 0.0001
@@ -566,18 +566,18 @@
           },
           "physical_counts_formatted": {
             "runtime": "6 mins",
-            "rqops": "632.31M",
-            "physicalQubits": "1.22M",
-            "algorithmicLogicalQubits": "3.29k",
+            "rqops": "2.21G",
+            "physicalQubits": "4.00M",
+            "algorithmicLogicalQubits": "11.52k",
             "algorithmicLogicalDepth": "72.56M",
             "logicalDepth": "72.56M",
             "numTstates": "95.82M",
             "numTfactories": "19",
             "numTfactoryRuns": "5.04M",
-            "physicalQubitsForAlgorithm": "1.11M",
+            "physicalQubitsForAlgorithm": "3.89M",
             "physicalQubitsForTfactories": "109.44k",
-            "physicalQubitsForTfactoriesPercentage": "8.96 %",
-            "requiredLogicalQubitErrorRate": "1.40e-15",
+            "physicalQubitsForTfactoriesPercentage": "2.73 %",
+            "requiredLogicalQubitErrorRate": "3.99e-16",
             "requiredLogicalTstateErrorRate": "3.48e-12",
             "physicalQubitsPerLogicalQubit": "338",
             "logicalCycleTime": "5 microsecs",
@@ -592,7 +592,7 @@
             "physicalQubitsPerRound": "5.76k, 4.84k",
             "tfactoryRuntimePerRound": "16 microsecs, 57 microsecs",
             "tstateLogicalErrorRate": "5.51e-13",
-            "logicalCountsNumQubits": "1.59k",
+            "logicalCountsNumQubits": "5.65k",
             "logicalCountsTCount": "0",
             "logicalCountsRotationCount": "511",
             "logicalCountsRotationDepth": "511",
@@ -644,7 +644,7 @@
             "logicalErrorRate": 5.512275623134896e-13
           },
           "bindings": {
-            "input_logical_counts_sha256": "4c7656f8d78df75a8b0f6df77c843da8cd595b162a961e0e9e6cb358aa98fd31",
+            "input_logical_counts_sha256": "2607baaa122d2edf8fedf2a150192e8c4d19a5309cbb840d6d37eeb0680ea0d1",
             "target_params_sha256": "62e0881d31451352cfb569ecc9b6d6178c586a8836b0c898ee58e1a31dec7ee5"
           }
         },
@@ -695,7 +695,7 @@
             "estimateType": "singlePoint"
           },
           "reported_logical_counts": {
-            "numQubits": 1587,
+            "numQubits": 5652,
             "tCount": 0,
             "rotationCount": 511,
             "rotationDepth": 511,
@@ -704,20 +704,20 @@
             "measurementCount": 685592
           },
           "physical_counts": {
-            "physicalQubits": 3594336,
-            "runtime": 282965463300,
-            "rqops": 843076924,
+            "physicalQubits": 12606616,
+            "runtime": 326498611500,
+            "rqops": 2559555556,
             "breakdown": {
-              "algorithmicLogicalQubits": 3288,
+              "algorithmicLogicalQubits": 11518,
               "algorithmicLogicalDepth": 72555247,
               "logicalDepth": 72555247,
               "numTstates": 95822800,
-              "clockFrequency": 256410.2564102564,
-              "numTfactories": 20,
-              "numTfactoryRuns": 4791140,
-              "physicalQubitsForTfactories": 1056000,
-              "physicalQubitsForAlgorithm": 2538336,
-              "requiredLogicalQubitErrorRate": 1.3972628473553058e-15,
+              "clockFrequency": 222222.22222222222,
+              "numTfactories": 18,
+              "numTfactoryRuns": 5323489,
+              "physicalQubitsForTfactories": 950400,
+              "physicalQubitsForAlgorithm": 11656216,
+              "requiredLogicalQubitErrorRate": 3.988713528480852e-16,
               "requiredLogicalTstateErrorRate": 3.4786432178284637e-12,
               "numTsPerRotation": 16,
               "cliffordErrorRate": 0.0001
@@ -725,23 +725,23 @@
           },
           "physical_counts_formatted": {
             "runtime": "5 mins",
-            "rqops": "843.08M",
-            "physicalQubits": "3.59M",
-            "algorithmicLogicalQubits": "3.29k",
+            "rqops": "2.56G",
+            "physicalQubits": "12.61M",
+            "algorithmicLogicalQubits": "11.52k",
             "algorithmicLogicalDepth": "72.56M",
             "logicalDepth": "72.56M",
             "numTstates": "95.82M",
-            "numTfactories": "20",
-            "numTfactoryRuns": "4.79M",
-            "physicalQubitsForAlgorithm": "2.54M",
-            "physicalQubitsForTfactories": "1.06M",
-            "physicalQubitsForTfactoriesPercentage": "29.38 %",
-            "requiredLogicalQubitErrorRate": "1.40e-15",
+            "numTfactories": "18",
+            "numTfactoryRuns": "5.32M",
+            "physicalQubitsForAlgorithm": "11.66M",
+            "physicalQubitsForTfactories": "950.40k",
+            "physicalQubitsForTfactoriesPercentage": "7.54 %",
+            "requiredLogicalQubitErrorRate": "3.99e-16",
             "requiredLogicalTstateErrorRate": "3.48e-12",
-            "physicalQubitsPerLogicalQubit": "772",
-            "logicalCycleTime": "4 microsecs",
-            "clockFrequency": "256.41k",
-            "logicalErrorRate": "7.00e-16",
+            "physicalQubitsPerLogicalQubit": "1.01k",
+            "logicalCycleTime": "5 microsecs",
+            "clockFrequency": "222.22k",
+            "logicalErrorRate": "7.00e-18",
             "tfactoryPhysicalQubits": "52.80k",
             "tfactoryRuntime": "58 microsecs",
             "numInputTstates": "23.95k",
@@ -751,7 +751,7 @@
             "physicalQubitsPerRound": "49.51k, 52.80k, 17.48k",
             "tfactoryRuntimePerRound": "2 microsecs, 20 microsecs, 36 microsecs",
             "tstateLogicalErrorRate": "5.02e-13",
-            "logicalCountsNumQubits": "1.59k",
+            "logicalCountsNumQubits": "5.65k",
             "logicalCountsTCount": "0",
             "logicalCountsRotationCount": "511",
             "logicalCountsRotationDepth": "511",
@@ -769,10 +769,10 @@
             "maxPhysicalQubits": "constraint not set"
           },
           "logical_qubit": {
-            "codeDistance": 13,
-            "physicalQubits": 772,
-            "logicalCycleTime": 3900,
-            "logicalErrorRate": 7.000000000000001e-16
+            "codeDistance": 15,
+            "physicalQubits": 1012,
+            "logicalCycleTime": 4500,
+            "logicalErrorRate": 7.000000000000001e-18
           },
           "tfactory": {
             "physicalQubits": 52800,
@@ -808,7 +808,7 @@
             "logicalErrorRate": 5.016398896495723e-13
           },
           "bindings": {
-            "input_logical_counts_sha256": "4c7656f8d78df75a8b0f6df77c843da8cd595b162a961e0e9e6cb358aa98fd31",
+            "input_logical_counts_sha256": "2607baaa122d2edf8fedf2a150192e8c4d19a5309cbb840d6d37eeb0680ea0d1",
             "target_params_sha256": "5cecd9217836cd4d96c84200fb27bb9f36baf417a6bc41f63f9b7dba82b72496"
           }
         },
@@ -859,7 +859,7 @@
             "estimateType": "singlePoint"
           },
           "reported_logical_counts": {
-            "numQubits": 1587,
+            "numQubits": 5652,
             "tCount": 0,
             "rotationCount": 511,
             "rotationDepth": 511,
@@ -868,11 +868,11 @@
             "measurementCount": 685592
           },
           "physical_counts": {
-            "physicalQubits": 839232,
+            "physicalQubits": 2847352,
             "runtime": 152366018700,
-            "rqops": 1565714286,
+            "rqops": 5484761905,
             "breakdown": {
-              "algorithmicLogicalQubits": 3288,
+              "algorithmicLogicalQubits": 11518,
               "algorithmicLogicalDepth": 72555247,
               "logicalDepth": 72555247,
               "numTstates": 95822800,
@@ -880,8 +880,8 @@
               "numTfactories": 14,
               "numTfactoryRuns": 6844486,
               "physicalQubitsForTfactories": 36960,
-              "physicalQubitsForAlgorithm": 802272,
-              "requiredLogicalQubitErrorRate": 1.3972628473553058e-15,
+              "physicalQubitsForAlgorithm": 2810392,
+              "requiredLogicalQubitErrorRate": 3.988713528480852e-16,
               "requiredLogicalTstateErrorRate": 3.4786432178284637e-12,
               "numTsPerRotation": 16,
               "cliffordErrorRate": 1e-06
@@ -889,18 +889,18 @@
           },
           "physical_counts_formatted": {
             "runtime": "3 mins",
-            "rqops": "1.57G",
-            "physicalQubits": "839.23k",
-            "algorithmicLogicalQubits": "3.29k",
+            "rqops": "5.48G",
+            "physicalQubits": "2.85M",
+            "algorithmicLogicalQubits": "11.52k",
             "algorithmicLogicalDepth": "72.56M",
             "logicalDepth": "72.56M",
             "numTstates": "95.82M",
             "numTfactories": "14",
             "numTfactoryRuns": "6.84M",
-            "physicalQubitsForAlgorithm": "802.27k",
+            "physicalQubitsForAlgorithm": "2.81M",
             "physicalQubitsForTfactories": "36.96k",
-            "physicalQubitsForTfactoriesPercentage": "4.40 %",
-            "requiredLogicalQubitErrorRate": "1.40e-15",
+            "physicalQubitsForTfactoriesPercentage": "1.30 %",
+            "requiredLogicalQubitErrorRate": "3.99e-16",
             "requiredLogicalTstateErrorRate": "3.48e-12",
             "physicalQubitsPerLogicalQubit": "244",
             "logicalCycleTime": "2 microsecs",
@@ -915,7 +915,7 @@
             "physicalQubitsPerRound": "713, 2.64k",
             "tfactoryRuntimePerRound": "2 microsecs, 20 microsecs",
             "tstateLogicalErrorRate": "3.11e-12",
-            "logicalCountsNumQubits": "1.59k",
+            "logicalCountsNumQubits": "5.65k",
             "logicalCountsTCount": "0",
             "logicalCountsRotationCount": "511",
             "logicalCountsRotationDepth": "511",
@@ -967,7 +967,7 @@
             "logicalErrorRate": 3.1086461350000004e-12
           },
           "bindings": {
-            "input_logical_counts_sha256": "4c7656f8d78df75a8b0f6df77c843da8cd595b162a961e0e9e6cb358aa98fd31",
+            "input_logical_counts_sha256": "2607baaa122d2edf8fedf2a150192e8c4d19a5309cbb840d6d37eeb0680ea0d1",
             "target_params_sha256": "28942d7080db65659e54ecd7009ba532b4bb99add36967c0fce3c3218496b540"
           }
         }
@@ -976,13 +976,13 @@
         "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
         "lowest_physical_qubits_target": {
           "target": "maj_ns_e6_floquet_code",
-          "physical_qubits": 839232,
+          "physical_qubits": 2847352,
           "runtime": 152366018700
         },
         "fastest_runtime_target": {
           "target": "maj_ns_e6_floquet_code",
           "runtime": 152366018700,
-          "physical_qubits": 839232
+          "physical_qubits": 2847352
         }
       }
     }
@@ -992,78 +992,78 @@
       "target": "gate_us_e3_surface_code",
       "lowest_physical_qubits_family": {
         "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
-        "physical_qubits": 5040864,
+        "physical_qubits": 17040204,
         "runtime": 1175395001400000
       },
       "fastest_runtime_family": {
         "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
         "runtime": 1175395001400000,
-        "physical_qubits": 5040864
+        "physical_qubits": 17040204
       }
     },
     {
       "target": "gate_us_e4_surface_code",
       "lowest_physical_qubits_family": {
         "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
-        "physical_qubits": 1183944,
+        "physical_qubits": 3965684,
         "runtime": 565930926600000
       },
       "fastest_runtime_family": {
         "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
         "runtime": 565930926600000,
-        "physical_qubits": 1183944
+        "physical_qubits": 3965684
       }
     },
     {
       "target": "gate_ns_e3_surface_code",
       "lowest_physical_qubits_family": {
         "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
-        "physical_qubits": 5327024,
+        "physical_qubits": 17326364,
         "runtime": 783596667600
       },
       "fastest_runtime_family": {
         "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
         "runtime": 783596667600,
-        "physical_qubits": 5327024
+        "physical_qubits": 17326364
       }
     },
     {
       "target": "gate_ns_e4_surface_code",
       "lowest_physical_qubits_family": {
         "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
-        "physical_qubits": 1220784,
+        "physical_qubits": 4002524,
         "runtime": 377287284400
       },
       "fastest_runtime_family": {
         "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
         "runtime": 377287284400,
-        "physical_qubits": 1220784
+        "physical_qubits": 4002524
       }
     },
     {
       "target": "maj_ns_e4_floquet_code",
       "lowest_physical_qubits_family": {
         "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
-        "physical_qubits": 3594336,
-        "runtime": 282965463300
+        "physical_qubits": 12606616,
+        "runtime": 326498611500
       },
       "fastest_runtime_family": {
         "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
-        "runtime": 282965463300,
-        "physical_qubits": 3594336
+        "runtime": 326498611500,
+        "physical_qubits": 12606616
       }
     },
     {
       "target": "maj_ns_e6_floquet_code",
       "lowest_physical_qubits_family": {
         "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
-        "physical_qubits": 839232,
+        "physical_qubits": 2847352,
         "runtime": 152366018700
       },
       "fastest_runtime_family": {
         "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
         "runtime": 152366018700,
-        "physical_qubits": 839232
+        "physical_qubits": 2847352
       }
     }
   ],

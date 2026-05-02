@@ -18,7 +18,7 @@ As of the current compiler frontier, the repository's central standard-QROM
 point is:
 
 - `23,953,656` non-Clifford
-- `1,587` logical qubits
+- `5,652` logical qubits
 
 This is the family
 `folded_bitwise_banked_unary_qrom_measured_uncompute_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1`
@@ -698,10 +698,10 @@ Result for `n = 256`:
 
 Whole-oracle implication:
 
-- the current central standard-QROM point is `1587` logical qubits, which decomposes as
-  `6 * 256 + 49 + 1 + 1`,
+- the current central standard-QROM point is `5652` logical qubits, which decomposes as
+  `6 * 256 + 4114 + 1 + 1`,
 - a hypothetical `7`-slot arithmetic leaf with sequential tmpand-style zero
-  tests lands at about `7 * 256 + 255 + 49 + 1 + 1 = 2098` logical qubits
+  tests lands at about `7 * 256 + 255 + 4114 + 1 + 1 = 6163` logical qubits
   before any extra branch-control bookkeeping,
 - the same candidate with parallel zero-test scratch rises to about `2352`
   logical qubits,
@@ -764,9 +764,10 @@ Repository implication at `n = 256`:
 - across the current `28` retained additions this is about `43,036`
   non-Clifford total,
 - that is still tiny relative to the current central standard-QROM point,
-- if the ancilla demand really stays in the `O(log*(n))` or minimal-qubit
-  regime, a `7`-slot candidate could plausibly remain in roughly the
-  mid-`1800`s logical-qubit range instead of collapsing back to `~2100`.
+- if the predicate ancilla demand really stays in the `O(log*(n))` or
+  minimal-qubit regime, the arithmetic shell would remain small, but the
+  current standard-QROAMClean lookup workspace still keeps the whole-oracle
+  logical-qubit total above `5k`.
 
 Important limitation:
 
@@ -796,7 +797,7 @@ What was checked locally:
 
 - translated the comparator-based predicate screen into whole-oracle headline
   numbers using the current central standard-QROM decomposition
-  `slots * 256 + 49 + 1 + 1`,
+  `slots * 256 + 4114 + 1 + 1`,
 - modeled the doubling predicate as two `3n`-style comparators plus one final
   one-bit conjunction at `n = 256`,
 - swept a small ancilla range `1..8` for the predicate layer.
@@ -806,10 +807,10 @@ Result:
 - the gate total remains essentially unchanged at about `22,796,867`
   non-Clifford across the whole sweep,
 - the qubit totals are approximately:
-  - `7` arithmetic slots: `1844..1851` logical qubits,
-  - `6` arithmetic slots: `1588..1595` logical qubits,
-  - `5` arithmetic slots: `1332..1339` logical qubits,
-  - `4` arithmetic slots: `1076..1083` logical qubits.
+  - `7` arithmetic slots: `5909..5916` logical qubits,
+  - `6` arithmetic slots: `5653..5660` logical qubits,
+  - `5` arithmetic slots: `5397..5404` logical qubits,
+  - `4` arithmetic slots: `5141..5148` logical qubits.
 
 Interpretation:
 
@@ -866,13 +867,13 @@ What was checked locally:
 
 - converted the `7`-slot floor into required effective field widths under the
   current central standard-QROM whole-oracle overhead model
-  `slots * width + 49 + 1 + 1 + predicate_ancilla`,
+  `slots * width + 4114 + 1 + 1 + predicate_ancilla`,
 - swept a small predicate-ancilla range `1..8`.
 
 Result:
 
-- for a `7`-slot design to beat `1450` logical qubits, the effective field-slot
-  width must fall to about `198..199` bits,
+- under the current standard-QROAMClean workspace, no positive field-slot width
+  can beat `1450` logical qubits with this `7`-slot shape,
 - for a `7`-slot design to beat `1200`, the effective field-slot width must
   fall to about `163..164` bits,
 - for a hypothetical `6`-slot design, the corresponding widths would be about
@@ -1688,9 +1689,9 @@ Qubit implication:
 
 - the same proxy is compatible with a constant-size shell workspace rather than
   a `254`-qubit tmpand ladder,
-- under the current `7`-slot shell accounting, this keeps the whole-oracle
-  qubit picture in the same `1843..1846` band already identified for low-ancilla
-  shell controls.
+- under the current standard-QROAMClean accounting, this improves only the
+  arithmetic-shell term; the whole-oracle qubit picture remains dominated by
+  the `4114` lookup-workspace term.
 
 Interpretation:
 
@@ -1735,16 +1736,16 @@ What was checked locally:
 - priced the qubit effect of carrying explicit shell-state controls on top of a
   hypothetical `7`-slot retained-add leaf,
 - kept the current central standard-QROM family's fixed non-arithmetic budget:
-  `49` lookup workspace qubits and `1` live phase bit.
+  `4114` lookup workspace qubits and `1` live phase bit.
 
 Result:
 
-- with `7` arithmetic slots, total qubits are `1841 + control_slots`,
+- with `7` arithmetic slots, total qubits are `5906 + control_slots`,
 - this gives:
-  - `1843` qubits for `2` control slots,
-  - `1844` qubits for `3` control slots,
-  - `1845` qubits for `4` control slots,
-  - `1846` qubits for `5` control slots.
+  - `5908` qubits for `2` control slots,
+  - `5909` qubits for `3` control slots,
+  - `5910` qubits for `4` control slots,
+  - `5911` qubits for `5` control slots.
 
 Interpretation:
 
@@ -1767,8 +1768,8 @@ Result:
 - a single generic `Fp^d` register costs at least `256d` logical qubits when
   expanded back to exact `Fp` storage,
 - under that optimistic proxy, a `7`-slot arithmetic leaf costs:
-  - `3635` logical qubits at `d = 2`,
-  - `5427` logical qubits at `d = 3`.
+  - `7700` logical qubits at `d = 2`,
+  - `9492` logical qubits at `d = 3`.
 
 Interpretation:
 

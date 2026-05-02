@@ -4,7 +4,7 @@
     {
       "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
       "logicalCounts": {
-        "numQubits": 1587,
+        "numQubits": 5652,
         "tCount": 0,
         "cczCount": 23953656,
         "ccixCount": 0,

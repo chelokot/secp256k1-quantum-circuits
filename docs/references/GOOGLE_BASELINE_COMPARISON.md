@@ -25,7 +25,7 @@ The repository's exact comparison layer is the compiler-family frontier in:
 
 Its checked public headline is one central standard-QROM family:
 
-- **central standard-QROM family:** `23,953,656 non-Clifford / 1,587 q`
+- **central standard-QROM family:** `23,953,656 non-Clifford / 5,652 q`
 
 The standard-QROM assessment records that the current central family uses a
 standard QROAM coordinate-stream primitive over the full 32768-entry folded
@@ -44,8 +44,8 @@ For the **central standard-QROM family**:
 The standard-QROM frontier does **not** currently beat Google's published
 qubit lines:
 
-- the central standard-QROM family is **387 qubits above** the public low-qubit line
-- the central standard-QROM family is **137 qubits above** the public low-gate line
+- the central standard-QROM family is **4,452 qubits above** the public low-qubit line
+- the central standard-QROM family is **4,202 qubits above** the public low-gate line
 
 Lower-exact modeled hypotheses are intentionally separated into
 `docs/research/MODELED_IMPLEMENTATION_HYPOTHESES.md`.

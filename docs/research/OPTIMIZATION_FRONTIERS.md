@@ -36,7 +36,7 @@ It would be inaccurate to describe the repository as already having:
 
 - a Clifford-complete primitive-gate full-oracle implementation,
 - a standard-QROM primitive-circuit realization with lower cost than the checked
-  `23,953,656 / 1,587` central result,
+  `23,953,656 / 5,652` central result,
 - a primitive-gate cleanup proof,
 - a fully flattened Shor circuit,
 - a globally optimal primitive-gate total.

@@ -139,6 +139,13 @@ def test_mutated_standard_qrom_assessment_is_detected() -> None:
     assert groups['standard_qrom_lookup_assessment_checks']['pass'] < groups['standard_qrom_lookup_assessment_checks']['total']
 
 
+def test_mutated_qroam_workspace_capacity_is_detected() -> None:
+    artifacts = deepcopy(_load_artifacts())
+    artifacts['streamed_lookup_table_multiplier_resource']['workspace_contract']['qroam_clean_junk_register_qubits'] -= 256
+    groups = evaluate_mutated_verification_groups(artifacts, REPO_ROOT)
+    assert groups['streamed_lookup_table_multiplier_resource_checks']['pass'] < groups['streamed_lookup_table_multiplier_resource_checks']['total']
+
+
 def test_mutated_phase_shell_lowering_is_detected() -> None:
     artifacts = deepcopy(_load_artifacts())
     artifacts['phase_shell_lowerings']['families'][0]['stages'][0]['blocks'][0]['phase_operation_generator']['phase_bits'] -= 1

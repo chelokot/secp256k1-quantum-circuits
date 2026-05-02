@@ -30,7 +30,7 @@ def test_zkp_attestation_input_reconstructs_public_claim() -> None:
     assert claim['expected_total_logical_qubits'] == family['total_logical_qubits']
     assert family['name'].endswith('__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1')
     assert family['full_oracle_non_clifford'] == 23_953_656
-    assert family['total_logical_qubits'] == 1_587
+    assert family['total_logical_qubits'] == 5_652
 
 
 def test_zkp_attestation_cases_match_leaf_and_group_law() -> None:
