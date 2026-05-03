@@ -929,11 +929,11 @@
           },
           "non_clifford_total": 0,
           "persistent_workspace_qubits": 18,
-          "local_workspace_qubits": 4096,
-          "total_workspace_qubits": 4114,
+          "local_workspace_qubits": 256,
+          "total_workspace_qubits": 274,
           "notes": [
             "The standard-QROAM table-data select is not the old bitwise chunk decode. It is bound in arithmetic_lowerings.json at each table-controlled coordinate-stream consumer because the stream is consumed by the multiplier latch immediately.",
-            "The stage local workspace reserves the 256-qubit QROAM target plus 15 junk registers of 256 qubits each."
+            "The stage local workspace reserves the 256-qubit QROAM target plus 0 junk registers of 256 qubits each."
           ]
         },
         {
@@ -949,8 +949,8 @@
           },
           "non_clifford_total": 0,
           "persistent_workspace_qubits": 18,
-          "local_workspace_qubits": 4096,
-          "total_workspace_qubits": 4114,
+          "local_workspace_qubits": 256,
+          "total_workspace_qubits": 274,
           "notes": [
             "Measured cleanup is paired with each coordinate target and its junk registers in arithmetic_lowerings.json; this lookup-family row owns the peak workspace capacity."
           ]
@@ -1110,11 +1110,11 @@
       "conditional_negate_y_non_clifford": 255,
       "direct_lookup_non_clifford": 297,
       "per_leaf_lookup_non_clifford": 297,
-      "extra_lookup_workspace_qubits": 4114,
+      "extra_lookup_workspace_qubits": 274,
       "workspace_reconstruction": {
         "persistent_workspace_qubits": 18,
         "peak_stage": "standard_qroam_coordinate_stream_compute",
-        "peak_total_workspace_qubits": 4114
+        "peak_total_workspace_qubits": 274
       },
       "semantic_profile": {
         "zero_maps_to_infinity": true,

@@ -368,7 +368,7 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
         frontier = compiler_project['frontier']
         section += 1
         print(f"[{section}/{total_sections}] Exact compiler build        {console.ok('PASS')}")
-        central_family = frontier['best_sub30m_qubit_family']
+        central_family = frontier['best_qubit_family']
         print(console.detail(
             f"      central standard-QROM family: {central_family['full_oracle_non_clifford']:,} non-Clifford / "
             f"{central_family['total_logical_qubits']:,} logical qubits"
@@ -387,7 +387,7 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
             f"      semantic replay: {compiler_verify['summary']['semantic_cases']['pass']:,} / {compiler_verify['summary']['semantic_cases']['total']:,} cases"
         ))
         print(console.detail(
-            f"      integrity checks: {compiler_verify['summary']['invariant_checks']['pass']:,} / {compiler_verify['summary']['invariant_checks']['total']:,} (canonical point + schedule + slot allocation + lowered arithmetic/lookup/phase shell + standard-QROM assessment + generated inventories + FT IR + whole-oracle recount + subcircuit equivalence + frontier + physical-estimator handoffs + transfer handoffs)"
+            f"      integrity checks: {compiler_verify['summary']['invariant_checks']['pass']:,} / {compiler_verify['summary']['invariant_checks']['total']:,} (canonical point + schedule + slot allocation + lowered arithmetic/lookup/phase shell + standard-QROM assessment + logical resource ledger + generated inventories + FT IR + whole-oracle recount + subcircuit equivalence + frontier + physical-estimator handoffs + transfer handoffs)"
         ))
         print(console.detail(f"      verification sha256: {compiler_project['verification_summary_sha256']}"))
         print(console.detail(
@@ -396,7 +396,7 @@ def print_human_summary(summary: Dict[str, Any], console: Console, quick: bool) 
         print()
 
     if compiler_project is not None:
-        central_exact = compiler_project['frontier']['best_sub30m_qubit_family']
+        central_exact = compiler_project['frontier']['best_qubit_family']
         gate_baseline = baseline['low_gate']
         qubit_baseline = baseline['low_qubit']
         labels = [

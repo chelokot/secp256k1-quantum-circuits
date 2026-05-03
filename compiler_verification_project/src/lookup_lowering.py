@@ -23,6 +23,7 @@ from lookup_research import (  # noqa: E402
 
 PointAffine = Optional[Tuple[int, int]]
 PrimitiveOperation = List[int | str]
+STANDARD_QROAM_CLEAN_BLOCK_SIZE = 1
 
 
 def _lookup_contract_path() -> Path:
@@ -566,7 +567,7 @@ def _standard_qroam_streamed_coordinate_family(contract: Mapping[str, Any]) -> D
     params = _contract_parameters(contract)
     persistent_workspace = _persistent_workspace(params['magnitude_bits'])
     persistent_total = sum(int(entry['qubits']) for entry in persistent_workspace)
-    block_size = 16
+    block_size = STANDARD_QROAM_CLEAN_BLOCK_SIZE
     coordinate_bits = int(params['coordinate_bits'])
     stream_workspace = block_size * coordinate_bits
     stages = [

@@ -35,34 +35,34 @@
     }
   },
   "headline_ranges": {
-    "time_efficient_days_if_90M_min": 2.6615173333333333,
-    "time_efficient_days_if_90M_max": 2.6615173333333333,
-    "time_efficient_days_if_70M_min": 3.421950857142857,
-    "time_efficient_days_if_70M_max": 3.421950857142857,
-    "same_density_physical_qubits_if_1200_min": 122460.0,
-    "same_density_physical_qubits_if_1200_max": 122460.0,
-    "same_density_physical_qubits_if_1450_min": 101346.20689655172,
-    "same_density_physical_qubits_if_1450_max": 101346.20689655172
+    "time_efficient_days_if_90M_min": 3.653259,
+    "time_efficient_days_if_90M_max": 3.653259,
+    "time_efficient_days_if_70M_min": 4.6970472857142855,
+    "time_efficient_days_if_70M_max": 4.6970472857142855,
+    "same_density_physical_qubits_if_1200_min": 39260.0,
+    "same_density_physical_qubits_if_1200_max": 39260.0,
+    "same_density_physical_qubits_if_1450_min": 32491.03448275862,
+    "same_density_physical_qubits_if_1450_max": 32491.03448275862
   },
   "cases": [
     {
       "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
-      "exact_non_clifford": 23953656,
-      "exact_logical_qubits": 5652,
+      "exact_non_clifford": 32879331,
+      "exact_logical_qubits": 1812,
       "runtime_transfer": {
         "assumption": "Fixed physical architecture, cycle time, and parallelization regime; runtime scales with exact-family non-Clifford ratio.",
-        "time_efficient_days_if_90M_maps_to_10d": 2.6615173333333333,
-        "time_efficient_days_if_70M_maps_to_10d": 3.421950857142857
+        "time_efficient_days_if_90M_maps_to_10d": 3.653259,
+        "time_efficient_days_if_70M_maps_to_10d": 4.6970472857142855
       },
       "space_transfer": {
         "assumption": "Logical-to-physical density is inherited from the cited Cain reference line.",
-        "same_density_physical_qubits_if_1200_maps_to_26k": 122460.0,
-        "same_density_physical_qubits_if_1450_maps_to_26k": 101346.20689655172
+        "same_density_physical_qubits_if_1200_maps_to_26k": 39260.0,
+        "same_density_physical_qubits_if_1450_maps_to_26k": 32491.03448275862
       }
     }
   ],
   "publication_safe_summary": {
-    "single_sentence": "If the repository's central standard-QROM compiler family is transferred into the neutral-atom architecture of Cain et al. under fixed cycle-time and parallelism assumptions, the checked result maps to roughly 2.7-3.4 days and about 101.3k-122.5k physical qubits under the stored reference-line transfers.",
+    "single_sentence": "If the repository's central standard-QROM compiler family is transferred into the neutral-atom architecture of Cain et al. under fixed cycle-time and parallelism assumptions, the checked result maps to roughly 3.7-4.7 days and about 32.5k-39.3k physical qubits under the stored reference-line transfers.",
     "do_not_say": [
       "Do not say the paper is beaten on its own P-256 target without recompiling for P-256.",
       "Do not say the transferred runtime or physical-qubit range is exact; it is still a cross-paper architecture transfer.",

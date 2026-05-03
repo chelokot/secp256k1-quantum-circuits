@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from typing import Any, Dict, List, Mapping
+from typing import Any, Dict, List, Mapping, Optional
 
 from derived_resources import minimal_addition_chain
 
 
 PrimitiveOperation = List[int | str]
+DEFAULT_QROAM_CLEAN_BLOCK_SIZE = 1
 
 
 def _primitive_counts(ccx: int = 0, cx: int = 0, x: int = 0, measurement: int = 0) -> Dict[str, int]:
@@ -29,6 +30,25 @@ def _primitive_counts_from_operations(primitive_operations: List[PrimitiveOperat
     for operation in primitive_operations:
         counts[str(operation[0])] += 1
     return counts
+
+
+def materialize_arithmetic_primitive_operations(block: Mapping[str, Any]) -> List[PrimitiveOperation]:
+    if 'primitive_operations' in block:
+        return list(block['primitive_operations'])
+    generator = block['primitive_operation_generator']
+    kind = str(generator['kind'])
+    count = int(generator['count'])
+    if kind == 'repeated_gate':
+        return [_primitive_operation(str(generator['gate']), index) for index in range(count)]
+    if kind == 'repeated_gate_with_measurement':
+        gate = str(generator['gate'])
+        measurement_gate = str(generator['measurement_gate'])
+        return [
+            operation
+            for index in range(count)
+            for operation in (_primitive_operation(gate, index), _primitive_operation(measurement_gate, index))
+        ]
+    raise ValueError(f'unknown arithmetic primitive operation generator kind: {kind}')
 
 
 def _ladder_operations(bit_count: int, include_measurement: bool) -> List[PrimitiveOperation]:
@@ -52,25 +72,40 @@ def _block(
     name: str,
     summary: str,
     instance_count: int,
-    primitive_operations: List[PrimitiveOperation],
     notes: List[str],
+    primitive_operations: Optional[List[PrimitiveOperation]] = None,
+    primitive_operation_generator: Optional[Mapping[str, Any]] = None,
 ) -> Dict[str, Any]:
-    primitive_totals = _primitive_counts_from_operations(primitive_operations)
+    if primitive_operations is None and primitive_operation_generator is None:
+        raise ValueError(f'{name} must provide primitive_operations or primitive_operation_generator')
+    if primitive_operations is not None and primitive_operation_generator is not None:
+        raise ValueError(f'{name} cannot provide both primitive_operations and primitive_operation_generator')
+    if primitive_operations is not None:
+        primitive_totals = _primitive_counts_from_operations(primitive_operations)
+    else:
+        primitive_totals = {
+            key: int(primitive_operation_generator['primitive_counts_total'][key])
+            for key in ('ccx', 'cx', 'x', 'measurement')
+        }
     primitive_counts = {
         key: int(primitive_totals[key] // int(instance_count))
         for key in ('ccx', 'cx', 'x', 'measurement')
     }
-    return {
+    block = {
         'name': name,
         'summary': summary,
         'instance_count': int(instance_count),
         'primitive_counts_per_instance': primitive_counts,
         'primitive_counts_total': primitive_totals,
         'primitive_operation_encoding': ['gate', 'operand_0', 'operand_1'],
-        'primitive_operations': primitive_operations,
         'non_clifford_total': primitive_totals['ccx'],
         'notes': notes,
     }
+    if primitive_operations is not None:
+        block['primitive_operations'] = primitive_operations
+    else:
+        block['primitive_operation_generator'] = dict(primitive_operation_generator)
+    return block
 
 
 def _stage(name: str, summary: str, category: str, blocks: List[Dict[str, Any]], notes: List[str]) -> Dict[str, Any]:
@@ -282,7 +317,7 @@ def _field_mul_kernel(field_bits: int) -> Dict[str, Any]:
     )
 
 
-def _standard_qroam_coordinate_stream_cost(field_bits: int, domain_size: int = 32768, block_size: int = 16) -> Dict[str, int]:
+def _standard_qroam_coordinate_stream_cost(field_bits: int, domain_size: int = 32768, block_size: int = DEFAULT_QROAM_CLEAN_BLOCK_SIZE) -> Dict[str, int]:
     lookup_compute = (domain_size + block_size - 1) // block_size + (block_size - 1) * field_bits
     measured_uncompute = (domain_size + block_size - 1) // block_size + (block_size - 1)
     junk_register_count = block_size - 1
@@ -302,23 +337,18 @@ def _standard_qroam_coordinate_stream_cost(field_bits: int, domain_size: int = 3
         'total_non_clifford': lookup_compute + measured_uncompute,
     }
 
-
-def _streamed_lookup_bit_oracle_stage(field_bits: int, bit_source: str) -> Dict[str, Any]:
-    cost = _standard_qroam_coordinate_stream_cost(field_bits)
-    compute_operations = [
-        _primitive_operation('ccx', index)
-        for index in range(cost['lookup_compute_non_clifford'])
-    ]
-    uncompute_operations = [
-        operation
-        for index in range(cost['measured_uncompute_non_clifford'])
-        for operation in (_primitive_operation('ccx', index), _primitive_operation('measurement', index))
-    ]
+def _streamed_lookup_bit_oracle_stage(field_bits: int, bit_source: str, qroam_block_size: int) -> Dict[str, Any]:
+    cost = _standard_qroam_coordinate_stream_cost(field_bits, block_size=qroam_block_size)
     compute_block = _block(
         name=f'streamed_{bit_source}_standard_qroam_compute',
         summary=f'Standard QROAM compute for one selected {bit_source} coordinate stream.',
         instance_count=1,
-        primitive_operations=compute_operations,
+        primitive_operation_generator={
+            'kind': 'repeated_gate',
+            'gate': 'ccx',
+            'count': cost['lookup_compute_non_clifford'],
+            'primitive_counts_total': _primitive_counts(ccx=cost['lookup_compute_non_clifford']),
+        },
         notes=[
             f"The block uses the standard QROAM cost N/K + (K - 1)b with N={cost['domain_size']}, K={cost['block_size']}, and b={field_bits}.",
             f"The matching workspace contract must count the {field_bits}-qubit target register plus {cost['junk_register_count']} junk registers of {field_bits} qubits each.",
@@ -328,7 +358,16 @@ def _streamed_lookup_bit_oracle_stage(field_bits: int, bit_source: str) -> Dict[
         name=f'streamed_{bit_source}_standard_qroam_measured_uncompute',
         summary=f'Measured standard-QROAM cleanup for one selected {bit_source} coordinate stream.',
         instance_count=1,
-        primitive_operations=uncompute_operations,
+        primitive_operation_generator={
+            'kind': 'repeated_gate_with_measurement',
+            'gate': 'ccx',
+            'measurement_gate': 'measurement',
+            'count': cost['measured_uncompute_non_clifford'],
+            'primitive_counts_total': _primitive_counts(
+                ccx=cost['measured_uncompute_non_clifford'],
+                measurement=cost['measured_uncompute_non_clifford'],
+            ),
+        },
         notes=[
             f"The measured cleanup uses the standard QROAM adjoint cost N/K + (K - 1) with N={cost['domain_size']} and K={cost['block_size']}.",
             'The cleanup is paired with the same coordinate target and junk registers before the next lookup-controlled arithmetic kernel starts.',
@@ -352,12 +391,13 @@ def _renamed_field_mul_kernel(
     summary: str,
     note: str,
     lookup_bit_source: str | None = None,
+    qroam_block_size: int = DEFAULT_QROAM_CLEAN_BLOCK_SIZE,
 ) -> Dict[str, Any]:
     kernel = deepcopy(_field_mul_kernel(field_bits))
     kernel['opcode'] = opcode
     kernel['summary'] = summary
     if lookup_bit_source is not None:
-        kernel['stages'].insert(0, _streamed_lookup_bit_oracle_stage(field_bits, lookup_bit_source))
+        kernel['stages'].insert(0, _streamed_lookup_bit_oracle_stage(field_bits, lookup_bit_source, qroam_block_size))
         primitive_totals = {
             key: sum(int(stage['primitive_counts_total'][key]) for stage in kernel['stages'])
             for key in ('ccx', 'cx', 'x', 'measurement')
@@ -428,13 +468,14 @@ def _field_triple_kernel(field_bits: int) -> Dict[str, Any]:
     )
 
 
-def _complete_a0_streamed_tail_kernel(field_bits: int) -> Dict[str, Any]:
+def _complete_a0_streamed_tail_kernel(field_bits: int, qroam_block_size: int) -> Dict[str, Any]:
     streamed_yz = deepcopy(_renamed_field_mul_kernel(
         field_bits,
         'field_mul_lookup_y',
         'Internal streamed yZ multiplication used by the complete-add tail macro.',
         'This stage is counted inside the macro because yZ is not materialized as a standalone leaf field value.',
         lookup_bit_source='lookup_y',
+        qroam_block_size=qroam_block_size,
     )['stages'])
     fixed_f = _block(
         name='fixed_21z_chain',
@@ -601,7 +642,11 @@ def _leaf_reconstruction(leaf_opcode_histogram: Mapping[str, int], kernels: List
     }
 
 
-def arithmetic_lowering_library(field_bits: int, leaf_opcode_histogram: Mapping[str, int]) -> Dict[str, Any]:
+def arithmetic_lowering_library(
+    field_bits: int,
+    leaf_opcode_histogram: Mapping[str, int],
+    qroam_block_size: int = DEFAULT_QROAM_CLEAN_BLOCK_SIZE,
+) -> Dict[str, Any]:
     kernels = [
         _field_mul_kernel(field_bits),
         _renamed_field_mul_kernel(
@@ -610,6 +655,7 @@ def arithmetic_lowering_library(field_bits: int, leaf_opcode_histogram: Mapping[
             'Exact table-fed x-coordinate field multiplication kernel with no materialized lookup-output field lane.',
             'The streamed lookup coordinate is a table-controlled constant input and is not counted as a leaf field wire.',
             lookup_bit_source='lookup_x',
+            qroam_block_size=qroam_block_size,
         ),
         _renamed_field_mul_kernel(
             field_bits,
@@ -617,6 +663,7 @@ def arithmetic_lowering_library(field_bits: int, leaf_opcode_histogram: Mapping[
             'Exact table-fed y-coordinate field multiplication kernel with no materialized lookup-output field lane.',
             'The streamed lookup coordinate is a table-controlled constant input and is not counted as a leaf field wire.',
             lookup_bit_source='lookup_y',
+            qroam_block_size=qroam_block_size,
         ),
         _renamed_field_mul_kernel(
             field_bits,
@@ -624,12 +671,13 @@ def arithmetic_lowering_library(field_bits: int, leaf_opcode_histogram: Mapping[
             'Exact table-fed (x+y)-coordinate field multiplication kernel with no materialized lookup-output field lane.',
             'The streamed lookup sum is a table-controlled constant input and is not counted as a leaf field wire.',
             lookup_bit_source='lookup_x_plus_y',
+            qroam_block_size=qroam_block_size,
         ),
         _field_add_kernel(field_bits),
         _field_sub_kernel(field_bits),
         _field_sub_sum_kernel(field_bits),
         _field_triple_kernel(field_bits),
-        _complete_a0_streamed_tail_kernel(field_bits),
+        _complete_a0_streamed_tail_kernel(field_bits, qroam_block_size),
         _mul_const_kernel(field_bits, 21),
         _field_select_kernel(field_bits),
     ]
@@ -640,6 +688,7 @@ def arithmetic_lowering_library(field_bits: int, leaf_opcode_histogram: Mapping[
             'summary': 'Exact arithmetic-kernel family with generated primitive-operation inventories for schoolbook multiplication, table-fed multiplication, fused add/sub tail kernels, conditional select, and fixed multiplication by 21.',
             'gate_set': 'Clifford + Toffoli-style arithmetic + measurement',
             'field_bits': int(field_bits),
+            'standard_qroam_clean_block_size': int(qroam_block_size),
             'exact_scope': 'exact non-Clifford counts and generated primitive-operation inventories for the named arithmetic-kernel family; Clifford micro-counts remain outside the shipped lowering layer',
             'source_references': [
                 {

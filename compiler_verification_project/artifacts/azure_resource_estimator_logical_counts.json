@@ -4,13 +4,13 @@
     {
       "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
       "logicalCounts": {
-        "numQubits": 5652,
+        "numQubits": 1812,
         "tCount": 0,
-        "cczCount": 23953656,
+        "cczCount": 32879331,
         "ccixCount": 0,
         "rotationCount": 511,
         "rotationDepth": 511,
-        "measurementCount": 685592
+        "measurementCount": 5444867
       },
       "notes": "Azure-style logicalCounts seed. The oracle CCZ total, phase-shell rotation inventory, and total measurement inventory are all sourced from exact compiler-family artifacts."
     }

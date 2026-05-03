@@ -17,15 +17,17 @@ lookup, and scaffold semantics.
 As of the current compiler frontier, the repository's central standard-QROM
 point is:
 
-- `23,953,656` non-Clifford
-- `5,652` logical qubits
+- `32,879,331` non-Clifford
+- `1,812` logical qubits
 
 This is the family
-`folded_bitwise_banked_unary_qrom_measured_uncompute_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1`
+`folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1`
 in `compiler_verification_project/artifacts/family_frontier.json`.
 The lookup side of this point is now bound to the standard-QROAM coordinate-stream model; see
 `compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json`
-for the checked standard-QROM status.
+for the checked standard-QROM status and
+`compiler_verification_project/artifacts/logical_resource_ledger.json` for the
+owner-derived peak-qubit count and QROAMClean block-size tradeoff sweep.
 
 The current arithmetic leaf is a complete mixed-add formula over the
 homogeneous short-Weierstrass embedding used in `src/common.py`, where affine
@@ -698,14 +700,15 @@ Result for `n = 256`:
 
 Whole-oracle implication:
 
-- the current central standard-QROM point is `5652` logical qubits, which decomposes as
-  `6 * 256 + 4114 + 1 + 1`,
+- the current central standard-QROM point is `1812` logical qubits, which decomposes as
+  `6 * 256 + 274 + 1 + 1`,
 - a hypothetical `7`-slot arithmetic leaf with sequential tmpand-style zero
-  tests lands at about `7 * 256 + 255 + 4114 + 1 + 1 = 6163` logical qubits
+  tests lands at about `7 * 256 + 255 + 274 + 1 + 1 = 2323` logical qubits
   before any extra branch-control bookkeeping,
-- the same candidate with parallel zero-test scratch rises to about `2352`
+- the same candidate with parallel zero-test scratch rises to about `2576`
   logical qubits,
-- the gate total barely moves, reaching only about `22,754,342`
+- the gate total barely moves relative to the `32,879,331` standard-QROM
+  baseline unless the lookup-stream count or QROAM block-size choice changes,
   non-Clifford.
 
 Interpretation:
@@ -797,20 +800,20 @@ What was checked locally:
 
 - translated the comparator-based predicate screen into whole-oracle headline
   numbers using the current central standard-QROM decomposition
-  `slots * 256 + 4114 + 1 + 1`,
+  `slots * 256 + 274 + 1 + 1`,
 - modeled the doubling predicate as two `3n`-style comparators plus one final
   one-bit conjunction at `n = 256`,
 - swept a small ancilla range `1..8` for the predicate layer.
 
 Result:
 
-- the gate total remains essentially unchanged at about `22,796,867`
-  non-Clifford across the whole sweep,
+- the gate total remains essentially unchanged relative to the `32,879,331`
+  non-Clifford current standard-QROM baseline across the whole sweep,
 - the qubit totals are approximately:
-  - `7` arithmetic slots: `5909..5916` logical qubits,
-  - `6` arithmetic slots: `5653..5660` logical qubits,
-  - `5` arithmetic slots: `5397..5404` logical qubits,
-  - `4` arithmetic slots: `5141..5148` logical qubits.
+  - `7` arithmetic slots: `2069..2076` logical qubits,
+  - `6` arithmetic slots: `1813..1820` logical qubits,
+  - `5` arithmetic slots: `1557..1564` logical qubits,
+  - `4` arithmetic slots: `1301..1308` logical qubits.
 
 Interpretation:
 
@@ -867,7 +870,7 @@ What was checked locally:
 
 - converted the `7`-slot floor into required effective field widths under the
   current central standard-QROM whole-oracle overhead model
-  `slots * width + 4114 + 1 + 1 + predicate_ancilla`,
+  `slots * width + 274 + 1 + 1 + predicate_ancilla`,
 - swept a small predicate-ancilla range `1..8`.
 
 Result:
@@ -1255,23 +1258,24 @@ Status:
 
 What was checked locally:
 
-- started from the then-current central exact point `22,753,831`,
-- added the corrected comparator-predicate estimate for the current
-  `28` retained additions, about `43,036` non-Clifford total,
+- compared the candidate predicate overhead against the current central exact
+  point `32,879,331`,
+- kept the previous comparator-predicate estimate as a small perturbation
+  relative to the standard-QROAM data-selection term,
 - measured the remaining slack against the repository's practical gate caps.
 
 Result:
 
-- after comparator predicates, the oracle still sits at about `22,796,867`
-  non-Clifford,
+- the oracle remains above the old `30M` preference under the current
+  standard-QROAM low-workspace point,
 - the remaining headroom is about:
-  - `7,203,133` to stay below `30M`,
-  - `17,203,133` to stay below `40M`,
-  - `47,203,133` to stay below Google's public `70M` line,
+  - no headroom to stay below `30M`,
+  - `7,120,669` to stay below `40M`,
+  - `37,120,669` to stay below Google's public `70M` line,
 - per retained addition, that is roughly:
-  - `257,255` non-Clifford of slack under `30M`,
-  - `614,398` under `40M`,
-  - `1,685,826` under `70M`.
+  - no slack under `30M`,
+  - about `254,310` under `40M`,
+  - about `1,325,738` under `70M`.
 
 Interpretation:
 
@@ -1690,8 +1694,9 @@ Qubit implication:
 - the same proxy is compatible with a constant-size shell workspace rather than
   a `254`-qubit tmpand ladder,
 - under the current standard-QROAMClean accounting, this improves only the
-  arithmetic-shell term; the whole-oracle qubit picture remains dominated by
-  the `4114` lookup-workspace term.
+  arithmetic-shell term; the whole-oracle qubit picture is now dominated by the
+  six field-sized arithmetic slots rather than by the `274`-qubit lookup
+  workspace term.
 
 Interpretation:
 
@@ -1736,16 +1741,16 @@ What was checked locally:
 - priced the qubit effect of carrying explicit shell-state controls on top of a
   hypothetical `7`-slot retained-add leaf,
 - kept the current central standard-QROM family's fixed non-arithmetic budget:
-  `4114` lookup workspace qubits and `1` live phase bit.
+  `274` lookup workspace qubits and `1` live phase bit.
 
 Result:
 
-- with `7` arithmetic slots, total qubits are `5906 + control_slots`,
+- with `7` arithmetic slots, total qubits are `2066 + control_slots`,
 - this gives:
-  - `5908` qubits for `2` control slots,
-  - `5909` qubits for `3` control slots,
-  - `5910` qubits for `4` control slots,
-  - `5911` qubits for `5` control slots.
+  - `2068` qubits for `2` control slots,
+  - `2069` qubits for `3` control slots,
+  - `2070` qubits for `4` control slots,
+  - `2071` qubits for `5` control slots.
 
 Interpretation:
 

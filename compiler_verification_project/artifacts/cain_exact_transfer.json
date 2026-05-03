@@ -3,10 +3,10 @@
   "families": [
     {
       "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
-      "heuristic_time_efficient_days_if_90M_maps_to_10d": 2.6615173333333333,
-      "heuristic_time_efficient_days_if_70M_maps_to_10d": 3.421950857142857,
-      "same_density_physical_qubits_if_1200_maps_to_26k": 122460.0,
-      "same_density_physical_qubits_if_1450_maps_to_26k": 101346.20689655172
+      "heuristic_time_efficient_days_if_90M_maps_to_10d": 3.653259,
+      "heuristic_time_efficient_days_if_70M_maps_to_10d": 4.6970472857142855,
+      "same_density_physical_qubits_if_1200_maps_to_26k": 39260.0,
+      "same_density_physical_qubits_if_1450_maps_to_26k": 32491.03448275862
     }
   ],
   "notes": [

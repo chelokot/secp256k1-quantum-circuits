@@ -53,6 +53,7 @@ What it does ship is:
 - `arithmetic_lowerings.json` — generated primitive-operation inventories for the named arithmetic-kernel family
 - `streamed_lookup_table_multiplier_resource.json` — explicit table-controlled multiplier resource contract for streamed lookup coordinate bits
 - `standard_qrom_lookup_assessment.json` — machine-checked assessment showing that the selected lookup/resource contract is a standard-QROM primitive-circuit result
+- `logical_resource_ledger.json` — generated peak-live-qubit owner ledger and QROAMClean block-size tradeoff sweep
 - `module_library.json` — arithmetic-kernel summary used by the frontier
 - `lookup_lowerings.json` — generated primitive-operation inventories for the named folded lookup families
 - `phase_shell_lowerings.json` — generated phase-operation inventories for the named full-register and semiclassical inverse-QFT shells
@@ -85,21 +86,27 @@ What it does ship is:
 
 ## Current central boundary result
 
-- **central standard-QROM family:** `23,953,656 non-Clifford`, `5,652 logical qubits`
+- **central standard-QROM family:** `32,879,331 non-Clifford`, `1,812 logical qubits`
 
 The central family uses a standard QROAM coordinate-stream lookup boundary, an
 exact semiclassical-QFT phase shell, and the executable streamed lookup tail
 point-add leaf. The resulting live-qubit formula is:
 
-`6 * 256 + 1 control + 4,114 lookup workspace + 1 phase = 5,652 logical qubits`
+`6 * 256 + 1 control + 274 lookup workspace + 1 phase = 1,812 logical qubits`
 
-The `4,114` lookup-workspace term is `18` folded-control qubits plus a
-`4,096`-qubit QROAMClean data region: one 256-bit coordinate target and fifteen
-256-bit junk registers for `K = 16`. The table-controlled
-`field_mul_lookup_*` kernels pay `7,951` non-Clifford operations per 256-bit
-coordinate stream: `5,888` for standard QROAM compute and `2,063` for measured
-uncompute. No field-sized lookup x/y output lane is free or borrowed from the
-interface.
+The `274` lookup-workspace term is `18` folded-control qubits plus one
+256-bit QROAMClean coordinate target for `K = 1`; there are no junk registers
+at this low-workspace block size. The table-controlled `field_mul_lookup_*`
+kernels pay `65,536` non-Clifford operations per 256-bit coordinate stream:
+`32,768` for standard QROAM compute and `32,768` for measured uncompute. No
+field-sized lookup x/y output lane is free or borrowed from the interface.
+
+`logical_resource_ledger.json` reconstructs the peak from counted owners:
+`1,536` arithmetic-slot qubits, `1` control qubit, `274` lookup-workspace
+qubits, and `1` phase-shell qubit. It also records the standard-QROAM tradeoff:
+the lowest-qubit point below `24M` non-Clifford in this QROAMClean family is
+`23,980,781 / 4,884`, and no checked block-size row reaches both `<24M`
+non-Clifford and `<1700` logical qubits.
 
 `standard_qrom_lookup_assessment.json` records the standard-QROM status and
 rejects the old bitwise-banked path-select boundary as a public standard-QROM

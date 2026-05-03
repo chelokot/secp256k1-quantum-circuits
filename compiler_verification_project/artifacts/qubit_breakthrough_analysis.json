@@ -18,25 +18,25 @@
     "slot_allocation_family": "streamed_lookup_tail_leaf_v1",
     "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
     "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
-    "arithmetic_leaf_non_clifford": 772392,
+    "arithmetic_leaf_non_clifford": 1060317,
     "direct_seed_non_clifford": 297,
     "per_leaf_lookup_non_clifford": 297,
-    "full_oracle_non_clifford": 23953656,
+    "full_oracle_non_clifford": 32879331,
     "arithmetic_slot_count": 6,
     "control_slot_count": 1,
     "borrowed_interface_qubits": 0,
-    "lookup_workspace_qubits": 4114,
+    "lookup_workspace_qubits": 274,
     "live_phase_bits": 1,
-    "total_logical_qubits": 5652,
+    "total_logical_qubits": 1812,
     "phase_shell_hadamards": 512,
     "phase_shell_measurements": 512,
     "phase_shell_rotations": 511,
     "phase_shell_rotation_depth": 511,
-    "total_measurements": 685592,
-    "improvement_vs_google_low_qubit": 3.7572552599068803,
-    "improvement_vs_google_low_gate": 2.92230964659424,
-    "qubit_ratio_vs_google_low_qubit": 0.21231422505307856,
-    "qubit_ratio_vs_google_low_gate": 0.25654635527246994,
+    "total_measurements": 5444867,
+    "improvement_vs_google_low_qubit": 2.7372819720693222,
+    "improvement_vs_google_low_gate": 2.1289970893872505,
+    "qubit_ratio_vs_google_low_qubit": 0.6622516556291391,
+    "qubit_ratio_vs_google_low_gate": 0.8002207505518764,
     "notes": [
       "This is the repository standard-QROM primitive-circuit lookup boundary. Unlike the rejected bitwise-banked family, it does not treat the 32768-entry coordinate table as 15 independent 2-way decodes.",
       "The selected coordinate stream pays the standard QROAM compute and measured-uncompute costs in arithmetic_lowerings.json for every table-controlled arithmetic consumer.",
@@ -47,29 +47,29 @@
   },
   "exact_component_breakdown": {
     "arithmetic_register_file_qubits": 1536,
-    "lookup_workspace_qubits": 4114,
+    "lookup_workspace_qubits": 274,
     "control_slot_qubits": 1,
     "live_phase_qubits": 1,
-    "fixed_non_arithmetic_overhead_qubits": 4116,
-    "arithmetic_register_file_share_fraction": 0.27176220806794055,
-    "fixed_non_arithmetic_overhead_share_fraction": 0.7282377919320594
+    "fixed_non_arithmetic_overhead_qubits": 276,
+    "arithmetic_register_file_share_fraction": 0.847682119205298,
+    "fixed_non_arithmetic_overhead_share_fraction": 0.152317880794702
   },
   "baseline_thresholds": {
     "low_qubit": {
       "baseline_logical_qubits": 1200,
-      "max_arithmetic_slots_at_current_field_width": -12,
-      "max_field_slot_logical_qubits_at_current_exact_slot_count": -486
+      "max_arithmetic_slots_at_current_field_width": 3,
+      "max_field_slot_logical_qubits_at_current_exact_slot_count": 154
     },
     "low_gate": {
       "baseline_logical_qubits": 1450,
-      "max_arithmetic_slots_at_current_field_width": -11,
-      "max_field_slot_logical_qubits_at_current_exact_slot_count": -445
+      "max_arithmetic_slots_at_current_field_width": 4,
+      "max_field_slot_logical_qubits_at_current_exact_slot_count": 195
     }
   },
   "counterfactual_slot_sweep": [
     {
       "arithmetic_slot_count": 6,
-      "derived_total_logical_qubits": 5652,
+      "derived_total_logical_qubits": 1812,
       "qubit_reduction_vs_current": 0,
       "qubit_reduction_fraction_vs_current": 0.0,
       "beats_google_low_qubit": false,
@@ -77,25 +77,25 @@
     },
     {
       "arithmetic_slot_count": 5,
-      "derived_total_logical_qubits": 5396,
+      "derived_total_logical_qubits": 1556,
       "qubit_reduction_vs_current": 256,
-      "qubit_reduction_fraction_vs_current": 0.04529370134465676,
+      "qubit_reduction_fraction_vs_current": 0.141280353200883,
       "beats_google_low_qubit": false,
       "beats_google_low_gate": false
     },
     {
       "arithmetic_slot_count": 4,
-      "derived_total_logical_qubits": 5140,
+      "derived_total_logical_qubits": 1300,
       "qubit_reduction_vs_current": 512,
-      "qubit_reduction_fraction_vs_current": 0.09058740268931352,
+      "qubit_reduction_fraction_vs_current": 0.282560706401766,
       "beats_google_low_qubit": false,
-      "beats_google_low_gate": false
+      "beats_google_low_gate": true
     }
   ],
   "counterfactual_field_width_sweep": [
     {
       "field_slot_logical_qubits": 256,
-      "derived_total_logical_qubits": 5652,
+      "derived_total_logical_qubits": 1812,
       "qubit_reduction_vs_current": 0,
       "qubit_reduction_fraction_vs_current": 0.0,
       "beats_google_low_qubit": false,
@@ -103,83 +103,83 @@
     },
     {
       "field_slot_logical_qubits": 192,
-      "derived_total_logical_qubits": 5268,
+      "derived_total_logical_qubits": 1428,
       "qubit_reduction_vs_current": 384,
-      "qubit_reduction_fraction_vs_current": 0.06794055201698514,
+      "qubit_reduction_fraction_vs_current": 0.2119205298013245,
       "beats_google_low_qubit": false,
-      "beats_google_low_gate": false
+      "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 160,
-      "derived_total_logical_qubits": 5076,
+      "derived_total_logical_qubits": 1236,
       "qubit_reduction_vs_current": 576,
-      "qubit_reduction_fraction_vs_current": 0.10191082802547771,
+      "qubit_reduction_fraction_vs_current": 0.31788079470198677,
       "beats_google_low_qubit": false,
-      "beats_google_low_gate": false
+      "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 157,
-      "derived_total_logical_qubits": 5058,
+      "derived_total_logical_qubits": 1218,
       "qubit_reduction_vs_current": 594,
-      "qubit_reduction_fraction_vs_current": 0.10509554140127389,
+      "qubit_reduction_fraction_vs_current": 0.32781456953642385,
       "beats_google_low_qubit": false,
-      "beats_google_low_gate": false
+      "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 144,
-      "derived_total_logical_qubits": 4980,
+      "derived_total_logical_qubits": 1140,
       "qubit_reduction_vs_current": 672,
-      "qubit_reduction_fraction_vs_current": 0.11889596602972399,
-      "beats_google_low_qubit": false,
-      "beats_google_low_gate": false
+      "qubit_reduction_fraction_vs_current": 0.3708609271523179,
+      "beats_google_low_qubit": true,
+      "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 129,
-      "derived_total_logical_qubits": 4890,
+      "derived_total_logical_qubits": 1050,
       "qubit_reduction_vs_current": 762,
-      "qubit_reduction_fraction_vs_current": 0.13481953290870488,
-      "beats_google_low_qubit": false,
-      "beats_google_low_gate": false
+      "qubit_reduction_fraction_vs_current": 0.4205298013245033,
+      "beats_google_low_qubit": true,
+      "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 128,
-      "derived_total_logical_qubits": 4884,
+      "derived_total_logical_qubits": 1044,
       "qubit_reduction_vs_current": 768,
-      "qubit_reduction_fraction_vs_current": 0.13588110403397027,
-      "beats_google_low_qubit": false,
-      "beats_google_low_gate": false
+      "qubit_reduction_fraction_vs_current": 0.423841059602649,
+      "beats_google_low_qubit": true,
+      "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 112,
-      "derived_total_logical_qubits": 4788,
+      "derived_total_logical_qubits": 948,
       "qubit_reduction_vs_current": 864,
-      "qubit_reduction_fraction_vs_current": 0.15286624203821655,
-      "beats_google_low_qubit": false,
-      "beats_google_low_gate": false
+      "qubit_reduction_fraction_vs_current": 0.4768211920529801,
+      "beats_google_low_qubit": true,
+      "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 96,
-      "derived_total_logical_qubits": 4692,
+      "derived_total_logical_qubits": 852,
       "qubit_reduction_vs_current": 960,
-      "qubit_reduction_fraction_vs_current": 0.16985138004246284,
-      "beats_google_low_qubit": false,
-      "beats_google_low_gate": false
+      "qubit_reduction_fraction_vs_current": 0.5298013245033113,
+      "beats_google_low_qubit": true,
+      "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 80,
-      "derived_total_logical_qubits": 4596,
+      "derived_total_logical_qubits": 756,
       "qubit_reduction_vs_current": 1056,
-      "qubit_reduction_fraction_vs_current": 0.18683651804670912,
-      "beats_google_low_qubit": false,
-      "beats_google_low_gate": false
+      "qubit_reduction_fraction_vs_current": 0.5827814569536424,
+      "beats_google_low_qubit": true,
+      "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 72,
-      "derived_total_logical_qubits": 4548,
+      "derived_total_logical_qubits": 708,
       "qubit_reduction_vs_current": 1104,
-      "qubit_reduction_fraction_vs_current": 0.19532908704883228,
-      "beats_google_low_qubit": false,
-      "beats_google_low_gate": false
+      "qubit_reduction_fraction_vs_current": 0.609271523178808,
+      "beats_google_low_qubit": true,
+      "beats_google_low_gate": true
     }
   ],
   "modeled_reference_points": {
@@ -202,9 +202,9 @@
     {
       "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
       "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
-      "lookup_workspace_qubits": 4114,
-      "total_logical_qubits": 5652,
-      "full_oracle_non_clifford": 23953656,
+      "lookup_workspace_qubits": 274,
+      "total_logical_qubits": 1812,
+      "full_oracle_non_clifford": 32879331,
       "delta_qubits_vs_best_qubit": 0,
       "delta_non_clifford_vs_best_qubit": 0
     }

@@ -10,9 +10,11 @@ metadata, together with deterministic audits, finite-model checks, and a
 separate exact compiler-family oracle subproject that closes the
 classical-tail-elision gap for a fully quantum raw-32 schedule. It now also
 ships an SP1 attestation bundle for one selected standard-QROM family claim at
-that same boundary. The current `23,953,656 / 5,652` result is a standard-QROM
+that same boundary. The current `32,879,331 / 1,812` result is a standard-QROM
 compiler-family result at the counted lookup boundary. It is not a
-below-1700-qubit standard-QROM result.
+below-1700-qubit standard-QROM result, and the generated QROAMClean tradeoff
+ledger proves that this current family has no block-size row satisfying both
+`<24M` non-Clifford and `<1700` logical qubits.
 
 ## Exact layers
 
@@ -149,8 +151,9 @@ lookup-data path to a standard QROAM coordinate-stream primitive over the
 For the streamed lookup tail result, the table-controlled arithmetic boundary
 is no longer free: `streamed_lookup_table_multiplier_resource.json` counts the
 QROAMClean full-coordinate target and junk-register capacity in lookup
-workspace and adds `7,951` non-Clifford operations for every 256-bit coordinate
-stream consumed by `field_mul_lookup_*` or the streamed tail. The remaining boundary is
+workspace. The selected central point uses `K = 1`, so each 256-bit coordinate
+stream consumed by `field_mul_lookup_*` or the streamed tail pays `65,536`
+non-Clifford operations and `274` lookup-workspace qubits. The remaining boundary is
 that the repository does not ship a Clifford-complete flattened netlist for
 every arithmetic and lookup block.
 

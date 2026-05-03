@@ -63,7 +63,7 @@ The root-level `compiler_verification_project/` is the repository's strongest
 exact layer below the ISA boundary. Its checked-in central whole-oracle result
 is:
 
-- **central standard-QROM family:** `23,953,656 non-Clifford`, `5,652 logical qubits`
+- **central standard-QROM family:** `32,879,331 non-Clifford`, `1,812 logical qubits`
 
 Those numbers are exact for the chosen compiler family, not a claim of global
 optimality or a Clifford-complete full-Shor netlist. The family uses standard
@@ -74,15 +74,18 @@ full QROAMClean coordinate target and junk-register capacity required by the
 selected block size; no field-sized lookup x/y lane is free or hidden. The repository also checks
 `compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json`,
 which records that the current central family is a standard-QROM primitive
-circuit at the counted lookup boundary.
+circuit at the counted lookup boundary, and
+`compiler_verification_project/artifacts/logical_resource_ledger.json`, which
+reconstructs peak live qubits from numeric owners and the same QROAMClean block
+size used for non-Clifford cost.
 
 Against Google's published 2026 secp256k1 baseline, the central standard-QROM
 result is:
 
-- **3.7573x** lower in non-Clifford cost than the public low-qubit line
-- **2.9223x** lower in non-Clifford cost than the public low-gate line
-- **4,452 qubits above** the public low-qubit line
-- **4,202 qubits above** the public low-gate line
+- **2.7373x** lower in non-Clifford cost than the public low-qubit line
+- **2.1290x** lower in non-Clifford cost than the public low-gate line
+- **612 qubits above** the public low-qubit line
+- **362 qubits above** the public low-gate line
 
 ### SP1 attestation layer
 

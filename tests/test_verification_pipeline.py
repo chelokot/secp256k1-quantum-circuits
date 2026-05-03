@@ -68,6 +68,7 @@ class VerificationPipelineTests(unittest.TestCase):
         verify = compiler['verification_summary']
         self.assertEqual(build['headline']['best_gate_family'], frontier['best_gate_family'])
         self.assertEqual(build['headline']['best_qubit_family'], frontier['best_qubit_family'])
+        self.assertEqual(build['headline']['best_google_low_gate_qubit_family'], frontier['best_google_low_gate_qubit_family'])
         self.assertEqual(build['headline']['best_sub30m_qubit_family'], frontier['best_sub30m_qubit_family'])
         self.assertEqual(verify['summary']['semantic_cases']['pass'], verify['summary']['semantic_cases']['total'])
         self.assertEqual(verify['summary']['invariant_checks']['pass'], verify['summary']['invariant_checks']['total'])

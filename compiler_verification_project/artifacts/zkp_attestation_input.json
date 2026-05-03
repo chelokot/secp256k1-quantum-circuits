@@ -2,48 +2,48 @@
   "schema": "compiler-project-zkp-attestation-input-v4",
   "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
   "selected_family_name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
-  "claim_sha256": "6c0e427b0947d9c7379b7e67f48525e90a62e8ca30b5a1a91e4976b69210b604",
+  "claim_sha256": "81e9add5d39f1298ea10866d3300c322638a781488e847366437f25c7115fd9e",
   "leaf_sha256": "a3ee8b140868da8e3e32801ac0e8c734c51409038d2ee5493fee19f8f7bb8eee",
-  "family_sha256": "eed1bee8da363a9435340215d16d0c89cd3a7dbca95ddd04140cb45c528cc486",
+  "family_sha256": "5fb8cbb6fcf00f65fe244f6f88d92dd902c4bc95b13e015cb974b63c6658d6b7",
   "case_corpus_sha256": "f65a746e29092442f2814378eeb266e5f688a44b71e23065b9218a5f9b660ad4",
   "claim_summary": {
     "field_bits": 256,
     "leaf_call_count_total": 31,
-    "expected_full_oracle_non_clifford": 23953656,
-    "expected_total_logical_qubits": 5652,
+    "expected_full_oracle_non_clifford": 32879331,
+    "expected_total_logical_qubits": 1812,
     "expected_case_count": 8,
     "non_clifford_formula": {
-      "arithmetic_leaf_non_clifford": 772392,
+      "arithmetic_leaf_non_clifford": 1060317,
       "per_leaf_lookup_non_clifford": 297,
       "direct_seed_non_clifford": 297,
       "leaf_call_count_total": 31,
-      "arithmetic_component": 23944152,
+      "arithmetic_component": 32869827,
       "lookup_component": 9207,
-      "reconstructed_total": 23953656
+      "reconstructed_total": 32879331
     },
     "logical_qubit_formula": {
       "field_bits": 256,
       "arithmetic_slot_count": 6,
       "control_slot_count": 1,
       "borrowed_interface_qubits": 0,
-      "lookup_workspace_qubits": 4114,
+      "lookup_workspace_qubits": 274,
       "live_phase_bits": 1,
       "arithmetic_component": 1536,
-      "reconstructed_total": 5652
+      "reconstructed_total": 1812
     }
   },
   "family_summary": {
     "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
-    "arithmetic_leaf_non_clifford": 772392,
+    "arithmetic_leaf_non_clifford": 1060317,
     "direct_seed_non_clifford": 297,
     "per_leaf_lookup_non_clifford": 297,
-    "full_oracle_non_clifford": 23953656,
+    "full_oracle_non_clifford": 32879331,
     "arithmetic_slot_count": 6,
     "control_slot_count": 1,
     "borrowed_interface_qubits": 0,
-    "lookup_workspace_qubits": 4114,
+    "lookup_workspace_qubits": 274,
     "live_phase_bits": 1,
-    "total_logical_qubits": 5652
+    "total_logical_qubits": 1812
   },
   "prepared_leaf": {
     "register_count": 14,

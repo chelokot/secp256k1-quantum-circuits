@@ -13,7 +13,7 @@ ROOT_SRC = PROJECT_ROOT / 'src'
 if str(ROOT_SRC) not in sys.path:
     sys.path.insert(0, str(ROOT_SRC))
 
-from arithmetic_lowering import arithmetic_lowering_library
+from arithmetic_lowering import arithmetic_lowering_library, materialize_arithmetic_primitive_operations
 from lookup_lowering import lookup_lowering_library, materialize_lookup_primitive_operations
 from phase_shell_lowering import materialize_phase_operations, phase_shell_lowering_library
 from project import FIELD_BITS, FULL_PHASE_REGISTER_BITS as PROJECT_PHASE_BITS, compiler_family_frontier, leaf_opcode_histogram, raw32_schedule
@@ -71,7 +71,7 @@ def _iter_arithmetic_operations(
             kernel = kernel_lookup[opcode]
             for stage in kernel['stages']:
                 for block in stage['blocks']:
-                    for operation in block['primitive_operations']:
+                    for operation in materialize_arithmetic_primitive_operations(block):
                         operands = [int(value) for value in operation[1:]]
                         yield {
                             'stream_index': stream_index,

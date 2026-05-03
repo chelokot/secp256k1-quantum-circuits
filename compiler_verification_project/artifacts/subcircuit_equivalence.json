@@ -122,7 +122,7 @@
         "opcode": "complete_a0_streamed_tail",
         "total": 96,
         "pass": 96,
-        "lowering_non_clifford_per_kernel": 473340
+        "lowering_non_clifford_per_kernel": 530925
       },
       {
         "opcode": "field_add",
@@ -140,19 +140,19 @@
         "opcode": "field_mul_lookup_sum",
         "total": 96,
         "pass": 96,
-        "lowering_non_clifford_per_kernel": 73998
+        "lowering_non_clifford_per_kernel": 131583
       },
       {
         "opcode": "field_mul_lookup_x",
         "total": 192,
         "pass": 192,
-        "lowering_non_clifford_per_kernel": 73998
+        "lowering_non_clifford_per_kernel": 131583
       },
       {
         "opcode": "field_mul_lookup_y",
         "total": 96,
         "pass": 96,
-        "lowering_non_clifford_per_kernel": 73998
+        "lowering_non_clifford_per_kernel": 131583
       },
       {
         "opcode": "field_sub",
@@ -480,8 +480,8 @@
         "name": "folded_standard_qroam_streamed_coordinate_v1",
         "direct_lookup_non_clifford": 297,
         "stage_reconstructed_non_clifford": 297,
-        "workspace_qubits": 4114,
-        "stage_reconstructed_workspace_qubits": 4114,
+        "workspace_qubits": 274,
+        "stage_reconstructed_workspace_qubits": 274,
         "canonical_full_exhaustive_total": 65536,
         "canonical_full_exhaustive_pass": 65536,
         "multibase_edge_total": 32,
@@ -564,17 +564,17 @@
     "best_gate_family": {
       "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
       "reconstruction": {
-        "arithmetic_leaf_non_clifford": 772392,
+        "arithmetic_leaf_non_clifford": 1060317,
         "direct_seed_non_clifford": 297,
         "per_leaf_lookup_non_clifford": 297,
-        "full_oracle_non_clifford": 23953656,
+        "full_oracle_non_clifford": 32879331,
         "primitive_totals": {
-          "ccx": 23953656,
+          "ccx": 32879331,
           "cx": 0,
           "x": 0,
-          "measurement": 685080
+          "measurement": 5444355
         },
-        "total_measurements": 685592,
+        "total_measurements": 5444867,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -582,25 +582,25 @@
         "arithmetic_slot_count": 6,
         "control_slot_count": 1,
         "borrowed_interface_qubits": 0,
-        "lookup_workspace_qubits": 4114,
+        "lookup_workspace_qubits": 274,
         "live_phase_bits": 1,
-        "total_logical_qubits": 5652
+        "total_logical_qubits": 1812
       }
     },
     "best_qubit_family": {
       "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
       "reconstruction": {
-        "arithmetic_leaf_non_clifford": 772392,
+        "arithmetic_leaf_non_clifford": 1060317,
         "direct_seed_non_clifford": 297,
         "per_leaf_lookup_non_clifford": 297,
-        "full_oracle_non_clifford": 23953656,
+        "full_oracle_non_clifford": 32879331,
         "primitive_totals": {
-          "ccx": 23953656,
+          "ccx": 32879331,
           "cx": 0,
           "x": 0,
-          "measurement": 685080
+          "measurement": 5444355
         },
-        "total_measurements": 685592,
+        "total_measurements": 5444867,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -608,20 +608,20 @@
         "arithmetic_slot_count": 6,
         "control_slot_count": 1,
         "borrowed_interface_qubits": 0,
-        "lookup_workspace_qubits": 4114,
+        "lookup_workspace_qubits": 274,
         "live_phase_bits": 1,
-        "total_logical_qubits": 5652
+        "total_logical_qubits": 1812
       }
     },
     "families": [
       {
         "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
-        "generated_full_oracle_non_clifford": 23953656,
-        "generated_total_logical_qubits": 5652,
-        "frontier_full_oracle_non_clifford": 23953656,
-        "frontier_total_logical_qubits": 5652,
-        "inventory_full_oracle_non_clifford": 23953656,
-        "inventory_total_logical_qubits": 5652
+        "generated_full_oracle_non_clifford": 32879331,
+        "generated_total_logical_qubits": 1812,
+        "frontier_full_oracle_non_clifford": 32879331,
+        "frontier_total_logical_qubits": 1812,
+        "inventory_full_oracle_non_clifford": 32879331,
+        "inventory_total_logical_qubits": 1812
       }
     ]
   },

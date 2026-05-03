@@ -53,6 +53,7 @@ Key files:
 - `compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json`
 - `compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json`
 - `compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json`
+- `compiler_verification_project/artifacts/logical_resource_ledger.json`
 - `compiler_verification_project/artifacts/zkp_attestation_family.json`
 - `compiler_verification_project/artifacts/zkp_attestation_fixture_groth16.json`
 - `compiler_verification_project/artifacts/zkp_attestation_proof_groth16.bin`

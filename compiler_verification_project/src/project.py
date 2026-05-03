@@ -55,7 +55,7 @@ from common import (  # noqa: E402
     sha256_bytes,
     sha256_path,
 )
-from arithmetic_lowering import arithmetic_kernel_summary, arithmetic_lowering_library  # noqa: E402
+from arithmetic_lowering import DEFAULT_QROAM_CLEAN_BLOCK_SIZE, arithmetic_kernel_summary, arithmetic_lowering_library  # noqa: E402
 from ft_ir import build_ft_ir_compositions as build_ft_ir_compositions_single  # noqa: E402
 from generated_block_inventory import build_generated_block_inventories as build_generated_block_inventories_single  # noqa: E402
 from lookup_fed_leaf import (  # noqa: E402
@@ -75,6 +75,7 @@ from physical_estimator import (  # noqa: E402
     build_azure_estimator_target_payload,
     build_or_load_azure_estimator_results_payload,
 )
+from resource_ledger import build_logical_resource_ledger  # noqa: E402
 from subcircuit_equivalence import build_subcircuit_equivalence_artifact  # noqa: E402
 from whole_oracle_recount import build_whole_oracle_recount as build_whole_oracle_recount_single  # noqa: E402
 
@@ -92,6 +93,7 @@ PUBLIC_GOOGLE_BASELINE = {
 }
 CENTRAL_LOOKUP_FAMILY = 'folded_standard_qroam_streamed_coordinate_v1'
 CENTRAL_PHASE_SHELL = 'semiclassical_qft_v1'
+CENTRAL_QROAM_CLEAN_BLOCK_SIZE = DEFAULT_QROAM_CLEAN_BLOCK_SIZE
 
 
 @dataclass(frozen=True)
@@ -617,11 +619,21 @@ def streamed_lookup_table_multiplier_resource(
     total_workspace = int(lookup_family['extra_lookup_workspace_qubits'])
     persistent_workspace = int(lookup_family['workspace_reconstruction']['persistent_workspace_qubits'])
     local_qroam_workspace = total_workspace - persistent_workspace
+    qroam_block_size = CENTRAL_QROAM_CLEAN_BLOCK_SIZE
+    qroam_target_qubits = FIELD_BITS
+    qroam_junk_register_count = qroam_block_size - 1
+    qroam_junk_register_qubits = qroam_junk_register_count * FIELD_BITS
+    qroam_target_plus_junk_qubits = qroam_block_size * FIELD_BITS
     per_kernel_costs = sorted({
         int(row['data_select_non_clifford_per_kernel'])
         for row in source_rows
         if int(row['data_select_non_clifford_per_kernel']) > 0
     })
+    representative_kernel = kernel_lookup['field_mul_lookup_x']
+    representative_stage = next(stage for stage in representative_kernel['stages'] if stage['category'] == 'streamed_lookup_data_select')
+    qroam_compute_non_clifford = int(representative_stage['blocks'][0]['non_clifford_total'])
+    qroam_uncompute_non_clifford = int(representative_stage['blocks'][1]['non_clifford_total'])
+    expected_per_kernel_cost = qroam_compute_non_clifford + qroam_uncompute_non_clifford
     return {
         'schema': 'compiler-project-standard-qroam-streamed-lookup-table-resource-v1',
         'field_bits': FIELD_BITS,
@@ -639,14 +651,14 @@ def streamed_lookup_table_multiplier_resource(
             'primitive': 'standard_qroam_clean_full_coordinate_stream',
             'folded_magnitude_bits': 15,
             'folded_coordinate_domain_size': FOLDED_MAG_DOMAIN,
-            'qroam_block_size': 16,
+            'qroam_block_size': qroam_block_size,
             'qroam_target_bitsize': FIELD_BITS,
             'table_controlled_coordinate_bits': ['lookup_x', 'lookup_y', 'lookup_x_plus_y'],
             'decomposition': {
-                'lookup_compute_non_clifford': 5_888,
-                'measured_uncompute_non_clifford': 2_063,
+                'lookup_compute_non_clifford': qroam_compute_non_clifford,
+                'measured_uncompute_non_clifford': qroam_uncompute_non_clifford,
             },
-            'per_kernel_non_clifford': 7_951,
+            'per_kernel_non_clifford': qroam_compute_non_clifford + qroam_uncompute_non_clifford,
             'per_leaf_streamed_kernel_count': per_leaf_streamed_kernel_count,
             'per_leaf_data_select_non_clifford': per_leaf_data_select_non_clifford,
             'leaf_call_count_total': leaf_calls,
@@ -656,23 +668,23 @@ def streamed_lookup_table_multiplier_resource(
             'lookup_workspace_qubits': total_workspace,
             'folded_control_workspace_qubits': persistent_workspace,
             'standard_qroam_local_workspace_qubits': local_qroam_workspace,
-            'qroam_clean_target_register_qubits': FIELD_BITS,
-            'qroam_clean_junk_register_count': 15,
+            'qroam_clean_target_register_qubits': qroam_target_qubits,
+            'qroam_clean_junk_register_count': qroam_junk_register_count,
             'qroam_clean_junk_register_bitsize': FIELD_BITS,
-            'qroam_clean_junk_register_qubits': 15 * FIELD_BITS,
-            'qroam_clean_target_plus_junk_qubits': 16 * FIELD_BITS,
+            'qroam_clean_junk_register_qubits': qroam_junk_register_qubits,
+            'qroam_clean_target_plus_junk_qubits': qroam_target_plus_junk_qubits,
             'coordinate_field_lanes_materialized': 0,
             'coordinate_field_lane_qubits_materialized': 0,
             'passes': (
-                total_workspace == persistent_workspace + 16 * FIELD_BITS
+                total_workspace == persistent_workspace + qroam_target_plus_junk_qubits
                 and persistent_workspace == 18
-                and local_qroam_workspace == 16 * FIELD_BITS
+                and local_qroam_workspace == qroam_target_plus_junk_qubits
             ),
         },
         'capacity_check': {
             'per_kernel_costs_seen': per_kernel_costs,
-            'all_coordinate_streams_use_standard_qroam_cost': per_kernel_costs == [7_951],
-            'qroam_clean_capacity_matches_cost_model': local_qroam_workspace == 16 * FIELD_BITS,
+            'all_coordinate_streams_use_standard_qroam_cost': per_kernel_costs == [expected_per_kernel_cost],
+            'qroam_clean_capacity_matches_cost_model': local_qroam_workspace == qroam_target_plus_junk_qubits,
             'whole_oracle_stream_count': per_leaf_streamed_kernel_count * leaf_calls,
         },
         'notes': [
@@ -719,7 +731,7 @@ def standard_qrom_lookup_assessment(
     )
     return {
         'schema': 'compiler-project-standard-qrom-lookup-assessment-v2',
-        'status': 'standard_qrom_primitive_circuit_proven_for_counted_family_with_high_workspace',
+        'status': 'standard_qrom_primitive_circuit_proven_for_counted_family_with_counted_workspace',
         'selected_boundary_family': family['name'],
         'source_artifacts': {
             'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
@@ -770,7 +782,7 @@ def standard_qrom_lookup_assessment(
             'materialized_coordinate_lane_qubits': materialized_coordinate_lane_qubits,
         },
         'public_claim_boundary': {
-            'claim': 'The checked family is a standard-QROM primitive-circuit result only with the high QROAMClean workspace included: every table-controlled coordinate stream pays the standard QROAM data-select cost and the matching target plus junk registers are counted in peak live qubits.',
+            'claim': 'The checked family is a standard-QROM primitive-circuit result only with the QROAMClean workspace included: every table-controlled coordinate stream pays the standard QROAM data-select cost and the matching target plus junk registers are counted in peak live qubits.',
             'required_to_keep_published': [
                 'keep the executable leaf, QROAM resource artifact, no-free-wire ownership artifact, generated inventories, ZKP public values, and checked proof bundle on the same selected family',
                 'do not substitute the rejected bitwise-banked lookup family into public standard-QROM claims',
@@ -1234,12 +1246,21 @@ def compiler_family_frontier() -> Dict[str, Any]:
         )
     best_gate = min(families, key=lambda row: (row.full_oracle_non_clifford, row.total_logical_qubits))
     best_qubit = min(families, key=lambda row: (row.total_logical_qubits, row.full_oracle_non_clifford))
-    best_sub30m_qubit = min(
-        (row for row in families if row.full_oracle_non_clifford < 30_000_000),
+    sub30m_rows = [row for row in families if row.full_oracle_non_clifford < 30_000_000]
+    best_sub30m_qubit = None if not sub30m_rows else min(
+        sub30m_rows,
+        key=lambda row: (row.total_logical_qubits, row.full_oracle_non_clifford),
+    )
+    google_low_gate_rows = [
+        row for row in families
+        if row.full_oracle_non_clifford < PUBLIC_GOOGLE_BASELINE['low_gate']['non_clifford']
+    ]
+    best_google_low_gate_qubit = min(
+        google_low_gate_rows,
         key=lambda row: (row.total_logical_qubits, row.full_oracle_non_clifford),
     )
     return {
-        'schema': 'compiler-project-frontier-v10',
+        'schema': 'compiler-project-frontier-v11',
         'public_google_baseline': PUBLIC_GOOGLE_BASELINE,
         'schedule': schedule,
         'slot_allocation': exact_leaf_slot_allocation(),
@@ -1265,7 +1286,8 @@ def compiler_family_frontier() -> Dict[str, Any]:
         'families': [asdict(row) for row in families],
         'best_gate_family': asdict(best_gate),
         'best_qubit_family': asdict(best_qubit),
-        'best_sub30m_qubit_family': asdict(best_sub30m_qubit),
+        'best_google_low_gate_qubit_family': asdict(best_google_low_gate_qubit),
+        'best_sub30m_qubit_family': None if best_sub30m_qubit is None else asdict(best_sub30m_qubit),
         'notes': [
             'These are exact whole-oracle counts for named compiler families over an explicit arithmetic-lowering family, an explicit lookup-lowering family, two explicit leaf-interface families, a generated block-inventory layer, and a fully quantum raw-32 schedule.',
             'The qubit frontier uses exact slot allocation and an explicit phase-shell lowering layer rather than a fixed 512-bit phase-register policy plus shell-level placeholder counters.',
@@ -1886,6 +1908,13 @@ def build_all_artifacts() -> Dict[str, Any]:
         lookup_lowerings=out['lookup_lowerings'],
         streamed_resource=out['streamed_lookup_table_multiplier_resource'],
     )
+    out['logical_resource_ledger'] = build_logical_resource_ledger(
+        frontier=out['frontier'],
+        generated_block_inventories=out['generated_block_inventories'],
+        streamed_lookup_resource=out['streamed_lookup_table_multiplier_resource'],
+        field_bits=FIELD_BITS,
+        public_google_baseline=PUBLIC_GOOGLE_BASELINE,
+    )
     out['qubit_breakthrough_analysis'] = build_qubit_breakthrough_analysis(frontier=out['frontier'])
     out['full_attack_inventory'] = full_attack_inventory()
     out['subcircuit_equivalence'] = build_subcircuit_equivalence_artifact(
@@ -1917,6 +1946,7 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('whole_oracle_recount.json'), out['whole_oracle_recount'])
     dump_json(project_artifact_path('family_frontier.json'), out['frontier'])
     dump_json(project_artifact_path('standard_qrom_lookup_assessment.json'), out['standard_qrom_lookup_assessment'])
+    dump_json(project_artifact_path('logical_resource_ledger.json'), out['logical_resource_ledger'])
     dump_json(project_artifact_path('qubit_breakthrough_analysis.json'), out['qubit_breakthrough_analysis'])
     dump_json(project_artifact_path('full_attack_inventory.json'), out['full_attack_inventory'])
     dump_json(project_artifact_path('subcircuit_equivalence.json'), out['subcircuit_equivalence'])
@@ -1930,7 +1960,7 @@ def build_all_artifacts() -> Dict[str, Any]:
     )
 
     build_summary = {
-        'schema': 'compiler-project-build-summary-v17',
+        'schema': 'compiler-project-build-summary-v18',
         'artifacts': {
             'canonical_public_point': 'compiler_verification_project/artifacts/canonical_public_point.json',
             'full_raw32_oracle': 'compiler_verification_project/artifacts/full_raw32_oracle.json',
@@ -1954,6 +1984,7 @@ def build_all_artifacts() -> Dict[str, Any]:
             'whole_oracle_recount': 'compiler_verification_project/artifacts/whole_oracle_recount.json',
             'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
             'standard_qrom_lookup_assessment': 'compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json',
+            'logical_resource_ledger': 'compiler_verification_project/artifacts/logical_resource_ledger.json',
             'qubit_breakthrough_analysis': 'compiler_verification_project/artifacts/qubit_breakthrough_analysis.json',
             'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
             'subcircuit_equivalence': 'compiler_verification_project/artifacts/subcircuit_equivalence.json',
@@ -1964,6 +1995,7 @@ def build_all_artifacts() -> Dict[str, Any]:
         'headline': {
             'best_gate_family': out['frontier']['best_gate_family'],
             'best_qubit_family': out['frontier']['best_qubit_family'],
+            'best_google_low_gate_qubit_family': out['frontier']['best_google_low_gate_qubit_family'],
             'best_sub30m_qubit_family': out['frontier']['best_sub30m_qubit_family'],
         },
         'notes': [
