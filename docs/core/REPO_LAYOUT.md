@@ -7,7 +7,8 @@
   inputs
 - `LICENSE` — repository license
 - `CITATION.cff` — citation metadata
-- `MANIFEST.sha256` — whole-tree hash manifest
+- `MANIFEST.sha256` — versioned-tree hash manifest
+- `.github/workflows/ci.yml` — Python matrix plus checked attestation Rust/Go CI
 
 ## Artifact layer
 
@@ -30,8 +31,9 @@ Primary optimized release with:
 Separate exact-oracle layer with:
 
 - fully quantum raw-32 schedule artifacts
-- exact whole-oracle frontier for named compiler families
-- exact leaf slot allocation
+- exact whole-oracle frontier for the central compiler family
+- exact streamed lookup tail leaf slot allocation
+- standard-QROM lookup assessment for the current lookup-lowering boundary
 - explicit phase-shell families
 - exact-family physical-estimator targets and recorded estimator outputs
 - exact-family Cain transfer artifacts
@@ -40,10 +42,23 @@ Key files:
 
 - `compiler_verification_project/README.md`
 - `compiler_verification_project/scripts/build.py`
+- `compiler_verification_project/scripts/build_zkp_attestation_input.py`
+- `compiler_verification_project/scripts/run_zkp_attestation_guarded.py`
 - `compiler_verification_project/scripts/verify.py`
 - `compiler_verification_project/src/project.py`
+- `compiler_verification_project/src/zkp_attestation.py`
 - `compiler_verification_project/artifacts/family_frontier.json`
+- `compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json`
 - `compiler_verification_project/artifacts/verification_summary.json`
+- `compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json`
+- `compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json`
+- `compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json`
+- `compiler_verification_project/artifacts/logical_resource_ledger.json`
+- `compiler_verification_project/artifacts/zkp_attestation_family.json`
+- `compiler_verification_project/artifacts/zkp_attestation_fixture_groth16.json`
+- `compiler_verification_project/artifacts/zkp_attestation_proof_groth16.bin`
+- `compiler_verification_project/artifacts/zkp_attestation_groth16_verifier/groth16_vk.bin`
+- `compiler_verification_project/zkp_attestation/`
 
 ## Source code
 

@@ -1,8 +1,8 @@
 # Public Google baseline comparison
 
 This file defines the baseline used when the repository says **Google's
-published 2026 secp256k1 estimates** and records the exact compiler-family
-comparison against that baseline.
+published 2026 secp256k1 estimates** and records the standard-QROM
+compiler-family comparison against that baseline.
 
 ## Baseline source
 
@@ -16,35 +16,42 @@ The tracked public lines are:
 - window size: **16**
 - retained point additions: **28**
 
-## Exact compiler-family comparison against that baseline
+## Standard-QROM compiler-family comparison against that baseline
 
 The repository's exact comparison layer is the compiler-family frontier in:
 
 - `compiler_verification_project/artifacts/family_frontier.json`
+- `compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json`
+- `compiler_verification_project/artifacts/logical_resource_ledger.json`
 
-Its two checked headline points are:
+Its checked public headline is one central standard-QROM family:
 
-- **best exact gate family:** `22,756,199 non-Clifford / 2,381 q`
-- **best exact qubit family:** `2,338 q / 37,432,935 non-Clifford`
+- **central standard-QROM family:** `32,879,331 non-Clifford / 1,812 q`
+
+The standard-QROM assessment records that the current central family uses a
+standard QROAM coordinate-stream primitive over the full 32768-entry folded
+coordinate domain. The ratios below are exact for that selected compiler family
+and the public Google rounded baseline.
 
 ## Exact non-Clifford comparison
 
-For the **best exact gate family**:
+For the **central standard-QROM family**:
 
-- **3.9550x** lower non-Clifford than the public low-qubit line
-- **3.0761x** lower non-Clifford than the public low-gate line
-
-For the **best exact qubit family**:
-
-- **2.4043x** lower non-Clifford than the public low-qubit line
-- **1.8700x** lower non-Clifford than the public low-gate line
+- **2.7373x** lower non-Clifford than the public low-qubit line
+- **2.1290x** lower non-Clifford than the public low-gate line
 
 ## Exact qubit comparison
 
-The exact frontier does **not** currently beat Google's published qubit lines:
+The standard-QROM frontier does **not** currently beat Google's published
+qubit lines:
 
-- the best exact qubit family is **1,138 qubits above** the public low-qubit line
-- the best exact qubit family is **888 qubits above** the public low-gate line
+- the central standard-QROM family is **612 qubits above** the public low-qubit line
+- the central standard-QROM family is **362 qubits above** the public low-gate line
+
+The generated QROAMClean tradeoff ledger also records that, in the current
+standard-QROAM family, the lowest-qubit point below `24M` non-Clifford is
+`23,980,781 / 4,884`, and no checked QROAMClean block-size row reaches both
+`<24M` non-Clifford and `<1700` logical qubits.
 
 Lower-exact modeled hypotheses are intentionally separated into
 `docs/research/MODELED_IMPLEMENTATION_HYPOTHESES.md`.

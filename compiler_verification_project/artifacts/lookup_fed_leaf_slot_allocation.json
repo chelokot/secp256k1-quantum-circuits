@@ -14,6 +14,7 @@
   "tracked_control_registers": [
     "f_lookup_inf"
   ],
+  "borrowed_field_registers": [],
   "peak_arithmetic_slots": {
     "count": 7,
     "pc": 14,
@@ -32,8 +33,10 @@
   "allocator_summary": {
     "exact_arithmetic_slot_count": 7,
     "exact_control_slot_count": 1,
+    "exact_borrowed_field_slot_count": 0,
     "arithmetic_bits": 1792,
-    "control_bits": 1
+    "control_bits": 1,
+    "borrowed_field_bits": 0
   },
   "per_pc": [
     {
@@ -43,7 +46,7 @@
       "control_slots_live_before_write": 0,
       "arithmetic_slots_needed_during_write": 0,
       "control_slots_needed_during_write": 0,
-      "dst": null,
+      "dst": [],
       "reuses_existing_slot": false
     },
     {
@@ -53,7 +56,7 @@
       "control_slots_live_before_write": 0,
       "arithmetic_slots_needed_during_write": 0,
       "control_slots_needed_during_write": 0,
-      "dst": null,
+      "dst": [],
       "reuses_existing_slot": false
     },
     {
@@ -63,7 +66,7 @@
       "control_slots_live_before_write": 0,
       "arithmetic_slots_needed_during_write": 0,
       "control_slots_needed_during_write": 0,
-      "dst": null,
+      "dst": [],
       "reuses_existing_slot": false
     },
     {
@@ -681,6 +684,57 @@
       "assigned_slot": 0
     }
   ],
+  "resource_ownership": {
+    "schema": "compiler-project-resource-ownership-v1",
+    "field_bits": 256,
+    "derived_from": "executable leaf instruction liveness and assigned register versions",
+    "owners": [
+      {
+        "owner": "arithmetic_slot_register_file",
+        "wire_class": "field",
+        "logical_qubit_budget": 1792,
+        "required_logical_qubits": 1792,
+        "live_wire_peak": 7,
+        "assigned_register_versions": 32,
+        "source_artifact": "compiler_verification_project/artifacts/lookup_fed_leaf_slot_allocation.json"
+      },
+      {
+        "owner": "control_slot_register_file",
+        "wire_class": "control",
+        "logical_qubit_budget": 1,
+        "required_logical_qubits": 1,
+        "live_wire_peak": 1,
+        "assigned_register_versions": 2,
+        "source_artifact": "compiler_verification_project/artifacts/lookup_fed_leaf_slot_allocation.json"
+      },
+      {
+        "owner": "borrowed_lookup_interface_field_lanes",
+        "wire_class": "field",
+        "logical_qubit_budget": 0,
+        "required_logical_qubits": 0,
+        "live_wire_peak": 0,
+        "assigned_register_versions": 0,
+        "source_artifact": "compiler_verification_project/artifacts/lookup_fed_leaf_slot_allocation.json"
+      }
+    ],
+    "lookup_interface_policy": {
+      "coordinate_field_lanes_materialized_by_leaf": 0,
+      "coordinate_field_lanes_counted_in_lookup_workspace": 0,
+      "qroam_coordinate_target_and_junk_counted_in_lookup_workspace": true,
+      "qroam_clean_target_register_qubits_per_live_stream": 256,
+      "qroam_clean_junk_register_qubits_per_live_stream": 3840,
+      "table_fed_coordinate_operands": [
+        "lookup_x",
+        "lookup_y",
+        "lookup_x_plus_y"
+      ],
+      "statement": "The streamed lookup contract consumes table coordinates inside table-fed arithmetic kernels; for the standard-QROAM counted family the full coordinate target and required QROAMClean junk registers are assigned to lookup workspace rather than treated as free borrowed field lanes."
+    },
+    "no_free_quantum_wire_invariant": {
+      "passes": true,
+      "capacity_rule": "Each counted owner budget must cover the peak live wires assigned to that owner; lookup coordinate output lanes are not part of lookup_workspace_qubits unless explicitly materialized."
+    }
+  },
   "notes": [
     "This artifact allocates the compiler-project lookup-fed leaf interface, where the initial lookup outputs are carried on explicit lookup wires instead of occupying persistent arithmetic slots.",
     "The reordered lookup-fed leaf preserves the checked point-add semantics while reducing the persistent arithmetic register file to seven field slots and the live control register file to one bit."

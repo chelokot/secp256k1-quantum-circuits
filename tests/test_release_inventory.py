@@ -99,8 +99,10 @@ class ReleaseInventoryTests(unittest.TestCase):
             'compiler_verification_project/src/phase_shell_lowering.py',
             'compiler_verification_project/src/physical_estimator.py',
             'compiler_verification_project/src/project.py',
+            'compiler_verification_project/src/resource_ledger.py',
             'compiler_verification_project/src/subcircuit_equivalence.py',
             'compiler_verification_project/src/whole_oracle_recount.py',
+            'compiler_verification_project/src/zkp_attestation.py',
             'compiler_verification_project/artifacts/build_summary.json',
             'compiler_verification_project/artifacts/arithmetic_lowerings.json',
             'compiler_verification_project/artifacts/family_frontier.json',
@@ -115,6 +117,12 @@ class ReleaseInventoryTests(unittest.TestCase):
             'compiler_verification_project/artifacts/lookup_fed_leaf.json',
             'compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json',
             'compiler_verification_project/artifacts/lookup_fed_leaf_slot_allocation.json',
+            'compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json',
+            'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json',
+            'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json',
+            'compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json',
+            'compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json',
+            'compiler_verification_project/artifacts/logical_resource_ledger.json',
             'compiler_verification_project/artifacts/primitive_multiplier_library.json',
             'compiler_verification_project/artifacts/phase_shell_lowerings.json',
             'compiler_verification_project/artifacts/phase_shell_families.json',
@@ -122,6 +130,38 @@ class ReleaseInventoryTests(unittest.TestCase):
             'compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json',
             'compiler_verification_project/artifacts/azure_resource_estimator_targets.json',
             'compiler_verification_project/artifacts/azure_resource_estimator_results.json',
+            'compiler_verification_project/artifacts/zkp_attestation_input.json',
+            'compiler_verification_project/artifacts/zkp_attestation_claim.json',
+            'compiler_verification_project/artifacts/zkp_attestation_family.json',
+            'compiler_verification_project/artifacts/zkp_attestation_cases.json',
+            'compiler_verification_project/artifacts/zkp_attestation_public_values.json',
+            'compiler_verification_project/artifacts/zkp_attestation_fixture_core.json',
+            'compiler_verification_project/artifacts/zkp_attestation_fixture_compressed.json',
+            'compiler_verification_project/artifacts/zkp_attestation_fixture_groth16.json',
+            'compiler_verification_project/artifacts/zkp_attestation_proof_compressed.bin',
+            'compiler_verification_project/artifacts/zkp_attestation_proof_groth16.bin',
+            'compiler_verification_project/artifacts/zkp_attestation_groth16_verifier/groth16_vk.bin',
+            'compiler_verification_project/scripts/build_zkp_attestation_input.py',
+            'compiler_verification_project/scripts/run_zkp_attestation_guarded.py',
+            'compiler_verification_project/zkp_attestation/Cargo.toml',
+            'compiler_verification_project/zkp_attestation/Cargo.lock',
+            'compiler_verification_project/zkp_attestation/lib/Cargo.toml',
+            'compiler_verification_project/zkp_attestation/lib/src/lib.rs',
+            'compiler_verification_project/zkp_attestation/program/Cargo.toml',
+            'compiler_verification_project/zkp_attestation/program/src/main.rs',
+            'compiler_verification_project/zkp_attestation/script/Cargo.toml',
+            'compiler_verification_project/zkp_attestation/script/build.rs',
+            'compiler_verification_project/zkp_attestation/script/src/bin/main.rs',
+            'compiler_verification_project/zkp_attestation/script/src/core_only.rs',
+            'compiler_verification_project/zkp_attestation/script/src/wrap_only.rs',
+            'compiler_verification_project/zkp_attestation/vendor/sp1-recursion-gnark-ffi/build.rs',
+            'compiler_verification_project/zkp_attestation/vendor/sp1-recursion-gnark-ffi/Cargo.toml',
+            'compiler_verification_project/zkp_attestation/vendor/sp1-recursion-gnark-ffi/go/go.mod',
+            'compiler_verification_project/zkp_attestation/vendor/sp1-recursion-gnark-ffi/go/go.sum',
+            'compiler_verification_project/zkp_attestation/vendor/sp1-recursion-gnark-ffi/go/sp1/build.go',
+            'compiler_verification_project/zkp_attestation/vendor/sp1-recursion-gnark-ffi/go/sp1/groth16_commitments.go',
+            'compiler_verification_project/zkp_attestation/vendor/sp1-recursion-gnark-ffi/go/sp1/prove_groth16.go',
+            'compiler_verification_project/zkp_attestation/vendor/sp1-recursion-gnark-ffi/src/lib.rs',
         ]
         for rel in expected:
             path = REPO_ROOT / rel
@@ -152,6 +192,23 @@ class ReleaseInventoryTests(unittest.TestCase):
             self.assertTrue(path.exists(), path)
             self.assertEqual(path.stat().st_size, record['bytes'])
             self.assertEqual(sha256_path(path), record['sha256'])
+
+    def test_proof_manifest_includes_custom_attestation_prover_sources(self):
+        proof = json.loads((REPO_ROOT / 'artifacts' / 'package' / 'proof_manifest.json').read_text())
+        required = [
+            'compiler_verification_project/zkp_attestation/script/src/core_only.rs',
+            'compiler_verification_project/zkp_attestation/script/src/wrap_only.rs',
+            'compiler_verification_project/zkp_attestation/vendor/sp1-recursion-gnark-ffi/build.rs',
+            'compiler_verification_project/zkp_attestation/vendor/sp1-recursion-gnark-ffi/Cargo.toml',
+            'compiler_verification_project/zkp_attestation/vendor/sp1-recursion-gnark-ffi/go/go.mod',
+            'compiler_verification_project/zkp_attestation/vendor/sp1-recursion-gnark-ffi/go/go.sum',
+            'compiler_verification_project/zkp_attestation/vendor/sp1-recursion-gnark-ffi/go/sp1/build.go',
+            'compiler_verification_project/zkp_attestation/vendor/sp1-recursion-gnark-ffi/go/sp1/groth16_commitments.go',
+            'compiler_verification_project/zkp_attestation/vendor/sp1-recursion-gnark-ffi/go/sp1/prove_groth16.go',
+            'compiler_verification_project/zkp_attestation/vendor/sp1-recursion-gnark-ffi/src/lib.rs',
+        ]
+        for rel in required:
+            self.assertIn(rel, proof['files'])
 
 
 if __name__ == '__main__':

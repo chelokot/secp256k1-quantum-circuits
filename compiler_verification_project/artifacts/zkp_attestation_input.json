@@ -1,0 +1,272 @@
+{
+  "schema": "compiler-project-zkp-attestation-input-v4",
+  "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
+  "selected_family_name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
+  "claim_sha256": "81e9add5d39f1298ea10866d3300c322638a781488e847366437f25c7115fd9e",
+  "leaf_sha256": "a3ee8b140868da8e3e32801ac0e8c734c51409038d2ee5493fee19f8f7bb8eee",
+  "family_sha256": "5fb8cbb6fcf00f65fe244f6f88d92dd902c4bc95b13e015cb974b63c6658d6b7",
+  "case_corpus_sha256": "f65a746e29092442f2814378eeb266e5f688a44b71e23065b9218a5f9b660ad4",
+  "claim_summary": {
+    "field_bits": 256,
+    "leaf_call_count_total": 31,
+    "expected_full_oracle_non_clifford": 32879331,
+    "expected_total_logical_qubits": 1812,
+    "expected_case_count": 8,
+    "non_clifford_formula": {
+      "arithmetic_leaf_non_clifford": 1060317,
+      "per_leaf_lookup_non_clifford": 297,
+      "direct_seed_non_clifford": 297,
+      "leaf_call_count_total": 31,
+      "arithmetic_component": 32869827,
+      "lookup_component": 9207,
+      "reconstructed_total": 32879331
+    },
+    "logical_qubit_formula": {
+      "field_bits": 256,
+      "arithmetic_slot_count": 6,
+      "control_slot_count": 1,
+      "borrowed_interface_qubits": 0,
+      "lookup_workspace_qubits": 274,
+      "live_phase_bits": 1,
+      "arithmetic_component": 1536,
+      "reconstructed_total": 1812
+    }
+  },
+  "family_summary": {
+    "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
+    "arithmetic_leaf_non_clifford": 1060317,
+    "direct_seed_non_clifford": 297,
+    "per_leaf_lookup_non_clifford": 297,
+    "full_oracle_non_clifford": 32879331,
+    "arithmetic_slot_count": 6,
+    "control_slot_count": 1,
+    "borrowed_interface_qubits": 0,
+    "lookup_workspace_qubits": 274,
+    "live_phase_bits": 1,
+    "total_logical_qubits": 1812
+  },
+  "prepared_leaf": {
+    "register_count": 14,
+    "input_qx": 0,
+    "input_qy": 1,
+    "input_qz": 2,
+    "input_k": 3,
+    "input_lookup_x": 4,
+    "input_lookup_y": 5,
+    "input_lookup_meta": 6,
+    "output_qx": 7,
+    "output_qy": 8,
+    "output_qz": 9,
+    "skip_on_lookup_infinity": true,
+    "instructions": [
+      {
+        "kind": "copy",
+        "dst": 7,
+        "src": 0
+      },
+      {
+        "kind": "copy",
+        "dst": 8,
+        "src": 1
+      },
+      {
+        "kind": "copy",
+        "dst": 9,
+        "src": 2
+      },
+      {
+        "kind": "copy",
+        "dst": 6,
+        "src": 6
+      },
+      {
+        "kind": "bool_from_flag",
+        "dst": 10,
+        "flags": 6,
+        "bit": 0
+      },
+      {
+        "kind": "field_mul_lookup_x",
+        "dst": 11,
+        "src": 7
+      },
+      {
+        "kind": "field_mul_lookup_x",
+        "dst": 12,
+        "src": 9
+      },
+      {
+        "kind": "field_add",
+        "dst": 12,
+        "left": 12,
+        "right": 7
+      },
+      {
+        "kind": "field_add",
+        "dst": 7,
+        "left": 7,
+        "right": 8
+      },
+      {
+        "kind": "field_mul_lookup_sum",
+        "dst": 13,
+        "src": 7
+      },
+      {
+        "kind": "mul_const",
+        "dst": 12,
+        "src": 12,
+        "constant": 21
+      },
+      {
+        "kind": "field_mul_lookup_y",
+        "dst": 7,
+        "src": 8
+      },
+      {
+        "kind": "field_sub_sum",
+        "dst": 13,
+        "minuend": 13,
+        "subtrahend_a": 11,
+        "subtrahend_b": 7
+      },
+      {
+        "kind": "field_triple",
+        "dst": 11,
+        "src": 11
+      },
+      {
+        "kind": "complete_a0_streamed_tail",
+        "out_x": 7,
+        "out_y": 8,
+        "out_z": 9,
+        "c": 12,
+        "k": 13,
+        "l": 11,
+        "i": 7,
+        "y": 8,
+        "z": 9
+      }
+    ]
+  },
+  "prepared_case_corpus": {
+    "field_modulus_hex": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
+    "case_count": 8,
+    "cases": [
+      {
+        "case_id": "zero_zero_0000",
+        "category": "zero_zero",
+        "accumulator": null,
+        "lookup": null,
+        "expected": null
+      },
+      {
+        "case_id": "accumulator_infinity_0001",
+        "category": "accumulator_infinity",
+        "accumulator": null,
+        "lookup": {
+          "x_hex": "127003053903b1bb31ba619718f06cf5831e0947870e300691182d9c926983e6",
+          "y_hex": "0f9a818c42f8c817de80533aadb63cb6e80a71748eb8a2834c8cb73d8a3e439b"
+        },
+        "expected": {
+          "x_hex": "127003053903b1bb31ba619718f06cf5831e0947870e300691182d9c926983e6",
+          "y_hex": "0f9a818c42f8c817de80533aadb63cb6e80a71748eb8a2834c8cb73d8a3e439b"
+        }
+      },
+      {
+        "case_id": "lookup_infinity_0002",
+        "category": "lookup_infinity",
+        "accumulator": {
+          "x_hex": "a88f84949c0581fda43bdf5e77525ed608bf35941961449ffd30247e170c53a1",
+          "y_hex": "71ad24ae51d48fb5413c584a0c182d752c71f07556164ba9efbfd0a637ce78bc"
+        },
+        "lookup": null,
+        "expected": {
+          "x_hex": "a88f84949c0581fda43bdf5e77525ed608bf35941961449ffd30247e170c53a1",
+          "y_hex": "71ad24ae51d48fb5413c584a0c182d752c71f07556164ba9efbfd0a637ce78bc"
+        }
+      },
+      {
+        "case_id": "doubling_0003",
+        "category": "doubling",
+        "accumulator": {
+          "x_hex": "e051feb8495e80170d3bb75dd703b0eef27432305fe6506b4cce9d9754647109",
+          "y_hex": "618b978a40f53376b79650b9fb0004c79c299a9771392b74efca139b49bcacba"
+        },
+        "lookup": {
+          "x_hex": "e051feb8495e80170d3bb75dd703b0eef27432305fe6506b4cce9d9754647109",
+          "y_hex": "618b978a40f53376b79650b9fb0004c79c299a9771392b74efca139b49bcacba"
+        },
+        "expected": {
+          "x_hex": "fd52da847fea2d1f41a7a6c81ba26aeb3af5d5e3ad2a7e5a3a4d546a1267cd61",
+          "y_hex": "9ed8ab1f554a7a6b5d4534c61acb754a7948f5fe1e019dfe07b822f761c3730d"
+        }
+      },
+      {
+        "case_id": "inverse_0004",
+        "category": "inverse",
+        "accumulator": {
+          "x_hex": "4ed88cf9fcfbff96a63a3f10930de95fc1312f94511815420fcdba231ff1b467",
+          "y_hex": "f9831ea91e7aeaa30e4a719b1203f18b4f08dcb78eb2bbbd7f7113400438bfc1"
+        },
+        "lookup": {
+          "x_hex": "4ed88cf9fcfbff96a63a3f10930de95fc1312f94511815420fcdba231ff1b467",
+          "y_hex": "067ce156e185155cf1b58e64edfc0e74b0f72348714d4442808eecbefbc73c6e"
+        },
+        "expected": null
+      },
+      {
+        "case_id": "random_0005",
+        "category": "random",
+        "accumulator": {
+          "x_hex": "baef94330c6f5f256c98a71702508aebe29d1cac04c089e5f1211992649a9c3f",
+          "y_hex": "0e9a910e31ed518aedea5386e77256811a81ea02876bf4fc536a0b65b6bb0c13"
+        },
+        "lookup": {
+          "x_hex": "bf5d170c55047076d4d1de62154cb7bc8b1d0dd65ebc277490d9aeadffaf4d30",
+          "y_hex": "ef030355c8158f6fac795d06d3294297cc2e80edd61a987fbf8ed20193d3a355"
+        },
+        "expected": {
+          "x_hex": "4414560cffbf9023f16571d2747c5d026ededd7897d0af3de5b589f2bc8e48c0",
+          "y_hex": "dc339574a785595139b31f70f21c20f51c7ba38016e6a17b9faecfb471ea4102"
+        }
+      },
+      {
+        "case_id": "random_0006",
+        "category": "random",
+        "accumulator": {
+          "x_hex": "74f59e5dbfa55dc9169453003c945a6be7d1d463172b620c44cc8859e301725c",
+          "y_hex": "a2117c384ed9b0ee976b06fc4d7168aa90de7ff15cdd2e7d05eac69d2ccb8b16"
+        },
+        "lookup": {
+          "x_hex": "f487832894cea5c2606427cfa97974efaa85cfe4d07d57c3f4207cc37c224870",
+          "y_hex": "9cf440316d3632ec62f079242b27efe00cbbd8b6f03206747303077b0a35cf55"
+        },
+        "expected": {
+          "x_hex": "c63810265741458c371cdcb63b2a8a481cdb900c6be1ca85917ff5062c80fc05",
+          "y_hex": "f18071b5e312f6212b979b305d0b7460fcef741cc2c862568b5c03e197d731f0"
+        }
+      },
+      {
+        "case_id": "random_0007",
+        "category": "random",
+        "accumulator": {
+          "x_hex": "53c1e0635c10fb028d0e568c6824a212ca8ac40fc7ede08bcd90bfb34698c602",
+          "y_hex": "9cb9beefc412fdbbb44c56a0c8a8d4bf0b4c33f8af9067619668621e7c7e3fb9"
+        },
+        "lookup": {
+          "x_hex": "6ca812b8f469c951bb9c561a1785a11eb343246b831fe13ab149f0de45afb762",
+          "y_hex": "4c8af10fc67e76e3769289dd51d9e1c3b4112d0c58d244ab9fdea0e3c7749b6c"
+        },
+        "expected": {
+          "x_hex": "d60c4dc53ac7c6e36bdde48a5092719a60c0d6e9f7938e569e71256bdd04b4ed",
+          "y_hex": "1f97161a3686a6eb6723cd95091c1611812b19672acf466e1dc1aca2efb07b69"
+        }
+      }
+    ]
+  },
+  "notes": [
+    "The proof input is a prepared attestation bundle: it carries the public document digests plus a proof-ready compiled leaf and deterministic public cases.",
+    "The checked JSON claim, family summary, and case corpus remain the source-of-truth sidecars for audit and regeneration."
+  ]
+}

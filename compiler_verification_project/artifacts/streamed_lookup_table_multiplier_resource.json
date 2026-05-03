@@ -1,0 +1,105 @@
+{
+  "schema": "compiler-project-standard-qroam-streamed-lookup-table-resource-v1",
+  "field_bits": 256,
+  "selected_lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
+  "selected_leaf_family": "streamed_lookup_tail_leaf_v1",
+  "source_artifacts": {
+    "arithmetic_lowerings": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+    "lookup_lowerings": "compiler_verification_project/artifacts/lookup_lowerings.json",
+    "streamed_lookup_tail_leaf": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json",
+    "streamed_lookup_tail_leaf_slot_allocation": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json"
+  },
+  "coordinate_bit_sources": [
+    {
+      "bit_source": "lookup_x",
+      "consumer_opcode": "field_mul_lookup_x",
+      "per_leaf_kernel_count": 2,
+      "field_bits_streamed_per_kernel": 256,
+      "data_select_non_clifford_per_kernel": 65536,
+      "data_select_non_clifford_per_leaf": 131072,
+      "stage_names": [
+        "streamed_lookup_x_standard_qroam_oracle"
+      ]
+    },
+    {
+      "bit_source": "lookup_y",
+      "consumer_opcode": "field_mul_lookup_y",
+      "per_leaf_kernel_count": 1,
+      "field_bits_streamed_per_kernel": 256,
+      "data_select_non_clifford_per_kernel": 65536,
+      "data_select_non_clifford_per_leaf": 65536,
+      "stage_names": [
+        "streamed_lookup_y_standard_qroam_oracle"
+      ]
+    },
+    {
+      "bit_source": "lookup_x_plus_y",
+      "consumer_opcode": "field_mul_lookup_sum",
+      "per_leaf_kernel_count": 1,
+      "field_bits_streamed_per_kernel": 256,
+      "data_select_non_clifford_per_kernel": 65536,
+      "data_select_non_clifford_per_leaf": 65536,
+      "stage_names": [
+        "streamed_lookup_x_plus_y_standard_qroam_oracle"
+      ]
+    },
+    {
+      "bit_source": "lookup_y",
+      "consumer_opcode": "complete_a0_streamed_tail",
+      "per_leaf_kernel_count": 1,
+      "field_bits_streamed_per_kernel": 256,
+      "data_select_non_clifford_per_kernel": 65536,
+      "data_select_non_clifford_per_leaf": 65536,
+      "stage_names": [
+        "streamed_lookup_y_standard_qroam_oracle"
+      ]
+    }
+  ],
+  "streamed_data_selection_model": {
+    "standard_qrom_equivalent": true,
+    "primitive": "standard_qroam_clean_full_coordinate_stream",
+    "folded_magnitude_bits": 15,
+    "folded_coordinate_domain_size": 32768,
+    "qroam_block_size": 1,
+    "qroam_target_bitsize": 256,
+    "table_controlled_coordinate_bits": [
+      "lookup_x",
+      "lookup_y",
+      "lookup_x_plus_y"
+    ],
+    "decomposition": {
+      "lookup_compute_non_clifford": 32768,
+      "measured_uncompute_non_clifford": 32768
+    },
+    "per_kernel_non_clifford": 65536,
+    "per_leaf_streamed_kernel_count": 5,
+    "per_leaf_data_select_non_clifford": 327680,
+    "leaf_call_count_total": 31,
+    "whole_oracle_data_select_non_clifford": 10158080
+  },
+  "workspace_contract": {
+    "lookup_workspace_qubits": 274,
+    "folded_control_workspace_qubits": 18,
+    "standard_qroam_local_workspace_qubits": 256,
+    "qroam_clean_target_register_qubits": 256,
+    "qroam_clean_junk_register_count": 0,
+    "qroam_clean_junk_register_bitsize": 256,
+    "qroam_clean_junk_register_qubits": 0,
+    "qroam_clean_target_plus_junk_qubits": 256,
+    "coordinate_field_lanes_materialized": 0,
+    "coordinate_field_lane_qubits_materialized": 0,
+    "passes": true
+  },
+  "capacity_check": {
+    "per_kernel_costs_seen": [
+      65536
+    ],
+    "all_coordinate_streams_use_standard_qroam_cost": true,
+    "qroam_clean_capacity_matches_cost_model": true,
+    "whole_oracle_stream_count": 155
+  },
+  "notes": [
+    "This artifact keeps the standard-QROM table-controlled multiplier resource model consistent: every coordinate stream pays a standard QROAMClean compute plus measured-uncompute primitive and the workspace counts the matching full-coordinate target plus junk registers.",
+    "No field-sized lookup x/y output lane is free; the coordinate target and QROAMClean junk capacity are explicitly assigned to lookup_workspace_qubits while the consuming arithmetic kernel runs."
+  ]
+}

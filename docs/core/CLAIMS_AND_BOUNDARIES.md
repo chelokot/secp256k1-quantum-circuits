@@ -8,7 +8,13 @@ The repository publishes exact kickmix-ISA arithmetic schedules for a
 secp256k1-specialized point-add leaf and explicit retained-window scaffold
 metadata, together with deterministic audits, finite-model checks, and a
 separate exact compiler-family oracle subproject that closes the
-classical-tail-elision gap for a fully quantum raw-32 schedule.
+classical-tail-elision gap for a fully quantum raw-32 schedule. It now also
+ships an SP1 attestation bundle for one selected standard-QROM family claim at
+that same boundary. The current `32,879,331 / 1,812` result is a standard-QROM
+compiler-family result at the counted lookup boundary. It is not a
+below-1700-qubit standard-QROM result, and the generated QROAMClean tradeoff
+ledger proves that this current family has no block-size row satisfying both
+`<24M` non-Clifford and `<1700` logical qubits.
 
 ## Exact layers
 
@@ -68,6 +74,7 @@ below the ISA boundary. It publishes:
 
 - `compiler_verification_project/artifacts/full_raw32_oracle.json`
 - `compiler_verification_project/artifacts/family_frontier.json`
+- `compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json`
 - `compiler_verification_project/artifacts/exact_leaf_slot_allocation.json`
 - `compiler_verification_project/artifacts/phase_shell_lowerings.json`
 - `compiler_verification_project/artifacts/ft_ir_compositions.json`
@@ -81,35 +88,85 @@ subproject. In particular, it fixes:
 - a fully quantum raw-32 schedule with no classical tail elisions,
 - generated folded lookup-family operation inventories,
 - generated arithmetic-kernel operation inventories,
+- explicit standard-QROAM streamed table-controlled multiplier data-selection
+  inventories,
+- a checked standard-QROM lookup assessment that binds the selected family to a
+  full 32768-entry coordinate-stream QROAM primitive instead of the rejected
+  bitwise-banked path-select boundary,
 - exact leaf slot allocation, and
-- generated phase-shell operation inventories for the named full-register and semiclassical inverse-QFT shells,
+- generated phase-shell operation inventories for the selected semiclassical inverse-QFT shell,
 - compositional FT-style call graphs plus traversed leaf sigma for the named
   compiler families,
 - independent exact whole-oracle recount derived from that FT IR leaf sigma,
 - internal subcircuit-equivalence witnesses across traced ISA opcodes, lowered
-  lookup families, the coherent cleanup window, and generated whole-oracle
-  composition, and
+  lookup families, boundary no-op semantics, no-free-wire ownership, and
+  generated whole-oracle composition, and
 - compact phase-shell summaries derived from those exact lowerings, including a semiclassical-QFT shell.
+
+### 5. Exact SP1 attestation at the compiler-family boundary
+
+The repository also ships a checked SP1 attestation bundle:
+
+- `compiler_verification_project/artifacts/zkp_attestation_input.json`
+- `compiler_verification_project/artifacts/zkp_attestation_claim.json`
+- `compiler_verification_project/artifacts/zkp_attestation_family.json`
+- `compiler_verification_project/artifacts/zkp_attestation_cases.json`
+- `compiler_verification_project/artifacts/zkp_attestation_public_values.json`
+- `compiler_verification_project/artifacts/zkp_attestation_fixture_core.json`
+- `compiler_verification_project/artifacts/zkp_attestation_fixture_compressed.json`
+- `compiler_verification_project/artifacts/zkp_attestation_fixture_groth16.json`
+- `compiler_verification_project/artifacts/zkp_attestation_proof_compressed.bin`
+- `compiler_verification_project/artifacts/zkp_attestation_proof_groth16.bin`
+- `compiler_verification_project/artifacts/zkp_attestation_groth16_verifier/groth16_vk.bin`
+
+That bundle is exact at the same boundary as the selected compiler-family
+summary and streamed lookup tail point-add leaf. The guest:
+
+- re-hashes the public claim, leaf document, selected family summary, and
+  deterministic case corpus,
+- replays the exact streamed lookup tail point-add contract on every public case,
+- checks the affine group law for every case, and
+- reconstructs the claimed full-oracle non-Clifford and logical-qubit totals
+  from the selected family summary before committing public values.
+
+The checked JSON sidecars remain the audit-friendly source-of-truth inputs for
+that bundle. The core, compressed, and Groth16 fixtures are checked proof-layer
+outputs for the same public claim, and the shipped Groth16 proof bundle plus
+verifying key allow cheap local re-verification from the repository without
+rebuilding the large vk-specific dev artifact tree.
+
+This is similar in shape to Google's disclosure model, but it proves a public
+deterministic point-add corpus at the repository exact-family boundary rather
+than a hidden primitive-gate Shor circuit.
 
 ## Modeled or non-exact layers
 
 ### A. Primitive-gate lookup realization
 
-The repository does not lower lookup memory into a primitive-gate qRAM or QROM
-construction. It validates the checked-in folded contract fields, ships
-generated compiler-family lookup operation inventories below that contract, and
-proves the lookup semantics assumed at the ISA boundary. It still stops short
-of a bit-for-bit Clifford-complete qRAM/QROM netlist.
+The repository does not lower lookup memory into a bit-for-bit
+Clifford-complete qRAM or full Shor circuit. It does now bind the counted
+lookup-data path to a standard QROAM coordinate-stream primitive over the
+32768-entry folded coordinate domain.
 
-### B. Primitive-gate cleanup
+For the streamed lookup tail result, the table-controlled arithmetic boundary
+is no longer free: `streamed_lookup_table_multiplier_resource.json` counts the
+QROAMClean full-coordinate target and junk-register capacity in lookup
+workspace. The selected central point uses `K = 1`, so each 256-bit coordinate
+stream consumed by `field_mul_lookup_*` or the streamed tail pays `65,536`
+non-Clifford operations and `274` lookup-workspace qubits. The remaining boundary is
+that the repository does not ship a Clifford-complete flattened netlist for
+every arithmetic and lookup block.
 
-The shipped no-op control cleanup is exact at the ISA boundary: the same
-metadata bit that populates `f_lookup_inf` is applied again to uncompute that
-one-bit control after the neutral-entry select path. The repository audits that
-coherent flag-cleanup pair directly on deterministic secp256k1 cases.
+### B. Boundary no-op and cleanup
 
-The repository still does not lower that cleanup pair into a primitive-gate
-subcircuit.
+The central streamed lookup tail family handles the neutral lookup entry as a
+boundary no-op instead of a leaf-internal XYZ select window. The hot leaf still
+binds and traces the lookup-infinity predicate, and the public equivalence
+corpus covers random, doubling, inverse, accumulator-infinity, and
+lookup-infinity cases.
+
+The repository still does not claim a primitive-gate proof below the named
+boundary no-op and arithmetic macro contracts.
 
 ### C. Fully flattened Shor gate list
 
@@ -144,6 +201,10 @@ Exact lookup-contract semantics: yes.
 
 Mainline exact primitive-gate lookup, cleanup, and full Shor flattening: no.
 
-Exact compiler-family whole-oracle counts: yes, in `compiler_verification_project/`, but only for the named compiler families checked into that subproject.
+Exact compiler-family whole-oracle standard-QROM counts: yes, in `compiler_verification_project/`, but only for the named compiler families checked into that subproject.
 
-Exact compiler-family comparison against the public Google baseline: yes.
+Exact compiler-family SP1 attestation for one selected family claim and public deterministic point-add corpus: yes.
+
+Standard-QROM compiler-family comparison against the public Google baseline: yes.
+
+Clifford-complete full-Shor primitive-gate comparison against the public Google baseline: no.

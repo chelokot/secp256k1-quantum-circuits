@@ -1,0 +1,31 @@
+{
+  "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
+  "summary": "Central standard-QROAM lookup family: folded lookup control with standard QROAM coordinate streams consumed by table-controlled arithmetic kernels. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Executable streamed lookup leaf with table-fed coordinate multipliers, boundary no-op semantics, and a counted multi-output complete-add tail.",
+  "gate_set": "Clifford + standard QROAM coordinate streams + measurement; Clifford + classically controlled dyadic phase + measurement",
+  "phase_shell": "semiclassical_qft_v1",
+  "slot_allocation_family": "streamed_lookup_tail_leaf_v1",
+  "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
+  "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
+  "arithmetic_leaf_non_clifford": 1060317,
+  "direct_seed_non_clifford": 297,
+  "per_leaf_lookup_non_clifford": 297,
+  "full_oracle_non_clifford": 32879331,
+  "arithmetic_slot_count": 6,
+  "control_slot_count": 1,
+  "borrowed_interface_qubits": 0,
+  "lookup_workspace_qubits": 274,
+  "live_phase_bits": 1,
+  "total_logical_qubits": 1812,
+  "phase_shell_hadamards": 512,
+  "phase_shell_measurements": 512,
+  "phase_shell_rotations": 511,
+  "phase_shell_rotation_depth": 511,
+  "total_measurements": 5444867,
+  "notes": [
+    "This is the repository standard-QROM primitive-circuit lookup boundary. Unlike the rejected bitwise-banked family, it does not treat the 32768-entry coordinate table as 15 independent 2-way decodes.",
+    "The selected coordinate stream pays the standard QROAM compute and measured-uncompute costs in arithmetic_lowerings.json for every table-controlled arithmetic consumer.",
+    "The peak lookup workspace counts the folded-control qubits plus the full QROAMClean target and junk-register capacity required by the coordinate-stream cost model.",
+    "This family is exact for the chosen semiclassical inverse-QFT schedule with one aggregated classical basis update per noninitial bit.",
+    "It preserves the oracle family while collapsing the live quantum phase register from 512 qubits to one qubit."
+  ]
+}

@@ -25,6 +25,13 @@ class RepoIntegrityTests(unittest.TestCase):
             manifest[rel] = digest
         self.assertTrue(all(not rel.startswith('.git/') for rel in manifest))
         self.assertNotIn('results/repo_verification_summary.json', manifest)
+        self.assertTrue(
+            all(
+                not rel.startswith('compiler_verification_project/zkp_attestation/target/')
+                for rel in manifest
+            )
+        )
+        self.assertNotIn('pro.txt', manifest)
         selected = [
             'artifacts/circuits/optimized_pointadd_secp256k1.json',
             'compiler_verification_project/artifacts/family_frontier.json',

@@ -18,10 +18,10 @@ class CainIntegrationTests(unittest.TestCase):
 
     def test_headline_ranges_are_ordered(self):
         head = self.summary['headline_ranges']
-        self.assertLess(head['time_efficient_days_if_90M_min'], head['time_efficient_days_if_90M_max'])
-        self.assertLess(head['time_efficient_days_if_70M_min'], head['time_efficient_days_if_70M_max'])
-        self.assertLess(head['same_density_physical_qubits_if_1200_min'], head['same_density_physical_qubits_if_1200_max'])
-        self.assertLess(head['same_density_physical_qubits_if_1450_min'], head['same_density_physical_qubits_if_1450_max'])
+        self.assertLessEqual(head['time_efficient_days_if_90M_min'], head['time_efficient_days_if_90M_max'])
+        self.assertLessEqual(head['time_efficient_days_if_70M_min'], head['time_efficient_days_if_70M_max'])
+        self.assertLessEqual(head['same_density_physical_qubits_if_1200_min'], head['same_density_physical_qubits_if_1200_max'])
+        self.assertLessEqual(head['same_density_physical_qubits_if_1450_min'], head['same_density_physical_qubits_if_1450_max'])
 
     def test_case_transfer_formulas_are_self_consistent(self):
         cain = self.summary['source_papers']['cain_2026']
@@ -61,7 +61,8 @@ class CainIntegrationTests(unittest.TestCase):
 
     def test_publication_safe_summary_exists(self):
         pub = self.summary['publication_safe_summary']
-        self.assertIn('2.6-5.3 days', pub['single_sentence'])
+        self.assertIn('central standard-QROM compiler family', pub['single_sentence'])
+        self.assertIn('3.7-4.7 days', pub['single_sentence'])
         self.assertEqual(len(pub['do_not_say']), 3)
 
 

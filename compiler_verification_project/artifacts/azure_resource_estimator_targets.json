@@ -16,8 +16,10 @@
     }
   },
   "logical_counts_binding": {
-    "family_names": [],
-    "logical_counts_sha256": "75e494681701de76fca64c4202ff12976716700ec8903faef36ca41c14aa0e60"
+    "family_names": [
+      "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1"
+    ],
+    "logical_counts_sha256": "8713ff031ccfe17167b8067e51186d0968154152d1dcfca6becf3211eaa0a07c"
   },
   "targets": [
     {

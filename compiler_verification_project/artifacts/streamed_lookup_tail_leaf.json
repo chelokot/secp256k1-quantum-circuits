@@ -1,0 +1,191 @@
+{
+  "schema": "compiler-project-streamed-lookup-tail-leaf-v1",
+  "variant": "a0_complete_mixed_streamed_lookup_tail_secp256k1",
+  "curve": "secp256k1",
+  "field_modulus_hex": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
+  "curve_b": 7,
+  "b3": 21,
+  "arithmetic_slots": [
+    "qx",
+    "qy",
+    "qz",
+    "lx",
+    "t0",
+    "t1"
+  ],
+  "interface_wires": [
+    "Q.X",
+    "Q.Y",
+    "Q.Z",
+    "k",
+    "T.x",
+    "T.y",
+    "T.meta"
+  ],
+  "instructions": [
+    {
+      "pc": 0,
+      "op": "load_input",
+      "dst": "qx",
+      "src": "Q.X",
+      "comment": "Accumulator X enters the arithmetic register file."
+    },
+    {
+      "pc": 1,
+      "op": "load_input",
+      "dst": "qy",
+      "src": "Q.Y",
+      "comment": "Accumulator Y enters the arithmetic register file."
+    },
+    {
+      "pc": 2,
+      "op": "load_input",
+      "dst": "qz",
+      "src": "Q.Z",
+      "comment": "Accumulator Z enters the arithmetic register file."
+    },
+    {
+      "pc": 3,
+      "op": "lookup_meta",
+      "dst": "lookup_meta",
+      "src": {
+        "table": "T.meta",
+        "key": "k"
+      },
+      "comment": "Metadata bit0 marks the neutral lookup entry."
+    },
+    {
+      "pc": 4,
+      "op": "bool_from_flag",
+      "dst": "f_lookup_inf",
+      "src": {
+        "flags": "lookup_meta",
+        "bit": 0
+      },
+      "comment": "Boundary no-op predicate for the k = 0 lookup entry."
+    },
+    {
+      "pc": 5,
+      "op": "field_mul_lookup_x",
+      "dst": "t0",
+      "src": "qx",
+      "comment": "A = X1 * x2 using the streamed table x-coordinate."
+    },
+    {
+      "pc": 6,
+      "op": "field_mul_lookup_x",
+      "dst": "lx",
+      "src": "qz",
+      "comment": "x2Z1 using the streamed table x-coordinate."
+    },
+    {
+      "pc": 7,
+      "op": "field_add",
+      "dst": "lx",
+      "src": [
+        "lx",
+        "qx"
+      ],
+      "comment": "C input before 3b scaling: X1 + x2Z1."
+    },
+    {
+      "pc": 8,
+      "op": "field_add",
+      "dst": "qx",
+      "src": [
+        "qx",
+        "qy"
+      ],
+      "comment": "G = X1 + Y1."
+    },
+    {
+      "pc": 9,
+      "op": "field_mul_lookup_sum",
+      "dst": "t1",
+      "src": "qx",
+      "comment": "H = (x2 + y2)(X1 + Y1) using streamed table constants."
+    },
+    {
+      "pc": 10,
+      "op": "mul_const",
+      "dst": "lx",
+      "src": "lx",
+      "const": 21,
+      "comment": "C = 3b(X1 + x2Z1)."
+    },
+    {
+      "pc": 11,
+      "op": "field_mul_lookup_y",
+      "dst": "qx",
+      "src": "qy",
+      "comment": "I = Y1 * y2 using the streamed table y-coordinate."
+    },
+    {
+      "pc": 12,
+      "op": "field_sub_sum",
+      "dst": "t1",
+      "src": [
+        "t1",
+        "t0",
+        "qx"
+      ],
+      "comment": "K = H - A - I."
+    },
+    {
+      "pc": 13,
+      "op": "field_triple",
+      "dst": "t0",
+      "src": "t0",
+      "comment": "L = 3A."
+    },
+    {
+      "pc": 14,
+      "op": "complete_a0_streamed_tail",
+      "dst": [
+        "qx",
+        "qy",
+        "qz"
+      ],
+      "src": {
+        "c": "lx",
+        "k": "t1",
+        "l": "t0",
+        "i": "qx",
+        "y": "qy",
+        "z": "qz"
+      },
+      "comment": "Multi-output streamed tail derives E, F, M, N internally and writes X3, Y3, Z3."
+    }
+  ],
+  "lookup_interface_slots": [
+    "lookup_meta"
+  ],
+  "lookup_constant_sources": [
+    "lookup_x",
+    "lookup_y",
+    "lookup_x_plus_y"
+  ],
+  "lookup_infinity_policy": "boundary_noop",
+  "tail_macro": {
+    "opcode": "complete_a0_streamed_tail",
+    "inputs": [
+      "C",
+      "K",
+      "L",
+      "I",
+      "Y",
+      "Z"
+    ],
+    "outputs": [
+      "X3",
+      "Y3",
+      "Z3"
+    ],
+    "non_clifford_lowering": "one streamed yZ multiplication, one fixed 21Z multiplication, three internal add/sub kernels, six output multipliers, and three output add/sub kernels"
+  },
+  "notes": [
+    "This executable leaf contract keeps lookup x/y as table-fed constants consumed by arithmetic kernels rather than field-sized lookup output wires.",
+    "The neutral lookup entry is a boundary no-op: the hot leaf is executed only for nonzero lookup entries, and the boundary keeps the accumulator unchanged for k = 0.",
+    "The complete_a0_streamed_tail macro is a multi-output lowering of the complete-add tail from six live field values and is counted with all internal yZ, F, E/M/N, product, and output-combine work."
+  ]
+}

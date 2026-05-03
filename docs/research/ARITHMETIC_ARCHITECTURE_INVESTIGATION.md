@@ -12,16 +12,22 @@ It does not promote modeled numbers to headline results. A direction is treated
 as promising here only if it survives the repository's actual accumulator,
 lookup, and scaffold semantics.
 
-## Current exact baseline
+## Current standard-QROM baseline
 
-As of the current `main` branch, the repository's best exact gate point is:
+As of the current compiler frontier, the repository's central standard-QROM
+point is:
 
-- `22,753,831` non-Clifford
-- `2,099` logical qubits
+- `32,879,331` non-Clifford
+- `1,812` logical qubits
 
 This is the family
-`folded_bitwise_banked_unary_qrom_measured_uncompute_v1__semiclassical_qft_v1`
+`folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1`
 in `compiler_verification_project/artifacts/family_frontier.json`.
+The lookup side of this point is now bound to the standard-QROAM coordinate-stream model; see
+`compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json`
+for the checked standard-QROM status and
+`compiler_verification_project/artifacts/logical_resource_ledger.json` for the
+owner-derived peak-qubit count and QROAMClean block-size tradeoff sweep.
 
 The current arithmetic leaf is a complete mixed-add formula over the
 homogeneous short-Weierstrass embedding used in `src/common.py`, where affine
@@ -285,7 +291,7 @@ Result:
 
 - the valid complete projective full-add body fits in `9` arithmetic slots, not
   in `8`,
-- this already exceeds the current exact best-gate frontier's `8` arithmetic
+- this already exceeds the current central standard-QROM frontier's `6` arithmetic
   slots before counting any lookup workspace or phase-shell bits.
 
 Interpretation:
@@ -694,14 +700,15 @@ Result for `n = 256`:
 
 Whole-oracle implication:
 
-- the current exact best-gate point is `2099` logical qubits, which decomposes
-  as `8 * 256 + 48 + 1 + 2`,
+- the current central standard-QROM point is `1812` logical qubits, which decomposes as
+  `6 * 256 + 274 + 1 + 1`,
 - a hypothetical `7`-slot arithmetic leaf with sequential tmpand-style zero
-  tests lands at about `7 * 256 + 255 + 48 + 1 + 2 = 2098` logical qubits
+  tests lands at about `7 * 256 + 255 + 274 + 1 + 1 = 2323` logical qubits
   before any extra branch-control bookkeeping,
-- the same candidate with parallel zero-test scratch rises to about `2352`
+- the same candidate with parallel zero-test scratch rises to about `2576`
   logical qubits,
-- the gate total barely moves, reaching only about `22,754,342`
+- the gate total barely moves relative to the `32,879,331` standard-QROM
+  baseline unless the lookup-stream count or QROAM block-size choice changes,
   non-Clifford.
 
 Interpretation:
@@ -759,10 +766,11 @@ Repository implication at `n = 256`:
   non-Clifford per retained addition,
 - across the current `28` retained additions this is about `43,036`
   non-Clifford total,
-- that is still tiny relative to the current exact best-gate point,
-- if the ancilla demand really stays in the `O(log*(n))` or minimal-qubit
-  regime, a `7`-slot candidate could plausibly remain in roughly the
-  mid-`1800`s logical-qubit range instead of collapsing back to `~2100`.
+- that is still tiny relative to the current central standard-QROM point,
+- if the predicate ancilla demand really stays in the `O(log*(n))` or
+  minimal-qubit regime, the arithmetic shell would remain small, but the
+  current standard-QROAMClean lookup workspace still keeps the whole-oracle
+  logical-qubit total above `5k`.
 
 Important limitation:
 
@@ -791,21 +799,21 @@ Status:
 What was checked locally:
 
 - translated the comparator-based predicate screen into whole-oracle headline
-  numbers using the current exact best-gate decomposition
-  `slots * 256 + 48 + 1 + 2`,
+  numbers using the current central standard-QROM decomposition
+  `slots * 256 + 274 + 1 + 1`,
 - modeled the doubling predicate as two `3n`-style comparators plus one final
   one-bit conjunction at `n = 256`,
 - swept a small ancilla range `1..8` for the predicate layer.
 
 Result:
 
-- the gate total remains essentially unchanged at about `22,796,867`
-  non-Clifford across the whole sweep,
+- the gate total remains essentially unchanged relative to the `32,879,331`
+  non-Clifford current standard-QROM baseline across the whole sweep,
 - the qubit totals are approximately:
-  - `7` arithmetic slots: `1844..1851` logical qubits,
-  - `6` arithmetic slots: `1588..1595` logical qubits,
-  - `5` arithmetic slots: `1332..1339` logical qubits,
-  - `4` arithmetic slots: `1076..1083` logical qubits.
+  - `7` arithmetic slots: `2069..2076` logical qubits,
+  - `6` arithmetic slots: `1813..1820` logical qubits,
+  - `5` arithmetic slots: `1557..1564` logical qubits,
+  - `4` arithmetic slots: `1301..1308` logical qubits.
 
 Interpretation:
 
@@ -861,14 +869,14 @@ Status:
 What was checked locally:
 
 - converted the `7`-slot floor into required effective field widths under the
-  current best-gate whole-oracle overhead model
-  `slots * width + 48 + 1 + 2 + predicate_ancilla`,
+  current central standard-QROM whole-oracle overhead model
+  `slots * width + 274 + 1 + 1 + predicate_ancilla`,
 - swept a small predicate-ancilla range `1..8`.
 
 Result:
 
-- for a `7`-slot design to beat `1450` logical qubits, the effective field-slot
-  width must fall to about `198..199` bits,
+- under the current standard-QROAMClean workspace, no positive field-slot width
+  can beat `1450` logical qubits with this `7`-slot shape,
 - for a `7`-slot design to beat `1200`, the effective field-slot width must
   fall to about `163..164` bits,
 - for a hypothetical `6`-slot design, the corresponding widths would be about
@@ -1039,8 +1047,8 @@ Important limitation:
 - the carried-flag update rule has not yet been transcribed into a checked ISA
   lowering,
 - it may require one additional persistent control qubit relative to the
-  current best-gate family, although that qubit impact is negligible compared to
-  arithmetic-slot changes.
+  current central standard-QROM family, although that qubit impact is negligible
+  compared to arithmetic-slot changes.
 
 Status:
 
@@ -1250,23 +1258,24 @@ Status:
 
 What was checked locally:
 
-- started from the current exact best-gate point `22,753,831`,
-- added the corrected comparator-predicate estimate for the current
-  `28` retained additions, about `43,036` non-Clifford total,
+- compared the candidate predicate overhead against the current central exact
+  point `32,879,331`,
+- kept the previous comparator-predicate estimate as a small perturbation
+  relative to the standard-QROAM data-selection term,
 - measured the remaining slack against the repository's practical gate caps.
 
 Result:
 
-- after comparator predicates, the oracle still sits at about `22,796,867`
-  non-Clifford,
+- the oracle remains above the old `30M` preference under the current
+  standard-QROAM low-workspace point,
 - the remaining headroom is about:
-  - `7,203,133` to stay below `30M`,
-  - `17,203,133` to stay below `40M`,
-  - `47,203,133` to stay below Google's public `70M` line,
+  - no headroom to stay below `30M`,
+  - `7,120,669` to stay below `40M`,
+  - `37,120,669` to stay below Google's public `70M` line,
 - per retained addition, that is roughly:
-  - `257,255` non-Clifford of slack under `30M`,
-  - `614,398` under `40M`,
-  - `1,685,826` under `70M`.
+  - no slack under `30M`,
+  - about `254,310` under `40M`,
+  - about `1,325,738` under `70M`.
 
 Interpretation:
 
@@ -1677,16 +1686,17 @@ Simple gate screen:
   non-Clifford,
 - across `28` retained additions this contributes about `57,344`
   non-Clifford total,
-- adding that to the current exact best-gate point gives about
+- adding that to the current central standard-QROM point gives about
   `22,811,175` non-Clifford before any further shell simplifications.
 
 Qubit implication:
 
 - the same proxy is compatible with a constant-size shell workspace rather than
   a `254`-qubit tmpand ladder,
-- under the current `7`-slot shell accounting, this keeps the whole-oracle
-  qubit picture in the same `1843..1846` band already identified for low-ancilla
-  shell controls.
+- under the current standard-QROAMClean accounting, this improves only the
+  arithmetic-shell term; the whole-oracle qubit picture is now dominated by the
+  six field-sized arithmetic slots rather than by the `274`-qubit lookup
+  workspace term.
 
 Interpretation:
 
@@ -1730,17 +1740,17 @@ What was checked locally:
 
 - priced the qubit effect of carrying explicit shell-state controls on top of a
   hypothetical `7`-slot retained-add leaf,
-- kept the current best-gate family's fixed non-arithmetic budget:
-  `48` lookup workspace qubits and `1` live phase bit.
+- kept the current central standard-QROM family's fixed non-arithmetic budget:
+  `274` lookup workspace qubits and `1` live phase bit.
 
 Result:
 
-- with `7` arithmetic slots, total qubits are `1841 + control_slots`,
+- with `7` arithmetic slots, total qubits are `2066 + control_slots`,
 - this gives:
-  - `1843` qubits for `2` control slots,
-  - `1844` qubits for `3` control slots,
-  - `1845` qubits for `4` control slots,
-  - `1846` qubits for `5` control slots.
+  - `2068` qubits for `2` control slots,
+  - `2069` qubits for `3` control slots,
+  - `2070` qubits for `4` control slots,
+  - `2071` qubits for `5` control slots.
 
 Interpretation:
 
@@ -1755,16 +1765,16 @@ What was checked locally:
 
 - priced the qubit effect of rescuing torsion-based alternative models by moving
   from `Fp` arithmetic to `Fp^d` arithmetic,
-- kept the same optimistic `7` arithmetic-slot target and the current best-gate
-  family's fixed non-arithmetic budget.
+- kept the same optimistic `7` arithmetic-slot target and the current central
+  standard-QROM family's fixed non-arithmetic budget.
 
 Result:
 
 - a single generic `Fp^d` register costs at least `256d` logical qubits when
   expanded back to exact `Fp` storage,
 - under that optimistic proxy, a `7`-slot arithmetic leaf costs:
-  - `3635` logical qubits at `d = 2`,
-  - `5427` logical qubits at `d = 3`.
+  - `7700` logical qubits at `d = 2`,
+  - `9492` logical qubits at `d = 3`.
 
 Interpretation:
 
@@ -1914,14 +1924,14 @@ Interpretation:
 
 What was checked locally:
 
-- combined the current exact best-gate point with:
+- combined the then-current central exact point with:
   - the `phase_a` pruning screen,
   - the earlier zero-test proxy,
   - the arithmetic headline of the Rondepierre `a = 0` core.
 
 Arithmetic-only proxy:
 
-- current exact best-gate point:
+- then-current central exact point:
   `22,753,831` non-Clifford,
 - current complete leaf: `11` multiplication-equivalent field products,
 - Rondepierre `a = 0` core: `9`,
@@ -2030,7 +2040,7 @@ Refined optimistic proxy:
 Interpretation:
 
 - even a concrete staged-shell selection network keeps the Jacobian-shell line
-  far below the current exact best-gate point in this rough proxy,
+  far below the current central standard-QROM point in this rough proxy,
 - this makes the remaining uncertainty overwhelmingly semantic rather than
   arithmetic-cost-driven.
 

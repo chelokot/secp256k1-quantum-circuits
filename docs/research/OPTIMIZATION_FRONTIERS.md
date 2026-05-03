@@ -20,6 +20,9 @@ which implementation gaps remain open.
   whole-oracle composition
 - exact compiler-family raw-32 whole-oracle frontier
 - exact slot allocation and exact phase-shell lowering
+- checked standard-QROM lookup assessment binding the selected family to a
+  standard-QROAM coordinate-stream primitive rather than the rejected
+  bitwise-banked path-select model
 
 The main open directions are therefore:
 
@@ -31,7 +34,9 @@ The main open directions are therefore:
 
 It would be inaccurate to describe the repository as already having:
 
-- a Clifford-complete primitive-gate lookup implementation,
+- a Clifford-complete primitive-gate full-oracle implementation,
+- a standard-QROM primitive-circuit realization with lower cost than the checked
+  `32,879,331 / 1,812` central result,
 - a primitive-gate cleanup proof,
 - a fully flattened Shor circuit,
 - a globally optimal primitive-gate total.

@@ -1,9 +1,22 @@
 {
   "schema": "compiler-project-azure-logical-counts-v2",
-  "families": [],
+  "families": [
+    {
+      "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
+      "logicalCounts": {
+        "numQubits": 1812,
+        "tCount": 0,
+        "cczCount": 32879331,
+        "ccixCount": 0,
+        "rotationCount": 511,
+        "rotationDepth": 511,
+        "measurementCount": 5444867
+      },
+      "notes": "Azure-style logicalCounts seed. The oracle CCZ total, phase-shell rotation inventory, and total measurement inventory are all sourced from exact compiler-family artifacts."
+    }
+  ],
   "notes": [
     "This file is not a claimed Azure output. It is a machine-readable logicalCounts seed suitable for exact-family handoff into a physical estimator.",
-    "The rotationCount and rotationDepth fields are sourced from the exact phase-shell lowering artifact for each named compiler family.",
-    "When qsharp/qdk is unavailable, this artifact is filtered to the subset of families that have checked recorded estimator outputs in the repository."
+    "The rotationCount and rotationDepth fields are sourced from the exact phase-shell lowering artifact for each named compiler family."
   ]
 }

@@ -7,7 +7,7 @@ import json
 from collections import defaultdict
 from copy import deepcopy
 from pathlib import Path
-from typing import Any, Dict, List, Mapping, Tuple
+from typing import Any, Dict, List, Mapping, Sequence, Tuple
 
 from common import (
     SECP_B,
@@ -22,13 +22,14 @@ from common import (
     sha256_bytes,
     sha256_path,
 )
-from arithmetic_lowering import arithmetic_kernel_summary, arithmetic_lowering_library
+from arithmetic_lowering import arithmetic_kernel_summary, arithmetic_lowering_library, materialize_arithmetic_primitive_operations
 from lookup_lowering import lookup_lowering_library, lowered_lookup_semantic_summary, materialize_lookup_primitive_operations
 from phase_shell_lowering import materialize_phase_operations, phase_shell_family_summary, phase_shell_lowering_library
 from physical_estimator import (
     build_azure_estimator_target_payload,
     build_or_load_azure_estimator_results_payload,
 )
+from resource_ledger import build_logical_resource_ledger, qroam_clean_stream_cost
 from project import (
     FIELD_BITS,
     FOLDED_MAG_BITS,
@@ -38,12 +39,12 @@ from project import (
     PUBLIC_GOOGLE_BASELINE,
     RAW_WINDOW_BITS,
     _leaf,
-    _register_map,
     build_azure_logical_counts_payload,
     build_cain_transfer_payload,
     build_ft_ir_compositions_payload,
     build_generated_block_inventories_payload,
     build_qubit_breakthrough_analysis,
+    central_executable_leaf,
     exact_leaf_slot_allocation,
     full_attack_inventory,
     leaf_opcode_histogram,
@@ -52,6 +53,9 @@ from project import (
     primitive_multiplier_library,
     raw32_schedule,
     slot_allocation_families,
+    standard_qrom_lookup_assessment,
+    streamed_lookup_tail_leaf_slot_allocation,
+    streamed_lookup_table_multiplier_resource,
     run_full_raw32_semantic_check,
     arithmetic_kernel_library,
     lookup_families,
@@ -125,7 +129,11 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'lookup_fed_leaf': artifact_root / 'lookup_fed_leaf.json',
         'lookup_fed_leaf_equivalence': artifact_root / 'lookup_fed_leaf_equivalence.json',
         'lookup_fed_leaf_slot_allocation': artifact_root / 'lookup_fed_leaf_slot_allocation.json',
+        'streamed_lookup_tail_leaf': artifact_root / 'streamed_lookup_tail_leaf.json',
+        'streamed_lookup_tail_leaf_equivalence': artifact_root / 'streamed_lookup_tail_leaf_equivalence.json',
+        'streamed_lookup_tail_leaf_slot_allocation': artifact_root / 'streamed_lookup_tail_leaf_slot_allocation.json',
         'arithmetic_lowerings': artifact_root / 'arithmetic_lowerings.json',
+        'streamed_lookup_table_multiplier_resource': artifact_root / 'streamed_lookup_table_multiplier_resource.json',
         'module_library': artifact_root / 'module_library.json',
         'primitive_multiplier_library': artifact_root / 'primitive_multiplier_library.json',
         'phase_shell_lowerings': artifact_root / 'phase_shell_lowerings.json',
@@ -134,6 +142,8 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'lookup_lowerings': artifact_root / 'lookup_lowerings.json',
         'generated_block_inventories': artifact_root / 'generated_block_inventories.json',
         'family_frontier': artifact_root / 'family_frontier.json',
+        'standard_qrom_lookup_assessment': artifact_root / 'standard_qrom_lookup_assessment.json',
+        'logical_resource_ledger': artifact_root / 'logical_resource_ledger.json',
         'qubit_breakthrough_analysis': artifact_root / 'qubit_breakthrough_analysis.json',
         'full_attack_inventory': artifact_root / 'full_attack_inventory.json',
         'ft_ir_compositions': artifact_root / 'ft_ir_compositions.json',
@@ -269,12 +279,10 @@ def build_arithmetic_kernel_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
     expected_kernel = arithmetic_kernel_summary(expected_lowerings)
     kernel_lookup = {row['opcode']: row for row in arithmetic_lowerings['kernels']}
     reconstruction = arithmetic_lowerings['leaf_reconstruction']
-    expected_leaf_non_clifford = (
-        leaf_opcode_histogram().get('field_mul', 0) * kernel_lookup['field_mul']['exact_non_clifford_per_kernel']
-        + leaf_opcode_histogram().get('field_add', 0) * kernel_lookup['field_add']['exact_non_clifford_per_kernel']
-        + leaf_opcode_histogram().get('field_sub', 0) * kernel_lookup['field_sub']['exact_non_clifford_per_kernel']
-        + leaf_opcode_histogram().get('mul_const', 0) * kernel_lookup['mul_const']['exact_non_clifford_per_kernel']
-        + leaf_opcode_histogram().get('select_field_if_flag', 0) * kernel_lookup['select_field_if_flag']['exact_non_clifford_per_kernel']
+    expected_leaf_non_clifford = sum(
+        leaf_opcode_histogram().get(opcode, 0) * kernel_lookup[opcode]['exact_non_clifford_per_kernel']
+        for opcode in leaf_opcode_histogram()
+        if opcode in kernel_lookup
     )
     block_operation_reconstruction = []
     stage_operation_reconstruction = []
@@ -283,7 +291,7 @@ def build_arithmetic_kernel_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
         for stage in lowering_kernel['stages']:
             stage_counts = {'ccx': 0, 'cx': 0, 'x': 0, 'measurement': 0}
             for block in stage['blocks']:
-                block_counts = _primitive_counts_from_operations(block['primitive_operations'])
+                block_counts = _primitive_counts_from_operations(materialize_arithmetic_primitive_operations(block))
                 block_operation_reconstruction.append({
                     'kernel': lowering_kernel['opcode'],
                     'stage': stage['name'],
@@ -345,43 +353,30 @@ def build_arithmetic_kernel_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
 
 
 def build_cleanup_pair_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
-    leaf = _leaf()
+    leaf = central_executable_leaf()
     hist = artifacts['module_library']['leaf_opcode_histogram']
     extract_ops = [ins for ins in leaf['instructions'] if ins['op'] == 'bool_from_flag']
     cleanup_ops = [ins for ins in leaf['instructions'] if ins['op'] == 'clear_bool_from_flag']
     select_ops = [ins for ins in leaf['instructions'] if ins['op'] == 'select_field_if_flag' and ins.get('flag') == 'f_lookup_inf']
     extract = extract_ops[0] if extract_ops else None
-    cleanup = cleanup_ops[0] if cleanup_ops else None
-    cleanup_window = (
-        [extract['pc'], cleanup['pc']]
-        if extract is not None and cleanup is not None
-        else None
-    )
-    expected_select_pcs = [33, 34, 35]
     observed_select_pcs = [ins['pc'] for ins in select_ops]
     checks = [
         _check('single_flag_extract_exists', len(extract_ops) == 1, 1, len(extract_ops)),
-        _check('single_flag_cleanup_exists', len(cleanup_ops) == 1, 1, len(cleanup_ops)),
         _check(
-            'cleanup_reuses_same_flag_source_and_destination',
-            extract is not None and cleanup is not None and extract['dst'] == cleanup['dst'] and extract['src'] == cleanup['src'],
-            {
-                'dst': extract['dst'] if extract is not None else None,
-                'src': extract['src'] if extract is not None else None,
-            },
-            {
-                'dst': cleanup['dst'] if cleanup is not None else None,
-                'src': cleanup['src'] if cleanup is not None else None,
-            },
+            'boundary_noop_policy_is_explicit',
+            leaf.get('lookup_infinity_policy') == 'boundary_noop',
+            'boundary_noop',
+            leaf.get('lookup_infinity_policy'),
         ),
-        _check('neutral_entry_selects_cover_xyz', observed_select_pcs == expected_select_pcs, expected_select_pcs, observed_select_pcs),
+        _check('boundary_noop_leaf_has_no_xyz_select_window', observed_select_pcs == [], [], observed_select_pcs),
         _check(
-            'cleanup_brackets_only_the_neutral_entry_select_window',
-            extract is not None and cleanup is not None and all(extract['pc'] < ins['pc'] < cleanup['pc'] for ins in select_ops),
-            'extract pc < select pcs < cleanup pc',
-            cleanup_window,
+            'boundary_noop_leaf_has_no_cleanup_opcode',
+            cleanup_ops == [],
+            [],
+            [ins['pc'] for ins in cleanup_ops],
         ),
-        _check('leaf_histogram_uses_explicit_cleanup_opcode', hist.get('clear_bool_from_flag', 0) == 1, 1, hist.get('clear_bool_from_flag', 0)),
+        _check('leaf_histogram_has_no_internal_select_cost', hist.get('select_field_if_flag', 0) == 0, 0, hist.get('select_field_if_flag', 0)),
+        _check('leaf_histogram_has_no_cleanup_opcode', hist.get('clear_bool_from_flag', 0) == 0, 0, hist.get('clear_bool_from_flag', 0)),
         _check('legacy_cleanup_opcode_is_absent', 'mbuc_clear_bool' not in hist, False, 'mbuc_clear_bool' in hist),
     ]
     return _summarize_checks(checks)
@@ -937,13 +932,12 @@ def _build_slot_allocation_checks(
 
 
 def build_slot_allocation_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
-    register_map = _register_map()
     return _build_slot_allocation_checks(
         slot_alloc=artifacts['exact_leaf_slot_allocation'],
         expected_slot_alloc=exact_leaf_slot_allocation(),
-        leaf=_leaf(),
-        arithmetic_registers=sorted(register_map['arithmetic_slots']),
-        control_registers=sorted(register_map['auxiliary_control_slots']),
+        leaf=central_executable_leaf(),
+        arithmetic_registers=sorted(artifacts['exact_leaf_slot_allocation']['tracked_arithmetic_registers']),
+        control_registers=sorted(artifacts['exact_leaf_slot_allocation']['tracked_control_registers']),
     )
 
 
@@ -958,12 +952,181 @@ def build_lookup_fed_slot_allocation_checks(artifacts: Mapping[str, Any]) -> Dic
     )
 
 
+def build_streamed_lookup_tail_slot_allocation_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    slot_alloc = artifacts['streamed_lookup_tail_leaf_slot_allocation']
+    base_checks = _build_slot_allocation_checks(
+        slot_alloc=slot_alloc,
+        expected_slot_alloc=streamed_lookup_tail_leaf_slot_allocation(),
+        leaf=artifacts['streamed_lookup_tail_leaf'],
+        arithmetic_registers=sorted(slot_alloc['tracked_arithmetic_registers']),
+        control_registers=sorted(slot_alloc['tracked_control_registers']),
+    )
+    ownership = slot_alloc['resource_ownership']
+    owner_failures = [
+        owner['owner']
+        for owner in ownership['owners']
+        if int(owner['logical_qubit_budget']) < int(owner['required_logical_qubits'])
+    ]
+    extra_checks = [
+        _check(
+            'streamed_lookup_tail_peak_arithmetic_slots_is_six',
+            slot_alloc['allocator_summary']['exact_arithmetic_slot_count'] == 6
+            and slot_alloc['peak_arithmetic_slots']['count'] == 6,
+            {'exact_arithmetic_slot_count': 6, 'peak_arithmetic_slots': 6},
+            {
+                'exact_arithmetic_slot_count': slot_alloc['allocator_summary']['exact_arithmetic_slot_count'],
+                'peak_arithmetic_slots': slot_alloc['peak_arithmetic_slots']['count'],
+            },
+        ),
+        _check(
+            'streamed_lookup_tail_has_no_borrowed_lookup_field_lanes',
+            slot_alloc['allocator_summary']['exact_borrowed_field_slot_count'] == 0
+            and ownership['lookup_interface_policy']['coordinate_field_lanes_materialized_by_leaf'] == 0,
+            0,
+            {
+                'borrowed_field_slot_count': slot_alloc['allocator_summary']['exact_borrowed_field_slot_count'],
+                'coordinate_field_lanes_materialized_by_leaf': ownership['lookup_interface_policy']['coordinate_field_lanes_materialized_by_leaf'],
+            },
+        ),
+        _check(
+            'resource_owner_capacity_covers_peak_live_wires',
+            ownership['no_free_quantum_wire_invariant']['passes'] and not owner_failures,
+            [],
+            owner_failures,
+        ),
+    ]
+    return {
+        'pass': base_checks['pass'] + sum(check['pass'] for check in extra_checks),
+        'total': base_checks['total'] + len(extra_checks),
+        'checks': [*base_checks['checks'], *extra_checks],
+    }
+
+
+def build_streamed_lookup_table_multiplier_resource_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    resource = artifacts['streamed_lookup_table_multiplier_resource']
+    expected_resource = streamed_lookup_table_multiplier_resource(
+        arithmetic_lowerings=artifacts['arithmetic_lowerings'],
+        lookup_lowerings=artifacts['lookup_lowerings'],
+    )
+    model = resource['streamed_data_selection_model']
+    workspace = resource['workspace_contract']
+    qroam_block_size = int(model['qroam_block_size'])
+    qroam_target_bitsize = int(model['qroam_target_bitsize'])
+    qroam_domain_size = int(model['folded_coordinate_domain_size'])
+    qroam_expected_compute = (qroam_domain_size + qroam_block_size - 1) // qroam_block_size + (qroam_block_size - 1) * qroam_target_bitsize
+    qroam_expected_uncompute = (qroam_domain_size + qroam_block_size - 1) // qroam_block_size + (qroam_block_size - 1)
+    qroam_expected_per_kernel = qroam_expected_compute + qroam_expected_uncompute
+    qroam_expected_local_workspace = qroam_block_size * qroam_target_bitsize
+    qroam_expected_junk_workspace = (qroam_block_size - 1) * qroam_target_bitsize
+    source_failures = [
+        row
+        for row in resource['coordinate_bit_sources']
+        if int(row['data_select_non_clifford_per_kernel']) != int(model['per_kernel_non_clifford'])
+        or not row['stage_names']
+    ]
+    arithmetic_lookup = {kernel['opcode']: kernel for kernel in artifacts['arithmetic_lowerings']['kernels']}
+    table_kernel_failures = [
+        opcode
+        for opcode in ('field_mul_lookup_x', 'field_mul_lookup_y', 'field_mul_lookup_sum')
+        if not any(stage['category'] == 'streamed_lookup_data_select' for stage in arithmetic_lookup[opcode]['stages'])
+    ]
+    complete_tail = arithmetic_lookup['complete_a0_streamed_tail']
+    checks = [
+        _check('streamed_lookup_table_multiplier_resource_matches_generator', resource == expected_resource, expected_resource, resource),
+        _check('streamed_lookup_table_multiplier_schema_is_current', resource['schema'] == 'compiler-project-standard-qroam-streamed-lookup-table-resource-v1', 'compiler-project-standard-qroam-streamed-lookup-table-resource-v1', resource['schema']),
+        _check('streamed_lookup_table_multiplier_uses_15_bit_folded_path', model['folded_magnitude_bits'] == 15, 15, model['folded_magnitude_bits']),
+        _check('streamed_lookup_table_multiplier_is_standard_qroam', model['standard_qrom_equivalent'] is True and model['primitive'] == 'standard_qroam_clean_full_coordinate_stream', {'standard_qrom_equivalent': True, 'primitive': 'standard_qroam_clean_full_coordinate_stream'}, {'standard_qrom_equivalent': model['standard_qrom_equivalent'], 'primitive': model['primitive']}),
+        _check('streamed_lookup_table_multiplier_counts_qroam_coordinate_stream', model['per_kernel_non_clifford'] == qroam_expected_per_kernel and model['decomposition']['lookup_compute_non_clifford'] == qroam_expected_compute and model['decomposition']['measured_uncompute_non_clifford'] == qroam_expected_uncompute, {'per_kernel_non_clifford': qroam_expected_per_kernel, 'lookup_compute_non_clifford': qroam_expected_compute, 'measured_uncompute_non_clifford': qroam_expected_uncompute}, model),
+        _check('streamed_lookup_table_multiplier_counts_five_leaf_kernels', model['per_leaf_streamed_kernel_count'] == 5, 5, model['per_leaf_streamed_kernel_count']),
+        _check('streamed_lookup_table_multiplier_per_leaf_cost_is_explicit', model['per_leaf_data_select_non_clifford'] == 5 * qroam_expected_per_kernel, 5 * qroam_expected_per_kernel, model['per_leaf_data_select_non_clifford']),
+        _check('streamed_lookup_table_multiplier_source_rows_have_data_select_stages', not source_failures, [], source_failures),
+        _check('streamed_lookup_table_multiplier_top_level_kernels_have_data_select_stage', not table_kernel_failures, [], table_kernel_failures),
+        _check(
+            'streamed_lookup_table_multiplier_complete_tail_internal_y_has_data_select_stage',
+            any(stage['category'] == 'streamed_lookup_data_select' for stage in complete_tail['stages']),
+            True,
+            [stage['category'] for stage in complete_tail['stages']],
+        ),
+        _check('streamed_lookup_table_multiplier_workspace_contract_passes', workspace['passes'], True, workspace),
+        _check('streamed_lookup_table_multiplier_counts_qroam_workspace', workspace['lookup_workspace_qubits'] == int(workspace['folded_control_workspace_qubits']) + qroam_expected_local_workspace and workspace['folded_control_workspace_qubits'] == 18 and workspace['standard_qroam_local_workspace_qubits'] == qroam_expected_local_workspace and workspace['qroam_clean_target_register_qubits'] == qroam_target_bitsize and workspace['qroam_clean_junk_register_qubits'] == qroam_expected_junk_workspace, {'lookup_workspace_qubits': 18 + qroam_expected_local_workspace, 'folded_control_workspace_qubits': 18, 'standard_qroam_local_workspace_qubits': qroam_expected_local_workspace, 'qroam_clean_target_register_qubits': qroam_target_bitsize, 'qroam_clean_junk_register_qubits': qroam_expected_junk_workspace}, workspace),
+        _check('streamed_lookup_table_multiplier_materializes_no_coordinate_field_lanes', workspace['coordinate_field_lanes_materialized'] == 0 and workspace['coordinate_field_lane_qubits_materialized'] == 0, 0, workspace),
+        _check('streamed_lookup_table_multiplier_all_streams_use_standard_qroam_cost', resource['capacity_check']['all_coordinate_streams_use_standard_qroam_cost'], True, resource['capacity_check']),
+        _check('streamed_lookup_table_multiplier_qroam_capacity_matches_cost_model', resource['capacity_check']['qroam_clean_capacity_matches_cost_model'], True, resource['capacity_check']),
+    ]
+    return _summarize_checks(checks)
+
+
+def build_standard_qrom_lookup_assessment_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    assessment = artifacts['standard_qrom_lookup_assessment']
+    expected = standard_qrom_lookup_assessment(
+        frontier=artifacts['family_frontier'],
+        lookup_lowerings=artifacts['lookup_lowerings'],
+        streamed_resource=artifacts['streamed_lookup_table_multiplier_resource'],
+    )
+    gap = assessment['standard_qrom_gap']
+    current = assessment['current_boundary_lookup_model']
+    implications = assessment['conservative_implications']
+    checks = [
+        _check('standard_qrom_lookup_assessment_matches_generator', assessment == expected, expected, assessment),
+        _check('standard_qrom_lookup_assessment_schema_is_current', assessment['schema'] == 'compiler-project-standard-qrom-lookup-assessment-v2', 'compiler-project-standard-qrom-lookup-assessment-v2', assessment['schema']),
+        _check('standard_qrom_lookup_assessment_status_is_proven', assessment['status'] == 'standard_qrom_primitive_circuit_proven_for_counted_family_with_counted_workspace', 'standard_qrom_primitive_circuit_proven_for_counted_family_with_counted_workspace', assessment['status']),
+        _check('standard_qrom_lookup_assessment_uses_full_selection_space', gap['standard_unary_qrom_compute_toffoli_for_full_table'] == 32767, 32767, gap['standard_unary_qrom_compute_toffoli_for_full_table']),
+        _check('standard_qrom_lookup_assessment_accepts_standard_qroam_stream', gap['standard_qrom_equivalent'] is True and gap['standard_qroam_coordinate_stream_toffoli'] == current['standard_qroam_coordinate_stream_non_clifford'] and gap['standard_qroam_coordinate_stream_target_plus_junk_qubits'] == current['standard_qroam_target_plus_junk_qubits'], {'standard_qrom_equivalent': True, 'standard_qroam_coordinate_stream_toffoli': current['standard_qroam_coordinate_stream_non_clifford'], 'standard_qroam_coordinate_stream_target_plus_junk_qubits': current['standard_qroam_target_plus_junk_qubits']}, {'standard_qrom_equivalent': gap['standard_qrom_equivalent'], 'standard_qroam_coordinate_stream_toffoli': gap['standard_qroam_coordinate_stream_toffoli'], 'standard_qroam_coordinate_stream_target_plus_junk_qubits': gap['standard_qroam_coordinate_stream_target_plus_junk_qubits']}),
+        _check('standard_qrom_lookup_assessment_has_no_streaming_gap', gap['current_streamed_bit_toffoli_shortfall'] == 0 and gap['current_compute_toffoli_shortfall'] == 0 and gap['current_qroam_workspace_shortfall'] == 0, {'current_streamed_bit_toffoli_shortfall': 0, 'current_compute_toffoli_shortfall': 0, 'current_qroam_workspace_shortfall': 0}, {'current_streamed_bit_toffoli_shortfall': gap['current_streamed_bit_toffoli_shortfall'], 'current_compute_toffoli_shortfall': gap['current_compute_toffoli_shortfall'], 'current_qroam_workspace_shortfall': gap['current_qroam_workspace_shortfall']}),
+        _check('standard_qrom_lookup_assessment_boundary_exceeds_1700', implications['boundary_model_logical_qubits'] > 1700, '> 1700', implications['boundary_model_logical_qubits']),
+    ]
+    return _summarize_checks(checks)
+
+
+def build_logical_resource_ledger_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    ledger = artifacts['logical_resource_ledger']
+    expected = build_logical_resource_ledger(
+        frontier=artifacts['family_frontier'],
+        generated_block_inventories=artifacts['generated_block_inventories'],
+        streamed_lookup_resource=artifacts['streamed_lookup_table_multiplier_resource'],
+        field_bits=FIELD_BITS,
+        public_google_baseline=PUBLIC_GOOGLE_BASELINE,
+    )
+    selected = artifacts['family_frontier']['best_qubit_family']
+    model = artifacts['streamed_lookup_table_multiplier_resource']['streamed_data_selection_model']
+    workspace = artifacts['streamed_lookup_table_multiplier_resource']['workspace_contract']
+    qroam_cost = qroam_clean_stream_cost(
+        int(model['folded_coordinate_domain_size']),
+        int(model['qroam_target_bitsize']),
+        int(model['qroam_block_size']),
+    )
+    owner_total = sum(int(owner['logical_qubits']) for owner in ledger['peak_live_qubit_owners'])
+    owner_capacity_failures = [
+        owner for owner in ledger['peak_live_qubit_owners']
+        if int(owner['logical_qubits']) != int(owner['decomposition_total'])
+    ]
+    selected_row = ledger['qroam_clean_tradeoff_sweep']['selected_row']
+    rows = ledger['qroam_clean_tradeoff_sweep']['rows']
+    rows_under_24m_and_1700 = [
+        row for row in rows
+        if bool(row['under_24m_non_clifford']) and bool(row['under_1700_logical_qubits'])
+    ]
+    checks = [
+        _check('logical_resource_ledger_matches_generator', ledger == expected, expected, ledger),
+        _check('logical_resource_ledger_schema_is_current', ledger['schema'] == 'compiler-project-logical-resource-ledger-v1', 'compiler-project-logical-resource-ledger-v1', ledger['schema']),
+        _check('logical_resource_ledger_passes_internal_checks', ledger['pass'] is True and all(ledger['checks'].values()), True, ledger['checks']),
+        _check('logical_resource_ledger_owner_sum_matches_frontier', owner_total == int(selected['total_logical_qubits']) == int(ledger['peak_live_qubit_total_from_owners']), int(selected['total_logical_qubits']), {'owner_total': owner_total, 'ledger_total': ledger['peak_live_qubit_total_from_owners']}),
+        _check('logical_resource_ledger_owner_capacity_is_numeric', not owner_capacity_failures, [], owner_capacity_failures),
+        _check('logical_resource_ledger_selected_qroam_cost_matches_streamed_resource', int(qroam_cost['per_stream_non_clifford']) == int(model['per_kernel_non_clifford']) and int(qroam_cost['target_plus_junk_qubits']) == int(workspace['qroam_clean_target_plus_junk_qubits']), {'per_stream_non_clifford': model['per_kernel_non_clifford'], 'target_plus_junk_qubits': workspace['qroam_clean_target_plus_junk_qubits']}, qroam_cost),
+        _check('logical_resource_ledger_selected_tradeoff_matches_frontier', int(selected_row['full_oracle_non_clifford']) == int(selected['full_oracle_non_clifford']) and int(selected_row['total_logical_qubits']) == int(selected['total_logical_qubits']), selected, selected_row),
+        _check('logical_resource_ledger_current_standard_qroam_is_low_workspace_k1', int(selected_row['block_size']) == 1 and int(selected_row['target_plus_junk_qubits']) == FIELD_BITS, {'block_size': 1, 'target_plus_junk_qubits': FIELD_BITS}, selected_row),
+        _check('logical_resource_ledger_proves_no_24m_1700_tradeoff_in_current_qroamclean_sweep', not rows_under_24m_and_1700 and not ledger['qroam_clean_tradeoff_sweep']['rows_under_24m_and_1700'], [], rows_under_24m_and_1700),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_qubit_breakthrough_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     analysis = artifacts['qubit_breakthrough_analysis']
     best_qubit = artifacts['family_frontier']['best_qubit_family']
     fixed_non_arithmetic_overhead = (
         int(best_qubit['lookup_workspace_qubits'])
         + int(best_qubit['control_slot_count'])
+        + int(best_qubit.get('borrowed_interface_qubits', 0))
         + int(best_qubit['live_phase_bits'])
     )
     slot_family_name = best_qubit['slot_allocation_family']
@@ -1035,6 +1198,12 @@ def build_full_attack_inventory_checks(artifacts: Mapping[str, Any]) -> Dict[str
         'whole_oracle_field_mul_count': leaf_calls * hist.get('field_mul', 0),
         'whole_oracle_field_add_count': leaf_calls * hist.get('field_add', 0),
         'whole_oracle_field_sub_count': leaf_calls * hist.get('field_sub', 0),
+        'whole_oracle_field_sub_sum_count': leaf_calls * hist.get('field_sub_sum', 0),
+        'whole_oracle_field_triple_count': leaf_calls * hist.get('field_triple', 0),
+        'whole_oracle_field_mul_lookup_x_count': leaf_calls * hist.get('field_mul_lookup_x', 0),
+        'whole_oracle_field_mul_lookup_y_count': leaf_calls * hist.get('field_mul_lookup_y', 0),
+        'whole_oracle_field_mul_lookup_sum_count': leaf_calls * hist.get('field_mul_lookup_sum', 0),
+        'whole_oracle_complete_a0_streamed_tail_count': leaf_calls * hist.get('complete_a0_streamed_tail', 0),
         'whole_oracle_mul_const_count': leaf_calls * hist.get('mul_const', 0),
         'whole_oracle_select_count': leaf_calls * hist.get('select_field_if_flag', 0),
         'whole_oracle_lookup_count': schedule['summary']['lookup_invocations_total'],
@@ -1305,7 +1474,7 @@ def build_subcircuit_equivalence_checks(artifacts: Mapping[str, Any], repo_root:
         full_attack_inventory=artifacts['full_attack_inventory'],
     )
     arithmetic = equivalence['arithmetic_opcode_equivalence']
-    cleanup = equivalence['cleanup_window_equivalence']
+    boundary_noop = equivalence['boundary_noop_equivalence']
     lookup = equivalence['lookup_family_equivalence']
     composition = equivalence['whole_oracle_composition_equivalence']
     reduced_width_failures = []
@@ -1332,28 +1501,22 @@ def build_subcircuit_equivalence_checks(artifacts: Mapping[str, Any], repo_root:
     ]
     arithmetic_per_pc_failures = [row['pc'] for row in arithmetic['per_pc'] if row['pass'] != row['total']]
     arithmetic_per_opcode_failures = [row['opcode'] for row in arithmetic['per_opcode'] if row['pass'] != row['total']]
+    expected_source_artifacts = {
+        'leaf': 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json',
+        'lookup_fed_leaf_equivalence': 'compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json',
+        'streamed_lookup_tail_leaf_equivalence': 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json',
+        'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
+        'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
+        'generated_block_inventories': 'compiler_verification_project/artifacts/generated_block_inventories.json',
+        'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
+        'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
+    }
     checks = [
         _check('subcircuit_equivalence_artifact_matches_generator', equivalence == expected, expected, equivalence),
         _check(
             'subcircuit_equivalence_source_paths_match_expected',
-            equivalence['source_artifacts'] == {
-                'leaf': 'artifacts/circuits/optimized_pointadd_secp256k1.json',
-                'cleanup_summary': 'artifacts/verification/extended/coherent_cleanup_summary.json',
-                'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
-                'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
-                'generated_block_inventories': 'compiler_verification_project/artifacts/generated_block_inventories.json',
-                'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
-                'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
-            },
-            {
-                'leaf': 'artifacts/circuits/optimized_pointadd_secp256k1.json',
-                'cleanup_summary': 'artifacts/verification/extended/coherent_cleanup_summary.json',
-                'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
-                'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
-                'generated_block_inventories': 'compiler_verification_project/artifacts/generated_block_inventories.json',
-                'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
-                'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
-            },
+            equivalence['source_artifacts'] == expected_source_artifacts,
+            expected_source_artifacts,
             equivalence['source_artifacts'],
         ),
         _check(
@@ -1365,22 +1528,30 @@ def build_subcircuit_equivalence_checks(artifacts: Mapping[str, Any], repo_root:
         _check('arithmetic_opcode_trace_equivalence_passes_all_traced_pcs', len(arithmetic_per_pc_failures) == 0, [], arithmetic_per_pc_failures),
         _check('arithmetic_opcode_trace_equivalence_passes_all_opcodes', len(arithmetic_per_opcode_failures) == 0, [], arithmetic_per_opcode_failures),
         _check(
-            'cleanup_trace_zero_after_clear_passes_all_cases',
-            cleanup['trace_cleanup_zero_pass'] == cleanup['trace_cleanup_zero_total'],
-            cleanup['trace_cleanup_zero_total'],
-            cleanup['trace_cleanup_zero_pass'],
+            'boundary_noop_policy_traces_flag_partition',
+            boundary_noop['policy'] == 'boundary_noop'
+            and boundary_noop['no_leaf_select_or_cleanup_pcs']
+            and boundary_noop['lookup_infinity_cases_seen'] > 0
+            and boundary_noop['ordinary_cases_seen'] > 0,
+            {
+                'policy': 'boundary_noop',
+                'no_leaf_select_or_cleanup_pcs': True,
+                'lookup_infinity_cases_seen': '> 0',
+                'ordinary_cases_seen': '> 0',
+            },
+            {
+                'policy': boundary_noop['policy'],
+                'no_leaf_select_or_cleanup_pcs': boundary_noop['no_leaf_select_or_cleanup_pcs'],
+                'lookup_infinity_cases_seen': boundary_noop['lookup_infinity_cases_seen'],
+                'ordinary_cases_seen': boundary_noop['ordinary_cases_seen'],
+            },
         ),
         _check(
-            'cleanup_summary_hash_matches_checked_artifact',
-            cleanup['cleanup_summary_sha256'] == sha256_path(repo_root / cleanup['cleanup_summary_path']),
-            sha256_path(repo_root / cleanup['cleanup_summary_path']),
-            cleanup['cleanup_summary_sha256'],
-        ),
-        _check(
-            'cleanup_imported_audit_passes_all_cases',
-            cleanup['imported_cleanup_audit']['pass'] == cleanup['imported_cleanup_audit']['total'],
-            cleanup['imported_cleanup_audit']['total'],
-            cleanup['imported_cleanup_audit']['pass'],
+            'streamed_leaf_interface_equivalence_passes_edge_cases',
+            equivalence['leaf_interface_equivalence']['streamed_lookup_tail_leaf']['summary']['pass']
+            == equivalence['leaf_interface_equivalence']['streamed_lookup_tail_leaf']['summary']['total'],
+            equivalence['leaf_interface_equivalence']['streamed_lookup_tail_leaf']['summary']['total'],
+            equivalence['leaf_interface_equivalence']['streamed_lookup_tail_leaf']['summary']['pass'],
         ),
         _check('lookup_family_equivalence_passes_all_semantic_witnesses', len(lookup_failures) == 0, [], lookup_failures),
         _check('reduced_width_family_shape_witnesses_pass', len(reduced_width_failures) == 0, [], reduced_width_failures),
@@ -1407,19 +1578,33 @@ def build_primitive_multiplier_checks(artifacts: Mapping[str, Any]) -> Dict[str,
     schedule = artifacts['full_raw32_oracle']
     kernel = artifacts['module_library']
     field_mul_kernel = next(row for row in artifacts['arithmetic_lowerings']['kernels'] if row['opcode'] == 'field_mul')
-    field_mul_pcs = [instruction['pc'] for instruction in _leaf()['instructions'] if instruction['op'] == 'field_mul']
-    expected_per_leaf = [
-        {
-            'leaf_multiplier_index': ordinal,
-            'leaf_pc': pc,
-            'family': kernel['name'],
-            'field_bits': FIELD_BITS,
-            'exact_non_clifford': field_mul_kernel['exact_non_clifford_per_kernel'],
-            'gate_set': kernel['gate_set'],
-            'arithmetic_lowering_artifact': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
-        }
-        for ordinal, pc in enumerate(field_mul_pcs)
-    ]
+    expected_per_leaf = []
+    for instruction in central_executable_leaf()['instructions']:
+        opcode = str(instruction['op'])
+        if opcode in {'field_mul', 'field_mul_lookup_x', 'field_mul_lookup_y', 'field_mul_lookup_sum'}:
+            expected_per_leaf.append({
+                'leaf_multiplier_index': len(expected_per_leaf),
+                'leaf_pc': int(instruction['pc']),
+                'opcode': opcode,
+                'family': kernel['name'],
+                'field_bits': FIELD_BITS,
+                'exact_non_clifford': field_mul_kernel['exact_non_clifford_per_kernel'],
+                'gate_set': kernel['gate_set'],
+                'arithmetic_lowering_artifact': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
+            })
+        elif opcode == 'complete_a0_streamed_tail':
+            for tail_product in ('KN', 'EC', 'NM', 'CL', 'ME', 'LK'):
+                expected_per_leaf.append({
+                    'leaf_multiplier_index': len(expected_per_leaf),
+                    'leaf_pc': int(instruction['pc']),
+                    'opcode': opcode,
+                    'tail_product': tail_product,
+                    'family': kernel['name'],
+                    'field_bits': FIELD_BITS,
+                    'exact_non_clifford': field_mul_kernel['exact_non_clifford_per_kernel'],
+                    'gate_set': kernel['gate_set'],
+                    'arithmetic_lowering_artifact': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
+                })
     expected_examples = []
     for call in schedule['leaf_calls']:
         for entry in expected_per_leaf:
@@ -1494,6 +1679,7 @@ def build_frontier_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
                     'full_oracle_non_clifford': recount['full_oracle_non_clifford'],
                     'arithmetic_slot_count': inventory['arithmetic_slot_count'],
                     'control_slot_count': inventory['control_slot_count'],
+                    'borrowed_interface_qubits': inventory.get('borrowed_interface_qubits', 0),
                     'lookup_workspace_qubits': inventory['lookup_workspace_qubits'],
                     'live_phase_bits': inventory['live_phase_bits'],
                     'total_logical_qubits': recount['total_logical_qubits'],
@@ -1510,12 +1696,21 @@ def build_frontier_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
                 })
     expected_best_gate = min(expected_families, key=lambda row: (row['full_oracle_non_clifford'], row['total_logical_qubits']))
     expected_best_qubit = min(expected_families, key=lambda row: (row['total_logical_qubits'], row['full_oracle_non_clifford']))
-    expected_best_sub30m_qubit = min(
-        (row for row in expected_families if row['full_oracle_non_clifford'] < 30_000_000),
+    expected_sub30m_rows = [row for row in expected_families if row['full_oracle_non_clifford'] < 30_000_000]
+    expected_best_sub30m_qubit = None if not expected_sub30m_rows else min(
+        expected_sub30m_rows,
+        key=lambda row: (row['total_logical_qubits'], row['full_oracle_non_clifford']),
+    )
+    expected_best_google_low_gate_qubit = min(
+        (
+            row for row in expected_families
+            if row['full_oracle_non_clifford'] < PUBLIC_GOOGLE_BASELINE['low_gate']['non_clifford']
+        ),
         key=lambda row: (row['total_logical_qubits'], row['full_oracle_non_clifford']),
     )
     checks = [
         _check('public_google_baseline_matches_constant', frontier['public_google_baseline'] == PUBLIC_GOOGLE_BASELINE, PUBLIC_GOOGLE_BASELINE, frontier['public_google_baseline']),
+        _check('frontier_schema_matches_current_version', frontier['schema'] == 'compiler-project-frontier-v11', 'compiler-project-frontier-v11', frontier['schema']),
         _check('frontier_schedule_matches_standalone_schedule', frontier['schedule'] == schedule, schedule, frontier['schedule']),
         _check('frontier_slot_allocation_matches_standalone_slot_allocation', frontier['slot_allocation'] == slot_alloc, slot_alloc, frontier['slot_allocation']),
         _check('frontier_slot_allocation_families_match_expected', frontier['slot_allocation_families'] == expected_slot_families, expected_slot_families, frontier['slot_allocation_families']),
@@ -1556,6 +1751,12 @@ def build_frontier_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
         _check('best_gate_family_is_minimum_over_family_rows', frontier['best_gate_family'] == expected_best_gate, expected_best_gate, frontier['best_gate_family']),
         _check('best_qubit_family_is_minimum_over_family_rows', frontier['best_qubit_family'] == expected_best_qubit, expected_best_qubit, frontier['best_qubit_family']),
         _check(
+            'best_google_low_gate_qubit_family_is_minimum_over_google_gate_rows',
+            frontier['best_google_low_gate_qubit_family'] == expected_best_google_low_gate_qubit,
+            expected_best_google_low_gate_qubit,
+            frontier['best_google_low_gate_qubit_family'],
+        ),
+        _check(
             'best_sub30m_qubit_family_is_minimum_over_sub30m_rows',
             frontier['best_sub30m_qubit_family'] == expected_best_sub30m_qubit,
             expected_best_sub30m_qubit,
@@ -1574,7 +1775,11 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'lookup_fed_leaf': 'compiler_verification_project/artifacts/lookup_fed_leaf.json',
         'lookup_fed_leaf_equivalence': 'compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json',
         'lookup_fed_leaf_slot_allocation': 'compiler_verification_project/artifacts/lookup_fed_leaf_slot_allocation.json',
+        'streamed_lookup_tail_leaf': 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json',
+        'streamed_lookup_tail_leaf_equivalence': 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json',
+        'streamed_lookup_tail_leaf_slot_allocation': 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json',
         'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
+        'streamed_lookup_table_multiplier_resource': 'compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json',
         'module_library': 'compiler_verification_project/artifacts/module_library.json',
         'primitive_multiplier_library': 'compiler_verification_project/artifacts/primitive_multiplier_library.json',
         'phase_shell_lowerings': 'compiler_verification_project/artifacts/phase_shell_lowerings.json',
@@ -1583,6 +1788,8 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
         'generated_block_inventories': 'compiler_verification_project/artifacts/generated_block_inventories.json',
         'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
+        'standard_qrom_lookup_assessment': 'compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json',
+        'logical_resource_ledger': 'compiler_verification_project/artifacts/logical_resource_ledger.json',
         'qubit_breakthrough_analysis': 'compiler_verification_project/artifacts/qubit_breakthrough_analysis.json',
         'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
         'ft_ir_compositions': 'compiler_verification_project/artifacts/ft_ir_compositions.json',
@@ -1593,7 +1800,7 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'azure_resource_estimator_results': 'compiler_verification_project/artifacts/azure_resource_estimator_results.json',
     }
     checks = [
-        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v13', 'compiler-project-build-summary-v13', build_summary['schema']),
+        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v18', 'compiler-project-build-summary-v18', build_summary['schema']),
         _check('build_summary_artifact_paths_match_expected_set', build_summary['artifacts'] == expected_paths, expected_paths, build_summary['artifacts']),
         _check(
             'build_summary_paths_exist_on_disk',
@@ -1603,6 +1810,7 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         ),
         _check('build_summary_best_gate_matches_frontier', build_summary['headline']['best_gate_family'] == artifacts['family_frontier']['best_gate_family'], artifacts['family_frontier']['best_gate_family'], build_summary['headline']['best_gate_family']),
         _check('build_summary_best_qubit_matches_frontier', build_summary['headline']['best_qubit_family'] == artifacts['family_frontier']['best_qubit_family'], artifacts['family_frontier']['best_qubit_family'], build_summary['headline']['best_qubit_family']),
+        _check('build_summary_best_google_low_gate_qubit_matches_frontier', build_summary['headline']['best_google_low_gate_qubit_family'] == artifacts['family_frontier']['best_google_low_gate_qubit_family'], artifacts['family_frontier']['best_google_low_gate_qubit_family'], build_summary['headline']['best_google_low_gate_qubit_family']),
         _check(
             'build_summary_best_sub30m_qubit_matches_frontier',
             build_summary['headline']['best_sub30m_qubit_family'] == artifacts['family_frontier']['best_sub30m_qubit_family'],
@@ -1876,31 +2084,37 @@ def build_semantic_replay_checks(semantic_replay: Mapping[str, Any], repo_root: 
     return _summarize_checks(checks)
 
 
-def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any]) -> Dict[str, Any]:
-    return {
-        'canonical_public_point_checks': build_canonical_public_point_checks(artifacts),
-        'schedule_checks': build_schedule_checks(artifacts),
-        'table_manifest_checks': build_table_manifest_checks(artifacts),
-        'arithmetic_kernel_checks': build_arithmetic_kernel_checks(artifacts),
-        'cleanup_pair_checks': build_cleanup_pair_checks(artifacts),
-        'lookup_lowering_checks': build_lookup_lowering_checks(artifacts),
-        'phase_shell_lowering_checks': build_phase_shell_lowering_checks(artifacts),
-        'generated_block_inventory_checks': build_generated_block_inventory_checks(artifacts),
-        'slot_allocation_checks': build_slot_allocation_checks(artifacts),
-        'lookup_fed_slot_allocation_checks': build_lookup_fed_slot_allocation_checks(artifacts),
-        'qubit_breakthrough_checks': build_qubit_breakthrough_checks(artifacts),
-        'full_attack_inventory_checks': build_full_attack_inventory_checks(artifacts),
-        'ft_ir_checks': build_ft_ir_checks(artifacts, repo_root),
-        'whole_oracle_recount_checks': build_whole_oracle_recount_checks(artifacts, repo_root),
-        'subcircuit_equivalence_checks': build_subcircuit_equivalence_checks(artifacts, repo_root),
-        'primitive_multiplier_checks': build_primitive_multiplier_checks(artifacts),
-        'frontier_checks': build_frontier_checks(artifacts),
-        'build_summary_checks': build_build_summary_checks(artifacts, repo_root),
-        'cain_transfer_checks': build_cain_transfer_checks(artifacts),
-        'azure_seed_checks': build_azure_seed_checks(artifacts),
-        'physical_estimator_target_checks': build_physical_estimator_target_checks(artifacts),
-        'physical_estimator_result_checks': build_physical_estimator_result_checks(artifacts, repo_root),
+def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_names: Sequence[str] | None = None) -> Dict[str, Any]:
+    builders = {
+        'canonical_public_point_checks': lambda: build_canonical_public_point_checks(artifacts),
+        'schedule_checks': lambda: build_schedule_checks(artifacts),
+        'table_manifest_checks': lambda: build_table_manifest_checks(artifacts),
+        'arithmetic_kernel_checks': lambda: build_arithmetic_kernel_checks(artifacts),
+        'cleanup_pair_checks': lambda: build_cleanup_pair_checks(artifacts),
+        'lookup_lowering_checks': lambda: build_lookup_lowering_checks(artifacts),
+        'phase_shell_lowering_checks': lambda: build_phase_shell_lowering_checks(artifacts),
+        'generated_block_inventory_checks': lambda: build_generated_block_inventory_checks(artifacts),
+        'slot_allocation_checks': lambda: build_slot_allocation_checks(artifacts),
+        'lookup_fed_slot_allocation_checks': lambda: build_lookup_fed_slot_allocation_checks(artifacts),
+        'streamed_lookup_tail_slot_allocation_checks': lambda: build_streamed_lookup_tail_slot_allocation_checks(artifacts),
+        'streamed_lookup_table_multiplier_resource_checks': lambda: build_streamed_lookup_table_multiplier_resource_checks(artifacts),
+        'standard_qrom_lookup_assessment_checks': lambda: build_standard_qrom_lookup_assessment_checks(artifacts),
+        'logical_resource_ledger_checks': lambda: build_logical_resource_ledger_checks(artifacts),
+        'qubit_breakthrough_checks': lambda: build_qubit_breakthrough_checks(artifacts),
+        'full_attack_inventory_checks': lambda: build_full_attack_inventory_checks(artifacts),
+        'ft_ir_checks': lambda: build_ft_ir_checks(artifacts, repo_root),
+        'whole_oracle_recount_checks': lambda: build_whole_oracle_recount_checks(artifacts, repo_root),
+        'subcircuit_equivalence_checks': lambda: build_subcircuit_equivalence_checks(artifacts, repo_root),
+        'primitive_multiplier_checks': lambda: build_primitive_multiplier_checks(artifacts),
+        'frontier_checks': lambda: build_frontier_checks(artifacts),
+        'build_summary_checks': lambda: build_build_summary_checks(artifacts, repo_root),
+        'cain_transfer_checks': lambda: build_cain_transfer_checks(artifacts),
+        'azure_seed_checks': lambda: build_azure_seed_checks(artifacts),
+        'physical_estimator_target_checks': lambda: build_physical_estimator_target_checks(artifacts),
+        'physical_estimator_result_checks': lambda: build_physical_estimator_result_checks(artifacts, repo_root),
     }
+    selected_names = list(builders) if group_names is None else list(group_names)
+    return {name: builders[name]() for name in selected_names}
 
 
 def build_verification_summary(case_count: int = 16, repo_root: Path | None = None) -> Dict[str, Any]:
@@ -1916,7 +2130,7 @@ def build_verification_summary(case_count: int = 16, repo_root: Path | None = No
     invariant_total = sum(group['total'] for group in invariant_groups.values())
     invariant_pass = sum(group['pass'] for group in invariant_groups.values())
     return {
-        'schema': 'compiler-project-verification-summary-v11',
+        'schema': 'compiler-project-verification-summary-v13',
         'semantic_replay': semantic,
         **invariant_groups,
         'summary': {
@@ -1941,10 +2155,14 @@ def write_verification_summary(case_count: int = 16, repo_root: Path | None = No
     return summary
 
 
-def evaluate_mutated_verification_groups(artifacts: Mapping[str, Any], repo_root: Path | None = None) -> Dict[str, Any]:
+def evaluate_mutated_verification_groups(
+    artifacts: Mapping[str, Any],
+    repo_root: Path | None = None,
+    group_names: Sequence[str] | None = None,
+) -> Dict[str, Any]:
     effective_root = repo_root or Path(__file__).resolve().parents[2]
     normalized = deepcopy(dict(artifacts))
-    return build_integrity_report(effective_root, normalized)
+    return build_integrity_report(effective_root, normalized, group_names=group_names)
 
 
 __all__ = [

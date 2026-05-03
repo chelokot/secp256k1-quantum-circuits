@@ -21,7 +21,9 @@ It is intentionally separate from the repository mainline.
 5. derives **whole-oracle non-Clifford and logical-qubit counts** for those
    families; and
 6. verifies the completed raw-32 schedule semantically on deterministic
-   secp256k1 basis-state cases.
+   secp256k1 basis-state cases; and
+7. packages one selected standard-QROM family claim into an SP1 attestation bundle
+   backed by a deterministic public point-add corpus.
 
 ## Strongest exact claim here
 
@@ -49,14 +51,17 @@ What it does ship is:
 - `full_raw32_oracle.json` — exact fully quantum schedule: 1 direct seed + 31 leaf calls
 - `exact_leaf_slot_allocation.json` — exact versioned live-range allocation of the checked leaf
 - `arithmetic_lowerings.json` — generated primitive-operation inventories for the named arithmetic-kernel family
+- `streamed_lookup_table_multiplier_resource.json` — explicit table-controlled multiplier resource contract for streamed lookup coordinate bits
+- `standard_qrom_lookup_assessment.json` — machine-checked assessment showing that the selected lookup/resource contract is a standard-QROM primitive-circuit result
+- `logical_resource_ledger.json` — generated peak-live-qubit owner ledger and QROAMClean block-size tradeoff sweep
 - `module_library.json` — arithmetic-kernel summary used by the frontier
 - `lookup_lowerings.json` — generated primitive-operation inventories for the named folded lookup families
 - `phase_shell_lowerings.json` — generated phase-operation inventories for the named full-register and semiclassical inverse-QFT shells
 - `generated_block_inventories.json` — generated whole-oracle block inventories for the supporting decomposition layer
 - `ft_ir_compositions.json` — compositional FT-style call graphs and leaf sigma reconstructions for every named compiler family
 - `whole_oracle_recount.json` — independent exact whole-oracle recount derived from the FT IR leaf sigma
-- `qubit_breakthrough_analysis.json` — exact qubit bottleneck decomposition, Google break-even thresholds, and counterfactual slot/field-width sweeps around the best exact qubit family
-- `subcircuit_equivalence.json` — cross-layer equivalence witnesses for traced ISA opcodes, lowered lookup families, the coherent cleanup window, and generated whole-oracle composition
+- `qubit_breakthrough_analysis.json` — exact qubit bottleneck decomposition, Google break-even thresholds, and counterfactual slot/field-width sweeps around the internal lowest-qubit family
+- `subcircuit_equivalence.json` — cross-layer equivalence witnesses for traced ISA opcodes, lowered lookup families, boundary no-op semantics, resource ownership, and generated whole-oracle composition
 - `primitive_multiplier_library.json` — auditable manifest for all 341 multiplier instances in the raw-32 oracle
 - `phase_shell_families.json` — compact summary of the exact phase-shell lowering families
 - `table_manifests.json` — exact folded-table dimensions and canonical window bases
@@ -66,30 +71,63 @@ What it does ship is:
 - `azure_resource_estimator_results.json` — recorded Microsoft Resource Estimator outputs for every exact family under every checked target profile
 - `cain_exact_transfer.json` — heuristic physical transfer for the exact families
 - `azure_resource_estimator_logical_counts.json` — logicalCounts-style handoff artifact for physical estimators
+- `zkp_attestation_input.json` — prepared SP1 attestation bundle carrying the public document digests, a compiled point-add leaf, and the deterministic public cases for the selected standard-QROM family claim
+- `zkp_attestation_claim.json` — standalone public claim derived from the selected exact family
+- `zkp_attestation_family.json` — selected standard-QROM family summary bound by the checked SP1 guest
+- `zkp_attestation_cases.json` — deterministic public point-add cases used by the checked SP1 guest
+- `zkp_attestation_public_values.json` — committed public values from the checked SP1 run
+- `zkp_attestation_fixture_core.json` — checked SP1 core fixture for the attested bundle
+- `zkp_attestation_fixture_compressed.json` — checked SP1 compressed fixture for the attested bundle
+- `zkp_attestation_fixture_groth16.json` — checked SP1 Groth16 fixture for the attested bundle
+- `zkp_attestation_proof_compressed.bin` — checked compressed SP1 proof bundle for local re-verification
+- `zkp_attestation_proof_groth16.bin` — checked binary Groth16 proof bundle for the attested bundle
+- `zkp_attestation_groth16_verifier/groth16_vk.bin` — checked Groth16 verifying key for cheap local re-verification of the checked proof bundle
+- local proof runs also emit reusable binary proof bundles such as `zkp_attestation_proof_compressed.bin`, `zkp_attestation_wrap_proof.bin`, and `zkp_attestation_proof_groth16.bin` into the selected output directory
 
-## Current exact frontier
+## Current central boundary result
 
-- **best exact gate family:** `22,756,199 non-Clifford`
-- **best exact qubit family:** `2,338 logical qubits`
+- **central standard-QROM family:** `32,879,331 non-Clifford`, `1,812 logical qubits`
 
-The best exact gate family uses a hierarchical banked unary QROM decode with
-measured uncompute. The best exact qubit family uses folded linear-scan lookup
-plus an exact semiclassical-QFT phase shell and an exact 9-slot leaf allocation.
-`qubit_breakthrough_analysis.json` isolates what would have to change to beat
-the cited Google qubit lines: at the current exact field width that means
-reducing the arithmetic register file from 9 slots to 5 for the 1,450-qubit
-line or to 4 for the 1,200-qubit line, while at the current exact 9-slot count
-it means realizing field-slot widths of 157 or 129 logical qubits respectively.
+The central family uses a standard QROAM coordinate-stream lookup boundary, an
+exact semiclassical-QFT phase shell, and the executable streamed lookup tail
+point-add leaf. The resulting live-qubit formula is:
+
+`6 * 256 + 1 control + 274 lookup workspace + 1 phase = 1,812 logical qubits`
+
+The `274` lookup-workspace term is `18` folded-control qubits plus one
+256-bit QROAMClean coordinate target for `K = 1`; there are no junk registers
+at this low-workspace block size. The table-controlled `field_mul_lookup_*`
+kernels pay `65,536` non-Clifford operations per 256-bit coordinate stream:
+`32,768` for standard QROAM compute and `32,768` for measured uncompute. No
+field-sized lookup x/y output lane is free or borrowed from the interface.
+
+`logical_resource_ledger.json` reconstructs the peak from counted owners:
+`1,536` arithmetic-slot qubits, `1` control qubit, `274` lookup-workspace
+qubits, and `1` phase-shell qubit. It also records the standard-QROAM tradeoff:
+the lowest-qubit point below `24M` non-Clifford in this QROAMClean family is
+`23,980,781 / 4,884`, and no checked block-size row reaches both `<24M`
+non-Clifford and `<1700` logical qubits.
+
+`standard_qrom_lookup_assessment.json` records the standard-QROM status and
+rejects the old bitwise-banked path-select boundary as a public standard-QROM
+claim.
+
+The compiler frontier intentionally publishes one repository result here rather
+than separate low-qubit and low-gate branches. Historical family lowerings
+remain auditable in the lowering artifacts, but the checked frontier, proof
+input, public values, and docs are centered on this one executable boundary
+contract.
 
 ## Interpreting the results
 
 This subproject is strongest when read as a **compiler-family exact oracle**,
-not as a claim of hidden-Google reconstruction or global optimality.
+not as a claim of hidden-Google reconstruction, global optimality, or a
+Clifford-complete full-Shor primitive-gate netlist.
 
 Its defining exact features are:
 
-- exact slot allocation cuts the leaf-side arithmetic peak from 10 named field
-  slots to **9 exact physical field slots**;
+- exact slot allocation cuts the checked streamed lookup tail leaf to a
+  **6-slot physical arithmetic peak**;
 - explicit arithmetic lowerings reconstruct the leaf-side non-Clifford totals
   from generated primitive-operation inventories instead of from naked opcode formulas;
 - explicit lookup lowerings reconstruct each lookup-family count from generated
@@ -102,7 +140,7 @@ Its defining exact features are:
 - whole-oracle recount reconstructs the frontier totals from the FT IR leaf
   sigma rather than directly from the generated block inventory layer;
 - subcircuit-equivalence witnesses bind traced ISA arithmetic/flag opcodes,
-  lowered lookup-family semantics, the coherent cleanup window, and generated
+  lowered lookup-family semantics, boundary no-op behavior, and generated
   whole-oracle composition back to the checked source artifacts;
 - exact logicalCounts are bound to explicit Microsoft Resource Estimator target
   profiles and recorded estimator outputs instead of stopping at a seed-only
@@ -112,8 +150,56 @@ Its defining exact features are:
   phase-shell lowering blocks;
 - a semiclassical-QFT phase-shell family removes the fixed **512 live phase
   qubits** assumption; and
-- those two ingredients place the best exact low-qubit family at **2,338
-  logical qubits**.
+- the no-free-wire resource contract proves every live field value is assigned
+  to a counted owner, with zero borrowed lookup coordinate field lanes; and
+- the streamed table-multiplier resource contract proves that lookup coordinate
+  targets and QROAMClean junk registers are counted together with the
+  corresponding standard-QROAM table-data selection gates included in the
+  arithmetic leaf total; and
+- the standard-QROM lookup assessment binds those same numbers to the selected
+  standard-QROAM primitive-circuit resource contract.
+
+## SP1 attestation layer
+
+This subproject now also ships an SP1 workspace under
+`compiler_verification_project/zkp_attestation/`. It stays at the same exact
+boundary as the compiler-family artifacts:
+
+- the checked JSON claim, family summary, and case corpus remain the
+  source-of-truth sidecars for audit and regeneration
+- the proof input carries their public digests plus a prepared compiled leaf
+  and deterministic public cases, so the guest does not spend proof time
+  re-hashing and compiling the raw documents
+- it replays the exact point-add leaf on every public case
+- it checks the affine group law for every case
+- it reconstructs the claimed full-oracle non-Clifford and logical-qubit
+  formulas from compact public summaries derived from the selected family
+
+The checked core fixture is
+`compiler_verification_project/artifacts/zkp_attestation_fixture_core.json`.
+The checked compressed fixture is
+`compiler_verification_project/artifacts/zkp_attestation_fixture_compressed.json`.
+The checked Groth16 fixture is
+`compiler_verification_project/artifacts/zkp_attestation_fixture_groth16.json`.
+The checked compressed proof bundle is
+`compiler_verification_project/artifacts/zkp_attestation_proof_compressed.bin`.
+The checked Groth16 proof bundle is
+`compiler_verification_project/artifacts/zkp_attestation_proof_groth16.bin`,
+and the repo ships the matching verifying key at
+`compiler_verification_project/artifacts/zkp_attestation_groth16_verifier/groth16_vk.bin`
+so the checked proof can be re-verified locally without rebuilding the large
+vk-specific Groth16 dev artifacts. The JSON fixture stores the backend proof
+bytes, while the `.bin` file stores the full SP1 proof bundle plus public
+values.
+The checked Groth16 proving path is pinned to the vendored
+`compiler_verification_project/zkp_attestation/vendor/sp1-recursion-gnark-ffi`
+patch set, which is also part of the curated proof manifest.
+Its public values bind the current central standard-QROM family claim and the `8 / 8`
+deterministic public cases in
+`compiler_verification_project/artifacts/zkp_attestation_cases.json`.
+
+This is similar in shape to Google's disclosure model, but it is still a proof
+at the repository exact-family boundary, not a primitive-gate full-Shor proof.
 
 ## Quick start
 
@@ -122,12 +208,100 @@ From the repository root:
 ```bash
 python compiler_verification_project/scripts/build.py
 python compiler_verification_project/scripts/verify.py --cases 16
+python compiler_verification_project/scripts/build_zkp_attestation_input.py --cases 8
 python compiler_verification_project/scripts/materialize_exact_circuits.py
 ```
 
 `materialize_exact_circuits.py` writes ignored whole-oracle operation streams
 for the selected exact compiler families under
 `compiler_verification_project/generated_circuits/`. With no family arguments it
-materializes the exact best-gate and exact best-qubit families; use
-`--all-families` to dump every checked exact family or `--list-families` to
-inspect the available names.
+materializes the central public standard-QROM family; use `--all-families` to dump every checked exact family or
+`--list-families` to inspect the available names.
+
+The SP1 workspace requires `sp1up` or `cargo-prove`, plus `protoc` and a
+working `libclang` for bindgen. The checked attestation bundle can be replayed
+with:
+
+```bash
+python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --execute
+python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --execute --write-core-fixture
+python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --prove --system core
+python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --prove --system compressed
+python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --prove --system groth16
+python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --prove --system groth16 --compressed-proof-input /tmp/zkp_attestation_proof_compressed.bin
+python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --prove --system groth16 --wrap-proof-input /tmp/zkp_attestation_wrap_proof.bin
+python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --verify-proof-input /tmp/zkp_attestation_proof_groth16.bin --system groth16
+python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --verify-proof-input compiler_verification_project/artifacts/zkp_attestation_proof_groth16.bin --system groth16
+```
+
+The guarded runner now defaults to `--resource-profile balanced`, which keeps
+`systemd-run` CPU, memory, and I/O caps but allows bounded multi-worker SP1
+parallelism. Use `--resource-profile safe` for the old single-worker floor, or
+`--resource-profile throughput` if the local machine has spare cores and you
+want the fastest bounded local profile. The raw cargo entrypoint still exists
+for manual use; pass `--resource-profile full` only if you explicitly want to
+remove the in-process SP1 worker throttling. Pass `--skip-build` to reuse the
+current host binary when you are profiling repeated local proof runs and do not
+want to pay the Cargo rebuild cost each time. Use repeated `--sp1-env
+NAME=VALUE` flags to tune executor or prover settings such as
+`MINIMAL_TRACE_CHUNK_THRESHOLD`, `ELEMENT_THRESHOLD`, or `MEMORY_LIMIT`, and
+use repeated `--systemd-property NAME=VALUE` flags when you need to override
+the wrapper's local `systemd-run` limits for a single run. For example:
+
+The execute path now uses SP1's blocking `LightProver`, so local `--execute`
+replays avoid initializing the full proving stack while `--prove` still uses
+the normal prover path.
+
+Each non-core proof run now writes a binary proof bundle next to the JSON
+fixture. Groth16 retries can either reuse a completed compressed proof or, once
+`shrink_wrap` has completed once, jump straight back in from the cached wrap
+bundle without paying that stage again. Finished proof bundles can also be
+re-verified cheaply with `--verify-proof-input`. A typical local flow is:
+
+```bash
+python compiler_verification_project/scripts/run_zkp_attestation_guarded.py \
+  --skip-build \
+  --resource-profile safe \
+  --prove --system compressed \
+  --output-dir /tmp/zkp-attestation-compressed
+
+python compiler_verification_project/scripts/run_zkp_attestation_guarded.py \
+  --skip-build \
+  --resource-profile safe \
+  --prove --system groth16 \
+  --compressed-proof-input /tmp/zkp-attestation-compressed/zkp_attestation_proof_compressed.bin \
+  --output-dir /tmp/zkp-attestation-groth16
+
+python compiler_verification_project/scripts/run_zkp_attestation_guarded.py \
+  --skip-build \
+  --resource-profile safe \
+  --prove --system groth16 \
+  --wrap-proof-input /tmp/zkp-attestation-groth16/zkp_attestation_wrap_proof.bin \
+  --output-dir /tmp/zkp-attestation-groth16-retry
+
+python compiler_verification_project/scripts/run_zkp_attestation_guarded.py \
+  --skip-build \
+  --resource-profile balanced \
+  --verify-proof-input compiler_verification_project/artifacts/zkp_attestation_proof_groth16.bin \
+  --system groth16
+```
+
+```bash
+python compiler_verification_project/scripts/run_zkp_attestation_guarded.py \
+  --skip-build \
+  --resource-profile balanced \
+  --prove --system core \
+  --sp1-env ELEMENT_THRESHOLD=201326592 \
+  --sp1-env MINIMAL_TRACE_CHUNK_THRESHOLD=65536 \
+  --systemd-property CPUQuota=250% \
+  --systemd-property MemoryMax=12G
+```
+
+The wrapper also prints a host-memory-pressure warning before the run when the
+current machine has less free RAM than the requested `MemoryHigh` budget or
+swap is nearly exhausted. That warning is advisory, but it is a good sign that
+local proof attempts may die by `oom-kill` before they hit the configured
+wrapper limits. Scoped runs now also print their deterministic systemd scope
+name up front, and on failure the wrapper emits a short postmortem with
+`Result`, `MemoryPeak`, `CPUUsage`, and the recent unit journal so local OOM
+failures are visible without a separate `journalctl` lookup.

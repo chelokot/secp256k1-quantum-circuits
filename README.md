@@ -30,15 +30,20 @@ and then to search for stronger secp256k1-specific optimizations.
 
 ## Content
 
-This repository has **two exact-first layers** and one quarantined hypothesis
-note.
+This repository has **three exact-first layers** and one quarantined
+hypothesis note.
 
 1. The primary `artifacts/` mainline publishes exact ISA-level secp256k1
    arithmetic artifacts.
 2. The root-level `compiler_verification_project/` subproject completes the
    schedule into a fully quantum raw-32 oracle and publishes exact whole-oracle
    counts for named compiler families.
-3. Lower-exact implementation ideas are isolated in
+3. The checked-in `compiler_verification_project/zkp_attestation/` workspace
+   packages one selected standard-QROM family claim into an SP1 attestation bundle with
+   hashed input documents, a deterministic public point-add corpus, checked
+   core/compressed/Groth16 fixtures, and a repo-contained Groth16 verifier
+   bundle.
+4. Lower-exact implementation ideas are isolated in
    `docs/research/MODELED_IMPLEMENTATION_HYPOTHESES.md` and are not used for
    top-level claims, tests, or headline comparisons.
 
@@ -46,31 +51,73 @@ The repository is strongest at the arithmetic ISA boundary, and the compiler
 project tightens one important gap by turning
 “leaf + scaffold + contract” into a checked exact compiler-family oracle with
 exact schedule completion, exact lookup-family choice, exact slot allocation,
-and explicit phase-shell families.
+and explicit phase-shell families. The attestation layer then turns one
+selected standard-QROM family claim into a machine-checked proof artifact without
+claiming a primitive-gate full-Shor witness.
 
 ## Main results
 
 ### Compiler + verification subproject
 
 The root-level `compiler_verification_project/` is the repository's strongest
-exact layer below the ISA boundary. Its checked-in whole-oracle frontier is:
+exact layer below the ISA boundary. Its checked-in central whole-oracle result
+is:
 
-- **best exact gate family:** `22,756,199 non-Clifford`
-- **best exact qubit family:** `2,338 logical qubits`
+- **central standard-QROM family:** `32,879,331 non-Clifford`, `1,812 logical qubits`
 
-Those numbers are exact for the chosen compiler families, not claims of global
-optimality. The best-gate family uses a hierarchical banked unary QROM decode
-with measured uncompute; the best-qubit family uses folded linear-scan lookup
-plus an exact semiclassical-QFT phase shell and exact live-range slot allocation.
+Those numbers are exact for the chosen compiler family, not a claim of global
+optimality or a Clifford-complete full-Shor netlist. The family uses standard
+QROAM coordinate streams over the full 32768-entry folded coordinate domain, an
+exact semiclassical-QFT phase shell, and the executable streamed lookup tail
+point-add leaf. The lookup workspace includes folded-control qubits plus the
+full QROAMClean coordinate target and junk-register capacity required by the
+selected block size; no field-sized lookup x/y lane is free or hidden. The repository also checks
+`compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json`,
+which records that the current central family is a standard-QROM primitive
+circuit at the counted lookup boundary, and
+`compiler_verification_project/artifacts/logical_resource_ledger.json`, which
+reconstructs peak live qubits from numeric owners and the same QROAMClean block
+size used for non-Clifford cost.
 
-Against Google's published 2026 secp256k1 baseline, the exact compiler frontier
-supports two separate comparisons:
+Against Google's published 2026 secp256k1 baseline, the central standard-QROM
+result is:
 
-- the **best exact gate family** is **3.9550x** lower in non-Clifford cost than
-  the public low-qubit line and **3.0761x** lower than the public low-gate line
-- the **best exact qubit family** still uses **2,338 logical qubits**, which is
-  above both public Google qubit lines, while reducing non-Clifford cost by
-  **2.4043x** and **1.8700x** respectively
+- **2.7373x** lower in non-Clifford cost than the public low-qubit line
+- **2.1290x** lower in non-Clifford cost than the public low-gate line
+- **612 qubits above** the public low-qubit line
+- **362 qubits above** the public low-gate line
+
+### SP1 attestation layer
+
+The repository now also ships a Google-like attestation at the exact
+compiler-family boundary. The checked artifacts bind:
+
+- a hashed `streamed_lookup_tail_leaf.json` witness leaf
+- a hashed selected family summary in
+  `compiler_verification_project/artifacts/zkp_attestation_family.json`
+- a hashed deterministic public point-add case corpus in
+  `compiler_verification_project/artifacts/zkp_attestation_cases.json`
+
+The SP1 guest re-checks semantic hashes for those embedded typed documents,
+replays the leaf on every public case, checks the affine group law, and
+reconstructs the claimed exact non-Clifford and logical-qubit formulas before
+committing public values. The checked core fixture is
+`compiler_verification_project/artifacts/zkp_attestation_fixture_core.json`,
+the checked compressed fixture is
+`compiler_verification_project/artifacts/zkp_attestation_fixture_compressed.json`,
+and the checked Groth16 fixture is
+`compiler_verification_project/artifacts/zkp_attestation_fixture_groth16.json`.
+The repo also ships the checked compressed proof bundle at
+`compiler_verification_project/artifacts/zkp_attestation_proof_compressed.bin`,
+the checked Groth16 proof bundle at
+`compiler_verification_project/artifacts/zkp_attestation_proof_groth16.bin`
+plus the matching verifying key at
+`compiler_verification_project/artifacts/zkp_attestation_groth16_verifier/groth16_vk.bin`,
+so the checked proof can be re-verified locally without rebuilding the large
+vk-specific dev artifacts. Together these artifacts bind the current central
+standard-QROM family claim and `8 / 8` public cases.
+This is similar in shape to Google's disclosure model, but it is still not a
+primitive-gate full-Shor proof.
 
 ### Primary audited mainline
 
@@ -110,8 +157,9 @@ That contract is exact at the lookup-contract level and audited by:
 - explicit lookup-contract semantics, including the signed folded variant
 - retained-window scaffold metadata and deterministic scaffold replay
 - exact whole-oracle counts for named compiler families in `compiler_verification_project/`
-- exact leaf slot allocation for the checked-in mixed-add leaf
+- exact leaf slot allocation for the streamed lookup tail leaf
 - exact phase-shell family accounting for full-register vs semiclassical-QFT shells
+- exact SP1 attestation of one selected compiler-family claim against a public deterministic point-add corpus
 
 Lower-exact implementation hypotheses are documented separately in
 `docs/research/MODELED_IMPLEMENTATION_HYPOTHESES.md`.
@@ -153,7 +201,7 @@ frontier into that physical model in
 parallelism assumptions, the exact-family runtime range spans roughly **2.65 to
 5.35 days** depending on which exact compiler family is chosen. The
 same-density physical-qubit range is much broader because the exact frontier
-includes both low-gate and low-space families. That transfer is intentionally
+still includes multiple internal family variants. That transfer is intentionally
 stated as approximate, because Cain's paper targets **P-256**, while the
 primary artifact in this repository is specialized to **secp256k1**.
 
@@ -166,7 +214,7 @@ primary artifact in this repository is specialized to **secp256k1**.
   research interpretation
 - `figures/` — generated report figures
 - `results/` — generated summary JSON files
-- `compiler_verification_project/` — exact compiler-family oracle build, frontier, and verification artifacts
+- `compiler_verification_project/` — exact compiler-family oracle build, frontier, verification artifacts, and SP1 attestation workspace
 
 ## Quick start
 
@@ -176,6 +224,7 @@ From the repository root:
 python scripts/verify_all.py
 python compiler_verification_project/scripts/build.py
 python compiler_verification_project/scripts/verify.py --cases 16
+python compiler_verification_project/scripts/build_zkp_attestation_input.py --cases 8
 python compiler_verification_project/scripts/materialize_exact_circuits.py
 python scripts/compare_cain_2026.py
 ```
@@ -183,8 +232,12 @@ python scripts/compare_cain_2026.py
 `compiler_verification_project/scripts/materialize_exact_circuits.py` writes
 ignored exact whole-oracle operation streams under
 `compiler_verification_project/generated_circuits/`. With no family arguments
-it materializes the exact best-gate and exact best-qubit families; use
-`--all-families` to dump every checked exact compiler family.
+it materializes the central public standard-QROM family and the internal minimum-qubit
+comparison family; use `--all-families` to dump every checked exact compiler
+family.
+
+See `compiler_verification_project/README.md` for the SP1 execute/prove
+commands that reproduce the checked attestation bundle.
 
 `make test` uses the built-in parallel test runner in `scripts/run_tests.py`;
 use `make test-sequential` for a single-process pytest run.

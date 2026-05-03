@@ -25,8 +25,11 @@ def _frontier() -> dict:
 def test_materialized_family_aliases_resolve_to_frontier_rows() -> None:
     frontier = _frontier()
     resolved = resolve_selected_family_names(['best-gate', 'best-qubit'], frontier=frontier)
-    assert resolved[0] == frontier['best_gate_family']['name']
-    assert resolved[1] == frontier['best_qubit_family']['name']
+    expected = []
+    for family in (frontier['best_gate_family']['name'], frontier['best_qubit_family']['name']):
+        if family not in expected:
+            expected.append(family)
+    assert resolved == expected
 
 
 def test_materialized_operation_stream_emits_seed_lookup_rows() -> None:
@@ -49,5 +52,9 @@ def test_materialized_circuit_script_lists_available_families() -> None:
     assert payload['best_gate_family']
     assert payload['best_qubit_family']
     frontier = _frontier()
-    expected_family_count = len(frontier['lookup_families']) * len(frontier['phase_shell_families'])
+    expected_family_count = (
+        len(frontier['lookup_families'])
+        * len(frontier['phase_shell_families'])
+        * len(frontier['slot_allocation_families'])
+    )
     assert len(payload['available_families']) == expected_family_count
