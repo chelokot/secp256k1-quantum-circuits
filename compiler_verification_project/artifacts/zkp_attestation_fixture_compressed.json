@@ -1,0 +1,19 @@
+{
+  "proof": null,
+  "proof_system": "compressed",
+  "public_values": {
+    "case_corpus_sha256": "8f1fd77bccfa2a0ec1d3bcf1365b396078a8b3c30ab635edc18288d97d69ebc1",
+    "case_count": 8,
+    "claim_sha256": "38a81ab064f1f533afb9d3d55480af85b1deba7b8afb21f763f51f1e580b53aa",
+    "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
+    "expected_full_oracle_non_clifford": 32879331,
+    "expected_total_logical_qubits": 1556,
+    "family_sha256": "501079c79ff39b3266754c03c5b56c3895a868afe208650cbc0aa9523d27b397",
+    "leaf_sha256": "3564c445ba69afe5fb64fcc1795dc841130f7da46e0ce010fd4ad3c32c2c7a8f",
+    "passed_case_count": 8,
+    "schema": "compiler-project-zkp-attestation-public-v2",
+    "selected_family_name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1"
+  },
+  "schema": "compiler-project-zkp-attestation-fixture-v1",
+  "verification_key": "0x00e100646fc9c01592274e0e2f3c8a09026b2158cc52f63dc83c45418e22c5af"
+}

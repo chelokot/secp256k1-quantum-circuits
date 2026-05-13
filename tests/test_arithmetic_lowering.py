@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import sys
 import unittest
 from pathlib import Path
 
@@ -10,6 +11,14 @@ from support import ensure_compiler_project_build_summary, ensure_compiler_proje
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+ROOT_SRC = REPO_ROOT / 'src'
+COMPILER_SRC = REPO_ROOT / 'compiler_verification_project' / 'src'
+if str(ROOT_SRC) not in sys.path:
+    sys.path.insert(0, str(ROOT_SRC))
+if str(COMPILER_SRC) not in sys.path:
+    sys.path.insert(0, str(COMPILER_SRC))
+
+from arithmetic_lowering import materialize_arithmetic_primitive_operations  # noqa: E402
 
 
 class ArithmeticLoweringTests(unittest.TestCase):
@@ -27,7 +36,7 @@ class ArithmeticLoweringTests(unittest.TestCase):
             for stage in kernel['stages']:
                 for block in stage['blocks']:
                     reconstructed = {'ccx': 0, 'cx': 0, 'x': 0, 'measurement': 0}
-                    for operation in block['primitive_operations']:
+                    for operation in materialize_arithmetic_primitive_operations(block):
                         reconstructed[operation[0]] += 1
                     self.assertEqual(reconstructed, block['primitive_counts_total'])
 

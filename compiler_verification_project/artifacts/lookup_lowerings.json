@@ -629,6 +629,505 @@
       ]
     },
     {
+      "name": "folded_standard_qroam_streamed_coordinate_v1",
+      "summary": "Central standard-QROAM lookup family: folded lookup control with standard QROAM coordinate streams consumed by table-controlled arithmetic kernels.",
+      "gate_set": "Clifford + standard QROAM coordinate streams + measurement",
+      "lookup_contract_sha256": "c3b6cc711aa323951a580f6a54a027d84bf84d6a5ad66965751db865553b635d",
+      "lowering_strategy": {
+        "classification": "shared folded sign/magnitude decomposition over the checked signed-folded lookup contract",
+        "lookup_compute": "standard QROAM coordinate-stream compute charged at each consuming arithmetic data-select stage",
+        "lookup_uncompute": "standard QROAM measured cleanup charged at each consuming arithmetic data-select stage",
+        "streamed_table_data": "one counted full-coordinate QROAM target plus the QROAMClean junk registers required by the selected block size; no field-sized lookup-output lane is borrowed or hidden"
+      },
+      "persistent_workspace": [
+        {
+          "name": "folded_magnitude_register",
+          "qubits": 15,
+          "summary": "Stores the shared absolute-value magnitude 0..32767 used by every lookup family."
+        },
+        {
+          "name": "lookup_control_predicates",
+          "qubits": 3,
+          "summary": "Tracks zero/min-word routing and the Y-negation enable predicate without allocating a full metadata table."
+        }
+      ],
+      "stages": [
+        {
+          "name": "folded_word_classification",
+          "summary": "Shared sign/magnitude classification for the 16-bit signed folded contract.",
+          "category": "classification",
+          "blocks": [
+            {
+              "name": "magnitude_all_zero_tree",
+              "summary": "Temporary logical-AND ladder over the 15 magnitude bits.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 14,
+                "cx": 0,
+                "x": 0,
+                "measurement": 14
+              },
+              "primitive_counts_total": {
+                "ccx": 14,
+                "cx": 0,
+                "x": 0,
+                "measurement": 14
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "repeated_ladder",
+                "instance_count": 1,
+                "bit_count": 14,
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 28,
+                "sha256": "1dcb7cf81673b233c026134572f13c256993d0627c72191bad19f2d61367ab79",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0,
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    0
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    1
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    1
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    2
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    2
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    3
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    3
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0,
+                    10
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    10
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    11
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    11
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    12
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    12
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    13
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    13
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 14,
+              "non_clifford_total": 14,
+              "notes": [
+                "The all-zero predicate is shared by zero-word bypass and 0x8000 special-word routing.",
+                "The temporary logical-AND ladder is uncomputed by local measurements inside the stage."
+              ]
+            },
+            {
+              "name": "signed_absolute_value_prepare",
+              "summary": "Two mirrored temporary logical-AND ladders prepare the folded absolute value for the positive lookup domain.",
+              "instance_count": 2,
+              "primitive_counts_per_instance": {
+                "ccx": 14,
+                "cx": 0,
+                "x": 0,
+                "measurement": 14
+              },
+              "primitive_counts_total": {
+                "ccx": 28,
+                "cx": 0,
+                "x": 0,
+                "measurement": 28
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "repeated_ladder",
+                "instance_count": 2,
+                "bit_count": 14,
+                "include_measurement": true
+              },
+              "primitive_operation_stream": {
+                "operation_count": 56,
+                "sha256": "e3f4add9394f9d8f6f8b5a08535202a6b3919b582c973ee87fd36d7d96dd0bd6",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0,
+                    0
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    0
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    1
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    1
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    2
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    2
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    3
+                  ],
+                  [
+                    "measurement",
+                    0,
+                    3
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    1,
+                    10
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    10
+                  ],
+                  [
+                    "ccx",
+                    1,
+                    11
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    11
+                  ],
+                  [
+                    "ccx",
+                    1,
+                    12
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    12
+                  ],
+                  [
+                    "ccx",
+                    1,
+                    13
+                  ],
+                  [
+                    "measurement",
+                    1,
+                    13
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 14,
+              "non_clifford_total": 28,
+              "notes": [
+                "This stage implements the explicit absolute-value preparation used by all checked lookup families.",
+                "Separate zero/min routing is driven from the shared all-zero predicate and the raw sign bit, so no additional non-Clifford flag-materialization block is counted here."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 42,
+            "cx": 0,
+            "x": 0,
+            "measurement": 42
+          },
+          "non_clifford_total": 42,
+          "persistent_workspace_qubits": 18,
+          "local_workspace_qubits": 13,
+          "total_workspace_qubits": 31,
+          "notes": [
+            "The classification stage is family-independent and implements the same signed-folded contract used by the main repository lookup audit."
+          ]
+        },
+        {
+          "name": "standard_qroam_coordinate_stream_compute",
+          "summary": "Standard QROAM coordinate-stream compute is charged at the consuming arithmetic kernel.",
+          "category": "lookup_compute",
+          "blocks": [],
+          "primitive_counts_total": {
+            "ccx": 0,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 0,
+          "persistent_workspace_qubits": 18,
+          "local_workspace_qubits": 256,
+          "total_workspace_qubits": 274,
+          "notes": [
+            "The standard-QROAM table-data select is not the old bitwise chunk decode. It is bound in arithmetic_lowerings.json at each table-controlled coordinate-stream consumer because the stream is consumed by the multiplier latch immediately.",
+            "The stage local workspace reserves the 256-qubit QROAM target plus 0 junk registers of 256 qubits each."
+          ]
+        },
+        {
+          "name": "standard_qroam_coordinate_stream_measured_uncompute",
+          "summary": "Measured QROAM cleanup is charged at the consuming arithmetic kernel.",
+          "category": "lookup_uncompute",
+          "blocks": [],
+          "primitive_counts_total": {
+            "ccx": 0,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 0,
+          "persistent_workspace_qubits": 18,
+          "local_workspace_qubits": 256,
+          "total_workspace_qubits": 274,
+          "notes": [
+            "Measured cleanup is paired with each coordinate target and its junk registers in arithmetic_lowerings.json; this lookup-family row owns the peak workspace capacity."
+          ]
+        },
+        {
+          "name": "conditional_y_negation",
+          "summary": "Applies the post-lookup Y negation required by negative raw words in the folded contract.",
+          "category": "post_lookup_fixup",
+          "blocks": [
+            {
+              "name": "conditional_field_negation",
+              "summary": "Field-width conditional subtraction/select network over the Y coordinate.",
+              "instance_count": 1,
+              "primitive_counts_per_instance": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "primitive_operation_encoding": [
+                "gate",
+                "operand_0",
+                "operand_1"
+              ],
+              "primitive_operation_generator": {
+                "kind": "repeated_ladder",
+                "instance_count": 1,
+                "bit_count": 255,
+                "include_measurement": false
+              },
+              "primitive_operation_stream": {
+                "operation_count": 255,
+                "sha256": "bc1daccf212c60fa60ea180cd084e3e8bde71a3bf7cc1fe295ef336a5eafa761",
+                "preview_head": [
+                  [
+                    "ccx",
+                    0,
+                    0
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    1
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    2
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    3
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    4
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    5
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    6
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    7
+                  ]
+                ],
+                "preview_tail": [
+                  [
+                    "ccx",
+                    0,
+                    247
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    248
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    249
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    250
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    251
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    252
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    253
+                  ],
+                  [
+                    "ccx",
+                    0,
+                    254
+                  ]
+                ]
+              },
+              "non_clifford_per_instance": 255,
+              "non_clifford_total": 255,
+              "notes": [
+                "This stage is the exact post-lookup sign-fix assumption represented as a single field-width conditional negation."
+              ]
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 255,
+          "persistent_workspace_qubits": 18,
+          "local_workspace_qubits": 0,
+          "total_workspace_qubits": 18,
+          "notes": [
+            "The X coordinate remains unchanged under negation; only the Y coordinate path carries non-Clifford cost."
+          ]
+        }
+      ],
+      "primitive_counts_total": {
+        "ccx": 297,
+        "cx": 0,
+        "x": 0,
+        "measurement": 42
+      },
+      "zero_check_non_clifford": 14,
+      "magnitude_prepare_non_clifford": 28,
+      "compute_lookup_non_clifford": 0,
+      "uncompute_lookup_non_clifford": 0,
+      "conditional_negate_y_non_clifford": 255,
+      "direct_lookup_non_clifford": 297,
+      "per_leaf_lookup_non_clifford": 297,
+      "extra_lookup_workspace_qubits": 274,
+      "workspace_reconstruction": {
+        "persistent_workspace_qubits": 18,
+        "peak_stage": "standard_qroam_coordinate_stream_compute",
+        "peak_total_workspace_qubits": 274
+      },
+      "semantic_profile": {
+        "zero_maps_to_infinity": true,
+        "special_case_word_hex": "0x8000",
+        "negative_words_negate_y_after_positive_lookup": true
+      },
+      "notes": [
+        "This is the repository standard-QROM primitive-circuit lookup boundary. Unlike the rejected bitwise-banked family, it does not treat the 32768-entry coordinate table as 15 independent 2-way decodes.",
+        "The selected coordinate stream pays the standard QROAM compute and measured-uncompute costs in arithmetic_lowerings.json for every table-controlled arithmetic consumer.",
+        "The peak lookup workspace counts the folded-control qubits plus the full QROAMClean target and junk-register capacity required by the coordinate-stream cost model."
+      ]
+    },
+    {
       "name": "folded_banked_unary_qrom_measured_uncompute_v1",
       "summary": "Intermediate exact lookup family using a 7/8-split banked unary decode with measured cleanup.",
       "gate_set": "Clifford + banked unary QROM + measurement",
@@ -2884,7 +3383,8 @@
       "lowering_strategy": {
         "classification": "shared folded sign/magnitude decomposition over the checked signed-folded lookup contract",
         "lookup_compute": "bitwise 1/1/1/1/1/1/1/1/1/1/1/1/1/1/1 banked unary decode over the 32768-entry positive folded domain",
-        "lookup_uncompute": "measured cleanup of every generated banked unary chunk register"
+        "lookup_uncompute": "measured cleanup of every generated banked unary chunk register",
+        "streamed_table_data": "one counted coordinate-bit latch; every field-sized table coordinate is streamed bit-by-bit into arithmetic kernels instead of materializing lookup x/y field lanes"
       },
       "persistent_workspace": [
         {
@@ -2896,6 +3396,11 @@
           "name": "lookup_control_predicates",
           "qubits": 3,
           "summary": "Tracks zero/min-word routing and the Y-negation enable predicate without allocating a full metadata table."
+        },
+        {
+          "name": "streamed_coordinate_bit_latch",
+          "qubits": 1,
+          "summary": "Single counted data-bit latch used by streamed table-controlled multiplication."
         }
       ],
       "stages": [
@@ -3156,9 +3661,9 @@
             "measurement": 42
           },
           "non_clifford_total": 42,
-          "persistent_workspace_qubits": 18,
+          "persistent_workspace_qubits": 19,
           "local_workspace_qubits": 13,
-          "total_workspace_qubits": 31,
+          "total_workspace_qubits": 32,
           "notes": [
             "The classification stage is family-independent and implements the same signed-folded contract used by the main repository lookup audit."
           ]
@@ -3911,9 +4416,9 @@
             "measurement": 0
           },
           "non_clifford_total": 15,
-          "persistent_workspace_qubits": 18,
+          "persistent_workspace_qubits": 19,
           "local_workspace_qubits": 30,
-          "total_workspace_qubits": 48,
+          "total_workspace_qubits": 49,
           "notes": [
             "The hierarchical family materializes one unary chunk per banking level instead of a full 32768-slot unary register."
           ]
@@ -4786,9 +5291,9 @@
             "measurement": 15
           },
           "non_clifford_total": 15,
-          "persistent_workspace_qubits": 18,
+          "persistent_workspace_qubits": 19,
           "local_workspace_qubits": 30,
-          "total_workspace_qubits": 48,
+          "total_workspace_qubits": 49,
           "notes": [
             "Measured cleanup keeps the hierarchical banked family exact within the chosen generated operation layer without reintroducing the full reverse unary pass."
           ]
@@ -4927,9 +5432,9 @@
             "measurement": 0
           },
           "non_clifford_total": 255,
-          "persistent_workspace_qubits": 18,
+          "persistent_workspace_qubits": 19,
           "local_workspace_qubits": 0,
-          "total_workspace_qubits": 18,
+          "total_workspace_qubits": 19,
           "notes": [
             "The X coordinate remains unchanged under negation; only the Y coordinate path carries non-Clifford cost."
           ]
@@ -4948,11 +5453,11 @@
       "conditional_negate_y_non_clifford": 255,
       "direct_lookup_non_clifford": 327,
       "per_leaf_lookup_non_clifford": 327,
-      "extra_lookup_workspace_qubits": 48,
+      "extra_lookup_workspace_qubits": 49,
       "workspace_reconstruction": {
-        "persistent_workspace_qubits": 18,
+        "persistent_workspace_qubits": 19,
         "peak_stage": "folded_positive_lookup_compute",
-        "peak_total_workspace_qubits": 48
+        "peak_total_workspace_qubits": 49
       },
       "semantic_profile": {
         "zero_maps_to_infinity": true,
@@ -4961,7 +5466,8 @@
       },
       "notes": [
         "This family fully factorizes the folded 15-bit magnitude into binary banking levels inside the same generated chunk-decode model used by the other banked families.",
-        "Within the current exact generated-operation boundary, the deeper banking reduces both direct lookup non-Clifford cost and explicit lookup workspace relative to the 3/4/4/4 hierarchical family."
+        "Within the current exact generated-operation boundary, the deeper banking reduces both direct lookup non-Clifford cost and explicit lookup workspace relative to the 3/4/4/4 hierarchical family.",
+        "For the streamed lookup tail family, this lookup workspace also counts the single coordinate-bit latch used by table-controlled arithmetic kernels."
       ]
     },
     {

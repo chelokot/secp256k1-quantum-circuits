@@ -181,10 +181,11 @@ def _qubit_blocks(
 ) -> List[Dict[str, Any]]:
     arithmetic_slots = int(slot_allocation['allocator_summary']['exact_arithmetic_slot_count'])
     control_slots = int(slot_allocation['allocator_summary']['exact_control_slot_count'])
+    borrowed_field_slots = int(slot_allocation['allocator_summary'].get('exact_borrowed_field_slot_count', 0))
     slot_source_artifact = str(
         slot_allocation.get('source_artifact', 'compiler_verification_project/artifacts/exact_leaf_slot_allocation.json')
     )
-    return [
+    blocks = [
         _qubit_block(
             block_id='arithmetic_slot_register_file',
             summary='Exact live arithmetic slot register file for the checked ISA leaf.',
@@ -199,6 +200,18 @@ def _qubit_blocks(
             logical_qubits=control_slots,
             metadata={'control_slot_count': control_slots},
         ),
+    ]
+    if borrowed_field_slots:
+        blocks.append(
+            _qubit_block(
+                block_id='borrowed_lookup_interface_field_lanes',
+                summary='Counted field-width lookup interface lanes borrowed by the selected leaf contract.',
+                source_artifact=slot_source_artifact,
+                logical_qubits=borrowed_field_slots * int(field_bits),
+                metadata={'borrowed_field_slot_count': borrowed_field_slots, 'field_bits': int(field_bits)},
+            )
+        )
+    blocks.extend([
         _qubit_block(
             block_id='lookup_workspace',
             summary='Peak explicit lookup workspace required by the named lowered lookup family.',
@@ -213,7 +226,8 @@ def _qubit_blocks(
             logical_qubits=int(phase_shell['live_quantum_bits']),
             metadata={'phase_shell': phase_shell['name']},
         ),
-    ]
+    ])
+    return blocks
 
 def _reconstruct_family(
     arithmetic_blocks: List[Dict[str, Any]],
@@ -264,6 +278,7 @@ def _reconstruct_family(
         'phase_shell_rotation_depth': total_rotation_depth,
         'arithmetic_slot_count': int(slot_allocation['allocator_summary']['exact_arithmetic_slot_count']),
         'control_slot_count': int(slot_allocation['allocator_summary']['exact_control_slot_count']),
+        'borrowed_interface_qubits': int(slot_allocation['allocator_summary'].get('borrowed_field_bits', 0)),
         'lookup_workspace_qubits': int(lookup_family['extra_lookup_workspace_qubits']),
         'live_phase_bits': int(phase_shell['live_quantum_bits']),
         'total_logical_qubits': sum(int(block['logical_qubits']) for block in qubit_blocks),

@@ -68,6 +68,7 @@ class VerificationPipelineTests(unittest.TestCase):
         verify = compiler['verification_summary']
         self.assertEqual(build['headline']['best_gate_family'], frontier['best_gate_family'])
         self.assertEqual(build['headline']['best_qubit_family'], frontier['best_qubit_family'])
+        self.assertEqual(build['headline']['best_google_low_gate_qubit_family'], frontier['best_google_low_gate_qubit_family'])
         self.assertEqual(build['headline']['best_sub30m_qubit_family'], frontier['best_sub30m_qubit_family'])
         self.assertEqual(verify['summary']['semantic_cases']['pass'], verify['summary']['semantic_cases']['total'])
         self.assertEqual(verify['summary']['invariant_checks']['pass'], verify['summary']['invariant_checks']['total'])
@@ -79,6 +80,9 @@ class VerificationPipelineTests(unittest.TestCase):
         self.assertEqual(verify['generated_block_inventory_checks']['pass'], verify['generated_block_inventory_checks']['total'])
         self.assertEqual(verify['slot_allocation_checks']['pass'], verify['slot_allocation_checks']['total'])
         self.assertEqual(verify['lookup_fed_slot_allocation_checks']['pass'], verify['lookup_fed_slot_allocation_checks']['total'])
+        self.assertEqual(verify['streamed_lookup_tail_slot_allocation_checks']['pass'], verify['streamed_lookup_tail_slot_allocation_checks']['total'])
+        self.assertEqual(verify['streamed_lookup_table_multiplier_resource_checks']['pass'], verify['streamed_lookup_table_multiplier_resource_checks']['total'])
+        self.assertEqual(verify['standard_qrom_lookup_assessment_checks']['pass'], verify['standard_qrom_lookup_assessment_checks']['total'])
         self.assertEqual(verify['ft_ir_checks']['pass'], verify['ft_ir_checks']['total'])
         self.assertEqual(verify['whole_oracle_recount_checks']['pass'], verify['whole_oracle_recount_checks']['total'])
         self.assertEqual(verify['subcircuit_equivalence_checks']['pass'], verify['subcircuit_equivalence_checks']['total'])

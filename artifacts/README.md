@@ -14,8 +14,8 @@ This directory contains the primary release artifact of the repository.
 - `projections/structural_accounting.json` — derived opcode, liveness, and
   scaffold accounting
 - `projections/backend_model_bundle.json` — versioned backend-model family
-- `projections/resource_projection.json` — modeled baseline comparison and
-  headline totals
+- `projections/resource_projection.json` — modeled baseline comparison kept
+  below the exact compiler-family headline
 
 ## Verification files
 

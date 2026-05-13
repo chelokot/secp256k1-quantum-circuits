@@ -63,7 +63,7 @@ the stored runtime range is:
 ## Space transfer
 
 The space transfer remains highly family-sensitive because the exact frontier
-contains both low-gate and low-space families. The current same-density scaling
+contains multiple internal compiler-family variants. The current same-density scaling
 ranges are:
 
 - **50.6k to 776.9k physical qubits** against Cain's time-efficient line
