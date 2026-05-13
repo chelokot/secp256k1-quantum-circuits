@@ -19,14 +19,13 @@ use sp1_prover::{
     worker::{
         CommonProverInput, CoreExecuteTaskRequest, DeferredEvents, GlobalMemoryShard,
         LocalWorkerClient, MessageReceiver, PrecompileArtifactSlice, ProofData, ProofId,
-        ProveShardTaskRequest, RequesterId, SP1Controller, SP1WorkerConfig, TaskContext,
-        TaskError, TaskId, TaskMetadata, TraceData, WorkerClient,
+        ProveShardTaskRequest, RequesterId, SP1Controller, SP1WorkerConfig, TaskContext, TaskError,
+        TaskId, TaskMetadata, TraceData, WorkerClient,
     },
     CpuSP1ProverComponents, SP1ProverComponents, SP1VerifyingKey, SP1_CIRCUIT_VERSION,
 };
 use sp1_prover_types::{
-    network_base_types::ProofMode, ArtifactClient, ArtifactType, InMemoryArtifactClient,
-    TaskStatus,
+    network_base_types::ProofMode, ArtifactClient, ArtifactType, InMemoryArtifactClient, TaskStatus,
 };
 use sp1_sdk::{SP1Proof, SP1ProofWithPublicValues};
 use tokio::runtime::Runtime;
@@ -40,7 +39,9 @@ pub struct CoreOnlyBlockingProver {
 
 impl CoreOnlyBlockingProver {
     pub fn new() -> Result<Self> {
-        let runtime = tokio::runtime::Builder::new_current_thread().enable_all().build()?;
+        let runtime = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()?;
         let inner = runtime.block_on(CoreOnlyAsyncProver::new())?;
         Ok(Self { runtime, inner })
     }
@@ -93,7 +94,10 @@ impl CoreOnlyAsyncProver {
         ));
 
         spawn_prove_shard_service(
-            channels.task_receivers.remove(&sp1_prover_types::TaskType::ProveShard).unwrap(),
+            channels
+                .task_receivers
+                .remove(&sp1_prover_types::TaskType::ProveShard)
+                .unwrap(),
             artifact_client.clone(),
             worker_client.clone(),
             core_air_prover.clone(),
@@ -128,7 +132,10 @@ impl CoreOnlyAsyncProver {
             Program::from(elf)
                 .map_err(|error| anyhow!("failed to disassemble program during setup: {error}"))?,
         );
-        let (_, vk) = self.core_air_prover.setup(program, self.permits.clone()).await;
+        let (_, vk) = self
+            .core_air_prover
+            .setup(program, self.permits.clone())
+            .await;
         Ok(SP1VerifyingKey { vk })
     }
 
@@ -147,7 +154,9 @@ impl CoreOnlyAsyncProver {
         }
 
         let elf_artifact = self.artifact_client.create_artifact()?;
-        self.artifact_client.upload_program(&elf_artifact, elf.to_vec()).await?;
+        self.artifact_client
+            .upload_program(&elf_artifact, elf.to_vec())
+            .await?;
 
         let stdin_artifact = self.artifact_client.create_artifact()?;
         self.artifact_client
@@ -162,7 +171,9 @@ impl CoreOnlyAsyncProver {
             nonce: [0u32; 4],
         };
         let common_input_artifact = self.artifact_client.create_artifact()?;
-        self.artifact_client.upload(&common_input_artifact, common_input).await?;
+        self.artifact_client
+            .upload(&common_input_artifact, common_input)
+            .await?;
 
         let execution_output_artifact = self.artifact_client.create_artifact()?;
         let context = TaskContext {
@@ -183,10 +194,15 @@ impl CoreOnlyAsyncProver {
 
         let executor_task_id = self
             .worker_client
-            .submit_task(sp1_prover_types::TaskType::CoreExecute, executor_request.into_raw()?)
+            .submit_task(
+                sp1_prover_types::TaskType::CoreExecute,
+                executor_request.into_raw()?,
+            )
             .await?;
         let core_proof_rx = MessageReceiver::<ProofData>::new(
-            self.worker_client.subscribe_task_messages(&executor_task_id).await?,
+            self.worker_client
+                .subscribe_task_messages(&executor_task_id)
+                .await?,
         );
         let proof_result = collect_core_proofs_direct(
             self.worker_client.clone(),
@@ -219,10 +235,16 @@ impl CoreOnlyAsyncProver {
             .try_delete(&stdin_artifact, ArtifactType::Stdin)
             .await?;
         self.artifact_client
-            .try_delete(&common_input_artifact, ArtifactType::UnspecifiedArtifactType)
+            .try_delete(
+                &common_input_artifact,
+                ArtifactType::UnspecifiedArtifactType,
+            )
             .await?;
         self.artifact_client
-            .try_delete(&execution_output_artifact, ArtifactType::UnspecifiedArtifactType)
+            .try_delete(
+                &execution_output_artifact,
+                ArtifactType::UnspecifiedArtifactType,
+            )
             .await?;
 
         Ok(SP1ProofWithPublicValues::new(
@@ -259,7 +281,9 @@ fn spawn_prove_shard_service(
                         .complete_task(proof_id, task_id, TaskMetadata::default())
                         .await
                     {
-                        eprintln!("[zkp-attestation] failed to complete ProveShard task: {error:?}");
+                        eprintln!(
+                            "[zkp-attestation] failed to complete ProveShard task: {error:?}"
+                        );
                     }
                 }
                 Err(TaskError::Retryable(error)) => {
@@ -310,7 +334,9 @@ fn spawn_core_execute_service(
                         .complete_task(proof_id, task_id, TaskMetadata::default())
                         .await
                     {
-                        eprintln!("[zkp-attestation] failed to complete CoreExecute task: {error:?}");
+                        eprintln!(
+                            "[zkp-attestation] failed to complete CoreExecute task: {error:?}"
+                        );
                     }
                 }
                 Err(error) => {
@@ -327,9 +353,7 @@ fn spawn_core_execute_service(
 fn spawn_marker_drain_service(
     mut marker_rx: tokio::sync::mpsc::Receiver<(TaskId, sp1_prover::worker::RawTaskRequest)>,
 ) {
-    tokio::spawn(async move {
-        while marker_rx.recv().await.is_some() {}
-    });
+    tokio::spawn(async move { while marker_rx.recv().await.is_some() {} });
 }
 
 async fn collect_core_proofs_direct(
@@ -338,13 +362,18 @@ async fn collect_core_proofs_direct(
     context: TaskContext,
     mut core_proof_rx: MessageReceiver<ProofData>,
 ) -> Result<Vec<ShardProof<SP1GlobalContext, SP1PcsProofInner>>, TaskError> {
-    let subscriber = worker_client.subscriber(context.proof_id.clone()).await?.per_task();
+    let subscriber = worker_client
+        .subscriber(context.proof_id.clone())
+        .await?
+        .per_task();
     let mut shard_proofs = Vec::new();
     while let Some(proof_data) = core_proof_rx.recv().await {
         let ProofData { task_id, proof, .. } = proof_data;
         let status = subscriber.wait_task(task_id.clone()).await?;
         if status != TaskStatus::Succeeded {
-            return Err(TaskError::Fatal(anyhow!("core proof task failed: {task_id:?}")));
+            return Err(TaskError::Fatal(anyhow!(
+                "core proof task failed: {task_id:?}"
+            )));
         }
         shard_proofs.push(
             artifact_client
@@ -396,10 +425,10 @@ async fn prove_core_shard_only(
         _ => None,
     };
 
-    let program = Arc::new(
-        Program::from(&elf_bytes)
-            .map_err(|error| TaskError::Fatal(anyhow!("failed to disassemble program: {error}")))?,
-    );
+    let program =
+        Arc::new(Program::from(&elf_bytes).map_err(|error| {
+            TaskError::Fatal(anyhow!("failed to disassemble program: {error}"))
+        })?);
     let (mut record, deferred_record) = match record_data {
         TraceData::Core(chunk_bytes) => tokio::task::spawn_blocking({
             let program = program.clone();
@@ -439,8 +468,11 @@ async fn prove_core_shard_only(
                 last_init_page_idx,
                 last_finalize_page_idx,
             } = *shard;
-            let mut record =
-                ExecutionRecord::new(program.clone(), common_input.nonce, opts.global_dependencies_opt);
+            let mut record = ExecutionRecord::new(
+                program.clone(),
+                common_input.nonce,
+                opts.global_dependencies_opt,
+            );
             record.global_memory_initialize_events = initialize_events;
             record.global_memory_finalize_events = finalize_events;
             let enable_untrusted_programs =
@@ -466,8 +498,11 @@ async fn prove_core_shard_only(
             (record, None)
         }
         TraceData::Precompile(artifacts, code) => {
-            let mut main_record =
-                ExecutionRecord::new(program.clone(), common_input.nonce, opts.global_dependencies_opt);
+            let mut main_record = ExecutionRecord::new(
+                program.clone(),
+                common_input.nonce,
+                opts.global_dependencies_opt,
+            );
             let total_events: usize = artifacts
                 .iter()
                 .map(|slice| slice.end_idx.saturating_sub(slice.start_idx))
@@ -501,9 +536,7 @@ async fn prove_core_shard_only(
             for (index, events) in results.into_iter().enumerate() {
                 let events = events?;
                 let PrecompileArtifactSlice {
-                    start_idx,
-                    end_idx,
-                    ..
+                    start_idx, end_idx, ..
                 } = artifacts[index].clone();
                 main_record
                     .precompile_events
@@ -513,10 +546,9 @@ async fn prove_core_shard_only(
                     .extend(events.into_iter().skip(start_idx).take(end_idx - start_idx));
             }
 
-            main_record.public_values.update_initialized_state(
-                program.pc_start_abs,
-                program.enable_untrusted_programs,
-            );
+            main_record
+                .public_values
+                .update_initialized_state(program.pc_start_abs, program.enable_untrusted_programs);
             (main_record, None)
         }
     };
@@ -538,15 +570,16 @@ async fn prove_core_shard_only(
             let opts = opts.clone();
             tokio::spawn(async move {
                 let program_len = program.instructions.len();
-                let split_opts = tokio::task::spawn_blocking(move || {
-                    SplitOpts::new(&opts, program_len, false)
-                })
-                .await
-                .map_err(|error| TaskError::Fatal(error.into()))?;
+                let split_opts =
+                    tokio::task::spawn_blocking(move || SplitOpts::new(&opts, program_len, false))
+                        .await
+                        .map_err(|error| TaskError::Fatal(error.into()))?;
                 let deferred_data =
                     DeferredEvents::defer_record(deferred_record, &artifact_client, split_opts)
                         .await?;
-                artifact_client.upload(&deferred_output, &deferred_data).await?;
+                artifact_client
+                    .upload(&deferred_output, &deferred_data)
+                    .await?;
                 worker_client
                     .complete_task(proof_id, deferred_marker_task_id, TaskMetadata::default())
                     .await?;
@@ -592,7 +625,9 @@ async fn prove_core_shard_only(
     }
 
     if let Some(handle) = deferred_upload_handle {
-        handle.await.map_err(|error| TaskError::Fatal(error.into()))??;
+        handle
+            .await
+            .map_err(|error| TaskError::Fatal(error.into()))??;
     }
 
     Ok(())

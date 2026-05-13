@@ -63,7 +63,7 @@ The root-level `compiler_verification_project/` is the repository's strongest
 exact layer below the ISA boundary. Its checked-in central whole-oracle result
 is:
 
-- **central standard-QROM family:** `32,879,331 non-Clifford`, `1,812 logical qubits`
+- **central standard-QROM family:** `32,879,331 non-Clifford`, `1,556 logical qubits`
 
 Those numbers are exact for the chosen compiler family, not a claim of global
 optimality or a Clifford-complete full-Shor netlist. The family uses standard

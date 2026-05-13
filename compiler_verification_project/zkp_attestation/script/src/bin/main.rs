@@ -5,16 +5,15 @@ mod wrap_only;
 
 use clap::{Parser, ValueEnum};
 use core_only::CoreOnlyBlockingProver;
-use secp256k1_zkp_attestation_lib::{
-    fixture_json, PreparedAttestationInput, PublicValues,
-};
+use secp256k1_zkp_attestation_lib::{fixture_json, PreparedAttestationInput, PublicValues};
+use sp1_sdk::ProvingKey;
 use sp1_sdk::{
     blocking::{LightProver, ProveRequest, Prover, ProverClient},
     include_elf, Elf, HashableKey, SP1ProofWithPublicValues, SP1Stdin,
 };
-use sp1_sdk::ProvingKey;
 use std::{
-    env, fs, io::Write,
+    env, fs,
+    io::Write,
     path::{Path, PathBuf},
     time::Instant,
 };
@@ -72,10 +71,8 @@ const THROUGHPUT_RESOURCE_DEFAULTS: [(&str, &str); 15] = [
     ("SP1_WORKER_DEFERRED_BUFFER_SIZE", "4"),
     ("SP1_WORKER_NUMBER_OF_GAS_EXECUTORS", "4"),
 ];
-const SAFE_GROTH16_DEFAULTS: [(&str, &str); 2] = [
-    ("TRACE_CHUNK_SLOTS", "2"),
-    ("MEMORY_LIMIT", "17179869184"),
-];
+const SAFE_GROTH16_DEFAULTS: [(&str, &str); 2] =
+    [("TRACE_CHUNK_SLOTS", "2"), ("MEMORY_LIMIT", "17179869184")];
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -159,7 +156,8 @@ fn resolve_path(path: &str) -> PathBuf {
 
 fn load_input(path: &str) -> PreparedAttestationInput {
     let absolute = resolve_path(path);
-    let bytes = fs::read(&absolute).unwrap_or_else(|error| panic!("failed to read {:?}: {error}", absolute));
+    let bytes = fs::read(&absolute)
+        .unwrap_or_else(|error| panic!("failed to read {:?}: {error}", absolute));
     serde_json::from_slice(&bytes).expect("failed to deserialize attestation input")
 }
 
@@ -169,7 +167,8 @@ fn load_compressed_proof_path(path: &str) -> PathBuf {
 
 fn prepare_output_dir(path: &str) -> PathBuf {
     let absolute = resolve_path(path);
-    fs::create_dir_all(&absolute).unwrap_or_else(|error| panic!("failed to create {:?}: {error}", absolute));
+    fs::create_dir_all(&absolute)
+        .unwrap_or_else(|error| panic!("failed to create {:?}: {error}", absolute));
     absolute
 }
 
@@ -191,6 +190,20 @@ fn proof_bundle_path(output_dir: &PathBuf, system: ProofSystem) -> PathBuf {
 
 fn wrap_proof_bundle_path(output_dir: &PathBuf) -> PathBuf {
     output_dir.join("zkp_attestation_wrap_proof.bin")
+}
+
+fn write_groth16_verifier_key(output_dir: &PathBuf, verifier_key_path: &PathBuf) -> PathBuf {
+    let verifier_dir = output_dir.join("zkp_attestation_groth16_verifier");
+    fs::create_dir_all(&verifier_dir)
+        .unwrap_or_else(|error| panic!("failed to create {:?}: {error}", verifier_dir));
+    let checked_verifier_key_path = verifier_dir.join("groth16_vk.bin");
+    fs::copy(verifier_key_path, &checked_verifier_key_path).unwrap_or_else(|error| {
+        panic!(
+            "failed to copy {:?} to {:?}: {error}",
+            verifier_key_path, checked_verifier_key_path
+        )
+    });
+    checked_verifier_key_path
 }
 
 fn infer_groth16_verify_dir(proof_bundle_path: &Path) -> Option<PathBuf> {
@@ -297,7 +310,9 @@ fn main() {
     if args.verify_proof_input.is_some()
         && (args.compressed_proof_input.is_some() || args.wrap_proof_input.is_some())
     {
-        eprintln!("Error: --verify-proof-input cannot be combined with wrap/compressed proof inputs");
+        eprintln!(
+            "Error: --verify-proof-input cannot be combined with wrap/compressed proof inputs"
+        );
         std::process::exit(1);
     }
     apply_resource_profile(&args);
@@ -313,22 +328,31 @@ fn main() {
     let output_dir = prepare_output_dir(&args.output_dir);
 
     if args.execute {
-        let input = input.as_ref().expect("execute path requires attestation input");
+        let input = input
+            .as_ref()
+            .expect("execute path requires attestation input");
         let prover_init_started_at = log_stage_start("prover_init");
         let client = build_execute_client();
         log_stage_done("prover_init", prover_init_started_at);
         let mut stdin = SP1Stdin::new();
         stdin.write(input);
         let execute_started_at = log_stage_start("execute");
-        let (mut output, report) =
-            client.execute(ATTESTATION_ELF, stdin).run().expect("failed to execute attestation guest");
+        let (mut output, report) = client
+            .execute(ATTESTATION_ELF, stdin)
+            .run()
+            .expect("failed to execute attestation guest");
         let execute_seconds = log_stage_done("execute", execute_started_at);
         let public_values: PublicValues = output.read();
         write_public_values(&public_values, &output_dir);
         if args.write_core_fixture {
-            assert!(matches!(args.system, ProofSystem::Core), "--write-core-fixture requires --system core");
+            assert!(
+                matches!(args.system, ProofSystem::Core),
+                "--write-core-fixture requires --system core"
+            );
             let setup_started_at = log_stage_start("setup");
-            let pk = client.setup(ATTESTATION_ELF).expect("failed to setup guest for core fixture");
+            let pk = client
+                .setup(ATTESTATION_ELF)
+                .expect("failed to setup guest for core fixture");
             let setup_seconds = log_stage_done("setup", setup_started_at);
             let fixture = fixture_json(
                 &public_values,
@@ -338,7 +362,10 @@ fn main() {
             );
             let fixture_path = output_dir.join("zkp_attestation_fixture_core.json");
             fs::write(&fixture_path, fixture).expect("failed to write core fixture");
-            eprintln!("[zkp-attestation] wrote core fixture after {:.2}s setup", setup_seconds);
+            eprintln!(
+                "[zkp-attestation] wrote core fixture after {:.2}s setup",
+                setup_seconds
+            );
         }
         println!(
             "{}",
@@ -367,7 +394,9 @@ fn main() {
         let setup_seconds;
         let verify_seconds;
 
-        if matches!(args.system, ProofSystem::Groth16) && env::var("SP1_CIRCUIT_MODE").ok().as_deref() == Some("dev") {
+        if matches!(args.system, ProofSystem::Groth16)
+            && env::var("SP1_CIRCUIT_MODE").ok().as_deref() == Some("dev")
+        {
             let prover_init_started_at = log_stage_start("prover_init");
             let client =
                 WrapOnlyBlockingProver::new().expect("failed to initialize wrap-only prover");
@@ -381,11 +410,7 @@ fn main() {
 
             let verify_started_at = log_stage_start("verify");
             proof_bundle = client
-                .verify_groth16_bundle_path(
-                    &proof_bundle_path,
-                    &vk,
-                    groth16_verify_dir.as_deref(),
-                )
+                .verify_groth16_bundle_path(&proof_bundle_path, &vk, groth16_verify_dir.as_deref())
                 .expect("failed to verify groth16 proof bundle");
             verify_seconds = log_stage_done("verify", verify_started_at);
             verifying_key = vk.bytes32().to_string();
@@ -409,7 +434,7 @@ fn main() {
                 pk.verifying_key(),
                 &groth16_verify_dir,
             )
-                .expect("failed to verify groth16 proof bundle");
+            .expect("failed to verify groth16 proof bundle");
             verify_seconds = log_stage_done("verify", verify_started_at);
             verifying_key = pk.verifying_key().bytes32().to_string();
         } else {
@@ -418,7 +443,9 @@ fn main() {
             prover_init_seconds = log_stage_done("prover_init", prover_init_started_at);
 
             let setup_started_at = log_stage_start("setup");
-            let pk = client.setup(ATTESTATION_ELF).expect("failed to setup guest for verification");
+            let pk = client
+                .setup(ATTESTATION_ELF)
+                .expect("failed to setup guest for verification");
             setup_seconds = log_stage_done("setup", setup_started_at);
 
             let verify_started_at = log_stage_start("verify");
@@ -459,140 +486,158 @@ fn main() {
         prove_seconds,
         verify_seconds,
         wrap_proof_bundle,
+        groth16_verifier_key_path,
     ) = if matches!(args.system, ProofSystem::Core) {
-            let input = input.as_ref().expect("core prove path requires attestation input");
-            let prover_init_started_at = log_stage_start("prover_init");
-            let client = CoreOnlyBlockingProver::new().expect("failed to initialize core-only prover");
-            let prover_init_seconds = log_stage_done("prover_init", prover_init_started_at);
+        let input = input
+            .as_ref()
+            .expect("core prove path requires attestation input");
+        let prover_init_started_at = log_stage_start("prover_init");
+        let client = CoreOnlyBlockingProver::new().expect("failed to initialize core-only prover");
+        let prover_init_seconds = log_stage_done("prover_init", prover_init_started_at);
 
-            let setup_started_at = log_stage_start("setup");
-            let vk = client.setup(&ATTESTATION_ELF).expect("failed to setup guest");
-            let setup_seconds = log_stage_done("setup", setup_started_at);
+        let setup_started_at = log_stage_start("setup");
+        let vk = client
+            .setup(&ATTESTATION_ELF)
+            .expect("failed to setup guest");
+        let setup_seconds = log_stage_done("setup", setup_started_at);
 
-            let prove_started_at = log_stage_start("prove");
-            let proof = client
-                .prove_core(&ATTESTATION_ELF, input, vk.clone())
-                .expect("failed to generate core proof");
-            let prove_seconds = log_stage_done("prove", prove_started_at);
+        let prove_started_at = log_stage_start("prove");
+        let proof = client
+            .prove_core(&ATTESTATION_ELF, input, vk.clone())
+            .expect("failed to generate core proof");
+        let prove_seconds = log_stage_done("prove", prove_started_at);
 
-            let verify_started_at = log_stage_start("verify");
-            build_execute_client()
-                .verify(&proof, &vk, None)
-                .expect("failed to verify core proof");
-            let verify_seconds = log_stage_done("verify", verify_started_at);
+        let verify_started_at = log_stage_start("verify");
+        build_execute_client()
+            .verify(&proof, &vk, None)
+            .expect("failed to verify core proof");
+        let verify_seconds = log_stage_done("verify", verify_started_at);
 
-            (
-                proof,
-                vk.bytes32().to_string(),
-                prover_init_seconds,
-                setup_seconds,
-                prove_seconds,
-                verify_seconds,
-                None,
+        (
+            proof,
+            vk.bytes32().to_string(),
+            prover_init_seconds,
+            setup_seconds,
+            prove_seconds,
+            verify_seconds,
+            None,
+            None,
+        )
+    } else if let Some(wrap_proof_input) = args.wrap_proof_input.as_ref() {
+        let prover_init_started_at = log_stage_start("prover_init");
+        let client = WrapOnlyBlockingProver::new().expect("failed to initialize wrap-only prover");
+        let prover_init_seconds = log_stage_done("prover_init", prover_init_started_at);
+
+        let setup_started_at = log_stage_start("setup");
+        let vk = client
+            .setup(&ATTESTATION_ELF)
+            .expect("failed to setup guest for wrap-only proving");
+        let setup_seconds = log_stage_done("setup", setup_started_at);
+
+        let prove_started_at = log_stage_start("prove");
+        let wrap_proof_path = load_compressed_proof_path(wrap_proof_input);
+        let proof = client
+            .groth16_from_wrap_path(&wrap_proof_path, &vk)
+            .expect("failed to generate groth16 proof from wrap bundle");
+        let prove_seconds = log_stage_done("prove", prove_started_at);
+        let groth16_verifier_key_path = client
+            .groth16_verifier_key_path_from_wrap_path(&wrap_proof_path)
+            .expect("failed to resolve groth16 verifier key path");
+
+        let verify_started_at = log_stage_start("verify");
+        let verify_seconds = log_stage_done("verify", verify_started_at);
+
+        (
+            proof,
+            vk.bytes32().to_string(),
+            prover_init_seconds,
+            setup_seconds,
+            prove_seconds,
+            verify_seconds,
+            Some(wrap_proof_path),
+            Some(groth16_verifier_key_path),
+        )
+    } else if let Some(compressed_proof_input) = args.compressed_proof_input.as_ref() {
+        let prover_init_started_at = log_stage_start("prover_init");
+        let client = WrapOnlyBlockingProver::new().expect("failed to initialize wrap-only prover");
+        let prover_init_seconds = log_stage_done("prover_init", prover_init_started_at);
+
+        let setup_started_at = log_stage_start("setup");
+        let vk = client
+            .setup(&ATTESTATION_ELF)
+            .expect("failed to setup guest for wrap-only proving");
+        let setup_seconds = log_stage_done("setup", setup_started_at);
+
+        let prove_started_at = log_stage_start("prove");
+        let wrap_proof_bundle_path = wrap_proof_bundle_path(&output_dir);
+        let proof = client
+            .groth16_from_compressed_path(
+                load_compressed_proof_path(compressed_proof_input),
+                &vk,
+                &wrap_proof_bundle_path,
             )
-        } else if let Some(wrap_proof_input) = args.wrap_proof_input.as_ref() {
-            let prover_init_started_at = log_stage_start("prover_init");
-            let client =
-                WrapOnlyBlockingProver::new().expect("failed to initialize wrap-only prover");
-            let prover_init_seconds = log_stage_done("prover_init", prover_init_started_at);
+            .expect("failed to generate groth16 proof from compressed bundle");
+        let prove_seconds = log_stage_done("prove", prove_started_at);
+        let groth16_verifier_key_path = client
+            .groth16_verifier_key_path_from_wrap_path(&wrap_proof_bundle_path)
+            .expect("failed to resolve groth16 verifier key path");
 
-            let setup_started_at = log_stage_start("setup");
-            let vk = client
-                .setup(&ATTESTATION_ELF)
-                .expect("failed to setup guest for wrap-only proving");
-            let setup_seconds = log_stage_done("setup", setup_started_at);
+        let verify_started_at = log_stage_start("verify");
+        let verify_seconds = log_stage_done("verify", verify_started_at);
 
-            let prove_started_at = log_stage_start("prove");
-            let proof = client
-                .groth16_from_wrap_path(load_compressed_proof_path(wrap_proof_input), &vk)
-                .expect("failed to generate groth16 proof from wrap bundle");
-            let prove_seconds = log_stage_done("prove", prove_started_at);
+        (
+            proof,
+            vk.bytes32().to_string(),
+            prover_init_seconds,
+            setup_seconds,
+            prove_seconds,
+            verify_seconds,
+            Some(wrap_proof_bundle_path),
+            Some(groth16_verifier_key_path),
+        )
+    } else {
+        let input = input
+            .as_ref()
+            .expect("prove path requires attestation input");
+        let prover_init_started_at = log_stage_start("prover_init");
+        let client = ProverClient::from_env();
+        let prover_init_seconds = log_stage_done("prover_init", prover_init_started_at);
 
-            let verify_started_at = log_stage_start("verify");
-            let verify_seconds = log_stage_done("verify", verify_started_at);
+        let mut stdin = SP1Stdin::new();
+        stdin.write(input);
+        let setup_started_at = log_stage_start("setup");
+        let pk = client
+            .setup(ATTESTATION_ELF)
+            .expect("failed to setup guest");
+        let setup_seconds = log_stage_done("setup", setup_started_at);
 
-            (
-                proof,
-                vk.bytes32().to_string(),
-                prover_init_seconds,
-                setup_seconds,
-                prove_seconds,
-                verify_seconds,
-                Some(load_compressed_proof_path(wrap_proof_input)),
-            )
-        } else if let Some(compressed_proof_input) = args.compressed_proof_input.as_ref() {
-            let prover_init_started_at = log_stage_start("prover_init");
-            let client =
-                WrapOnlyBlockingProver::new().expect("failed to initialize wrap-only prover");
-            let prover_init_seconds = log_stage_done("prover_init", prover_init_started_at);
+        let prove_started_at = log_stage_start("prove");
+        let proof = match args.system {
+            ProofSystem::Core => unreachable!("core handled in lightweight branch"),
+            ProofSystem::Compressed => client.prove(&pk, stdin).compressed().run(),
+            ProofSystem::Groth16 => client.prove(&pk, stdin).groth16().run(),
+            ProofSystem::Plonk => client.prove(&pk, stdin).plonk().run(),
+        }
+        .expect("failed to generate proof");
+        let prove_seconds = log_stage_done("prove", prove_started_at);
 
-            let setup_started_at = log_stage_start("setup");
-            let vk = client
-                .setup(&ATTESTATION_ELF)
-                .expect("failed to setup guest for wrap-only proving");
-            let setup_seconds = log_stage_done("setup", setup_started_at);
+        let verify_started_at = log_stage_start("verify");
+        client
+            .verify(&proof, pk.verifying_key(), None)
+            .expect("failed to verify proof");
+        let verify_seconds = log_stage_done("verify", verify_started_at);
 
-            let prove_started_at = log_stage_start("prove");
-            let wrap_proof_bundle_path = wrap_proof_bundle_path(&output_dir);
-            let proof = client
-                .groth16_from_compressed_path(
-                    load_compressed_proof_path(compressed_proof_input),
-                    &vk,
-                    &wrap_proof_bundle_path,
-                )
-                .expect("failed to generate groth16 proof from compressed bundle");
-            let prove_seconds = log_stage_done("prove", prove_started_at);
-
-            let verify_started_at = log_stage_start("verify");
-            let verify_seconds = log_stage_done("verify", verify_started_at);
-
-            (
-                proof,
-                vk.bytes32().to_string(),
-                prover_init_seconds,
-                setup_seconds,
-                prove_seconds,
-                verify_seconds,
-                Some(wrap_proof_bundle_path),
-            )
-        } else {
-            let input = input.as_ref().expect("prove path requires attestation input");
-            let prover_init_started_at = log_stage_start("prover_init");
-            let client = ProverClient::from_env();
-            let prover_init_seconds = log_stage_done("prover_init", prover_init_started_at);
-
-            let mut stdin = SP1Stdin::new();
-            stdin.write(input);
-            let setup_started_at = log_stage_start("setup");
-            let pk = client.setup(ATTESTATION_ELF).expect("failed to setup guest");
-            let setup_seconds = log_stage_done("setup", setup_started_at);
-
-            let prove_started_at = log_stage_start("prove");
-            let proof = match args.system {
-                ProofSystem::Core => unreachable!("core handled in lightweight branch"),
-                ProofSystem::Compressed => client.prove(&pk, stdin).compressed().run(),
-                ProofSystem::Groth16 => client.prove(&pk, stdin).groth16().run(),
-                ProofSystem::Plonk => client.prove(&pk, stdin).plonk().run(),
-            }
-            .expect("failed to generate proof");
-            let prove_seconds = log_stage_done("prove", prove_started_at);
-
-            let verify_started_at = log_stage_start("verify");
-            client
-                .verify(&proof, pk.verifying_key(), None)
-                .expect("failed to verify proof");
-            let verify_seconds = log_stage_done("verify", verify_started_at);
-
-            (
-                proof,
-                pk.verifying_key().bytes32().to_string(),
-                prover_init_seconds,
-                setup_seconds,
-                prove_seconds,
-                verify_seconds,
-                None,
-            )
-        };
+        (
+            proof,
+            pk.verifying_key().bytes32().to_string(),
+            prover_init_seconds,
+            setup_seconds,
+            prove_seconds,
+            verify_seconds,
+            None,
+            None,
+        )
+    };
 
     let mut proof_public_values = proof.public_values.clone();
     let public_values: PublicValues = proof_public_values.read();
@@ -607,9 +652,14 @@ fn main() {
             Some(bundle_path)
         }
     };
+    let groth16_checked_verifier_key_path = groth16_verifier_key_path
+        .as_ref()
+        .map(|path| write_groth16_verifier_key(&output_dir, path));
     let proof_hex = match args.system {
         ProofSystem::Core | ProofSystem::Compressed => None,
-        ProofSystem::Groth16 | ProofSystem::Plonk => Some(format!("0x{}", hex::encode(proof.bytes()))),
+        ProofSystem::Groth16 | ProofSystem::Plonk => {
+            Some(format!("0x{}", hex::encode(proof.bytes())))
+        }
     };
     let fixture = fixture_json(
         &public_values,
@@ -631,6 +681,7 @@ fn main() {
                 "fixture_path": fixture_path,
                 "proof_bundle_path": proof_bundle_path,
                 "wrap_proof_bundle_path": wrap_proof_bundle,
+                "groth16_verifier_key_path": groth16_checked_verifier_key_path,
                 "public_values": public_values,
                 "stage_seconds": {
                     "prover_init": prover_init_seconds,
@@ -648,11 +699,8 @@ mod tests {
     use super::infer_groth16_verify_dir;
     use crate::ATTESTATION_ELF;
     use secp256k1_zkp_attestation_lib::PublicValues;
-    use sp1_sdk::{
-        blocking::Prover,
-        HashableKey, SP1ProofWithPublicValues,
-    };
     use sp1_sdk::ProvingKey;
+    use sp1_sdk::{blocking::Prover, HashableKey, SP1ProofWithPublicValues};
     use std::{
         fs,
         path::PathBuf,
@@ -679,9 +727,8 @@ mod tests {
         )
         .expect("failed to write vk");
 
-        let inferred = infer_groth16_verify_dir(
-            &proof_dir.join("zkp_attestation_proof_groth16.bin"),
-        );
+        let inferred =
+            infer_groth16_verify_dir(&proof_dir.join("zkp_attestation_proof_groth16.bin"));
         assert_eq!(inferred, Some(verifier_dir));
 
         let _ = fs::remove_dir_all(base_dir);
@@ -693,9 +740,8 @@ mod tests {
         let proof_dir = base_dir.join("proofs");
         fs::create_dir_all(&proof_dir).expect("failed to create proof dir");
 
-        let inferred = infer_groth16_verify_dir(
-            &proof_dir.join("zkp_attestation_proof_groth16.bin"),
-        );
+        let inferred =
+            infer_groth16_verify_dir(&proof_dir.join("zkp_attestation_proof_groth16.bin"));
         assert_eq!(inferred, None);
 
         let _ = fs::remove_dir_all(base_dir);
@@ -703,17 +749,15 @@ mod tests {
 
     #[test]
     fn checked_groth16_bundle_matches_checked_fixture() {
-        let artifact_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("../../artifacts");
+        let artifact_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../artifacts");
         let fixture = serde_json::from_slice::<serde_json::Value>(
             &fs::read(artifact_dir.join("zkp_attestation_fixture_groth16.json"))
                 .expect("failed to read checked groth16 fixture"),
         )
         .expect("failed to parse checked groth16 fixture");
-        let bundle = SP1ProofWithPublicValues::load(
-            artifact_dir.join("zkp_attestation_proof_groth16.bin"),
-        )
-        .expect("failed to load checked groth16 bundle");
+        let bundle =
+            SP1ProofWithPublicValues::load(artifact_dir.join("zkp_attestation_proof_groth16.bin"))
+                .expect("failed to load checked groth16 bundle");
 
         let client = super::build_execute_client();
         let pk = client

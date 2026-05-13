@@ -14,7 +14,12 @@
       "bit_source": "lookup_x",
       "consumer_opcode": "field_mul_lookup_x",
       "per_leaf_kernel_count": 2,
+      "coordinate_streams_per_kernel": 1,
+      "per_leaf_coordinate_stream_count": 2,
       "field_bits_streamed_per_kernel": 256,
+      "data_select_non_clifford_per_stream": [
+        65536
+      ],
       "data_select_non_clifford_per_kernel": 65536,
       "data_select_non_clifford_per_leaf": 131072,
       "stage_names": [
@@ -24,10 +29,15 @@
     {
       "bit_source": "lookup_y",
       "consumer_opcode": "field_mul_lookup_y",
-      "per_leaf_kernel_count": 1,
+      "per_leaf_kernel_count": 0,
+      "coordinate_streams_per_kernel": 1,
+      "per_leaf_coordinate_stream_count": 0,
       "field_bits_streamed_per_kernel": 256,
+      "data_select_non_clifford_per_stream": [
+        65536
+      ],
       "data_select_non_clifford_per_kernel": 65536,
-      "data_select_non_clifford_per_leaf": 65536,
+      "data_select_non_clifford_per_leaf": 0,
       "stage_names": [
         "streamed_lookup_y_standard_qroam_oracle"
       ]
@@ -36,7 +46,12 @@
       "bit_source": "lookup_x_plus_y",
       "consumer_opcode": "field_mul_lookup_sum",
       "per_leaf_kernel_count": 1,
+      "coordinate_streams_per_kernel": 1,
+      "per_leaf_coordinate_stream_count": 1,
       "field_bits_streamed_per_kernel": 256,
+      "data_select_non_clifford_per_stream": [
+        65536
+      ],
       "data_select_non_clifford_per_kernel": 65536,
       "data_select_non_clifford_per_leaf": 65536,
       "stage_names": [
@@ -47,11 +62,18 @@
       "bit_source": "lookup_y",
       "consumer_opcode": "complete_a0_streamed_tail",
       "per_leaf_kernel_count": 1,
+      "coordinate_streams_per_kernel": 2,
+      "per_leaf_coordinate_stream_count": 2,
       "field_bits_streamed_per_kernel": 256,
-      "data_select_non_clifford_per_kernel": 65536,
-      "data_select_non_clifford_per_leaf": 65536,
+      "data_select_non_clifford_per_stream": [
+        65536,
+        65536
+      ],
+      "data_select_non_clifford_per_kernel": 131072,
+      "data_select_non_clifford_per_leaf": 131072,
       "stage_names": [
-        "streamed_lookup_y_standard_qroam_oracle"
+        "tail_i_streamed_lookup_y_standard_qroam_oracle",
+        "tail_yz_streamed_lookup_y_standard_qroam_oracle"
       ]
     }
   ],
@@ -91,7 +113,7 @@
     "passes": true
   },
   "capacity_check": {
-    "per_kernel_costs_seen": [
+    "per_stream_costs_seen": [
       65536
     ],
     "all_coordinate_streams_use_standard_qroam_cost": true,

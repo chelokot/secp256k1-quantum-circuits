@@ -86,13 +86,13 @@ What it does ship is:
 
 ## Current central boundary result
 
-- **central standard-QROM family:** `32,879,331 non-Clifford`, `1,812 logical qubits`
+- **central standard-QROM family:** `32,879,331 non-Clifford`, `1,556 logical qubits`
 
 The central family uses a standard QROAM coordinate-stream lookup boundary, an
 exact semiclassical-QFT phase shell, and the executable streamed lookup tail
 point-add leaf. The resulting live-qubit formula is:
 
-`6 * 256 + 1 control + 274 lookup workspace + 1 phase = 1,812 logical qubits`
+`5 * 256 + 1 control + 274 lookup workspace + 1 phase = 1,556 logical qubits`
 
 The `274` lookup-workspace term is `18` folded-control qubits plus one
 256-bit QROAMClean coordinate target for `K = 1`; there are no junk registers

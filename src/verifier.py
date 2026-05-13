@@ -123,11 +123,13 @@ def _apply_instruction(env: Dict[str, Any], ins: Dict[str, Any], p: int) -> None
     elif op == 'complete_a0_streamed_tail':
         src = ins['src']
         c = env[src['c']]
-        k = env[src['k']]
-        l = env[src['l']]
-        i = env[src['i']]
+        h = env[src['h']]
+        a = env[src['a']]
         y = env[src['y']]
         z = env[src['z']]
+        i = (y * env['T.y'][env['k']]) % p
+        k = (h - a - i) % p
+        l = (3 * a) % p
         yz = (env['T.y'][env['k']] * z) % p
         e = (y + yz) % p
         f = (21 * z) % p

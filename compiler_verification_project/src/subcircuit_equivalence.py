@@ -105,12 +105,14 @@ def _expected_instruction_results(before: Mapping[str, Any], ins: Mapping[str, A
     if opcode == 'complete_a0_streamed_tail':
         src = ins['src']
         c = int(before[src['c']])
-        k = int(before[src['k']])
-        l = int(before[src['l']])
-        i = int(before[src['i']])
+        h = int(before[src['h']])
+        a = int(before[src['a']])
         y = int(before[src['y']])
         z = int(before[src['z']])
         lookup_y = int(before['T.y'][before['k']])
+        i = (y * lookup_y) % p
+        k = (h - a - i) % p
+        l = (3 * a) % p
         e = (y + lookup_y * z) % p
         f = (21 * z) % p
         m = (i + f) % p

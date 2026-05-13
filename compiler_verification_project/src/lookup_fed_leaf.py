@@ -138,15 +138,12 @@ def build_streamed_lookup_tail_leaf(leaf: Optional[Mapping[str, Any]] = None) ->
         {'pc': 8, 'op': 'field_add', 'dst': 'qx', 'src': ['qx', 'qy'], 'comment': 'G = X1 + Y1.'},
         {'pc': 9, 'op': 'field_mul_lookup_sum', 'dst': 't1', 'src': 'qx', 'comment': 'H = (x2 + y2)(X1 + Y1) using streamed table constants.'},
         {'pc': 10, 'op': 'mul_const', 'dst': 'lx', 'src': 'lx', 'const': 21, 'comment': 'C = 3b(X1 + x2Z1).'},
-        {'pc': 11, 'op': 'field_mul_lookup_y', 'dst': 'qx', 'src': 'qy', 'comment': 'I = Y1 * y2 using the streamed table y-coordinate.'},
-        {'pc': 12, 'op': 'field_sub_sum', 'dst': 't1', 'src': ['t1', 't0', 'qx'], 'comment': 'K = H - A - I.'},
-        {'pc': 13, 'op': 'field_triple', 'dst': 't0', 'src': 't0', 'comment': 'L = 3A.'},
         {
-            'pc': 14,
+            'pc': 11,
             'op': 'complete_a0_streamed_tail',
             'dst': ['qx', 'qy', 'qz'],
-            'src': {'c': 'lx', 'k': 't1', 'l': 't0', 'i': 'qx', 'y': 'qy', 'z': 'qz'},
-            'comment': 'Multi-output streamed tail derives E, F, M, N internally and writes X3, Y3, Z3.',
+            'src': {'c': 'lx', 'h': 't1', 'a': 't0', 'y': 'qy', 'z': 'qz'},
+            'comment': 'Multi-output streamed tail derives I, K, L, E, F, M, N internally and writes X3, Y3, Z3.',
         },
     ]
     return {
@@ -161,15 +158,15 @@ def build_streamed_lookup_tail_leaf(leaf: Optional[Mapping[str, Any]] = None) ->
             'lookup_infinity_policy': 'boundary_noop',
             'tail_macro': {
                 'opcode': 'complete_a0_streamed_tail',
-                'inputs': ['C', 'K', 'L', 'I', 'Y', 'Z'],
+                'inputs': ['C', 'H', 'A', 'Y', 'Z'],
                 'outputs': ['X3', 'Y3', 'Z3'],
-                'non_clifford_lowering': 'one streamed yZ multiplication, one fixed 21Z multiplication, three internal add/sub kernels, six output multipliers, and three output add/sub kernels',
+                'non_clifford_lowering': 'two streamed lookup-y multiplications for I and yZ, one fused K = H - A - I subtraction, one fused L = 3A double-add, one fixed 21Z multiplication, three internal add/sub kernels, six output multipliers, and three output add/sub kernels',
             },
             'instructions': instructions,
             'notes': [
                 'This executable leaf contract keeps lookup x/y as table-fed constants consumed by arithmetic kernels rather than field-sized lookup output wires.',
                 'The neutral lookup entry is a boundary no-op: the hot leaf is executed only for nonzero lookup entries, and the boundary keeps the accumulator unchanged for k = 0.',
-                'The complete_a0_streamed_tail macro is a multi-output lowering of the complete-add tail from six live field values and is counted with all internal yZ, F, E/M/N, product, and output-combine work.',
+                'The complete_a0_streamed_tail macro is a multi-output lowering of the complete-add tail from five live field values and is counted with all internal I, K, L, yZ, F, E/M/N, product, and output-combine work.',
             ],
         }.items()
     }

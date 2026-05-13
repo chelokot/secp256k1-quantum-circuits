@@ -193,7 +193,7 @@ def _source_as_lookup(source: Any) -> tuple[str, str]:
 
 
 def _source_as_streamed_tail(source: Any) -> Dict[str, str]:
-    expected = {'c', 'k', 'l', 'i', 'y', 'z'}
+    expected = {'c', 'h', 'a', 'y', 'z'}
     if isinstance(source, dict) and set(source) == expected and all(isinstance(value, str) for value in source.values()):
         return {key: str(value) for key, value in source.items()}
     raise TypeError(f'expected streamed tail source, got {source!r}')
@@ -234,9 +234,8 @@ def _compile_leaf_for_proof(leaf: Mapping[str, Any]) -> Dict[str, Any]:
                 'out_y': output_ids[1],
                 'out_z': output_ids[2],
                 'c': _ensure_defined_register(register_ids, defined, tail_source['c'], 'complete_a0_streamed_tail C'),
-                'k': _ensure_defined_register(register_ids, defined, tail_source['k'], 'complete_a0_streamed_tail K'),
-                'l': _ensure_defined_register(register_ids, defined, tail_source['l'], 'complete_a0_streamed_tail L'),
-                'i': _ensure_defined_register(register_ids, defined, tail_source['i'], 'complete_a0_streamed_tail I'),
+                'h': _ensure_defined_register(register_ids, defined, tail_source['h'], 'complete_a0_streamed_tail H'),
+                'a': _ensure_defined_register(register_ids, defined, tail_source['a'], 'complete_a0_streamed_tail A'),
                 'y': _ensure_defined_register(register_ids, defined, tail_source['y'], 'complete_a0_streamed_tail Y'),
                 'z': _ensure_defined_register(register_ids, defined, tail_source['z'], 'complete_a0_streamed_tail Z'),
             })

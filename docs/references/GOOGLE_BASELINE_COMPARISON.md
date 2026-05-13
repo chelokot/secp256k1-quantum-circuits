@@ -26,7 +26,7 @@ The repository's exact comparison layer is the compiler-family frontier in:
 
 Its checked public headline is one central standard-QROM family:
 
-- **central standard-QROM family:** `32,879,331 non-Clifford / 1,812 q`
+- **central standard-QROM family:** `32,879,331 non-Clifford / 1,556 q`
 
 The standard-QROM assessment records that the current central family uses a
 standard QROAM coordinate-stream primitive over the full 32768-entry folded

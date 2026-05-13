@@ -36,16 +36,6 @@
     {
       "leaf_multiplier_index": 3,
       "leaf_pc": 11,
-      "opcode": "field_mul_lookup_y",
-      "family": "litinski_addsub_schoolbook_v1",
-      "field_bits": 256,
-      "exact_non_clifford": 66047,
-      "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
-      "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
-    },
-    {
-      "leaf_multiplier_index": 4,
-      "leaf_pc": 14,
       "opcode": "complete_a0_streamed_tail",
       "tail_product": "KN",
       "family": "litinski_addsub_schoolbook_v1",
@@ -55,8 +45,8 @@
       "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
     },
     {
-      "leaf_multiplier_index": 5,
-      "leaf_pc": 14,
+      "leaf_multiplier_index": 4,
+      "leaf_pc": 11,
       "opcode": "complete_a0_streamed_tail",
       "tail_product": "EC",
       "family": "litinski_addsub_schoolbook_v1",
@@ -66,8 +56,8 @@
       "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
     },
     {
-      "leaf_multiplier_index": 6,
-      "leaf_pc": 14,
+      "leaf_multiplier_index": 5,
+      "leaf_pc": 11,
       "opcode": "complete_a0_streamed_tail",
       "tail_product": "NM",
       "family": "litinski_addsub_schoolbook_v1",
@@ -77,8 +67,8 @@
       "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
     },
     {
-      "leaf_multiplier_index": 7,
-      "leaf_pc": 14,
+      "leaf_multiplier_index": 6,
+      "leaf_pc": 11,
       "opcode": "complete_a0_streamed_tail",
       "tail_product": "CL",
       "family": "litinski_addsub_schoolbook_v1",
@@ -88,8 +78,8 @@
       "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
     },
     {
-      "leaf_multiplier_index": 8,
-      "leaf_pc": 14,
+      "leaf_multiplier_index": 7,
+      "leaf_pc": 11,
       "opcode": "complete_a0_streamed_tail",
       "tail_product": "ME",
       "family": "litinski_addsub_schoolbook_v1",
@@ -99,8 +89,8 @@
       "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
     },
     {
-      "leaf_multiplier_index": 9,
-      "leaf_pc": 14,
+      "leaf_multiplier_index": 8,
+      "leaf_pc": 11,
       "opcode": "complete_a0_streamed_tail",
       "tail_product": "LK",
       "family": "litinski_addsub_schoolbook_v1",
@@ -110,8 +100,8 @@
       "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
     }
   ],
-  "whole_oracle_multiplier_instance_count": 310,
-  "whole_oracle_multiplier_non_clifford_total": 20474570,
+  "whole_oracle_multiplier_instance_count": 279,
+  "whole_oracle_multiplier_non_clifford_total": 18427113,
   "example_instances": [
     {
       "call_index": 0,
@@ -158,19 +148,6 @@
       "window_index_within_register": 1,
       "leaf_multiplier_index": 3,
       "leaf_pc": 11,
-      "opcode": "field_mul_lookup_y",
-      "family": "litinski_addsub_schoolbook_v1",
-      "field_bits": 256,
-      "exact_non_clifford": 66047,
-      "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
-      "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
-    },
-    {
-      "call_index": 0,
-      "phase_register": "phase_a",
-      "window_index_within_register": 1,
-      "leaf_multiplier_index": 4,
-      "leaf_pc": 14,
       "opcode": "complete_a0_streamed_tail",
       "tail_product": "KN",
       "family": "litinski_addsub_schoolbook_v1",
@@ -183,8 +160,8 @@
       "call_index": 0,
       "phase_register": "phase_a",
       "window_index_within_register": 1,
-      "leaf_multiplier_index": 5,
-      "leaf_pc": 14,
+      "leaf_multiplier_index": 4,
+      "leaf_pc": 11,
       "opcode": "complete_a0_streamed_tail",
       "tail_product": "EC",
       "family": "litinski_addsub_schoolbook_v1",
@@ -197,8 +174,8 @@
       "call_index": 0,
       "phase_register": "phase_a",
       "window_index_within_register": 1,
-      "leaf_multiplier_index": 6,
-      "leaf_pc": 14,
+      "leaf_multiplier_index": 5,
+      "leaf_pc": 11,
       "opcode": "complete_a0_streamed_tail",
       "tail_product": "NM",
       "family": "litinski_addsub_schoolbook_v1",
@@ -211,10 +188,24 @@
       "call_index": 0,
       "phase_register": "phase_a",
       "window_index_within_register": 1,
-      "leaf_multiplier_index": 7,
-      "leaf_pc": 14,
+      "leaf_multiplier_index": 6,
+      "leaf_pc": 11,
       "opcode": "complete_a0_streamed_tail",
       "tail_product": "CL",
+      "family": "litinski_addsub_schoolbook_v1",
+      "field_bits": 256,
+      "exact_non_clifford": 66047,
+      "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
+      "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
+    },
+    {
+      "call_index": 0,
+      "phase_register": "phase_a",
+      "window_index_within_register": 1,
+      "leaf_multiplier_index": 7,
+      "leaf_pc": 11,
+      "opcode": "complete_a0_streamed_tail",
+      "tail_product": "ME",
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
       "exact_non_clifford": 66047,

@@ -18,7 +18,7 @@ As of the current compiler frontier, the repository's central standard-QROM
 point is:
 
 - `32,879,331` non-Clifford
-- `1,812` logical qubits
+- `1,556` logical qubits
 
 This is the family
 `folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1`
@@ -700,8 +700,8 @@ Result for `n = 256`:
 
 Whole-oracle implication:
 
-- the current central standard-QROM point is `1812` logical qubits, which decomposes as
-  `6 * 256 + 274 + 1 + 1`,
+- the current central standard-QROM point is `1556` logical qubits, which decomposes as
+  `5 * 256 + 274 + 1 + 1`,
 - a hypothetical `7`-slot arithmetic leaf with sequential tmpand-style zero
   tests lands at about `7 * 256 + 255 + 274 + 1 + 1 = 2323` logical qubits
   before any extra branch-control bookkeeping,
@@ -1694,8 +1694,8 @@ Qubit implication:
 - the same proxy is compatible with a constant-size shell workspace rather than
   a `254`-qubit tmpand ladder,
 - under the current standard-QROAMClean accounting, this improves only the
-  arithmetic-shell term; the whole-oracle qubit picture is now dominated by the
-  six field-sized arithmetic slots rather than by the `274`-qubit lookup
+  arithmetic-shell term; the whole-oracle qubit picture is still dominated by
+  the five field-sized arithmetic slots rather than by the `274`-qubit lookup
   workspace term.
 
 Interpretation:

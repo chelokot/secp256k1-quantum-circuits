@@ -1,6 +1,5 @@
 use std::{
-    env,
-    fs,
+    env, fs,
     path::{Path, PathBuf},
     time::Instant,
 };
@@ -9,15 +8,18 @@ use anyhow::{anyhow, Result};
 use num_bigint::BigUint;
 use serde::{Deserialize, Serialize};
 use slop_algebra::PrimeField;
+use sp1_hypercube::{koalabears_to_bn254, HashableKey};
+use sp1_hypercube::{SP1PcsProofOuter, SP1WrapProof};
+use sp1_primitives::{io::SP1PublicValues, SP1OuterGlobalContext};
 use sp1_prover::{
-    build::{build_constraints_and_witness, build_groth16_bn254_artifacts, try_build_groth16_artifacts_dir},
+    build::{
+        build_constraints_and_witness, build_groth16_bn254_artifacts,
+        try_build_groth16_artifacts_dir,
+    },
     verify::{SP1Verifier, VerifierRecursionVks},
     worker::{cpu_worker_builder, SP1LocalNode, SP1LocalNodeBuilder},
     SP1VerifyingKey, SP1_CIRCUIT_VERSION,
 };
-use sp1_hypercube::{koalabears_to_bn254, HashableKey};
-use sp1_primitives::{io::SP1PublicValues, SP1OuterGlobalContext};
-use sp1_hypercube::{SP1PcsProofOuter, SP1WrapProof};
 use sp1_recursion_gnark_ffi::{Groth16Bn254Proof, Groth16Bn254Prover};
 use sp1_sdk::{SP1Proof, SP1ProofWithPublicValues};
 use tokio::runtime::Runtime;
@@ -52,7 +54,10 @@ fn use_development_mode() -> bool {
 }
 
 fn hex_prefix(hash: &[u8]) -> String {
-    format!("{:016x}", u64::from_be_bytes(hash[..8].try_into().expect("prefix slice")))
+    format!(
+        "{:016x}",
+        u64::from_be_bytes(hash[..8].try_into().expect("prefix slice"))
+    )
 }
 
 fn groth16_dev_artifacts_dir(
@@ -68,8 +73,7 @@ fn groth16_dev_artifacts_dir(
         .join(".sp1")
         .join("circuits"),
     };
-    Ok(base_dir
-        .join(format!("{}-groth16-dev", hex_prefix(&digest))))
+    Ok(base_dir.join(format!("{}-groth16-dev", hex_prefix(&digest))))
 }
 
 fn groth16_artifacts_complete(build_dir: &Path) -> bool {
@@ -179,9 +183,12 @@ pub fn verify_groth16_bundle_path_with_default_vks(
 
 impl WrapOnlyBlockingProver {
     pub fn new() -> Result<Self> {
-        let runtime = tokio::runtime::Builder::new_current_thread().enable_all().build()?;
-        let node =
-            runtime.block_on(SP1LocalNodeBuilder::from_worker_client_builder(cpu_worker_builder()).build())?;
+        let runtime = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()?;
+        let node = runtime.block_on(
+            SP1LocalNodeBuilder::from_worker_client_builder(cpu_worker_builder()).build(),
+        )?;
         Ok(Self { runtime, node })
     }
 
@@ -212,6 +219,19 @@ impl WrapOnlyBlockingProver {
         self.groth16_from_wrap_bundle(wrap_bundle, vk)
     }
 
+    pub fn groth16_verifier_key_path_from_wrap_path(
+        &self,
+        wrap_proof_path: impl AsRef<Path>,
+    ) -> Result<PathBuf> {
+        let wrap_bundle = load_wrap_proof_bundle(wrap_proof_path.as_ref())?;
+        let build_dir = ensure_groth16_build_dir(
+            &self.runtime,
+            &wrap_bundle.wrap_proof.vk,
+            &wrap_bundle.wrap_proof.proof,
+        )?;
+        Ok(build_dir.join("groth16_vk.bin"))
+    }
+
     fn groth16_from_compressed_bundle(
         &self,
         compressed_bundle: SP1ProofWithPublicValues,
@@ -232,7 +252,9 @@ impl WrapOnlyBlockingProver {
         log_stage_done("verify_compressed_bundle", verify_compressed_started_at);
 
         let shrink_wrap_started_at = log_stage_start("shrink_wrap");
-        let wrap_proof = self.runtime.block_on(self.node.shrink_wrap(&compressed_bundle.proof))?;
+        let wrap_proof = self
+            .runtime
+            .block_on(self.node.shrink_wrap(&compressed_bundle.proof))?;
         log_stage_done("shrink_wrap", shrink_wrap_started_at);
         let wrap_bundle = WrapProofBundle {
             public_values: compressed_bundle.public_values,

@@ -573,7 +573,7 @@ def streamed_lookup_tail_leaf_slot_allocation() -> Dict[str, Any]:
         notes=[
             'This artifact allocates the streamed lookup tail contract directly from executable leaf liveness.',
             'Lookup x/y coordinates are not materialized as field-sized interface lanes; table-fed arithmetic kernels consume them as constants, and the resource ownership contract records zero borrowed lookup field lanes.',
-            'The complete_a0_streamed_tail multi-output instruction consumes C/K/L/I/Y/Z and derives E/F/M/N internally, so the peak arithmetic register file is six field slots.',
+            'The complete_a0_streamed_tail multi-output instruction consumes C/H/A/Y/Z and derives I/K/L/E/F/M/N internally, so the peak arithmetic register file is five field slots.',
         ],
     )
 
@@ -603,17 +603,22 @@ def streamed_lookup_table_multiplier_resource(
         data_select_stages = [
             stage for stage in kernel['stages'] if stage['category'] == 'streamed_lookup_data_select'
         ]
+        stream_count_per_kernel = len(data_select_stages)
+        per_stream_costs = [int(stage['non_clifford_total']) for stage in data_select_stages]
         data_select_non_clifford = sum(int(stage['non_clifford_total']) for stage in data_select_stages)
         source_rows.append({
             'bit_source': bit_source,
             'consumer_opcode': opcode,
             'per_leaf_kernel_count': count,
+            'coordinate_streams_per_kernel': stream_count_per_kernel,
+            'per_leaf_coordinate_stream_count': stream_count_per_kernel * count,
             'field_bits_streamed_per_kernel': FIELD_BITS,
+            'data_select_non_clifford_per_stream': per_stream_costs,
             'data_select_non_clifford_per_kernel': data_select_non_clifford,
             'data_select_non_clifford_per_leaf': data_select_non_clifford * count,
             'stage_names': [stage['name'] for stage in data_select_stages],
         })
-        per_leaf_streamed_kernel_count += count
+        per_leaf_streamed_kernel_count += stream_count_per_kernel * count
         per_leaf_data_select_non_clifford += data_select_non_clifford * count
     leaf_calls = int(raw32_schedule()['summary']['leaf_call_count_total'])
     total_workspace = int(lookup_family['extra_lookup_workspace_qubits'])
@@ -624,10 +629,11 @@ def streamed_lookup_table_multiplier_resource(
     qroam_junk_register_count = qroam_block_size - 1
     qroam_junk_register_qubits = qroam_junk_register_count * FIELD_BITS
     qroam_target_plus_junk_qubits = qroam_block_size * FIELD_BITS
-    per_kernel_costs = sorted({
-        int(row['data_select_non_clifford_per_kernel'])
+    per_stream_costs = sorted({
+        int(cost)
         for row in source_rows
-        if int(row['data_select_non_clifford_per_kernel']) > 0
+        for cost in row['data_select_non_clifford_per_stream']
+        if int(cost) > 0
     })
     representative_kernel = kernel_lookup['field_mul_lookup_x']
     representative_stage = next(stage for stage in representative_kernel['stages'] if stage['category'] == 'streamed_lookup_data_select')
@@ -682,8 +688,8 @@ def streamed_lookup_table_multiplier_resource(
             ),
         },
         'capacity_check': {
-            'per_kernel_costs_seen': per_kernel_costs,
-            'all_coordinate_streams_use_standard_qroam_cost': per_kernel_costs == [expected_per_kernel_cost],
+            'per_stream_costs_seen': per_stream_costs,
+            'all_coordinate_streams_use_standard_qroam_cost': per_stream_costs == [expected_per_kernel_cost],
             'qroam_clean_capacity_matches_cost_model': local_qroam_workspace == qroam_target_plus_junk_qubits,
             'whole_oracle_stream_count': per_leaf_streamed_kernel_count * leaf_calls,
         },
@@ -786,7 +792,7 @@ def standard_qrom_lookup_assessment(
             'required_to_keep_published': [
                 'keep the executable leaf, QROAM resource artifact, no-free-wire ownership artifact, generated inventories, ZKP public values, and checked proof bundle on the same selected family',
                 'do not substitute the rejected bitwise-banked lookup family into public standard-QROM claims',
-                'do not publish a below-1700-qubit standard-QROAM claim unless a different primitive proves both the lower workspace and its data-selection cost',
+                'do not publish a lower-qubit standard-QROAM claim unless the executable tail contract, liveness artifact, QROAM stream ledger, and ZKP public values all bind the same counted primitive circuit',
             ],
         },
     }
@@ -801,7 +807,7 @@ def slot_allocation_families() -> List[SlotAllocationFamily]:
             leaf_source_artifact='compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json',
             slot_allocation=streamed_lookup_tail_leaf_slot_allocation(),
             notes=[
-                'This is the repository central standard-QROM leaf contract: no field-sized lookup x/y output lanes are free, and the six-slot arithmetic peak is derived from executable liveness while QROAM target/junk capacity is counted separately in lookup workspace.',
+                'This is the repository central standard-QROM leaf contract: no field-sized lookup x/y output lanes are free, and the five-slot arithmetic peak is derived from executable liveness while QROAM target/junk capacity is counted separately in lookup workspace.',
             ],
         ),
     ]

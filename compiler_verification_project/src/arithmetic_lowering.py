@@ -469,6 +469,14 @@ def _field_triple_kernel(field_bits: int) -> Dict[str, Any]:
 
 
 def _complete_a0_streamed_tail_kernel(field_bits: int, qroam_block_size: int) -> Dict[str, Any]:
+    streamed_i = deepcopy(_renamed_field_mul_kernel(
+        field_bits,
+        'field_mul_lookup_y',
+        'Internal streamed I = Y*y multiplication used by the complete-add tail macro.',
+        'This stage is counted inside the macro because I is not materialized as a standalone leaf field value.',
+        lookup_bit_source='lookup_y',
+        qroam_block_size=qroam_block_size,
+    )['stages'])
     streamed_yz = deepcopy(_renamed_field_mul_kernel(
         field_bits,
         'field_mul_lookup_y',
@@ -477,6 +485,30 @@ def _complete_a0_streamed_tail_kernel(field_bits: int, qroam_block_size: int) ->
         lookup_bit_source='lookup_y',
         qroam_block_size=qroam_block_size,
     )['stages'])
+    for stage in streamed_i:
+        stage['name'] = f"tail_i_{stage['name']}"
+    for stage in streamed_yz:
+        stage['name'] = f"tail_yz_{stage['name']}"
+    derive_k = _block(
+        name='derive_k_borrow_ladders',
+        summary='Two field-subtract ladders for K = H - A - I inside the streamed tail macro.',
+        instance_count=2 * (field_bits - 1),
+        primitive_operations=_ladder_operations(field_bits - 1, include_measurement=True)
+        + _ladder_operations(field_bits - 1, include_measurement=True),
+        notes=[
+            'This is the same two-subtraction cost as the standalone field_sub_sum kernel.',
+        ],
+    )
+    derive_l = _block(
+        name='derive_l_carry_ladders',
+        summary='Two field-add ladders for L = 3A inside the streamed tail macro.',
+        instance_count=2 * (field_bits - 1),
+        primitive_operations=_ladder_operations(field_bits - 1, include_measurement=True)
+        + _ladder_operations(field_bits - 1, include_measurement=True),
+        notes=[
+            'This is the same two-addition cost as the standalone field_triple kernel.',
+        ],
+    )
     fixed_f = _block(
         name='fixed_21z_chain',
         summary='Fixed multiplication F = 21Z inside the streamed tail macro.',
@@ -557,8 +589,16 @@ def _complete_a0_streamed_tail_kernel(field_bits: int, qroam_block_size: int) ->
     )
     return _kernel(
         opcode='complete_a0_streamed_tail',
-        summary='Exact multi-output complete-add tail kernel from C, K, L, I, Y, and Z.',
+        summary='Exact multi-output complete-add tail kernel from C, H, A, Y, and Z.',
         stages=[
+            *streamed_i,
+            _stage(
+                name='tail_derive_k_l',
+                summary='Internal construction of K = H - A - I and L = 3A.',
+                category='tail_combine',
+                blocks=[derive_k, derive_l],
+                notes=['These four add/sub ladders avoid materializing I, K, and L as leaf-owned field wires.'],
+            ),
             *streamed_yz,
             _stage(
                 name='tail_fixed_21z',
@@ -604,7 +644,7 @@ def _complete_a0_streamed_tail_kernel(field_bits: int, qroam_block_size: int) ->
             ),
         ],
         notes=[
-            'The macro is a liveness contract, not a free arithmetic operation: its non-Clifford count includes yZ, 21Z, E/M/N, six output multipliers, and three output add/sub combines.',
+            'The macro is a liveness contract, not a free arithmetic operation: its non-Clifford count includes I, K, L, yZ, 21Z, E/M/N, six output multipliers, and three output add/sub combines.',
         ],
     )
 

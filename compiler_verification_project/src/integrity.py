@@ -969,10 +969,10 @@ def build_streamed_lookup_tail_slot_allocation_checks(artifacts: Mapping[str, An
     ]
     extra_checks = [
         _check(
-            'streamed_lookup_tail_peak_arithmetic_slots_is_six',
-            slot_alloc['allocator_summary']['exact_arithmetic_slot_count'] == 6
-            and slot_alloc['peak_arithmetic_slots']['count'] == 6,
-            {'exact_arithmetic_slot_count': 6, 'peak_arithmetic_slots': 6},
+            'streamed_lookup_tail_peak_arithmetic_slots_is_five',
+            slot_alloc['allocator_summary']['exact_arithmetic_slot_count'] == 5
+            and slot_alloc['peak_arithmetic_slots']['count'] == 5,
+            {'exact_arithmetic_slot_count': 5, 'peak_arithmetic_slots': 5},
             {
                 'exact_arithmetic_slot_count': slot_alloc['allocator_summary']['exact_arithmetic_slot_count'],
                 'peak_arithmetic_slots': slot_alloc['peak_arithmetic_slots']['count'],
@@ -1021,7 +1021,7 @@ def build_streamed_lookup_table_multiplier_resource_checks(artifacts: Mapping[st
     source_failures = [
         row
         for row in resource['coordinate_bit_sources']
-        if int(row['data_select_non_clifford_per_kernel']) != int(model['per_kernel_non_clifford'])
+        if any(int(cost) != int(model['per_kernel_non_clifford']) for cost in row['data_select_non_clifford_per_stream'])
         or not row['stage_names']
     ]
     arithmetic_lookup = {kernel['opcode']: kernel for kernel in artifacts['arithmetic_lowerings']['kernels']}
@@ -1073,7 +1073,7 @@ def build_standard_qrom_lookup_assessment_checks(artifacts: Mapping[str, Any]) -
         _check('standard_qrom_lookup_assessment_uses_full_selection_space', gap['standard_unary_qrom_compute_toffoli_for_full_table'] == 32767, 32767, gap['standard_unary_qrom_compute_toffoli_for_full_table']),
         _check('standard_qrom_lookup_assessment_accepts_standard_qroam_stream', gap['standard_qrom_equivalent'] is True and gap['standard_qroam_coordinate_stream_toffoli'] == current['standard_qroam_coordinate_stream_non_clifford'] and gap['standard_qroam_coordinate_stream_target_plus_junk_qubits'] == current['standard_qroam_target_plus_junk_qubits'], {'standard_qrom_equivalent': True, 'standard_qroam_coordinate_stream_toffoli': current['standard_qroam_coordinate_stream_non_clifford'], 'standard_qroam_coordinate_stream_target_plus_junk_qubits': current['standard_qroam_target_plus_junk_qubits']}, {'standard_qrom_equivalent': gap['standard_qrom_equivalent'], 'standard_qroam_coordinate_stream_toffoli': gap['standard_qroam_coordinate_stream_toffoli'], 'standard_qroam_coordinate_stream_target_plus_junk_qubits': gap['standard_qroam_coordinate_stream_target_plus_junk_qubits']}),
         _check('standard_qrom_lookup_assessment_has_no_streaming_gap', gap['current_streamed_bit_toffoli_shortfall'] == 0 and gap['current_compute_toffoli_shortfall'] == 0 and gap['current_qroam_workspace_shortfall'] == 0, {'current_streamed_bit_toffoli_shortfall': 0, 'current_compute_toffoli_shortfall': 0, 'current_qroam_workspace_shortfall': 0}, {'current_streamed_bit_toffoli_shortfall': gap['current_streamed_bit_toffoli_shortfall'], 'current_compute_toffoli_shortfall': gap['current_compute_toffoli_shortfall'], 'current_qroam_workspace_shortfall': gap['current_qroam_workspace_shortfall']}),
-        _check('standard_qrom_lookup_assessment_boundary_exceeds_1700', implications['boundary_model_logical_qubits'] > 1700, '> 1700', implications['boundary_model_logical_qubits']),
+        _check('standard_qrom_lookup_assessment_boundary_under_1600', implications['boundary_model_logical_qubits'] < 1600, '< 1600', implications['boundary_model_logical_qubits']),
     ]
     return _summarize_checks(checks)
 
