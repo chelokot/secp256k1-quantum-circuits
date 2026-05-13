@@ -45,10 +45,7 @@
   "arithmetic_slots": [
     "qx",
     "qy",
-    "qz",
-    "lx",
-    "t0",
-    "t1"
+    "qz"
   ],
   "summary": {
     "total": 80,

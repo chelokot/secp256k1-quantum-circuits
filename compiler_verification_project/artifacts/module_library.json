@@ -17,11 +17,7 @@
     "load_input": 3,
     "lookup_meta": 1,
     "bool_from_flag": 1,
-    "field_mul_lookup_x": 2,
-    "field_add": 2,
-    "field_mul_lookup_sum": 1,
-    "mul_const": 1,
-    "complete_a0_streamed_tail": 1
+    "complete_a0_all_streamed_tail": 1
   },
   "exact_scope": "exact non-Clifford counts and generated primitive-operation inventories for the named arithmetic-kernel family; Clifford micro-counts remain outside the shipped lowering layer",
   "notes": [

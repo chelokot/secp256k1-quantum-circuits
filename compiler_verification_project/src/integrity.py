@@ -969,10 +969,10 @@ def build_streamed_lookup_tail_slot_allocation_checks(artifacts: Mapping[str, An
     ]
     extra_checks = [
         _check(
-            'streamed_lookup_tail_peak_arithmetic_slots_is_five',
-            slot_alloc['allocator_summary']['exact_arithmetic_slot_count'] == 5
-            and slot_alloc['peak_arithmetic_slots']['count'] == 5,
-            {'exact_arithmetic_slot_count': 5, 'peak_arithmetic_slots': 5},
+            'streamed_lookup_tail_peak_arithmetic_slots_is_three',
+            slot_alloc['allocator_summary']['exact_arithmetic_slot_count'] == 3
+            and slot_alloc['peak_arithmetic_slots']['count'] == 3,
+            {'exact_arithmetic_slot_count': 3, 'peak_arithmetic_slots': 3},
             {
                 'exact_arithmetic_slot_count': slot_alloc['allocator_summary']['exact_arithmetic_slot_count'],
                 'peak_arithmetic_slots': slot_alloc['peak_arithmetic_slots']['count'],
@@ -1030,7 +1030,7 @@ def build_streamed_lookup_table_multiplier_resource_checks(artifacts: Mapping[st
         for opcode in ('field_mul_lookup_x', 'field_mul_lookup_y', 'field_mul_lookup_sum')
         if not any(stage['category'] == 'streamed_lookup_data_select' for stage in arithmetic_lookup[opcode]['stages'])
     ]
-    complete_tail = arithmetic_lookup['complete_a0_streamed_tail']
+    complete_tail = arithmetic_lookup['complete_a0_all_streamed_tail']
     checks = [
         _check('streamed_lookup_table_multiplier_resource_matches_generator', resource == expected_resource, expected_resource, resource),
         _check('streamed_lookup_table_multiplier_schema_is_current', resource['schema'] == 'compiler-project-standard-qroam-streamed-lookup-table-resource-v1', 'compiler-project-standard-qroam-streamed-lookup-table-resource-v1', resource['schema']),
@@ -1042,7 +1042,7 @@ def build_streamed_lookup_table_multiplier_resource_checks(artifacts: Mapping[st
         _check('streamed_lookup_table_multiplier_source_rows_have_data_select_stages', not source_failures, [], source_failures),
         _check('streamed_lookup_table_multiplier_top_level_kernels_have_data_select_stage', not table_kernel_failures, [], table_kernel_failures),
         _check(
-            'streamed_lookup_table_multiplier_complete_tail_internal_y_has_data_select_stage',
+            'streamed_lookup_table_multiplier_complete_tail_internal_xy_has_data_select_stage',
             any(stage['category'] == 'streamed_lookup_data_select' for stage in complete_tail['stages']),
             True,
             [stage['category'] for stage in complete_tail['stages']],
@@ -1204,6 +1204,8 @@ def build_full_attack_inventory_checks(artifacts: Mapping[str, Any]) -> Dict[str
         'whole_oracle_field_mul_lookup_y_count': leaf_calls * hist.get('field_mul_lookup_y', 0),
         'whole_oracle_field_mul_lookup_sum_count': leaf_calls * hist.get('field_mul_lookup_sum', 0),
         'whole_oracle_complete_a0_streamed_tail_count': leaf_calls * hist.get('complete_a0_streamed_tail', 0),
+        'whole_oracle_complete_a0_fully_streamed_tail_count': leaf_calls * hist.get('complete_a0_fully_streamed_tail', 0),
+        'whole_oracle_complete_a0_all_streamed_tail_count': leaf_calls * hist.get('complete_a0_all_streamed_tail', 0),
         'whole_oracle_mul_const_count': leaf_calls * hist.get('mul_const', 0),
         'whole_oracle_select_count': leaf_calls * hist.get('select_field_if_flag', 0),
         'whole_oracle_lookup_count': schedule['summary']['lookup_invocations_total'],
@@ -1592,7 +1594,7 @@ def build_primitive_multiplier_checks(artifacts: Mapping[str, Any]) -> Dict[str,
                 'gate_set': kernel['gate_set'],
                 'arithmetic_lowering_artifact': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
             })
-        elif opcode == 'complete_a0_streamed_tail':
+        elif opcode in {'complete_a0_streamed_tail', 'complete_a0_fully_streamed_tail', 'complete_a0_all_streamed_tail'}:
             for tail_product in ('KN', 'EC', 'NM', 'CL', 'ME', 'LK'):
                 expected_per_leaf.append({
                     'leaf_multiplier_index': len(expected_per_leaf),

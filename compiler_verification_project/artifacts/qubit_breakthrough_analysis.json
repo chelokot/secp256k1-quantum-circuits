@@ -22,12 +22,12 @@
     "direct_seed_non_clifford": 297,
     "per_leaf_lookup_non_clifford": 297,
     "full_oracle_non_clifford": 32879331,
-    "arithmetic_slot_count": 5,
+    "arithmetic_slot_count": 3,
     "control_slot_count": 1,
     "borrowed_interface_qubits": 0,
     "lookup_workspace_qubits": 274,
     "live_phase_bits": 1,
-    "total_logical_qubits": 1556,
+    "total_logical_qubits": 1044,
     "phase_shell_hadamards": 512,
     "phase_shell_measurements": 512,
     "phase_shell_rotations": 511,
@@ -35,8 +35,8 @@
     "total_measurements": 5444867,
     "improvement_vs_google_low_qubit": 2.7372819720693222,
     "improvement_vs_google_low_gate": 2.1289970893872505,
-    "qubit_ratio_vs_google_low_qubit": 0.7712082262210797,
-    "qubit_ratio_vs_google_low_gate": 0.9318766066838047,
+    "qubit_ratio_vs_google_low_qubit": 1.1494252873563218,
+    "qubit_ratio_vs_google_low_gate": 1.3888888888888888,
     "notes": [
       "This is the repository standard-QROM primitive-circuit lookup boundary. Unlike the rejected bitwise-banked family, it does not treat the 32768-entry coordinate table as 15 independent 2-way decodes.",
       "The selected coordinate stream pays the standard QROAM compute and measured-uncompute costs in arithmetic_lowerings.json for every table-controlled arithmetic consumer.",
@@ -46,130 +46,113 @@
     ]
   },
   "exact_component_breakdown": {
-    "arithmetic_register_file_qubits": 1280,
+    "arithmetic_register_file_qubits": 768,
     "lookup_workspace_qubits": 274,
     "control_slot_qubits": 1,
     "live_phase_qubits": 1,
     "fixed_non_arithmetic_overhead_qubits": 276,
-    "arithmetic_register_file_share_fraction": 0.8226221079691517,
-    "fixed_non_arithmetic_overhead_share_fraction": 0.17737789203084833
+    "arithmetic_register_file_share_fraction": 0.735632183908046,
+    "fixed_non_arithmetic_overhead_share_fraction": 0.26436781609195403
   },
   "baseline_thresholds": {
     "low_qubit": {
       "baseline_logical_qubits": 1200,
       "max_arithmetic_slots_at_current_field_width": 3,
-      "max_field_slot_logical_qubits_at_current_exact_slot_count": 184
+      "max_field_slot_logical_qubits_at_current_exact_slot_count": 308
     },
     "low_gate": {
       "baseline_logical_qubits": 1450,
       "max_arithmetic_slots_at_current_field_width": 4,
-      "max_field_slot_logical_qubits_at_current_exact_slot_count": 234
+      "max_field_slot_logical_qubits_at_current_exact_slot_count": 391
     }
   },
-  "counterfactual_slot_sweep": [
-    {
-      "arithmetic_slot_count": 5,
-      "derived_total_logical_qubits": 1556,
-      "qubit_reduction_vs_current": 0,
-      "qubit_reduction_fraction_vs_current": 0.0,
-      "beats_google_low_qubit": false,
-      "beats_google_low_gate": false
-    },
-    {
-      "arithmetic_slot_count": 4,
-      "derived_total_logical_qubits": 1300,
-      "qubit_reduction_vs_current": 256,
-      "qubit_reduction_fraction_vs_current": 0.16452442159383032,
-      "beats_google_low_qubit": false,
-      "beats_google_low_gate": true
-    }
-  ],
+  "counterfactual_slot_sweep": [],
   "counterfactual_field_width_sweep": [
     {
       "field_slot_logical_qubits": 256,
-      "derived_total_logical_qubits": 1556,
+      "derived_total_logical_qubits": 1044,
       "qubit_reduction_vs_current": 0,
       "qubit_reduction_fraction_vs_current": 0.0,
-      "beats_google_low_qubit": false,
-      "beats_google_low_gate": false
+      "beats_google_low_qubit": true,
+      "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 192,
-      "derived_total_logical_qubits": 1236,
-      "qubit_reduction_vs_current": 320,
-      "qubit_reduction_fraction_vs_current": 0.20565552699228792,
-      "beats_google_low_qubit": false,
+      "derived_total_logical_qubits": 852,
+      "qubit_reduction_vs_current": 192,
+      "qubit_reduction_fraction_vs_current": 0.1839080459770115,
+      "beats_google_low_qubit": true,
       "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 160,
-      "derived_total_logical_qubits": 1076,
-      "qubit_reduction_vs_current": 480,
-      "qubit_reduction_fraction_vs_current": 0.30848329048843187,
+      "derived_total_logical_qubits": 756,
+      "qubit_reduction_vs_current": 288,
+      "qubit_reduction_fraction_vs_current": 0.27586206896551724,
       "beats_google_low_qubit": true,
       "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 157,
-      "derived_total_logical_qubits": 1061,
-      "qubit_reduction_vs_current": 495,
-      "qubit_reduction_fraction_vs_current": 0.3181233933161954,
+      "derived_total_logical_qubits": 747,
+      "qubit_reduction_vs_current": 297,
+      "qubit_reduction_fraction_vs_current": 0.28448275862068967,
       "beats_google_low_qubit": true,
       "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 144,
-      "derived_total_logical_qubits": 996,
-      "qubit_reduction_vs_current": 560,
-      "qubit_reduction_fraction_vs_current": 0.35989717223650386,
+      "derived_total_logical_qubits": 708,
+      "qubit_reduction_vs_current": 336,
+      "qubit_reduction_fraction_vs_current": 0.3218390804597701,
       "beats_google_low_qubit": true,
       "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 129,
-      "derived_total_logical_qubits": 921,
-      "qubit_reduction_vs_current": 635,
-      "qubit_reduction_fraction_vs_current": 0.40809768637532134,
+      "derived_total_logical_qubits": 663,
+      "qubit_reduction_vs_current": 381,
+      "qubit_reduction_fraction_vs_current": 0.3649425287356322,
       "beats_google_low_qubit": true,
       "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 128,
-      "derived_total_logical_qubits": 916,
-      "qubit_reduction_vs_current": 640,
-      "qubit_reduction_fraction_vs_current": 0.41131105398457585,
+      "derived_total_logical_qubits": 660,
+      "qubit_reduction_vs_current": 384,
+      "qubit_reduction_fraction_vs_current": 0.367816091954023,
       "beats_google_low_qubit": true,
       "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 112,
-      "derived_total_logical_qubits": 836,
-      "qubit_reduction_vs_current": 720,
-      "qubit_reduction_fraction_vs_current": 0.46272493573264784,
+      "derived_total_logical_qubits": 612,
+      "qubit_reduction_vs_current": 432,
+      "qubit_reduction_fraction_vs_current": 0.41379310344827586,
       "beats_google_low_qubit": true,
       "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 96,
-      "derived_total_logical_qubits": 756,
-      "qubit_reduction_vs_current": 800,
-      "qubit_reduction_fraction_vs_current": 0.5141388174807198,
+      "derived_total_logical_qubits": 564,
+      "qubit_reduction_vs_current": 480,
+      "qubit_reduction_fraction_vs_current": 0.45977011494252873,
       "beats_google_low_qubit": true,
       "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 80,
-      "derived_total_logical_qubits": 676,
-      "qubit_reduction_vs_current": 880,
-      "qubit_reduction_fraction_vs_current": 0.5655526992287918,
+      "derived_total_logical_qubits": 516,
+      "qubit_reduction_vs_current": 528,
+      "qubit_reduction_fraction_vs_current": 0.5057471264367817,
       "beats_google_low_qubit": true,
       "beats_google_low_gate": true
     },
     {
       "field_slot_logical_qubits": 72,
-      "derived_total_logical_qubits": 636,
-      "qubit_reduction_vs_current": 920,
-      "qubit_reduction_fraction_vs_current": 0.5912596401028277,
+      "derived_total_logical_qubits": 492,
+      "qubit_reduction_vs_current": 552,
+      "qubit_reduction_fraction_vs_current": 0.5287356321839081,
       "beats_google_low_qubit": true,
       "beats_google_low_gate": true
     }
@@ -195,23 +178,23 @@
       "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
       "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
       "lookup_workspace_qubits": 274,
-      "total_logical_qubits": 1556,
+      "total_logical_qubits": 1044,
       "full_oracle_non_clifford": 32879331,
       "delta_qubits_vs_best_qubit": 0,
       "delta_non_clifford_vs_best_qubit": 0
     }
   ],
   "peak_live_hotspot": {
-    "peak_pc": 6,
-    "peak_opcode": "field_mul_lookup_x",
-    "peak_arithmetic_slot_count": 5,
+    "peak_pc": 2,
+    "peak_opcode": "load_input",
+    "peak_arithmetic_slot_count": 3,
     "active_arithmetic_versions": [
       {
         "version_id": 0,
         "register": "qx",
         "reg_type": "arithmetic",
         "def_pc": 0,
-        "last_use_pc": 8,
+        "last_use_pc": 5,
         "assigned_slot": 0
       },
       {
@@ -219,7 +202,7 @@
         "register": "qy",
         "reg_type": "arithmetic",
         "def_pc": 1,
-        "last_use_pc": 11,
+        "last_use_pc": 5,
         "assigned_slot": 1
       },
       {
@@ -227,27 +210,35 @@
         "register": "qz",
         "reg_type": "arithmetic",
         "def_pc": 2,
-        "last_use_pc": 11,
+        "last_use_pc": 5,
         "assigned_slot": 2
-      },
-      {
-        "version_id": 4,
-        "register": "t0",
-        "reg_type": "arithmetic",
-        "def_pc": 5,
-        "last_use_pc": 11,
-        "assigned_slot": 3
-      },
-      {
-        "version_id": 5,
-        "register": "lx",
-        "reg_type": "arithmetic",
-        "def_pc": 6,
-        "last_use_pc": 7,
-        "assigned_slot": 4
       }
     ],
     "instruction_window": [
+      {
+        "pc": 0,
+        "op": "load_input",
+        "dst": "qx",
+        "src": "Q.X",
+        "flag": null,
+        "comment": "Accumulator X enters the arithmetic register file."
+      },
+      {
+        "pc": 1,
+        "op": "load_input",
+        "dst": "qy",
+        "src": "Q.Y",
+        "flag": null,
+        "comment": "Accumulator Y enters the arithmetic register file."
+      },
+      {
+        "pc": 2,
+        "op": "load_input",
+        "dst": "qz",
+        "src": "Q.Z",
+        "flag": null,
+        "comment": "Accumulator Z enters the arithmetic register file."
+      },
       {
         "pc": 3,
         "op": "lookup_meta",
@@ -272,49 +263,19 @@
       },
       {
         "pc": 5,
-        "op": "field_mul_lookup_x",
-        "dst": "t0",
-        "src": "qx",
-        "flag": null,
-        "comment": "A = X1 * x2 using the streamed table x-coordinate."
-      },
-      {
-        "pc": 6,
-        "op": "field_mul_lookup_x",
-        "dst": "lx",
-        "src": "qz",
-        "flag": null,
-        "comment": "x2Z1 using the streamed table x-coordinate."
-      },
-      {
-        "pc": 7,
-        "op": "field_add",
-        "dst": "lx",
-        "src": [
-          "lx",
-          "qx"
-        ],
-        "flag": null,
-        "comment": "C input before 3b scaling: X1 + x2Z1."
-      },
-      {
-        "pc": 8,
-        "op": "field_add",
-        "dst": "qx",
-        "src": [
+        "op": "complete_a0_all_streamed_tail",
+        "dst": [
           "qx",
-          "qy"
+          "qy",
+          "qz"
         ],
+        "src": {
+          "x": "qx",
+          "y": "qy",
+          "z": "qz"
+        },
         "flag": null,
-        "comment": "G = X1 + Y1."
-      },
-      {
-        "pc": 9,
-        "op": "field_mul_lookup_sum",
-        "dst": "t1",
-        "src": "qx",
-        "flag": null,
-        "comment": "H = (x2 + y2)(X1 + Y1) using streamed table constants."
+        "comment": "Multi-output streamed tail derives H, A, C, I, K, L, E, F, M, N internally and writes X3, Y3, Z3."
       }
     ]
   },

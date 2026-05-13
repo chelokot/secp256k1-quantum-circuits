@@ -5,7 +5,7 @@
   "field_bits": 256,
   "leaf_call_count_total": 31,
   "expected_full_oracle_non_clifford": 32879331,
-  "expected_total_logical_qubits": 1556,
+  "expected_total_logical_qubits": 1044,
   "expected_case_count": 8,
   "non_clifford_formula": {
     "arithmetic_leaf_non_clifford": 1060317,
@@ -18,13 +18,13 @@
   },
   "logical_qubit_formula": {
     "field_bits": 256,
-    "arithmetic_slot_count": 5,
+    "arithmetic_slot_count": 3,
     "control_slot_count": 1,
     "borrowed_interface_qubits": 0,
     "lookup_workspace_qubits": 274,
     "live_phase_bits": 1,
-    "arithmetic_component": 1280,
-    "reconstructed_total": 1556
+    "arithmetic_component": 768,
+    "reconstructed_total": 1044
   },
   "notes": [
     "This claim intentionally stays at the repository exact-family boundary: exact point-add witness semantics plus exact compiler-family resource derivation.",

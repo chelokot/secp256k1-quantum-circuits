@@ -10,7 +10,7 @@ metadata, together with deterministic audits, finite-model checks, and a
 separate exact compiler-family oracle subproject that closes the
 classical-tail-elision gap for a fully quantum raw-32 schedule. It now also
 ships an SP1 attestation bundle for one selected standard-QROM family claim at
-that same boundary. The current `32,879,331 / 1,556` result is a standard-QROM
+that same boundary. The current `32,879,331 / 1,044` result is a standard-QROM
 compiler-family result at the counted lookup boundary and below 1600 logical
 qubits. The generated QROAMClean tradeoff ledger still records the higher-space
 rows needed for the older `<24M` non-Clifford target; the repository headline is

@@ -123,6 +123,56 @@ def _expected_instruction_results(before: Mapping[str, Any], ins: Mapping[str, A
             out_y: (n * m + c * l) % p,
             out_z: (m * e + l * k) % p,
         }
+    if opcode == 'complete_a0_fully_streamed_tail':
+        src = ins['src']
+        x_acc = int(before[src['x']])
+        h = int(before[src['h']])
+        y_acc = int(before[src['y']])
+        z_acc = int(before[src['z']])
+        lookup_x = int(before['T.x'][before['k']])
+        lookup_y = int(before['T.y'][before['k']])
+        a = (x_acc * lookup_x) % p
+        zx = (z_acc * lookup_x) % p
+        c = (21 * (x_acc + zx)) % p
+        i = (y_acc * lookup_y) % p
+        k = (h - a - i) % p
+        l = (3 * a) % p
+        yz = (lookup_y * z_acc) % p
+        e = (y_acc + yz) % p
+        f = (21 * z_acc) % p
+        m = (i + f) % p
+        n = (i - f) % p
+        out_x, out_y, out_z = ins['dst']
+        return {
+            out_x: (k * n - e * c) % p,
+            out_y: (n * m + c * l) % p,
+            out_z: (m * e + l * k) % p,
+        }
+    if opcode == 'complete_a0_all_streamed_tail':
+        src = ins['src']
+        x_acc = int(before[src['x']])
+        y_acc = int(before[src['y']])
+        z_acc = int(before[src['z']])
+        lookup_x = int(before['T.x'][before['k']])
+        lookup_y = int(before['T.y'][before['k']])
+        h = ((x_acc + y_acc) * ((lookup_x + lookup_y) % p)) % p
+        a = (x_acc * lookup_x) % p
+        zx = (z_acc * lookup_x) % p
+        c = (21 * (x_acc + zx)) % p
+        i = (y_acc * lookup_y) % p
+        k = (h - a - i) % p
+        l = (3 * a) % p
+        yz = (lookup_y * z_acc) % p
+        e = (y_acc + yz) % p
+        f = (21 * z_acc) % p
+        m = (i + f) % p
+        n = (i - f) % p
+        out_x, out_y, out_z = ins['dst']
+        return {
+            out_x: (k * n - e * c) % p,
+            out_y: (n * m + c * l) % p,
+            out_z: (m * e + l * k) % p,
+        }
     raise KeyError(f'unsupported traced opcode: {opcode}')
 
 
@@ -228,6 +278,8 @@ def _arithmetic_opcode_equivalence(
         'mul_const',
         'select_field_if_flag',
         'complete_a0_streamed_tail',
+        'complete_a0_fully_streamed_tail',
+        'complete_a0_all_streamed_tail',
     }
     trace_pcs = {int(ins['pc']) for ins in leaf['instructions'] if ins['op'] in traced_opcodes}
     per_pc_stats: Dict[int, Dict[str, Any]] = {

@@ -11,69 +11,33 @@
   },
   "coordinate_bit_sources": [
     {
-      "bit_source": "lookup_x",
-      "consumer_opcode": "field_mul_lookup_x",
-      "per_leaf_kernel_count": 2,
-      "coordinate_streams_per_kernel": 1,
-      "per_leaf_coordinate_stream_count": 2,
-      "field_bits_streamed_per_kernel": 256,
-      "data_select_non_clifford_per_stream": [
-        65536
+      "bit_sources": [
+        "lookup_x_plus_y",
+        "lookup_x",
+        "lookup_x",
+        "lookup_y",
+        "lookup_y"
       ],
-      "data_select_non_clifford_per_kernel": 65536,
-      "data_select_non_clifford_per_leaf": 131072,
-      "stage_names": [
-        "streamed_lookup_x_standard_qroam_oracle"
-      ]
-    },
-    {
-      "bit_source": "lookup_y",
-      "consumer_opcode": "field_mul_lookup_y",
-      "per_leaf_kernel_count": 0,
-      "coordinate_streams_per_kernel": 1,
-      "per_leaf_coordinate_stream_count": 0,
-      "field_bits_streamed_per_kernel": 256,
-      "data_select_non_clifford_per_stream": [
-        65536
-      ],
-      "data_select_non_clifford_per_kernel": 65536,
-      "data_select_non_clifford_per_leaf": 0,
-      "stage_names": [
-        "streamed_lookup_y_standard_qroam_oracle"
-      ]
-    },
-    {
-      "bit_source": "lookup_x_plus_y",
-      "consumer_opcode": "field_mul_lookup_sum",
+      "consumer_opcode": "complete_a0_all_streamed_tail",
       "per_leaf_kernel_count": 1,
-      "coordinate_streams_per_kernel": 1,
-      "per_leaf_coordinate_stream_count": 1,
-      "field_bits_streamed_per_kernel": 256,
-      "data_select_non_clifford_per_stream": [
-        65536
-      ],
-      "data_select_non_clifford_per_kernel": 65536,
-      "data_select_non_clifford_per_leaf": 65536,
-      "stage_names": [
-        "streamed_lookup_x_plus_y_standard_qroam_oracle"
-      ]
-    },
-    {
-      "bit_source": "lookup_y",
-      "consumer_opcode": "complete_a0_streamed_tail",
-      "per_leaf_kernel_count": 1,
-      "coordinate_streams_per_kernel": 2,
-      "per_leaf_coordinate_stream_count": 2,
+      "coordinate_streams_per_kernel": 5,
+      "per_leaf_coordinate_stream_count": 5,
       "field_bits_streamed_per_kernel": 256,
       "data_select_non_clifford_per_stream": [
         65536,
+        65536,
+        65536,
+        65536,
         65536
       ],
-      "data_select_non_clifford_per_kernel": 131072,
-      "data_select_non_clifford_per_leaf": 131072,
+      "data_select_non_clifford_per_kernel": 327680,
+      "data_select_non_clifford_per_leaf": 327680,
       "stage_names": [
-        "tail_i_streamed_lookup_y_standard_qroam_oracle",
-        "tail_yz_streamed_lookup_y_standard_qroam_oracle"
+        "tail_h_streamed_lookup_x_plus_y_standard_qroam_oracle",
+        "all_streamed_tail_a_streamed_lookup_x_standard_qroam_oracle",
+        "all_streamed_tail_zx_streamed_lookup_x_standard_qroam_oracle",
+        "all_streamed_fully_streamed_tail_i_streamed_lookup_y_standard_qroam_oracle",
+        "all_streamed_fully_streamed_tail_yz_streamed_lookup_y_standard_qroam_oracle"
       ]
     }
   ],
