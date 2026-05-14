@@ -85,6 +85,7 @@ def test_checked_in_public_values_and_core_fixture_match_bundle() -> None:
     assert public_values['leaf_sha256'] == payload['leaf_sha256']
     assert public_values['family_sha256'] == payload['family_sha256']
     assert public_values['case_corpus_sha256'] == payload['case_corpus_sha256']
+    assert public_values['resource_certificate_sha256'] == payload['resource_certificate_sha256']
     assert public_values['case_count'] == payload['prepared_case_corpus']['case_count']
     assert public_values['passed_case_count'] == public_values['case_count']
     assert fixture['proof_system'] == 'core'
@@ -122,6 +123,7 @@ def test_zkp_attestation_bundle_supports_alternate_output_dir(tmp_path: Path) ->
     assert json.loads((tmp_path / 'zkp_attestation_claim.json').read_text())['schema'] == 'compiler-project-zkp-attestation-claim-v1'
     assert json.loads((tmp_path / 'zkp_attestation_family.json').read_text())['name'] == payload['selected_family_name']
     assert json.loads((tmp_path / 'zkp_attestation_cases.json').read_text())['case_count'] == payload['prepared_case_corpus']['case_count']
+    assert payload['resource_certificate_document']['payload']['pass'] is True
 
 
 def test_zkp_attestation_case_start_selects_late_case_ids() -> None:

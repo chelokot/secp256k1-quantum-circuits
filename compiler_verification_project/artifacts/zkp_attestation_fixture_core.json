@@ -11,9 +11,10 @@
     "family_sha256": "987004b514b5499430aa45d6d83e472c9cdf4bf05fd457dc72472717c3760f38",
     "leaf_sha256": "a8b6d7dc3f45c85b450a373f90a174cf4cc3bdfe85520c56ee7ec8db2c5f6ab1",
     "passed_case_count": 8,
+    "resource_certificate_sha256": "a1f61b2c3831b3eefda5e3a82aae0b40adf98461c67848277fac5641d64767dc",
     "schema": "compiler-project-zkp-attestation-public-v2",
     "selected_family_name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1"
   },
   "schema": "compiler-project-zkp-attestation-fixture-v1",
-  "verification_key": "0x00bc85fd39e6df9b086ab8f7d5a18ba088a60e0b600bd2f5c283cb72b839546b"
+  "verification_key": "0x003e1085e67fc6b6900e439db58d3f12939e23eab622b2e777e71e5772f31942"
 }

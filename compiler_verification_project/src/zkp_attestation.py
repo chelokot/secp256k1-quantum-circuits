@@ -549,6 +549,14 @@ def _build_zkp_attestation_materials(
         artifact_path='compiler_verification_project/artifacts/zkp_attestation_cases.json',
         payload=case_corpus,
     )
+    resource_certificate = json.loads(
+        (PROJECT_ROOT / 'compiler_verification_project' / 'artifacts' / 'resource_liveness_certificate.json').read_text()
+    )
+    resource_certificate_blob = _committed_payload(
+        document_type='resource_liveness_certificate',
+        artifact_path='compiler_verification_project/artifacts/resource_liveness_certificate.json',
+        payload=resource_certificate,
+    )
     family_blob = _committed_payload(
         document_type='compiler_family_summary',
         artifact_path='compiler_verification_project/artifacts/zkp_attestation_family.json',
@@ -609,13 +617,19 @@ def _build_zkp_attestation_materials(
     prepared_case_corpus = _prepared_case_corpus(case_corpus)
     return {
         'input': {
-            'schema': 'compiler-project-zkp-attestation-input-v4',
+            'schema': 'compiler-project-zkp-attestation-input-v5',
             'document_digest_scheme': DIGEST_SCHEME,
             'selected_family_name': family_payload['name'],
             'claim_sha256': claim_blob['sha256'],
             'leaf_sha256': leaf_blob['sha256'],
             'family_sha256': family_blob['sha256'],
             'case_corpus_sha256': case_blob['sha256'],
+            'resource_certificate_sha256': resource_certificate_blob['sha256'],
+            'claim_document': claim_blob,
+            'leaf_document': leaf_blob,
+            'family_document': family_blob,
+            'case_corpus_document': case_blob,
+            'resource_certificate_document': resource_certificate_blob,
             'claim_summary': {
                 'field_bits': int(public_claim['field_bits']),
                 'leaf_call_count_total': int(public_claim['leaf_call_count_total']),
@@ -641,13 +655,14 @@ def _build_zkp_attestation_materials(
             'prepared_leaf': prepared_leaf,
             'prepared_case_corpus': prepared_case_corpus,
             'notes': [
-                'The proof input is a prepared attestation bundle: it carries the public document digests plus a proof-ready compiled leaf and deterministic public cases.',
-                'The checked JSON claim, family summary, and case corpus remain the source-of-truth sidecars for audit and regeneration.',
+                'The proof input carries both the committed source documents and proof-ready reductions.',
+                'The guest recomputes every source-document digest and derives the prepared leaf/case reductions from those documents before publishing public values.',
             ],
         },
         'claim': public_claim,
         'family': family_payload,
         'cases': case_corpus,
+        'resource_certificate': resource_certificate,
     }
 
 

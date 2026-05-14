@@ -76,6 +76,7 @@ from physical_estimator import (  # noqa: E402
     build_or_load_azure_estimator_results_payload,
 )
 from resource_ledger import build_logical_resource_ledger  # noqa: E402
+from resource_certificate import build_resource_liveness_certificate  # noqa: E402
 from subcircuit_equivalence import build_subcircuit_equivalence_artifact  # noqa: E402
 from whole_oracle_recount import build_whole_oracle_recount as build_whole_oracle_recount_single  # noqa: E402
 
@@ -1932,6 +1933,14 @@ def build_all_artifacts() -> Dict[str, Any]:
         field_bits=FIELD_BITS,
         public_google_baseline=PUBLIC_GOOGLE_BASELINE,
     )
+    out['resource_liveness_certificate'] = build_resource_liveness_certificate(
+        frontier=out['frontier'],
+        streamed_lookup_tail_slot_allocation=out['streamed_lookup_tail_slot_allocation'],
+        arithmetic_lowerings=out['arithmetic_lowerings'],
+        streamed_lookup_resource=out['streamed_lookup_table_multiplier_resource'],
+        logical_resource_ledger=out['logical_resource_ledger'],
+        field_bits=FIELD_BITS,
+    )
     out['qubit_breakthrough_analysis'] = build_qubit_breakthrough_analysis(frontier=out['frontier'])
     out['full_attack_inventory'] = full_attack_inventory()
     out['subcircuit_equivalence'] = build_subcircuit_equivalence_artifact(
@@ -1964,6 +1973,7 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('family_frontier.json'), out['frontier'])
     dump_json(project_artifact_path('standard_qrom_lookup_assessment.json'), out['standard_qrom_lookup_assessment'])
     dump_json(project_artifact_path('logical_resource_ledger.json'), out['logical_resource_ledger'])
+    dump_json(project_artifact_path('resource_liveness_certificate.json'), out['resource_liveness_certificate'])
     dump_json(project_artifact_path('qubit_breakthrough_analysis.json'), out['qubit_breakthrough_analysis'])
     dump_json(project_artifact_path('full_attack_inventory.json'), out['full_attack_inventory'])
     dump_json(project_artifact_path('subcircuit_equivalence.json'), out['subcircuit_equivalence'])
@@ -2002,6 +2012,7 @@ def build_all_artifacts() -> Dict[str, Any]:
             'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
             'standard_qrom_lookup_assessment': 'compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json',
             'logical_resource_ledger': 'compiler_verification_project/artifacts/logical_resource_ledger.json',
+            'resource_liveness_certificate': 'compiler_verification_project/artifacts/resource_liveness_certificate.json',
             'qubit_breakthrough_analysis': 'compiler_verification_project/artifacts/qubit_breakthrough_analysis.json',
             'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
             'subcircuit_equivalence': 'compiler_verification_project/artifacts/subcircuit_equivalence.json',
@@ -2074,6 +2085,7 @@ __all__ = [
     'lookup_fed_leaf_slot_allocation',
     'streamed_lookup_tail_leaf_slot_allocation',
     'streamed_lookup_table_multiplier_resource',
+    'build_resource_liveness_certificate',
     'standard_qrom_lookup_assessment',
     'slot_allocation_families',
     'raw32_schedule',

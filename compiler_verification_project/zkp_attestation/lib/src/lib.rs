@@ -1,10 +1,11 @@
 use num_bigint::BigUint;
 use num_traits::{Num, One, ToPrimitive, Zero};
 use serde::{
-    de::Deserializer,
+    de::{DeserializeOwned, Deserializer},
     ser::{SerializeSeq, SerializeStruct, Serializer},
     Deserialize, Serialize,
 };
+use serde_json::Value;
 use sha2::{Digest, Sha256};
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -29,6 +30,9 @@ pub struct CommittedDocument<T> {
     pub payload: T,
 }
 
+#[derive(Debug, Clone, PartialEq)]
+pub struct SemanticJsonPayload(pub Value);
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ClaimDocument {
     pub schema: String,
@@ -44,7 +48,7 @@ pub struct ClaimDocument {
     pub notes: Vec<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct NonCliffordFormula {
     pub arithmetic_leaf_non_clifford: u64,
     pub per_leaf_lookup_non_clifford: u64,
@@ -55,7 +59,7 @@ pub struct NonCliffordFormula {
     pub reconstructed_total: u64,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct LogicalQubitFormula {
     pub field_bits: u32,
     pub arithmetic_slot_count: u32,
@@ -78,6 +82,8 @@ pub struct LeafDocument {
     pub interface_wires: Vec<String>,
     pub lookup_interface_slots: Vec<String>,
     pub arithmetic_slots: Vec<String>,
+    #[serde(default)]
+    pub lookup_infinity_policy: Option<String>,
     pub instructions: Vec<Instruction>,
     pub notes: Vec<String>,
 }
@@ -87,18 +93,62 @@ pub struct Instruction {
     pub pc: u32,
     pub op: String,
     pub comment: Option<String>,
-    pub dst: Option<String>,
+    pub dst: Option<InstructionDestination>,
     pub src: Option<InstructionSource>,
     pub flag: Option<String>,
     pub const_value: Option<u64>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum InstructionDestination {
+    Register(String),
+    Registers(Vec<String>),
+}
+
+#[derive(Serialize, Deserialize)]
+#[serde(untagged)]
+enum HumanInstructionDestination {
+    Register(String),
+    Registers(Vec<String>),
+}
+
+#[derive(Serialize, Deserialize)]
+enum BinaryInstructionDestination {
+    Register(String),
+    Registers(Vec<String>),
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum InstructionSource {
     Register(String),
     Pair([String; 2]),
-    FlagBit { flags: String, bit: u64 },
-    Lookup { table: String, key: String },
+    Triple([String; 3]),
+    StreamedTail {
+        c: String,
+        h: String,
+        a: String,
+        y: String,
+        z: String,
+    },
+    FullyStreamedTail {
+        x: String,
+        h: String,
+        y: String,
+        z: String,
+    },
+    AllStreamedTail {
+        x: String,
+        y: String,
+        z: String,
+    },
+    FlagBit {
+        flags: String,
+        bit: u64,
+    },
+    Lookup {
+        table: String,
+        key: String,
+    },
 }
 
 #[derive(Serialize, Deserialize)]
@@ -106,16 +156,66 @@ pub enum InstructionSource {
 enum HumanInstructionSource {
     Register(String),
     Pair([String; 2]),
-    FlagBit { flags: String, bit: u64 },
-    Lookup { table: String, key: String },
+    Triple([String; 3]),
+    StreamedTail {
+        c: String,
+        h: String,
+        a: String,
+        y: String,
+        z: String,
+    },
+    FullyStreamedTail {
+        x: String,
+        h: String,
+        y: String,
+        z: String,
+    },
+    AllStreamedTail {
+        x: String,
+        y: String,
+        z: String,
+    },
+    FlagBit {
+        flags: String,
+        bit: u64,
+    },
+    Lookup {
+        table: String,
+        key: String,
+    },
 }
 
 #[derive(Serialize, Deserialize)]
 enum BinaryInstructionSource {
     Register(String),
     Pair([String; 2]),
-    FlagBit { flags: String, bit: u64 },
-    Lookup { table: String, key: String },
+    Triple([String; 3]),
+    StreamedTail {
+        c: String,
+        h: String,
+        a: String,
+        y: String,
+        z: String,
+    },
+    FullyStreamedTail {
+        x: String,
+        h: String,
+        y: String,
+        z: String,
+    },
+    AllStreamedTail {
+        x: String,
+        y: String,
+        z: String,
+    },
+    FlagBit {
+        flags: String,
+        bit: u64,
+    },
+    Lookup {
+        table: String,
+        key: String,
+    },
 }
 
 #[derive(Serialize, Deserialize)]
@@ -125,7 +225,7 @@ struct HumanInstruction {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     comment: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    dst: Option<String>,
+    dst: Option<InstructionDestination>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     src: Option<InstructionSource>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -139,7 +239,7 @@ struct BinaryInstruction {
     pc: u32,
     op: String,
     comment: Option<String>,
-    dst: Option<String>,
+    dst: Option<InstructionDestination>,
     src: Option<InstructionSource>,
     flag: Option<String>,
     const_value: Option<u64>,
@@ -201,6 +301,96 @@ impl From<BinaryInstruction> for Instruction {
     }
 }
 
+impl Serialize for InstructionDestination {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        if serializer.is_human_readable() {
+            match self {
+                InstructionDestination::Register(register) => serializer.serialize_str(register),
+                InstructionDestination::Registers(registers) => {
+                    let mut seq = serializer.serialize_seq(Some(registers.len()))?;
+                    for register in registers {
+                        seq.serialize_element(register)?;
+                    }
+                    seq.end()
+                }
+            }
+        } else {
+            match self {
+                InstructionDestination::Register(register) => {
+                    BinaryInstructionDestination::Register(register.clone())
+                }
+                InstructionDestination::Registers(registers) => {
+                    BinaryInstructionDestination::Registers(registers.clone())
+                }
+            }
+            .serialize(serializer)
+        }
+    }
+}
+
+impl<'de> Deserialize<'de> for InstructionDestination {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        if deserializer.is_human_readable() {
+            let destination = HumanInstructionDestination::deserialize(deserializer)?;
+            Ok(match destination {
+                HumanInstructionDestination::Register(register) => {
+                    InstructionDestination::Register(register)
+                }
+                HumanInstructionDestination::Registers(registers) => {
+                    InstructionDestination::Registers(registers)
+                }
+            })
+        } else {
+            let destination = BinaryInstructionDestination::deserialize(deserializer)?;
+            Ok(match destination {
+                BinaryInstructionDestination::Register(register) => {
+                    InstructionDestination::Register(register)
+                }
+                BinaryInstructionDestination::Registers(registers) => {
+                    InstructionDestination::Registers(registers)
+                }
+            })
+        }
+    }
+}
+
+impl Serialize for SemanticJsonPayload {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        if serializer.is_human_readable() {
+            self.0.serialize(serializer)
+        } else {
+            serde_json::to_string(&self.0)
+                .expect("failed to serialize semantic JSON payload")
+                .serialize(serializer)
+        }
+    }
+}
+
+impl<'de> Deserialize<'de> for SemanticJsonPayload {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        if deserializer.is_human_readable() {
+            Value::deserialize(deserializer).map(Self)
+        } else {
+            let encoded = String::deserialize(deserializer)?;
+            serde_json::from_str(&encoded)
+                .map(Self)
+                .map_err(serde::de::Error::custom)
+        }
+    }
+}
+
 impl Serialize for Instruction {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
@@ -242,6 +432,37 @@ impl Serialize for InstructionSource {
                     }
                     seq.end()
                 }
+                InstructionSource::Triple(triple) => {
+                    let mut seq = serializer.serialize_seq(Some(triple.len()))?;
+                    for item in triple {
+                        seq.serialize_element(item)?;
+                    }
+                    seq.end()
+                }
+                InstructionSource::StreamedTail { c, h, a, y, z } => {
+                    let mut map = serializer.serialize_struct("InstructionSource", 5)?;
+                    map.serialize_field("a", a)?;
+                    map.serialize_field("c", c)?;
+                    map.serialize_field("h", h)?;
+                    map.serialize_field("y", y)?;
+                    map.serialize_field("z", z)?;
+                    map.end()
+                }
+                InstructionSource::FullyStreamedTail { x, h, y, z } => {
+                    let mut map = serializer.serialize_struct("InstructionSource", 4)?;
+                    map.serialize_field("h", h)?;
+                    map.serialize_field("x", x)?;
+                    map.serialize_field("y", y)?;
+                    map.serialize_field("z", z)?;
+                    map.end()
+                }
+                InstructionSource::AllStreamedTail { x, y, z } => {
+                    let mut map = serializer.serialize_struct("InstructionSource", 3)?;
+                    map.serialize_field("x", x)?;
+                    map.serialize_field("y", y)?;
+                    map.serialize_field("z", z)?;
+                    map.end()
+                }
                 InstructionSource::FlagBit { flags, bit } => {
                     let mut map = serializer.serialize_struct("InstructionSource", 2)?;
                     map.serialize_field("flags", flags)?;
@@ -261,6 +482,33 @@ impl Serialize for InstructionSource {
                     BinaryInstructionSource::Register(register.clone())
                 }
                 InstructionSource::Pair(pair) => BinaryInstructionSource::Pair(pair.clone()),
+                InstructionSource::Triple(triple) => {
+                    BinaryInstructionSource::Triple(triple.clone())
+                }
+                InstructionSource::StreamedTail { c, h, a, y, z } => {
+                    BinaryInstructionSource::StreamedTail {
+                        c: c.clone(),
+                        h: h.clone(),
+                        a: a.clone(),
+                        y: y.clone(),
+                        z: z.clone(),
+                    }
+                }
+                InstructionSource::FullyStreamedTail { x, h, y, z } => {
+                    BinaryInstructionSource::FullyStreamedTail {
+                        x: x.clone(),
+                        h: h.clone(),
+                        y: y.clone(),
+                        z: z.clone(),
+                    }
+                }
+                InstructionSource::AllStreamedTail { x, y, z } => {
+                    BinaryInstructionSource::AllStreamedTail {
+                        x: x.clone(),
+                        y: y.clone(),
+                        z: z.clone(),
+                    }
+                }
                 InstructionSource::FlagBit { flags, bit } => BinaryInstructionSource::FlagBit {
                     flags: flags.clone(),
                     bit: *bit,
@@ -285,6 +533,16 @@ impl<'de> Deserialize<'de> for InstructionSource {
             Ok(match source {
                 HumanInstructionSource::Register(register) => InstructionSource::Register(register),
                 HumanInstructionSource::Pair(pair) => InstructionSource::Pair(pair),
+                HumanInstructionSource::Triple(triple) => InstructionSource::Triple(triple),
+                HumanInstructionSource::StreamedTail { c, h, a, y, z } => {
+                    InstructionSource::StreamedTail { c, h, a, y, z }
+                }
+                HumanInstructionSource::FullyStreamedTail { x, h, y, z } => {
+                    InstructionSource::FullyStreamedTail { x, h, y, z }
+                }
+                HumanInstructionSource::AllStreamedTail { x, y, z } => {
+                    InstructionSource::AllStreamedTail { x, y, z }
+                }
                 HumanInstructionSource::FlagBit { flags, bit } => {
                     InstructionSource::FlagBit { flags, bit }
                 }
@@ -299,6 +557,16 @@ impl<'de> Deserialize<'de> for InstructionSource {
                     InstructionSource::Register(register)
                 }
                 BinaryInstructionSource::Pair(pair) => InstructionSource::Pair(pair),
+                BinaryInstructionSource::Triple(triple) => InstructionSource::Triple(triple),
+                BinaryInstructionSource::StreamedTail { c, h, a, y, z } => {
+                    InstructionSource::StreamedTail { c, h, a, y, z }
+                }
+                BinaryInstructionSource::FullyStreamedTail { x, h, y, z } => {
+                    InstructionSource::FullyStreamedTail { x, h, y, z }
+                }
+                BinaryInstructionSource::AllStreamedTail { x, y, z } => {
+                    InstructionSource::AllStreamedTail { x, y, z }
+                }
                 BinaryInstructionSource::FlagBit { flags, bit } => {
                     InstructionSource::FlagBit { flags, bit }
                 }
@@ -482,7 +750,7 @@ impl<'de> Deserialize<'de> for CaseCorpusDocument {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct PointAddCase {
     pub case_id: String,
     pub category: String,
@@ -491,13 +759,13 @@ pub struct PointAddCase {
     pub expected: Option<AffineEncoding>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct AffineEncoding {
     pub x_hex: String,
     pub y_hex: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct PreparedClaimSummary {
     pub field_bits: u32,
     pub leaf_call_count_total: u32,
@@ -508,7 +776,7 @@ pub struct PreparedClaimSummary {
     pub logical_qubit_formula: LogicalQubitFormula,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct PreparedFamilySummary {
     pub name: String,
     pub arithmetic_leaf_non_clifford: u64,
@@ -523,7 +791,7 @@ pub struct PreparedFamilySummary {
     pub total_logical_qubits: u64,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct PreparedCaseCorpus {
     pub field_modulus_hex: String,
     pub case_start_index: Option<u32>,
@@ -540,6 +808,7 @@ pub struct PublicValues {
     pub leaf_sha256: String,
     pub family_sha256: String,
     pub case_corpus_sha256: String,
+    pub resource_certificate_sha256: String,
     pub expected_full_oracle_non_clifford: u64,
     pub expected_total_logical_qubits: u64,
     pub case_count: u32,
@@ -550,7 +819,7 @@ type PointAffine = Option<(BigUint, BigUint)>;
 type PointProj = (BigUint, BigUint, BigUint);
 type RegisterId = usize;
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct CompiledLeaf {
     register_count: usize,
     input_qx: RegisterId,
@@ -567,7 +836,7 @@ pub struct CompiledLeaf {
     instructions: Vec<CompiledInstruction>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum CompiledInstruction {
     Copy {
         dst: RegisterId,
@@ -1339,6 +1608,12 @@ pub struct PreparedAttestationInput {
     pub leaf_sha256: String,
     pub family_sha256: String,
     pub case_corpus_sha256: String,
+    pub resource_certificate_sha256: String,
+    pub claim_document: CommittedDocument<SemanticJsonPayload>,
+    pub leaf_document: CommittedDocument<SemanticJsonPayload>,
+    pub family_document: CommittedDocument<SemanticJsonPayload>,
+    pub case_corpus_document: CommittedDocument<SemanticJsonPayload>,
+    pub resource_certificate_document: CommittedDocument<SemanticJsonPayload>,
     pub claim_summary: PreparedClaimSummary,
     pub family_summary: PreparedFamilySummary,
     pub prepared_leaf: CompiledLeaf,
@@ -1431,6 +1706,46 @@ impl<T: SemanticHash> SemanticHash for Option<T> {
     }
 }
 
+impl SemanticHash for SemanticJsonPayload {
+    fn semantic_hash(&self, hasher: &mut Sha256) {
+        self.0.semantic_hash(hasher);
+    }
+}
+
+impl SemanticHash for Value {
+    fn semantic_hash(&self, hasher: &mut Sha256) {
+        match self {
+            Value::Null => hasher.update([b'n']),
+            Value::Bool(true) => hasher.update([b't']),
+            Value::Bool(false) => hasher.update([b'f']),
+            Value::Number(number) => number.to_string().semantic_hash_integer(hasher),
+            Value::String(value) => value.semantic_hash(hasher),
+            Value::Array(values) => values.semantic_hash(hasher),
+            Value::Object(object) => {
+                let mut keys: Vec<&String> = object.keys().collect();
+                keys.sort();
+                semantic_hash_object_start(hasher, keys.len());
+                for key in keys {
+                    semantic_hash_field(
+                        hasher,
+                        key,
+                        object.get(key).expect("missing sorted object key"),
+                    );
+                }
+            }
+        }
+    }
+}
+
+impl SemanticHash for InstructionDestination {
+    fn semantic_hash(&self, hasher: &mut Sha256) {
+        match self {
+            InstructionDestination::Register(register) => register.semantic_hash(hasher),
+            InstructionDestination::Registers(registers) => registers.semantic_hash(hasher),
+        }
+    }
+}
+
 impl SemanticHash for InstructionSource {
     fn semantic_hash(&self, hasher: &mut Sha256) {
         match self {
@@ -1440,6 +1755,33 @@ impl SemanticHash for InstructionSource {
                 for item in pair {
                     item.semantic_hash(hasher);
                 }
+            }
+            InstructionSource::Triple(triple) => {
+                semantic_hash_array_start(hasher, triple.len());
+                for item in triple {
+                    item.semantic_hash(hasher);
+                }
+            }
+            InstructionSource::StreamedTail { c, h, a, y, z } => {
+                semantic_hash_object_start(hasher, 5);
+                semantic_hash_field(hasher, "a", a);
+                semantic_hash_field(hasher, "c", c);
+                semantic_hash_field(hasher, "h", h);
+                semantic_hash_field(hasher, "y", y);
+                semantic_hash_field(hasher, "z", z);
+            }
+            InstructionSource::FullyStreamedTail { x, h, y, z } => {
+                semantic_hash_object_start(hasher, 4);
+                semantic_hash_field(hasher, "h", h);
+                semantic_hash_field(hasher, "x", x);
+                semantic_hash_field(hasher, "y", y);
+                semantic_hash_field(hasher, "z", z);
+            }
+            InstructionSource::AllStreamedTail { x, y, z } => {
+                semantic_hash_object_start(hasher, 3);
+                semantic_hash_field(hasher, "x", x);
+                semantic_hash_field(hasher, "y", y);
+                semantic_hash_field(hasher, "z", z);
             }
             InstructionSource::FlagBit { flags, bit } => {
                 semantic_hash_object_start(hasher, 2);
@@ -1558,7 +1900,8 @@ impl SemanticHash for Instruction {
 
 impl SemanticHash for LeafDocument {
     fn semantic_hash(&self, hasher: &mut Sha256) {
-        semantic_hash_object_start(hasher, 11);
+        let field_count = 11 + usize::from(self.lookup_infinity_policy.is_some());
+        semantic_hash_object_start(hasher, field_count);
         semantic_hash_field(hasher, "arithmetic_slots", &self.arithmetic_slots);
         semantic_hash_field(hasher, "b3", &self.b3);
         semantic_hash_field(hasher, "curve", &self.curve);
@@ -1566,6 +1909,9 @@ impl SemanticHash for LeafDocument {
         semantic_hash_field(hasher, "field_modulus_hex", &self.field_modulus_hex);
         semantic_hash_field(hasher, "instructions", &self.instructions);
         semantic_hash_field(hasher, "interface_wires", &self.interface_wires);
+        if let Some(lookup_infinity_policy) = &self.lookup_infinity_policy {
+            semantic_hash_field(hasher, "lookup_infinity_policy", lookup_infinity_policy);
+        }
         semantic_hash_field(
             hasher,
             "lookup_interface_slots",
@@ -1792,6 +2138,13 @@ fn source_as_pair(source: &InstructionSource) -> (&str, &str) {
     }
 }
 
+fn source_as_triple(source: &InstructionSource) -> (&str, &str, &str) {
+    match source {
+        InstructionSource::Triple([first, second, third]) => (first, second, third),
+        _ => panic!("expected triple source"),
+    }
+}
+
 fn source_as_register(source: &InstructionSource) -> &str {
     match source {
         InstructionSource::Register(register) => register,
@@ -1817,6 +2170,41 @@ fn source_as_lookup(source: &InstructionSource) -> (&str, &str) {
     match source {
         InstructionSource::Lookup { table, key } => (table, key),
         _ => panic!("expected lookup source"),
+    }
+}
+
+fn source_as_streamed_tail(source: &InstructionSource) -> (&str, &str, &str, &str, &str) {
+    match source {
+        InstructionSource::StreamedTail { c, h, a, y, z } => (c, h, a, y, z),
+        _ => panic!("expected streamed tail source"),
+    }
+}
+
+fn source_as_fully_streamed_tail(source: &InstructionSource) -> (&str, &str, &str, &str) {
+    match source {
+        InstructionSource::FullyStreamedTail { x, h, y, z } => (x, h, y, z),
+        _ => panic!("expected fully streamed tail source"),
+    }
+}
+
+fn source_as_all_streamed_tail(source: &InstructionSource) -> (&str, &str, &str) {
+    match source {
+        InstructionSource::AllStreamedTail { x, y, z } => (x, y, z),
+        _ => panic!("expected all-streamed tail source"),
+    }
+}
+
+fn destination_as_register(destination: &InstructionDestination) -> &str {
+    match destination {
+        InstructionDestination::Register(register) => register,
+        _ => panic!("expected register destination"),
+    }
+}
+
+fn destination_as_registers(destination: &InstructionDestination) -> &[String] {
+    match destination {
+        InstructionDestination::Registers(registers) => registers,
+        _ => panic!("expected register-list destination"),
     }
 }
 
@@ -1869,15 +2257,175 @@ fn compile_leaf(leaf: &LeafDocument) -> CompiledLeaf {
     sorted_instructions.sort_by_key(|instruction| instruction.pc);
     let mut compiled = Vec::with_capacity(sorted_instructions.len());
     for instruction in sorted_instructions {
-        let dst_name = instruction
+        let destination = instruction
             .dst
             .as_ref()
             .expect("missing instruction destination");
+        if instruction.op == "complete_a0_streamed_tail" {
+            let dst_names = destination_as_registers(destination);
+            assert_eq!(dst_names.len(), 3);
+            let output_ids: Vec<RegisterId> = dst_names
+                .iter()
+                .map(|name| {
+                    if let Some(existing) = register_ids.get(name) {
+                        *existing
+                    } else {
+                        let next_id = register_ids.len();
+                        register_ids.insert(name.clone(), next_id);
+                        next_id
+                    }
+                })
+                .collect();
+            let (c_name, h_name, a_name, y_name, z_name) = source_as_streamed_tail(
+                instruction
+                    .src
+                    .as_ref()
+                    .expect("missing complete_a0_streamed_tail source"),
+            );
+            compiled.push(CompiledInstruction::CompleteA0StreamedTail {
+                out_x: output_ids[0],
+                out_y: output_ids[1],
+                out_z: output_ids[2],
+                c: ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    c_name,
+                    "complete_a0_streamed_tail C",
+                ),
+                h: ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    h_name,
+                    "complete_a0_streamed_tail H",
+                ),
+                a: ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    a_name,
+                    "complete_a0_streamed_tail A",
+                ),
+                y: ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    y_name,
+                    "complete_a0_streamed_tail Y",
+                ),
+                z: ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    z_name,
+                    "complete_a0_streamed_tail Z",
+                ),
+            });
+            defined.extend(dst_names.iter().cloned());
+            continue;
+        }
+        if instruction.op == "complete_a0_fully_streamed_tail" {
+            let dst_names = destination_as_registers(destination);
+            assert_eq!(dst_names.len(), 3);
+            let output_ids: Vec<RegisterId> = dst_names
+                .iter()
+                .map(|name| {
+                    if let Some(existing) = register_ids.get(name) {
+                        *existing
+                    } else {
+                        let next_id = register_ids.len();
+                        register_ids.insert(name.clone(), next_id);
+                        next_id
+                    }
+                })
+                .collect();
+            let (x_name, h_name, y_name, z_name) = source_as_fully_streamed_tail(
+                instruction
+                    .src
+                    .as_ref()
+                    .expect("missing complete_a0_fully_streamed_tail source"),
+            );
+            compiled.push(CompiledInstruction::CompleteA0FullyStreamedTail {
+                out_x: output_ids[0],
+                out_y: output_ids[1],
+                out_z: output_ids[2],
+                x: ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    x_name,
+                    "complete_a0_fully_streamed_tail X",
+                ),
+                h: ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    h_name,
+                    "complete_a0_fully_streamed_tail H",
+                ),
+                y: ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    y_name,
+                    "complete_a0_fully_streamed_tail Y",
+                ),
+                z: ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    z_name,
+                    "complete_a0_fully_streamed_tail Z",
+                ),
+            });
+            defined.extend(dst_names.iter().cloned());
+            continue;
+        }
+        if instruction.op == "complete_a0_all_streamed_tail" {
+            let dst_names = destination_as_registers(destination);
+            assert_eq!(dst_names.len(), 3);
+            let output_ids: Vec<RegisterId> = dst_names
+                .iter()
+                .map(|name| {
+                    if let Some(existing) = register_ids.get(name) {
+                        *existing
+                    } else {
+                        let next_id = register_ids.len();
+                        register_ids.insert(name.clone(), next_id);
+                        next_id
+                    }
+                })
+                .collect();
+            let (x_name, y_name, z_name) = source_as_all_streamed_tail(
+                instruction
+                    .src
+                    .as_ref()
+                    .expect("missing complete_a0_all_streamed_tail source"),
+            );
+            compiled.push(CompiledInstruction::CompleteA0AllStreamedTail {
+                out_x: output_ids[0],
+                out_y: output_ids[1],
+                out_z: output_ids[2],
+                x: ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    x_name,
+                    "complete_a0_all_streamed_tail X",
+                ),
+                y: ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    y_name,
+                    "complete_a0_all_streamed_tail Y",
+                ),
+                z: ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    z_name,
+                    "complete_a0_all_streamed_tail Z",
+                ),
+            });
+            defined.extend(dst_names.iter().cloned());
+            continue;
+        }
+        let dst_name = destination_as_register(destination);
         let dst = if let Some(existing) = register_ids.get(dst_name) {
             *existing
         } else {
             let next_id = register_ids.len();
-            register_ids.insert(dst_name.clone(), next_id);
+            register_ids.insert(dst_name.to_owned(), next_id);
             next_id
         };
         let compiled_instruction = match instruction.op.as_str() {
@@ -1986,6 +2534,51 @@ fn compile_leaf(leaf: &LeafDocument) -> CompiledLeaf {
                 );
                 CompiledInstruction::FieldMul { dst, left, right }
             }
+            "field_mul_lookup_x" => {
+                let src_name = source_as_register(
+                    instruction
+                        .src
+                        .as_ref()
+                        .expect("missing field_mul_lookup_x source"),
+                );
+                let src = ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    src_name,
+                    "field_mul_lookup_x source",
+                );
+                CompiledInstruction::FieldMulLookupX { dst, src }
+            }
+            "field_mul_lookup_y" => {
+                let src_name = source_as_register(
+                    instruction
+                        .src
+                        .as_ref()
+                        .expect("missing field_mul_lookup_y source"),
+                );
+                let src = ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    src_name,
+                    "field_mul_lookup_y source",
+                );
+                CompiledInstruction::FieldMulLookupY { dst, src }
+            }
+            "field_mul_lookup_sum" => {
+                let src_name = source_as_register(
+                    instruction
+                        .src
+                        .as_ref()
+                        .expect("missing field_mul_lookup_sum source"),
+                );
+                let src = ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    src_name,
+                    "field_mul_lookup_sum source",
+                );
+                CompiledInstruction::FieldMulLookupSum { dst, src }
+            }
             "field_add" => {
                 let (left_name, right_name) =
                     source_as_pair(instruction.src.as_ref().expect("missing field_add source"));
@@ -2019,6 +2612,50 @@ fn compile_leaf(leaf: &LeafDocument) -> CompiledLeaf {
                     "field_sub rhs",
                 );
                 CompiledInstruction::FieldSub { dst, left, right }
+            }
+            "field_sub_sum" => {
+                let (minuend_name, subtrahend_a_name, subtrahend_b_name) = source_as_triple(
+                    instruction
+                        .src
+                        .as_ref()
+                        .expect("missing field_sub_sum source"),
+                );
+                CompiledInstruction::FieldSubSum {
+                    dst,
+                    minuend: ensure_defined_register(
+                        &mut register_ids,
+                        &defined,
+                        minuend_name,
+                        "field_sub_sum minuend",
+                    ),
+                    subtrahend_a: ensure_defined_register(
+                        &mut register_ids,
+                        &defined,
+                        subtrahend_a_name,
+                        "field_sub_sum subtrahend_a",
+                    ),
+                    subtrahend_b: ensure_defined_register(
+                        &mut register_ids,
+                        &defined,
+                        subtrahend_b_name,
+                        "field_sub_sum subtrahend_b",
+                    ),
+                }
+            }
+            "field_triple" => {
+                let src_name = source_as_register(
+                    instruction
+                        .src
+                        .as_ref()
+                        .expect("missing field_triple source"),
+                );
+                let src = ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    src_name,
+                    "field_triple source",
+                );
+                CompiledInstruction::FieldTriple { dst, src }
             }
             "mul_const" => {
                 let src_name =
@@ -2071,7 +2708,7 @@ fn compile_leaf(leaf: &LeafDocument) -> CompiledLeaf {
             other => panic!("unsupported instruction opcode: {other}"),
         };
         compiled.push(compiled_instruction);
-        defined.insert(dst_name.clone());
+        defined.insert(dst_name.to_owned());
     }
     for output in ["qx", "qy", "qz"] {
         assert!(
@@ -2091,7 +2728,7 @@ fn compile_leaf(leaf: &LeafDocument) -> CompiledLeaf {
         output_qx: register_id(&register_ids, "qx"),
         output_qy: register_id(&register_ids, "qy"),
         output_qz: register_id(&register_ids, "qz"),
-        skip_on_lookup_infinity: false,
+        skip_on_lookup_infinity: leaf.lookup_infinity_policy.as_deref() == Some("boundary_noop"),
         instructions: compiled,
     }
 }
@@ -2274,7 +2911,8 @@ fn execute_leaf(
                 let f = (BigUint::from(21u32) * &registers[*z]) % modulus;
                 let m = (&i + &f) % modulus;
                 let n = mod_sub(&i, &f, modulus);
-                registers[*out_x] = mod_sub(&((&k * &n) % modulus), &((&e * &c) % modulus), modulus);
+                registers[*out_x] =
+                    mod_sub(&((&k * &n) % modulus), &((&e * &c) % modulus), modulus);
                 registers[*out_y] = ((&n * &m) + (&c * &l)) % modulus;
                 registers[*out_z] = ((&m * &e) + (&l * &k)) % modulus;
             }
@@ -2300,7 +2938,8 @@ fn execute_leaf(
                 let f = (BigUint::from(21u32) * &registers[*z]) % modulus;
                 let m = (&i + &f) % modulus;
                 let n = mod_sub(&i, &f, modulus);
-                registers[*out_x] = mod_sub(&((&k * &n) % modulus), &((&e * &c) % modulus), modulus);
+                registers[*out_x] =
+                    mod_sub(&((&k * &n) % modulus), &((&e * &c) % modulus), modulus);
                 registers[*out_y] = ((&n * &m) + (&c * &l)) % modulus;
                 registers[*out_z] = ((&m * &e) + (&l * &k)) % modulus;
             }
@@ -2482,6 +3121,8 @@ pub fn run_attestation(input: &AttestationInput) -> PublicValues {
         leaf_sha256: input.leaf_document.sha256.clone(),
         family_sha256: input.family_document.sha256.clone(),
         case_corpus_sha256: input.case_corpus_document.sha256.clone(),
+        resource_certificate_sha256: "legacy-full-document-path-without-resource-certificate"
+            .to_owned(),
         expected_full_oracle_non_clifford: claim.expected_full_oracle_non_clifford,
         expected_total_logical_qubits: claim.expected_total_logical_qubits,
         case_count: case_corpus.case_count,
@@ -2489,12 +3130,232 @@ pub fn run_attestation(input: &AttestationInput) -> PublicValues {
     }
 }
 
+fn validate_committed_value_document(
+    document: &CommittedDocument<SemanticJsonPayload>,
+    expected_document_type: &str,
+    expected_sha256: &str,
+) {
+    assert_eq!(document.document_type, expected_document_type);
+    assert_eq!(document.digest_scheme, DIGEST_SCHEME);
+    assert_eq!(document.sha256, expected_sha256);
+    assert_eq!(
+        semantic_payload_sha256(&document.document_type, &document.payload),
+        document.sha256
+    );
+}
+
+fn decode_committed_payload<T: DeserializeOwned>(
+    document: &CommittedDocument<SemanticJsonPayload>,
+) -> T {
+    serde_json::from_value(document.payload.0.clone()).expect("failed to decode committed payload")
+}
+
+fn claim_summary_from_claim(claim: &ClaimDocument) -> PreparedClaimSummary {
+    PreparedClaimSummary {
+        field_bits: claim.field_bits,
+        leaf_call_count_total: claim.leaf_call_count_total,
+        expected_full_oracle_non_clifford: claim.expected_full_oracle_non_clifford,
+        expected_total_logical_qubits: claim.expected_total_logical_qubits,
+        expected_case_count: claim.expected_case_count,
+        non_clifford_formula: claim.non_clifford_formula.clone(),
+        logical_qubit_formula: claim.logical_qubit_formula.clone(),
+    }
+}
+
+fn family_summary_from_family(family: &FamilyDocument) -> PreparedFamilySummary {
+    PreparedFamilySummary {
+        name: family.name.clone(),
+        arithmetic_leaf_non_clifford: family.arithmetic_leaf_non_clifford,
+        direct_seed_non_clifford: family.direct_seed_non_clifford,
+        per_leaf_lookup_non_clifford: family.per_leaf_lookup_non_clifford,
+        full_oracle_non_clifford: family.full_oracle_non_clifford,
+        arithmetic_slot_count: family.arithmetic_slot_count,
+        control_slot_count: family.control_slot_count,
+        borrowed_interface_qubits: family.borrowed_interface_qubits,
+        lookup_workspace_qubits: family.lookup_workspace_qubits,
+        live_phase_bits: family.live_phase_bits,
+        total_logical_qubits: family.total_logical_qubits,
+    }
+}
+
+fn prepared_case_corpus_from_case_corpus(case_corpus: &CaseCorpusDocument) -> PreparedCaseCorpus {
+    PreparedCaseCorpus {
+        field_modulus_hex: case_corpus.field_modulus_hex.clone(),
+        case_start_index: case_corpus.case_start_index,
+        case_count: case_corpus.case_count,
+        cases: case_corpus.cases.clone(),
+    }
+}
+
+fn json_object_field<'a>(value: &'a Value, key: &str) -> &'a Value {
+    value
+        .get(key)
+        .unwrap_or_else(|| panic!("missing resource certificate field: {key}"))
+}
+
+fn json_string_field<'a>(value: &'a Value, key: &str) -> &'a str {
+    json_object_field(value, key)
+        .as_str()
+        .unwrap_or_else(|| panic!("resource certificate field is not a string: {key}"))
+}
+
+fn json_u64_field(value: &Value, key: &str) -> u64 {
+    json_object_field(value, key)
+        .as_u64()
+        .unwrap_or_else(|| panic!("resource certificate field is not a u64: {key}"))
+}
+
+fn json_bool_field(value: &Value, key: &str) -> bool {
+    json_object_field(value, key)
+        .as_bool()
+        .unwrap_or_else(|| panic!("resource certificate field is not a bool: {key}"))
+}
+
+fn validate_resource_certificate(
+    certificate: &Value,
+    claim: &PreparedClaimSummary,
+    family: &PreparedFamilySummary,
+) {
+    assert_eq!(
+        json_string_field(certificate, "schema"),
+        "compiler-project-resource-liveness-certificate-v1"
+    );
+    assert!(json_bool_field(certificate, "pass"));
+    assert_eq!(
+        json_string_field(certificate, "selected_family"),
+        family.name.as_str()
+    );
+    assert_eq!(
+        json_u64_field(certificate, "field_bits"),
+        claim.field_bits as u64
+    );
+    assert_eq!(
+        json_u64_field(certificate, "global_peak_live_qubits"),
+        claim.expected_total_logical_qubits
+    );
+
+    let headline = json_object_field(certificate, "headline_totals");
+    assert_eq!(
+        json_u64_field(headline, "full_oracle_non_clifford"),
+        claim.expected_full_oracle_non_clifford
+    );
+    assert_eq!(
+        json_u64_field(headline, "total_logical_qubits"),
+        claim.expected_total_logical_qubits
+    );
+    assert_eq!(
+        json_u64_field(headline, "arithmetic_leaf_non_clifford"),
+        family.arithmetic_leaf_non_clifford
+    );
+    assert_eq!(
+        json_u64_field(headline, "per_leaf_lookup_non_clifford"),
+        family.per_leaf_lookup_non_clifford
+    );
+    assert_eq!(
+        json_u64_field(headline, "leaf_call_count_total"),
+        claim.leaf_call_count_total as u64
+    );
+
+    let leaf_liveness = json_object_field(certificate, "flat_leaf_liveness");
+    assert_eq!(
+        json_u64_field(leaf_liveness, "arithmetic_slots_from_schedule"),
+        family.arithmetic_slot_count as u64
+    );
+    assert_eq!(
+        json_u64_field(leaf_liveness, "control_slots_from_schedule"),
+        family.control_slot_count as u64
+    );
+    assert_eq!(
+        json_u64_field(leaf_liveness, "arithmetic_qubits_from_schedule"),
+        claim.field_bits as u64 * family.arithmetic_slot_count as u64
+    );
+    assert_eq!(json_u64_field(leaf_liveness, "borrowed_field_lanes"), 0);
+
+    let qroam_workspace = json_object_field(certificate, "qroam_workspace");
+    assert_eq!(
+        json_u64_field(qroam_workspace, "lookup_workspace_qubits"),
+        family.lookup_workspace_qubits as u64
+    );
+    assert_eq!(
+        json_u64_field(qroam_workspace, "coordinate_field_lanes_materialized"),
+        0
+    );
+    assert_eq!(
+        json_u64_field(qroam_workspace, "coordinate_field_lane_qubits_materialized"),
+        0
+    );
+
+    let checks = json_object_field(certificate, "checks")
+        .as_object()
+        .expect("resource certificate checks must be an object");
+    assert!(
+        checks.values().all(|value| value.as_bool() == Some(true)),
+        "resource certificate contains a failing check"
+    );
+}
+
 pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValues {
-    assert_eq!(input.schema, "compiler-project-zkp-attestation-input-v4");
+    assert_eq!(input.schema, "compiler-project-zkp-attestation-input-v5");
     assert_eq!(input.document_digest_scheme, DIGEST_SCHEME);
+
+    validate_committed_value_document(
+        &input.claim_document,
+        "attestation_claim",
+        &input.claim_sha256,
+    );
+    validate_committed_value_document(
+        &input.leaf_document,
+        "streamed_lookup_tail_leaf",
+        &input.leaf_sha256,
+    );
+    validate_committed_value_document(
+        &input.family_document,
+        "compiler_family_summary",
+        &input.family_sha256,
+    );
+    validate_committed_value_document(
+        &input.case_corpus_document,
+        "pointadd_case_corpus",
+        &input.case_corpus_sha256,
+    );
+    validate_committed_value_document(
+        &input.resource_certificate_document,
+        "resource_liveness_certificate",
+        &input.resource_certificate_sha256,
+    );
+
+    let claim_document: ClaimDocument = decode_committed_payload(&input.claim_document);
+    let leaf_document: LeafDocument = decode_committed_payload(&input.leaf_document);
+    let family_document: FamilyDocument = decode_committed_payload(&input.family_document);
+    let case_corpus_document: CaseCorpusDocument =
+        decode_committed_payload(&input.case_corpus_document);
+
+    assert_eq!(
+        input.claim_summary,
+        claim_summary_from_claim(&claim_document)
+    );
+    assert_eq!(
+        input.family_summary,
+        family_summary_from_family(&family_document)
+    );
+    assert_eq!(
+        input.prepared_case_corpus,
+        prepared_case_corpus_from_case_corpus(&case_corpus_document)
+    );
+    assert_eq!(input.prepared_leaf, compile_leaf(&leaf_document));
+    assert_eq!(claim_document.selected_family_name, family_document.name);
+    assert_eq!(
+        claim_document.expected_case_count,
+        case_corpus_document.case_count
+    );
 
     let claim = &input.claim_summary;
     let family = &input.family_summary;
+    validate_resource_certificate(
+        &input.resource_certificate_document.payload.0,
+        claim,
+        family,
+    );
     let case_corpus = &input.prepared_case_corpus;
     let compiled_cases = compile_prepared_case_corpus(case_corpus);
 
@@ -2615,6 +3476,7 @@ pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValue
         leaf_sha256: input.leaf_sha256.clone(),
         family_sha256: input.family_sha256.clone(),
         case_corpus_sha256: input.case_corpus_sha256.clone(),
+        resource_certificate_sha256: input.resource_certificate_sha256.clone(),
         expected_full_oracle_non_clifford: claim.expected_full_oracle_non_clifford,
         expected_total_logical_qubits: claim.expected_total_logical_qubits,
         case_count: case_corpus.case_count,
@@ -2650,12 +3512,16 @@ pub fn fixture_json(
 mod tests {
     use super::{run_prepared_attestation, PreparedAttestationInput};
 
-    #[test]
-    fn native_run_prepared_attestation_matches_checked_in_input_shape() {
-        let input: PreparedAttestationInput = serde_json::from_str(include_str!(
+    fn checked_input() -> PreparedAttestationInput {
+        serde_json::from_str(include_str!(
             "../../../artifacts/zkp_attestation_input.json"
         ))
-        .expect("failed to parse checked-in prepared attestation input");
+        .expect("failed to parse checked-in prepared attestation input")
+    }
+
+    #[test]
+    fn native_run_prepared_attestation_matches_checked_in_input_shape() {
+        let input = checked_input();
         let public_values = run_prepared_attestation(&input);
         assert_eq!(
             public_values.schema,
@@ -2667,10 +3533,7 @@ mod tests {
 
     #[test]
     fn bincode_roundtrip_checked_in_prepared_input_preserves_attestation_behavior() {
-        let input: PreparedAttestationInput = serde_json::from_str(include_str!(
-            "../../../artifacts/zkp_attestation_input.json"
-        ))
-        .expect("failed to parse checked-in prepared attestation input");
+        let input = checked_input();
         let bytes = bincode::serialize(&input)
             .expect("failed to bincode-serialize prepared attestation input");
         let roundtrip: PreparedAttestationInput = bincode::deserialize(&bytes)
@@ -2687,10 +3550,7 @@ mod tests {
 
     #[test]
     fn json_roundtrip_checked_in_prepared_input_preserves_shape() {
-        let input: PreparedAttestationInput = serde_json::from_str(include_str!(
-            "../../../artifacts/zkp_attestation_input.json"
-        ))
-        .expect("failed to parse checked-in prepared attestation input");
+        let input = checked_input();
         let json =
             serde_json::to_string(&input).expect("failed to serialize prepared attestation input");
         let roundtrip: PreparedAttestationInput =
@@ -2699,5 +3559,37 @@ mod tests {
             serde_json::to_value(&input).expect("failed to serialize original prepared input"),
             serde_json::to_value(&roundtrip).expect("failed to serialize roundtrip prepared input"),
         );
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_stale_claim_digest() {
+        let mut input = checked_input();
+        input.claim_sha256 = "00".repeat(32);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_mutated_committed_claim_payload() {
+        let mut input = checked_input();
+        input.claim_document.payload.0["expected_total_logical_qubits"] = serde_json::json!(1045);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_mutated_prepared_leaf() {
+        let mut input = checked_input();
+        input.prepared_leaf.register_count += 1;
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_mutated_prepared_case_corpus() {
+        let mut input = checked_input();
+        input.prepared_case_corpus.cases[0].case_id = "forged_case".to_owned();
+        run_prepared_attestation(&input);
     }
 }

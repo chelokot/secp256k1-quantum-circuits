@@ -132,6 +132,8 @@ PROOF_MANIFEST_PATHS = [
     'compiler_verification_project/artifacts/ft_ir_compositions.json',
     'compiler_verification_project/artifacts/whole_oracle_recount.json',
     'compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json',
+    'compiler_verification_project/artifacts/logical_resource_ledger.json',
+    'compiler_verification_project/artifacts/resource_liveness_certificate.json',
     'compiler_verification_project/artifacts/qubit_breakthrough_analysis.json',
     'compiler_verification_project/artifacts/subcircuit_equivalence.json',
     'compiler_verification_project/artifacts/verification_summary.json',

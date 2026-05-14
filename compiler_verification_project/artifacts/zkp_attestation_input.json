@@ -1,11 +1,669 @@
 {
-  "schema": "compiler-project-zkp-attestation-input-v4",
+  "schema": "compiler-project-zkp-attestation-input-v5",
   "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
   "selected_family_name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
   "claim_sha256": "e67198605a439798bdf556f565a3da3c3a83405c836db0a63df64aa09b1c8ee2",
   "leaf_sha256": "a8b6d7dc3f45c85b450a373f90a174cf4cc3bdfe85520c56ee7ec8db2c5f6ab1",
   "family_sha256": "987004b514b5499430aa45d6d83e472c9cdf4bf05fd457dc72472717c3760f38",
   "case_corpus_sha256": "bf3cb3d15e8cb9ba158e800047936d62d83aba34191ca50d5e6138dff57dd28b",
+  "resource_certificate_sha256": "a1f61b2c3831b3eefda5e3a82aae0b40adf98461c67848277fac5641d64767dc",
+  "claim_document": {
+    "document_type": "attestation_claim",
+    "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_claim.json",
+    "digest_scheme": "compiler-project-semantic-json-sha256-v1",
+    "sha256": "e67198605a439798bdf556f565a3da3c3a83405c836db0a63df64aa09b1c8ee2",
+    "payload": {
+      "schema": "compiler-project-zkp-attestation-claim-v1",
+      "selected_family_alias": "best-gate",
+      "selected_family_name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
+      "field_bits": 256,
+      "leaf_call_count_total": 31,
+      "expected_full_oracle_non_clifford": 32879331,
+      "expected_total_logical_qubits": 1044,
+      "expected_case_count": 8,
+      "non_clifford_formula": {
+        "arithmetic_leaf_non_clifford": 1060317,
+        "per_leaf_lookup_non_clifford": 297,
+        "direct_seed_non_clifford": 297,
+        "leaf_call_count_total": 31,
+        "arithmetic_component": 32869827,
+        "lookup_component": 9207,
+        "reconstructed_total": 32879331
+      },
+      "logical_qubit_formula": {
+        "field_bits": 256,
+        "arithmetic_slot_count": 3,
+        "control_slot_count": 1,
+        "borrowed_interface_qubits": 0,
+        "lookup_workspace_qubits": 274,
+        "live_phase_bits": 1,
+        "arithmetic_component": 768,
+        "reconstructed_total": 1044
+      },
+      "notes": [
+        "This claim intentionally stays at the repository exact-family boundary: exact point-add witness semantics plus exact compiler-family resource derivation.",
+        "It is similar in shape to the Google disclosure model, but it proves a public deterministic point-add corpus instead of Fiat-Shamir-generated hidden tests."
+      ]
+    }
+  },
+  "leaf_document": {
+    "document_type": "streamed_lookup_tail_leaf",
+    "artifact_path": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json",
+    "digest_scheme": "compiler-project-semantic-json-sha256-v1",
+    "sha256": "a8b6d7dc3f45c85b450a373f90a174cf4cc3bdfe85520c56ee7ec8db2c5f6ab1",
+    "payload": {
+      "schema": "compiler-project-streamed-lookup-tail-leaf-v1",
+      "variant": "a0_complete_mixed_streamed_lookup_tail_secp256k1",
+      "curve": "secp256k1",
+      "field_modulus_hex": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
+      "curve_b": 7,
+      "b3": 21,
+      "arithmetic_slots": [
+        "qx",
+        "qy",
+        "qz"
+      ],
+      "interface_wires": [
+        "Q.X",
+        "Q.Y",
+        "Q.Z",
+        "k",
+        "T.x",
+        "T.y",
+        "T.meta"
+      ],
+      "instructions": [
+        {
+          "pc": 0,
+          "op": "load_input",
+          "dst": "qx",
+          "src": "Q.X",
+          "comment": "Accumulator X enters the arithmetic register file."
+        },
+        {
+          "pc": 1,
+          "op": "load_input",
+          "dst": "qy",
+          "src": "Q.Y",
+          "comment": "Accumulator Y enters the arithmetic register file."
+        },
+        {
+          "pc": 2,
+          "op": "load_input",
+          "dst": "qz",
+          "src": "Q.Z",
+          "comment": "Accumulator Z enters the arithmetic register file."
+        },
+        {
+          "pc": 3,
+          "op": "lookup_meta",
+          "dst": "lookup_meta",
+          "src": {
+            "table": "T.meta",
+            "key": "k"
+          },
+          "comment": "Metadata bit0 marks the neutral lookup entry."
+        },
+        {
+          "pc": 4,
+          "op": "bool_from_flag",
+          "dst": "f_lookup_inf",
+          "src": {
+            "flags": "lookup_meta",
+            "bit": 0
+          },
+          "comment": "Boundary no-op predicate for the k = 0 lookup entry."
+        },
+        {
+          "pc": 5,
+          "op": "complete_a0_all_streamed_tail",
+          "dst": [
+            "qx",
+            "qy",
+            "qz"
+          ],
+          "src": {
+            "x": "qx",
+            "y": "qy",
+            "z": "qz"
+          },
+          "comment": "Multi-output streamed tail derives H, A, C, I, K, L, E, F, M, N internally and writes X3, Y3, Z3."
+        }
+      ],
+      "lookup_interface_slots": [
+        "lookup_meta"
+      ],
+      "lookup_constant_sources": [
+        "lookup_x",
+        "lookup_y",
+        "lookup_x_plus_y"
+      ],
+      "lookup_infinity_policy": "boundary_noop",
+      "tail_macro": {
+        "opcode": "complete_a0_all_streamed_tail",
+        "inputs": [
+          "X",
+          "Y",
+          "Z"
+        ],
+        "outputs": [
+          "X3",
+          "Y3",
+          "Z3"
+        ],
+        "non_clifford_lowering": "one G = X + Y field addition, one streamed lookup-(x+y) multiplication for H, two streamed lookup-x multiplications for A and Zx, one C = 21(X + Zx) fixed-chain construction, two streamed lookup-y multiplications for I and yZ, one fused K = H - A - I subtraction, one fused L = 3A double-add, one fixed 21Z multiplication, three internal add/sub kernels, six output multipliers, and three output add/sub kernels"
+      },
+      "notes": [
+        "This executable leaf contract keeps lookup x/y as table-fed constants consumed by arithmetic kernels rather than field-sized lookup output wires.",
+        "The neutral lookup entry is a boundary no-op: the hot leaf is executed only for nonzero lookup entries, and the boundary keeps the accumulator unchanged for k = 0.",
+        "The complete_a0_all_streamed_tail macro is a multi-output lowering of the complete-add tail from three live field values and is counted with all internal G, H, A, Zx, C, I, K, L, yZ, F, E/M/N, product, and output-combine work."
+      ]
+    }
+  },
+  "family_document": {
+    "document_type": "compiler_family_summary",
+    "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_family.json",
+    "digest_scheme": "compiler-project-semantic-json-sha256-v1",
+    "sha256": "987004b514b5499430aa45d6d83e472c9cdf4bf05fd457dc72472717c3760f38",
+    "payload": {
+      "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
+      "summary": "Central standard-QROAM lookup family: folded lookup control with standard QROAM coordinate streams consumed by table-controlled arithmetic kernels. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Executable streamed lookup leaf with table-fed coordinate multipliers, boundary no-op semantics, and a counted multi-output complete-add tail.",
+      "gate_set": "Clifford + standard QROAM coordinate streams + measurement; Clifford + classically controlled dyadic phase + measurement",
+      "phase_shell": "semiclassical_qft_v1",
+      "slot_allocation_family": "streamed_lookup_tail_leaf_v1",
+      "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
+      "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
+      "arithmetic_leaf_non_clifford": 1060317,
+      "direct_seed_non_clifford": 297,
+      "per_leaf_lookup_non_clifford": 297,
+      "full_oracle_non_clifford": 32879331,
+      "arithmetic_slot_count": 3,
+      "control_slot_count": 1,
+      "borrowed_interface_qubits": 0,
+      "lookup_workspace_qubits": 274,
+      "live_phase_bits": 1,
+      "total_logical_qubits": 1044,
+      "phase_shell_hadamards": 512,
+      "phase_shell_measurements": 512,
+      "phase_shell_rotations": 511,
+      "phase_shell_rotation_depth": 511,
+      "total_measurements": 5444867,
+      "notes": [
+        "This is the repository standard-QROM primitive-circuit lookup boundary. Unlike the rejected bitwise-banked family, it does not treat the 32768-entry coordinate table as 15 independent 2-way decodes.",
+        "The selected coordinate stream pays the standard QROAM compute and measured-uncompute costs in arithmetic_lowerings.json for every table-controlled arithmetic consumer.",
+        "The peak lookup workspace counts the folded-control qubits plus the full QROAMClean target and junk-register capacity required by the coordinate-stream cost model.",
+        "This family is exact for the chosen semiclassical inverse-QFT schedule with one aggregated classical basis update per noninitial bit.",
+        "It preserves the oracle family while collapsing the live quantum phase register from 512 qubits to one qubit."
+      ]
+    }
+  },
+  "case_corpus_document": {
+    "document_type": "pointadd_case_corpus",
+    "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_cases.json",
+    "digest_scheme": "compiler-project-semantic-json-sha256-v1",
+    "sha256": "bf3cb3d15e8cb9ba158e800047936d62d83aba34191ca50d5e6138dff57dd28b",
+    "payload": {
+      "schema": "compiler-project-zkp-attestation-cases-v1",
+      "curve": "secp256k1",
+      "field_modulus_hex": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
+      "curve_b": 7,
+      "seed_sha256": "27b1c651762927a913ab65cbcc63d54f649f84a124d6d636914b901f81eabea0",
+      "seed_hash_scheme": "compiler-project-leaf-canonical-json-sha256-v1",
+      "case_count": 8,
+      "category_counts": {
+        "zero_zero": 1,
+        "accumulator_infinity": 1,
+        "lookup_infinity": 1,
+        "doubling": 1,
+        "inverse": 1,
+        "random": 3
+      },
+      "cases": [
+        {
+          "case_id": "zero_zero_0000",
+          "category": "zero_zero",
+          "accumulator": null,
+          "lookup": null,
+          "expected": null
+        },
+        {
+          "case_id": "accumulator_infinity_0001",
+          "category": "accumulator_infinity",
+          "accumulator": null,
+          "lookup": {
+            "x_hex": "4ec0a4ab1ab7b847d2efccd8ece309c8b6f41a01b7595c2adf7bac1ed0a4f4e1",
+            "y_hex": "973f065f4921608c0261b2b60eb4cfb5ea7b5066339b23b2e2390304511cbc90"
+          },
+          "expected": {
+            "x_hex": "4ec0a4ab1ab7b847d2efccd8ece309c8b6f41a01b7595c2adf7bac1ed0a4f4e1",
+            "y_hex": "973f065f4921608c0261b2b60eb4cfb5ea7b5066339b23b2e2390304511cbc90"
+          }
+        },
+        {
+          "case_id": "lookup_infinity_0002",
+          "category": "lookup_infinity",
+          "accumulator": {
+            "x_hex": "f165fcfafba975901a55e67e50c8632c3e3f0817fa31f209735d1a92452e92f1",
+            "y_hex": "aa3bc4847601e3051a4e82ee056fa862e9af685d8b9dada13bd25f1a0b0860af"
+          },
+          "lookup": null,
+          "expected": {
+            "x_hex": "f165fcfafba975901a55e67e50c8632c3e3f0817fa31f209735d1a92452e92f1",
+            "y_hex": "aa3bc4847601e3051a4e82ee056fa862e9af685d8b9dada13bd25f1a0b0860af"
+          }
+        },
+        {
+          "case_id": "doubling_0003",
+          "category": "doubling",
+          "accumulator": {
+            "x_hex": "948c9d88fc5f7da7d87d94e7e95e0b46e486d6b23956abd351f9c2bc6494b44e",
+            "y_hex": "737c58ef51cd21ae1ea38f706d357135e0c864db3d11c618a329a11ecab80954"
+          },
+          "lookup": {
+            "x_hex": "948c9d88fc5f7da7d87d94e7e95e0b46e486d6b23956abd351f9c2bc6494b44e",
+            "y_hex": "737c58ef51cd21ae1ea38f706d357135e0c864db3d11c618a329a11ecab80954"
+          },
+          "expected": {
+            "x_hex": "057c6d689b5284a7e2284030e363ba553edff58c0ce780184ab87a61ba93b49f",
+            "y_hex": "8fa8f29b1580ba3f137fdab556bb26ca6d2d24fa052c1de0c154de276056cd2a"
+          }
+        },
+        {
+          "case_id": "inverse_0004",
+          "category": "inverse",
+          "accumulator": {
+            "x_hex": "3d4a78290a8e9f69108168bfaf4ab0466f0ed7bb23978921b20c1d0389102b27",
+            "y_hex": "0e59f572008856bab54eec98ccb0b8f1d5ad5cf6ed80b1afdc8c1ceec27c229b"
+          },
+          "lookup": {
+            "x_hex": "3d4a78290a8e9f69108168bfaf4ab0466f0ed7bb23978921b20c1d0389102b27",
+            "y_hex": "f1a60a8dff77a9454ab11367334f470e2a52a309127f4e502373e3103d83d994"
+          },
+          "expected": null
+        },
+        {
+          "case_id": "random_0005",
+          "category": "random",
+          "accumulator": {
+            "x_hex": "632eaae04460531d7d06665525c70e35e2e5f7dc6c4890b6e680e455d43f7cb6",
+            "y_hex": "65562e5da4505df1d84e6e387f7da88935a90eed53a2f52f6bd54751c1cec0ed"
+          },
+          "lookup": {
+            "x_hex": "d9a97b1acfbe0ebe6b845485eb5caa58ea5e8552b3b0ceed7a1ff44371b5d875",
+            "y_hex": "53a596076466e66594563f0f2d93d3d30fc2108a8673ab341bc1f0310d804402"
+          },
+          "expected": {
+            "x_hex": "69fc6bd72504c6e0ecc4d5899c328b607bff43f4822780508ded5c7e2289522f",
+            "y_hex": "233b5831e88573b2c28d585117a5cf10dcff5ebedab72b144161ecb712f04f93"
+          }
+        },
+        {
+          "case_id": "random_0006",
+          "category": "random",
+          "accumulator": {
+            "x_hex": "be6ab9df60212113f543b1ae5c91a5eeee38f561f00a97ecd1d62686e0cb0890",
+            "y_hex": "4ca7977ba298c97c7681d39b58db5d5869bcb4bc837649893499874633fca499"
+          },
+          "lookup": {
+            "x_hex": "c5e3fa9d8f1650dfbea4a6d3fb783f7021c887bbb63a3c96ab3ab3c3c570e654",
+            "y_hex": "6d4342d636d58bd80d8609dccd534ea8deea6f9d02052ce39b6c25461ce25927"
+          },
+          "expected": {
+            "x_hex": "d4f5de12fe74ec1c6f515b45809ff658f02a6dc393088671eeeee9c4977dc0f0",
+            "y_hex": "5eb7824a18670f46ced24019f9467fba3d3559ed097ad17f8602c1dd7aa921b8"
+          }
+        },
+        {
+          "case_id": "random_0007",
+          "category": "random",
+          "accumulator": {
+            "x_hex": "af9b1a00d9e10c1d5023515167890ee2f8a4b7033fcb835dedf5332807a0e28d",
+            "y_hex": "299f49739aeb0865b03c6ab5a4cc82a7c1f5eb30207dd17a22831ee9db30c0f8"
+          },
+          "lookup": {
+            "x_hex": "d19c3437e2b40e0048c6a129d403a0cee5ace41a347195d0b293d7f5b77a3304",
+            "y_hex": "c150020d645fac5517b455408e7079287713dac77147daec298a9171bc39f6d1"
+          },
+          "expected": {
+            "x_hex": "f4307e8fc90c3def82a1774c783deca8ae652f143eebaa9ac0600d9dcaad0e14",
+            "y_hex": "e61fcc5a44d54a5c6d070922e14f3f507911c341a098ee445572526061cfcde0"
+          }
+        }
+      ],
+      "notes": [
+        "These point-add challenge cases are deterministic and public, derived from the streamed lookup tail leaf hash stream.",
+        "The categories intentionally force neutral-entry, doubling, inverse, and ordinary mixed-add paths."
+      ]
+    }
+  },
+  "resource_certificate_document": {
+    "document_type": "resource_liveness_certificate",
+    "artifact_path": "compiler_verification_project/artifacts/resource_liveness_certificate.json",
+    "digest_scheme": "compiler-project-semantic-json-sha256-v1",
+    "sha256": "a1f61b2c3831b3eefda5e3a82aae0b40adf98461c67848277fac5641d64767dc",
+    "payload": {
+      "schema": "compiler-project-resource-liveness-certificate-v1",
+      "selected_family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
+      "field_bits": 256,
+      "source_artifacts": {
+        "family_frontier": "compiler_verification_project/artifacts/family_frontier.json",
+        "streamed_lookup_tail_leaf_slot_allocation": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json",
+        "arithmetic_lowerings": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+        "streamed_lookup_table_multiplier_resource": "compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json",
+        "logical_resource_ledger": "compiler_verification_project/artifacts/logical_resource_ledger.json"
+      },
+      "headline_totals": {
+        "full_oracle_non_clifford": 32879331,
+        "total_logical_qubits": 1044,
+        "arithmetic_leaf_non_clifford": 1060317,
+        "per_leaf_lookup_non_clifford": 297,
+        "leaf_call_count_total": 31
+      },
+      "flat_leaf_liveness": {
+        "arithmetic_slots_from_schedule": 3,
+        "control_slots_from_schedule": 1,
+        "arithmetic_qubits_from_schedule": 768,
+        "control_qubits_from_schedule": 1,
+        "borrowed_field_lanes": 0,
+        "instruction_count": 6,
+        "per_pc": [
+          {
+            "pc": 0,
+            "opcode": "load_input",
+            "arithmetic_slots_needed_during_write": 1,
+            "control_slots_needed_during_write": 0
+          },
+          {
+            "pc": 1,
+            "opcode": "load_input",
+            "arithmetic_slots_needed_during_write": 2,
+            "control_slots_needed_during_write": 0
+          },
+          {
+            "pc": 2,
+            "opcode": "load_input",
+            "arithmetic_slots_needed_during_write": 3,
+            "control_slots_needed_during_write": 0
+          },
+          {
+            "pc": 3,
+            "opcode": "lookup_meta",
+            "arithmetic_slots_needed_during_write": 3,
+            "control_slots_needed_during_write": 0
+          },
+          {
+            "pc": 4,
+            "opcode": "bool_from_flag",
+            "arithmetic_slots_needed_during_write": 3,
+            "control_slots_needed_during_write": 1
+          },
+          {
+            "pc": 5,
+            "opcode": "complete_a0_all_streamed_tail",
+            "arithmetic_slots_needed_during_write": 3,
+            "control_slots_needed_during_write": 0
+          }
+        ]
+      },
+      "qroam_workspace": {
+        "domain_size": 32768,
+        "field_bits": 256,
+        "block_size": 1,
+        "target_register_qubits": 256,
+        "junk_register_count": 0,
+        "junk_register_qubits": 0,
+        "target_plus_junk_qubits": 256,
+        "lookup_compute_non_clifford": 32768,
+        "measured_uncompute_non_clifford": 32768,
+        "per_stream_non_clifford": 65536,
+        "folded_control_workspace_qubits": 18,
+        "lookup_workspace_qubits": 274,
+        "coordinate_field_lanes_materialized": 0,
+        "coordinate_field_lane_qubits_materialized": 0,
+        "whole_oracle_stream_count": 155
+      },
+      "macro_lowering_inventory": {
+        "opcode": "complete_a0_all_streamed_tail",
+        "exact_non_clifford_per_kernel": 1060317,
+        "stage_count": 29,
+        "stages": [
+          {
+            "name": "tail_derive_g",
+            "category": "tail_combine",
+            "non_clifford_total": 255,
+            "block_count": 1
+          },
+          {
+            "name": "tail_h_streamed_lookup_x_plus_y_standard_qroam_oracle",
+            "category": "streamed_lookup_data_select",
+            "non_clifford_total": 65536,
+            "block_count": 2
+          },
+          {
+            "name": "tail_h_partial_products",
+            "category": "schoolbook_grid",
+            "non_clifford_total": 65536,
+            "block_count": 1
+          },
+          {
+            "name": "tail_h_controlled_add_path",
+            "category": "controlled_add",
+            "non_clifford_total": 255,
+            "block_count": 1
+          },
+          {
+            "name": "tail_h_controlled_sub_path",
+            "category": "controlled_subtract",
+            "non_clifford_total": 256,
+            "block_count": 1
+          },
+          {
+            "name": "all_streamed_tail_a_streamed_lookup_x_standard_qroam_oracle",
+            "category": "streamed_lookup_data_select",
+            "non_clifford_total": 65536,
+            "block_count": 2
+          },
+          {
+            "name": "all_streamed_tail_a_partial_products",
+            "category": "schoolbook_grid",
+            "non_clifford_total": 65536,
+            "block_count": 1
+          },
+          {
+            "name": "all_streamed_tail_a_controlled_add_path",
+            "category": "controlled_add",
+            "non_clifford_total": 255,
+            "block_count": 1
+          },
+          {
+            "name": "all_streamed_tail_a_controlled_sub_path",
+            "category": "controlled_subtract",
+            "non_clifford_total": 256,
+            "block_count": 1
+          },
+          {
+            "name": "all_streamed_tail_zx_streamed_lookup_x_standard_qroam_oracle",
+            "category": "streamed_lookup_data_select",
+            "non_clifford_total": 65536,
+            "block_count": 2
+          },
+          {
+            "name": "all_streamed_tail_zx_partial_products",
+            "category": "schoolbook_grid",
+            "non_clifford_total": 65536,
+            "block_count": 1
+          },
+          {
+            "name": "all_streamed_tail_zx_controlled_add_path",
+            "category": "controlled_add",
+            "non_clifford_total": 255,
+            "block_count": 1
+          },
+          {
+            "name": "all_streamed_tail_zx_controlled_sub_path",
+            "category": "controlled_subtract",
+            "non_clifford_total": 256,
+            "block_count": 1
+          },
+          {
+            "name": "all_streamed_tail_derive_c",
+            "category": "tail_combine",
+            "non_clifford_total": 1785,
+            "block_count": 2
+          },
+          {
+            "name": "all_streamed_fully_streamed_tail_i_streamed_lookup_y_standard_qroam_oracle",
+            "category": "streamed_lookup_data_select",
+            "non_clifford_total": 65536,
+            "block_count": 2
+          },
+          {
+            "name": "all_streamed_fully_streamed_tail_i_partial_products",
+            "category": "schoolbook_grid",
+            "non_clifford_total": 65536,
+            "block_count": 1
+          },
+          {
+            "name": "all_streamed_fully_streamed_tail_i_controlled_add_path",
+            "category": "controlled_add",
+            "non_clifford_total": 255,
+            "block_count": 1
+          },
+          {
+            "name": "all_streamed_fully_streamed_tail_i_controlled_sub_path",
+            "category": "controlled_subtract",
+            "non_clifford_total": 256,
+            "block_count": 1
+          },
+          {
+            "name": "all_streamed_fully_streamed_tail_derive_k_l",
+            "category": "tail_combine",
+            "non_clifford_total": 1020,
+            "block_count": 2
+          },
+          {
+            "name": "all_streamed_fully_streamed_tail_yz_streamed_lookup_y_standard_qroam_oracle",
+            "category": "streamed_lookup_data_select",
+            "non_clifford_total": 65536,
+            "block_count": 2
+          },
+          {
+            "name": "all_streamed_fully_streamed_tail_yz_partial_products",
+            "category": "schoolbook_grid",
+            "non_clifford_total": 65536,
+            "block_count": 1
+          },
+          {
+            "name": "all_streamed_fully_streamed_tail_yz_controlled_add_path",
+            "category": "controlled_add",
+            "non_clifford_total": 255,
+            "block_count": 1
+          },
+          {
+            "name": "all_streamed_fully_streamed_tail_yz_controlled_sub_path",
+            "category": "controlled_subtract",
+            "non_clifford_total": 256,
+            "block_count": 1
+          },
+          {
+            "name": "all_streamed_fully_streamed_tail_fixed_21z",
+            "category": "mul_const",
+            "non_clifford_total": 1530,
+            "block_count": 1
+          },
+          {
+            "name": "all_streamed_fully_streamed_tail_internal_combines",
+            "category": "tail_combine",
+            "non_clifford_total": 765,
+            "block_count": 1
+          },
+          {
+            "name": "all_streamed_fully_streamed_tail_partial_products",
+            "category": "schoolbook_grid",
+            "non_clifford_total": 393216,
+            "block_count": 1
+          },
+          {
+            "name": "all_streamed_fully_streamed_tail_controlled_add_path",
+            "category": "controlled_add",
+            "non_clifford_total": 1530,
+            "block_count": 1
+          },
+          {
+            "name": "all_streamed_fully_streamed_tail_controlled_sub_path",
+            "category": "controlled_subtract",
+            "non_clifford_total": 1536,
+            "block_count": 1
+          },
+          {
+            "name": "all_streamed_fully_streamed_tail_output_combine",
+            "category": "tail_combine",
+            "non_clifford_total": 765,
+            "block_count": 1
+          }
+        ]
+      },
+      "global_peak_owners": [
+        {
+          "owner_id": "arithmetic_slot_register_file",
+          "logical_qubits": 768,
+          "source_artifact": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json",
+          "decomposition": {
+            "field_slots": 768
+          },
+          "decomposition_total": 768
+        },
+        {
+          "owner_id": "control_slot_register_file",
+          "logical_qubits": 1,
+          "source_artifact": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json",
+          "decomposition": {
+            "control_bits": 1
+          },
+          "decomposition_total": 1
+        },
+        {
+          "owner_id": "lookup_workspace",
+          "logical_qubits": 274,
+          "source_artifact": "compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json",
+          "decomposition": {
+            "folded_control_workspace_qubits": 18,
+            "qroam_clean_target_register_qubits": 256,
+            "qroam_clean_junk_register_qubits": 0
+          },
+          "decomposition_total": 274
+        },
+        {
+          "owner_id": "phase_shell_live_register",
+          "logical_qubits": 1,
+          "source_artifact": "compiler_verification_project/artifacts/phase_shell_lowerings.json",
+          "decomposition": {
+            "phase_bits": 1
+          },
+          "decomposition_total": 1
+        }
+      ],
+      "global_peak_live_qubits": 1044,
+      "checks": {
+        "selected_family_matches_frontier_best_qubit": true,
+        "leaf_peak_arithmetic_slots_derived_from_per_pc": true,
+        "leaf_peak_control_slots_derived_from_per_pc": true,
+        "leaf_arithmetic_qubits_match_field_width": true,
+        "owner_total_matches_selected_family": true,
+        "owner_decompositions_are_numeric": true,
+        "qroam_cost_matches_workspace_block_size": true,
+        "qroam_cost_matches_non_clifford_model": true,
+        "qroam_workspace_is_counted_not_borrowed": true,
+        "arithmetic_leaf_non_clifford_matches_lowering_reconstruction": true,
+        "tail_macro_has_explicit_internal_stage_inventory": true
+      },
+      "pass": true,
+      "notes": [
+        "This certificate is the compact resource object bound by the ZKP input: it ties the executable leaf liveness, QROAM workspace, arithmetic lowering inventory, and global owner ledger to the selected headline.",
+        "It is intentionally smaller than the full primitive-operation artifacts, but all numeric capacity checks are derived from checked artifacts rather than prose-only accounting."
+      ]
+    }
+  },
   "claim_summary": {
     "field_bits": 256,
     "leaf_call_count_total": 31,
@@ -213,7 +871,7 @@
     ]
   },
   "notes": [
-    "The proof input is a prepared attestation bundle: it carries the public document digests plus a proof-ready compiled leaf and deterministic public cases.",
-    "The checked JSON claim, family summary, and case corpus remain the source-of-truth sidecars for audit and regeneration."
+    "The proof input carries both the committed source documents and proof-ready reductions.",
+    "The guest recomputes every source-document digest and derives the prepared leaf/case reductions from those documents before publishing public values."
   ]
 }

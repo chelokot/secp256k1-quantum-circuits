@@ -30,6 +30,7 @@ from physical_estimator import (
     build_or_load_azure_estimator_results_payload,
 )
 from resource_ledger import build_logical_resource_ledger, qroam_clean_stream_cost
+from resource_certificate import build_resource_liveness_certificate
 from project import (
     FIELD_BITS,
     FOLDED_MAG_BITS,
@@ -144,6 +145,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'family_frontier': artifact_root / 'family_frontier.json',
         'standard_qrom_lookup_assessment': artifact_root / 'standard_qrom_lookup_assessment.json',
         'logical_resource_ledger': artifact_root / 'logical_resource_ledger.json',
+        'resource_liveness_certificate': artifact_root / 'resource_liveness_certificate.json',
         'qubit_breakthrough_analysis': artifact_root / 'qubit_breakthrough_analysis.json',
         'full_attack_inventory': artifact_root / 'full_attack_inventory.json',
         'ft_ir_compositions': artifact_root / 'ft_ir_compositions.json',
@@ -1120,6 +1122,27 @@ def build_logical_resource_ledger_checks(artifacts: Mapping[str, Any]) -> Dict[s
     return _summarize_checks(checks)
 
 
+def build_resource_liveness_certificate_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    certificate = artifacts['resource_liveness_certificate']
+    expected = build_resource_liveness_certificate(
+        frontier=artifacts['family_frontier'],
+        streamed_lookup_tail_slot_allocation=artifacts['streamed_lookup_tail_leaf_slot_allocation'],
+        arithmetic_lowerings=artifacts['arithmetic_lowerings'],
+        streamed_lookup_resource=artifacts['streamed_lookup_table_multiplier_resource'],
+        logical_resource_ledger=artifacts['logical_resource_ledger'],
+        field_bits=FIELD_BITS,
+    )
+    selected = artifacts['family_frontier']['best_qubit_family']
+    checks = [
+        _check('resource_liveness_certificate_matches_generator', certificate == expected, expected, certificate),
+        _check('resource_liveness_certificate_schema_is_current', certificate['schema'] == 'compiler-project-resource-liveness-certificate-v1', 'compiler-project-resource-liveness-certificate-v1', certificate['schema']),
+        _check('resource_liveness_certificate_passes_internal_checks', certificate['pass'] is True and all(certificate['checks'].values()), True, certificate['checks']),
+        _check('resource_liveness_certificate_binds_selected_headline', certificate['selected_family'] == selected['name'] and certificate['headline_totals']['full_oracle_non_clifford'] == selected['full_oracle_non_clifford'] and certificate['headline_totals']['total_logical_qubits'] == selected['total_logical_qubits'], selected, certificate['headline_totals']),
+        _check('resource_liveness_certificate_derives_peak_from_schedule_and_owners', certificate['flat_leaf_liveness']['arithmetic_slots_from_schedule'] == selected['arithmetic_slot_count'] and certificate['global_peak_live_qubits'] == selected['total_logical_qubits'], {'arithmetic_slot_count': selected['arithmetic_slot_count'], 'total_logical_qubits': selected['total_logical_qubits']}, {'arithmetic_slots_from_schedule': certificate['flat_leaf_liveness']['arithmetic_slots_from_schedule'], 'global_peak_live_qubits': certificate['global_peak_live_qubits']}),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_qubit_breakthrough_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     analysis = artifacts['qubit_breakthrough_analysis']
     best_qubit = artifacts['family_frontier']['best_qubit_family']
@@ -1792,6 +1815,7 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
         'standard_qrom_lookup_assessment': 'compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json',
         'logical_resource_ledger': 'compiler_verification_project/artifacts/logical_resource_ledger.json',
+        'resource_liveness_certificate': 'compiler_verification_project/artifacts/resource_liveness_certificate.json',
         'qubit_breakthrough_analysis': 'compiler_verification_project/artifacts/qubit_breakthrough_analysis.json',
         'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
         'ft_ir_compositions': 'compiler_verification_project/artifacts/ft_ir_compositions.json',
@@ -1836,14 +1860,15 @@ def build_azure_seed_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     observed = artifacts['azure_resource_estimator_logical_counts']
     observed_family_names = [row['family'] for row in observed['families']]
     expected_family_names = [row['family'] for row in expected['families']]
-    if observed_family_names != expected_family_names:
+    filtered_runtime_note = 'When qsharp/qdk is unavailable, this artifact is filtered to the subset of families that have checked recorded estimator outputs in the repository.'
+    if observed_family_names != expected_family_names or filtered_runtime_note in observed.get('notes', []):
         observed_name_set = set(observed_family_names)
         expected = {
             **expected,
             'families': [row for row in expected['families'] if row['family'] in observed_name_set],
             'notes': [
                 *expected['notes'],
-                'When qsharp/qdk is unavailable, this artifact is filtered to the subset of families that have checked recorded estimator outputs in the repository.',
+                filtered_runtime_note,
             ],
         }
     checks = [
@@ -2102,6 +2127,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'streamed_lookup_table_multiplier_resource_checks': lambda: build_streamed_lookup_table_multiplier_resource_checks(artifacts),
         'standard_qrom_lookup_assessment_checks': lambda: build_standard_qrom_lookup_assessment_checks(artifacts),
         'logical_resource_ledger_checks': lambda: build_logical_resource_ledger_checks(artifacts),
+        'resource_liveness_certificate_checks': lambda: build_resource_liveness_certificate_checks(artifacts),
         'qubit_breakthrough_checks': lambda: build_qubit_breakthrough_checks(artifacts),
         'full_attack_inventory_checks': lambda: build_full_attack_inventory_checks(artifacts),
         'ft_ir_checks': lambda: build_ft_ir_checks(artifacts, repo_root),
