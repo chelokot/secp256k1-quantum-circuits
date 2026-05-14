@@ -3438,6 +3438,30 @@ fn validate_resource_certificate(
         "tail macro must be expanded into primitive leaf-sigma rows"
     );
 
+    let materialized_stream = json_object_field(certificate, "materialized_operation_stream");
+    assert_eq!(
+        json_string_field(materialized_stream, "family"),
+        family.name.as_str()
+    );
+    let materialized_gate_totals = json_object_field(materialized_stream, "gate_totals");
+    assert_eq!(
+        json_u64_field(materialized_gate_totals, "ccx"),
+        claim.expected_full_oracle_non_clifford
+    );
+    assert!(
+        json_string_field(materialized_stream, "operation_stream_sha256").len() == 64,
+        "materialized operation stream digest must be a sha256 hex digest"
+    );
+    let materialized_checks = json_object_field(materialized_stream, "reconstruction_checks")
+        .as_object()
+        .expect("materialized stream checks must be an object");
+    assert!(
+        materialized_checks
+            .values()
+            .all(|value| value.as_bool() == Some(true)),
+        "materialized operation stream contains a failing check"
+    );
+
     let checks = json_object_field(certificate, "checks")
         .as_object()
         .expect("resource certificate checks must be an object");

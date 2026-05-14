@@ -10,6 +10,13 @@ Headline under review:
 - `1,044` logical qubits
 - family: `folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1`
 
+Current post-remediation checked headline on this branch:
+
+- `34,736,076` non-Clifford
+- `1,044` logical qubits
+- same family, now with explicit secp256k1 pseudo-Mersenne multiplication
+  reduction counted in the arithmetic lowering
+
 This document is intentionally adversarial. It is not a release note and not a
 claim that the result is false. It records every major place where an external
 reviewer still has to trust the repo authors, the abstraction boundary, or a
@@ -38,6 +45,11 @@ The strongest defensible statement is:
 > compressed proof, and Groth16 proof agree on `32,879,331 / 1,044`, with
 > sidecar-hash binding currently enforced by repo generation/tests rather than
 > fully recomputed inside the active ZKP guest.
+
+That statement is the historical verdict for commit
+`4d9fefed41ca0f6b5cf6528ce8366065fc6d557a`. The current branch has since moved
+the public claim to `34,736,076 / 1,044` after adding explicit modular-reduction
+cost and stronger ZKP resource binding.
 
 The statement that is not yet defensible without more engineering is:
 
@@ -1250,7 +1262,7 @@ Use:
 
 > Under the repository's checked standard-QROM compiler-family boundary, the
 > current artifacts and checked SP1 compressed/Groth16 proofs bind a
-> `32,879,331` non-Clifford / `1,044` logical-qubit result. This improves the
+> `34,736,076` non-Clifford / `1,044` logical-qubit result. This improves the
 > cited public Google 2026 resource lines numerically, but the proof boundary is
 > not identical to Google's hidden-circuit 9024-case SP1/Groth16 attestation and
 > the repository does not yet ship a Clifford-complete flattened full-Shor
@@ -1263,7 +1275,7 @@ resource model fixes the previous lookup/QROAM accounting failures. But the
 credible external claim is still narrower than the most excited internal
 phrasing:
 
-- strong: checked standard-QROM compiler-family boundary at `32,879,331 / 1,044`
+- strong: checked standard-QROM compiler-family boundary at `34,736,076 / 1,044`
 - not yet strong enough: Google-equivalent proof confidence
 - not yet strong enough: fully flattened primitive-gate Shor circuit
 - most urgent engineering gap: replace model consistency with one flat
@@ -1290,6 +1302,11 @@ Fixed after review:
 - Negative guest tests were added for stale claim labels, mutated committed
   claim payloads, mutated prepared leaves, mutated prepared case corpora, and
   mutated resource leaf-sigma primitive counts.
+- `RES-2`: the central `field_mul` lowering now carries explicit secp256k1
+  pseudo-Mersenne reduction stages for `p = 2^256 - 2^32 - 977`, including the
+  first fold, second narrow fold, and two canonical subtract-p passes. This
+  moved the checked headline from `32,879,331 / 1,044` to
+  `34,736,076 / 1,044` rather than leaving prime-field reduction implicit.
 
 Partially mitigated after review:
 
@@ -1298,11 +1315,18 @@ Partially mitigated after review:
   leaf-sigma rows. The SP1 guest recomputes primitive totals, live-qubit
   totals, phase counts, and the expanded all-streamed-tail contribution from
   those rows before accepting the public values. This is a real resource
-  certificate, not only a headline consistency check. It is still a leaf-sigma
-  certificate rather than a checked giant gate-list dump.
+  certificate, not only a headline consistency check. The repo now also emits
+  `compiler_verification_project/artifacts/materialized_circuit_manifest.json`,
+  a selected-family primitive operation-stream manifest whose stream digest
+  `a96f690cd1f4f3888f51dad42b80dcdda840ccfccbb900ed34517d9916355208`
+  reconstructs `42,038,711` operations, `34,736,076` CCX, and `7,301,612`
+  measurements. That manifest is included in the build summary, curated proof
+  manifest, resource liveness certificate, and SP1 guest resource-certificate
+  checks. This is still a digest/manifest over the stream rather than a checked
+  tens-of-millions-row TSV dump.
 - `RES-1`: `complete_a0_all_streamed_tail` is no longer only a single opaque
   resource token in the ZKP-bound resource certificate. The certificate contains
-  36 primitive leaf-sigma rows for the macro, and the guest verifies that their
+  66 primitive leaf-sigma rows for the macro, and the guest verifies that their
   whole-oracle non-Clifford contribution equals the per-leaf macro lowering
   times the 31 leaf calls. Internal live-wire scheduling below those primitive
   rows is still not a bit-addressed wire netlist.
@@ -1312,12 +1336,8 @@ Partially mitigated after review:
 
 Still open:
 
-- `RES-2`: modular field arithmetic remains model-level lowering with
-  checked kernels and reconstruction, not a generated primitive modular circuit
-  netlist with one global liveness pass.
-- A fully materialized, bit-addressed primitive circuit stream is available as
-  a generator interface, but the repository still ships digestable leaf-sigma
-  artifacts rather than checking in a tens-of-millions-row gate list.
+- The repository ships a checked digest/manifest of the selected primitive
+  operation stream, but not the tens-of-millions-row TSV gate list itself.
 - The deepest refactor remains mandatory before claiming Google-equivalent
   hidden-circuit confidence: the same source engine should emit the semantic
   leaf, primitive lowering, liveness peak, artifact digests, and ZKP input

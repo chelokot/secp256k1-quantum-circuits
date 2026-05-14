@@ -124,6 +124,7 @@ def build_resource_liveness_certificate(
     streamed_lookup_resource: Mapping[str, Any],
     logical_resource_ledger: Mapping[str, Any],
     ft_ir_compositions: Mapping[str, Any],
+    materialized_circuit_manifest: Mapping[str, Any],
     field_bits: int,
 ) -> Dict[str, Any]:
     selected = frontier['best_qubit_family']
@@ -162,6 +163,7 @@ def build_resource_liveness_certificate(
     leaf_call_count_total = int(qroam_model['leaf_call_count_total'])
     tail_macro_expected_non_clifford = int(tail_kernel['exact_non_clifford_per_kernel']) * leaf_call_count_total
     qroam_target_plus_junk = int(qroam_workspace['qroam_clean_target_plus_junk_qubits'])
+    materialized_checks = materialized_circuit_manifest['reconstruction_checks']
     checks = {
         'selected_family_matches_frontier_best_qubit': selected['name'] == logical_resource_ledger['selected_family'],
         'leaf_peak_arithmetic_slots_derived_from_per_pc': leaf_peak_arithmetic_slots == int(selected['arithmetic_slot_count']),
@@ -213,6 +215,12 @@ def build_resource_liveness_certificate(
             }
             for row in leaf_sigma
         ),
+        'materialized_operation_stream_reconstructs_selected_headline': (
+            materialized_circuit_manifest['family'] == selected['name']
+            and int(materialized_circuit_manifest['gate_totals']['ccx']) == int(selected['full_oracle_non_clifford'])
+            and int(materialized_circuit_manifest['gate_totals']['measurement']) == int(selected['total_measurements'])
+            and all(bool(value) for value in materialized_checks.values())
+        ),
     }
     return {
         'schema': 'compiler-project-resource-liveness-certificate-v2',
@@ -225,6 +233,7 @@ def build_resource_liveness_certificate(
             'streamed_lookup_table_multiplier_resource': 'compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json',
             'logical_resource_ledger': 'compiler_verification_project/artifacts/logical_resource_ledger.json',
             'ft_ir_compositions': 'compiler_verification_project/artifacts/ft_ir_compositions.json',
+            'materialized_circuit_manifest': 'compiler_verification_project/artifacts/materialized_circuit_manifest.json',
         },
         'headline_totals': {
             'full_oracle_non_clifford': int(selected['full_oracle_non_clifford']),
@@ -289,6 +298,14 @@ def build_resource_liveness_certificate(
                 }
                 for stage in tail_kernel['stages']
             ],
+        },
+        'materialized_operation_stream': {
+            'family': materialized_circuit_manifest['family'],
+            'stream_encoding': materialized_circuit_manifest['stream_encoding'],
+            'operation_stream_sha256': materialized_circuit_manifest['operation_stream_sha256'],
+            'operation_count': int(materialized_circuit_manifest['operation_count']),
+            'gate_totals': materialized_circuit_manifest['gate_totals'],
+            'reconstruction_checks': materialized_circuit_manifest['reconstruction_checks'],
         },
         'global_peak_owners': owner_rows,
         'global_peak_live_qubits': owner_total,

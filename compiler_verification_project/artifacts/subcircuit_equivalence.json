@@ -59,19 +59,19 @@
         "opcode": "complete_a0_all_streamed_tail",
         "total": 96,
         "pass": 96,
-        "lowering_non_clifford_per_kernel": 1060317
+        "lowering_non_clifford_per_kernel": 1120212
       },
       {
         "opcode": "complete_a0_fully_streamed_tail",
         "total": 0,
         "pass": 0,
-        "lowering_non_clifford_per_kernel": 928479
+        "lowering_non_clifford_per_kernel": 982929
       },
       {
         "opcode": "complete_a0_streamed_tail",
         "total": 0,
         "pass": 0,
-        "lowering_non_clifford_per_kernel": 663528
+        "lowering_non_clifford_per_kernel": 707088
       },
       {
         "opcode": "field_add",
@@ -83,25 +83,25 @@
         "opcode": "field_mul",
         "total": 0,
         "pass": 0,
-        "lowering_non_clifford_per_kernel": 66047
+        "lowering_non_clifford_per_kernel": 71492
       },
       {
         "opcode": "field_mul_lookup_sum",
         "total": 0,
         "pass": 0,
-        "lowering_non_clifford_per_kernel": 131583
+        "lowering_non_clifford_per_kernel": 137028
       },
       {
         "opcode": "field_mul_lookup_x",
         "total": 0,
         "pass": 0,
-        "lowering_non_clifford_per_kernel": 131583
+        "lowering_non_clifford_per_kernel": 137028
       },
       {
         "opcode": "field_mul_lookup_y",
         "total": 0,
         "pass": 0,
-        "lowering_non_clifford_per_kernel": 131583
+        "lowering_non_clifford_per_kernel": 137028
       },
       {
         "opcode": "field_sub",
@@ -510,17 +510,17 @@
     "best_gate_family": {
       "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
       "reconstruction": {
-        "arithmetic_leaf_non_clifford": 1060317,
+        "arithmetic_leaf_non_clifford": 1120212,
         "direct_seed_non_clifford": 297,
         "per_leaf_lookup_non_clifford": 297,
-        "full_oracle_non_clifford": 32879331,
+        "full_oracle_non_clifford": 34736076,
         "primitive_totals": {
-          "ccx": 32879331,
+          "ccx": 34736076,
           "cx": 0,
           "x": 0,
-          "measurement": 5444355
+          "measurement": 7301100
         },
-        "total_measurements": 5444867,
+        "total_measurements": 7301612,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -536,17 +536,17 @@
     "best_qubit_family": {
       "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
       "reconstruction": {
-        "arithmetic_leaf_non_clifford": 1060317,
+        "arithmetic_leaf_non_clifford": 1120212,
         "direct_seed_non_clifford": 297,
         "per_leaf_lookup_non_clifford": 297,
-        "full_oracle_non_clifford": 32879331,
+        "full_oracle_non_clifford": 34736076,
         "primitive_totals": {
-          "ccx": 32879331,
+          "ccx": 34736076,
           "cx": 0,
           "x": 0,
-          "measurement": 5444355
+          "measurement": 7301100
         },
-        "total_measurements": 5444867,
+        "total_measurements": 7301612,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -562,11 +562,11 @@
     "families": [
       {
         "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
-        "generated_full_oracle_non_clifford": 32879331,
+        "generated_full_oracle_non_clifford": 34736076,
         "generated_total_logical_qubits": 1044,
-        "frontier_full_oracle_non_clifford": 32879331,
+        "frontier_full_oracle_non_clifford": 34736076,
         "frontier_total_logical_qubits": 1044,
-        "inventory_full_oracle_non_clifford": 32879331,
+        "inventory_full_oracle_non_clifford": 34736076,
         "inventory_total_logical_qubits": 1044
       }
     ]

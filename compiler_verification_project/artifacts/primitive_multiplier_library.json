@@ -10,7 +10,7 @@
       "tail_product": "KN",
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
-      "exact_non_clifford": 66047,
+      "exact_non_clifford": 71492,
       "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
       "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
     },
@@ -21,7 +21,7 @@
       "tail_product": "EC",
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
-      "exact_non_clifford": 66047,
+      "exact_non_clifford": 71492,
       "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
       "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
     },
@@ -32,7 +32,7 @@
       "tail_product": "NM",
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
-      "exact_non_clifford": 66047,
+      "exact_non_clifford": 71492,
       "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
       "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
     },
@@ -43,7 +43,7 @@
       "tail_product": "CL",
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
-      "exact_non_clifford": 66047,
+      "exact_non_clifford": 71492,
       "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
       "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
     },
@@ -54,7 +54,7 @@
       "tail_product": "ME",
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
-      "exact_non_clifford": 66047,
+      "exact_non_clifford": 71492,
       "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
       "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
     },
@@ -65,13 +65,13 @@
       "tail_product": "LK",
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
-      "exact_non_clifford": 66047,
+      "exact_non_clifford": 71492,
       "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
       "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
     }
   ],
   "whole_oracle_multiplier_instance_count": 186,
-  "whole_oracle_multiplier_non_clifford_total": 12284742,
+  "whole_oracle_multiplier_non_clifford_total": 13297512,
   "example_instances": [
     {
       "call_index": 0,
@@ -83,7 +83,7 @@
       "tail_product": "KN",
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
-      "exact_non_clifford": 66047,
+      "exact_non_clifford": 71492,
       "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
       "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
     },
@@ -97,7 +97,7 @@
       "tail_product": "EC",
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
-      "exact_non_clifford": 66047,
+      "exact_non_clifford": 71492,
       "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
       "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
     },
@@ -111,7 +111,7 @@
       "tail_product": "NM",
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
-      "exact_non_clifford": 66047,
+      "exact_non_clifford": 71492,
       "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
       "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
     },
@@ -125,7 +125,7 @@
       "tail_product": "CL",
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
-      "exact_non_clifford": 66047,
+      "exact_non_clifford": 71492,
       "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
       "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
     },
@@ -139,7 +139,7 @@
       "tail_product": "ME",
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
-      "exact_non_clifford": 66047,
+      "exact_non_clifford": 71492,
       "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
       "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
     },
@@ -153,7 +153,7 @@
       "tail_product": "LK",
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
-      "exact_non_clifford": 66047,
+      "exact_non_clifford": 71492,
       "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
       "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
     },
@@ -167,7 +167,7 @@
       "tail_product": "KN",
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
-      "exact_non_clifford": 66047,
+      "exact_non_clifford": 71492,
       "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
       "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
     },
@@ -181,7 +181,7 @@
       "tail_product": "EC",
       "family": "litinski_addsub_schoolbook_v1",
       "field_bits": 256,
-      "exact_non_clifford": 66047,
+      "exact_non_clifford": 71492,
       "gate_set": "Clifford + Toffoli-style arithmetic + measurement",
       "arithmetic_lowering_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
     }

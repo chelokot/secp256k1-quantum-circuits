@@ -269,17 +269,17 @@
     "best_gate_family": {
       "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
       "reconstruction": {
-        "arithmetic_leaf_non_clifford": 1060317,
+        "arithmetic_leaf_non_clifford": 1120212,
         "direct_seed_non_clifford": 297,
         "per_leaf_lookup_non_clifford": 297,
-        "full_oracle_non_clifford": 32879331,
+        "full_oracle_non_clifford": 34736076,
         "primitive_totals": {
-          "ccx": 32879331,
+          "ccx": 34736076,
           "cx": 0,
           "x": 0,
-          "measurement": 5444355
+          "measurement": 7301100
         },
-        "total_measurements": 5444867,
+        "total_measurements": 7301612,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -295,17 +295,17 @@
     "best_qubit_family": {
       "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
       "reconstruction": {
-        "arithmetic_leaf_non_clifford": 1060317,
+        "arithmetic_leaf_non_clifford": 1120212,
         "direct_seed_non_clifford": 297,
         "per_leaf_lookup_non_clifford": 297,
-        "full_oracle_non_clifford": 32879331,
+        "full_oracle_non_clifford": 34736076,
         "primitive_totals": {
-          "ccx": 32879331,
+          "ccx": 34736076,
           "cx": 0,
           "x": 0,
-          "measurement": 5444355
+          "measurement": 7301100
         },
-        "total_measurements": 5444867,
+        "total_measurements": 7301612,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -321,7 +321,7 @@
     "family_reconstructed_totals": [
       {
         "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
-        "full_oracle_non_clifford": 32879331,
+        "full_oracle_non_clifford": 34736076,
         "total_logical_qubits": 1044
       }
     ]
@@ -335,10 +335,10 @@
       "slot_allocation_family": "streamed_lookup_tail_leaf_v1",
       "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
       "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
-      "arithmetic_leaf_non_clifford": 1060317,
+      "arithmetic_leaf_non_clifford": 1120212,
       "direct_seed_non_clifford": 297,
       "per_leaf_lookup_non_clifford": 297,
-      "full_oracle_non_clifford": 32879331,
+      "full_oracle_non_clifford": 34736076,
       "arithmetic_slot_count": 3,
       "control_slot_count": 1,
       "borrowed_interface_qubits": 0,
@@ -349,9 +349,9 @@
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 511,
       "phase_shell_rotation_depth": 511,
-      "total_measurements": 5444867,
-      "improvement_vs_google_low_qubit": 2.7372819720693222,
-      "improvement_vs_google_low_gate": 2.1289970893872505,
+      "total_measurements": 7301612,
+      "improvement_vs_google_low_qubit": 2.5909662334916588,
+      "improvement_vs_google_low_gate": 2.0151959593824014,
       "qubit_ratio_vs_google_low_qubit": 1.1494252873563218,
       "qubit_ratio_vs_google_low_gate": 1.3888888888888888,
       "notes": [
@@ -370,10 +370,10 @@
       "slot_allocation_family": "streamed_lookup_tail_leaf_v1",
       "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
       "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
-      "arithmetic_leaf_non_clifford": 1060317,
+      "arithmetic_leaf_non_clifford": 1120212,
       "direct_seed_non_clifford": 297,
       "per_leaf_lookup_non_clifford": 297,
-      "full_oracle_non_clifford": 32879331,
+      "full_oracle_non_clifford": 34736076,
       "arithmetic_slot_count": 3,
       "control_slot_count": 1,
       "borrowed_interface_qubits": 0,
@@ -384,9 +384,9 @@
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 511,
       "phase_shell_rotation_depth": 511,
-      "total_measurements": 5444867,
-      "improvement_vs_google_low_qubit": 2.7372819720693222,
-      "improvement_vs_google_low_gate": 2.1289970893872505,
+      "total_measurements": 7301612,
+      "improvement_vs_google_low_qubit": 2.5909662334916588,
+      "improvement_vs_google_low_gate": 2.0151959593824014,
       "qubit_ratio_vs_google_low_qubit": 1.1494252873563218,
       "qubit_ratio_vs_google_low_gate": 1.3888888888888888,
       "notes": [
@@ -400,7 +400,7 @@
     "family_recount_totals": [
       {
         "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
-        "full_oracle_non_clifford": 32879331,
+        "full_oracle_non_clifford": 34736076,
         "total_logical_qubits": 1044
       }
     ]
@@ -413,10 +413,10 @@
     "slot_allocation_family": "streamed_lookup_tail_leaf_v1",
     "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
     "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
-    "arithmetic_leaf_non_clifford": 1060317,
+    "arithmetic_leaf_non_clifford": 1120212,
     "direct_seed_non_clifford": 297,
     "per_leaf_lookup_non_clifford": 297,
-    "full_oracle_non_clifford": 32879331,
+    "full_oracle_non_clifford": 34736076,
     "arithmetic_slot_count": 3,
     "control_slot_count": 1,
     "borrowed_interface_qubits": 0,
@@ -427,9 +427,9 @@
     "phase_shell_measurements": 512,
     "phase_shell_rotations": 511,
     "phase_shell_rotation_depth": 511,
-    "total_measurements": 5444867,
-    "improvement_vs_google_low_qubit": 2.7372819720693222,
-    "improvement_vs_google_low_gate": 2.1289970893872505,
+    "total_measurements": 7301612,
+    "improvement_vs_google_low_qubit": 2.5909662334916588,
+    "improvement_vs_google_low_gate": 2.0151959593824014,
     "qubit_ratio_vs_google_low_qubit": 1.1494252873563218,
     "qubit_ratio_vs_google_low_gate": 1.3888888888888888,
     "notes": [
@@ -448,10 +448,10 @@
     "slot_allocation_family": "streamed_lookup_tail_leaf_v1",
     "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
     "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
-    "arithmetic_leaf_non_clifford": 1060317,
+    "arithmetic_leaf_non_clifford": 1120212,
     "direct_seed_non_clifford": 297,
     "per_leaf_lookup_non_clifford": 297,
-    "full_oracle_non_clifford": 32879331,
+    "full_oracle_non_clifford": 34736076,
     "arithmetic_slot_count": 3,
     "control_slot_count": 1,
     "borrowed_interface_qubits": 0,
@@ -462,9 +462,9 @@
     "phase_shell_measurements": 512,
     "phase_shell_rotations": 511,
     "phase_shell_rotation_depth": 511,
-    "total_measurements": 5444867,
-    "improvement_vs_google_low_qubit": 2.7372819720693222,
-    "improvement_vs_google_low_gate": 2.1289970893872505,
+    "total_measurements": 7301612,
+    "improvement_vs_google_low_qubit": 2.5909662334916588,
+    "improvement_vs_google_low_gate": 2.0151959593824014,
     "qubit_ratio_vs_google_low_qubit": 1.1494252873563218,
     "qubit_ratio_vs_google_low_gate": 1.3888888888888888,
     "notes": [

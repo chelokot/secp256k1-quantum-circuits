@@ -70,6 +70,7 @@ from lookup_fed_leaf import (  # noqa: E402
     execute_leaf_contract,
 )
 from lookup_lowering import lookup_lowering_library  # noqa: E402
+from materialized_circuit import build_materialized_family_manifest  # noqa: E402
 from phase_shell_lowering import phase_shell_family_summary, phase_shell_lowering_library  # noqa: E402
 from physical_estimator import (  # noqa: E402
     build_azure_estimator_target_payload,
@@ -1933,6 +1934,18 @@ def build_all_artifacts() -> Dict[str, Any]:
         field_bits=FIELD_BITS,
         public_google_baseline=PUBLIC_GOOGLE_BASELINE,
     )
+    out['materialized_circuit_manifest'] = build_materialized_family_manifest(
+        family_name=out['frontier']['best_qubit_family']['name'],
+        frontier=out['frontier'],
+        schedule=out['raw32_schedule'],
+        leaf=out['streamed_lookup_tail_leaf'],
+        arithmetic_lowerings=out['arithmetic_lowerings'],
+        lookup_lowerings=out['lookup_lowerings'],
+        phase_shell_lowerings=out['phase_shell_lowerings'],
+        field_bits=FIELD_BITS,
+        phase_bits=FULL_PHASE_REGISTER_BITS,
+        leaf_histogram=leaf_opcode_histogram(),
+    )
     out['resource_liveness_certificate'] = build_resource_liveness_certificate(
         frontier=out['frontier'],
         streamed_lookup_tail_slot_allocation=out['streamed_lookup_tail_slot_allocation'],
@@ -1940,6 +1953,7 @@ def build_all_artifacts() -> Dict[str, Any]:
         streamed_lookup_resource=out['streamed_lookup_table_multiplier_resource'],
         logical_resource_ledger=out['logical_resource_ledger'],
         ft_ir_compositions=out['ft_ir_compositions'],
+        materialized_circuit_manifest=out['materialized_circuit_manifest'],
         field_bits=FIELD_BITS,
     )
     out['qubit_breakthrough_analysis'] = build_qubit_breakthrough_analysis(frontier=out['frontier'])
@@ -1975,6 +1989,7 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('standard_qrom_lookup_assessment.json'), out['standard_qrom_lookup_assessment'])
     dump_json(project_artifact_path('logical_resource_ledger.json'), out['logical_resource_ledger'])
     dump_json(project_artifact_path('resource_liveness_certificate.json'), out['resource_liveness_certificate'])
+    dump_json(project_artifact_path('materialized_circuit_manifest.json'), out['materialized_circuit_manifest'])
     dump_json(project_artifact_path('qubit_breakthrough_analysis.json'), out['qubit_breakthrough_analysis'])
     dump_json(project_artifact_path('full_attack_inventory.json'), out['full_attack_inventory'])
     dump_json(project_artifact_path('subcircuit_equivalence.json'), out['subcircuit_equivalence'])
@@ -2014,6 +2029,7 @@ def build_all_artifacts() -> Dict[str, Any]:
             'standard_qrom_lookup_assessment': 'compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json',
             'logical_resource_ledger': 'compiler_verification_project/artifacts/logical_resource_ledger.json',
             'resource_liveness_certificate': 'compiler_verification_project/artifacts/resource_liveness_certificate.json',
+            'materialized_circuit_manifest': 'compiler_verification_project/artifacts/materialized_circuit_manifest.json',
             'qubit_breakthrough_analysis': 'compiler_verification_project/artifacts/qubit_breakthrough_analysis.json',
             'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
             'subcircuit_equivalence': 'compiler_verification_project/artifacts/subcircuit_equivalence.json',

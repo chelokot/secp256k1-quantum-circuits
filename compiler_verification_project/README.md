@@ -86,7 +86,7 @@ What it does ship is:
 
 ## Current central boundary result
 
-- **central standard-QROM family:** `32,879,331 non-Clifford`, `1,044 logical qubits`
+- **central standard-QROM family:** `34,736,076 non-Clifford`, `1,044 logical qubits`
 
 The central family uses a standard QROAM coordinate-stream lookup boundary, an
 exact semiclassical-QFT phase shell, and the executable streamed lookup tail

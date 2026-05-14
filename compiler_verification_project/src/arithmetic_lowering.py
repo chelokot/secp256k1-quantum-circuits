@@ -10,6 +10,9 @@ from derived_resources import minimal_addition_chain
 
 PrimitiveOperation = List[int | str]
 DEFAULT_QROAM_CLEAN_BLOCK_SIZE = 1
+SECP256K1_PSEUDO_MERSENNE_SHIFT = 32
+SECP256K1_PSEUDO_MERSENNE_LOW_TERM = 977
+SECP256K1_CANONICAL_SUBTRACT_PASSES = 2
 
 
 def _primitive_counts(ccx: int = 0, cx: int = 0, x: int = 0, measurement: int = 0) -> Dict[str, int]:
@@ -68,6 +71,10 @@ def _field_mul_partial_product_operations(field_bits: int) -> List[PrimitiveOper
     return primitive_operations
 
 
+def _binary_addition_chain_step_count(constant: int) -> int:
+    return int(constant).bit_length() + int(constant).bit_count() - 2
+
+
 def _block(
     name: str,
     summary: str,
@@ -106,6 +113,23 @@ def _block(
     else:
         block['primitive_operation_generator'] = dict(primitive_operation_generator)
     return block
+
+
+def _repeated_ladder_block(name: str, summary: str, bit_count: int, repeat_count: int, notes: List[str]) -> Dict[str, Any]:
+    operation_count = int(bit_count) * int(repeat_count)
+    return _block(
+        name=name,
+        summary=summary,
+        instance_count=operation_count,
+        primitive_operation_generator={
+            'kind': 'repeated_gate_with_measurement',
+            'gate': 'ccx',
+            'measurement_gate': 'measurement',
+            'count': operation_count,
+            'primitive_counts_total': _primitive_counts(ccx=operation_count, measurement=operation_count),
+        },
+        notes=notes,
+    )
 
 
 def _stage(name: str, summary: str, category: str, blocks: List[Dict[str, Any]], notes: List[str]) -> Dict[str, Any]:
@@ -257,6 +281,90 @@ def _mul_const_kernel(field_bits: int, const_value: int) -> Dict[str, Any]:
     )
 
 
+def _pseudo_mersenne_reduction_stages(field_bits: int, multiplication_count: int = 1) -> List[Dict[str, Any]]:
+    first_fold_width = field_bits + SECP256K1_PSEUDO_MERSENNE_SHIFT
+    second_fold_width = (
+        SECP256K1_PSEUDO_MERSENNE_SHIFT
+        + SECP256K1_PSEUDO_MERSENNE_LOW_TERM.bit_length()
+        + 1
+    )
+    chain_steps = _binary_addition_chain_step_count(SECP256K1_PSEUDO_MERSENNE_LOW_TERM)
+    first_shift_add = _repeated_ladder_block(
+        name='first_fold_shift_add',
+        summary='Add the high product half shifted by 32 bits using 2^256 = 2^32 + 977 mod p.',
+        bit_count=first_fold_width - 1,
+        repeat_count=multiplication_count,
+        notes=[
+            'This is the shifted 2^32 contribution in the first pseudo-Mersenne reduction fold.',
+        ],
+    )
+    first_low_term = _repeated_ladder_block(
+        name='first_fold_977_chain',
+        summary='Add 977 times the high product half with a binary addition-chain multiplier.',
+        bit_count=first_fold_width - 1,
+        repeat_count=multiplication_count * chain_steps,
+        notes=[
+            f'The binary addition-chain multiplier for 977 uses {chain_steps} add/sub ladders.',
+        ],
+    )
+    second_shift_add = _repeated_ladder_block(
+        name='second_fold_shift_add',
+        summary='Fold the residual high carry by adding it shifted by 32 bits.',
+        bit_count=second_fold_width - 1,
+        repeat_count=multiplication_count,
+        notes=[
+            'After the first fold, the remaining high component is narrow, so the second fold is not field-width.',
+        ],
+    )
+    second_low_term = _repeated_ladder_block(
+        name='second_fold_977_chain',
+        summary='Add 977 times the residual high carry using the same binary chain.',
+        bit_count=second_fold_width - 1,
+        repeat_count=multiplication_count * chain_steps,
+        notes=[
+            'This finishes the pseudo-Mersenne fold for the small residual high component.',
+        ],
+    )
+    canonical_subtracts = _repeated_ladder_block(
+        name='canonical_subtract_p_ladders',
+        summary='Two conditional subtract-p passes to return the product to the canonical field interval.',
+        bit_count=field_bits - 1,
+        repeat_count=multiplication_count * SECP256K1_CANONICAL_SUBTRACT_PASSES,
+        notes=[
+            'The two passes cover the bounded post-fold interval for p = 2^256 - 2^32 - 977.',
+        ],
+    )
+    return [
+        _stage(
+            name='pseudo_mersenne_first_fold',
+            summary='First pseudo-Mersenne fold of the 512-bit schoolbook product.',
+            category='pseudo_mersenne_reduction',
+            blocks=[first_shift_add, first_low_term],
+            notes=[
+                'This stage accounts for the non-free prime-field reduction work missing from a bare low-word multiplication model.',
+            ],
+        ),
+        _stage(
+            name='pseudo_mersenne_second_fold',
+            summary='Second narrow pseudo-Mersenne fold for the residual high component.',
+            category='pseudo_mersenne_reduction',
+            blocks=[second_shift_add, second_low_term],
+            notes=[
+                'The residual high component is narrow because the first fold used the secp256k1 pseudo-Mersenne shape.',
+            ],
+        ),
+        _stage(
+            name='pseudo_mersenne_canonicalize',
+            summary='Canonical post-reduction subtract-p correction.',
+            category='canonical_mod_p_reduction',
+            blocks=[canonical_subtracts],
+            notes=[
+                'This stage makes the field-multiplication contract a canonical mod-p operation rather than arithmetic modulo 2^256.',
+            ],
+        ),
+    ]
+
+
 def _field_mul_kernel(field_bits: int) -> Dict[str, Any]:
     partial_products = _block(
         name='partial_product_grid',
@@ -287,7 +395,7 @@ def _field_mul_kernel(field_bits: int) -> Dict[str, Any]:
     )
     return _kernel(
         opcode='field_mul',
-        summary='Exact schoolbook controlled add-subtract field-multiplication kernel over the checked 256-bit field width.',
+        summary='Exact schoolbook controlled add-subtract field-multiplication kernel with secp256k1 pseudo-Mersenne mod-p reduction.',
         stages=[
             _stage(
                 name='partial_products',
@@ -310,9 +418,10 @@ def _field_mul_kernel(field_bits: int) -> Dict[str, Any]:
                 blocks=[controlled_sub_path],
                 notes=['The subtract path carries the final linear correction term in the Litinski-style controlled add-subtract multiplier.'],
             ),
+            *_pseudo_mersenne_reduction_stages(field_bits),
         ],
         notes=[
-            'The kernel reconstructs n^2 + 2n - 1 non-Clifford operations as an explicit partial-product grid plus add/sub correction paths.',
+            'The kernel reconstructs the controlled add-subtract schoolbook core plus explicit pseudo-Mersenne reduction and canonical subtract-p correction for secp256k1.',
         ],
     )
 
@@ -635,6 +744,17 @@ def _complete_a0_streamed_tail_kernel(field_bits: int, qroam_block_size: int) ->
                 blocks=[controlled_sub_path],
                 notes=['Counted exactly as six field-mul subtract paths.'],
             ),
+            *[
+                {
+                    **stage,
+                    'name': f'tail_{stage["name"]}',
+                    'notes': [
+                        *stage['notes'],
+                        'Counted for all six internal tail multiplications before the output combine stage.',
+                    ],
+                }
+                for stage in _pseudo_mersenne_reduction_stages(field_bits, multiplication_count=6)
+            ],
             _stage(
                 name='tail_output_combine',
                 summary='Three add/sub combines that write X3, Y3, and Z3.',
