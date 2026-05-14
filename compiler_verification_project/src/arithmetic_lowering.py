@@ -649,6 +649,117 @@ def _complete_a0_streamed_tail_kernel(field_bits: int, qroam_block_size: int) ->
     )
 
 
+def _complete_a0_fully_streamed_tail_kernel(field_bits: int, qroam_block_size: int) -> Dict[str, Any]:
+    streamed_a = deepcopy(_renamed_field_mul_kernel(
+        field_bits,
+        'field_mul_lookup_x',
+        'Internal streamed A = X*x multiplication used by the fully streamed complete-add tail macro.',
+        'This stage is counted inside the macro because A is not materialized as a standalone leaf field value.',
+        lookup_bit_source='lookup_x',
+        qroam_block_size=qroam_block_size,
+    )['stages'])
+    streamed_zx = deepcopy(_renamed_field_mul_kernel(
+        field_bits,
+        'field_mul_lookup_x',
+        'Internal streamed Zx = Z*x multiplication used by the fully streamed complete-add tail macro.',
+        'This stage is counted inside the macro because Zx is not materialized as a standalone leaf field value.',
+        lookup_bit_source='lookup_x',
+        qroam_block_size=qroam_block_size,
+    )['stages'])
+    for stage in streamed_a:
+        stage['name'] = f"tail_a_{stage['name']}"
+    for stage in streamed_zx:
+        stage['name'] = f"tail_zx_{stage['name']}"
+    derive_c_input = _block(
+        name='derive_c_input_carry_ladder',
+        summary='One field-add ladder for C input X + Zx inside the fully streamed tail macro.',
+        instance_count=field_bits - 1,
+        primitive_operations=_ladder_operations(field_bits - 1, include_measurement=True),
+        notes=[
+            'This is the same cost as the standalone field_add kernel, moved inside the macro boundary.',
+        ],
+    )
+    derive_c_fixed = _block(
+        name='derive_c_fixed_21_chain',
+        summary='Fixed multiplication C = 21(X + Zx) inside the fully streamed tail macro.',
+        instance_count=6 * (field_bits - 1),
+        primitive_operations=[
+            operation
+            for _ in range(6)
+            for operation in _ladder_operations(field_bits - 1, include_measurement=True)
+        ],
+        notes=[
+            'The checked field constant is 3b = 21, whose monotone addition chain has six field-add steps.',
+        ],
+    )
+    streamed_tail = _complete_a0_streamed_tail_kernel(field_bits, qroam_block_size)
+    inherited_stages = deepcopy(streamed_tail['stages'])
+    for stage in inherited_stages:
+        stage['name'] = f"fully_streamed_{stage['name']}"
+    return _kernel(
+        opcode='complete_a0_fully_streamed_tail',
+        summary='Exact multi-output complete-add tail kernel from X, H, Y, and Z with all lookup-x/y products internal.',
+        stages=[
+            *streamed_a,
+            *streamed_zx,
+            _stage(
+                name='tail_derive_c',
+                summary='Internal construction of C = 21(X + Zx).',
+                category='tail_combine',
+                blocks=[derive_c_input, derive_c_fixed],
+                notes=['These add-chain ladders avoid materializing Zx and C as leaf-owned field wires.'],
+            ),
+            *inherited_stages,
+        ],
+        notes=[
+            'The macro is a liveness contract, not a free arithmetic operation: its non-Clifford count includes A, Zx, C, I, K, L, yZ, 21Z, E/M/N, six output multipliers, and three output add/sub combines.',
+        ],
+    )
+
+
+def _complete_a0_all_streamed_tail_kernel(field_bits: int, qroam_block_size: int) -> Dict[str, Any]:
+    derive_g = _block(
+        name='derive_g_carry_ladder',
+        summary='One field-add ladder for G = X + Y inside the all-streamed tail macro.',
+        instance_count=field_bits - 1,
+        primitive_operations=_ladder_operations(field_bits - 1, include_measurement=True),
+        notes=[
+            'This is the same cost as the standalone field_add kernel, moved inside the macro boundary.',
+        ],
+    )
+    streamed_h = deepcopy(_renamed_field_mul_kernel(
+        field_bits,
+        'field_mul_lookup_sum',
+        'Internal streamed H = (X + Y)(x + y) multiplication used by the all-streamed complete-add tail macro.',
+        'This stage is counted inside the macro because H is not materialized as a standalone leaf field value.',
+        lookup_bit_source='lookup_x_plus_y',
+        qroam_block_size=qroam_block_size,
+    )['stages'])
+    for stage in streamed_h:
+        stage['name'] = f"tail_h_{stage['name']}"
+    inherited_stages = deepcopy(_complete_a0_fully_streamed_tail_kernel(field_bits, qroam_block_size)['stages'])
+    for stage in inherited_stages:
+        stage['name'] = f"all_streamed_{stage['name']}"
+    return _kernel(
+        opcode='complete_a0_all_streamed_tail',
+        summary='Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.',
+        stages=[
+            _stage(
+                name='tail_derive_g',
+                summary='Internal construction of G = X + Y.',
+                category='tail_combine',
+                blocks=[derive_g],
+                notes=['This adder avoids materializing G as a leaf-owned field wire.'],
+            ),
+            *streamed_h,
+            *inherited_stages,
+        ],
+        notes=[
+            'The macro is a liveness contract, not a free arithmetic operation: its non-Clifford count includes G, H, A, Zx, C, I, K, L, yZ, 21Z, E/M/N, six output multipliers, and three output add/sub combines.',
+        ],
+    )
+
+
 def _leaf_reconstruction(leaf_opcode_histogram: Mapping[str, int], kernels: List[Dict[str, Any]]) -> Dict[str, Any]:
     kernel_lookup = {kernel['opcode']: kernel for kernel in kernels}
     per_opcode = []
@@ -718,6 +829,8 @@ def arithmetic_lowering_library(
         _field_sub_sum_kernel(field_bits),
         _field_triple_kernel(field_bits),
         _complete_a0_streamed_tail_kernel(field_bits, qroam_block_size),
+        _complete_a0_fully_streamed_tail_kernel(field_bits, qroam_block_size),
+        _complete_a0_all_streamed_tail_kernel(field_bits, qroam_block_size),
         _mul_const_kernel(field_bits, 21),
         _field_select_kernel(field_bits),
     ]

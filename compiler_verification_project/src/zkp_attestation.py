@@ -199,6 +199,20 @@ def _source_as_streamed_tail(source: Any) -> Dict[str, str]:
     raise TypeError(f'expected streamed tail source, got {source!r}')
 
 
+def _source_as_fully_streamed_tail(source: Any) -> Dict[str, str]:
+    expected = {'x', 'h', 'y', 'z'}
+    if isinstance(source, dict) and set(source) == expected and all(isinstance(value, str) for value in source.values()):
+        return {key: str(value) for key, value in source.items()}
+    raise TypeError(f'expected fully streamed tail source, got {source!r}')
+
+
+def _source_as_all_streamed_tail(source: Any) -> Dict[str, str]:
+    expected = {'x', 'y', 'z'}
+    if isinstance(source, dict) and set(source) == expected and all(isinstance(value, str) for value in source.values()):
+        return {key: str(value) for key, value in source.items()}
+    raise TypeError(f'expected all-streamed tail source, got {source!r}')
+
+
 def _ensure_defined_register(
     register_ids: Dict[str, int],
     defined: set[str],
@@ -238,6 +252,41 @@ def _compile_leaf_for_proof(leaf: Mapping[str, Any]) -> Dict[str, Any]:
                 'a': _ensure_defined_register(register_ids, defined, tail_source['a'], 'complete_a0_streamed_tail A'),
                 'y': _ensure_defined_register(register_ids, defined, tail_source['y'], 'complete_a0_streamed_tail Y'),
                 'z': _ensure_defined_register(register_ids, defined, tail_source['z'], 'complete_a0_streamed_tail Z'),
+            })
+            defined.update(str(name) for name in dst_names)
+            continue
+        if op == 'complete_a0_fully_streamed_tail':
+            dst_names = instruction['dst']
+            if not isinstance(dst_names, list) or len(dst_names) != 3:
+                raise TypeError(f'expected three output registers for complete_a0_fully_streamed_tail, got {dst_names!r}')
+            output_ids = [register_ids.setdefault(str(name), len(register_ids)) for name in dst_names]
+            tail_source = _source_as_fully_streamed_tail(source)
+            compiled_instructions.append({
+                'kind': 'complete_a0_fully_streamed_tail',
+                'out_x': output_ids[0],
+                'out_y': output_ids[1],
+                'out_z': output_ids[2],
+                'x': _ensure_defined_register(register_ids, defined, tail_source['x'], 'complete_a0_fully_streamed_tail X'),
+                'h': _ensure_defined_register(register_ids, defined, tail_source['h'], 'complete_a0_fully_streamed_tail H'),
+                'y': _ensure_defined_register(register_ids, defined, tail_source['y'], 'complete_a0_fully_streamed_tail Y'),
+                'z': _ensure_defined_register(register_ids, defined, tail_source['z'], 'complete_a0_fully_streamed_tail Z'),
+            })
+            defined.update(str(name) for name in dst_names)
+            continue
+        if op == 'complete_a0_all_streamed_tail':
+            dst_names = instruction['dst']
+            if not isinstance(dst_names, list) or len(dst_names) != 3:
+                raise TypeError(f'expected three output registers for complete_a0_all_streamed_tail, got {dst_names!r}')
+            output_ids = [register_ids.setdefault(str(name), len(register_ids)) for name in dst_names]
+            tail_source = _source_as_all_streamed_tail(source)
+            compiled_instructions.append({
+                'kind': 'complete_a0_all_streamed_tail',
+                'out_x': output_ids[0],
+                'out_y': output_ids[1],
+                'out_z': output_ids[2],
+                'x': _ensure_defined_register(register_ids, defined, tail_source['x'], 'complete_a0_all_streamed_tail X'),
+                'y': _ensure_defined_register(register_ids, defined, tail_source['y'], 'complete_a0_all_streamed_tail Y'),
+                'z': _ensure_defined_register(register_ids, defined, tail_source['z'], 'complete_a0_all_streamed_tail Z'),
             })
             defined.update(str(name) for name in dst_names)
             continue

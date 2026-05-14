@@ -41,6 +41,9 @@ def load_json(path: Path) -> Any:
 
 
 def dump_json(path: Path, obj: Any) -> None:
+    if path.name == 'arithmetic_lowerings.json':
+        path.write_text(json.dumps(obj, separators=(',', ':'), sort_keys=False))
+        return
     path.write_text(json.dumps(obj, indent=2, sort_keys=False))
 
 

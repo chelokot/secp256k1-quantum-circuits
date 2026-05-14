@@ -139,6 +139,52 @@ def _apply_instruction(env: Dict[str, Any], ins: Dict[str, Any], p: int) -> None
         env[out_x] = (k * n - e * c) % p
         env[out_y] = (n * m + c * l) % p
         env[out_z] = (m * e + l * k) % p
+    elif op == 'complete_a0_fully_streamed_tail':
+        src = ins['src']
+        x_acc = env[src['x']]
+        h = env[src['h']]
+        y_acc = env[src['y']]
+        z_acc = env[src['z']]
+        lookup_x = env['T.x'][env['k']]
+        lookup_y = env['T.y'][env['k']]
+        a = (x_acc * lookup_x) % p
+        zx = (z_acc * lookup_x) % p
+        c = (21 * (x_acc + zx)) % p
+        i = (y_acc * lookup_y) % p
+        k = (h - a - i) % p
+        l = (3 * a) % p
+        yz = (lookup_y * z_acc) % p
+        e = (y_acc + yz) % p
+        f = (21 * z_acc) % p
+        m = (i + f) % p
+        n = (i - f) % p
+        out_x, out_y, out_z = ins['dst']
+        env[out_x] = (k * n - e * c) % p
+        env[out_y] = (n * m + c * l) % p
+        env[out_z] = (m * e + l * k) % p
+    elif op == 'complete_a0_all_streamed_tail':
+        src = ins['src']
+        x_acc = env[src['x']]
+        y_acc = env[src['y']]
+        z_acc = env[src['z']]
+        lookup_x = env['T.x'][env['k']]
+        lookup_y = env['T.y'][env['k']]
+        h = ((x_acc + y_acc) * ((lookup_x + lookup_y) % p)) % p
+        a = (x_acc * lookup_x) % p
+        zx = (z_acc * lookup_x) % p
+        c = (21 * (x_acc + zx)) % p
+        i = (y_acc * lookup_y) % p
+        k = (h - a - i) % p
+        l = (3 * a) % p
+        yz = (lookup_y * z_acc) % p
+        e = (y_acc + yz) % p
+        f = (21 * z_acc) % p
+        m = (i + f) % p
+        n = (i - f) % p
+        out_x, out_y, out_z = ins['dst']
+        env[out_x] = (k * n - e * c) % p
+        env[out_y] = (n * m + c * l) % p
+        env[out_z] = (m * e + l * k) % p
     else:
         raise ValueError(f'Unsupported optimized opcode: {op}')
 

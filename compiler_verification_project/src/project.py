@@ -573,7 +573,7 @@ def streamed_lookup_tail_leaf_slot_allocation() -> Dict[str, Any]:
         notes=[
             'This artifact allocates the streamed lookup tail contract directly from executable leaf liveness.',
             'Lookup x/y coordinates are not materialized as field-sized interface lanes; table-fed arithmetic kernels consume them as constants, and the resource ownership contract records zero borrowed lookup field lanes.',
-            'The complete_a0_streamed_tail multi-output instruction consumes C/H/A/Y/Z and derives I/K/L/E/F/M/N internally, so the peak arithmetic register file is five field slots.',
+            'The complete_a0_all_streamed_tail multi-output instruction consumes X/Y/Z and derives G/H/A/Zx/C/I/K/L/E/F/M/N internally, so the peak arithmetic register file is three field slots.',
         ],
     )
 
@@ -589,25 +589,34 @@ def streamed_lookup_table_multiplier_resource(
     lookup = lookup_lowerings if lookup_lowerings is not None else lookup_lowering_library()
     kernel_lookup = {kernel['opcode']: kernel for kernel in arithmetic['kernels']}
     lookup_family = next(row for row in lookup['families'] if row['name'] == CENTRAL_LOOKUP_FAMILY)
-    bit_sources = [
-        ('lookup_x', 'field_mul_lookup_x', int(leaf_opcode_histogram().get('field_mul_lookup_x', 0))),
-        ('lookup_y', 'field_mul_lookup_y', int(leaf_opcode_histogram().get('field_mul_lookup_y', 0))),
-        ('lookup_x_plus_y', 'field_mul_lookup_sum', int(leaf_opcode_histogram().get('field_mul_lookup_sum', 0))),
-        ('lookup_y', 'complete_a0_streamed_tail', int(leaf_opcode_histogram().get('complete_a0_streamed_tail', 0))),
-    ]
     source_rows = []
     per_leaf_streamed_kernel_count = 0
     per_leaf_data_select_non_clifford = 0
-    for bit_source, opcode, count in bit_sources:
+    for opcode, count in sorted(leaf_opcode_histogram().items()):
+        if opcode not in kernel_lookup or count == 0:
+            continue
         kernel = kernel_lookup[opcode]
         data_select_stages = [
             stage for stage in kernel['stages'] if stage['category'] == 'streamed_lookup_data_select'
         ]
+        if not data_select_stages:
+            continue
         stream_count_per_kernel = len(data_select_stages)
         per_stream_costs = [int(stage['non_clifford_total']) for stage in data_select_stages]
+        bit_sources_seen = []
+        for stage in data_select_stages:
+            stage_name = str(stage['name'])
+            if 'lookup_x_plus_y' in stage_name:
+                bit_sources_seen.append('lookup_x_plus_y')
+            elif 'lookup_x' in stage_name:
+                bit_sources_seen.append('lookup_x')
+            elif 'lookup_y' in stage_name:
+                bit_sources_seen.append('lookup_y')
+            else:
+                bit_sources_seen.append('unknown')
         data_select_non_clifford = sum(int(stage['non_clifford_total']) for stage in data_select_stages)
         source_rows.append({
-            'bit_source': bit_source,
+            'bit_sources': bit_sources_seen,
             'consumer_opcode': opcode,
             'per_leaf_kernel_count': count,
             'coordinate_streams_per_kernel': stream_count_per_kernel,
@@ -807,7 +816,7 @@ def slot_allocation_families() -> List[SlotAllocationFamily]:
             leaf_source_artifact='compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json',
             slot_allocation=streamed_lookup_tail_leaf_slot_allocation(),
             notes=[
-                'This is the repository central standard-QROM leaf contract: no field-sized lookup x/y output lanes are free, and the five-slot arithmetic peak is derived from executable liveness while QROAM target/junk capacity is counted separately in lookup workspace.',
+                'This is the repository central standard-QROM leaf contract: no field-sized lookup x/y output lanes are free, and the three-slot arithmetic peak is derived from executable liveness while QROAM target/junk capacity is counted separately in lookup workspace.',
             ],
         ),
     ]
@@ -859,7 +868,7 @@ def primitive_multiplier_library() -> Dict[str, Any]:
                 'gate_set': kernel['gate_set'],
                 'arithmetic_lowering_artifact': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
             })
-        elif opcode == 'complete_a0_streamed_tail':
+        elif opcode in {'complete_a0_streamed_tail', 'complete_a0_fully_streamed_tail', 'complete_a0_all_streamed_tail'}:
             for tail_product in ('KN', 'EC', 'NM', 'CL', 'ME', 'LK'):
                 per_leaf.append({
                     'leaf_multiplier_index': len(per_leaf),
@@ -1566,7 +1575,9 @@ def full_attack_inventory() -> Dict[str, Any]:
             'whole_oracle_field_mul_lookup_x_count': leaf_calls * hist.get('field_mul_lookup_x', 0),
             'whole_oracle_field_mul_lookup_y_count': leaf_calls * hist.get('field_mul_lookup_y', 0),
             'whole_oracle_field_mul_lookup_sum_count': leaf_calls * hist.get('field_mul_lookup_sum', 0),
-            'whole_oracle_complete_a0_streamed_tail_count': leaf_calls * hist.get('complete_a0_streamed_tail', 0),
+                'whole_oracle_complete_a0_streamed_tail_count': leaf_calls * hist.get('complete_a0_streamed_tail', 0),
+                'whole_oracle_complete_a0_fully_streamed_tail_count': leaf_calls * hist.get('complete_a0_fully_streamed_tail', 0),
+                'whole_oracle_complete_a0_all_streamed_tail_count': leaf_calls * hist.get('complete_a0_all_streamed_tail', 0),
             'whole_oracle_mul_const_count': leaf_calls * hist.get('mul_const', 0),
             'whole_oracle_select_count': leaf_calls * hist.get('select_field_if_flag', 0),
             'whole_oracle_lookup_count': schedule['summary']['lookup_invocations_total'],

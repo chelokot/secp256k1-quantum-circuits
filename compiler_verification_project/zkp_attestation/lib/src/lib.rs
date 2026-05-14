@@ -641,6 +641,23 @@ pub enum CompiledInstruction {
         y: RegisterId,
         z: RegisterId,
     },
+    CompleteA0FullyStreamedTail {
+        out_x: RegisterId,
+        out_y: RegisterId,
+        out_z: RegisterId,
+        x: RegisterId,
+        h: RegisterId,
+        y: RegisterId,
+        z: RegisterId,
+    },
+    CompleteA0AllStreamedTail {
+        out_x: RegisterId,
+        out_y: RegisterId,
+        out_z: RegisterId,
+        x: RegisterId,
+        y: RegisterId,
+        z: RegisterId,
+    },
 }
 
 #[derive(Serialize, Deserialize)]
@@ -718,6 +735,23 @@ enum HumanCompiledInstruction {
         y: RegisterId,
         z: RegisterId,
     },
+    CompleteA0FullyStreamedTail {
+        out_x: RegisterId,
+        out_y: RegisterId,
+        out_z: RegisterId,
+        x: RegisterId,
+        h: RegisterId,
+        y: RegisterId,
+        z: RegisterId,
+    },
+    CompleteA0AllStreamedTail {
+        out_x: RegisterId,
+        out_y: RegisterId,
+        out_z: RegisterId,
+        x: RegisterId,
+        y: RegisterId,
+        z: RegisterId,
+    },
 }
 
 #[derive(Serialize, Deserialize)]
@@ -791,6 +825,23 @@ enum BinaryCompiledInstruction {
         c: RegisterId,
         h: RegisterId,
         a: RegisterId,
+        y: RegisterId,
+        z: RegisterId,
+    },
+    CompleteA0FullyStreamedTail {
+        out_x: RegisterId,
+        out_y: RegisterId,
+        out_z: RegisterId,
+        x: RegisterId,
+        h: RegisterId,
+        y: RegisterId,
+        z: RegisterId,
+    },
+    CompleteA0AllStreamedTail {
+        out_x: RegisterId,
+        out_y: RegisterId,
+        out_z: RegisterId,
+        x: RegisterId,
         y: RegisterId,
         z: RegisterId,
     },
@@ -890,6 +941,38 @@ impl From<&CompiledInstruction> for HumanCompiledInstruction {
                 y: *y,
                 z: *z,
             },
+            CompiledInstruction::CompleteA0FullyStreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                x,
+                h,
+                y,
+                z,
+            } => Self::CompleteA0FullyStreamedTail {
+                out_x: *out_x,
+                out_y: *out_y,
+                out_z: *out_z,
+                x: *x,
+                h: *h,
+                y: *y,
+                z: *z,
+            },
+            CompiledInstruction::CompleteA0AllStreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                x,
+                y,
+                z,
+            } => Self::CompleteA0AllStreamedTail {
+                out_x: *out_x,
+                out_y: *out_y,
+                out_z: *out_z,
+                x: *x,
+                y: *y,
+                z: *z,
+            },
         }
     }
 }
@@ -964,6 +1047,38 @@ impl From<HumanCompiledInstruction> for CompiledInstruction {
                 c,
                 h,
                 a,
+                y,
+                z,
+            },
+            HumanCompiledInstruction::CompleteA0FullyStreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                x,
+                h,
+                y,
+                z,
+            } => Self::CompleteA0FullyStreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                x,
+                h,
+                y,
+                z,
+            },
+            HumanCompiledInstruction::CompleteA0AllStreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                x,
+                y,
+                z,
+            } => Self::CompleteA0AllStreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                x,
                 y,
                 z,
             },
@@ -1044,6 +1159,38 @@ impl From<&CompiledInstruction> for BinaryCompiledInstruction {
                 y,
                 z,
             },
+            HumanCompiledInstruction::CompleteA0FullyStreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                x,
+                h,
+                y,
+                z,
+            } => Self::CompleteA0FullyStreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                x,
+                h,
+                y,
+                z,
+            },
+            HumanCompiledInstruction::CompleteA0AllStreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                x,
+                y,
+                z,
+            } => Self::CompleteA0AllStreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                x,
+                y,
+                z,
+            },
         }
     }
 }
@@ -1118,6 +1265,38 @@ impl From<BinaryCompiledInstruction> for CompiledInstruction {
                 c,
                 h,
                 a,
+                y,
+                z,
+            },
+            BinaryCompiledInstruction::CompleteA0FullyStreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                x,
+                h,
+                y,
+                z,
+            } => Self::CompleteA0FullyStreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                x,
+                h,
+                y,
+                z,
+            },
+            BinaryCompiledInstruction::CompleteA0AllStreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                x,
+                y,
+                z,
+            } => Self::CompleteA0AllStreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                x,
                 y,
                 z,
             },
@@ -2072,6 +2251,57 @@ fn execute_leaf(
                     modulus,
                 );
                 registers[*out_y] = ((&n * &m) + (&registers[*c] * &l)) % modulus;
+                registers[*out_z] = ((&m * &e) + (&l * &k)) % modulus;
+            }
+            CompiledInstruction::CompleteA0FullyStreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                x,
+                h,
+                y,
+                z,
+            } => {
+                let a = (&registers[*x] * &lookup_x) % modulus;
+                let zx = (&registers[*z] * &lookup_x) % modulus;
+                let c = (BigUint::from(21u32) * ((&registers[*x] + &zx) % modulus)) % modulus;
+                let i = (&registers[*y] * &lookup_y) % modulus;
+                let k_minus_a = mod_sub(&registers[*h], &a, modulus);
+                let k = mod_sub(&k_minus_a, &i, modulus);
+                let l = (BigUint::from(3u32) * &a) % modulus;
+                let yz = (&lookup_y * &registers[*z]) % modulus;
+                let e = (&registers[*y] + yz) % modulus;
+                let f = (BigUint::from(21u32) * &registers[*z]) % modulus;
+                let m = (&i + &f) % modulus;
+                let n = mod_sub(&i, &f, modulus);
+                registers[*out_x] = mod_sub(&((&k * &n) % modulus), &((&e * &c) % modulus), modulus);
+                registers[*out_y] = ((&n * &m) + (&c * &l)) % modulus;
+                registers[*out_z] = ((&m * &e) + (&l * &k)) % modulus;
+            }
+            CompiledInstruction::CompleteA0AllStreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                x,
+                y,
+                z,
+            } => {
+                let lookup_sum = (&lookup_x + &lookup_y) % modulus;
+                let h = (((&registers[*x] + &registers[*y]) % modulus) * lookup_sum) % modulus;
+                let a = (&registers[*x] * &lookup_x) % modulus;
+                let zx = (&registers[*z] * &lookup_x) % modulus;
+                let c = (BigUint::from(21u32) * ((&registers[*x] + &zx) % modulus)) % modulus;
+                let i = (&registers[*y] * &lookup_y) % modulus;
+                let k_minus_a = mod_sub(&h, &a, modulus);
+                let k = mod_sub(&k_minus_a, &i, modulus);
+                let l = (BigUint::from(3u32) * &a) % modulus;
+                let yz = (&lookup_y * &registers[*z]) % modulus;
+                let e = (&registers[*y] + yz) % modulus;
+                let f = (BigUint::from(21u32) * &registers[*z]) % modulus;
+                let m = (&i + &f) % modulus;
+                let n = mod_sub(&i, &f, modulus);
+                registers[*out_x] = mod_sub(&((&k * &n) % modulus), &((&e * &c) % modulus), modulus);
+                registers[*out_y] = ((&n * &m) + (&c * &l)) % modulus;
                 registers[*out_z] = ((&m * &e) + (&l * &k)) % modulus;
             }
         }
