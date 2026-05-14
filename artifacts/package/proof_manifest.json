@@ -186,6 +186,10 @@
       "sha256": "00718f962772a5f2e42d345571614593d7c1e7dbdee0db1a217dec368f6f32cd",
       "bytes": 38865
     },
+    "compiler_verification_project/src/materialized_circuit.py": {
+      "sha256": "0d1adacb36156bde899708d5056dd7bb002edf7261cbfd815876f9aa748a2120",
+      "bytes": 14192
+    },
     "compiler_verification_project/src/phase_shell_lowering.py": {
       "sha256": "d234a21db633c1178e2d2cf8ce6fe7b436a0bda68121e04e50093aa26270dbc4",
       "bytes": 16111
@@ -477,6 +481,10 @@
     "compiler_verification_project/artifacts/resource_liveness_certificate.json": {
       "sha256": "b21862ccb8350fa1da87f4367e742313f0539597a72f50f7559819f43999702e",
       "bytes": 71663
+    },
+    "compiler_verification_project/artifacts/materialized_circuit_manifest.json": {
+      "sha256": "f037112f434c9d4c826e60dd2b8934939ecfc692149630893d9c48799efaf223",
+      "bytes": 7864
     },
     "compiler_verification_project/artifacts/qubit_breakthrough_analysis.json": {
       "sha256": "c6097947f7b4a7123c20b028a22df1808ec51c3150b5a610c56517994b757c65",
