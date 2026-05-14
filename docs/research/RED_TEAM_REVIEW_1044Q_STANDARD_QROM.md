@@ -1285,32 +1285,40 @@ Fixed after review:
   documents; and publishes the recomputed hashes as public values.
 - The public values now include `resource_certificate_sha256`, binding the
   selected frontier, executable leaf liveness summary, QROAM workspace/cost
-  checks, arithmetic lowering inventory, and global resource owner ledger to the
-  proof input.
+  checks, arithmetic lowering inventory, selected-family FT-IR leaf sigma, and
+  global resource owner ledger to the proof input.
 - Negative guest tests were added for stale claim labels, mutated committed
-  claim payloads, mutated prepared leaves, and mutated prepared case corpora.
+  claim payloads, mutated prepared leaves, mutated prepared case corpora, and
+  mutated resource leaf-sigma primitive counts.
 
 Partially mitigated after review:
 
-- `ZK-2` and `RES-3`: the new checked
-  `resource_liveness_certificate.json` is a compact machine-checked resource
-  certificate rather than prose-only accounting. It reduces the trust gap by
-  tying liveness, QROAM workspace, lowering inventory, and owner totals to one
-  committed document that the guest verifies. It is still not the same thing as
-  feeding one fully flattened primitive circuit/liveness IR into the proof.
+- `ZK-2` and `RES-3`: the checked
+  `resource_liveness_certificate.json` now carries the selected FT-IR
+  leaf-sigma rows. The SP1 guest recomputes primitive totals, live-qubit
+  totals, phase counts, and the expanded all-streamed-tail contribution from
+  those rows before accepting the public values. This is a real resource
+  certificate, not only a headline consistency check. It is still a leaf-sigma
+  certificate rather than a checked giant gate-list dump.
+- `RES-1`: `complete_a0_all_streamed_tail` is no longer only a single opaque
+  resource token in the ZKP-bound resource certificate. The certificate contains
+  36 primitive leaf-sigma rows for the macro, and the guest verifies that their
+  whole-oracle non-Clifford contribution equals the per-leaf macro lowering
+  times the 31 leaf calls. Internal live-wire scheduling below those primitive
+  rows is still not a bit-addressed wire netlist.
 - `ZK-3`: proof binaries are now included in the curated proof manifest, but
   the checked JSON fixtures still intentionally keep the large binary proof
   payloads out-of-line.
 
 Still open:
 
-- `RES-1`: `complete_a0_all_streamed_tail` has an explicit stage inventory, but
-  the repo still needs a fully scheduled primitive expansion if the intended
-  standard is "no macro boundary left to trust".
 - `RES-2`: modular field arithmetic remains model-level lowering with
   checked kernels and reconstruction, not a generated primitive modular circuit
   netlist with one global liveness pass.
+- A fully materialized, bit-addressed primitive circuit stream is available as
+  a generator interface, but the repository still ships digestable leaf-sigma
+  artifacts rather than checking in a tens-of-millions-row gate list.
 - The deepest refactor remains mandatory before claiming Google-equivalent
-  confidence: a single executable resource engine should emit the semantic
-  leaf, primitive lowering, liveness peak, artifact digests, and ZKP input from
-  one source of truth.
+  hidden-circuit confidence: the same source engine should emit the semantic
+  leaf, primitive lowering, liveness peak, artifact digests, and ZKP input
+  without maintaining parallel prepared and audit views.

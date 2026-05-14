@@ -3211,6 +3211,21 @@ fn json_bool_field(value: &Value, key: &str) -> bool {
         .unwrap_or_else(|| panic!("resource certificate field is not a bool: {key}"))
 }
 
+fn json_array_field<'a>(value: &'a Value, key: &str) -> &'a Vec<Value> {
+    json_object_field(value, key)
+        .as_array()
+        .unwrap_or_else(|| panic!("resource certificate field is not an array: {key}"))
+}
+
+fn json_primitive_counts(value: &Value, key: &str) -> BTreeMap<String, u64> {
+    let object = json_object_field(value, key);
+    let mut counts = BTreeMap::new();
+    for count_key in ["ccx", "cx", "x", "measurement"] {
+        counts.insert(count_key.to_owned(), json_u64_field(object, count_key));
+    }
+    counts
+}
+
 fn validate_resource_certificate(
     certificate: &Value,
     claim: &PreparedClaimSummary,
@@ -3218,7 +3233,7 @@ fn validate_resource_certificate(
 ) {
     assert_eq!(
         json_string_field(certificate, "schema"),
-        "compiler-project-resource-liveness-certificate-v1"
+        "compiler-project-resource-liveness-certificate-v2"
     );
     assert!(json_bool_field(certificate, "pass"));
     assert_eq!(
@@ -3283,6 +3298,144 @@ fn validate_resource_certificate(
     assert_eq!(
         json_u64_field(qroam_workspace, "coordinate_field_lane_qubits_materialized"),
         0
+    );
+
+    let primitive_ir = json_object_field(certificate, "primitive_oracle_ir");
+    assert_eq!(
+        json_string_field(primitive_ir, "selected_family"),
+        family.name.as_str()
+    );
+    assert_eq!(
+        json_string_field(primitive_ir, "source_schema"),
+        "compiler-project-ft-ir-v2"
+    );
+    let leaf_sigma = json_array_field(primitive_ir, "leaf_sigma");
+    assert_eq!(
+        json_u64_field(primitive_ir, "leaf_sigma_count"),
+        leaf_sigma.len() as u64
+    );
+    let mut primitive_totals: BTreeMap<String, u64> = BTreeMap::new();
+    for key in ["ccx", "cx", "x", "measurement"] {
+        primitive_totals.insert(key.to_owned(), 0);
+    }
+    let mut logical_qubits_total = 0u64;
+    let mut phase_shell_hadamards = 0u64;
+    let mut phase_shell_measurements = 0u64;
+    let mut phase_shell_rotations = 0u64;
+    let mut phase_shell_rotation_depth = 0u64;
+    let mut tail_row_count = 0u64;
+    let mut tail_non_clifford = 0u64;
+    for row in leaf_sigma {
+        let leaf_id = json_string_field(row, "leaf_id");
+        let semantics = json_string_field(row, "resource_semantics");
+        let path_multiplicity = json_u64_field(row, "path_multiplicity");
+        match semantics {
+            "additive_primitive" => {
+                let base_instance_count = json_u64_field(row, "base_instance_count");
+                let per_instance = json_primitive_counts(row, "primitive_counts_per_instance");
+                let total = json_primitive_counts(row, "primitive_counts_total");
+                for key in ["ccx", "cx", "x", "measurement"] {
+                    let reconstructed = path_multiplicity * base_instance_count * per_instance[key];
+                    assert_eq!(
+                        reconstructed, total[key],
+                        "primitive leaf-sigma row does not reconstruct: {leaf_id}:{key}"
+                    );
+                    *primitive_totals.get_mut(key).unwrap() += reconstructed;
+                }
+                if leaf_id.starts_with("arithmetic_opcode__complete_a0_all_streamed_tail__") {
+                    tail_row_count += 1;
+                    tail_non_clifford += total["ccx"];
+                }
+            }
+            "peak_live_qubits" => {
+                let reconstructed = path_multiplicity * json_u64_field(row, "logical_qubits");
+                assert_eq!(
+                    reconstructed,
+                    json_u64_field(row, "logical_qubits_total"),
+                    "live-qubit leaf-sigma row does not reconstruct: {leaf_id}"
+                );
+                logical_qubits_total += reconstructed;
+            }
+            "additive_phase_hadamards" => {
+                let reconstructed = path_multiplicity * json_u64_field(row, "count");
+                assert_eq!(reconstructed, json_u64_field(row, "count_total"));
+                phase_shell_hadamards += reconstructed;
+            }
+            "additive_phase_measurements" => {
+                let reconstructed = path_multiplicity * json_u64_field(row, "count");
+                assert_eq!(reconstructed, json_u64_field(row, "count_total"));
+                phase_shell_measurements += reconstructed;
+            }
+            "additive_phase_rotations" => {
+                let reconstructed = path_multiplicity * json_u64_field(row, "count");
+                assert_eq!(reconstructed, json_u64_field(row, "count_total"));
+                phase_shell_rotations += reconstructed;
+            }
+            "additive_phase_rotation_depth" => {
+                let reconstructed = path_multiplicity * json_u64_field(row, "count");
+                assert_eq!(reconstructed, json_u64_field(row, "count_total"));
+                phase_shell_rotation_depth += reconstructed;
+            }
+            _ => panic!("unknown resource leaf-sigma semantics: {semantics}"),
+        }
+    }
+    let reconstruction = json_object_field(primitive_ir, "reconstruction_from_leaf_sigma");
+    assert_eq!(
+        primitive_totals["ccx"],
+        claim.expected_full_oracle_non_clifford
+    );
+    assert_eq!(
+        json_u64_field(reconstruction, "full_oracle_non_clifford"),
+        primitive_totals["ccx"]
+    );
+    assert_eq!(
+        json_primitive_counts(reconstruction, "primitive_totals"),
+        primitive_totals
+    );
+    assert_eq!(
+        json_u64_field(reconstruction, "total_logical_qubits"),
+        logical_qubits_total
+    );
+    assert_eq!(logical_qubits_total, claim.expected_total_logical_qubits);
+    assert_eq!(
+        json_u64_field(reconstruction, "phase_shell_hadamards"),
+        phase_shell_hadamards
+    );
+    assert_eq!(
+        json_u64_field(reconstruction, "phase_shell_measurements"),
+        phase_shell_measurements
+    );
+    assert_eq!(
+        json_u64_field(reconstruction, "phase_shell_rotations"),
+        phase_shell_rotations
+    );
+    assert_eq!(
+        json_u64_field(reconstruction, "phase_shell_rotation_depth"),
+        phase_shell_rotation_depth
+    );
+    let generated = json_object_field(primitive_ir, "generated_block_inventory_reconstruction");
+    assert_eq!(
+        json_u64_field(generated, "full_oracle_non_clifford"),
+        primitive_totals["ccx"]
+    );
+    assert_eq!(
+        json_u64_field(generated, "total_logical_qubits"),
+        logical_qubits_total
+    );
+    let tail_rows = json_object_field(primitive_ir, "tail_macro_rows");
+    assert_eq!(json_u64_field(tail_rows, "row_count"), tail_row_count);
+    assert_eq!(
+        json_u64_field(tail_rows, "whole_oracle_non_clifford"),
+        tail_non_clifford
+    );
+    assert_eq!(
+        tail_non_clifford,
+        json_u64_field(tail_rows, "per_leaf_non_clifford")
+            * json_u64_field(tail_rows, "leaf_call_count_total")
+    );
+    assert!(
+        tail_row_count >= 20,
+        "tail macro must be expanded into primitive leaf-sigma rows"
     );
 
     let checks = json_object_field(certificate, "checks")
@@ -3590,6 +3743,15 @@ mod tests {
     fn prepared_attestation_rejects_mutated_prepared_case_corpus() {
         let mut input = checked_input();
         input.prepared_case_corpus.cases[0].case_id = "forged_case".to_owned();
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_mutated_resource_leaf_sigma() {
+        let mut input = checked_input();
+        input.resource_certificate_document.payload.0["primitive_oracle_ir"]["leaf_sigma"][0]
+            ["primitive_counts_total"]["ccx"] = serde_json::json!(0);
         run_prepared_attestation(&input);
     }
 }

@@ -1130,15 +1130,20 @@ def build_resource_liveness_certificate_checks(artifacts: Mapping[str, Any]) -> 
         arithmetic_lowerings=artifacts['arithmetic_lowerings'],
         streamed_lookup_resource=artifacts['streamed_lookup_table_multiplier_resource'],
         logical_resource_ledger=artifacts['logical_resource_ledger'],
+        ft_ir_compositions=artifacts['ft_ir_compositions'],
         field_bits=FIELD_BITS,
     )
     selected = artifacts['family_frontier']['best_qubit_family']
+    primitive_ir = certificate['primitive_oracle_ir']
     checks = [
         _check('resource_liveness_certificate_matches_generator', certificate == expected, expected, certificate),
-        _check('resource_liveness_certificate_schema_is_current', certificate['schema'] == 'compiler-project-resource-liveness-certificate-v1', 'compiler-project-resource-liveness-certificate-v1', certificate['schema']),
+        _check('resource_liveness_certificate_schema_is_current', certificate['schema'] == 'compiler-project-resource-liveness-certificate-v2', 'compiler-project-resource-liveness-certificate-v2', certificate['schema']),
         _check('resource_liveness_certificate_passes_internal_checks', certificate['pass'] is True and all(certificate['checks'].values()), True, certificate['checks']),
         _check('resource_liveness_certificate_binds_selected_headline', certificate['selected_family'] == selected['name'] and certificate['headline_totals']['full_oracle_non_clifford'] == selected['full_oracle_non_clifford'] and certificate['headline_totals']['total_logical_qubits'] == selected['total_logical_qubits'], selected, certificate['headline_totals']),
         _check('resource_liveness_certificate_derives_peak_from_schedule_and_owners', certificate['flat_leaf_liveness']['arithmetic_slots_from_schedule'] == selected['arithmetic_slot_count'] and certificate['global_peak_live_qubits'] == selected['total_logical_qubits'], {'arithmetic_slot_count': selected['arithmetic_slot_count'], 'total_logical_qubits': selected['total_logical_qubits']}, {'arithmetic_slots_from_schedule': certificate['flat_leaf_liveness']['arithmetic_slots_from_schedule'], 'global_peak_live_qubits': certificate['global_peak_live_qubits']}),
+        _check('resource_liveness_certificate_embeds_selected_ft_ir_leaf_sigma', primitive_ir['selected_family'] == selected['name'] and primitive_ir['source_schema'] == artifacts['ft_ir_compositions']['schema'] and primitive_ir['leaf_sigma_count'] == len(primitive_ir['leaf_sigma']), {'selected_family': selected['name'], 'source_schema': artifacts['ft_ir_compositions']['schema']}, {'selected_family': primitive_ir['selected_family'], 'source_schema': primitive_ir['source_schema'], 'leaf_sigma_count': primitive_ir['leaf_sigma_count']}),
+        _check('resource_liveness_certificate_leaf_sigma_reconstructs_headline', primitive_ir['reconstruction_from_leaf_sigma']['full_oracle_non_clifford'] == selected['full_oracle_non_clifford'] and primitive_ir['reconstruction_from_leaf_sigma']['total_logical_qubits'] == selected['total_logical_qubits'], selected, primitive_ir['reconstruction_from_leaf_sigma']),
+        _check('resource_liveness_certificate_tail_macro_expands_into_rows', primitive_ir['tail_macro_rows']['row_count'] > 0 and primitive_ir['tail_macro_rows']['whole_oracle_non_clifford'] == primitive_ir['tail_macro_rows']['per_leaf_non_clifford'] * primitive_ir['tail_macro_rows']['leaf_call_count_total'], True, primitive_ir['tail_macro_rows']),
     ]
     return _summarize_checks(checks)
 

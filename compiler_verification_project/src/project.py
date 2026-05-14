@@ -1939,6 +1939,7 @@ def build_all_artifacts() -> Dict[str, Any]:
         arithmetic_lowerings=out['arithmetic_lowerings'],
         streamed_lookup_resource=out['streamed_lookup_table_multiplier_resource'],
         logical_resource_ledger=out['logical_resource_ledger'],
+        ft_ir_compositions=out['ft_ir_compositions'],
         field_bits=FIELD_BITS,
     )
     out['qubit_breakthrough_analysis'] = build_qubit_breakthrough_analysis(frontier=out['frontier'])
