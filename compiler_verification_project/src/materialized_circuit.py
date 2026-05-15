@@ -20,6 +20,40 @@ from phase_shell_lowering import materialize_phase_operations, phase_shell_lower
 
 
 STREAM_COLUMNS = ['stream_index', 'family', 'scope', 'invocation', 'source', 'gate', 'operand_0', 'operand_1', 'operand_2']
+DEFAULT_SEGMENT_SIZE = 1_000_000
+
+
+def _empty_gate_totals() -> Dict[str, int]:
+    return {
+        'ccx': 0,
+        'cx': 0,
+        'x': 0,
+        'measurement': 0,
+        'hadamard': 0,
+        'single_qubit_rotation': 0,
+        'controlled_rotation': 0,
+    }
+
+
+def _merkle_parent(left_hex: str, right_hex: str) -> str:
+    digest = hashlib.sha256()
+    digest.update(bytes.fromhex(left_hex))
+    digest.update(bytes.fromhex(right_hex))
+    return digest.hexdigest()
+
+
+def _merkle_root(leaf_hashes: List[str]) -> str:
+    if not leaf_hashes:
+        return hashlib.sha256(b'').hexdigest()
+    level = list(leaf_hashes)
+    while len(level) > 1:
+        next_level: List[str] = []
+        for index in range(0, len(level), 2):
+            left = level[index]
+            right = level[index + 1] if index + 1 < len(level) else left
+            next_level.append(_merkle_parent(left, right))
+        level = next_level
+    return level[0]
 
 
 def _project_defaults() -> Dict[str, Any]:
@@ -222,26 +256,26 @@ def build_materialized_family_manifest(
     field_bits: Optional[int] = None,
     phase_bits: Optional[int] = None,
     leaf_histogram: Optional[Mapping[str, int]] = None,
+    segment_size: int = DEFAULT_SEGMENT_SIZE,
 ) -> Dict[str, Any]:
     defaults: Optional[Dict[str, Any]] = None
     if frontier is None:
         defaults = _project_defaults()
     resolved_frontier = frontier if frontier is not None else defaults['frontier']
     family = _family_lookup(resolved_frontier)[family_name]
-    gate_totals = {
-        'ccx': 0,
-        'cx': 0,
-        'x': 0,
-        'measurement': 0,
-        'hadamard': 0,
-        'single_qubit_rotation': 0,
-        'controlled_rotation': 0,
-    }
+    gate_totals = _empty_gate_totals()
     operation_count = 0
     operation_stream_hash = hashlib.sha256()
     operation_stream_hash.update(('\t'.join(STREAM_COLUMNS) + '\n').encode('utf-8'))
+    segment_hash = hashlib.sha256()
+    segment_count = 0
+    segment_start = 0
+    segment_gate_totals = _empty_gate_totals()
+    segments: List[Dict[str, Any]] = []
     preview_head: List[Dict[str, Any]] = []
     preview_tail: List[Dict[str, Any]] = []
+    if segment_size <= 0:
+        raise ValueError('segment_size must be positive')
     for row in iter_family_operation_stream(
         family_name,
         frontier=resolved_frontier,
@@ -257,12 +291,39 @@ def build_materialized_family_manifest(
         gate = str(row['gate'])
         gate_totals[gate] += 1
         operation_count += 1
-        operation_stream_hash.update(_encoded_stream_row(row).encode('utf-8'))
+        encoded_row = _encoded_stream_row(row).encode('utf-8')
+        operation_stream_hash.update(encoded_row)
+        segment_hash.update(encoded_row)
+        segment_count += 1
+        segment_gate_totals[gate] += 1
         if len(preview_head) < 8:
             preview_head.append(dict(row))
         preview_tail.append(dict(row))
         if len(preview_tail) > 8:
             preview_tail.pop(0)
+        if segment_count == segment_size:
+            segments.append({
+                'segment_index': len(segments),
+                'operation_start': segment_start,
+                'operation_end_exclusive': operation_count,
+                'operation_count': segment_count,
+                'sha256': segment_hash.hexdigest(),
+                'gate_totals': segment_gate_totals,
+            })
+            segment_hash = hashlib.sha256()
+            segment_count = 0
+            segment_start = operation_count
+            segment_gate_totals = _empty_gate_totals()
+    if segment_count:
+        segments.append({
+            'segment_index': len(segments),
+            'operation_start': segment_start,
+            'operation_end_exclusive': operation_count,
+            'operation_count': segment_count,
+            'sha256': segment_hash.hexdigest(),
+            'gate_totals': segment_gate_totals,
+        })
+    segment_hashes = [segment['sha256'] for segment in segments]
     return {
         'family': family_name,
         'summary': family['summary'],
@@ -272,6 +333,10 @@ def build_materialized_family_manifest(
         'stream_encoding': STREAM_COLUMNS,
         'operation_stream_sha256': operation_stream_hash.hexdigest(),
         'operation_count': operation_count,
+        'segment_size': segment_size,
+        'segment_count': len(segments),
+        'segment_merkle_root_sha256': _merkle_root(segment_hashes),
+        'segments': segments,
         'gate_totals': gate_totals,
         'expected_totals': {
             'full_oracle_non_clifford': int(family['full_oracle_non_clifford']),

@@ -1961,6 +1961,9 @@
     ],
     "operation_stream_sha256": "a96f690cd1f4f3888f51dad42b80dcdda840ccfccbb900ed34517d9916355208",
     "operation_count": 42038711,
+    "segment_size": 1000000,
+    "segment_count": 43,
+    "segment_merkle_root_sha256": "5ff61670bb4d1a394cb15b57b3c917687c092083654bb8738e47f2f0f1589188",
     "gate_totals": {
       "ccx": 34736076,
       "cx": 0,
@@ -2034,11 +2037,13 @@
     "ft_ir_leaf_sigma_matches_generated_inventory": true,
     "tail_macro_expanded_into_primitive_leaf_sigma_rows": true,
     "leaf_sigma_contains_no_macro_resource_tokens": true,
-    "materialized_operation_stream_reconstructs_selected_headline": true
+    "materialized_operation_stream_reconstructs_selected_headline": true,
+    "materialized_operation_stream_segments_cover_stream": true
   },
   "pass": true,
   "notes": [
     "This certificate is the resource object bound by the ZKP input: it ties the executable leaf liveness, QROAM workspace, arithmetic lowering inventory, selected-family FT-IR leaf sigma, and global owner ledger to the selected headline.",
-    "The primitive_oracle_ir section is intentionally a leaf-sigma certificate rather than a giant gate-list dump: every row carries multiplicity, primitive counts, and live-qubit totals that reconstruct the checked headline inside the SP1 guest."
+    "The primitive_oracle_ir section is intentionally a leaf-sigma certificate rather than a giant gate-list dump: every row carries multiplicity, primitive counts, and live-qubit totals that reconstruct the checked headline inside the SP1 guest.",
+    "The materialized_operation_stream section binds the full generated operation stream by a whole-stream digest plus a segmented Merkle root, so large-stream drift can be audited without checking in the full TSV."
   ]
 }

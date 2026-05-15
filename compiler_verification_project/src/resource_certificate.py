@@ -164,6 +164,11 @@ def build_resource_liveness_certificate(
     tail_macro_expected_non_clifford = int(tail_kernel['exact_non_clifford_per_kernel']) * leaf_call_count_total
     qroam_target_plus_junk = int(qroam_workspace['qroam_clean_target_plus_junk_qubits'])
     materialized_checks = materialized_circuit_manifest['reconstruction_checks']
+    materialized_segment_count = int(materialized_circuit_manifest['segment_count'])
+    materialized_segment_total = sum(
+        int(segment['operation_count'])
+        for segment in materialized_circuit_manifest['segments']
+    )
     checks = {
         'selected_family_matches_frontier_best_qubit': selected['name'] == logical_resource_ledger['selected_family'],
         'leaf_peak_arithmetic_slots_derived_from_per_pc': leaf_peak_arithmetic_slots == int(selected['arithmetic_slot_count']),
@@ -220,6 +225,11 @@ def build_resource_liveness_certificate(
             and int(materialized_circuit_manifest['gate_totals']['ccx']) == int(selected['full_oracle_non_clifford'])
             and int(materialized_circuit_manifest['gate_totals']['measurement']) == int(selected['total_measurements'])
             and all(bool(value) for value in materialized_checks.values())
+        ),
+        'materialized_operation_stream_segments_cover_stream': (
+            materialized_segment_count == len(materialized_circuit_manifest['segments'])
+            and materialized_segment_total == int(materialized_circuit_manifest['operation_count'])
+            and len(str(materialized_circuit_manifest['segment_merkle_root_sha256'])) == 64
         ),
     }
     return {
@@ -304,6 +314,9 @@ def build_resource_liveness_certificate(
             'stream_encoding': materialized_circuit_manifest['stream_encoding'],
             'operation_stream_sha256': materialized_circuit_manifest['operation_stream_sha256'],
             'operation_count': int(materialized_circuit_manifest['operation_count']),
+            'segment_size': int(materialized_circuit_manifest['segment_size']),
+            'segment_count': materialized_segment_count,
+            'segment_merkle_root_sha256': materialized_circuit_manifest['segment_merkle_root_sha256'],
             'gate_totals': materialized_circuit_manifest['gate_totals'],
             'reconstruction_checks': materialized_circuit_manifest['reconstruction_checks'],
         },
@@ -314,6 +327,7 @@ def build_resource_liveness_certificate(
         'notes': [
             'This certificate is the resource object bound by the ZKP input: it ties the executable leaf liveness, QROAM workspace, arithmetic lowering inventory, selected-family FT-IR leaf sigma, and global owner ledger to the selected headline.',
             'The primitive_oracle_ir section is intentionally a leaf-sigma certificate rather than a giant gate-list dump: every row carries multiplicity, primitive counts, and live-qubit totals that reconstruct the checked headline inside the SP1 guest.',
+            'The materialized_operation_stream section binds the full generated operation stream by a whole-stream digest plus a segmented Merkle root, so large-stream drift can be audited without checking in the full TSV.',
         ],
     }
 

@@ -6,7 +6,7 @@
   "leaf_sha256": "a8b6d7dc3f45c85b450a373f90a174cf4cc3bdfe85520c56ee7ec8db2c5f6ab1",
   "family_sha256": "49d7eb7a73ef6c715e2ea155c5c1e42efe6e8cfa322aeae509b3091d92097a94",
   "case_corpus_sha256": "bf3cb3d15e8cb9ba158e800047936d62d83aba34191ca50d5e6138dff57dd28b",
-  "resource_certificate_sha256": "963331a52ffc25ce4d2e3033b7715fdefffa4e1123e245bfdfd5a8861cea756d",
+  "resource_certificate_sha256": "d93495974ffe26ad11e1d40eb46f8075c5ef27ca0f485b17c42387eab7058287",
   "expected_full_oracle_non_clifford": 34736076,
   "expected_total_logical_qubits": 1044,
   "case_count": 8,

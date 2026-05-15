@@ -3452,6 +3452,18 @@ fn validate_resource_certificate(
         json_string_field(materialized_stream, "operation_stream_sha256").len() == 64,
         "materialized operation stream digest must be a sha256 hex digest"
     );
+    assert!(
+        json_string_field(materialized_stream, "segment_merkle_root_sha256").len() == 64,
+        "materialized operation stream segment root must be a sha256 hex digest"
+    );
+    assert!(
+        json_u64_field(materialized_stream, "segment_count") > 0,
+        "materialized operation stream must have at least one digest segment"
+    );
+    assert!(
+        json_u64_field(materialized_stream, "segment_size") > 0,
+        "materialized operation stream segment size must be positive"
+    );
     let materialized_checks = json_object_field(materialized_stream, "reconstruction_checks")
         .as_object()
         .expect("materialized stream checks must be an object");

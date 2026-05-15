@@ -4921,21 +4921,21 @@
     ]
   },
   "resource_liveness_certificate_checks": {
-    "pass": 9,
-    "total": 9,
+    "pass": 10,
+    "total": 10,
     "checks": [
       {
         "name": "resource_liveness_certificate_matches_generator",
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "36a2d8d41cc34802a5e8d0a173d5be0301e8c6445d007cacef835c5b56fd7e44",
-          "size_bytes": 51747
+          "sha256": "ce088cb635a6a6b83fb3cd60d7d75c61f87177bd0436b55159b56044b1089044",
+          "size_bytes": 52156
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "36a2d8d41cc34802a5e8d0a173d5be0301e8c6445d007cacef835c5b56fd7e44",
-          "size_bytes": 51747
+          "sha256": "ce088cb635a6a6b83fb3cd60d7d75c61f87177bd0436b55159b56044b1089044",
+          "size_bytes": 52156
         }
       },
       {
@@ -4964,7 +4964,8 @@
           "ft_ir_leaf_sigma_matches_generated_inventory": true,
           "tail_macro_expanded_into_primitive_leaf_sigma_rows": true,
           "leaf_sigma_contains_no_macro_resource_tokens": true,
-          "materialized_operation_stream_reconstructs_selected_headline": true
+          "materialized_operation_stream_reconstructs_selected_headline": true,
+          "materialized_operation_stream_segments_cover_stream": true
         }
       },
       {
@@ -5096,8 +5097,8 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "37ed1d7816e35cb91d58acf8ebbe5a6295102830b26fb4917cb72088233ba3c5",
-          "size_bytes": 6340
+          "sha256": "3e1ce18197e7593a3b106ac29e453331b25d6be646918fdaf98bcd380cf0c1f0",
+          "size_bytes": 19829
         },
         "observed": {
           "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
@@ -5114,6 +5115,9 @@
           ],
           "operation_stream_sha256": "a96f690cd1f4f3888f51dad42b80dcdda840ccfccbb900ed34517d9916355208",
           "operation_count": 42038711,
+          "segment_size": 1000000,
+          "segment_count": 43,
+          "segment_merkle_root_sha256": "5ff61670bb4d1a394cb15b57b3c917687c092083654bb8738e47f2f0f1589188",
           "gate_totals": {
             "ccx": 34736076,
             "cx": 0,
@@ -5140,6 +5144,45 @@
           "whole_oracle_non_clifford": 34726572,
           "per_leaf_non_clifford": 1120212,
           "leaf_call_count_total": 31
+        }
+      },
+      {
+        "name": "resource_liveness_certificate_binds_materialized_segment_tree",
+        "pass": 1,
+        "expected": "5ff61670bb4d1a394cb15b57b3c917687c092083654bb8738e47f2f0f1589188",
+        "observed": {
+          "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
+          "stream_encoding": [
+            "stream_index",
+            "family",
+            "scope",
+            "invocation",
+            "source",
+            "gate",
+            "operand_0",
+            "operand_1",
+            "operand_2"
+          ],
+          "operation_stream_sha256": "a96f690cd1f4f3888f51dad42b80dcdda840ccfccbb900ed34517d9916355208",
+          "operation_count": 42038711,
+          "segment_size": 1000000,
+          "segment_count": 43,
+          "segment_merkle_root_sha256": "5ff61670bb4d1a394cb15b57b3c917687c092083654bb8738e47f2f0f1589188",
+          "gate_totals": {
+            "ccx": 34736076,
+            "cx": 0,
+            "x": 0,
+            "measurement": 7301612,
+            "hadamard": 512,
+            "single_qubit_rotation": 511,
+            "controlled_rotation": 0
+          },
+          "reconstruction_checks": {
+            "non_clifford_matches_frontier": true,
+            "phase_hadamards_match_frontier": true,
+            "phase_rotations_match_frontier": true,
+            "measurements_match_frontier": true
+          }
         }
       }
     ]
@@ -7932,8 +7975,7 @@
           ],
           "notes": [
             "This file is not a claimed Azure output. It is a machine-readable logicalCounts seed suitable for exact-family handoff into a physical estimator.",
-            "The rotationCount and rotationDepth fields are sourced from the exact phase-shell lowering artifact for each named compiler family.",
-            "When qsharp/qdk is unavailable, this artifact is filtered to the subset of families that have checked recorded estimator outputs in the repository."
+            "The rotationCount and rotationDepth fields are sourced from the exact phase-shell lowering artifact for each named compiler family."
           ]
         },
         "observed": {
@@ -7955,8 +7997,7 @@
           ],
           "notes": [
             "This file is not a claimed Azure output. It is a machine-readable logicalCounts seed suitable for exact-family handoff into a physical estimator.",
-            "The rotationCount and rotationDepth fields are sourced from the exact phase-shell lowering artifact for each named compiler family.",
-            "When qsharp/qdk is unavailable, this artifact is filtered to the subset of families that have checked recorded estimator outputs in the repository."
+            "The rotationCount and rotationDepth fields are sourced from the exact phase-shell lowering artifact for each named compiler family."
           ]
         }
       }
@@ -7990,7 +8031,7 @@
             "family_names": [
               "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1"
             ],
-            "logical_counts_sha256": "d92e572a6bf302b515827f70295af1c176291c1439a00b2029a5f62a9dd8ba01"
+            "logical_counts_sha256": "9490bdb2e474c208d6851a736749556a960d68cec28950cd57518a07f8407cd7"
           },
           "targets": [
             {
@@ -8104,7 +8145,7 @@
             "family_names": [
               "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1"
             ],
-            "logical_counts_sha256": "d92e572a6bf302b515827f70295af1c176291c1439a00b2029a5f62a9dd8ba01"
+            "logical_counts_sha256": "9490bdb2e474c208d6851a736749556a960d68cec28950cd57518a07f8407cd7"
           },
           "targets": [
             {
@@ -8950,10 +8991,10 @@
       "pass": 30
     },
     "invariant_checks": {
-      "total": 266,
-      "pass": 266
+      "total": 267,
+      "pass": 267
     },
-    "total": 296,
-    "pass": 296
+    "total": 297,
+    "pass": 297
   }
 }

@@ -17,6 +17,699 @@
   ],
   "operation_stream_sha256": "a96f690cd1f4f3888f51dad42b80dcdda840ccfccbb900ed34517d9916355208",
   "operation_count": 42038711,
+  "segment_size": 1000000,
+  "segment_count": 43,
+  "segment_merkle_root_sha256": "5ff61670bb4d1a394cb15b57b3c917687c092083654bb8738e47f2f0f1589188",
+  "segments": [
+    {
+      "segment_index": 0,
+      "operation_start": 0,
+      "operation_end_exclusive": 1000000,
+      "operation_count": 1000000,
+      "sha256": "73bef8f19086b1491a474a9209529f293710ea637dd81c6170a1debaa34d59b6",
+      "gate_totals": {
+        "ccx": 799681,
+        "cx": 0,
+        "x": 0,
+        "measurement": 200319,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 1,
+      "operation_start": 1000000,
+      "operation_end_exclusive": 2000000,
+      "operation_count": 1000000,
+      "sha256": "c0ee4ff9119d2e32a19eee50e679bef41729d6031a67f3691bd51eabb25e367f",
+      "gate_totals": {
+        "ccx": 812519,
+        "cx": 0,
+        "x": 0,
+        "measurement": 187481,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 2,
+      "operation_start": 2000000,
+      "operation_end_exclusive": 3000000,
+      "operation_count": 1000000,
+      "sha256": "73cd2a001817fb7321dd689c1bc219017abb93dc1c40d11c4d11d8a5fc611615",
+      "gate_totals": {
+        "ccx": 843757,
+        "cx": 0,
+        "x": 0,
+        "measurement": 156243,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 3,
+      "operation_start": 3000000,
+      "operation_end_exclusive": 4000000,
+      "operation_count": 1000000,
+      "sha256": "6e154c5b358ab7da556a9218ad24931a42c0e22436c2792745f6b2c48a059ffb",
+      "gate_totals": {
+        "ccx": 872772,
+        "cx": 0,
+        "x": 0,
+        "measurement": 127228,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 4,
+      "operation_start": 4000000,
+      "operation_end_exclusive": 5000000,
+      "operation_count": 1000000,
+      "sha256": "81d0f31a60538d20efb9eb0cd1f7b7d5161c62c851953b3eb4c917740424dd5e",
+      "gate_totals": {
+        "ccx": 764524,
+        "cx": 0,
+        "x": 0,
+        "measurement": 235476,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 5,
+      "operation_start": 5000000,
+      "operation_end_exclusive": 6000000,
+      "operation_count": 1000000,
+      "sha256": "6eab7b48bddb21833f7d1e300b4f49e31467b7268817f79a358f28afeae6aca9",
+      "gate_totals": {
+        "ccx": 844139,
+        "cx": 0,
+        "x": 0,
+        "measurement": 155861,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 6,
+      "operation_start": 6000000,
+      "operation_end_exclusive": 7000000,
+      "operation_count": 1000000,
+      "sha256": "95e59992c66637cd0f86dd86b763724a9a9fa7c5447570debeb6edd5551e13ca",
+      "gate_totals": {
+        "ccx": 844064,
+        "cx": 0,
+        "x": 0,
+        "measurement": 155936,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 7,
+      "operation_start": 7000000,
+      "operation_end_exclusive": 8000000,
+      "operation_count": 1000000,
+      "sha256": "a5293a69eedc240040bc8985d32dbb2e0e41deb4e48dc6853086d2e72b2ce131",
+      "gate_totals": {
+        "ccx": 840845,
+        "cx": 0,
+        "x": 0,
+        "measurement": 159155,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 8,
+      "operation_start": 8000000,
+      "operation_end_exclusive": 9000000,
+      "operation_count": 1000000,
+      "sha256": "4813e89255ead727e7927cd3df1823edbf93bce19d96893fb17a8e121c27397d",
+      "gate_totals": {
+        "ccx": 772775,
+        "cx": 0,
+        "x": 0,
+        "measurement": 227225,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 9,
+      "operation_start": 9000000,
+      "operation_end_exclusive": 10000000,
+      "operation_count": 1000000,
+      "sha256": "93f94bd36f69b67a34cf9e63e94b6ae11ac27a55b9ea6f54242fcc0a894d08f7",
+      "gate_totals": {
+        "ccx": 844777,
+        "cx": 0,
+        "x": 0,
+        "measurement": 155223,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 10,
+      "operation_start": 10000000,
+      "operation_end_exclusive": 11000000,
+      "operation_count": 1000000,
+      "sha256": "d7fb21cce156936eab37c5560cdd0b18d499ff17747725934797fbd7a7f38d68",
+      "gate_totals": {
+        "ccx": 841972,
+        "cx": 0,
+        "x": 0,
+        "measurement": 158028,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 11,
+      "operation_start": 11000000,
+      "operation_end_exclusive": 12000000,
+      "operation_count": 1000000,
+      "sha256": "fcd93bba357da15050949f394ef16c8e48acfcea30dc5b7cc87b16d51eb9f732",
+      "gate_totals": {
+        "ccx": 834048,
+        "cx": 0,
+        "x": 0,
+        "measurement": 165952,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 12,
+      "operation_start": 12000000,
+      "operation_end_exclusive": 13000000,
+      "operation_count": 1000000,
+      "sha256": "2c7940883743fc09478b47e0a7db553182042592326def951297ca7c9433fea7",
+      "gate_totals": {
+        "ccx": 782511,
+        "cx": 0,
+        "x": 0,
+        "measurement": 217489,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 13,
+      "operation_start": 13000000,
+      "operation_end_exclusive": 14000000,
+      "operation_count": 1000000,
+      "sha256": "d4150bda546848ef88b460bf338c9cea9528c482fe708bac04ec90d58376efa0",
+      "gate_totals": {
+        "ccx": 844064,
+        "cx": 0,
+        "x": 0,
+        "measurement": 155936,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 14,
+      "operation_start": 14000000,
+      "operation_end_exclusive": 15000000,
+      "operation_count": 1000000,
+      "sha256": "71c7f07a205eeee30adc183a55c2e79b85fdba74a1aa49abaa3052080eff560f",
+      "gate_totals": {
+        "ccx": 844064,
+        "cx": 0,
+        "x": 0,
+        "measurement": 155936,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 15,
+      "operation_start": 15000000,
+      "operation_end_exclusive": 16000000,
+      "operation_count": 1000000,
+      "sha256": "2d915df03832208d470a7c83f3e30a969dd1120f5906bc6244bbd994be6eaa31",
+      "gate_totals": {
+        "ccx": 822933,
+        "cx": 0,
+        "x": 0,
+        "measurement": 177067,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 16,
+      "operation_start": 16000000,
+      "operation_end_exclusive": 17000000,
+      "operation_count": 1000000,
+      "sha256": "30cd7eae76cd6fdedd3947ea200ee2bfe7e7c265b3e72d78a3c2d1a72ddcf284",
+      "gate_totals": {
+        "ccx": 805543,
+        "cx": 0,
+        "x": 0,
+        "measurement": 194457,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 17,
+      "operation_start": 17000000,
+      "operation_end_exclusive": 18000000,
+      "operation_count": 1000000,
+      "sha256": "b5591cc44aef8c7f7dfba74d0eda659bca943b8b2c64fc71d5da802d84a7b8b9",
+      "gate_totals": {
+        "ccx": 844777,
+        "cx": 0,
+        "x": 0,
+        "measurement": 155223,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 18,
+      "operation_start": 18000000,
+      "operation_end_exclusive": 19000000,
+      "operation_count": 1000000,
+      "sha256": "24626d35b773f5ea5f0ceaa1e98d6d5b6137eb1c8eb965a6f15f3604114f2f5d",
+      "gate_totals": {
+        "ccx": 841972,
+        "cx": 0,
+        "x": 0,
+        "measurement": 158028,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 19,
+      "operation_start": 19000000,
+      "operation_end_exclusive": 20000000,
+      "operation_count": 1000000,
+      "sha256": "dccf19e83b71257e23984c6d2c99d3a2cb8f89bd5512223abc96f408a4bf7d69",
+      "gate_totals": {
+        "ccx": 801280,
+        "cx": 0,
+        "x": 0,
+        "measurement": 198720,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 20,
+      "operation_start": 20000000,
+      "operation_end_exclusive": 21000000,
+      "operation_count": 1000000,
+      "sha256": "6012c78bc8ba42bfb8ef42a4f013b6896750230e19bf82a16652606b0e00e720",
+      "gate_totals": {
+        "ccx": 812519,
+        "cx": 0,
+        "x": 0,
+        "measurement": 187481,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 21,
+      "operation_start": 21000000,
+      "operation_end_exclusive": 22000000,
+      "operation_count": 1000000,
+      "sha256": "25fa88937f019f34bd1f40a26238b78b86cc98e51151faebc1456f8cf29299bb",
+      "gate_totals": {
+        "ccx": 843757,
+        "cx": 0,
+        "x": 0,
+        "measurement": 156243,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 22,
+      "operation_start": 22000000,
+      "operation_end_exclusive": 23000000,
+      "operation_count": 1000000,
+      "sha256": "46570ff4dfaed200bdb3eb6fcb6496c4ee579d853c61bc193b380731c1d78229",
+      "gate_totals": {
+        "ccx": 865043,
+        "cx": 0,
+        "x": 0,
+        "measurement": 134957,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 23,
+      "operation_start": 23000000,
+      "operation_end_exclusive": 24000000,
+      "operation_count": 1000000,
+      "sha256": "409e4db464935fa0961ccc516989e4959385e1fd9c6c56deacd6b080ac407412",
+      "gate_totals": {
+        "ccx": 772253,
+        "cx": 0,
+        "x": 0,
+        "measurement": 227747,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 24,
+      "operation_start": 24000000,
+      "operation_end_exclusive": 25000000,
+      "operation_count": 1000000,
+      "sha256": "6762aaa956578555e5ec2bb244ff780b521c7f2dec40bf1badca8c79afe96a51",
+      "gate_totals": {
+        "ccx": 833955,
+        "cx": 0,
+        "x": 0,
+        "measurement": 166045,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 25,
+      "operation_start": 25000000,
+      "operation_end_exclusive": 26000000,
+      "operation_count": 1000000,
+      "sha256": "34024cb26d912639f3aca5497b65124cc449177da4fa2ecb2851e0c650bc6c0e",
+      "gate_totals": {
+        "ccx": 844064,
+        "cx": 0,
+        "x": 0,
+        "measurement": 155936,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 26,
+      "operation_start": 26000000,
+      "operation_end_exclusive": 27000000,
+      "operation_count": 1000000,
+      "sha256": "26773d940349d2e706ba86339a30f20bab282bc3bbd00a65665dd47f0e8df891",
+      "gate_totals": {
+        "ccx": 851029,
+        "cx": 0,
+        "x": 0,
+        "measurement": 148971,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 27,
+      "operation_start": 27000000,
+      "operation_end_exclusive": 28000000,
+      "operation_count": 1000000,
+      "sha256": "68ab9b257f79a1cdc436e9793d616764af8795ba5a2edebccddc37c0ba2ef514",
+      "gate_totals": {
+        "ccx": 771563,
+        "cx": 0,
+        "x": 0,
+        "measurement": 228437,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 28,
+      "operation_start": 28000000,
+      "operation_end_exclusive": 29000000,
+      "operation_count": 1000000,
+      "sha256": "ee20f2b239d919c59a80d0398b090873c9ad44bfa1e3cca04f9e4bc142e46431",
+      "gate_totals": {
+        "ccx": 844064,
+        "cx": 0,
+        "x": 0,
+        "measurement": 155936,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 29,
+      "operation_start": 29000000,
+      "operation_end_exclusive": 30000000,
+      "operation_count": 1000000,
+      "sha256": "075ca5b78611216a0781ddf40d5e6084c15c4ceb3648f45bd37a109a5411ec05",
+      "gate_totals": {
+        "ccx": 843897,
+        "cx": 0,
+        "x": 0,
+        "measurement": 156103,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 30,
+      "operation_start": 30000000,
+      "operation_end_exclusive": 31000000,
+      "operation_count": 1000000,
+      "sha256": "2f1e2bf3180ddce92ffa8a9ecdd1c3e12aa61eda61b5486bcb09d23530078142",
+      "gate_totals": {
+        "ccx": 834048,
+        "cx": 0,
+        "x": 0,
+        "measurement": 165952,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 31,
+      "operation_start": 31000000,
+      "operation_end_exclusive": 32000000,
+      "operation_count": 1000000,
+      "sha256": "98dce8e468c970bed70703397dc6b26cf283c0d202b12e126cb99261c6bbffdf",
+      "gate_totals": {
+        "ccx": 772775,
+        "cx": 0,
+        "x": 0,
+        "measurement": 227225,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 32,
+      "operation_start": 32000000,
+      "operation_end_exclusive": 33000000,
+      "operation_count": 1000000,
+      "sha256": "fb8e1992f2b2972d09e1b7e03fd0e135bdfea609e65f9bd370438725652ef217",
+      "gate_totals": {
+        "ccx": 844777,
+        "cx": 0,
+        "x": 0,
+        "measurement": 155223,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 33,
+      "operation_start": 33000000,
+      "operation_end_exclusive": 34000000,
+      "operation_count": 1000000,
+      "sha256": "6786512a98805fc96c6b7dbed8f660924261d806dffd2b7d215c33903b9e81e0",
+      "gate_totals": {
+        "ccx": 842903,
+        "cx": 0,
+        "x": 0,
+        "measurement": 157097,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 34,
+      "operation_start": 34000000,
+      "operation_end_exclusive": 35000000,
+      "operation_count": 1000000,
+      "sha256": "6ef21a6e3c315ae770ca7ef095e5b6cef850d9d7bd4f86987691609ee9e3d8f4",
+      "gate_totals": {
+        "ccx": 833117,
+        "cx": 0,
+        "x": 0,
+        "measurement": 166883,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 35,
+      "operation_start": 35000000,
+      "operation_end_exclusive": 36000000,
+      "operation_count": 1000000,
+      "sha256": "9a7e4aa910e261edd8577d226518f10bddfed691769bb810f9fc64ba2477cba3",
+      "gate_totals": {
+        "ccx": 805543,
+        "cx": 0,
+        "x": 0,
+        "measurement": 194457,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 36,
+      "operation_start": 36000000,
+      "operation_end_exclusive": 37000000,
+      "operation_count": 1000000,
+      "sha256": "21a35bc4396e0e462fe534655bf811f4e5b20bf944baeb1326d40e942f42a6fa",
+      "gate_totals": {
+        "ccx": 844380,
+        "cx": 0,
+        "x": 0,
+        "measurement": 155620,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 37,
+      "operation_start": 37000000,
+      "operation_end_exclusive": 38000000,
+      "operation_count": 1000000,
+      "sha256": "1650a900e2b9bc6b48e6e8bb4737d899aa8100ff59f5fb99eac860fed62f3d53",
+      "gate_totals": {
+        "ccx": 842369,
+        "cx": 0,
+        "x": 0,
+        "measurement": 157631,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 38,
+      "operation_start": 38000000,
+      "operation_end_exclusive": 39000000,
+      "operation_count": 1000000,
+      "sha256": "71a46a02a9f08c20d527921dbc1563e9957ab00405d3f4773b27dad1adfd0a1f",
+      "gate_totals": {
+        "ccx": 801280,
+        "cx": 0,
+        "x": 0,
+        "measurement": 198720,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 39,
+      "operation_start": 39000000,
+      "operation_end_exclusive": 40000000,
+      "operation_count": 1000000,
+      "sha256": "6dec72b6c726e29b7f208723d51d459971a17fb8103ed804376be3bce265698a",
+      "gate_totals": {
+        "ccx": 812519,
+        "cx": 0,
+        "x": 0,
+        "measurement": 187481,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 40,
+      "operation_start": 40000000,
+      "operation_end_exclusive": 41000000,
+      "operation_count": 1000000,
+      "sha256": "7e0c9b9d50e0f3a28d96d138f71eb5e595974b088710d924d7d53075e9bb31f2",
+      "gate_totals": {
+        "ccx": 843757,
+        "cx": 0,
+        "x": 0,
+        "measurement": 156243,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 41,
+      "operation_start": 41000000,
+      "operation_end_exclusive": 42000000,
+      "operation_count": 1000000,
+      "sha256": "44709612aadf1fd10ed5702a37fbe913d998d156cb4c2f2576617623c70c232f",
+      "gate_totals": {
+        "ccx": 854859,
+        "cx": 0,
+        "x": 0,
+        "measurement": 145141,
+        "hadamard": 0,
+        "single_qubit_rotation": 0,
+        "controlled_rotation": 0
+      }
+    },
+    {
+      "segment_index": 42,
+      "operation_start": 42000000,
+      "operation_end_exclusive": 42038711,
+      "operation_count": 38711,
+      "sha256": "d999270c9868727b3270ea0e934f3127f9d7af21913eac8b6c16662efd36958b",
+      "gate_totals": {
+        "ccx": 18588,
+        "cx": 0,
+        "x": 0,
+        "measurement": 19100,
+        "hadamard": 512,
+        "single_qubit_rotation": 511,
+        "controlled_rotation": 0
+      }
+    }
+  ],
   "gate_totals": {
     "ccx": 34736076,
     "cx": 0,

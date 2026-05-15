@@ -11,10 +11,10 @@
     "family_sha256": "49d7eb7a73ef6c715e2ea155c5c1e42efe6e8cfa322aeae509b3091d92097a94",
     "leaf_sha256": "a8b6d7dc3f45c85b450a373f90a174cf4cc3bdfe85520c56ee7ec8db2c5f6ab1",
     "passed_case_count": 8,
-    "resource_certificate_sha256": "963331a52ffc25ce4d2e3033b7715fdefffa4e1123e245bfdfd5a8861cea756d",
+    "resource_certificate_sha256": "d93495974ffe26ad11e1d40eb46f8075c5ef27ca0f485b17c42387eab7058287",
     "schema": "compiler-project-zkp-attestation-public-v2",
     "selected_family_name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1"
   },
   "schema": "compiler-project-zkp-attestation-fixture-v1",
-  "verification_key": "0x0047c7990bf470682691d0b3cd58929657d069e305837b31e55f48efbd4ed1de"
+  "verification_key": "0x001a46dedf45c5e5254b5be0b0a515e85109541f3e1a6820a809532db6444174"
 }

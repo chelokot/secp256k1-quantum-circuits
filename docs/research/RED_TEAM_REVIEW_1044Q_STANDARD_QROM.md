@@ -1320,9 +1320,12 @@ Partially mitigated after review:
   a selected-family primitive operation-stream manifest whose stream digest
   `a96f690cd1f4f3888f51dad42b80dcdda840ccfccbb900ed34517d9916355208`
   reconstructs `42,038,711` operations, `34,736,076` CCX, and `7,301,612`
-  measurements. That manifest is included in the build summary, curated proof
-  manifest, resource liveness certificate, and SP1 guest resource-certificate
-  checks. This is still a digest/manifest over the stream rather than a checked
+  measurements. The manifest now splits that stream into `43` deterministic
+  million-operation-or-smaller digest segments with Merkle root
+  `5ff61670bb4d1a394cb15b57b3c917687c092083654bb8738e47f2f0f1589188`.
+  That manifest is included in the build summary, curated proof manifest,
+  resource liveness certificate, and SP1 guest resource-certificate checks.
+  This is still a digest/manifest over the stream rather than a checked
   tens-of-millions-row TSV dump.
 - `RES-1`: `complete_a0_all_streamed_tail` is no longer only a single opaque
   resource token in the ZKP-bound resource certificate. The certificate contains
@@ -1336,8 +1339,9 @@ Partially mitigated after review:
 
 Still open:
 
-- The repository ships a checked digest/manifest of the selected primitive
-  operation stream, but not the tens-of-millions-row TSV gate list itself.
+- The repository ships a checked segmented digest/Merkle manifest of the
+  selected primitive operation stream, but not the tens-of-millions-row TSV gate
+  list itself.
 - The deepest refactor remains mandatory before claiming Google-equivalent
   hidden-circuit confidence: the same source engine should emit the semantic
   leaf, primitive lowering, liveness peak, artifact digests, and ZKP input

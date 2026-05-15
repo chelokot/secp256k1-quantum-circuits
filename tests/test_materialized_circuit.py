@@ -50,6 +50,9 @@ def test_materialized_operation_stream_reconstructs_best_qubit_headline() -> Non
     assert manifest['gate_totals']['measurement'] == family['total_measurements']
     assert all(manifest['reconstruction_checks'].values())
     assert len(manifest['operation_stream_sha256']) == 64
+    assert manifest['segment_count'] == len(manifest['segments'])
+    assert sum(segment['operation_count'] for segment in manifest['segments']) == manifest['operation_count']
+    assert len(manifest['segment_merkle_root_sha256']) == 64
 
 
 def test_materialized_circuit_script_lists_available_families() -> None:
