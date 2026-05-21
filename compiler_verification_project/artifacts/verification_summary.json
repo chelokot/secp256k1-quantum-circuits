@@ -4201,6 +4201,219 @@
       }
     ]
   },
+  "tail_macro_reversibility_checks": {
+    "pass": 5,
+    "total": 5,
+    "checks": [
+      {
+        "name": "tail_macro_reversibility_matches_generator",
+        "pass": 1,
+        "expected": {
+          "schema": "compiler-project-tail-macro-reversibility-v1",
+          "opcode": "complete_a0_all_streamed_tail",
+          "semantic_map": "(X,Y,Z) -> complete_a0_all_streamed_tail(X,Y,Z,lookup_x,lookup_y)",
+          "full_raw_field_domain": {
+            "curve": "toy61_b2",
+            "domain_size": 226981,
+            "injective": false,
+            "collision": {
+              "first_input": [
+                0,
+                0,
+                30
+              ],
+              "second_input": [
+                0,
+                0,
+                31
+              ],
+              "shared_output": [
+                49,
+                52,
+                12
+              ]
+            }
+          },
+          "valid_projective_subgroup_domain": {
+            "lookup_point_policy": "generator_point_as_nonzero_lookup_entry",
+            "rows": [
+              {
+                "curve": "toy61_b2",
+                "representative_count": 3600,
+                "injective": true,
+                "collision": null
+              },
+              {
+                "curve": "toy127_b11",
+                "representative_count": 13608,
+                "injective": true,
+                "collision": null
+              },
+              {
+                "curve": "toy181_b3",
+                "representative_count": 29160,
+                "injective": true,
+                "collision": null
+              },
+              {
+                "curve": "toy241_b29",
+                "representative_count": 50400,
+                "injective": true,
+                "collision": null
+              }
+            ],
+            "all_checked_rows_injective": true
+          },
+          "status": "three_slot_tail_requires_valid_subspace_permutation_extension",
+          "notes": [
+            "The polynomial tail formula is not injective over the full raw field-register domain, so it cannot itself be a no-ancilla in-place reversible map on arbitrary field triples.",
+            "The same formula is injective on the checked valid non-infinity projective subgroup representatives for the curated toy curves.",
+            "A future three-slot primitive schedule must therefore prove a reversible permutation extension or an explicit valid-subspace encoding; semantic point-add tests alone are not enough."
+          ]
+        },
+        "observed": {
+          "schema": "compiler-project-tail-macro-reversibility-v1",
+          "opcode": "complete_a0_all_streamed_tail",
+          "semantic_map": "(X,Y,Z) -> complete_a0_all_streamed_tail(X,Y,Z,lookup_x,lookup_y)",
+          "full_raw_field_domain": {
+            "curve": "toy61_b2",
+            "domain_size": 226981,
+            "injective": false,
+            "collision": {
+              "first_input": [
+                0,
+                0,
+                30
+              ],
+              "second_input": [
+                0,
+                0,
+                31
+              ],
+              "shared_output": [
+                49,
+                52,
+                12
+              ]
+            }
+          },
+          "valid_projective_subgroup_domain": {
+            "lookup_point_policy": "generator_point_as_nonzero_lookup_entry",
+            "rows": [
+              {
+                "curve": "toy61_b2",
+                "representative_count": 3600,
+                "injective": true,
+                "collision": null
+              },
+              {
+                "curve": "toy127_b11",
+                "representative_count": 13608,
+                "injective": true,
+                "collision": null
+              },
+              {
+                "curve": "toy181_b3",
+                "representative_count": 29160,
+                "injective": true,
+                "collision": null
+              },
+              {
+                "curve": "toy241_b29",
+                "representative_count": 50400,
+                "injective": true,
+                "collision": null
+              }
+            ],
+            "all_checked_rows_injective": true
+          },
+          "status": "three_slot_tail_requires_valid_subspace_permutation_extension",
+          "notes": [
+            "The polynomial tail formula is not injective over the full raw field-register domain, so it cannot itself be a no-ancilla in-place reversible map on arbitrary field triples.",
+            "The same formula is injective on the checked valid non-infinity projective subgroup representatives for the curated toy curves.",
+            "A future three-slot primitive schedule must therefore prove a reversible permutation extension or an explicit valid-subspace encoding; semantic point-add tests alone are not enough."
+          ]
+        }
+      },
+      {
+        "name": "tail_macro_reversibility_schema_is_current",
+        "pass": 1,
+        "expected": "compiler-project-tail-macro-reversibility-v1",
+        "observed": "compiler-project-tail-macro-reversibility-v1"
+      },
+      {
+        "name": "tail_macro_reversibility_tracks_current_macro_opcode",
+        "pass": 1,
+        "expected": "complete_a0_all_streamed_tail",
+        "observed": "complete_a0_all_streamed_tail"
+      },
+      {
+        "name": "tail_macro_full_raw_domain_is_not_injective",
+        "pass": 1,
+        "expected": {
+          "injective": false,
+          "collision": "present"
+        },
+        "observed": {
+          "curve": "toy61_b2",
+          "domain_size": 226981,
+          "injective": false,
+          "collision": {
+            "first_input": [
+              0,
+              0,
+              30
+            ],
+            "second_input": [
+              0,
+              0,
+              31
+            ],
+            "shared_output": [
+              49,
+              52,
+              12
+            ]
+          }
+        }
+      },
+      {
+        "name": "tail_macro_valid_projective_rows_are_injective",
+        "pass": 1,
+        "expected": "all rows injective",
+        "observed": {
+          "lookup_point_policy": "generator_point_as_nonzero_lookup_entry",
+          "rows": [
+            {
+              "curve": "toy61_b2",
+              "representative_count": 3600,
+              "injective": true,
+              "collision": null
+            },
+            {
+              "curve": "toy127_b11",
+              "representative_count": 13608,
+              "injective": true,
+              "collision": null
+            },
+            {
+              "curve": "toy181_b3",
+              "representative_count": 29160,
+              "injective": true,
+              "collision": null
+            },
+            {
+              "curve": "toy241_b29",
+              "representative_count": 50400,
+              "injective": true,
+              "collision": null
+            }
+          ],
+          "all_checked_rows_injective": true
+        }
+      }
+    ]
+  },
   "streamed_lookup_table_multiplier_resource_checks": {
     "pass": 15,
     "total": 15,
@@ -7648,8 +7861,8 @@
       {
         "name": "build_summary_schema_matches_current_version",
         "pass": 1,
-        "expected": "compiler-project-build-summary-v20",
-        "observed": "compiler-project-build-summary-v20"
+        "expected": "compiler-project-build-summary-v21",
+        "observed": "compiler-project-build-summary-v21"
       },
       {
         "name": "build_summary_artifact_paths_match_expected_set",
@@ -7667,6 +7880,7 @@
           "streamed_lookup_tail_leaf_slot_allocation": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json",
           "arithmetic_lowerings": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "tail_macro_liveness": "compiler_verification_project/artifacts/tail_macro_liveness.json",
+          "tail_macro_reversibility": "compiler_verification_project/artifacts/tail_macro_reversibility.json",
           "streamed_lookup_table_multiplier_resource": "compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json",
           "module_library": "compiler_verification_project/artifacts/module_library.json",
           "primitive_multiplier_library": "compiler_verification_project/artifacts/primitive_multiplier_library.json",
@@ -7702,6 +7916,7 @@
           "streamed_lookup_tail_leaf_slot_allocation": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json",
           "arithmetic_lowerings": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "tail_macro_liveness": "compiler_verification_project/artifacts/tail_macro_liveness.json",
+          "tail_macro_reversibility": "compiler_verification_project/artifacts/tail_macro_reversibility.json",
           "streamed_lookup_table_multiplier_resource": "compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json",
           "module_library": "compiler_verification_project/artifacts/module_library.json",
           "primitive_multiplier_library": "compiler_verification_project/artifacts/primitive_multiplier_library.json",
@@ -7761,6 +7976,7 @@
           "compiler_verification_project/artifacts/subcircuit_equivalence.json",
           "compiler_verification_project/artifacts/table_manifests.json",
           "compiler_verification_project/artifacts/tail_macro_liveness.json",
+          "compiler_verification_project/artifacts/tail_macro_reversibility.json",
           "compiler_verification_project/artifacts/whole_oracle_recount.json"
         ],
         "observed": [
@@ -7796,6 +8012,7 @@
           "compiler_verification_project/artifacts/subcircuit_equivalence.json",
           "compiler_verification_project/artifacts/table_manifests.json",
           "compiler_verification_project/artifacts/tail_macro_liveness.json",
+          "compiler_verification_project/artifacts/tail_macro_reversibility.json",
           "compiler_verification_project/artifacts/whole_oracle_recount.json"
         ]
       },
@@ -9127,10 +9344,10 @@
       "pass": 30
     },
     "invariant_checks": {
-      "total": 273,
-      "pass": 273
+      "total": 278,
+      "pass": 278
     },
-    "total": 303,
-    "pass": 303
+    "total": 308,
+    "pass": 308
   }
 }

@@ -1,0 +1,63 @@
+{
+  "schema": "compiler-project-tail-macro-reversibility-v1",
+  "opcode": "complete_a0_all_streamed_tail",
+  "semantic_map": "(X,Y,Z) -> complete_a0_all_streamed_tail(X,Y,Z,lookup_x,lookup_y)",
+  "full_raw_field_domain": {
+    "curve": "toy61_b2",
+    "domain_size": 226981,
+    "injective": false,
+    "collision": {
+      "first_input": [
+        0,
+        0,
+        30
+      ],
+      "second_input": [
+        0,
+        0,
+        31
+      ],
+      "shared_output": [
+        49,
+        52,
+        12
+      ]
+    }
+  },
+  "valid_projective_subgroup_domain": {
+    "lookup_point_policy": "generator_point_as_nonzero_lookup_entry",
+    "rows": [
+      {
+        "curve": "toy61_b2",
+        "representative_count": 3600,
+        "injective": true,
+        "collision": null
+      },
+      {
+        "curve": "toy127_b11",
+        "representative_count": 13608,
+        "injective": true,
+        "collision": null
+      },
+      {
+        "curve": "toy181_b3",
+        "representative_count": 29160,
+        "injective": true,
+        "collision": null
+      },
+      {
+        "curve": "toy241_b29",
+        "representative_count": 50400,
+        "injective": true,
+        "collision": null
+      }
+    ],
+    "all_checked_rows_injective": true
+  },
+  "status": "three_slot_tail_requires_valid_subspace_permutation_extension",
+  "notes": [
+    "The polynomial tail formula is not injective over the full raw field-register domain, so it cannot itself be a no-ancilla in-place reversible map on arbitrary field triples.",
+    "The same formula is injective on the checked valid non-infinity projective subgroup representatives for the curated toy curves.",
+    "A future three-slot primitive schedule must therefore prove a reversible permutation extension or an explicit valid-subspace encoding; semantic point-add tests alone are not enough."
+  ]
+}

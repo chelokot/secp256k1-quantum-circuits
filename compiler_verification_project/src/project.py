@@ -81,6 +81,7 @@ from resource_ledger import build_logical_resource_ledger, qroam_clean_stream_co
 from resource_certificate import build_resource_liveness_certificate  # noqa: E402
 from subcircuit_equivalence import build_subcircuit_equivalence_artifact  # noqa: E402
 from tail_macro_liveness import build_tail_macro_liveness  # noqa: E402
+from tail_macro_reversibility import build_tail_macro_reversibility  # noqa: E402
 from whole_oracle_recount import build_whole_oracle_recount as build_whole_oracle_recount_single  # noqa: E402
 
 PointAffine = Optional[Tuple[int, int]]
@@ -1911,6 +1912,7 @@ def build_all_artifacts() -> Dict[str, Any]:
             field_bits=FIELD_BITS,
             counted_arithmetic_slots=len(STREAMED_LOOKUP_TAIL_ARITHMETIC_SLOTS),
         ),
+        'tail_macro_reversibility': build_tail_macro_reversibility(),
         'streamed_lookup_table_multiplier_resource': streamed_lookup_table_multiplier_resource(
             arithmetic_lowerings=arithmetic_lowerings,
             lookup_lowerings=lookup_lowerings,
@@ -1982,6 +1984,7 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('streamed_lookup_tail_leaf_slot_allocation.json'), out['streamed_lookup_tail_slot_allocation'])
     dump_json(project_artifact_path('arithmetic_lowerings.json'), out['arithmetic_lowerings'])
     dump_json(project_artifact_path('tail_macro_liveness.json'), out['tail_macro_liveness'])
+    dump_json(project_artifact_path('tail_macro_reversibility.json'), out['tail_macro_reversibility'])
     dump_json(project_artifact_path('streamed_lookup_table_multiplier_resource.json'), out['streamed_lookup_table_multiplier_resource'])
     dump_json(project_artifact_path('module_library.json'), out['arithmetic_kernel_library'])
     dump_json(project_artifact_path('primitive_multiplier_library.json'), out['primitive_multiplier_library'])
@@ -2010,7 +2013,7 @@ def build_all_artifacts() -> Dict[str, Any]:
     )
 
     build_summary = {
-        'schema': 'compiler-project-build-summary-v20',
+        'schema': 'compiler-project-build-summary-v21',
         'artifacts': {
             'canonical_public_point': 'compiler_verification_project/artifacts/canonical_public_point.json',
             'public_google_baseline_source': 'compiler_verification_project/artifacts/public_google_baseline_source.json',
@@ -2024,6 +2027,7 @@ def build_all_artifacts() -> Dict[str, Any]:
             'streamed_lookup_tail_leaf_slot_allocation': 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json',
             'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
             'tail_macro_liveness': 'compiler_verification_project/artifacts/tail_macro_liveness.json',
+            'tail_macro_reversibility': 'compiler_verification_project/artifacts/tail_macro_reversibility.json',
             'streamed_lookup_table_multiplier_resource': 'compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json',
             'module_library': 'compiler_verification_project/artifacts/module_library.json',
             'primitive_multiplier_library': 'compiler_verification_project/artifacts/primitive_multiplier_library.json',

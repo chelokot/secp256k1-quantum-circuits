@@ -207,6 +207,12 @@ Current additional diagnostic:
   live field values. The repository still needs a generated destructive/in-place
   schedule certificate before `3 * 256` can be treated as primitive liveness
   rather than a macro contract.
+- `compiler_verification_project/artifacts/tail_macro_reversibility.json` adds
+  the matching reversible-boundary check. The macro polynomial is not injective
+  over the full raw field-register domain, although it is injective over checked
+  valid non-infinity projective subgroup representatives on curated toy curves.
+  A future three-slot implementation must therefore prove either a concrete
+  reversible permutation extension or an explicit valid-subspace encoding.
 
 ### 2. The resource ledger is still owner-summed, not circuit-derived
 

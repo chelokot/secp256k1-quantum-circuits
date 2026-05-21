@@ -32,6 +32,7 @@ from physical_estimator import (
 from resource_ledger import build_logical_resource_ledger, qroam_clean_stream_cost
 from resource_certificate import build_resource_liveness_certificate
 from tail_macro_liveness import build_tail_macro_liveness
+from tail_macro_reversibility import build_tail_macro_reversibility
 from project import (
     FIELD_BITS,
     FOLDED_MAG_BITS,
@@ -137,6 +138,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'streamed_lookup_tail_leaf_slot_allocation': artifact_root / 'streamed_lookup_tail_leaf_slot_allocation.json',
         'arithmetic_lowerings': artifact_root / 'arithmetic_lowerings.json',
         'tail_macro_liveness': artifact_root / 'tail_macro_liveness.json',
+        'tail_macro_reversibility': artifact_root / 'tail_macro_reversibility.json',
         'streamed_lookup_table_multiplier_resource': artifact_root / 'streamed_lookup_table_multiplier_resource.json',
         'module_library': artifact_root / 'module_library.json',
         'primitive_multiplier_library': artifact_root / 'primitive_multiplier_library.json',
@@ -1091,6 +1093,21 @@ def build_tail_macro_liveness_checks(artifacts: Mapping[str, Any]) -> Dict[str, 
     return _summarize_checks(checks)
 
 
+def build_tail_macro_reversibility_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    artifact = artifacts['tail_macro_reversibility']
+    expected = build_tail_macro_reversibility()
+    full_domain = artifact['full_raw_field_domain']
+    valid_domain = artifact['valid_projective_subgroup_domain']
+    checks = [
+        _check('tail_macro_reversibility_matches_generator', artifact == expected, expected, artifact),
+        _check('tail_macro_reversibility_schema_is_current', artifact['schema'] == 'compiler-project-tail-macro-reversibility-v1', 'compiler-project-tail-macro-reversibility-v1', artifact['schema']),
+        _check('tail_macro_reversibility_tracks_current_macro_opcode', artifact['opcode'] == 'complete_a0_all_streamed_tail', 'complete_a0_all_streamed_tail', artifact['opcode']),
+        _check('tail_macro_full_raw_domain_is_not_injective', full_domain['injective'] is False and full_domain['collision'] is not None, {'injective': False, 'collision': 'present'}, full_domain),
+        _check('tail_macro_valid_projective_rows_are_injective', valid_domain['all_checked_rows_injective'] is True and all(row['injective'] is True for row in valid_domain['rows']), 'all rows injective', valid_domain),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_standard_qrom_lookup_assessment_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     assessment = artifacts['standard_qrom_lookup_assessment']
     expected = standard_qrom_lookup_assessment(
@@ -1856,6 +1873,7 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'streamed_lookup_tail_leaf_slot_allocation': 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json',
         'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
         'tail_macro_liveness': 'compiler_verification_project/artifacts/tail_macro_liveness.json',
+        'tail_macro_reversibility': 'compiler_verification_project/artifacts/tail_macro_reversibility.json',
         'streamed_lookup_table_multiplier_resource': 'compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json',
         'module_library': 'compiler_verification_project/artifacts/module_library.json',
         'primitive_multiplier_library': 'compiler_verification_project/artifacts/primitive_multiplier_library.json',
@@ -1879,7 +1897,7 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'azure_resource_estimator_results': 'compiler_verification_project/artifacts/azure_resource_estimator_results.json',
     }
     checks = [
-        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v20', 'compiler-project-build-summary-v20', build_summary['schema']),
+        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v21', 'compiler-project-build-summary-v21', build_summary['schema']),
         _check('build_summary_artifact_paths_match_expected_set', build_summary['artifacts'] == expected_paths, expected_paths, build_summary['artifacts']),
         _check(
             'build_summary_paths_exist_on_disk',
@@ -2178,6 +2196,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'lookup_fed_slot_allocation_checks': lambda: build_lookup_fed_slot_allocation_checks(artifacts),
         'streamed_lookup_tail_slot_allocation_checks': lambda: build_streamed_lookup_tail_slot_allocation_checks(artifacts),
         'tail_macro_liveness_checks': lambda: build_tail_macro_liveness_checks(artifacts),
+        'tail_macro_reversibility_checks': lambda: build_tail_macro_reversibility_checks(artifacts),
         'streamed_lookup_table_multiplier_resource_checks': lambda: build_streamed_lookup_table_multiplier_resource_checks(artifacts),
         'standard_qrom_lookup_assessment_checks': lambda: build_standard_qrom_lookup_assessment_checks(artifacts),
         'logical_resource_ledger_checks': lambda: build_logical_resource_ledger_checks(artifacts),
