@@ -22,6 +22,7 @@ from common import (
     sha256_bytes,
     sha256_path,
 )
+from artifact_registry import BUILD_SUMMARY_ARTIFACT_PATHS, BUILD_SUMMARY_SCHEMA
 from arithmetic_lowering import arithmetic_kernel_summary, arithmetic_lowering_library, materialize_arithmetic_primitive_operations
 from lookup_lowering import lookup_lowering_library, lowered_lookup_semantic_summary, materialize_lookup_primitive_operations
 from phase_shell_lowering import materialize_phase_operations, phase_shell_family_summary, phase_shell_lowering_library
@@ -1864,44 +1865,9 @@ def build_frontier_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
 
 def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) -> Dict[str, Any]:
     build_summary = artifacts['build_summary']
-    expected_paths = {
-        'canonical_public_point': 'compiler_verification_project/artifacts/canonical_public_point.json',
-        'public_google_baseline_source': 'compiler_verification_project/artifacts/public_google_baseline_source.json',
-        'full_raw32_oracle': 'compiler_verification_project/artifacts/full_raw32_oracle.json',
-        'exact_leaf_slot_allocation': 'compiler_verification_project/artifacts/exact_leaf_slot_allocation.json',
-        'lookup_fed_leaf': 'compiler_verification_project/artifacts/lookup_fed_leaf.json',
-        'lookup_fed_leaf_equivalence': 'compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json',
-        'lookup_fed_leaf_slot_allocation': 'compiler_verification_project/artifacts/lookup_fed_leaf_slot_allocation.json',
-        'streamed_lookup_tail_leaf': 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json',
-        'streamed_lookup_tail_leaf_equivalence': 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json',
-        'streamed_lookup_tail_leaf_slot_allocation': 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json',
-        'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
-        'tail_macro_liveness': 'compiler_verification_project/artifacts/tail_macro_liveness.json',
-        'tail_macro_reversibility': 'compiler_verification_project/artifacts/tail_macro_reversibility.json',
-        'streamed_lookup_table_multiplier_resource': 'compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json',
-        'module_library': 'compiler_verification_project/artifacts/module_library.json',
-        'primitive_multiplier_library': 'compiler_verification_project/artifacts/primitive_multiplier_library.json',
-        'phase_shell_lowerings': 'compiler_verification_project/artifacts/phase_shell_lowerings.json',
-        'phase_shell_families': 'compiler_verification_project/artifacts/phase_shell_families.json',
-        'table_manifests': 'compiler_verification_project/artifacts/table_manifests.json',
-        'lookup_lowerings': 'compiler_verification_project/artifacts/lookup_lowerings.json',
-        'generated_block_inventories': 'compiler_verification_project/artifacts/generated_block_inventories.json',
-        'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
-        'standard_qrom_lookup_assessment': 'compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json',
-        'logical_resource_ledger': 'compiler_verification_project/artifacts/logical_resource_ledger.json',
-        'resource_liveness_certificate': 'compiler_verification_project/artifacts/resource_liveness_certificate.json',
-        'materialized_circuit_manifest': 'compiler_verification_project/artifacts/materialized_circuit_manifest.json',
-        'qubit_breakthrough_analysis': 'compiler_verification_project/artifacts/qubit_breakthrough_analysis.json',
-        'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
-        'ft_ir_compositions': 'compiler_verification_project/artifacts/ft_ir_compositions.json',
-        'whole_oracle_recount': 'compiler_verification_project/artifacts/whole_oracle_recount.json',
-        'subcircuit_equivalence': 'compiler_verification_project/artifacts/subcircuit_equivalence.json',
-        'azure_resource_estimator_logical_counts': 'compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json',
-        'azure_resource_estimator_targets': 'compiler_verification_project/artifacts/azure_resource_estimator_targets.json',
-        'azure_resource_estimator_results': 'compiler_verification_project/artifacts/azure_resource_estimator_results.json',
-    }
+    expected_paths = dict(BUILD_SUMMARY_ARTIFACT_PATHS)
     checks = [
-        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v21', 'compiler-project-build-summary-v21', build_summary['schema']),
+        _check('build_summary_schema_matches_current_version', build_summary['schema'] == BUILD_SUMMARY_SCHEMA, BUILD_SUMMARY_SCHEMA, build_summary['schema']),
         _check('build_summary_artifact_paths_match_expected_set', build_summary['artifacts'] == expected_paths, expected_paths, build_summary['artifacts']),
         _check(
             'build_summary_paths_exist_on_disk',

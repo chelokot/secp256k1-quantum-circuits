@@ -90,6 +90,7 @@ PROOF_MANIFEST_PATHS = [
     'src/resource_projection.py',
     'src/derived_resources.py',
     'compiler_verification_project/README.md',
+    'compiler_verification_project/src/artifact_registry.py',
     'compiler_verification_project/src/arithmetic_lowering.py',
     'compiler_verification_project/src/ft_ir.py',
     'compiler_verification_project/src/integrity.py',
