@@ -18,9 +18,15 @@ def main() -> None:
     payload = build_all_artifacts()
     payload['cain_transfer'] = write_cain_transfer()
     payload['zkp_attestation'] = write_zkp_attestation_inputs()
+    candidate_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts' / 'zkp_attestation_reusable_chunk_candidate'
+    payload['zkp_attestation_reusable_chunk_candidate'] = write_zkp_attestation_inputs(
+        family_name='reusable-chunk',
+        output_dir=candidate_dir,
+    )
     print(json.dumps({
         'build_summary': payload['frontier']['best_gate_family'],
         'zkp_attestation_input': 'compiler_verification_project/artifacts/zkp_attestation_input.json',
+        'zkp_attestation_reusable_chunk_candidate_input': 'compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json',
         'artifact_dir': 'compiler_verification_project/artifacts',
     }, indent=2))
 

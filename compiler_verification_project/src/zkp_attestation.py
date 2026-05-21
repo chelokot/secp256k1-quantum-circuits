@@ -28,6 +28,7 @@ from common import (  # noqa: E402
 )
 from lookup_fed_leaf import build_streamed_lookup_tail_leaf, execute_leaf_contract  # noqa: E402
 from project import compiler_family_frontier, project_artifact_path, raw32_schedule  # noqa: E402
+from reusable_chunk_tail_candidate import build_reusable_chunk_tail_leaf  # noqa: E402
 from verifier import exec_netlist  # noqa: E402
 
 DEFAULT_CASE_COUNT = 8
@@ -107,6 +108,8 @@ def _committed_payload(
 
 
 def _resolve_family(frontier: Mapping[str, Any], family_name: str) -> Dict[str, Any]:
+    if family_name in {'reusable-chunk', 'best-reusable-chunk', 'candidate-reusable-chunk'}:
+        return _reusable_chunk_family_payload()
     if family_name == 'best-gate':
         return dict(frontier['best_gate_family'])
     if family_name == 'best-qubit':
@@ -115,6 +118,54 @@ def _resolve_family(frontier: Mapping[str, Any], family_name: str) -> Dict[str, 
         if row['name'] == family_name:
             return dict(row)
     raise KeyError(f'unknown compiler family: {family_name}')
+
+
+def _reusable_chunk_family_payload() -> Dict[str, Any]:
+    lowering_path = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts' / 'reusable_chunk_lowering.json'
+    lowering = json.loads(lowering_path.read_text())
+    non_clifford = lowering['non_clifford_derivation']
+    qubits = lowering['qubit_derivation']
+    leaf_call_count_total = int(lowering['stream_plan']['leaf_call_count_total'])
+    direct_seed_non_clifford = 297
+    per_leaf_lookup_non_clifford = (
+        int(non_clifford['qroam_chunk_non_clifford']) // leaf_call_count_total
+    )
+    arithmetic_leaf_non_clifford = (
+        int(non_clifford['base_non_clifford_without_streamed_qroam']) - direct_seed_non_clifford
+    ) // leaf_call_count_total
+    if int(non_clifford['qroam_chunk_non_clifford']) % leaf_call_count_total != 0:
+        raise ValueError('reusable chunk QROAM component is not divisible by leaf call count')
+    if (int(non_clifford['base_non_clifford_without_streamed_qroam']) - direct_seed_non_clifford) % leaf_call_count_total != 0:
+        raise ValueError('reusable chunk arithmetic base is not divisible by leaf call count')
+    return {
+        'name': 'folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1',
+        'summary': 'Candidate reusable-chunk standard-QROAM family: four arithmetic slots, one reusable 155-bit QROAM chunk target, chunked table-controlled coordinate multipliers, and semiclassical QFT.',
+        'gate_set': 'Clifford + standard QROAMClean K=1 chunk streams + measurement; Clifford + classically controlled dyadic phase + measurement',
+        'phase_shell': 'semiclassical_qft_v1',
+        'slot_allocation_family': 'reusable_chunk_tail_leaf_v1',
+        'arithmetic_kernel_family': 'litinski_addsub_schoolbook_reusable_chunk_bound_v1',
+        'lookup_family': 'folded_standard_qroam_reusable_chunked_coordinate_v1',
+        'arithmetic_leaf_non_clifford': arithmetic_leaf_non_clifford,
+        'direct_seed_non_clifford': direct_seed_non_clifford,
+        'per_leaf_lookup_non_clifford': per_leaf_lookup_non_clifford,
+        'full_oracle_non_clifford': int(non_clifford['candidate_total_non_clifford']),
+        'arithmetic_slot_count': int(qubits['arithmetic_slot_count']),
+        'control_slot_count': int(qubits['control_qubits']),
+        'borrowed_interface_qubits': 0,
+        'lookup_workspace_qubits': int(qubits['lookup_workspace_qubits']),
+        'live_phase_bits': int(qubits['phase_qubits']),
+        'total_logical_qubits': int(qubits['candidate_total_logical_qubits']),
+        'phase_shell_hadamards': 512,
+        'phase_shell_measurements': 512,
+        'phase_shell_rotations': 511,
+        'phase_shell_rotation_depth': 511,
+        'total_measurements': 0,
+        'notes': [
+            'This candidate is not the default checked headline until compressed and Groth16 artifacts are rebuilt from checked branch state.',
+            'Its resource certificate is compiler_verification_project/artifacts/reusable_chunk_lowering.json.',
+            'The table-controlled multiplier arithmetic bound is derived from chunk effective widths 155 + 101 and the inherited full-width partial-product grid.',
+        ],
+    }
 
 
 def _family_proof_payload(family: Mapping[str, Any]) -> Dict[str, Any]:
@@ -149,6 +200,8 @@ def _leaf_for_family(family: Mapping[str, Any]) -> Dict[str, Any]:
     slot_family = str(family['slot_allocation_family'])
     if slot_family == 'streamed_lookup_tail_leaf_v1':
         return build_streamed_lookup_tail_leaf()
+    if slot_family == 'reusable_chunk_tail_leaf_v1':
+        return _reusable_chunk_leaf_document()
     raise KeyError(f'unsupported attested leaf slot family: {slot_family}')
 
 
@@ -156,7 +209,30 @@ def _leaf_commitment_metadata(family: Mapping[str, Any]) -> tuple[str, str]:
     slot_family = str(family['slot_allocation_family'])
     if slot_family == 'streamed_lookup_tail_leaf_v1':
         return 'streamed_lookup_tail_leaf', 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json'
+    if slot_family == 'reusable_chunk_tail_leaf_v1':
+        return 'reusable_chunk_tail_leaf', 'compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json'
     raise KeyError(f'unsupported attested leaf slot family: {slot_family}')
+
+
+def _reusable_chunk_leaf_document() -> Dict[str, Any]:
+    leaf = build_reusable_chunk_tail_leaf()
+    return {
+        'schema': 'compiler-project-reusable-chunk-tail-leaf-candidate-v1',
+        'curve': 'secp256k1',
+        'field_modulus_hex': format(SECP_P, '064x'),
+        'curve_b': SECP_B,
+        'b3': 3 * SECP_B,
+        'variant': leaf['variant'],
+        'interface_wires': ['Q.X', 'Q.Y', 'Q.Z', 'k'],
+        'lookup_interface_slots': list(leaf['lookup_interface_slots']),
+        'arithmetic_slots': list(leaf['arithmetic_slots']),
+        'lookup_infinity_policy': leaf['lookup_infinity_policy'],
+        'instructions': list(leaf['instructions']),
+        'notes': [
+            'Executable reusable-chunk tail candidate used by the ZKP attestation candidate path.',
+            'The qchunk slot is a counted scratch owner; no full lookup_x, lookup_y, or lookup_x_plus_y field lane is materialized.',
+        ],
+    }
 
 
 def _point_payload(point: Optional[tuple[int, int]]) -> Optional[Dict[str, str]]:
@@ -211,6 +287,13 @@ def _source_as_all_streamed_tail(source: Any) -> Dict[str, str]:
     if isinstance(source, dict) and set(source) == expected and all(isinstance(value, str) for value in source.values()):
         return {key: str(value) for key, value in source.items()}
     raise TypeError(f'expected all-streamed tail source, got {source!r}')
+
+
+def _source_as_reusable_chunk_tail(source: Any) -> Dict[str, str]:
+    expected = {'x', 'y', 'z', 'scratch'}
+    if isinstance(source, dict) and set(source) == expected and all(isinstance(value, str) for value in source.values()):
+        return {key: str(value) for key, value in source.items()}
+    raise TypeError(f'expected reusable-chunk tail source, got {source!r}')
 
 
 def _ensure_defined_register(
@@ -289,6 +372,29 @@ def _compile_leaf_for_proof(leaf: Mapping[str, Any]) -> Dict[str, Any]:
                 'z': _ensure_defined_register(register_ids, defined, tail_source['z'], 'complete_a0_all_streamed_tail Z'),
             })
             defined.update(str(name) for name in dst_names)
+            continue
+        if op == 'complete_a0_reusable_chunk_tail':
+            dst_names = instruction['dst']
+            if not isinstance(dst_names, list) or len(dst_names) != 3:
+                raise TypeError(f'expected three output registers for complete_a0_reusable_chunk_tail, got {dst_names!r}')
+            output_ids = [register_ids.setdefault(str(name), len(register_ids)) for name in dst_names]
+            tail_source = _source_as_reusable_chunk_tail(source)
+            scratch = register_ids.setdefault(tail_source['scratch'], len(register_ids))
+            compiled_instructions.append({
+                'kind': 'complete_a0_reusable_chunk_tail',
+                'out_x': output_ids[0],
+                'out_y': output_ids[1],
+                'out_z': output_ids[2],
+                'x': _ensure_defined_register(register_ids, defined, tail_source['x'], 'complete_a0_reusable_chunk_tail X'),
+                'y': _ensure_defined_register(register_ids, defined, tail_source['y'], 'complete_a0_reusable_chunk_tail Y'),
+                'z': _ensure_defined_register(register_ids, defined, tail_source['z'], 'complete_a0_reusable_chunk_tail Z'),
+                'scratch': scratch,
+                'chunk_bits': int(instruction['chunk_bits']),
+                'chunk_count': int(instruction['chunk_count']),
+                'b3': int(instruction['b3']),
+            })
+            defined.update(str(name) for name in dst_names)
+            defined.add(tail_source['scratch'])
             continue
         dst_name = str(instruction['dst'])
         dst = register_ids.setdefault(dst_name, len(register_ids))
@@ -549,12 +655,16 @@ def _build_zkp_attestation_materials(
         artifact_path='compiler_verification_project/artifacts/zkp_attestation_cases.json',
         payload=case_corpus,
     )
-    resource_certificate = json.loads(
-        (PROJECT_ROOT / 'compiler_verification_project' / 'artifacts' / 'resource_liveness_certificate.json').read_text()
-    )
+    if str(family_payload['slot_allocation_family']) == 'reusable_chunk_tail_leaf_v1':
+        resource_document_type = 'reusable_chunk_lowering'
+        resource_artifact_path = 'compiler_verification_project/artifacts/reusable_chunk_lowering.json'
+    else:
+        resource_document_type = 'resource_liveness_certificate'
+        resource_artifact_path = 'compiler_verification_project/artifacts/resource_liveness_certificate.json'
+    resource_certificate = json.loads((PROJECT_ROOT / resource_artifact_path).read_text())
     resource_certificate_blob = _committed_payload(
-        document_type='resource_liveness_certificate',
-        artifact_path='compiler_verification_project/artifacts/resource_liveness_certificate.json',
+        document_type=resource_document_type,
+        artifact_path=resource_artifact_path,
         payload=resource_certificate,
     )
     family_blob = _committed_payload(

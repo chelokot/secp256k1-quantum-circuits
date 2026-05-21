@@ -1,0 +1,962 @@
+{
+  "schema": "compiler-project-zkp-attestation-input-v5",
+  "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
+  "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+  "claim_sha256": "2a098c6004436f393953eed4bcda8c000ad6c3bca81f1c91f2c7b57b3e0413e5",
+  "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
+  "family_sha256": "345237abab722243c6a2ae1230e77b1c58c1a2e3248f0feab88ac3e074c8be1d",
+  "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
+  "resource_certificate_sha256": "aa83edcfc7e0fb2e9a15104652cfe6942f4a78cfba2b3f4c9cf50b0aae733e41",
+  "claim_document": {
+    "document_type": "attestation_claim",
+    "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_claim.json",
+    "digest_scheme": "compiler-project-semantic-json-sha256-v1",
+    "sha256": "2a098c6004436f393953eed4bcda8c000ad6c3bca81f1c91f2c7b57b3e0413e5",
+    "payload": {
+      "schema": "compiler-project-zkp-attestation-claim-v1",
+      "selected_family_alias": "reusable-chunk",
+      "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+      "field_bits": 256,
+      "leaf_call_count_total": 31,
+      "expected_full_oracle_non_clifford": 36767692,
+      "expected_total_logical_qubits": 1199,
+      "expected_case_count": 8,
+      "non_clifford_formula": {
+        "arithmetic_leaf_non_clifford": 792829,
+        "per_leaf_lookup_non_clifford": 393216,
+        "direct_seed_non_clifford": 297,
+        "leaf_call_count_total": 31,
+        "arithmetic_component": 24577699,
+        "lookup_component": 12189696,
+        "reconstructed_total": 36767692
+      },
+      "logical_qubit_formula": {
+        "field_bits": 256,
+        "arithmetic_slot_count": 4,
+        "control_slot_count": 1,
+        "borrowed_interface_qubits": 0,
+        "lookup_workspace_qubits": 173,
+        "live_phase_bits": 1,
+        "arithmetic_component": 1024,
+        "reconstructed_total": 1199
+      },
+      "notes": [
+        "This claim intentionally stays at the repository exact-family boundary: exact point-add witness semantics plus exact compiler-family resource derivation.",
+        "It is similar in shape to the Google disclosure model, but it proves a public deterministic point-add corpus instead of Fiat-Shamir-generated hidden tests."
+      ]
+    }
+  },
+  "leaf_document": {
+    "document_type": "reusable_chunk_tail_leaf",
+    "artifact_path": "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
+    "digest_scheme": "compiler-project-semantic-json-sha256-v1",
+    "sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
+    "payload": {
+      "schema": "compiler-project-reusable-chunk-tail-leaf-candidate-v1",
+      "curve": "secp256k1",
+      "field_modulus_hex": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
+      "curve_b": 7,
+      "b3": 21,
+      "variant": "a0_complete_reusable_chunk_tail_candidate",
+      "interface_wires": [
+        "Q.X",
+        "Q.Y",
+        "Q.Z",
+        "k"
+      ],
+      "lookup_interface_slots": [
+        "lookup_meta"
+      ],
+      "arithmetic_slots": [
+        "qx",
+        "qy",
+        "qz",
+        "qchunk"
+      ],
+      "lookup_infinity_policy": "boundary_noop",
+      "instructions": [
+        {
+          "pc": 0,
+          "op": "load_input",
+          "dst": "qx",
+          "src": "Q.X"
+        },
+        {
+          "pc": 1,
+          "op": "load_input",
+          "dst": "qy",
+          "src": "Q.Y"
+        },
+        {
+          "pc": 2,
+          "op": "load_input",
+          "dst": "qz",
+          "src": "Q.Z"
+        },
+        {
+          "pc": 3,
+          "op": "lookup_meta",
+          "dst": "lookup_meta",
+          "src": {
+            "table": "T.meta",
+            "key": "k"
+          }
+        },
+        {
+          "pc": 4,
+          "op": "bool_from_flag",
+          "dst": "f_lookup_inf",
+          "src": {
+            "flags": "lookup_meta",
+            "bit": 0
+          }
+        },
+        {
+          "pc": 5,
+          "op": "complete_a0_reusable_chunk_tail",
+          "dst": [
+            "qx",
+            "qy",
+            "qz"
+          ],
+          "src": {
+            "x": "qx",
+            "y": "qy",
+            "z": "qz",
+            "scratch": "qchunk"
+          },
+          "chunk_bits": 155,
+          "chunk_count": 2,
+          "b3": 21
+        }
+      ],
+      "notes": [
+        "Executable reusable-chunk tail candidate used by the ZKP attestation candidate path.",
+        "The qchunk slot is a counted scratch owner; no full lookup_x, lookup_y, or lookup_x_plus_y field lane is materialized."
+      ]
+    }
+  },
+  "family_document": {
+    "document_type": "compiler_family_summary",
+    "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_family.json",
+    "digest_scheme": "compiler-project-semantic-json-sha256-v1",
+    "sha256": "345237abab722243c6a2ae1230e77b1c58c1a2e3248f0feab88ac3e074c8be1d",
+    "payload": {
+      "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+      "summary": "Candidate reusable-chunk standard-QROAM family: four arithmetic slots, one reusable 155-bit QROAM chunk target, chunked table-controlled coordinate multipliers, and semiclassical QFT.",
+      "gate_set": "Clifford + standard QROAMClean K=1 chunk streams + measurement; Clifford + classically controlled dyadic phase + measurement",
+      "phase_shell": "semiclassical_qft_v1",
+      "slot_allocation_family": "reusable_chunk_tail_leaf_v1",
+      "arithmetic_kernel_family": "litinski_addsub_schoolbook_reusable_chunk_bound_v1",
+      "lookup_family": "folded_standard_qroam_reusable_chunked_coordinate_v1",
+      "arithmetic_leaf_non_clifford": 792829,
+      "direct_seed_non_clifford": 297,
+      "per_leaf_lookup_non_clifford": 393216,
+      "full_oracle_non_clifford": 36767692,
+      "arithmetic_slot_count": 4,
+      "control_slot_count": 1,
+      "borrowed_interface_qubits": 0,
+      "lookup_workspace_qubits": 173,
+      "live_phase_bits": 1,
+      "total_logical_qubits": 1199,
+      "phase_shell_hadamards": 512,
+      "phase_shell_measurements": 512,
+      "phase_shell_rotations": 511,
+      "phase_shell_rotation_depth": 511,
+      "total_measurements": 0,
+      "notes": [
+        "This candidate is not the default checked headline until compressed and Groth16 artifacts are rebuilt from checked branch state.",
+        "Its resource certificate is compiler_verification_project/artifacts/reusable_chunk_lowering.json.",
+        "The table-controlled multiplier arithmetic bound is derived from chunk effective widths 155 + 101 and the inherited full-width partial-product grid."
+      ]
+    }
+  },
+  "case_corpus_document": {
+    "document_type": "pointadd_case_corpus",
+    "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_cases.json",
+    "digest_scheme": "compiler-project-semantic-json-sha256-v1",
+    "sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
+    "payload": {
+      "schema": "compiler-project-zkp-attestation-cases-v1",
+      "curve": "secp256k1",
+      "field_modulus_hex": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
+      "curve_b": 7,
+      "seed_sha256": "5b2f3c497b8b7107223ef77a210fd8590cfc653da71cc7a22db1c59c6d1b7e12",
+      "seed_hash_scheme": "compiler-project-leaf-canonical-json-sha256-v1",
+      "case_count": 8,
+      "category_counts": {
+        "zero_zero": 1,
+        "accumulator_infinity": 1,
+        "lookup_infinity": 1,
+        "doubling": 1,
+        "inverse": 1,
+        "random": 3
+      },
+      "cases": [
+        {
+          "case_id": "zero_zero_0000",
+          "category": "zero_zero",
+          "accumulator": null,
+          "lookup": null,
+          "expected": null
+        },
+        {
+          "case_id": "accumulator_infinity_0001",
+          "category": "accumulator_infinity",
+          "accumulator": null,
+          "lookup": {
+            "x_hex": "868e186ceebc4024a1e5d09694a2dc76d802b12ba1581dd43c5c0063e0094373",
+            "y_hex": "9332729f5f02372c857abfa136c6e780dfb32667d869d2a87c63d48568446cc9"
+          },
+          "expected": {
+            "x_hex": "868e186ceebc4024a1e5d09694a2dc76d802b12ba1581dd43c5c0063e0094373",
+            "y_hex": "9332729f5f02372c857abfa136c6e780dfb32667d869d2a87c63d48568446cc9"
+          }
+        },
+        {
+          "case_id": "lookup_infinity_0002",
+          "category": "lookup_infinity",
+          "accumulator": {
+            "x_hex": "3d0a84f3a285d480b196ee66594444590507425ec4b9cd9a150b92d04372b685",
+            "y_hex": "8ab3c4c1c32f8878311f09a7241c445d937bfbf63dcff1a292df27ca087448d0"
+          },
+          "lookup": null,
+          "expected": {
+            "x_hex": "3d0a84f3a285d480b196ee66594444590507425ec4b9cd9a150b92d04372b685",
+            "y_hex": "8ab3c4c1c32f8878311f09a7241c445d937bfbf63dcff1a292df27ca087448d0"
+          }
+        },
+        {
+          "case_id": "doubling_0003",
+          "category": "doubling",
+          "accumulator": {
+            "x_hex": "29962f0f6c69f2092dbe15f41ec0d7b1934adf626be5fab072ebbe9530e79671",
+            "y_hex": "e5ae02121fc06997696fa81ab54c175923a1df741bfb6c4faecbde35db9aba94"
+          },
+          "lookup": {
+            "x_hex": "29962f0f6c69f2092dbe15f41ec0d7b1934adf626be5fab072ebbe9530e79671",
+            "y_hex": "e5ae02121fc06997696fa81ab54c175923a1df741bfb6c4faecbde35db9aba94"
+          },
+          "expected": {
+            "x_hex": "1b5b014d3727ce87b8acd225ac737a9bd2fef01682b75b840b7d65766df0cd84",
+            "y_hex": "7546c3d07d25683edc473107e3fee3f4298a159a1b9e5daab547362b55abec43"
+          }
+        },
+        {
+          "case_id": "inverse_0004",
+          "category": "inverse",
+          "accumulator": {
+            "x_hex": "f1e11e887d95f350144ddb13879394a8e0fd893b1a6254863df5fd66388cf3d1",
+            "y_hex": "12b764f7c7830f4a765a9bac2210b8d680ca5de0dd4adcff707df6e6c8b9d4e9"
+          },
+          "lookup": {
+            "x_hex": "f1e11e887d95f350144ddb13879394a8e0fd893b1a6254863df5fd66388cf3d1",
+            "y_hex": "ed489b08387cf0b589a56453ddef47297f35a21f22b523008f82091837462746"
+          },
+          "expected": null
+        },
+        {
+          "case_id": "random_0005",
+          "category": "random",
+          "accumulator": {
+            "x_hex": "f6a9d4007a5e020b7e827b327bebb40ee7fb7f1375c5711c5a445c6e2ee969a1",
+            "y_hex": "83f242c7c2ca805b6f7c2cb01790a1ddf5249f990003af1b3757a030d1c6c1db"
+          },
+          "lookup": {
+            "x_hex": "f21248432ff49f8a3c38130a7282333fc8c5811745f55af4bb9c79f8cddc04c6",
+            "y_hex": "3e4ccdab74ffd62e6775ed09a5acd3f1a571f9d1ee60413e0dd3d448f6db6184"
+          },
+          "expected": {
+            "x_hex": "082cef43e8b9fb4a5bf17916f72b81b4e533fe4948490cee05a20fd7b5100a5d",
+            "y_hex": "a7ce60de850aa9ab8ca05068468d30875f832b5792fc69c9c694b95cabc0885c"
+          }
+        },
+        {
+          "case_id": "random_0006",
+          "category": "random",
+          "accumulator": {
+            "x_hex": "87d5dc6cad63583832a2e64c817bb00d38c18efecf9be7373c6832e3d94fb528",
+            "y_hex": "42df00f5ad31f07e8b04f87406d1705f91430ec50a1b4627a93e89e4b4f174f2"
+          },
+          "lookup": {
+            "x_hex": "c885c640153a9add337b384d31481f313a4949664a645a50472284471aea6839",
+            "y_hex": "8830a96ebafe6812e46afdcfd383a19d1f7ffc28fad25a0738fcf891ee7a187b"
+          },
+          "expected": {
+            "x_hex": "906da1eaf085ddcc1177ea79afe9a5401b0d0860d30cf86a06518478ac4c5237",
+            "y_hex": "ced63ba1e6670306c907770036ca80396fd217e6cdfc5c979cb121ebc4ba8c40"
+          }
+        },
+        {
+          "case_id": "random_0007",
+          "category": "random",
+          "accumulator": {
+            "x_hex": "9c970b72f662873a7616d0e8df4e89f1f081e6c772036246880392f075dd5386",
+            "y_hex": "4f34094950e3e9db43604a2aa13f9c9da323e8f718fe56437228677612b45fda"
+          },
+          "lookup": {
+            "x_hex": "3df2888ce0567bd7305fb56576975b6a7591c6070115bc3fd2106e29fc2c2aa2",
+            "y_hex": "1d31efbcffb6859a9935a39a939b31c038f063161056b4baa5418a5c9500d63f"
+          },
+          "expected": {
+            "x_hex": "75f5f6e3949e209207cf297b391064174562238c482eaeb5b430ba751e724b49",
+            "y_hex": "575ed61caafd9efd125df1a7ef2f9f16497c8c9c1449093a92ef26dd145669ef"
+          }
+        }
+      ],
+      "notes": [
+        "These point-add challenge cases are deterministic and public, derived from the streamed lookup tail leaf hash stream.",
+        "The categories intentionally force neutral-entry, doubling, inverse, and ordinary mixed-add paths."
+      ]
+    }
+  },
+  "resource_certificate_document": {
+    "document_type": "reusable_chunk_lowering",
+    "artifact_path": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
+    "digest_scheme": "compiler-project-semantic-json-sha256-v1",
+    "sha256": "aa83edcfc7e0fb2e9a15104652cfe6942f4a78cfba2b3f4c9cf50b0aae733e41",
+    "payload": {
+      "schema": "compiler-project-reusable-chunk-lowering-v2",
+      "status": "candidate_lowering_contract_unproven_not_headline",
+      "source_artifacts": {
+        "reusable_chunk_tail_candidate": "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
+        "fallback_frontier_stress": "compiler_verification_project/artifacts/fallback_frontier_stress.json",
+        "logical_resource_ledger": "compiler_verification_project/artifacts/logical_resource_ledger.json"
+      },
+      "executable_contract": {
+        "variant": "a0_complete_reusable_chunk_tail_candidate",
+        "opcode": "complete_a0_reusable_chunk_tail",
+        "arithmetic_slots": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk"
+        ],
+        "control_slots": [
+          "f_lookup_inf"
+        ],
+        "chunk_contract": {
+          "chunk_bits": 155,
+          "chunk_count": 2,
+          "b3": 21,
+          "full_coordinate_lanes_materialized": 0,
+          "reusable_chunk_slot": "qchunk"
+        },
+        "lookup_constant_sources": [
+          "lookup_x",
+          "lookup_y",
+          "lookup_x_plus_y"
+        ]
+      },
+      "stream_plan": {
+        "coordinate_table_count": 3,
+        "coordinate_tables": [
+          "lookup_x",
+          "lookup_y",
+          "lookup_x_plus_y"
+        ],
+        "chunk_bits": 155,
+        "chunk_count": 2,
+        "chunk_streams_per_leaf": 6,
+        "leaf_call_count_total": 31,
+        "whole_oracle_chunk_streams": 186,
+        "rows": [
+          {
+            "table": "lookup_x",
+            "chunk_index": 0,
+            "chunk_bits": 155,
+            "consumers_before_uncompute": [
+              "A = X * lookup_x",
+              "Zx = Z * lookup_x"
+            ],
+            "consumer_count": 2,
+            "qroam_clean_block_size": 1,
+            "qroam_compute_non_clifford": 32768,
+            "measured_uncompute_non_clifford": 32768,
+            "per_chunk_stream_non_clifford": 65536,
+            "live_target_qubits": 155,
+            "junk_register_qubits": 0,
+            "full_coordinate_lane_materialized": 0
+          },
+          {
+            "table": "lookup_x",
+            "chunk_index": 1,
+            "chunk_bits": 155,
+            "consumers_before_uncompute": [
+              "A = X * lookup_x",
+              "Zx = Z * lookup_x"
+            ],
+            "consumer_count": 2,
+            "qroam_clean_block_size": 1,
+            "qroam_compute_non_clifford": 32768,
+            "measured_uncompute_non_clifford": 32768,
+            "per_chunk_stream_non_clifford": 65536,
+            "live_target_qubits": 155,
+            "junk_register_qubits": 0,
+            "full_coordinate_lane_materialized": 0
+          },
+          {
+            "table": "lookup_y",
+            "chunk_index": 0,
+            "chunk_bits": 155,
+            "consumers_before_uncompute": [
+              "I = Y * lookup_y",
+              "yZ = Z * lookup_y"
+            ],
+            "consumer_count": 2,
+            "qroam_clean_block_size": 1,
+            "qroam_compute_non_clifford": 32768,
+            "measured_uncompute_non_clifford": 32768,
+            "per_chunk_stream_non_clifford": 65536,
+            "live_target_qubits": 155,
+            "junk_register_qubits": 0,
+            "full_coordinate_lane_materialized": 0
+          },
+          {
+            "table": "lookup_y",
+            "chunk_index": 1,
+            "chunk_bits": 155,
+            "consumers_before_uncompute": [
+              "I = Y * lookup_y",
+              "yZ = Z * lookup_y"
+            ],
+            "consumer_count": 2,
+            "qroam_clean_block_size": 1,
+            "qroam_compute_non_clifford": 32768,
+            "measured_uncompute_non_clifford": 32768,
+            "per_chunk_stream_non_clifford": 65536,
+            "live_target_qubits": 155,
+            "junk_register_qubits": 0,
+            "full_coordinate_lane_materialized": 0
+          },
+          {
+            "table": "lookup_x_plus_y",
+            "chunk_index": 0,
+            "chunk_bits": 155,
+            "consumers_before_uncompute": [
+              "H = (X + Y) * (lookup_x + lookup_y)"
+            ],
+            "consumer_count": 1,
+            "qroam_clean_block_size": 1,
+            "qroam_compute_non_clifford": 32768,
+            "measured_uncompute_non_clifford": 32768,
+            "per_chunk_stream_non_clifford": 65536,
+            "live_target_qubits": 155,
+            "junk_register_qubits": 0,
+            "full_coordinate_lane_materialized": 0
+          },
+          {
+            "table": "lookup_x_plus_y",
+            "chunk_index": 1,
+            "chunk_bits": 155,
+            "consumers_before_uncompute": [
+              "H = (X + Y) * (lookup_x + lookup_y)"
+            ],
+            "consumer_count": 1,
+            "qroam_clean_block_size": 1,
+            "qroam_compute_non_clifford": 32768,
+            "measured_uncompute_non_clifford": 32768,
+            "per_chunk_stream_non_clifford": 65536,
+            "live_target_qubits": 155,
+            "junk_register_qubits": 0,
+            "full_coordinate_lane_materialized": 0
+          }
+        ]
+      },
+      "standard_qroamclean_k1_model": {
+        "domain_size": 32768,
+        "field_bits": 155,
+        "block_size": 1,
+        "target_register_qubits": 155,
+        "junk_register_count": 0,
+        "junk_register_qubits": 0,
+        "target_plus_junk_qubits": 155,
+        "lookup_compute_non_clifford": 32768,
+        "measured_uncompute_non_clifford": 32768,
+        "per_stream_non_clifford": 65536
+      },
+      "chunked_multiplier_primitive_contract": {
+        "source_arithmetic_kernel": "complete_a0_all_streamed_tail",
+        "field_bits": 256,
+        "chunk_bits": 155,
+        "chunk_effective_bits": [
+          155,
+          101
+        ],
+        "table_multiplier_count_per_leaf": 5,
+        "table_multiplier_rows": [
+          {
+            "table": "lookup_x_plus_y",
+            "consumer_expression": "H = (X + Y) * (lookup_x + lookup_y)",
+            "inherited_stage_prefix": "tail_h",
+            "chunk_rows": [
+              {
+                "chunk_index": 0,
+                "target_capacity_bits": 155,
+                "effective_constant_bits": 155,
+                "zero_padded_target_bits": 0,
+                "partial_product_non_clifford": 39680
+              },
+              {
+                "chunk_index": 1,
+                "target_capacity_bits": 155,
+                "effective_constant_bits": 101,
+                "zero_padded_target_bits": 54,
+                "partial_product_non_clifford": 25856
+              }
+            ],
+            "chunked_partial_product_non_clifford": 65536,
+            "inherited_full_width_partial_product_non_clifford": 65536,
+            "partial_product_count_is_exact_match": true,
+            "single_modular_reduction_after_chunk_accumulation": true,
+            "extra_chunk_combine_non_clifford": 0,
+            "inherited_non_qroam_field_mul_non_clifford": 71492,
+            "chunked_non_qroam_field_mul_bound_non_clifford": 71492,
+            "bound_is_conservative": true
+          },
+          {
+            "table": "lookup_x",
+            "consumer_expression": "A = X * lookup_x",
+            "inherited_stage_prefix": "all_streamed_tail_a",
+            "chunk_rows": [
+              {
+                "chunk_index": 0,
+                "target_capacity_bits": 155,
+                "effective_constant_bits": 155,
+                "zero_padded_target_bits": 0,
+                "partial_product_non_clifford": 39680
+              },
+              {
+                "chunk_index": 1,
+                "target_capacity_bits": 155,
+                "effective_constant_bits": 101,
+                "zero_padded_target_bits": 54,
+                "partial_product_non_clifford": 25856
+              }
+            ],
+            "chunked_partial_product_non_clifford": 65536,
+            "inherited_full_width_partial_product_non_clifford": 65536,
+            "partial_product_count_is_exact_match": true,
+            "single_modular_reduction_after_chunk_accumulation": true,
+            "extra_chunk_combine_non_clifford": 0,
+            "inherited_non_qroam_field_mul_non_clifford": 71492,
+            "chunked_non_qroam_field_mul_bound_non_clifford": 71492,
+            "bound_is_conservative": true
+          },
+          {
+            "table": "lookup_x",
+            "consumer_expression": "Zx = Z * lookup_x",
+            "inherited_stage_prefix": "all_streamed_tail_zx",
+            "chunk_rows": [
+              {
+                "chunk_index": 0,
+                "target_capacity_bits": 155,
+                "effective_constant_bits": 155,
+                "zero_padded_target_bits": 0,
+                "partial_product_non_clifford": 39680
+              },
+              {
+                "chunk_index": 1,
+                "target_capacity_bits": 155,
+                "effective_constant_bits": 101,
+                "zero_padded_target_bits": 54,
+                "partial_product_non_clifford": 25856
+              }
+            ],
+            "chunked_partial_product_non_clifford": 65536,
+            "inherited_full_width_partial_product_non_clifford": 65536,
+            "partial_product_count_is_exact_match": true,
+            "single_modular_reduction_after_chunk_accumulation": true,
+            "extra_chunk_combine_non_clifford": 0,
+            "inherited_non_qroam_field_mul_non_clifford": 71492,
+            "chunked_non_qroam_field_mul_bound_non_clifford": 71492,
+            "bound_is_conservative": true
+          },
+          {
+            "table": "lookup_y",
+            "consumer_expression": "I = Y * lookup_y",
+            "inherited_stage_prefix": "all_streamed_fully_streamed_tail_i",
+            "chunk_rows": [
+              {
+                "chunk_index": 0,
+                "target_capacity_bits": 155,
+                "effective_constant_bits": 155,
+                "zero_padded_target_bits": 0,
+                "partial_product_non_clifford": 39680
+              },
+              {
+                "chunk_index": 1,
+                "target_capacity_bits": 155,
+                "effective_constant_bits": 101,
+                "zero_padded_target_bits": 54,
+                "partial_product_non_clifford": 25856
+              }
+            ],
+            "chunked_partial_product_non_clifford": 65536,
+            "inherited_full_width_partial_product_non_clifford": 65536,
+            "partial_product_count_is_exact_match": true,
+            "single_modular_reduction_after_chunk_accumulation": true,
+            "extra_chunk_combine_non_clifford": 0,
+            "inherited_non_qroam_field_mul_non_clifford": 71492,
+            "chunked_non_qroam_field_mul_bound_non_clifford": 71492,
+            "bound_is_conservative": true
+          },
+          {
+            "table": "lookup_y",
+            "consumer_expression": "yZ = Z * lookup_y",
+            "inherited_stage_prefix": "all_streamed_fully_streamed_tail_yz",
+            "chunk_rows": [
+              {
+                "chunk_index": 0,
+                "target_capacity_bits": 155,
+                "effective_constant_bits": 155,
+                "zero_padded_target_bits": 0,
+                "partial_product_non_clifford": 39680
+              },
+              {
+                "chunk_index": 1,
+                "target_capacity_bits": 155,
+                "effective_constant_bits": 101,
+                "zero_padded_target_bits": 54,
+                "partial_product_non_clifford": 25856
+              }
+            ],
+            "chunked_partial_product_non_clifford": 65536,
+            "inherited_full_width_partial_product_non_clifford": 65536,
+            "partial_product_count_is_exact_match": true,
+            "single_modular_reduction_after_chunk_accumulation": true,
+            "extra_chunk_combine_non_clifford": 0,
+            "inherited_non_qroam_field_mul_non_clifford": 71492,
+            "chunked_non_qroam_field_mul_bound_non_clifford": 71492,
+            "bound_is_conservative": true
+          }
+        ],
+        "table_multiplier_partial_products_per_leaf": 327680,
+        "inherited_table_multiplier_partial_products_per_leaf": 327680,
+        "downstream_full_width_multiplier_count_per_leaf": 6,
+        "downstream_full_width_partial_products_per_leaf": 393216,
+        "arithmetic_base_conservatism": {
+          "table_multiplier_partial_products_equal_inherited_full_width": true,
+          "high_chunk_qroam_is_overcounted_to_full_chunk_width": true,
+          "modular_reduction_count_matches_inherited_per_consumer_reduction": true,
+          "inherited_base_without_streamed_qroam_is_valid_for_chunked_contract": true
+        }
+      },
+      "non_clifford_derivation": {
+        "base_non_clifford_without_streamed_qroam": 24577996,
+        "qroam_chunk_streams": 186,
+        "per_chunk_stream_non_clifford": 65536,
+        "qroam_chunk_non_clifford": 12189696,
+        "candidate_total_non_clifford": 36767692
+      },
+      "qubit_derivation": {
+        "field_bits": 256,
+        "arithmetic_slot_count": 4,
+        "arithmetic_slot_qubits": 1024,
+        "folded_control_workspace_qubits": 18,
+        "qroam_clean_chunk_target_qubits": 155,
+        "qroam_clean_junk_register_qubits": 0,
+        "lookup_workspace_qubits": 173,
+        "control_qubits": 1,
+        "phase_qubits": 1,
+        "candidate_total_logical_qubits": 1199
+      },
+      "owner_capacity": {
+        "rows": [
+          {
+            "owner_id": "arithmetic_slot_register_file",
+            "logical_qubits": 1024,
+            "source": "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
+            "required_live_wires": {
+              "qx": 256,
+              "qy": 256,
+              "qz": 256,
+              "qchunk": 256
+            },
+            "required_peak_qubits": 1024,
+            "capacity_margin_qubits": 0,
+            "capacity_pass": true
+          },
+          {
+            "owner_id": "lookup_workspace",
+            "logical_qubits": 173,
+            "source": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
+            "required_live_wires": {
+              "folded_control_workspace_qubits": 18,
+              "qroam_clean_chunk_target_qubits": 155,
+              "qroam_clean_junk_register_qubits": 0
+            },
+            "required_peak_qubits": 173,
+            "capacity_margin_qubits": 0,
+            "capacity_pass": true
+          },
+          {
+            "owner_id": "control_slot_register_file",
+            "logical_qubits": 1,
+            "source": "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
+            "required_live_wires": {
+              "f_lookup_inf": 1
+            },
+            "required_peak_qubits": 1,
+            "capacity_margin_qubits": 0,
+            "capacity_pass": true
+          },
+          {
+            "owner_id": "phase_shell_live_register",
+            "logical_qubits": 1,
+            "source": "compiler_verification_project/artifacts/phase_shell_lowerings.json",
+            "required_live_wires": {
+              "semiclassical_qft_live_phase_bit": 1
+            },
+            "required_peak_qubits": 1,
+            "capacity_margin_qubits": 0,
+            "capacity_pass": true
+          }
+        ],
+        "required_global_peak_qubits": 1199,
+        "capacity_global_peak_qubits": 1199
+      },
+      "checks": {
+        "executable_leaf_uses_four_arithmetic_slots": true,
+        "executable_leaf_has_reusable_chunk_scratch": true,
+        "no_full_coordinate_lanes_materialized": true,
+        "chunk_width_matches_strict_qubit_pressure": true,
+        "stream_count_derived_from_tables_and_chunks": true,
+        "whole_oracle_stream_count_derived_from_leaf_calls": true,
+        "per_stream_cost_matches_standard_qroamclean_k1": true,
+        "chunked_multiplier_partial_products_match_inherited_full_width_base": true,
+        "chunked_multiplier_high_chunk_zero_padding_is_explicit": true,
+        "chunked_multiplier_uses_single_reduction_per_consumer": true,
+        "non_clifford_matches_candidate": true,
+        "logical_qubits_match_candidate": true,
+        "owner_capacity_rows_cover_required_peak": true,
+        "fits_requested_limits": true
+      },
+      "pass": true,
+      "remaining_proof_obligations": [
+        "Bind this contract and its owner-capacity certificate in the ZKP before changing public headline values.",
+        "Promote the candidate only after compressed and Groth16 verification pass from checked-in branch artifacts."
+      ],
+      "notes": [
+        "This artifact prevents the previous QROAMClean width/workspace mix-up for the reusable chunk candidate: K=1 uses a 155-bit live target and zero junk registers, so the same model drives gates and qubits.",
+        "The three coordinate tables are streamed as chunks and consumed before uncompute; no full x, y, or x_plus_y coordinate lane is allocated.",
+        "The chunked multiplier primitive contract proves that the inherited non-QROAM arithmetic base is a conservative bound: low 155 bits plus high 101 effective bits produce the same 65,536 partial products as the inherited full-width field multiplier, with the same single reduction boundary.",
+        "The result remains non-headline because ZKP binding is not complete."
+      ]
+    }
+  },
+  "claim_summary": {
+    "field_bits": 256,
+    "leaf_call_count_total": 31,
+    "expected_full_oracle_non_clifford": 36767692,
+    "expected_total_logical_qubits": 1199,
+    "expected_case_count": 8,
+    "non_clifford_formula": {
+      "arithmetic_leaf_non_clifford": 792829,
+      "per_leaf_lookup_non_clifford": 393216,
+      "direct_seed_non_clifford": 297,
+      "leaf_call_count_total": 31,
+      "arithmetic_component": 24577699,
+      "lookup_component": 12189696,
+      "reconstructed_total": 36767692
+    },
+    "logical_qubit_formula": {
+      "field_bits": 256,
+      "arithmetic_slot_count": 4,
+      "control_slot_count": 1,
+      "borrowed_interface_qubits": 0,
+      "lookup_workspace_qubits": 173,
+      "live_phase_bits": 1,
+      "arithmetic_component": 1024,
+      "reconstructed_total": 1199
+    }
+  },
+  "family_summary": {
+    "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+    "arithmetic_leaf_non_clifford": 792829,
+    "direct_seed_non_clifford": 297,
+    "per_leaf_lookup_non_clifford": 393216,
+    "full_oracle_non_clifford": 36767692,
+    "arithmetic_slot_count": 4,
+    "control_slot_count": 1,
+    "borrowed_interface_qubits": 0,
+    "lookup_workspace_qubits": 173,
+    "live_phase_bits": 1,
+    "total_logical_qubits": 1199
+  },
+  "prepared_leaf": {
+    "register_count": 12,
+    "input_qx": 0,
+    "input_qy": 1,
+    "input_qz": 2,
+    "input_k": 3,
+    "input_lookup_x": 4,
+    "input_lookup_y": 5,
+    "input_lookup_meta": 6,
+    "output_qx": 7,
+    "output_qy": 8,
+    "output_qz": 9,
+    "skip_on_lookup_infinity": true,
+    "instructions": [
+      {
+        "kind": "copy",
+        "dst": 7,
+        "src": 0
+      },
+      {
+        "kind": "copy",
+        "dst": 8,
+        "src": 1
+      },
+      {
+        "kind": "copy",
+        "dst": 9,
+        "src": 2
+      },
+      {
+        "kind": "copy",
+        "dst": 6,
+        "src": 6
+      },
+      {
+        "kind": "bool_from_flag",
+        "dst": 10,
+        "flags": 6,
+        "bit": 0
+      },
+      {
+        "kind": "complete_a0_reusable_chunk_tail",
+        "out_x": 7,
+        "out_y": 8,
+        "out_z": 9,
+        "x": 7,
+        "y": 8,
+        "z": 9,
+        "scratch": 11,
+        "chunk_bits": 155,
+        "chunk_count": 2,
+        "b3": 21
+      }
+    ]
+  },
+  "prepared_case_corpus": {
+    "field_modulus_hex": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
+    "case_count": 8,
+    "cases": [
+      {
+        "case_id": "zero_zero_0000",
+        "category": "zero_zero",
+        "accumulator": null,
+        "lookup": null,
+        "expected": null
+      },
+      {
+        "case_id": "accumulator_infinity_0001",
+        "category": "accumulator_infinity",
+        "accumulator": null,
+        "lookup": {
+          "x_hex": "868e186ceebc4024a1e5d09694a2dc76d802b12ba1581dd43c5c0063e0094373",
+          "y_hex": "9332729f5f02372c857abfa136c6e780dfb32667d869d2a87c63d48568446cc9"
+        },
+        "expected": {
+          "x_hex": "868e186ceebc4024a1e5d09694a2dc76d802b12ba1581dd43c5c0063e0094373",
+          "y_hex": "9332729f5f02372c857abfa136c6e780dfb32667d869d2a87c63d48568446cc9"
+        }
+      },
+      {
+        "case_id": "lookup_infinity_0002",
+        "category": "lookup_infinity",
+        "accumulator": {
+          "x_hex": "3d0a84f3a285d480b196ee66594444590507425ec4b9cd9a150b92d04372b685",
+          "y_hex": "8ab3c4c1c32f8878311f09a7241c445d937bfbf63dcff1a292df27ca087448d0"
+        },
+        "lookup": null,
+        "expected": {
+          "x_hex": "3d0a84f3a285d480b196ee66594444590507425ec4b9cd9a150b92d04372b685",
+          "y_hex": "8ab3c4c1c32f8878311f09a7241c445d937bfbf63dcff1a292df27ca087448d0"
+        }
+      },
+      {
+        "case_id": "doubling_0003",
+        "category": "doubling",
+        "accumulator": {
+          "x_hex": "29962f0f6c69f2092dbe15f41ec0d7b1934adf626be5fab072ebbe9530e79671",
+          "y_hex": "e5ae02121fc06997696fa81ab54c175923a1df741bfb6c4faecbde35db9aba94"
+        },
+        "lookup": {
+          "x_hex": "29962f0f6c69f2092dbe15f41ec0d7b1934adf626be5fab072ebbe9530e79671",
+          "y_hex": "e5ae02121fc06997696fa81ab54c175923a1df741bfb6c4faecbde35db9aba94"
+        },
+        "expected": {
+          "x_hex": "1b5b014d3727ce87b8acd225ac737a9bd2fef01682b75b840b7d65766df0cd84",
+          "y_hex": "7546c3d07d25683edc473107e3fee3f4298a159a1b9e5daab547362b55abec43"
+        }
+      },
+      {
+        "case_id": "inverse_0004",
+        "category": "inverse",
+        "accumulator": {
+          "x_hex": "f1e11e887d95f350144ddb13879394a8e0fd893b1a6254863df5fd66388cf3d1",
+          "y_hex": "12b764f7c7830f4a765a9bac2210b8d680ca5de0dd4adcff707df6e6c8b9d4e9"
+        },
+        "lookup": {
+          "x_hex": "f1e11e887d95f350144ddb13879394a8e0fd893b1a6254863df5fd66388cf3d1",
+          "y_hex": "ed489b08387cf0b589a56453ddef47297f35a21f22b523008f82091837462746"
+        },
+        "expected": null
+      },
+      {
+        "case_id": "random_0005",
+        "category": "random",
+        "accumulator": {
+          "x_hex": "f6a9d4007a5e020b7e827b327bebb40ee7fb7f1375c5711c5a445c6e2ee969a1",
+          "y_hex": "83f242c7c2ca805b6f7c2cb01790a1ddf5249f990003af1b3757a030d1c6c1db"
+        },
+        "lookup": {
+          "x_hex": "f21248432ff49f8a3c38130a7282333fc8c5811745f55af4bb9c79f8cddc04c6",
+          "y_hex": "3e4ccdab74ffd62e6775ed09a5acd3f1a571f9d1ee60413e0dd3d448f6db6184"
+        },
+        "expected": {
+          "x_hex": "082cef43e8b9fb4a5bf17916f72b81b4e533fe4948490cee05a20fd7b5100a5d",
+          "y_hex": "a7ce60de850aa9ab8ca05068468d30875f832b5792fc69c9c694b95cabc0885c"
+        }
+      },
+      {
+        "case_id": "random_0006",
+        "category": "random",
+        "accumulator": {
+          "x_hex": "87d5dc6cad63583832a2e64c817bb00d38c18efecf9be7373c6832e3d94fb528",
+          "y_hex": "42df00f5ad31f07e8b04f87406d1705f91430ec50a1b4627a93e89e4b4f174f2"
+        },
+        "lookup": {
+          "x_hex": "c885c640153a9add337b384d31481f313a4949664a645a50472284471aea6839",
+          "y_hex": "8830a96ebafe6812e46afdcfd383a19d1f7ffc28fad25a0738fcf891ee7a187b"
+        },
+        "expected": {
+          "x_hex": "906da1eaf085ddcc1177ea79afe9a5401b0d0860d30cf86a06518478ac4c5237",
+          "y_hex": "ced63ba1e6670306c907770036ca80396fd217e6cdfc5c979cb121ebc4ba8c40"
+        }
+      },
+      {
+        "case_id": "random_0007",
+        "category": "random",
+        "accumulator": {
+          "x_hex": "9c970b72f662873a7616d0e8df4e89f1f081e6c772036246880392f075dd5386",
+          "y_hex": "4f34094950e3e9db43604a2aa13f9c9da323e8f718fe56437228677612b45fda"
+        },
+        "lookup": {
+          "x_hex": "3df2888ce0567bd7305fb56576975b6a7591c6070115bc3fd2106e29fc2c2aa2",
+          "y_hex": "1d31efbcffb6859a9935a39a939b31c038f063161056b4baa5418a5c9500d63f"
+        },
+        "expected": {
+          "x_hex": "75f5f6e3949e209207cf297b391064174562238c482eaeb5b430ba751e724b49",
+          "y_hex": "575ed61caafd9efd125df1a7ef2f9f16497c8c9c1449093a92ef26dd145669ef"
+        }
+      }
+    ]
+  },
+  "notes": [
+    "The proof input carries both the committed source documents and proof-ready reductions.",
+    "The guest recomputes every source-document digest and derives the prepared leaf/case reductions from those documents before publishing public values."
+  ]
+}

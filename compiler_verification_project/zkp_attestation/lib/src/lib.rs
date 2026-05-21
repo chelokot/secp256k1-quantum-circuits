@@ -97,6 +97,9 @@ pub struct Instruction {
     pub src: Option<InstructionSource>,
     pub flag: Option<String>,
     pub const_value: Option<u64>,
+    pub chunk_bits: Option<u32>,
+    pub chunk_count: Option<u32>,
+    pub b3: Option<u64>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -136,6 +139,12 @@ pub enum InstructionSource {
         y: String,
         z: String,
     },
+    ReusableChunkTail {
+        x: String,
+        y: String,
+        z: String,
+        scratch: String,
+    },
     AllStreamedTail {
         x: String,
         y: String,
@@ -169,6 +178,12 @@ enum HumanInstructionSource {
         h: String,
         y: String,
         z: String,
+    },
+    ReusableChunkTail {
+        x: String,
+        y: String,
+        z: String,
+        scratch: String,
     },
     AllStreamedTail {
         x: String,
@@ -208,6 +223,12 @@ enum BinaryInstructionSource {
         y: String,
         z: String,
     },
+    ReusableChunkTail {
+        x: String,
+        y: String,
+        z: String,
+        scratch: String,
+    },
     FlagBit {
         flags: String,
         bit: u64,
@@ -232,6 +253,12 @@ struct HumanInstruction {
     flag: Option<String>,
     #[serde(rename = "const", default, skip_serializing_if = "Option::is_none")]
     const_value: Option<u64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    chunk_bits: Option<u32>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    chunk_count: Option<u32>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    b3: Option<u64>,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -243,6 +270,9 @@ struct BinaryInstruction {
     src: Option<InstructionSource>,
     flag: Option<String>,
     const_value: Option<u64>,
+    chunk_bits: Option<u32>,
+    chunk_count: Option<u32>,
+    b3: Option<u64>,
 }
 
 impl From<&Instruction> for HumanInstruction {
@@ -255,6 +285,9 @@ impl From<&Instruction> for HumanInstruction {
             src: value.src.clone(),
             flag: value.flag.clone(),
             const_value: value.const_value,
+            chunk_bits: value.chunk_bits,
+            chunk_count: value.chunk_count,
+            b3: value.b3,
         }
     }
 }
@@ -269,6 +302,9 @@ impl From<HumanInstruction> for Instruction {
             src: value.src,
             flag: value.flag,
             const_value: value.const_value,
+            chunk_bits: value.chunk_bits,
+            chunk_count: value.chunk_count,
+            b3: value.b3,
         }
     }
 }
@@ -283,6 +319,9 @@ impl From<&Instruction> for BinaryInstruction {
             src: value.src.clone(),
             flag: value.flag.clone(),
             const_value: value.const_value,
+            chunk_bits: value.chunk_bits,
+            chunk_count: value.chunk_count,
+            b3: value.b3,
         }
     }
 }
@@ -297,6 +336,9 @@ impl From<BinaryInstruction> for Instruction {
             src: value.src,
             flag: value.flag,
             const_value: value.const_value,
+            chunk_bits: value.chunk_bits,
+            chunk_count: value.chunk_count,
+            b3: value.b3,
         }
     }
 }
@@ -463,6 +505,14 @@ impl Serialize for InstructionSource {
                     map.serialize_field("z", z)?;
                     map.end()
                 }
+                InstructionSource::ReusableChunkTail { x, y, z, scratch } => {
+                    let mut map = serializer.serialize_struct("InstructionSource", 4)?;
+                    map.serialize_field("scratch", scratch)?;
+                    map.serialize_field("x", x)?;
+                    map.serialize_field("y", y)?;
+                    map.serialize_field("z", z)?;
+                    map.end()
+                }
                 InstructionSource::FlagBit { flags, bit } => {
                     let mut map = serializer.serialize_struct("InstructionSource", 2)?;
                     map.serialize_field("flags", flags)?;
@@ -509,6 +559,14 @@ impl Serialize for InstructionSource {
                         z: z.clone(),
                     }
                 }
+                InstructionSource::ReusableChunkTail { x, y, z, scratch } => {
+                    BinaryInstructionSource::ReusableChunkTail {
+                        x: x.clone(),
+                        y: y.clone(),
+                        z: z.clone(),
+                        scratch: scratch.clone(),
+                    }
+                }
                 InstructionSource::FlagBit { flags, bit } => BinaryInstructionSource::FlagBit {
                     flags: flags.clone(),
                     bit: *bit,
@@ -543,6 +601,9 @@ impl<'de> Deserialize<'de> for InstructionSource {
                 HumanInstructionSource::AllStreamedTail { x, y, z } => {
                     InstructionSource::AllStreamedTail { x, y, z }
                 }
+                HumanInstructionSource::ReusableChunkTail { x, y, z, scratch } => {
+                    InstructionSource::ReusableChunkTail { x, y, z, scratch }
+                }
                 HumanInstructionSource::FlagBit { flags, bit } => {
                     InstructionSource::FlagBit { flags, bit }
                 }
@@ -566,6 +627,9 @@ impl<'de> Deserialize<'de> for InstructionSource {
                 }
                 BinaryInstructionSource::AllStreamedTail { x, y, z } => {
                     InstructionSource::AllStreamedTail { x, y, z }
+                }
+                BinaryInstructionSource::ReusableChunkTail { x, y, z, scratch } => {
+                    InstructionSource::ReusableChunkTail { x, y, z, scratch }
                 }
                 BinaryInstructionSource::FlagBit { flags, bit } => {
                     InstructionSource::FlagBit { flags, bit }
@@ -927,6 +991,18 @@ pub enum CompiledInstruction {
         y: RegisterId,
         z: RegisterId,
     },
+    CompleteA0ReusableChunkTail {
+        out_x: RegisterId,
+        out_y: RegisterId,
+        out_z: RegisterId,
+        x: RegisterId,
+        y: RegisterId,
+        z: RegisterId,
+        scratch: RegisterId,
+        chunk_bits: u32,
+        chunk_count: u32,
+        b3: u64,
+    },
 }
 
 #[derive(Serialize, Deserialize)]
@@ -1021,6 +1097,18 @@ enum HumanCompiledInstruction {
         y: RegisterId,
         z: RegisterId,
     },
+    CompleteA0ReusableChunkTail {
+        out_x: RegisterId,
+        out_y: RegisterId,
+        out_z: RegisterId,
+        x: RegisterId,
+        y: RegisterId,
+        z: RegisterId,
+        scratch: RegisterId,
+        chunk_bits: u32,
+        chunk_count: u32,
+        b3: u64,
+    },
 }
 
 #[derive(Serialize, Deserialize)]
@@ -1113,6 +1201,18 @@ enum BinaryCompiledInstruction {
         x: RegisterId,
         y: RegisterId,
         z: RegisterId,
+    },
+    CompleteA0ReusableChunkTail {
+        out_x: RegisterId,
+        out_y: RegisterId,
+        out_z: RegisterId,
+        x: RegisterId,
+        y: RegisterId,
+        z: RegisterId,
+        scratch: RegisterId,
+        chunk_bits: u32,
+        chunk_count: u32,
+        b3: u64,
     },
 }
 
@@ -1242,6 +1342,29 @@ impl From<&CompiledInstruction> for HumanCompiledInstruction {
                 y: *y,
                 z: *z,
             },
+            CompiledInstruction::CompleteA0ReusableChunkTail {
+                out_x,
+                out_y,
+                out_z,
+                x,
+                y,
+                z,
+                scratch,
+                chunk_bits,
+                chunk_count,
+                b3,
+            } => Self::CompleteA0ReusableChunkTail {
+                out_x: *out_x,
+                out_y: *out_y,
+                out_z: *out_z,
+                x: *x,
+                y: *y,
+                z: *z,
+                scratch: *scratch,
+                chunk_bits: *chunk_bits,
+                chunk_count: *chunk_count,
+                b3: *b3,
+            },
         }
     }
 }
@@ -1350,6 +1473,29 @@ impl From<HumanCompiledInstruction> for CompiledInstruction {
                 x,
                 y,
                 z,
+            },
+            HumanCompiledInstruction::CompleteA0ReusableChunkTail {
+                out_x,
+                out_y,
+                out_z,
+                x,
+                y,
+                z,
+                scratch,
+                chunk_bits,
+                chunk_count,
+                b3,
+            } => Self::CompleteA0ReusableChunkTail {
+                out_x,
+                out_y,
+                out_z,
+                x,
+                y,
+                z,
+                scratch,
+                chunk_bits,
+                chunk_count,
+                b3,
             },
         }
     }
@@ -1460,6 +1606,29 @@ impl From<&CompiledInstruction> for BinaryCompiledInstruction {
                 y,
                 z,
             },
+            HumanCompiledInstruction::CompleteA0ReusableChunkTail {
+                out_x,
+                out_y,
+                out_z,
+                x,
+                y,
+                z,
+                scratch,
+                chunk_bits,
+                chunk_count,
+                b3,
+            } => Self::CompleteA0ReusableChunkTail {
+                out_x,
+                out_y,
+                out_z,
+                x,
+                y,
+                z,
+                scratch,
+                chunk_bits,
+                chunk_count,
+                b3,
+            },
         }
     }
 }
@@ -1568,6 +1737,29 @@ impl From<BinaryCompiledInstruction> for CompiledInstruction {
                 x,
                 y,
                 z,
+            },
+            BinaryCompiledInstruction::CompleteA0ReusableChunkTail {
+                out_x,
+                out_y,
+                out_z,
+                x,
+                y,
+                z,
+                scratch,
+                chunk_bits,
+                chunk_count,
+                b3,
+            } => Self::CompleteA0ReusableChunkTail {
+                out_x,
+                out_y,
+                out_z,
+                x,
+                y,
+                z,
+                scratch,
+                chunk_bits,
+                chunk_count,
+                b3,
             },
         }
     }
@@ -1783,6 +1975,13 @@ impl SemanticHash for InstructionSource {
                 semantic_hash_field(hasher, "y", y);
                 semantic_hash_field(hasher, "z", z);
             }
+            InstructionSource::ReusableChunkTail { x, y, z, scratch } => {
+                semantic_hash_object_start(hasher, 4);
+                semantic_hash_field(hasher, "scratch", scratch);
+                semantic_hash_field(hasher, "x", x);
+                semantic_hash_field(hasher, "y", y);
+                semantic_hash_field(hasher, "z", z);
+            }
             InstructionSource::FlagBit { flags, bit } => {
                 semantic_hash_object_start(hasher, 2);
                 semantic_hash_field(hasher, "bit", bit);
@@ -1874,6 +2073,9 @@ impl SemanticHash for Instruction {
         let field_count = 2
             + usize::from(self.comment.is_some())
             + usize::from(self.const_value.is_some())
+            + usize::from(self.chunk_bits.is_some())
+            + usize::from(self.chunk_count.is_some())
+            + usize::from(self.b3.is_some())
             + usize::from(self.dst.is_some())
             + usize::from(self.flag.is_some())
             + usize::from(self.src.is_some());
@@ -1883,6 +2085,15 @@ impl SemanticHash for Instruction {
         }
         if let Some(const_value) = &self.const_value {
             semantic_hash_field(hasher, "const", const_value);
+        }
+        if let Some(chunk_bits) = &self.chunk_bits {
+            semantic_hash_field(hasher, "chunk_bits", chunk_bits);
+        }
+        if let Some(chunk_count) = &self.chunk_count {
+            semantic_hash_field(hasher, "chunk_count", chunk_count);
+        }
+        if let Some(b3) = &self.b3 {
+            semantic_hash_field(hasher, "b3", b3);
         }
         if let Some(dst) = &self.dst {
             semantic_hash_field(hasher, "dst", dst);
@@ -2194,6 +2405,13 @@ fn source_as_all_streamed_tail(source: &InstructionSource) -> (&str, &str, &str)
     }
 }
 
+fn source_as_reusable_chunk_tail(source: &InstructionSource) -> (&str, &str, &str, &str) {
+    match source {
+        InstructionSource::ReusableChunkTail { x, y, z, scratch } => (x, y, z, scratch),
+        _ => panic!("expected reusable-chunk tail source"),
+    }
+}
+
 fn destination_as_register(destination: &InstructionDestination) -> &str {
     match destination {
         InstructionDestination::Register(register) => register,
@@ -2418,6 +2636,71 @@ fn compile_leaf(leaf: &LeafDocument) -> CompiledLeaf {
                 ),
             });
             defined.extend(dst_names.iter().cloned());
+            continue;
+        }
+        if instruction.op == "complete_a0_reusable_chunk_tail" {
+            let dst_names = destination_as_registers(destination);
+            assert_eq!(dst_names.len(), 3);
+            let output_ids: Vec<RegisterId> = dst_names
+                .iter()
+                .map(|name| {
+                    if let Some(existing) = register_ids.get(name) {
+                        *existing
+                    } else {
+                        let next_id = register_ids.len();
+                        register_ids.insert(name.clone(), next_id);
+                        next_id
+                    }
+                })
+                .collect();
+            let (x_name, y_name, z_name, scratch_name) = source_as_reusable_chunk_tail(
+                instruction
+                    .src
+                    .as_ref()
+                    .expect("missing complete_a0_reusable_chunk_tail source"),
+            );
+            let scratch = if let Some(existing) = register_ids.get(scratch_name) {
+                *existing
+            } else {
+                let next_id = register_ids.len();
+                register_ids.insert(scratch_name.to_owned(), next_id);
+                next_id
+            };
+            compiled.push(CompiledInstruction::CompleteA0ReusableChunkTail {
+                out_x: output_ids[0],
+                out_y: output_ids[1],
+                out_z: output_ids[2],
+                x: ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    x_name,
+                    "complete_a0_reusable_chunk_tail X",
+                ),
+                y: ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    y_name,
+                    "complete_a0_reusable_chunk_tail Y",
+                ),
+                z: ensure_defined_register(
+                    &mut register_ids,
+                    &defined,
+                    z_name,
+                    "complete_a0_reusable_chunk_tail Z",
+                ),
+                scratch,
+                chunk_bits: instruction
+                    .chunk_bits
+                    .expect("missing complete_a0_reusable_chunk_tail chunk_bits"),
+                chunk_count: instruction
+                    .chunk_count
+                    .expect("missing complete_a0_reusable_chunk_tail chunk_count"),
+                b3: instruction
+                    .b3
+                    .expect("missing complete_a0_reusable_chunk_tail b3"),
+            });
+            defined.extend(dst_names.iter().cloned());
+            defined.insert(scratch_name.to_owned());
             continue;
         }
         let dst_name = destination_as_register(destination);
@@ -2769,6 +3052,24 @@ fn projective_matches_affine(point: &PointProj, expected: &PointAffine, modulus:
     }
 }
 
+fn chunked_const_mul(
+    value: &BigUint,
+    constant: &BigUint,
+    modulus: &BigUint,
+    chunk_bits: u32,
+    chunk_count: u32,
+) -> BigUint {
+    let mask = (BigUint::one() << chunk_bits) - BigUint::one();
+    let mut total = BigUint::zero();
+    for chunk_index in 0..chunk_count {
+        let shift = chunk_bits * chunk_index;
+        let chunk = (constant >> shift) & &mask;
+        let scale = (BigUint::one() << shift) % modulus;
+        total = (total + value * chunk * scale) % modulus;
+    }
+    total
+}
+
 fn execute_leaf(
     leaf: &CompiledLeaf,
     accumulator: PointAffine,
@@ -2936,6 +3237,69 @@ fn execute_leaf(
                 let yz = (&lookup_y * &registers[*z]) % modulus;
                 let e = (&registers[*y] + yz) % modulus;
                 let f = (BigUint::from(21u32) * &registers[*z]) % modulus;
+                let m = (&i + &f) % modulus;
+                let n = mod_sub(&i, &f, modulus);
+                registers[*out_x] =
+                    mod_sub(&((&k * &n) % modulus), &((&e * &c) % modulus), modulus);
+                registers[*out_y] = ((&n * &m) + (&c * &l)) % modulus;
+                registers[*out_z] = ((&m * &e) + (&l * &k)) % modulus;
+            }
+            CompiledInstruction::CompleteA0ReusableChunkTail {
+                out_x,
+                out_y,
+                out_z,
+                x,
+                y,
+                z,
+                scratch,
+                chunk_bits,
+                chunk_count,
+                b3,
+            } => {
+                registers[*scratch] = BigUint::zero();
+                let lookup_sum = (&lookup_x + &lookup_y) % modulus;
+                let accumulator_sum = (&registers[*x] + &registers[*y]) % modulus;
+                let h = chunked_const_mul(
+                    &accumulator_sum,
+                    &lookup_sum,
+                    modulus,
+                    *chunk_bits,
+                    *chunk_count,
+                );
+                let a = chunked_const_mul(
+                    &registers[*x],
+                    &lookup_x,
+                    modulus,
+                    *chunk_bits,
+                    *chunk_count,
+                );
+                let zx = chunked_const_mul(
+                    &registers[*z],
+                    &lookup_x,
+                    modulus,
+                    *chunk_bits,
+                    *chunk_count,
+                );
+                let c = (BigUint::from(*b3) * ((&registers[*x] + &zx) % modulus)) % modulus;
+                let i = chunked_const_mul(
+                    &registers[*y],
+                    &lookup_y,
+                    modulus,
+                    *chunk_bits,
+                    *chunk_count,
+                );
+                let k_minus_a = mod_sub(&h, &a, modulus);
+                let k = mod_sub(&k_minus_a, &i, modulus);
+                let l = (BigUint::from(3u32) * &a) % modulus;
+                let yz = chunked_const_mul(
+                    &registers[*z],
+                    &lookup_y,
+                    modulus,
+                    *chunk_bits,
+                    *chunk_count,
+                );
+                let e = (&registers[*y] + yz) % modulus;
+                let f = (BigUint::from(*b3) * &registers[*z]) % modulus;
                 let m = (&i + &f) % modulus;
                 let n = mod_sub(&i, &f, modulus);
                 registers[*out_x] =
@@ -3541,6 +3905,180 @@ fn validate_resource_certificate(
     );
 }
 
+fn validate_reusable_chunk_lowering(
+    certificate: &Value,
+    claim: &PreparedClaimSummary,
+    family: &PreparedFamilySummary,
+) {
+    assert_eq!(
+        json_string_field(certificate, "schema"),
+        "compiler-project-reusable-chunk-lowering-v2"
+    );
+    assert_eq!(
+        json_string_field(certificate, "status"),
+        "candidate_lowering_contract_unproven_not_headline"
+    );
+    assert!(json_bool_field(certificate, "pass"));
+
+    let executable = json_object_field(certificate, "executable_contract");
+    assert_eq!(
+        json_string_field(executable, "opcode"),
+        "complete_a0_reusable_chunk_tail"
+    );
+    let chunk_contract = json_object_field(executable, "chunk_contract");
+    assert_eq!(json_u64_field(chunk_contract, "chunk_bits"), 155);
+    assert_eq!(json_u64_field(chunk_contract, "chunk_count"), 2);
+    assert_eq!(json_u64_field(chunk_contract, "b3"), 21);
+    assert_eq!(
+        json_u64_field(chunk_contract, "full_coordinate_lanes_materialized"),
+        0
+    );
+
+    let stream_plan = json_object_field(certificate, "stream_plan");
+    assert_eq!(json_u64_field(stream_plan, "coordinate_table_count"), 3);
+    assert_eq!(json_u64_field(stream_plan, "chunk_bits"), 155);
+    assert_eq!(json_u64_field(stream_plan, "chunk_count"), 2);
+    assert_eq!(json_u64_field(stream_plan, "chunk_streams_per_leaf"), 6);
+    assert_eq!(
+        json_u64_field(stream_plan, "whole_oracle_chunk_streams"),
+        json_u64_field(stream_plan, "leaf_call_count_total")
+            * json_u64_field(stream_plan, "chunk_streams_per_leaf")
+    );
+    assert_eq!(
+        json_u64_field(stream_plan, "leaf_call_count_total"),
+        claim.leaf_call_count_total as u64
+    );
+    for row in json_array_field(stream_plan, "rows") {
+        assert_eq!(json_u64_field(row, "full_coordinate_lane_materialized"), 0);
+        assert_eq!(json_u64_field(row, "live_target_qubits"), 155);
+        assert_eq!(json_u64_field(row, "junk_register_qubits"), 0);
+    }
+
+    let qroam_model = json_object_field(certificate, "standard_qroamclean_k1_model");
+    assert_eq!(json_u64_field(qroam_model, "block_size"), 1);
+    assert_eq!(json_u64_field(qroam_model, "target_register_qubits"), 155);
+    assert_eq!(json_u64_field(qroam_model, "junk_register_qubits"), 0);
+    assert_eq!(
+        json_u64_field(qroam_model, "per_stream_non_clifford"),
+        65536
+    );
+
+    let primitive_contract =
+        json_object_field(certificate, "chunked_multiplier_primitive_contract");
+    let chunk_effective_bits = json_array_field(primitive_contract, "chunk_effective_bits");
+    assert_eq!(chunk_effective_bits[0].as_u64(), Some(155));
+    assert_eq!(chunk_effective_bits[1].as_u64(), Some(101));
+    assert_eq!(
+        json_u64_field(
+            primitive_contract,
+            "table_multiplier_partial_products_per_leaf"
+        ),
+        327680
+    );
+    assert_eq!(
+        json_u64_field(
+            primitive_contract,
+            "inherited_table_multiplier_partial_products_per_leaf"
+        ),
+        327680
+    );
+    let conservatism = json_object_field(primitive_contract, "arithmetic_base_conservatism");
+    assert!(json_bool_field(
+        conservatism,
+        "inherited_base_without_streamed_qroam_is_valid_for_chunked_contract"
+    ));
+    assert!(json_bool_field(
+        conservatism,
+        "table_multiplier_partial_products_equal_inherited_full_width"
+    ));
+    for row in json_array_field(primitive_contract, "table_multiplier_rows") {
+        let chunks = json_array_field(row, "chunk_rows");
+        assert_eq!(json_u64_field(&chunks[0], "effective_constant_bits"), 155);
+        assert_eq!(json_u64_field(&chunks[1], "effective_constant_bits"), 101);
+        assert_eq!(json_u64_field(&chunks[1], "zero_padded_target_bits"), 54);
+        assert!(json_bool_field(row, "partial_product_count_is_exact_match"));
+        assert!(json_bool_field(
+            row,
+            "single_modular_reduction_after_chunk_accumulation"
+        ));
+    }
+
+    let non_clifford = json_object_field(certificate, "non_clifford_derivation");
+    assert_eq!(
+        json_u64_field(non_clifford, "candidate_total_non_clifford"),
+        claim.expected_full_oracle_non_clifford
+    );
+    assert_eq!(
+        json_u64_field(non_clifford, "qroam_chunk_streams"),
+        json_u64_field(stream_plan, "whole_oracle_chunk_streams")
+    );
+    assert_eq!(
+        json_u64_field(non_clifford, "qroam_chunk_non_clifford"),
+        json_u64_field(non_clifford, "qroam_chunk_streams")
+            * json_u64_field(non_clifford, "per_chunk_stream_non_clifford")
+    );
+
+    let qubits = json_object_field(certificate, "qubit_derivation");
+    assert_eq!(
+        json_u64_field(qubits, "field_bits"),
+        claim.field_bits as u64
+    );
+    assert_eq!(
+        json_u64_field(qubits, "arithmetic_slot_count"),
+        family.arithmetic_slot_count as u64
+    );
+    assert_eq!(
+        json_u64_field(qubits, "lookup_workspace_qubits"),
+        family.lookup_workspace_qubits as u64
+    );
+    assert_eq!(
+        json_u64_field(qubits, "candidate_total_logical_qubits"),
+        claim.expected_total_logical_qubits
+    );
+
+    let owner_capacity = json_object_field(certificate, "owner_capacity");
+    assert_eq!(
+        json_u64_field(owner_capacity, "required_global_peak_qubits"),
+        claim.expected_total_logical_qubits
+    );
+    assert_eq!(
+        json_u64_field(owner_capacity, "capacity_global_peak_qubits"),
+        claim.expected_total_logical_qubits
+    );
+    let mut owner_ids = BTreeSet::new();
+    let mut required_peak_total = 0u64;
+    let mut capacity_peak_total = 0u64;
+    for row in json_array_field(owner_capacity, "rows") {
+        let owner_id = json_string_field(row, "owner_id");
+        owner_ids.insert(owner_id.to_owned());
+        let capacity = json_u64_field(row, "logical_qubits");
+        let required = json_u64_field(row, "required_peak_qubits");
+        assert!(json_bool_field(row, "capacity_pass"));
+        assert!(capacity >= required);
+        required_peak_total += required;
+        capacity_peak_total += capacity;
+    }
+    assert_eq!(
+        owner_ids,
+        BTreeSet::from([
+            "arithmetic_slot_register_file".to_owned(),
+            "control_slot_register_file".to_owned(),
+            "lookup_workspace".to_owned(),
+            "phase_shell_live_register".to_owned(),
+        ])
+    );
+    assert_eq!(required_peak_total, claim.expected_total_logical_qubits);
+    assert_eq!(capacity_peak_total, claim.expected_total_logical_qubits);
+
+    let checks = json_object_field(certificate, "checks")
+        .as_object()
+        .expect("reusable chunk lowering checks must be an object");
+    assert!(
+        checks.values().all(|value| value.as_bool() == Some(true)),
+        "reusable chunk lowering contains a failing check"
+    );
+}
+
 pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValues {
     assert_eq!(input.schema, "compiler-project-zkp-attestation-input-v5");
     assert_eq!(input.document_digest_scheme, DIGEST_SCHEME);
@@ -3552,7 +4090,11 @@ pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValue
     );
     validate_committed_value_document(
         &input.leaf_document,
-        "streamed_lookup_tail_leaf",
+        if input.selected_family_name.contains("reusable_chunk") {
+            "reusable_chunk_tail_leaf"
+        } else {
+            "streamed_lookup_tail_leaf"
+        },
         &input.leaf_sha256,
     );
     validate_committed_value_document(
@@ -3567,7 +4109,11 @@ pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValue
     );
     validate_committed_value_document(
         &input.resource_certificate_document,
-        "resource_liveness_certificate",
+        if input.selected_family_name.contains("reusable_chunk") {
+            "reusable_chunk_lowering"
+        } else {
+            "resource_liveness_certificate"
+        },
         &input.resource_certificate_sha256,
     );
 
@@ -3598,11 +4144,19 @@ pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValue
 
     let claim = &input.claim_summary;
     let family = &input.family_summary;
-    validate_resource_certificate(
-        &input.resource_certificate_document.payload.0,
-        claim,
-        family,
-    );
+    if input.resource_certificate_document.document_type == "reusable_chunk_lowering" {
+        validate_reusable_chunk_lowering(
+            &input.resource_certificate_document.payload.0,
+            claim,
+            family,
+        );
+    } else {
+        validate_resource_certificate(
+            &input.resource_certificate_document.payload.0,
+            claim,
+            family,
+        );
+    }
     let case_corpus = &input.prepared_case_corpus;
     let compiled_cases = compile_prepared_case_corpus(case_corpus);
 
@@ -3781,6 +4335,13 @@ mod tests {
         .expect("failed to parse checked-in prepared attestation input")
     }
 
+    fn checked_reusable_chunk_input() -> PreparedAttestationInput {
+        serde_json::from_str(include_str!(
+            "../../../artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json"
+        ))
+        .expect("failed to parse checked-in reusable-chunk prepared attestation input")
+    }
+
     #[test]
     fn native_run_prepared_attestation_matches_checked_in_input_shape() {
         let input = checked_input();
@@ -3789,6 +4350,20 @@ mod tests {
             public_values.schema,
             "compiler-project-zkp-attestation-public-v2"
         );
+        assert_eq!(public_values.case_count, 8);
+        assert_eq!(public_values.passed_case_count, 8);
+    }
+
+    #[test]
+    fn native_run_prepared_attestation_accepts_reusable_chunk_candidate() {
+        let input = checked_reusable_chunk_input();
+        let public_values = run_prepared_attestation(&input);
+        assert_eq!(
+            public_values.selected_family_name,
+            "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1"
+        );
+        assert_eq!(public_values.expected_full_oracle_non_clifford, 36_767_692);
+        assert_eq!(public_values.expected_total_logical_qubits, 1_199);
         assert_eq!(public_values.case_count, 8);
         assert_eq!(public_values.passed_case_count, 8);
     }

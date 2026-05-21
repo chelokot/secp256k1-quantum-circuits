@@ -1,0 +1,133 @@
+{
+  "schema": "compiler-project-zkp-attestation-cases-v1",
+  "curve": "secp256k1",
+  "field_modulus_hex": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
+  "curve_b": 7,
+  "seed_sha256": "5b2f3c497b8b7107223ef77a210fd8590cfc653da71cc7a22db1c59c6d1b7e12",
+  "seed_hash_scheme": "compiler-project-leaf-canonical-json-sha256-v1",
+  "case_count": 8,
+  "category_counts": {
+    "zero_zero": 1,
+    "accumulator_infinity": 1,
+    "lookup_infinity": 1,
+    "doubling": 1,
+    "inverse": 1,
+    "random": 3
+  },
+  "cases": [
+    {
+      "case_id": "zero_zero_0000",
+      "category": "zero_zero",
+      "accumulator": null,
+      "lookup": null,
+      "expected": null
+    },
+    {
+      "case_id": "accumulator_infinity_0001",
+      "category": "accumulator_infinity",
+      "accumulator": null,
+      "lookup": {
+        "x_hex": "868e186ceebc4024a1e5d09694a2dc76d802b12ba1581dd43c5c0063e0094373",
+        "y_hex": "9332729f5f02372c857abfa136c6e780dfb32667d869d2a87c63d48568446cc9"
+      },
+      "expected": {
+        "x_hex": "868e186ceebc4024a1e5d09694a2dc76d802b12ba1581dd43c5c0063e0094373",
+        "y_hex": "9332729f5f02372c857abfa136c6e780dfb32667d869d2a87c63d48568446cc9"
+      }
+    },
+    {
+      "case_id": "lookup_infinity_0002",
+      "category": "lookup_infinity",
+      "accumulator": {
+        "x_hex": "3d0a84f3a285d480b196ee66594444590507425ec4b9cd9a150b92d04372b685",
+        "y_hex": "8ab3c4c1c32f8878311f09a7241c445d937bfbf63dcff1a292df27ca087448d0"
+      },
+      "lookup": null,
+      "expected": {
+        "x_hex": "3d0a84f3a285d480b196ee66594444590507425ec4b9cd9a150b92d04372b685",
+        "y_hex": "8ab3c4c1c32f8878311f09a7241c445d937bfbf63dcff1a292df27ca087448d0"
+      }
+    },
+    {
+      "case_id": "doubling_0003",
+      "category": "doubling",
+      "accumulator": {
+        "x_hex": "29962f0f6c69f2092dbe15f41ec0d7b1934adf626be5fab072ebbe9530e79671",
+        "y_hex": "e5ae02121fc06997696fa81ab54c175923a1df741bfb6c4faecbde35db9aba94"
+      },
+      "lookup": {
+        "x_hex": "29962f0f6c69f2092dbe15f41ec0d7b1934adf626be5fab072ebbe9530e79671",
+        "y_hex": "e5ae02121fc06997696fa81ab54c175923a1df741bfb6c4faecbde35db9aba94"
+      },
+      "expected": {
+        "x_hex": "1b5b014d3727ce87b8acd225ac737a9bd2fef01682b75b840b7d65766df0cd84",
+        "y_hex": "7546c3d07d25683edc473107e3fee3f4298a159a1b9e5daab547362b55abec43"
+      }
+    },
+    {
+      "case_id": "inverse_0004",
+      "category": "inverse",
+      "accumulator": {
+        "x_hex": "f1e11e887d95f350144ddb13879394a8e0fd893b1a6254863df5fd66388cf3d1",
+        "y_hex": "12b764f7c7830f4a765a9bac2210b8d680ca5de0dd4adcff707df6e6c8b9d4e9"
+      },
+      "lookup": {
+        "x_hex": "f1e11e887d95f350144ddb13879394a8e0fd893b1a6254863df5fd66388cf3d1",
+        "y_hex": "ed489b08387cf0b589a56453ddef47297f35a21f22b523008f82091837462746"
+      },
+      "expected": null
+    },
+    {
+      "case_id": "random_0005",
+      "category": "random",
+      "accumulator": {
+        "x_hex": "f6a9d4007a5e020b7e827b327bebb40ee7fb7f1375c5711c5a445c6e2ee969a1",
+        "y_hex": "83f242c7c2ca805b6f7c2cb01790a1ddf5249f990003af1b3757a030d1c6c1db"
+      },
+      "lookup": {
+        "x_hex": "f21248432ff49f8a3c38130a7282333fc8c5811745f55af4bb9c79f8cddc04c6",
+        "y_hex": "3e4ccdab74ffd62e6775ed09a5acd3f1a571f9d1ee60413e0dd3d448f6db6184"
+      },
+      "expected": {
+        "x_hex": "082cef43e8b9fb4a5bf17916f72b81b4e533fe4948490cee05a20fd7b5100a5d",
+        "y_hex": "a7ce60de850aa9ab8ca05068468d30875f832b5792fc69c9c694b95cabc0885c"
+      }
+    },
+    {
+      "case_id": "random_0006",
+      "category": "random",
+      "accumulator": {
+        "x_hex": "87d5dc6cad63583832a2e64c817bb00d38c18efecf9be7373c6832e3d94fb528",
+        "y_hex": "42df00f5ad31f07e8b04f87406d1705f91430ec50a1b4627a93e89e4b4f174f2"
+      },
+      "lookup": {
+        "x_hex": "c885c640153a9add337b384d31481f313a4949664a645a50472284471aea6839",
+        "y_hex": "8830a96ebafe6812e46afdcfd383a19d1f7ffc28fad25a0738fcf891ee7a187b"
+      },
+      "expected": {
+        "x_hex": "906da1eaf085ddcc1177ea79afe9a5401b0d0860d30cf86a06518478ac4c5237",
+        "y_hex": "ced63ba1e6670306c907770036ca80396fd217e6cdfc5c979cb121ebc4ba8c40"
+      }
+    },
+    {
+      "case_id": "random_0007",
+      "category": "random",
+      "accumulator": {
+        "x_hex": "9c970b72f662873a7616d0e8df4e89f1f081e6c772036246880392f075dd5386",
+        "y_hex": "4f34094950e3e9db43604a2aa13f9c9da323e8f718fe56437228677612b45fda"
+      },
+      "lookup": {
+        "x_hex": "3df2888ce0567bd7305fb56576975b6a7591c6070115bc3fd2106e29fc2c2aa2",
+        "y_hex": "1d31efbcffb6859a9935a39a939b31c038f063161056b4baa5418a5c9500d63f"
+      },
+      "expected": {
+        "x_hex": "75f5f6e3949e209207cf297b391064174562238c482eaeb5b430ba751e724b49",
+        "y_hex": "575ed61caafd9efd125df1a7ef2f9f16497c8c9c1449093a92ef26dd145669ef"
+      }
+    }
+  ],
+  "notes": [
+    "These point-add challenge cases are deterministic and public, derived from the streamed lookup tail leaf hash stream.",
+    "The categories intentionally force neutral-entry, doubling, inverse, and ordinary mixed-add paths."
+  ]
+}

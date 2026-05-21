@@ -1441,8 +1441,7 @@ Partially mitigated after review:
   group addition over the same `110,692` curated toy boundary pairs. The artifact
   now also contains an executable candidate leaf using
   `complete_a0_reusable_chunk_tail` with a fourth scratch slot `qchunk`, and the
-  toy check executes that leaf through `exec_netlist`. It still marks the
-  candidate as not-headline because it has not yet been bound by the ZKP.
+  toy check executes that leaf through `exec_netlist`.
 - `compiler_verification_project/artifacts/reusable_chunk_lowering.json` now
   records the candidate's generated lowering/resource contract. It derives the
   6 chunk streams per leaf from the executable leaf's three coordinate tables
@@ -1455,9 +1454,15 @@ Partially mitigated after review:
   partial-product grid is exactly the inherited full-width `65,536`
   non-Clifford grid, while the high chunk's 54 zero-padded QROAM target lanes
   are still charged in lookup workspace/cost. This fixes the previous class of
-  width/workspace mix-ups for the reusable-chunk candidate, but it is still not
-  a headline result until the ZKP public values bind the new certificate and the
-  compressed/Groth16 proof artifacts are rebuilt from the checked branch state.
+  width/workspace mix-ups for the reusable-chunk candidate.
+- `compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/`
+  now contains a checked candidate ZKP input bundle, and the Rust guest library
+  accepts it in `run_prepared_attestation`. This means the native guest path
+  binds and executes `complete_a0_reusable_chunk_tail`, commits
+  `reusable_chunk_lowering.json`, and returns public values
+  `36,767,692 / 1,199`. It is still not the default public headline until the
+  compressed and Groth16 proof artifacts are rebuilt and verified from the
+  checked branch state.
 - `ZK-3`: proof binaries are now included in the curated proof manifest, but
   the checked JSON fixtures still intentionally keep the large binary proof
   payloads out-of-line.

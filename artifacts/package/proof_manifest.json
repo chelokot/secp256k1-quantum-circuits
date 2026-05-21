@@ -251,12 +251,12 @@
       "bytes": 4853
     },
     "compiler_verification_project/src/zkp_attestation.py": {
-      "sha256": "b61ffedbbc2f2249440d03ad84f77b897a33de5d463d22724c52121b519b1311",
-      "bytes": 32228
+      "sha256": "f37ec76e41c62d1a21478b36d44f3d0308de229494b965476c471d92e18b6361",
+      "bytes": 39053
     },
     "compiler_verification_project/scripts/build.py": {
-      "sha256": "95393c0ec2112f4214936f202a44b4ac9f3b6168fb2c5c622fc4d7f6fea5ab5e",
-      "bytes": 921
+      "sha256": "f52873a9f04c1a1cd28b22e928be667f92081bea53547b5709d4e05643f610a1",
+      "bytes": 1382
     },
     "compiler_verification_project/scripts/build_zkp_attestation_input.py": {
       "sha256": "57bc7439172fd78b17affcdc40bff368d96791653ee1267f5e7eafb5dba306f2",
@@ -283,8 +283,8 @@
       "bytes": 324
     },
     "compiler_verification_project/zkp_attestation/lib/src/lib.rs": {
-      "sha256": "a6d4a58d16288e6cb683cfbe1647e17f02c226e0c16742e922a08493be986038",
-      "bytes": 135415
+      "sha256": "8e749d039146b796ed5e723ee47dad0a87283a497d12a474d3c696c2c2e8da31",
+      "bytes": 156200
     },
     "compiler_verification_project/zkp_attestation/program/Cargo.toml": {
       "sha256": "ad4e8d80b5b8e2865b14cd9a46fd218ea02973b45387fc4100b314883af25a84",
@@ -600,6 +600,22 @@
     },
     "compiler_verification_project/artifacts/zkp_attestation_cases.json": {
       "sha256": "c669eff2952b1500040c9f723da57797eb35dcb092e6c84248f7ae64d091c016",
+      "bytes": 5139
+    },
+    "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json": {
+      "sha256": "abf8f1179cd6bc9addb05466e39a3d74a120e07e719a4807d93296f56c391d7f",
+      "bytes": 37970
+    },
+    "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json": {
+      "sha256": "d6e5ffc0c39e2d66097a02ac644d3d5da0593162d2bfc0d5093479db742a837d",
+      "bytes": 1329
+    },
+    "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_family.json": {
+      "sha256": "96caba5622823dc415a7566975458847f1bd37510d32534525cadab938546e1e",
+      "bytes": 1637
+    },
+    "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_cases.json": {
+      "sha256": "3d3bef33a7133d468dc36821e0eca5e5dc1e4cc6b24f3d574a1719265f25c969",
       "bytes": 5139
     },
     "compiler_verification_project/artifacts/zkp_attestation_public_values.json": {

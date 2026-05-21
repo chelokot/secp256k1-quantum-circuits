@@ -34,6 +34,29 @@ def test_zkp_attestation_input_reconstructs_public_claim() -> None:
     assert family['total_logical_qubits'] == 1_044
 
 
+def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None:
+    payload = build_zkp_attestation_input(family_name='reusable-chunk', case_count=8)
+    claim = payload['claim_summary']
+    family = payload['family_summary']
+    leaf_document = payload['leaf_document']
+    resource_document = payload['resource_certificate_document']
+    primitive_contract = resource_document['payload']['chunked_multiplier_primitive_contract']
+    assert payload['selected_family_name'].endswith('__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1')
+    assert claim['expected_full_oracle_non_clifford'] == 36_767_692
+    assert claim['expected_total_logical_qubits'] == 1_199
+    assert family['arithmetic_slot_count'] == 4
+    assert family['lookup_workspace_qubits'] == 173
+    assert leaf_document['document_type'] == 'reusable_chunk_tail_leaf'
+    assert resource_document['document_type'] == 'reusable_chunk_lowering'
+    assert payload['prepared_leaf']['instructions'][-1]['kind'] == 'complete_a0_reusable_chunk_tail'
+    assert payload['prepared_leaf']['instructions'][-1]['chunk_bits'] == 155
+    assert payload['prepared_leaf']['instructions'][-1]['chunk_count'] == 2
+    assert primitive_contract['chunk_effective_bits'] == [155, 101]
+    assert primitive_contract['table_multiplier_partial_products_per_leaf'] == 327_680
+    assert resource_document['payload']['owner_capacity']['capacity_global_peak_qubits'] == 1_199
+    assert resource_document['payload']['pass'] is True
+
+
 def test_zkp_attestation_cases_match_leaf_and_group_law() -> None:
     payload = build_zkp_attestation_input(case_count=8)
     leaf = build_streamed_lookup_tail_leaf()
