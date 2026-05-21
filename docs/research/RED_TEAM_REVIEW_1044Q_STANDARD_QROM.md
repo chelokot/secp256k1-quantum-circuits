@@ -1434,6 +1434,13 @@ Partially mitigated after review:
   and `1,199` logical qubits. This is not a headline result until the chunked
   table-controlled multiplier lowering, executable four-slot contract,
   liveness, resource certificate, and ZKP binding are built.
+- `compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json`
+  now checks the semantic half of that escape route. It splits table coordinates
+  into chunks, reuses each chunk across matching consumers, and exhaustively
+  verifies the chunked tail against the unchunked complete-add tail and affine
+  group addition over the same `110,692` curated toy boundary pairs. The artifact
+  still marks the candidate as not-headline because it has not yet generated the
+  chunked multiplier lowering or a four-slot executable leaf.
 - `ZK-3`: proof binaries are now included in the curated proof manifest, but
   the checked JSON fixtures still intentionally keep the large binary proof
   payloads out-of-line.

@@ -5886,6 +5886,454 @@
       }
     ]
   },
+  "reusable_chunk_tail_candidate_checks": {
+    "pass": 8,
+    "total": 8,
+    "checks": [
+      {
+        "name": "reusable_chunk_tail_candidate_matches_generator",
+        "pass": 1,
+        "expected": {
+          "schema": "compiler-project-reusable-chunk-tail-candidate-v1",
+          "status": "candidate_unproven_not_headline",
+          "source_artifact": "compiler_verification_project/artifacts/fallback_frontier_stress.json",
+          "semantic_model": {
+            "description": "Each table coordinate is split into chunks; the same live chunk target may feed every matching table-controlled multiplication before uncompute.",
+            "coordinate_tables": [
+              "lookup_x",
+              "lookup_y",
+              "lookup_x_plus_y"
+            ],
+            "consumer_plan": {
+              "lookup_x": [
+                "A = X * lookup_x",
+                "Zx = Z * lookup_x"
+              ],
+              "lookup_y": [
+                "I = Y * lookup_y",
+                "yZ = Z * lookup_y"
+              ],
+              "lookup_x_plus_y": [
+                "H = (X + Y) * (lookup_x + lookup_y)"
+              ]
+            },
+            "full_coordinate_lanes_materialized": 0
+          },
+          "toy_semantic_equivalence": {
+            "rows": [
+              {
+                "curve": "toy61_b2",
+                "field_bits": 6,
+                "chunk_bits": 3,
+                "chunk_count": 2,
+                "total_boundary_pairs": 3721,
+                "category_totals": {
+                  "ordinary": 3480,
+                  "doubling": 60,
+                  "inverse": 60,
+                  "accumulator_infinity": 60,
+                  "lookup_infinity": 61
+                },
+                "semantic_pass": true,
+                "semantic_failure_examples": []
+              },
+              {
+                "curve": "toy127_b11",
+                "field_bits": 7,
+                "chunk_bits": 4,
+                "chunk_count": 2,
+                "total_boundary_pairs": 16129,
+                "category_totals": {
+                  "ordinary": 15624,
+                  "doubling": 126,
+                  "inverse": 126,
+                  "accumulator_infinity": 126,
+                  "lookup_infinity": 127
+                },
+                "semantic_pass": true,
+                "semantic_failure_examples": []
+              },
+              {
+                "curve": "toy181_b3",
+                "field_bits": 8,
+                "chunk_bits": 4,
+                "chunk_count": 2,
+                "total_boundary_pairs": 32761,
+                "category_totals": {
+                  "ordinary": 32040,
+                  "doubling": 180,
+                  "inverse": 180,
+                  "accumulator_infinity": 180,
+                  "lookup_infinity": 181
+                },
+                "semantic_pass": true,
+                "semantic_failure_examples": []
+              },
+              {
+                "curve": "toy241_b29",
+                "field_bits": 8,
+                "chunk_bits": 4,
+                "chunk_count": 2,
+                "total_boundary_pairs": 58081,
+                "category_totals": {
+                  "ordinary": 57120,
+                  "doubling": 240,
+                  "inverse": 240,
+                  "accumulator_infinity": 240,
+                  "lookup_infinity": 241
+                },
+                "semantic_pass": true,
+                "semantic_failure_examples": []
+              }
+            ],
+            "all_rows_semantic": true,
+            "total_boundary_pairs": 110692,
+            "category_totals": {
+              "ordinary": 108264,
+              "doubling": 606,
+              "inverse": 606,
+              "accumulator_infinity": 606,
+              "lookup_infinity": 610
+            }
+          },
+          "production_resource_candidate": {
+            "field_bits": 256,
+            "chunk_bits": 155,
+            "chunk_count": 2,
+            "arithmetic_slot_count": 4,
+            "chunk_streams_per_leaf": 6,
+            "leaf_call_count_total": 31,
+            "candidate_total_non_clifford": 36767692,
+            "candidate_total_logical_qubits": 1199,
+            "beats_requested_non_clifford_limit": true,
+            "beats_requested_logical_qubit_limit": true
+          },
+          "remaining_proof_obligations": [
+            "define an executable four-slot tail contract whose live values include one reusable coordinate chunk target and no full x/y field lane",
+            "prove the chunked table-controlled multiplier lowering, including partial-product accumulation across chunks and a single modular reduction boundary",
+            "derive liveness from that executable contract, including chunk target lifetime, arithmetic slots, folded lookup controls, and output registers",
+            "bind the new contract and resource certificate in the ZKP before changing headline public values"
+          ],
+          "notes": [
+            "This artifact proves only the chunked table-constant semantics and resource arithmetic for the candidate model.",
+            "It deliberately does not update the repository headline or ZKP public values.",
+            "A public result still requires a generated chunked multiplier lowering and an executable four-slot leaf contract."
+          ]
+        },
+        "observed": {
+          "schema": "compiler-project-reusable-chunk-tail-candidate-v1",
+          "status": "candidate_unproven_not_headline",
+          "source_artifact": "compiler_verification_project/artifacts/fallback_frontier_stress.json",
+          "semantic_model": {
+            "description": "Each table coordinate is split into chunks; the same live chunk target may feed every matching table-controlled multiplication before uncompute.",
+            "coordinate_tables": [
+              "lookup_x",
+              "lookup_y",
+              "lookup_x_plus_y"
+            ],
+            "consumer_plan": {
+              "lookup_x": [
+                "A = X * lookup_x",
+                "Zx = Z * lookup_x"
+              ],
+              "lookup_y": [
+                "I = Y * lookup_y",
+                "yZ = Z * lookup_y"
+              ],
+              "lookup_x_plus_y": [
+                "H = (X + Y) * (lookup_x + lookup_y)"
+              ]
+            },
+            "full_coordinate_lanes_materialized": 0
+          },
+          "toy_semantic_equivalence": {
+            "rows": [
+              {
+                "curve": "toy61_b2",
+                "field_bits": 6,
+                "chunk_bits": 3,
+                "chunk_count": 2,
+                "total_boundary_pairs": 3721,
+                "category_totals": {
+                  "ordinary": 3480,
+                  "doubling": 60,
+                  "inverse": 60,
+                  "accumulator_infinity": 60,
+                  "lookup_infinity": 61
+                },
+                "semantic_pass": true,
+                "semantic_failure_examples": []
+              },
+              {
+                "curve": "toy127_b11",
+                "field_bits": 7,
+                "chunk_bits": 4,
+                "chunk_count": 2,
+                "total_boundary_pairs": 16129,
+                "category_totals": {
+                  "ordinary": 15624,
+                  "doubling": 126,
+                  "inverse": 126,
+                  "accumulator_infinity": 126,
+                  "lookup_infinity": 127
+                },
+                "semantic_pass": true,
+                "semantic_failure_examples": []
+              },
+              {
+                "curve": "toy181_b3",
+                "field_bits": 8,
+                "chunk_bits": 4,
+                "chunk_count": 2,
+                "total_boundary_pairs": 32761,
+                "category_totals": {
+                  "ordinary": 32040,
+                  "doubling": 180,
+                  "inverse": 180,
+                  "accumulator_infinity": 180,
+                  "lookup_infinity": 181
+                },
+                "semantic_pass": true,
+                "semantic_failure_examples": []
+              },
+              {
+                "curve": "toy241_b29",
+                "field_bits": 8,
+                "chunk_bits": 4,
+                "chunk_count": 2,
+                "total_boundary_pairs": 58081,
+                "category_totals": {
+                  "ordinary": 57120,
+                  "doubling": 240,
+                  "inverse": 240,
+                  "accumulator_infinity": 240,
+                  "lookup_infinity": 241
+                },
+                "semantic_pass": true,
+                "semantic_failure_examples": []
+              }
+            ],
+            "all_rows_semantic": true,
+            "total_boundary_pairs": 110692,
+            "category_totals": {
+              "ordinary": 108264,
+              "doubling": 606,
+              "inverse": 606,
+              "accumulator_infinity": 606,
+              "lookup_infinity": 610
+            }
+          },
+          "production_resource_candidate": {
+            "field_bits": 256,
+            "chunk_bits": 155,
+            "chunk_count": 2,
+            "arithmetic_slot_count": 4,
+            "chunk_streams_per_leaf": 6,
+            "leaf_call_count_total": 31,
+            "candidate_total_non_clifford": 36767692,
+            "candidate_total_logical_qubits": 1199,
+            "beats_requested_non_clifford_limit": true,
+            "beats_requested_logical_qubit_limit": true
+          },
+          "remaining_proof_obligations": [
+            "define an executable four-slot tail contract whose live values include one reusable coordinate chunk target and no full x/y field lane",
+            "prove the chunked table-controlled multiplier lowering, including partial-product accumulation across chunks and a single modular reduction boundary",
+            "derive liveness from that executable contract, including chunk target lifetime, arithmetic slots, folded lookup controls, and output registers",
+            "bind the new contract and resource certificate in the ZKP before changing headline public values"
+          ],
+          "notes": [
+            "This artifact proves only the chunked table-constant semantics and resource arithmetic for the candidate model.",
+            "It deliberately does not update the repository headline or ZKP public values.",
+            "A public result still requires a generated chunked multiplier lowering and an executable four-slot leaf contract."
+          ]
+        }
+      },
+      {
+        "name": "reusable_chunk_tail_candidate_schema_is_current",
+        "pass": 1,
+        "expected": "compiler-project-reusable-chunk-tail-candidate-v1",
+        "observed": "compiler-project-reusable-chunk-tail-candidate-v1"
+      },
+      {
+        "name": "reusable_chunk_tail_candidate_is_not_headline",
+        "pass": 1,
+        "expected": "candidate_unproven_not_headline",
+        "observed": "candidate_unproven_not_headline"
+      },
+      {
+        "name": "reusable_chunk_tail_candidate_toy_semantics_pass_all_boundary_pairs",
+        "pass": 1,
+        "expected": {
+          "all_rows_semantic": true,
+          "total_boundary_pairs": 110692
+        },
+        "observed": {
+          "rows": [
+            {
+              "curve": "toy61_b2",
+              "field_bits": 6,
+              "chunk_bits": 3,
+              "chunk_count": 2,
+              "total_boundary_pairs": 3721,
+              "category_totals": {
+                "ordinary": 3480,
+                "doubling": 60,
+                "inverse": 60,
+                "accumulator_infinity": 60,
+                "lookup_infinity": 61
+              },
+              "semantic_pass": true,
+              "semantic_failure_examples": []
+            },
+            {
+              "curve": "toy127_b11",
+              "field_bits": 7,
+              "chunk_bits": 4,
+              "chunk_count": 2,
+              "total_boundary_pairs": 16129,
+              "category_totals": {
+                "ordinary": 15624,
+                "doubling": 126,
+                "inverse": 126,
+                "accumulator_infinity": 126,
+                "lookup_infinity": 127
+              },
+              "semantic_pass": true,
+              "semantic_failure_examples": []
+            },
+            {
+              "curve": "toy181_b3",
+              "field_bits": 8,
+              "chunk_bits": 4,
+              "chunk_count": 2,
+              "total_boundary_pairs": 32761,
+              "category_totals": {
+                "ordinary": 32040,
+                "doubling": 180,
+                "inverse": 180,
+                "accumulator_infinity": 180,
+                "lookup_infinity": 181
+              },
+              "semantic_pass": true,
+              "semantic_failure_examples": []
+            },
+            {
+              "curve": "toy241_b29",
+              "field_bits": 8,
+              "chunk_bits": 4,
+              "chunk_count": 2,
+              "total_boundary_pairs": 58081,
+              "category_totals": {
+                "ordinary": 57120,
+                "doubling": 240,
+                "inverse": 240,
+                "accumulator_infinity": 240,
+                "lookup_infinity": 241
+              },
+              "semantic_pass": true,
+              "semantic_failure_examples": []
+            }
+          ],
+          "all_rows_semantic": true,
+          "total_boundary_pairs": 110692,
+          "category_totals": {
+            "ordinary": 108264,
+            "doubling": 606,
+            "inverse": 606,
+            "accumulator_infinity": 606,
+            "lookup_infinity": 610
+          }
+        }
+      },
+      {
+        "name": "reusable_chunk_tail_candidate_covers_edge_categories",
+        "pass": 1,
+        "expected": "all edge categories > 0",
+        "observed": {
+          "ordinary": 108264,
+          "doubling": 606,
+          "inverse": 606,
+          "accumulator_infinity": 606,
+          "lookup_infinity": 610
+        }
+      },
+      {
+        "name": "reusable_chunk_tail_candidate_resource_numbers_match_stress_candidate",
+        "pass": 1,
+        "expected": {
+          "status": "promising_unproven_not_headline",
+          "model": "split x, y, and x_plus_y table values into reusable live chunks, then consume each x chunk for both x-multiplications and each y chunk for both y-multiplications inside a four-slot tail schedule",
+          "required_new_lowering": "chunked table-controlled multiplier that accumulates coordinate chunks without materializing a full field-sized coordinate lane and without repeating QROAM for each consumer",
+          "coordinate_tables": [
+            "lookup_x",
+            "lookup_y",
+            "lookup_x_plus_y"
+          ],
+          "chunks_per_coordinate_table": 2,
+          "chunk_streams_per_leaf": 6,
+          "leaf_call_count_total": 31,
+          "per_chunk_stream_non_clifford": 65536,
+          "base_non_clifford_without_streamed_qroam": 24577996,
+          "chunked_qroam_non_clifford": 12189696,
+          "candidate_total_non_clifford": 36767692,
+          "candidate_total_logical_qubits": 1199,
+          "beats_requested_non_clifford_limit": true,
+          "beats_requested_logical_qubit_limit": true,
+          "margin_to_non_clifford_limit": 3232308,
+          "margin_to_logical_qubit_limit": 1,
+          "proof_obligations_before_public_claim": [
+            "define an executable four-slot tail contract whose live values include one reusable coordinate chunk target and no full x/y field lane",
+            "prove the chunked table-controlled multiplier lowering, including partial-product accumulation across chunks and a single modular reduction boundary",
+            "derive liveness from that executable contract, including chunk target lifetime, arithmetic slots, folded lookup controls, and output registers",
+            "bind the new contract and resource certificate in the ZKP before changing headline public values"
+          ]
+        },
+        "observed": {
+          "field_bits": 256,
+          "chunk_bits": 155,
+          "chunk_count": 2,
+          "arithmetic_slot_count": 4,
+          "chunk_streams_per_leaf": 6,
+          "leaf_call_count_total": 31,
+          "candidate_total_non_clifford": 36767692,
+          "candidate_total_logical_qubits": 1199,
+          "beats_requested_non_clifford_limit": true,
+          "beats_requested_logical_qubit_limit": true
+        }
+      },
+      {
+        "name": "reusable_chunk_tail_candidate_fits_requested_limits_if_proven",
+        "pass": 1,
+        "expected": {
+          "non_clifford": "< 40000000",
+          "logical_qubits": "< 1200"
+        },
+        "observed": {
+          "field_bits": 256,
+          "chunk_bits": 155,
+          "chunk_count": 2,
+          "arithmetic_slot_count": 4,
+          "chunk_streams_per_leaf": 6,
+          "leaf_call_count_total": 31,
+          "candidate_total_non_clifford": 36767692,
+          "candidate_total_logical_qubits": 1199,
+          "beats_requested_non_clifford_limit": true,
+          "beats_requested_logical_qubit_limit": true
+        }
+      },
+      {
+        "name": "reusable_chunk_tail_candidate_keeps_proof_obligations_open",
+        "pass": 1,
+        "expected": ">= 4",
+        "observed": [
+          "define an executable four-slot tail contract whose live values include one reusable coordinate chunk target and no full x/y field lane",
+          "prove the chunked table-controlled multiplier lowering, including partial-product accumulation across chunks and a single modular reduction boundary",
+          "derive liveness from that executable contract, including chunk target lifetime, arithmetic slots, folded lookup controls, and output registers",
+          "bind the new contract and resource certificate in the ZKP before changing headline public values"
+        ]
+      }
+    ]
+  },
   "resource_liveness_certificate_checks": {
     "pass": 11,
     "total": 11,
@@ -9359,8 +9807,8 @@
       {
         "name": "build_summary_schema_matches_current_version",
         "pass": 1,
-        "expected": "compiler-project-build-summary-v24",
-        "observed": "compiler-project-build-summary-v24"
+        "expected": "compiler-project-build-summary-v25",
+        "observed": "compiler-project-build-summary-v25"
       },
       {
         "name": "build_summary_artifact_paths_match_expected_set",
@@ -9394,6 +9842,7 @@
           "standard_qrom_lookup_assessment": "compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json",
           "logical_resource_ledger": "compiler_verification_project/artifacts/logical_resource_ledger.json",
           "fallback_frontier_stress": "compiler_verification_project/artifacts/fallback_frontier_stress.json",
+          "reusable_chunk_tail_candidate": "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
           "resource_liveness_certificate": "compiler_verification_project/artifacts/resource_liveness_certificate.json",
           "materialized_circuit_manifest": "compiler_verification_project/artifacts/materialized_circuit_manifest.json",
           "qubit_breakthrough_analysis": "compiler_verification_project/artifacts/qubit_breakthrough_analysis.json",
@@ -9433,6 +9882,7 @@
           "standard_qrom_lookup_assessment": "compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json",
           "logical_resource_ledger": "compiler_verification_project/artifacts/logical_resource_ledger.json",
           "fallback_frontier_stress": "compiler_verification_project/artifacts/fallback_frontier_stress.json",
+          "reusable_chunk_tail_candidate": "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
           "resource_liveness_certificate": "compiler_verification_project/artifacts/resource_liveness_certificate.json",
           "materialized_circuit_manifest": "compiler_verification_project/artifacts/materialized_circuit_manifest.json",
           "qubit_breakthrough_analysis": "compiler_verification_project/artifacts/qubit_breakthrough_analysis.json",
@@ -9474,6 +9924,7 @@
           "compiler_verification_project/artifacts/public_google_baseline_source.json",
           "compiler_verification_project/artifacts/qubit_breakthrough_analysis.json",
           "compiler_verification_project/artifacts/resource_liveness_certificate.json",
+          "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
           "compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json",
           "compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json",
           "compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json",
@@ -9513,6 +9964,7 @@
           "compiler_verification_project/artifacts/public_google_baseline_source.json",
           "compiler_verification_project/artifacts/qubit_breakthrough_analysis.json",
           "compiler_verification_project/artifacts/resource_liveness_certificate.json",
+          "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
           "compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json",
           "compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json",
           "compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json",
@@ -10854,10 +11306,10 @@
       "pass": 30
     },
     "invariant_checks": {
-      "total": 303,
-      "pass": 303
+      "total": 311,
+      "pass": 311
     },
-    "total": 333,
-    "pass": 333
+    "total": 341,
+    "pass": 341
   }
 }

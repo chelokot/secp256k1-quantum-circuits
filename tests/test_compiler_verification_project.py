@@ -115,6 +115,8 @@ def test_compiler_project_verification_summary_groups_all_pass() -> None:
     assert logical_resource_ledger['pass'] == logical_resource_ledger['total']
     fallback_frontier_stress = summary['fallback_frontier_stress_checks']
     assert fallback_frontier_stress['pass'] == fallback_frontier_stress['total']
+    reusable_chunk_tail_candidate = summary['reusable_chunk_tail_candidate_checks']
+    assert reusable_chunk_tail_candidate['pass'] == reusable_chunk_tail_candidate['total']
     recount = summary['whole_oracle_recount_checks']
     assert recount['pass'] == recount['total']
     subcircuit_equivalence = summary['subcircuit_equivalence_checks']
@@ -181,6 +183,13 @@ def test_mutated_fallback_frontier_stress_is_detected() -> None:
     artifacts['fallback_frontier_stress']['conclusion']['current_models_have_no_four_slot_fallback_under_limits'] = False
     groups = _evaluate_mutation(artifacts, 'fallback_frontier_stress_checks')
     assert groups['fallback_frontier_stress_checks']['pass'] < groups['fallback_frontier_stress_checks']['total']
+
+
+def test_mutated_reusable_chunk_tail_candidate_is_detected() -> None:
+    artifacts = deepcopy(_load_artifacts())
+    artifacts['reusable_chunk_tail_candidate']['toy_semantic_equivalence']['rows'][0]['semantic_pass'] = False
+    groups = _evaluate_mutation(artifacts, 'reusable_chunk_tail_candidate_checks')
+    assert groups['reusable_chunk_tail_candidate_checks']['pass'] < groups['reusable_chunk_tail_candidate_checks']['total']
 
 
 def test_mutated_resource_certificate_owner_capacity_is_detected() -> None:

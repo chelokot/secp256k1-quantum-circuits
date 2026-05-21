@@ -31,6 +31,7 @@ from physical_estimator import (
     build_azure_estimator_target_payload,
     build_or_load_azure_estimator_results_payload,
 )
+from reusable_chunk_tail_candidate import build_reusable_chunk_tail_candidate
 from resource_ledger import build_logical_resource_ledger, qroam_clean_stream_cost
 from resource_certificate import build_resource_liveness_certificate
 from tail_macro_liveness import build_tail_macro_liveness
@@ -156,6 +157,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'standard_qrom_lookup_assessment': artifact_root / 'standard_qrom_lookup_assessment.json',
         'logical_resource_ledger': artifact_root / 'logical_resource_ledger.json',
         'fallback_frontier_stress': artifact_root / 'fallback_frontier_stress.json',
+        'reusable_chunk_tail_candidate': artifact_root / 'reusable_chunk_tail_candidate.json',
         'resource_liveness_certificate': artifact_root / 'resource_liveness_certificate.json',
         'materialized_circuit_manifest': artifact_root / 'materialized_circuit_manifest.json',
         'qubit_breakthrough_analysis': artifact_root / 'qubit_breakthrough_analysis.json',
@@ -1226,6 +1228,26 @@ def build_fallback_frontier_stress_checks(artifacts: Mapping[str, Any]) -> Dict[
     return _summarize_checks(checks)
 
 
+def build_reusable_chunk_tail_candidate_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    candidate = artifacts['reusable_chunk_tail_candidate']
+    expected = build_reusable_chunk_tail_candidate(
+        fallback_frontier_stress=artifacts['fallback_frontier_stress'],
+    )
+    semantic = candidate['toy_semantic_equivalence']
+    production = candidate['production_resource_candidate']
+    checks = [
+        _check('reusable_chunk_tail_candidate_matches_generator', candidate == expected, expected, candidate),
+        _check('reusable_chunk_tail_candidate_schema_is_current', candidate['schema'] == 'compiler-project-reusable-chunk-tail-candidate-v1', 'compiler-project-reusable-chunk-tail-candidate-v1', candidate['schema']),
+        _check('reusable_chunk_tail_candidate_is_not_headline', candidate['status'] == 'candidate_unproven_not_headline', 'candidate_unproven_not_headline', candidate['status']),
+        _check('reusable_chunk_tail_candidate_toy_semantics_pass_all_boundary_pairs', semantic['all_rows_semantic'] is True and semantic['total_boundary_pairs'] == 110692 and all(row['semantic_pass'] is True for row in semantic['rows']), {'all_rows_semantic': True, 'total_boundary_pairs': 110692}, semantic),
+        _check('reusable_chunk_tail_candidate_covers_edge_categories', all(semantic['category_totals'][category] > 0 for category in ('ordinary', 'doubling', 'inverse', 'accumulator_infinity', 'lookup_infinity')), 'all edge categories > 0', semantic['category_totals']),
+        _check('reusable_chunk_tail_candidate_resource_numbers_match_stress_candidate', production['candidate_total_non_clifford'] == artifacts['fallback_frontier_stress']['reusable_chunked_coordinate_candidate']['candidate_total_non_clifford'] and production['candidate_total_logical_qubits'] == artifacts['fallback_frontier_stress']['reusable_chunked_coordinate_candidate']['candidate_total_logical_qubits'], artifacts['fallback_frontier_stress']['reusable_chunked_coordinate_candidate'], production),
+        _check('reusable_chunk_tail_candidate_fits_requested_limits_if_proven', production['beats_requested_non_clifford_limit'] is True and production['beats_requested_logical_qubit_limit'] is True and production['candidate_total_non_clifford'] < 40_000_000 and production['candidate_total_logical_qubits'] < 1200, {'non_clifford': '< 40000000', 'logical_qubits': '< 1200'}, production),
+        _check('reusable_chunk_tail_candidate_keeps_proof_obligations_open', len(candidate['remaining_proof_obligations']) >= 4, '>= 4', candidate['remaining_proof_obligations']),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_resource_liveness_certificate_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     certificate = artifacts['resource_liveness_certificate']
     expected = build_resource_liveness_certificate(
@@ -2244,6 +2266,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'standard_qrom_lookup_assessment_checks': lambda: build_standard_qrom_lookup_assessment_checks(artifacts),
         'logical_resource_ledger_checks': lambda: build_logical_resource_ledger_checks(artifacts),
         'fallback_frontier_stress_checks': lambda: build_fallback_frontier_stress_checks(artifacts),
+        'reusable_chunk_tail_candidate_checks': lambda: build_reusable_chunk_tail_candidate_checks(artifacts),
         'resource_liveness_certificate_checks': lambda: build_resource_liveness_certificate_checks(artifacts),
         'qubit_breakthrough_checks': lambda: build_qubit_breakthrough_checks(artifacts),
         'full_attack_inventory_checks': lambda: build_full_attack_inventory_checks(artifacts),

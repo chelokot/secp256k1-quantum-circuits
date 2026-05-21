@@ -80,6 +80,7 @@ from physical_estimator import (  # noqa: E402
     build_azure_estimator_target_payload,
     build_or_load_azure_estimator_results_payload,
 )
+from reusable_chunk_tail_candidate import build_reusable_chunk_tail_candidate  # noqa: E402
 from resource_ledger import build_logical_resource_ledger, qroam_clean_stream_cost  # noqa: E402
 from resource_certificate import build_resource_liveness_certificate  # noqa: E402
 from subcircuit_equivalence import build_subcircuit_equivalence_artifact  # noqa: E402
@@ -1952,6 +1953,9 @@ def build_all_artifacts() -> Dict[str, Any]:
         logical_resource_ledger=out['logical_resource_ledger'],
         field_bits=FIELD_BITS,
     )
+    out['reusable_chunk_tail_candidate'] = build_reusable_chunk_tail_candidate(
+        fallback_frontier_stress=out['fallback_frontier_stress'],
+    )
     out['materialized_circuit_manifest'] = build_materialized_family_manifest(
         family_name=out['frontier']['best_qubit_family']['name'],
         frontier=out['frontier'],
@@ -2019,6 +2023,7 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('standard_qrom_lookup_assessment.json'), out['standard_qrom_lookup_assessment'])
     dump_json(project_artifact_path('logical_resource_ledger.json'), out['logical_resource_ledger'])
     dump_json(project_artifact_path('fallback_frontier_stress.json'), out['fallback_frontier_stress'])
+    dump_json(project_artifact_path('reusable_chunk_tail_candidate.json'), out['reusable_chunk_tail_candidate'])
     dump_json(project_artifact_path('resource_liveness_certificate.json'), out['resource_liveness_certificate'])
     dump_json(project_artifact_path('materialized_circuit_manifest.json'), out['materialized_circuit_manifest'])
     dump_json(project_artifact_path('qubit_breakthrough_analysis.json'), out['qubit_breakthrough_analysis'])

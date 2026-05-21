@@ -175,8 +175,8 @@
       "bytes": 19121
     },
     "compiler_verification_project/src/artifact_registry.py": {
-      "sha256": "a8239af0988adaef0f4217e92e9fefae5db52ca42780b99ef3a26cd90d6af5a5",
-      "bytes": 4230
+      "sha256": "d86a3d1c8ecd50640eb94fe34b057204cc2b0da9bbfaf48bdb810a732346660c",
+      "bytes": 4345
     },
     "compiler_verification_project/src/arithmetic_lowering.py": {
       "sha256": "8845517d06b8054ec4d71bc06cdc609b3f5a9b031e3112ad4e8306b199dbc1ae",
@@ -187,8 +187,8 @@
       "bytes": 26931
     },
     "compiler_verification_project/src/integrity.py": {
-      "sha256": "05c5001dbbf0a65a4b8ae24f495bb223bd3cbdfba2cc7c695903e9b6d2396fab",
-      "bytes": 145170
+      "sha256": "c09d0425f4e411820ec2587b661e72855c77628c0b9f0864042a49b2dea4e40b",
+      "bytes": 148073
     },
     "compiler_verification_project/src/generated_block_inventory.py": {
       "sha256": "9a5a8cdc5369e43cb88df726d08fbc88ba727a43b72962388357546b8d382d89",
@@ -219,8 +219,12 @@
       "bytes": 12143
     },
     "compiler_verification_project/src/project.py": {
-      "sha256": "827bd7a00ce3389a66b1d3f1b76ec23953c9d0f1ebef4f6c587823ee0852284c",
-      "bytes": 106114
+      "sha256": "40ba18df5804d32cd00f3a82a852aeeb69ccc2186ed2c240129bea7c24b9866f",
+      "bytes": 106471
+    },
+    "compiler_verification_project/src/reusable_chunk_tail_candidate.py": {
+      "sha256": "a8a120a19522067a58a41166b04a7bf2bda9af049d7e46e8598f8df650bea21a",
+      "bytes": 8693
     },
     "compiler_verification_project/src/subcircuit_equivalence.py": {
       "sha256": "1933f72d12a1d1da0103a39ac5aa35f0fa538b393bea39be34ad193de0d09d66",
@@ -443,8 +447,8 @@
       "bytes": 2405
     },
     "compiler_verification_project/artifacts/build_summary.json": {
-      "sha256": "d684b39b147aa00c5f9e54a1fb6a6a0b05d9434d8ff5d3093f63adcc47ae3556",
-      "bytes": 12680
+      "sha256": "827e2b33c0921373edb24e1acacbd1e008291d8bed276af6baebd37f8ebc3755",
+      "bytes": 12795
     },
     "compiler_verification_project/artifacts/public_google_baseline_source.json": {
       "sha256": "4714ebbc7f250509af0e4ed1cd823274c4742d172c73c031f602419f06e05548",
@@ -530,6 +534,10 @@
       "sha256": "68ebb71bb19bbf6843f5e5fd8a072f6d33297248270e19ef72fd599ec1883e6d",
       "bytes": 4181
     },
+    "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json": {
+      "sha256": "9c97fbef118c9922892ee83deaa0244c7dbd46a63694bbd6a223d4093b8b9a71",
+      "bytes": 4141
+    },
     "compiler_verification_project/artifacts/resource_liveness_certificate.json": {
       "sha256": "59161a5f3657e4ac599bf309a53ee8f889c5b652774f416c387ede29ed6b4107",
       "bytes": 75130
@@ -551,8 +559,8 @@
       "bytes": 4183
     },
     "compiler_verification_project/artifacts/verification_summary.json": {
-      "sha256": "4708c8895a6ba13bad516c759768710cd753af83e6e0a74c4bb5279cb652fa86",
-      "bytes": 423105
+      "sha256": "c633da2b08a53451a964b9dde50bb641e25c92635ddda4b57b1213138ab1d378",
+      "bytes": 441412
     },
     "compiler_verification_project/artifacts/cain_exact_transfer.json": {
       "sha256": "02ab9b452578ee476755b828351c983e4e848802a78eba33db23b1d016ca6cea",
