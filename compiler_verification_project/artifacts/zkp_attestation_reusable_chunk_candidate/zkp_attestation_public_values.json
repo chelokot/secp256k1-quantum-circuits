@@ -1,0 +1,14 @@
+{
+  "schema": "compiler-project-zkp-attestation-public-v2",
+  "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
+  "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+  "claim_sha256": "2a098c6004436f393953eed4bcda8c000ad6c3bca81f1c91f2c7b57b3e0413e5",
+  "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
+  "family_sha256": "345237abab722243c6a2ae1230e77b1c58c1a2e3248f0feab88ac3e074c8be1d",
+  "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
+  "resource_certificate_sha256": "aa83edcfc7e0fb2e9a15104652cfe6942f4a78cfba2b3f4c9cf50b0aae733e41",
+  "expected_full_oracle_non_clifford": 36767692,
+  "expected_total_logical_qubits": 1199,
+  "case_count": 8,
+  "passed_case_count": 8
+}

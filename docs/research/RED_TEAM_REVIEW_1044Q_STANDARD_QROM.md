@@ -1460,9 +1460,11 @@ Partially mitigated after review:
   accepts it in `run_prepared_attestation`. This means the native guest path
   binds and executes `complete_a0_reusable_chunk_tail`, commits
   `reusable_chunk_lowering.json`, and returns public values
-  `36,767,692 / 1,199`. It is still not the default public headline until the
-  compressed and Groth16 proof artifacts are rebuilt and verified from the
-  checked branch state.
+  `36,767,692 / 1,199`. The candidate directory now also contains checked
+  core, compressed, and Groth16 fixtures, the compressed proof bundle, the
+  Groth16 proof bundle, the wrap proof bundle, and the matching Groth16
+  verifier key. Both explicit compressed and Groth16 verification commands have
+  been run against those checked candidate artifacts.
 - `ZK-3`: proof binaries are now included in the curated proof manifest, but
   the checked JSON fixtures still intentionally keep the large binary proof
   payloads out-of-line.
