@@ -117,6 +117,8 @@ def test_compiler_project_verification_summary_groups_all_pass() -> None:
     assert fallback_frontier_stress['pass'] == fallback_frontier_stress['total']
     reusable_chunk_tail_candidate = summary['reusable_chunk_tail_candidate_checks']
     assert reusable_chunk_tail_candidate['pass'] == reusable_chunk_tail_candidate['total']
+    reusable_chunk_lowering = summary['reusable_chunk_lowering_checks']
+    assert reusable_chunk_lowering['pass'] == reusable_chunk_lowering['total']
     recount = summary['whole_oracle_recount_checks']
     assert recount['pass'] == recount['total']
     subcircuit_equivalence = summary['subcircuit_equivalence_checks']
@@ -190,6 +192,21 @@ def test_mutated_reusable_chunk_tail_candidate_is_detected() -> None:
     artifacts['reusable_chunk_tail_candidate']['toy_semantic_equivalence']['rows'][0]['semantic_pass'] = False
     groups = _evaluate_mutation(artifacts, 'reusable_chunk_tail_candidate_checks')
     assert groups['reusable_chunk_tail_candidate_checks']['pass'] < groups['reusable_chunk_tail_candidate_checks']['total']
+
+
+def test_mutated_reusable_chunk_lowering_capacity_is_detected() -> None:
+    artifacts = deepcopy(_load_artifacts())
+    lookup_owner = next(row for row in artifacts['reusable_chunk_lowering']['owner_capacity']['rows'] if row['owner_id'] == 'lookup_workspace')
+    lookup_owner['logical_qubits'] -= 1
+    groups = _evaluate_mutation(artifacts, 'reusable_chunk_lowering_checks')
+    assert groups['reusable_chunk_lowering_checks']['pass'] < groups['reusable_chunk_lowering_checks']['total']
+
+
+def test_mutated_reusable_chunk_lowering_full_lane_is_detected() -> None:
+    artifacts = deepcopy(_load_artifacts())
+    artifacts['reusable_chunk_lowering']['stream_plan']['rows'][0]['full_coordinate_lane_materialized'] = 1
+    groups = _evaluate_mutation(artifacts, 'reusable_chunk_lowering_checks')
+    assert groups['reusable_chunk_lowering_checks']['pass'] < groups['reusable_chunk_lowering_checks']['total']
 
 
 def test_mutated_resource_certificate_owner_capacity_is_detected() -> None:

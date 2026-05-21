@@ -175,8 +175,8 @@
       "bytes": 19121
     },
     "compiler_verification_project/src/artifact_registry.py": {
-      "sha256": "d86a3d1c8ecd50640eb94fe34b057204cc2b0da9bbfaf48bdb810a732346660c",
-      "bytes": 4345
+      "sha256": "4c8c10e5c744665e871201fa43eeffd1800f5f0acf63b29e4204dd391f84c26b",
+      "bytes": 4448
     },
     "compiler_verification_project/src/arithmetic_lowering.py": {
       "sha256": "8845517d06b8054ec4d71bc06cdc609b3f5a9b031e3112ad4e8306b199dbc1ae",
@@ -187,8 +187,8 @@
       "bytes": 26931
     },
     "compiler_verification_project/src/integrity.py": {
-      "sha256": "83dd5ad0deba21176c1b28ee75c7aba04545c099b8a07062114b12b9cc03372d",
-      "bytes": 148181
+      "sha256": "03f626f206479487de2d27707d328e9b56d51b57794b25a1d5519977761f4999",
+      "bytes": 152596
     },
     "compiler_verification_project/src/generated_block_inventory.py": {
       "sha256": "9a5a8cdc5369e43cb88df726d08fbc88ba727a43b72962388357546b8d382d89",
@@ -219,8 +219,12 @@
       "bytes": 12143
     },
     "compiler_verification_project/src/project.py": {
-      "sha256": "40ba18df5804d32cd00f3a82a852aeeb69ccc2186ed2c240129bea7c24b9866f",
-      "bytes": 106471
+      "sha256": "8e322cf92772f129c8e9644512abbb2507c61770fd4005ec12dae025816d1318",
+      "bytes": 106963
+    },
+    "compiler_verification_project/src/reusable_chunk_lowering.py": {
+      "sha256": "32bc4bdd1dc3409d0c949cd84889a1583fe12e66f4ed564fb4460c1301276c3e",
+      "bytes": 11050
     },
     "compiler_verification_project/src/reusable_chunk_tail_candidate.py": {
       "sha256": "0fff6263dc13e5f657a8c69dc8c785b80b1871a20ac241cc2cc46a68df11b8d9",
@@ -447,8 +451,8 @@
       "bytes": 2405
     },
     "compiler_verification_project/artifacts/build_summary.json": {
-      "sha256": "827e2b33c0921373edb24e1acacbd1e008291d8bed276af6baebd37f8ebc3755",
-      "bytes": 12795
+      "sha256": "d22a0bd71d0188bc60b29eedbc8b32588b5de5e495ceb5fc1b6533d60d9d00b1",
+      "bytes": 12898
     },
     "compiler_verification_project/artifacts/public_google_baseline_source.json": {
       "sha256": "4714ebbc7f250509af0e4ed1cd823274c4742d172c73c031f602419f06e05548",
@@ -538,6 +542,10 @@
       "sha256": "a17d99eb7e74e39228b3623efb6ab19e94502d41459caede3b324255e9c920e5",
       "bytes": 6204
     },
+    "compiler_verification_project/artifacts/reusable_chunk_lowering.json": {
+      "sha256": "a94b4ee6edc98161d20660e97be342db970be241db478e51e91106b3295cd705",
+      "bytes": 8911
+    },
     "compiler_verification_project/artifacts/resource_liveness_certificate.json": {
       "sha256": "59161a5f3657e4ac599bf309a53ee8f889c5b652774f416c387ede29ed6b4107",
       "bytes": 75130
@@ -559,8 +567,8 @@
       "bytes": 4183
     },
     "compiler_verification_project/artifacts/verification_summary.json": {
-      "sha256": "3b79ff8e6bb2c7f67ed5b96912cf2a6205c0585c9dc3bea6697acb4be5df8e34",
-      "bytes": 432014
+      "sha256": "8759739c6f8a886d9e4fc13efa8e5df456fdb224d7da3110a5a2f317e7544e26",
+      "bytes": 447481
     },
     "compiler_verification_project/artifacts/cain_exact_transfer.json": {
       "sha256": "02ab9b452578ee476755b828351c983e4e848802a78eba33db23b1d016ca6cea",

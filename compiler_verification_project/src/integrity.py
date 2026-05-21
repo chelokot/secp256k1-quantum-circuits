@@ -31,6 +31,7 @@ from physical_estimator import (
     build_azure_estimator_target_payload,
     build_or_load_azure_estimator_results_payload,
 )
+from reusable_chunk_lowering import build_reusable_chunk_lowering
 from reusable_chunk_tail_candidate import build_reusable_chunk_tail_candidate
 from resource_ledger import build_logical_resource_ledger, qroam_clean_stream_cost
 from resource_certificate import build_resource_liveness_certificate
@@ -158,6 +159,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'logical_resource_ledger': artifact_root / 'logical_resource_ledger.json',
         'fallback_frontier_stress': artifact_root / 'fallback_frontier_stress.json',
         'reusable_chunk_tail_candidate': artifact_root / 'reusable_chunk_tail_candidate.json',
+        'reusable_chunk_lowering': artifact_root / 'reusable_chunk_lowering.json',
         'resource_liveness_certificate': artifact_root / 'resource_liveness_certificate.json',
         'materialized_circuit_manifest': artifact_root / 'materialized_circuit_manifest.json',
         'qubit_breakthrough_analysis': artifact_root / 'qubit_breakthrough_analysis.json',
@@ -1248,6 +1250,34 @@ def build_reusable_chunk_tail_candidate_checks(artifacts: Mapping[str, Any]) -> 
     return _summarize_checks(checks)
 
 
+def build_reusable_chunk_lowering_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    lowering = artifacts['reusable_chunk_lowering']
+    expected = build_reusable_chunk_lowering(
+        reusable_chunk_tail_candidate=artifacts['reusable_chunk_tail_candidate'],
+        fallback_frontier_stress=artifacts['fallback_frontier_stress'],
+        logical_resource_ledger=artifacts['logical_resource_ledger'],
+        field_bits=FIELD_BITS,
+    )
+    stream_plan = lowering['stream_plan']
+    qubits = lowering['qubit_derivation']
+    non_clifford = lowering['non_clifford_derivation']
+    owners = lowering['owner_capacity']
+    checks = [
+        _check('reusable_chunk_lowering_matches_generator', lowering == expected, expected, lowering),
+        _check('reusable_chunk_lowering_schema_is_current', lowering['schema'] == 'compiler-project-reusable-chunk-lowering-v1', 'compiler-project-reusable-chunk-lowering-v1', lowering['schema']),
+        _check('reusable_chunk_lowering_is_not_headline', lowering['status'] == 'candidate_lowering_contract_unproven_not_headline', 'candidate_lowering_contract_unproven_not_headline', lowering['status']),
+        _check('reusable_chunk_lowering_passes_internal_checks', lowering['pass'] is True and all(lowering['checks'].values()), True, lowering['checks']),
+        _check('reusable_chunk_lowering_derives_stream_count_from_contract', stream_plan['coordinate_table_count'] == len(stream_plan['coordinate_tables']) == 3 and stream_plan['chunk_streams_per_leaf'] == stream_plan['coordinate_table_count'] * stream_plan['chunk_count'] == 6 and stream_plan['whole_oracle_chunk_streams'] == stream_plan['leaf_call_count_total'] * stream_plan['chunk_streams_per_leaf'], {'tables': 3, 'chunk_streams_per_leaf': 6}, stream_plan),
+        _check('reusable_chunk_lowering_uses_standard_qroamclean_k1_consistently', lowering['standard_qroamclean_k1_model']['block_size'] == 1 and lowering['standard_qroamclean_k1_model']['target_register_qubits'] == stream_plan['chunk_bits'] == 155 and lowering['standard_qroamclean_k1_model']['junk_register_qubits'] == 0 and lowering['standard_qroamclean_k1_model']['per_stream_non_clifford'] == 65536, {'block_size': 1, 'target_register_qubits': 155, 'junk_register_qubits': 0, 'per_stream_non_clifford': 65536}, lowering['standard_qroamclean_k1_model']),
+        _check('reusable_chunk_lowering_materializes_no_full_coordinate_lane', all(row['full_coordinate_lane_materialized'] == 0 and row['live_target_qubits'] == 155 for row in stream_plan['rows']) and lowering['executable_contract']['chunk_contract']['full_coordinate_lanes_materialized'] == 0, 0, stream_plan['rows']),
+        _check('reusable_chunk_lowering_reconstructs_non_clifford_candidate', non_clifford['qroam_chunk_streams'] == 186 and non_clifford['qroam_chunk_non_clifford'] == 12189696 and non_clifford['candidate_total_non_clifford'] == artifacts['reusable_chunk_tail_candidate']['production_resource_candidate']['candidate_total_non_clifford'] == 36767692, {'qroam_chunk_streams': 186, 'candidate_total_non_clifford': 36767692}, non_clifford),
+        _check('reusable_chunk_lowering_reconstructs_qubit_candidate', qubits['arithmetic_slot_count'] == 4 and qubits['arithmetic_slot_qubits'] == 1024 and qubits['lookup_workspace_qubits'] == 173 and qubits['candidate_total_logical_qubits'] == artifacts['reusable_chunk_tail_candidate']['production_resource_candidate']['candidate_total_logical_qubits'] == 1199, {'arithmetic_slot_qubits': 1024, 'lookup_workspace_qubits': 173, 'candidate_total_logical_qubits': 1199}, qubits),
+        _check('reusable_chunk_lowering_owner_capacity_is_numeric', owners['required_global_peak_qubits'] == 1199 and owners['capacity_global_peak_qubits'] == 1199 and all(row['capacity_pass'] is True and row['logical_qubits'] >= row['required_peak_qubits'] for row in owners['rows']), {'required_global_peak_qubits': 1199, 'capacity_global_peak_qubits': 1199}, owners),
+        _check('reusable_chunk_lowering_keeps_zkp_and_primitive_obligations_open', len(lowering['remaining_proof_obligations']) >= 3, '>= 3', lowering['remaining_proof_obligations']),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_resource_liveness_certificate_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     certificate = artifacts['resource_liveness_certificate']
     expected = build_resource_liveness_certificate(
@@ -2267,6 +2297,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'logical_resource_ledger_checks': lambda: build_logical_resource_ledger_checks(artifacts),
         'fallback_frontier_stress_checks': lambda: build_fallback_frontier_stress_checks(artifacts),
         'reusable_chunk_tail_candidate_checks': lambda: build_reusable_chunk_tail_candidate_checks(artifacts),
+        'reusable_chunk_lowering_checks': lambda: build_reusable_chunk_lowering_checks(artifacts),
         'resource_liveness_certificate_checks': lambda: build_resource_liveness_certificate_checks(artifacts),
         'qubit_breakthrough_checks': lambda: build_qubit_breakthrough_checks(artifacts),
         'full_attack_inventory_checks': lambda: build_full_attack_inventory_checks(artifacts),

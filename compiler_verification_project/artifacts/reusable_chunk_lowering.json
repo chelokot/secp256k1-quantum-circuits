@@ -1,0 +1,259 @@
+{
+  "schema": "compiler-project-reusable-chunk-lowering-v1",
+  "status": "candidate_lowering_contract_unproven_not_headline",
+  "source_artifacts": {
+    "reusable_chunk_tail_candidate": "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
+    "fallback_frontier_stress": "compiler_verification_project/artifacts/fallback_frontier_stress.json",
+    "logical_resource_ledger": "compiler_verification_project/artifacts/logical_resource_ledger.json"
+  },
+  "executable_contract": {
+    "variant": "a0_complete_reusable_chunk_tail_candidate",
+    "opcode": "complete_a0_reusable_chunk_tail",
+    "arithmetic_slots": [
+      "qx",
+      "qy",
+      "qz",
+      "qchunk"
+    ],
+    "control_slots": [
+      "f_lookup_inf"
+    ],
+    "chunk_contract": {
+      "chunk_bits": 155,
+      "chunk_count": 2,
+      "b3": 21,
+      "full_coordinate_lanes_materialized": 0,
+      "reusable_chunk_slot": "qchunk"
+    },
+    "lookup_constant_sources": [
+      "lookup_x",
+      "lookup_y",
+      "lookup_x_plus_y"
+    ]
+  },
+  "stream_plan": {
+    "coordinate_table_count": 3,
+    "coordinate_tables": [
+      "lookup_x",
+      "lookup_y",
+      "lookup_x_plus_y"
+    ],
+    "chunk_bits": 155,
+    "chunk_count": 2,
+    "chunk_streams_per_leaf": 6,
+    "leaf_call_count_total": 31,
+    "whole_oracle_chunk_streams": 186,
+    "rows": [
+      {
+        "table": "lookup_x",
+        "chunk_index": 0,
+        "chunk_bits": 155,
+        "consumers_before_uncompute": [
+          "A = X * lookup_x",
+          "Zx = Z * lookup_x"
+        ],
+        "consumer_count": 2,
+        "qroam_clean_block_size": 1,
+        "qroam_compute_non_clifford": 32768,
+        "measured_uncompute_non_clifford": 32768,
+        "per_chunk_stream_non_clifford": 65536,
+        "live_target_qubits": 155,
+        "junk_register_qubits": 0,
+        "full_coordinate_lane_materialized": 0
+      },
+      {
+        "table": "lookup_x",
+        "chunk_index": 1,
+        "chunk_bits": 155,
+        "consumers_before_uncompute": [
+          "A = X * lookup_x",
+          "Zx = Z * lookup_x"
+        ],
+        "consumer_count": 2,
+        "qroam_clean_block_size": 1,
+        "qroam_compute_non_clifford": 32768,
+        "measured_uncompute_non_clifford": 32768,
+        "per_chunk_stream_non_clifford": 65536,
+        "live_target_qubits": 155,
+        "junk_register_qubits": 0,
+        "full_coordinate_lane_materialized": 0
+      },
+      {
+        "table": "lookup_y",
+        "chunk_index": 0,
+        "chunk_bits": 155,
+        "consumers_before_uncompute": [
+          "I = Y * lookup_y",
+          "yZ = Z * lookup_y"
+        ],
+        "consumer_count": 2,
+        "qroam_clean_block_size": 1,
+        "qroam_compute_non_clifford": 32768,
+        "measured_uncompute_non_clifford": 32768,
+        "per_chunk_stream_non_clifford": 65536,
+        "live_target_qubits": 155,
+        "junk_register_qubits": 0,
+        "full_coordinate_lane_materialized": 0
+      },
+      {
+        "table": "lookup_y",
+        "chunk_index": 1,
+        "chunk_bits": 155,
+        "consumers_before_uncompute": [
+          "I = Y * lookup_y",
+          "yZ = Z * lookup_y"
+        ],
+        "consumer_count": 2,
+        "qroam_clean_block_size": 1,
+        "qroam_compute_non_clifford": 32768,
+        "measured_uncompute_non_clifford": 32768,
+        "per_chunk_stream_non_clifford": 65536,
+        "live_target_qubits": 155,
+        "junk_register_qubits": 0,
+        "full_coordinate_lane_materialized": 0
+      },
+      {
+        "table": "lookup_x_plus_y",
+        "chunk_index": 0,
+        "chunk_bits": 155,
+        "consumers_before_uncompute": [
+          "H = (X + Y) * (lookup_x + lookup_y)"
+        ],
+        "consumer_count": 1,
+        "qroam_clean_block_size": 1,
+        "qroam_compute_non_clifford": 32768,
+        "measured_uncompute_non_clifford": 32768,
+        "per_chunk_stream_non_clifford": 65536,
+        "live_target_qubits": 155,
+        "junk_register_qubits": 0,
+        "full_coordinate_lane_materialized": 0
+      },
+      {
+        "table": "lookup_x_plus_y",
+        "chunk_index": 1,
+        "chunk_bits": 155,
+        "consumers_before_uncompute": [
+          "H = (X + Y) * (lookup_x + lookup_y)"
+        ],
+        "consumer_count": 1,
+        "qroam_clean_block_size": 1,
+        "qroam_compute_non_clifford": 32768,
+        "measured_uncompute_non_clifford": 32768,
+        "per_chunk_stream_non_clifford": 65536,
+        "live_target_qubits": 155,
+        "junk_register_qubits": 0,
+        "full_coordinate_lane_materialized": 0
+      }
+    ]
+  },
+  "standard_qroamclean_k1_model": {
+    "domain_size": 32768,
+    "field_bits": 155,
+    "block_size": 1,
+    "target_register_qubits": 155,
+    "junk_register_count": 0,
+    "junk_register_qubits": 0,
+    "target_plus_junk_qubits": 155,
+    "lookup_compute_non_clifford": 32768,
+    "measured_uncompute_non_clifford": 32768,
+    "per_stream_non_clifford": 65536
+  },
+  "non_clifford_derivation": {
+    "base_non_clifford_without_streamed_qroam": 24577996,
+    "qroam_chunk_streams": 186,
+    "per_chunk_stream_non_clifford": 65536,
+    "qroam_chunk_non_clifford": 12189696,
+    "candidate_total_non_clifford": 36767692
+  },
+  "qubit_derivation": {
+    "field_bits": 256,
+    "arithmetic_slot_count": 4,
+    "arithmetic_slot_qubits": 1024,
+    "folded_control_workspace_qubits": 18,
+    "qroam_clean_chunk_target_qubits": 155,
+    "qroam_clean_junk_register_qubits": 0,
+    "lookup_workspace_qubits": 173,
+    "control_qubits": 1,
+    "phase_qubits": 1,
+    "candidate_total_logical_qubits": 1199
+  },
+  "owner_capacity": {
+    "rows": [
+      {
+        "owner_id": "arithmetic_slot_register_file",
+        "logical_qubits": 1024,
+        "source": "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
+        "required_live_wires": {
+          "qx": 256,
+          "qy": 256,
+          "qz": 256,
+          "qchunk": 256
+        },
+        "required_peak_qubits": 1024,
+        "capacity_margin_qubits": 0,
+        "capacity_pass": true
+      },
+      {
+        "owner_id": "lookup_workspace",
+        "logical_qubits": 173,
+        "source": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
+        "required_live_wires": {
+          "folded_control_workspace_qubits": 18,
+          "qroam_clean_chunk_target_qubits": 155,
+          "qroam_clean_junk_register_qubits": 0
+        },
+        "required_peak_qubits": 173,
+        "capacity_margin_qubits": 0,
+        "capacity_pass": true
+      },
+      {
+        "owner_id": "control_slot_register_file",
+        "logical_qubits": 1,
+        "source": "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
+        "required_live_wires": {
+          "f_lookup_inf": 1
+        },
+        "required_peak_qubits": 1,
+        "capacity_margin_qubits": 0,
+        "capacity_pass": true
+      },
+      {
+        "owner_id": "phase_shell_live_register",
+        "logical_qubits": 1,
+        "source": "compiler_verification_project/artifacts/phase_shell_lowerings.json",
+        "required_live_wires": {
+          "semiclassical_qft_live_phase_bit": 1
+        },
+        "required_peak_qubits": 1,
+        "capacity_margin_qubits": 0,
+        "capacity_pass": true
+      }
+    ],
+    "required_global_peak_qubits": 1199,
+    "capacity_global_peak_qubits": 1199
+  },
+  "checks": {
+    "executable_leaf_uses_four_arithmetic_slots": true,
+    "executable_leaf_has_reusable_chunk_scratch": true,
+    "no_full_coordinate_lanes_materialized": true,
+    "chunk_width_matches_strict_qubit_pressure": true,
+    "stream_count_derived_from_tables_and_chunks": true,
+    "whole_oracle_stream_count_derived_from_leaf_calls": true,
+    "per_stream_cost_matches_standard_qroamclean_k1": true,
+    "non_clifford_matches_candidate": true,
+    "logical_qubits_match_candidate": true,
+    "owner_capacity_rows_cover_required_peak": true,
+    "fits_requested_limits": true
+  },
+  "pass": true,
+  "remaining_proof_obligations": [
+    "Replace the inherited field-multiplication arithmetic base with generated chunked multiplier primitive blocks, or prove the inherited base is a conservative upper bound for this chunked contract.",
+    "Bind this contract and its owner-capacity certificate in the ZKP before changing public headline values.",
+    "Promote the candidate only after compressed and Groth16 verification pass from checked-in branch artifacts."
+  ],
+  "notes": [
+    "This artifact prevents the previous QROAMClean width/workspace mix-up for the reusable chunk candidate: K=1 uses a 155-bit live target and zero junk registers, so the same model drives gates and qubits.",
+    "The three coordinate tables are streamed as chunks and consumed before uncompute; no full x, y, or x_plus_y coordinate lane is allocated.",
+    "The result remains non-headline because the primitive chunked multiplier lowering and ZKP binding are not complete."
+  ]
+}
