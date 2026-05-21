@@ -209,6 +209,15 @@ def test_mutated_reusable_chunk_lowering_full_lane_is_detected() -> None:
     assert groups['reusable_chunk_lowering_checks']['pass'] < groups['reusable_chunk_lowering_checks']['total']
 
 
+def test_mutated_reusable_chunk_lowering_high_chunk_width_is_detected() -> None:
+    artifacts = deepcopy(_load_artifacts())
+    primitive = artifacts['reusable_chunk_lowering']['chunked_multiplier_primitive_contract']
+    primitive['chunk_effective_bits'][1] = 155
+    primitive['table_multiplier_rows'][0]['chunk_rows'][1]['effective_constant_bits'] = 155
+    groups = _evaluate_mutation(artifacts, 'reusable_chunk_lowering_checks')
+    assert groups['reusable_chunk_lowering_checks']['pass'] < groups['reusable_chunk_lowering_checks']['total']
+
+
 def test_mutated_resource_certificate_owner_capacity_is_detected() -> None:
     artifacts = deepcopy(_load_artifacts())
     artifacts['resource_liveness_certificate']['derived_owner_capacity']['rows'][0]['capacity_qubits'] -= 1

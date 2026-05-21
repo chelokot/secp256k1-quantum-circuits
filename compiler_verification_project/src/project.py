@@ -1961,6 +1961,7 @@ def build_all_artifacts() -> Dict[str, Any]:
         reusable_chunk_tail_candidate=out['reusable_chunk_tail_candidate'],
         fallback_frontier_stress=out['fallback_frontier_stress'],
         logical_resource_ledger=out['logical_resource_ledger'],
+        arithmetic_lowerings=out['arithmetic_lowerings'],
         field_bits=FIELD_BITS,
     )
     out['materialized_circuit_manifest'] = build_materialized_family_manifest(

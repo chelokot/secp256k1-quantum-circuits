@@ -1442,20 +1442,22 @@ Partially mitigated after review:
   now also contains an executable candidate leaf using
   `complete_a0_reusable_chunk_tail` with a fourth scratch slot `qchunk`, and the
   toy check executes that leaf through `exec_netlist`. It still marks the
-  candidate as not-headline because it has not yet generated the primitive
-  chunked multiplier lowering or ZKP binding.
+  candidate as not-headline because it has not yet been bound by the ZKP.
 - `compiler_verification_project/artifacts/reusable_chunk_lowering.json` now
-  records the candidate's first generated lowering/resource contract. It derives
-  the 6 chunk streams per leaf from the executable leaf's three coordinate
-  tables and two chunks, prices each stream with standard QROAMClean `K=1`
-  (`65,536` non-Clifford, `155` target qubits, zero junk), reconstructs
-  `36,767,692` non-Clifford operations and `1,199` logical qubits, and assigns
-  numeric capacity to every counted owner. This fixes the previous class of
+  records the candidate's generated lowering/resource contract. It derives the
+  6 chunk streams per leaf from the executable leaf's three coordinate tables
+  and two chunks, prices each stream with standard QROAMClean `K=1` (`65,536`
+  non-Clifford, `155` target qubits, zero junk), reconstructs `36,767,692`
+  non-Clifford operations and `1,199` logical qubits, and assigns numeric
+  capacity to every counted owner. It also closes the inherited-arithmetic-base
+  objection at the counted primitive-block level: each table-controlled
+  multiplier has low/high effective chunk widths `155 + 101 = 256`, so its
+  partial-product grid is exactly the inherited full-width `65,536`
+  non-Clifford grid, while the high chunk's 54 zero-padded QROAM target lanes
+  are still charged in lookup workspace/cost. This fixes the previous class of
   width/workspace mix-ups for the reusable-chunk candidate, but it is still not
-  a headline result: the inherited field-multiplication arithmetic base must be
-  replaced by generated chunked multiplier primitive blocks, or proven as a
-  conservative upper bound, and the ZKP public values must bind the new
-  certificate before publication.
+  a headline result until the ZKP public values bind the new certificate and the
+  compressed/Groth16 proof artifacts are rebuilt from the checked branch state.
 - `ZK-3`: proof binaries are now included in the curated proof manifest, but
   the checked JSON fixtures still intentionally keep the large binary proof
   payloads out-of-line.

@@ -1,5 +1,5 @@
 {
-  "schema": "compiler-project-reusable-chunk-lowering-v1",
+  "schema": "compiler-project-reusable-chunk-lowering-v2",
   "status": "candidate_lowering_contract_unproven_not_headline",
   "source_artifacts": {
     "reusable_chunk_tail_candidate": "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
@@ -158,6 +158,173 @@
     "measured_uncompute_non_clifford": 32768,
     "per_stream_non_clifford": 65536
   },
+  "chunked_multiplier_primitive_contract": {
+    "source_arithmetic_kernel": "complete_a0_all_streamed_tail",
+    "field_bits": 256,
+    "chunk_bits": 155,
+    "chunk_effective_bits": [
+      155,
+      101
+    ],
+    "table_multiplier_count_per_leaf": 5,
+    "table_multiplier_rows": [
+      {
+        "table": "lookup_x_plus_y",
+        "consumer_expression": "H = (X + Y) * (lookup_x + lookup_y)",
+        "inherited_stage_prefix": "tail_h",
+        "chunk_rows": [
+          {
+            "chunk_index": 0,
+            "target_capacity_bits": 155,
+            "effective_constant_bits": 155,
+            "zero_padded_target_bits": 0,
+            "partial_product_non_clifford": 39680
+          },
+          {
+            "chunk_index": 1,
+            "target_capacity_bits": 155,
+            "effective_constant_bits": 101,
+            "zero_padded_target_bits": 54,
+            "partial_product_non_clifford": 25856
+          }
+        ],
+        "chunked_partial_product_non_clifford": 65536,
+        "inherited_full_width_partial_product_non_clifford": 65536,
+        "partial_product_count_is_exact_match": true,
+        "single_modular_reduction_after_chunk_accumulation": true,
+        "extra_chunk_combine_non_clifford": 0,
+        "inherited_non_qroam_field_mul_non_clifford": 71492,
+        "chunked_non_qroam_field_mul_bound_non_clifford": 71492,
+        "bound_is_conservative": true
+      },
+      {
+        "table": "lookup_x",
+        "consumer_expression": "A = X * lookup_x",
+        "inherited_stage_prefix": "all_streamed_tail_a",
+        "chunk_rows": [
+          {
+            "chunk_index": 0,
+            "target_capacity_bits": 155,
+            "effective_constant_bits": 155,
+            "zero_padded_target_bits": 0,
+            "partial_product_non_clifford": 39680
+          },
+          {
+            "chunk_index": 1,
+            "target_capacity_bits": 155,
+            "effective_constant_bits": 101,
+            "zero_padded_target_bits": 54,
+            "partial_product_non_clifford": 25856
+          }
+        ],
+        "chunked_partial_product_non_clifford": 65536,
+        "inherited_full_width_partial_product_non_clifford": 65536,
+        "partial_product_count_is_exact_match": true,
+        "single_modular_reduction_after_chunk_accumulation": true,
+        "extra_chunk_combine_non_clifford": 0,
+        "inherited_non_qroam_field_mul_non_clifford": 71492,
+        "chunked_non_qroam_field_mul_bound_non_clifford": 71492,
+        "bound_is_conservative": true
+      },
+      {
+        "table": "lookup_x",
+        "consumer_expression": "Zx = Z * lookup_x",
+        "inherited_stage_prefix": "all_streamed_tail_zx",
+        "chunk_rows": [
+          {
+            "chunk_index": 0,
+            "target_capacity_bits": 155,
+            "effective_constant_bits": 155,
+            "zero_padded_target_bits": 0,
+            "partial_product_non_clifford": 39680
+          },
+          {
+            "chunk_index": 1,
+            "target_capacity_bits": 155,
+            "effective_constant_bits": 101,
+            "zero_padded_target_bits": 54,
+            "partial_product_non_clifford": 25856
+          }
+        ],
+        "chunked_partial_product_non_clifford": 65536,
+        "inherited_full_width_partial_product_non_clifford": 65536,
+        "partial_product_count_is_exact_match": true,
+        "single_modular_reduction_after_chunk_accumulation": true,
+        "extra_chunk_combine_non_clifford": 0,
+        "inherited_non_qroam_field_mul_non_clifford": 71492,
+        "chunked_non_qroam_field_mul_bound_non_clifford": 71492,
+        "bound_is_conservative": true
+      },
+      {
+        "table": "lookup_y",
+        "consumer_expression": "I = Y * lookup_y",
+        "inherited_stage_prefix": "all_streamed_fully_streamed_tail_i",
+        "chunk_rows": [
+          {
+            "chunk_index": 0,
+            "target_capacity_bits": 155,
+            "effective_constant_bits": 155,
+            "zero_padded_target_bits": 0,
+            "partial_product_non_clifford": 39680
+          },
+          {
+            "chunk_index": 1,
+            "target_capacity_bits": 155,
+            "effective_constant_bits": 101,
+            "zero_padded_target_bits": 54,
+            "partial_product_non_clifford": 25856
+          }
+        ],
+        "chunked_partial_product_non_clifford": 65536,
+        "inherited_full_width_partial_product_non_clifford": 65536,
+        "partial_product_count_is_exact_match": true,
+        "single_modular_reduction_after_chunk_accumulation": true,
+        "extra_chunk_combine_non_clifford": 0,
+        "inherited_non_qroam_field_mul_non_clifford": 71492,
+        "chunked_non_qroam_field_mul_bound_non_clifford": 71492,
+        "bound_is_conservative": true
+      },
+      {
+        "table": "lookup_y",
+        "consumer_expression": "yZ = Z * lookup_y",
+        "inherited_stage_prefix": "all_streamed_fully_streamed_tail_yz",
+        "chunk_rows": [
+          {
+            "chunk_index": 0,
+            "target_capacity_bits": 155,
+            "effective_constant_bits": 155,
+            "zero_padded_target_bits": 0,
+            "partial_product_non_clifford": 39680
+          },
+          {
+            "chunk_index": 1,
+            "target_capacity_bits": 155,
+            "effective_constant_bits": 101,
+            "zero_padded_target_bits": 54,
+            "partial_product_non_clifford": 25856
+          }
+        ],
+        "chunked_partial_product_non_clifford": 65536,
+        "inherited_full_width_partial_product_non_clifford": 65536,
+        "partial_product_count_is_exact_match": true,
+        "single_modular_reduction_after_chunk_accumulation": true,
+        "extra_chunk_combine_non_clifford": 0,
+        "inherited_non_qroam_field_mul_non_clifford": 71492,
+        "chunked_non_qroam_field_mul_bound_non_clifford": 71492,
+        "bound_is_conservative": true
+      }
+    ],
+    "table_multiplier_partial_products_per_leaf": 327680,
+    "inherited_table_multiplier_partial_products_per_leaf": 327680,
+    "downstream_full_width_multiplier_count_per_leaf": 6,
+    "downstream_full_width_partial_products_per_leaf": 393216,
+    "arithmetic_base_conservatism": {
+      "table_multiplier_partial_products_equal_inherited_full_width": true,
+      "high_chunk_qroam_is_overcounted_to_full_chunk_width": true,
+      "modular_reduction_count_matches_inherited_per_consumer_reduction": true,
+      "inherited_base_without_streamed_qroam_is_valid_for_chunked_contract": true
+    }
+  },
   "non_clifford_derivation": {
     "base_non_clifford_without_streamed_qroam": 24577996,
     "qroam_chunk_streams": 186,
@@ -240,6 +407,9 @@
     "stream_count_derived_from_tables_and_chunks": true,
     "whole_oracle_stream_count_derived_from_leaf_calls": true,
     "per_stream_cost_matches_standard_qroamclean_k1": true,
+    "chunked_multiplier_partial_products_match_inherited_full_width_base": true,
+    "chunked_multiplier_high_chunk_zero_padding_is_explicit": true,
+    "chunked_multiplier_uses_single_reduction_per_consumer": true,
     "non_clifford_matches_candidate": true,
     "logical_qubits_match_candidate": true,
     "owner_capacity_rows_cover_required_peak": true,
@@ -247,13 +417,13 @@
   },
   "pass": true,
   "remaining_proof_obligations": [
-    "Replace the inherited field-multiplication arithmetic base with generated chunked multiplier primitive blocks, or prove the inherited base is a conservative upper bound for this chunked contract.",
     "Bind this contract and its owner-capacity certificate in the ZKP before changing public headline values.",
     "Promote the candidate only after compressed and Groth16 verification pass from checked-in branch artifacts."
   ],
   "notes": [
     "This artifact prevents the previous QROAMClean width/workspace mix-up for the reusable chunk candidate: K=1 uses a 155-bit live target and zero junk registers, so the same model drives gates and qubits.",
     "The three coordinate tables are streamed as chunks and consumed before uncompute; no full x, y, or x_plus_y coordinate lane is allocated.",
-    "The result remains non-headline because the primitive chunked multiplier lowering and ZKP binding are not complete."
+    "The chunked multiplier primitive contract proves that the inherited non-QROAM arithmetic base is a conservative bound: low 155 bits plus high 101 effective bits produce the same 65,536 partial products as the inherited full-width field multiplier, with the same single reduction boundary.",
+    "The result remains non-headline because ZKP binding is not complete."
   ]
 }

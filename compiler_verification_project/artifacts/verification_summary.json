@@ -6101,28 +6101,28 @@
     ]
   },
   "reusable_chunk_lowering_checks": {
-    "pass": 11,
-    "total": 11,
+    "pass": 13,
+    "total": 13,
     "checks": [
       {
         "name": "reusable_chunk_lowering_matches_generator",
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "c3b933ce5bb93dac8474dd3861f0f61fd7d7980d1d01ba6c80a9dff094b318fe",
-          "size_bytes": 6862
+          "sha256": "8ec1c0462341c4cb02b023e8930dbf8dace849ad4848b565fd458afcd049ef86",
+          "size_bytes": 11818
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "c3b933ce5bb93dac8474dd3861f0f61fd7d7980d1d01ba6c80a9dff094b318fe",
-          "size_bytes": 6862
+          "sha256": "8ec1c0462341c4cb02b023e8930dbf8dace849ad4848b565fd458afcd049ef86",
+          "size_bytes": 11818
         }
       },
       {
         "name": "reusable_chunk_lowering_schema_is_current",
         "pass": 1,
-        "expected": "compiler-project-reusable-chunk-lowering-v1",
-        "observed": "compiler-project-reusable-chunk-lowering-v1"
+        "expected": "compiler-project-reusable-chunk-lowering-v2",
+        "observed": "compiler-project-reusable-chunk-lowering-v2"
       },
       {
         "name": "reusable_chunk_lowering_is_not_headline",
@@ -6142,6 +6142,9 @@
           "stream_count_derived_from_tables_and_chunks": true,
           "whole_oracle_stream_count_derived_from_leaf_calls": true,
           "per_stream_cost_matches_standard_qroamclean_k1": true,
+          "chunked_multiplier_partial_products_match_inherited_full_width_base": true,
+          "chunked_multiplier_high_chunk_zero_padding_is_explicit": true,
+          "chunked_multiplier_uses_single_reduction_per_consumer": true,
           "non_clifford_matches_candidate": true,
           "logical_qubits_match_candidate": true,
           "owner_capacity_rows_cover_required_peak": true,
@@ -6401,6 +6404,33 @@
         ]
       },
       {
+        "name": "reusable_chunk_lowering_proves_table_multiplier_base_conservative",
+        "pass": 1,
+        "expected": {
+          "table_multiplier_partial_products_per_leaf": 327680
+        },
+        "observed": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "8802dd51611861787d07e72cbf124edeb5aff5caba869cf486c908b5fb81ffd5",
+          "size_bytes": 4671
+        }
+      },
+      {
+        "name": "reusable_chunk_lowering_high_chunk_effective_bits_are_explicit",
+        "pass": 1,
+        "expected": {
+          "chunk_effective_bits": [
+            155,
+            101
+          ]
+        },
+        "observed": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "8802dd51611861787d07e72cbf124edeb5aff5caba869cf486c908b5fb81ffd5",
+          "size_bytes": 4671
+        }
+      },
+      {
         "name": "reusable_chunk_lowering_reconstructs_non_clifford_candidate",
         "pass": 1,
         "expected": {
@@ -6500,11 +6530,10 @@
         }
       },
       {
-        "name": "reusable_chunk_lowering_keeps_zkp_and_primitive_obligations_open",
+        "name": "reusable_chunk_lowering_keeps_zkp_and_release_obligations_open",
         "pass": 1,
-        "expected": ">= 3",
+        "expected": ">= 2",
         "observed": [
-          "Replace the inherited field-multiplication arithmetic base with generated chunked multiplier primitive blocks, or prove the inherited base is a conservative upper bound for this chunked contract.",
           "Bind this contract and its owner-capacity certificate in the ZKP before changing public headline values.",
           "Promote the candidate only after compressed and Groth16 verification pass from checked-in branch artifacts."
         ]
@@ -9984,8 +10013,8 @@
       {
         "name": "build_summary_schema_matches_current_version",
         "pass": 1,
-        "expected": "compiler-project-build-summary-v26",
-        "observed": "compiler-project-build-summary-v26"
+        "expected": "compiler-project-build-summary-v27",
+        "observed": "compiler-project-build-summary-v27"
       },
       {
         "name": "build_summary_artifact_paths_match_expected_set",
@@ -11487,10 +11516,10 @@
       "pass": 30
     },
     "invariant_checks": {
-      "total": 322,
-      "pass": 322
+      "total": 324,
+      "pass": 324
     },
-    "total": 352,
-    "pass": 352
+    "total": 354,
+    "pass": 354
   }
 }

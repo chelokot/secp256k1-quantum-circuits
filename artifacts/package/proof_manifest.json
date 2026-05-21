@@ -175,7 +175,7 @@
       "bytes": 19121
     },
     "compiler_verification_project/src/artifact_registry.py": {
-      "sha256": "4c8c10e5c744665e871201fa43eeffd1800f5f0acf63b29e4204dd391f84c26b",
+      "sha256": "8ba4d5ff8fdbeace18ac180963865a1fac210158e4abf05d96dfb24749acc89a",
       "bytes": 4448
     },
     "compiler_verification_project/src/arithmetic_lowering.py": {
@@ -187,8 +187,8 @@
       "bytes": 26931
     },
     "compiler_verification_project/src/integrity.py": {
-      "sha256": "03f626f206479487de2d27707d328e9b56d51b57794b25a1d5519977761f4999",
-      "bytes": 152596
+      "sha256": "9ce617839d98b6f91733a6c8d84994a9c2d0cb2cf2effed3b6fabb98ddbc9967",
+      "bytes": 153699
     },
     "compiler_verification_project/src/generated_block_inventory.py": {
       "sha256": "9a5a8cdc5369e43cb88df726d08fbc88ba727a43b72962388357546b8d382d89",
@@ -219,12 +219,12 @@
       "bytes": 12143
     },
     "compiler_verification_project/src/project.py": {
-      "sha256": "8e322cf92772f129c8e9644512abbb2507c61770fd4005ec12dae025816d1318",
-      "bytes": 106963
+      "sha256": "a1b10ba2e18740aa955a714fd0e643506b3dc5a05e5d893e3dc91b1d6485851f",
+      "bytes": 107021
     },
     "compiler_verification_project/src/reusable_chunk_lowering.py": {
-      "sha256": "32bc4bdd1dc3409d0c949cd84889a1583fe12e66f4ed564fb4460c1301276c3e",
-      "bytes": 11050
+      "sha256": "a5d1c1ec265a06c62009e3abe59caac76977a80efb8ee0354521f4caad39f176",
+      "bytes": 17963
     },
     "compiler_verification_project/src/reusable_chunk_tail_candidate.py": {
       "sha256": "0fff6263dc13e5f657a8c69dc8c785b80b1871a20ac241cc2cc46a68df11b8d9",
@@ -451,7 +451,7 @@
       "bytes": 2405
     },
     "compiler_verification_project/artifacts/build_summary.json": {
-      "sha256": "d22a0bd71d0188bc60b29eedbc8b32588b5de5e495ceb5fc1b6533d60d9d00b1",
+      "sha256": "421eaca02efe9303764ba1e4bff3269454f2fc6076859b63cec2403c92e7d13e",
       "bytes": 12898
     },
     "compiler_verification_project/artifacts/public_google_baseline_source.json": {
@@ -543,8 +543,8 @@
       "bytes": 6204
     },
     "compiler_verification_project/artifacts/reusable_chunk_lowering.json": {
-      "sha256": "a94b4ee6edc98161d20660e97be342db970be241db478e51e91106b3295cd705",
-      "bytes": 8911
+      "sha256": "d45b3deb024604347bc615aebaf415b8990b96d8a5f2c7679ca2b62809430d9d",
+      "bytes": 15654
     },
     "compiler_verification_project/artifacts/resource_liveness_certificate.json": {
       "sha256": "59161a5f3657e4ac599bf309a53ee8f889c5b652774f416c387ede29ed6b4107",
@@ -567,8 +567,8 @@
       "bytes": 4183
     },
     "compiler_verification_project/artifacts/verification_summary.json": {
-      "sha256": "8759739c6f8a886d9e4fc13efa8e5df456fdb224d7da3110a5a2f317e7544e26",
-      "bytes": 447481
+      "sha256": "4513112c2d1dd317759011e3f162f137883aaee89e7269620daf287de9381035",
+      "bytes": 448467
     },
     "compiler_verification_project/artifacts/cain_exact_transfer.json": {
       "sha256": "02ab9b452578ee476755b828351c983e4e848802a78eba33db23b1d016ca6cea",
