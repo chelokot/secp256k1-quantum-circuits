@@ -24,6 +24,91 @@
     },
     "full_coordinate_lanes_materialized": 0
   },
+  "executable_leaf_contract": {
+    "schema": "compiler-project-reusable-chunk-tail-leaf-candidate-v1",
+    "variant": "a0_complete_reusable_chunk_tail_candidate",
+    "arithmetic_slots": [
+      "qx",
+      "qy",
+      "qz",
+      "qchunk"
+    ],
+    "control_slots": [
+      "f_lookup_inf"
+    ],
+    "lookup_interface_slots": [
+      "lookup_meta"
+    ],
+    "lookup_constant_sources": [
+      "lookup_x",
+      "lookup_y",
+      "lookup_x_plus_y"
+    ],
+    "lookup_infinity_policy": "boundary_noop",
+    "chunk_contract": {
+      "chunk_bits": 155,
+      "chunk_count": 2,
+      "b3": 21,
+      "full_coordinate_lanes_materialized": 0,
+      "reusable_chunk_slot": "qchunk"
+    },
+    "instructions": [
+      {
+        "pc": 0,
+        "op": "load_input",
+        "dst": "qx",
+        "src": "Q.X"
+      },
+      {
+        "pc": 1,
+        "op": "load_input",
+        "dst": "qy",
+        "src": "Q.Y"
+      },
+      {
+        "pc": 2,
+        "op": "load_input",
+        "dst": "qz",
+        "src": "Q.Z"
+      },
+      {
+        "pc": 3,
+        "op": "lookup_meta",
+        "dst": "lookup_meta",
+        "src": {
+          "table": "T.meta",
+          "key": "k"
+        }
+      },
+      {
+        "pc": 4,
+        "op": "bool_from_flag",
+        "dst": "f_lookup_inf",
+        "src": {
+          "flags": "lookup_meta",
+          "bit": 0
+        }
+      },
+      {
+        "pc": 5,
+        "op": "complete_a0_reusable_chunk_tail",
+        "dst": [
+          "qx",
+          "qy",
+          "qz"
+        ],
+        "src": {
+          "x": "qx",
+          "y": "qy",
+          "z": "qz",
+          "scratch": "qchunk"
+        },
+        "chunk_bits": 155,
+        "chunk_count": 2,
+        "b3": 21
+      }
+    ]
+  },
   "toy_semantic_equivalence": {
     "rows": [
       {
@@ -40,7 +125,9 @@
           "lookup_infinity": 61
         },
         "semantic_pass": true,
-        "semantic_failure_examples": []
+        "executable_pass": true,
+        "semantic_failure_examples": [],
+        "executable_failure_examples": []
       },
       {
         "curve": "toy127_b11",
@@ -56,7 +143,9 @@
           "lookup_infinity": 127
         },
         "semantic_pass": true,
-        "semantic_failure_examples": []
+        "executable_pass": true,
+        "semantic_failure_examples": [],
+        "executable_failure_examples": []
       },
       {
         "curve": "toy181_b3",
@@ -72,7 +161,9 @@
           "lookup_infinity": 181
         },
         "semantic_pass": true,
-        "semantic_failure_examples": []
+        "executable_pass": true,
+        "semantic_failure_examples": [],
+        "executable_failure_examples": []
       },
       {
         "curve": "toy241_b29",
@@ -88,10 +179,13 @@
           "lookup_infinity": 241
         },
         "semantic_pass": true,
-        "semantic_failure_examples": []
+        "executable_pass": true,
+        "semantic_failure_examples": [],
+        "executable_failure_examples": []
       }
     ],
     "all_rows_semantic": true,
+    "all_rows_executable": true,
     "total_boundary_pairs": 110692,
     "category_totals": {
       "ordinary": 108264,

@@ -67,6 +67,18 @@ def _flag_bit(env: Dict[str, Any], src: Mapping[str, Any]) -> int:
     return int((env[src['flags']] >> src['bit']) & 1)
 
 
+def _split_chunks(value: int, chunk_bits: int, chunk_count: int) -> List[int]:
+    mask = (1 << int(chunk_bits)) - 1
+    return [(int(value) >> (index * int(chunk_bits))) & mask for index in range(int(chunk_count))]
+
+
+def _chunked_const_mul(value: int, constant: int, p: int, chunk_bits: int, chunk_count: int) -> int:
+    total = 0
+    for index, chunk in enumerate(_split_chunks(constant, chunk_bits, chunk_count)):
+        total += int(value) * int(chunk) * pow(2, index * int(chunk_bits), p)
+    return total % p
+
+
 def _apply_instruction(env: Dict[str, Any], ins: Dict[str, Any], p: int) -> None:
     op = ins['op']
     dst = ins.get('dst')
@@ -179,6 +191,34 @@ def _apply_instruction(env: Dict[str, Any], ins: Dict[str, Any], p: int) -> None
         yz = (lookup_y * z_acc) % p
         e = (y_acc + yz) % p
         f = (21 * z_acc) % p
+        m = (i + f) % p
+        n = (i - f) % p
+        out_x, out_y, out_z = ins['dst']
+        env[out_x] = (k * n - e * c) % p
+        env[out_y] = (n * m + c * l) % p
+        env[out_z] = (m * e + l * k) % p
+    elif op == 'complete_a0_reusable_chunk_tail':
+        src = ins['src']
+        chunk_bits = int(ins['chunk_bits'])
+        chunk_count = int(ins['chunk_count'])
+        b3 = int(ins.get('b3', 21))
+        x_acc = env[src['x']]
+        y_acc = env[src['y']]
+        z_acc = env[src['z']]
+        lookup_x = env['T.x'][env['k']]
+        lookup_y = env['T.y'][env['k']]
+        lookup_sum = (lookup_x + lookup_y) % p
+        g = (x_acc + y_acc) % p
+        h = _chunked_const_mul(g, lookup_sum, p, chunk_bits, chunk_count)
+        a = _chunked_const_mul(x_acc, lookup_x, p, chunk_bits, chunk_count)
+        zx = _chunked_const_mul(z_acc, lookup_x, p, chunk_bits, chunk_count)
+        c = (b3 * (x_acc + zx)) % p
+        i = _chunked_const_mul(y_acc, lookup_y, p, chunk_bits, chunk_count)
+        k = (h - a - i) % p
+        l = (3 * a) % p
+        yz = _chunked_const_mul(z_acc, lookup_y, p, chunk_bits, chunk_count)
+        e = (y_acc + yz) % p
+        f = (b3 * z_acc) % p
         m = (i + f) % p
         n = (i - f) % p
         out_x, out_y, out_z = ins['dst']

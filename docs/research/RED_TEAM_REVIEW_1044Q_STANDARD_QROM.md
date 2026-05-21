@@ -1439,8 +1439,11 @@ Partially mitigated after review:
   into chunks, reuses each chunk across matching consumers, and exhaustively
   verifies the chunked tail against the unchunked complete-add tail and affine
   group addition over the same `110,692` curated toy boundary pairs. The artifact
-  still marks the candidate as not-headline because it has not yet generated the
-  chunked multiplier lowering or a four-slot executable leaf.
+  now also contains an executable candidate leaf using
+  `complete_a0_reusable_chunk_tail` with a fourth scratch slot `qchunk`, and the
+  toy check executes that leaf through `exec_netlist`. It still marks the
+  candidate as not-headline because it has not yet generated the chunked
+  multiplier lowering, full liveness certificate, or ZKP binding.
 - `ZK-3`: proof binaries are now included in the curated proof manifest, but
   the checked JSON fixtures still intentionally keep the large binary proof
   payloads out-of-line.

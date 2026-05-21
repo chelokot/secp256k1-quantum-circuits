@@ -14,6 +14,52 @@ from tail_macro_reversibility import (
     _subgroup_points,
     _tail_map,
 )
+from verifier import exec_netlist
+
+
+PRODUCTION_CHUNK_BITS = 155
+PRODUCTION_CHUNK_COUNT = 2
+
+
+def build_reusable_chunk_tail_leaf(
+    *,
+    chunk_bits: int = PRODUCTION_CHUNK_BITS,
+    chunk_count: int = PRODUCTION_CHUNK_COUNT,
+    b3: int = 21,
+) -> Dict[str, Any]:
+    instructions = [
+        {'pc': 0, 'op': 'load_input', 'dst': 'qx', 'src': 'Q.X'},
+        {'pc': 1, 'op': 'load_input', 'dst': 'qy', 'src': 'Q.Y'},
+        {'pc': 2, 'op': 'load_input', 'dst': 'qz', 'src': 'Q.Z'},
+        {'pc': 3, 'op': 'lookup_meta', 'dst': 'lookup_meta', 'src': {'table': 'T.meta', 'key': 'k'}},
+        {'pc': 4, 'op': 'bool_from_flag', 'dst': 'f_lookup_inf', 'src': {'flags': 'lookup_meta', 'bit': 0}},
+        {
+            'pc': 5,
+            'op': 'complete_a0_reusable_chunk_tail',
+            'dst': ['qx', 'qy', 'qz'],
+            'src': {'x': 'qx', 'y': 'qy', 'z': 'qz', 'scratch': 'qchunk'},
+            'chunk_bits': int(chunk_bits),
+            'chunk_count': int(chunk_count),
+            'b3': int(b3),
+        },
+    ]
+    return {
+        'schema': 'compiler-project-reusable-chunk-tail-leaf-candidate-v1',
+        'variant': 'a0_complete_reusable_chunk_tail_candidate',
+        'arithmetic_slots': ['qx', 'qy', 'qz', 'qchunk'],
+        'control_slots': ['f_lookup_inf'],
+        'lookup_interface_slots': ['lookup_meta'],
+        'lookup_constant_sources': ['lookup_x', 'lookup_y', 'lookup_x_plus_y'],
+        'lookup_infinity_policy': 'boundary_noop',
+        'chunk_contract': {
+            'chunk_bits': int(chunk_bits),
+            'chunk_count': int(chunk_count),
+            'b3': int(b3),
+            'full_coordinate_lanes_materialized': 0,
+            'reusable_chunk_slot': 'qchunk',
+        },
+        'instructions': instructions,
+    }
 
 
 def _split_chunks(value: int, chunk_bits: int, chunk_count: int) -> List[int]:
@@ -89,6 +135,12 @@ def _toy_semantic_row(curve: Mapping[str, Any]) -> Dict[str, Any]:
         'lookup_infinity': 0,
     }
     semantic_failures = []
+    executable_failures = []
+    candidate_leaf = build_reusable_chunk_tail_leaf(
+        chunk_bits=chunk_bits,
+        chunk_count=chunk_count,
+        b3=(3 * curve_b) % modulus,
+    )
     total_pairs = 0
     for lookup in points:
         for accumulator in points:
@@ -96,6 +148,7 @@ def _toy_semantic_row(curve: Mapping[str, Any]) -> Dict[str, Any]:
             if lookup is None:
                 output_triple = input_triple
                 reference_triple = input_triple
+                executable_triple = input_triple
             else:
                 output_triple = _chunked_tail_map(
                     modulus=modulus,
@@ -109,14 +162,18 @@ def _toy_semantic_row(curve: Mapping[str, Any]) -> Dict[str, Any]:
                     chunk_count=chunk_count,
                 )
                 reference_triple = _tail_map(modulus, curve_b, lookup[0], lookup[1], *input_triple)
+                executable_triple = exec_netlist(candidate_leaf['instructions'], modulus, input_triple, lookup, 1)
             expected_affine = _add_points(accumulator, lookup, modulus)
             output_affine = _projective_to_affine(output_triple, modulus)
             reference_affine = _projective_to_affine(reference_triple, modulus)
+            executable_affine = _projective_to_affine(executable_triple, modulus)
             category_totals[_boundary_case(accumulator, lookup, modulus)] += 1
             total_pairs += 1
             if (
                 output_triple != reference_triple
+                or executable_triple != output_triple
                 or output_affine != reference_affine
+                or executable_affine != output_affine
                 or output_affine != expected_affine
             ) and len(semantic_failures) < 4:
                 semantic_failures.append({
@@ -124,10 +181,19 @@ def _toy_semantic_row(curve: Mapping[str, Any]) -> Dict[str, Any]:
                     'accumulator_affine': None if accumulator is None else list(accumulator),
                     'input_projective': list(input_triple),
                     'output_projective': list(output_triple),
+                    'executable_projective': list(executable_triple),
                     'reference_projective': list(reference_triple),
                     'output_affine': None if output_affine is None else list(output_affine),
+                    'executable_affine': None if executable_affine is None else list(executable_affine),
                     'reference_affine': None if reference_affine is None else list(reference_affine),
                     'expected_affine': None if expected_affine is None else list(expected_affine),
+                })
+            if executable_triple != output_triple and len(executable_failures) < 4:
+                executable_failures.append({
+                    'lookup_affine': None if lookup is None else list(lookup),
+                    'accumulator_affine': None if accumulator is None else list(accumulator),
+                    'executable_projective': list(executable_triple),
+                    'chunked_reference_projective': list(output_triple),
                 })
     return {
         'curve': curve['name'],
@@ -137,7 +203,9 @@ def _toy_semantic_row(curve: Mapping[str, Any]) -> Dict[str, Any]:
         'total_boundary_pairs': total_pairs,
         'category_totals': category_totals,
         'semantic_pass': not semantic_failures,
+        'executable_pass': not executable_failures,
         'semantic_failure_examples': semantic_failures,
+        'executable_failure_examples': executable_failures,
     }
 
 
@@ -161,9 +229,11 @@ def build_reusable_chunk_tail_candidate(
             },
             'full_coordinate_lanes_materialized': 0,
         },
+        'executable_leaf_contract': build_reusable_chunk_tail_leaf(),
         'toy_semantic_equivalence': {
             'rows': toy_rows,
             'all_rows_semantic': all(bool(row['semantic_pass']) for row in toy_rows),
+            'all_rows_executable': all(bool(row['executable_pass']) for row in toy_rows),
             'total_boundary_pairs': sum(int(row['total_boundary_pairs']) for row in toy_rows),
             'category_totals': {
                 category: sum(int(row['category_totals'][category]) for row in toy_rows)
@@ -191,4 +261,4 @@ def build_reusable_chunk_tail_candidate(
     }
 
 
-__all__ = ['build_reusable_chunk_tail_candidate']
+__all__ = ['build_reusable_chunk_tail_candidate', 'build_reusable_chunk_tail_leaf']
