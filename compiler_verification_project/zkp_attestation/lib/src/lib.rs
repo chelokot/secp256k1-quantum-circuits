@@ -3681,11 +3681,20 @@ pub fn public_values_from_bytes(bytes: &[u8]) -> PublicValues {
     serde_json::from_slice(bytes).expect("failed to deserialize public values")
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct FixtureArtifactMetadata {
+    pub path: String,
+    pub sha256: String,
+    pub size_bytes: u64,
+}
+
 pub fn fixture_json(
     public_values: &PublicValues,
     verifying_key: &str,
     proof_hex: Option<&str>,
     system: &str,
+    proof_artifact: Option<&FixtureArtifactMetadata>,
+    verifier_key_artifact: Option<&FixtureArtifactMetadata>,
 ) -> String {
     serde_json::to_string_pretty(&serde_json::json!({
         "schema": "compiler-project-zkp-attestation-fixture-v1",
@@ -3693,6 +3702,12 @@ pub fn fixture_json(
         "verification_key": verifying_key,
         "public_values": public_values,
         "proof": proof_hex,
+        "proof_path": proof_artifact.map(|metadata| metadata.path.clone()),
+        "proof_sha256": proof_artifact.map(|metadata| metadata.sha256.clone()),
+        "proof_size_bytes": proof_artifact.map(|metadata| metadata.size_bytes),
+        "verifier_key_path": verifier_key_artifact.map(|metadata| metadata.path.clone()),
+        "verifier_key_sha256": verifier_key_artifact.map(|metadata| metadata.sha256.clone()),
+        "verifier_key_size_bytes": verifier_key_artifact.map(|metadata| metadata.size_bytes),
     }))
     .expect("failed to serialize proof fixture")
 }

@@ -5,7 +5,10 @@ mod wrap_only;
 
 use clap::{Parser, ValueEnum};
 use core_only::CoreOnlyBlockingProver;
-use secp256k1_zkp_attestation_lib::{fixture_json, PreparedAttestationInput, PublicValues};
+use secp256k1_zkp_attestation_lib::{
+    fixture_json, FixtureArtifactMetadata, PreparedAttestationInput, PublicValues,
+};
+use sha2::{Digest, Sha256};
 use sp1_sdk::ProvingKey;
 use sp1_sdk::{
     blocking::{LightProver, ProveRequest, Prover, ProverClient},
@@ -152,6 +155,33 @@ enum ResourceProfile {
 
 fn resolve_path(path: &str) -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR")).join(path)
+}
+
+fn repository_root() -> PathBuf {
+    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join("../../..")
+        .canonicalize()
+        .expect("failed to resolve repository root")
+}
+
+fn display_artifact_path(path: &Path) -> String {
+    let canonical = path.canonicalize().unwrap_or_else(|_| path.to_path_buf());
+    canonical
+        .strip_prefix(repository_root())
+        .unwrap_or(&canonical)
+        .to_string_lossy()
+        .to_string()
+}
+
+fn fixture_artifact_metadata(path: &Path) -> FixtureArtifactMetadata {
+    let bytes = fs::read(path)
+        .unwrap_or_else(|error| panic!("failed to read fixture artifact {:?}: {error}", path));
+    let sha256 = hex::encode(Sha256::digest(&bytes));
+    FixtureArtifactMetadata {
+        path: display_artifact_path(path),
+        sha256,
+        size_bytes: bytes.len() as u64,
+    }
 }
 
 fn load_input(path: &str) -> PreparedAttestationInput {
@@ -359,6 +389,8 @@ fn main() {
                 &pk.verifying_key().bytes32().to_string(),
                 None,
                 proof_system_name(args.system),
+                None,
+                None,
             );
             let fixture_path = output_dir.join("zkp_attestation_fixture_core.json");
             fs::write(&fixture_path, fixture).expect("failed to write core fixture");
@@ -655,6 +687,12 @@ fn main() {
     let groth16_checked_verifier_key_path = groth16_verifier_key_path
         .as_ref()
         .map(|path| write_groth16_verifier_key(&output_dir, path));
+    let proof_artifact = proof_bundle_path
+        .as_ref()
+        .map(|path| fixture_artifact_metadata(path));
+    let verifier_key_artifact = groth16_checked_verifier_key_path
+        .as_ref()
+        .map(|path| fixture_artifact_metadata(path));
     let proof_hex = match args.system {
         ProofSystem::Core | ProofSystem::Compressed => None,
         ProofSystem::Groth16 | ProofSystem::Plonk => {
@@ -666,6 +704,8 @@ fn main() {
         &verifying_key,
         proof_hex.as_deref(),
         proof_system_name(args.system),
+        proof_artifact.as_ref(),
+        verifier_key_artifact.as_ref(),
     );
     let fixture_path = output_dir.join(format!(
         "zkp_attestation_fixture_{}.json",
@@ -696,7 +736,7 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
-    use super::infer_groth16_verify_dir;
+    use super::{fixture_artifact_metadata, infer_groth16_verify_dir};
     use crate::ATTESTATION_ELF;
     use secp256k1_zkp_attestation_lib::PublicValues;
     use sp1_sdk::ProvingKey;
@@ -758,6 +798,11 @@ mod tests {
         let bundle =
             SP1ProofWithPublicValues::load(artifact_dir.join("zkp_attestation_proof_groth16.bin"))
                 .expect("failed to load checked groth16 bundle");
+        let proof_metadata =
+            fixture_artifact_metadata(&artifact_dir.join("zkp_attestation_proof_groth16.bin"));
+        let verifier_key_metadata = fixture_artifact_metadata(
+            &artifact_dir.join("zkp_attestation_groth16_verifier/groth16_vk.bin"),
+        );
 
         let client = super::build_execute_client();
         let pk = client
@@ -773,6 +818,30 @@ mod tests {
         assert_eq!(
             fixture["proof"],
             format!("0x{}", hex::encode(bundle.bytes()))
+        );
+        assert_eq!(
+            fixture["proof_path"].as_str(),
+            Some(proof_metadata.path.as_str())
+        );
+        assert_eq!(
+            fixture["proof_sha256"].as_str(),
+            Some(proof_metadata.sha256.as_str())
+        );
+        assert_eq!(
+            fixture["proof_size_bytes"].as_u64(),
+            Some(proof_metadata.size_bytes)
+        );
+        assert_eq!(
+            fixture["verifier_key_path"].as_str(),
+            Some(verifier_key_metadata.path.as_str())
+        );
+        assert_eq!(
+            fixture["verifier_key_sha256"].as_str(),
+            Some(verifier_key_metadata.sha256.as_str())
+        );
+        assert_eq!(
+            fixture["verifier_key_size_bytes"].as_u64(),
+            Some(verifier_key_metadata.size_bytes)
         );
         assert_eq!(
             fixture["public_values"],

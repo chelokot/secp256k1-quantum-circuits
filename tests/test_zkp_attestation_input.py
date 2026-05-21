@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import sys
 from pathlib import Path
 
@@ -97,12 +98,22 @@ def test_checked_in_all_fixtures_match_public_values() -> None:
     artifact_dir = REPO_ROOT / 'compiler_verification_project' / 'artifacts'
     public_values = json.loads((artifact_dir / 'zkp_attestation_public_values.json').read_text())
     expected = {
-        'zkp_attestation_fixture_core.json': ('core', None),
-        'zkp_attestation_fixture_compressed.json': ('compressed', None),
-        'zkp_attestation_fixture_groth16.json': ('groth16', '0x'),
+        'zkp_attestation_fixture_core.json': ('core', None, None, None),
+        'zkp_attestation_fixture_compressed.json': (
+            'compressed',
+            None,
+            'compiler_verification_project/artifacts/zkp_attestation_proof_compressed.bin',
+            None,
+        ),
+        'zkp_attestation_fixture_groth16.json': (
+            'groth16',
+            '0x',
+            'compiler_verification_project/artifacts/zkp_attestation_proof_groth16.bin',
+            'compiler_verification_project/artifacts/zkp_attestation_groth16_verifier/groth16_vk.bin',
+        ),
     }
     verification_key = None
-    for fixture_name, (proof_system, proof_prefix) in expected.items():
+    for fixture_name, (proof_system, proof_prefix, proof_path, verifier_key_path) in expected.items():
         fixture = json.loads((artifact_dir / fixture_name).read_text())
         assert fixture['schema'] == 'compiler-project-zkp-attestation-fixture-v1'
         assert fixture['proof_system'] == proof_system
@@ -115,6 +126,26 @@ def test_checked_in_all_fixtures_match_public_values() -> None:
         if verification_key is None:
             verification_key = fixture['verification_key']
         assert fixture['verification_key'] == verification_key
+        if proof_path is None:
+            assert fixture['proof_path'] is None
+            assert fixture['proof_sha256'] is None
+            assert fixture['proof_size_bytes'] is None
+        else:
+            proof_file = REPO_ROOT / proof_path
+            proof_bytes = proof_file.read_bytes()
+            assert fixture['proof_path'] == proof_path
+            assert fixture['proof_sha256'] == hashlib.sha256(proof_bytes).hexdigest()
+            assert fixture['proof_size_bytes'] == len(proof_bytes)
+        if verifier_key_path is None:
+            assert fixture['verifier_key_path'] is None
+            assert fixture['verifier_key_sha256'] is None
+            assert fixture['verifier_key_size_bytes'] is None
+        else:
+            verifier_key_file = REPO_ROOT / verifier_key_path
+            verifier_key_bytes = verifier_key_file.read_bytes()
+            assert fixture['verifier_key_path'] == verifier_key_path
+            assert fixture['verifier_key_sha256'] == hashlib.sha256(verifier_key_bytes).hexdigest()
+            assert fixture['verifier_key_size_bytes'] == len(verifier_key_bytes)
 
 
 def test_zkp_attestation_bundle_supports_alternate_output_dir(tmp_path: Path) -> None:

@@ -3528,6 +3528,7 @@ dependencies = [
  "secp256k1-zkp-attestation-lib",
  "serde",
  "serde_json",
+ "sha2",
  "slop-algebra",
  "sp1-build",
  "sp1-core-executor",

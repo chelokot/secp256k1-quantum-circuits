@@ -16,5 +16,11 @@
     "selected_family_name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1"
   },
   "schema": "compiler-project-zkp-attestation-fixture-v1",
-  "verification_key": "0x001a46dedf45c5e5254b5be0b0a515e85109541f3e1a6820a809532db6444174"
+  "verification_key": "0x001a46dedf45c5e5254b5be0b0a515e85109541f3e1a6820a809532db6444174",
+  "proof_path": "compiler_verification_project/artifacts/zkp_attestation_proof_compressed.bin",
+  "proof_sha256": "dfe85b2f9eba6bac03517d31d9bcebfef50d48ba18fbc05aa676859bcd549e71",
+  "proof_size_bytes": 1273155,
+  "verifier_key_path": null,
+  "verifier_key_sha256": null,
+  "verifier_key_size_bytes": null
 }

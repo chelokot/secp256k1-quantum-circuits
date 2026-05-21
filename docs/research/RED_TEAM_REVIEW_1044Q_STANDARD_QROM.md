@@ -455,11 +455,27 @@ Required hardening:
 
 ### 10. The compressed proof fixture is not self-contained
 
-The checked compressed fixture JSON currently has `proof: null`; the actual
-compressed proof is stored in
+Reviewed-state issue:
+
+The checked compressed fixture JSON had `proof: null`; the actual compressed
+proof was stored in
 `compiler_verification_project/artifacts/zkp_attestation_proof_compressed.bin`.
 The Groth16 fixture embeds a short hex proof string, while compressed proof
 verification relies on the sidecar binary.
+
+Current remediation:
+
+Every checked fixture now carries explicit sidecar metadata:
+
+- `proof_path`
+- `proof_sha256`
+- `proof_size_bytes`
+- `verifier_key_path`
+- `verifier_key_sha256`
+- `verifier_key_size_bytes`
+
+`tests/test_zkp_attestation_input.py` verifies those fixture fields against the
+checked binary proof bundles and checked Groth16 verifier key.
 
 This is not a mathematical bug. The binary proof verified locally. But it is a
 release-packaging weakness:
@@ -471,9 +487,8 @@ release-packaging weakness:
 
 Required hardening:
 
-- Add `proof_path`, `proof_sha256`, and `proof_size_bytes` to every fixture.
-- Make tests verify the fixture metadata against the binary proof files.
-- Include the verifier-key digest in the fixture public metadata.
+- Keep proof and verifier-key sidecar metadata in every fixture and keep tests
+  verifying the metadata against checked binary files.
 
 ## Hardcoded Numbers And Computations
 
