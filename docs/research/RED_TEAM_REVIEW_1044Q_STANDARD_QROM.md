@@ -209,10 +209,11 @@ Current additional diagnostic:
   rather than a macro contract.
 - `compiler_verification_project/artifacts/tail_macro_reversibility.json` adds
   the matching reversible-boundary check. The macro polynomial is not injective
-  over the full raw field-register domain, although it is injective over checked
-  valid non-infinity projective subgroup representatives on curated toy curves.
+  over the full raw field-register domain and is also not injective over all
+  plain-projective representatives of the subgroup. It is injective over
+  canonical subgroup representatives and over fixed-lookup reachable toy orbits.
   A future three-slot implementation must therefore prove either a concrete
-  reversible permutation extension or an explicit valid-subspace encoding.
+  reversible permutation extension or an explicit reachable-subspace encoding.
 
 ### 2. The resource ledger is still owner-summed, not circuit-derived
 

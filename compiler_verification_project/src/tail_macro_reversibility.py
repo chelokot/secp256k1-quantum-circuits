@@ -99,25 +99,59 @@ def _full_domain_collision(curve: Dict[str, Any]) -> Dict[str, Any]:
     return {'domain_size': modulus ** 3, 'injective': True, 'collision': None}
 
 
-def _valid_projective_subgroup_injectivity(curve: Dict[str, Any]) -> Dict[str, Any]:
+def _canonical_subgroup_injectivity(curve: Dict[str, Any]) -> Dict[str, Any]:
     modulus = int(curve['p'])
     curve_b = int(curve['b'])
     lookup_x, lookup_y = curve['generator']
     seen: Dict[Tuple[int, int, int], Tuple[int, int, int]] = {}
     for point in _subgroup_points(modulus, curve['generator'], int(curve['order'])):
+        input_triple = (0, 1, 0) if point is None else (point[0], point[1], 1)
+        output_triple = _tail_map(modulus, curve_b, lookup_x, lookup_y, *input_triple)
+        previous = seen.get(output_triple)
+        if previous is not None and previous != input_triple:
+            return {
+                'curve': curve['name'],
+                'representative_count': int(curve['order']),
+                'injective': False,
+                'collision': {
+                    'first_input': list(previous),
+                    'second_input': list(input_triple),
+                    'shared_output': list(output_triple),
+                },
+            }
+        seen[output_triple] = input_triple
+    return {
+        'curve': curve['name'],
+        'representative_count': int(curve['order']),
+        'injective': True,
+        'collision': None,
+    }
+
+
+def _all_projective_representative_collision(curve: Dict[str, Any]) -> Dict[str, Any]:
+    modulus = int(curve['p'])
+    curve_b = int(curve['b'])
+    lookup_x, lookup_y = curve['generator']
+    seen: Dict[Tuple[int, int, int], Tuple[int, int, int]] = {}
+    full_representative_count = 1 + (int(curve['order']) - 1) * (modulus - 1)
+    searched_representatives = 0
+    for point in _subgroup_points(modulus, curve['generator'], int(curve['order'])):
         if point is None:
-            continue
-        affine_x, affine_y = point
-        for accum_z in range(1, modulus):
-            accum_x = (affine_x * accum_z * accum_z) % modulus
-            accum_y = (affine_y * accum_z * accum_z * accum_z) % modulus
-            input_triple = (accum_x, accum_y, accum_z)
-            output_triple = _tail_map(modulus, curve_b, lookup_x, lookup_y, accum_x, accum_y, accum_z)
+            representative_rows = [(0, 1, 0)]
+        else:
+            representative_rows = [
+                ((point[0] * accum_z) % modulus, (point[1] * accum_z) % modulus, accum_z)
+                for accum_z in range(1, modulus)
+            ]
+        for input_triple in representative_rows:
+            searched_representatives += 1
+            output_triple = _tail_map(modulus, curve_b, lookup_x, lookup_y, *input_triple)
             previous = seen.get(output_triple)
             if previous is not None and previous != input_triple:
                 return {
                     'curve': curve['name'],
-                    'representative_count': (int(curve['order']) - 1) * (modulus - 1),
+                    'full_representative_count': full_representative_count,
+                    'searched_representatives_until_collision': searched_representatives,
                     'injective': False,
                     'collision': {
                         'first_input': list(previous),
@@ -128,7 +162,45 @@ def _valid_projective_subgroup_injectivity(curve: Dict[str, Any]) -> Dict[str, A
             seen[output_triple] = input_triple
     return {
         'curve': curve['name'],
-        'representative_count': (int(curve['order']) - 1) * (modulus - 1),
+        'full_representative_count': full_representative_count,
+        'searched_representatives_until_collision': searched_representatives,
+        'injective': True,
+        'collision': None,
+    }
+
+
+def _fixed_lookup_reachable_orbit_injectivity(curve: Dict[str, Any]) -> Dict[str, Any]:
+    modulus = int(curve['p'])
+    curve_b = int(curve['b'])
+    lookup_x, lookup_y = curve['generator']
+    state = (0, 1, 0)
+    orbit = []
+    for _ in range(int(curve['order'])):
+        orbit.append(state)
+        state = _tail_map(modulus, curve_b, lookup_x, lookup_y, *state)
+    seen: Dict[Tuple[int, int, int], Tuple[int, int, int]] = {}
+    for input_triple in orbit:
+        output_triple = _tail_map(modulus, curve_b, lookup_x, lookup_y, *input_triple)
+        previous = seen.get(output_triple)
+        if previous is not None and previous != input_triple:
+            return {
+                'curve': curve['name'],
+                'reachable_state_count': len(orbit),
+                'unique_reachable_state_count': len(set(orbit)),
+                'returns_to_projective_infinity_after_group_order_steps': state[2] % modulus == 0,
+                'injective': False,
+                'collision': {
+                    'first_input': list(previous),
+                    'second_input': list(input_triple),
+                    'shared_output': list(output_triple),
+                },
+            }
+        seen[output_triple] = input_triple
+    return {
+        'curve': curve['name'],
+        'reachable_state_count': len(orbit),
+        'unique_reachable_state_count': len(set(orbit)),
+        'returns_to_projective_infinity_after_group_order_steps': state[2] % modulus == 0,
         'injective': True,
         'collision': None,
     }
@@ -136,7 +208,9 @@ def _valid_projective_subgroup_injectivity(curve: Dict[str, Any]) -> Dict[str, A
 
 def build_tail_macro_reversibility() -> Dict[str, Any]:
     full_domain_curve = TOY_CURVES[0]
-    valid_rows = [_valid_projective_subgroup_injectivity(curve) for curve in TOY_CURVES]
+    canonical_rows = [_canonical_subgroup_injectivity(curve) for curve in TOY_CURVES]
+    projective_rows = [_all_projective_representative_collision(curve) for curve in TOY_CURVES]
+    reachable_rows = [_fixed_lookup_reachable_orbit_injectivity(curve) for curve in TOY_CURVES]
     full_domain = {
         'curve': full_domain_curve['name'],
         **_full_domain_collision(full_domain_curve),
@@ -146,16 +220,31 @@ def build_tail_macro_reversibility() -> Dict[str, Any]:
         'opcode': 'complete_a0_all_streamed_tail',
         'semantic_map': '(X,Y,Z) -> complete_a0_all_streamed_tail(X,Y,Z,lookup_x,lookup_y)',
         'full_raw_field_domain': full_domain,
-        'valid_projective_subgroup_domain': {
+        'canonical_subgroup_domain': {
             'lookup_point_policy': 'generator_point_as_nonzero_lookup_entry',
-            'rows': valid_rows,
-            'all_checked_rows_injective': all(bool(row['injective']) for row in valid_rows),
+            'rows': canonical_rows,
+            'all_checked_rows_injective': all(bool(row['injective']) for row in canonical_rows),
+        },
+        'all_projective_representatives_domain': {
+            'projective_representation': 'plain_projective_x_over_z_y_over_z',
+            'rows': projective_rows,
+            'all_checked_rows_injective': all(bool(row['injective']) for row in projective_rows),
+        },
+        'fixed_lookup_reachable_orbit_domain': {
+            'lookup_point_policy': 'repeat_generator_point_as_nonzero_lookup_entry',
+            'rows': reachable_rows,
+            'all_checked_rows_injective': all(bool(row['injective']) for row in reachable_rows),
+            'all_checked_rows_return_to_projective_infinity': all(
+                bool(row['returns_to_projective_infinity_after_group_order_steps'])
+                for row in reachable_rows
+            ),
         },
         'status': 'three_slot_tail_requires_valid_subspace_permutation_extension',
         'notes': [
             'The polynomial tail formula is not injective over the full raw field-register domain, so it cannot itself be a no-ancilla in-place reversible map on arbitrary field triples.',
-            'The same formula is injective on the checked valid non-infinity projective subgroup representatives for the curated toy curves.',
-            'A future three-slot primitive schedule must therefore prove a reversible permutation extension or an explicit valid-subspace encoding; semantic point-add tests alone are not enough.',
+            'The same formula is injective on canonical subgroup representatives and on the fixed-lookup reachable orbit for the curated toy curves.',
+            'It is not injective on all plain-projective representatives of the subgroup, so a future three-slot primitive schedule must specify the exact reachable/encoded subspace instead of saying all valid projective triples.',
+            'A future three-slot primitive schedule must prove a reversible permutation extension or an explicit valid-subspace encoding; semantic point-add tests alone are not enough.',
         ],
     }
 

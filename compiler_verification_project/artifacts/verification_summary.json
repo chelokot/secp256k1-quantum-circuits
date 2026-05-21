@@ -4202,8 +4202,8 @@
     ]
   },
   "tail_macro_reversibility_checks": {
-    "pass": 5,
-    "total": 5,
+    "pass": 7,
+    "total": 7,
     "checks": [
       {
         "name": "tail_macro_reversibility_matches_generator",
@@ -4234,41 +4234,179 @@
               ]
             }
           },
-          "valid_projective_subgroup_domain": {
+          "canonical_subgroup_domain": {
             "lookup_point_policy": "generator_point_as_nonzero_lookup_entry",
             "rows": [
               {
                 "curve": "toy61_b2",
-                "representative_count": 3600,
+                "representative_count": 61,
                 "injective": true,
                 "collision": null
               },
               {
                 "curve": "toy127_b11",
-                "representative_count": 13608,
+                "representative_count": 127,
                 "injective": true,
                 "collision": null
               },
               {
                 "curve": "toy181_b3",
-                "representative_count": 29160,
+                "representative_count": 181,
                 "injective": true,
                 "collision": null
               },
               {
                 "curve": "toy241_b29",
-                "representative_count": 50400,
+                "representative_count": 241,
                 "injective": true,
                 "collision": null
               }
             ],
             "all_checked_rows_injective": true
           },
+          "all_projective_representatives_domain": {
+            "projective_representation": "plain_projective_x_over_z_y_over_z",
+            "rows": [
+              {
+                "curve": "toy61_b2",
+                "full_representative_count": 3601,
+                "searched_representatives_until_collision": 32,
+                "injective": false,
+                "collision": {
+                  "first_input": [
+                    30,
+                    57,
+                    30
+                  ],
+                  "second_input": [
+                    31,
+                    4,
+                    31
+                  ],
+                  "shared_output": [
+                    1,
+                    48,
+                    48
+                  ]
+                }
+              },
+              {
+                "curve": "toy127_b11",
+                "full_representative_count": 13609,
+                "searched_representatives_until_collision": 56,
+                "injective": false,
+                "collision": {
+                  "first_input": [
+                    54,
+                    49,
+                    54
+                  ],
+                  "second_input": [
+                    55,
+                    60,
+                    55
+                  ],
+                  "shared_output": [
+                    12,
+                    4,
+                    46
+                  ]
+                }
+              },
+              {
+                "curve": "toy181_b3",
+                "full_representative_count": 29161,
+                "searched_representatives_until_collision": 83,
+                "injective": false,
+                "collision": {
+                  "first_input": [
+                    81,
+                    162,
+                    81
+                  ],
+                  "second_input": [
+                    82,
+                    1,
+                    82
+                  ],
+                  "shared_output": [
+                    140,
+                    38,
+                    16
+                  ]
+                }
+              },
+              {
+                "curve": "toy241_b29",
+                "full_representative_count": 50401,
+                "searched_representatives_until_collision": 107,
+                "injective": false,
+                "collision": {
+                  "first_input": [
+                    105,
+                    193,
+                    105
+                  ],
+                  "second_input": [
+                    106,
+                    18,
+                    106
+                  ],
+                  "shared_output": [
+                    62,
+                    204,
+                    50
+                  ]
+                }
+              }
+            ],
+            "all_checked_rows_injective": false
+          },
+          "fixed_lookup_reachable_orbit_domain": {
+            "lookup_point_policy": "repeat_generator_point_as_nonzero_lookup_entry",
+            "rows": [
+              {
+                "curve": "toy61_b2",
+                "reachable_state_count": 61,
+                "unique_reachable_state_count": 61,
+                "returns_to_projective_infinity_after_group_order_steps": true,
+                "injective": true,
+                "collision": null
+              },
+              {
+                "curve": "toy127_b11",
+                "reachable_state_count": 127,
+                "unique_reachable_state_count": 127,
+                "returns_to_projective_infinity_after_group_order_steps": true,
+                "injective": true,
+                "collision": null
+              },
+              {
+                "curve": "toy181_b3",
+                "reachable_state_count": 181,
+                "unique_reachable_state_count": 181,
+                "returns_to_projective_infinity_after_group_order_steps": true,
+                "injective": true,
+                "collision": null
+              },
+              {
+                "curve": "toy241_b29",
+                "reachable_state_count": 241,
+                "unique_reachable_state_count": 241,
+                "returns_to_projective_infinity_after_group_order_steps": true,
+                "injective": true,
+                "collision": null
+              }
+            ],
+            "all_checked_rows_injective": true,
+            "all_checked_rows_return_to_projective_infinity": true
+          },
           "status": "three_slot_tail_requires_valid_subspace_permutation_extension",
           "notes": [
             "The polynomial tail formula is not injective over the full raw field-register domain, so it cannot itself be a no-ancilla in-place reversible map on arbitrary field triples.",
-            "The same formula is injective on the checked valid non-infinity projective subgroup representatives for the curated toy curves.",
-            "A future three-slot primitive schedule must therefore prove a reversible permutation extension or an explicit valid-subspace encoding; semantic point-add tests alone are not enough."
+            "The same formula is injective on canonical subgroup representatives and on the fixed-lookup reachable orbit for the curated toy curves.",
+            "It is not injective on all plain-projective representatives of the subgroup, so a future three-slot primitive schedule must specify the exact reachable/encoded subspace instead of saying all valid projective triples.",
+            "A future three-slot primitive schedule must prove a reversible permutation extension or an explicit valid-subspace encoding; semantic point-add tests alone are not enough."
           ]
         },
         "observed": {
@@ -4297,41 +4435,179 @@
               ]
             }
           },
-          "valid_projective_subgroup_domain": {
+          "canonical_subgroup_domain": {
             "lookup_point_policy": "generator_point_as_nonzero_lookup_entry",
             "rows": [
               {
                 "curve": "toy61_b2",
-                "representative_count": 3600,
+                "representative_count": 61,
                 "injective": true,
                 "collision": null
               },
               {
                 "curve": "toy127_b11",
-                "representative_count": 13608,
+                "representative_count": 127,
                 "injective": true,
                 "collision": null
               },
               {
                 "curve": "toy181_b3",
-                "representative_count": 29160,
+                "representative_count": 181,
                 "injective": true,
                 "collision": null
               },
               {
                 "curve": "toy241_b29",
-                "representative_count": 50400,
+                "representative_count": 241,
                 "injective": true,
                 "collision": null
               }
             ],
             "all_checked_rows_injective": true
           },
+          "all_projective_representatives_domain": {
+            "projective_representation": "plain_projective_x_over_z_y_over_z",
+            "rows": [
+              {
+                "curve": "toy61_b2",
+                "full_representative_count": 3601,
+                "searched_representatives_until_collision": 32,
+                "injective": false,
+                "collision": {
+                  "first_input": [
+                    30,
+                    57,
+                    30
+                  ],
+                  "second_input": [
+                    31,
+                    4,
+                    31
+                  ],
+                  "shared_output": [
+                    1,
+                    48,
+                    48
+                  ]
+                }
+              },
+              {
+                "curve": "toy127_b11",
+                "full_representative_count": 13609,
+                "searched_representatives_until_collision": 56,
+                "injective": false,
+                "collision": {
+                  "first_input": [
+                    54,
+                    49,
+                    54
+                  ],
+                  "second_input": [
+                    55,
+                    60,
+                    55
+                  ],
+                  "shared_output": [
+                    12,
+                    4,
+                    46
+                  ]
+                }
+              },
+              {
+                "curve": "toy181_b3",
+                "full_representative_count": 29161,
+                "searched_representatives_until_collision": 83,
+                "injective": false,
+                "collision": {
+                  "first_input": [
+                    81,
+                    162,
+                    81
+                  ],
+                  "second_input": [
+                    82,
+                    1,
+                    82
+                  ],
+                  "shared_output": [
+                    140,
+                    38,
+                    16
+                  ]
+                }
+              },
+              {
+                "curve": "toy241_b29",
+                "full_representative_count": 50401,
+                "searched_representatives_until_collision": 107,
+                "injective": false,
+                "collision": {
+                  "first_input": [
+                    105,
+                    193,
+                    105
+                  ],
+                  "second_input": [
+                    106,
+                    18,
+                    106
+                  ],
+                  "shared_output": [
+                    62,
+                    204,
+                    50
+                  ]
+                }
+              }
+            ],
+            "all_checked_rows_injective": false
+          },
+          "fixed_lookup_reachable_orbit_domain": {
+            "lookup_point_policy": "repeat_generator_point_as_nonzero_lookup_entry",
+            "rows": [
+              {
+                "curve": "toy61_b2",
+                "reachable_state_count": 61,
+                "unique_reachable_state_count": 61,
+                "returns_to_projective_infinity_after_group_order_steps": true,
+                "injective": true,
+                "collision": null
+              },
+              {
+                "curve": "toy127_b11",
+                "reachable_state_count": 127,
+                "unique_reachable_state_count": 127,
+                "returns_to_projective_infinity_after_group_order_steps": true,
+                "injective": true,
+                "collision": null
+              },
+              {
+                "curve": "toy181_b3",
+                "reachable_state_count": 181,
+                "unique_reachable_state_count": 181,
+                "returns_to_projective_infinity_after_group_order_steps": true,
+                "injective": true,
+                "collision": null
+              },
+              {
+                "curve": "toy241_b29",
+                "reachable_state_count": 241,
+                "unique_reachable_state_count": 241,
+                "returns_to_projective_infinity_after_group_order_steps": true,
+                "injective": true,
+                "collision": null
+              }
+            ],
+            "all_checked_rows_injective": true,
+            "all_checked_rows_return_to_projective_infinity": true
+          },
           "status": "three_slot_tail_requires_valid_subspace_permutation_extension",
           "notes": [
             "The polynomial tail formula is not injective over the full raw field-register domain, so it cannot itself be a no-ancilla in-place reversible map on arbitrary field triples.",
-            "The same formula is injective on the checked valid non-infinity projective subgroup representatives for the curated toy curves.",
-            "A future three-slot primitive schedule must therefore prove a reversible permutation extension or an explicit valid-subspace encoding; semantic point-add tests alone are not enough."
+            "The same formula is injective on canonical subgroup representatives and on the fixed-lookup reachable orbit for the curated toy curves.",
+            "It is not injective on all plain-projective representatives of the subgroup, so a future three-slot primitive schedule must specify the exact reachable/encoded subspace instead of saying all valid projective triples.",
+            "A future three-slot primitive schedule must prove a reversible permutation extension or an explicit valid-subspace encoding; semantic point-add tests alone are not enough."
           ]
         }
       },
@@ -4378,7 +4654,7 @@
         }
       },
       {
-        "name": "tail_macro_valid_projective_rows_are_injective",
+        "name": "tail_macro_canonical_subgroup_rows_are_injective",
         "pass": 1,
         "expected": "all rows injective",
         "observed": {
@@ -4386,30 +4662,180 @@
           "rows": [
             {
               "curve": "toy61_b2",
-              "representative_count": 3600,
+              "representative_count": 61,
               "injective": true,
               "collision": null
             },
             {
               "curve": "toy127_b11",
-              "representative_count": 13608,
+              "representative_count": 127,
               "injective": true,
               "collision": null
             },
             {
               "curve": "toy181_b3",
-              "representative_count": 29160,
+              "representative_count": 181,
               "injective": true,
               "collision": null
             },
             {
               "curve": "toy241_b29",
-              "representative_count": 50400,
+              "representative_count": 241,
               "injective": true,
               "collision": null
             }
           ],
           "all_checked_rows_injective": true
+        }
+      },
+      {
+        "name": "tail_macro_all_projective_representatives_are_not_injective",
+        "pass": 1,
+        "expected": "all rows non-injective with collision",
+        "observed": {
+          "projective_representation": "plain_projective_x_over_z_y_over_z",
+          "rows": [
+            {
+              "curve": "toy61_b2",
+              "full_representative_count": 3601,
+              "searched_representatives_until_collision": 32,
+              "injective": false,
+              "collision": {
+                "first_input": [
+                  30,
+                  57,
+                  30
+                ],
+                "second_input": [
+                  31,
+                  4,
+                  31
+                ],
+                "shared_output": [
+                  1,
+                  48,
+                  48
+                ]
+              }
+            },
+            {
+              "curve": "toy127_b11",
+              "full_representative_count": 13609,
+              "searched_representatives_until_collision": 56,
+              "injective": false,
+              "collision": {
+                "first_input": [
+                  54,
+                  49,
+                  54
+                ],
+                "second_input": [
+                  55,
+                  60,
+                  55
+                ],
+                "shared_output": [
+                  12,
+                  4,
+                  46
+                ]
+              }
+            },
+            {
+              "curve": "toy181_b3",
+              "full_representative_count": 29161,
+              "searched_representatives_until_collision": 83,
+              "injective": false,
+              "collision": {
+                "first_input": [
+                  81,
+                  162,
+                  81
+                ],
+                "second_input": [
+                  82,
+                  1,
+                  82
+                ],
+                "shared_output": [
+                  140,
+                  38,
+                  16
+                ]
+              }
+            },
+            {
+              "curve": "toy241_b29",
+              "full_representative_count": 50401,
+              "searched_representatives_until_collision": 107,
+              "injective": false,
+              "collision": {
+                "first_input": [
+                  105,
+                  193,
+                  105
+                ],
+                "second_input": [
+                  106,
+                  18,
+                  106
+                ],
+                "shared_output": [
+                  62,
+                  204,
+                  50
+                ]
+              }
+            }
+          ],
+          "all_checked_rows_injective": false
+        }
+      },
+      {
+        "name": "tail_macro_fixed_lookup_reachable_orbits_are_injective",
+        "pass": 1,
+        "expected": {
+          "injective": true,
+          "returns_to_projective_infinity": true
+        },
+        "observed": {
+          "lookup_point_policy": "repeat_generator_point_as_nonzero_lookup_entry",
+          "rows": [
+            {
+              "curve": "toy61_b2",
+              "reachable_state_count": 61,
+              "unique_reachable_state_count": 61,
+              "returns_to_projective_infinity_after_group_order_steps": true,
+              "injective": true,
+              "collision": null
+            },
+            {
+              "curve": "toy127_b11",
+              "reachable_state_count": 127,
+              "unique_reachable_state_count": 127,
+              "returns_to_projective_infinity_after_group_order_steps": true,
+              "injective": true,
+              "collision": null
+            },
+            {
+              "curve": "toy181_b3",
+              "reachable_state_count": 181,
+              "unique_reachable_state_count": 181,
+              "returns_to_projective_infinity_after_group_order_steps": true,
+              "injective": true,
+              "collision": null
+            },
+            {
+              "curve": "toy241_b29",
+              "reachable_state_count": 241,
+              "unique_reachable_state_count": 241,
+              "returns_to_projective_infinity_after_group_order_steps": true,
+              "injective": true,
+              "collision": null
+            }
+          ],
+          "all_checked_rows_injective": true,
+          "all_checked_rows_return_to_projective_infinity": true
         }
       }
     ]
@@ -9344,10 +9770,10 @@
       "pass": 30
     },
     "invariant_checks": {
-      "total": 278,
-      "pass": 278
+      "total": 280,
+      "pass": 280
     },
-    "total": 308,
-    "pass": 308
+    "total": 310,
+    "pass": 310
   }
 }

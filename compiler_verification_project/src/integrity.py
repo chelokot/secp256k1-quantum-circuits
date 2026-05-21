@@ -1097,13 +1097,17 @@ def build_tail_macro_reversibility_checks(artifacts: Mapping[str, Any]) -> Dict[
     artifact = artifacts['tail_macro_reversibility']
     expected = build_tail_macro_reversibility()
     full_domain = artifact['full_raw_field_domain']
-    valid_domain = artifact['valid_projective_subgroup_domain']
+    canonical_domain = artifact['canonical_subgroup_domain']
+    projective_domain = artifact['all_projective_representatives_domain']
+    reachable_domain = artifact['fixed_lookup_reachable_orbit_domain']
     checks = [
         _check('tail_macro_reversibility_matches_generator', artifact == expected, expected, artifact),
         _check('tail_macro_reversibility_schema_is_current', artifact['schema'] == 'compiler-project-tail-macro-reversibility-v1', 'compiler-project-tail-macro-reversibility-v1', artifact['schema']),
         _check('tail_macro_reversibility_tracks_current_macro_opcode', artifact['opcode'] == 'complete_a0_all_streamed_tail', 'complete_a0_all_streamed_tail', artifact['opcode']),
         _check('tail_macro_full_raw_domain_is_not_injective', full_domain['injective'] is False and full_domain['collision'] is not None, {'injective': False, 'collision': 'present'}, full_domain),
-        _check('tail_macro_valid_projective_rows_are_injective', valid_domain['all_checked_rows_injective'] is True and all(row['injective'] is True for row in valid_domain['rows']), 'all rows injective', valid_domain),
+        _check('tail_macro_canonical_subgroup_rows_are_injective', canonical_domain['all_checked_rows_injective'] is True and all(row['injective'] is True for row in canonical_domain['rows']), 'all rows injective', canonical_domain),
+        _check('tail_macro_all_projective_representatives_are_not_injective', projective_domain['all_checked_rows_injective'] is False and all(row['injective'] is False and row['collision'] is not None for row in projective_domain['rows']), 'all rows non-injective with collision', projective_domain),
+        _check('tail_macro_fixed_lookup_reachable_orbits_are_injective', reachable_domain['all_checked_rows_injective'] is True and reachable_domain['all_checked_rows_return_to_projective_infinity'] is True, {'injective': True, 'returns_to_projective_infinity': True}, reachable_domain),
     ]
     return _summarize_checks(checks)
 
