@@ -1101,6 +1101,8 @@ def build_tail_macro_reversibility_checks(artifacts: Mapping[str, Any]) -> Dict[
     canonical_domain = artifact['canonical_subgroup_domain']
     projective_domain = artifact['all_projective_representatives_domain']
     reachable_domain = artifact['fixed_lookup_reachable_orbit_domain']
+    boundary_domain = artifact['canonical_boundary_translation_domain']
+    expected_boundary_categories = ('ordinary', 'doubling', 'inverse', 'accumulator_infinity', 'lookup_infinity')
     checks = [
         _check('tail_macro_reversibility_matches_generator', artifact == expected, expected, artifact),
         _check('tail_macro_reversibility_schema_is_current', artifact['schema'] == 'compiler-project-tail-macro-reversibility-v1', 'compiler-project-tail-macro-reversibility-v1', artifact['schema']),
@@ -1109,6 +1111,9 @@ def build_tail_macro_reversibility_checks(artifacts: Mapping[str, Any]) -> Dict[
         _check('tail_macro_canonical_subgroup_rows_are_injective', canonical_domain['all_checked_rows_injective'] is True and all(row['injective'] is True for row in canonical_domain['rows']), 'all rows injective', canonical_domain),
         _check('tail_macro_all_projective_representatives_are_not_injective', projective_domain['all_checked_rows_injective'] is False and all(row['injective'] is False and row['collision'] is not None for row in projective_domain['rows']), 'all rows non-injective with collision', projective_domain),
         _check('tail_macro_fixed_lookup_reachable_orbits_are_injective', reachable_domain['all_checked_rows_injective'] is True and reachable_domain['all_checked_rows_return_to_projective_infinity'] is True, {'injective': True, 'returns_to_projective_infinity': True}, reachable_domain),
+        _check('tail_macro_canonical_boundary_translation_is_semantic', boundary_domain['all_checked_rows_semantic'] is True and all(row['semantic_pass'] is True for row in boundary_domain['rows']), 'all rows semantic', boundary_domain),
+        _check('tail_macro_canonical_boundary_translation_is_injective_per_lookup', boundary_domain['all_checked_rows_injective_for_each_lookup'] is True and all(row['injective_for_each_lookup'] is True for row in boundary_domain['rows']), 'all fixed lookup translations injective', boundary_domain),
+        _check('tail_macro_canonical_boundary_translation_covers_edge_cases', all(boundary_domain['category_totals'][category] > 0 for category in expected_boundary_categories), {category: '> 0' for category in expected_boundary_categories}, boundary_domain['category_totals']),
     ]
     return _summarize_checks(checks)
 

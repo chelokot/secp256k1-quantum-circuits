@@ -6,6 +6,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 
 Point = Optional[Tuple[int, int]]
+ProjectiveTriple = Tuple[int, int, int]
 TOY_CURVES = (
     {'name': 'toy61_b2', 'p': 61, 'b': 2, 'order': 61, 'generator': (1, 8)},
     {'name': 'toy127_b11', 'p': 109, 'b': 11, 'order': 127, 'generator': (1, 11)},
@@ -43,6 +44,30 @@ def _subgroup_points(modulus: int, generator: Tuple[int, int], order: int) -> Li
         points.append(point)
         point = _add_points(point, generator, modulus)
     return points
+
+
+def _canonical_projective(point: Point) -> ProjectiveTriple:
+    return (0, 1, 0) if point is None else (point[0], point[1], 1)
+
+
+def _projective_to_affine(triple: ProjectiveTriple, modulus: int) -> Point:
+    accum_x, accum_y, accum_z = triple
+    if accum_z % modulus == 0:
+        return None
+    inverse_z = _inverse(accum_z, modulus)
+    return ((accum_x * inverse_z) % modulus, (accum_y * inverse_z) % modulus)
+
+
+def _boundary_case(accumulator: Point, lookup: Point, modulus: int) -> str:
+    if lookup is None:
+        return 'lookup_infinity'
+    if accumulator is None:
+        return 'accumulator_infinity'
+    if accumulator == lookup:
+        return 'doubling'
+    if accumulator[0] == lookup[0] and (accumulator[1] + lookup[1]) % modulus == 0:
+        return 'inverse'
+    return 'ordinary'
 
 
 def _tail_map(
@@ -97,6 +122,69 @@ def _full_domain_collision(curve: Dict[str, Any]) -> Dict[str, Any]:
                     }
                 seen[output_triple] = input_triple
     return {'domain_size': modulus ** 3, 'injective': True, 'collision': None}
+
+
+def _canonical_boundary_translation_contract(curve: Dict[str, Any]) -> Dict[str, Any]:
+    modulus = int(curve['p'])
+    curve_b = int(curve['b'])
+    points = _subgroup_points(modulus, curve['generator'], int(curve['order']))
+    category_totals = {
+        'ordinary': 0,
+        'doubling': 0,
+        'inverse': 0,
+        'accumulator_infinity': 0,
+        'lookup_infinity': 0,
+    }
+    semantic_failures = []
+    injectivity_failures = []
+    total_pairs = 0
+    for lookup_index, lookup in enumerate(points):
+        seen_outputs: Dict[ProjectiveTriple, ProjectiveTriple] = {}
+        lookup_triple = _canonical_projective(lookup)
+        for accumulator_index, accumulator in enumerate(points):
+            input_triple = _canonical_projective(accumulator)
+            if lookup is None:
+                output_triple = input_triple
+            else:
+                output_triple = _tail_map(modulus, curve_b, lookup[0], lookup[1], *input_triple)
+            expected_affine = _add_points(accumulator, lookup, modulus)
+            output_affine = _projective_to_affine(output_triple, modulus)
+            category_totals[_boundary_case(accumulator, lookup, modulus)] += 1
+            total_pairs += 1
+            if output_affine != expected_affine and len(semantic_failures) < 4:
+                semantic_failures.append({
+                    'lookup_index': lookup_index,
+                    'accumulator_index': accumulator_index,
+                    'lookup_affine': None if lookup is None else list(lookup),
+                    'accumulator_affine': None if accumulator is None else list(accumulator),
+                    'lookup_projective': list(lookup_triple),
+                    'input_projective': list(input_triple),
+                    'output_projective': list(output_triple),
+                    'expected_affine': None if expected_affine is None else list(expected_affine),
+                    'output_affine': None if output_affine is None else list(output_affine),
+                })
+            previous = seen_outputs.get(output_triple)
+            if previous is not None and previous != input_triple and len(injectivity_failures) < 4:
+                injectivity_failures.append({
+                    'lookup_index': lookup_index,
+                    'lookup_affine': None if lookup is None else list(lookup),
+                    'lookup_projective': list(lookup_triple),
+                    'first_input_projective': list(previous),
+                    'second_input_projective': list(input_triple),
+                    'shared_output_projective': list(output_triple),
+                })
+            seen_outputs[output_triple] = input_triple
+    return {
+        'curve': curve['name'],
+        'accumulator_domain_size': len(points),
+        'lookup_domain_size': len(points),
+        'total_boundary_pairs': total_pairs,
+        'category_totals': category_totals,
+        'semantic_pass': not semantic_failures,
+        'injective_for_each_lookup': not injectivity_failures,
+        'semantic_failure_examples': semantic_failures,
+        'injectivity_failure_examples': injectivity_failures,
+    }
 
 
 def _canonical_subgroup_injectivity(curve: Dict[str, Any]) -> Dict[str, Any]:
@@ -211,6 +299,7 @@ def build_tail_macro_reversibility() -> Dict[str, Any]:
     canonical_rows = [_canonical_subgroup_injectivity(curve) for curve in TOY_CURVES]
     projective_rows = [_all_projective_representative_collision(curve) for curve in TOY_CURVES]
     reachable_rows = [_fixed_lookup_reachable_orbit_injectivity(curve) for curve in TOY_CURVES]
+    boundary_rows = [_canonical_boundary_translation_contract(curve) for curve in TOY_CURVES]
     full_domain = {
         'curve': full_domain_curve['name'],
         **_full_domain_collision(full_domain_curve),
@@ -239,10 +328,26 @@ def build_tail_macro_reversibility() -> Dict[str, Any]:
                 for row in reachable_rows
             ),
         },
+        'canonical_boundary_translation_domain': {
+            'accumulator_domain': 'canonical subgroup representatives including projective infinity',
+            'lookup_domain': 'canonical subgroup representatives including lookup infinity',
+            'lookup_infinity_policy': 'boundary no-op before hot tail formula',
+            'rows': boundary_rows,
+            'all_checked_rows_semantic': all(bool(row['semantic_pass']) for row in boundary_rows),
+            'all_checked_rows_injective_for_each_lookup': all(
+                bool(row['injective_for_each_lookup']) for row in boundary_rows
+            ),
+            'total_boundary_pairs': sum(int(row['total_boundary_pairs']) for row in boundary_rows),
+            'category_totals': {
+                category: sum(int(row['category_totals'][category]) for row in boundary_rows)
+                for category in ('ordinary', 'doubling', 'inverse', 'accumulator_infinity', 'lookup_infinity')
+            },
+        },
         'status': 'three_slot_tail_requires_valid_subspace_permutation_extension',
         'notes': [
             'The polynomial tail formula is not injective over the full raw field-register domain, so it cannot itself be a no-ancilla in-place reversible map on arbitrary field triples.',
             'The same formula is injective on canonical subgroup representatives and on the fixed-lookup reachable orbit for the curated toy curves.',
+            'The canonical boundary translation check exhausts all toy accumulator and lookup subgroup pairs, including doubling, inverse, accumulator-infinity, and lookup-infinity no-op cases.',
             'It is not injective on all plain-projective representatives of the subgroup, so a future three-slot primitive schedule must specify the exact reachable/encoded subspace instead of saying all valid projective triples.',
             'A future three-slot primitive schedule must prove a reversible permutation extension or an explicit valid-subspace encoding; semantic point-add tests alone are not enough.',
         ],

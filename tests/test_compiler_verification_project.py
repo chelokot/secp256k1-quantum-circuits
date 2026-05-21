@@ -189,6 +189,7 @@ def test_mutated_tail_macro_reversibility_is_detected() -> None:
     artifacts = deepcopy(_load_artifacts())
     artifacts['tail_macro_reversibility']['full_raw_field_domain']['injective'] = True
     artifacts['tail_macro_reversibility']['all_projective_representatives_domain']['all_checked_rows_injective'] = True
+    artifacts['tail_macro_reversibility']['canonical_boundary_translation_domain']['category_totals']['inverse'] = 0
     groups = _evaluate_mutation(artifacts, 'tail_macro_reversibility_checks')
     assert groups['tail_macro_reversibility_checks']['pass'] < groups['tail_macro_reversibility_checks']['total']
 

@@ -212,8 +212,15 @@ Current additional diagnostic:
   over the full raw field-register domain and is also not injective over all
   plain-projective representatives of the subgroup. It is injective over
   canonical subgroup representatives and over fixed-lookup reachable toy orbits.
-  A future three-slot implementation must therefore prove either a concrete
-  reversible permutation extension or an explicit reachable-subspace encoding.
+  The same artifact now exhausts all canonical accumulator-state by lookup-state
+  toy boundary pairs across the curated groups: `110,692` total pairs, including
+  ordinary addition, doubling, inverse, accumulator-infinity, and lookup-infinity
+  no-op cases. Every checked pair matches affine group addition, and every fixed
+  lookup acts injectively on the canonical accumulator domain. This substantially
+  narrows the semantic/reversible-boundary risk, but it still does not prove the
+  missing destructive three-slot primitive schedule. A future three-slot
+  implementation must therefore prove either a concrete reversible permutation
+  extension or an explicit reachable-subspace encoding.
 
 ### 2. The resource ledger is still owner-summed, not circuit-derived
 
@@ -1388,8 +1395,11 @@ Partially mitigated after review:
   resource token in the ZKP-bound resource certificate. The certificate contains
   66 primitive leaf-sigma rows for the macro, and the guest verifies that their
   whole-oracle non-Clifford contribution equals the per-leaf macro lowering
-  times the 31 leaf calls. Internal live-wire scheduling below those primitive
-  rows is still not a bit-addressed wire netlist.
+  times the 31 leaf calls. The tail reversibility artifact now also checks
+  `110,692` exhaustive canonical toy boundary translations, including the edge
+  cases that historically produced semantic blind spots. Internal live-wire
+  scheduling below those primitive rows is still not a bit-addressed wire
+  netlist.
 - `ZK-3`: proof binaries are now included in the curated proof manifest, but
   the checked JSON fixtures still intentionally keep the large binary proof
   payloads out-of-line.

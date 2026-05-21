@@ -191,10 +191,96 @@
     "all_checked_rows_injective": true,
     "all_checked_rows_return_to_projective_infinity": true
   },
+  "canonical_boundary_translation_domain": {
+    "accumulator_domain": "canonical subgroup representatives including projective infinity",
+    "lookup_domain": "canonical subgroup representatives including lookup infinity",
+    "lookup_infinity_policy": "boundary no-op before hot tail formula",
+    "rows": [
+      {
+        "curve": "toy61_b2",
+        "accumulator_domain_size": 61,
+        "lookup_domain_size": 61,
+        "total_boundary_pairs": 3721,
+        "category_totals": {
+          "ordinary": 3480,
+          "doubling": 60,
+          "inverse": 60,
+          "accumulator_infinity": 60,
+          "lookup_infinity": 61
+        },
+        "semantic_pass": true,
+        "injective_for_each_lookup": true,
+        "semantic_failure_examples": [],
+        "injectivity_failure_examples": []
+      },
+      {
+        "curve": "toy127_b11",
+        "accumulator_domain_size": 127,
+        "lookup_domain_size": 127,
+        "total_boundary_pairs": 16129,
+        "category_totals": {
+          "ordinary": 15624,
+          "doubling": 126,
+          "inverse": 126,
+          "accumulator_infinity": 126,
+          "lookup_infinity": 127
+        },
+        "semantic_pass": true,
+        "injective_for_each_lookup": true,
+        "semantic_failure_examples": [],
+        "injectivity_failure_examples": []
+      },
+      {
+        "curve": "toy181_b3",
+        "accumulator_domain_size": 181,
+        "lookup_domain_size": 181,
+        "total_boundary_pairs": 32761,
+        "category_totals": {
+          "ordinary": 32040,
+          "doubling": 180,
+          "inverse": 180,
+          "accumulator_infinity": 180,
+          "lookup_infinity": 181
+        },
+        "semantic_pass": true,
+        "injective_for_each_lookup": true,
+        "semantic_failure_examples": [],
+        "injectivity_failure_examples": []
+      },
+      {
+        "curve": "toy241_b29",
+        "accumulator_domain_size": 241,
+        "lookup_domain_size": 241,
+        "total_boundary_pairs": 58081,
+        "category_totals": {
+          "ordinary": 57120,
+          "doubling": 240,
+          "inverse": 240,
+          "accumulator_infinity": 240,
+          "lookup_infinity": 241
+        },
+        "semantic_pass": true,
+        "injective_for_each_lookup": true,
+        "semantic_failure_examples": [],
+        "injectivity_failure_examples": []
+      }
+    ],
+    "all_checked_rows_semantic": true,
+    "all_checked_rows_injective_for_each_lookup": true,
+    "total_boundary_pairs": 110692,
+    "category_totals": {
+      "ordinary": 108264,
+      "doubling": 606,
+      "inverse": 606,
+      "accumulator_infinity": 606,
+      "lookup_infinity": 610
+    }
+  },
   "status": "three_slot_tail_requires_valid_subspace_permutation_extension",
   "notes": [
     "The polynomial tail formula is not injective over the full raw field-register domain, so it cannot itself be a no-ancilla in-place reversible map on arbitrary field triples.",
     "The same formula is injective on canonical subgroup representatives and on the fixed-lookup reachable orbit for the curated toy curves.",
+    "The canonical boundary translation check exhausts all toy accumulator and lookup subgroup pairs, including doubling, inverse, accumulator-infinity, and lookup-infinity no-op cases.",
     "It is not injective on all plain-projective representatives of the subgroup, so a future three-slot primitive schedule must specify the exact reachable/encoded subspace instead of saying all valid projective triples.",
     "A future three-slot primitive schedule must prove a reversible permutation extension or an explicit valid-subspace encoding; semantic point-add tests alone are not enough."
   ]
