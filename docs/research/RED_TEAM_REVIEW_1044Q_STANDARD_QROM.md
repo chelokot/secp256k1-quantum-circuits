@@ -199,12 +199,14 @@ Current additional diagnostic:
   generated pressure test for the macro formula DAG. It records the exact
   `complete_a0_all_streamed_tail` formula dependencies from the executable
   semantic boundary, including `yZ = lookup_y * Z`, and computes a
-  single-assignment/no-recompute liveness peak.
+  single-assignment/no-recompute liveness peak plus a conservative
+  non-destructive recomputation pebble search.
 - The diagnostic deliberately does not close RES-1. It exposes the remaining
   proof obligation: the naive formula DAG peaks above the counted three
-  arithmetic slots, so the repository still needs a generated destructive or
-  recompute schedule certificate before `3 * 256` can be treated as primitive
-  liveness rather than a macro contract.
+  arithmetic slots, and even non-destructive recomputation fails below eight
+  live field values. The repository still needs a generated destructive/in-place
+  schedule certificate before `3 * 256` can be treated as primitive liveness
+  rather than a macro contract.
 
 ### 2. The resource ledger is still owner-summed, not circuit-derived
 

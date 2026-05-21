@@ -1079,8 +1079,13 @@ def build_tail_macro_liveness_checks(artifacts: Mapping[str, Any]) -> Dict[str, 
         _check('tail_macro_liveness_uses_streamed_leaf_slot_budget', artifact['counted_arithmetic_slots'] == len(artifacts['streamed_lookup_tail_leaf']['arithmetic_slots']), len(artifacts['streamed_lookup_tail_leaf']['arithmetic_slots']), artifact['counted_arithmetic_slots']),
         _check('tail_macro_liveness_exposes_no_recompute_gap',
                gap['one_compute_peak_field_values'] > gap['counted_arithmetic_slots']
+               and gap['non_destructive_recompute_minimum_peak_field_values'] > gap['counted_arithmetic_slots']
                and gap['additional_field_slots_needed_without_recompute_or_destructive_schedule'] == gap['one_compute_peak_field_values'] - gap['counted_arithmetic_slots'],
-               {'one_compute_peak_field_values': '> counted_arithmetic_slots', 'additional_field_slots_needed_without_recompute_or_destructive_schedule': 'difference'},
+               {
+                   'one_compute_peak_field_values': '> counted_arithmetic_slots',
+                   'non_destructive_recompute_minimum_peak_field_values': '> counted_arithmetic_slots',
+                   'additional_field_slots_needed_without_recompute_or_destructive_schedule': 'difference',
+               },
                gap),
     ]
     return _summarize_checks(checks)

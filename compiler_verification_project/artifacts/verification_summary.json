@@ -4155,13 +4155,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "32b5313ed2ca78324b515d28924f678c18027016685caeee03d09d9113168f8c",
-          "size_bytes": 8304
+          "sha256": "5f60042f2ae891387583cc6ee10cb6fdd11aeef460eadac18c6e512712736cb1",
+          "size_bytes": 16160
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "32b5313ed2ca78324b515d28924f678c18027016685caeee03d09d9113168f8c",
-          "size_bytes": 8304
+          "sha256": "5f60042f2ae891387583cc6ee10cb6fdd11aeef460eadac18c6e512712736cb1",
+          "size_bytes": 16160
         }
       },
       {
@@ -4187,10 +4187,12 @@
         "pass": 1,
         "expected": {
           "one_compute_peak_field_values": "> counted_arithmetic_slots",
+          "non_destructive_recompute_minimum_peak_field_values": "> counted_arithmetic_slots",
           "additional_field_slots_needed_without_recompute_or_destructive_schedule": "difference"
         },
         "observed": {
           "one_compute_peak_field_values": 8,
+          "non_destructive_recompute_minimum_peak_field_values": 8,
           "counted_arithmetic_slots": 3,
           "additional_field_slots_needed_without_recompute_or_destructive_schedule": 5,
           "additional_logical_qubits_needed_without_recompute_or_destructive_schedule": 1280,

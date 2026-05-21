@@ -855,8 +855,769 @@
       }
     ]
   },
+  "non_destructive_recompute_search": {
+    "schedule_model": "black_pebble_non_destructive_recompute_formula_dag",
+    "description": "A field value can be computed when all quantum dependencies are live, and non-output values may be dropped and later recomputed. No operation may overwrite a dependency in place.",
+    "initial_live_field_values": [
+      "X",
+      "Y",
+      "Z"
+    ],
+    "goal_outputs": [
+      "X3",
+      "Y3",
+      "Z3"
+    ],
+    "budget_rows": [
+      {
+        "field_value_budget": 3,
+        "solution_found": false,
+        "states_visited": 136
+      },
+      {
+        "field_value_budget": 4,
+        "solution_found": false,
+        "states_visited": 892
+      },
+      {
+        "field_value_budget": 5,
+        "solution_found": false,
+        "states_visited": 6115
+      },
+      {
+        "field_value_budget": 6,
+        "solution_found": false,
+        "states_visited": 43809
+      },
+      {
+        "field_value_budget": 7,
+        "solution_found": false,
+        "states_visited": 340872
+      },
+      {
+        "field_value_budget": 8,
+        "solution_found": true,
+        "states_visited": 1195161,
+        "step_count": 39,
+        "peak_live_field_values": 8
+      }
+    ],
+    "first_solution": {
+      "minimum_peak_field_values": 8,
+      "terminal_live_field_values": [
+        "KN",
+        "L",
+        "LK",
+        "ME",
+        "NM",
+        "X3",
+        "Y3",
+        "Z3"
+      ],
+      "schedule": [
+        {
+          "operation": "compute",
+          "target": "G",
+          "dependencies": [
+            "X",
+            "Y"
+          ],
+          "live_field_values_after_step": [
+            "G",
+            "X",
+            "Y",
+            "Z"
+          ],
+          "live_field_value_count_after_step": 4,
+          "index": 0
+        },
+        {
+          "operation": "compute",
+          "target": "H",
+          "dependencies": [
+            "G"
+          ],
+          "live_field_values_after_step": [
+            "G",
+            "H",
+            "X",
+            "Y",
+            "Z"
+          ],
+          "live_field_value_count_after_step": 5,
+          "index": 1
+        },
+        {
+          "operation": "compute",
+          "target": "A",
+          "dependencies": [
+            "X"
+          ],
+          "live_field_values_after_step": [
+            "A",
+            "G",
+            "H",
+            "X",
+            "Y",
+            "Z"
+          ],
+          "live_field_value_count_after_step": 6,
+          "index": 2
+        },
+        {
+          "operation": "compute",
+          "target": "Zx",
+          "dependencies": [
+            "Z"
+          ],
+          "live_field_values_after_step": [
+            "A",
+            "G",
+            "H",
+            "X",
+            "Y",
+            "Z",
+            "Zx"
+          ],
+          "live_field_value_count_after_step": 7,
+          "index": 3
+        },
+        {
+          "operation": "compute",
+          "target": "C",
+          "dependencies": [
+            "X",
+            "Zx"
+          ],
+          "live_field_values_after_step": [
+            "A",
+            "C",
+            "G",
+            "H",
+            "X",
+            "Y",
+            "Z",
+            "Zx"
+          ],
+          "live_field_value_count_after_step": 8,
+          "index": 4
+        },
+        {
+          "operation": "drop",
+          "target": "G",
+          "dependencies": [],
+          "live_field_values_after_step": [
+            "A",
+            "C",
+            "H",
+            "X",
+            "Y",
+            "Z",
+            "Zx"
+          ],
+          "live_field_value_count_after_step": 7,
+          "index": 5
+        },
+        {
+          "operation": "compute",
+          "target": "I",
+          "dependencies": [
+            "Y"
+          ],
+          "live_field_values_after_step": [
+            "A",
+            "C",
+            "H",
+            "I",
+            "X",
+            "Y",
+            "Z",
+            "Zx"
+          ],
+          "live_field_value_count_after_step": 8,
+          "index": 6
+        },
+        {
+          "operation": "drop",
+          "target": "X",
+          "dependencies": [],
+          "live_field_values_after_step": [
+            "A",
+            "C",
+            "H",
+            "I",
+            "Y",
+            "Z",
+            "Zx"
+          ],
+          "live_field_value_count_after_step": 7,
+          "index": 7
+        },
+        {
+          "operation": "compute",
+          "target": "K",
+          "dependencies": [
+            "H",
+            "A",
+            "I"
+          ],
+          "live_field_values_after_step": [
+            "A",
+            "C",
+            "H",
+            "I",
+            "K",
+            "Y",
+            "Z",
+            "Zx"
+          ],
+          "live_field_value_count_after_step": 8,
+          "index": 8
+        },
+        {
+          "operation": "drop",
+          "target": "H",
+          "dependencies": [],
+          "live_field_values_after_step": [
+            "A",
+            "C",
+            "I",
+            "K",
+            "Y",
+            "Z",
+            "Zx"
+          ],
+          "live_field_value_count_after_step": 7,
+          "index": 9
+        },
+        {
+          "operation": "compute",
+          "target": "L",
+          "dependencies": [
+            "A"
+          ],
+          "live_field_values_after_step": [
+            "A",
+            "C",
+            "I",
+            "K",
+            "L",
+            "Y",
+            "Z",
+            "Zx"
+          ],
+          "live_field_value_count_after_step": 8,
+          "index": 10
+        },
+        {
+          "operation": "drop",
+          "target": "A",
+          "dependencies": [],
+          "live_field_values_after_step": [
+            "C",
+            "I",
+            "K",
+            "L",
+            "Y",
+            "Z",
+            "Zx"
+          ],
+          "live_field_value_count_after_step": 7,
+          "index": 11
+        },
+        {
+          "operation": "compute",
+          "target": "yZ",
+          "dependencies": [
+            "Z"
+          ],
+          "live_field_values_after_step": [
+            "C",
+            "I",
+            "K",
+            "L",
+            "Y",
+            "Z",
+            "Zx",
+            "yZ"
+          ],
+          "live_field_value_count_after_step": 8,
+          "index": 12
+        },
+        {
+          "operation": "drop",
+          "target": "Zx",
+          "dependencies": [],
+          "live_field_values_after_step": [
+            "C",
+            "I",
+            "K",
+            "L",
+            "Y",
+            "Z",
+            "yZ"
+          ],
+          "live_field_value_count_after_step": 7,
+          "index": 13
+        },
+        {
+          "operation": "compute",
+          "target": "E",
+          "dependencies": [
+            "Y",
+            "yZ"
+          ],
+          "live_field_values_after_step": [
+            "C",
+            "E",
+            "I",
+            "K",
+            "L",
+            "Y",
+            "Z",
+            "yZ"
+          ],
+          "live_field_value_count_after_step": 8,
+          "index": 14
+        },
+        {
+          "operation": "drop",
+          "target": "Y",
+          "dependencies": [],
+          "live_field_values_after_step": [
+            "C",
+            "E",
+            "I",
+            "K",
+            "L",
+            "Z",
+            "yZ"
+          ],
+          "live_field_value_count_after_step": 7,
+          "index": 15
+        },
+        {
+          "operation": "compute",
+          "target": "F",
+          "dependencies": [
+            "Z"
+          ],
+          "live_field_values_after_step": [
+            "C",
+            "E",
+            "F",
+            "I",
+            "K",
+            "L",
+            "Z",
+            "yZ"
+          ],
+          "live_field_value_count_after_step": 8,
+          "index": 16
+        },
+        {
+          "operation": "drop",
+          "target": "Z",
+          "dependencies": [],
+          "live_field_values_after_step": [
+            "C",
+            "E",
+            "F",
+            "I",
+            "K",
+            "L",
+            "yZ"
+          ],
+          "live_field_value_count_after_step": 7,
+          "index": 17
+        },
+        {
+          "operation": "compute",
+          "target": "M",
+          "dependencies": [
+            "I",
+            "F"
+          ],
+          "live_field_values_after_step": [
+            "C",
+            "E",
+            "F",
+            "I",
+            "K",
+            "L",
+            "M",
+            "yZ"
+          ],
+          "live_field_value_count_after_step": 8,
+          "index": 18
+        },
+        {
+          "operation": "drop",
+          "target": "yZ",
+          "dependencies": [],
+          "live_field_values_after_step": [
+            "C",
+            "E",
+            "F",
+            "I",
+            "K",
+            "L",
+            "M"
+          ],
+          "live_field_value_count_after_step": 7,
+          "index": 19
+        },
+        {
+          "operation": "compute",
+          "target": "N",
+          "dependencies": [
+            "I",
+            "F"
+          ],
+          "live_field_values_after_step": [
+            "C",
+            "E",
+            "F",
+            "I",
+            "K",
+            "L",
+            "M",
+            "N"
+          ],
+          "live_field_value_count_after_step": 8,
+          "index": 20
+        },
+        {
+          "operation": "drop",
+          "target": "F",
+          "dependencies": [],
+          "live_field_values_after_step": [
+            "C",
+            "E",
+            "I",
+            "K",
+            "L",
+            "M",
+            "N"
+          ],
+          "live_field_value_count_after_step": 7,
+          "index": 21
+        },
+        {
+          "operation": "compute",
+          "target": "KN",
+          "dependencies": [
+            "K",
+            "N"
+          ],
+          "live_field_values_after_step": [
+            "C",
+            "E",
+            "I",
+            "K",
+            "KN",
+            "L",
+            "M",
+            "N"
+          ],
+          "live_field_value_count_after_step": 8,
+          "index": 22
+        },
+        {
+          "operation": "drop",
+          "target": "I",
+          "dependencies": [],
+          "live_field_values_after_step": [
+            "C",
+            "E",
+            "K",
+            "KN",
+            "L",
+            "M",
+            "N"
+          ],
+          "live_field_value_count_after_step": 7,
+          "index": 23
+        },
+        {
+          "operation": "compute",
+          "target": "NM",
+          "dependencies": [
+            "N",
+            "M"
+          ],
+          "live_field_values_after_step": [
+            "C",
+            "E",
+            "K",
+            "KN",
+            "L",
+            "M",
+            "N",
+            "NM"
+          ],
+          "live_field_value_count_after_step": 8,
+          "index": 24
+        },
+        {
+          "operation": "drop",
+          "target": "N",
+          "dependencies": [],
+          "live_field_values_after_step": [
+            "C",
+            "E",
+            "K",
+            "KN",
+            "L",
+            "M",
+            "NM"
+          ],
+          "live_field_value_count_after_step": 7,
+          "index": 25
+        },
+        {
+          "operation": "compute",
+          "target": "ME",
+          "dependencies": [
+            "M",
+            "E"
+          ],
+          "live_field_values_after_step": [
+            "C",
+            "E",
+            "K",
+            "KN",
+            "L",
+            "M",
+            "ME",
+            "NM"
+          ],
+          "live_field_value_count_after_step": 8,
+          "index": 26
+        },
+        {
+          "operation": "drop",
+          "target": "M",
+          "dependencies": [],
+          "live_field_values_after_step": [
+            "C",
+            "E",
+            "K",
+            "KN",
+            "L",
+            "ME",
+            "NM"
+          ],
+          "live_field_value_count_after_step": 7,
+          "index": 27
+        },
+        {
+          "operation": "compute",
+          "target": "EC",
+          "dependencies": [
+            "E",
+            "C"
+          ],
+          "live_field_values_after_step": [
+            "C",
+            "E",
+            "EC",
+            "K",
+            "KN",
+            "L",
+            "ME",
+            "NM"
+          ],
+          "live_field_value_count_after_step": 8,
+          "index": 28
+        },
+        {
+          "operation": "drop",
+          "target": "E",
+          "dependencies": [],
+          "live_field_values_after_step": [
+            "C",
+            "EC",
+            "K",
+            "KN",
+            "L",
+            "ME",
+            "NM"
+          ],
+          "live_field_value_count_after_step": 7,
+          "index": 29
+        },
+        {
+          "operation": "compute",
+          "target": "CL",
+          "dependencies": [
+            "C",
+            "L"
+          ],
+          "live_field_values_after_step": [
+            "C",
+            "CL",
+            "EC",
+            "K",
+            "KN",
+            "L",
+            "ME",
+            "NM"
+          ],
+          "live_field_value_count_after_step": 8,
+          "index": 30
+        },
+        {
+          "operation": "drop",
+          "target": "C",
+          "dependencies": [],
+          "live_field_values_after_step": [
+            "CL",
+            "EC",
+            "K",
+            "KN",
+            "L",
+            "ME",
+            "NM"
+          ],
+          "live_field_value_count_after_step": 7,
+          "index": 31
+        },
+        {
+          "operation": "compute",
+          "target": "LK",
+          "dependencies": [
+            "L",
+            "K"
+          ],
+          "live_field_values_after_step": [
+            "CL",
+            "EC",
+            "K",
+            "KN",
+            "L",
+            "LK",
+            "ME",
+            "NM"
+          ],
+          "live_field_value_count_after_step": 8,
+          "index": 32
+        },
+        {
+          "operation": "drop",
+          "target": "K",
+          "dependencies": [],
+          "live_field_values_after_step": [
+            "CL",
+            "EC",
+            "KN",
+            "L",
+            "LK",
+            "ME",
+            "NM"
+          ],
+          "live_field_value_count_after_step": 7,
+          "index": 33
+        },
+        {
+          "operation": "compute",
+          "target": "X3",
+          "dependencies": [
+            "KN",
+            "EC"
+          ],
+          "live_field_values_after_step": [
+            "CL",
+            "EC",
+            "KN",
+            "L",
+            "LK",
+            "ME",
+            "NM",
+            "X3"
+          ],
+          "live_field_value_count_after_step": 8,
+          "index": 34
+        },
+        {
+          "operation": "drop",
+          "target": "EC",
+          "dependencies": [],
+          "live_field_values_after_step": [
+            "CL",
+            "KN",
+            "L",
+            "LK",
+            "ME",
+            "NM",
+            "X3"
+          ],
+          "live_field_value_count_after_step": 7,
+          "index": 35
+        },
+        {
+          "operation": "compute",
+          "target": "Y3",
+          "dependencies": [
+            "NM",
+            "CL"
+          ],
+          "live_field_values_after_step": [
+            "CL",
+            "KN",
+            "L",
+            "LK",
+            "ME",
+            "NM",
+            "X3",
+            "Y3"
+          ],
+          "live_field_value_count_after_step": 8,
+          "index": 36
+        },
+        {
+          "operation": "drop",
+          "target": "CL",
+          "dependencies": [],
+          "live_field_values_after_step": [
+            "KN",
+            "L",
+            "LK",
+            "ME",
+            "NM",
+            "X3",
+            "Y3"
+          ],
+          "live_field_value_count_after_step": 7,
+          "index": 37
+        },
+        {
+          "operation": "compute",
+          "target": "Z3",
+          "dependencies": [
+            "ME",
+            "LK"
+          ],
+          "live_field_values_after_step": [
+            "KN",
+            "L",
+            "LK",
+            "ME",
+            "NM",
+            "X3",
+            "Y3",
+            "Z3"
+          ],
+          "live_field_value_count_after_step": 8,
+          "index": 38
+        }
+      ]
+    },
+    "status": "non_destructive_recompute_still_exceeds_counted_slots"
+  },
   "gap_analysis": {
     "one_compute_peak_field_values": 8,
+    "non_destructive_recompute_minimum_peak_field_values": 8,
     "counted_arithmetic_slots": 3,
     "additional_field_slots_needed_without_recompute_or_destructive_schedule": 5,
     "additional_logical_qubits_needed_without_recompute_or_destructive_schedule": 1280,
@@ -865,7 +1626,8 @@
   "pass": true,
   "notes": [
     "This diagnostic is intentionally not a proof of the three-slot macro. It is a generated lower-bound pressure test for the current formula DAG.",
-    "The single-assignment formula DAG peaks above the counted three arithmetic slots, so the current headline still requires a separately generated destructive/recompute macro schedule or a different resource point.",
+    "The single-assignment formula DAG peaks above the counted three arithmetic slots, and the non-destructive recompute pebble search also fails below that peak.",
+    "The current headline therefore requires a separately generated destructive/in-place macro schedule or a different resource point.",
     "The artifact exists to prevent the macro-liveness gap from being hidden inside prose while the full scheduled primitive macro is being developed."
   ]
 }
