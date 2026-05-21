@@ -4646,6 +4646,207 @@
       }
     ]
   },
+  "tail_macro_schedule_search_checks": {
+    "pass": 5,
+    "total": 5,
+    "checks": [
+      {
+        "name": "tail_macro_schedule_search_matches_generator",
+        "pass": 1,
+        "expected": {
+          "schema": "compiler-project-tail-macro-schedule-search-v1",
+          "opcode": "complete_a0_all_streamed_tail",
+          "schedule_model": "formula_dag_compute_then_keep_injective_subset",
+          "field_value_budget": 3,
+          "rows": [
+            {
+              "curve": "toy61_b2",
+              "lookup_point_policy": "generator_point_as_nonzero_lookup_entry",
+              "field_value_budget": 3,
+              "canonical_accumulator_domain_size": 61,
+              "solution_found": false,
+              "states_visited": 233,
+              "terminal_live_field_values": null,
+              "schedule": null
+            },
+            {
+              "curve": "toy127_b11",
+              "lookup_point_policy": "generator_point_as_nonzero_lookup_entry",
+              "field_value_budget": 3,
+              "canonical_accumulator_domain_size": 127,
+              "solution_found": false,
+              "states_visited": 239,
+              "terminal_live_field_values": null,
+              "schedule": null
+            },
+            {
+              "curve": "toy181_b3",
+              "lookup_point_policy": "generator_point_as_nonzero_lookup_entry",
+              "field_value_budget": 3,
+              "canonical_accumulator_domain_size": 181,
+              "solution_found": false,
+              "states_visited": 238,
+              "terminal_live_field_values": null,
+              "schedule": null
+            },
+            {
+              "curve": "toy241_b29",
+              "lookup_point_policy": "generator_point_as_nonzero_lookup_entry",
+              "field_value_budget": 3,
+              "canonical_accumulator_domain_size": 241,
+              "solution_found": false,
+              "states_visited": 234,
+              "terminal_live_field_values": null,
+              "schedule": null
+            }
+          ],
+          "any_checked_curve_has_solution": false,
+          "all_checked_curves_exhausted_without_solution": true,
+          "notes": [
+            "This search is more permissive than non-destructive pebbling: after a formula value is computed, old live values may be dropped whenever the remaining live tuple is still injective over the canonical accumulator domain.",
+            "The checked three-slot budget still finds no schedule for the current formula DAG on any curated toy generator lookup.",
+            "This does not prove that no different formula or no explicit permutation-extension implementation can realize a three-field-register tail."
+          ]
+        },
+        "observed": {
+          "schema": "compiler-project-tail-macro-schedule-search-v1",
+          "opcode": "complete_a0_all_streamed_tail",
+          "schedule_model": "formula_dag_compute_then_keep_injective_subset",
+          "field_value_budget": 3,
+          "rows": [
+            {
+              "curve": "toy61_b2",
+              "lookup_point_policy": "generator_point_as_nonzero_lookup_entry",
+              "field_value_budget": 3,
+              "canonical_accumulator_domain_size": 61,
+              "solution_found": false,
+              "states_visited": 233,
+              "terminal_live_field_values": null,
+              "schedule": null
+            },
+            {
+              "curve": "toy127_b11",
+              "lookup_point_policy": "generator_point_as_nonzero_lookup_entry",
+              "field_value_budget": 3,
+              "canonical_accumulator_domain_size": 127,
+              "solution_found": false,
+              "states_visited": 239,
+              "terminal_live_field_values": null,
+              "schedule": null
+            },
+            {
+              "curve": "toy181_b3",
+              "lookup_point_policy": "generator_point_as_nonzero_lookup_entry",
+              "field_value_budget": 3,
+              "canonical_accumulator_domain_size": 181,
+              "solution_found": false,
+              "states_visited": 238,
+              "terminal_live_field_values": null,
+              "schedule": null
+            },
+            {
+              "curve": "toy241_b29",
+              "lookup_point_policy": "generator_point_as_nonzero_lookup_entry",
+              "field_value_budget": 3,
+              "canonical_accumulator_domain_size": 241,
+              "solution_found": false,
+              "states_visited": 234,
+              "terminal_live_field_values": null,
+              "schedule": null
+            }
+          ],
+          "any_checked_curve_has_solution": false,
+          "all_checked_curves_exhausted_without_solution": true,
+          "notes": [
+            "This search is more permissive than non-destructive pebbling: after a formula value is computed, old live values may be dropped whenever the remaining live tuple is still injective over the canonical accumulator domain.",
+            "The checked three-slot budget still finds no schedule for the current formula DAG on any curated toy generator lookup.",
+            "This does not prove that no different formula or no explicit permutation-extension implementation can realize a three-field-register tail."
+          ]
+        }
+      },
+      {
+        "name": "tail_macro_schedule_search_schema_is_current",
+        "pass": 1,
+        "expected": "compiler-project-tail-macro-schedule-search-v1",
+        "observed": "compiler-project-tail-macro-schedule-search-v1"
+      },
+      {
+        "name": "tail_macro_schedule_search_tracks_current_macro_opcode",
+        "pass": 1,
+        "expected": "complete_a0_all_streamed_tail",
+        "observed": "complete_a0_all_streamed_tail"
+      },
+      {
+        "name": "tail_macro_schedule_search_uses_streamed_leaf_slot_budget",
+        "pass": 1,
+        "expected": 3,
+        "observed": 3
+      },
+      {
+        "name": "tail_macro_schedule_search_exhausts_three_slot_formula_dag_without_solution",
+        "pass": 1,
+        "expected": {
+          "all_checked_curves_exhausted_without_solution": true,
+          "any_checked_curve_has_solution": false
+        },
+        "observed": {
+          "schema": "compiler-project-tail-macro-schedule-search-v1",
+          "opcode": "complete_a0_all_streamed_tail",
+          "schedule_model": "formula_dag_compute_then_keep_injective_subset",
+          "field_value_budget": 3,
+          "rows": [
+            {
+              "curve": "toy61_b2",
+              "lookup_point_policy": "generator_point_as_nonzero_lookup_entry",
+              "field_value_budget": 3,
+              "canonical_accumulator_domain_size": 61,
+              "solution_found": false,
+              "states_visited": 233,
+              "terminal_live_field_values": null,
+              "schedule": null
+            },
+            {
+              "curve": "toy127_b11",
+              "lookup_point_policy": "generator_point_as_nonzero_lookup_entry",
+              "field_value_budget": 3,
+              "canonical_accumulator_domain_size": 127,
+              "solution_found": false,
+              "states_visited": 239,
+              "terminal_live_field_values": null,
+              "schedule": null
+            },
+            {
+              "curve": "toy181_b3",
+              "lookup_point_policy": "generator_point_as_nonzero_lookup_entry",
+              "field_value_budget": 3,
+              "canonical_accumulator_domain_size": 181,
+              "solution_found": false,
+              "states_visited": 238,
+              "terminal_live_field_values": null,
+              "schedule": null
+            },
+            {
+              "curve": "toy241_b29",
+              "lookup_point_policy": "generator_point_as_nonzero_lookup_entry",
+              "field_value_budget": 3,
+              "canonical_accumulator_domain_size": 241,
+              "solution_found": false,
+              "states_visited": 234,
+              "terminal_live_field_values": null,
+              "schedule": null
+            }
+          ],
+          "any_checked_curve_has_solution": false,
+          "all_checked_curves_exhausted_without_solution": true,
+          "notes": [
+            "This search is more permissive than non-destructive pebbling: after a formula value is computed, old live values may be dropped whenever the remaining live tuple is still injective over the canonical accumulator domain.",
+            "The checked three-slot budget still finds no schedule for the current formula DAG on any curated toy generator lookup.",
+            "This does not prove that no different formula or no explicit permutation-extension implementation can realize a three-field-register tail."
+          ]
+        }
+      }
+    ]
+  },
   "streamed_lookup_table_multiplier_resource_checks": {
     "pass": 15,
     "total": 15,
@@ -8893,8 +9094,8 @@
       {
         "name": "build_summary_schema_matches_current_version",
         "pass": 1,
-        "expected": "compiler-project-build-summary-v22",
-        "observed": "compiler-project-build-summary-v22"
+        "expected": "compiler-project-build-summary-v23",
+        "observed": "compiler-project-build-summary-v23"
       },
       {
         "name": "build_summary_artifact_paths_match_expected_set",
@@ -8913,6 +9114,7 @@
           "arithmetic_lowerings": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "tail_macro_liveness": "compiler_verification_project/artifacts/tail_macro_liveness.json",
           "tail_macro_reversibility": "compiler_verification_project/artifacts/tail_macro_reversibility.json",
+          "tail_macro_schedule_search": "compiler_verification_project/artifacts/tail_macro_schedule_search.json",
           "streamed_lookup_table_multiplier_resource": "compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json",
           "module_library": "compiler_verification_project/artifacts/module_library.json",
           "primitive_multiplier_library": "compiler_verification_project/artifacts/primitive_multiplier_library.json",
@@ -8950,6 +9152,7 @@
           "arithmetic_lowerings": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "tail_macro_liveness": "compiler_verification_project/artifacts/tail_macro_liveness.json",
           "tail_macro_reversibility": "compiler_verification_project/artifacts/tail_macro_reversibility.json",
+          "tail_macro_schedule_search": "compiler_verification_project/artifacts/tail_macro_schedule_search.json",
           "streamed_lookup_table_multiplier_resource": "compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json",
           "module_library": "compiler_verification_project/artifacts/module_library.json",
           "primitive_multiplier_library": "compiler_verification_project/artifacts/primitive_multiplier_library.json",
@@ -9012,6 +9215,7 @@
           "compiler_verification_project/artifacts/table_manifests.json",
           "compiler_verification_project/artifacts/tail_macro_liveness.json",
           "compiler_verification_project/artifacts/tail_macro_reversibility.json",
+          "compiler_verification_project/artifacts/tail_macro_schedule_search.json",
           "compiler_verification_project/artifacts/whole_oracle_recount.json"
         ],
         "observed": [
@@ -9049,6 +9253,7 @@
           "compiler_verification_project/artifacts/table_manifests.json",
           "compiler_verification_project/artifacts/tail_macro_liveness.json",
           "compiler_verification_project/artifacts/tail_macro_reversibility.json",
+          "compiler_verification_project/artifacts/tail_macro_schedule_search.json",
           "compiler_verification_project/artifacts/whole_oracle_recount.json"
         ]
       },
@@ -10380,10 +10585,10 @@
       "pass": 30
     },
     "invariant_checks": {
-      "total": 291,
-      "pass": 291
+      "total": 296,
+      "pass": 296
     },
-    "total": 321,
-    "pass": 321
+    "total": 326,
+    "pass": 326
   }
 }

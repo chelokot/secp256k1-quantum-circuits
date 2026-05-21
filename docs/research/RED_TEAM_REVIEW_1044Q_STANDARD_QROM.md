@@ -207,6 +207,14 @@ Current additional diagnostic:
   live field values. The repository still needs a generated destructive/in-place
   schedule certificate before `3 * 256` can be treated as primitive liveness
   rather than a macro contract.
+- `compiler_verification_project/artifacts/tail_macro_schedule_search.json`
+  adds a stricter destructive-schedule search for the current formula DAG. It
+  permits computing a formula value and dropping old values whenever the
+  remaining live tuple is still injective over the canonical toy accumulator
+  domain. Even under that permissive model, the counted three-slot budget finds
+  no schedule for any curated toy generator lookup. This is negative evidence
+  for the current formula DAG, not a proof against a different formula or a
+  concrete permutation-extension implementation.
 - `compiler_verification_project/artifacts/tail_macro_reversibility.json` adds
   the matching reversible-boundary check. The macro polynomial is not injective
   over the full raw field-register domain and is also not injective over all
@@ -1397,9 +1405,12 @@ Partially mitigated after review:
   whole-oracle non-Clifford contribution equals the per-leaf macro lowering
   times the 31 leaf calls. The tail reversibility artifact now also checks
   `110,692` exhaustive canonical toy boundary translations, including the edge
-  cases that historically produced semantic blind spots. Internal live-wire
-  scheduling below those primitive rows is still not a bit-addressed wire
-  netlist.
+  cases that historically produced semantic blind spots. A destructive
+  formula-DAG search now also fails to fit the current tail formula into the
+  counted three field slots on curated toy generator lookups, even when old
+  values may be dropped after injectivity-preserving transitions. Internal
+  live-wire scheduling below those primitive rows is still not a bit-addressed
+  wire netlist.
 - Error class 4: `compiler_verification_project/artifacts/headline_opcode_coverage.json`
   is now a generated coverage matrix for every opcode in the selected executable
   leaf. It requires a declared opcode policy, a ZKP-prepared kind, flat-liveness

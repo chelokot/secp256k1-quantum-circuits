@@ -84,6 +84,7 @@ from resource_certificate import build_resource_liveness_certificate  # noqa: E4
 from subcircuit_equivalence import build_subcircuit_equivalence_artifact  # noqa: E402
 from tail_macro_liveness import build_tail_macro_liveness  # noqa: E402
 from tail_macro_reversibility import build_tail_macro_reversibility  # noqa: E402
+from tail_macro_schedule_search import build_tail_macro_schedule_search  # noqa: E402
 from whole_oracle_recount import build_whole_oracle_recount as build_whole_oracle_recount_single  # noqa: E402
 
 PointAffine = Optional[Tuple[int, int]]
@@ -1915,6 +1916,9 @@ def build_all_artifacts() -> Dict[str, Any]:
             counted_arithmetic_slots=len(STREAMED_LOOKUP_TAIL_ARITHMETIC_SLOTS),
         ),
         'tail_macro_reversibility': build_tail_macro_reversibility(),
+        'tail_macro_schedule_search': build_tail_macro_schedule_search(
+            counted_arithmetic_slots=len(STREAMED_LOOKUP_TAIL_ARITHMETIC_SLOTS),
+        ),
         'streamed_lookup_table_multiplier_resource': streamed_lookup_table_multiplier_resource(
             arithmetic_lowerings=arithmetic_lowerings,
             lookup_lowerings=lookup_lowerings,
@@ -1994,6 +1998,7 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('arithmetic_lowerings.json'), out['arithmetic_lowerings'])
     dump_json(project_artifact_path('tail_macro_liveness.json'), out['tail_macro_liveness'])
     dump_json(project_artifact_path('tail_macro_reversibility.json'), out['tail_macro_reversibility'])
+    dump_json(project_artifact_path('tail_macro_schedule_search.json'), out['tail_macro_schedule_search'])
     dump_json(project_artifact_path('streamed_lookup_table_multiplier_resource.json'), out['streamed_lookup_table_multiplier_resource'])
     dump_json(project_artifact_path('module_library.json'), out['arithmetic_kernel_library'])
     dump_json(project_artifact_path('primitive_multiplier_library.json'), out['primitive_multiplier_library'])

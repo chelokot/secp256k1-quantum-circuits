@@ -1,0 +1,55 @@
+{
+  "schema": "compiler-project-tail-macro-schedule-search-v1",
+  "opcode": "complete_a0_all_streamed_tail",
+  "schedule_model": "formula_dag_compute_then_keep_injective_subset",
+  "field_value_budget": 3,
+  "rows": [
+    {
+      "curve": "toy61_b2",
+      "lookup_point_policy": "generator_point_as_nonzero_lookup_entry",
+      "field_value_budget": 3,
+      "canonical_accumulator_domain_size": 61,
+      "solution_found": false,
+      "states_visited": 233,
+      "terminal_live_field_values": null,
+      "schedule": null
+    },
+    {
+      "curve": "toy127_b11",
+      "lookup_point_policy": "generator_point_as_nonzero_lookup_entry",
+      "field_value_budget": 3,
+      "canonical_accumulator_domain_size": 127,
+      "solution_found": false,
+      "states_visited": 239,
+      "terminal_live_field_values": null,
+      "schedule": null
+    },
+    {
+      "curve": "toy181_b3",
+      "lookup_point_policy": "generator_point_as_nonzero_lookup_entry",
+      "field_value_budget": 3,
+      "canonical_accumulator_domain_size": 181,
+      "solution_found": false,
+      "states_visited": 238,
+      "terminal_live_field_values": null,
+      "schedule": null
+    },
+    {
+      "curve": "toy241_b29",
+      "lookup_point_policy": "generator_point_as_nonzero_lookup_entry",
+      "field_value_budget": 3,
+      "canonical_accumulator_domain_size": 241,
+      "solution_found": false,
+      "states_visited": 234,
+      "terminal_live_field_values": null,
+      "schedule": null
+    }
+  ],
+  "any_checked_curve_has_solution": false,
+  "all_checked_curves_exhausted_without_solution": true,
+  "notes": [
+    "This search is more permissive than non-destructive pebbling: after a formula value is computed, old live values may be dropped whenever the remaining live tuple is still injective over the canonical accumulator domain.",
+    "The checked three-slot budget still finds no schedule for the current formula DAG on any curated toy generator lookup.",
+    "This does not prove that no different formula or no explicit permutation-extension implementation can realize a three-field-register tail."
+  ]
+}

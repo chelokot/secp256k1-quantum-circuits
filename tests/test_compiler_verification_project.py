@@ -103,6 +103,8 @@ def test_compiler_project_verification_summary_groups_all_pass() -> None:
     assert tail_macro_liveness['pass'] == tail_macro_liveness['total']
     tail_macro_reversibility = summary['tail_macro_reversibility_checks']
     assert tail_macro_reversibility['pass'] == tail_macro_reversibility['total']
+    tail_macro_schedule_search = summary['tail_macro_schedule_search_checks']
+    assert tail_macro_schedule_search['pass'] == tail_macro_schedule_search['total']
     headline_opcode_coverage = summary['headline_opcode_coverage_checks']
     assert headline_opcode_coverage['pass'] == headline_opcode_coverage['total']
     streamed_lookup_table_multiplier_resource = summary['streamed_lookup_table_multiplier_resource_checks']
@@ -194,6 +196,14 @@ def test_mutated_tail_macro_reversibility_is_detected() -> None:
     artifacts['tail_macro_reversibility']['canonical_boundary_translation_domain']['category_totals']['inverse'] = 0
     groups = _evaluate_mutation(artifacts, 'tail_macro_reversibility_checks')
     assert groups['tail_macro_reversibility_checks']['pass'] < groups['tail_macro_reversibility_checks']['total']
+
+
+def test_mutated_tail_macro_schedule_search_is_detected() -> None:
+    artifacts = deepcopy(_load_artifacts())
+    artifacts['tail_macro_schedule_search']['any_checked_curve_has_solution'] = True
+    artifacts['tail_macro_schedule_search']['rows'][0]['solution_found'] = True
+    groups = _evaluate_mutation(artifacts, 'tail_macro_schedule_search_checks')
+    assert groups['tail_macro_schedule_search_checks']['pass'] < groups['tail_macro_schedule_search_checks']['total']
 
 
 def test_mutated_headline_opcode_coverage_is_detected() -> None:

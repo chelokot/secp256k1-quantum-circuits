@@ -34,6 +34,7 @@ from resource_ledger import build_logical_resource_ledger, qroam_clean_stream_co
 from resource_certificate import build_resource_liveness_certificate
 from tail_macro_liveness import build_tail_macro_liveness
 from tail_macro_reversibility import build_tail_macro_reversibility
+from tail_macro_schedule_search import build_tail_macro_schedule_search
 from headline_opcode_coverage import build_headline_opcode_coverage
 from project import (
     FIELD_BITS,
@@ -141,6 +142,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'arithmetic_lowerings': artifact_root / 'arithmetic_lowerings.json',
         'tail_macro_liveness': artifact_root / 'tail_macro_liveness.json',
         'tail_macro_reversibility': artifact_root / 'tail_macro_reversibility.json',
+        'tail_macro_schedule_search': artifact_root / 'tail_macro_schedule_search.json',
         'streamed_lookup_table_multiplier_resource': artifact_root / 'streamed_lookup_table_multiplier_resource.json',
         'module_library': artifact_root / 'module_library.json',
         'primitive_multiplier_library': artifact_root / 'primitive_multiplier_library.json',
@@ -1116,6 +1118,21 @@ def build_tail_macro_reversibility_checks(artifacts: Mapping[str, Any]) -> Dict[
         _check('tail_macro_canonical_boundary_translation_is_semantic', boundary_domain['all_checked_rows_semantic'] is True and all(row['semantic_pass'] is True for row in boundary_domain['rows']), 'all rows semantic', boundary_domain),
         _check('tail_macro_canonical_boundary_translation_is_injective_per_lookup', boundary_domain['all_checked_rows_injective_for_each_lookup'] is True and all(row['injective_for_each_lookup'] is True for row in boundary_domain['rows']), 'all fixed lookup translations injective', boundary_domain),
         _check('tail_macro_canonical_boundary_translation_covers_edge_cases', all(boundary_domain['category_totals'][category] > 0 for category in expected_boundary_categories), {category: '> 0' for category in expected_boundary_categories}, boundary_domain['category_totals']),
+    ]
+    return _summarize_checks(checks)
+
+
+def build_tail_macro_schedule_search_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    artifact = artifacts['tail_macro_schedule_search']
+    expected = build_tail_macro_schedule_search(
+        counted_arithmetic_slots=len(artifacts['streamed_lookup_tail_leaf']['arithmetic_slots']),
+    )
+    checks = [
+        _check('tail_macro_schedule_search_matches_generator', artifact == expected, expected, artifact),
+        _check('tail_macro_schedule_search_schema_is_current', artifact['schema'] == 'compiler-project-tail-macro-schedule-search-v1', 'compiler-project-tail-macro-schedule-search-v1', artifact['schema']),
+        _check('tail_macro_schedule_search_tracks_current_macro_opcode', artifact['opcode'] == 'complete_a0_all_streamed_tail', 'complete_a0_all_streamed_tail', artifact['opcode']),
+        _check('tail_macro_schedule_search_uses_streamed_leaf_slot_budget', artifact['field_value_budget'] == len(artifacts['streamed_lookup_tail_leaf']['arithmetic_slots']), len(artifacts['streamed_lookup_tail_leaf']['arithmetic_slots']), artifact['field_value_budget']),
+        _check('tail_macro_schedule_search_exhausts_three_slot_formula_dag_without_solution', artifact['all_checked_curves_exhausted_without_solution'] is True and artifact['any_checked_curve_has_solution'] is False and all(row['solution_found'] is False for row in artifact['rows']), {'all_checked_curves_exhausted_without_solution': True, 'any_checked_curve_has_solution': False}, artifact),
     ]
     return _summarize_checks(checks)
 
@@ -2198,6 +2215,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'streamed_lookup_tail_slot_allocation_checks': lambda: build_streamed_lookup_tail_slot_allocation_checks(artifacts),
         'tail_macro_liveness_checks': lambda: build_tail_macro_liveness_checks(artifacts),
         'tail_macro_reversibility_checks': lambda: build_tail_macro_reversibility_checks(artifacts),
+        'tail_macro_schedule_search_checks': lambda: build_tail_macro_schedule_search_checks(artifacts),
         'streamed_lookup_table_multiplier_resource_checks': lambda: build_streamed_lookup_table_multiplier_resource_checks(artifacts),
         'standard_qrom_lookup_assessment_checks': lambda: build_standard_qrom_lookup_assessment_checks(artifacts),
         'logical_resource_ledger_checks': lambda: build_logical_resource_ledger_checks(artifacts),
