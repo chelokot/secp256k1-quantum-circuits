@@ -15,6 +15,7 @@ SRC_DIR = REPO_ROOT / 'src'
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
+from baselines import load_public_google_baseline_lines  # noqa: E402
 from common import sha256_path  # noqa: E402
 
 
@@ -26,6 +27,7 @@ class ReleaseInventoryTests(unittest.TestCase):
             'LICENSE',
             'CITATION.cff',
             'MANIFEST.sha256',
+            'data/public_google_baseline.json',
             'docs/core/CLAIMS_AND_BOUNDARIES.md',
             'docs/references/GOOGLE_BASELINE_COMPARISON.md',
             'docs/core/EXTENDED_VERIFICATION.md',
@@ -44,6 +46,7 @@ class ReleaseInventoryTests(unittest.TestCase):
             'scripts/verify_all.py',
             'scripts/compare_cain_2026.py',
             'scripts/refresh_repo.py',
+            'src/baselines.py',
             'src/common.py',
             'src/cain_integration.py',
             'src/derived_resources.py',
@@ -107,6 +110,7 @@ class ReleaseInventoryTests(unittest.TestCase):
             'compiler_verification_project/src/whole_oracle_recount.py',
             'compiler_verification_project/src/zkp_attestation.py',
             'compiler_verification_project/artifacts/build_summary.json',
+            'compiler_verification_project/artifacts/public_google_baseline_source.json',
             'compiler_verification_project/artifacts/arithmetic_lowerings.json',
             'compiler_verification_project/artifacts/family_frontier.json',
             'compiler_verification_project/artifacts/lookup_lowerings.json',
@@ -185,6 +189,9 @@ class ReleaseInventoryTests(unittest.TestCase):
         ensure_repo_verification_summary()
         frontier = json.loads((REPO_ROOT / 'compiler_verification_project' / 'artifacts' / 'family_frontier.json').read_text())
         baseline = frontier['public_google_baseline']
+        source = json.loads((REPO_ROOT / 'compiler_verification_project' / 'artifacts' / 'public_google_baseline_source.json').read_text())
+        self.assertEqual(baseline, load_public_google_baseline_lines())
+        self.assertEqual(baseline, source['lines'])
         best_gate = frontier['best_gate_family']
         best_qubit = frontier['best_qubit_family']
         self.assertAlmostEqual(best_gate['improvement_vs_google_low_gate'], baseline['low_gate']['non_clifford'] / best_gate['full_oracle_non_clifford'])

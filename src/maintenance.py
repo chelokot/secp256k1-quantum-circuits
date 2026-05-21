@@ -49,6 +49,7 @@ VENDORED_GROTH16_FFI_PATHS = [
 
 
 PROOF_MANIFEST_PATHS = [
+    'data/public_google_baseline.json',
     'artifacts/README.md',
     'artifacts/circuits/optimized_pointadd_secp256k1.json',
     'artifacts/circuits/optimized_pointadd_family.json',
@@ -82,6 +83,7 @@ PROOF_MANIFEST_PATHS = [
     'figures/core/projection_headroom.png',
     'figures/research/verification_coverage_extended.png',
     'figures/research/optimization_frontier_ranges.png',
+    'src/baselines.py',
     'src/verifier.py',
     'src/extended_verifier.py',
     'src/figure_generation.py',
@@ -118,6 +120,7 @@ PROOF_MANIFEST_PATHS = [
     'compiler_verification_project/zkp_attestation/script/src/wrap_only.rs',
     *VENDORED_GROTH16_FFI_PATHS,
     'compiler_verification_project/artifacts/build_summary.json',
+    'compiler_verification_project/artifacts/public_google_baseline_source.json',
     'compiler_verification_project/artifacts/arithmetic_lowerings.json',
     'compiler_verification_project/artifacts/family_frontier.json',
     'compiler_verification_project/artifacts/lookup_lowerings.json',

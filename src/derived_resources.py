@@ -25,6 +25,7 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, MutableMapping, Sequence
 
+from baselines import load_public_google_baseline_projection
 from common import artifact_circuits_path, artifact_lookup_path, artifact_projection_path, dump_json, load_json, sha256_path
 
 FIELD_ARITH_OPS = {'field_mul', 'field_add', 'field_sub', 'mul_const', 'select_field_if_flag'}
@@ -526,19 +527,7 @@ def _project_from_model(
     }
 
 
-PUBLIC_GOOGLE_BASELINE = {
-    'source': 'Google/Babbush et al. 2026 rounded published secp256k1 estimates',
-    'window_size': 16,
-    'retained_window_additions': 28,
-    'low_qubit': {
-        'logical_qubits': 1200,
-        'non_clifford': 90_000_000,
-    },
-    'low_gate': {
-        'logical_qubits': 1450,
-        'non_clifford': 70_000_000,
-    },
-}
+PUBLIC_GOOGLE_BASELINE = load_public_google_baseline_projection()
 
 
 def build_derived_resource_family(repo_root: Path) -> Dict[str, Any]:

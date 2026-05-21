@@ -482,10 +482,22 @@ tests, or formulas instead of being derived from one flat circuit engine.
 
 ### Public baseline constants
 
-- `scripts/verify_all.py` contains `1200`, `90_000_000`, `1450`,
+Reviewed-state issue:
+
+- `scripts/verify_all.py` contained `1200`, `90_000_000`, `1450`,
   `70_000_000`.
-- `compiler_verification_project/src/project.py` and generated artifacts carry
-  the same Google baseline.
+- `compiler_verification_project/src/project.py` and generated artifacts
+  carried the same Google baseline.
+
+Current remediation:
+
+- `data/public_google_baseline.json` is the versioned baseline source.
+- `src/baselines.py`, `compiler_verification_project/src/project.py`,
+  `src/derived_resources.py`, `scripts/verify_all.py`, and the relevant tests
+  import that source instead of restating the numbers.
+- `compiler_verification_project/artifacts/public_google_baseline_source.json`
+  mirrors the source artifact, and integrity tests require it to match
+  `family_frontier.json`.
 
 Risk:
 
@@ -494,9 +506,9 @@ Risk:
 
 Required hardening:
 
-- Store external baselines in a versioned `baselines/google_2026.json` with
-  citation metadata.
-- Make all docs/tests import that baseline.
+- Keep the external baseline in the versioned baseline source artifact and make
+  generated docs/tests consume it through the shared loader or mirrored checked
+  artifact.
 
 ### Headline numbers in tests
 

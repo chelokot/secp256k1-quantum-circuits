@@ -16,6 +16,7 @@ if str(COMPILER_SRC) not in sys.path:
     sys.path.insert(0, str(COMPILER_SRC))
 
 from integrity import evaluate_mutated_verification_groups, load_compiler_artifacts  # noqa: E402
+from baselines import load_public_google_baseline_lines  # noqa: E402
 
 
 def _load_artifacts() -> dict:
@@ -41,7 +42,9 @@ def test_compiler_project_frontier_and_schedule() -> None:
     assert summary['headline']['best_sub30m_qubit_family'] == frontier['best_sub30m_qubit_family']
     assert frontier['best_gate_family']['phase_shell'] == 'semiclassical_qft_v1'
     assert frontier['best_qubit_family']['phase_shell'] == 'semiclassical_qft_v1'
-    assert frontier['best_google_low_gate_qubit_family']['full_oracle_non_clifford'] < 70_000_000
+    baseline = load_public_google_baseline_lines()
+    assert frontier['public_google_baseline'] == baseline
+    assert frontier['best_google_low_gate_qubit_family']['full_oracle_non_clifford'] < baseline['low_gate']['non_clifford']
     assert frontier['best_sub30m_qubit_family'] is None
 
 
@@ -60,10 +63,11 @@ def test_qubit_breakthrough_analysis_thresholds_are_self_consistent() -> None:
     assert analysis['best_exact_qubit_family'] == best_qubit
     assert analysis['exact_component_breakdown']['arithmetic_register_file_qubits'] == best_qubit['arithmetic_slot_count'] * 256
     assert analysis['exact_component_breakdown']['fixed_non_arithmetic_overhead_qubits'] == fixed_overhead
-    assert analysis['baseline_thresholds']['low_gate']['max_arithmetic_slots_at_current_field_width'] == (1450 - fixed_overhead) // 256
-    assert analysis['baseline_thresholds']['low_qubit']['max_arithmetic_slots_at_current_field_width'] == (1200 - fixed_overhead) // 256
-    assert analysis['baseline_thresholds']['low_gate']['max_field_slot_logical_qubits_at_current_exact_slot_count'] == (1450 - fixed_overhead) // best_qubit['arithmetic_slot_count']
-    assert analysis['baseline_thresholds']['low_qubit']['max_field_slot_logical_qubits_at_current_exact_slot_count'] == (1200 - fixed_overhead) // best_qubit['arithmetic_slot_count']
+    baseline = load_public_google_baseline_lines()
+    assert analysis['baseline_thresholds']['low_gate']['max_arithmetic_slots_at_current_field_width'] == (baseline['low_gate']['logical_qubits'] - fixed_overhead) // 256
+    assert analysis['baseline_thresholds']['low_qubit']['max_arithmetic_slots_at_current_field_width'] == (baseline['low_qubit']['logical_qubits'] - fixed_overhead) // 256
+    assert analysis['baseline_thresholds']['low_gate']['max_field_slot_logical_qubits_at_current_exact_slot_count'] == (baseline['low_gate']['logical_qubits'] - fixed_overhead) // best_qubit['arithmetic_slot_count']
+    assert analysis['baseline_thresholds']['low_qubit']['max_field_slot_logical_qubits_at_current_exact_slot_count'] == (baseline['low_qubit']['logical_qubits'] - fixed_overhead) // best_qubit['arithmetic_slot_count']
     assert analysis['modeled_reference_points']['addsub_modmul_named_slots_v2']['logical_qubits_total'] == 592
     assert analysis['modeled_reference_points']['addsub_modmul_liveness_v2']['logical_qubits_total'] == 520
 

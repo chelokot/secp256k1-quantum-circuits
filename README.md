@@ -129,7 +129,9 @@ lookup-contract layer that the compiler project builds on top of.
 
 When this repository says **Google's published 2026 secp256k1 estimates**, it
 means the rounded public comparison lines cited from Babbush et al. 2026 and
-copied into the exact compiler frontier:
+stored in `data/public_google_baseline.json`, then mirrored into the exact
+compiler frontier and
+`compiler_verification_project/artifacts/public_google_baseline_source.json`:
 
 - **low-qubit line:** `1200 logical qubits`, `90,000,000 non-Clifford`
 - **low-gate line:** `1450 logical qubits`, `70,000,000 non-Clifford`

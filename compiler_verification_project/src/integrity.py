@@ -125,6 +125,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
     artifact_root = repo_root / 'compiler_verification_project' / 'artifacts'
     required = {
         'canonical_public_point': artifact_root / 'canonical_public_point.json',
+        'public_google_baseline_source': artifact_root / 'public_google_baseline_source.json',
         'full_raw32_oracle': artifact_root / 'full_raw32_oracle.json',
         'exact_leaf_slot_allocation': artifact_root / 'exact_leaf_slot_allocation.json',
         'lookup_fed_leaf': artifact_root / 'lookup_fed_leaf.json',
@@ -1743,7 +1744,7 @@ def build_frontier_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
         key=lambda row: (row['total_logical_qubits'], row['full_oracle_non_clifford']),
     )
     checks = [
-        _check('public_google_baseline_matches_constant', frontier['public_google_baseline'] == PUBLIC_GOOGLE_BASELINE, PUBLIC_GOOGLE_BASELINE, frontier['public_google_baseline']),
+        _check('public_google_baseline_matches_source_artifact', frontier['public_google_baseline'] == artifacts['public_google_baseline_source']['lines'] == PUBLIC_GOOGLE_BASELINE, artifacts['public_google_baseline_source']['lines'], frontier['public_google_baseline']),
         _check('frontier_schema_matches_current_version', frontier['schema'] == 'compiler-project-frontier-v11', 'compiler-project-frontier-v11', frontier['schema']),
         _check('frontier_schedule_matches_standalone_schedule', frontier['schedule'] == schedule, schedule, frontier['schedule']),
         _check('frontier_slot_allocation_matches_standalone_slot_allocation', frontier['slot_allocation'] == slot_alloc, slot_alloc, frontier['slot_allocation']),
@@ -1804,6 +1805,7 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
     build_summary = artifacts['build_summary']
     expected_paths = {
         'canonical_public_point': 'compiler_verification_project/artifacts/canonical_public_point.json',
+        'public_google_baseline_source': 'compiler_verification_project/artifacts/public_google_baseline_source.json',
         'full_raw32_oracle': 'compiler_verification_project/artifacts/full_raw32_oracle.json',
         'exact_leaf_slot_allocation': 'compiler_verification_project/artifacts/exact_leaf_slot_allocation.json',
         'lookup_fed_leaf': 'compiler_verification_project/artifacts/lookup_fed_leaf.json',
@@ -1836,7 +1838,7 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'azure_resource_estimator_results': 'compiler_verification_project/artifacts/azure_resource_estimator_results.json',
     }
     checks = [
-        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v18', 'compiler-project-build-summary-v18', build_summary['schema']),
+        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v19', 'compiler-project-build-summary-v19', build_summary['schema']),
         _check('build_summary_artifact_paths_match_expected_set', build_summary['artifacts'] == expected_paths, expected_paths, build_summary['artifacts']),
         _check(
             'build_summary_paths_exist_on_disk',

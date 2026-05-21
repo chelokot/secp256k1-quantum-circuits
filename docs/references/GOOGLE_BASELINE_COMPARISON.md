@@ -7,7 +7,11 @@ compiler-family comparison against that baseline.
 ## Baseline source
 
 The baseline is the rounded public secp256k1 estimate from Babbush et al. 2026
-as copied into `compiler_verification_project/artifacts/family_frontier.json`.
+as stored in `data/public_google_baseline.json`. The compiler build mirrors
+that same artifact into
+`compiler_verification_project/artifacts/public_google_baseline_source.json`
+and uses its `lines` object in
+`compiler_verification_project/artifacts/family_frontier.json`.
 
 The tracked public lines are:
 

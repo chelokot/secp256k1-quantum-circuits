@@ -6,6 +6,10 @@
     "Paths are repository-relative."
   ],
   "files": {
+    "data/public_google_baseline.json": {
+      "sha256": "37e1b3dbaf294aca7ad8dda82ecd2c328412d96298821be3b10e9436e03a712d",
+      "bytes": 712
+    },
     "artifacts/README.md": {
       "sha256": "2ccdf7687e60aa3e83473827ae443090e868ed1c7deabd60ef3493f52aad2e5b",
       "bytes": 1761
@@ -138,6 +142,10 @@
       "sha256": "64accc6620104df8071bc791c98c5756b5a35aec80646ffa97dc9dfcb5a90baf",
       "bytes": 69396
     },
+    "src/baselines.py": {
+      "sha256": "6b3c03805dca22e529036cab44215378cdbd502708503d8981b59a3b6b3e71f6",
+      "bytes": 1015
+    },
     "src/verifier.py": {
       "sha256": "26e6b2fe4a5b13eb86a5a76d981fa587ddf0050541c07663b22dbe2350028d42",
       "bytes": 15375
@@ -155,8 +163,8 @@
       "bytes": 1390
     },
     "src/derived_resources.py": {
-      "sha256": "3b9ac251e2b2f1ed7f202ced5b389be21725ab633dc9d3e8d9dbcc46e669a330",
-      "bytes": 28942
+      "sha256": "d678f3b7785b84792c07469201f146704cf70176e16abf9474242c852fe2acfa",
+      "bytes": 28711
     },
     "compiler_verification_project/README.md": {
       "sha256": "a958681ba982d0beb993af76678cbf8c90fd760125f1aa887868f24be3cc1c3c",
@@ -171,8 +179,8 @@
       "bytes": 26931
     },
     "compiler_verification_project/src/integrity.py": {
-      "sha256": "4bff1d73e262f8fccbfefc4b56ce1b000266dd0c607974fa59ea6e81f229b1c6",
-      "bytes": 134397
+      "sha256": "fae836bf228086862ffbfca18dcacded46c84b65b4136ce3fdaa1b14e24a50e7",
+      "bytes": 134702
     },
     "compiler_verification_project/src/generated_block_inventory.py": {
       "sha256": "9a5a8cdc5369e43cb88df726d08fbc88ba727a43b72962388357546b8d382d89",
@@ -199,8 +207,8 @@
       "bytes": 12143
     },
     "compiler_verification_project/src/project.py": {
-      "sha256": "b5bd9c895466ea912256b87a1217670dc38a4611438aefeaa6b82b472aadd50b",
-      "bytes": 107043
+      "sha256": "3748960abe87d89c8f3af5affe0375ba785a26870a90e3fbae1e0aa2a4e3bccc",
+      "bytes": 107573
     },
     "compiler_verification_project/src/subcircuit_equivalence.py": {
       "sha256": "1933f72d12a1d1da0103a39ac5aa35f0fa538b393bea39be34ad193de0d09d66",
@@ -411,8 +419,12 @@
       "bytes": 2405
     },
     "compiler_verification_project/artifacts/build_summary.json": {
-      "sha256": "48af05743b7344d5bf46b7c4f75727e33a6da20e9f76a84be44d5b85c46eb290",
-      "bytes": 12046
+      "sha256": "84a56cbc6f31513c33d77f02bea4ca18d1ed4c4c1624292583a7f49bbe082cb6",
+      "bytes": 12161
+    },
+    "compiler_verification_project/artifacts/public_google_baseline_source.json": {
+      "sha256": "4714ebbc7f250509af0e4ed1cd823274c4742d172c73c031f602419f06e05548",
+      "bytes": 711
     },
     "compiler_verification_project/artifacts/arithmetic_lowerings.json": {
       "sha256": "083c4ba621efc9658b4bcd3797331e20a0988067f55f4ee6b0c6b44d20e5f56d",
@@ -495,8 +507,8 @@
       "bytes": 15988
     },
     "compiler_verification_project/artifacts/verification_summary.json": {
-      "sha256": "b45b4ca8507a47370307bc4fcd46ad438bd9085afc00bcac61c8902501edd7fa",
-      "bytes": 350102
+      "sha256": "0704ec22c8c17bc1eafbe675f027122e0ee12d4ed0f547c3641ea833a6945a47",
+      "bytes": 350853
     },
     "compiler_verification_project/artifacts/cain_exact_transfer.json": {
       "sha256": "02ab9b452578ee476755b828351c983e4e848802a78eba33db23b1d016ca6cea",

@@ -187,7 +187,9 @@ repository's headline result.
 
 When this repository refers to the **public Google baseline**, it means the
 rounded published lines stored in
-`compiler_verification_project/artifacts/family_frontier.json`:
+`data/public_google_baseline.json` and mirrored into
+`compiler_verification_project/artifacts/public_google_baseline_source.json`
+and `compiler_verification_project/artifacts/family_frontier.json`:
 
 - `1200 logical qubits / 90,000,000 non-Clifford`
 - `1450 logical qubits / 70,000,000 non-Clifford`

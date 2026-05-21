@@ -55,6 +55,7 @@ from common import (  # noqa: E402
     sha256_bytes,
     sha256_path,
 )
+from baselines import load_public_google_baseline_artifact, load_public_google_baseline_lines  # noqa: E402
 from arithmetic_lowering import DEFAULT_QROAM_CLEAN_BLOCK_SIZE, arithmetic_kernel_summary, arithmetic_lowering_library  # noqa: E402
 from ft_ir import build_ft_ir_compositions as build_ft_ir_compositions_single  # noqa: E402
 from generated_block_inventory import build_generated_block_inventories as build_generated_block_inventories_single  # noqa: E402
@@ -89,10 +90,7 @@ FOLDED_MAG_BITS = 15
 FOLDED_MAG_DOMAIN = 1 << FOLDED_MAG_BITS  # 32768 magnitudes 0..32767
 FULL_RAW_WINDOWS = 32
 FULL_PHASE_REGISTER_BITS = 512
-PUBLIC_GOOGLE_BASELINE = {
-    'low_qubit': {'logical_qubits': 1200, 'non_clifford': 90_000_000},
-    'low_gate': {'logical_qubits': 1450, 'non_clifford': 70_000_000},
-}
+PUBLIC_GOOGLE_BASELINE = load_public_google_baseline_lines()
 CENTRAL_LOOKUP_FAMILY = 'folded_standard_qroam_streamed_coordinate_v1'
 CENTRAL_PHASE_SHELL = 'semiclassical_qft_v1'
 CENTRAL_QROAM_CLEAN_BLOCK_SIZE = DEFAULT_QROAM_CLEAN_BLOCK_SIZE
@@ -1897,6 +1895,7 @@ def build_all_artifacts() -> Dict[str, Any]:
         public_google_baseline=PUBLIC_GOOGLE_BASELINE,
     )
     out = {
+        'public_google_baseline_source': load_public_google_baseline_artifact(),
         'canonical_public_point': canonical_public_point(),
         'raw32_schedule': raw32_schedule(),
         'slot_allocation': exact_leaf_slot_allocation(),
@@ -1966,6 +1965,7 @@ def build_all_artifacts() -> Dict[str, Any]:
         full_attack_inventory=out['full_attack_inventory'],
     )
     dump_json(project_artifact_path('canonical_public_point.json'), out['canonical_public_point'])
+    dump_json(project_artifact_path('public_google_baseline_source.json'), out['public_google_baseline_source'])
     dump_json(project_artifact_path('full_raw32_oracle.json'), out['raw32_schedule'])
     dump_json(project_artifact_path('exact_leaf_slot_allocation.json'), out['slot_allocation'])
     dump_json(project_artifact_path('lookup_fed_leaf.json'), out['lookup_fed_leaf'])
@@ -2003,9 +2003,10 @@ def build_all_artifacts() -> Dict[str, Any]:
     )
 
     build_summary = {
-        'schema': 'compiler-project-build-summary-v18',
+        'schema': 'compiler-project-build-summary-v19',
         'artifacts': {
             'canonical_public_point': 'compiler_verification_project/artifacts/canonical_public_point.json',
+            'public_google_baseline_source': 'compiler_verification_project/artifacts/public_google_baseline_source.json',
             'full_raw32_oracle': 'compiler_verification_project/artifacts/full_raw32_oracle.json',
             'exact_leaf_slot_allocation': 'compiler_verification_project/artifacts/exact_leaf_slot_allocation.json',
             'lookup_fed_leaf': 'compiler_verification_project/artifacts/lookup_fed_leaf.json',
@@ -2057,16 +2058,19 @@ def build_all_artifacts() -> Dict[str, Any]:
 def build_cain_transfer_payload(frontier: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     if frontier is None:
         frontier = load_json(project_artifact_path('family_frontier.json')) if project_artifact_path('family_frontier.json').exists() else compiler_family_frontier()
+    baseline = frontier['public_google_baseline']
+    low_qubit = baseline['low_qubit']
+    low_gate = baseline['low_gate']
     out_rows = []
     for family in frontier['families']:
         nc = int(family['full_oracle_non_clifford'])
         logical = int(family['total_logical_qubits'])
         out_rows.append({
             'family': family['name'],
-            'heuristic_time_efficient_days_if_90M_maps_to_10d': (10.0 * nc) / 90_000_000,
-            'heuristic_time_efficient_days_if_70M_maps_to_10d': (10.0 * nc) / 70_000_000,
-            'same_density_physical_qubits_if_1200_maps_to_26k': (26_000.0 * logical) / 1200.0,
-            'same_density_physical_qubits_if_1450_maps_to_26k': (26_000.0 * logical) / 1450.0,
+            'heuristic_time_efficient_days_if_90M_maps_to_10d': (10.0 * nc) / int(low_qubit['non_clifford']),
+            'heuristic_time_efficient_days_if_70M_maps_to_10d': (10.0 * nc) / int(low_gate['non_clifford']),
+            'same_density_physical_qubits_if_1200_maps_to_26k': (26_000.0 * logical) / int(low_qubit['logical_qubits']),
+            'same_density_physical_qubits_if_1450_maps_to_26k': (26_000.0 * logical) / int(low_gate['logical_qubits']),
         })
     payload = {
         'schema': 'compiler-project-cain-transfer-v2',

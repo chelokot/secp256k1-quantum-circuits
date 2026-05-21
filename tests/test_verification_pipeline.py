@@ -15,6 +15,7 @@ if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
 from common import sha256_path  # noqa: E402
+from baselines import load_public_google_baseline_projection  # noqa: E402
 
 
 class VerificationPipelineTests(unittest.TestCase):
@@ -40,10 +41,7 @@ class VerificationPipelineTests(unittest.TestCase):
 
     def test_google_baseline_is_recorded(self):
         baseline = self.summary['google_baseline']
-        self.assertEqual(baseline['low_qubit']['logical_qubits'], 1200)
-        self.assertEqual(baseline['low_qubit']['non_clifford'], 90_000_000)
-        self.assertEqual(baseline['low_gate']['logical_qubits'], 1450)
-        self.assertEqual(baseline['low_gate']['non_clifford'], 70_000_000)
+        self.assertEqual(baseline, load_public_google_baseline_projection())
 
     def test_extended_supporting_checks_are_recorded(self):
         extended = self.summary['extended']

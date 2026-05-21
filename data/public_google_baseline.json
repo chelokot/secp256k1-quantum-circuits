@@ -1,0 +1,21 @@
+{
+  "schema": "secp256k1-public-google-baseline-v1",
+  "source": "Google/Babbush et al. 2026 rounded published secp256k1 estimates",
+  "scope": "public comparison baseline only; not a regenerated Google circuit",
+  "window_size": 16,
+  "retained_window_additions": 28,
+  "lines": {
+    "low_qubit": {
+      "logical_qubits": 1200,
+      "non_clifford": 90000000
+    },
+    "low_gate": {
+      "logical_qubits": 1450,
+      "non_clifford": 70000000
+    }
+  },
+  "notes": [
+    "These rounded public numbers are the only Google baseline numbers used for repo-wide numeric comparisons.",
+    "The repository does not claim to regenerate Google's hidden circuit or proof boundary from this baseline artifact."
+  ]
+}

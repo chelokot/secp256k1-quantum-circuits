@@ -33,6 +33,7 @@ Role:
 The structural comparison between the published baseline framing and the
 optimized artifact family includes:
 
+- baseline source: `data/public_google_baseline.json`
 - Google low-qubit ECDLP line: `1200 logical qubits`, `90,000,000 non-Clifford`
 - Google low-gate ECDLP line: `1450 logical qubits`, `70,000,000 non-Clifford`
 - optimized exact leaf: `37` ISA instructions, `12` named arithmetic slots

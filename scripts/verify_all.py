@@ -16,6 +16,7 @@ SRC_DIR = REPO_ROOT / 'src'
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
+from baselines import load_public_google_baseline_lines, load_public_google_baseline_projection  # noqa: E402
 from common import artifact_core_verification_path, dump_json, load_json, sha256_path  # noqa: E402
 from extended_verifier import (  # noqa: E402
     run_claim_boundary_matrix,
@@ -217,14 +218,13 @@ def build_summary(console: Console, show_progress: bool, quick: bool) -> Dict[st
     if not quick:
         extended = build_extended_summary(REPO_ROOT, progress, 3, step_count)
         compiler_project = build_compiler_project_summary(REPO_ROOT, progress, 8, step_count)
-    google_baseline = (
+    source_google_baseline_lines = load_public_google_baseline_lines()
+    compiler_google_baseline = (
         compiler_project['frontier']['public_google_baseline']
         if compiler_project is not None
-        else {
-            'low_qubit': {'logical_qubits': 1200, 'non_clifford': 90_000_000},
-            'low_gate': {'logical_qubits': 1450, 'non_clifford': 70_000_000},
-        }
+        else source_google_baseline_lines
     )
+    google_baseline = load_public_google_baseline_projection()
 
     summary = {
         'optimized': optimized,
@@ -232,12 +232,7 @@ def build_summary(console: Console, show_progress: bool, quick: bool) -> Dict[st
         'headline_checks': {
             'optimized_audit_pass': optimized['audit']['summary']['pass'] == optimized['audit']['summary']['total'] == 16384,
             'optimized_toy_pass': optimized['toy']['summary']['pass'] == optimized['toy']['summary']['total'] == 19850,
-            'google_baseline_present': (
-                google_baseline['low_qubit']['logical_qubits'] == 1200
-                and google_baseline['low_qubit']['non_clifford'] == 90_000_000
-                and google_baseline['low_gate']['logical_qubits'] == 1450
-                and google_baseline['low_gate']['non_clifford'] == 70_000_000
-            ),
+            'google_baseline_present': compiler_google_baseline == source_google_baseline_lines,
         },
     }
     if extended is not None:
