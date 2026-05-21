@@ -3775,6 +3775,38 @@ mod tests {
 
     #[test]
     #[should_panic]
+    fn prepared_attestation_rejects_stale_leaf_digest() {
+        let mut input = checked_input();
+        input.leaf_sha256 = "00".repeat(32);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_stale_family_digest() {
+        let mut input = checked_input();
+        input.family_sha256 = "00".repeat(32);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_stale_case_corpus_digest() {
+        let mut input = checked_input();
+        input.case_corpus_sha256 = "00".repeat(32);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_stale_resource_certificate_digest() {
+        let mut input = checked_input();
+        input.resource_certificate_sha256 = "00".repeat(32);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
     fn prepared_attestation_rejects_mutated_committed_claim_payload() {
         let mut input = checked_input();
         input.claim_document.payload.0["expected_total_logical_qubits"] = serde_json::json!(1045);

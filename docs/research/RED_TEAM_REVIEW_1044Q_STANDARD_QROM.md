@@ -28,28 +28,30 @@ engine that emits and counts one flat executable object.
 The result is strong inside the repository's current boundary, but it is not yet
 as confidence-preserving as Google's disclosure boundary.
 
-After deeper review, the highest-severity issue is in the ZKP binding layer:
-the active SP1 program uses the prepared-input path
-`run_prepared_attestation`, not the older full-document `run_attestation` path.
-The prepared path does **not** recompute the public `claim_sha256`,
-`leaf_sha256`, `family_sha256`, or `case_corpus_sha256` from embedded full
-documents inside the guest. It checks formulas and executes the prepared leaf
-and prepared cases, then copies those hash strings into public values. The
-repo-side Python builder and tests currently ensure the checked files agree, but
-that agreement is not itself enforced inside the Groth16 statement.
+The reviewed commit's highest-severity issue was in the ZKP binding layer: the
+active SP1 program used a prepared-input path that did not recompute public
+document hashes from embedded full sidecars inside the guest. The current branch
+has remediated that specific binding bug. The active
+`run_prepared_attestation` path now carries committed claim, leaf, family,
+case-corpus, and resource-certificate documents; recomputes their semantic
+SHA-256 digests inside the guest; derives the prepared leaf and case reductions
+from those committed documents; and rejects stale digest labels, mutated
+committed payloads, mutated prepared reductions, and mutated resource
+leaf-sigma rows.
 
 The strongest defensible statement is:
 
 > The repository currently contains a checked standard-QROM compiler-family
-> boundary whose artifacts, resource ledger, prepared SP1 public values,
-> compressed proof, and Groth16 proof agree on `32,879,331 / 1,044`, with
-> sidecar-hash binding currently enforced by repo generation/tests rather than
-> fully recomputed inside the active ZKP guest.
+> boundary whose artifacts, resource ledger, committed-document SP1 public
+> values, compressed proof, and Groth16 proof agree on `34,736,076 / 1,044`,
+> with claim/leaf/family/case/resource document hashes recomputed inside the
+> active ZKP guest.
 
-That statement is the historical verdict for commit
+The weaker `32,879,331 / 1,044` statement is the historical verdict for commit
 `4d9fefed41ca0f6b5cf6528ce8366065fc6d557a`. The current branch has since moved
 the public claim to `34,736,076 / 1,044` after adding explicit modular-reduction
-cost and stronger ZKP resource binding.
+cost, stronger ZKP resource binding, and in-guest committed-document hash
+binding.
 
 The statement that is not yet defensible without more engineering is:
 
@@ -67,7 +69,7 @@ resource semantics and macro boundaries.
 
 | ID | Severity | Finding | Why it matters | Required fix |
 | --- | --- | --- | --- | --- |
-| ZK-1 | P0 | Active SP1 prepared path does not recompute sidecar hashes | Public values can carry hash labels that are trusted from the input builder, not proven from full sidecars inside the circuit | Make the guest hash full claim/leaf/family/case documents, or hash canonical prepared documents whose digests are the published source of truth |
+| ZK-1 | P0 reviewed-state; remediated on current branch | Reviewed SP1 prepared path did not recompute sidecar hashes; current path now recomputes committed claim/leaf/family/case/resource hashes in guest | This used to let public values carry hash labels trusted from the input builder; current tests reject stale digest labels and mutated committed payloads | Keep full committed documents in the guest input and keep negative digest/payload tests |
 | ZK-2 | P0 | ZKP executes high-level field/macro semantics, not primitive QROAM/arithmetic lowerings | The proof checks point-add behavior for prepared cases, but not that the resource-counted primitive circuit implements that behavior | Feed the same resource IR into the guest or prove a separate lowering certificate |
 | RES-1 | P0 | `complete_a0_all_streamed_tail` hides internal liveness behind a macro boundary | The `1,044` qubit result depends on internal temporaries not increasing peak live qubits | Flatten macro into scheduled IR and derive peak from that IR |
 | RES-2 | P0 | Modular field arithmetic costs are model-level costs, not a generated modular circuit | Rust semantics applies `% p`; arithmetic lowering counts abstract add/sub/mul kernels whose modular-reduction completeness must be trusted | Generate modular add/sub/mul circuits including reduction and count them |
@@ -101,81 +103,60 @@ resource semantics and macro boundaries.
 
 ## Critical Trust Assumptions
 
-### 0. The active ZKP does not recompute the sidecar document hashes
+### 0. The active ZKP sidecar-hash binding bug is remediated
 
-This is the most important deeper-review finding.
+Reviewed-state issue:
 
-There are two Rust attestation paths:
+The reviewed commit used `run_prepared_attestation` without embedded full
+sidecar documents. The guest executed prepared cases and copied public hash
+labels, so a verifier of only the Groth16 proof had to trust the repo-side
+builder to connect those labels to the checked JSON sidecars.
 
-- `run_attestation(input: &AttestationInput)` handles schema
-  `compiler-project-zkp-attestation-input-v2` and explicitly recomputes
-  semantic hashes for full claim, leaf, family, and case-corpus documents.
-- `run_prepared_attestation(input: &PreparedAttestationInput)` handles schema
-  `compiler-project-zkp-attestation-input-v4`, which is the path used by
-  `compiler_verification_project/zkp_attestation/program/src/main.rs`.
+Current remediation:
 
-The active SP1 program reads `PreparedAttestationInput` and calls
-`run_prepared_attestation`. In that path:
+The active SP1 program still calls `run_prepared_attestation`, but the prepared
+input schema is now `compiler-project-zkp-attestation-input-v5` and carries:
 
-- the guest checks `input.schema` and formulas;
-- the guest executes `input.prepared_leaf` on `input.prepared_case_corpus`;
-- the guest copies `input.claim_sha256`, `input.leaf_sha256`,
-  `input.family_sha256`, and `input.case_corpus_sha256` into public values;
-- the guest does not recompute those hashes from full sidecar documents, because
-  the full sidecar documents are not in the prepared input.
+- committed claim document;
+- committed streamed leaf document;
+- committed selected-family document;
+- committed point-add case-corpus document;
+- committed resource-liveness certificate document;
+- proof-ready prepared leaf and case reductions.
+
+Inside the guest, `run_prepared_attestation` now:
+
+- checks every committed document digest scheme;
+- recomputes each semantic SHA-256 digest from the committed payload;
+- requires the recomputed digest to equal the public digest label in the input;
+- decodes the committed documents;
+- derives the claim summary, family summary, prepared case corpus, and prepared
+  leaf from those committed documents;
+- requires those derived prepared forms to equal the supplied prepared forms;
+- validates the resource certificate before publishing public values.
 
 Evidence:
 
 - active entrypoint:
   `compiler_verification_project/zkp_attestation/program/src/main.rs`
-- full-document path recomputes hashes:
-  `compiler_verification_project/zkp_attestation/lib/src/lib.rs:2316-2359`
-- prepared path starts at:
-  `compiler_verification_project/zkp_attestation/lib/src/lib.rs:2492`
-- prepared path copies public hash labels at:
-  `compiler_verification_project/zkp_attestation/lib/src/lib.rs:2610-2617`
-- Python builder computes sidecar hashes outside the guest:
-  `compiler_verification_project/src/zkp_attestation.py:523-650`
+- committed-document validation:
+  `compiler_verification_project/zkp_attestation/lib/src/lib.rs:3136-3144`
+- prepared path document binding:
+  `compiler_verification_project/zkp_attestation/lib/src/lib.rs:3486-3544`
+- negative tests:
+  `compiler_verification_project/zkp_attestation/lib/src/lib.rs:3769-3828`
 
-This means the current Groth16 proof does not, by itself, prove:
+The old attack shape no longer works: mutating only a public digest label,
+mutating only a committed payload, or mutating only a prepared reduction causes
+the guest to reject. The checked tests explicitly cover stale claim, leaf,
+family, case-corpus, and resource-certificate digests.
 
-- `leaf_sha256` is the semantic hash of the checked
-  `streamed_lookup_tail_leaf.json`;
-- `family_sha256` is the semantic hash of the checked
-  `zkp_attestation_family.json`;
-- `claim_sha256` is the semantic hash of the checked
-  `zkp_attestation_claim.json`;
-- `case_corpus_sha256` is the semantic hash of the checked
-  `zkp_attestation_cases.json`.
+Remaining trust boundary:
 
-The repo tests and artifact generator do check that the checked files match the
-default builder output. That is valuable, but it is an external release-process
-check, not an in-circuit proof constraint.
-
-Attack shape against the statement, not necessarily against the current repo
-commit:
-
-1. Create a prepared input with a valid easy leaf/case corpus.
-2. Put arbitrary `leaf_sha256` / `family_sha256` labels in the input.
-3. The prepared guest can still output those labels as public values if formulas
-   and prepared cases are internally consistent.
-
-That attack would not pass the repo's checked default-build tests if artifacts
-were regenerated honestly, but a third-party verifier receiving only the proof
-and public values does not get the same guarantee.
-
-Required hardening:
-
-- Best: use a single full-document input path in the SP1 program and recompute
-  all semantic document hashes inside the guest.
-- Acceptable: define the prepared input itself as the source-of-truth object,
-  publish its canonical hash, and stop saying the proof binds the full JSON
-  sidecars.
-- Better: include both full sidecars and prepared compiled forms, and have the
-  guest prove that the prepared forms are derived from the full sidecars.
-- Add negative tests that mutate only `leaf_sha256`, `family_sha256`,
-  `claim_sha256`, and `case_corpus_sha256` in `zkp_attestation_input.json` and
-  require the SP1 guest to reject.
+This fix binds the proof to the committed source documents and prepared
+reductions. It does not by itself make the proof a full primitive-gate Shor
+circuit proof; the remaining high-severity issues are the resource/lowering
+and flat-liveness boundaries below.
 
 ### 1. The all-streamed tail macro is trusted as a counted liveness boundary
 

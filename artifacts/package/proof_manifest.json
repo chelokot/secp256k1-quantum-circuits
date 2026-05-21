@@ -251,8 +251,8 @@
       "bytes": 324
     },
     "compiler_verification_project/zkp_attestation/lib/src/lib.rs": {
-      "sha256": "6e6f1789320264cc81d0af798930322b3f764f8add18560ba5ef285ff766447c",
-      "bytes": 131831
+      "sha256": "753a5bc662e1540168e0753341bada9c5ad9e5a4d694949bda78532df9ffc09d",
+      "bytes": 132781
     },
     "compiler_verification_project/zkp_attestation/program/Cargo.toml": {
       "sha256": "ad4e8d80b5b8e2865b14cd9a46fd218ea02973b45387fc4100b314883af25a84",
