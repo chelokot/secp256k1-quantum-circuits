@@ -60,6 +60,7 @@ from baselines import load_public_google_baseline_artifact, load_public_google_b
 from arithmetic_lowering import DEFAULT_QROAM_CLEAN_BLOCK_SIZE, arithmetic_kernel_summary, arithmetic_lowering_library  # noqa: E402
 from ft_ir import build_ft_ir_compositions as build_ft_ir_compositions_single  # noqa: E402
 from generated_block_inventory import build_generated_block_inventories as build_generated_block_inventories_single  # noqa: E402
+from headline_opcode_coverage import build_headline_opcode_coverage  # noqa: E402
 from lookup_fed_leaf import (  # noqa: E402
     LOOKUP_FED_ARITHMETIC_SLOTS,
     LOOKUP_FED_CONTROL_SLOTS,
@@ -1973,6 +1974,13 @@ def build_all_artifacts() -> Dict[str, Any]:
         frontier=out['frontier'],
         full_attack_inventory=out['full_attack_inventory'],
     )
+    out['headline_opcode_coverage'] = build_headline_opcode_coverage(
+        leaf=out['streamed_lookup_tail_leaf'],
+        streamed_lookup_tail_leaf_equivalence=out['streamed_lookup_tail_leaf_equivalence'],
+        subcircuit_equivalence=out['subcircuit_equivalence'],
+        arithmetic_lowerings=out['arithmetic_lowerings'],
+        resource_liveness_certificate=out['resource_liveness_certificate'],
+    )
     dump_json(project_artifact_path('canonical_public_point.json'), out['canonical_public_point'])
     dump_json(project_artifact_path('public_google_baseline_source.json'), out['public_google_baseline_source'])
     dump_json(project_artifact_path('full_raw32_oracle.json'), out['raw32_schedule'])
@@ -2004,6 +2012,7 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('qubit_breakthrough_analysis.json'), out['qubit_breakthrough_analysis'])
     dump_json(project_artifact_path('full_attack_inventory.json'), out['full_attack_inventory'])
     dump_json(project_artifact_path('subcircuit_equivalence.json'), out['subcircuit_equivalence'])
+    dump_json(project_artifact_path('headline_opcode_coverage.json'), out['headline_opcode_coverage'])
     out['azure_resource_estimator_logical_counts'] = write_azure_logical_counts()
     out['azure_resource_estimator_targets'] = write_azure_estimator_targets(
         logical_counts_payload=out['azure_resource_estimator_logical_counts']

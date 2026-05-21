@@ -34,6 +34,7 @@ from resource_ledger import build_logical_resource_ledger, qroam_clean_stream_co
 from resource_certificate import build_resource_liveness_certificate
 from tail_macro_liveness import build_tail_macro_liveness
 from tail_macro_reversibility import build_tail_macro_reversibility
+from headline_opcode_coverage import build_headline_opcode_coverage
 from project import (
     FIELD_BITS,
     FOLDED_MAG_BITS,
@@ -158,6 +159,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'ft_ir_compositions': artifact_root / 'ft_ir_compositions.json',
         'whole_oracle_recount': artifact_root / 'whole_oracle_recount.json',
         'subcircuit_equivalence': artifact_root / 'subcircuit_equivalence.json',
+        'headline_opcode_coverage': artifact_root / 'headline_opcode_coverage.json',
         'build_summary': artifact_root / 'build_summary.json',
         'cain_exact_transfer': artifact_root / 'cain_exact_transfer.json',
         'azure_resource_estimator_logical_counts': artifact_root / 'azure_resource_estimator_logical_counts.json',
@@ -1675,6 +1677,30 @@ def build_subcircuit_equivalence_checks(artifacts: Mapping[str, Any], repo_root:
     return _summarize_checks(checks)
 
 
+def build_headline_opcode_coverage_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    coverage = artifacts['headline_opcode_coverage']
+    expected = build_headline_opcode_coverage(
+        leaf=artifacts['streamed_lookup_tail_leaf'],
+        streamed_lookup_tail_leaf_equivalence=artifacts['streamed_lookup_tail_leaf_equivalence'],
+        subcircuit_equivalence=artifacts['subcircuit_equivalence'],
+        arithmetic_lowerings=artifacts['arithmetic_lowerings'],
+        resource_liveness_certificate=artifacts['resource_liveness_certificate'],
+    )
+    rows_by_opcode = {row['opcode']: row for row in coverage['rows']}
+    tail_row = rows_by_opcode['complete_a0_all_streamed_tail']
+    checks = [
+        _check('headline_opcode_coverage_matches_generator', coverage == expected, expected, coverage),
+        _check('headline_opcode_coverage_schema_is_current', coverage['schema'] == 'compiler-project-headline-opcode-coverage-v1', 'compiler-project-headline-opcode-coverage-v1', coverage['schema']),
+        _check('headline_opcode_coverage_matches_leaf_histogram', coverage['headline_opcode_histogram'] == leaf_opcode_histogram(), leaf_opcode_histogram(), coverage['headline_opcode_histogram']),
+        _check('headline_opcode_coverage_has_policy_for_every_opcode', coverage['all_headline_opcodes_have_policy'] is True, True, coverage['rows']),
+        _check('headline_opcode_coverage_has_zkp_prepared_kind_for_every_opcode', coverage['all_headline_opcodes_have_zkp_prepared_kind'] is True, True, coverage['rows']),
+        _check('headline_opcode_coverage_has_liveness_rows_for_every_pc', coverage['all_headline_opcode_pcs_have_liveness_rows'] is True, True, coverage['rows']),
+        _check('headline_opcode_coverage_all_required_layers_pass', coverage['all_required_opcode_coverage_passes'] is True and all(row['passes_required_coverage'] is True for row in coverage['rows']), True, coverage['rows']),
+        _check('headline_opcode_coverage_tail_opcode_has_counted_lowering_and_sigma_rows', tail_row['arithmetic_lowering_non_clifford_per_kernel'] == artifacts['resource_liveness_certificate']['macro_lowering_inventory']['exact_non_clifford_per_kernel'] and tail_row['macro_leaf_sigma']['row_count'] > 0 and tail_row['macro_leaf_sigma']['whole_oracle_non_clifford'] > 0, {'non_clifford': artifacts['resource_liveness_certificate']['macro_lowering_inventory']['exact_non_clifford_per_kernel'], 'sigma_rows': '> 0'}, tail_row),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_primitive_multiplier_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     primitive = artifacts['primitive_multiplier_library']
     schedule = artifacts['full_raw32_oracle']
@@ -2181,6 +2207,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'ft_ir_checks': lambda: build_ft_ir_checks(artifacts, repo_root),
         'whole_oracle_recount_checks': lambda: build_whole_oracle_recount_checks(artifacts, repo_root),
         'subcircuit_equivalence_checks': lambda: build_subcircuit_equivalence_checks(artifacts, repo_root),
+        'headline_opcode_coverage_checks': lambda: build_headline_opcode_coverage_checks(artifacts),
         'primitive_multiplier_checks': lambda: build_primitive_multiplier_checks(artifacts),
         'frontier_checks': lambda: build_frontier_checks(artifacts),
         'build_summary_checks': lambda: build_build_summary_checks(artifacts, repo_root),

@@ -1400,6 +1400,13 @@ Partially mitigated after review:
   cases that historically produced semantic blind spots. Internal live-wire
   scheduling below those primitive rows is still not a bit-addressed wire
   netlist.
+- Error class 4: `compiler_verification_project/artifacts/headline_opcode_coverage.json`
+  is now a generated coverage matrix for every opcode in the selected executable
+  leaf. It requires a declared opcode policy, a ZKP-prepared kind, flat-liveness
+  rows for every executable pc, whole-leaf edge-case equivalence, and additional
+  subcircuit/lowering/leaf-sigma evidence for counted arithmetic opcodes. This
+  prevents a future headline opcode from entering the selected leaf as an
+  unreviewed semantic/resource side path.
 - `ZK-3`: proof binaries are now included in the curated proof manifest, but
   the checked JSON fixtures still intentionally keep the large binary proof
   payloads out-of-line.

@@ -103,6 +103,8 @@ def test_compiler_project_verification_summary_groups_all_pass() -> None:
     assert tail_macro_liveness['pass'] == tail_macro_liveness['total']
     tail_macro_reversibility = summary['tail_macro_reversibility_checks']
     assert tail_macro_reversibility['pass'] == tail_macro_reversibility['total']
+    headline_opcode_coverage = summary['headline_opcode_coverage_checks']
+    assert headline_opcode_coverage['pass'] == headline_opcode_coverage['total']
     streamed_lookup_table_multiplier_resource = summary['streamed_lookup_table_multiplier_resource_checks']
     assert streamed_lookup_table_multiplier_resource['pass'] == streamed_lookup_table_multiplier_resource['total']
     standard_qrom_lookup_assessment = summary['standard_qrom_lookup_assessment_checks']
@@ -192,6 +194,14 @@ def test_mutated_tail_macro_reversibility_is_detected() -> None:
     artifacts['tail_macro_reversibility']['canonical_boundary_translation_domain']['category_totals']['inverse'] = 0
     groups = _evaluate_mutation(artifacts, 'tail_macro_reversibility_checks')
     assert groups['tail_macro_reversibility_checks']['pass'] < groups['tail_macro_reversibility_checks']['total']
+
+
+def test_mutated_headline_opcode_coverage_is_detected() -> None:
+    artifacts = deepcopy(_load_artifacts())
+    tail_row = next(row for row in artifacts['headline_opcode_coverage']['rows'] if row['opcode'] == 'complete_a0_all_streamed_tail')
+    tail_row['passes_required_coverage'] = False
+    groups = _evaluate_mutation(artifacts, 'headline_opcode_coverage_checks')
+    assert groups['headline_opcode_coverage_checks']['pass'] < groups['headline_opcode_coverage_checks']['total']
 
 
 def test_mutated_phase_shell_lowering_is_detected() -> None:

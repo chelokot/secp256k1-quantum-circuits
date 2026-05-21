@@ -1,0 +1,149 @@
+{
+  "schema": "compiler-project-headline-opcode-coverage-v1",
+  "leaf_variant": "a0_complete_mixed_streamed_lookup_tail_secp256k1",
+  "headline_opcode_histogram": {
+    "bool_from_flag": 1,
+    "complete_a0_all_streamed_tail": 1,
+    "load_input": 3,
+    "lookup_meta": 1
+  },
+  "edge_case_leaf_equivalence": {
+    "total": 80,
+    "pass": 80,
+    "categories": {
+      "accumulator_infinity": {
+        "total": 16,
+        "pass": 16
+      },
+      "doubling": {
+        "total": 16,
+        "pass": 16
+      },
+      "inverse": {
+        "total": 16,
+        "pass": 16
+      },
+      "lookup_infinity": {
+        "total": 16,
+        "pass": 16
+      },
+      "random": {
+        "total": 16,
+        "pass": 16
+      }
+    }
+  },
+  "rows": [
+    {
+      "opcode": "bool_from_flag",
+      "instruction_count": 1,
+      "pcs": [
+        4
+      ],
+      "policy": "control_flag_extract",
+      "zkp_prepared_kind": "bool_from_flag",
+      "liveness_pcs": [
+        4
+      ],
+      "liveness_covers_all_pcs": true,
+      "subcircuit_equivalence": {
+        "total": 96,
+        "pass": 96
+      },
+      "requires_subcircuit_equivalence": true,
+      "requires_arithmetic_lowering": false,
+      "arithmetic_lowering_non_clifford_per_kernel": null,
+      "macro_leaf_sigma": {
+        "row_count": 0,
+        "whole_oracle_non_clifford": 0
+      },
+      "requires_edge_case_leaf_equivalence": true,
+      "passes_required_coverage": true
+    },
+    {
+      "opcode": "complete_a0_all_streamed_tail",
+      "instruction_count": 1,
+      "pcs": [
+        5
+      ],
+      "policy": "counted_arithmetic_macro",
+      "zkp_prepared_kind": "complete_a0_all_streamed_tail",
+      "liveness_pcs": [
+        5
+      ],
+      "liveness_covers_all_pcs": true,
+      "subcircuit_equivalence": {
+        "total": 96,
+        "pass": 96
+      },
+      "requires_subcircuit_equivalence": true,
+      "requires_arithmetic_lowering": true,
+      "arithmetic_lowering_non_clifford_per_kernel": 1120212,
+      "macro_leaf_sigma": {
+        "row_count": 66,
+        "whole_oracle_non_clifford": 34726572
+      },
+      "requires_edge_case_leaf_equivalence": true,
+      "passes_required_coverage": true
+    },
+    {
+      "opcode": "load_input",
+      "instruction_count": 3,
+      "pcs": [
+        0,
+        1,
+        2
+      ],
+      "policy": "field_interface_copy",
+      "zkp_prepared_kind": "copy",
+      "liveness_pcs": [
+        0,
+        1,
+        2
+      ],
+      "liveness_covers_all_pcs": true,
+      "subcircuit_equivalence": null,
+      "requires_subcircuit_equivalence": false,
+      "requires_arithmetic_lowering": false,
+      "arithmetic_lowering_non_clifford_per_kernel": null,
+      "macro_leaf_sigma": {
+        "row_count": 0,
+        "whole_oracle_non_clifford": 0
+      },
+      "requires_edge_case_leaf_equivalence": true,
+      "passes_required_coverage": true
+    },
+    {
+      "opcode": "lookup_meta",
+      "instruction_count": 1,
+      "pcs": [
+        3
+      ],
+      "policy": "lookup_metadata_copy",
+      "zkp_prepared_kind": "copy",
+      "liveness_pcs": [
+        3
+      ],
+      "liveness_covers_all_pcs": true,
+      "subcircuit_equivalence": null,
+      "requires_subcircuit_equivalence": false,
+      "requires_arithmetic_lowering": false,
+      "arithmetic_lowering_non_clifford_per_kernel": null,
+      "macro_leaf_sigma": {
+        "row_count": 0,
+        "whole_oracle_non_clifford": 0
+      },
+      "requires_edge_case_leaf_equivalence": true,
+      "passes_required_coverage": true
+    }
+  ],
+  "all_headline_opcodes_have_policy": true,
+  "all_headline_opcodes_have_zkp_prepared_kind": true,
+  "all_headline_opcode_pcs_have_liveness_rows": true,
+  "all_required_opcode_coverage_passes": true,
+  "notes": [
+    "This artifact is a release guard against adding a headline executable opcode without a declared proof/resource policy.",
+    "Interface-copy opcodes are zero-non-Clifford policies but still require ZKP preparation, whole-leaf edge-case equivalence, and liveness rows.",
+    "Counted arithmetic opcodes additionally require subcircuit equivalence, arithmetic lowering, and primitive leaf-sigma rows in the resource certificate."
+  ]
+}
