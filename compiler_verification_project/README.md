@@ -51,6 +51,7 @@ What it does ship is:
 - `full_raw32_oracle.json` — exact fully quantum schedule: 1 direct seed + 31 leaf calls
 - `exact_leaf_slot_allocation.json` — exact versioned live-range allocation of the checked leaf
 - `arithmetic_lowerings.json` — generated primitive-operation inventories for the named arithmetic-kernel family
+- `tail_macro_liveness.json` — generated diagnostic liveness pressure test for the `complete_a0_all_streamed_tail` formula DAG and the remaining three-slot schedule obligation
 - `streamed_lookup_table_multiplier_resource.json` — explicit table-controlled multiplier resource contract for streamed lookup coordinate bits
 - `standard_qrom_lookup_assessment.json` — machine-checked assessment showing that the selected lookup/resource contract is a standard-QROM primitive-circuit result
 - `logical_resource_ledger.json` — generated peak-live-qubit owner ledger and QROAMClean block-size tradeoff sweep

@@ -31,6 +31,7 @@ from physical_estimator import (
 )
 from resource_ledger import build_logical_resource_ledger, qroam_clean_stream_cost
 from resource_certificate import build_resource_liveness_certificate
+from tail_macro_liveness import build_tail_macro_liveness
 from project import (
     FIELD_BITS,
     FOLDED_MAG_BITS,
@@ -135,6 +136,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'streamed_lookup_tail_leaf_equivalence': artifact_root / 'streamed_lookup_tail_leaf_equivalence.json',
         'streamed_lookup_tail_leaf_slot_allocation': artifact_root / 'streamed_lookup_tail_leaf_slot_allocation.json',
         'arithmetic_lowerings': artifact_root / 'arithmetic_lowerings.json',
+        'tail_macro_liveness': artifact_root / 'tail_macro_liveness.json',
         'streamed_lookup_table_multiplier_resource': artifact_root / 'streamed_lookup_table_multiplier_resource.json',
         'module_library': artifact_root / 'module_library.json',
         'primitive_multiplier_library': artifact_root / 'primitive_multiplier_library.json',
@@ -1063,6 +1065,27 @@ def build_streamed_lookup_table_multiplier_resource_checks(artifacts: Mapping[st
     return _summarize_checks(checks)
 
 
+def build_tail_macro_liveness_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    artifact = artifacts['tail_macro_liveness']
+    expected = build_tail_macro_liveness(
+        field_bits=FIELD_BITS,
+        counted_arithmetic_slots=len(artifacts['streamed_lookup_tail_leaf']['arithmetic_slots']),
+    )
+    gap = artifact['gap_analysis']
+    checks = [
+        _check('tail_macro_liveness_matches_generator', artifact == expected, expected, artifact),
+        _check('tail_macro_liveness_schema_is_current', artifact['schema'] == 'compiler-project-tail-macro-liveness-v1', 'compiler-project-tail-macro-liveness-v1', artifact['schema']),
+        _check('tail_macro_liveness_tracks_current_macro_opcode', artifact['opcode'] == 'complete_a0_all_streamed_tail', 'complete_a0_all_streamed_tail', artifact['opcode']),
+        _check('tail_macro_liveness_uses_streamed_leaf_slot_budget', artifact['counted_arithmetic_slots'] == len(artifacts['streamed_lookup_tail_leaf']['arithmetic_slots']), len(artifacts['streamed_lookup_tail_leaf']['arithmetic_slots']), artifact['counted_arithmetic_slots']),
+        _check('tail_macro_liveness_exposes_no_recompute_gap',
+               gap['one_compute_peak_field_values'] > gap['counted_arithmetic_slots']
+               and gap['additional_field_slots_needed_without_recompute_or_destructive_schedule'] == gap['one_compute_peak_field_values'] - gap['counted_arithmetic_slots'],
+               {'one_compute_peak_field_values': '> counted_arithmetic_slots', 'additional_field_slots_needed_without_recompute_or_destructive_schedule': 'difference'},
+               gap),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_standard_qrom_lookup_assessment_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     assessment = artifacts['standard_qrom_lookup_assessment']
     expected = standard_qrom_lookup_assessment(
@@ -1827,6 +1850,7 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'streamed_lookup_tail_leaf_equivalence': 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json',
         'streamed_lookup_tail_leaf_slot_allocation': 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json',
         'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
+        'tail_macro_liveness': 'compiler_verification_project/artifacts/tail_macro_liveness.json',
         'streamed_lookup_table_multiplier_resource': 'compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json',
         'module_library': 'compiler_verification_project/artifacts/module_library.json',
         'primitive_multiplier_library': 'compiler_verification_project/artifacts/primitive_multiplier_library.json',
@@ -1850,7 +1874,7 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
         'azure_resource_estimator_results': 'compiler_verification_project/artifacts/azure_resource_estimator_results.json',
     }
     checks = [
-        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v19', 'compiler-project-build-summary-v19', build_summary['schema']),
+        _check('build_summary_schema_matches_current_version', build_summary['schema'] == 'compiler-project-build-summary-v20', 'compiler-project-build-summary-v20', build_summary['schema']),
         _check('build_summary_artifact_paths_match_expected_set', build_summary['artifacts'] == expected_paths, expected_paths, build_summary['artifacts']),
         _check(
             'build_summary_paths_exist_on_disk',
@@ -2148,6 +2172,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'slot_allocation_checks': lambda: build_slot_allocation_checks(artifacts),
         'lookup_fed_slot_allocation_checks': lambda: build_lookup_fed_slot_allocation_checks(artifacts),
         'streamed_lookup_tail_slot_allocation_checks': lambda: build_streamed_lookup_tail_slot_allocation_checks(artifacts),
+        'tail_macro_liveness_checks': lambda: build_tail_macro_liveness_checks(artifacts),
         'streamed_lookup_table_multiplier_resource_checks': lambda: build_streamed_lookup_table_multiplier_resource_checks(artifacts),
         'standard_qrom_lookup_assessment_checks': lambda: build_standard_qrom_lookup_assessment_checks(artifacts),
         'logical_resource_ledger_checks': lambda: build_logical_resource_ledger_checks(artifacts),

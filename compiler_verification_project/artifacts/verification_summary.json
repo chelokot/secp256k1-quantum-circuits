@@ -4146,6 +4146,59 @@
       }
     ]
   },
+  "tail_macro_liveness_checks": {
+    "pass": 5,
+    "total": 5,
+    "checks": [
+      {
+        "name": "tail_macro_liveness_matches_generator",
+        "pass": 1,
+        "expected": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "32b5313ed2ca78324b515d28924f678c18027016685caeee03d09d9113168f8c",
+          "size_bytes": 8304
+        },
+        "observed": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "32b5313ed2ca78324b515d28924f678c18027016685caeee03d09d9113168f8c",
+          "size_bytes": 8304
+        }
+      },
+      {
+        "name": "tail_macro_liveness_schema_is_current",
+        "pass": 1,
+        "expected": "compiler-project-tail-macro-liveness-v1",
+        "observed": "compiler-project-tail-macro-liveness-v1"
+      },
+      {
+        "name": "tail_macro_liveness_tracks_current_macro_opcode",
+        "pass": 1,
+        "expected": "complete_a0_all_streamed_tail",
+        "observed": "complete_a0_all_streamed_tail"
+      },
+      {
+        "name": "tail_macro_liveness_uses_streamed_leaf_slot_budget",
+        "pass": 1,
+        "expected": 3,
+        "observed": 3
+      },
+      {
+        "name": "tail_macro_liveness_exposes_no_recompute_gap",
+        "pass": 1,
+        "expected": {
+          "one_compute_peak_field_values": "> counted_arithmetic_slots",
+          "additional_field_slots_needed_without_recompute_or_destructive_schedule": "difference"
+        },
+        "observed": {
+          "one_compute_peak_field_values": 8,
+          "counted_arithmetic_slots": 3,
+          "additional_field_slots_needed_without_recompute_or_destructive_schedule": 5,
+          "additional_logical_qubits_needed_without_recompute_or_destructive_schedule": 1280,
+          "status": "current_three_slot_claim_requires_a_destructive_or_recompute_schedule"
+        }
+      }
+    ]
+  },
   "streamed_lookup_table_multiplier_resource_checks": {
     "pass": 15,
     "total": 15,
@@ -7593,8 +7646,8 @@
       {
         "name": "build_summary_schema_matches_current_version",
         "pass": 1,
-        "expected": "compiler-project-build-summary-v19",
-        "observed": "compiler-project-build-summary-v19"
+        "expected": "compiler-project-build-summary-v20",
+        "observed": "compiler-project-build-summary-v20"
       },
       {
         "name": "build_summary_artifact_paths_match_expected_set",
@@ -7611,6 +7664,7 @@
           "streamed_lookup_tail_leaf_equivalence": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json",
           "streamed_lookup_tail_leaf_slot_allocation": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json",
           "arithmetic_lowerings": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "tail_macro_liveness": "compiler_verification_project/artifacts/tail_macro_liveness.json",
           "streamed_lookup_table_multiplier_resource": "compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json",
           "module_library": "compiler_verification_project/artifacts/module_library.json",
           "primitive_multiplier_library": "compiler_verification_project/artifacts/primitive_multiplier_library.json",
@@ -7645,6 +7699,7 @@
           "streamed_lookup_tail_leaf_equivalence": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json",
           "streamed_lookup_tail_leaf_slot_allocation": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json",
           "arithmetic_lowerings": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "tail_macro_liveness": "compiler_verification_project/artifacts/tail_macro_liveness.json",
           "streamed_lookup_table_multiplier_resource": "compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json",
           "module_library": "compiler_verification_project/artifacts/module_library.json",
           "primitive_multiplier_library": "compiler_verification_project/artifacts/primitive_multiplier_library.json",
@@ -7703,6 +7758,7 @@
           "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json",
           "compiler_verification_project/artifacts/subcircuit_equivalence.json",
           "compiler_verification_project/artifacts/table_manifests.json",
+          "compiler_verification_project/artifacts/tail_macro_liveness.json",
           "compiler_verification_project/artifacts/whole_oracle_recount.json"
         ],
         "observed": [
@@ -7737,6 +7793,7 @@
           "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json",
           "compiler_verification_project/artifacts/subcircuit_equivalence.json",
           "compiler_verification_project/artifacts/table_manifests.json",
+          "compiler_verification_project/artifacts/tail_macro_liveness.json",
           "compiler_verification_project/artifacts/whole_oracle_recount.json"
         ]
       },
@@ -9068,10 +9125,10 @@
       "pass": 30
     },
     "invariant_checks": {
-      "total": 268,
-      "pass": 268
+      "total": 273,
+      "pass": 273
     },
-    "total": 298,
-    "pass": 298
+    "total": 303,
+    "pass": 303
   }
 }

@@ -85,8 +85,8 @@ resource semantics and macro boundaries.
   - `compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json`
   - `compiler_verification_project/artifacts/zkp_attestation_public_values.json`
   - compressed and Groth16 fixtures/proofs.
-- `scripts/refresh_repo.py` rebuilds the repo-level artifacts and reports
-  exact compiler verification `287/287`.
+- `compiler_verification_project/scripts/verify.py --cases 16` reports exact
+  compiler verification `303/303`.
 - `pytest -q` passed at the reviewed state.
 - The proof public values bind the selected family, leaf hash, case corpus hash,
   and the final numbers.
@@ -192,6 +192,19 @@ Required hardening:
 - Prove that any temporary scratch inside the macro is either sequentially
   reused inside an already counted owner or explicitly added to peak live
   qubits.
+
+Current additional diagnostic:
+
+- `compiler_verification_project/artifacts/tail_macro_liveness.json` is now a
+  generated pressure test for the macro formula DAG. It records the exact
+  `complete_a0_all_streamed_tail` formula dependencies from the executable
+  semantic boundary, including `yZ = lookup_y * Z`, and computes a
+  single-assignment/no-recompute liveness peak.
+- The diagnostic deliberately does not close RES-1. It exposes the remaining
+  proof obligation: the naive formula DAG peaks above the counted three
+  arithmetic slots, so the repository still needs a generated destructive or
+  recompute schedule certificate before `3 * 256` can be treated as primitive
+  liveness rather than a macro contract.
 
 ### 2. The resource ledger is still owner-summed, not circuit-derived
 

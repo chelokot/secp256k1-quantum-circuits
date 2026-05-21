@@ -99,6 +99,8 @@ def test_compiler_project_verification_summary_groups_all_pass() -> None:
     assert lookup_fed_slot_allocation['pass'] == lookup_fed_slot_allocation['total']
     streamed_lookup_tail_slot_allocation = summary['streamed_lookup_tail_slot_allocation_checks']
     assert streamed_lookup_tail_slot_allocation['pass'] == streamed_lookup_tail_slot_allocation['total']
+    tail_macro_liveness = summary['tail_macro_liveness_checks']
+    assert tail_macro_liveness['pass'] == tail_macro_liveness['total']
     streamed_lookup_table_multiplier_resource = summary['streamed_lookup_table_multiplier_resource_checks']
     assert streamed_lookup_table_multiplier_resource['pass'] == streamed_lookup_table_multiplier_resource['total']
     standard_qrom_lookup_assessment = summary['standard_qrom_lookup_assessment_checks']
@@ -171,6 +173,14 @@ def test_mutated_resource_certificate_owner_capacity_is_detected() -> None:
     artifacts['resource_liveness_certificate']['derived_owner_capacity']['rows'][0]['capacity_qubits'] -= 1
     groups = _evaluate_mutation(artifacts, 'resource_liveness_certificate_checks')
     assert groups['resource_liveness_certificate_checks']['pass'] < groups['resource_liveness_certificate_checks']['total']
+
+
+def test_mutated_tail_macro_liveness_is_detected() -> None:
+    artifacts = deepcopy(_load_artifacts())
+    y_z_row = next(row for row in artifacts['tail_macro_liveness']['formula_rows'] if row['target'] == 'yZ')
+    y_z_row['sources'].append('Y')
+    groups = _evaluate_mutation(artifacts, 'tail_macro_liveness_checks')
+    assert groups['tail_macro_liveness_checks']['pass'] < groups['tail_macro_liveness_checks']['total']
 
 
 def test_mutated_phase_shell_lowering_is_detected() -> None:
