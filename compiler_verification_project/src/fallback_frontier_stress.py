@@ -38,6 +38,18 @@ def build_fallback_frontier_stress(
     chunks_per_coordinate_stream = ceil(int(field_bits) / max_qroam_target_bits_for_four_slots)
     chunked_qroam_non_clifford = stream_count * chunks_per_coordinate_stream * qroam_chunk_cost
     chunked_total_non_clifford = base_without_streamed_qroam + chunked_qroam_non_clifford
+    reusable_coordinate_tables = 3
+    reusable_chunk_streams_per_leaf = reusable_coordinate_tables * chunks_per_coordinate_stream
+    leaf_call_count_total = stream_count // 5
+    reusable_chunked_qroam_non_clifford = leaf_call_count_total * reusable_chunk_streams_per_leaf * qroam_chunk_cost
+    reusable_chunked_total_non_clifford = base_without_streamed_qroam + reusable_chunked_qroam_non_clifford
+    reusable_chunked_total_logical_qubits = (
+        four_slot_arithmetic_qubits
+        + control_qubits
+        + phase_qubits
+        + folded_control_workspace
+        + max_qroam_target_bits_for_four_slots
+    )
     return {
         'schema': 'compiler-project-fallback-frontier-stress-v1',
         'limits': {
@@ -89,14 +101,43 @@ def build_fallback_frontier_stress(
                 chunked_total_non_clifford - int(non_clifford_limit),
             ),
         },
+        'reusable_chunked_coordinate_candidate': {
+            'status': 'promising_unproven_not_headline',
+            'model': 'split x, y, and x_plus_y table values into reusable live chunks, then consume each x chunk for both x-multiplications and each y chunk for both y-multiplications inside a four-slot tail schedule',
+            'required_new_lowering': 'chunked table-controlled multiplier that accumulates coordinate chunks without materializing a full field-sized coordinate lane and without repeating QROAM for each consumer',
+            'coordinate_tables': ['lookup_x', 'lookup_y', 'lookup_x_plus_y'],
+            'chunks_per_coordinate_table': chunks_per_coordinate_stream,
+            'chunk_streams_per_leaf': reusable_chunk_streams_per_leaf,
+            'leaf_call_count_total': leaf_call_count_total,
+            'per_chunk_stream_non_clifford': qroam_chunk_cost,
+            'base_non_clifford_without_streamed_qroam': base_without_streamed_qroam,
+            'chunked_qroam_non_clifford': reusable_chunked_qroam_non_clifford,
+            'candidate_total_non_clifford': reusable_chunked_total_non_clifford,
+            'candidate_total_logical_qubits': reusable_chunked_total_logical_qubits,
+            'beats_requested_non_clifford_limit': reusable_chunked_total_non_clifford < int(non_clifford_limit),
+            'beats_requested_logical_qubit_limit': reusable_chunked_total_logical_qubits < int(logical_qubit_limit_exclusive),
+            'margin_to_non_clifford_limit': int(non_clifford_limit) - reusable_chunked_total_non_clifford,
+            'margin_to_logical_qubit_limit': int(logical_qubit_limit_exclusive) - reusable_chunked_total_logical_qubits,
+            'proof_obligations_before_public_claim': [
+                'define an executable four-slot tail contract whose live values include one reusable coordinate chunk target and no full x/y field lane',
+                'prove the chunked table-controlled multiplier lowering, including partial-product accumulation across chunks and a single modular reduction boundary',
+                'derive liveness from that executable contract, including chunk target lifetime, arithmetic slots, folded lookup controls, and output registers',
+                'bind the new contract and resource certificate in the ZKP before changing headline public values',
+            ],
+        },
         'conclusion': {
             'current_models_have_no_four_slot_fallback_under_limits': chunked_total_non_clifford >= int(non_clifford_limit),
             'four_slot_fallback_requires_new_arithmetic_savings_or_new_lookup_primitive': chunked_total_non_clifford >= int(non_clifford_limit),
+            'new_chunk_reuse_candidate_would_fit_limits_if_lowering_is_proven': (
+                reusable_chunked_total_non_clifford < int(non_clifford_limit)
+                and reusable_chunked_total_logical_qubits < int(logical_qubit_limit_exclusive)
+            ),
         },
         'notes': [
             'This stress test is intentionally strict about the user-facing bound: logical qubits must be strictly below 1200, not equal to 1200.',
             'With four field slots, the current full-coordinate QROAM workspace misses the qubit bound before considering gates.',
             'Chunking the QROAM target enough to fit the four-slot qubit bound doubles the coordinate-stream QROAM count under the K=1 model and misses the 40M non-Clifford bound unless another layer saves the reported excess.',
+            'The reusable chunked-coordinate candidate is not a repo headline because its multiplier lowering and four-slot executable contract are not yet proven.',
         ],
     }
 

@@ -1212,6 +1212,7 @@ def build_fallback_frontier_stress_checks(artifacts: Mapping[str, Any]) -> Dict[
         field_bits=FIELD_BITS,
     )
     chunked = stress['chunked_coordinate_qroam_counterfactual']
+    reusable = stress['reusable_chunked_coordinate_candidate']
     pressure = stress['four_slot_pressure']
     checks = [
         _check('fallback_frontier_stress_matches_generator', stress == expected, expected, stress),
@@ -1219,6 +1220,7 @@ def build_fallback_frontier_stress_checks(artifacts: Mapping[str, Any]) -> Dict[
         _check('fallback_frontier_stress_uses_strict_1200_limit', stress['limits']['logical_qubit_limit_exclusive'] == 1200, 1200, stress['limits']['logical_qubit_limit_exclusive']),
         _check('fallback_frontier_stress_shows_four_full_coordinate_slots_miss_qubit_limit', pressure['current_four_slot_total_with_full_coordinate_qroam'] >= 1200 and pressure['lookup_workspace_reduction_needed_from_current'] > 0, {'four_slot_total': '>= 1200', 'workspace_reduction_needed': '> 0'}, pressure),
         _check('fallback_frontier_stress_chunked_four_slot_counterfactual_misses_40m', chunked['chunked_total_logical_qubits'] < 1200 and chunked['chunked_total_non_clifford'] >= 40_000_000 and chunked['required_non_qroam_base_reduction_to_fit_limit'] > 0, {'chunked_total_logical_qubits': '< 1200', 'chunked_total_non_clifford': '>= 40000000', 'required_non_qroam_base_reduction_to_fit_limit': '> 0'}, chunked),
+        _check('fallback_frontier_stress_reusable_chunk_candidate_fits_limits_but_is_not_headline', reusable['status'] == 'promising_unproven_not_headline' and reusable['beats_requested_non_clifford_limit'] is True and reusable['beats_requested_logical_qubit_limit'] is True and reusable['candidate_total_non_clifford'] < 40_000_000 and reusable['candidate_total_logical_qubits'] < 1200 and len(reusable['proof_obligations_before_public_claim']) >= 4, {'status': 'promising_unproven_not_headline', 'candidate_total_non_clifford': '< 40000000', 'candidate_total_logical_qubits': '< 1200', 'proof_obligations_before_public_claim': '>= 4'}, reusable),
         _check('fallback_frontier_stress_conclusion_has_no_current_four_slot_fallback', stress['conclusion']['current_models_have_no_four_slot_fallback_under_limits'] is True, True, stress['conclusion']),
     ]
     return _summarize_checks(checks)

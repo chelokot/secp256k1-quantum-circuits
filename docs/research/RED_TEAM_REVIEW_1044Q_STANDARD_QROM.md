@@ -1426,6 +1426,14 @@ Partially mitigated after review:
   the count to `44,894,156` non-Clifford operations. Under current lowerings, a
   four-slot fallback therefore needs either a new lookup primitive or at least
   `4,894,156` non-QROAM non-Clifford savings.
+- The same fallback stress now records the main plausible escape route rather
+  than hiding it in discussion: reusable chunked coordinate targets. If a
+  155-bit QROAM target chunk can be loaded once per `lookup_x`, `lookup_y`, and
+  `lookup_x_plus_y` chunk and reused across the matching consumers inside a
+  four-slot tail, the stress model gives `36,767,692` non-Clifford operations
+  and `1,199` logical qubits. This is not a headline result until the chunked
+  table-controlled multiplier lowering, executable four-slot contract,
+  liveness, resource certificate, and ZKP binding are built.
 - `ZK-3`: proof binaries are now included in the curated proof manifest, but
   the checked JSON fixtures still intentionally keep the large binary proof
   payloads out-of-line.
