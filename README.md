@@ -97,11 +97,14 @@ compiler-family boundary. The checked artifacts bind:
   `compiler_verification_project/artifacts/zkp_attestation_family.json`
 - a hashed deterministic public point-add case corpus in
   `compiler_verification_project/artifacts/zkp_attestation_cases.json`
+- a hashed resource liveness certificate in
+  `compiler_verification_project/artifacts/resource_liveness_certificate.json`
 
 The SP1 guest re-checks semantic hashes for those embedded typed documents,
 replays the leaf on every public case, checks the affine group law, and
-reconstructs the claimed exact non-Clifford and logical-qubit formulas before
-committing public values. The checked core fixture is
+reconstructs the claimed exact non-Clifford and logical-qubit formulas. It also
+checks the resource certificate, including the derived owner-capacity section,
+before committing public values. The checked core fixture is
 `compiler_verification_project/artifacts/zkp_attestation_fixture_core.json`,
 the checked compressed fixture is
 `compiler_verification_project/artifacts/zkp_attestation_fixture_compressed.json`,

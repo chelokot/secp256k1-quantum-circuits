@@ -112,6 +112,7 @@ The repository also ships a checked SP1 attestation bundle:
 - `compiler_verification_project/artifacts/zkp_attestation_claim.json`
 - `compiler_verification_project/artifacts/zkp_attestation_family.json`
 - `compiler_verification_project/artifacts/zkp_attestation_cases.json`
+- `compiler_verification_project/artifacts/resource_liveness_certificate.json`
 - `compiler_verification_project/artifacts/zkp_attestation_public_values.json`
 - `compiler_verification_project/artifacts/zkp_attestation_fixture_core.json`
 - `compiler_verification_project/artifacts/zkp_attestation_fixture_compressed.json`
@@ -123,12 +124,13 @@ The repository also ships a checked SP1 attestation bundle:
 That bundle is exact at the same boundary as the selected compiler-family
 summary and streamed lookup tail point-add leaf. The guest:
 
-- re-hashes the public claim, leaf document, selected family summary, and
-  deterministic case corpus,
+- re-hashes the public claim, leaf document, selected family summary,
+  deterministic case corpus, and resource liveness certificate,
 - replays the exact streamed lookup tail point-add contract on every public case,
 - checks the affine group law for every case, and
 - reconstructs the claimed full-oracle non-Clifford and logical-qubit totals
-  from the selected family summary before committing public values.
+  from the selected family summary, including the resource certificate's
+  derived owner-capacity obligations, before committing public values.
 
 The checked JSON sidecars remain the audit-friendly source-of-truth inputs for
 that bundle. The core, compressed, and Groth16 fixtures are checked proof-layer

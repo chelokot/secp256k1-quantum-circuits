@@ -3233,7 +3233,7 @@ fn validate_resource_certificate(
 ) {
     assert_eq!(
         json_string_field(certificate, "schema"),
-        "compiler-project-resource-liveness-certificate-v2"
+        "compiler-project-resource-liveness-certificate-v3"
     );
     assert!(json_bool_field(certificate, "pass"));
     assert_eq!(
@@ -3299,6 +3299,64 @@ fn validate_resource_certificate(
         json_u64_field(qroam_workspace, "coordinate_field_lane_qubits_materialized"),
         0
     );
+
+    let owner_capacity = json_object_field(certificate, "derived_owner_capacity");
+    assert_eq!(json_u64_field(owner_capacity, "owner_count"), 4);
+    assert_eq!(
+        json_u64_field(owner_capacity, "required_global_peak_qubits"),
+        claim.expected_total_logical_qubits
+    );
+    assert_eq!(
+        json_u64_field(owner_capacity, "capacity_global_peak_qubits"),
+        claim.expected_total_logical_qubits
+    );
+    let owner_capacity_rows = json_array_field(owner_capacity, "rows");
+    assert_eq!(
+        owner_capacity_rows.len() as u64,
+        json_u64_field(owner_capacity, "owner_count")
+    );
+    let mut owner_ids = BTreeSet::new();
+    let mut required_peak_total = 0u64;
+    let mut capacity_peak_total = 0u64;
+    for row in owner_capacity_rows {
+        let owner_id = json_string_field(row, "owner_id");
+        owner_ids.insert(owner_id.to_owned());
+        let capacity = json_u64_field(row, "capacity_qubits");
+        let required = json_u64_field(row, "required_peak_qubits");
+        assert!(
+            capacity >= required,
+            "owner capacity below derived requirement: {owner_id}"
+        );
+        assert_eq!(
+            json_u64_field(row, "capacity_margin_qubits"),
+            capacity - required
+        );
+        let assigned_components = json_object_field(row, "assigned_components");
+        let component_total: u64 = assigned_components
+            .as_object()
+            .expect("assigned_components must be an object")
+            .values()
+            .map(|value| value.as_u64().expect("owner component must be u64"))
+            .sum();
+        assert_eq!(
+            component_total,
+            json_u64_field(row, "assigned_component_total")
+        );
+        assert_eq!(component_total, required);
+        required_peak_total += required;
+        capacity_peak_total += capacity;
+    }
+    assert_eq!(
+        owner_ids,
+        BTreeSet::from([
+            "arithmetic_slot_register_file".to_owned(),
+            "control_slot_register_file".to_owned(),
+            "lookup_workspace".to_owned(),
+            "phase_shell_live_register".to_owned(),
+        ])
+    );
+    assert_eq!(required_peak_total, claim.expected_total_logical_qubits);
+    assert_eq!(capacity_peak_total, claim.expected_total_logical_qubits);
 
     let primitive_ir = json_object_field(certificate, "primitive_oracle_ir");
     assert_eq!(
@@ -3835,6 +3893,15 @@ mod tests {
         let mut input = checked_input();
         input.resource_certificate_document.payload.0["primitive_oracle_ir"]["leaf_sigma"][0]
             ["primitive_counts_total"]["ccx"] = serde_json::json!(0);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_underprovisioned_owner_capacity() {
+        let mut input = checked_input();
+        input.resource_certificate_document.payload.0["derived_owner_capacity"]["rows"][0]
+            ["capacity_qubits"] = serde_json::json!(767);
         run_prepared_attestation(&input);
     }
 }

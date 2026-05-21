@@ -1,5 +1,5 @@
 {
-  "schema": "compiler-project-resource-liveness-certificate-v2",
+  "schema": "compiler-project-resource-liveness-certificate-v3",
   "selected_family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
   "field_bits": 256,
   "source_artifacts": {
@@ -9,6 +9,7 @@
     "streamed_lookup_table_multiplier_resource": "compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json",
     "logical_resource_ledger": "compiler_verification_project/artifacts/logical_resource_ledger.json",
     "ft_ir_compositions": "compiler_verification_project/artifacts/ft_ir_compositions.json",
+    "phase_shell_lowerings": "compiler_verification_project/artifacts/phase_shell_lowerings.json",
     "materialized_circuit_manifest": "compiler_verification_project/artifacts/materialized_circuit_manifest.json"
   },
   "headline_totals": {
@@ -1657,6 +1658,66 @@
     "coordinate_field_lane_qubits_materialized": 0,
     "whole_oracle_stream_count": 155
   },
+  "derived_owner_capacity": {
+    "owner_count": 4,
+    "required_global_peak_qubits": 1044,
+    "capacity_global_peak_qubits": 1044,
+    "rows": [
+      {
+        "owner_id": "arithmetic_slot_register_file",
+        "source_artifact": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json",
+        "derivation": "max(flat_leaf_liveness.per_pc.arithmetic_slots_needed_during_write) * field_bits",
+        "capacity_qubits": 768,
+        "required_peak_qubits": 768,
+        "capacity_margin_qubits": 0,
+        "assigned_components": {
+          "field_slot_register_bits": 768
+        },
+        "assigned_component_total": 768
+      },
+      {
+        "owner_id": "control_slot_register_file",
+        "source_artifact": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json",
+        "derivation": "max(flat_leaf_liveness.per_pc.control_slots_needed_during_write)",
+        "capacity_qubits": 1,
+        "required_peak_qubits": 1,
+        "capacity_margin_qubits": 0,
+        "assigned_components": {
+          "control_slot_bits": 1
+        },
+        "assigned_component_total": 1
+      },
+      {
+        "owner_id": "lookup_workspace",
+        "source_artifact": "compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json",
+        "derivation": "folded_control_workspace_qubits + QROAMClean target_plus_junk_qubits",
+        "capacity_qubits": 274,
+        "required_peak_qubits": 274,
+        "capacity_margin_qubits": 0,
+        "assigned_components": {
+          "folded_control_workspace_qubits": 18,
+          "qroam_clean_target_plus_junk_qubits": 256
+        },
+        "assigned_component_total": 274
+      },
+      {
+        "owner_id": "phase_shell_live_register",
+        "source_artifact": "compiler_verification_project/artifacts/phase_shell_lowerings.json",
+        "derivation": "selected phase_shell_lowerings live_quantum_bits",
+        "capacity_qubits": 1,
+        "required_peak_qubits": 1,
+        "capacity_margin_qubits": 0,
+        "assigned_components": {
+          "phase_shell_live_quantum_bits": 1
+        },
+        "assigned_component_total": 1
+      }
+    ],
+    "notes": [
+      "These rows are derived from executable leaf slot liveness, QROAMClean workspace capacity, and selected phase-shell live bits rather than from manually selected tracked registers.",
+      "Every counted owner must have capacity at least equal to its derived required peak; the current selected family has zero capacity margin for all owners."
+    ]
+  },
   "macro_lowering_inventory": {
     "opcode": "complete_a0_all_streamed_tail",
     "exact_non_clifford_per_kernel": 1120212,
@@ -2028,6 +2089,9 @@
     "leaf_arithmetic_qubits_match_field_width": true,
     "owner_total_matches_selected_family": true,
     "owner_decompositions_are_numeric": true,
+    "owner_set_matches_derived_capacity_engine": true,
+    "derived_owner_capacity_covers_every_required_peak": true,
+    "derived_owner_capacity_reconstructs_global_peak": true,
     "qroam_cost_matches_workspace_block_size": true,
     "qroam_cost_matches_non_clifford_model": true,
     "qroam_workspace_is_counted_not_borrowed": true,
@@ -2044,6 +2108,7 @@
   "notes": [
     "This certificate is the resource object bound by the ZKP input: it ties the executable leaf liveness, QROAM workspace, arithmetic lowering inventory, selected-family FT-IR leaf sigma, and global owner ledger to the selected headline.",
     "The primitive_oracle_ir section is intentionally a leaf-sigma certificate rather than a giant gate-list dump: every row carries multiplicity, primitive counts, and live-qubit totals that reconstruct the checked headline inside the SP1 guest.",
+    "The derived_owner_capacity section turns owner names into checked capacity obligations derived from leaf liveness, QROAMClean workspace, and phase-shell lowering artifacts.",
     "The materialized_operation_stream section binds the full generated operation stream by a whole-stream digest plus a segmented Merkle root, so large-stream drift can be audited without checking in the full TSV."
   ]
 }

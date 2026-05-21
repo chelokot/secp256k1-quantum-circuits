@@ -166,6 +166,13 @@ def test_mutated_logical_resource_owner_capacity_is_detected() -> None:
     assert groups['logical_resource_ledger_checks']['pass'] < groups['logical_resource_ledger_checks']['total']
 
 
+def test_mutated_resource_certificate_owner_capacity_is_detected() -> None:
+    artifacts = deepcopy(_load_artifacts())
+    artifacts['resource_liveness_certificate']['derived_owner_capacity']['rows'][0]['capacity_qubits'] -= 1
+    groups = _evaluate_mutation(artifacts, 'resource_liveness_certificate_checks')
+    assert groups['resource_liveness_certificate_checks']['pass'] < groups['resource_liveness_certificate_checks']['total']
+
+
 def test_mutated_phase_shell_lowering_is_detected() -> None:
     artifacts = deepcopy(_load_artifacts())
     artifacts['phase_shell_lowerings']['families'][0]['stages'][0]['blocks'][0]['phase_operation_generator']['phase_bits'] -= 1

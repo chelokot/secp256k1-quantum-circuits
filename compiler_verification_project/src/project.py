@@ -77,7 +77,7 @@ from physical_estimator import (  # noqa: E402
     build_azure_estimator_target_payload,
     build_or_load_azure_estimator_results_payload,
 )
-from resource_ledger import build_logical_resource_ledger  # noqa: E402
+from resource_ledger import build_logical_resource_ledger, qroam_clean_stream_cost  # noqa: E402
 from resource_certificate import build_resource_liveness_certificate  # noqa: E402
 from subcircuit_equivalence import build_subcircuit_equivalence_artifact  # noqa: E402
 from whole_oracle_recount import build_whole_oracle_recount as build_whole_oracle_recount_single  # noqa: E402
@@ -634,10 +634,11 @@ def streamed_lookup_table_multiplier_resource(
     persistent_workspace = int(lookup_family['workspace_reconstruction']['persistent_workspace_qubits'])
     local_qroam_workspace = total_workspace - persistent_workspace
     qroam_block_size = CENTRAL_QROAM_CLEAN_BLOCK_SIZE
-    qroam_target_qubits = FIELD_BITS
-    qroam_junk_register_count = qroam_block_size - 1
-    qroam_junk_register_qubits = qroam_junk_register_count * FIELD_BITS
-    qroam_target_plus_junk_qubits = qroam_block_size * FIELD_BITS
+    qroam_cost = qroam_clean_stream_cost(FOLDED_MAG_DOMAIN, FIELD_BITS, qroam_block_size)
+    qroam_target_qubits = int(qroam_cost['target_register_qubits'])
+    qroam_junk_register_count = int(qroam_cost['junk_register_count'])
+    qroam_junk_register_qubits = int(qroam_cost['junk_register_qubits'])
+    qroam_target_plus_junk_qubits = int(qroam_cost['target_plus_junk_qubits'])
     per_stream_costs = sorted({
         int(cost)
         for row in source_rows
@@ -692,7 +693,6 @@ def streamed_lookup_table_multiplier_resource(
             'coordinate_field_lane_qubits_materialized': 0,
             'passes': (
                 total_workspace == persistent_workspace + qroam_target_plus_junk_qubits
-                and persistent_workspace == 18
                 and local_qroam_workspace == qroam_target_plus_junk_qubits
             ),
         },
@@ -1952,6 +1952,7 @@ def build_all_artifacts() -> Dict[str, Any]:
         streamed_lookup_resource=out['streamed_lookup_table_multiplier_resource'],
         logical_resource_ledger=out['logical_resource_ledger'],
         ft_ir_compositions=out['ft_ir_compositions'],
+        phase_shell_lowerings=out['phase_shell_lowerings'],
         materialized_circuit_manifest=out['materialized_circuit_manifest'],
         field_bits=FIELD_BITS,
     )

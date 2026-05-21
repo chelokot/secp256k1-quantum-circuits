@@ -195,8 +195,10 @@ Required hardening:
 
 ### 2. The resource ledger is still owner-summed, not circuit-derived
 
-The current ledger is much better than previous manual tracked-register lists,
-but it still sums named owners:
+Reviewed-state issue:
+
+The reviewed ledger was much better than previous manual tracked-register
+lists, but it still summed named owners:
 
 - arithmetic slot register file: `768`
 - control slot register file: `1`
@@ -204,9 +206,34 @@ but it still sums named owners:
 - phase shell live register: `1`
 - total: `1044`
 
-The ledger checks numeric decompositions, but it does not derive a global peak
-from one time-indexed flat schedule containing arithmetic, lookup target,
-lookup junk, phase qubit, MBUC measurement dependencies, and macro scratch.
+Current remediation:
+
+`resource_liveness_certificate.json` now carries a
+`derived_owner_capacity` section. It derives each owner requirement from the
+source that creates the live quantum obligation:
+
+- arithmetic slot register file: max arithmetic slots over executable leaf
+  `per_pc` liveness times `field_bits`;
+- control slot register file: max control slots over executable leaf `per_pc`
+  liveness;
+- lookup workspace: folded-control workspace plus QROAMClean
+  target-plus-junk capacity;
+- phase shell live register: selected phase-shell lowering
+  `live_quantum_bits`.
+
+The certificate fails unless every counted owner has capacity at least equal to
+its derived required peak, every assigned component sums numerically, the owner
+set is exact, and the required/capacity totals reconstruct the public
+`1,044`-qubit claim. The Rust SP1 guest also walks this section and rejects an
+underprovisioned owner capacity.
+
+Remaining boundary:
+
+This is stronger than owner-summed prose, but it is still not a fully
+bit-addressed global schedule over every temporary wire in a complete
+primitive-gate Shor circuit. The unresolved part is the same lower boundary as
+RES-1/RES-2: internal macro scratch is represented by lowering inventories and
+resource owners rather than by a single complete time-indexed netlist.
 
 Where trust enters:
 
@@ -215,13 +242,13 @@ Where trust enters:
 - `compiler_verification_project/artifacts/logical_resource_ledger.json` proves
   internal agreement, not independent extraction from a primitive circuit.
 
-Required hardening:
+Required hardening still open:
 
-- Create one resource engine that consumes a flat scheduled IR and computes peak
-  live qubits by interval analysis.
-- Make owner labels derived outputs of that engine, not input accounting rows.
-- Fail if any primitive wire lacks exactly one owner or if any owner capacity is
-  below the sum or peak of assigned live intervals.
+- Keep moving toward one resource engine that consumes a flat scheduled IR and
+  computes peak live qubits by interval analysis.
+- Keep owner labels as derived outputs of that engine.
+- Extend the current derived owner-capacity checks down to bit-addressed macro
+  scratch intervals when the macro lowering is flattened further.
 
 ### 3. The arithmetic cost model is generated, but still handwritten at the block level
 

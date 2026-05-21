@@ -54,6 +54,7 @@ What it does ship is:
 - `streamed_lookup_table_multiplier_resource.json` — explicit table-controlled multiplier resource contract for streamed lookup coordinate bits
 - `standard_qrom_lookup_assessment.json` — machine-checked assessment showing that the selected lookup/resource contract is a standard-QROM primitive-circuit result
 - `logical_resource_ledger.json` — generated peak-live-qubit owner ledger and QROAMClean block-size tradeoff sweep
+- `resource_liveness_certificate.json` — ZKP-bound liveness certificate deriving owner-capacity requirements from executable leaf liveness, QROAMClean workspace, and phase-shell lowering artifacts
 - `module_library.json` — arithmetic-kernel summary used by the frontier
 - `lookup_lowerings.json` — generated primitive-operation inventories for the named folded lookup families
 - `phase_shell_lowerings.json` — generated phase-operation inventories for the named full-register and semiclassical inverse-QFT shells
@@ -102,7 +103,7 @@ kernels pay `65,536` non-Clifford operations per 256-bit coordinate stream:
 field-sized lookup x/y output lane is free or borrowed from the interface.
 
 `logical_resource_ledger.json` reconstructs the peak from counted owners:
-`1,536` arithmetic-slot qubits, `1` control qubit, `274` lookup-workspace
+`768` arithmetic-slot qubits, `1` control qubit, `274` lookup-workspace
 qubits, and `1` phase-shell qubit. It also records the standard-QROAM tradeoff:
 the lowest-qubit point below `24M` non-Clifford in this QROAMClean family is
 `23,980,781 / 4,884`, and no checked block-size row reaches both `<24M`
@@ -127,7 +128,7 @@ Clifford-complete full-Shor primitive-gate netlist.
 Its defining exact features are:
 
 - exact slot allocation cuts the checked streamed lookup tail leaf to a
-  **6-slot physical arithmetic peak**;
+  **3-slot arithmetic peak**;
 - explicit arithmetic lowerings reconstruct the leaf-side non-Clifford totals
   from generated primitive-operation inventories instead of from naked opcode formulas;
 - explicit lookup lowerings reconstruct each lookup-family count from generated
@@ -150,8 +151,9 @@ Its defining exact features are:
   phase-shell lowering blocks;
 - a semiclassical-QFT phase-shell family removes the fixed **512 live phase
   qubits** assumption; and
-- the no-free-wire resource contract proves every live field value is assigned
-  to a counted owner, with zero borrowed lookup coordinate field lanes; and
+- the no-free-wire resource contract proves counted owner capacity at the
+  executable leaf/interface boundary, with zero borrowed lookup coordinate field
+  lanes and an explicit remaining macro-internal liveness boundary; and
 - the streamed table-multiplier resource contract proves that lookup coordinate
   targets and QROAMClean junk registers are counted together with the
   corresponding standard-QROAM table-data selection gates included in the

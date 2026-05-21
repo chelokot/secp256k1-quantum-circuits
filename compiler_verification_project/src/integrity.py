@@ -1014,14 +1014,17 @@ def build_streamed_lookup_table_multiplier_resource_checks(artifacts: Mapping[st
     )
     model = resource['streamed_data_selection_model']
     workspace = resource['workspace_contract']
+    lookup_family = next(row for row in artifacts['lookup_lowerings']['families'] if row['name'] == resource['selected_lookup_family'])
+    expected_folded_workspace = int(lookup_family['workspace_reconstruction']['persistent_workspace_qubits'])
     qroam_block_size = int(model['qroam_block_size'])
     qroam_target_bitsize = int(model['qroam_target_bitsize'])
     qroam_domain_size = int(model['folded_coordinate_domain_size'])
-    qroam_expected_compute = (qroam_domain_size + qroam_block_size - 1) // qroam_block_size + (qroam_block_size - 1) * qroam_target_bitsize
-    qroam_expected_uncompute = (qroam_domain_size + qroam_block_size - 1) // qroam_block_size + (qroam_block_size - 1)
-    qroam_expected_per_kernel = qroam_expected_compute + qroam_expected_uncompute
-    qroam_expected_local_workspace = qroam_block_size * qroam_target_bitsize
-    qroam_expected_junk_workspace = (qroam_block_size - 1) * qroam_target_bitsize
+    qroam_cost = qroam_clean_stream_cost(qroam_domain_size, qroam_target_bitsize, qroam_block_size)
+    qroam_expected_compute = int(qroam_cost['lookup_compute_non_clifford'])
+    qroam_expected_uncompute = int(qroam_cost['measured_uncompute_non_clifford'])
+    qroam_expected_per_kernel = int(qroam_cost['per_stream_non_clifford'])
+    qroam_expected_local_workspace = int(qroam_cost['target_plus_junk_qubits'])
+    qroam_expected_junk_workspace = int(qroam_cost['junk_register_qubits'])
     source_failures = [
         row
         for row in resource['coordinate_bit_sources']
@@ -1052,7 +1055,7 @@ def build_streamed_lookup_table_multiplier_resource_checks(artifacts: Mapping[st
             [stage['category'] for stage in complete_tail['stages']],
         ),
         _check('streamed_lookup_table_multiplier_workspace_contract_passes', workspace['passes'], True, workspace),
-        _check('streamed_lookup_table_multiplier_counts_qroam_workspace', workspace['lookup_workspace_qubits'] == int(workspace['folded_control_workspace_qubits']) + qroam_expected_local_workspace and workspace['folded_control_workspace_qubits'] == 18 and workspace['standard_qroam_local_workspace_qubits'] == qroam_expected_local_workspace and workspace['qroam_clean_target_register_qubits'] == qroam_target_bitsize and workspace['qroam_clean_junk_register_qubits'] == qroam_expected_junk_workspace, {'lookup_workspace_qubits': 18 + qroam_expected_local_workspace, 'folded_control_workspace_qubits': 18, 'standard_qroam_local_workspace_qubits': qroam_expected_local_workspace, 'qroam_clean_target_register_qubits': qroam_target_bitsize, 'qroam_clean_junk_register_qubits': qroam_expected_junk_workspace}, workspace),
+        _check('streamed_lookup_table_multiplier_counts_qroam_workspace', workspace['lookup_workspace_qubits'] == expected_folded_workspace + qroam_expected_local_workspace and workspace['folded_control_workspace_qubits'] == expected_folded_workspace and workspace['standard_qroam_local_workspace_qubits'] == qroam_expected_local_workspace and workspace['qroam_clean_target_register_qubits'] == qroam_target_bitsize and workspace['qroam_clean_junk_register_qubits'] == qroam_expected_junk_workspace, {'lookup_workspace_qubits': expected_folded_workspace + qroam_expected_local_workspace, 'folded_control_workspace_qubits': expected_folded_workspace, 'standard_qroam_local_workspace_qubits': qroam_expected_local_workspace, 'qroam_clean_target_register_qubits': qroam_target_bitsize, 'qroam_clean_junk_register_qubits': qroam_expected_junk_workspace}, workspace),
         _check('streamed_lookup_table_multiplier_materializes_no_coordinate_field_lanes', workspace['coordinate_field_lanes_materialized'] == 0 and workspace['coordinate_field_lane_qubits_materialized'] == 0, 0, workspace),
         _check('streamed_lookup_table_multiplier_all_streams_use_standard_qroam_cost', resource['capacity_check']['all_coordinate_streams_use_standard_qroam_cost'], True, resource['capacity_check']),
         _check('streamed_lookup_table_multiplier_qroam_capacity_matches_cost_model', resource['capacity_check']['qroam_clean_capacity_matches_cost_model'], True, resource['capacity_check']),
@@ -1070,11 +1073,12 @@ def build_standard_qrom_lookup_assessment_checks(artifacts: Mapping[str, Any]) -
     gap = assessment['standard_qrom_gap']
     current = assessment['current_boundary_lookup_model']
     implications = assessment['conservative_implications']
+    expected_full_table_qrom_compute = int(current['positive_domain_size']) - 1
     checks = [
         _check('standard_qrom_lookup_assessment_matches_generator', assessment == expected, expected, assessment),
         _check('standard_qrom_lookup_assessment_schema_is_current', assessment['schema'] == 'compiler-project-standard-qrom-lookup-assessment-v2', 'compiler-project-standard-qrom-lookup-assessment-v2', assessment['schema']),
         _check('standard_qrom_lookup_assessment_status_is_proven', assessment['status'] == 'standard_qrom_primitive_circuit_proven_for_counted_family_with_counted_workspace', 'standard_qrom_primitive_circuit_proven_for_counted_family_with_counted_workspace', assessment['status']),
-        _check('standard_qrom_lookup_assessment_uses_full_selection_space', gap['standard_unary_qrom_compute_toffoli_for_full_table'] == 32767, 32767, gap['standard_unary_qrom_compute_toffoli_for_full_table']),
+        _check('standard_qrom_lookup_assessment_uses_full_selection_space', gap['standard_unary_qrom_compute_toffoli_for_full_table'] == expected_full_table_qrom_compute, expected_full_table_qrom_compute, gap['standard_unary_qrom_compute_toffoli_for_full_table']),
         _check('standard_qrom_lookup_assessment_accepts_standard_qroam_stream', gap['standard_qrom_equivalent'] is True and gap['standard_qroam_coordinate_stream_toffoli'] == current['standard_qroam_coordinate_stream_non_clifford'] and gap['standard_qroam_coordinate_stream_target_plus_junk_qubits'] == current['standard_qroam_target_plus_junk_qubits'], {'standard_qrom_equivalent': True, 'standard_qroam_coordinate_stream_toffoli': current['standard_qroam_coordinate_stream_non_clifford'], 'standard_qroam_coordinate_stream_target_plus_junk_qubits': current['standard_qroam_target_plus_junk_qubits']}, {'standard_qrom_equivalent': gap['standard_qrom_equivalent'], 'standard_qroam_coordinate_stream_toffoli': gap['standard_qroam_coordinate_stream_toffoli'], 'standard_qroam_coordinate_stream_target_plus_junk_qubits': gap['standard_qroam_coordinate_stream_target_plus_junk_qubits']}),
         _check('standard_qrom_lookup_assessment_has_no_streaming_gap', gap['current_streamed_bit_toffoli_shortfall'] == 0 and gap['current_compute_toffoli_shortfall'] == 0 and gap['current_qroam_workspace_shortfall'] == 0, {'current_streamed_bit_toffoli_shortfall': 0, 'current_compute_toffoli_shortfall': 0, 'current_qroam_workspace_shortfall': 0}, {'current_streamed_bit_toffoli_shortfall': gap['current_streamed_bit_toffoli_shortfall'], 'current_compute_toffoli_shortfall': gap['current_compute_toffoli_shortfall'], 'current_qroam_workspace_shortfall': gap['current_qroam_workspace_shortfall']}),
         _check('standard_qrom_lookup_assessment_boundary_under_1600', implications['boundary_model_logical_qubits'] < 1600, '< 1600', implications['boundary_model_logical_qubits']),
@@ -1133,17 +1137,25 @@ def build_resource_liveness_certificate_checks(artifacts: Mapping[str, Any]) -> 
         streamed_lookup_resource=artifacts['streamed_lookup_table_multiplier_resource'],
         logical_resource_ledger=artifacts['logical_resource_ledger'],
         ft_ir_compositions=artifacts['ft_ir_compositions'],
+        phase_shell_lowerings=artifacts['phase_shell_lowerings'],
         materialized_circuit_manifest=artifacts['materialized_circuit_manifest'],
         field_bits=FIELD_BITS,
     )
     selected = artifacts['family_frontier']['best_qubit_family']
     primitive_ir = certificate['primitive_oracle_ir']
+    owner_capacity = certificate['derived_owner_capacity']
     checks = [
         _check('resource_liveness_certificate_matches_generator', certificate == expected, expected, certificate),
-        _check('resource_liveness_certificate_schema_is_current', certificate['schema'] == 'compiler-project-resource-liveness-certificate-v2', 'compiler-project-resource-liveness-certificate-v2', certificate['schema']),
+        _check('resource_liveness_certificate_schema_is_current', certificate['schema'] == 'compiler-project-resource-liveness-certificate-v3', 'compiler-project-resource-liveness-certificate-v3', certificate['schema']),
         _check('resource_liveness_certificate_passes_internal_checks', certificate['pass'] is True and all(certificate['checks'].values()), True, certificate['checks']),
         _check('resource_liveness_certificate_binds_selected_headline', certificate['selected_family'] == selected['name'] and certificate['headline_totals']['full_oracle_non_clifford'] == selected['full_oracle_non_clifford'] and certificate['headline_totals']['total_logical_qubits'] == selected['total_logical_qubits'], selected, certificate['headline_totals']),
         _check('resource_liveness_certificate_derives_peak_from_schedule_and_owners', certificate['flat_leaf_liveness']['arithmetic_slots_from_schedule'] == selected['arithmetic_slot_count'] and certificate['global_peak_live_qubits'] == selected['total_logical_qubits'], {'arithmetic_slot_count': selected['arithmetic_slot_count'], 'total_logical_qubits': selected['total_logical_qubits']}, {'arithmetic_slots_from_schedule': certificate['flat_leaf_liveness']['arithmetic_slots_from_schedule'], 'global_peak_live_qubits': certificate['global_peak_live_qubits']}),
+        _check('resource_liveness_certificate_owner_capacity_rows_cover_required_peak',
+               owner_capacity['required_global_peak_qubits'] == selected['total_logical_qubits']
+               and owner_capacity['capacity_global_peak_qubits'] == selected['total_logical_qubits']
+               and all(row['capacity_qubits'] >= row['required_peak_qubits'] for row in owner_capacity['rows']),
+               {'required_global_peak_qubits': selected['total_logical_qubits'], 'capacity_global_peak_qubits': selected['total_logical_qubits']},
+               owner_capacity),
         _check('resource_liveness_certificate_embeds_selected_ft_ir_leaf_sigma', primitive_ir['selected_family'] == selected['name'] and primitive_ir['source_schema'] == artifacts['ft_ir_compositions']['schema'] and primitive_ir['leaf_sigma_count'] == len(primitive_ir['leaf_sigma']), {'selected_family': selected['name'], 'source_schema': artifacts['ft_ir_compositions']['schema']}, {'selected_family': primitive_ir['selected_family'], 'source_schema': primitive_ir['source_schema'], 'leaf_sigma_count': primitive_ir['leaf_sigma_count']}),
         _check('resource_liveness_certificate_leaf_sigma_reconstructs_headline', primitive_ir['reconstruction_from_leaf_sigma']['full_oracle_non_clifford'] == selected['full_oracle_non_clifford'] and primitive_ir['reconstruction_from_leaf_sigma']['total_logical_qubits'] == selected['total_logical_qubits'], selected, primitive_ir['reconstruction_from_leaf_sigma']),
         _check('resource_liveness_certificate_binds_materialized_stream_manifest', certificate['materialized_operation_stream']['operation_stream_sha256'] == artifacts['materialized_circuit_manifest']['operation_stream_sha256'] and certificate['materialized_operation_stream']['gate_totals']['ccx'] == selected['full_oracle_non_clifford'], artifacts['materialized_circuit_manifest'], certificate['materialized_operation_stream']),

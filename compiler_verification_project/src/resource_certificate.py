@@ -23,6 +23,13 @@ def _selected_family(ft_ir_compositions: Mapping[str, Any], family_name: str) ->
     raise KeyError(f'FT IR family not found: {family_name}')
 
 
+def _phase_shell_family(phase_shell_lowerings: Mapping[str, Any], family_name: str) -> Mapping[str, Any]:
+    for family in phase_shell_lowerings['families']:
+        if family['name'] == family_name:
+            return family
+    raise KeyError(f'phase shell family not found: {family_name}')
+
+
 def _source_artifact_lookup(family: Mapping[str, Any]) -> Dict[str, str]:
     return {
         node['id']: str(node['metadata']['source_artifact'])
@@ -116,6 +123,30 @@ def _reconstruct_leaf_sigma(rows: List[Mapping[str, Any]]) -> Dict[str, Any]:
     }
 
 
+def _component_total(components: Mapping[str, int]) -> int:
+    return sum(int(value) for value in components.values())
+
+
+def _derived_owner_capacity_row(
+    *,
+    owner: Mapping[str, Any],
+    derivation: str,
+    components: Mapping[str, int],
+) -> Dict[str, Any]:
+    required = _component_total(components)
+    capacity = int(owner['logical_qubits'])
+    return {
+        'owner_id': str(owner['owner_id']),
+        'source_artifact': str(owner['source_artifact']),
+        'derivation': derivation,
+        'capacity_qubits': capacity,
+        'required_peak_qubits': required,
+        'capacity_margin_qubits': capacity - required,
+        'assigned_components': {key: int(value) for key, value in components.items()},
+        'assigned_component_total': required,
+    }
+
+
 def build_resource_liveness_certificate(
     *,
     frontier: Mapping[str, Any],
@@ -124,11 +155,13 @@ def build_resource_liveness_certificate(
     streamed_lookup_resource: Mapping[str, Any],
     logical_resource_ledger: Mapping[str, Any],
     ft_ir_compositions: Mapping[str, Any],
+    phase_shell_lowerings: Mapping[str, Any],
     materialized_circuit_manifest: Mapping[str, Any],
     field_bits: int,
 ) -> Dict[str, Any]:
     selected = frontier['best_qubit_family']
     selected_ft_ir = _selected_family(ft_ir_compositions, selected['name'])
+    selected_phase_shell = _phase_shell_family(phase_shell_lowerings, selected['phase_shell'])
     leaf_sigma = _certificate_leaf_sigma(selected_ft_ir)
     leaf_sigma_reconstruction = _reconstruct_leaf_sigma(leaf_sigma)
     leaf_reconstruction = arithmetic_lowerings['leaf_reconstruction']
@@ -163,6 +196,34 @@ def build_resource_liveness_certificate(
     leaf_call_count_total = int(qroam_model['leaf_call_count_total'])
     tail_macro_expected_non_clifford = int(tail_kernel['exact_non_clifford_per_kernel']) * leaf_call_count_total
     qroam_target_plus_junk = int(qroam_workspace['qroam_clean_target_plus_junk_qubits'])
+    owners_by_id = {str(owner['owner_id']): owner for owner in owner_rows}
+    derived_owner_capacity_rows = [
+        _derived_owner_capacity_row(
+            owner=owners_by_id['arithmetic_slot_register_file'],
+            derivation='max(flat_leaf_liveness.per_pc.arithmetic_slots_needed_during_write) * field_bits',
+            components={'field_slot_register_bits': leaf_peak_arithmetic_slots * int(field_bits)},
+        ),
+        _derived_owner_capacity_row(
+            owner=owners_by_id['control_slot_register_file'],
+            derivation='max(flat_leaf_liveness.per_pc.control_slots_needed_during_write)',
+            components={'control_slot_bits': leaf_peak_control_slots},
+        ),
+        _derived_owner_capacity_row(
+            owner=owners_by_id['lookup_workspace'],
+            derivation='folded_control_workspace_qubits + QROAMClean target_plus_junk_qubits',
+            components={
+                'folded_control_workspace_qubits': int(qroam_workspace['folded_control_workspace_qubits']),
+                'qroam_clean_target_plus_junk_qubits': qroam_target_plus_junk,
+            },
+        ),
+        _derived_owner_capacity_row(
+            owner=owners_by_id['phase_shell_live_register'],
+            derivation='selected phase_shell_lowerings live_quantum_bits',
+            components={'phase_shell_live_quantum_bits': int(selected_phase_shell['live_quantum_bits'])},
+        ),
+    ]
+    required_global_peak = sum(int(row['required_peak_qubits']) for row in derived_owner_capacity_rows)
+    capacity_global_peak = sum(int(row['capacity_qubits']) for row in derived_owner_capacity_rows)
     materialized_checks = materialized_circuit_manifest['reconstruction_checks']
     materialized_segment_count = int(materialized_circuit_manifest['segment_count'])
     materialized_segment_total = sum(
@@ -180,6 +241,22 @@ def build_resource_liveness_certificate(
         'owner_decompositions_are_numeric': all(
             int(owner['logical_qubits']) == int(owner['decomposition_total'])
             for owner in owner_rows
+        ),
+        'owner_set_matches_derived_capacity_engine': set(owners_by_id) == {
+            'arithmetic_slot_register_file',
+            'control_slot_register_file',
+            'lookup_workspace',
+            'phase_shell_live_register',
+        },
+        'derived_owner_capacity_covers_every_required_peak': all(
+            int(row['capacity_qubits']) >= int(row['required_peak_qubits'])
+            and int(row['capacity_margin_qubits']) == int(row['capacity_qubits']) - int(row['required_peak_qubits'])
+            and int(row['assigned_component_total']) == _component_total(row['assigned_components'])
+            for row in derived_owner_capacity_rows
+        ),
+        'derived_owner_capacity_reconstructs_global_peak': (
+            required_global_peak == int(selected['total_logical_qubits'])
+            and capacity_global_peak == int(selected['total_logical_qubits'])
         ),
         'qroam_cost_matches_workspace_block_size': int(qroam_cost['target_plus_junk_qubits']) == qroam_target_plus_junk,
         'qroam_cost_matches_non_clifford_model': int(qroam_cost['per_stream_non_clifford']) == int(
@@ -233,7 +310,7 @@ def build_resource_liveness_certificate(
         ),
     }
     return {
-        'schema': 'compiler-project-resource-liveness-certificate-v2',
+        'schema': 'compiler-project-resource-liveness-certificate-v3',
         'selected_family': selected['name'],
         'field_bits': int(field_bits),
         'source_artifacts': {
@@ -243,6 +320,7 @@ def build_resource_liveness_certificate(
             'streamed_lookup_table_multiplier_resource': 'compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json',
             'logical_resource_ledger': 'compiler_verification_project/artifacts/logical_resource_ledger.json',
             'ft_ir_compositions': 'compiler_verification_project/artifacts/ft_ir_compositions.json',
+            'phase_shell_lowerings': 'compiler_verification_project/artifacts/phase_shell_lowerings.json',
             'materialized_circuit_manifest': 'compiler_verification_project/artifacts/materialized_circuit_manifest.json',
         },
         'headline_totals': {
@@ -295,6 +373,16 @@ def build_resource_liveness_certificate(
             'coordinate_field_lane_qubits_materialized': int(qroam_workspace['coordinate_field_lane_qubits_materialized']),
             'whole_oracle_stream_count': int(streamed_lookup_resource['capacity_check']['whole_oracle_stream_count']),
         },
+        'derived_owner_capacity': {
+            'owner_count': len(derived_owner_capacity_rows),
+            'required_global_peak_qubits': required_global_peak,
+            'capacity_global_peak_qubits': capacity_global_peak,
+            'rows': derived_owner_capacity_rows,
+            'notes': [
+                'These rows are derived from executable leaf slot liveness, QROAMClean workspace capacity, and selected phase-shell live bits rather than from manually selected tracked registers.',
+                'Every counted owner must have capacity at least equal to its derived required peak; the current selected family has zero capacity margin for all owners.',
+            ],
+        },
         'macro_lowering_inventory': {
             'opcode': tail_kernel['opcode'],
             'exact_non_clifford_per_kernel': int(tail_kernel['exact_non_clifford_per_kernel']),
@@ -327,6 +415,7 @@ def build_resource_liveness_certificate(
         'notes': [
             'This certificate is the resource object bound by the ZKP input: it ties the executable leaf liveness, QROAM workspace, arithmetic lowering inventory, selected-family FT-IR leaf sigma, and global owner ledger to the selected headline.',
             'The primitive_oracle_ir section is intentionally a leaf-sigma certificate rather than a giant gate-list dump: every row carries multiplicity, primitive counts, and live-qubit totals that reconstruct the checked headline inside the SP1 guest.',
+            'The derived_owner_capacity section turns owner names into checked capacity obligations derived from leaf liveness, QROAMClean workspace, and phase-shell lowering artifacts.',
             'The materialized_operation_stream section binds the full generated operation stream by a whole-stream digest plus a segmented Merkle root, so large-stream drift can be audited without checking in the full TSV.',
         ],
     }
