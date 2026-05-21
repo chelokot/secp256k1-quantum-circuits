@@ -47,6 +47,18 @@ Role here:
 
 - alternate physical reference point under a different hardware stack
 
+### 5. IBM Quantum roadmap
+
+Role here:
+
+- named industrial roadmap context stated in logical-qubit and gate-scale terms
+- Starling/Blue Jay comparison point for the repository's logical
+  compiler-family totals
+
+File:
+
+- `docs/references/IBM_QUANTUM_ROADMAP_CONTEXT.md`
+
 ## How to read these layers
 
 Physical papers are consumers of the logical artifact, not replacements for it.

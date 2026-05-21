@@ -210,6 +210,31 @@ still includes multiple internal family variants. That transfer is intentionally
 stated as approximate, because Cain's paper targets **P-256**, while the
 primary artifact in this repository is specialized to **secp256k1**.
 
+## IBM Quantum roadmap context
+
+IBM is one of the clearest public hardware roadmaps to compare against because
+it states named milestones in logical qubits and gate-scale language rather
+than only in physical-qubit counts. IBM's public roadmap says that Starling is
+planned for 2029 as a fault-tolerant system with **200 logical qubits** and
+**100 million gates**, followed by Blue Jay at **2,000 logical qubits** and
+**1 billion gates** in the 2033+ roadmap window.
+
+Read against this repository's current secp256k1 compiler-family scale, that
+does not mean Starling is already a drop-in secp256k1 attack machine: the
+logical-qubit requirement here is still about one thousand logical qubits, and
+this repository reports non-Clifford gates rather than IBM's full logical-gate
+metric. The important comparison is more precise. The non-Clifford scale is
+already below the 100-million-gate class, while the qubit footprint points to a
+post-Starling, Blue Jay-class system as the first named IBM target with obvious
+space headroom.
+
+That makes IBM's roadmap especially relevant for this repository: if IBM
+delivers the post-Starling logical-qubit and gate-scale targets it has publicly
+described, secp256k1 ECDLP moves from an abstract future risk into the scale of
+a named IBM fault-tolerant machine class. The repository keeps this as roadmap
+context, not as a claim that any current IBM processor can run the circuit.
+See `docs/references/IBM_QUANTUM_ROADMAP_CONTEXT.md` for sources and caveats.
+
 ## Repository map
 
 - `artifacts/` — primary optimized artifact, audits, projections, and research outputs
@@ -255,4 +280,5 @@ use `make test-sequential` for a single-process pytest run.
 4. `docs/research/LOOKUP_FOLDING_RESEARCH_PASS.md`
 5. `docs/research/OPTIMIZATION_FRONTIERS.md`
 6. `docs/references/STATE_OF_THE_ART_2026.md`
-7. `docs/core/RED_TEAM_REVIEW.md`
+7. `docs/references/IBM_QUANTUM_ROADMAP_CONTEXT.md`
+8. `docs/core/RED_TEAM_REVIEW.md`
