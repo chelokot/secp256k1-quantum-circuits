@@ -58,6 +58,7 @@ from common import (  # noqa: E402
 from artifact_registry import BUILD_SUMMARY_ARTIFACT_PATHS, BUILD_SUMMARY_SCHEMA  # noqa: E402
 from baselines import load_public_google_baseline_artifact, load_public_google_baseline_lines  # noqa: E402
 from arithmetic_lowering import DEFAULT_QROAM_CLEAN_BLOCK_SIZE, arithmetic_kernel_summary, arithmetic_lowering_library  # noqa: E402
+from fallback_frontier_stress import build_fallback_frontier_stress  # noqa: E402
 from ft_ir import build_ft_ir_compositions as build_ft_ir_compositions_single  # noqa: E402
 from generated_block_inventory import build_generated_block_inventories as build_generated_block_inventories_single  # noqa: E402
 from headline_opcode_coverage import build_headline_opcode_coverage  # noqa: E402
@@ -1946,6 +1947,11 @@ def build_all_artifacts() -> Dict[str, Any]:
         field_bits=FIELD_BITS,
         public_google_baseline=PUBLIC_GOOGLE_BASELINE,
     )
+    out['fallback_frontier_stress'] = build_fallback_frontier_stress(
+        frontier=out['frontier'],
+        logical_resource_ledger=out['logical_resource_ledger'],
+        field_bits=FIELD_BITS,
+    )
     out['materialized_circuit_manifest'] = build_materialized_family_manifest(
         family_name=out['frontier']['best_qubit_family']['name'],
         frontier=out['frontier'],
@@ -2012,6 +2018,7 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('family_frontier.json'), out['frontier'])
     dump_json(project_artifact_path('standard_qrom_lookup_assessment.json'), out['standard_qrom_lookup_assessment'])
     dump_json(project_artifact_path('logical_resource_ledger.json'), out['logical_resource_ledger'])
+    dump_json(project_artifact_path('fallback_frontier_stress.json'), out['fallback_frontier_stress'])
     dump_json(project_artifact_path('resource_liveness_certificate.json'), out['resource_liveness_certificate'])
     dump_json(project_artifact_path('materialized_circuit_manifest.json'), out['materialized_circuit_manifest'])
     dump_json(project_artifact_path('qubit_breakthrough_analysis.json'), out['qubit_breakthrough_analysis'])

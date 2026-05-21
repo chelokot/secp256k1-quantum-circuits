@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Dict
 
 
-BUILD_SUMMARY_SCHEMA = 'compiler-project-build-summary-v23'
+BUILD_SUMMARY_SCHEMA = 'compiler-project-build-summary-v24'
 
 BUILD_SUMMARY_ARTIFACT_PATHS: Dict[str, str] = {
     'canonical_public_point': 'compiler_verification_project/artifacts/canonical_public_point.json',
@@ -35,6 +35,7 @@ BUILD_SUMMARY_ARTIFACT_PATHS: Dict[str, str] = {
     'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
     'standard_qrom_lookup_assessment': 'compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json',
     'logical_resource_ledger': 'compiler_verification_project/artifacts/logical_resource_ledger.json',
+    'fallback_frontier_stress': 'compiler_verification_project/artifacts/fallback_frontier_stress.json',
     'resource_liveness_certificate': 'compiler_verification_project/artifacts/resource_liveness_certificate.json',
     'materialized_circuit_manifest': 'compiler_verification_project/artifacts/materialized_circuit_manifest.json',
     'qubit_breakthrough_analysis': 'compiler_verification_project/artifacts/qubit_breakthrough_analysis.json',

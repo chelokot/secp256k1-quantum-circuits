@@ -1418,6 +1418,14 @@ Partially mitigated after review:
   subcircuit/lowering/leaf-sigma evidence for counted arithmetic opcodes. This
   prevents a future headline opcode from entering the selected leaf as an
   unreviewed semantic/resource side path.
+- Fallback stress: `compiler_verification_project/artifacts/fallback_frontier_stress.json`
+  checks the strict `<40M / <1200` escape route if the tail needs four field
+  slots. With the current full-coordinate QROAM workspace, four field slots
+  reach `1,300` logical qubits. Chunking the coordinate target enough to fit
+  strictly below `1,200` qubits gives a `1,199`-qubit counterfactual but raises
+  the count to `44,894,156` non-Clifford operations. Under current lowerings, a
+  four-slot fallback therefore needs either a new lookup primitive or at least
+  `4,894,156` non-QROAM non-Clifford savings.
 - `ZK-3`: proof binaries are now included in the curated proof manifest, but
   the checked JSON fixtures still intentionally keep the large binary proof
   payloads out-of-line.

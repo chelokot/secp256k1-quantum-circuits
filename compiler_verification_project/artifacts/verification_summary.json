@@ -5621,6 +5621,172 @@
       }
     ]
   },
+  "fallback_frontier_stress_checks": {
+    "pass": 6,
+    "total": 6,
+    "checks": [
+      {
+        "name": "fallback_frontier_stress_matches_generator",
+        "pass": 1,
+        "expected": {
+          "schema": "compiler-project-fallback-frontier-stress-v1",
+          "limits": {
+            "non_clifford_limit": 40000000,
+            "logical_qubit_limit_exclusive": 1200
+          },
+          "current_selected_family": {
+            "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
+            "full_oracle_non_clifford": 34736076,
+            "total_logical_qubits": 1044,
+            "arithmetic_slot_count": 3,
+            "lookup_workspace_qubits": 274
+          },
+          "four_slot_pressure": {
+            "field_bits": 256,
+            "four_slot_arithmetic_qubits": 1024,
+            "control_qubits": 1,
+            "phase_qubits": 1,
+            "current_full_coordinate_lookup_workspace_qubits": 274,
+            "current_four_slot_total_with_full_coordinate_qroam": 1300,
+            "max_lookup_workspace_for_strictly_below_limit": 173,
+            "lookup_workspace_reduction_needed_from_current": 101
+          },
+          "chunked_coordinate_qroam_counterfactual": {
+            "model": "split each 256-bit coordinate stream into equally costed standard QROAMClean K=1 target chunks",
+            "folded_control_workspace_qubits": 18,
+            "max_qroam_target_bits_per_live_chunk": 155,
+            "chunks_per_coordinate_stream": 2,
+            "whole_oracle_stream_count_before_chunking": 155,
+            "per_chunk_stream_non_clifford": 65536,
+            "base_non_clifford_without_streamed_qroam": 24577996,
+            "chunked_qroam_non_clifford": 20316160,
+            "chunked_total_non_clifford": 44894156,
+            "chunked_total_logical_qubits": 1199,
+            "non_clifford_excess_over_limit": 4894156,
+            "required_non_qroam_base_reduction_to_fit_limit": 4894156
+          },
+          "conclusion": {
+            "current_models_have_no_four_slot_fallback_under_limits": true,
+            "four_slot_fallback_requires_new_arithmetic_savings_or_new_lookup_primitive": true
+          },
+          "notes": [
+            "This stress test is intentionally strict about the user-facing bound: logical qubits must be strictly below 1200, not equal to 1200.",
+            "With four field slots, the current full-coordinate QROAM workspace misses the qubit bound before considering gates.",
+            "Chunking the QROAM target enough to fit the four-slot qubit bound doubles the coordinate-stream QROAM count under the K=1 model and misses the 40M non-Clifford bound unless another layer saves the reported excess."
+          ]
+        },
+        "observed": {
+          "schema": "compiler-project-fallback-frontier-stress-v1",
+          "limits": {
+            "non_clifford_limit": 40000000,
+            "logical_qubit_limit_exclusive": 1200
+          },
+          "current_selected_family": {
+            "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
+            "full_oracle_non_clifford": 34736076,
+            "total_logical_qubits": 1044,
+            "arithmetic_slot_count": 3,
+            "lookup_workspace_qubits": 274
+          },
+          "four_slot_pressure": {
+            "field_bits": 256,
+            "four_slot_arithmetic_qubits": 1024,
+            "control_qubits": 1,
+            "phase_qubits": 1,
+            "current_full_coordinate_lookup_workspace_qubits": 274,
+            "current_four_slot_total_with_full_coordinate_qroam": 1300,
+            "max_lookup_workspace_for_strictly_below_limit": 173,
+            "lookup_workspace_reduction_needed_from_current": 101
+          },
+          "chunked_coordinate_qroam_counterfactual": {
+            "model": "split each 256-bit coordinate stream into equally costed standard QROAMClean K=1 target chunks",
+            "folded_control_workspace_qubits": 18,
+            "max_qroam_target_bits_per_live_chunk": 155,
+            "chunks_per_coordinate_stream": 2,
+            "whole_oracle_stream_count_before_chunking": 155,
+            "per_chunk_stream_non_clifford": 65536,
+            "base_non_clifford_without_streamed_qroam": 24577996,
+            "chunked_qroam_non_clifford": 20316160,
+            "chunked_total_non_clifford": 44894156,
+            "chunked_total_logical_qubits": 1199,
+            "non_clifford_excess_over_limit": 4894156,
+            "required_non_qroam_base_reduction_to_fit_limit": 4894156
+          },
+          "conclusion": {
+            "current_models_have_no_four_slot_fallback_under_limits": true,
+            "four_slot_fallback_requires_new_arithmetic_savings_or_new_lookup_primitive": true
+          },
+          "notes": [
+            "This stress test is intentionally strict about the user-facing bound: logical qubits must be strictly below 1200, not equal to 1200.",
+            "With four field slots, the current full-coordinate QROAM workspace misses the qubit bound before considering gates.",
+            "Chunking the QROAM target enough to fit the four-slot qubit bound doubles the coordinate-stream QROAM count under the K=1 model and misses the 40M non-Clifford bound unless another layer saves the reported excess."
+          ]
+        }
+      },
+      {
+        "name": "fallback_frontier_stress_schema_is_current",
+        "pass": 1,
+        "expected": "compiler-project-fallback-frontier-stress-v1",
+        "observed": "compiler-project-fallback-frontier-stress-v1"
+      },
+      {
+        "name": "fallback_frontier_stress_uses_strict_1200_limit",
+        "pass": 1,
+        "expected": 1200,
+        "observed": 1200
+      },
+      {
+        "name": "fallback_frontier_stress_shows_four_full_coordinate_slots_miss_qubit_limit",
+        "pass": 1,
+        "expected": {
+          "four_slot_total": ">= 1200",
+          "workspace_reduction_needed": "> 0"
+        },
+        "observed": {
+          "field_bits": 256,
+          "four_slot_arithmetic_qubits": 1024,
+          "control_qubits": 1,
+          "phase_qubits": 1,
+          "current_full_coordinate_lookup_workspace_qubits": 274,
+          "current_four_slot_total_with_full_coordinate_qroam": 1300,
+          "max_lookup_workspace_for_strictly_below_limit": 173,
+          "lookup_workspace_reduction_needed_from_current": 101
+        }
+      },
+      {
+        "name": "fallback_frontier_stress_chunked_four_slot_counterfactual_misses_40m",
+        "pass": 1,
+        "expected": {
+          "chunked_total_logical_qubits": "< 1200",
+          "chunked_total_non_clifford": ">= 40000000",
+          "required_non_qroam_base_reduction_to_fit_limit": "> 0"
+        },
+        "observed": {
+          "model": "split each 256-bit coordinate stream into equally costed standard QROAMClean K=1 target chunks",
+          "folded_control_workspace_qubits": 18,
+          "max_qroam_target_bits_per_live_chunk": 155,
+          "chunks_per_coordinate_stream": 2,
+          "whole_oracle_stream_count_before_chunking": 155,
+          "per_chunk_stream_non_clifford": 65536,
+          "base_non_clifford_without_streamed_qroam": 24577996,
+          "chunked_qroam_non_clifford": 20316160,
+          "chunked_total_non_clifford": 44894156,
+          "chunked_total_logical_qubits": 1199,
+          "non_clifford_excess_over_limit": 4894156,
+          "required_non_qroam_base_reduction_to_fit_limit": 4894156
+        }
+      },
+      {
+        "name": "fallback_frontier_stress_conclusion_has_no_current_four_slot_fallback",
+        "pass": 1,
+        "expected": true,
+        "observed": {
+          "current_models_have_no_four_slot_fallback_under_limits": true,
+          "four_slot_fallback_requires_new_arithmetic_savings_or_new_lookup_primitive": true
+        }
+      }
+    ]
+  },
   "resource_liveness_certificate_checks": {
     "pass": 11,
     "total": 11,
@@ -9094,8 +9260,8 @@
       {
         "name": "build_summary_schema_matches_current_version",
         "pass": 1,
-        "expected": "compiler-project-build-summary-v23",
-        "observed": "compiler-project-build-summary-v23"
+        "expected": "compiler-project-build-summary-v24",
+        "observed": "compiler-project-build-summary-v24"
       },
       {
         "name": "build_summary_artifact_paths_match_expected_set",
@@ -9128,6 +9294,7 @@
           "family_frontier": "compiler_verification_project/artifacts/family_frontier.json",
           "standard_qrom_lookup_assessment": "compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json",
           "logical_resource_ledger": "compiler_verification_project/artifacts/logical_resource_ledger.json",
+          "fallback_frontier_stress": "compiler_verification_project/artifacts/fallback_frontier_stress.json",
           "resource_liveness_certificate": "compiler_verification_project/artifacts/resource_liveness_certificate.json",
           "materialized_circuit_manifest": "compiler_verification_project/artifacts/materialized_circuit_manifest.json",
           "qubit_breakthrough_analysis": "compiler_verification_project/artifacts/qubit_breakthrough_analysis.json",
@@ -9166,6 +9333,7 @@
           "family_frontier": "compiler_verification_project/artifacts/family_frontier.json",
           "standard_qrom_lookup_assessment": "compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json",
           "logical_resource_ledger": "compiler_verification_project/artifacts/logical_resource_ledger.json",
+          "fallback_frontier_stress": "compiler_verification_project/artifacts/fallback_frontier_stress.json",
           "resource_liveness_certificate": "compiler_verification_project/artifacts/resource_liveness_certificate.json",
           "materialized_circuit_manifest": "compiler_verification_project/artifacts/materialized_circuit_manifest.json",
           "qubit_breakthrough_analysis": "compiler_verification_project/artifacts/qubit_breakthrough_analysis.json",
@@ -9187,6 +9355,7 @@
           "compiler_verification_project/artifacts/azure_resource_estimator_targets.json",
           "compiler_verification_project/artifacts/canonical_public_point.json",
           "compiler_verification_project/artifacts/exact_leaf_slot_allocation.json",
+          "compiler_verification_project/artifacts/fallback_frontier_stress.json",
           "compiler_verification_project/artifacts/family_frontier.json",
           "compiler_verification_project/artifacts/ft_ir_compositions.json",
           "compiler_verification_project/artifacts/full_attack_inventory.json",
@@ -9225,6 +9394,7 @@
           "compiler_verification_project/artifacts/azure_resource_estimator_targets.json",
           "compiler_verification_project/artifacts/canonical_public_point.json",
           "compiler_verification_project/artifacts/exact_leaf_slot_allocation.json",
+          "compiler_verification_project/artifacts/fallback_frontier_stress.json",
           "compiler_verification_project/artifacts/family_frontier.json",
           "compiler_verification_project/artifacts/ft_ir_compositions.json",
           "compiler_verification_project/artifacts/full_attack_inventory.json",
@@ -10585,10 +10755,10 @@
       "pass": 30
     },
     "invariant_checks": {
-      "total": 296,
-      "pass": 296
+      "total": 302,
+      "pass": 302
     },
-    "total": 326,
-    "pass": 326
+    "total": 332,
+    "pass": 332
   }
 }

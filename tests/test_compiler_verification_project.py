@@ -113,6 +113,8 @@ def test_compiler_project_verification_summary_groups_all_pass() -> None:
     assert standard_qrom_lookup_assessment['pass'] == standard_qrom_lookup_assessment['total']
     logical_resource_ledger = summary['logical_resource_ledger_checks']
     assert logical_resource_ledger['pass'] == logical_resource_ledger['total']
+    fallback_frontier_stress = summary['fallback_frontier_stress_checks']
+    assert fallback_frontier_stress['pass'] == fallback_frontier_stress['total']
     recount = summary['whole_oracle_recount_checks']
     assert recount['pass'] == recount['total']
     subcircuit_equivalence = summary['subcircuit_equivalence_checks']
@@ -172,6 +174,13 @@ def test_mutated_logical_resource_owner_capacity_is_detected() -> None:
     artifacts['logical_resource_ledger']['peak_live_qubit_owners'][2]['decomposition']['qroam_clean_target_register_qubits'] -= 1
     groups = _evaluate_mutation(artifacts, 'logical_resource_ledger_checks')
     assert groups['logical_resource_ledger_checks']['pass'] < groups['logical_resource_ledger_checks']['total']
+
+
+def test_mutated_fallback_frontier_stress_is_detected() -> None:
+    artifacts = deepcopy(_load_artifacts())
+    artifacts['fallback_frontier_stress']['conclusion']['current_models_have_no_four_slot_fallback_under_limits'] = False
+    groups = _evaluate_mutation(artifacts, 'fallback_frontier_stress_checks')
+    assert groups['fallback_frontier_stress_checks']['pass'] < groups['fallback_frontier_stress_checks']['total']
 
 
 def test_mutated_resource_certificate_owner_capacity_is_detected() -> None:

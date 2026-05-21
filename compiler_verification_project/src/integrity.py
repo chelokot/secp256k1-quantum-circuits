@@ -24,6 +24,7 @@ from common import (
 )
 from artifact_registry import BUILD_SUMMARY_ARTIFACT_PATHS, BUILD_SUMMARY_SCHEMA
 from arithmetic_lowering import arithmetic_kernel_summary, arithmetic_lowering_library, materialize_arithmetic_primitive_operations
+from fallback_frontier_stress import build_fallback_frontier_stress
 from lookup_lowering import lookup_lowering_library, lowered_lookup_semantic_summary, materialize_lookup_primitive_operations
 from phase_shell_lowering import materialize_phase_operations, phase_shell_family_summary, phase_shell_lowering_library
 from physical_estimator import (
@@ -154,6 +155,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'family_frontier': artifact_root / 'family_frontier.json',
         'standard_qrom_lookup_assessment': artifact_root / 'standard_qrom_lookup_assessment.json',
         'logical_resource_ledger': artifact_root / 'logical_resource_ledger.json',
+        'fallback_frontier_stress': artifact_root / 'fallback_frontier_stress.json',
         'resource_liveness_certificate': artifact_root / 'resource_liveness_certificate.json',
         'materialized_circuit_manifest': artifact_root / 'materialized_circuit_manifest.json',
         'qubit_breakthrough_analysis': artifact_root / 'qubit_breakthrough_analysis.json',
@@ -1202,6 +1204,26 @@ def build_logical_resource_ledger_checks(artifacts: Mapping[str, Any]) -> Dict[s
     return _summarize_checks(checks)
 
 
+def build_fallback_frontier_stress_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    stress = artifacts['fallback_frontier_stress']
+    expected = build_fallback_frontier_stress(
+        frontier=artifacts['family_frontier'],
+        logical_resource_ledger=artifacts['logical_resource_ledger'],
+        field_bits=FIELD_BITS,
+    )
+    chunked = stress['chunked_coordinate_qroam_counterfactual']
+    pressure = stress['four_slot_pressure']
+    checks = [
+        _check('fallback_frontier_stress_matches_generator', stress == expected, expected, stress),
+        _check('fallback_frontier_stress_schema_is_current', stress['schema'] == 'compiler-project-fallback-frontier-stress-v1', 'compiler-project-fallback-frontier-stress-v1', stress['schema']),
+        _check('fallback_frontier_stress_uses_strict_1200_limit', stress['limits']['logical_qubit_limit_exclusive'] == 1200, 1200, stress['limits']['logical_qubit_limit_exclusive']),
+        _check('fallback_frontier_stress_shows_four_full_coordinate_slots_miss_qubit_limit', pressure['current_four_slot_total_with_full_coordinate_qroam'] >= 1200 and pressure['lookup_workspace_reduction_needed_from_current'] > 0, {'four_slot_total': '>= 1200', 'workspace_reduction_needed': '> 0'}, pressure),
+        _check('fallback_frontier_stress_chunked_four_slot_counterfactual_misses_40m', chunked['chunked_total_logical_qubits'] < 1200 and chunked['chunked_total_non_clifford'] >= 40_000_000 and chunked['required_non_qroam_base_reduction_to_fit_limit'] > 0, {'chunked_total_logical_qubits': '< 1200', 'chunked_total_non_clifford': '>= 40000000', 'required_non_qroam_base_reduction_to_fit_limit': '> 0'}, chunked),
+        _check('fallback_frontier_stress_conclusion_has_no_current_four_slot_fallback', stress['conclusion']['current_models_have_no_four_slot_fallback_under_limits'] is True, True, stress['conclusion']),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_resource_liveness_certificate_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     certificate = artifacts['resource_liveness_certificate']
     expected = build_resource_liveness_certificate(
@@ -2219,6 +2241,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'streamed_lookup_table_multiplier_resource_checks': lambda: build_streamed_lookup_table_multiplier_resource_checks(artifacts),
         'standard_qrom_lookup_assessment_checks': lambda: build_standard_qrom_lookup_assessment_checks(artifacts),
         'logical_resource_ledger_checks': lambda: build_logical_resource_ledger_checks(artifacts),
+        'fallback_frontier_stress_checks': lambda: build_fallback_frontier_stress_checks(artifacts),
         'resource_liveness_certificate_checks': lambda: build_resource_liveness_certificate_checks(artifacts),
         'qubit_breakthrough_checks': lambda: build_qubit_breakthrough_checks(artifacts),
         'full_attack_inventory_checks': lambda: build_full_attack_inventory_checks(artifacts),
