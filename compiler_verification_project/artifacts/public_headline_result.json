@@ -179,6 +179,11 @@
       "path": "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
       "sha256": "e719c4e3eec265b04925b65770573b86801f9f412f36f8dbfa35cb7401133530",
       "bytes": 7212
+    },
+    "headline_resource_manifest": {
+      "path": "compiler_verification_project/artifacts/headline_resource_manifest.json",
+      "sha256": "660a0bddcd34e807a2530aa522dd841a107f9f688eb1f1d41b751d04730480d6",
+      "bytes": 51805
     }
   },
   "verification_commands": {
@@ -198,6 +203,7 @@
       "semantic hashes for committed claim, leaf, family, case corpus, and resource-certificate documents",
       "generated QROAM K=1 primitive-count certificate bound into the reusable-chunk resource document",
       "executable liveness peak, qchunk/QROAM-target concurrency, and owner-capacity checks",
+      "current-headline counted-resource stream manifest derived from reusable_chunk_lowering counted_resource_ir",
       "fixture-to-proof and fixture-to-verifier-key binding"
     ]
   },
@@ -211,6 +217,7 @@
     "reusable_chunk_executable_liveness_binds_public_qubits": true,
     "reusable_chunk_counted_resource_ir_binds_public_totals": true,
     "reusable_chunk_resource_contract_engine_unifies_liveness_and_capacity": true,
+    "headline_resource_manifest_binds_current_public_result": true,
     "proof_register_contract_binds_prepared_leaf_to_resource_owners": true,
     "compiler_parameters_document_binds_parameter_source": true,
     "reusable_chunk_binds_generated_qroam_primitive_certificate": true,

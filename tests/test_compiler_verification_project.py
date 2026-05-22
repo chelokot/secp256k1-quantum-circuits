@@ -124,6 +124,8 @@ def test_compiler_project_verification_summary_groups_all_pass() -> None:
     assert tail_macro_schedule_search['pass'] == tail_macro_schedule_search['total']
     headline_opcode_coverage = summary['headline_opcode_coverage_checks']
     assert headline_opcode_coverage['pass'] == headline_opcode_coverage['total']
+    headline_resource_manifest = summary['headline_resource_manifest_checks']
+    assert headline_resource_manifest['pass'] == headline_resource_manifest['total']
     streamed_lookup_table_multiplier_resource = summary['streamed_lookup_table_multiplier_resource_checks']
     assert streamed_lookup_table_multiplier_resource['pass'] == streamed_lookup_table_multiplier_resource['total']
     standard_qrom_lookup_assessment = summary['standard_qrom_lookup_assessment_checks']
@@ -345,6 +347,13 @@ def test_mutated_headline_opcode_coverage_is_detected() -> None:
     tail_row['passes_required_coverage'] = False
     groups = _evaluate_mutation(artifacts, 'headline_opcode_coverage_checks')
     assert groups['headline_opcode_coverage_checks']['pass'] < groups['headline_opcode_coverage_checks']['total']
+
+
+def test_mutated_headline_resource_manifest_is_detected() -> None:
+    artifacts = _artifacts_for_mutation('headline_resource_manifest')
+    artifacts['headline_resource_manifest']['public_totals']['non_clifford'] -= 1
+    groups = _evaluate_mutation(artifacts, 'headline_resource_manifest_checks')
+    assert groups['headline_resource_manifest_checks']['pass'] < groups['headline_resource_manifest_checks']['total']
 
 
 def test_mutated_phase_shell_lowering_is_detected() -> None:

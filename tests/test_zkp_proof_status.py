@@ -9,6 +9,14 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+ROOT_SRC = REPO_ROOT / 'src'
+COMPILER_SRC = REPO_ROOT / 'compiler_verification_project' / 'src'
+if str(ROOT_SRC) not in sys.path:
+    sys.path.insert(0, str(ROOT_SRC))
+if str(COMPILER_SRC) not in sys.path:
+    sys.path.insert(0, str(COMPILER_SRC))
+
+from proof_status_report import build_proof_status_report  # noqa: E402
 
 
 def test_proof_status_reports_fixture_freshness_without_running_provers() -> None:
@@ -105,3 +113,14 @@ def test_proof_status_require_all_current_exit_code_matches_report() -> None:
     )
     report = json.loads(result.stdout)
     assert result.returncode == (0 if report['all_current'] else 1)
+
+
+def test_proof_status_cli_is_thin_wrapper_around_shared_report_engine() -> None:
+    result = subprocess.run(
+        [sys.executable, 'compiler_verification_project/scripts/proof_status.py'],
+        cwd=REPO_ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    assert json.loads(result.stdout) == build_proof_status_report(REPO_ROOT)

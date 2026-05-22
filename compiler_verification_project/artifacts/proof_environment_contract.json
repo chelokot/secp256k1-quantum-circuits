@@ -464,19 +464,30 @@
       },
       "manifest_record_present": true,
       "manifest_sha256_matches_checked_record": true
+    },
+    "headline_resource_manifest": {
+      "path": "compiler_verification_project/artifacts/headline_resource_manifest.json",
+      "sha256": "660a0bddcd34e807a2530aa522dd841a107f9f688eb1f1d41b751d04730480d6",
+      "bytes": 51805,
+      "manifest_record": {
+        "sha256": "660a0bddcd34e807a2530aa522dd841a107f9f688eb1f1d41b751d04730480d6",
+        "bytes": 51805
+      },
+      "manifest_record_present": true,
+      "manifest_sha256_matches_checked_record": true
     }
   },
   "proof_manifest": {
     "path": "artifacts/package/proof_manifest.json",
-    "sha256": "6b020bfad3bc84fd76cfc54021d205bd7aa70c537e66d8bfb9248236b81d5864",
-    "bytes": 37159,
+    "sha256": "49d8ffadb816d8b7d19f4d88fc96539c52f90a1ca62a667ff39fcfc0423fb4a6",
+    "bytes": 38255,
     "schema": null,
-    "file_count": 194
+    "file_count": 200
   },
   "public_headline_result": {
     "path": "compiler_verification_project/artifacts/public_headline_result.json",
-    "sha256": "0d3880a507120cb186e4c7f86457536ac7547fb85a414726a061cd0288692a08",
-    "bytes": 13326
+    "sha256": "e4846b414540fb2244eefc422d676dd00e1a434b2421a216f00f8f38c65054a3",
+    "bytes": 13747
   },
   "notes": [
     "This artifact is deterministic and repository-bound; it is not a pinned container or Nix lock.",

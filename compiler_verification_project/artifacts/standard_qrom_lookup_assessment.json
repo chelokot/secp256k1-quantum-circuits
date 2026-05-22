@@ -42,7 +42,7 @@
     "standard_qrom_equivalent": true
   },
   "conservative_implications": {
-    "boundary_model_non_clifford": 34736076,
+    "boundary_model_non_clifford": 34925796,
     "boundary_model_logical_qubits": 1044,
     "stream_each_output_bit_with_standard_qrom_non_clifford_per_kernel": 32767,
     "stream_one_coordinate_with_standard_qrom_non_clifford_per_kernel": 8388352,

@@ -37,6 +37,7 @@ from physical_estimator import (
 )
 from proof_corpus_profiles import GOOGLE_COMPARABLE_PROFILE, SMOKE_PUBLIC_PROFILE, build_proof_corpus_profiles
 from proof_environment_contract import PROOF_ENVIRONMENT_CONTRACT_SCHEMA, build_proof_environment_contract
+from proof_publication_status import PROOF_PUBLICATION_STATUS_SCHEMA, build_proof_publication_status
 from public_result import build_public_headline_result, write_public_headline_result
 from qroam_primitive import build_qroam_k1_primitive_certificate
 from qroam_reference_crosscheck import QROAM_REFERENCE_CROSSCHECK_SCHEMA, build_qroam_reference_crosscheck
@@ -55,6 +56,7 @@ from tail_macro_liveness import build_tail_macro_liveness
 from tail_macro_reversibility import build_tail_macro_reversibility
 from tail_macro_schedule_search import build_tail_macro_schedule_search
 from headline_opcode_coverage import build_headline_opcode_coverage
+from headline_resource_manifest import HEADLINE_RESOURCE_MANIFEST_SCHEMA, build_headline_resource_manifest
 from project import (
     FIELD_BITS,
     FOLDED_MAG_BITS,
@@ -184,6 +186,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'reusable_chunk_lowering': artifact_root / 'reusable_chunk_lowering.json',
         'resource_liveness_certificate': artifact_root / 'resource_liveness_certificate.json',
         'materialized_circuit_manifest': artifact_root / 'materialized_circuit_manifest.json',
+        'headline_resource_manifest': artifact_root / 'headline_resource_manifest.json',
         'qubit_breakthrough_analysis': artifact_root / 'qubit_breakthrough_analysis.json',
         'full_attack_inventory': artifact_root / 'full_attack_inventory.json',
         'ft_ir_compositions': artifact_root / 'ft_ir_compositions.json',
@@ -201,6 +204,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'azure_resource_estimator_results': artifact_root / 'azure_resource_estimator_results.json',
         'artifact_digest_tree': artifact_root / 'artifact_digest_tree.json',
         'proof_environment_contract': artifact_root / 'proof_environment_contract.json',
+        'proof_publication_status': artifact_root / 'proof_publication_status.json',
     }
     if not all(path.exists() for path in required.values()):
         from project import build_all_artifacts, write_cain_transfer
@@ -211,6 +215,10 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         dump_json(
             artifact_root / 'proof_environment_contract.json',
             build_proof_environment_contract(repo_root=repo_root),
+        )
+        dump_json(
+            artifact_root / 'proof_publication_status.json',
+            build_proof_publication_status(repo_root=repo_root),
         )
     return {name: _load_artifact(path) for name, path in required.items()}
 
@@ -2013,6 +2021,26 @@ def build_headline_opcode_coverage_checks(artifacts: Mapping[str, Any]) -> Dict[
     return _summarize_checks(checks)
 
 
+def build_headline_resource_manifest_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    manifest = artifacts['headline_resource_manifest']
+    lowering = artifacts['reusable_chunk_lowering']
+    selected_family_name = artifacts['zkp_attestation_reusable_chunk_candidate_input']['selected_family_name']
+    expected = build_headline_resource_manifest(
+        reusable_chunk_lowering=lowering,
+        selected_family_name=selected_family_name,
+    )
+    checks = [
+        _check('headline_resource_manifest_matches_generator', manifest == expected, expected, manifest),
+        _check('headline_resource_manifest_schema_is_current', manifest['schema'] == HEADLINE_RESOURCE_MANIFEST_SCHEMA, HEADLINE_RESOURCE_MANIFEST_SCHEMA, manifest['schema']),
+        _check('headline_resource_manifest_family_matches_candidate_input', manifest['selected_family_name'] == selected_family_name, selected_family_name, manifest['selected_family_name']),
+        _check('headline_resource_manifest_binds_reusable_chunk_counted_ir', manifest['source_counted_resource_ir_sha256'] == lowering['resource_contract_engine']['counted_resource_ir_sha256'], lowering['resource_contract_engine']['counted_resource_ir_sha256'], manifest['source_counted_resource_ir_sha256']),
+        _check('headline_resource_manifest_reconstructs_public_non_clifford', manifest['public_totals']['non_clifford'] == lowering['non_clifford_derivation']['candidate_total_non_clifford'], lowering['non_clifford_derivation']['candidate_total_non_clifford'], manifest['public_totals']['non_clifford']),
+        _check('headline_resource_manifest_reconstructs_public_qubits', manifest['public_totals']['logical_qubits'] == lowering['qubit_derivation']['candidate_total_logical_qubits'], lowering['qubit_derivation']['candidate_total_logical_qubits'], manifest['public_totals']['logical_qubits']),
+        _check('headline_resource_manifest_expands_qroam_stream_instances', manifest['checks']['qroam_rows_expand_stream_plan_instances'] is True and manifest['term_row_count'] > len(lowering['counted_resource_ir']['non_clifford_terms']), {'qroam_rows_expand_stream_plan_instances': True}, manifest),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_primitive_multiplier_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     primitive = artifacts['primitive_multiplier_library']
     schedule = artifacts['full_raw32_oracle']
@@ -2270,6 +2298,24 @@ def build_proof_environment_contract_checks(artifacts: Mapping[str, Any], repo_r
         _check('proof_environment_contract_has_publication_freshness_gate', command_by_name['proof_status_publication_gate']['publication_gate'] is True and '--require-all-current' in command_by_name['proof_status_publication_gate']['argv'], 'proof_status.py --require-all-current', command_by_name['proof_status_publication_gate']),
         _check('proof_environment_contract_has_checked_compressed_and_groth16_verifiers', command_by_name['direct_compressed_verify']['publication_gate'] is True and command_by_name['direct_groth16_verify']['publication_gate'] is True and contract['checks']['direct_verify_commands_bind_checked_input_and_proofs'] is True, 'direct checked compressed and Groth16 verify commands', {'compressed': command_by_name['direct_compressed_verify'], 'groth16': command_by_name['direct_groth16_verify']}),
         _check('proof_environment_contract_lists_required_tool_stack', set(contract['tool_contract']['required_tool_names']) == {'python', 'cargo', 'rustc', 'protoc', 'clang', 'go'}, ['cargo', 'clang', 'go', 'protoc', 'python', 'rustc'], sorted(contract['tool_contract']['required_tool_names'])),
+    ]
+    return _summarize_checks(checks)
+
+
+def build_proof_publication_status_checks(artifacts: Mapping[str, Any], repo_root: Path) -> Dict[str, Any]:
+    status = artifacts['proof_publication_status']
+    expected = build_proof_publication_status(repo_root=repo_root)
+    proof_status = status['proof_status']
+    checks = [
+        _check('proof_publication_status_matches_generator', status == expected, expected, status),
+        _check('proof_publication_status_schema_is_current', status['schema'] == PROOF_PUBLICATION_STATUS_SCHEMA, PROOF_PUBLICATION_STATUS_SCHEMA, status['schema']),
+        _check('proof_publication_status_passes_internal_checks', status['pass'] is True and all(status['checks'].values()), True, status['checks']),
+        _check('proof_publication_status_ready_matches_proof_status', status['publication_ready'] == proof_status['all_current'], proof_status['all_current'], status['publication_ready']),
+        _check('proof_publication_status_has_blockers_when_stale', status['publication_ready'] or len(status['publication_blockers']) > 0, 'blockers exist when publication_ready is false', status['publication_blockers']),
+        _check('proof_publication_status_public_headline_pass_matches_ready', artifacts['public_headline_result']['pass'] == status['publication_ready'], status['publication_ready'], artifacts['public_headline_result']['pass']),
+        _check('proof_publication_status_records_compressed_and_groth16_gates', {'public_headline_compressed_verify', 'public_headline_groth16_verify', 'direct_compressed_verify', 'direct_groth16_verify'}.issubset({command['name'] for command in status['publication_gate_commands']}), 'compressed and Groth16 publication gates', [command['name'] for command in status['publication_gate_commands']]),
+        _check('proof_publication_status_binds_environment_contract', status['source_artifacts']['proof_environment_contract']['sha256'] == sha256_path(repo_root / status['source_artifacts']['proof_environment_contract']['path']), status['source_artifacts']['proof_environment_contract'], status['source_artifacts']['proof_environment_contract']),
+        _check('proof_publication_status_binds_public_headline_result', status['source_artifacts']['public_headline_result']['sha256'] == sha256_path(repo_root / status['source_artifacts']['public_headline_result']['path']), status['source_artifacts']['public_headline_result'], status['source_artifacts']['public_headline_result']),
     ]
     return _summarize_checks(checks)
 
@@ -2634,11 +2680,13 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'whole_oracle_recount_checks': lambda: build_whole_oracle_recount_checks(artifacts, repo_root),
         'subcircuit_equivalence_checks': lambda: build_subcircuit_equivalence_checks(artifacts, repo_root),
         'headline_opcode_coverage_checks': lambda: build_headline_opcode_coverage_checks(artifacts),
+        'headline_resource_manifest_checks': lambda: build_headline_resource_manifest_checks(artifacts),
         'primitive_multiplier_checks': lambda: build_primitive_multiplier_checks(artifacts),
         'frontier_checks': lambda: build_frontier_checks(artifacts),
         'build_summary_checks': lambda: build_build_summary_checks(artifacts, repo_root),
         'artifact_digest_tree_checks': lambda: build_artifact_digest_tree_checks(artifacts, repo_root),
         'proof_environment_contract_checks': lambda: build_proof_environment_contract_checks(artifacts, repo_root),
+        'proof_publication_status_checks': lambda: build_proof_publication_status_checks(artifacts, repo_root),
         'proof_corpus_profile_checks': lambda: build_proof_corpus_profile_checks(artifacts),
         'release_corpus_preflight_checks': lambda: build_release_corpus_preflight_checks(artifacts),
         'public_headline_result_checks': lambda: build_public_headline_result_checks(artifacts, repo_root),

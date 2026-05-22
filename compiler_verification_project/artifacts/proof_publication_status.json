@@ -1,0 +1,286 @@
+{
+  "schema": "compiler-project-proof-publication-status-v1",
+  "scope": "checked publication freshness status for the public reusable-chunk proof bundle",
+  "publication_ready": false,
+  "selected_result": {
+    "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+    "non_clifford": 36957412,
+    "logical_qubits": 1199,
+    "case_count": 8,
+    "passed_case_count": 8,
+    "document_digest_scheme": "compiler-project-semantic-json-sha256-v1"
+  },
+  "proof_status_sha256": "6675d0b32d92b97f2b702651d6a4c55431e418265914df3509ed1a9ef25a6c40",
+  "proof_status": {
+    "schema": "compiler-project-proof-status-v1",
+    "proof_manifest": "artifacts/package/proof_manifest.json",
+    "proof_manifest_sha256": "49d8ffadb816d8b7d19f4d88fc96539c52f90a1ca62a667ff39fcfc0423fb4a6",
+    "candidate_input": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
+    "candidate_input_sha256": "f1e1f9ba216295c15dc35419d8ec37620a1cb6bf0c8b49d283e0d224d7bfa31c",
+    "compiler_parameters_sha256": "5d17d0fcc6fb8967cc5b02f916bd8c7da717c8b160486bc128bf3d81a7c8f517",
+    "compiler_parameters_document_sha256": "5d17d0fcc6fb8967cc5b02f916bd8c7da717c8b160486bc128bf3d81a7c8f517",
+    "resource_certificate_sha256": "8224f86922f043d3975b583d47bd82a2fe5ba5bc3d1bba4723bf9a7f493e07c7",
+    "public_values_resource_certificate_sha256": "9e6761fddca97566eeaa5105241af14b07f4dbf2f287cbe01bb5e83605e73085",
+    "input_and_public_values_match": false,
+    "systems": {
+      "core": {
+        "system": "core",
+        "current": false,
+        "fixture_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_fixture_core.json",
+        "fixture_manifest_record_exists": true,
+        "fixture_manifest_sha256_matches_file": true,
+        "fixture_manifest_sha256": "eb6b7fac6e953fb5f384f6d3d4274f11f599879d8e380678d0290d62448e432b",
+        "verification_key": "0x00a045504797672214fb629c1fce35cf1b76690546c4b61b13de48098fc749a8",
+        "input_path": null,
+        "input_file_exists": null,
+        "input_sha256": null,
+        "input_size_bytes": null,
+        "missing_input_metadata_keys": [],
+        "observed_input_sha256": "f1e1f9ba216295c15dc35419d8ec37620a1cb6bf0c8b49d283e0d224d7bfa31c",
+        "fixture_input_observed_sha256": null,
+        "fixture_input_observed_size_bytes": null,
+        "input_binding_status": "fixture_declares_no_input_metadata",
+        "input_digest_matches_fixture": false,
+        "resource_certificate_sha256": "9e6761fddca97566eeaa5105241af14b07f4dbf2f287cbe01bb5e83605e73085",
+        "public_values_match_current": true,
+        "resource_digest_matches_input": false,
+        "stale_reasons": [
+          "fixture_declares_no_input_metadata",
+          "fixture_resource_digest_does_not_match_current_input"
+        ],
+        "proof_path": null,
+        "proof_file_exists": null,
+        "proof_sha256_matches_fixture": null,
+        "proof_manifest_record_exists": null,
+        "proof_manifest_sha256_matches_file": null,
+        "verifier_key_path": null,
+        "verifier_key_file_exists": null,
+        "verifier_key_sha256_matches_fixture": null,
+        "verifier_key_manifest_record_exists": null,
+        "verifier_key_manifest_sha256_matches_file": null
+      },
+      "compressed": {
+        "system": "compressed",
+        "current": false,
+        "fixture_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_fixture_compressed.json",
+        "fixture_manifest_record_exists": true,
+        "fixture_manifest_sha256_matches_file": true,
+        "fixture_manifest_sha256": "1e29b89fcac4f00911a5d1572ce2460e1837947d734ceb6808f94743a0a7b3bf",
+        "verification_key": "0x00a045504797672214fb629c1fce35cf1b76690546c4b61b13de48098fc749a8",
+        "input_path": null,
+        "input_file_exists": null,
+        "input_sha256": null,
+        "input_size_bytes": null,
+        "missing_input_metadata_keys": [],
+        "observed_input_sha256": "f1e1f9ba216295c15dc35419d8ec37620a1cb6bf0c8b49d283e0d224d7bfa31c",
+        "fixture_input_observed_sha256": null,
+        "fixture_input_observed_size_bytes": null,
+        "input_binding_status": "fixture_declares_no_input_metadata",
+        "input_digest_matches_fixture": false,
+        "resource_certificate_sha256": "9e6761fddca97566eeaa5105241af14b07f4dbf2f287cbe01bb5e83605e73085",
+        "public_values_match_current": true,
+        "resource_digest_matches_input": false,
+        "stale_reasons": [
+          "fixture_declares_no_input_metadata",
+          "fixture_resource_digest_does_not_match_current_input"
+        ],
+        "proof_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin",
+        "proof_file_exists": true,
+        "proof_sha256_matches_fixture": true,
+        "observed_proof_sha256": "d66a8a10e4364f859d1207c1dc343d7c54a7c6a39a7058a7c05b1b5d7dd5c396",
+        "fixture_proof_sha256": "d66a8a10e4364f859d1207c1dc343d7c54a7c6a39a7058a7c05b1b5d7dd5c396",
+        "proof_manifest_record_exists": true,
+        "proof_manifest_sha256_matches_file": true,
+        "proof_manifest_sha256": "d66a8a10e4364f859d1207c1dc343d7c54a7c6a39a7058a7c05b1b5d7dd5c396",
+        "verifier_key_path": null,
+        "verifier_key_file_exists": null,
+        "verifier_key_sha256_matches_fixture": null,
+        "verifier_key_manifest_record_exists": null,
+        "verifier_key_manifest_sha256_matches_file": null
+      },
+      "groth16": {
+        "system": "groth16",
+        "current": false,
+        "fixture_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_fixture_groth16.json",
+        "fixture_manifest_record_exists": true,
+        "fixture_manifest_sha256_matches_file": true,
+        "fixture_manifest_sha256": "0b9ded6ac65245256a5ba2a82b4ea1cdaf586038febb849a63b0e570c43b6875",
+        "verification_key": "0x000468e7e74d2eccde25e6af5576efe93dfa7056aabd1e535598774df7a2c832",
+        "input_path": null,
+        "input_file_exists": null,
+        "input_sha256": null,
+        "input_size_bytes": null,
+        "missing_input_metadata_keys": [],
+        "observed_input_sha256": "f1e1f9ba216295c15dc35419d8ec37620a1cb6bf0c8b49d283e0d224d7bfa31c",
+        "fixture_input_observed_sha256": null,
+        "fixture_input_observed_size_bytes": null,
+        "input_binding_status": "fixture_declares_no_input_metadata",
+        "input_digest_matches_fixture": false,
+        "resource_certificate_sha256": "d37820bea8e18cab61a8db7ec90efd4fb12801e5398ae686648555bcf1065c53",
+        "public_values_match_current": false,
+        "resource_digest_matches_input": false,
+        "stale_reasons": [
+          "fixture_declares_no_input_metadata",
+          "fixture_public_values_do_not_match_checked_public_values",
+          "fixture_resource_digest_does_not_match_current_input"
+        ],
+        "proof_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_groth16.bin",
+        "proof_file_exists": true,
+        "proof_sha256_matches_fixture": true,
+        "observed_proof_sha256": "95e5f291652d6f1864cc22fb259cd87b335e204d28b8955f3e7e255ff4f75fc2",
+        "fixture_proof_sha256": "95e5f291652d6f1864cc22fb259cd87b335e204d28b8955f3e7e255ff4f75fc2",
+        "proof_manifest_record_exists": true,
+        "proof_manifest_sha256_matches_file": true,
+        "proof_manifest_sha256": "95e5f291652d6f1864cc22fb259cd87b335e204d28b8955f3e7e255ff4f75fc2",
+        "verifier_key_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_groth16_verifier/groth16_vk.bin",
+        "verifier_key_file_exists": true,
+        "verifier_key_sha256_matches_fixture": true,
+        "observed_verifier_key_sha256": "4125fe6fab5e7d3af4bb9386f49589450a6d37f536e98650adca79768c469975",
+        "fixture_verifier_key_sha256": "4125fe6fab5e7d3af4bb9386f49589450a6d37f536e98650adca79768c469975",
+        "verifier_key_manifest_record_exists": true,
+        "verifier_key_manifest_sha256_matches_file": true,
+        "verifier_key_manifest_sha256": "4125fe6fab5e7d3af4bb9386f49589450a6d37f536e98650adca79768c469975"
+      }
+    },
+    "stale_systems": [
+      "core",
+      "compressed",
+      "groth16"
+    ],
+    "all_current": false,
+    "heavy_rebuild_steps_remaining": [
+      "compressed",
+      "groth16"
+    ]
+  },
+  "publication_blockers": [
+    {
+      "system": "core",
+      "fixture_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_fixture_core.json",
+      "stale_reasons": [
+        "fixture_declares_no_input_metadata",
+        "fixture_resource_digest_does_not_match_current_input"
+      ],
+      "input_binding_status": "fixture_declares_no_input_metadata",
+      "resource_certificate_sha256": "9e6761fddca97566eeaa5105241af14b07f4dbf2f287cbe01bb5e83605e73085"
+    },
+    {
+      "system": "compressed",
+      "fixture_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_fixture_compressed.json",
+      "stale_reasons": [
+        "fixture_declares_no_input_metadata",
+        "fixture_resource_digest_does_not_match_current_input"
+      ],
+      "input_binding_status": "fixture_declares_no_input_metadata",
+      "resource_certificate_sha256": "9e6761fddca97566eeaa5105241af14b07f4dbf2f287cbe01bb5e83605e73085"
+    },
+    {
+      "system": "groth16",
+      "fixture_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_fixture_groth16.json",
+      "stale_reasons": [
+        "fixture_declares_no_input_metadata",
+        "fixture_public_values_do_not_match_checked_public_values",
+        "fixture_resource_digest_does_not_match_current_input"
+      ],
+      "input_binding_status": "fixture_declares_no_input_metadata",
+      "resource_certificate_sha256": "d37820bea8e18cab61a8db7ec90efd4fb12801e5398ae686648555bcf1065c53"
+    }
+  ],
+  "publication_gate_commands": [
+    {
+      "name": "proof_status_publication_gate",
+      "phase": "freshness",
+      "argv": [
+        "python",
+        "compiler_verification_project/scripts/proof_status.py",
+        "--require-all-current"
+      ],
+      "cwd": ".",
+      "invokes_prover": false,
+      "publication_gate": true
+    },
+    {
+      "name": "fast_zkp_preflight_publication_gate",
+      "phase": "fast_no_prover_preflight",
+      "argv": [
+        "python",
+        "compiler_verification_project/scripts/fast_zkp_preflight.py",
+        "--require-current-proofs"
+      ],
+      "cwd": ".",
+      "invokes_prover": false,
+      "publication_gate": true
+    },
+    {
+      "name": "public_headline_compressed_verify",
+      "phase": "proof_verification",
+      "argv": [
+        "python",
+        "compiler_verification_project/scripts/verify_public_headline.py",
+        "--verify-compressed"
+      ],
+      "cwd": ".",
+      "invokes_prover": false,
+      "publication_gate": true
+    },
+    {
+      "name": "public_headline_groth16_verify",
+      "phase": "proof_verification",
+      "argv": [
+        "python",
+        "compiler_verification_project/scripts/verify_public_headline.py",
+        "--verify-groth16"
+      ],
+      "cwd": ".",
+      "invokes_prover": false,
+      "publication_gate": true
+    },
+    {
+      "name": "direct_compressed_verify",
+      "phase": "proof_verification",
+      "shell_command": "SP1_CIRCUIT_MODE=dev python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --verify-proof-input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin --system compressed --resource-profile safe --systemd-property TasksMax=128 --skip-build --input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json --output-dir compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate",
+      "cwd": ".",
+      "invokes_prover": false,
+      "publication_gate": true
+    },
+    {
+      "name": "direct_groth16_verify",
+      "phase": "proof_verification",
+      "shell_command": "SP1_CIRCUIT_MODE=dev python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --verify-proof-input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_groth16.bin --system groth16 --resource-profile safe --systemd-property TasksMax=128 --skip-build --groth16-verify-dir compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_groth16_verifier --input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json --output-dir compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate",
+      "cwd": ".",
+      "invokes_prover": false,
+      "publication_gate": true
+    }
+  ],
+  "source_artifacts": {
+    "public_headline_result": {
+      "path": "compiler_verification_project/artifacts/public_headline_result.json",
+      "sha256": "e4846b414540fb2244eefc422d676dd00e1a434b2421a216f00f8f38c65054a3"
+    },
+    "proof_environment_contract": {
+      "path": "compiler_verification_project/artifacts/proof_environment_contract.json",
+      "sha256": "29ab33a89d44432983603e2c9cc1edaeba4ace1603e9bed0824556702a178561"
+    },
+    "proof_manifest": {
+      "path": "artifacts/package/proof_manifest.json",
+      "sha256": "49d8ffadb816d8b7d19f4d88fc96539c52f90a1ca62a667ff39fcfc0423fb4a6"
+    }
+  },
+  "checks": {
+    "proof_status_schema_is_current": true,
+    "proof_status_all_current_matches_stale_systems": true,
+    "proof_status_heavy_rebuild_steps_are_stale_proof_systems": true,
+    "public_headline_pass_matches_proof_status": true,
+    "public_headline_checked_input_digest_matches_proof_status": true,
+    "public_headline_resource_digest_matches_proof_status_input": true,
+    "proof_manifest_digest_matches_environment_contract": true,
+    "environment_contract_has_current_publication_gates": true,
+    "stale_publication_has_explicit_blockers": true,
+    "publication_ready_requires_compressed_and_groth16_verification": true
+  },
+  "pass": true,
+  "notes": [
+    "pass means the publication status was derived consistently; publication_ready is the separate freshness verdict.",
+    "When publication_ready is false, the public result remains a checked resource candidate but not a current compressed/Groth16 proof claim."
+  ]
+}

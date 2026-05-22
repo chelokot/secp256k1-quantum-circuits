@@ -17,8 +17,12 @@ reference boundary, but not as the promoted public claim. The generated
 QROAMClean tradeoff ledger still records the higher-space rows needed for the
 older `<24M` non-Clifford target; the repository headline is the single checked
 central family bound by the executable leaf, resource ledger, and ZKP public
-values after the final compressed/Groth16 proof rebuild. Until then the proof
-freshness tooling intentionally marks the checked proof layers stale.
+values after the final compressed/Groth16 proof rebuild. The current headline
+also has its own counted-resource stream manifest,
+`compiler_verification_project/artifacts/headline_resource_manifest.json`,
+because `materialized_circuit_manifest.json` still describes the older checked
+three-slot frontier family. Until then the proof freshness tooling intentionally
+marks the checked proof layers stale.
 
 ## Exact layers
 

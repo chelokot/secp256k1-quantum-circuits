@@ -6,11 +6,11 @@
       "logicalCounts": {
         "numQubits": 1044,
         "tCount": 0,
-        "cczCount": 34736076,
+        "cczCount": 34925796,
         "ccixCount": 0,
         "rotationCount": 511,
         "rotationDepth": 511,
-        "measurementCount": 7301612
+        "measurementCount": 7491332
       },
       "notes": "Azure-style logicalCounts seed. The oracle CCZ total, phase-shell rotation inventory, and total measurement inventory are all sourced from exact compiler-family artifacts."
     }

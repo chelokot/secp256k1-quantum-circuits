@@ -20,6 +20,7 @@ from artifact_digest_tree import build_artifact_digest_tree  # noqa: E402
 from artifact_registry import BUILD_SUMMARY_ARTIFACT_PATHS, BUILD_SUMMARY_SCHEMA  # noqa: E402
 from arithmetic_operation_ir import build_arithmetic_operation_ir  # noqa: E402
 from headline_opcode_coverage import build_headline_opcode_coverage  # noqa: E402
+from headline_resource_manifest import build_headline_resource_manifest  # noqa: E402
 from materialized_circuit import build_materialized_family_manifest  # noqa: E402
 from project import FIELD_BITS, build_all_artifacts, build_resource_stack_artifacts, full_attack_inventory, write_cain_transfer  # noqa: E402
 from public_result import write_public_headline_result  # noqa: E402
@@ -31,6 +32,7 @@ from subcircuit_equivalence import build_subcircuit_equivalence_artifact  # noqa
 from zkp_attestation import write_zkp_attestation_inputs  # noqa: E402
 from proof_corpus_profiles import resolve_proof_corpus_profile  # noqa: E402
 from proof_environment_contract import build_proof_environment_contract  # noqa: E402
+from proof_publication_status import build_proof_publication_status  # noqa: E402
 
 BUILD_TARGETS = (
     'all',
@@ -38,8 +40,10 @@ BUILD_TARGETS = (
     'build-summary',
     'artifact-digest-tree',
     'proof-environment-contract',
+    'proof-publication-status',
     'release-corpus-preflight',
     'materialized-circuit-manifest',
+    'headline-resource-manifest',
     'arithmetic-operation-ir',
     'resource-liveness-certificate',
     'resource-stack',
@@ -208,6 +212,12 @@ def build_proof_environment_contract_artifact() -> None:
     dump_json(artifact_dir / 'proof_environment_contract.json', payload)
 
 
+def build_proof_publication_status_artifact() -> None:
+    artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
+    payload = build_proof_publication_status(repo_root=PROJECT_ROOT)
+    dump_json(artifact_dir / 'proof_publication_status.json', payload)
+
+
 def build_release_corpus_preflight_artifact() -> None:
     artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
     payload = build_release_corpus_preflight(
@@ -225,6 +235,18 @@ def build_materialized_circuit_manifest_artifact() -> None:
         frontier=frontier,
     )
     dump_json(artifact_dir / 'materialized_circuit_manifest.json', payload)
+
+
+def build_headline_resource_manifest_artifact() -> None:
+    artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
+    candidate_input = load_json(
+        artifact_dir / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json'
+    )
+    payload = build_headline_resource_manifest(
+        reusable_chunk_lowering=load_json(artifact_dir / 'reusable_chunk_lowering.json'),
+        selected_family_name=candidate_input['selected_family_name'],
+    )
+    dump_json(artifact_dir / 'headline_resource_manifest.json', payload)
 
 
 def build_summary_artifact() -> None:
@@ -269,12 +291,18 @@ def main() -> None:
     if args.target in ('proof-environment-contract',):
         build_proof_environment_contract_artifact()
         payload['proof_environment_contract'] = 'compiler_verification_project/artifacts/proof_environment_contract.json'
+    if args.target in ('proof-publication-status',):
+        build_proof_publication_status_artifact()
+        payload['proof_publication_status'] = 'compiler_verification_project/artifacts/proof_publication_status.json'
     if args.target in ('release-corpus-preflight',):
         build_release_corpus_preflight_artifact()
         payload['release_corpus_preflight'] = 'compiler_verification_project/artifacts/release_corpus_preflight.json'
     if args.target in ('materialized-circuit-manifest',):
         build_materialized_circuit_manifest_artifact()
         payload['materialized_circuit_manifest'] = 'compiler_verification_project/artifacts/materialized_circuit_manifest.json'
+    if args.target in ('headline-resource-manifest',):
+        build_headline_resource_manifest_artifact()
+        payload['headline_resource_manifest'] = 'compiler_verification_project/artifacts/headline_resource_manifest.json'
     if args.target in ('resource-stack', 'resource-zkp-and-public'):
         payload.update(build_resource_stack())
     if args.target in ('arithmetic-operation-ir',):
@@ -296,6 +324,9 @@ def main() -> None:
     if args.target in ('all', 'candidate-zkp', 'zkp-and-public', 'resource-zkp-and-public'):
         build_candidate_zkp()
         payload['zkp_attestation_reusable_chunk_candidate'] = 'compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json'
+    if args.target in ('all', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
+        build_headline_resource_manifest_artifact()
+        payload['headline_resource_manifest'] = 'compiler_verification_project/artifacts/headline_resource_manifest.json'
     if args.target in ('release-candidate-zkp',):
         build_release_candidate_zkp()
         payload['zkp_attestation_release_candidate'] = 'compiler_verification_project/artifacts/zkp_attestation_release_candidate/zkp_attestation_input.json'
@@ -305,14 +336,18 @@ def main() -> None:
     if args.target in ('all', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
         build_proof_environment_contract_artifact()
         payload['proof_environment_contract'] = 'compiler_verification_project/artifacts/proof_environment_contract.json'
+        build_proof_publication_status_artifact()
+        payload['proof_publication_status'] = 'compiler_verification_project/artifacts/proof_publication_status.json'
     print(json.dumps({
         'target': args.target,
         'build_summary': payload['frontier']['best_gate_family'] if isinstance(payload.get('frontier'), dict) else None,
         'build_summary_artifact': payload.get('build_summary_artifact'),
         'artifact_digest_tree': payload.get('artifact_digest_tree'),
         'proof_environment_contract': payload.get('proof_environment_contract'),
+        'proof_publication_status': payload.get('proof_publication_status'),
         'release_corpus_preflight': payload.get('release_corpus_preflight'),
         'materialized_circuit_manifest': payload.get('materialized_circuit_manifest'),
+        'headline_resource_manifest': payload.get('headline_resource_manifest'),
         'arithmetic_operation_ir': payload.get('arithmetic_operation_ir'),
         'resource_liveness_certificate': payload.get('resource_liveness_certificate'),
         'qroam_reference_crosscheck': payload.get('qroam_reference_crosscheck'),

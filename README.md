@@ -106,7 +106,11 @@ replays the leaf on every public case, checks the affine group law, and
 reconstructs the claimed exact non-Clifford and logical-qubit formulas. It also
 checks the resource certificate, including executable interval liveness,
 qchunk/QROAM-target concurrency, no full-coordinate lookup lane, and numeric
-owner capacity. It also validates the committed compiler-parameter document
+owner capacity. The current-headline counted-resource stream is separately
+materialized in
+`compiler_verification_project/artifacts/headline_resource_manifest.json`, so
+the promoted `36,957,412 / 1,199` result is not backed by the older
+three-slot materialized manifest by accident. It also validates the committed compiler-parameter document
 before committing public values. The candidate directory records core,
 compressed, and Groth16 fixtures, compressed/Groth16 proof bundles, the wrap
 proof bundle, and the matching Groth16 verifying key. During source churn,
@@ -262,6 +266,7 @@ python compiler_verification_project/scripts/build.py
 python compiler_verification_project/scripts/build.py --target composition-artifacts
 python compiler_verification_project/scripts/build.py --target materialized-circuit-manifest
 python compiler_verification_project/scripts/build.py --target proof-environment-contract
+python compiler_verification_project/scripts/build.py --target proof-publication-status
 python compiler_verification_project/scripts/build.py --target resource-zkp-and-public
 python compiler_verification_project/scripts/build.py --target zkp-and-public
 python compiler_verification_project/scripts/build.py --target release-candidate-zkp
@@ -294,8 +299,10 @@ or frontier accounting that feeds the composition layer; it refreshes
 operation-stream digest/Merkle manifest without a full rebuild. Use
 `build.py --target proof-environment-contract` after changing proof paths,
 runbook commands, proof manifest membership, or public-headline verification
-commands. Use `build.py --target zkp-and-public` when only attestation wrapping
-metadata changed.
+commands. Use `build.py --target proof-publication-status` after changing
+proof-status logic, public-headline pass/freshness semantics, or publication
+gate wiring. Use `build.py --target zkp-and-public` when only attestation
+wrapping metadata changed.
 Checked artifact tests reuse existing build/verification summaries by default;
 set `SECP256K1_OPEN_AUDIT_FORCE_REBUILD=1` only when you intentionally want a
 test run to regenerate those summaries.
@@ -304,10 +311,11 @@ Use `build.py --target release-candidate-zkp` or
 Google-comparable input bundle without invoking SP1 proving.
 Use `compiler_verification_project/scripts/fast_zkp_preflight.py` as the normal
 ZKP/resource edit-loop gate. It runs `proof_status.py`, targeted integrity
-groups including `proof_environment_contract_checks`, focused pytest tests, and
-the attestation-library Rust unit tests, and it has an internal guard that
-rejects any command plan containing a prover. The fast gate also rebuild-checks
-the 9024-case release-corpus preflight as semantic evidence only; it is not a
+groups including `proof_environment_contract_checks` and
+`proof_publication_status_checks`, focused pytest tests, and the
+attestation-library Rust unit tests, and it has an internal guard that rejects
+any command plan containing a prover. The fast gate also rebuild-checks the
+9024-case release-corpus preflight as semantic evidence only; it is not a
 substitute for compressed/Groth16 proof freshness.
 After compressed/Groth16 proof rebuilds, run the same preflight with
 `--require-current-proofs` to make stale checked proof fixtures a hard failure
@@ -323,6 +331,11 @@ invoking any prover.
 binds the checked runbook layer: required tools, no-prover edit-loop commands,
 publication freshness gates, direct compressed/Groth16 verification commands,
 public-headline artifact digests, and curated proof-manifest records.
+`compiler_verification_project/artifacts/proof_publication_status.json` binds
+the current publication-readiness verdict. Its `pass` flag means the stale/fresh
+status was derived consistently; `publication_ready` remains false until
+`proof_status.py --require-all-current` and compressed/Groth16 verification
+both agree with the checked artifacts.
 Compressed and Groth16 proving are not part of the edit loop; the guarded
 runner requires `--allow-heavy-proof` for those release-gate operations so an
 ordinary verification pass cannot accidentally start a multi-hour proof.

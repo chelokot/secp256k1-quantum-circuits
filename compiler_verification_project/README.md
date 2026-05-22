@@ -68,6 +68,7 @@ What it does ship is:
 - `resource_liveness_certificate.json` — ZKP-bound liveness certificate deriving owner-capacity requirements from executable leaf liveness, QROAMClean workspace, and phase-shell lowering artifacts
 - `artifact_digest_tree.json` — chunked SHA-256/Merkle manifest for tracked large artifacts, generated from the checked tree so reviewers can verify large JSON/CSV/proof blobs by chunks rather than by one opaque file hash
 - `proof_environment_contract.json` — checked proof-environment contract binding required tools, no-prover edit-loop gates, publication freshness gates, direct compressed/Groth16 verifier commands, public-headline artifact digests, and curated proof-manifest records
+- `proof_publication_status.json` — checked publication-readiness artifact derived from the shared proof-status engine; it keeps `publication_ready` separate from resource-contract `pass`, records stale systems/blockers, and binds the public headline, proof manifest, and proof-environment contract
 - `module_library.json` — arithmetic-kernel summary used by the frontier
 - `lookup_lowerings.json` — generated primitive-operation inventories for the named folded lookup families
 - `phase_shell_lowerings.json` — generated phase-operation inventories for the named full-register and semiclassical inverse-QFT shells
@@ -123,6 +124,11 @@ root attestation bundle. The reusable-chunk candidate directory contains the
 core/compressed/Groth16 fixtures and proof bundles for the public
 `36,957,412 / 1,199` candidate result; use `proof_status.py --require-all-current` as the
 freshness gate after any resource-certificate or guest change.
+`headline_resource_manifest.json` is the current-headline counted-resource
+stream manifest. It expands the reusable-chunk counted-resource IR into term
+rows and liveness rows, reconstructs `36,957,412 / 1,199`, and prevents the
+older three-slot `materialized_circuit_manifest.json` from being mistaken for
+the promoted result.
 
 `standard_qrom_lookup_assessment.json` records the standard-QROM status and
 rejects the old bitwise-banked path-select boundary as a public standard-QROM
@@ -232,6 +238,7 @@ python compiler_verification_project/scripts/build.py
 python compiler_verification_project/scripts/build.py --target composition-artifacts
 python compiler_verification_project/scripts/build.py --target materialized-circuit-manifest
 python compiler_verification_project/scripts/build.py --target proof-environment-contract
+python compiler_verification_project/scripts/build.py --target proof-publication-status
 python compiler_verification_project/scripts/build.py --target resource-zkp-and-public
 python compiler_verification_project/scripts/build.py --target zkp-and-public
 python compiler_verification_project/scripts/build.py --target release-candidate-zkp
@@ -256,8 +263,10 @@ or frontier accounting that feeds the composition layer; it refreshes
 operation-stream digest/Merkle manifest without a full rebuild. Use
 `build.py --target proof-environment-contract` after changing proof paths,
 runbook commands, proof manifest membership, or public-headline verification
-commands. Use `build.py --target zkp-and-public` when only attestation wrapping
-metadata changed.
+commands. Use `build.py --target proof-publication-status` after changing
+proof-status logic, public-headline pass/freshness semantics, or publication
+gate wiring. Use `build.py --target zkp-and-public` when only attestation
+wrapping metadata changed.
 Checked artifact tests reuse existing build/verification summaries by default;
 set `SECP256K1_OPEN_AUDIT_FORCE_REBUILD=1` only when you intentionally want a
 test run to regenerate those summaries.
@@ -280,6 +289,11 @@ tests regenerate it, require proof-manifest records for all public-headline
 checked artifacts, require no `--prove` in fast/publication gates, and require
 direct compressed/Groth16 verification commands to point at the checked input,
 proof bundles, and Groth16 verifier-key directory.
+`proof_publication_status.json` is the checked freshness companion: it is
+generated from the same library used by `proof_status.py`, records the exact
+stale systems and blockers, and lets integrity tests verify that the public
+headline `pass` flag agrees with proof freshness without treating a stale proof
+bundle as a resource-count failure.
 
 For a tight loop on one integrity layer, use `--groups` to avoid the semantic
 replay and artifact rewrite:

@@ -11,10 +11,17 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from proof_status import build_report as build_proof_status_report
-
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+SRC = PROJECT_ROOT / 'compiler_verification_project' / 'src'
+if str(SRC) not in sys.path:
+    sys.path.insert(0, str(SRC))
+ROOT_SRC = PROJECT_ROOT / 'src'
+if str(ROOT_SRC) not in sys.path:
+    sys.path.insert(0, str(ROOT_SRC))
+
+from proof_status_report import build_proof_status_report  # noqa: E402
+
 ARTIFACT_ROOT = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
 CANDIDATE_ROOT = ARTIFACT_ROOT / 'zkp_attestation_reusable_chunk_candidate'
 DIGEST_SCHEME = 'compiler-project-semantic-json-sha256-v1'
@@ -287,7 +294,7 @@ def build_metadata_report() -> dict[str, Any]:
     check(checks, 'groth16_fixture_has_embedded_short_proof_and_bundle_digest', isinstance(groth16_fixture['proof'], str) and groth16_fixture['proof'].startswith('0x') and groth16_fixture['proof_sha256'] is not None, 'embedded Groth16 proof plus checked bundle digest', {'proof_prefix': str(groth16_fixture['proof'])[:10], 'proof_sha256': groth16_fixture['proof_sha256']})
 
     failed = [item for item in checks if not item['pass']]
-    proof_freshness = build_proof_status_report()
+    proof_freshness = build_proof_status_report(PROJECT_ROOT)
     return {
         'schema': 'compiler-project-public-headline-verification-v1',
         'metadata_pass': not failed,

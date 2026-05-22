@@ -586,6 +586,12 @@ fixtures cannot look fresh merely because the sidecar proof/key digests match.
 The current stale fixtures explicitly declare null input metadata and correctly
 report `fixture_declares_no_input_metadata` until a real proof rebuild emits
 proof-time input hashes.
+The proof-status engine is now shared code in
+`compiler_verification_project/src/proof_status_report.py`, and
+`compiler_verification_project/artifacts/proof_publication_status.json` records
+the same verdict as a checked artifact. Its `pass` flag means the publication
+status was derived consistently; its `publication_ready` flag remains false
+while core/compressed/Groth16 fixtures are stale.
 
 This is not a mathematical bug. The binary proof verified locally. But it is a
 release-packaging weakness:
@@ -1585,6 +1591,11 @@ Current remediation:
   `proof_environment_contract_checks` regenerates this artifact, rejects
   manifest drift, rejects publication gates that no longer require current
   proofs, and rejects accidental `--prove` in the fast command contract.
+- `compiler_verification_project/artifacts/proof_publication_status.json` is a
+  checked freshness artifact generated from the shared proof-status engine. The
+  integrity group `proof_publication_status_checks` rejects forged
+  `publication_ready` values, removed compressed/Groth16 publication gates,
+  stale public-headline pass semantics, and source-artifact digest drift.
 
 Still open:
 
@@ -1750,6 +1761,16 @@ Fixed after review:
   owner peaks. This does not make the repository a Clifford-complete full-Shor
   primitive netlist, but it removes another parallel formula-only path from the
   public headline.
+- `ZK-2` / current-headline stream manifest: the repo now emits
+  `compiler_verification_project/artifacts/headline_resource_manifest.json`
+  for the promoted reusable-chunk result. It expands the ZKP-bound
+  `counted_resource_ir` into counted term rows and liveness rows, recomputes
+  `36,957,412` non-Clifford operations and the `1,199`-qubit peak, and is bound
+  by `public_headline_result.json` plus integrity checks. This closes the
+  specific stale-evidence hazard where
+  `materialized_circuit_manifest.json` still describes the older checked
+  `34,925,796 / 1,044` three-slot frontier family. It is still a counted-resource
+  stream manifest, not a Clifford-complete per-gate netlist.
 
 Partially mitigated after review:
 
@@ -1863,6 +1884,11 @@ Partially mitigated after review:
   keys, and `artifacts/package/proof_manifest.json`. The checked JSON fixtures
   still intentionally keep large compressed proof bytes out-of-line, but path,
   size, and digest binding is now part of the cheap freshness gate.
+- The proof freshness verdict is no longer only a CLI report:
+  `proof_status.py` is a thin wrapper around `proof_status_report.py`, and
+  `proof_publication_status.json` binds the stale systems, blockers,
+  public-headline pass flag, proof-manifest digest, and publication gate
+  commands into the checked artifact set.
 
 Still open:
 

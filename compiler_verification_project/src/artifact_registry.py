@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Dict
 
 
-BUILD_SUMMARY_SCHEMA = 'compiler-project-build-summary-v37'
+BUILD_SUMMARY_SCHEMA = 'compiler-project-build-summary-v39'
 
 BUILD_SUMMARY_ARTIFACT_PATHS: Dict[str, str] = {
     'canonical_public_point': 'compiler_verification_project/artifacts/canonical_public_point.json',
@@ -47,6 +47,7 @@ BUILD_SUMMARY_ARTIFACT_PATHS: Dict[str, str] = {
     'reusable_chunk_lowering': 'compiler_verification_project/artifacts/reusable_chunk_lowering.json',
     'resource_liveness_certificate': 'compiler_verification_project/artifacts/resource_liveness_certificate.json',
     'materialized_circuit_manifest': 'compiler_verification_project/artifacts/materialized_circuit_manifest.json',
+    'headline_resource_manifest': 'compiler_verification_project/artifacts/headline_resource_manifest.json',
     'qubit_breakthrough_analysis': 'compiler_verification_project/artifacts/qubit_breakthrough_analysis.json',
     'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
     'subcircuit_equivalence': 'compiler_verification_project/artifacts/subcircuit_equivalence.json',
@@ -57,6 +58,7 @@ BUILD_SUMMARY_ARTIFACT_PATHS: Dict[str, str] = {
     'azure_resource_estimator_results': 'compiler_verification_project/artifacts/azure_resource_estimator_results.json',
     'artifact_digest_tree': 'compiler_verification_project/artifacts/artifact_digest_tree.json',
     'proof_environment_contract': 'compiler_verification_project/artifacts/proof_environment_contract.json',
+    'proof_publication_status': 'compiler_verification_project/artifacts/proof_publication_status.json',
 }
 
 
