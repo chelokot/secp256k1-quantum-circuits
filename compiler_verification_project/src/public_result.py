@@ -68,8 +68,13 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
     compressed_fixture = _load(CANDIDATE_ROOT / 'zkp_attestation_fixture_compressed.json')
     groth16_fixture = _load(CANDIDATE_ROOT / 'zkp_attestation_fixture_groth16.json')
     lowering = _load(ARTIFACT_ROOT / 'reusable_chunk_lowering.json')
+    qroam_primitive = _load(ARTIFACT_ROOT / 'qroam_primitive_certificate.json')
+    qroam_reference = _load(ARTIFACT_ROOT / 'qroam_reference_crosscheck.json')
+    modular_arithmetic = _load(ARTIFACT_ROOT / 'modular_arithmetic_certificate.json')
+    proof_corpus_profiles = _load(ARTIFACT_ROOT / 'proof_corpus_profiles.json')
     tail_candidate = _load(ARTIFACT_ROOT / 'reusable_chunk_tail_candidate.json')
     executable_liveness = lowering['executable_liveness']
+    counted_resource_ir = lowering['counted_resource_ir']
     non_clifford = int(public_values['expected_full_oracle_non_clifford'])
     qubits = int(public_values['expected_total_logical_qubits'])
     checks = {
@@ -113,12 +118,45 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             and executable_liveness['checks']['qroam_target_and_qchunk_are_concurrently_live'] is True
             and executable_liveness['checks']['no_full_coordinate_lane_wire_is_live'] is True
         ),
+        'reusable_chunk_counted_resource_ir_binds_public_totals': (
+            counted_resource_ir['pass'] is True
+            and counted_resource_ir['recomputed_total_non_clifford'] == non_clifford
+            and counted_resource_ir['recomputed_peak_live_qubits'] == qubits
+            and sum(term['total_non_clifford'] for term in counted_resource_ir['non_clifford_terms']) == non_clifford
+            and max(interval['total_live_qubits'] for interval in counted_resource_ir['liveness_intervals']) == qubits
+        ),
+        'reusable_chunk_binds_generated_qroam_primitive_certificate': (
+            qroam_primitive['pass'] is True
+            and lowering['qroam_primitive_certificate'] == qroam_primitive
+            and lowering['checks']['per_stream_cost_matches_generated_qroam_primitive'] is True
+            and qroam_primitive['traversed_counts']['per_stream_non_clifford'] == lowering['standard_qroamclean_k1_model']['per_stream_non_clifford']
+            and qroam_primitive['traversed_counts']['target_plus_junk_qubits'] == lowering['standard_qroamclean_k1_model']['target_plus_junk_qubits']
+        ),
+        'reusable_chunk_binds_independent_qroam_reference_crosscheck': (
+            qroam_reference['pass'] is True
+            and lowering['qroam_reference_crosscheck'] == qroam_reference
+            and lowering['checks']['per_stream_cost_matches_independent_qroam_reference_crosscheck'] is True
+            and qroam_reference['selected_reference']['per_stream_non_clifford'] == lowering['standard_qroamclean_k1_model']['per_stream_non_clifford']
+            and qroam_reference['selected_reference']['target_plus_junk_qubits'] == lowering['standard_qroamclean_k1_model']['target_plus_junk_qubits']
+        ),
+        'reusable_chunk_binds_modular_arithmetic_certificate': (
+            modular_arithmetic['pass'] is True
+            and lowering['modular_arithmetic_certificate'] == modular_arithmetic
+            and lowering['checks']['modular_arithmetic_certificate_binds_counted_field_mul'] is True
+            and modular_arithmetic['field_mul_stage_count_certificate']['stage_counts_match'] is True
+            and modular_arithmetic['field_mul_stage_count_certificate']['observed_total_ccx'] == modular_arithmetic['field_mul_stage_count_certificate']['expected_total_ccx']
+        ),
         'reusable_chunk_tail_contract_is_proven_for_public_headline': (
             tail_candidate['status'] == 'proven_public_headline'
             and tail_candidate['toy_semantic_equivalence']['all_rows_semantic'] is True
             and tail_candidate['toy_semantic_equivalence']['all_rows_executable'] is True
         ),
         'fits_strict_public_goal': non_clifford < 40_000_000 and qubits < 1200,
+        'public_case_count_matches_selected_proof_profile': (
+            int(public_values['case_count'])
+            == int(public_values['passed_case_count'])
+            == int(proof_corpus_profiles['profiles'][proof_corpus_profiles['selected_public_profile']]['case_count'])
+        ),
     }
     return {
         'schema': 'compiler-project-public-headline-result-v1',
@@ -155,6 +193,7 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             'claim': _file_record('compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json'),
             'family': _file_record('compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_family.json'),
             'case_corpus': _file_record('compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_cases.json'),
+            'proof_corpus_profiles': _file_record('compiler_verification_project/artifacts/proof_corpus_profiles.json'),
             'public_values': _file_record('compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_public_values.json'),
             'core_fixture': _fixture_record('zkp_attestation_fixture_core.json'),
             'compressed_fixture': _fixture_record('zkp_attestation_fixture_compressed.json'),
@@ -163,6 +202,9 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             'groth16_proof': _file_record('compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_groth16.bin'),
             'wrap_proof': _file_record('compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_wrap_proof.bin'),
             'groth16_verifier_key': _file_record('compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_groth16_verifier/groth16_vk.bin'),
+            'qroam_primitive_certificate': _file_record('compiler_verification_project/artifacts/qroam_primitive_certificate.json'),
+            'qroam_reference_crosscheck': _file_record('compiler_verification_project/artifacts/qroam_reference_crosscheck.json'),
+            'modular_arithmetic_certificate': _file_record('compiler_verification_project/artifacts/modular_arithmetic_certificate.json'),
             'reusable_chunk_lowering': _file_record('compiler_verification_project/artifacts/reusable_chunk_lowering.json'),
             'reusable_chunk_tail_candidate': _file_record('compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json'),
         },
@@ -181,6 +223,7 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
                 'public headline result status and strict <40M / <1200 bounds',
                 'checked input, public values, sidecar documents, fixtures, proof binaries, wrap proof, and Groth16 verifier-key digests',
                 'semantic hashes for committed claim, leaf, family, case corpus, and resource-certificate documents',
+                'generated QROAM K=1 primitive-count certificate bound into the reusable-chunk resource document',
                 'executable liveness peak, qchunk/QROAM-target concurrency, and owner-capacity checks',
                 'fixture-to-proof and fixture-to-verifier-key binding',
             ],
@@ -189,7 +232,7 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
         'pass': all(checks.values()),
         'boundary': [
             'This is a checked standard-QROAM compiler-family boundary, not a Clifford-complete flattened full-Shor netlist.',
-            'The checked proof uses an 8-case public point-add corpus, not Google\'s hidden-circuit 9024-case disclosure boundary.',
+            'The checked proof uses the selected public proof-corpus profile, currently an explicit 8-case smoke profile rather than Google\'s hidden-circuit 9024-case disclosure boundary.',
             'The proof binds and executes the reusable-chunk contract and resource certificate; it does not by itself prove an external physical runtime.',
         ],
     }

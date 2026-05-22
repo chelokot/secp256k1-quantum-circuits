@@ -19,14 +19,29 @@ from integrity import evaluate_mutated_verification_groups, load_compiler_artifa
 from baselines import load_public_google_baseline_lines  # noqa: E402
 
 
+_COMPILER_ARTIFACTS: dict | None = None
+
+
 def _load_artifacts() -> dict:
+    global _COMPILER_ARTIFACTS
+    if _COMPILER_ARTIFACTS is not None:
+        return _COMPILER_ARTIFACTS
     ensure_compiler_project_build_summary()
     ensure_compiler_project_verification_summary()
-    return load_compiler_artifacts(REPO_ROOT)
+    _COMPILER_ARTIFACTS = load_compiler_artifacts(REPO_ROOT)
+    return _COMPILER_ARTIFACTS
 
 
 def _evaluate_mutation(artifacts: dict, *group_names: str) -> dict:
     return evaluate_mutated_verification_groups(artifacts, REPO_ROOT, group_names=group_names)
+
+
+def _artifacts_for_mutation(*artifact_names: str) -> dict:
+    artifacts = _load_artifacts()
+    mutated = dict(artifacts)
+    for artifact_name in artifact_names:
+        mutated[artifact_name] = deepcopy(artifacts[artifact_name])
+    return mutated
 
 
 def test_compiler_project_frontier_and_schedule() -> None:
@@ -89,6 +104,8 @@ def test_compiler_project_verification_summary_groups_all_pass() -> None:
     assert lookup_lowering['pass'] == lookup_lowering['total']
     phase_shell_lowering = summary['phase_shell_lowering_checks']
     assert phase_shell_lowering['pass'] == phase_shell_lowering['total']
+    modular_arithmetic = summary['modular_arithmetic_certificate_checks']
+    assert modular_arithmetic['pass'] == modular_arithmetic['total']
     cleanup_pair = summary['cleanup_pair_checks']
     assert cleanup_pair['pass'] == cleanup_pair['total']
     generated_block_inventory = summary['generated_block_inventory_checks']
@@ -117,6 +134,8 @@ def test_compiler_project_verification_summary_groups_all_pass() -> None:
     assert fallback_frontier_stress['pass'] == fallback_frontier_stress['total']
     reusable_chunk_tail_candidate = summary['reusable_chunk_tail_candidate_checks']
     assert reusable_chunk_tail_candidate['pass'] == reusable_chunk_tail_candidate['total']
+    qroam_primitive_certificate = summary['qroam_primitive_certificate_checks']
+    assert qroam_primitive_certificate['pass'] == qroam_primitive_certificate['total']
     reusable_chunk_lowering = summary['reusable_chunk_lowering_checks']
     assert reusable_chunk_lowering['pass'] == reusable_chunk_lowering['total']
     recount = summary['whole_oracle_recount_checks']
@@ -130,7 +149,7 @@ def test_compiler_project_verification_summary_groups_all_pass() -> None:
 
 
 def test_mutated_frontier_family_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('family_frontier')
     artifacts['family_frontier']['families'][0]['full_oracle_non_clifford'] += 1
     groups = _evaluate_mutation(artifacts, 'frontier_checks', 'cain_transfer_checks')
     assert groups['frontier_checks']['pass'] < groups['frontier_checks']['total']
@@ -138,35 +157,35 @@ def test_mutated_frontier_family_is_detected() -> None:
 
 
 def test_mutated_slot_assignment_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('exact_leaf_slot_allocation')
     artifacts['exact_leaf_slot_allocation']['versions'][1]['assigned_slot'] = artifacts['exact_leaf_slot_allocation']['versions'][0]['assigned_slot']
     groups = _evaluate_mutation(artifacts, 'slot_allocation_checks')
     assert groups['slot_allocation_checks']['pass'] < groups['slot_allocation_checks']['total']
 
 
 def test_mutated_qubit_breakthrough_analysis_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('qubit_breakthrough_analysis')
     artifacts['qubit_breakthrough_analysis']['baseline_thresholds']['low_gate']['max_arithmetic_slots_at_current_field_width'] += 1
     groups = _evaluate_mutation(artifacts, 'qubit_breakthrough_checks')
     assert groups['qubit_breakthrough_checks']['pass'] < groups['qubit_breakthrough_checks']['total']
 
 
 def test_mutated_lookup_lowering_stage_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('lookup_lowerings')
     artifacts['lookup_lowerings']['families'][0]['stages'][1]['blocks'][0]['primitive_operation_generator']['bit_count'] += 1
     groups = _evaluate_mutation(artifacts, 'lookup_lowering_checks')
     assert groups['lookup_lowering_checks']['pass'] < groups['lookup_lowering_checks']['total']
 
 
 def test_mutated_standard_qrom_assessment_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('standard_qrom_lookup_assessment')
     artifacts['standard_qrom_lookup_assessment']['standard_qrom_gap']['standard_qrom_equivalent'] = False
     groups = _evaluate_mutation(artifacts, 'standard_qrom_lookup_assessment_checks')
     assert groups['standard_qrom_lookup_assessment_checks']['pass'] < groups['standard_qrom_lookup_assessment_checks']['total']
 
 
 def test_mutated_qroam_workspace_capacity_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('streamed_lookup_table_multiplier_resource')
     artifacts['streamed_lookup_table_multiplier_resource']['workspace_contract']['qroam_clean_junk_register_qubits'] -= 256
     groups = _evaluate_mutation(artifacts, 'streamed_lookup_table_multiplier_resource_checks', 'logical_resource_ledger_checks')
     assert groups['streamed_lookup_table_multiplier_resource_checks']['pass'] < groups['streamed_lookup_table_multiplier_resource_checks']['total']
@@ -174,28 +193,28 @@ def test_mutated_qroam_workspace_capacity_is_detected() -> None:
 
 
 def test_mutated_logical_resource_owner_capacity_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('logical_resource_ledger')
     artifacts['logical_resource_ledger']['peak_live_qubit_owners'][2]['decomposition']['qroam_clean_target_register_qubits'] -= 1
     groups = _evaluate_mutation(artifacts, 'logical_resource_ledger_checks')
     assert groups['logical_resource_ledger_checks']['pass'] < groups['logical_resource_ledger_checks']['total']
 
 
 def test_mutated_fallback_frontier_stress_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('fallback_frontier_stress')
     artifacts['fallback_frontier_stress']['conclusion']['current_models_have_no_four_slot_fallback_under_limits'] = False
     groups = _evaluate_mutation(artifacts, 'fallback_frontier_stress_checks')
     assert groups['fallback_frontier_stress_checks']['pass'] < groups['fallback_frontier_stress_checks']['total']
 
 
 def test_mutated_reusable_chunk_tail_candidate_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('reusable_chunk_tail_candidate')
     artifacts['reusable_chunk_tail_candidate']['toy_semantic_equivalence']['rows'][0]['semantic_pass'] = False
     groups = _evaluate_mutation(artifacts, 'reusable_chunk_tail_candidate_checks')
     assert groups['reusable_chunk_tail_candidate_checks']['pass'] < groups['reusable_chunk_tail_candidate_checks']['total']
 
 
 def test_mutated_reusable_chunk_lowering_capacity_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('reusable_chunk_lowering')
     lookup_owner = next(row for row in artifacts['reusable_chunk_lowering']['owner_capacity']['rows'] if row['owner_id'] == 'lookup_workspace')
     lookup_owner['logical_qubits'] -= 1
     groups = _evaluate_mutation(artifacts, 'reusable_chunk_lowering_checks')
@@ -203,14 +222,14 @@ def test_mutated_reusable_chunk_lowering_capacity_is_detected() -> None:
 
 
 def test_mutated_reusable_chunk_lowering_full_lane_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('reusable_chunk_lowering')
     artifacts['reusable_chunk_lowering']['stream_plan']['rows'][0]['full_coordinate_lane_materialized'] = 1
     groups = _evaluate_mutation(artifacts, 'reusable_chunk_lowering_checks')
     assert groups['reusable_chunk_lowering_checks']['pass'] < groups['reusable_chunk_lowering_checks']['total']
 
 
 def test_mutated_reusable_chunk_lowering_high_chunk_width_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('reusable_chunk_lowering')
     primitive = artifacts['reusable_chunk_lowering']['chunked_multiplier_primitive_contract']
     primitive['chunk_effective_bits'][1] = 155
     primitive['table_multiplier_rows'][0]['chunk_rows'][1]['effective_constant_bits'] = 155
@@ -218,15 +237,22 @@ def test_mutated_reusable_chunk_lowering_high_chunk_width_is_detected() -> None:
     assert groups['reusable_chunk_lowering_checks']['pass'] < groups['reusable_chunk_lowering_checks']['total']
 
 
+def test_mutated_reusable_chunk_counted_resource_ir_is_detected() -> None:
+    artifacts = _artifacts_for_mutation('reusable_chunk_lowering')
+    artifacts['reusable_chunk_lowering']['counted_resource_ir']['non_clifford_terms'][1]['total_non_clifford'] -= 1
+    groups = _evaluate_mutation(artifacts, 'reusable_chunk_lowering_checks')
+    assert groups['reusable_chunk_lowering_checks']['pass'] < groups['reusable_chunk_lowering_checks']['total']
+
+
 def test_mutated_resource_certificate_owner_capacity_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('resource_liveness_certificate')
     artifacts['resource_liveness_certificate']['derived_owner_capacity']['rows'][0]['capacity_qubits'] -= 1
     groups = _evaluate_mutation(artifacts, 'resource_liveness_certificate_checks')
     assert groups['resource_liveness_certificate_checks']['pass'] < groups['resource_liveness_certificate_checks']['total']
 
 
 def test_mutated_tail_macro_liveness_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('tail_macro_liveness')
     y_z_row = next(row for row in artifacts['tail_macro_liveness']['formula_rows'] if row['target'] == 'yZ')
     y_z_row['sources'].append('Y')
     groups = _evaluate_mutation(artifacts, 'tail_macro_liveness_checks')
@@ -234,7 +260,7 @@ def test_mutated_tail_macro_liveness_is_detected() -> None:
 
 
 def test_mutated_tail_macro_reversibility_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('tail_macro_reversibility')
     artifacts['tail_macro_reversibility']['full_raw_field_domain']['injective'] = True
     artifacts['tail_macro_reversibility']['all_projective_representatives_domain']['all_checked_rows_injective'] = True
     artifacts['tail_macro_reversibility']['canonical_boundary_translation_domain']['category_totals']['inverse'] = 0
@@ -243,7 +269,7 @@ def test_mutated_tail_macro_reversibility_is_detected() -> None:
 
 
 def test_mutated_tail_macro_schedule_search_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('tail_macro_schedule_search')
     artifacts['tail_macro_schedule_search']['any_checked_curve_has_solution'] = True
     artifacts['tail_macro_schedule_search']['rows'][0]['solution_found'] = True
     groups = _evaluate_mutation(artifacts, 'tail_macro_schedule_search_checks')
@@ -251,7 +277,7 @@ def test_mutated_tail_macro_schedule_search_is_detected() -> None:
 
 
 def test_mutated_headline_opcode_coverage_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('headline_opcode_coverage')
     tail_row = next(row for row in artifacts['headline_opcode_coverage']['rows'] if row['opcode'] == 'complete_a0_all_streamed_tail')
     tail_row['passes_required_coverage'] = False
     groups = _evaluate_mutation(artifacts, 'headline_opcode_coverage_checks')
@@ -259,63 +285,63 @@ def test_mutated_headline_opcode_coverage_is_detected() -> None:
 
 
 def test_mutated_phase_shell_lowering_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('phase_shell_lowerings')
     artifacts['phase_shell_lowerings']['families'][0]['stages'][0]['blocks'][0]['phase_operation_generator']['phase_bits'] -= 1
     groups = _evaluate_mutation(artifacts, 'phase_shell_lowering_checks')
     assert groups['phase_shell_lowering_checks']['pass'] < groups['phase_shell_lowering_checks']['total']
 
 
 def test_mutated_cleanup_pair_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('module_library')
     artifacts['module_library']['leaf_opcode_histogram']['select_field_if_flag'] = 1
     groups = _evaluate_mutation(artifacts, 'cleanup_pair_checks')
     assert groups['cleanup_pair_checks']['pass'] < groups['cleanup_pair_checks']['total']
 
 
 def test_mutated_arithmetic_lowering_stage_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('arithmetic_lowerings')
     artifacts['arithmetic_lowerings']['kernels'][0]['stages'][0]['blocks'][0]['primitive_operations'].append(['ccx', 999999, 999999])
     groups = _evaluate_mutation(artifacts, 'arithmetic_kernel_checks')
     assert groups['arithmetic_kernel_checks']['pass'] < groups['arithmetic_kernel_checks']['total']
 
 
 def test_mutated_generated_block_inventory_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('generated_block_inventories')
     artifacts['generated_block_inventories']['families'][0]['non_clifford_blocks'][0]['primitive_counts_total']['ccx'] += 1
     groups = _evaluate_mutation(artifacts, 'generated_block_inventory_checks')
     assert groups['generated_block_inventory_checks']['pass'] < groups['generated_block_inventory_checks']['total']
 
 
 def test_mutated_ft_ir_edge_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('ft_ir_compositions')
     artifacts['ft_ir_compositions']['families'][0]['graph']['edges'][0]['count'] += 1
     groups = _evaluate_mutation(artifacts, 'ft_ir_checks')
     assert groups['ft_ir_checks']['pass'] < groups['ft_ir_checks']['total']
 
 
 def test_mutated_whole_oracle_recount_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('whole_oracle_recount')
     artifacts['whole_oracle_recount']['families'][0]['full_oracle_non_clifford'] += 1
     groups = _evaluate_mutation(artifacts, 'whole_oracle_recount_checks')
     assert groups['whole_oracle_recount_checks']['pass'] < groups['whole_oracle_recount_checks']['total']
 
 
 def test_mutated_full_attack_generated_summary_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('full_attack_inventory')
     artifacts['full_attack_inventory']['generated_block_inventory_summary']['family_reconstructed_totals'][0]['full_oracle_non_clifford'] += 1
     groups = _evaluate_mutation(artifacts, 'full_attack_inventory_checks')
     assert groups['full_attack_inventory_checks']['pass'] < groups['full_attack_inventory_checks']['total']
 
 
 def test_mutated_cain_transfer_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('cain_exact_transfer')
     artifacts['cain_exact_transfer']['families'][0]['heuristic_time_efficient_days_if_90M_maps_to_10d'] += 1.0
     groups = _evaluate_mutation(artifacts, 'cain_transfer_checks')
     assert groups['cain_transfer_checks']['pass'] < groups['cain_transfer_checks']['total']
 
 
 def test_mutated_azure_seed_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('azure_resource_estimator_logical_counts')
     artifacts['azure_resource_estimator_logical_counts']['families'][0]['logicalCounts']['numQubits'] += 1
     groups = _evaluate_mutation(artifacts, 'azure_seed_checks', 'physical_estimator_target_checks')
     assert groups['azure_seed_checks']['pass'] < groups['azure_seed_checks']['total']
@@ -323,7 +349,7 @@ def test_mutated_azure_seed_is_detected() -> None:
 
 
 def test_mutated_physical_estimator_target_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('azure_resource_estimator_targets')
     artifacts['azure_resource_estimator_targets']['targets'][0]['requested_params']['errorBudget'] = 0.01
     groups = _evaluate_mutation(artifacts, 'physical_estimator_target_checks', 'physical_estimator_result_checks')
     assert groups['physical_estimator_target_checks']['pass'] < groups['physical_estimator_target_checks']['total']
@@ -331,14 +357,14 @@ def test_mutated_physical_estimator_target_is_detected() -> None:
 
 
 def test_mutated_physical_estimator_result_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('azure_resource_estimator_results')
     artifacts['azure_resource_estimator_results']['families'][0]['estimates'][0]['physical_counts']['physicalQubits'] += 1
     groups = _evaluate_mutation(artifacts, 'physical_estimator_result_checks')
     assert groups['physical_estimator_result_checks']['pass'] < groups['physical_estimator_result_checks']['total']
 
 
 def test_mutated_subcircuit_equivalence_is_detected() -> None:
-    artifacts = deepcopy(_load_artifacts())
+    artifacts = _artifacts_for_mutation('subcircuit_equivalence')
     artifacts['subcircuit_equivalence']['whole_oracle_composition_equivalence']['families'][0]['frontier_full_oracle_non_clifford'] += 1
     groups = _evaluate_mutation(artifacts, 'subcircuit_equivalence_checks')
     assert groups['subcircuit_equivalence_checks']['pass'] < groups['subcircuit_equivalence_checks']['total']

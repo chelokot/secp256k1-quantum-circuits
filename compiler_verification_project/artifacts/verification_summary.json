@@ -82,6 +82,334 @@
       }
     ]
   },
+  "compiler_parameter_checks": {
+    "pass": 7,
+    "total": 7,
+    "checks": [
+      {
+        "name": "compiler_parameters_match_generator",
+        "pass": 1,
+        "expected": {
+          "schema": "compiler-project-parameters-v1",
+          "curve": {
+            "name": "secp256k1",
+            "field_modulus_hex": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
+            "scalar_order_hex": "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141",
+            "curve_b": 7,
+            "generator_x_hex": "79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+            "generator_y_hex": "483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8"
+          },
+          "field": {
+            "field_bits": 256,
+            "pseudo_mersenne_shift": 32,
+            "pseudo_mersenne_low_term": 977,
+            "canonical_subtract_passes": 2
+          },
+          "windowing": {
+            "raw_window_bits": 16,
+            "full_raw_windows": 32,
+            "folded_magnitude_bits": 15,
+            "folded_magnitude_domain": 32768,
+            "fixed_window_width": 8
+          },
+          "phase_shell": {
+            "full_phase_register_bits": 512,
+            "selected_public_shell": "semiclassical_qft_v1"
+          },
+          "lookup_policy": {
+            "selected_public_lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
+            "standard_qroamclean_block_size": 1
+          },
+          "reusable_chunk_policy": {
+            "chunk_bits": 155,
+            "chunk_count": 2,
+            "scratch_slot": "qchunk"
+          },
+          "checks": {
+            "field_modulus_has_declared_bit_width": true,
+            "pseudo_mersenne_identity_matches_modulus": true,
+            "folded_domain_matches_magnitude_bits": true,
+            "raw_window_span_matches_scalar_width": true,
+            "qroamclean_selected_block_size_is_k1": true,
+            "reusable_chunk_policy_covers_field_width": true
+          },
+          "pass": true,
+          "parameter_digest_sha256": "8ecc453477263f7afc5a8bdd7ae438515ff163bb2dab61501bc82a2ea78b1b99"
+        },
+        "observed": {
+          "schema": "compiler-project-parameters-v1",
+          "curve": {
+            "name": "secp256k1",
+            "field_modulus_hex": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
+            "scalar_order_hex": "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141",
+            "curve_b": 7,
+            "generator_x_hex": "79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+            "generator_y_hex": "483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8"
+          },
+          "field": {
+            "field_bits": 256,
+            "pseudo_mersenne_shift": 32,
+            "pseudo_mersenne_low_term": 977,
+            "canonical_subtract_passes": 2
+          },
+          "windowing": {
+            "raw_window_bits": 16,
+            "full_raw_windows": 32,
+            "folded_magnitude_bits": 15,
+            "folded_magnitude_domain": 32768,
+            "fixed_window_width": 8
+          },
+          "phase_shell": {
+            "full_phase_register_bits": 512,
+            "selected_public_shell": "semiclassical_qft_v1"
+          },
+          "lookup_policy": {
+            "selected_public_lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
+            "standard_qroamclean_block_size": 1
+          },
+          "reusable_chunk_policy": {
+            "chunk_bits": 155,
+            "chunk_count": 2,
+            "scratch_slot": "qchunk"
+          },
+          "checks": {
+            "field_modulus_has_declared_bit_width": true,
+            "pseudo_mersenne_identity_matches_modulus": true,
+            "folded_domain_matches_magnitude_bits": true,
+            "raw_window_span_matches_scalar_width": true,
+            "qroamclean_selected_block_size_is_k1": true,
+            "reusable_chunk_policy_covers_field_width": true
+          },
+          "pass": true,
+          "parameter_digest_sha256": "8ecc453477263f7afc5a8bdd7ae438515ff163bb2dab61501bc82a2ea78b1b99"
+        }
+      },
+      {
+        "name": "compiler_parameters_schema_is_current",
+        "pass": 1,
+        "expected": "compiler-project-parameters-v1",
+        "observed": "compiler-project-parameters-v1"
+      },
+      {
+        "name": "compiler_parameters_pass_internal_checks",
+        "pass": 1,
+        "expected": true,
+        "observed": {
+          "field_modulus_has_declared_bit_width": true,
+          "pseudo_mersenne_identity_matches_modulus": true,
+          "folded_domain_matches_magnitude_bits": true,
+          "raw_window_span_matches_scalar_width": true,
+          "qroamclean_selected_block_size_is_k1": true,
+          "reusable_chunk_policy_covers_field_width": true
+        }
+      },
+      {
+        "name": "compiler_parameters_bind_project_field_and_window_constants",
+        "pass": 1,
+        "expected": {
+          "field_bits": 256,
+          "raw_window_bits": 16,
+          "folded_magnitude_domain": 32768,
+          "full_raw_windows": 32
+        },
+        "observed": {
+          "field": {
+            "field_bits": 256,
+            "pseudo_mersenne_shift": 32,
+            "pseudo_mersenne_low_term": 977,
+            "canonical_subtract_passes": 2
+          },
+          "windowing": {
+            "raw_window_bits": 16,
+            "full_raw_windows": 32,
+            "folded_magnitude_bits": 15,
+            "folded_magnitude_domain": 32768,
+            "fixed_window_width": 8
+          }
+        }
+      },
+      {
+        "name": "compiler_parameters_bind_lookup_resource_policy",
+        "pass": 1,
+        "expected": {
+          "selected_family_summary": {
+            "full_oracle_non_clifford": 34736076,
+            "total_logical_qubits": 1044,
+            "qroam_clean_block_size": 1
+          },
+          "headline_family": {
+            "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
+            "summary": "Central standard-QROAM lookup family: folded lookup control with standard QROAM coordinate streams consumed by table-controlled arithmetic kernels. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Executable streamed lookup leaf with table-fed coordinate multipliers, boundary no-op semantics, and a counted multi-output complete-add tail.",
+            "gate_set": "Clifford + standard QROAM coordinate streams + measurement; Clifford + classically controlled dyadic phase + measurement",
+            "phase_shell": "semiclassical_qft_v1",
+            "slot_allocation_family": "streamed_lookup_tail_leaf_v1",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
+            "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
+            "arithmetic_leaf_non_clifford": 1120212,
+            "direct_seed_non_clifford": 297,
+            "per_leaf_lookup_non_clifford": 297,
+            "full_oracle_non_clifford": 34736076,
+            "arithmetic_slot_count": 3,
+            "control_slot_count": 1,
+            "borrowed_interface_qubits": 0,
+            "lookup_workspace_qubits": 274,
+            "live_phase_bits": 1,
+            "total_logical_qubits": 1044,
+            "phase_shell_hadamards": 512,
+            "phase_shell_measurements": 512,
+            "phase_shell_rotations": 511,
+            "phase_shell_rotation_depth": 511,
+            "total_measurements": 7301612,
+            "improvement_vs_google_low_qubit": 2.5909662334916588,
+            "improvement_vs_google_low_gate": 2.0151959593824014,
+            "qubit_ratio_vs_google_low_qubit": 1.1494252873563218,
+            "qubit_ratio_vs_google_low_gate": 1.3888888888888888,
+            "notes": [
+              "This is the repository standard-QROM primitive-circuit lookup boundary. Unlike the rejected bitwise-banked family, it does not treat the 32768-entry coordinate table as 15 independent 2-way decodes.",
+              "The selected coordinate stream pays the standard QROAM compute and measured-uncompute costs in arithmetic_lowerings.json for every table-controlled arithmetic consumer.",
+              "The peak lookup workspace counts the folded-control qubits plus the full QROAMClean target and junk-register capacity required by the coordinate-stream cost model.",
+              "This family is exact for the chosen semiclassical inverse-QFT schedule with one aggregated classical basis update per noninitial bit.",
+              "It preserves the oracle family while collapsing the live quantum phase register from 512 qubits to one qubit."
+            ]
+          }
+        },
+        "observed": {
+          "selected_public_lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
+          "standard_qroamclean_block_size": 1
+        }
+      },
+      {
+        "name": "compiler_parameters_bind_reusable_chunk_policy",
+        "pass": 1,
+        "expected": {
+          "coordinate_table_count": 3,
+          "coordinate_tables": [
+            "lookup_x",
+            "lookup_y",
+            "lookup_x_plus_y"
+          ],
+          "chunk_bits": 155,
+          "chunk_count": 2,
+          "chunk_streams_per_leaf": 6,
+          "leaf_call_count_total": 31,
+          "whole_oracle_chunk_streams": 186,
+          "rows": [
+            {
+              "table": "lookup_x",
+              "chunk_index": 0,
+              "chunk_bits": 155,
+              "consumers_before_uncompute": [
+                "A = X * lookup_x",
+                "Zx = Z * lookup_x"
+              ],
+              "consumer_count": 2,
+              "qroam_clean_block_size": 1,
+              "qroam_compute_non_clifford": 32768,
+              "measured_uncompute_non_clifford": 32768,
+              "per_chunk_stream_non_clifford": 65536,
+              "live_target_qubits": 155,
+              "junk_register_qubits": 0,
+              "full_coordinate_lane_materialized": 0
+            },
+            {
+              "table": "lookup_x",
+              "chunk_index": 1,
+              "chunk_bits": 155,
+              "consumers_before_uncompute": [
+                "A = X * lookup_x",
+                "Zx = Z * lookup_x"
+              ],
+              "consumer_count": 2,
+              "qroam_clean_block_size": 1,
+              "qroam_compute_non_clifford": 32768,
+              "measured_uncompute_non_clifford": 32768,
+              "per_chunk_stream_non_clifford": 65536,
+              "live_target_qubits": 155,
+              "junk_register_qubits": 0,
+              "full_coordinate_lane_materialized": 0
+            },
+            {
+              "table": "lookup_y",
+              "chunk_index": 0,
+              "chunk_bits": 155,
+              "consumers_before_uncompute": [
+                "I = Y * lookup_y",
+                "yZ = Z * lookup_y"
+              ],
+              "consumer_count": 2,
+              "qroam_clean_block_size": 1,
+              "qroam_compute_non_clifford": 32768,
+              "measured_uncompute_non_clifford": 32768,
+              "per_chunk_stream_non_clifford": 65536,
+              "live_target_qubits": 155,
+              "junk_register_qubits": 0,
+              "full_coordinate_lane_materialized": 0
+            },
+            {
+              "table": "lookup_y",
+              "chunk_index": 1,
+              "chunk_bits": 155,
+              "consumers_before_uncompute": [
+                "I = Y * lookup_y",
+                "yZ = Z * lookup_y"
+              ],
+              "consumer_count": 2,
+              "qroam_clean_block_size": 1,
+              "qroam_compute_non_clifford": 32768,
+              "measured_uncompute_non_clifford": 32768,
+              "per_chunk_stream_non_clifford": 65536,
+              "live_target_qubits": 155,
+              "junk_register_qubits": 0,
+              "full_coordinate_lane_materialized": 0
+            },
+            {
+              "table": "lookup_x_plus_y",
+              "chunk_index": 0,
+              "chunk_bits": 155,
+              "consumers_before_uncompute": [
+                "H = (X + Y) * (lookup_x + lookup_y)"
+              ],
+              "consumer_count": 1,
+              "qroam_clean_block_size": 1,
+              "qroam_compute_non_clifford": 32768,
+              "measured_uncompute_non_clifford": 32768,
+              "per_chunk_stream_non_clifford": 65536,
+              "live_target_qubits": 155,
+              "junk_register_qubits": 0,
+              "full_coordinate_lane_materialized": 0
+            },
+            {
+              "table": "lookup_x_plus_y",
+              "chunk_index": 1,
+              "chunk_bits": 155,
+              "consumers_before_uncompute": [
+                "H = (X + Y) * (lookup_x + lookup_y)"
+              ],
+              "consumer_count": 1,
+              "qroam_clean_block_size": 1,
+              "qroam_compute_non_clifford": 32768,
+              "measured_uncompute_non_clifford": 32768,
+              "per_chunk_stream_non_clifford": 65536,
+              "live_target_qubits": 155,
+              "junk_register_qubits": 0,
+              "full_coordinate_lane_materialized": 0
+            }
+          ]
+        },
+        "observed": {
+          "chunk_bits": 155,
+          "chunk_count": 2,
+          "scratch_slot": "qchunk"
+        }
+      },
+      {
+        "name": "compiler_parameters_digest_is_stable_sha256",
+        "pass": 1,
+        "expected": "64 hex chars",
+        "observed": "8ecc453477263f7afc5a8bdd7ae438515ff163bb2dab61501bc82a2ea78b1b99"
+      }
+    ]
+  },
   "schedule_checks": {
     "pass": 9,
     "total": 9,
@@ -1392,6 +1720,840 @@
         "pass": 1,
         "expected": 1120212,
         "observed": 1120212
+      }
+    ]
+  },
+  "modular_arithmetic_certificate_checks": {
+    "pass": 6,
+    "total": 6,
+    "checks": [
+      {
+        "name": "modular_arithmetic_certificate_matches_generator",
+        "pass": 1,
+        "expected": {
+          "schema": "compiler-project-modular-arithmetic-certificate-v1",
+          "purpose": "Executable reduced-width certificate for the pseudo-Mersenne modular arithmetic schedule used by the counted field_mul lowering.",
+          "secp256k1_parameters": {
+            "field_bits": 256,
+            "modulus_hex": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
+            "pseudo_mersenne_identity": "2^256 = 2^32 + 977 mod p",
+            "shift": 32,
+            "low_term": 977,
+            "canonical_subtract_passes": 2
+          },
+          "field_mul_stage_count_certificate": {
+            "chain_steps_for_low_term": 14,
+            "second_fold_width": 43,
+            "expected_stage_ccx": {
+              "partial_products": 65536,
+              "controlled_add_path": 255,
+              "controlled_sub_path": 256,
+              "pseudo_mersenne_first_fold": 4305,
+              "pseudo_mersenne_second_fold": 630,
+              "pseudo_mersenne_canonicalize": 510
+            },
+            "observed_stage_ccx": {
+              "partial_products": 65536,
+              "controlled_add_path": 255,
+              "controlled_sub_path": 256,
+              "pseudo_mersenne_first_fold": 4305,
+              "pseudo_mersenne_second_fold": 630,
+              "pseudo_mersenne_canonicalize": 510
+            },
+            "expected_total_ccx": 71492,
+            "observed_total_ccx": 71492,
+            "stage_counts_match": true
+          },
+          "reduced_width_exhaustive_cases": [
+            {
+              "field_bits": 5,
+              "shift": 2,
+              "low_term": 5,
+              "modulus": 23,
+              "rows_checked": 529,
+              "operations_checked": [
+                "add",
+                "sub",
+                "mul",
+                "mul_const_21"
+              ],
+              "sample_traces": [
+                {
+                  "left": 0,
+                  "right": 0,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 23,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                },
+                {
+                  "left": 0,
+                  "right": 2,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 23,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                },
+                {
+                  "left": 0,
+                  "right": 22,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 23,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                },
+                {
+                  "left": 1,
+                  "right": 0,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 23,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                }
+              ],
+              "failures": [],
+              "pass": true
+            },
+            {
+              "field_bits": 6,
+              "shift": 3,
+              "low_term": 3,
+              "modulus": 53,
+              "rows_checked": 2809,
+              "operations_checked": [
+                "add",
+                "sub",
+                "mul",
+                "mul_const_21"
+              ],
+              "sample_traces": [
+                {
+                  "left": 0,
+                  "right": 0,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 53,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                },
+                {
+                  "left": 0,
+                  "right": 2,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 53,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                },
+                {
+                  "left": 0,
+                  "right": 52,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 53,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                },
+                {
+                  "left": 1,
+                  "right": 0,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 53,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                }
+              ],
+              "failures": [],
+              "pass": true
+            }
+          ],
+          "checks": {
+            "secp256k1_modulus_matches_common_constant": true,
+            "field_mul_stage_counts_match_arithmetic_lowering": true,
+            "reduced_width_cases_exhaustive_pass": true
+          },
+          "pass": true,
+          "boundary": [
+            "This certificate executes the modular reduction algorithm on reduced-width pseudo-Mersenne analogues and binds the 256-bit stage counts back to arithmetic_lowerings.json.",
+            "It is not yet a Clifford-complete reversible netlist for every arithmetic opcode."
+          ]
+        },
+        "observed": {
+          "schema": "compiler-project-modular-arithmetic-certificate-v1",
+          "purpose": "Executable reduced-width certificate for the pseudo-Mersenne modular arithmetic schedule used by the counted field_mul lowering.",
+          "secp256k1_parameters": {
+            "field_bits": 256,
+            "modulus_hex": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
+            "pseudo_mersenne_identity": "2^256 = 2^32 + 977 mod p",
+            "shift": 32,
+            "low_term": 977,
+            "canonical_subtract_passes": 2
+          },
+          "field_mul_stage_count_certificate": {
+            "chain_steps_for_low_term": 14,
+            "second_fold_width": 43,
+            "expected_stage_ccx": {
+              "partial_products": 65536,
+              "controlled_add_path": 255,
+              "controlled_sub_path": 256,
+              "pseudo_mersenne_first_fold": 4305,
+              "pseudo_mersenne_second_fold": 630,
+              "pseudo_mersenne_canonicalize": 510
+            },
+            "observed_stage_ccx": {
+              "partial_products": 65536,
+              "controlled_add_path": 255,
+              "controlled_sub_path": 256,
+              "pseudo_mersenne_first_fold": 4305,
+              "pseudo_mersenne_second_fold": 630,
+              "pseudo_mersenne_canonicalize": 510
+            },
+            "expected_total_ccx": 71492,
+            "observed_total_ccx": 71492,
+            "stage_counts_match": true
+          },
+          "reduced_width_exhaustive_cases": [
+            {
+              "field_bits": 5,
+              "shift": 2,
+              "low_term": 5,
+              "modulus": 23,
+              "rows_checked": 529,
+              "operations_checked": [
+                "add",
+                "sub",
+                "mul",
+                "mul_const_21"
+              ],
+              "sample_traces": [
+                {
+                  "left": 0,
+                  "right": 0,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 23,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                },
+                {
+                  "left": 0,
+                  "right": 2,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 23,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                },
+                {
+                  "left": 0,
+                  "right": 22,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 23,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                },
+                {
+                  "left": 1,
+                  "right": 0,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 23,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                }
+              ],
+              "failures": [],
+              "pass": true
+            },
+            {
+              "field_bits": 6,
+              "shift": 3,
+              "low_term": 3,
+              "modulus": 53,
+              "rows_checked": 2809,
+              "operations_checked": [
+                "add",
+                "sub",
+                "mul",
+                "mul_const_21"
+              ],
+              "sample_traces": [
+                {
+                  "left": 0,
+                  "right": 0,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 53,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                },
+                {
+                  "left": 0,
+                  "right": 2,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 53,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                },
+                {
+                  "left": 0,
+                  "right": 52,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 53,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                },
+                {
+                  "left": 1,
+                  "right": 0,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 53,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                }
+              ],
+              "failures": [],
+              "pass": true
+            }
+          ],
+          "checks": {
+            "secp256k1_modulus_matches_common_constant": true,
+            "field_mul_stage_counts_match_arithmetic_lowering": true,
+            "reduced_width_cases_exhaustive_pass": true
+          },
+          "pass": true,
+          "boundary": [
+            "This certificate executes the modular reduction algorithm on reduced-width pseudo-Mersenne analogues and binds the 256-bit stage counts back to arithmetic_lowerings.json.",
+            "It is not yet a Clifford-complete reversible netlist for every arithmetic opcode."
+          ]
+        }
+      },
+      {
+        "name": "modular_arithmetic_certificate_schema_is_current",
+        "pass": 1,
+        "expected": "compiler-project-modular-arithmetic-certificate-v1",
+        "observed": "compiler-project-modular-arithmetic-certificate-v1"
+      },
+      {
+        "name": "modular_arithmetic_certificate_passes_internal_checks",
+        "pass": 1,
+        "expected": true,
+        "observed": {
+          "secp256k1_modulus_matches_common_constant": true,
+          "field_mul_stage_counts_match_arithmetic_lowering": true,
+          "reduced_width_cases_exhaustive_pass": true
+        }
+      },
+      {
+        "name": "modular_arithmetic_certificate_binds_secp256k1_modulus_shape",
+        "pass": 1,
+        "expected": {
+          "field_bits": 256,
+          "shift": 32,
+          "low_term": 977,
+          "canonical_subtract_passes": 2
+        },
+        "observed": {
+          "field_bits": 256,
+          "modulus_hex": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
+          "pseudo_mersenne_identity": "2^256 = 2^32 + 977 mod p",
+          "shift": 32,
+          "low_term": 977,
+          "canonical_subtract_passes": 2
+        }
+      },
+      {
+        "name": "modular_arithmetic_certificate_field_mul_stage_counts_match_lowering",
+        "pass": 1,
+        "expected": {
+          "partial_products": 65536,
+          "controlled_add_path": 255,
+          "controlled_sub_path": 256,
+          "pseudo_mersenne_first_fold": 4305,
+          "pseudo_mersenne_second_fold": 630,
+          "pseudo_mersenne_canonicalize": 510
+        },
+        "observed": {
+          "chain_steps_for_low_term": 14,
+          "second_fold_width": 43,
+          "expected_stage_ccx": {
+            "partial_products": 65536,
+            "controlled_add_path": 255,
+            "controlled_sub_path": 256,
+            "pseudo_mersenne_first_fold": 4305,
+            "pseudo_mersenne_second_fold": 630,
+            "pseudo_mersenne_canonicalize": 510
+          },
+          "observed_stage_ccx": {
+            "partial_products": 65536,
+            "controlled_add_path": 255,
+            "controlled_sub_path": 256,
+            "pseudo_mersenne_first_fold": 4305,
+            "pseudo_mersenne_second_fold": 630,
+            "pseudo_mersenne_canonicalize": 510
+          },
+          "expected_total_ccx": 71492,
+          "observed_total_ccx": 71492,
+          "stage_counts_match": true
+        }
+      },
+      {
+        "name": "modular_arithmetic_certificate_reduced_width_cases_are_exhaustive",
+        "pass": 1,
+        "expected": "all reduced-width rows pass exhaustive p^2 testing",
+        "observed": [
+          {
+            "field_bits": 5,
+            "shift": 2,
+            "low_term": 5,
+            "modulus": 23,
+            "rows_checked": 529,
+            "operations_checked": [
+              "add",
+              "sub",
+              "mul",
+              "mul_const_21"
+            ],
+            "sample_traces": [
+              {
+                "left": 0,
+                "right": 0,
+                "product_trace": {
+                  "input": 0,
+                  "modulus": 23,
+                  "first_high": 0,
+                  "first_fold": 0,
+                  "second_high": 0,
+                  "second_fold": 0,
+                  "subtract_trace": [
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    },
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    }
+                  ],
+                  "canonical": 0
+                }
+              },
+              {
+                "left": 0,
+                "right": 2,
+                "product_trace": {
+                  "input": 0,
+                  "modulus": 23,
+                  "first_high": 0,
+                  "first_fold": 0,
+                  "second_high": 0,
+                  "second_fold": 0,
+                  "subtract_trace": [
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    },
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    }
+                  ],
+                  "canonical": 0
+                }
+              },
+              {
+                "left": 0,
+                "right": 22,
+                "product_trace": {
+                  "input": 0,
+                  "modulus": 23,
+                  "first_high": 0,
+                  "first_fold": 0,
+                  "second_high": 0,
+                  "second_fold": 0,
+                  "subtract_trace": [
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    },
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    }
+                  ],
+                  "canonical": 0
+                }
+              },
+              {
+                "left": 1,
+                "right": 0,
+                "product_trace": {
+                  "input": 0,
+                  "modulus": 23,
+                  "first_high": 0,
+                  "first_fold": 0,
+                  "second_high": 0,
+                  "second_fold": 0,
+                  "subtract_trace": [
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    },
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    }
+                  ],
+                  "canonical": 0
+                }
+              }
+            ],
+            "failures": [],
+            "pass": true
+          },
+          {
+            "field_bits": 6,
+            "shift": 3,
+            "low_term": 3,
+            "modulus": 53,
+            "rows_checked": 2809,
+            "operations_checked": [
+              "add",
+              "sub",
+              "mul",
+              "mul_const_21"
+            ],
+            "sample_traces": [
+              {
+                "left": 0,
+                "right": 0,
+                "product_trace": {
+                  "input": 0,
+                  "modulus": 53,
+                  "first_high": 0,
+                  "first_fold": 0,
+                  "second_high": 0,
+                  "second_fold": 0,
+                  "subtract_trace": [
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    },
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    }
+                  ],
+                  "canonical": 0
+                }
+              },
+              {
+                "left": 0,
+                "right": 2,
+                "product_trace": {
+                  "input": 0,
+                  "modulus": 53,
+                  "first_high": 0,
+                  "first_fold": 0,
+                  "second_high": 0,
+                  "second_fold": 0,
+                  "subtract_trace": [
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    },
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    }
+                  ],
+                  "canonical": 0
+                }
+              },
+              {
+                "left": 0,
+                "right": 52,
+                "product_trace": {
+                  "input": 0,
+                  "modulus": 53,
+                  "first_high": 0,
+                  "first_fold": 0,
+                  "second_high": 0,
+                  "second_fold": 0,
+                  "subtract_trace": [
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    },
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    }
+                  ],
+                  "canonical": 0
+                }
+              },
+              {
+                "left": 1,
+                "right": 0,
+                "product_trace": {
+                  "input": 0,
+                  "modulus": 53,
+                  "first_high": 0,
+                  "first_fold": 0,
+                  "second_high": 0,
+                  "second_fold": 0,
+                  "subtract_trace": [
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    },
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    }
+                  ],
+                  "canonical": 0
+                }
+              }
+            ],
+            "failures": [],
+            "pass": true
+          }
+        ]
       }
     ]
   },
@@ -6100,22 +7262,139 @@
       }
     ]
   },
+  "qroam_primitive_certificate_checks": {
+    "pass": 7,
+    "total": 7,
+    "checks": [
+      {
+        "name": "qroam_primitive_certificate_matches_generator",
+        "pass": 1,
+        "expected": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "9a97e536aa4e15e25873adf187db977910a0ef8fb03914958d409940a54eb125",
+          "size_bytes": 4815
+        },
+        "observed": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "9a97e536aa4e15e25873adf187db977910a0ef8fb03914958d409940a54eb125",
+          "size_bytes": 4815
+        }
+      },
+      {
+        "name": "qroam_primitive_certificate_schema_is_current",
+        "pass": 1,
+        "expected": "compiler-project-qroam-k1-primitive-certificate-v1",
+        "observed": "compiler-project-qroam-k1-primitive-certificate-v1"
+      },
+      {
+        "name": "qroam_primitive_certificate_passes_internal_checks",
+        "pass": 1,
+        "expected": true,
+        "observed": {
+          "block_size_is_k1": true,
+          "segment_rows_cover_compute_domain": true,
+          "segment_rows_cover_cleanup_domain": true,
+          "traversed_counts_match_qroamclean_cost": true,
+          "workspace_matches_cost_model": true,
+          "no_junk_registers_for_k1": true
+        }
+      },
+      {
+        "name": "qroam_primitive_certificate_uses_public_k1_stream_parameters",
+        "pass": 1,
+        "expected": {
+          "domain_size": 32768,
+          "target_bits": 155,
+          "block_size": 1
+        },
+        "observed": {
+          "domain_size": 32768,
+          "target_bits": 155,
+          "block_size": 1,
+          "segment_size": 4096
+        }
+      },
+      {
+        "name": "qroam_primitive_certificate_traverses_compute_and_cleanup_domains",
+        "pass": 1,
+        "expected": {
+          "compute_ccx": 32768,
+          "cleanup_ccx": 32768
+        },
+        "observed": {
+          "compute_ccx": 32768,
+          "cleanup_ccx": 32768,
+          "segment_count": 16
+        }
+      },
+      {
+        "name": "qroam_primitive_certificate_counts_match_qroamclean_cost_model",
+        "pass": 1,
+        "expected": {
+          "domain_size": 32768,
+          "field_bits": 155,
+          "block_size": 1,
+          "target_register_qubits": 155,
+          "junk_register_count": 0,
+          "junk_register_qubits": 0,
+          "target_plus_junk_qubits": 155,
+          "lookup_compute_non_clifford": 32768,
+          "measured_uncompute_non_clifford": 32768,
+          "per_stream_non_clifford": 65536
+        },
+        "observed": {
+          "lookup_compute_non_clifford": 32768,
+          "measured_uncompute_non_clifford": 32768,
+          "per_stream_non_clifford": 65536,
+          "target_register_qubits": 155,
+          "junk_register_qubits": 0,
+          "target_plus_junk_qubits": 155
+        }
+      },
+      {
+        "name": "qroam_primitive_certificate_workspace_decomposes_target_and_junk",
+        "pass": 1,
+        "expected": {
+          "target_register_qubits": 155,
+          "junk_register_qubits": 0
+        },
+        "observed": {
+          "selection_register": {
+            "role": "folded table address",
+            "qubits": 15,
+            "logical_owner": "caller_control_registers"
+          },
+          "target_register": {
+            "role": "QROAM target chunk",
+            "qubits": 155,
+            "logical_owner": "lookup_workspace"
+          },
+          "junk_registers": {
+            "role": "QROAMClean junk registers",
+            "register_count": 0,
+            "qubits": 0,
+            "logical_owner": "lookup_workspace"
+          }
+        }
+      }
+    ]
+  },
   "reusable_chunk_lowering_checks": {
-    "pass": 15,
-    "total": 15,
+    "pass": 18,
+    "total": 18,
     "checks": [
       {
         "name": "reusable_chunk_lowering_matches_generator",
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "02f9906ec4294b238156ea04c0c8eda53507a08aade0bacc4d8fb56bf002666b",
-          "size_bytes": 18592
+          "sha256": "714a87042697da78892856fc6f9f95633bde7dbfa894d4b55a6d78adb895ea45",
+          "size_bytes": 35074
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "02f9906ec4294b238156ea04c0c8eda53507a08aade0bacc4d8fb56bf002666b",
-          "size_bytes": 18592
+          "sha256": "714a87042697da78892856fc6f9f95633bde7dbfa894d4b55a6d78adb895ea45",
+          "size_bytes": 35074
         }
       },
       {
@@ -6142,6 +7421,8 @@
           "stream_count_derived_from_tables_and_chunks": true,
           "whole_oracle_stream_count_derived_from_leaf_calls": true,
           "per_stream_cost_matches_standard_qroamclean_k1": true,
+          "per_stream_cost_matches_generated_qroam_primitive": true,
+          "modular_arithmetic_certificate_binds_counted_field_mul": true,
           "chunked_multiplier_partial_products_match_inherited_full_width_base": true,
           "chunked_multiplier_high_chunk_zero_padding_is_explicit": true,
           "chunked_multiplier_uses_single_reduction_per_consumer": true,
@@ -6150,6 +7431,7 @@
           "owner_capacity_rows_cover_required_peak": true,
           "executable_liveness_peak_matches_candidate": true,
           "executable_liveness_owner_peaks_match_capacity": true,
+          "counted_resource_ir_recomputes_public_totals": true,
           "fits_requested_limits": true
         }
       },
@@ -6157,8 +7439,7 @@
         "name": "reusable_chunk_lowering_derives_stream_count_from_contract",
         "pass": 1,
         "expected": {
-          "tables": 3,
-          "chunk_streams_per_leaf": 6
+          "whole_oracle_chunk_streams": 186
         },
         "observed": {
           "coordinate_table_count": 3,
@@ -6280,7 +7561,6 @@
         "name": "reusable_chunk_lowering_uses_standard_qroamclean_k1_consistently",
         "pass": 1,
         "expected": {
-          "block_size": 1,
           "target_register_qubits": 155,
           "junk_register_qubits": 0,
           "per_stream_non_clifford": 65536
@@ -6296,6 +7576,554 @@
           "lookup_compute_non_clifford": 32768,
           "measured_uncompute_non_clifford": 32768,
           "per_stream_non_clifford": 65536
+        }
+      },
+      {
+        "name": "reusable_chunk_lowering_binds_generated_qroam_primitive_certificate",
+        "pass": 1,
+        "expected": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "9a97e536aa4e15e25873adf187db977910a0ef8fb03914958d409940a54eb125",
+          "size_bytes": 4815
+        },
+        "observed": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "9a97e536aa4e15e25873adf187db977910a0ef8fb03914958d409940a54eb125",
+          "size_bytes": 4815
+        }
+      },
+      {
+        "name": "reusable_chunk_lowering_binds_modular_arithmetic_certificate",
+        "pass": 1,
+        "expected": {
+          "schema": "compiler-project-modular-arithmetic-certificate-v1",
+          "purpose": "Executable reduced-width certificate for the pseudo-Mersenne modular arithmetic schedule used by the counted field_mul lowering.",
+          "secp256k1_parameters": {
+            "field_bits": 256,
+            "modulus_hex": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
+            "pseudo_mersenne_identity": "2^256 = 2^32 + 977 mod p",
+            "shift": 32,
+            "low_term": 977,
+            "canonical_subtract_passes": 2
+          },
+          "field_mul_stage_count_certificate": {
+            "chain_steps_for_low_term": 14,
+            "second_fold_width": 43,
+            "expected_stage_ccx": {
+              "partial_products": 65536,
+              "controlled_add_path": 255,
+              "controlled_sub_path": 256,
+              "pseudo_mersenne_first_fold": 4305,
+              "pseudo_mersenne_second_fold": 630,
+              "pseudo_mersenne_canonicalize": 510
+            },
+            "observed_stage_ccx": {
+              "partial_products": 65536,
+              "controlled_add_path": 255,
+              "controlled_sub_path": 256,
+              "pseudo_mersenne_first_fold": 4305,
+              "pseudo_mersenne_second_fold": 630,
+              "pseudo_mersenne_canonicalize": 510
+            },
+            "expected_total_ccx": 71492,
+            "observed_total_ccx": 71492,
+            "stage_counts_match": true
+          },
+          "reduced_width_exhaustive_cases": [
+            {
+              "field_bits": 5,
+              "shift": 2,
+              "low_term": 5,
+              "modulus": 23,
+              "rows_checked": 529,
+              "operations_checked": [
+                "add",
+                "sub",
+                "mul",
+                "mul_const_21"
+              ],
+              "sample_traces": [
+                {
+                  "left": 0,
+                  "right": 0,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 23,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                },
+                {
+                  "left": 0,
+                  "right": 2,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 23,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                },
+                {
+                  "left": 0,
+                  "right": 22,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 23,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                },
+                {
+                  "left": 1,
+                  "right": 0,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 23,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                }
+              ],
+              "failures": [],
+              "pass": true
+            },
+            {
+              "field_bits": 6,
+              "shift": 3,
+              "low_term": 3,
+              "modulus": 53,
+              "rows_checked": 2809,
+              "operations_checked": [
+                "add",
+                "sub",
+                "mul",
+                "mul_const_21"
+              ],
+              "sample_traces": [
+                {
+                  "left": 0,
+                  "right": 0,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 53,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                },
+                {
+                  "left": 0,
+                  "right": 2,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 53,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                },
+                {
+                  "left": 0,
+                  "right": 52,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 53,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                },
+                {
+                  "left": 1,
+                  "right": 0,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 53,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                }
+              ],
+              "failures": [],
+              "pass": true
+            }
+          ],
+          "checks": {
+            "secp256k1_modulus_matches_common_constant": true,
+            "field_mul_stage_counts_match_arithmetic_lowering": true,
+            "reduced_width_cases_exhaustive_pass": true
+          },
+          "pass": true,
+          "boundary": [
+            "This certificate executes the modular reduction algorithm on reduced-width pseudo-Mersenne analogues and binds the 256-bit stage counts back to arithmetic_lowerings.json.",
+            "It is not yet a Clifford-complete reversible netlist for every arithmetic opcode."
+          ]
+        },
+        "observed": {
+          "schema": "compiler-project-modular-arithmetic-certificate-v1",
+          "purpose": "Executable reduced-width certificate for the pseudo-Mersenne modular arithmetic schedule used by the counted field_mul lowering.",
+          "secp256k1_parameters": {
+            "field_bits": 256,
+            "modulus_hex": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
+            "pseudo_mersenne_identity": "2^256 = 2^32 + 977 mod p",
+            "shift": 32,
+            "low_term": 977,
+            "canonical_subtract_passes": 2
+          },
+          "field_mul_stage_count_certificate": {
+            "chain_steps_for_low_term": 14,
+            "second_fold_width": 43,
+            "expected_stage_ccx": {
+              "partial_products": 65536,
+              "controlled_add_path": 255,
+              "controlled_sub_path": 256,
+              "pseudo_mersenne_first_fold": 4305,
+              "pseudo_mersenne_second_fold": 630,
+              "pseudo_mersenne_canonicalize": 510
+            },
+            "observed_stage_ccx": {
+              "partial_products": 65536,
+              "controlled_add_path": 255,
+              "controlled_sub_path": 256,
+              "pseudo_mersenne_first_fold": 4305,
+              "pseudo_mersenne_second_fold": 630,
+              "pseudo_mersenne_canonicalize": 510
+            },
+            "expected_total_ccx": 71492,
+            "observed_total_ccx": 71492,
+            "stage_counts_match": true
+          },
+          "reduced_width_exhaustive_cases": [
+            {
+              "field_bits": 5,
+              "shift": 2,
+              "low_term": 5,
+              "modulus": 23,
+              "rows_checked": 529,
+              "operations_checked": [
+                "add",
+                "sub",
+                "mul",
+                "mul_const_21"
+              ],
+              "sample_traces": [
+                {
+                  "left": 0,
+                  "right": 0,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 23,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                },
+                {
+                  "left": 0,
+                  "right": 2,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 23,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                },
+                {
+                  "left": 0,
+                  "right": 22,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 23,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                },
+                {
+                  "left": 1,
+                  "right": 0,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 23,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                }
+              ],
+              "failures": [],
+              "pass": true
+            },
+            {
+              "field_bits": 6,
+              "shift": 3,
+              "low_term": 3,
+              "modulus": 53,
+              "rows_checked": 2809,
+              "operations_checked": [
+                "add",
+                "sub",
+                "mul",
+                "mul_const_21"
+              ],
+              "sample_traces": [
+                {
+                  "left": 0,
+                  "right": 0,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 53,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                },
+                {
+                  "left": 0,
+                  "right": 2,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 53,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                },
+                {
+                  "left": 0,
+                  "right": 52,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 53,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                },
+                {
+                  "left": 1,
+                  "right": 0,
+                  "product_trace": {
+                    "input": 0,
+                    "modulus": 53,
+                    "first_high": 0,
+                    "first_fold": 0,
+                    "second_high": 0,
+                    "second_fold": 0,
+                    "subtract_trace": [
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      },
+                      {
+                        "did_subtract": false,
+                        "value_after_pass": 0
+                      }
+                    ],
+                    "canonical": 0
+                  }
+                }
+              ],
+              "failures": [],
+              "pass": true
+            }
+          ],
+          "checks": {
+            "secp256k1_modulus_matches_common_constant": true,
+            "field_mul_stage_counts_match_arithmetic_lowering": true,
+            "reduced_width_cases_exhaustive_pass": true
+          },
+          "pass": true,
+          "boundary": [
+            "This certificate executes the modular reduction algorithm on reduced-width pseudo-Mersenne analogues and binds the 256-bit stage counts back to arithmetic_lowerings.json.",
+            "It is not yet a Clifford-complete reversible netlist for every arithmetic opcode."
+          ]
         }
       },
       {
@@ -6558,6 +8386,20 @@
           "global_peak_equals_sum_of_interval_liveness": true,
           "qroam_target_and_qchunk_are_concurrently_live": true,
           "no_full_coordinate_lane_wire_is_live": true
+        }
+      },
+      {
+        "name": "reusable_chunk_lowering_counted_resource_ir_recomputes_public_totals",
+        "pass": 1,
+        "expected": {
+          "non_clifford": 36767692,
+          "peak_live_qubits": 1199,
+          "qroam_terms": 6
+        },
+        "observed": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "7f4a9715038dc7dd151648e1a4b6546332ba190c2adbb5a240a67b28bb7404cd",
+          "size_bytes": 7365
         }
       },
       {
@@ -10044,95 +11886,21 @@
       {
         "name": "build_summary_schema_matches_current_version",
         "pass": 1,
-        "expected": "compiler-project-build-summary-v28",
-        "observed": "compiler-project-build-summary-v28"
+        "expected": "compiler-project-build-summary-v32",
+        "observed": "compiler-project-build-summary-v32"
       },
       {
         "name": "build_summary_artifact_paths_match_expected_set",
         "pass": 1,
         "expected": {
-          "canonical_public_point": "compiler_verification_project/artifacts/canonical_public_point.json",
-          "public_google_baseline_source": "compiler_verification_project/artifacts/public_google_baseline_source.json",
-          "full_raw32_oracle": "compiler_verification_project/artifacts/full_raw32_oracle.json",
-          "exact_leaf_slot_allocation": "compiler_verification_project/artifacts/exact_leaf_slot_allocation.json",
-          "lookup_fed_leaf": "compiler_verification_project/artifacts/lookup_fed_leaf.json",
-          "lookup_fed_leaf_equivalence": "compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json",
-          "lookup_fed_leaf_slot_allocation": "compiler_verification_project/artifacts/lookup_fed_leaf_slot_allocation.json",
-          "streamed_lookup_tail_leaf": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json",
-          "streamed_lookup_tail_leaf_equivalence": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json",
-          "streamed_lookup_tail_leaf_slot_allocation": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json",
-          "arithmetic_lowerings": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-          "tail_macro_liveness": "compiler_verification_project/artifacts/tail_macro_liveness.json",
-          "tail_macro_reversibility": "compiler_verification_project/artifacts/tail_macro_reversibility.json",
-          "tail_macro_schedule_search": "compiler_verification_project/artifacts/tail_macro_schedule_search.json",
-          "streamed_lookup_table_multiplier_resource": "compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json",
-          "module_library": "compiler_verification_project/artifacts/module_library.json",
-          "primitive_multiplier_library": "compiler_verification_project/artifacts/primitive_multiplier_library.json",
-          "phase_shell_lowerings": "compiler_verification_project/artifacts/phase_shell_lowerings.json",
-          "phase_shell_families": "compiler_verification_project/artifacts/phase_shell_families.json",
-          "table_manifests": "compiler_verification_project/artifacts/table_manifests.json",
-          "lookup_lowerings": "compiler_verification_project/artifacts/lookup_lowerings.json",
-          "generated_block_inventories": "compiler_verification_project/artifacts/generated_block_inventories.json",
-          "ft_ir_compositions": "compiler_verification_project/artifacts/ft_ir_compositions.json",
-          "whole_oracle_recount": "compiler_verification_project/artifacts/whole_oracle_recount.json",
-          "family_frontier": "compiler_verification_project/artifacts/family_frontier.json",
-          "standard_qrom_lookup_assessment": "compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json",
-          "logical_resource_ledger": "compiler_verification_project/artifacts/logical_resource_ledger.json",
-          "fallback_frontier_stress": "compiler_verification_project/artifacts/fallback_frontier_stress.json",
-          "reusable_chunk_tail_candidate": "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
-          "reusable_chunk_lowering": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
-          "resource_liveness_certificate": "compiler_verification_project/artifacts/resource_liveness_certificate.json",
-          "materialized_circuit_manifest": "compiler_verification_project/artifacts/materialized_circuit_manifest.json",
-          "qubit_breakthrough_analysis": "compiler_verification_project/artifacts/qubit_breakthrough_analysis.json",
-          "full_attack_inventory": "compiler_verification_project/artifacts/full_attack_inventory.json",
-          "subcircuit_equivalence": "compiler_verification_project/artifacts/subcircuit_equivalence.json",
-          "headline_opcode_coverage": "compiler_verification_project/artifacts/headline_opcode_coverage.json",
-          "public_headline_result": "compiler_verification_project/artifacts/public_headline_result.json",
-          "azure_resource_estimator_logical_counts": "compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json",
-          "azure_resource_estimator_targets": "compiler_verification_project/artifacts/azure_resource_estimator_targets.json",
-          "azure_resource_estimator_results": "compiler_verification_project/artifacts/azure_resource_estimator_results.json"
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "6aa5f87dd53bd0c8b9648e77118d42b64c3a6dc747b5ef2da7ca5a667beb8e25",
+          "size_bytes": 4441
         },
         "observed": {
-          "canonical_public_point": "compiler_verification_project/artifacts/canonical_public_point.json",
-          "public_google_baseline_source": "compiler_verification_project/artifacts/public_google_baseline_source.json",
-          "full_raw32_oracle": "compiler_verification_project/artifacts/full_raw32_oracle.json",
-          "exact_leaf_slot_allocation": "compiler_verification_project/artifacts/exact_leaf_slot_allocation.json",
-          "lookup_fed_leaf": "compiler_verification_project/artifacts/lookup_fed_leaf.json",
-          "lookup_fed_leaf_equivalence": "compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json",
-          "lookup_fed_leaf_slot_allocation": "compiler_verification_project/artifacts/lookup_fed_leaf_slot_allocation.json",
-          "streamed_lookup_tail_leaf": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf.json",
-          "streamed_lookup_tail_leaf_equivalence": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json",
-          "streamed_lookup_tail_leaf_slot_allocation": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json",
-          "arithmetic_lowerings": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-          "tail_macro_liveness": "compiler_verification_project/artifacts/tail_macro_liveness.json",
-          "tail_macro_reversibility": "compiler_verification_project/artifacts/tail_macro_reversibility.json",
-          "tail_macro_schedule_search": "compiler_verification_project/artifacts/tail_macro_schedule_search.json",
-          "streamed_lookup_table_multiplier_resource": "compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json",
-          "module_library": "compiler_verification_project/artifacts/module_library.json",
-          "primitive_multiplier_library": "compiler_verification_project/artifacts/primitive_multiplier_library.json",
-          "phase_shell_lowerings": "compiler_verification_project/artifacts/phase_shell_lowerings.json",
-          "phase_shell_families": "compiler_verification_project/artifacts/phase_shell_families.json",
-          "table_manifests": "compiler_verification_project/artifacts/table_manifests.json",
-          "lookup_lowerings": "compiler_verification_project/artifacts/lookup_lowerings.json",
-          "generated_block_inventories": "compiler_verification_project/artifacts/generated_block_inventories.json",
-          "ft_ir_compositions": "compiler_verification_project/artifacts/ft_ir_compositions.json",
-          "whole_oracle_recount": "compiler_verification_project/artifacts/whole_oracle_recount.json",
-          "family_frontier": "compiler_verification_project/artifacts/family_frontier.json",
-          "standard_qrom_lookup_assessment": "compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json",
-          "logical_resource_ledger": "compiler_verification_project/artifacts/logical_resource_ledger.json",
-          "fallback_frontier_stress": "compiler_verification_project/artifacts/fallback_frontier_stress.json",
-          "reusable_chunk_tail_candidate": "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
-          "reusable_chunk_lowering": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
-          "resource_liveness_certificate": "compiler_verification_project/artifacts/resource_liveness_certificate.json",
-          "materialized_circuit_manifest": "compiler_verification_project/artifacts/materialized_circuit_manifest.json",
-          "qubit_breakthrough_analysis": "compiler_verification_project/artifacts/qubit_breakthrough_analysis.json",
-          "full_attack_inventory": "compiler_verification_project/artifacts/full_attack_inventory.json",
-          "subcircuit_equivalence": "compiler_verification_project/artifacts/subcircuit_equivalence.json",
-          "headline_opcode_coverage": "compiler_verification_project/artifacts/headline_opcode_coverage.json",
-          "public_headline_result": "compiler_verification_project/artifacts/public_headline_result.json",
-          "azure_resource_estimator_logical_counts": "compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json",
-          "azure_resource_estimator_targets": "compiler_verification_project/artifacts/azure_resource_estimator_targets.json",
-          "azure_resource_estimator_results": "compiler_verification_project/artifacts/azure_resource_estimator_results.json"
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "6aa5f87dd53bd0c8b9648e77118d42b64c3a6dc747b5ef2da7ca5a667beb8e25",
+          "size_bytes": 4441
         }
       },
       {
@@ -10144,6 +11912,7 @@
           "compiler_verification_project/artifacts/azure_resource_estimator_results.json",
           "compiler_verification_project/artifacts/azure_resource_estimator_targets.json",
           "compiler_verification_project/artifacts/canonical_public_point.json",
+          "compiler_verification_project/artifacts/compiler_parameters.json",
           "compiler_verification_project/artifacts/exact_leaf_slot_allocation.json",
           "compiler_verification_project/artifacts/fallback_frontier_stress.json",
           "compiler_verification_project/artifacts/family_frontier.json",
@@ -10158,12 +11927,15 @@
           "compiler_verification_project/artifacts/lookup_fed_leaf_slot_allocation.json",
           "compiler_verification_project/artifacts/lookup_lowerings.json",
           "compiler_verification_project/artifacts/materialized_circuit_manifest.json",
+          "compiler_verification_project/artifacts/modular_arithmetic_certificate.json",
           "compiler_verification_project/artifacts/module_library.json",
           "compiler_verification_project/artifacts/phase_shell_families.json",
           "compiler_verification_project/artifacts/phase_shell_lowerings.json",
           "compiler_verification_project/artifacts/primitive_multiplier_library.json",
+          "compiler_verification_project/artifacts/proof_corpus_profiles.json",
           "compiler_verification_project/artifacts/public_google_baseline_source.json",
           "compiler_verification_project/artifacts/public_headline_result.json",
+          "compiler_verification_project/artifacts/qroam_primitive_certificate.json",
           "compiler_verification_project/artifacts/qubit_breakthrough_analysis.json",
           "compiler_verification_project/artifacts/resource_liveness_certificate.json",
           "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
@@ -10186,6 +11958,7 @@
           "compiler_verification_project/artifacts/azure_resource_estimator_results.json",
           "compiler_verification_project/artifacts/azure_resource_estimator_targets.json",
           "compiler_verification_project/artifacts/canonical_public_point.json",
+          "compiler_verification_project/artifacts/compiler_parameters.json",
           "compiler_verification_project/artifacts/exact_leaf_slot_allocation.json",
           "compiler_verification_project/artifacts/fallback_frontier_stress.json",
           "compiler_verification_project/artifacts/family_frontier.json",
@@ -10200,12 +11973,15 @@
           "compiler_verification_project/artifacts/lookup_fed_leaf_slot_allocation.json",
           "compiler_verification_project/artifacts/lookup_lowerings.json",
           "compiler_verification_project/artifacts/materialized_circuit_manifest.json",
+          "compiler_verification_project/artifacts/modular_arithmetic_certificate.json",
           "compiler_verification_project/artifacts/module_library.json",
           "compiler_verification_project/artifacts/phase_shell_families.json",
           "compiler_verification_project/artifacts/phase_shell_lowerings.json",
           "compiler_verification_project/artifacts/primitive_multiplier_library.json",
+          "compiler_verification_project/artifacts/proof_corpus_profiles.json",
           "compiler_verification_project/artifacts/public_google_baseline_source.json",
           "compiler_verification_project/artifacts/public_headline_result.json",
+          "compiler_verification_project/artifacts/qroam_primitive_certificate.json",
           "compiler_verification_project/artifacts/qubit_breakthrough_analysis.json",
           "compiler_verification_project/artifacts/resource_liveness_certificate.json",
           "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
@@ -10459,6 +12235,140 @@
       }
     ]
   },
+  "proof_corpus_profile_checks": {
+    "pass": 6,
+    "total": 6,
+    "checks": [
+      {
+        "name": "proof_corpus_profiles_match_generator",
+        "pass": 1,
+        "expected": {
+          "schema": "compiler-project-proof-corpus-profiles-v1",
+          "selected_public_profile": "smoke_public_8",
+          "release_profile": "google_comparable_9024",
+          "profiles": {
+            "smoke_public_8": {
+              "case_count": 8,
+              "case_start": 0,
+              "role": "current public smoke attestation",
+              "release_grade": false
+            },
+            "google_comparable_9024": {
+              "case_count": 9024,
+              "case_start": 0,
+              "role": "Google-disclosure-size public corpus target",
+              "release_grade": true
+            }
+          },
+          "checks": {
+            "selected_public_profile_exists": true,
+            "google_comparable_profile_exists": true,
+            "selected_public_profile_is_explicit_smoke": true,
+            "google_comparable_profile_is_release_grade": true
+          },
+          "pass": true,
+          "boundary": [
+            "The current checked public proof profile is an explicit 8-case smoke attestation.",
+            "The Google-comparable release target is tracked as a separate 9024-case profile and must be rebuilt before claiming Google-equivalent proof confidence."
+          ]
+        },
+        "observed": {
+          "schema": "compiler-project-proof-corpus-profiles-v1",
+          "selected_public_profile": "smoke_public_8",
+          "release_profile": "google_comparable_9024",
+          "profiles": {
+            "smoke_public_8": {
+              "case_count": 8,
+              "case_start": 0,
+              "role": "current public smoke attestation",
+              "release_grade": false
+            },
+            "google_comparable_9024": {
+              "case_count": 9024,
+              "case_start": 0,
+              "role": "Google-disclosure-size public corpus target",
+              "release_grade": true
+            }
+          },
+          "checks": {
+            "selected_public_profile_exists": true,
+            "google_comparable_profile_exists": true,
+            "selected_public_profile_is_explicit_smoke": true,
+            "google_comparable_profile_is_release_grade": true
+          },
+          "pass": true,
+          "boundary": [
+            "The current checked public proof profile is an explicit 8-case smoke attestation.",
+            "The Google-comparable release target is tracked as a separate 9024-case profile and must be rebuilt before claiming Google-equivalent proof confidence."
+          ]
+        }
+      },
+      {
+        "name": "proof_corpus_profiles_schema_is_current",
+        "pass": 1,
+        "expected": "compiler-project-proof-corpus-profiles-v1",
+        "observed": "compiler-project-proof-corpus-profiles-v1"
+      },
+      {
+        "name": "proof_corpus_profiles_pass_internal_checks",
+        "pass": 1,
+        "expected": true,
+        "observed": {
+          "selected_public_profile_exists": true,
+          "google_comparable_profile_exists": true,
+          "selected_public_profile_is_explicit_smoke": true,
+          "google_comparable_profile_is_release_grade": true
+        }
+      },
+      {
+        "name": "proof_corpus_profiles_select_explicit_public_smoke_profile",
+        "pass": 1,
+        "expected": "smoke_public_8",
+        "observed": {
+          "selected_public_profile": "smoke_public_8",
+          "selected": {
+            "case_count": 8,
+            "case_start": 0,
+            "role": "current public smoke attestation",
+            "release_grade": false
+          }
+        }
+      },
+      {
+        "name": "proof_corpus_profiles_track_google_comparable_release_target",
+        "pass": 1,
+        "expected": "google_comparable_9024",
+        "observed": {
+          "release_profile": "google_comparable_9024",
+          "release": {
+            "case_count": 9024,
+            "case_start": 0,
+            "role": "Google-disclosure-size public corpus target",
+            "release_grade": true
+          }
+        }
+      },
+      {
+        "name": "proof_corpus_profiles_match_current_public_candidate_case_count",
+        "pass": 1,
+        "expected": 8,
+        "observed": {
+          "schema": "compiler-project-zkp-attestation-public-v2",
+          "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
+          "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+          "claim_sha256": "2a098c6004436f393953eed4bcda8c000ad6c3bca81f1c91f2c7b57b3e0413e5",
+          "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
+          "family_sha256": "c1a1cd68e1c159353724cb3e21b98c65115b2add9930d247b3f5f0f85dd5ba20",
+          "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
+          "resource_certificate_sha256": "9e6761fddca97566eeaa5105241af14b07f4dbf2f287cbe01bb5e83605e73085",
+          "expected_full_oracle_non_clifford": 36767692,
+          "expected_total_logical_qubits": 1199,
+          "case_count": 8,
+          "passed_case_count": 8
+        }
+      }
+    ]
+  },
   "public_headline_result_checks": {
     "pass": 9,
     "total": 9,
@@ -10468,13 +12378,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "e3829010bcebfa6e01751d4fb2ac70dbd97cc0bb4545f3664c9d637af8167299",
-          "size_bytes": 9605
+          "sha256": "08937a385987f5c18af17e4c160c430bb314963f11c2ad74b0d6000c6476b65f",
+          "size_bytes": 10610
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "e3829010bcebfa6e01751d4fb2ac70dbd97cc0bb4545f3664c9d637af8167299",
-          "size_bytes": 9605
+          "sha256": "08937a385987f5c18af17e4c160c430bb314963f11c2ad74b0d6000c6476b65f",
+          "size_bytes": 10610
         }
       },
       {
@@ -10484,18 +12394,25 @@
         "observed": "compiler-project-public-headline-result-v1"
       },
       {
-        "name": "public_headline_result_passes_internal_checks",
+        "name": "public_headline_result_pass_flag_matches_internal_checks",
         "pass": 1,
-        "expected": true,
+        "expected": false,
         "observed": {
-          "public_values_match_input_claim": true,
-          "all_fixtures_bind_same_public_values": true,
-          "compressed_fixture_binds_checked_proof_binary": true,
-          "groth16_fixture_binds_checked_proof_and_verifier_key": true,
-          "reusable_chunk_lowering_is_proven_for_public_headline": true,
-          "reusable_chunk_executable_liveness_binds_public_qubits": true,
-          "reusable_chunk_tail_contract_is_proven_for_public_headline": true,
-          "fits_strict_public_goal": true
+          "pass": false,
+          "checks": {
+            "public_values_match_input_claim": false,
+            "all_fixtures_bind_same_public_values": false,
+            "compressed_fixture_binds_checked_proof_binary": true,
+            "groth16_fixture_binds_checked_proof_and_verifier_key": true,
+            "reusable_chunk_lowering_is_proven_for_public_headline": true,
+            "reusable_chunk_executable_liveness_binds_public_qubits": true,
+            "reusable_chunk_counted_resource_ir_binds_public_totals": true,
+            "reusable_chunk_binds_generated_qroam_primitive_certificate": true,
+            "reusable_chunk_binds_modular_arithmetic_certificate": true,
+            "reusable_chunk_tail_contract_is_proven_for_public_headline": true,
+            "fits_strict_public_goal": true,
+            "public_case_count_matches_selected_proof_profile": true
+          }
         }
       },
       {
@@ -10526,7 +12443,7 @@
           "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
           "family_sha256": "c1a1cd68e1c159353724cb3e21b98c65115b2add9930d247b3f5f0f85dd5ba20",
           "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
-          "resource_certificate_sha256": "d37820bea8e18cab61a8db7ec90efd4fb12801e5398ae686648555bcf1065c53",
+          "resource_certificate_sha256": "9e6761fddca97566eeaa5105241af14b07f4dbf2f287cbe01bb5e83605e73085",
           "expected_full_oracle_non_clifford": 36767692,
           "expected_total_logical_qubits": 1199,
           "case_count": 8,
@@ -10546,12 +12463,12 @@
         "pass": 1,
         "expected": {
           "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin",
-          "sha256": "49d81633c8d60d99f30d0874effc1687856eeddc74b7df578535ab5313d566e3",
+          "sha256": "d66a8a10e4364f859d1207c1dc343d7c54a7c6a39a7058a7c05b1b5d7dd5c396",
           "bytes": 1273162
         },
         "observed": {
           "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin",
-          "sha256": "49d81633c8d60d99f30d0874effc1687856eeddc74b7df578535ab5313d566e3",
+          "sha256": "d66a8a10e4364f859d1207c1dc343d7c54a7c6a39a7058a7c05b1b5d7dd5c396",
           "bytes": 1273162
         }
       },
@@ -11689,10 +13606,10 @@
       "pass": 30
     },
     "invariant_checks": {
-      "total": 336,
-      "pass": 336
+      "total": 365,
+      "pass": 365
     },
-    "total": 366,
-    "pass": 366
+    "total": 395,
+    "pass": 395
   }
 }

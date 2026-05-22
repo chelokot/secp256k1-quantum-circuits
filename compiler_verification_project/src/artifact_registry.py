@@ -5,11 +5,13 @@ from __future__ import annotations
 from typing import Dict
 
 
-BUILD_SUMMARY_SCHEMA = 'compiler-project-build-summary-v28'
+BUILD_SUMMARY_SCHEMA = 'compiler-project-build-summary-v33'
 
 BUILD_SUMMARY_ARTIFACT_PATHS: Dict[str, str] = {
     'canonical_public_point': 'compiler_verification_project/artifacts/canonical_public_point.json',
+    'compiler_parameters': 'compiler_verification_project/artifacts/compiler_parameters.json',
     'public_google_baseline_source': 'compiler_verification_project/artifacts/public_google_baseline_source.json',
+    'proof_corpus_profiles': 'compiler_verification_project/artifacts/proof_corpus_profiles.json',
     'full_raw32_oracle': 'compiler_verification_project/artifacts/full_raw32_oracle.json',
     'exact_leaf_slot_allocation': 'compiler_verification_project/artifacts/exact_leaf_slot_allocation.json',
     'lookup_fed_leaf': 'compiler_verification_project/artifacts/lookup_fed_leaf.json',
@@ -19,6 +21,7 @@ BUILD_SUMMARY_ARTIFACT_PATHS: Dict[str, str] = {
     'streamed_lookup_tail_leaf_equivalence': 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json',
     'streamed_lookup_tail_leaf_slot_allocation': 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json',
     'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
+    'modular_arithmetic_certificate': 'compiler_verification_project/artifacts/modular_arithmetic_certificate.json',
     'tail_macro_liveness': 'compiler_verification_project/artifacts/tail_macro_liveness.json',
     'tail_macro_reversibility': 'compiler_verification_project/artifacts/tail_macro_reversibility.json',
     'tail_macro_schedule_search': 'compiler_verification_project/artifacts/tail_macro_schedule_search.json',
@@ -37,6 +40,8 @@ BUILD_SUMMARY_ARTIFACT_PATHS: Dict[str, str] = {
     'logical_resource_ledger': 'compiler_verification_project/artifacts/logical_resource_ledger.json',
     'fallback_frontier_stress': 'compiler_verification_project/artifacts/fallback_frontier_stress.json',
     'reusable_chunk_tail_candidate': 'compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json',
+    'qroam_primitive_certificate': 'compiler_verification_project/artifacts/qroam_primitive_certificate.json',
+    'qroam_reference_crosscheck': 'compiler_verification_project/artifacts/qroam_reference_crosscheck.json',
     'reusable_chunk_lowering': 'compiler_verification_project/artifacts/reusable_chunk_lowering.json',
     'resource_liveness_certificate': 'compiler_verification_project/artifacts/resource_liveness_certificate.json',
     'materialized_circuit_manifest': 'compiler_verification_project/artifacts/materialized_circuit_manifest.json',

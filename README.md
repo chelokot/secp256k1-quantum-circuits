@@ -87,8 +87,10 @@ result is:
 
 ### SP1 attestation layer
 
-The repository now also ships a Google-like attestation at the exact
-compiler-family boundary. The public headline proof artifacts live under
+The repository now also ships a public SP1 attestation at the exact
+compiler-family boundary, similar in broad shape to Google's disclosure but
+with a public 8-case corpus and explicit proof-freshness checks. The public
+headline proof artifacts live under
 `compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/`
 and bind:
 
@@ -104,11 +106,20 @@ replays the leaf on every public case, checks the affine group law, and
 reconstructs the claimed exact non-Clifford and logical-qubit formulas. It also
 checks the resource certificate, including executable interval liveness,
 qchunk/QROAM-target concurrency, no full-coordinate lookup lane, and numeric
-owner capacity, before committing public values. The checked core, compressed,
-and Groth16 fixtures, compressed proof bundle, Groth16 proof bundle, wrap proof
-bundle, and matching Groth16 verifying key are all recorded in that candidate directory.
-Together these artifacts bind the public `36,767,692 / 1,199` claim and `8 / 8`
-public cases.
+owner capacity, before committing public values. The candidate directory records
+core, compressed, and Groth16 fixtures, compressed/Groth16 proof bundles, the
+wrap proof bundle, and the matching Groth16 verifying key. During source churn,
+`compiler_verification_project/scripts/proof_status.py` is the authority for
+whether those proof layers still bind the current input; after the latest
+resource-certificate binding changes, final compressed/Groth16 rebuild remains
+the release gate before claiming current proof freshness. Together these
+artifacts define the public `36,767,692 / 1,199` claim and `8 / 8` public cases.
+The compiler artifacts also include proof-bound generated QROAM,
+independent QROAM reference, and modular-arithmetic certificates. The QROAM
+reference keeps the selected 155-bit reusable chunk stream separate from the
+256-bit full-field ledger sweep, so reviewers can audit the selected lookup
+stream and the field-multiplication pseudo-Mersenne reduction without treating
+them as loose spreadsheet constants.
 This is similar in shape to Google's disclosure model, but it is still not a
 primitive-gate full-Shor proof.
 
@@ -245,7 +256,10 @@ From the repository root:
 ```bash
 python scripts/verify_all.py
 python compiler_verification_project/scripts/build.py
+python compiler_verification_project/scripts/build.py --target resource-zkp-and-public
+python compiler_verification_project/scripts/build.py --target zkp-and-public
 python compiler_verification_project/scripts/verify.py --cases 16
+python compiler_verification_project/scripts/proof_status.py
 python compiler_verification_project/scripts/verify_public_headline.py
 python compiler_verification_project/scripts/build_zkp_attestation_input.py --cases 8
 python compiler_verification_project/scripts/materialize_exact_circuits.py
@@ -259,8 +273,20 @@ it materializes the central public standard-QROM family and the internal minimum
 comparison family; use `--all-families` to dump every checked exact compiler
 family.
 
+Use `build.py --target resource-zkp-and-public` for the normal reusable-chunk
+resource edit loop: it refreshes `reusable_chunk_lowering.json`, the candidate
+ZKP input bundle, and the public headline JSON without rebuilding every compiler
+artifact. Use `build.py --target zkp-and-public` when only attestation wrapping
+metadata changed.
+Checked artifact tests reuse existing build/verification summaries by default;
+set `SECP256K1_OPEN_AUDIT_FORCE_REBUILD=1` only when you intentionally want a
+test run to regenerate those summaries.
+
 See `compiler_verification_project/README.md` for the SP1 execute/prove
 commands that reproduce the checked attestation bundle.
+`compiler_verification_project/scripts/proof_status.py` is the cheap preflight
+for proof freshness: it compares the current candidate input, public values,
+fixtures, proof binaries, and verifier key without invoking any prover.
 `compiler_verification_project/scripts/verify_public_headline.py` is the fast
 reviewer entrypoint for the checked public headline: by default it validates
 the public result, input, public values, source-document hashes, fixture

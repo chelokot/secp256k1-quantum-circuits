@@ -1,7 +1,7 @@
 {
   "proof": null,
   "proof_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin",
-  "proof_sha256": "49d81633c8d60d99f30d0874effc1687856eeddc74b7df578535ab5313d566e3",
+  "proof_sha256": "d66a8a10e4364f859d1207c1dc343d7c54a7c6a39a7058a7c05b1b5d7dd5c396",
   "proof_size_bytes": 1273162,
   "proof_system": "compressed",
   "public_values": {
@@ -14,12 +14,12 @@
     "family_sha256": "c1a1cd68e1c159353724cb3e21b98c65115b2add9930d247b3f5f0f85dd5ba20",
     "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
     "passed_case_count": 8,
-    "resource_certificate_sha256": "d37820bea8e18cab61a8db7ec90efd4fb12801e5398ae686648555bcf1065c53",
+    "resource_certificate_sha256": "9e6761fddca97566eeaa5105241af14b07f4dbf2f287cbe01bb5e83605e73085",
     "schema": "compiler-project-zkp-attestation-public-v2",
     "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1"
   },
   "schema": "compiler-project-zkp-attestation-fixture-v1",
-  "verification_key": "0x000468e7e74d2eccde25e6af5576efe93dfa7056aabd1e535598774df7a2c832",
+  "verification_key": "0x00a045504797672214fb629c1fce35cf1b76690546c4b61b13de48098fc749a8",
   "verifier_key_path": null,
   "verifier_key_sha256": null,
   "verifier_key_size_bytes": null

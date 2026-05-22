@@ -11,6 +11,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from proof_status import build_report as build_proof_status_report
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 ARTIFACT_ROOT = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
@@ -187,7 +189,10 @@ def build_metadata_report() -> dict[str, Any]:
     compressed_fixture = load_json(CANDIDATE_ROOT / 'zkp_attestation_fixture_compressed.json')
     groth16_fixture = load_json(CANDIDATE_ROOT / 'zkp_attestation_fixture_groth16.json')
     lowering = load_json(ARTIFACT_ROOT / 'reusable_chunk_lowering.json')
+    qroam_primitive = load_json(ARTIFACT_ROOT / 'qroam_primitive_certificate.json')
+    qroam_reference = load_json(ARTIFACT_ROOT / 'qroam_reference_crosscheck.json')
     tail_candidate = load_json(ARTIFACT_ROOT / 'reusable_chunk_tail_candidate.json')
+    proof_corpus_profiles = load_json(ARTIFACT_ROOT / 'proof_corpus_profiles.json')
 
     selected = public_result['selected_result']
     checked_artifacts = public_result['checked_artifacts']
@@ -198,7 +203,8 @@ def build_metadata_report() -> dict[str, Any]:
     check(checks, 'public_headline_stays_under_strict_goal', selected['non_clifford'] < 40_000_000 and selected['logical_qubits'] < 1200, '<40M non-Clifford and <1200 logical qubits', selected)
     check(checks, 'public_headline_matches_public_values', selected['name'] == public_values['selected_family_name'] and selected['non_clifford'] == public_values['expected_full_oracle_non_clifford'] and selected['logical_qubits'] == public_values['expected_total_logical_qubits'], public_values, selected)
     check(checks, 'public_values_match_input_digest_headers', all(public_values[key] == input_payload[key] == bound_documents[key] for key in bound_documents), bound_documents, {key: {'public_values': public_values[key], 'input': input_payload[key]} for key in bound_documents})
-    check(checks, 'case_counts_match_and_pass', selected['case_count'] == selected['passed_case_count'] == public_values['case_count'] == public_values['passed_case_count'] == 8, 8, {'selected': selected, 'public_values': public_values})
+    selected_profile = proof_corpus_profiles['profiles'][proof_corpus_profiles['selected_public_profile']]
+    check(checks, 'case_counts_match_selected_proof_profile_and_pass', selected['case_count'] == selected['passed_case_count'] == public_values['case_count'] == public_values['passed_case_count'] == selected_profile['case_count'], selected_profile, {'selected': selected, 'public_values': public_values})
 
     for label, record in checked_artifacts.items():
         verify_file_record(checks, label, record)
@@ -239,14 +245,19 @@ def build_metadata_report() -> dict[str, Any]:
     check(checks, 'leaf_document_chunk_shape_matches_checked_tail_contract', leaf_payload['instructions'][-1]['chunk_bits'] == executable_leaf['chunk_contract']['chunk_bits'] and leaf_payload['instructions'][-1]['chunk_count'] == executable_leaf['chunk_contract']['chunk_count'], executable_leaf['chunk_contract'], leaf_payload['instructions'][-1])
 
     check(checks, 'reusable_chunk_lowering_status_is_public_headline', lowering['status'] == 'proven_public_headline' and lowering['pass'] is True, 'proven_public_headline pass=true', {'status': lowering['status'], 'pass': lowering['pass']})
+    check(checks, 'reusable_chunk_binds_generated_qroam_primitive_certificate', qroam_primitive['pass'] is True and lowering['qroam_primitive_certificate'] == qroam_primitive and lowering['checks']['per_stream_cost_matches_generated_qroam_primitive'] is True, 'generated QROAM primitive certificate bound into reusable lowering', {'qroam_pass': qroam_primitive['pass'], 'lowering_check': lowering['checks'].get('per_stream_cost_matches_generated_qroam_primitive')})
+    check(checks, 'reusable_chunk_binds_independent_qroam_reference_crosscheck', qroam_reference['pass'] is True and lowering['qroam_reference_crosscheck'] == qroam_reference and lowering['checks']['per_stream_cost_matches_independent_qroam_reference_crosscheck'] is True, 'independent QROAM reference cross-check bound into reusable lowering', {'qroam_reference_pass': qroam_reference['pass'], 'lowering_check': lowering['checks'].get('per_stream_cost_matches_independent_qroam_reference_crosscheck')})
     executable_liveness = lowering['executable_liveness']
     check(checks, 'reusable_chunk_executable_liveness_recomputes_public_peak', executable_liveness['pass'] is True and executable_liveness['global_peak_live_qubits'] == public_values['expected_total_logical_qubits'], public_values['expected_total_logical_qubits'], executable_liveness)
     check(checks, 'reusable_chunk_executable_liveness_counts_qchunk_and_qroam_target_concurrently', executable_liveness['checks']['qroam_target_and_qchunk_are_concurrently_live'] is True and executable_liveness['checks']['no_full_coordinate_lane_wire_is_live'] is True, {'qchunk_and_qroam_target_concurrent': True, 'full_coordinate_lane_live': False}, executable_liveness['checks'])
+    counted_resource_ir = lowering['counted_resource_ir']
+    check(checks, 'reusable_chunk_counted_resource_ir_recomputes_public_totals', counted_resource_ir['pass'] is True and counted_resource_ir['recomputed_total_non_clifford'] == public_values['expected_full_oracle_non_clifford'] and counted_resource_ir['recomputed_peak_live_qubits'] == public_values['expected_total_logical_qubits'], {'non_clifford': public_values['expected_full_oracle_non_clifford'], 'logical_qubits': public_values['expected_total_logical_qubits']}, counted_resource_ir)
     check(checks, 'reusable_chunk_tail_status_is_public_headline', tail_candidate['status'] == 'proven_public_headline', 'proven_public_headline', tail_candidate['status'])
     check(checks, 'compressed_fixture_keeps_large_proof_out_of_line_but_bound', compressed_fixture['proof'] is None and compressed_fixture['proof_path'] is not None and compressed_fixture['proof_sha256'] is not None, 'out-of-line proof with digest', {'proof': compressed_fixture['proof'], 'proof_path': compressed_fixture['proof_path'], 'proof_sha256': compressed_fixture['proof_sha256']})
     check(checks, 'groth16_fixture_has_embedded_short_proof_and_bundle_digest', isinstance(groth16_fixture['proof'], str) and groth16_fixture['proof'].startswith('0x') and groth16_fixture['proof_sha256'] is not None, 'embedded Groth16 proof plus checked bundle digest', {'proof_prefix': str(groth16_fixture['proof'])[:10], 'proof_sha256': groth16_fixture['proof_sha256']})
 
     failed = [item for item in checks if not item['pass']]
+    proof_freshness = build_proof_status_report()
     return {
         'schema': 'compiler-project-public-headline-verification-v1',
         'metadata_pass': not failed,
@@ -259,6 +270,7 @@ def build_metadata_report() -> dict[str, Any]:
             'groth16_proof_sha256': checked_artifacts['groth16_proof']['sha256'],
             'groth16_verifier_key_sha256': checked_artifacts['groth16_verifier_key']['sha256'],
         },
+        'proof_freshness': proof_freshness,
         'checks': checks,
     }
 

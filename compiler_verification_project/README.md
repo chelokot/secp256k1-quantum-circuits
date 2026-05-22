@@ -50,12 +50,17 @@ What it does ship is:
 - `family_frontier.json` — exact whole-oracle frontier for the named compiler families
 - `full_raw32_oracle.json` — exact fully quantum schedule: 1 direct seed + 31 leaf calls
 - `exact_leaf_slot_allocation.json` — exact versioned live-range allocation of the checked leaf
+- `compiler_parameters.json` — versioned curve/window/QROAM/reusable-chunk parameter source with a stable digest
+- `proof_corpus_profiles.json` — versioned ZKP case-corpus profiles: current public smoke profile and Google-comparable release target
 - `arithmetic_lowerings.json` — generated primitive-operation inventories for the named arithmetic-kernel family
+- `modular_arithmetic_certificate.json` — proof-bound reduced-width executable pseudo-Mersenne arithmetic certificate plus 256-bit field-mul stage-count binding
 - `tail_macro_liveness.json` — generated diagnostic liveness pressure test for the `complete_a0_all_streamed_tail` formula DAG and the remaining three-slot schedule obligation
 - `tail_macro_reversibility.json` — generated raw-domain and valid-projective-subspace injectivity check for the tail macro's reversible boundary
 - `streamed_lookup_table_multiplier_resource.json` — explicit table-controlled multiplier resource contract for streamed lookup coordinate bits
 - `standard_qrom_lookup_assessment.json` — machine-checked assessment showing that the selected lookup/resource contract is a standard-QROM primitive-circuit result
 - `logical_resource_ledger.json` — generated peak-live-qubit owner ledger and QROAMClean block-size tradeoff sweep
+- `qroam_primitive_certificate.json` — generated QROAMClean `K=1` primitive-count certificate for the selected reusable chunk stream, including traversed compute/cleanup segment counts and target/junk workspace
+- `qroam_reference_crosscheck.json` — independent QROAMClean gate/workspace reference calculation plus reduced-domain table-select semantics; it separately checks the actual 155-bit reusable chunk stream and the full-field 256-bit ledger sweep before binding into the reusable-chunk resource document
 - `resource_liveness_certificate.json` — ZKP-bound liveness certificate deriving owner-capacity requirements from executable leaf liveness, QROAMClean workspace, and phase-shell lowering artifacts
 - `module_library.json` — arithmetic-kernel summary used by the frontier
 - `lookup_lowerings.json` — generated primitive-operation inventories for the named folded lookup families
@@ -109,8 +114,9 @@ the interface.
 The older `34,736,076 / 1,044` three-slot family remains checked as a reference
 boundary in `family_frontier.json`, `logical_resource_ledger.json`, and the
 root attestation bundle. The reusable-chunk candidate directory contains the
-checked core/compressed/Groth16 fixtures and proof bundles for the public
-`36,767,692 / 1,199` result.
+core/compressed/Groth16 fixtures and proof bundles for the public
+`36,767,692 / 1,199` result; use `proof_status.py --require-all-current` as the
+freshness gate after any resource-certificate or guest change.
 
 `standard_qrom_lookup_assessment.json` records the standard-QROM status and
 rejects the old bitwise-banked path-select boundary as a public standard-QROM
@@ -134,6 +140,9 @@ Its defining exact features are:
   **3-slot arithmetic peak**;
 - explicit arithmetic lowerings reconstruct the leaf-side non-Clifford totals
   from generated primitive-operation inventories instead of from naked opcode formulas;
+- the modular arithmetic certificate executes reduced-width pseudo-Mersenne
+  analogues exhaustively and binds the 256-bit field-mul reduction stage counts
+  back to the arithmetic lowering artifact;
 - explicit lookup lowerings reconstruct each lookup-family count from generated
   primitive-operation inventories instead of from naked family formulas;
 - explicit phase-shell lowerings reconstruct Hadamard, rotation, measurement,
@@ -214,11 +223,34 @@ From the repository root:
 
 ```bash
 python compiler_verification_project/scripts/build.py
+python compiler_verification_project/scripts/build.py --target resource-zkp-and-public
+python compiler_verification_project/scripts/build.py --target zkp-and-public
 python compiler_verification_project/scripts/verify.py --cases 16
+python compiler_verification_project/scripts/proof_status.py
 python compiler_verification_project/scripts/verify_public_headline.py
 python compiler_verification_project/scripts/build_zkp_attestation_input.py --cases 8
 python compiler_verification_project/scripts/materialize_exact_circuits.py
 ```
+
+Use `build.py --target resource-zkp-and-public` for the normal reusable-chunk
+resource edit loop: it refreshes `reusable_chunk_lowering.json`, the candidate
+ZKP input bundle, and the public headline JSON without rebuilding every compiler
+artifact. Use `build.py --target zkp-and-public` when only attestation wrapping
+metadata changed.
+Checked artifact tests reuse existing build/verification summaries by default;
+set `SECP256K1_OPEN_AUDIT_FORCE_REBUILD=1` only when you intentionally want a
+test run to regenerate those summaries.
+
+For a tight loop on one integrity layer, use `--groups` to avoid the semantic
+replay and artifact rewrite:
+
+```bash
+python compiler_verification_project/scripts/verify.py --summary --groups modular_arithmetic_certificate_checks qroam_primitive_certificate_checks qroam_reference_crosscheck_checks
+```
+
+The reusable-chunk SP1 resource contract also embeds the modular-arithmetic,
+QROAM primitive, and independent QROAM reference certificates, so changing any
+of them invalidates the proof input until the proof layers are rebuilt.
 
 `materialize_exact_circuits.py` writes ignored whole-oracle operation streams
 for the selected exact compiler families under
@@ -235,6 +267,13 @@ python compiler_verification_project/scripts/verify_public_headline.py
 python compiler_verification_project/scripts/verify_public_headline.py --verify-compressed
 python compiler_verification_project/scripts/verify_public_headline.py --verify-groth16
 ```
+
+During development, run
+`python compiler_verification_project/scripts/proof_status.py` before any heavy
+prover command. It reports whether core, compressed, and Groth16 fixtures still
+bind the current candidate input and checked proof binaries. The
+`--require-all-current` flag is a final-gate check: it exits nonzero when any
+proof layer is stale, without trying to rebuild it.
 
 The first command is metadata-only and validates the public headline, checked
 input, public values, committed source-document semantic hashes, fixtures,

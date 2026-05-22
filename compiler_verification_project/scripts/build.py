@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -14,28 +15,112 @@ if str(ROOT_SRC) not in sys.path:
     sys.path.insert(0, str(ROOT_SRC))
 
 from baselines import load_public_google_baseline_lines  # noqa: E402
-from project import build_all_artifacts, write_cain_transfer  # noqa: E402
+from common import dump_json, load_json  # noqa: E402
+from artifact_registry import BUILD_SUMMARY_ARTIFACT_PATHS, BUILD_SUMMARY_SCHEMA  # noqa: E402
+from project import FIELD_BITS, build_all_artifacts, write_cain_transfer  # noqa: E402
 from public_result import write_public_headline_result  # noqa: E402
+from qroam_reference_crosscheck import build_qroam_reference_crosscheck  # noqa: E402
+from reusable_chunk_lowering import build_reusable_chunk_lowering  # noqa: E402
 from zkp_attestation import write_zkp_attestation_inputs  # noqa: E402
 
 
-def main() -> None:
-    payload = build_all_artifacts()
-    payload['cain_transfer'] = write_cain_transfer()
-    payload['zkp_attestation'] = write_zkp_attestation_inputs()
+def build_candidate_zkp() -> None:
     candidate_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts' / 'zkp_attestation_reusable_chunk_candidate'
-    payload['zkp_attestation_reusable_chunk_candidate'] = write_zkp_attestation_inputs(
+    write_zkp_attestation_inputs(
         family_name='reusable-chunk',
         output_dir=candidate_dir,
     )
-    payload['public_headline_result'] = write_public_headline_result(
+
+
+def build_public_headline() -> None:
+    write_public_headline_result(
         baseline=load_public_google_baseline_lines(),
     )
+
+
+def build_reusable_chunk_resource() -> None:
+    artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
+    payload = build_reusable_chunk_lowering(
+        reusable_chunk_tail_candidate=load_json(artifact_dir / 'reusable_chunk_tail_candidate.json'),
+        fallback_frontier_stress=load_json(artifact_dir / 'fallback_frontier_stress.json'),
+        logical_resource_ledger=load_json(artifact_dir / 'logical_resource_ledger.json'),
+        arithmetic_lowerings=load_json(artifact_dir / 'arithmetic_lowerings.json'),
+        qroam_primitive_certificate=load_json(artifact_dir / 'qroam_primitive_certificate.json'),
+        qroam_reference_crosscheck=load_json(artifact_dir / 'qroam_reference_crosscheck.json'),
+        modular_arithmetic_certificate=load_json(artifact_dir / 'modular_arithmetic_certificate.json'),
+        field_bits=FIELD_BITS,
+    )
+    dump_json(artifact_dir / 'reusable_chunk_lowering.json', payload)
+
+
+def build_qroam_reference() -> None:
+    artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
+    payload = build_qroam_reference_crosscheck(
+        qroam_primitive_certificate=load_json(artifact_dir / 'qroam_primitive_certificate.json'),
+        logical_resource_ledger=load_json(artifact_dir / 'logical_resource_ledger.json'),
+    )
+    dump_json(artifact_dir / 'qroam_reference_crosscheck.json', payload)
+
+
+def build_summary_artifact() -> None:
+    artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
+    frontier = load_json(artifact_dir / 'family_frontier.json')
+    payload = {
+        'schema': BUILD_SUMMARY_SCHEMA,
+        'artifacts': dict(BUILD_SUMMARY_ARTIFACT_PATHS),
+        'headline': {
+            'best_gate_family': frontier['best_gate_family'],
+            'best_qubit_family': frontier['best_qubit_family'],
+            'best_google_low_gate_qubit_family': frontier['best_google_low_gate_qubit_family'],
+            'best_sub30m_qubit_family': frontier['best_sub30m_qubit_family'],
+            'public_headline_result_artifact': 'compiler_verification_project/artifacts/public_headline_result.json',
+        },
+        'notes': [
+            'Targeted build-summary refresh: artifact paths and headline references are read from checked registry and frontier artifacts.',
+            'Use --target all for a full compiler artifact rebuild.',
+        ],
+    }
+    dump_json(artifact_dir / 'build_summary.json', payload)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--target',
+        choices=('all', 'core-artifacts', 'build-summary', 'qroam-reference', 'reusable-chunk-resource', 'zkp', 'candidate-zkp', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'),
+        default='all',
+    )
+    args = parser.parse_args()
+    payload = {}
+    if args.target in ('all', 'core-artifacts'):
+        payload = build_all_artifacts()
+        payload['cain_transfer'] = write_cain_transfer()
+    if args.target in ('build-summary',):
+        build_summary_artifact()
+        payload['build_summary_artifact'] = 'compiler_verification_project/artifacts/build_summary.json'
+    if args.target in ('qroam-reference', 'resource-zkp-and-public'):
+        build_qroam_reference()
+        payload['qroam_reference_crosscheck'] = 'compiler_verification_project/artifacts/qroam_reference_crosscheck.json'
+    if args.target in ('reusable-chunk-resource', 'resource-zkp-and-public'):
+        build_reusable_chunk_resource()
+        payload['reusable_chunk_lowering'] = 'compiler_verification_project/artifacts/reusable_chunk_lowering.json'
+    if args.target in ('all', 'zkp', 'zkp-and-public'):
+        payload['zkp_attestation'] = write_zkp_attestation_inputs()
+    if args.target in ('all', 'candidate-zkp', 'zkp-and-public', 'resource-zkp-and-public'):
+        build_candidate_zkp()
+        payload['zkp_attestation_reusable_chunk_candidate'] = 'compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json'
+    if args.target in ('all', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
+        build_public_headline()
+        payload['public_headline_result'] = 'compiler_verification_project/artifacts/public_headline_result.json'
     print(json.dumps({
-        'build_summary': payload['frontier']['best_gate_family'],
-        'public_headline_result': 'compiler_verification_project/artifacts/public_headline_result.json',
-        'zkp_attestation_input': 'compiler_verification_project/artifacts/zkp_attestation_input.json',
-        'zkp_attestation_reusable_chunk_candidate_input': 'compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json',
+        'target': args.target,
+        'build_summary': payload['frontier']['best_gate_family'] if 'frontier' in payload else None,
+        'build_summary_artifact': payload.get('build_summary_artifact'),
+        'qroam_reference_crosscheck': payload.get('qroam_reference_crosscheck'),
+        'reusable_chunk_lowering': payload.get('reusable_chunk_lowering'),
+        'public_headline_result': payload.get('public_headline_result'),
+        'zkp_attestation_input': 'compiler_verification_project/artifacts/zkp_attestation_input.json' if 'zkp_attestation' in payload else None,
+        'zkp_attestation_reusable_chunk_candidate_input': payload.get('zkp_attestation_reusable_chunk_candidate'),
         'artifact_dir': 'compiler_verification_project/artifacts',
     }, indent=2))
 

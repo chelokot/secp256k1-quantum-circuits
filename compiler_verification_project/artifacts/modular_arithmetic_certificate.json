@@ -1,0 +1,265 @@
+{
+  "schema": "compiler-project-modular-arithmetic-certificate-v1",
+  "purpose": "Executable reduced-width certificate for the pseudo-Mersenne modular arithmetic schedule used by the counted field_mul lowering.",
+  "secp256k1_parameters": {
+    "field_bits": 256,
+    "modulus_hex": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
+    "pseudo_mersenne_identity": "2^256 = 2^32 + 977 mod p",
+    "shift": 32,
+    "low_term": 977,
+    "canonical_subtract_passes": 2
+  },
+  "field_mul_stage_count_certificate": {
+    "chain_steps_for_low_term": 14,
+    "second_fold_width": 43,
+    "expected_stage_ccx": {
+      "partial_products": 65536,
+      "controlled_add_path": 255,
+      "controlled_sub_path": 256,
+      "pseudo_mersenne_first_fold": 4305,
+      "pseudo_mersenne_second_fold": 630,
+      "pseudo_mersenne_canonicalize": 510
+    },
+    "observed_stage_ccx": {
+      "partial_products": 65536,
+      "controlled_add_path": 255,
+      "controlled_sub_path": 256,
+      "pseudo_mersenne_first_fold": 4305,
+      "pseudo_mersenne_second_fold": 630,
+      "pseudo_mersenne_canonicalize": 510
+    },
+    "expected_total_ccx": 71492,
+    "observed_total_ccx": 71492,
+    "stage_counts_match": true
+  },
+  "reduced_width_exhaustive_cases": [
+    {
+      "field_bits": 5,
+      "shift": 2,
+      "low_term": 5,
+      "modulus": 23,
+      "rows_checked": 529,
+      "operations_checked": [
+        "add",
+        "sub",
+        "mul",
+        "mul_const_21"
+      ],
+      "sample_traces": [
+        {
+          "left": 0,
+          "right": 0,
+          "product_trace": {
+            "input": 0,
+            "modulus": 23,
+            "first_high": 0,
+            "first_fold": 0,
+            "second_high": 0,
+            "second_fold": 0,
+            "subtract_trace": [
+              {
+                "did_subtract": false,
+                "value_after_pass": 0
+              },
+              {
+                "did_subtract": false,
+                "value_after_pass": 0
+              }
+            ],
+            "canonical": 0
+          }
+        },
+        {
+          "left": 0,
+          "right": 2,
+          "product_trace": {
+            "input": 0,
+            "modulus": 23,
+            "first_high": 0,
+            "first_fold": 0,
+            "second_high": 0,
+            "second_fold": 0,
+            "subtract_trace": [
+              {
+                "did_subtract": false,
+                "value_after_pass": 0
+              },
+              {
+                "did_subtract": false,
+                "value_after_pass": 0
+              }
+            ],
+            "canonical": 0
+          }
+        },
+        {
+          "left": 0,
+          "right": 22,
+          "product_trace": {
+            "input": 0,
+            "modulus": 23,
+            "first_high": 0,
+            "first_fold": 0,
+            "second_high": 0,
+            "second_fold": 0,
+            "subtract_trace": [
+              {
+                "did_subtract": false,
+                "value_after_pass": 0
+              },
+              {
+                "did_subtract": false,
+                "value_after_pass": 0
+              }
+            ],
+            "canonical": 0
+          }
+        },
+        {
+          "left": 1,
+          "right": 0,
+          "product_trace": {
+            "input": 0,
+            "modulus": 23,
+            "first_high": 0,
+            "first_fold": 0,
+            "second_high": 0,
+            "second_fold": 0,
+            "subtract_trace": [
+              {
+                "did_subtract": false,
+                "value_after_pass": 0
+              },
+              {
+                "did_subtract": false,
+                "value_after_pass": 0
+              }
+            ],
+            "canonical": 0
+          }
+        }
+      ],
+      "failures": [],
+      "pass": true
+    },
+    {
+      "field_bits": 6,
+      "shift": 3,
+      "low_term": 3,
+      "modulus": 53,
+      "rows_checked": 2809,
+      "operations_checked": [
+        "add",
+        "sub",
+        "mul",
+        "mul_const_21"
+      ],
+      "sample_traces": [
+        {
+          "left": 0,
+          "right": 0,
+          "product_trace": {
+            "input": 0,
+            "modulus": 53,
+            "first_high": 0,
+            "first_fold": 0,
+            "second_high": 0,
+            "second_fold": 0,
+            "subtract_trace": [
+              {
+                "did_subtract": false,
+                "value_after_pass": 0
+              },
+              {
+                "did_subtract": false,
+                "value_after_pass": 0
+              }
+            ],
+            "canonical": 0
+          }
+        },
+        {
+          "left": 0,
+          "right": 2,
+          "product_trace": {
+            "input": 0,
+            "modulus": 53,
+            "first_high": 0,
+            "first_fold": 0,
+            "second_high": 0,
+            "second_fold": 0,
+            "subtract_trace": [
+              {
+                "did_subtract": false,
+                "value_after_pass": 0
+              },
+              {
+                "did_subtract": false,
+                "value_after_pass": 0
+              }
+            ],
+            "canonical": 0
+          }
+        },
+        {
+          "left": 0,
+          "right": 52,
+          "product_trace": {
+            "input": 0,
+            "modulus": 53,
+            "first_high": 0,
+            "first_fold": 0,
+            "second_high": 0,
+            "second_fold": 0,
+            "subtract_trace": [
+              {
+                "did_subtract": false,
+                "value_after_pass": 0
+              },
+              {
+                "did_subtract": false,
+                "value_after_pass": 0
+              }
+            ],
+            "canonical": 0
+          }
+        },
+        {
+          "left": 1,
+          "right": 0,
+          "product_trace": {
+            "input": 0,
+            "modulus": 53,
+            "first_high": 0,
+            "first_fold": 0,
+            "second_high": 0,
+            "second_fold": 0,
+            "subtract_trace": [
+              {
+                "did_subtract": false,
+                "value_after_pass": 0
+              },
+              {
+                "did_subtract": false,
+                "value_after_pass": 0
+              }
+            ],
+            "canonical": 0
+          }
+        }
+      ],
+      "failures": [],
+      "pass": true
+    }
+  ],
+  "checks": {
+    "secp256k1_modulus_matches_common_constant": true,
+    "field_mul_stage_counts_match_arithmetic_lowering": true,
+    "reduced_width_cases_exhaustive_pass": true
+  },
+  "pass": true,
+  "boundary": [
+    "This certificate executes the modular reduction algorithm on reduced-width pseudo-Mersenne analogues and binds the 256-bit stage counts back to arithmetic_lowerings.json.",
+    "It is not yet a Clifford-complete reversible netlist for every arithmetic opcode."
+  ]
+}

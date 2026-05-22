@@ -4,9 +4,9 @@
   "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
   "claim_sha256": "2a098c6004436f393953eed4bcda8c000ad6c3bca81f1c91f2c7b57b3e0413e5",
   "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
-  "family_sha256": "c1a1cd68e1c159353724cb3e21b98c65115b2add9930d247b3f5f0f85dd5ba20",
+  "family_sha256": "8b28e7f1c9badc9860bc81f25fe14deb51f71d69396879a092e06c5da8c9e84e",
   "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
-  "resource_certificate_sha256": "d37820bea8e18cab61a8db7ec90efd4fb12801e5398ae686648555bcf1065c53",
+  "resource_certificate_sha256": "de714ef88490ba507a10fe3efe518a70104fd66114d90b871829df181b60d68e",
   "claim_document": {
     "document_type": "attestation_claim",
     "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_claim.json",
@@ -140,7 +140,7 @@
     "document_type": "compiler_family_summary",
     "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_family.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "c1a1cd68e1c159353724cb3e21b98c65115b2add9930d247b3f5f0f85dd5ba20",
+    "sha256": "8b28e7f1c9badc9860bc81f25fe14deb51f71d69396879a092e06c5da8c9e84e",
     "payload": {
       "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
       "summary": "Candidate reusable-chunk standard-QROAM family: four arithmetic slots, one reusable 155-bit QROAM chunk target, chunked table-controlled coordinate multipliers, and semiclassical QFT.",
@@ -165,7 +165,7 @@
       "phase_shell_rotation_depth": 511,
       "total_measurements": 0,
       "notes": [
-        "This family is the checked public headline after compressed and Groth16 artifacts were rebuilt and verified from checked branch state.",
+        "This family is the checked resource headline; compressed and Groth16 proof freshness is separately gated by proof_status.py --require-all-current.",
         "Its resource certificate is compiler_verification_project/artifacts/reusable_chunk_lowering.json.",
         "The table-controlled multiplier arithmetic bound is derived from chunk effective widths 155 + 101 and the inherited full-width partial-product grid."
       ]
@@ -314,14 +314,17 @@
     "document_type": "reusable_chunk_lowering",
     "artifact_path": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "d37820bea8e18cab61a8db7ec90efd4fb12801e5398ae686648555bcf1065c53",
+    "sha256": "de714ef88490ba507a10fe3efe518a70104fd66114d90b871829df181b60d68e",
     "payload": {
       "schema": "compiler-project-reusable-chunk-lowering-v2",
       "status": "proven_public_headline",
       "source_artifacts": {
         "reusable_chunk_tail_candidate": "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
         "fallback_frontier_stress": "compiler_verification_project/artifacts/fallback_frontier_stress.json",
-        "logical_resource_ledger": "compiler_verification_project/artifacts/logical_resource_ledger.json"
+        "logical_resource_ledger": "compiler_verification_project/artifacts/logical_resource_ledger.json",
+        "qroam_primitive_certificate": "compiler_verification_project/artifacts/qroam_primitive_certificate.json",
+        "qroam_reference_crosscheck": "compiler_verification_project/artifacts/qroam_reference_crosscheck.json",
+        "modular_arithmetic_certificate": "compiler_verification_project/artifacts/modular_arithmetic_certificate.json"
       },
       "executable_contract": {
         "variant": "a0_complete_reusable_chunk_tail_candidate",
@@ -474,6 +477,1501 @@
         "lookup_compute_non_clifford": 32768,
         "measured_uncompute_non_clifford": 32768,
         "per_stream_non_clifford": 65536
+      },
+      "qroam_primitive_certificate": {
+        "schema": "compiler-project-qroam-k1-primitive-certificate-v1",
+        "construction": "standard QROAMClean K=1 unary-iteration primitive over the full folded lookup domain",
+        "parameters": {
+          "domain_size": 32768,
+          "target_bits": 155,
+          "block_size": 1,
+          "segment_size": 4096
+        },
+        "wire_catalog": {
+          "selection_register": {
+            "role": "folded table address",
+            "qubits": 15,
+            "logical_owner": "caller_control_registers"
+          },
+          "target_register": {
+            "role": "QROAM target chunk",
+            "qubits": 155,
+            "logical_owner": "lookup_workspace"
+          },
+          "junk_registers": {
+            "role": "QROAMClean junk registers",
+            "register_count": 0,
+            "qubits": 0,
+            "logical_owner": "lookup_workspace"
+          }
+        },
+        "operation_stream": {
+          "operation_schema": "qroamclean-k1-unary-iteration-step-v1",
+          "segments": [
+            {
+              "phase": "compute",
+              "start_address": 0,
+              "end_address_exclusive": 4096,
+              "operation_count": 4096,
+              "ccx": 4096,
+              "sha256": "5a3205fe608b5f245e42f64f40e4414cdac537178b30602588232e2be016ad13"
+            },
+            {
+              "phase": "compute",
+              "start_address": 4096,
+              "end_address_exclusive": 8192,
+              "operation_count": 4096,
+              "ccx": 4096,
+              "sha256": "a594f084c6f3cf3a603c4eab021a14ca4e229e24a7e33b98e320c5aea344419d"
+            },
+            {
+              "phase": "compute",
+              "start_address": 8192,
+              "end_address_exclusive": 12288,
+              "operation_count": 4096,
+              "ccx": 4096,
+              "sha256": "aef30cf3b3b2f4a74b3b101694b8c95f5ee05905dc016db44817d91a43a841f9"
+            },
+            {
+              "phase": "compute",
+              "start_address": 12288,
+              "end_address_exclusive": 16384,
+              "operation_count": 4096,
+              "ccx": 4096,
+              "sha256": "73d586c06888b85ea1960b6a0ff67aa3fc6e366149b1c967a98314c3d216390d"
+            },
+            {
+              "phase": "compute",
+              "start_address": 16384,
+              "end_address_exclusive": 20480,
+              "operation_count": 4096,
+              "ccx": 4096,
+              "sha256": "c68fc829523acf80461b5d4d9626b8a9491b288ef04782cedd757f3a57070ed8"
+            },
+            {
+              "phase": "compute",
+              "start_address": 20480,
+              "end_address_exclusive": 24576,
+              "operation_count": 4096,
+              "ccx": 4096,
+              "sha256": "17ac86ace23504f00f06c2f46eec29356973b86302add49fa441aea643fc0bfe"
+            },
+            {
+              "phase": "compute",
+              "start_address": 24576,
+              "end_address_exclusive": 28672,
+              "operation_count": 4096,
+              "ccx": 4096,
+              "sha256": "00d1ff812cc5c664e5420e998be6d486310f172f78e520cec5421e8f0283e6cd"
+            },
+            {
+              "phase": "compute",
+              "start_address": 28672,
+              "end_address_exclusive": 32768,
+              "operation_count": 4096,
+              "ccx": 4096,
+              "sha256": "d096976dcbe8c9d3912c27ed2f7f458a7274c0e6e70e5ab6ec6a771909cc1d7e"
+            },
+            {
+              "phase": "measured_uncompute",
+              "start_address": 0,
+              "end_address_exclusive": 4096,
+              "operation_count": 4096,
+              "ccx": 4096,
+              "sha256": "2a556222dfe51e42b09bc8e8646a7ca78fbf43b8776392d368bbbf27a68fee92"
+            },
+            {
+              "phase": "measured_uncompute",
+              "start_address": 4096,
+              "end_address_exclusive": 8192,
+              "operation_count": 4096,
+              "ccx": 4096,
+              "sha256": "0dafb3452a6b3e06024003062a6a409a187504913836afb4f7207e77a5bb68d6"
+            },
+            {
+              "phase": "measured_uncompute",
+              "start_address": 8192,
+              "end_address_exclusive": 12288,
+              "operation_count": 4096,
+              "ccx": 4096,
+              "sha256": "11650d64aef263af960dcc266937fe47ea1ef10f92836bc068a0f8b989fca012"
+            },
+            {
+              "phase": "measured_uncompute",
+              "start_address": 12288,
+              "end_address_exclusive": 16384,
+              "operation_count": 4096,
+              "ccx": 4096,
+              "sha256": "d1d6aafdf22b7743fe5260cfe26828f10358be735b9bd90f785becccb5aed381"
+            },
+            {
+              "phase": "measured_uncompute",
+              "start_address": 16384,
+              "end_address_exclusive": 20480,
+              "operation_count": 4096,
+              "ccx": 4096,
+              "sha256": "63ae4140a030cd2ef5cf28622482da0f8906ff9074dfab64a0c0c30b0455420b"
+            },
+            {
+              "phase": "measured_uncompute",
+              "start_address": 20480,
+              "end_address_exclusive": 24576,
+              "operation_count": 4096,
+              "ccx": 4096,
+              "sha256": "6e892de8e10699eb5b98d9802370eadc0e2ad051a4722fb46100fc659568c72b"
+            },
+            {
+              "phase": "measured_uncompute",
+              "start_address": 24576,
+              "end_address_exclusive": 28672,
+              "operation_count": 4096,
+              "ccx": 4096,
+              "sha256": "ef58ff7cdee2902843ea435dd13e768fcc9ce6270d63dae1a10ee80760a9c39e"
+            },
+            {
+              "phase": "measured_uncompute",
+              "start_address": 28672,
+              "end_address_exclusive": 32768,
+              "operation_count": 4096,
+              "ccx": 4096,
+              "sha256": "a5be377d32d8cf09f694e21d435a0ef049c7d87dcba56ba62ea4d50e23da21ba"
+            }
+          ],
+          "segment_count": 16,
+          "segment_merkle_root_sha256": "4adf8b1389ac2ad67551a4a058377b919ac446b88ae22da3ab68bc84f2156cb5"
+        },
+        "traversed_counts": {
+          "lookup_compute_non_clifford": 32768,
+          "measured_uncompute_non_clifford": 32768,
+          "per_stream_non_clifford": 65536,
+          "target_register_qubits": 155,
+          "junk_register_qubits": 0,
+          "target_plus_junk_qubits": 155
+        },
+        "qroamclean_cost_model": {
+          "domain_size": 32768,
+          "field_bits": 155,
+          "block_size": 1,
+          "target_register_qubits": 155,
+          "junk_register_count": 0,
+          "junk_register_qubits": 0,
+          "target_plus_junk_qubits": 155,
+          "lookup_compute_non_clifford": 32768,
+          "measured_uncompute_non_clifford": 32768,
+          "per_stream_non_clifford": 65536
+        },
+        "checks": {
+          "block_size_is_k1": true,
+          "segment_rows_cover_compute_domain": true,
+          "segment_rows_cover_cleanup_domain": true,
+          "traversed_counts_match_qroamclean_cost": true,
+          "workspace_matches_cost_model": true,
+          "no_junk_registers_for_k1": true
+        },
+        "pass": true,
+        "notes": [
+          "This is a compact deterministic primitive-count certificate, not a Clifford-complete bit-level QROAM netlist.",
+          "Counts are obtained by traversing generated compute and measured-uncompute unary-iteration segments, then checked against the QROAMClean K=1 resource rule."
+        ]
+      },
+      "qroam_reference_crosscheck": {
+        "schema": "compiler-project-qroam-reference-crosscheck-v1",
+        "scope": "independent closed-form QROAMClean cost/workspace reference plus reduced-domain QROAM table-select semantics",
+        "independence_boundary": "does not import production resource_ledger.qroam_clean_stream_cost",
+        "selected_reference": {
+          "domain_size": 32768,
+          "target_bits": 155,
+          "block_size": 1,
+          "address_blocks": 32768,
+          "target_register_qubits": 155,
+          "junk_register_count": 0,
+          "junk_register_qubits": 0,
+          "target_plus_junk_qubits": 155,
+          "lookup_compute_non_clifford": 32768,
+          "measured_uncompute_non_clifford": 32768,
+          "per_stream_non_clifford": 65536
+        },
+        "ledger_selected_reference": {
+          "domain_size": 32768,
+          "target_bits": 256,
+          "block_size": 1,
+          "address_blocks": 32768,
+          "target_register_qubits": 256,
+          "junk_register_count": 0,
+          "junk_register_qubits": 0,
+          "target_plus_junk_qubits": 256,
+          "lookup_compute_non_clifford": 32768,
+          "measured_uncompute_non_clifford": 32768,
+          "per_stream_non_clifford": 65536
+        },
+        "ledger_sweep_crosscheck": [
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 1,
+            "address_blocks": 32768,
+            "target_register_qubits": 256,
+            "junk_register_count": 0,
+            "junk_register_qubits": 0,
+            "target_plus_junk_qubits": 256,
+            "lookup_compute_non_clifford": 32768,
+            "measured_uncompute_non_clifford": 32768,
+            "per_stream_non_clifford": 65536,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 2,
+            "address_blocks": 16384,
+            "target_register_qubits": 256,
+            "junk_register_count": 1,
+            "junk_register_qubits": 256,
+            "target_plus_junk_qubits": 512,
+            "lookup_compute_non_clifford": 16640,
+            "measured_uncompute_non_clifford": 16385,
+            "per_stream_non_clifford": 33025,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 3,
+            "address_blocks": 10923,
+            "target_register_qubits": 256,
+            "junk_register_count": 2,
+            "junk_register_qubits": 512,
+            "target_plus_junk_qubits": 768,
+            "lookup_compute_non_clifford": 11435,
+            "measured_uncompute_non_clifford": 10925,
+            "per_stream_non_clifford": 22360,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 4,
+            "address_blocks": 8192,
+            "target_register_qubits": 256,
+            "junk_register_count": 3,
+            "junk_register_qubits": 768,
+            "target_plus_junk_qubits": 1024,
+            "lookup_compute_non_clifford": 8960,
+            "measured_uncompute_non_clifford": 8195,
+            "per_stream_non_clifford": 17155,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 5,
+            "address_blocks": 6554,
+            "target_register_qubits": 256,
+            "junk_register_count": 4,
+            "junk_register_qubits": 1024,
+            "target_plus_junk_qubits": 1280,
+            "lookup_compute_non_clifford": 7578,
+            "measured_uncompute_non_clifford": 6558,
+            "per_stream_non_clifford": 14136,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 6,
+            "address_blocks": 5462,
+            "target_register_qubits": 256,
+            "junk_register_count": 5,
+            "junk_register_qubits": 1280,
+            "target_plus_junk_qubits": 1536,
+            "lookup_compute_non_clifford": 6742,
+            "measured_uncompute_non_clifford": 5467,
+            "per_stream_non_clifford": 12209,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 7,
+            "address_blocks": 4682,
+            "target_register_qubits": 256,
+            "junk_register_count": 6,
+            "junk_register_qubits": 1536,
+            "target_plus_junk_qubits": 1792,
+            "lookup_compute_non_clifford": 6218,
+            "measured_uncompute_non_clifford": 4688,
+            "per_stream_non_clifford": 10906,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 8,
+            "address_blocks": 4096,
+            "target_register_qubits": 256,
+            "junk_register_count": 7,
+            "junk_register_qubits": 1792,
+            "target_plus_junk_qubits": 2048,
+            "lookup_compute_non_clifford": 5888,
+            "measured_uncompute_non_clifford": 4103,
+            "per_stream_non_clifford": 9991,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 9,
+            "address_blocks": 3641,
+            "target_register_qubits": 256,
+            "junk_register_count": 8,
+            "junk_register_qubits": 2048,
+            "target_plus_junk_qubits": 2304,
+            "lookup_compute_non_clifford": 5689,
+            "measured_uncompute_non_clifford": 3649,
+            "per_stream_non_clifford": 9338,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 10,
+            "address_blocks": 3277,
+            "target_register_qubits": 256,
+            "junk_register_count": 9,
+            "junk_register_qubits": 2304,
+            "target_plus_junk_qubits": 2560,
+            "lookup_compute_non_clifford": 5581,
+            "measured_uncompute_non_clifford": 3286,
+            "per_stream_non_clifford": 8867,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 11,
+            "address_blocks": 2979,
+            "target_register_qubits": 256,
+            "junk_register_count": 10,
+            "junk_register_qubits": 2560,
+            "target_plus_junk_qubits": 2816,
+            "lookup_compute_non_clifford": 5539,
+            "measured_uncompute_non_clifford": 2989,
+            "per_stream_non_clifford": 8528,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 12,
+            "address_blocks": 2731,
+            "target_register_qubits": 256,
+            "junk_register_count": 11,
+            "junk_register_qubits": 2816,
+            "target_plus_junk_qubits": 3072,
+            "lookup_compute_non_clifford": 5547,
+            "measured_uncompute_non_clifford": 2742,
+            "per_stream_non_clifford": 8289,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 13,
+            "address_blocks": 2521,
+            "target_register_qubits": 256,
+            "junk_register_count": 12,
+            "junk_register_qubits": 3072,
+            "target_plus_junk_qubits": 3328,
+            "lookup_compute_non_clifford": 5593,
+            "measured_uncompute_non_clifford": 2533,
+            "per_stream_non_clifford": 8126,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 14,
+            "address_blocks": 2341,
+            "target_register_qubits": 256,
+            "junk_register_count": 13,
+            "junk_register_qubits": 3328,
+            "target_plus_junk_qubits": 3584,
+            "lookup_compute_non_clifford": 5669,
+            "measured_uncompute_non_clifford": 2354,
+            "per_stream_non_clifford": 8023,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 15,
+            "address_blocks": 2185,
+            "target_register_qubits": 256,
+            "junk_register_count": 14,
+            "junk_register_qubits": 3584,
+            "target_plus_junk_qubits": 3840,
+            "lookup_compute_non_clifford": 5769,
+            "measured_uncompute_non_clifford": 2199,
+            "per_stream_non_clifford": 7968,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 16,
+            "address_blocks": 2048,
+            "target_register_qubits": 256,
+            "junk_register_count": 15,
+            "junk_register_qubits": 3840,
+            "target_plus_junk_qubits": 4096,
+            "lookup_compute_non_clifford": 5888,
+            "measured_uncompute_non_clifford": 2063,
+            "per_stream_non_clifford": 7951,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 17,
+            "address_blocks": 1928,
+            "target_register_qubits": 256,
+            "junk_register_count": 16,
+            "junk_register_qubits": 4096,
+            "target_plus_junk_qubits": 4352,
+            "lookup_compute_non_clifford": 6024,
+            "measured_uncompute_non_clifford": 1944,
+            "per_stream_non_clifford": 7968,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 18,
+            "address_blocks": 1821,
+            "target_register_qubits": 256,
+            "junk_register_count": 17,
+            "junk_register_qubits": 4352,
+            "target_plus_junk_qubits": 4608,
+            "lookup_compute_non_clifford": 6173,
+            "measured_uncompute_non_clifford": 1838,
+            "per_stream_non_clifford": 8011,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 19,
+            "address_blocks": 1725,
+            "target_register_qubits": 256,
+            "junk_register_count": 18,
+            "junk_register_qubits": 4608,
+            "target_plus_junk_qubits": 4864,
+            "lookup_compute_non_clifford": 6333,
+            "measured_uncompute_non_clifford": 1743,
+            "per_stream_non_clifford": 8076,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 20,
+            "address_blocks": 1639,
+            "target_register_qubits": 256,
+            "junk_register_count": 19,
+            "junk_register_qubits": 4864,
+            "target_plus_junk_qubits": 5120,
+            "lookup_compute_non_clifford": 6503,
+            "measured_uncompute_non_clifford": 1658,
+            "per_stream_non_clifford": 8161,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 21,
+            "address_blocks": 1561,
+            "target_register_qubits": 256,
+            "junk_register_count": 20,
+            "junk_register_qubits": 5120,
+            "target_plus_junk_qubits": 5376,
+            "lookup_compute_non_clifford": 6681,
+            "measured_uncompute_non_clifford": 1581,
+            "per_stream_non_clifford": 8262,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 22,
+            "address_blocks": 1490,
+            "target_register_qubits": 256,
+            "junk_register_count": 21,
+            "junk_register_qubits": 5376,
+            "target_plus_junk_qubits": 5632,
+            "lookup_compute_non_clifford": 6866,
+            "measured_uncompute_non_clifford": 1511,
+            "per_stream_non_clifford": 8377,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 23,
+            "address_blocks": 1425,
+            "target_register_qubits": 256,
+            "junk_register_count": 22,
+            "junk_register_qubits": 5632,
+            "target_plus_junk_qubits": 5888,
+            "lookup_compute_non_clifford": 7057,
+            "measured_uncompute_non_clifford": 1447,
+            "per_stream_non_clifford": 8504,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 24,
+            "address_blocks": 1366,
+            "target_register_qubits": 256,
+            "junk_register_count": 23,
+            "junk_register_qubits": 5888,
+            "target_plus_junk_qubits": 6144,
+            "lookup_compute_non_clifford": 7254,
+            "measured_uncompute_non_clifford": 1389,
+            "per_stream_non_clifford": 8643,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 25,
+            "address_blocks": 1311,
+            "target_register_qubits": 256,
+            "junk_register_count": 24,
+            "junk_register_qubits": 6144,
+            "target_plus_junk_qubits": 6400,
+            "lookup_compute_non_clifford": 7455,
+            "measured_uncompute_non_clifford": 1335,
+            "per_stream_non_clifford": 8790,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 26,
+            "address_blocks": 1261,
+            "target_register_qubits": 256,
+            "junk_register_count": 25,
+            "junk_register_qubits": 6400,
+            "target_plus_junk_qubits": 6656,
+            "lookup_compute_non_clifford": 7661,
+            "measured_uncompute_non_clifford": 1286,
+            "per_stream_non_clifford": 8947,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 27,
+            "address_blocks": 1214,
+            "target_register_qubits": 256,
+            "junk_register_count": 26,
+            "junk_register_qubits": 6656,
+            "target_plus_junk_qubits": 6912,
+            "lookup_compute_non_clifford": 7870,
+            "measured_uncompute_non_clifford": 1240,
+            "per_stream_non_clifford": 9110,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 28,
+            "address_blocks": 1171,
+            "target_register_qubits": 256,
+            "junk_register_count": 27,
+            "junk_register_qubits": 6912,
+            "target_plus_junk_qubits": 7168,
+            "lookup_compute_non_clifford": 8083,
+            "measured_uncompute_non_clifford": 1198,
+            "per_stream_non_clifford": 9281,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 29,
+            "address_blocks": 1130,
+            "target_register_qubits": 256,
+            "junk_register_count": 28,
+            "junk_register_qubits": 7168,
+            "target_plus_junk_qubits": 7424,
+            "lookup_compute_non_clifford": 8298,
+            "measured_uncompute_non_clifford": 1158,
+            "per_stream_non_clifford": 9456,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 30,
+            "address_blocks": 1093,
+            "target_register_qubits": 256,
+            "junk_register_count": 29,
+            "junk_register_qubits": 7424,
+            "target_plus_junk_qubits": 7680,
+            "lookup_compute_non_clifford": 8517,
+            "measured_uncompute_non_clifford": 1122,
+            "per_stream_non_clifford": 9639,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 31,
+            "address_blocks": 1058,
+            "target_register_qubits": 256,
+            "junk_register_count": 30,
+            "junk_register_qubits": 7680,
+            "target_plus_junk_qubits": 7936,
+            "lookup_compute_non_clifford": 8738,
+            "measured_uncompute_non_clifford": 1088,
+            "per_stream_non_clifford": 9826,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 32,
+            "address_blocks": 1024,
+            "target_register_qubits": 256,
+            "junk_register_count": 31,
+            "junk_register_qubits": 7936,
+            "target_plus_junk_qubits": 8192,
+            "lookup_compute_non_clifford": 8960,
+            "measured_uncompute_non_clifford": 1055,
+            "per_stream_non_clifford": 10015,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 33,
+            "address_blocks": 993,
+            "target_register_qubits": 256,
+            "junk_register_count": 32,
+            "junk_register_qubits": 8192,
+            "target_plus_junk_qubits": 8448,
+            "lookup_compute_non_clifford": 9185,
+            "measured_uncompute_non_clifford": 1025,
+            "per_stream_non_clifford": 10210,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 34,
+            "address_blocks": 964,
+            "target_register_qubits": 256,
+            "junk_register_count": 33,
+            "junk_register_qubits": 8448,
+            "target_plus_junk_qubits": 8704,
+            "lookup_compute_non_clifford": 9412,
+            "measured_uncompute_non_clifford": 997,
+            "per_stream_non_clifford": 10409,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 35,
+            "address_blocks": 937,
+            "target_register_qubits": 256,
+            "junk_register_count": 34,
+            "junk_register_qubits": 8704,
+            "target_plus_junk_qubits": 8960,
+            "lookup_compute_non_clifford": 9641,
+            "measured_uncompute_non_clifford": 971,
+            "per_stream_non_clifford": 10612,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 36,
+            "address_blocks": 911,
+            "target_register_qubits": 256,
+            "junk_register_count": 35,
+            "junk_register_qubits": 8960,
+            "target_plus_junk_qubits": 9216,
+            "lookup_compute_non_clifford": 9871,
+            "measured_uncompute_non_clifford": 946,
+            "per_stream_non_clifford": 10817,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 37,
+            "address_blocks": 886,
+            "target_register_qubits": 256,
+            "junk_register_count": 36,
+            "junk_register_qubits": 9216,
+            "target_plus_junk_qubits": 9472,
+            "lookup_compute_non_clifford": 10102,
+            "measured_uncompute_non_clifford": 922,
+            "per_stream_non_clifford": 11024,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 38,
+            "address_blocks": 863,
+            "target_register_qubits": 256,
+            "junk_register_count": 37,
+            "junk_register_qubits": 9472,
+            "target_plus_junk_qubits": 9728,
+            "lookup_compute_non_clifford": 10335,
+            "measured_uncompute_non_clifford": 900,
+            "per_stream_non_clifford": 11235,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 39,
+            "address_blocks": 841,
+            "target_register_qubits": 256,
+            "junk_register_count": 38,
+            "junk_register_qubits": 9728,
+            "target_plus_junk_qubits": 9984,
+            "lookup_compute_non_clifford": 10569,
+            "measured_uncompute_non_clifford": 879,
+            "per_stream_non_clifford": 11448,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 40,
+            "address_blocks": 820,
+            "target_register_qubits": 256,
+            "junk_register_count": 39,
+            "junk_register_qubits": 9984,
+            "target_plus_junk_qubits": 10240,
+            "lookup_compute_non_clifford": 10804,
+            "measured_uncompute_non_clifford": 859,
+            "per_stream_non_clifford": 11663,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 41,
+            "address_blocks": 800,
+            "target_register_qubits": 256,
+            "junk_register_count": 40,
+            "junk_register_qubits": 10240,
+            "target_plus_junk_qubits": 10496,
+            "lookup_compute_non_clifford": 11040,
+            "measured_uncompute_non_clifford": 840,
+            "per_stream_non_clifford": 11880,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 42,
+            "address_blocks": 781,
+            "target_register_qubits": 256,
+            "junk_register_count": 41,
+            "junk_register_qubits": 10496,
+            "target_plus_junk_qubits": 10752,
+            "lookup_compute_non_clifford": 11277,
+            "measured_uncompute_non_clifford": 822,
+            "per_stream_non_clifford": 12099,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 43,
+            "address_blocks": 763,
+            "target_register_qubits": 256,
+            "junk_register_count": 42,
+            "junk_register_qubits": 10752,
+            "target_plus_junk_qubits": 11008,
+            "lookup_compute_non_clifford": 11515,
+            "measured_uncompute_non_clifford": 805,
+            "per_stream_non_clifford": 12320,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 44,
+            "address_blocks": 745,
+            "target_register_qubits": 256,
+            "junk_register_count": 43,
+            "junk_register_qubits": 11008,
+            "target_plus_junk_qubits": 11264,
+            "lookup_compute_non_clifford": 11753,
+            "measured_uncompute_non_clifford": 788,
+            "per_stream_non_clifford": 12541,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 45,
+            "address_blocks": 729,
+            "target_register_qubits": 256,
+            "junk_register_count": 44,
+            "junk_register_qubits": 11264,
+            "target_plus_junk_qubits": 11520,
+            "lookup_compute_non_clifford": 11993,
+            "measured_uncompute_non_clifford": 773,
+            "per_stream_non_clifford": 12766,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 46,
+            "address_blocks": 713,
+            "target_register_qubits": 256,
+            "junk_register_count": 45,
+            "junk_register_qubits": 11520,
+            "target_plus_junk_qubits": 11776,
+            "lookup_compute_non_clifford": 12233,
+            "measured_uncompute_non_clifford": 758,
+            "per_stream_non_clifford": 12991,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 47,
+            "address_blocks": 698,
+            "target_register_qubits": 256,
+            "junk_register_count": 46,
+            "junk_register_qubits": 11776,
+            "target_plus_junk_qubits": 12032,
+            "lookup_compute_non_clifford": 12474,
+            "measured_uncompute_non_clifford": 744,
+            "per_stream_non_clifford": 13218,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 48,
+            "address_blocks": 683,
+            "target_register_qubits": 256,
+            "junk_register_count": 47,
+            "junk_register_qubits": 12032,
+            "target_plus_junk_qubits": 12288,
+            "lookup_compute_non_clifford": 12715,
+            "measured_uncompute_non_clifford": 730,
+            "per_stream_non_clifford": 13445,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 49,
+            "address_blocks": 669,
+            "target_register_qubits": 256,
+            "junk_register_count": 48,
+            "junk_register_qubits": 12288,
+            "target_plus_junk_qubits": 12544,
+            "lookup_compute_non_clifford": 12957,
+            "measured_uncompute_non_clifford": 717,
+            "per_stream_non_clifford": 13674,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 50,
+            "address_blocks": 656,
+            "target_register_qubits": 256,
+            "junk_register_count": 49,
+            "junk_register_qubits": 12544,
+            "target_plus_junk_qubits": 12800,
+            "lookup_compute_non_clifford": 13200,
+            "measured_uncompute_non_clifford": 705,
+            "per_stream_non_clifford": 13905,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 51,
+            "address_blocks": 643,
+            "target_register_qubits": 256,
+            "junk_register_count": 50,
+            "junk_register_qubits": 12800,
+            "target_plus_junk_qubits": 13056,
+            "lookup_compute_non_clifford": 13443,
+            "measured_uncompute_non_clifford": 693,
+            "per_stream_non_clifford": 14136,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 52,
+            "address_blocks": 631,
+            "target_register_qubits": 256,
+            "junk_register_count": 51,
+            "junk_register_qubits": 13056,
+            "target_plus_junk_qubits": 13312,
+            "lookup_compute_non_clifford": 13687,
+            "measured_uncompute_non_clifford": 682,
+            "per_stream_non_clifford": 14369,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 53,
+            "address_blocks": 619,
+            "target_register_qubits": 256,
+            "junk_register_count": 52,
+            "junk_register_qubits": 13312,
+            "target_plus_junk_qubits": 13568,
+            "lookup_compute_non_clifford": 13931,
+            "measured_uncompute_non_clifford": 671,
+            "per_stream_non_clifford": 14602,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 54,
+            "address_blocks": 607,
+            "target_register_qubits": 256,
+            "junk_register_count": 53,
+            "junk_register_qubits": 13568,
+            "target_plus_junk_qubits": 13824,
+            "lookup_compute_non_clifford": 14175,
+            "measured_uncompute_non_clifford": 660,
+            "per_stream_non_clifford": 14835,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 55,
+            "address_blocks": 596,
+            "target_register_qubits": 256,
+            "junk_register_count": 54,
+            "junk_register_qubits": 13824,
+            "target_plus_junk_qubits": 14080,
+            "lookup_compute_non_clifford": 14420,
+            "measured_uncompute_non_clifford": 650,
+            "per_stream_non_clifford": 15070,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 56,
+            "address_blocks": 586,
+            "target_register_qubits": 256,
+            "junk_register_count": 55,
+            "junk_register_qubits": 14080,
+            "target_plus_junk_qubits": 14336,
+            "lookup_compute_non_clifford": 14666,
+            "measured_uncompute_non_clifford": 641,
+            "per_stream_non_clifford": 15307,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 57,
+            "address_blocks": 575,
+            "target_register_qubits": 256,
+            "junk_register_count": 56,
+            "junk_register_qubits": 14336,
+            "target_plus_junk_qubits": 14592,
+            "lookup_compute_non_clifford": 14911,
+            "measured_uncompute_non_clifford": 631,
+            "per_stream_non_clifford": 15542,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 58,
+            "address_blocks": 565,
+            "target_register_qubits": 256,
+            "junk_register_count": 57,
+            "junk_register_qubits": 14592,
+            "target_plus_junk_qubits": 14848,
+            "lookup_compute_non_clifford": 15157,
+            "measured_uncompute_non_clifford": 622,
+            "per_stream_non_clifford": 15779,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 59,
+            "address_blocks": 556,
+            "target_register_qubits": 256,
+            "junk_register_count": 58,
+            "junk_register_qubits": 14848,
+            "target_plus_junk_qubits": 15104,
+            "lookup_compute_non_clifford": 15404,
+            "measured_uncompute_non_clifford": 614,
+            "per_stream_non_clifford": 16018,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 60,
+            "address_blocks": 547,
+            "target_register_qubits": 256,
+            "junk_register_count": 59,
+            "junk_register_qubits": 15104,
+            "target_plus_junk_qubits": 15360,
+            "lookup_compute_non_clifford": 15651,
+            "measured_uncompute_non_clifford": 606,
+            "per_stream_non_clifford": 16257,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 61,
+            "address_blocks": 538,
+            "target_register_qubits": 256,
+            "junk_register_count": 60,
+            "junk_register_qubits": 15360,
+            "target_plus_junk_qubits": 15616,
+            "lookup_compute_non_clifford": 15898,
+            "measured_uncompute_non_clifford": 598,
+            "per_stream_non_clifford": 16496,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 62,
+            "address_blocks": 529,
+            "target_register_qubits": 256,
+            "junk_register_count": 61,
+            "junk_register_qubits": 15616,
+            "target_plus_junk_qubits": 15872,
+            "lookup_compute_non_clifford": 16145,
+            "measured_uncompute_non_clifford": 590,
+            "per_stream_non_clifford": 16735,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 63,
+            "address_blocks": 521,
+            "target_register_qubits": 256,
+            "junk_register_count": 62,
+            "junk_register_qubits": 15872,
+            "target_plus_junk_qubits": 16128,
+            "lookup_compute_non_clifford": 16393,
+            "measured_uncompute_non_clifford": 583,
+            "per_stream_non_clifford": 16976,
+            "matches_ledger": true
+          },
+          {
+            "domain_size": 32768,
+            "target_bits": 256,
+            "block_size": 64,
+            "address_blocks": 512,
+            "target_register_qubits": 256,
+            "junk_register_count": 63,
+            "junk_register_qubits": 16128,
+            "target_plus_junk_qubits": 16384,
+            "lookup_compute_non_clifford": 16640,
+            "measured_uncompute_non_clifford": 575,
+            "per_stream_non_clifford": 17215,
+            "matches_ledger": true
+          }
+        ],
+        "toy_semantics": [
+          {
+            "domain_size": 4,
+            "target_bits": 3,
+            "table_values": [
+              5,
+              1,
+              7,
+              7
+            ],
+            "rows": [
+              {
+                "selection": 0,
+                "expected_table_value": 5,
+                "target_after_compute": 5,
+                "target_after_measured_uncompute": 0,
+                "pass": true
+              },
+              {
+                "selection": 1,
+                "expected_table_value": 1,
+                "target_after_compute": 1,
+                "target_after_measured_uncompute": 0,
+                "pass": true
+              },
+              {
+                "selection": 2,
+                "expected_table_value": 7,
+                "target_after_compute": 7,
+                "target_after_measured_uncompute": 0,
+                "pass": true
+              },
+              {
+                "selection": 3,
+                "expected_table_value": 7,
+                "target_after_compute": 7,
+                "target_after_measured_uncompute": 0,
+                "pass": true
+              }
+            ],
+            "pass": true
+          },
+          {
+            "domain_size": 5,
+            "target_bits": 4,
+            "table_values": [
+              5,
+              9,
+              15,
+              7,
+              1
+            ],
+            "rows": [
+              {
+                "selection": 0,
+                "expected_table_value": 5,
+                "target_after_compute": 5,
+                "target_after_measured_uncompute": 0,
+                "pass": true
+              },
+              {
+                "selection": 1,
+                "expected_table_value": 9,
+                "target_after_compute": 9,
+                "target_after_measured_uncompute": 0,
+                "pass": true
+              },
+              {
+                "selection": 2,
+                "expected_table_value": 15,
+                "target_after_compute": 15,
+                "target_after_measured_uncompute": 0,
+                "pass": true
+              },
+              {
+                "selection": 3,
+                "expected_table_value": 7,
+                "target_after_compute": 7,
+                "target_after_measured_uncompute": 0,
+                "pass": true
+              },
+              {
+                "selection": 4,
+                "expected_table_value": 1,
+                "target_after_compute": 1,
+                "target_after_measured_uncompute": 0,
+                "pass": true
+              }
+            ],
+            "pass": true
+          }
+        ],
+        "checks": {
+          "selected_reference_matches_primitive_certificate": true,
+          "ledger_selected_reference_matches_logical_resource_ledger": true,
+          "chunked_selected_reference_matches_ledger_topology": true,
+          "reference_sweep_matches_ledger_rows": true,
+          "toy_qroam_semantics_select_and_uncompute": true
+        },
+        "pass": true,
+        "notes": [
+          "This is a lightweight formal reference cross-check, not an imported Qualtran synthesis.",
+          "It guards the previous class of QROAM gate/workspace mix-ups by recomputing target, junk, compute, and measured-uncompute costs independently.",
+          "The selected reusable-chunk primitive is checked at its actual chunk width; the ledger sweep is checked separately at full-field width."
+        ]
+      },
+      "modular_arithmetic_certificate": {
+        "schema": "compiler-project-modular-arithmetic-certificate-v1",
+        "purpose": "Executable reduced-width certificate for the pseudo-Mersenne modular arithmetic schedule used by the counted field_mul lowering.",
+        "secp256k1_parameters": {
+          "field_bits": 256,
+          "modulus_hex": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
+          "pseudo_mersenne_identity": "2^256 = 2^32 + 977 mod p",
+          "shift": 32,
+          "low_term": 977,
+          "canonical_subtract_passes": 2
+        },
+        "field_mul_stage_count_certificate": {
+          "chain_steps_for_low_term": 14,
+          "second_fold_width": 43,
+          "expected_stage_ccx": {
+            "partial_products": 65536,
+            "controlled_add_path": 255,
+            "controlled_sub_path": 256,
+            "pseudo_mersenne_first_fold": 4305,
+            "pseudo_mersenne_second_fold": 630,
+            "pseudo_mersenne_canonicalize": 510
+          },
+          "observed_stage_ccx": {
+            "partial_products": 65536,
+            "controlled_add_path": 255,
+            "controlled_sub_path": 256,
+            "pseudo_mersenne_first_fold": 4305,
+            "pseudo_mersenne_second_fold": 630,
+            "pseudo_mersenne_canonicalize": 510
+          },
+          "expected_total_ccx": 71492,
+          "observed_total_ccx": 71492,
+          "stage_counts_match": true
+        },
+        "reduced_width_exhaustive_cases": [
+          {
+            "field_bits": 5,
+            "shift": 2,
+            "low_term": 5,
+            "modulus": 23,
+            "rows_checked": 529,
+            "operations_checked": [
+              "add",
+              "sub",
+              "mul",
+              "mul_const_21"
+            ],
+            "sample_traces": [
+              {
+                "left": 0,
+                "right": 0,
+                "product_trace": {
+                  "input": 0,
+                  "modulus": 23,
+                  "first_high": 0,
+                  "first_fold": 0,
+                  "second_high": 0,
+                  "second_fold": 0,
+                  "subtract_trace": [
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    },
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    }
+                  ],
+                  "canonical": 0
+                }
+              },
+              {
+                "left": 0,
+                "right": 2,
+                "product_trace": {
+                  "input": 0,
+                  "modulus": 23,
+                  "first_high": 0,
+                  "first_fold": 0,
+                  "second_high": 0,
+                  "second_fold": 0,
+                  "subtract_trace": [
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    },
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    }
+                  ],
+                  "canonical": 0
+                }
+              },
+              {
+                "left": 0,
+                "right": 22,
+                "product_trace": {
+                  "input": 0,
+                  "modulus": 23,
+                  "first_high": 0,
+                  "first_fold": 0,
+                  "second_high": 0,
+                  "second_fold": 0,
+                  "subtract_trace": [
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    },
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    }
+                  ],
+                  "canonical": 0
+                }
+              },
+              {
+                "left": 1,
+                "right": 0,
+                "product_trace": {
+                  "input": 0,
+                  "modulus": 23,
+                  "first_high": 0,
+                  "first_fold": 0,
+                  "second_high": 0,
+                  "second_fold": 0,
+                  "subtract_trace": [
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    },
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    }
+                  ],
+                  "canonical": 0
+                }
+              }
+            ],
+            "failures": [],
+            "pass": true
+          },
+          {
+            "field_bits": 6,
+            "shift": 3,
+            "low_term": 3,
+            "modulus": 53,
+            "rows_checked": 2809,
+            "operations_checked": [
+              "add",
+              "sub",
+              "mul",
+              "mul_const_21"
+            ],
+            "sample_traces": [
+              {
+                "left": 0,
+                "right": 0,
+                "product_trace": {
+                  "input": 0,
+                  "modulus": 53,
+                  "first_high": 0,
+                  "first_fold": 0,
+                  "second_high": 0,
+                  "second_fold": 0,
+                  "subtract_trace": [
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    },
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    }
+                  ],
+                  "canonical": 0
+                }
+              },
+              {
+                "left": 0,
+                "right": 2,
+                "product_trace": {
+                  "input": 0,
+                  "modulus": 53,
+                  "first_high": 0,
+                  "first_fold": 0,
+                  "second_high": 0,
+                  "second_fold": 0,
+                  "subtract_trace": [
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    },
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    }
+                  ],
+                  "canonical": 0
+                }
+              },
+              {
+                "left": 0,
+                "right": 52,
+                "product_trace": {
+                  "input": 0,
+                  "modulus": 53,
+                  "first_high": 0,
+                  "first_fold": 0,
+                  "second_high": 0,
+                  "second_fold": 0,
+                  "subtract_trace": [
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    },
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    }
+                  ],
+                  "canonical": 0
+                }
+              },
+              {
+                "left": 1,
+                "right": 0,
+                "product_trace": {
+                  "input": 0,
+                  "modulus": 53,
+                  "first_high": 0,
+                  "first_fold": 0,
+                  "second_high": 0,
+                  "second_fold": 0,
+                  "subtract_trace": [
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    },
+                    {
+                      "did_subtract": false,
+                      "value_after_pass": 0
+                    }
+                  ],
+                  "canonical": 0
+                }
+              }
+            ],
+            "failures": [],
+            "pass": true
+          }
+        ],
+        "checks": {
+          "secp256k1_modulus_matches_common_constant": true,
+          "field_mul_stage_counts_match_arithmetic_lowering": true,
+          "reduced_width_cases_exhaustive_pass": true
+        },
+        "pass": true,
+        "boundary": [
+          "This certificate executes the modular reduction algorithm on reduced-width pseudo-Mersenne analogues and binds the 256-bit stage counts back to arithmetic_lowerings.json.",
+          "It is not yet a Clifford-complete reversible netlist for every arithmetic opcode."
+        ]
       },
       "chunked_multiplier_primitive_contract": {
         "source_arithmetic_kernel": "complete_a0_all_streamed_tail",
@@ -660,6 +2158,340 @@
         "control_qubits": 1,
         "phase_qubits": 1,
         "candidate_total_logical_qubits": 1199
+      },
+      "counted_resource_ir": {
+        "schema": "compiler-project-reusable-chunk-counted-resource-ir-v1",
+        "derivation": "single counted IR consumed by integrity checks and the SP1 guest for reusable-chunk headline non-Clifford and live-qubit totals",
+        "non_clifford_terms": [
+          {
+            "term_id": "base_without_streamed_qroam",
+            "category": "arithmetic_control_and_phase_base",
+            "instances": 1,
+            "per_instance_non_clifford": 24577996,
+            "total_non_clifford": 24577996,
+            "source": "logical_resource_ledger.qroam_clean_tradeoff_sweep.base_non_clifford_without_streamed_qroam"
+          },
+          {
+            "term_id": "qroam_stream__lookup_x__chunk_0",
+            "category": "qroam_chunk_stream",
+            "table": "lookup_x",
+            "chunk_index": 0,
+            "instances": 31,
+            "per_instance_non_clifford": 65536,
+            "total_non_clifford": 2031616,
+            "source": "stream_plan.rows"
+          },
+          {
+            "term_id": "qroam_stream__lookup_x__chunk_1",
+            "category": "qroam_chunk_stream",
+            "table": "lookup_x",
+            "chunk_index": 1,
+            "instances": 31,
+            "per_instance_non_clifford": 65536,
+            "total_non_clifford": 2031616,
+            "source": "stream_plan.rows"
+          },
+          {
+            "term_id": "qroam_stream__lookup_y__chunk_0",
+            "category": "qroam_chunk_stream",
+            "table": "lookup_y",
+            "chunk_index": 0,
+            "instances": 31,
+            "per_instance_non_clifford": 65536,
+            "total_non_clifford": 2031616,
+            "source": "stream_plan.rows"
+          },
+          {
+            "term_id": "qroam_stream__lookup_y__chunk_1",
+            "category": "qroam_chunk_stream",
+            "table": "lookup_y",
+            "chunk_index": 1,
+            "instances": 31,
+            "per_instance_non_clifford": 65536,
+            "total_non_clifford": 2031616,
+            "source": "stream_plan.rows"
+          },
+          {
+            "term_id": "qroam_stream__lookup_x_plus_y__chunk_0",
+            "category": "qroam_chunk_stream",
+            "table": "lookup_x_plus_y",
+            "chunk_index": 0,
+            "instances": 31,
+            "per_instance_non_clifford": 65536,
+            "total_non_clifford": 2031616,
+            "source": "stream_plan.rows"
+          },
+          {
+            "term_id": "qroam_stream__lookup_x_plus_y__chunk_1",
+            "category": "qroam_chunk_stream",
+            "table": "lookup_x_plus_y",
+            "chunk_index": 1,
+            "instances": 31,
+            "per_instance_non_clifford": 65536,
+            "total_non_clifford": 2031616,
+            "source": "stream_plan.rows"
+          }
+        ],
+        "wire_catalog": {
+          "qx": {
+            "wire_id": "qx",
+            "owner_id": "arithmetic_slot_register_file",
+            "qubits": 256,
+            "role": "field_arithmetic_slot"
+          },
+          "qy": {
+            "wire_id": "qy",
+            "owner_id": "arithmetic_slot_register_file",
+            "qubits": 256,
+            "role": "field_arithmetic_slot"
+          },
+          "qz": {
+            "wire_id": "qz",
+            "owner_id": "arithmetic_slot_register_file",
+            "qubits": 256,
+            "role": "field_arithmetic_slot"
+          },
+          "qchunk": {
+            "wire_id": "qchunk",
+            "owner_id": "arithmetic_slot_register_file",
+            "qubits": 256,
+            "role": "field_arithmetic_slot"
+          },
+          "f_lookup_inf": {
+            "wire_id": "f_lookup_inf",
+            "owner_id": "control_slot_register_file",
+            "qubits": 1,
+            "role": "leaf_control_flag"
+          },
+          "folded_lookup_control_workspace": {
+            "wire_id": "folded_lookup_control_workspace",
+            "owner_id": "lookup_workspace",
+            "qubits": 18,
+            "role": "folded_lookup_decode_control_workspace"
+          },
+          "semiclassical_qft_live_phase_bit": {
+            "wire_id": "semiclassical_qft_live_phase_bit",
+            "owner_id": "phase_shell_live_register",
+            "qubits": 1,
+            "role": "live_phase_bit"
+          },
+          "qroam_chunk_target__lookup_x__chunk_0": {
+            "wire_id": "qroam_chunk_target__lookup_x__chunk_0",
+            "owner_id": "lookup_workspace",
+            "qubits": 155,
+            "role": "standard_qroamclean_k1_chunk_target"
+          },
+          "qroam_chunk_target__lookup_x__chunk_1": {
+            "wire_id": "qroam_chunk_target__lookup_x__chunk_1",
+            "owner_id": "lookup_workspace",
+            "qubits": 155,
+            "role": "standard_qroamclean_k1_chunk_target"
+          },
+          "qroam_chunk_target__lookup_y__chunk_0": {
+            "wire_id": "qroam_chunk_target__lookup_y__chunk_0",
+            "owner_id": "lookup_workspace",
+            "qubits": 155,
+            "role": "standard_qroamclean_k1_chunk_target"
+          },
+          "qroam_chunk_target__lookup_y__chunk_1": {
+            "wire_id": "qroam_chunk_target__lookup_y__chunk_1",
+            "owner_id": "lookup_workspace",
+            "qubits": 155,
+            "role": "standard_qroamclean_k1_chunk_target"
+          },
+          "qroam_chunk_target__lookup_x_plus_y__chunk_0": {
+            "wire_id": "qroam_chunk_target__lookup_x_plus_y__chunk_0",
+            "owner_id": "lookup_workspace",
+            "qubits": 155,
+            "role": "standard_qroamclean_k1_chunk_target"
+          },
+          "qroam_chunk_target__lookup_x_plus_y__chunk_1": {
+            "wire_id": "qroam_chunk_target__lookup_x_plus_y__chunk_1",
+            "owner_id": "lookup_workspace",
+            "qubits": 155,
+            "role": "standard_qroamclean_k1_chunk_target"
+          }
+        },
+        "liveness_intervals": [
+          {
+            "interval_id": "pc0_2_load_carried_inputs",
+            "live_wire_ids": [
+              "qx",
+              "qy",
+              "qz",
+              "semiclassical_qft_live_phase_bit"
+            ],
+            "owner_live_qubits": {
+              "arithmetic_slot_register_file": 768,
+              "phase_shell_live_register": 1
+            },
+            "total_live_qubits": 769
+          },
+          {
+            "interval_id": "pc3_lookup_meta",
+            "live_wire_ids": [
+              "qx",
+              "qy",
+              "qz",
+              "folded_lookup_control_workspace",
+              "semiclassical_qft_live_phase_bit"
+            ],
+            "owner_live_qubits": {
+              "arithmetic_slot_register_file": 768,
+              "lookup_workspace": 18,
+              "phase_shell_live_register": 1
+            },
+            "total_live_qubits": 787
+          },
+          {
+            "interval_id": "pc4_lookup_infinity_flag",
+            "live_wire_ids": [
+              "qx",
+              "qy",
+              "qz",
+              "folded_lookup_control_workspace",
+              "f_lookup_inf",
+              "semiclassical_qft_live_phase_bit"
+            ],
+            "owner_live_qubits": {
+              "arithmetic_slot_register_file": 768,
+              "lookup_workspace": 18,
+              "control_slot_register_file": 1,
+              "phase_shell_live_register": 1
+            },
+            "total_live_qubits": 788
+          },
+          {
+            "interval_id": "pc5_stream_00_lookup_x_chunk_0",
+            "live_wire_ids": [
+              "qx",
+              "qy",
+              "qz",
+              "qchunk",
+              "folded_lookup_control_workspace",
+              "qroam_chunk_target__lookup_x__chunk_0",
+              "f_lookup_inf",
+              "semiclassical_qft_live_phase_bit"
+            ],
+            "owner_live_qubits": {
+              "arithmetic_slot_register_file": 1024,
+              "lookup_workspace": 173,
+              "control_slot_register_file": 1,
+              "phase_shell_live_register": 1
+            },
+            "total_live_qubits": 1199
+          },
+          {
+            "interval_id": "pc5_stream_01_lookup_x_chunk_1",
+            "live_wire_ids": [
+              "qx",
+              "qy",
+              "qz",
+              "qchunk",
+              "folded_lookup_control_workspace",
+              "qroam_chunk_target__lookup_x__chunk_1",
+              "f_lookup_inf",
+              "semiclassical_qft_live_phase_bit"
+            ],
+            "owner_live_qubits": {
+              "arithmetic_slot_register_file": 1024,
+              "lookup_workspace": 173,
+              "control_slot_register_file": 1,
+              "phase_shell_live_register": 1
+            },
+            "total_live_qubits": 1199
+          },
+          {
+            "interval_id": "pc5_stream_02_lookup_y_chunk_0",
+            "live_wire_ids": [
+              "qx",
+              "qy",
+              "qz",
+              "qchunk",
+              "folded_lookup_control_workspace",
+              "qroam_chunk_target__lookup_y__chunk_0",
+              "f_lookup_inf",
+              "semiclassical_qft_live_phase_bit"
+            ],
+            "owner_live_qubits": {
+              "arithmetic_slot_register_file": 1024,
+              "lookup_workspace": 173,
+              "control_slot_register_file": 1,
+              "phase_shell_live_register": 1
+            },
+            "total_live_qubits": 1199
+          },
+          {
+            "interval_id": "pc5_stream_03_lookup_y_chunk_1",
+            "live_wire_ids": [
+              "qx",
+              "qy",
+              "qz",
+              "qchunk",
+              "folded_lookup_control_workspace",
+              "qroam_chunk_target__lookup_y__chunk_1",
+              "f_lookup_inf",
+              "semiclassical_qft_live_phase_bit"
+            ],
+            "owner_live_qubits": {
+              "arithmetic_slot_register_file": 1024,
+              "lookup_workspace": 173,
+              "control_slot_register_file": 1,
+              "phase_shell_live_register": 1
+            },
+            "total_live_qubits": 1199
+          },
+          {
+            "interval_id": "pc5_stream_04_lookup_x_plus_y_chunk_0",
+            "live_wire_ids": [
+              "qx",
+              "qy",
+              "qz",
+              "qchunk",
+              "folded_lookup_control_workspace",
+              "qroam_chunk_target__lookup_x_plus_y__chunk_0",
+              "f_lookup_inf",
+              "semiclassical_qft_live_phase_bit"
+            ],
+            "owner_live_qubits": {
+              "arithmetic_slot_register_file": 1024,
+              "lookup_workspace": 173,
+              "control_slot_register_file": 1,
+              "phase_shell_live_register": 1
+            },
+            "total_live_qubits": 1199
+          },
+          {
+            "interval_id": "pc5_stream_05_lookup_x_plus_y_chunk_1",
+            "live_wire_ids": [
+              "qx",
+              "qy",
+              "qz",
+              "qchunk",
+              "folded_lookup_control_workspace",
+              "qroam_chunk_target__lookup_x_plus_y__chunk_1",
+              "f_lookup_inf",
+              "semiclassical_qft_live_phase_bit"
+            ],
+            "owner_live_qubits": {
+              "arithmetic_slot_register_file": 1024,
+              "lookup_workspace": 173,
+              "control_slot_register_file": 1,
+              "phase_shell_live_register": 1
+            },
+            "total_live_qubits": 1199
+          }
+        ],
+        "recomputed_total_non_clifford": 36767692,
+        "recomputed_peak_live_qubits": 1199,
+        "peak_interval_id": "pc5_stream_00_lookup_x_chunk_0",
+        "checks": {
+          "non_clifford_terms_sum_to_candidate": true,
+          "qroam_terms_match_stream_rows": true,
+          "each_qroam_term_reuses_leaf_call_count": true,
+          "liveness_intervals_match_executable_liveness_peak": true
+        },
+        "pass": true
       },
       "owner_capacity": {
         "rows": [
@@ -1013,6 +2845,9 @@
         "stream_count_derived_from_tables_and_chunks": true,
         "whole_oracle_stream_count_derived_from_leaf_calls": true,
         "per_stream_cost_matches_standard_qroamclean_k1": true,
+        "per_stream_cost_matches_generated_qroam_primitive": true,
+        "per_stream_cost_matches_independent_qroam_reference_crosscheck": true,
+        "modular_arithmetic_certificate_binds_counted_field_mul": true,
         "chunked_multiplier_partial_products_match_inherited_full_width_base": true,
         "chunked_multiplier_high_chunk_zero_padding_is_explicit": true,
         "chunked_multiplier_uses_single_reduction_per_consumer": true,
@@ -1021,6 +2856,7 @@
         "owner_capacity_rows_cover_required_peak": true,
         "executable_liveness_peak_matches_candidate": true,
         "executable_liveness_owner_peaks_match_capacity": true,
+        "counted_resource_ir_recomputes_public_totals": true,
         "fits_requested_limits": true
       },
       "pass": true,
@@ -1032,7 +2868,7 @@
         "This artifact prevents the previous QROAMClean width/workspace mix-up for the reusable chunk candidate: K=1 uses a 155-bit live target and zero junk registers, so the same model drives gates and qubits.",
         "The three coordinate tables are streamed as chunks and consumed before uncompute; no full x, y, or x_plus_y coordinate lane is allocated.",
         "The chunked multiplier primitive contract proves that the inherited non-QROAM arithmetic base is a conservative bound: low 155 bits plus high 101 effective bits produce the same 65,536 partial products as the inherited full-width field multiplier, with the same single reduction boundary.",
-        "The result is the public headline after checked compressed and Groth16 verification over the reusable-chunk artifacts."
+        "The resource result is the public headline candidate; compressed and Groth16 proof freshness remains gated by proof_status.py --require-all-current."
       ]
     }
   },

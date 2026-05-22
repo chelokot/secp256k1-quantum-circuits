@@ -22,7 +22,7 @@
   "phase_shell_rotation_depth": 511,
   "total_measurements": 0,
   "notes": [
-    "This family is the checked public headline after compressed and Groth16 artifacts were rebuilt and verified from checked branch state.",
+    "This family is the checked resource headline; compressed and Groth16 proof freshness is separately gated by proof_status.py --require-all-current.",
     "Its resource certificate is compiler_verification_project/artifacts/reusable_chunk_lowering.json.",
     "The table-controlled multiplier arithmetic bound is derived from chunk effective widths 155 + 101 and the inherited full-width partial-product grid."
   ]

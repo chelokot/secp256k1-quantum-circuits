@@ -1,8 +1,10 @@
 {
-  "schema": "compiler-project-build-summary-v28",
+  "schema": "compiler-project-build-summary-v33",
   "artifacts": {
     "canonical_public_point": "compiler_verification_project/artifacts/canonical_public_point.json",
+    "compiler_parameters": "compiler_verification_project/artifacts/compiler_parameters.json",
     "public_google_baseline_source": "compiler_verification_project/artifacts/public_google_baseline_source.json",
+    "proof_corpus_profiles": "compiler_verification_project/artifacts/proof_corpus_profiles.json",
     "full_raw32_oracle": "compiler_verification_project/artifacts/full_raw32_oracle.json",
     "exact_leaf_slot_allocation": "compiler_verification_project/artifacts/exact_leaf_slot_allocation.json",
     "lookup_fed_leaf": "compiler_verification_project/artifacts/lookup_fed_leaf.json",
@@ -12,6 +14,7 @@
     "streamed_lookup_tail_leaf_equivalence": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json",
     "streamed_lookup_tail_leaf_slot_allocation": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json",
     "arithmetic_lowerings": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+    "modular_arithmetic_certificate": "compiler_verification_project/artifacts/modular_arithmetic_certificate.json",
     "tail_macro_liveness": "compiler_verification_project/artifacts/tail_macro_liveness.json",
     "tail_macro_reversibility": "compiler_verification_project/artifacts/tail_macro_reversibility.json",
     "tail_macro_schedule_search": "compiler_verification_project/artifacts/tail_macro_schedule_search.json",
@@ -30,6 +33,8 @@
     "logical_resource_ledger": "compiler_verification_project/artifacts/logical_resource_ledger.json",
     "fallback_frontier_stress": "compiler_verification_project/artifacts/fallback_frontier_stress.json",
     "reusable_chunk_tail_candidate": "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
+    "qroam_primitive_certificate": "compiler_verification_project/artifacts/qroam_primitive_certificate.json",
+    "qroam_reference_crosscheck": "compiler_verification_project/artifacts/qroam_reference_crosscheck.json",
     "reusable_chunk_lowering": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
     "resource_liveness_certificate": "compiler_verification_project/artifacts/resource_liveness_certificate.json",
     "materialized_circuit_manifest": "compiler_verification_project/artifacts/materialized_circuit_manifest.json",
@@ -152,8 +157,7 @@
     "public_headline_result_artifact": "compiler_verification_project/artifacts/public_headline_result.json"
   },
   "notes": [
-    "The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families with explicit arithmetic, lookup, and phase-shell lowerings, generated block inventories, a compositional FT IR layer, a full whole-oracle recount, internal subcircuit-equivalence witnesses, and exact leaf-interface families.",
-    "Its qubit accounting uses exact slot allocation and exact phase-shell lowering instead of a fixed 10-slot/512-phase policy.",
-    "The physical-estimator layer binds those exact logical counts to explicit Microsoft Resource Estimator target profiles and recorded estimator outputs."
+    "Targeted build-summary refresh: artifact paths and headline references are read from checked registry and frontier artifacts.",
+    "Use --target all for a full compiler artifact rebuild."
   ]
 }

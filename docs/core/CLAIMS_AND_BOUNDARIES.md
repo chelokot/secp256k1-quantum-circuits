@@ -91,6 +91,9 @@ subproject. In particular, it fixes:
 - a fully quantum raw-32 schedule with no classical tail elisions,
 - generated folded lookup-family operation inventories,
 - generated arithmetic-kernel operation inventories,
+- a proof-bound modular arithmetic certificate that executes reduced-width pseudo-Mersenne
+  analogues and binds the 256-bit field-multiplication reduction stage counts
+  back to the arithmetic lowering artifact,
 - explicit standard-QROAM streamed table-controlled multiplier data-selection
   inventories,
 - a checked standard-QROM lookup assessment that binds the selected family to a
@@ -135,10 +138,15 @@ summary and streamed lookup tail point-add leaf. The guest:
   derived owner-capacity obligations, before committing public values.
 
 The checked JSON sidecars remain the audit-friendly source-of-truth inputs for
-that bundle. The core, compressed, and Groth16 fixtures are checked proof-layer
-outputs for the same public claim, and the shipped Groth16 proof bundle plus
-verifying key allow cheap local re-verification from the repository without
-rebuilding the large vk-specific dev artifact tree.
+that bundle. The candidate directory records core, compressed, and Groth16
+fixtures plus the shipped Groth16 proof bundle and verifying key. Those files
+allow cheap local re-verification when `proof_status.py` reports they still bind
+the current candidate input; after resource-certificate source changes, final
+compressed/Groth16 rebuild is required before publishing proof freshness.
+`python compiler_verification_project/scripts/proof_status.py` is the cheap
+freshness preflight: it does not invoke a prover, and it reports whether the
+checked proof layers still bind the current candidate input, public values,
+proof binaries, and Groth16 verifier key.
 For the promoted reusable-chunk public headline, run
 `python compiler_verification_project/scripts/verify_public_headline.py` to
 validate the checked headline artifact, candidate input, public values,
@@ -146,7 +154,10 @@ source-document semantic hashes, fixture records, proof-binary digests, wrap
 proof, and Groth16 verifier key from the checked branch state. The promoted
 candidate resource certificate also carries executable interval liveness for
 the reusable-chunk leaf, and the guest recomputes the peak live-qubit total from
-those intervals before accepting the public values.
+those intervals before accepting the public values. It also validates the
+embedded generated QROAM primitive certificate and modular arithmetic
+certificate, so changes to those certificates stale the proof input rather than
+silently changing the claim.
 
 This is similar in shape to Google's disclosure model, but it proves a public
 deterministic point-add corpus at the repository exact-family boundary rather
@@ -163,12 +174,13 @@ lookup-data path to a standard QROAM coordinate-stream primitive over the
 
 For the streamed lookup tail result, the table-controlled arithmetic boundary
 is no longer free: `streamed_lookup_table_multiplier_resource.json` counts the
-QROAMClean full-coordinate target and junk-register capacity in lookup
-workspace. The selected central point uses `K = 1`, so each 256-bit coordinate
-stream consumed by `field_mul_lookup_*` or the streamed tail pays `65,536`
-non-Clifford operations and `274` lookup-workspace qubits. The remaining boundary is
-that the repository does not ship a Clifford-complete flattened netlist for
-every arithmetic and lookup block.
+QROAMClean target and junk-register capacity in lookup workspace. The selected
+public reusable-chunk point uses `K = 1` and 155-bit coordinate chunks, so each
+chunk stream pays `65,536` non-Clifford operations, the live QROAM target is
+`155` qubits, and the total counted lookup workspace is `173` qubits after the
+18 folded-control qubits are included. The remaining boundary is that the
+repository does not ship a Clifford-complete flattened netlist for every
+arithmetic and lookup block.
 
 ### B. Boundary no-op and cleanup
 

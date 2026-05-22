@@ -43,13 +43,13 @@
     "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
     "family_sha256": "c1a1cd68e1c159353724cb3e21b98c65115b2add9930d247b3f5f0f85dd5ba20",
     "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
-    "resource_certificate_sha256": "d37820bea8e18cab61a8db7ec90efd4fb12801e5398ae686648555bcf1065c53"
+    "resource_certificate_sha256": "9e6761fddca97566eeaa5105241af14b07f4dbf2f287cbe01bb5e83605e73085"
   },
   "checked_artifacts": {
     "input": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
-      "sha256": "4ccba78f283b56751b5edde630f143e2d09d863ca57dfe288f88c291a7806bcd",
-      "bytes": 48690
+      "sha256": "2e7317cb6c2825d1a22e00ca4262ba4ebac1f211640b900915e794d65869df74",
+      "bytes": 114771
     },
     "claim": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json",
@@ -58,25 +58,30 @@
     },
     "family": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_family.json",
-      "sha256": "52cde8ef62a25ca71d0b8cce331dc46e1471ca9e2e883fe81ad1b02b468d9117",
-      "bytes": 1643
+      "sha256": "adc2d73534ae250f0ab236e9d01879cdc532474607715b324d61f74f9f6d4ac9",
+      "bytes": 1655
     },
     "case_corpus": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_cases.json",
       "sha256": "3d3bef33a7133d468dc36821e0eca5e5dc1e4cc6b24f3d574a1719265f25c969",
       "bytes": 5139
     },
+    "proof_corpus_profiles": {
+      "path": "compiler_verification_project/artifacts/proof_corpus_profiles.json",
+      "sha256": "9c42de1999f9271f212c16d835c510ee307a28a27ab87e94c115798fb7ecd952",
+      "bytes": 1009
+    },
     "public_values": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_public_values.json",
-      "sha256": "5fb51db37a5297f068fbd3a4b74ac3bff325ad453728fc6a7318f36167f6b2d4",
+      "sha256": "bc43a3be29dfc4f278b23bdfbb996b657959b8e411db51ae4570d2ee48f012e4",
       "bytes": 851
     },
     "core_fixture": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_fixture_core.json",
-      "sha256": "8515adca49952b953fabf916b4158c0c09eda837c556c1f04d17a2323a73ee53",
+      "sha256": "0475d47cc358b5f195cf9853223297c53516050e91928a4dd89d787be8bb8f92",
       "bytes": 1263,
       "proof_system": "core",
-      "verification_key": "0x000468e7e74d2eccde25e6af5576efe93dfa7056aabd1e535598774df7a2c832",
+      "verification_key": "0x00a045504797672214fb629c1fce35cf1b76690546c4b61b13de48098fc749a8",
       "proof_path": null,
       "proof_sha256": null,
       "proof_size_bytes": null,
@@ -86,12 +91,12 @@
     },
     "compressed_fixture": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_fixture_compressed.json",
-      "sha256": "acdbd79c7acd0c46320a7f88a7d5db75d20b367c2f2570a490ebfa5abeb6a2f8",
+      "sha256": "ddfd6559e299e8a31e95129b55eea84941516100338905ef7b9e2467b01cdccb",
       "bytes": 1449,
       "proof_system": "compressed",
-      "verification_key": "0x000468e7e74d2eccde25e6af5576efe93dfa7056aabd1e535598774df7a2c832",
+      "verification_key": "0x00a045504797672214fb629c1fce35cf1b76690546c4b61b13de48098fc749a8",
       "proof_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin",
-      "proof_sha256": "49d81633c8d60d99f30d0874effc1687856eeddc74b7df578535ab5313d566e3",
+      "proof_sha256": "d66a8a10e4364f859d1207c1dc343d7c54a7c6a39a7058a7c05b1b5d7dd5c396",
       "proof_size_bytes": 1273162,
       "verifier_key_path": null,
       "verifier_key_sha256": null,
@@ -112,7 +117,7 @@
     },
     "compressed_proof": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin",
-      "sha256": "49d81633c8d60d99f30d0874effc1687856eeddc74b7df578535ab5313d566e3",
+      "sha256": "d66a8a10e4364f859d1207c1dc343d7c54a7c6a39a7058a7c05b1b5d7dd5c396",
       "bytes": 1273162
     },
     "groth16_proof": {
@@ -130,10 +135,25 @@
       "sha256": "4125fe6fab5e7d3af4bb9386f49589450a6d37f536e98650adca79768c469975",
       "bytes": 492
     },
+    "qroam_primitive_certificate": {
+      "path": "compiler_verification_project/artifacts/qroam_primitive_certificate.json",
+      "sha256": "69d0ebe49b5d88c4627f3dd06f47e54ba7d67f9d4c4d32c96fdf8f2c82c1a9d1",
+      "bytes": 6369
+    },
+    "qroam_reference_crosscheck": {
+      "path": "compiler_verification_project/artifacts/qroam_reference_crosscheck.json",
+      "sha256": "24e45d7de5672801530017831042da06a8caffbb58b30e0562d15d73d6eb2da8",
+      "bytes": 31139
+    },
+    "modular_arithmetic_certificate": {
+      "path": "compiler_verification_project/artifacts/modular_arithmetic_certificate.json",
+      "sha256": "3a867b60d18a9f3356e979717c4e9e44c84fe29634f8515de7c1ae0e292f7fab",
+      "bytes": 6897
+    },
     "reusable_chunk_lowering": {
       "path": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
-      "sha256": "88098f744a17c440fe6cb5ccd188b44b5af0d1c5fbce114f3c21b75c01821d97",
-      "bytes": 25204
+      "sha256": "02221610f6d1765ccac6c386bdf5bafdab52d13ae900961435d6468f060f53e9",
+      "bytes": 83929
     },
     "reusable_chunk_tail_candidate": {
       "path": "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
@@ -156,24 +176,30 @@
       "public headline result status and strict <40M / <1200 bounds",
       "checked input, public values, sidecar documents, fixtures, proof binaries, wrap proof, and Groth16 verifier-key digests",
       "semantic hashes for committed claim, leaf, family, case corpus, and resource-certificate documents",
+      "generated QROAM K=1 primitive-count certificate bound into the reusable-chunk resource document",
       "executable liveness peak, qchunk/QROAM-target concurrency, and owner-capacity checks",
       "fixture-to-proof and fixture-to-verifier-key binding"
     ]
   },
   "checks": {
-    "public_values_match_input_claim": true,
-    "all_fixtures_bind_same_public_values": true,
+    "public_values_match_input_claim": false,
+    "all_fixtures_bind_same_public_values": false,
     "compressed_fixture_binds_checked_proof_binary": true,
     "groth16_fixture_binds_checked_proof_and_verifier_key": true,
     "reusable_chunk_lowering_is_proven_for_public_headline": true,
     "reusable_chunk_executable_liveness_binds_public_qubits": true,
+    "reusable_chunk_counted_resource_ir_binds_public_totals": true,
+    "reusable_chunk_binds_generated_qroam_primitive_certificate": true,
+    "reusable_chunk_binds_independent_qroam_reference_crosscheck": true,
+    "reusable_chunk_binds_modular_arithmetic_certificate": true,
     "reusable_chunk_tail_contract_is_proven_for_public_headline": true,
-    "fits_strict_public_goal": true
+    "fits_strict_public_goal": true,
+    "public_case_count_matches_selected_proof_profile": true
   },
-  "pass": true,
+  "pass": false,
   "boundary": [
     "This is a checked standard-QROAM compiler-family boundary, not a Clifford-complete flattened full-Shor netlist.",
-    "The checked proof uses an 8-case public point-add corpus, not Google's hidden-circuit 9024-case disclosure boundary.",
+    "The checked proof uses the selected public proof-corpus profile, currently an explicit 8-case smoke profile rather than Google's hidden-circuit 9024-case disclosure boundary.",
     "The proof binds and executes the reusable-chunk contract and resource certificate; it does not by itself prove an external physical runtime."
   ]
 }

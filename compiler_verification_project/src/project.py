@@ -58,6 +58,7 @@ from common import (  # noqa: E402
 from artifact_registry import BUILD_SUMMARY_ARTIFACT_PATHS, BUILD_SUMMARY_SCHEMA  # noqa: E402
 from baselines import load_public_google_baseline_artifact, load_public_google_baseline_lines  # noqa: E402
 from arithmetic_lowering import DEFAULT_QROAM_CLEAN_BLOCK_SIZE, arithmetic_kernel_summary, arithmetic_lowering_library  # noqa: E402
+from compiler_parameters import build_compiler_parameters  # noqa: E402
 from fallback_frontier_stress import build_fallback_frontier_stress  # noqa: E402
 from ft_ir import build_ft_ir_compositions as build_ft_ir_compositions_single  # noqa: E402
 from generated_block_inventory import build_generated_block_inventories as build_generated_block_inventories_single  # noqa: E402
@@ -75,11 +76,15 @@ from lookup_fed_leaf import (  # noqa: E402
 )
 from lookup_lowering import lookup_lowering_library  # noqa: E402
 from materialized_circuit import build_materialized_family_manifest  # noqa: E402
+from modular_arithmetic_certificate import build_modular_arithmetic_certificate  # noqa: E402
 from phase_shell_lowering import phase_shell_family_summary, phase_shell_lowering_library  # noqa: E402
 from physical_estimator import (  # noqa: E402
     build_azure_estimator_target_payload,
     build_or_load_azure_estimator_results_payload,
 )
+from proof_corpus_profiles import build_proof_corpus_profiles  # noqa: E402
+from qroam_primitive import build_qroam_k1_primitive_certificate  # noqa: E402
+from qroam_reference_crosscheck import build_qroam_reference_crosscheck  # noqa: E402
 from reusable_chunk_lowering import build_reusable_chunk_lowering  # noqa: E402
 from reusable_chunk_tail_candidate import build_reusable_chunk_tail_candidate  # noqa: E402
 from resource_ledger import build_logical_resource_ledger, qroam_clean_stream_cost  # noqa: E402
@@ -1903,7 +1908,9 @@ def build_all_artifacts() -> Dict[str, Any]:
         public_google_baseline=PUBLIC_GOOGLE_BASELINE,
     )
     out = {
+        'compiler_parameters': build_compiler_parameters(),
         'public_google_baseline_source': load_public_google_baseline_artifact(),
+        'proof_corpus_profiles': build_proof_corpus_profiles(),
         'canonical_public_point': canonical_public_point(),
         'raw32_schedule': raw32_schedule(),
         'slot_allocation': exact_leaf_slot_allocation(),
@@ -1914,6 +1921,10 @@ def build_all_artifacts() -> Dict[str, Any]:
         'streamed_lookup_tail_leaf_equivalence': build_streamed_lookup_tail_leaf_equivalence(),
         'streamed_lookup_tail_slot_allocation': streamed_lookup_tail_leaf_slot_allocation(),
         'arithmetic_lowerings': arithmetic_lowerings,
+        'modular_arithmetic_certificate': build_modular_arithmetic_certificate(
+            arithmetic_lowerings=arithmetic_lowerings,
+            field_bits=FIELD_BITS,
+        ),
         'tail_macro_liveness': build_tail_macro_liveness(
             field_bits=FIELD_BITS,
             counted_arithmetic_slots=len(STREAMED_LOOKUP_TAIL_ARITHMETIC_SLOTS),
@@ -1957,11 +1968,23 @@ def build_all_artifacts() -> Dict[str, Any]:
     out['reusable_chunk_tail_candidate'] = build_reusable_chunk_tail_candidate(
         fallback_frontier_stress=out['fallback_frontier_stress'],
     )
+    out['qroam_primitive_certificate'] = build_qroam_k1_primitive_certificate(
+        domain_size=int(out['logical_resource_ledger']['qroam_clean_tradeoff_sweep']['selected_row']['domain_size']),
+        target_bits=int(out['fallback_frontier_stress']['chunked_coordinate_qroam_counterfactual']['max_qroam_target_bits_per_live_chunk']),
+        block_size=1,
+    )
+    out['qroam_reference_crosscheck'] = build_qroam_reference_crosscheck(
+        qroam_primitive_certificate=out['qroam_primitive_certificate'],
+        logical_resource_ledger=out['logical_resource_ledger'],
+    )
     out['reusable_chunk_lowering'] = build_reusable_chunk_lowering(
         reusable_chunk_tail_candidate=out['reusable_chunk_tail_candidate'],
         fallback_frontier_stress=out['fallback_frontier_stress'],
         logical_resource_ledger=out['logical_resource_ledger'],
         arithmetic_lowerings=out['arithmetic_lowerings'],
+        qroam_primitive_certificate=out['qroam_primitive_certificate'],
+        qroam_reference_crosscheck=out['qroam_reference_crosscheck'],
+        modular_arithmetic_certificate=out['modular_arithmetic_certificate'],
         field_bits=FIELD_BITS,
     )
     out['materialized_circuit_manifest'] = build_materialized_family_manifest(
@@ -2004,7 +2027,9 @@ def build_all_artifacts() -> Dict[str, Any]:
         resource_liveness_certificate=out['resource_liveness_certificate'],
     )
     dump_json(project_artifact_path('canonical_public_point.json'), out['canonical_public_point'])
+    dump_json(project_artifact_path('compiler_parameters.json'), out['compiler_parameters'])
     dump_json(project_artifact_path('public_google_baseline_source.json'), out['public_google_baseline_source'])
+    dump_json(project_artifact_path('proof_corpus_profiles.json'), out['proof_corpus_profiles'])
     dump_json(project_artifact_path('full_raw32_oracle.json'), out['raw32_schedule'])
     dump_json(project_artifact_path('exact_leaf_slot_allocation.json'), out['slot_allocation'])
     dump_json(project_artifact_path('lookup_fed_leaf.json'), out['lookup_fed_leaf'])
@@ -2014,6 +2039,7 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('streamed_lookup_tail_leaf_equivalence.json'), out['streamed_lookup_tail_leaf_equivalence'])
     dump_json(project_artifact_path('streamed_lookup_tail_leaf_slot_allocation.json'), out['streamed_lookup_tail_slot_allocation'])
     dump_json(project_artifact_path('arithmetic_lowerings.json'), out['arithmetic_lowerings'])
+    dump_json(project_artifact_path('modular_arithmetic_certificate.json'), out['modular_arithmetic_certificate'])
     dump_json(project_artifact_path('tail_macro_liveness.json'), out['tail_macro_liveness'])
     dump_json(project_artifact_path('tail_macro_reversibility.json'), out['tail_macro_reversibility'])
     dump_json(project_artifact_path('tail_macro_schedule_search.json'), out['tail_macro_schedule_search'])
@@ -2032,6 +2058,8 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('logical_resource_ledger.json'), out['logical_resource_ledger'])
     dump_json(project_artifact_path('fallback_frontier_stress.json'), out['fallback_frontier_stress'])
     dump_json(project_artifact_path('reusable_chunk_tail_candidate.json'), out['reusable_chunk_tail_candidate'])
+    dump_json(project_artifact_path('qroam_primitive_certificate.json'), out['qroam_primitive_certificate'])
+    dump_json(project_artifact_path('qroam_reference_crosscheck.json'), out['qroam_reference_crosscheck'])
     dump_json(project_artifact_path('reusable_chunk_lowering.json'), out['reusable_chunk_lowering'])
     dump_json(project_artifact_path('resource_liveness_certificate.json'), out['resource_liveness_certificate'])
     dump_json(project_artifact_path('materialized_circuit_manifest.json'), out['materialized_circuit_manifest'])

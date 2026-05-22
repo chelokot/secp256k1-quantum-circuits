@@ -1,0 +1,30 @@
+{
+  "schema": "compiler-project-proof-corpus-profiles-v1",
+  "selected_public_profile": "smoke_public_8",
+  "release_profile": "google_comparable_9024",
+  "profiles": {
+    "smoke_public_8": {
+      "case_count": 8,
+      "case_start": 0,
+      "role": "current public smoke attestation",
+      "release_grade": false
+    },
+    "google_comparable_9024": {
+      "case_count": 9024,
+      "case_start": 0,
+      "role": "Google-disclosure-size public corpus target",
+      "release_grade": true
+    }
+  },
+  "checks": {
+    "selected_public_profile_exists": true,
+    "google_comparable_profile_exists": true,
+    "selected_public_profile_is_explicit_smoke": true,
+    "google_comparable_profile_is_release_grade": true
+  },
+  "pass": true,
+  "boundary": [
+    "The current checked public proof profile is an explicit 8-case smoke attestation.",
+    "The Google-comparable release target is tracked as a separate 9024-case profile and must be rebuilt before claiming Google-equivalent proof confidence."
+  ]
+}

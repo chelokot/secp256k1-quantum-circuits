@@ -1,0 +1,47 @@
+{
+  "schema": "compiler-project-parameters-v1",
+  "curve": {
+    "name": "secp256k1",
+    "field_modulus_hex": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
+    "scalar_order_hex": "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141",
+    "curve_b": 7,
+    "generator_x_hex": "79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+    "generator_y_hex": "483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8"
+  },
+  "field": {
+    "field_bits": 256,
+    "pseudo_mersenne_shift": 32,
+    "pseudo_mersenne_low_term": 977,
+    "canonical_subtract_passes": 2
+  },
+  "windowing": {
+    "raw_window_bits": 16,
+    "full_raw_windows": 32,
+    "folded_magnitude_bits": 15,
+    "folded_magnitude_domain": 32768,
+    "fixed_window_width": 8
+  },
+  "phase_shell": {
+    "full_phase_register_bits": 512,
+    "selected_public_shell": "semiclassical_qft_v1"
+  },
+  "lookup_policy": {
+    "selected_public_lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
+    "standard_qroamclean_block_size": 1
+  },
+  "reusable_chunk_policy": {
+    "chunk_bits": 155,
+    "chunk_count": 2,
+    "scratch_slot": "qchunk"
+  },
+  "checks": {
+    "field_modulus_has_declared_bit_width": true,
+    "pseudo_mersenne_identity_matches_modulus": true,
+    "folded_domain_matches_magnitude_bits": true,
+    "raw_window_span_matches_scalar_width": true,
+    "qroamclean_selected_block_size_is_k1": true,
+    "reusable_chunk_policy_covers_field_width": true
+  },
+  "pass": true,
+  "parameter_digest_sha256": "8ecc453477263f7afc5a8bdd7ae438515ff163bb2dab61501bc82a2ea78b1b99"
+}

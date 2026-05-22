@@ -44,15 +44,18 @@ The strongest defensible statement is:
 
 > The repository currently contains a checked standard-QROM compiler-family
 > boundary whose artifacts, resource ledger, committed-document SP1 public
-> values, compressed proof, and Groth16 proof agree on `36,767,692 / 1,199`,
+> values, and proof-freshness tooling define a `36,767,692 / 1,199` result,
 > with claim/leaf/family/case/resource document hashes recomputed inside the
-> active ZKP guest.
+> active ZKP guest. The current working tree intentionally marks the checked
+> compressed/Groth16 proof layers stale after resource-certificate changes until
+> the final proof rebuild is run.
 
 The weaker `32,879,331 / 1,044` statement is the historical verdict for commit
 `4d9fefed41ca0f6b5cf6528ce8366065fc6d557a`. The current branch has since moved
 the public claim to `36,767,692 / 1,199` after adding explicit modular-reduction
 cost, stronger ZKP resource binding, in-guest committed-document hash binding,
-and the verified reusable-chunk four-slot candidate proof bundle.
+and the reusable-chunk four-slot candidate proof bundle with explicit freshness
+checks.
 
 The statement that is not yet defensible without more engineering is:
 
@@ -92,15 +95,15 @@ resource semantics and macro boundaries.
 - The proof public values bind the selected family, leaf hash, case corpus hash,
   and the final numbers.
 - The earlier "free lookup x/y lane" class of error is not present in the
-  current headline. The current resource contract counts `274` lookup workspace
-  qubits: `18` folded-control qubits plus a `256`-qubit full-coordinate QROAM
-  target at `K = 1`.
+  current headline. The current reusable-chunk resource contract counts `173`
+  lookup workspace qubits: `18` folded-control qubits plus a live `155`-qubit
+  chunk QROAM target at `K = 1`.
 - The earlier `15 independent 2-way chunks` lookup model is no longer the
   selected public model. The selected resource model charges `65,536`
-  non-Clifford per 256-bit coordinate stream.
+  non-Clifford per 155-bit reusable chunk stream.
 - The earlier QROAM block-size inconsistency is not present in the selected row:
-  `K = 1` implies no junk registers and `256` target qubits, so the QROAM gate
-  and workspace formulas agree for the selected point.
+  `K = 1` implies no junk registers and a `155`-qubit chunk target, so the QROAM
+  gate and workspace formulas agree for the selected public point.
 
 ## Critical Trust Assumptions
 
@@ -259,11 +262,13 @@ source that creates the live quantum obligation:
 - phase shell live register: selected phase-shell lowering
   `live_quantum_bits`.
 
-The certificate fails unless every counted owner has capacity at least equal to
-its derived required peak, every assigned component sums numerically, the owner
-set is exact, and the required/capacity totals reconstruct the public
-`1,044`-qubit claim. The Rust SP1 guest also walks this section and rejects an
-underprovisioned owner capacity.
+For the current reusable-chunk public headline,
+`reusable_chunk_lowering.json` additionally carries an executable interval
+liveness certificate. It recomputes the `1,199`-qubit global peak from the live
+wire intervals, proves the `155`-qubit QROAM target and `qchunk` are counted
+concurrently, proves no full-coordinate lookup lane is live, and requires every
+owner peak to match its numeric capacity. The Rust SP1 guest walks this section
+and rejects underprovisioned owner capacity or forged QROAM-target liveness.
 
 Remaining boundary:
 
@@ -341,32 +346,50 @@ Required hardening:
 - Add small-prime exhaustive lowered-circuit tests for the arithmetic kernels
   themselves, not just the high-level point-add leaf.
 
-### 4. QROAM standardness is a model assertion, not an imported verified primitive
+### 4. QROAM standardness now has an internal generated primitive-count certificate, but not an external implementation import
 
 The selected `K = 1` row avoids the previous QROAMClean junk-register mismatch,
-but the repo still encodes QROAM cost formulas itself.
+and the current branch no longer relies only on a manually read formula for the
+public reusable-chunk stream. It now emits
+`compiler_verification_project/artifacts/qroam_primitive_certificate.json`,
+emits an independent
+`compiler_verification_project/artifacts/qroam_reference_crosscheck.json`,
+embeds both payloads into `reusable_chunk_lowering.json`, and makes the SP1
+guest validate the embedded certificates before accepting the public resource
+digest.
 
-The current claim relies on:
+The public reusable-chunk claim relies on:
 
 - `domain_size = 32768`
-- `field_bits = 256`
+- `target_bits = 155`
 - `block_size = 1`
-- per coordinate stream non-Clifford: `32768 + 32768 = 65536`
-- workspace: `256` target bits plus zero junk bits
+- per chunk stream non-Clifford: `32768 + 32768 = 65536`
+- workspace: `155` target bits plus zero junk bits
 
-The formula is now internally consistent. The remaining trust point is that the
-coordinate stream primitive, its target lifetime, its measured cleanup, and its
-interaction with the arithmetic consumer are not imported from a formally
-verified QROM/QROAM implementation.
+The certificate traverses deterministic compute and measured-uncompute
+unary-iteration segments and checks those traversed counts against the
+QROAMClean `K = 1` parameter object. The separate reference cross-check does
+not import the production `resource_ledger.qroam_clean_stream_cost` helper; it
+recomputes the QROAMClean gate/workspace equations, keeps the `155`-bit
+reusable chunk stream separate from the `256`-bit full-field ledger sweep, and
+includes reduced-domain table-select/uncompute semantic cases. This is stronger
+than a single local formula, and it directly guards the previous
+gate/workspace-width mix-up, but still not a Clifford-complete QROAM netlist and
+not an imported third-party formal implementation. The remaining trust point is
+therefore narrower: reviewers still have to accept the locally specified
+`qroamclean_k1_unary_iteration_step` primitive model, or ask for an external
+Qualtran/QROM synthesis cross-check.
 
 Required hardening:
 
-- Add a standalone QROAM primitive IR with selection bits, table entries,
-  target register, measurement cleanup, and optional junk registers.
-- Instantiate it for every coordinate stream.
-- Verify the cost/workspace by traversing that QROAM IR, not by formula.
-- Optionally cross-check against a Qualtran-generated QROM/QROAM decomposition
-  for the same parameters.
+- Extend the current primitive-count certificate into a full QROAM primitive IR
+  with selection bits, table entries, target register, measurement cleanup, and
+  optional junk registers.
+- Instantiate or reference the certificate for every coordinate stream.
+- Keep verifying the cost/workspace by traversing the generated certificate,
+  not by comparing two hand-written constants.
+- Add an external Qualtran-generated QROM/QROAM decomposition cross-check for
+  the same parameters.
 
 ### 5. Boundary no-op semantics are trusted at the system boundary
 
@@ -587,20 +610,70 @@ Required hardening:
 
 ### ZKP default corpus size
 
-- `DEFAULT_CASE_COUNT = 8` in `compiler_verification_project/src/zkp_attestation.py`.
+Reviewed-state issue:
+
+- `DEFAULT_CASE_COUNT = 8` lived directly in
+  `compiler_verification_project/src/zkp_attestation.py`.
 
 Risk:
 
 - The proof defaults to a corpus that is much smaller than Google's disclosed
   proof corpus.
 
-Required hardening:
+Current remediation:
 
-- Move proof-corpus profiles into config:
-  - `smoke = 8`
-  - `google_comparable = 9024`
-  - `release = selected profile`
-- Make public release proofs fail if the selected profile is `smoke`.
+- `compiler_verification_project/artifacts/proof_corpus_profiles.json` now
+  records the selected public profile as `smoke_public_8` and the release target
+  as `google_comparable_9024`.
+- `DEFAULT_CASE_COUNT` is derived from that profile source rather than being a
+  standalone source literal.
+- `proof_corpus_profile_checks` requires the current public candidate case
+  count to match the selected smoke profile and keeps the 9024-case profile as
+  the explicit Google-comparable release target.
+
+Remaining boundary:
+
+- The current public proof is still an 8-case smoke attestation. Final
+  Google-comparable confidence requires building and proving the 9024-case
+  profile.
+
+### Public headline/resource constants
+
+Reviewed-state issue:
+
+- Headline totals, reusable-chunk QROAM width, lookup workspace, and modular
+  multiplier counts were repeated in tests and integrity checks.
+
+Current remediation:
+
+- `reusable_chunk_lowering_checks` now derives stream counts from
+  `stream_plan`, QROAM target/workspace from the embedded QROAM model,
+  high/low chunk widths from the field width and chunk count, non-Clifford
+  totals from the stream count and per-stream QROAM cost, and logical qubits
+  from the owner-capacity/liveness certificate.
+- ZKP input tests now derive reusable-chunk headline totals, QROAM parameters,
+  modular arithmetic stage totals, and liveness peaks from the bound resource
+  document and public values instead of restating `36,767,692`, `1,199`,
+  `65,536`, `173`, or `71,492` as independent magic constants.
+- The SP1 guest reusable-chunk validator now derives chunk width, chunk count,
+  QROAM target/junk capacity, per-stream non-Clifford totals, effective
+  high/low chunk widths, and table-multiplier partial-product sums from the
+  embedded resource document instead of pinning `155`, `65,536`, `71,492`, or
+  `327,680` as validator literals.
+- `public_headline_result_checks` now checks that the artifact's `pass` flag
+  matches its internal freshness/resource checks. During source churn, stale
+  proofs are therefore a detected state rather than a hidden test failure.
+- `compiler_verification_project/artifacts/compiler_parameters.json` now records
+  the curve, field, raw-window, folded-domain, phase-shell, QROAM block-size,
+  and reusable-chunk policy in one versioned artifact with a stable parameter
+  digest. `compiler_parameter_checks` ties that artifact back to the schedule,
+  logical-resource ledger, and reusable-chunk lowering.
+
+Remaining boundary:
+
+- Not every downstream artifact carries the parameter digest yet. The digest is
+  checked centrally and should be propagated into every release-critical
+  artifact before final publication.
 
 ### Register list in the proof compiler
 
@@ -782,52 +855,76 @@ Best fix:
 
 - Replace operation labels with a typed circuit DAG.
 
-### RES-2: Modular reduction cost is not visibly proven
+### RES-2: Field-multiplication reduction now has an executable certificate, but full arithmetic netlists are still not complete
 
 Evidence:
 
 - The SP1/Rust semantics uses `% modulus` for field operations.
-- The arithmetic lowering uses n-bit carry ladders and schoolbook-product
-  formulas.
-- The current report artifacts do not expose a full modular reduction schedule
-  for secp256k1's prime in each field operation.
+- The arithmetic lowering uses n-bit carry ladders, schoolbook-product formulas,
+  and an explicit pseudo-Mersenne reduction schedule for `field_mul`.
+- `compiler_verification_project/artifacts/modular_arithmetic_certificate.json`
+  now binds that `field_mul` schedule to secp256k1's
+  `p = 2^256 - 2^32 - 977` shape, reconstructs the 256-bit stage counts from
+  `arithmetic_lowerings.json`, and exhaustively executes reduced-width
+  pseudo-Mersenne analogues for add/sub/mul/mul-by-21.
+- `reusable_chunk_lowering.json` embeds the modular certificate, its internal
+  check must pass, and the SP1 guest validates the embedded certificate before
+  accepting the reusable-chunk resource digest.
 
 Impact:
 
-- A reviewer can object that the counted arithmetic is an arithmetic-kernel
-  model, not a complete field-arithmetic circuit.
-- This may be a larger concern than QROAM after the QROAM model fix.
+- The largest previous blind spot, whether the counted multiplier includes a
+  concrete mod-p reduction schedule, is narrowed by an executable certificate
+  and forged-stage-count/reduced-case tests in both the Python integrity layer
+  and the SP1 guest.
+- A reviewer can still object that the counted arithmetic is an
+  arithmetic-kernel model, not a Clifford-complete reversible netlist for every
+  field opcode.
 
 Minimum fix:
 
-- Add a document per opcode explaining how modular reduction is represented and
-  counted.
+- Extend the proof-bound modular arithmetic certificate from the current
+  `field_mul` reduction focus to every field opcode.
 
 Best fix:
 
-- Generate and test the modular arithmetic circuit itself.
+- Generate and test the modular arithmetic circuit itself, with typed
+  reversible wires, cleanup, and liveness.
 
-### RES-3: QROAM K=1 is consistent but not independently synthesized
+### RES-3: QROAM K=1 has an internal generated certificate, but not an external synthesis cross-check
 
 Evidence:
 
-- `qroam_clean_stream_cost` computes the QROAM formula directly.
-- `logical_resource_ledger.py` then reuses that formula to produce the sweep.
-- Integrity checks compare artifacts to the same formula.
+- `qroam_primitive_certificate.json` is generated from the selected public
+  parameters and records the traversed compute/uncompute segment counts,
+  target-register capacity, junk-register capacity, and certificate checks.
+- `qroam_reference_crosscheck.json` independently recomputes the QROAMClean
+  compute, measured-uncompute, target, and junk equations, checks every
+  full-field ledger sweep row, separately checks the selected 155-bit chunk
+  stream, and includes reduced-domain table-select/uncompute semantic cases.
+- `reusable_chunk_lowering.json` embeds both certificates and checks that they
+  match the QROAMClean `K = 1` model used by the public candidate.
+- The SP1 guest validates the embedded certificates, recomputes segment CCX
+  totals by phase, checks target/junk workspace fields against the public
+  QROAM model and independent reference row, and rejects count/workspace
+  mutations in negative tests.
 
 Impact:
 
-- The previous mixed-model bug is fixed for `K = 1`, but the repo still relies
-  on formula-level QROAM rather than a QROAM circuit/liveness generator.
+- The previous mixed-model bug is fixed for `K = 1`, and the selected public
+  QROAM stream is no longer only a formula-level assertion. The remaining gap is
+  that the certificates are still compact local count/reference certificates,
+  not an external QROAM synthesis or Clifford-complete bit-level circuit.
 
 Minimum fix:
 
-- Cross-check the formula against an external library for all selected rows.
+- Cross-check the generated certificate against an external library for all
+  selected rows.
 
 Best fix:
 
-- Generate the QROAM primitive IR locally and count it with the same liveness
-  engine as the arithmetic.
+- Expand the certificate into a full QROAM primitive IR and count it with the
+  same liveness engine as the arithmetic.
 
 ### REL-1: Release artifact packaging is not fully containerized, but the public headline has a single verifier
 
@@ -1286,15 +1383,16 @@ Exit criterion:
 - The guest computes non-Clifford and qubit totals from the committed circuit
   representation or from a separately proven resource certificate.
 
-### P1: External QROM/QROAM cross-check
+### P1: QROM/QROAM reference cross-check
 
 Add a cross-check against an external QROM/QROAM implementation or a small
 formally specified QROAM primitive.
 
 Exit criterion:
 
-- For selected parameters, internal QROAM cost/workspace matches the external
-  primitive, and mismatch fails CI.
+- For selected parameters, internal QROAM cost/workspace matches an independent
+  reference primitive, the 155-bit chunk stream is not conflated with the
+  256-bit full-field ledger sweep, and mismatch fails CI.
 
 ### P1: Baseline source package
 
@@ -1347,12 +1445,12 @@ Avoid:
 Use:
 
 > Under the repository's checked standard-QROM compiler-family boundary, the
-> current artifacts and checked SP1 compressed/Groth16 proofs bind a
-> `36,767,692` non-Clifford / `1,199` logical-qubit result. This improves the
-> cited public Google 2026 resource lines numerically, but the proof boundary is
-> not identical to Google's hidden-circuit 9024-case SP1/Groth16 attestation and
-> the repository does not yet ship a Clifford-complete flattened full-Shor
-> netlist.
+> current artifacts define a `36,767,692` non-Clifford / `1,199` logical-qubit
+> result, and `proof_status.py --require-all-current` is the release gate for
+> checked SP1 compressed/Groth16 proof freshness. This improves the cited public
+> Google 2026 resource lines numerically, but the proof boundary is not
+> identical to Google's hidden-circuit 9024-case SP1/Groth16 attestation and the
+> repository does not yet ship a Clifford-complete flattened full-Shor netlist.
 
 ## Bottom Line
 
@@ -1388,11 +1486,38 @@ Fixed after review:
 - Negative guest tests were added for stale claim labels, mutated committed
   claim payloads, mutated prepared leaves, mutated prepared case corpora, and
   mutated resource leaf-sigma primitive counts.
+- `RES-3`: the public reusable-chunk input now binds
+  `qroam_primitive_certificate.json` and `qroam_reference_crosscheck.json`
+  through `reusable_chunk_lowering.json`.
+  That certificate traverses generated QROAMClean `K=1` compute and measured
+  cleanup segments for the selected `32768`-entry, `155`-target-bit stream,
+  reconstructs the `65,536` non-Clifford per-stream cost and `155`
+  target-plus-junk workspace, cross-checks it against an independent reference
+  artifact that also validates the full-field ledger sweep, and is validated by
+  the SP1 guest. New negative guest tests reject forged QROAM primitive counts,
+  forged target workspace, and forged reference rows.
 - `RES-2`: the central `field_mul` lowering now carries explicit secp256k1
   pseudo-Mersenne reduction stages for `p = 2^256 - 2^32 - 977`, including the
   first fold, second narrow fold, and two canonical subtract-p passes. This
   moved the checked headline from `32,879,331 / 1,044` to
   `34,736,076 / 1,044` rather than leaving prime-field reduction implicit.
+- `RES-2`: `modular_arithmetic_certificate.json` now independently reconstructs
+  the 256-bit `field_mul` reduction stage counts from
+  `arithmetic_lowerings.json` and exhaustively executes reduced-width
+  pseudo-Mersenne analogues over `23^2` and `53^2` input pairs for add, sub,
+  multiplication, and multiplication by `21`. Integrity checks and narrow tests
+  reject forged reduction-stage counts and forged reduced-width results. The
+  reusable-chunk resource certificate embeds this certificate, and the SP1 guest
+  validates it before accepting the public resource digest.
+- `ZK-2` / resource-IR binding: `reusable_chunk_lowering.json` now includes
+  `counted_resource_ir`, a committed counted-resource representation containing
+  the non-Clifford terms and liveness intervals used for the public
+  reusable-chunk headline. Integrity checks, `verify_public_headline.py`, and the
+  SP1 guest recompute `36,767,692` non-Clifford operations and the `1,199`
+  live-qubit peak from that IR; guest tests reject forged counted-resource
+  terms. This does not make the repository a Clifford-complete full-Shor
+  primitive netlist, but it removes another parallel formula-only path from the
+  public headline.
 
 Partially mitigated after review:
 
@@ -1480,17 +1605,19 @@ Partially mitigated after review:
   binds and executes `complete_a0_reusable_chunk_tail`, commits
   `reusable_chunk_lowering.json`, recomputes the executable-liveness peak from
   the certificate's interval rows, rejects failing liveness checks, and returns
-  public values `36,767,692 / 1,199`. The candidate directory now also contains
+  public values `36,767,692 / 1,199`. The candidate directory also contains
   checked core, compressed, and Groth16 fixtures, the compressed proof bundle,
   the Groth16 proof bundle, the wrap proof bundle, and the matching Groth16
-  verifier key. Both explicit compressed and Groth16 verification commands have
-  been run against those checked candidate artifacts.
+  verifier key. After the modular-arithmetic certificate was bound into the
+  reusable-chunk resource document, `proof_status.py` correctly marks those
+  proof layers stale until the final compressed/Groth16 rebuild is run.
 - `compiler_verification_project/artifacts/public_headline_result.json` now
-  selects that verified reusable-chunk bundle as the single public repository
-  headline. It records the checked proof files, verifier key, input/public-value
-  hashes, strict `<40M / <1200` checks, and exact comparison ratios against the
-  public Google baseline. The old `34,736,076 / 1,044` three-slot family remains
-  checked as a reference boundary, not the public headline.
+  selects the reusable-chunk bundle as the single public repository headline.
+  It records the checked proof files, verifier key, input/public-value hashes,
+  strict `<40M / <1200` checks, exact comparison ratios against the public
+  Google baseline, and a failing `pass` flag while checked proofs are stale
+  against the current resource digest. The old `34,736,076 / 1,044` three-slot
+  family remains checked as a reference boundary, not the public headline.
 - `ZK-3`: proof binaries are now included in the curated proof manifest, but
   the checked JSON fixtures still intentionally keep the large binary proof
   payloads out-of-line.
@@ -1501,6 +1628,11 @@ Still open:
   selected primitive operation stream, but not the tens-of-millions-row TSV gate
   list itself.
 - The deepest refactor remains mandatory before claiming Google-equivalent
-  hidden-circuit confidence: the same source engine should emit the semantic
-  leaf, primitive lowering, liveness peak, artifact digests, and ZKP input
-  without maintaining parallel prepared and audit views.
+  hidden-circuit confidence: `counted_resource_ir` now ties the public resource
+  totals to a committed IR consumed by integrity checks and the SP1 guest, but
+  the same source engine still should emit the semantic leaf, primitive
+  lowering, artifact digests, and ZKP input without maintaining parallel
+  prepared and audit views.
+- Final publication still requires rebuilding core/compressed/Groth16 artifacts
+  from the current checked input and making `proof_status.py --require-all-current`
+  pass.

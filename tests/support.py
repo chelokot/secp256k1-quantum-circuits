@@ -13,7 +13,7 @@ _prepared_targets: set[Path] = set()
 def _ensure_target(summary_path: Path, command: list[str]) -> Path:
     if summary_path in _prepared_targets:
         return summary_path
-    if os.environ.get('SECP256K1_OPEN_AUDIT_REUSE_ARTIFACTS') == '1' and summary_path.exists():
+    if summary_path.exists() and os.environ.get('SECP256K1_OPEN_AUDIT_FORCE_REBUILD') != '1':
         _prepared_targets.add(summary_path)
         return summary_path
     subprocess.run(command, cwd=REPO_ROOT, check=True, stdout=subprocess.DEVNULL)

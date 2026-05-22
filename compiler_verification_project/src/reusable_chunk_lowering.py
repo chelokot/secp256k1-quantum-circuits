@@ -51,6 +51,68 @@ def _owner_peak(intervals: List[Dict[str, Any]], wire_catalog: Mapping[str, Dict
     }
 
 
+def _build_counted_resource_ir(
+    *,
+    stream_rows: List[Dict[str, Any]],
+    executable_liveness: Mapping[str, Any],
+    base_without_streamed_qroam: int,
+    leaf_call_count_total: int,
+    total_non_clifford: int,
+    total_logical_qubits: int,
+) -> Dict[str, Any]:
+    non_clifford_terms = [
+        {
+            'term_id': 'base_without_streamed_qroam',
+            'category': 'arithmetic_control_and_phase_base',
+            'instances': 1,
+            'per_instance_non_clifford': int(base_without_streamed_qroam),
+            'total_non_clifford': int(base_without_streamed_qroam),
+            'source': 'logical_resource_ledger.qroam_clean_tradeoff_sweep.base_non_clifford_without_streamed_qroam',
+        }
+    ]
+    for row in stream_rows:
+        non_clifford_terms.append({
+            'term_id': f"qroam_stream__{row['table']}__chunk_{row['chunk_index']}",
+            'category': 'qroam_chunk_stream',
+            'table': row['table'],
+            'chunk_index': int(row['chunk_index']),
+            'instances': int(leaf_call_count_total),
+            'per_instance_non_clifford': int(row['per_chunk_stream_non_clifford']),
+            'total_non_clifford': int(leaf_call_count_total) * int(row['per_chunk_stream_non_clifford']),
+            'source': 'stream_plan.rows',
+        })
+    interval_rows = [
+        {
+            'interval_id': interval['interval_id'],
+            'live_wire_ids': list(interval['live_wire_ids']),
+            'owner_live_qubits': dict(interval['owner_live_qubits']),
+            'total_live_qubits': int(interval['total_live_qubits']),
+        }
+        for interval in executable_liveness['intervals']
+    ]
+    recomputed_total_non_clifford = sum(int(term['total_non_clifford']) for term in non_clifford_terms)
+    peak_interval = max(interval_rows, key=lambda interval: int(interval['total_live_qubits']))
+    qroam_terms = [term for term in non_clifford_terms if term['category'] == 'qroam_chunk_stream']
+    checks = {
+        'non_clifford_terms_sum_to_candidate': recomputed_total_non_clifford == int(total_non_clifford),
+        'qroam_terms_match_stream_rows': len(qroam_terms) == len(stream_rows),
+        'each_qroam_term_reuses_leaf_call_count': all(int(term['instances']) == int(leaf_call_count_total) for term in qroam_terms),
+        'liveness_intervals_match_executable_liveness_peak': int(peak_interval['total_live_qubits']) == int(executable_liveness['global_peak_live_qubits']) == int(total_logical_qubits),
+    }
+    return {
+        'schema': 'compiler-project-reusable-chunk-counted-resource-ir-v1',
+        'derivation': 'single counted IR consumed by integrity checks and the SP1 guest for reusable-chunk headline non-Clifford and live-qubit totals',
+        'non_clifford_terms': non_clifford_terms,
+        'wire_catalog': dict(executable_liveness['wire_catalog']),
+        'liveness_intervals': interval_rows,
+        'recomputed_total_non_clifford': recomputed_total_non_clifford,
+        'recomputed_peak_live_qubits': int(peak_interval['total_live_qubits']),
+        'peak_interval_id': peak_interval['interval_id'],
+        'checks': checks,
+        'pass': all(checks.values()),
+    }
+
+
 def _build_executable_liveness_certificate(
     *,
     executable_leaf: Mapping[str, Any],
@@ -276,6 +338,9 @@ def build_reusable_chunk_lowering(
     fallback_frontier_stress: Mapping[str, Any],
     logical_resource_ledger: Mapping[str, Any],
     arithmetic_lowerings: Mapping[str, Any],
+    qroam_primitive_certificate: Mapping[str, Any],
+    qroam_reference_crosscheck: Mapping[str, Any],
+    modular_arithmetic_certificate: Mapping[str, Any],
     field_bits: int,
 ) -> Dict[str, Any]:
     candidate = reusable_chunk_tail_candidate['production_resource_candidate']
@@ -296,6 +361,10 @@ def build_reusable_chunk_lowering(
         chunk_bits,
         1,
     )
+    qroam_traversed = qroam_primitive_certificate['traversed_counts']
+    qroam_reference_selected = qroam_reference_crosscheck['selected_reference']
+    modular_stage_certificate = modular_arithmetic_certificate['field_mul_stage_count_certificate']
+    reduced_width_cases = modular_arithmetic_certificate['reduced_width_exhaustive_cases']
     table_names = list(executable_leaf['lookup_constant_sources'])
     consumer_plan = reusable_chunk_tail_candidate['semantic_model']['consumer_plan']
     stream_rows: List[Dict[str, Any]] = []
@@ -378,6 +447,14 @@ def build_reusable_chunk_lowering(
         control_qubits=control_qubits,
         phase_qubits=phase_qubits,
     )
+    counted_resource_ir = _build_counted_resource_ir(
+        stream_rows=stream_rows,
+        executable_liveness=executable_liveness,
+        base_without_streamed_qroam=base_without_streamed_qroam,
+        leaf_call_count_total=leaf_call_count_total,
+        total_non_clifford=total_non_clifford,
+        total_logical_qubits=total_logical_qubits,
+    )
     owner_required_total = sum(int(owner['required_peak_qubits']) for owner in owners)
     owner_capacity_total = sum(int(owner['logical_qubits']) for owner in owners)
     checks = {
@@ -388,6 +465,37 @@ def build_reusable_chunk_lowering(
         'stream_count_derived_from_tables_and_chunks': chunk_streams_per_leaf == len(table_names) * chunk_count == int(candidate['chunk_streams_per_leaf']),
         'whole_oracle_stream_count_derived_from_leaf_calls': whole_oracle_chunk_streams == leaf_call_count_total * chunk_streams_per_leaf,
         'per_stream_cost_matches_standard_qroamclean_k1': int(qroam_cost['per_stream_non_clifford']) == int(stress_candidate['per_chunk_stream_non_clifford']),
+        'per_stream_cost_matches_generated_qroam_primitive': (
+            qroam_primitive_certificate['pass'] is True
+            and qroam_primitive_certificate['parameters']['domain_size'] == int(qroam_cost['domain_size'])
+            and qroam_primitive_certificate['parameters']['target_bits'] == int(qroam_cost['target_register_qubits'])
+            and qroam_primitive_certificate['parameters']['block_size'] == int(qroam_cost['block_size'])
+            and int(qroam_traversed['lookup_compute_non_clifford']) == int(qroam_cost['lookup_compute_non_clifford'])
+            and int(qroam_traversed['measured_uncompute_non_clifford']) == int(qroam_cost['measured_uncompute_non_clifford'])
+            and int(qroam_traversed['per_stream_non_clifford']) == int(qroam_cost['per_stream_non_clifford'])
+            and int(qroam_traversed['target_plus_junk_qubits']) == int(qroam_cost['target_plus_junk_qubits'])
+        ),
+        'per_stream_cost_matches_independent_qroam_reference_crosscheck': (
+            qroam_reference_crosscheck['pass'] is True
+            and qroam_reference_selected['domain_size'] == int(qroam_cost['domain_size'])
+            and qroam_reference_selected['target_bits'] == int(qroam_cost['target_register_qubits'])
+            and qroam_reference_selected['block_size'] == int(qroam_cost['block_size'])
+            and int(qroam_reference_selected['lookup_compute_non_clifford']) == int(qroam_cost['lookup_compute_non_clifford'])
+            and int(qroam_reference_selected['measured_uncompute_non_clifford']) == int(qroam_cost['measured_uncompute_non_clifford'])
+            and int(qroam_reference_selected['per_stream_non_clifford']) == int(qroam_cost['per_stream_non_clifford'])
+            and int(qroam_reference_selected['target_plus_junk_qubits']) == int(qroam_cost['target_plus_junk_qubits'])
+        ),
+        'modular_arithmetic_certificate_binds_counted_field_mul': (
+            modular_arithmetic_certificate['pass'] is True
+            and modular_arithmetic_certificate['secp256k1_parameters']['field_bits'] == int(field_bits)
+            and modular_arithmetic_certificate['secp256k1_parameters']['shift'] == 32
+            and modular_arithmetic_certificate['secp256k1_parameters']['low_term'] == 977
+            and modular_arithmetic_certificate['secp256k1_parameters']['canonical_subtract_passes'] == 2
+            and modular_stage_certificate['stage_counts_match'] is True
+            and int(modular_stage_certificate['observed_total_ccx']) == int(_kernel_by_opcode(arithmetic_lowerings, 'field_mul')['exact_non_clifford_per_kernel'])
+            and int(modular_stage_certificate['observed_total_ccx']) == int(modular_stage_certificate['expected_total_ccx'])
+            and all(row['pass'] is True and int(row['rows_checked']) == int(row['modulus']) * int(row['modulus']) for row in reduced_width_cases)
+        ),
         'chunked_multiplier_partial_products_match_inherited_full_width_base': table_multiplier_partial_products_per_leaf == inherited_table_multiplier_partial_products_per_leaf == 5 * int(field_bits) * int(field_bits),
         'chunked_multiplier_high_chunk_zero_padding_is_explicit': all(row['chunk_rows'][1]['effective_constant_bits'] == int(field_bits) - chunk_bits and row['chunk_rows'][1]['zero_padded_target_bits'] == chunk_bits - (int(field_bits) - chunk_bits) for row in table_multiplier_rows),
         'chunked_multiplier_uses_single_reduction_per_consumer': all(bool(row['single_modular_reduction_after_chunk_accumulation']) and int(row['extra_chunk_combine_non_clifford']) == 0 for row in table_multiplier_rows),
@@ -396,6 +504,7 @@ def build_reusable_chunk_lowering(
         'owner_capacity_rows_cover_required_peak': owner_required_total <= owner_capacity_total == total_logical_qubits and all(bool(owner['capacity_pass']) for owner in owners),
         'executable_liveness_peak_matches_candidate': executable_liveness['pass'] is True and int(executable_liveness['global_peak_live_qubits']) == total_logical_qubits,
         'executable_liveness_owner_peaks_match_capacity': executable_liveness['owner_peak_live_qubits'] == executable_liveness['owner_capacity_qubits'],
+        'counted_resource_ir_recomputes_public_totals': counted_resource_ir['pass'] is True and int(counted_resource_ir['recomputed_total_non_clifford']) == total_non_clifford and int(counted_resource_ir['recomputed_peak_live_qubits']) == total_logical_qubits,
         'fits_requested_limits': total_non_clifford < 40_000_000 and total_logical_qubits < 1200,
     }
     return {
@@ -405,6 +514,9 @@ def build_reusable_chunk_lowering(
             'reusable_chunk_tail_candidate': 'compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json',
             'fallback_frontier_stress': 'compiler_verification_project/artifacts/fallback_frontier_stress.json',
             'logical_resource_ledger': 'compiler_verification_project/artifacts/logical_resource_ledger.json',
+            'qroam_primitive_certificate': 'compiler_verification_project/artifacts/qroam_primitive_certificate.json',
+            'qroam_reference_crosscheck': 'compiler_verification_project/artifacts/qroam_reference_crosscheck.json',
+            'modular_arithmetic_certificate': 'compiler_verification_project/artifacts/modular_arithmetic_certificate.json',
         },
         'executable_contract': {
             'variant': executable_leaf['variant'],
@@ -425,6 +537,9 @@ def build_reusable_chunk_lowering(
             'rows': stream_rows,
         },
         'standard_qroamclean_k1_model': qroam_cost,
+        'qroam_primitive_certificate': qroam_primitive_certificate,
+        'qroam_reference_crosscheck': qroam_reference_crosscheck,
+        'modular_arithmetic_certificate': modular_arithmetic_certificate,
         'chunked_multiplier_primitive_contract': {
             'source_arithmetic_kernel': 'complete_a0_all_streamed_tail',
             'field_bits': int(field_bits),
@@ -462,6 +577,7 @@ def build_reusable_chunk_lowering(
             'phase_qubits': phase_qubits,
             'candidate_total_logical_qubits': total_logical_qubits,
         },
+        'counted_resource_ir': counted_resource_ir,
         'owner_capacity': {
             'rows': owners,
             'required_global_peak_qubits': owner_required_total,
@@ -478,7 +594,7 @@ def build_reusable_chunk_lowering(
             'This artifact prevents the previous QROAMClean width/workspace mix-up for the reusable chunk candidate: K=1 uses a 155-bit live target and zero junk registers, so the same model drives gates and qubits.',
             'The three coordinate tables are streamed as chunks and consumed before uncompute; no full x, y, or x_plus_y coordinate lane is allocated.',
             'The chunked multiplier primitive contract proves that the inherited non-QROAM arithmetic base is a conservative bound: low 155 bits plus high 101 effective bits produce the same 65,536 partial products as the inherited full-width field multiplier, with the same single reduction boundary.',
-            'The result is the public headline after checked compressed and Groth16 verification over the reusable-chunk artifacts.',
+            'The resource result is the public headline candidate; compressed and Groth16 proof freshness remains gated by proof_status.py --require-all-current.',
         ],
     }
 

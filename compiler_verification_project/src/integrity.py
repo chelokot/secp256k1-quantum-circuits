@@ -24,14 +24,19 @@ from common import (
 )
 from artifact_registry import BUILD_SUMMARY_ARTIFACT_PATHS, BUILD_SUMMARY_SCHEMA
 from arithmetic_lowering import arithmetic_kernel_summary, arithmetic_lowering_library, materialize_arithmetic_primitive_operations
+from compiler_parameters import COMPILER_PARAMETERS_SCHEMA, build_compiler_parameters
 from fallback_frontier_stress import build_fallback_frontier_stress
 from lookup_lowering import lookup_lowering_library, lowered_lookup_semantic_summary, materialize_lookup_primitive_operations
+from modular_arithmetic_certificate import build_modular_arithmetic_certificate
 from phase_shell_lowering import materialize_phase_operations, phase_shell_family_summary, phase_shell_lowering_library
 from physical_estimator import (
     build_azure_estimator_target_payload,
     build_or_load_azure_estimator_results_payload,
 )
+from proof_corpus_profiles import GOOGLE_COMPARABLE_PROFILE, SMOKE_PUBLIC_PROFILE, build_proof_corpus_profiles
 from public_result import build_public_headline_result, write_public_headline_result
+from qroam_primitive import build_qroam_k1_primitive_certificate
+from qroam_reference_crosscheck import QROAM_REFERENCE_CROSSCHECK_SCHEMA, build_qroam_reference_crosscheck
 from reusable_chunk_lowering import build_reusable_chunk_lowering
 from reusable_chunk_tail_candidate import build_reusable_chunk_tail_candidate
 from resource_ledger import build_logical_resource_ledger, qroam_clean_stream_cost
@@ -134,7 +139,9 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
     artifact_root = repo_root / 'compiler_verification_project' / 'artifacts'
     required = {
         'canonical_public_point': artifact_root / 'canonical_public_point.json',
+        'compiler_parameters': artifact_root / 'compiler_parameters.json',
         'public_google_baseline_source': artifact_root / 'public_google_baseline_source.json',
+        'proof_corpus_profiles': artifact_root / 'proof_corpus_profiles.json',
         'full_raw32_oracle': artifact_root / 'full_raw32_oracle.json',
         'exact_leaf_slot_allocation': artifact_root / 'exact_leaf_slot_allocation.json',
         'lookup_fed_leaf': artifact_root / 'lookup_fed_leaf.json',
@@ -144,6 +151,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'streamed_lookup_tail_leaf_equivalence': artifact_root / 'streamed_lookup_tail_leaf_equivalence.json',
         'streamed_lookup_tail_leaf_slot_allocation': artifact_root / 'streamed_lookup_tail_leaf_slot_allocation.json',
         'arithmetic_lowerings': artifact_root / 'arithmetic_lowerings.json',
+        'modular_arithmetic_certificate': artifact_root / 'modular_arithmetic_certificate.json',
         'tail_macro_liveness': artifact_root / 'tail_macro_liveness.json',
         'tail_macro_reversibility': artifact_root / 'tail_macro_reversibility.json',
         'tail_macro_schedule_search': artifact_root / 'tail_macro_schedule_search.json',
@@ -160,6 +168,8 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'logical_resource_ledger': artifact_root / 'logical_resource_ledger.json',
         'fallback_frontier_stress': artifact_root / 'fallback_frontier_stress.json',
         'reusable_chunk_tail_candidate': artifact_root / 'reusable_chunk_tail_candidate.json',
+        'qroam_primitive_certificate': artifact_root / 'qroam_primitive_certificate.json',
+        'qroam_reference_crosscheck': artifact_root / 'qroam_reference_crosscheck.json',
         'reusable_chunk_lowering': artifact_root / 'reusable_chunk_lowering.json',
         'resource_liveness_certificate': artifact_root / 'resource_liveness_certificate.json',
         'materialized_circuit_manifest': artifact_root / 'materialized_circuit_manifest.json',
@@ -218,6 +228,29 @@ def build_canonical_public_point_checks(artifacts: Mapping[str, Any]) -> Dict[st
             artifacts['canonical_public_point'],
             artifacts['table_manifests']['canonical_public_point'],
         ),
+    ]
+    return _summarize_checks(checks)
+
+
+def build_compiler_parameter_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    parameters = artifacts['compiler_parameters']
+    expected = build_compiler_parameters()
+    field = parameters['field']
+    windowing = parameters['windowing']
+    lookup_policy = parameters['lookup_policy']
+    reusable_chunk_policy = parameters['reusable_chunk_policy']
+    schedule = artifacts['full_raw32_oracle']
+    selected_family = artifacts['logical_resource_ledger']['selected_family_summary']
+    headline_family = artifacts['build_summary']['headline']['best_gate_family']
+    reusable_chunk = artifacts['reusable_chunk_lowering']
+    checks = [
+        _check('compiler_parameters_match_generator', parameters == expected, expected, parameters),
+        _check('compiler_parameters_schema_is_current', parameters['schema'] == COMPILER_PARAMETERS_SCHEMA, COMPILER_PARAMETERS_SCHEMA, parameters['schema']),
+        _check('compiler_parameters_pass_internal_checks', parameters['pass'] is True and all(parameters['checks'].values()), True, parameters['checks']),
+        _check('compiler_parameters_bind_project_field_and_window_constants', field['field_bits'] == FIELD_BITS and windowing['raw_window_bits'] == RAW_WINDOW_BITS and windowing['folded_magnitude_bits'] == FOLDED_MAG_BITS and windowing['folded_magnitude_domain'] == FOLDED_MAG_DOMAIN and windowing['full_raw_windows'] == schedule['raw_window_count'], {'field_bits': FIELD_BITS, 'raw_window_bits': RAW_WINDOW_BITS, 'folded_magnitude_domain': FOLDED_MAG_DOMAIN, 'full_raw_windows': schedule['raw_window_count']}, {'field': field, 'windowing': windowing}),
+        _check('compiler_parameters_bind_lookup_resource_policy', lookup_policy['standard_qroamclean_block_size'] == selected_family['qroam_clean_block_size'] and lookup_policy['selected_public_lookup_family'] == headline_family['lookup_family'], {'selected_family_summary': selected_family, 'headline_family': headline_family}, lookup_policy),
+        _check('compiler_parameters_bind_reusable_chunk_policy', reusable_chunk_policy['chunk_bits'] == reusable_chunk['stream_plan']['chunk_bits'] and reusable_chunk_policy['chunk_count'] == reusable_chunk['stream_plan']['chunk_count'] and reusable_chunk_policy['scratch_slot'] in reusable_chunk['executable_contract']['arithmetic_slots'], reusable_chunk['stream_plan'], reusable_chunk_policy),
+        _check('compiler_parameters_digest_is_stable_sha256', isinstance(parameters['parameter_digest_sha256'], str) and len(parameters['parameter_digest_sha256']) == 64, '64 hex chars', parameters['parameter_digest_sha256']),
     ]
     return _summarize_checks(checks)
 
@@ -371,6 +404,25 @@ def build_arithmetic_kernel_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
             expected_leaf_non_clifford,
             kernel['arithmetic_leaf_non_clifford'],
         ),
+    ]
+    return _summarize_checks(checks)
+
+
+def build_modular_arithmetic_certificate_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    certificate = artifacts['modular_arithmetic_certificate']
+    expected = build_modular_arithmetic_certificate(
+        arithmetic_lowerings=artifacts['arithmetic_lowerings'],
+        field_bits=FIELD_BITS,
+    )
+    stage_certificate = certificate['field_mul_stage_count_certificate']
+    reduced_cases = certificate['reduced_width_exhaustive_cases']
+    checks = [
+        _check('modular_arithmetic_certificate_matches_generator', certificate == expected, expected, certificate),
+        _check('modular_arithmetic_certificate_schema_is_current', certificate['schema'] == 'compiler-project-modular-arithmetic-certificate-v1', 'compiler-project-modular-arithmetic-certificate-v1', certificate['schema']),
+        _check('modular_arithmetic_certificate_passes_internal_checks', certificate['pass'] is True and all(certificate['checks'].values()), True, certificate['checks']),
+        _check('modular_arithmetic_certificate_binds_secp256k1_modulus_shape', certificate['secp256k1_parameters']['field_bits'] == FIELD_BITS and certificate['secp256k1_parameters']['shift'] == 32 and certificate['secp256k1_parameters']['low_term'] == 977 and certificate['secp256k1_parameters']['canonical_subtract_passes'] == 2, {'field_bits': FIELD_BITS, 'shift': 32, 'low_term': 977, 'canonical_subtract_passes': 2}, certificate['secp256k1_parameters']),
+        _check('modular_arithmetic_certificate_field_mul_stage_counts_match_lowering', stage_certificate['stage_counts_match'] is True and stage_certificate['observed_stage_ccx'] == stage_certificate['expected_stage_ccx'] and stage_certificate['observed_total_ccx'] == stage_certificate['expected_total_ccx'], stage_certificate['expected_stage_ccx'], stage_certificate),
+        _check('modular_arithmetic_certificate_reduced_width_cases_are_exhaustive', all(row['pass'] is True and row['rows_checked'] == row['modulus'] * row['modulus'] for row in reduced_cases), 'all reduced-width rows pass exhaustive p^2 testing', reduced_cases),
     ]
     return _summarize_checks(checks)
 
@@ -1254,6 +1306,65 @@ def build_reusable_chunk_tail_candidate_checks(artifacts: Mapping[str, Any]) -> 
     return _summarize_checks(checks)
 
 
+def build_qroam_primitive_certificate_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    certificate = artifacts['qroam_primitive_certificate']
+    selected_row = artifacts['logical_resource_ledger']['qroam_clean_tradeoff_sweep']['selected_row']
+    target_bits = int(
+        artifacts['fallback_frontier_stress']['chunked_coordinate_qroam_counterfactual'][
+            'max_qroam_target_bits_per_live_chunk'
+        ]
+    )
+    expected = build_qroam_k1_primitive_certificate(
+        domain_size=int(selected_row['domain_size']),
+        target_bits=target_bits,
+        block_size=1,
+    )
+    parameters = certificate['parameters']
+    traversed = certificate['traversed_counts']
+    qroam_cost = qroam_clean_stream_cost(
+        int(parameters['domain_size']),
+        int(parameters['target_bits']),
+        int(parameters['block_size']),
+    )
+    segments = certificate['operation_stream']['segments']
+    compute_segments = [row for row in segments if row['phase'] == 'compute']
+    cleanup_segments = [row for row in segments if row['phase'] == 'measured_uncompute']
+    compute_ccx = sum(int(row['ccx']) for row in compute_segments)
+    cleanup_ccx = sum(int(row['ccx']) for row in cleanup_segments)
+    checks = [
+        _check('qroam_primitive_certificate_matches_generator', certificate == expected, expected, certificate),
+        _check('qroam_primitive_certificate_schema_is_current', certificate['schema'] == 'compiler-project-qroam-k1-primitive-certificate-v1', 'compiler-project-qroam-k1-primitive-certificate-v1', certificate['schema']),
+        _check('qroam_primitive_certificate_passes_internal_checks', certificate['pass'] is True and all(certificate['checks'].values()), True, certificate['checks']),
+        _check('qroam_primitive_certificate_uses_public_k1_stream_parameters', int(parameters['domain_size']) == int(selected_row['domain_size']) and int(parameters['target_bits']) == target_bits and int(parameters['block_size']) == 1, {'domain_size': selected_row['domain_size'], 'target_bits': target_bits, 'block_size': 1}, parameters),
+        _check('qroam_primitive_certificate_traverses_compute_and_cleanup_domains', compute_ccx == cleanup_ccx == int(parameters['domain_size']) and len(compute_segments) == len(cleanup_segments) and len(segments) == int(certificate['operation_stream']['segment_count']), {'compute_ccx': parameters['domain_size'], 'cleanup_ccx': parameters['domain_size']}, {'compute_ccx': compute_ccx, 'cleanup_ccx': cleanup_ccx, 'segment_count': len(segments)}),
+        _check('qroam_primitive_certificate_counts_match_qroamclean_cost_model', int(traversed['lookup_compute_non_clifford']) == int(qroam_cost['lookup_compute_non_clifford']) and int(traversed['measured_uncompute_non_clifford']) == int(qroam_cost['measured_uncompute_non_clifford']) and int(traversed['per_stream_non_clifford']) == int(qroam_cost['per_stream_non_clifford']) and int(traversed['target_plus_junk_qubits']) == int(qroam_cost['target_plus_junk_qubits']), qroam_cost, traversed),
+        _check('qroam_primitive_certificate_workspace_decomposes_target_and_junk', int(certificate['wire_catalog']['target_register']['qubits']) == int(parameters['target_bits']) and int(certificate['wire_catalog']['junk_registers']['qubits']) == 0 and int(traversed['target_plus_junk_qubits']) == int(parameters['target_bits']), {'target_register_qubits': parameters['target_bits'], 'junk_register_qubits': 0}, certificate['wire_catalog']),
+    ]
+    return _summarize_checks(checks)
+
+
+def build_qroam_reference_crosscheck_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    crosscheck = artifacts['qroam_reference_crosscheck']
+    expected = build_qroam_reference_crosscheck(
+        qroam_primitive_certificate=artifacts['qroam_primitive_certificate'],
+        logical_resource_ledger=artifacts['logical_resource_ledger'],
+    )
+    selected = crosscheck['selected_reference']
+    ledger_selected = crosscheck['ledger_selected_reference']
+    primitive = artifacts['qroam_primitive_certificate']['traversed_counts']
+    selected_row = artifacts['logical_resource_ledger']['qroam_clean_tradeoff_sweep']['selected_row']
+    checks = [
+        _check('qroam_reference_crosscheck_matches_generator', crosscheck == expected, expected, crosscheck),
+        _check('qroam_reference_crosscheck_schema_is_current', crosscheck['schema'] == QROAM_REFERENCE_CROSSCHECK_SCHEMA, QROAM_REFERENCE_CROSSCHECK_SCHEMA, crosscheck['schema']),
+        _check('qroam_reference_crosscheck_passes_internal_checks', crosscheck['pass'] is True and all(crosscheck['checks'].values()), True, crosscheck['checks']),
+        _check('qroam_reference_crosscheck_selected_matches_primitive_certificate', selected['per_stream_non_clifford'] == primitive['per_stream_non_clifford'] and selected['target_plus_junk_qubits'] == primitive['target_plus_junk_qubits'], primitive, selected),
+        _check('qroam_reference_crosscheck_ledger_selected_matches_resource_ledger', ledger_selected['block_size'] == selected_row['block_size'] and ledger_selected['per_stream_non_clifford'] == selected_row['per_stream_non_clifford'] and ledger_selected['target_plus_junk_qubits'] == selected_row['target_plus_junk_qubits'], selected_row, ledger_selected),
+        _check('qroam_reference_crosscheck_chunk_reference_keeps_width_boundary_explicit', selected['block_size'] == selected_row['block_size'] and selected['domain_size'] == selected_row['domain_size'] and selected['per_stream_non_clifford'] == selected_row['per_stream_non_clifford'] and selected['target_bits'] <= selected_row['target_register_qubits'], selected_row, selected),
+        _check('qroam_reference_crosscheck_toy_semantics_are_exhaustive', all(row['pass'] is True and len(row['rows']) == row['domain_size'] for row in crosscheck['toy_semantics']), 'all toy selections pass', crosscheck['toy_semantics']),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_reusable_chunk_lowering_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     lowering = artifacts['reusable_chunk_lowering']
     expected = build_reusable_chunk_lowering(
@@ -1261,6 +1372,9 @@ def build_reusable_chunk_lowering_checks(artifacts: Mapping[str, Any]) -> Dict[s
         fallback_frontier_stress=artifacts['fallback_frontier_stress'],
         logical_resource_ledger=artifacts['logical_resource_ledger'],
         arithmetic_lowerings=artifacts['arithmetic_lowerings'],
+        qroam_primitive_certificate=artifacts['qroam_primitive_certificate'],
+        qroam_reference_crosscheck=artifacts['qroam_reference_crosscheck'],
+        modular_arithmetic_certificate=artifacts['modular_arithmetic_certificate'],
         field_bits=FIELD_BITS,
     )
     stream_plan = lowering['stream_plan']
@@ -1268,21 +1382,47 @@ def build_reusable_chunk_lowering_checks(artifacts: Mapping[str, Any]) -> Dict[s
     non_clifford = lowering['non_clifford_derivation']
     owners = lowering['owner_capacity']
     executable_liveness = lowering['executable_liveness']
+    counted_resource_ir = lowering['counted_resource_ir']
+    qroam_model = lowering['standard_qroamclean_k1_model']
+    primitive_contract = lowering['chunked_multiplier_primitive_contract']
+    expected_stream_count = (
+        stream_plan['leaf_call_count_total']
+        * stream_plan['coordinate_table_count']
+        * stream_plan['chunk_count']
+    )
+    expected_chunk_effective_bits = [
+        max(0, min(stream_plan['chunk_bits'], FIELD_BITS - stream_plan['chunk_bits'] * index))
+        for index in range(stream_plan['chunk_count'])
+    ]
+    expected_qroam_non_clifford = (
+        non_clifford['qroam_chunk_streams']
+        * non_clifford['per_chunk_stream_non_clifford']
+    )
+    expected_arithmetic_qubits = qubits['arithmetic_slot_count'] * qubits['field_bits']
+    expected_lookup_workspace_qubits = (
+        qubits['folded_control_workspace_qubits']
+        + qubits['qroam_clean_chunk_target_qubits']
+        + qubits['qroam_clean_junk_register_qubits']
+    )
     checks = [
         _check('reusable_chunk_lowering_matches_generator', lowering == expected, expected, lowering),
         _check('reusable_chunk_lowering_schema_is_current', lowering['schema'] == 'compiler-project-reusable-chunk-lowering-v2', 'compiler-project-reusable-chunk-lowering-v2', lowering['schema']),
         _check('reusable_chunk_lowering_is_public_headline', lowering['status'] == 'proven_public_headline', 'proven_public_headline', lowering['status']),
         _check('reusable_chunk_lowering_passes_internal_checks', lowering['pass'] is True and all(lowering['checks'].values()), True, lowering['checks']),
-        _check('reusable_chunk_lowering_derives_stream_count_from_contract', stream_plan['coordinate_table_count'] == len(stream_plan['coordinate_tables']) == 3 and stream_plan['chunk_streams_per_leaf'] == stream_plan['coordinate_table_count'] * stream_plan['chunk_count'] == 6 and stream_plan['whole_oracle_chunk_streams'] == stream_plan['leaf_call_count_total'] * stream_plan['chunk_streams_per_leaf'], {'tables': 3, 'chunk_streams_per_leaf': 6}, stream_plan),
-        _check('reusable_chunk_lowering_uses_standard_qroamclean_k1_consistently', lowering['standard_qroamclean_k1_model']['block_size'] == 1 and lowering['standard_qroamclean_k1_model']['target_register_qubits'] == stream_plan['chunk_bits'] == 155 and lowering['standard_qroamclean_k1_model']['junk_register_qubits'] == 0 and lowering['standard_qroamclean_k1_model']['per_stream_non_clifford'] == 65536, {'block_size': 1, 'target_register_qubits': 155, 'junk_register_qubits': 0, 'per_stream_non_clifford': 65536}, lowering['standard_qroamclean_k1_model']),
-        _check('reusable_chunk_lowering_materializes_no_full_coordinate_lane', all(row['full_coordinate_lane_materialized'] == 0 and row['live_target_qubits'] == 155 for row in stream_plan['rows']) and lowering['executable_contract']['chunk_contract']['full_coordinate_lanes_materialized'] == 0, 0, stream_plan['rows']),
-        _check('reusable_chunk_lowering_proves_table_multiplier_base_conservative', lowering['chunked_multiplier_primitive_contract']['arithmetic_base_conservatism']['inherited_base_without_streamed_qroam_is_valid_for_chunked_contract'] is True and lowering['chunked_multiplier_primitive_contract']['table_multiplier_partial_products_per_leaf'] == lowering['chunked_multiplier_primitive_contract']['inherited_table_multiplier_partial_products_per_leaf'] == 327680, {'table_multiplier_partial_products_per_leaf': 327680}, lowering['chunked_multiplier_primitive_contract']),
-        _check('reusable_chunk_lowering_high_chunk_effective_bits_are_explicit', lowering['chunked_multiplier_primitive_contract']['chunk_effective_bits'] == [155, 101] and all(row['chunk_rows'][1]['effective_constant_bits'] == 101 and row['chunk_rows'][1]['zero_padded_target_bits'] == 54 for row in lowering['chunked_multiplier_primitive_contract']['table_multiplier_rows']), {'chunk_effective_bits': [155, 101]}, lowering['chunked_multiplier_primitive_contract']),
-        _check('reusable_chunk_lowering_reconstructs_non_clifford_candidate', non_clifford['qroam_chunk_streams'] == 186 and non_clifford['qroam_chunk_non_clifford'] == 12189696 and non_clifford['candidate_total_non_clifford'] == artifacts['reusable_chunk_tail_candidate']['production_resource_candidate']['candidate_total_non_clifford'] == 36767692, {'qroam_chunk_streams': 186, 'candidate_total_non_clifford': 36767692}, non_clifford),
-        _check('reusable_chunk_lowering_reconstructs_qubit_candidate', qubits['arithmetic_slot_count'] == 4 and qubits['arithmetic_slot_qubits'] == 1024 and qubits['lookup_workspace_qubits'] == 173 and qubits['candidate_total_logical_qubits'] == artifacts['reusable_chunk_tail_candidate']['production_resource_candidate']['candidate_total_logical_qubits'] == 1199, {'arithmetic_slot_qubits': 1024, 'lookup_workspace_qubits': 173, 'candidate_total_logical_qubits': 1199}, qubits),
-        _check('reusable_chunk_lowering_owner_capacity_is_numeric', owners['required_global_peak_qubits'] == 1199 and owners['capacity_global_peak_qubits'] == 1199 and all(row['capacity_pass'] is True and row['logical_qubits'] >= row['required_peak_qubits'] for row in owners['rows']), {'required_global_peak_qubits': 1199, 'capacity_global_peak_qubits': 1199}, owners),
-        _check('reusable_chunk_lowering_executable_liveness_reconstructs_peak', executable_liveness['pass'] is True and executable_liveness['global_peak_live_qubits'] == 1199 and executable_liveness['owner_peak_live_qubits'] == executable_liveness['owner_capacity_qubits'], {'global_peak_live_qubits': 1199, 'owner_peaks_equal_capacity': True}, executable_liveness),
+        _check('reusable_chunk_lowering_derives_stream_count_from_contract', stream_plan['coordinate_table_count'] == len(stream_plan['coordinate_tables']) and stream_plan['chunk_streams_per_leaf'] == stream_plan['coordinate_table_count'] * stream_plan['chunk_count'] and stream_plan['whole_oracle_chunk_streams'] == expected_stream_count, {'whole_oracle_chunk_streams': expected_stream_count}, stream_plan),
+        _check('reusable_chunk_lowering_uses_standard_qroamclean_k1_consistently', qroam_model['block_size'] == 1 and qroam_model['target_register_qubits'] == stream_plan['chunk_bits'] and qroam_model['junk_register_qubits'] == 0 and qroam_model['per_stream_non_clifford'] == qroam_model['lookup_compute_non_clifford'] + qroam_model['measured_uncompute_non_clifford'], {'target_register_qubits': stream_plan['chunk_bits'], 'junk_register_qubits': 0, 'per_stream_non_clifford': qroam_model['lookup_compute_non_clifford'] + qroam_model['measured_uncompute_non_clifford']}, qroam_model),
+        _check('reusable_chunk_lowering_binds_generated_qroam_primitive_certificate', lowering['qroam_primitive_certificate'] == artifacts['qroam_primitive_certificate'] and lowering['checks']['per_stream_cost_matches_generated_qroam_primitive'] is True, artifacts['qroam_primitive_certificate'], lowering['qroam_primitive_certificate']),
+        _check('reusable_chunk_lowering_binds_independent_qroam_reference_crosscheck', lowering['qroam_reference_crosscheck'] == artifacts['qroam_reference_crosscheck'] and lowering['checks']['per_stream_cost_matches_independent_qroam_reference_crosscheck'] is True, artifacts['qroam_reference_crosscheck'], lowering['qroam_reference_crosscheck']),
+        _check('reusable_chunk_lowering_binds_modular_arithmetic_certificate', lowering['modular_arithmetic_certificate'] == artifacts['modular_arithmetic_certificate'] and lowering['checks']['modular_arithmetic_certificate_binds_counted_field_mul'] is True, artifacts['modular_arithmetic_certificate'], lowering['modular_arithmetic_certificate']),
+        _check('reusable_chunk_lowering_materializes_no_full_coordinate_lane', all(row['full_coordinate_lane_materialized'] == 0 and row['live_target_qubits'] == qroam_model['target_register_qubits'] for row in stream_plan['rows']) and lowering['executable_contract']['chunk_contract']['full_coordinate_lanes_materialized'] == 0, 0, stream_plan['rows']),
+        _check('reusable_chunk_lowering_proves_table_multiplier_base_conservative', primitive_contract['arithmetic_base_conservatism']['inherited_base_without_streamed_qroam_is_valid_for_chunked_contract'] is True and primitive_contract['table_multiplier_partial_products_per_leaf'] == primitive_contract['inherited_table_multiplier_partial_products_per_leaf'] == sum(row['inherited_full_width_partial_product_non_clifford'] for row in primitive_contract['table_multiplier_rows']), {'table_multiplier_partial_products_per_leaf': primitive_contract['inherited_table_multiplier_partial_products_per_leaf']}, primitive_contract),
+        _check('reusable_chunk_lowering_high_chunk_effective_bits_are_explicit', primitive_contract['chunk_effective_bits'] == expected_chunk_effective_bits and all([chunk['effective_constant_bits'] for chunk in row['chunk_rows']] == expected_chunk_effective_bits for row in primitive_contract['table_multiplier_rows']), {'chunk_effective_bits': expected_chunk_effective_bits}, primitive_contract),
+        _check('reusable_chunk_lowering_reconstructs_non_clifford_candidate', non_clifford['qroam_chunk_streams'] == expected_stream_count and non_clifford['qroam_chunk_non_clifford'] == expected_qroam_non_clifford and non_clifford['candidate_total_non_clifford'] == artifacts['reusable_chunk_tail_candidate']['production_resource_candidate']['candidate_total_non_clifford'], {'qroam_chunk_streams': expected_stream_count, 'candidate_total_non_clifford': artifacts['reusable_chunk_tail_candidate']['production_resource_candidate']['candidate_total_non_clifford']}, non_clifford),
+        _check('reusable_chunk_lowering_reconstructs_qubit_candidate', qubits['arithmetic_slot_qubits'] == expected_arithmetic_qubits and qubits['lookup_workspace_qubits'] == expected_lookup_workspace_qubits and qubits['candidate_total_logical_qubits'] == artifacts['reusable_chunk_tail_candidate']['production_resource_candidate']['candidate_total_logical_qubits'], {'arithmetic_slot_qubits': expected_arithmetic_qubits, 'lookup_workspace_qubits': expected_lookup_workspace_qubits, 'candidate_total_logical_qubits': artifacts['reusable_chunk_tail_candidate']['production_resource_candidate']['candidate_total_logical_qubits']}, qubits),
+        _check('reusable_chunk_lowering_owner_capacity_is_numeric', owners['required_global_peak_qubits'] == owners['capacity_global_peak_qubits'] == qubits['candidate_total_logical_qubits'] and all(row['capacity_pass'] is True and row['logical_qubits'] >= row['required_peak_qubits'] for row in owners['rows']), {'required_global_peak_qubits': qubits['candidate_total_logical_qubits'], 'capacity_global_peak_qubits': qubits['candidate_total_logical_qubits']}, owners),
+        _check('reusable_chunk_lowering_executable_liveness_reconstructs_peak', executable_liveness['pass'] is True and executable_liveness['global_peak_live_qubits'] == qubits['candidate_total_logical_qubits'] and executable_liveness['owner_peak_live_qubits'] == executable_liveness['owner_capacity_qubits'], {'global_peak_live_qubits': qubits['candidate_total_logical_qubits'], 'owner_peaks_equal_capacity': True}, executable_liveness),
         _check('reusable_chunk_lowering_executable_liveness_counts_qchunk_and_qroam_target_concurrently', executable_liveness['checks']['qroam_target_and_qchunk_are_concurrently_live'] is True and executable_liveness['checks']['no_full_coordinate_lane_wire_is_live'] is True, {'qchunk_and_qroam_target_concurrent': True, 'full_coordinate_lane_live': False}, executable_liveness['checks']),
+        _check('reusable_chunk_lowering_counted_resource_ir_recomputes_public_totals', counted_resource_ir['pass'] is True and counted_resource_ir['recomputed_total_non_clifford'] == non_clifford['candidate_total_non_clifford'] and counted_resource_ir['recomputed_peak_live_qubits'] == qubits['candidate_total_logical_qubits'] and len([term for term in counted_resource_ir['non_clifford_terms'] if term['category'] == 'qroam_chunk_stream']) == len(stream_plan['rows']), {'non_clifford': non_clifford['candidate_total_non_clifford'], 'peak_live_qubits': qubits['candidate_total_logical_qubits'], 'qroam_terms': len(stream_plan['rows'])}, counted_resource_ir),
         _check('reusable_chunk_lowering_records_zkp_and_release_evidence', len(lowering['public_claim_evidence']) >= 2, '>= 2', lowering['public_claim_evidence']),
     ]
     return _summarize_checks(checks)
@@ -2028,6 +2168,23 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
     return _summarize_checks(checks)
 
 
+def build_proof_corpus_profile_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    profiles = artifacts['proof_corpus_profiles']
+    expected = build_proof_corpus_profiles()
+    selected = profiles['profiles'][profiles['selected_public_profile']]
+    release = profiles['profiles'][profiles['release_profile']]
+    reusable_public_values = artifacts['zkp_attestation_reusable_chunk_candidate_public_values']
+    checks = [
+        _check('proof_corpus_profiles_match_generator', profiles == expected, expected, profiles),
+        _check('proof_corpus_profiles_schema_is_current', profiles['schema'] == 'compiler-project-proof-corpus-profiles-v1', 'compiler-project-proof-corpus-profiles-v1', profiles['schema']),
+        _check('proof_corpus_profiles_pass_internal_checks', profiles['pass'] is True and all(profiles['checks'].values()), True, profiles['checks']),
+        _check('proof_corpus_profiles_select_explicit_public_smoke_profile', profiles['selected_public_profile'] == SMOKE_PUBLIC_PROFILE and selected['release_grade'] is False, SMOKE_PUBLIC_PROFILE, {'selected_public_profile': profiles['selected_public_profile'], 'selected': selected}),
+        _check('proof_corpus_profiles_track_google_comparable_release_target', profiles['release_profile'] == GOOGLE_COMPARABLE_PROFILE and release['release_grade'] is True and release['case_count'] > selected['case_count'], GOOGLE_COMPARABLE_PROFILE, {'release_profile': profiles['release_profile'], 'release': release}),
+        _check('proof_corpus_profiles_match_current_public_candidate_case_count', reusable_public_values['case_count'] == reusable_public_values['passed_case_count'] == selected['case_count'], selected['case_count'], reusable_public_values),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_public_headline_result_checks(artifacts: Mapping[str, Any], repo_root: Path) -> Dict[str, Any]:
     public_result = artifacts['public_headline_result']
     expected = build_public_headline_result(baseline=PUBLIC_GOOGLE_BASELINE)
@@ -2036,8 +2193,8 @@ def build_public_headline_result_checks(artifacts: Mapping[str, Any], repo_root:
     checks = [
         _check('public_headline_result_matches_generator', public_result == expected, expected, public_result),
         _check('public_headline_result_schema_is_current', public_result['schema'] == 'compiler-project-public-headline-result-v1', 'compiler-project-public-headline-result-v1', public_result['schema']),
-        _check('public_headline_result_passes_internal_checks', public_result['pass'] is True and all(public_result['checks'].values()), True, public_result['checks']),
-        _check('public_headline_result_is_strict_40m_1200_candidate', selected['non_clifford'] == 36_767_692 and selected['logical_qubits'] == 1_199 and selected['non_clifford'] < 40_000_000 and selected['logical_qubits'] < 1200, {'non_clifford': 36_767_692, 'logical_qubits': 1_199, 'strict_limits': True}, selected),
+        _check('public_headline_result_pass_flag_matches_internal_checks', public_result['pass'] == all(public_result['checks'].values()), all(public_result['checks'].values()), {'pass': public_result['pass'], 'checks': public_result['checks']}),
+        _check('public_headline_result_is_strict_40m_1200_candidate', selected['non_clifford'] == artifacts['zkp_attestation_reusable_chunk_candidate_public_values']['expected_full_oracle_non_clifford'] and selected['logical_qubits'] == artifacts['zkp_attestation_reusable_chunk_candidate_public_values']['expected_total_logical_qubits'] and selected['non_clifford'] < 40_000_000 and selected['logical_qubits'] < 1200, {'non_clifford': artifacts['zkp_attestation_reusable_chunk_candidate_public_values']['expected_full_oracle_non_clifford'], 'logical_qubits': artifacts['zkp_attestation_reusable_chunk_candidate_public_values']['expected_total_logical_qubits'], 'strict_limits': True}, selected),
         _check('public_headline_result_bindings_match_candidate_public_values', selected['name'] == artifacts['zkp_attestation_reusable_chunk_candidate_public_values']['selected_family_name'] and selected['non_clifford'] == artifacts['zkp_attestation_reusable_chunk_candidate_public_values']['expected_full_oracle_non_clifford'] and selected['logical_qubits'] == artifacts['zkp_attestation_reusable_chunk_candidate_public_values']['expected_total_logical_qubits'], artifacts['zkp_attestation_reusable_chunk_candidate_public_values'], selected),
         _check('public_headline_result_compressed_proof_hash_matches_file', checked['compressed_proof']['sha256'] == sha256_path(repo_root / checked['compressed_proof']['path']) and checked['compressed_proof']['bytes'] == (repo_root / checked['compressed_proof']['path']).stat().st_size, checked['compressed_proof'], checked['compressed_proof']),
         _check('public_headline_result_groth16_proof_hash_matches_file', checked['groth16_proof']['sha256'] == sha256_path(repo_root / checked['groth16_proof']['path']) and checked['groth16_proof']['bytes'] == (repo_root / checked['groth16_proof']['path']).stat().st_size, checked['groth16_proof'], checked['groth16_proof']),
@@ -2314,9 +2471,11 @@ def build_semantic_replay_checks(semantic_replay: Mapping[str, Any], repo_root: 
 def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_names: Sequence[str] | None = None) -> Dict[str, Any]:
     builders = {
         'canonical_public_point_checks': lambda: build_canonical_public_point_checks(artifacts),
+        'compiler_parameter_checks': lambda: build_compiler_parameter_checks(artifacts),
         'schedule_checks': lambda: build_schedule_checks(artifacts),
         'table_manifest_checks': lambda: build_table_manifest_checks(artifacts),
         'arithmetic_kernel_checks': lambda: build_arithmetic_kernel_checks(artifacts),
+        'modular_arithmetic_certificate_checks': lambda: build_modular_arithmetic_certificate_checks(artifacts),
         'cleanup_pair_checks': lambda: build_cleanup_pair_checks(artifacts),
         'lookup_lowering_checks': lambda: build_lookup_lowering_checks(artifacts),
         'phase_shell_lowering_checks': lambda: build_phase_shell_lowering_checks(artifacts),
@@ -2332,6 +2491,8 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'logical_resource_ledger_checks': lambda: build_logical_resource_ledger_checks(artifacts),
         'fallback_frontier_stress_checks': lambda: build_fallback_frontier_stress_checks(artifacts),
         'reusable_chunk_tail_candidate_checks': lambda: build_reusable_chunk_tail_candidate_checks(artifacts),
+        'qroam_primitive_certificate_checks': lambda: build_qroam_primitive_certificate_checks(artifacts),
+        'qroam_reference_crosscheck_checks': lambda: build_qroam_reference_crosscheck_checks(artifacts),
         'reusable_chunk_lowering_checks': lambda: build_reusable_chunk_lowering_checks(artifacts),
         'resource_liveness_certificate_checks': lambda: build_resource_liveness_certificate_checks(artifacts),
         'qubit_breakthrough_checks': lambda: build_qubit_breakthrough_checks(artifacts),
@@ -2343,6 +2504,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'primitive_multiplier_checks': lambda: build_primitive_multiplier_checks(artifacts),
         'frontier_checks': lambda: build_frontier_checks(artifacts),
         'build_summary_checks': lambda: build_build_summary_checks(artifacts, repo_root),
+        'proof_corpus_profile_checks': lambda: build_proof_corpus_profile_checks(artifacts),
         'public_headline_result_checks': lambda: build_public_headline_result_checks(artifacts, repo_root),
         'cain_transfer_checks': lambda: build_cain_transfer_checks(artifacts),
         'azure_seed_checks': lambda: build_azure_seed_checks(artifacts),

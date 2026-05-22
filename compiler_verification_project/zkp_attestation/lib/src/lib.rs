@@ -3575,6 +3575,47 @@ fn json_bool_field(value: &Value, key: &str) -> bool {
         .unwrap_or_else(|| panic!("resource certificate field is not a bool: {key}"))
 }
 
+fn assert_qroam_reference_cost(row: &Value) {
+    let domain_size = json_u64_field(row, "domain_size");
+    let target_bits = json_u64_field(row, "target_bits");
+    let block_size = json_u64_field(row, "block_size");
+    assert!(domain_size > 0);
+    assert!(target_bits > 0);
+    assert!(block_size > 0);
+    let address_blocks = (domain_size + block_size - 1) / block_size;
+    let junk_register_count = block_size - 1;
+    let junk_register_qubits = junk_register_count * target_bits;
+    let target_plus_junk_qubits = block_size * target_bits;
+    let lookup_compute_non_clifford = address_blocks + junk_register_qubits;
+    let measured_uncompute_non_clifford = address_blocks + junk_register_count;
+    assert_eq!(json_u64_field(row, "address_blocks"), address_blocks);
+    assert_eq!(json_u64_field(row, "target_register_qubits"), target_bits);
+    assert_eq!(
+        json_u64_field(row, "junk_register_count"),
+        junk_register_count
+    );
+    assert_eq!(
+        json_u64_field(row, "junk_register_qubits"),
+        junk_register_qubits
+    );
+    assert_eq!(
+        json_u64_field(row, "target_plus_junk_qubits"),
+        target_plus_junk_qubits
+    );
+    assert_eq!(
+        json_u64_field(row, "lookup_compute_non_clifford"),
+        lookup_compute_non_clifford
+    );
+    assert_eq!(
+        json_u64_field(row, "measured_uncompute_non_clifford"),
+        measured_uncompute_non_clifford
+    );
+    assert_eq!(
+        json_u64_field(row, "per_stream_non_clifford"),
+        lookup_compute_non_clifford + measured_uncompute_non_clifford
+    );
+}
+
 fn json_array_field<'a>(value: &'a Value, key: &str) -> &'a Vec<Value> {
     json_object_field(value, key)
         .as_array()
@@ -3926,19 +3967,28 @@ fn validate_reusable_chunk_lowering(
         "complete_a0_reusable_chunk_tail"
     );
     let chunk_contract = json_object_field(executable, "chunk_contract");
-    assert_eq!(json_u64_field(chunk_contract, "chunk_bits"), 155);
-    assert_eq!(json_u64_field(chunk_contract, "chunk_count"), 2);
-    assert_eq!(json_u64_field(chunk_contract, "b3"), 21);
+    let chunk_bits = json_u64_field(chunk_contract, "chunk_bits");
+    let chunk_count = json_u64_field(chunk_contract, "chunk_count");
+    assert!(chunk_bits > 0);
+    assert!(chunk_count > 0);
+    assert!(json_u64_field(chunk_contract, "b3") > 0);
     assert_eq!(
         json_u64_field(chunk_contract, "full_coordinate_lanes_materialized"),
         0
     );
 
     let stream_plan = json_object_field(certificate, "stream_plan");
-    assert_eq!(json_u64_field(stream_plan, "coordinate_table_count"), 3);
-    assert_eq!(json_u64_field(stream_plan, "chunk_bits"), 155);
-    assert_eq!(json_u64_field(stream_plan, "chunk_count"), 2);
-    assert_eq!(json_u64_field(stream_plan, "chunk_streams_per_leaf"), 6);
+    let coordinate_tables = json_array_field(stream_plan, "coordinate_tables");
+    assert_eq!(
+        json_u64_field(stream_plan, "coordinate_table_count"),
+        coordinate_tables.len() as u64
+    );
+    assert_eq!(json_u64_field(stream_plan, "chunk_bits"), chunk_bits);
+    assert_eq!(json_u64_field(stream_plan, "chunk_count"), chunk_count);
+    assert_eq!(
+        json_u64_field(stream_plan, "chunk_streams_per_leaf"),
+        json_u64_field(stream_plan, "coordinate_table_count") * chunk_count
+    );
     assert_eq!(
         json_u64_field(stream_plan, "whole_oracle_chunk_streams"),
         json_u64_field(stream_plan, "leaf_call_count_total")
@@ -3948,39 +3998,330 @@ fn validate_reusable_chunk_lowering(
         json_u64_field(stream_plan, "leaf_call_count_total"),
         claim.leaf_call_count_total as u64
     );
-    for row in json_array_field(stream_plan, "rows") {
-        assert_eq!(json_u64_field(row, "full_coordinate_lane_materialized"), 0);
-        assert_eq!(json_u64_field(row, "live_target_qubits"), 155);
-        assert_eq!(json_u64_field(row, "junk_register_qubits"), 0);
-    }
-
     let qroam_model = json_object_field(certificate, "standard_qroamclean_k1_model");
     assert_eq!(json_u64_field(qroam_model, "block_size"), 1);
-    assert_eq!(json_u64_field(qroam_model, "target_register_qubits"), 155);
-    assert_eq!(json_u64_field(qroam_model, "junk_register_qubits"), 0);
+    assert_eq!(
+        json_u64_field(qroam_model, "target_register_qubits"),
+        chunk_bits
+    );
+    assert_eq!(
+        json_u64_field(qroam_model, "junk_register_qubits"),
+        (json_u64_field(qroam_model, "block_size") - 1)
+            * json_u64_field(qroam_model, "target_register_qubits")
+    );
+    assert_eq!(
+        json_u64_field(qroam_model, "target_plus_junk_qubits"),
+        json_u64_field(qroam_model, "target_register_qubits")
+            + json_u64_field(qroam_model, "junk_register_qubits")
+    );
     assert_eq!(
         json_u64_field(qroam_model, "per_stream_non_clifford"),
-        65536
+        json_u64_field(qroam_model, "lookup_compute_non_clifford")
+            + json_u64_field(qroam_model, "measured_uncompute_non_clifford")
     );
+    let stream_rows = json_array_field(stream_plan, "rows");
+    assert_eq!(
+        stream_rows.len() as u64,
+        json_u64_field(stream_plan, "chunk_streams_per_leaf")
+    );
+    for row in stream_rows {
+        assert_eq!(json_u64_field(row, "full_coordinate_lane_materialized"), 0);
+        assert_eq!(
+            json_u64_field(row, "live_target_qubits"),
+            json_u64_field(qroam_model, "target_register_qubits")
+        );
+        assert_eq!(
+            json_u64_field(row, "junk_register_qubits"),
+            json_u64_field(qroam_model, "junk_register_qubits")
+        );
+    }
+    let qroam_primitive = json_object_field(certificate, "qroam_primitive_certificate");
+    assert_eq!(
+        json_string_field(qroam_primitive, "schema"),
+        "compiler-project-qroam-k1-primitive-certificate-v1"
+    );
+    assert!(json_bool_field(qroam_primitive, "pass"));
+    let qroam_primitive_checks = json_object_field(qroam_primitive, "checks")
+        .as_object()
+        .expect("QROAM primitive certificate checks must be an object");
+    assert!(
+        qroam_primitive_checks
+            .values()
+            .all(|value| value.as_bool() == Some(true)),
+        "QROAM primitive certificate contains a failing check"
+    );
+    let qroam_parameters = json_object_field(qroam_primitive, "parameters");
+    assert_eq!(
+        json_u64_field(qroam_parameters, "domain_size"),
+        json_u64_field(qroam_model, "domain_size")
+    );
+    assert_eq!(
+        json_u64_field(qroam_parameters, "target_bits"),
+        json_u64_field(qroam_model, "target_register_qubits")
+    );
+    assert_eq!(
+        json_u64_field(qroam_parameters, "block_size"),
+        json_u64_field(qroam_model, "block_size")
+    );
+    let qroam_traversed = json_object_field(qroam_primitive, "traversed_counts");
+    assert_eq!(
+        json_u64_field(qroam_traversed, "lookup_compute_non_clifford"),
+        json_u64_field(qroam_model, "lookup_compute_non_clifford")
+    );
+    assert_eq!(
+        json_u64_field(qroam_traversed, "measured_uncompute_non_clifford"),
+        json_u64_field(qroam_model, "measured_uncompute_non_clifford")
+    );
+    assert_eq!(
+        json_u64_field(qroam_traversed, "per_stream_non_clifford"),
+        json_u64_field(qroam_model, "per_stream_non_clifford")
+    );
+    assert_eq!(
+        json_u64_field(qroam_traversed, "target_register_qubits"),
+        json_u64_field(qroam_model, "target_register_qubits")
+    );
+    assert_eq!(
+        json_u64_field(qroam_traversed, "junk_register_qubits"),
+        json_u64_field(qroam_model, "junk_register_qubits")
+    );
+    assert_eq!(
+        json_u64_field(qroam_traversed, "target_plus_junk_qubits"),
+        json_u64_field(qroam_model, "target_plus_junk_qubits")
+    );
+    let qroam_wire_catalog = json_object_field(qroam_primitive, "wire_catalog");
+    assert_eq!(
+        json_u64_field(
+            json_object_field(qroam_wire_catalog, "target_register"),
+            "qubits"
+        ),
+        json_u64_field(qroam_model, "target_register_qubits")
+    );
+    assert_eq!(
+        json_u64_field(
+            json_object_field(qroam_wire_catalog, "junk_registers"),
+            "qubits"
+        ),
+        json_u64_field(qroam_model, "junk_register_qubits")
+    );
+    let qroam_operation_stream = json_object_field(qroam_primitive, "operation_stream");
+    let qroam_segments = json_array_field(qroam_operation_stream, "segments");
+    assert_eq!(
+        json_u64_field(qroam_operation_stream, "segment_count"),
+        qroam_segments.len() as u64
+    );
+    assert_eq!(
+        json_string_field(qroam_operation_stream, "segment_merkle_root_sha256").len(),
+        64
+    );
+    let mut qroam_compute_ccx = 0u64;
+    let mut qroam_cleanup_ccx = 0u64;
+    for segment in qroam_segments {
+        assert_eq!(json_string_field(segment, "sha256").len(), 64);
+        assert_eq!(
+            json_u64_field(segment, "operation_count"),
+            json_u64_field(segment, "end_address_exclusive")
+                - json_u64_field(segment, "start_address")
+        );
+        assert_eq!(
+            json_u64_field(segment, "ccx"),
+            json_u64_field(segment, "operation_count")
+        );
+        match json_string_field(segment, "phase") {
+            "compute" => qroam_compute_ccx += json_u64_field(segment, "ccx"),
+            "measured_uncompute" => qroam_cleanup_ccx += json_u64_field(segment, "ccx"),
+            other => panic!("unexpected QROAM primitive phase: {other}"),
+        }
+    }
+    assert_eq!(
+        qroam_compute_ccx,
+        json_u64_field(qroam_traversed, "lookup_compute_non_clifford")
+    );
+    assert_eq!(
+        qroam_cleanup_ccx,
+        json_u64_field(qroam_traversed, "measured_uncompute_non_clifford")
+    );
+
+    let qroam_reference = json_object_field(certificate, "qroam_reference_crosscheck");
+    assert_eq!(
+        json_string_field(qroam_reference, "schema"),
+        "compiler-project-qroam-reference-crosscheck-v1"
+    );
+    assert!(json_bool_field(qroam_reference, "pass"));
+    let qroam_reference_checks = json_object_field(qroam_reference, "checks")
+        .as_object()
+        .expect("QROAM reference cross-check checks must be an object");
+    assert!(
+        qroam_reference_checks
+            .values()
+            .all(|value| value.as_bool() == Some(true)),
+        "QROAM reference cross-check contains a failing check"
+    );
+    let qroam_reference_selected = json_object_field(qroam_reference, "selected_reference");
+    let qroam_reference_ledger_selected =
+        json_object_field(qroam_reference, "ledger_selected_reference");
+    assert_qroam_reference_cost(qroam_reference_selected);
+    assert_qroam_reference_cost(qroam_reference_ledger_selected);
+    assert_eq!(
+        json_u64_field(qroam_reference_selected, "domain_size"),
+        json_u64_field(qroam_model, "domain_size")
+    );
+    assert_eq!(
+        json_u64_field(qroam_reference_selected, "target_bits"),
+        json_u64_field(qroam_model, "target_register_qubits")
+    );
+    assert_eq!(
+        json_u64_field(qroam_reference_selected, "block_size"),
+        json_u64_field(qroam_model, "block_size")
+    );
+    assert_eq!(
+        json_u64_field(qroam_reference_selected, "lookup_compute_non_clifford"),
+        json_u64_field(qroam_model, "lookup_compute_non_clifford")
+    );
+    assert_eq!(
+        json_u64_field(qroam_reference_selected, "measured_uncompute_non_clifford"),
+        json_u64_field(qroam_model, "measured_uncompute_non_clifford")
+    );
+    assert_eq!(
+        json_u64_field(qroam_reference_selected, "per_stream_non_clifford"),
+        json_u64_field(qroam_model, "per_stream_non_clifford")
+    );
+    assert_eq!(
+        json_u64_field(qroam_reference_selected, "target_plus_junk_qubits"),
+        json_u64_field(qroam_model, "target_plus_junk_qubits")
+    );
+    assert!(
+        json_u64_field(qroam_reference_ledger_selected, "target_bits")
+            >= json_u64_field(qroam_reference_selected, "target_bits")
+    );
+    assert_eq!(
+        json_u64_field(qroam_reference_ledger_selected, "domain_size"),
+        json_u64_field(qroam_reference_selected, "domain_size")
+    );
+    assert_eq!(
+        json_u64_field(qroam_reference_ledger_selected, "block_size"),
+        json_u64_field(qroam_reference_selected, "block_size")
+    );
+
+    let modular_certificate = json_object_field(certificate, "modular_arithmetic_certificate");
+    assert_eq!(
+        json_string_field(modular_certificate, "schema"),
+        "compiler-project-modular-arithmetic-certificate-v1"
+    );
+    assert!(json_bool_field(modular_certificate, "pass"));
+    let modular_checks = json_object_field(modular_certificate, "checks")
+        .as_object()
+        .expect("modular arithmetic certificate checks must be an object");
+    assert!(
+        modular_checks
+            .values()
+            .all(|value| value.as_bool() == Some(true)),
+        "modular arithmetic certificate contains a failing check"
+    );
+    let secp_parameters = json_object_field(modular_certificate, "secp256k1_parameters");
+    assert_eq!(
+        json_u64_field(secp_parameters, "field_bits"),
+        claim.field_bits as u64
+    );
+    assert_eq!(json_u64_field(secp_parameters, "shift"), 32);
+    assert_eq!(json_u64_field(secp_parameters, "low_term"), 977);
+    assert_eq!(
+        json_u64_field(secp_parameters, "canonical_subtract_passes"),
+        2
+    );
+    assert_eq!(
+        json_string_field(secp_parameters, "modulus_hex"),
+        "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f"
+    );
+    let field_mul_stage =
+        json_object_field(modular_certificate, "field_mul_stage_count_certificate");
+    assert!(json_bool_field(field_mul_stage, "stage_counts_match"));
+    let expected_stage_ccx = json_object_field(field_mul_stage, "expected_stage_ccx")
+        .as_object()
+        .expect("expected_stage_ccx must be an object");
+    let observed_stage_ccx = json_object_field(field_mul_stage, "observed_stage_ccx")
+        .as_object()
+        .expect("observed_stage_ccx must be an object");
+    assert_eq!(expected_stage_ccx.len(), observed_stage_ccx.len());
+    let mut expected_total_ccx = 0u64;
+    let mut observed_total_ccx = 0u64;
+    for (stage_name, expected_value) in expected_stage_ccx {
+        let expected_ccx = expected_value
+            .as_u64()
+            .expect("expected field_mul stage count must be u64");
+        let observed_ccx = observed_stage_ccx
+            .get(stage_name)
+            .and_then(Value::as_u64)
+            .expect("observed field_mul stage count must be u64");
+        assert_eq!(observed_ccx, expected_ccx);
+        expected_total_ccx += expected_ccx;
+        observed_total_ccx += observed_ccx;
+    }
+    assert_eq!(
+        expected_total_ccx,
+        json_u64_field(field_mul_stage, "expected_total_ccx")
+    );
+    assert_eq!(
+        observed_total_ccx,
+        json_u64_field(field_mul_stage, "observed_total_ccx")
+    );
+    assert_eq!(
+        json_u64_field(field_mul_stage, "observed_total_ccx"),
+        json_u64_field(field_mul_stage, "expected_total_ccx")
+    );
+    for row in json_array_field(modular_certificate, "reduced_width_exhaustive_cases") {
+        assert!(json_bool_field(row, "pass"));
+        assert_eq!(
+            json_u64_field(row, "rows_checked"),
+            json_u64_field(row, "modulus") * json_u64_field(row, "modulus")
+        );
+        assert!(
+            json_array_field(row, "failures").is_empty(),
+            "reduced-width modular arithmetic case must not contain failures"
+        );
+    }
 
     let primitive_contract =
         json_object_field(certificate, "chunked_multiplier_primitive_contract");
     let chunk_effective_bits = json_array_field(primitive_contract, "chunk_effective_bits");
-    assert_eq!(chunk_effective_bits[0].as_u64(), Some(155));
-    assert_eq!(chunk_effective_bits[1].as_u64(), Some(101));
+    assert_eq!(chunk_effective_bits.len() as u64, chunk_count);
+    let mut expected_effective_bits = Vec::new();
+    for chunk_index in 0..chunk_count {
+        let consumed_bits = chunk_bits * chunk_index;
+        let remaining_bits = (claim.field_bits as u64).saturating_sub(consumed_bits);
+        expected_effective_bits.push(chunk_bits.min(remaining_bits));
+    }
+    for (index, expected_bits) in expected_effective_bits.iter().enumerate() {
+        assert_eq!(chunk_effective_bits[index].as_u64(), Some(*expected_bits));
+    }
     assert_eq!(
         json_u64_field(
             primitive_contract,
             "table_multiplier_partial_products_per_leaf"
         ),
-        327680
+        json_array_field(primitive_contract, "table_multiplier_rows")
+            .iter()
+            .map(|row| json_u64_field(row, "chunked_partial_product_non_clifford"))
+            .sum::<u64>()
     );
     assert_eq!(
         json_u64_field(
             primitive_contract,
             "inherited_table_multiplier_partial_products_per_leaf"
         ),
-        327680
+        json_array_field(primitive_contract, "table_multiplier_rows")
+            .iter()
+            .map(|row| json_u64_field(row, "inherited_full_width_partial_product_non_clifford"))
+            .sum::<u64>()
+    );
+    assert_eq!(
+        json_u64_field(
+            primitive_contract,
+            "table_multiplier_partial_products_per_leaf"
+        ),
+        json_u64_field(
+            primitive_contract,
+            "inherited_table_multiplier_partial_products_per_leaf"
+        )
     );
     let conservatism = json_object_field(primitive_contract, "arithmetic_base_conservatism");
     assert!(json_bool_field(
@@ -3993,14 +4334,34 @@ fn validate_reusable_chunk_lowering(
     ));
     for row in json_array_field(primitive_contract, "table_multiplier_rows") {
         let chunks = json_array_field(row, "chunk_rows");
-        assert_eq!(json_u64_field(&chunks[0], "effective_constant_bits"), 155);
-        assert_eq!(json_u64_field(&chunks[1], "effective_constant_bits"), 101);
-        assert_eq!(json_u64_field(&chunks[1], "zero_padded_target_bits"), 54);
+        assert_eq!(chunks.len() as u64, chunk_count);
+        let mut chunk_partial_products = 0u64;
+        for (index, chunk) in chunks.iter().enumerate() {
+            assert_eq!(json_u64_field(chunk, "target_capacity_bits"), chunk_bits);
+            assert_eq!(
+                json_u64_field(chunk, "effective_constant_bits"),
+                expected_effective_bits[index]
+            );
+            assert_eq!(
+                json_u64_field(chunk, "zero_padded_target_bits"),
+                chunk_bits - expected_effective_bits[index]
+            );
+            chunk_partial_products += json_u64_field(chunk, "partial_product_non_clifford");
+        }
+        assert_eq!(
+            chunk_partial_products,
+            json_u64_field(row, "chunked_partial_product_non_clifford")
+        );
         assert!(json_bool_field(row, "partial_product_count_is_exact_match"));
         assert!(json_bool_field(
             row,
             "single_modular_reduction_after_chunk_accumulation"
         ));
+        assert_eq!(json_u64_field(row, "extra_chunk_combine_non_clifford"), 0);
+        assert_eq!(
+            json_u64_field(row, "chunked_non_qroam_field_mul_bound_non_clifford"),
+            json_u64_field(row, "inherited_non_qroam_field_mul_non_clifford")
+        );
     }
 
     let non_clifford = json_object_field(certificate, "non_clifford_derivation");
@@ -4034,6 +4395,94 @@ fn validate_reusable_chunk_lowering(
     assert_eq!(
         json_u64_field(qubits, "candidate_total_logical_qubits"),
         claim.expected_total_logical_qubits
+    );
+
+    let counted_ir = json_object_field(certificate, "counted_resource_ir");
+    assert_eq!(
+        json_string_field(counted_ir, "schema"),
+        "compiler-project-reusable-chunk-counted-resource-ir-v1"
+    );
+    assert!(json_bool_field(counted_ir, "pass"));
+    let counted_ir_checks = json_object_field(counted_ir, "checks")
+        .as_object()
+        .expect("counted_resource_ir checks must be an object");
+    assert!(
+        counted_ir_checks
+            .values()
+            .all(|value| value.as_bool() == Some(true)),
+        "counted_resource_ir contains a failing check"
+    );
+    let mut ir_non_clifford_total = 0u64;
+    let mut ir_qroam_term_count = 0u64;
+    for term in json_array_field(counted_ir, "non_clifford_terms") {
+        let instances = json_u64_field(term, "instances");
+        let per_instance = json_u64_field(term, "per_instance_non_clifford");
+        let total = json_u64_field(term, "total_non_clifford");
+        assert_eq!(instances * per_instance, total);
+        match json_string_field(term, "category") {
+            "arithmetic_control_and_phase_base" => {
+                assert_eq!(instances, 1);
+                assert_eq!(
+                    per_instance,
+                    json_u64_field(non_clifford, "base_non_clifford_without_streamed_qroam")
+                );
+            }
+            "qroam_chunk_stream" => {
+                ir_qroam_term_count += 1;
+                assert_eq!(
+                    instances,
+                    json_u64_field(stream_plan, "leaf_call_count_total")
+                );
+                assert_eq!(
+                    per_instance,
+                    json_u64_field(non_clifford, "per_chunk_stream_non_clifford")
+                );
+            }
+            other => panic!("unexpected counted_resource_ir non-Clifford category: {other}"),
+        }
+        ir_non_clifford_total += total;
+    }
+    assert_eq!(
+        ir_qroam_term_count,
+        json_u64_field(stream_plan, "chunk_streams_per_leaf")
+    );
+    assert_eq!(
+        ir_non_clifford_total,
+        claim.expected_full_oracle_non_clifford
+    );
+    assert_eq!(
+        json_u64_field(counted_ir, "recomputed_total_non_clifford"),
+        ir_non_clifford_total
+    );
+    let counted_intervals = json_array_field(counted_ir, "liveness_intervals");
+    assert_eq!(
+        counted_intervals.len(),
+        json_array_field(
+            json_object_field(certificate, "executable_liveness"),
+            "intervals"
+        )
+        .len()
+    );
+    let mut counted_peak_live_qubits = 0u64;
+    let mut counted_peak_interval_id = "";
+    for interval in counted_intervals {
+        let total = json_u64_field(interval, "total_live_qubits");
+        if total > counted_peak_live_qubits {
+            counted_peak_live_qubits = total;
+            counted_peak_interval_id = json_string_field(interval, "interval_id");
+        }
+    }
+    assert_eq!(
+        counted_peak_live_qubits,
+        claim.expected_total_logical_qubits
+    );
+    assert_eq!(
+        json_u64_field(counted_ir, "recomputed_peak_live_qubits"),
+        counted_peak_live_qubits
+    );
+    assert_eq!(
+        json_string_field(counted_ir, "peak_interval_id"),
+        counted_peak_interval_id
     );
 
     let owner_capacity = json_object_field(certificate, "owner_capacity");
@@ -4639,6 +5088,76 @@ mod tests {
         let mut input = checked_reusable_chunk_input();
         input.resource_certificate_document.payload.0["executable_liveness"]["checks"]
             ["qroam_target_and_qchunk_are_concurrently_live"] = serde_json::json!(false);
+        refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_reusable_chunk_counted_resource_ir_forgery() {
+        let mut input = checked_reusable_chunk_input();
+        input.resource_certificate_document.payload.0["counted_resource_ir"]
+            ["non_clifford_terms"][1]["total_non_clifford"] = serde_json::json!(65_535);
+        refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_reusable_chunk_qroam_primitive_count_forgery() {
+        let mut input = checked_reusable_chunk_input();
+        input.resource_certificate_document.payload.0["qroam_primitive_certificate"]
+            ["traversed_counts"]["per_stream_non_clifford"] = serde_json::json!(65_535);
+        refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_reusable_chunk_qroam_primitive_workspace_forgery() {
+        let mut input = checked_reusable_chunk_input();
+        input.resource_certificate_document.payload.0["qroam_primitive_certificate"]
+            ["wire_catalog"]["target_register"]["qubits"] = serde_json::json!(154);
+        refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_reusable_chunk_qroam_reference_forgery() {
+        let mut input = checked_reusable_chunk_input();
+        input.resource_certificate_document.payload.0["qroam_reference_crosscheck"]
+            ["selected_reference"]["target_plus_junk_qubits"] = serde_json::json!(154);
+        refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_reusable_chunk_qroam_reference_formula_forgery() {
+        let mut input = checked_reusable_chunk_input();
+        input.resource_certificate_document.payload.0["qroam_reference_crosscheck"]
+            ["ledger_selected_reference"]["junk_register_qubits"] = serde_json::json!(1);
+        refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_reusable_chunk_modular_stage_count_forgery() {
+        let mut input = checked_reusable_chunk_input();
+        input.resource_certificate_document.payload.0["modular_arithmetic_certificate"]
+            ["field_mul_stage_count_certificate"]["observed_total_ccx"] = serde_json::json!(71_491);
+        refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_reusable_chunk_modular_reduced_case_forgery() {
+        let mut input = checked_reusable_chunk_input();
+        input.resource_certificate_document.payload.0["modular_arithmetic_certificate"]
+            ["reduced_width_exhaustive_cases"][0]["pass"] = serde_json::json!(false);
         refresh_resource_certificate_digest(&mut input);
         run_prepared_attestation(&input);
     }

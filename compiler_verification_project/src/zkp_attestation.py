@@ -28,10 +28,11 @@ from common import (  # noqa: E402
 )
 from lookup_fed_leaf import build_streamed_lookup_tail_leaf, execute_leaf_contract  # noqa: E402
 from project import compiler_family_frontier, project_artifact_path, raw32_schedule  # noqa: E402
+from proof_corpus_profiles import selected_public_case_count  # noqa: E402
 from reusable_chunk_tail_candidate import build_reusable_chunk_tail_leaf  # noqa: E402
 from verifier import exec_netlist  # noqa: E402
 
-DEFAULT_CASE_COUNT = 8
+DEFAULT_CASE_COUNT = selected_public_case_count()
 DIGEST_SCHEME = 'compiler-project-semantic-json-sha256-v1'
 CASE_SEED_SCHEME = 'compiler-project-leaf-canonical-json-sha256-v1'
 
@@ -161,7 +162,7 @@ def _reusable_chunk_family_payload() -> Dict[str, Any]:
         'phase_shell_rotation_depth': 511,
         'total_measurements': 0,
         'notes': [
-            'This family is the checked public headline after compressed and Groth16 artifacts were rebuilt and verified from checked branch state.',
+            'This family is the checked resource headline; compressed and Groth16 proof freshness is separately gated by proof_status.py --require-all-current.',
             'Its resource certificate is compiler_verification_project/artifacts/reusable_chunk_lowering.json.',
             'The table-controlled multiplier arithmetic bound is derived from chunk effective widths 155 + 101 and the inherited full-width partial-product grid.',
         ],
