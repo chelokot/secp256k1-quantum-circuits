@@ -145,7 +145,10 @@ generated QROAMClean `K = 1` primitive certificate, and the selected
 semiclassical phase shell into the same public claim layer. Its public totals
 are derived from the flat netlist non-Clifford count and materialized liveness
 peak; the older reusable-resource totals are retained as cross-check snapshots,
-not as the authoritative source.
+not as the authoritative source. The materialized flat engine and public engine
+are now built from compiler/resource artifacts rather than from the ZKP input,
+so the proof input can be treated as a downstream publication wrapper instead
+of an upstream resource source.
 The QROAM reference keeps the selected 155-bit reusable chunk stream separate
 from the 256-bit full-field ledger sweep, so reviewers can audit the selected
 lookup stream and the field-multiplication pseudo-Mersenne reduction without

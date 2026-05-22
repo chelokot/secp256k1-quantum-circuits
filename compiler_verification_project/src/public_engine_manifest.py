@@ -111,7 +111,7 @@ def build_public_engine_manifest(
     reusable_chunk_tail_candidate: Mapping[str, Any],
     streamed_lookup_tail_leaf_equivalence: Mapping[str, Any],
     release_corpus_preflight: Mapping[str, Any],
-    zkp_attestation_input: Mapping[str, Any],
+    compiler_parameters: Mapping[str, Any],
     arithmetic_operation_ir: Mapping[str, Any],
     qroam_primitive_certificate: Mapping[str, Any],
     phase_shell_lowerings: Mapping[str, Any],
@@ -132,9 +132,6 @@ def build_public_engine_manifest(
         str(category): int(count)
         for category, count in sorted(release_corpus_preflight['category_counts'].items())
     }
-    smoke_case_category_counts = _case_category_counts(list(zkp_attestation_input['prepared_case_corpus']['cases']))
-    compiler_parameters = zkp_attestation_input['compiler_parameters_document']['payload']
-    family_payload = zkp_attestation_input['family_document']['payload']
     selected_phase_shell_name = str(compiler_parameters['phase_shell']['selected_public_shell'])
     phase_register_bits = int(compiler_parameters['phase_shell']['full_phase_register_bits'])
     selected_qroam_block_size = int(compiler_parameters['lookup_policy']['standard_qroamclean_block_size'])
@@ -228,9 +225,11 @@ def build_public_engine_manifest(
             and int(release_corpus_preflight['case_count']) == GOOGLE_COMPARABLE_CASE_COUNT
             and all(release_category_counts.get(category, 0) > 0 for category in semantic_required_categories)
         ),
-        'smoke_case_corpus_covers_required_categories': (
-            int(zkp_attestation_input['prepared_case_corpus']['case_count']) == len(zkp_attestation_input['prepared_case_corpus']['cases'])
-            and all(smoke_case_category_counts.get(category, 0) > 0 for category in semantic_required_categories)
+        'compiler_parameters_bind_selected_public_family': (
+            compiler_parameters['pass'] is True
+            and selected_family_name == compiler_parameters['public_headline_policy']['selected_public_family_name']
+            and selected_phase_shell_name in selected_family_name
+            and 'reusable_chunk_tail_leaf_v1' in selected_family_name
         ),
         'arithmetic_operation_ir_binds_tail_opcode': (
             arithmetic_operation_ir['pass'] is True
@@ -254,18 +253,12 @@ def build_public_engine_manifest(
             and int(qroam_counts['per_stream_non_clifford']) * int(reusable_chunk_lowering['stream_plan']['whole_oracle_chunk_streams']) == int(reusable_chunk_lowering['non_clifford_derivation']['qroam_chunk_non_clifford'])
         ),
         'phase_shell_primitive_counts_bind_public_family': (
-            selected_phase_shell['name'] == family_payload['phase_shell']
-            and selected_phase_shell['name'] in selected_family_name
+            selected_phase_shell['name'] in selected_family_name
             and int(phase_shell_lowerings['phase_register_bits']) == phase_register_bits
             and int(selected_phase_shell['live_quantum_bits']) == int(reusable_chunk_lowering['qubit_derivation']['phase_qubits'])
-            and int(selected_phase_shell['live_quantum_bits']) == int(family_payload['live_phase_bits'])
             and int(selected_phase_shell['hadamard_count']) == phase_register_bits
-            and int(selected_phase_shell['hadamard_count']) == int(family_payload['phase_shell_hadamards'])
             and int(selected_phase_shell['total_measurements']) == phase_register_bits
-            and int(selected_phase_shell['total_measurements']) == int(family_payload['phase_shell_measurements'])
             and int(selected_phase_shell['single_qubit_rotation_count']) == phase_register_bits - 1
-            and int(selected_phase_shell['single_qubit_rotation_count']) == int(family_payload['phase_shell_rotations'])
-            and int(selected_phase_shell['rotation_depth']) == int(family_payload['phase_shell_rotation_depth'])
             and int(selected_phase_shell['controlled_rotation_count']) == int(selected_phase_shell['total_rotations']) - int(selected_phase_shell['single_qubit_rotation_count'])
         ),
         'public_candidate_materialized_stream_binds_engine_totals': (
@@ -289,6 +282,7 @@ def build_public_engine_manifest(
         'engine_source_module': executable_resource_engine['engine_source_module'],
         'public_totals': public_totals,
         'source_digests': {
+            'compiler_parameters_sha256': _sha256_payload(compiler_parameters),
             'executable_resource_engine_sha256': _sha256_payload(executable_resource_engine),
             'counted_resource_ir_sha256': executable_resource_engine['counted_resource_ir_sha256'],
             'executable_liveness_sha256': executable_resource_engine['executable_liveness_sha256'],
@@ -357,11 +351,12 @@ def build_public_engine_manifest(
                 'case_stream_sha256': release_corpus_preflight['case_stream_sha256'],
                 'category_counts': release_category_counts,
             },
-            'smoke_case_corpus': {
-                'input_sha256': _sha256_payload(zkp_attestation_input),
-                'case_corpus_sha256': zkp_attestation_input['case_corpus_sha256'],
-                'case_count': int(zkp_attestation_input['prepared_case_corpus']['case_count']),
-                'category_counts': smoke_case_category_counts,
+            'compiler_parameters': {
+                'schema': compiler_parameters['schema'],
+                'sha256': _sha256_payload(compiler_parameters),
+                'selected_public_family_name': compiler_parameters['public_headline_policy']['selected_public_family_name'],
+                'selected_public_phase_shell': selected_phase_shell_name,
+                'selected_qroamclean_block_size': selected_qroam_block_size,
             },
         },
         'primitive_operation_evidence': {

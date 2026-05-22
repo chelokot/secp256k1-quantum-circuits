@@ -39,6 +39,35 @@ def _candidate_input() -> dict:
     ).read_text())
 
 
+def _compiler_parameters() -> dict:
+    return _artifact('compiler_parameters.json')
+
+
+def _public_family_name() -> str:
+    return _compiler_parameters()['public_headline_policy']['selected_public_family_name']
+
+
+def _build_public_candidate_materialized(
+    *,
+    reusable: dict | None = None,
+    arithmetic_operation_ir: dict | None = None,
+    lookup_lowerings: dict | None = None,
+    qroam_primitive: dict | None = None,
+    phase_shell: dict | None = None,
+    compiler_parameters: dict | None = None,
+) -> dict:
+    resolved_compiler_parameters = compiler_parameters or _compiler_parameters()
+    return build_public_candidate_materialized_circuit_manifest(
+        reusable_chunk_lowering=reusable or _artifact('reusable_chunk_lowering.json'),
+        arithmetic_operation_ir=arithmetic_operation_ir or _artifact('arithmetic_operation_ir.json'),
+        lookup_lowerings=lookup_lowerings or _artifact('lookup_lowerings.json'),
+        qroam_primitive_certificate=qroam_primitive or _artifact('qroam_primitive_certificate.json'),
+        phase_shell_lowerings=phase_shell or _artifact('phase_shell_lowerings.json'),
+        compiler_parameters=resolved_compiler_parameters,
+        selected_family_name=resolved_compiler_parameters['public_headline_policy']['selected_public_family_name'],
+    )
+
+
 def test_materialized_family_aliases_resolve_to_frontier_rows() -> None:
     frontier = _frontier()
     resolved = resolve_selected_family_names(['best-gate', 'best-qubit'], frontier=frontier)
@@ -85,7 +114,7 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     manifest = _artifact('public_candidate_materialized_circuit_manifest.json')
     reusable = _artifact('reusable_chunk_lowering.json')
     assert manifest['schema'] == PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA
-    assert manifest['selected_family_name'] == _candidate_input()['selected_family_name']
+    assert manifest['selected_family_name'] == _public_family_name()
     assert manifest['pass'] is True
     assert manifest['public_totals']['source'] == 'public_candidate_materialized.flat_netlist.non_clifford_count + materialized_liveness.peak_live_qubits'
     assert manifest['public_totals']['non_clifford'] == reusable['non_clifford_derivation']['candidate_total_non_clifford']
@@ -171,15 +200,12 @@ def test_public_candidate_flat_netlist_iterator_emits_concrete_operand_wires() -
 def test_public_candidate_materialized_manifest_rejects_qroam_domain_width_drift() -> None:
     qroam = _artifact('qroam_primitive_certificate.json')
     qroam['operation_stream']['segments'][0]['end_address_exclusive'] -= 1
-    candidate_input = _candidate_input()
-    observed = build_public_candidate_materialized_circuit_manifest(
-        reusable_chunk_lowering=_artifact('reusable_chunk_lowering.json'),
+    observed = _build_public_candidate_materialized(
+        reusable=_artifact('reusable_chunk_lowering.json'),
         arithmetic_operation_ir=_artifact('arithmetic_operation_ir.json'),
         lookup_lowerings=_artifact('lookup_lowerings.json'),
-        qroam_primitive_certificate=qroam,
-        phase_shell_lowerings=_artifact('phase_shell_lowerings.json'),
-        zkp_attestation_input=candidate_input,
-        selected_family_name=candidate_input['selected_family_name'],
+        qroam_primitive=qroam,
+        phase_shell=_artifact('phase_shell_lowerings.json'),
     )
     assert observed['checks']['flat_execution_probe_qroam_target_width_matches_segments'] is False
     assert observed['pass'] is False
@@ -188,15 +214,12 @@ def test_public_candidate_materialized_manifest_rejects_qroam_domain_width_drift
 def test_public_candidate_materialized_manifest_rejects_qroam_segment_drift() -> None:
     qroam = _artifact('qroam_primitive_certificate.json')
     qroam['operation_stream']['segments'][0]['ccx'] -= 1
-    candidate_input = _candidate_input()
-    observed = build_public_candidate_materialized_circuit_manifest(
-        reusable_chunk_lowering=_artifact('reusable_chunk_lowering.json'),
+    observed = _build_public_candidate_materialized(
+        reusable=_artifact('reusable_chunk_lowering.json'),
         arithmetic_operation_ir=_artifact('arithmetic_operation_ir.json'),
         lookup_lowerings=_artifact('lookup_lowerings.json'),
-        qroam_primitive_certificate=qroam,
-        phase_shell_lowerings=_artifact('phase_shell_lowerings.json'),
-        zkp_attestation_input=candidate_input,
-        selected_family_name=candidate_input['selected_family_name'],
+        qroam_primitive=qroam,
+        phase_shell=_artifact('phase_shell_lowerings.json'),
     )
     assert observed['checks']['non_clifford_total_matches_public_candidate'] is False
     assert observed['checks']['qroam_rows_sum_to_public_qroam_derivation'] is False
@@ -208,15 +231,12 @@ def test_public_candidate_materialized_manifest_rejects_arithmetic_stage_drift()
     tail = next(row for row in arithmetic_operation_ir['kernels'] if row['opcode'] == 'complete_a0_all_streamed_tail')
     stage = next(row for row in tail['stages'] if row['category'] != 'streamed_lookup_data_select')
     stage['blocks'][0]['primitive_counts_total']['ccx'] += 1
-    candidate_input = _candidate_input()
-    observed = build_public_candidate_materialized_circuit_manifest(
-        reusable_chunk_lowering=_artifact('reusable_chunk_lowering.json'),
+    observed = _build_public_candidate_materialized(
+        reusable=_artifact('reusable_chunk_lowering.json'),
         arithmetic_operation_ir=arithmetic_operation_ir,
         lookup_lowerings=_artifact('lookup_lowerings.json'),
-        qroam_primitive_certificate=_artifact('qroam_primitive_certificate.json'),
-        phase_shell_lowerings=_artifact('phase_shell_lowerings.json'),
-        zkp_attestation_input=candidate_input,
-        selected_family_name=candidate_input['selected_family_name'],
+        qroam_primitive=_artifact('qroam_primitive_certificate.json'),
+        phase_shell=_artifact('phase_shell_lowerings.json'),
     )
     assert observed['checks']['non_clifford_total_matches_public_candidate'] is False
     assert observed['checks']['generated_base_rows_match_public_non_qroam_derivation'] is False
@@ -227,19 +247,15 @@ def test_public_candidate_materialized_manifest_rejects_lookup_base_drift() -> N
     lookup_lowerings = _artifact('lookup_lowerings.json')
     family = next(row for row in lookup_lowerings['families'] if row['name'] == 'folded_standard_qroam_streamed_coordinate_v1')
     family['primitive_counts_total']['ccx'] -= 1
-    candidate_input = _candidate_input()
-    observed = build_public_candidate_materialized_circuit_manifest(
-        reusable_chunk_lowering=_artifact('reusable_chunk_lowering.json'),
+    observed = _build_public_candidate_materialized(
+        reusable=_artifact('reusable_chunk_lowering.json'),
         arithmetic_operation_ir=_artifact('arithmetic_operation_ir.json'),
         lookup_lowerings=lookup_lowerings,
-        qroam_primitive_certificate=_artifact('qroam_primitive_certificate.json'),
-        phase_shell_lowerings=_artifact('phase_shell_lowerings.json'),
-        zkp_attestation_input=candidate_input,
-        selected_family_name=candidate_input['selected_family_name'],
+        qroam_primitive=_artifact('qroam_primitive_certificate.json'),
+        phase_shell=_artifact('phase_shell_lowerings.json'),
     )
     assert observed['checks']['non_clifford_total_matches_public_candidate'] is False
     assert observed['checks']['generated_base_rows_match_public_non_qroam_derivation'] is False
-    assert observed['checks']['generated_base_rows_bind_family_snapshot'] is False
     assert observed['pass'] is False
 
 
@@ -247,15 +263,12 @@ def test_public_candidate_materialized_manifest_rejects_forged_liveness_owner_su
     reusable = _artifact('reusable_chunk_lowering.json')
     interval = next(row for row in reusable['executable_liveness']['intervals'] if row['interval_id'] == reusable['executable_liveness']['global_peak_interval_id'])
     interval['owner_live_qubits']['lookup_workspace'] -= 1
-    candidate_input = _candidate_input()
-    observed = build_public_candidate_materialized_circuit_manifest(
-        reusable_chunk_lowering=reusable,
+    observed = _build_public_candidate_materialized(
+        reusable=reusable,
         arithmetic_operation_ir=_artifact('arithmetic_operation_ir.json'),
         lookup_lowerings=_artifact('lookup_lowerings.json'),
-        qroam_primitive_certificate=_artifact('qroam_primitive_certificate.json'),
-        phase_shell_lowerings=_artifact('phase_shell_lowerings.json'),
-        zkp_attestation_input=candidate_input,
-        selected_family_name=candidate_input['selected_family_name'],
+        qroam_primitive=_artifact('qroam_primitive_certificate.json'),
+        phase_shell=_artifact('phase_shell_lowerings.json'),
     )
     assert observed['checks']['liveness_bindings_recompute_owner_sums_from_wire_catalog'] is False
     assert observed['pass'] is False
@@ -265,15 +278,12 @@ def test_public_candidate_materialized_manifest_rejects_duplicate_live_wire() ->
     reusable = _artifact('reusable_chunk_lowering.json')
     interval = next(row for row in reusable['executable_liveness']['intervals'] if row['interval_id'] == reusable['executable_liveness']['global_peak_interval_id'])
     interval['live_wire_ids'].append(interval['live_wire_ids'][0])
-    candidate_input = _candidate_input()
-    observed = build_public_candidate_materialized_circuit_manifest(
-        reusable_chunk_lowering=reusable,
+    observed = _build_public_candidate_materialized(
+        reusable=reusable,
         arithmetic_operation_ir=_artifact('arithmetic_operation_ir.json'),
         lookup_lowerings=_artifact('lookup_lowerings.json'),
-        qroam_primitive_certificate=_artifact('qroam_primitive_certificate.json'),
-        phase_shell_lowerings=_artifact('phase_shell_lowerings.json'),
-        zkp_attestation_input=candidate_input,
-        selected_family_name=candidate_input['selected_family_name'],
+        qroam_primitive=_artifact('qroam_primitive_certificate.json'),
+        phase_shell=_artifact('phase_shell_lowerings.json'),
     )
     assert observed['checks']['liveness_bindings_have_unique_live_wires'] is False
     assert observed['checks']['liveness_bindings_recompute_owner_sums_from_wire_catalog'] is False
@@ -286,15 +296,12 @@ def test_public_candidate_materialized_manifest_rejects_operand_owner_not_live()
     interval['live_wire_ids'] = [wire_id for wire_id in interval['live_wire_ids'] if wire_id != 'folded_lookup_control_workspace']
     interval['owner_live_qubits'].pop('lookup_workspace')
     interval['total_live_qubits'] -= 18
-    candidate_input = _candidate_input()
-    observed = build_public_candidate_materialized_circuit_manifest(
-        reusable_chunk_lowering=reusable,
+    observed = _build_public_candidate_materialized(
+        reusable=reusable,
         arithmetic_operation_ir=_artifact('arithmetic_operation_ir.json'),
         lookup_lowerings=_artifact('lookup_lowerings.json'),
-        qroam_primitive_certificate=_artifact('qroam_primitive_certificate.json'),
-        phase_shell_lowerings=_artifact('phase_shell_lowerings.json'),
-        zkp_attestation_input=candidate_input,
-        selected_family_name=candidate_input['selected_family_name'],
+        qroam_primitive=_artifact('qroam_primitive_certificate.json'),
+        phase_shell=_artifact('phase_shell_lowerings.json'),
     )
     assert observed['checks']['primitive_operand_contract_owners_are_known_and_live'] is False
     assert observed['pass'] is False

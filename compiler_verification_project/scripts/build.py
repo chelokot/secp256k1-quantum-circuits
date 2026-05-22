@@ -258,49 +258,43 @@ def build_materialized_circuit_manifest_artifact() -> None:
 
 def build_public_candidate_materialized_circuit_manifest_artifact() -> None:
     artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
-    candidate_input = load_json(
-        artifact_dir / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json'
-    )
+    compiler_parameters = load_json(artifact_dir / 'compiler_parameters.json')
     payload = build_public_candidate_materialized_circuit_manifest(
         reusable_chunk_lowering=load_json(artifact_dir / 'reusable_chunk_lowering.json'),
         arithmetic_operation_ir=load_json(artifact_dir / 'arithmetic_operation_ir.json'),
         lookup_lowerings=load_json(artifact_dir / 'lookup_lowerings.json'),
         qroam_primitive_certificate=load_json(artifact_dir / 'qroam_primitive_certificate.json'),
         phase_shell_lowerings=load_json(artifact_dir / 'phase_shell_lowerings.json'),
-        zkp_attestation_input=candidate_input,
-        selected_family_name=candidate_input['selected_family_name'],
+        compiler_parameters=compiler_parameters,
+        selected_family_name=compiler_parameters['public_headline_policy']['selected_public_family_name'],
     )
     dump_json(artifact_dir / 'public_candidate_materialized_circuit_manifest.json', payload)
 
 
 def build_headline_resource_manifest_artifact() -> None:
     artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
-    candidate_input = load_json(
-        artifact_dir / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json'
-    )
+    compiler_parameters = load_json(artifact_dir / 'compiler_parameters.json')
     payload = build_headline_resource_manifest(
         reusable_chunk_lowering=load_json(artifact_dir / 'reusable_chunk_lowering.json'),
-        selected_family_name=candidate_input['selected_family_name'],
+        selected_family_name=compiler_parameters['public_headline_policy']['selected_public_family_name'],
     )
     dump_json(artifact_dir / 'headline_resource_manifest.json', payload)
 
 
 def build_public_engine_manifest_artifact() -> None:
     artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
-    candidate_input = load_json(
-        artifact_dir / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json'
-    )
+    compiler_parameters = load_json(artifact_dir / 'compiler_parameters.json')
     payload = build_public_engine_manifest(
         reusable_chunk_lowering=load_json(artifact_dir / 'reusable_chunk_lowering.json'),
         reusable_chunk_tail_candidate=load_json(artifact_dir / 'reusable_chunk_tail_candidate.json'),
         streamed_lookup_tail_leaf_equivalence=load_json(artifact_dir / 'streamed_lookup_tail_leaf_equivalence.json'),
         release_corpus_preflight=load_json(artifact_dir / 'release_corpus_preflight.json'),
-        zkp_attestation_input=candidate_input,
+        compiler_parameters=compiler_parameters,
         arithmetic_operation_ir=load_json(artifact_dir / 'arithmetic_operation_ir.json'),
         qroam_primitive_certificate=load_json(artifact_dir / 'qroam_primitive_certificate.json'),
         phase_shell_lowerings=load_json(artifact_dir / 'phase_shell_lowerings.json'),
         public_candidate_materialized_circuit_manifest=load_json(artifact_dir / 'public_candidate_materialized_circuit_manifest.json'),
-        selected_family_name=candidate_input['selected_family_name'],
+        selected_family_name=compiler_parameters['public_headline_policy']['selected_public_family_name'],
     )
     dump_json(artifact_dir / 'public_engine_manifest.json', payload)
 

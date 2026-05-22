@@ -12,6 +12,7 @@
     "role": "single public repository headline",
     "reason": "Verified reusable-chunk four-slot contract is the strongest checked result that keeps non-Clifford below the compiler-parameter headline limit and logical qubits strictly below the compiler-parameter headline limit under the strict standard-QROAM model.",
     "limits": {
+      "selected_public_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
       "non_clifford_limit_exclusive": 40000000,
       "logical_qubit_limit_exclusive": 1200,
       "proof_freshness_required_for_public_pass": true
@@ -54,8 +55,8 @@
   "checked_artifacts": {
     "input": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
-      "sha256": "74e601eff3f18481c79b502ca4fc2095abfd63687810a7371c487e60acde2fbb",
-      "bytes": 275961
+      "sha256": "1669c6efa5fd9ffed95107674389115cf4a7f4f4fb15d91788f1e5bb3cc64481",
+      "bytes": 276177
     },
     "claim": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json",
@@ -79,8 +80,8 @@
     },
     "compiler_parameters": {
       "path": "compiler_verification_project/artifacts/compiler_parameters.json",
-      "sha256": "b6fcb4e2e3b68a4657bc7a4590721bbd4792cb9d54e499b50cd1795446b604cf",
-      "bytes": 1832
+      "sha256": "aec277a8507d505473f06f90ef82d5989710099f271fa78f69424ff8958dbb38",
+      "bytes": 2040
     },
     "public_values": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_public_values.json",
@@ -187,13 +188,13 @@
     },
     "public_candidate_materialized_circuit_manifest": {
       "path": "compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json",
-      "sha256": "01f91c58f3c137fe7b8903b8c688aabfab9a8293095d3c8d1fc5d69285f2d1c1",
-      "bytes": 22915673
+      "sha256": "a0b1181312779e8bc0f8a66cf7e4bf8b199f5d16626393dbfb576ba750db5842",
+      "bytes": 22915682
     },
     "public_engine_manifest": {
       "path": "compiler_verification_project/artifacts/public_engine_manifest.json",
-      "sha256": "fbaf9633c6f65d53259ee3ba665ea3f4e493c45626ddd1bd653f7d903b3685d4",
-      "bytes": 21468
+      "sha256": "c2dbf59a5332d82021d7d0806e97dd407a6b1a2746a739bb4cb5520b440ee2fa",
+      "bytes": 21558
     }
   },
   "verification_commands": {

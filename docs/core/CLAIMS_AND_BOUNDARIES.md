@@ -155,7 +155,9 @@ liveness bindings, QROAM target-domain widths, and a reduced schoolbook
 Cartesian operand grid. The public engine manifest derives the public
 non-Clifford count from that flat netlist and the public qubit count from the
 materialized liveness peak; reusable-resource totals are checked against those
-values as snapshots.
+values as snapshots. The materialized/public engine layer is generated from
+compiler parameters and resource artifacts, not from the ZKP input, leaving ZKP
+as a downstream publication wrapper rather than an upstream claim source.
 
 The checked JSON sidecars remain the audit-friendly source-of-truth inputs for
 that bundle. The candidate directory records core, compressed, and Groth16

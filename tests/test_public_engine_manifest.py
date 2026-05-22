@@ -21,42 +21,30 @@ def _load(name: str) -> dict:
     return json.loads((REPO_ROOT / 'compiler_verification_project' / 'artifacts' / name).read_text())
 
 
-def _candidate_input() -> dict:
-    return json.loads(
-        (
-            REPO_ROOT
-            / 'compiler_verification_project'
-            / 'artifacts'
-            / 'zkp_attestation_reusable_chunk_candidate'
-            / 'zkp_attestation_input.json'
-        ).read_text()
-    )
-
-
 def _build_manifest(
     *,
     reusable: dict | None = None,
     tail_candidate: dict | None = None,
     streamed_equivalence: dict | None = None,
     release_preflight: dict | None = None,
-    candidate_input: dict | None = None,
+    compiler_parameters: dict | None = None,
     arithmetic_operation_ir: dict | None = None,
     qroam_primitive: dict | None = None,
     phase_shell: dict | None = None,
     public_candidate_materialized: dict | None = None,
 ) -> dict:
-    resolved_candidate_input = candidate_input or _candidate_input()
+    resolved_compiler_parameters = compiler_parameters or _load('compiler_parameters.json')
     return build_public_engine_manifest(
         reusable_chunk_lowering=reusable or _load('reusable_chunk_lowering.json'),
         reusable_chunk_tail_candidate=tail_candidate or _load('reusable_chunk_tail_candidate.json'),
         streamed_lookup_tail_leaf_equivalence=streamed_equivalence or _load('streamed_lookup_tail_leaf_equivalence.json'),
         release_corpus_preflight=release_preflight or _load('release_corpus_preflight.json'),
-        zkp_attestation_input=resolved_candidate_input,
+        compiler_parameters=resolved_compiler_parameters,
         arithmetic_operation_ir=arithmetic_operation_ir or _load('arithmetic_operation_ir.json'),
         qroam_primitive_certificate=qroam_primitive or _load('qroam_primitive_certificate.json'),
         phase_shell_lowerings=phase_shell or _load('phase_shell_lowerings.json'),
         public_candidate_materialized_circuit_manifest=public_candidate_materialized or _load('public_candidate_materialized_circuit_manifest.json'),
-        selected_family_name=resolved_candidate_input['selected_family_name'],
+        selected_family_name=resolved_compiler_parameters['public_headline_policy']['selected_public_family_name'],
     )
 
 
@@ -72,8 +60,9 @@ def test_public_engine_manifest_reconstructs_checked_artifact() -> None:
     assert expected['public_totals']['logical_qubits'] == reusable['executable_resource_engine']['public_totals']['logical_qubits']
     assert expected['fast_no_zkp_contract']['prover_required'] is False
     assert expected['semantic_boundary_evidence']['release_corpus_preflight']['case_count'] == GOOGLE_COMPARABLE_CASE_COUNT
+    assert expected['semantic_boundary_evidence']['compiler_parameters']['selected_public_family_name'] == expected['selected_family_name']
     assert set(expected['semantic_boundary_evidence']['required_categories']).issubset(
-        expected['semantic_boundary_evidence']['smoke_case_corpus']['category_counts']
+        expected['semantic_boundary_evidence']['release_corpus_preflight']['category_counts']
     )
     assert expected['primitive_operation_evidence']['qroam_primitive_certificate']['whole_oracle_non_clifford'] == reusable['non_clifford_derivation']['qroam_chunk_non_clifford']
     assert expected['primitive_operation_evidence']['phase_shell']['phase_register_bits'] == expected['primitive_operation_evidence']['phase_shell']['hadamard_count']
@@ -103,6 +92,14 @@ def test_public_engine_manifest_rejects_semantic_boundary_drift() -> None:
     release_preflight['category_counts']['lookup_infinity'] = 0
     observed = _build_manifest(release_preflight=release_preflight)
     assert observed['checks']['release_corpus_preflight_covers_required_categories'] is False
+    assert observed['pass'] is False
+
+
+def test_public_engine_manifest_rejects_compiler_parameter_family_drift() -> None:
+    compiler_parameters = _load('compiler_parameters.json')
+    compiler_parameters['public_headline_policy']['selected_public_family_name'] = 'wrong_family'
+    observed = _build_manifest(compiler_parameters=compiler_parameters)
+    assert observed['checks']['compiler_parameters_bind_selected_public_family'] is False
     assert observed['pass'] is False
 
 

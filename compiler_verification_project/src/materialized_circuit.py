@@ -1114,9 +1114,8 @@ def _public_base_run_length_rows(
     reusable_chunk_lowering: Mapping[str, Any],
     arithmetic_operation_ir: Mapping[str, Any],
     lookup_lowerings: Mapping[str, Any],
-    zkp_attestation_input: Mapping[str, Any],
+    compiler_parameters: Mapping[str, Any],
 ) -> List[Dict[str, Any]]:
-    compiler_parameters = zkp_attestation_input['compiler_parameters_document']['payload']
     lookup_family = _selected_lookup_family(
         lookup_lowerings,
         str(compiler_parameters['lookup_policy']['selected_public_lookup_family']),
@@ -1285,12 +1284,11 @@ def build_public_candidate_materialized_circuit_manifest(
     lookup_lowerings: Mapping[str, Any],
     qroam_primitive_certificate: Mapping[str, Any],
     phase_shell_lowerings: Mapping[str, Any],
-    zkp_attestation_input: Mapping[str, Any],
+    compiler_parameters: Mapping[str, Any],
     selected_family_name: str,
 ) -> Dict[str, Any]:
     counted_resource_ir = reusable_chunk_lowering['counted_resource_ir']
     public_totals = reusable_chunk_lowering['executable_resource_engine']['public_totals']
-    compiler_parameters = zkp_attestation_input['compiler_parameters_document']['payload']
     selected_phase_shell_name = str(compiler_parameters['phase_shell']['selected_public_shell'])
     selected_phase_shell = _selected_phase_shell(phase_shell_lowerings, selected_phase_shell_name)
     base_non_clifford = int(reusable_chunk_lowering['non_clifford_derivation']['base_non_clifford_without_streamed_qroam'])
@@ -1298,7 +1296,7 @@ def build_public_candidate_materialized_circuit_manifest(
         reusable_chunk_lowering=reusable_chunk_lowering,
         arithmetic_operation_ir=arithmetic_operation_ir,
         lookup_lowerings=lookup_lowerings,
-        zkp_attestation_input=zkp_attestation_input,
+        compiler_parameters=compiler_parameters,
     )
     rows.extend(_qroam_run_length_rows(
         reusable_chunk_lowering=reusable_chunk_lowering,
@@ -1372,7 +1370,7 @@ def build_public_candidate_materialized_circuit_manifest(
         owner_capacity_by_id=owner_capacity_by_id,
     )
     checks = {
-        'selected_family_matches_public_input': selected_family_name == zkp_attestation_input['selected_family_name'],
+        'selected_family_matches_compiler_parameters': selected_family_name == compiler_parameters['public_headline_policy']['selected_public_family_name'],
         'source_engines_pass': (
             reusable_chunk_lowering['executable_resource_engine']['pass'] is True
             and reusable_chunk_lowering['counted_resource_engine']['pass'] is True
@@ -1393,15 +1391,14 @@ def build_public_candidate_materialized_circuit_manifest(
             arithmetic_generated_streamed_qroam_per_leaf > 0
             and not any(row.get('arithmetic_category') == 'streamed_lookup_data_select' for row in arithmetic_leaf_rows)
         ),
-        'generated_base_rows_bind_family_snapshot': (
-            sum(int(row['non_clifford_count']) for row in direct_seed_rows) == int(zkp_attestation_input['family_document']['payload']['direct_seed_non_clifford'])
-            and (
-                lookup_base_non_clifford_per_leaf + arithmetic_generated_non_qroam_per_leaf
-                == int(zkp_attestation_input['family_document']['payload']['arithmetic_leaf_non_clifford'])
-            )
+        'generated_base_rows_bind_compiler_parameters': (
+            'reusable_chunk_tail_leaf_v1' in selected_family_name
+            and sum(int(row['non_clifford_count']) for row in direct_seed_rows) == lookup_base_non_clifford_per_leaf
+            and lookup_base_non_clifford_per_leaf > 0
+            and arithmetic_generated_non_qroam_per_leaf > 0
         ),
         'phase_rows_bind_selected_phase_shell': (
-            selected_phase_shell['name'] == zkp_attestation_input['family_document']['payload']['phase_shell']
+            selected_phase_shell['name'] in selected_family_name
             and phase_total_hadamards == int(selected_phase_shell['hadamard_count'])
             and phase_total_measurements == int(selected_phase_shell['total_measurements'])
             and phase_total_rotations == int(selected_phase_shell['total_rotations'])
@@ -1493,7 +1490,7 @@ def build_public_candidate_materialized_circuit_manifest(
             'lookup_lowerings_sha256': _sha256_payload(lookup_lowerings),
             'qroam_primitive_certificate_sha256': _sha256_payload(qroam_primitive_certificate),
             'phase_shell_lowerings_sha256': _sha256_payload(phase_shell_lowerings),
-            'zkp_attestation_input_sha256': _sha256_payload(zkp_attestation_input),
+            'compiler_parameters_sha256': _sha256_payload(compiler_parameters),
         },
         'operation_stream_sha256': _public_candidate_stream_hash(rows),
         'liveness_binding_stream_sha256': _public_candidate_liveness_hash(liveness_rows),

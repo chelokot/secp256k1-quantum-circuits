@@ -246,8 +246,8 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 lookup_lowerings=load_json(artifact_root / 'lookup_lowerings.json'),
                 qroam_primitive_certificate=load_json(artifact_root / 'qroam_primitive_certificate.json'),
                 phase_shell_lowerings=load_json(artifact_root / 'phase_shell_lowerings.json'),
-                zkp_attestation_input=load_json(artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json'),
-                selected_family_name=load_json(artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json')['selected_family_name'],
+                compiler_parameters=load_json(artifact_root / 'compiler_parameters.json'),
+                selected_family_name=load_json(artifact_root / 'compiler_parameters.json')['public_headline_policy']['selected_public_family_name'],
             ),
         )
         dump_json(
@@ -257,12 +257,12 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 reusable_chunk_tail_candidate=load_json(artifact_root / 'reusable_chunk_tail_candidate.json'),
                 streamed_lookup_tail_leaf_equivalence=load_json(artifact_root / 'streamed_lookup_tail_leaf_equivalence.json'),
                 release_corpus_preflight=load_json(artifact_root / 'release_corpus_preflight.json'),
-                zkp_attestation_input=load_json(artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json'),
+                compiler_parameters=load_json(artifact_root / 'compiler_parameters.json'),
                 arithmetic_operation_ir=load_json(artifact_root / 'arithmetic_operation_ir.json'),
                 qroam_primitive_certificate=load_json(artifact_root / 'qroam_primitive_certificate.json'),
                 phase_shell_lowerings=load_json(artifact_root / 'phase_shell_lowerings.json'),
                 public_candidate_materialized_circuit_manifest=load_json(artifact_root / 'public_candidate_materialized_circuit_manifest.json'),
-                selected_family_name=load_json(artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json')['selected_family_name'],
+                selected_family_name=load_json(artifact_root / 'compiler_parameters.json')['public_headline_policy']['selected_public_family_name'],
             ),
         )
     return {name: _load_artifact(path) for name, path in required.items()}
@@ -2082,7 +2082,7 @@ def build_headline_opcode_coverage_checks(artifacts: Mapping[str, Any]) -> Dict[
 def build_headline_resource_manifest_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     manifest = artifacts['headline_resource_manifest']
     lowering = artifacts['reusable_chunk_lowering']
-    selected_family_name = artifacts['zkp_attestation_reusable_chunk_candidate_input']['selected_family_name']
+    selected_family_name = artifacts['compiler_parameters']['public_headline_policy']['selected_public_family_name']
     expected = build_headline_resource_manifest(
         reusable_chunk_lowering=lowering,
         selected_family_name=selected_family_name,
@@ -2090,7 +2090,7 @@ def build_headline_resource_manifest_checks(artifacts: Mapping[str, Any]) -> Dic
     checks = [
         _check('headline_resource_manifest_matches_generator', manifest == expected, expected, manifest),
         _check('headline_resource_manifest_schema_is_current', manifest['schema'] == HEADLINE_RESOURCE_MANIFEST_SCHEMA, HEADLINE_RESOURCE_MANIFEST_SCHEMA, manifest['schema']),
-        _check('headline_resource_manifest_family_matches_candidate_input', manifest['selected_family_name'] == selected_family_name, selected_family_name, manifest['selected_family_name']),
+        _check('headline_resource_manifest_family_matches_compiler_parameters', manifest['selected_family_name'] == selected_family_name, selected_family_name, manifest['selected_family_name']),
         _check('headline_resource_manifest_binds_reusable_chunk_counted_ir', manifest['source_counted_resource_ir_sha256'] == lowering['resource_contract_engine']['counted_resource_ir_sha256'], lowering['resource_contract_engine']['counted_resource_ir_sha256'], manifest['source_counted_resource_ir_sha256']),
         _check('headline_resource_manifest_reconstructs_public_non_clifford', manifest['public_totals']['non_clifford'] == lowering['non_clifford_derivation']['candidate_total_non_clifford'], lowering['non_clifford_derivation']['candidate_total_non_clifford'], manifest['public_totals']['non_clifford']),
         _check('headline_resource_manifest_reconstructs_public_qubits', manifest['public_totals']['logical_qubits'] == lowering['qubit_derivation']['candidate_total_logical_qubits'], lowering['qubit_derivation']['candidate_total_logical_qubits'], manifest['public_totals']['logical_qubits']),
@@ -2102,13 +2102,14 @@ def build_headline_resource_manifest_checks(artifacts: Mapping[str, Any]) -> Dic
 def build_public_engine_manifest_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     manifest = artifacts['public_engine_manifest']
     lowering = artifacts['reusable_chunk_lowering']
-    selected_family_name = artifacts['zkp_attestation_reusable_chunk_candidate_input']['selected_family_name']
+    compiler_parameters = artifacts['compiler_parameters']
+    selected_family_name = compiler_parameters['public_headline_policy']['selected_public_family_name']
     expected = build_public_engine_manifest(
         reusable_chunk_lowering=lowering,
         reusable_chunk_tail_candidate=artifacts['reusable_chunk_tail_candidate'],
         streamed_lookup_tail_leaf_equivalence=artifacts['streamed_lookup_tail_leaf_equivalence'],
         release_corpus_preflight=artifacts['release_corpus_preflight'],
-        zkp_attestation_input=artifacts['zkp_attestation_reusable_chunk_candidate_input'],
+        compiler_parameters=compiler_parameters,
         arithmetic_operation_ir=artifacts['arithmetic_operation_ir'],
         qroam_primitive_certificate=artifacts['qroam_primitive_certificate'],
         phase_shell_lowerings=artifacts['phase_shell_lowerings'],
@@ -2138,7 +2139,7 @@ def build_public_engine_manifest_checks(artifacts: Mapping[str, Any]) -> Dict[st
         _check('public_engine_manifest_binds_liveness_and_owner_digests', manifest['source_digests']['executable_liveness_sha256'] == resource_contract_engine['executable_liveness_sha256'] and manifest['source_digests']['owner_capacity_sha256'] == resource_contract_engine['owner_capacity_sha256'], {'executable_liveness_sha256': resource_contract_engine['executable_liveness_sha256'], 'owner_capacity_sha256': resource_contract_engine['owner_capacity_sha256']}, manifest['source_digests']),
         _check('public_engine_manifest_instruction_schedule_and_wire_streams_are_nonempty', manifest['instruction_stream']['row_count'] > 0 and manifest['schedule_stream']['row_count'] > 0 and manifest['wire_catalog_stream']['row_count'] > 0, '> 0 rows', {'instruction_rows': manifest['instruction_stream']['row_count'], 'schedule_rows': manifest['schedule_stream']['row_count'], 'wire_rows': manifest['wire_catalog_stream']['row_count']}),
         _check('public_engine_manifest_fast_contract_is_no_zkp', manifest['fast_no_zkp_contract']['prover_required'] is False and manifest['fast_no_zkp_contract']['verify_group'] == 'public_engine_manifest_checks', {'prover_required': False, 'verify_group': 'public_engine_manifest_checks'}, manifest['fast_no_zkp_contract']),
-        _check('public_engine_manifest_binds_semantic_boundary_evidence', manifest['semantic_boundary_evidence']['streamed_lookup_tail_leaf_equivalence']['pass'] == manifest['semantic_boundary_evidence']['streamed_lookup_tail_leaf_equivalence']['total'] and manifest['semantic_boundary_evidence']['release_corpus_preflight']['case_count'] == GOOGLE_COMPARABLE_CASE_COUNT and all(manifest['semantic_boundary_evidence']['smoke_case_corpus']['category_counts'].get(category, 0) > 0 for category in manifest['semantic_boundary_evidence']['required_categories']) and all(manifest['semantic_boundary_evidence']['release_corpus_preflight']['category_counts'].get(category, 0) > 0 for category in manifest['semantic_boundary_evidence']['required_categories']), 'semantic boundary evidence covers required categories in smoke and release corpora', manifest['semantic_boundary_evidence']),
+        _check('public_engine_manifest_binds_semantic_boundary_evidence', manifest['semantic_boundary_evidence']['streamed_lookup_tail_leaf_equivalence']['pass'] == manifest['semantic_boundary_evidence']['streamed_lookup_tail_leaf_equivalence']['total'] and manifest['semantic_boundary_evidence']['release_corpus_preflight']['case_count'] == GOOGLE_COMPARABLE_CASE_COUNT and all(manifest['semantic_boundary_evidence']['release_corpus_preflight']['category_counts'].get(category, 0) > 0 for category in manifest['semantic_boundary_evidence']['required_categories']) and manifest['semantic_boundary_evidence']['compiler_parameters']['selected_public_family_name'] == selected_family_name, 'semantic boundary evidence covers required categories in release corpus and binds compiler parameters', manifest['semantic_boundary_evidence']),
         _check('public_engine_manifest_binds_primitive_operation_evidence', manifest['primitive_operation_evidence']['arithmetic_operation_ir']['pass'] is True and manifest['primitive_operation_evidence']['qroam_primitive_certificate']['pass'] is True and manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['pass'] is True and manifest['primitive_operation_evidence']['qroam_primitive_certificate']['whole_oracle_non_clifford'] == lowering['non_clifford_derivation']['qroam_chunk_non_clifford'] and manifest['primitive_operation_evidence']['phase_shell']['name'] in selected_family_name, 'primitive operation evidence binds materialized public candidate, arithmetic, qroam, and phase shell sources', manifest['primitive_operation_evidence']),
         _check('public_engine_manifest_passes_internal_checks', manifest['pass'] is True and all(manifest['checks'].values()), True, manifest['checks']),
     ]

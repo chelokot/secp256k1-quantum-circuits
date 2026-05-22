@@ -7,7 +7,7 @@
   "family_sha256": "d3cecc3c5c3ec6b7611057d6fb3608dd5e95d7020f66ac55d55e2066d9398eae",
   "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
   "resource_certificate_sha256": "047500decb193aa262ae33fed728563dd18b2e8fcd9caa72deb310bea3d5ada5",
-  "compiler_parameters_sha256": "5d17d0fcc6fb8967cc5b02f916bd8c7da717c8b160486bc128bf3d81a7c8f517",
+  "compiler_parameters_sha256": "8015f87a4d334c61db0d2c8843fe12330db770a87e0c5c51e344347416a7555b",
   "claim_document": {
     "document_type": "attestation_claim",
     "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_claim.json",
@@ -6955,7 +6955,7 @@
     "document_type": "compiler_parameters",
     "artifact_path": "compiler_verification_project/artifacts/compiler_parameters.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "5d17d0fcc6fb8967cc5b02f916bd8c7da717c8b160486bc128bf3d81a7c8f517",
+    "sha256": "8015f87a4d334c61db0d2c8843fe12330db770a87e0c5c51e344347416a7555b",
     "payload": {
       "schema": "compiler-project-parameters-v1",
       "curve": {
@@ -6993,6 +6993,7 @@
         "scratch_slot": "qchunk"
       },
       "public_headline_policy": {
+        "selected_public_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
         "non_clifford_limit_exclusive": 40000000,
         "logical_qubit_limit_exclusive": 1200,
         "proof_freshness_required_for_public_pass": true
@@ -7004,10 +7005,11 @@
         "raw_window_span_matches_scalar_width": true,
         "qroamclean_selected_block_size_is_k1": true,
         "reusable_chunk_policy_covers_field_width": true,
+        "selected_public_family_matches_reusable_chunk_policy": true,
         "public_headline_limits_are_strict": true
       },
       "pass": true,
-      "parameter_digest_sha256": "ff6e9ffc4411af58791855dc281723b57e8f462ee40d91f82d3ebb4aa9dda520"
+      "parameter_digest_sha256": "47f5bf03c24360d51e75ad4496f455a112b2a8abf7f93e3fef56d07780d5dd6e"
     }
   },
   "claim_summary": {
