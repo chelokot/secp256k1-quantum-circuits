@@ -111,7 +111,10 @@ materialized in
 `compiler_verification_project/artifacts/headline_resource_manifest.json`, so
 the promoted `36,957,412 / 1,199` result is not backed by the older
 three-slot materialized manifest by accident. It also validates the committed compiler-parameter document
-before committing public values. The candidate directory records core,
+before committing public values. `compiler_verification_project/artifacts/constant_provenance.json`
+binds the selected phase-shell counts, headline totals, and publication limits
+from their source artifacts into the ZKP family document and public headline
+JSON, and checks that the old hardcoded ZKP count pattern is absent. The candidate directory records core,
 compressed, and Groth16 fixtures, compressed/Groth16 proof bundles, the wrap
 proof bundle, and the matching Groth16 verifying key. During source churn,
 `compiler_verification_project/scripts/proof_status.py` is the authority for

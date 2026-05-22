@@ -722,13 +722,19 @@ Current remediation:
   plus `compiler_parameters_sha256`; the SP1 guest validates that document's
   semantic digest, schema, internal checks, and stable parameter digest before
   accepting the attestation.
+- `compiler_verification_project/artifacts/constant_provenance.json` now binds
+  release-critical phase-shell counts, selected headline resource totals, and
+  public limits from their source artifacts into the ZKP family document,
+  public headline JSON, and counted-resource manifest. The corresponding
+  `constant_provenance_checks` group also scans the ZKP input generator for the
+  previous hardcoded `512 / 511 / total_measurements = 0` family-count pattern
+  and fails if those resource fields become integer literals again.
 
 Remaining boundary:
 
-- The parameter document is now bound into the proof input and public headline
-  metadata, but not every older supporting artifact carries the digest inline.
-  Continue propagating it into non-headline support artifacts as they are
-  touched.
+- The provenance manifest is a guard against repeated release-critical
+  constants and source drift; it is not a substitute for a single
+  Clifford-complete circuit generator.
 - `proof_status.py` now also requires each fixture to bind the exact prepared
   input by `input_sha256` and `input_size_bytes`. A proof-only input change, such
   as adding the compiler-parameter document, therefore cannot look current only
@@ -1595,7 +1601,11 @@ Current remediation:
   checked freshness artifact generated from the shared proof-status engine. The
   integrity group `proof_publication_status_checks` rejects forged
   `publication_ready` values, removed compressed/Groth16 publication gates,
-  stale public-headline pass semantics, and source-artifact digest drift.
+  stale public-headline pass semantics, and source-artifact digest drift. It
+  intentionally records the curated proof manifest by path and file count, not
+  by full-manifest SHA, and the curated proof manifest excludes
+  `verification_summary.json`; this keeps the manifest/summary/publication
+  status stack acyclic while `MANIFEST.sha256` still covers the checked summary.
 
 Still open:
 

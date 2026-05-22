@@ -19,6 +19,7 @@ from common import dump_json, load_json  # noqa: E402
 from artifact_digest_tree import build_artifact_digest_tree  # noqa: E402
 from artifact_registry import BUILD_SUMMARY_ARTIFACT_PATHS, BUILD_SUMMARY_SCHEMA  # noqa: E402
 from arithmetic_operation_ir import build_arithmetic_operation_ir  # noqa: E402
+from constant_provenance import build_constant_provenance  # noqa: E402
 from headline_opcode_coverage import build_headline_opcode_coverage  # noqa: E402
 from headline_resource_manifest import build_headline_resource_manifest  # noqa: E402
 from materialized_circuit import build_materialized_family_manifest  # noqa: E402
@@ -41,6 +42,7 @@ BUILD_TARGETS = (
     'artifact-digest-tree',
     'proof-environment-contract',
     'proof-publication-status',
+    'constant-provenance',
     'release-corpus-preflight',
     'materialized-circuit-manifest',
     'headline-resource-manifest',
@@ -218,6 +220,20 @@ def build_proof_publication_status_artifact() -> None:
     dump_json(artifact_dir / 'proof_publication_status.json', payload)
 
 
+def build_constant_provenance_artifact() -> None:
+    artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
+    payload = build_constant_provenance(
+        repo_root=PROJECT_ROOT,
+        compiler_parameters=load_json(artifact_dir / 'compiler_parameters.json'),
+        phase_shell_lowerings=load_json(artifact_dir / 'phase_shell_lowerings.json'),
+        reusable_chunk_lowering=load_json(artifact_dir / 'reusable_chunk_lowering.json'),
+        zkp_attestation_input=load_json(artifact_dir / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json'),
+        public_headline_result=load_json(artifact_dir / 'public_headline_result.json'),
+        headline_resource_manifest=load_json(artifact_dir / 'headline_resource_manifest.json'),
+    )
+    dump_json(artifact_dir / 'constant_provenance.json', payload)
+
+
 def build_release_corpus_preflight_artifact() -> None:
     artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
     payload = build_release_corpus_preflight(
@@ -294,6 +310,9 @@ def main() -> None:
     if args.target in ('proof-publication-status',):
         build_proof_publication_status_artifact()
         payload['proof_publication_status'] = 'compiler_verification_project/artifacts/proof_publication_status.json'
+    if args.target in ('constant-provenance',):
+        build_constant_provenance_artifact()
+        payload['constant_provenance'] = 'compiler_verification_project/artifacts/constant_provenance.json'
     if args.target in ('release-corpus-preflight',):
         build_release_corpus_preflight_artifact()
         payload['release_corpus_preflight'] = 'compiler_verification_project/artifacts/release_corpus_preflight.json'
@@ -338,6 +357,8 @@ def main() -> None:
         payload['proof_environment_contract'] = 'compiler_verification_project/artifacts/proof_environment_contract.json'
         build_proof_publication_status_artifact()
         payload['proof_publication_status'] = 'compiler_verification_project/artifacts/proof_publication_status.json'
+        build_constant_provenance_artifact()
+        payload['constant_provenance'] = 'compiler_verification_project/artifacts/constant_provenance.json'
     print(json.dumps({
         'target': args.target,
         'build_summary': payload['frontier']['best_gate_family'] if isinstance(payload.get('frontier'), dict) else None,
@@ -345,6 +366,7 @@ def main() -> None:
         'artifact_digest_tree': payload.get('artifact_digest_tree'),
         'proof_environment_contract': payload.get('proof_environment_contract'),
         'proof_publication_status': payload.get('proof_publication_status'),
+        'constant_provenance': payload.get('constant_provenance'),
         'release_corpus_preflight': payload.get('release_corpus_preflight'),
         'materialized_circuit_manifest': payload.get('materialized_circuit_manifest'),
         'headline_resource_manifest': payload.get('headline_resource_manifest'),

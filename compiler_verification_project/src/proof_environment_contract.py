@@ -9,7 +9,7 @@ from common import load_json, sha256_path
 from proof_environment import tool_contracts
 
 
-PROOF_ENVIRONMENT_CONTRACT_SCHEMA = 'compiler-project-proof-environment-contract-v1'
+PROOF_ENVIRONMENT_CONTRACT_SCHEMA = 'compiler-project-proof-environment-contract-v2'
 
 
 def _file_record(repo_root: Path, relative_path: str) -> dict[str, Any]:
@@ -237,13 +237,14 @@ def build_proof_environment_contract(*, repo_root: Path) -> dict[str, Any]:
         'command_contracts': commands,
         'checked_artifacts': checked_records,
         'proof_manifest': {
-            **_file_record(repo_root, 'artifacts/package/proof_manifest.json'),
+            'path': 'artifacts/package/proof_manifest.json',
             'schema': proof_manifest.get('schema'),
             'file_count': len(proof_manifest['files']),
         },
         'public_headline_result': _file_record(repo_root, 'compiler_verification_project/artifacts/public_headline_result.json'),
         'notes': [
             'This artifact is deterministic and repository-bound; it is not a pinned container or Nix lock.',
+            'The proof manifest is checked for curated coverage but not hash-bound here; proof_status.py remains the authority for manifest freshness.',
             'Publication still requires proof_status.py --require-all-current plus compressed and Groth16 verification against checked artifacts.',
             'No command in this contract invokes --prove; proof rebuilds remain an explicit separate operation.',
         ],

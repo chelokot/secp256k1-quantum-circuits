@@ -11,7 +11,7 @@ from common import load_json, sha256_path
 from proof_status_report import PROOF_STATUS_SCHEMA, build_proof_status_report
 
 
-PROOF_PUBLICATION_STATUS_SCHEMA = 'compiler-project-proof-publication-status-v1'
+PROOF_PUBLICATION_STATUS_SCHEMA = 'compiler-project-proof-publication-status-v3'
 
 
 def _canonical_sha256(payload: Any) -> str:
@@ -19,11 +19,19 @@ def _canonical_sha256(payload: Any) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
+def _normalise_proof_status_for_publication(proof_status: dict[str, Any]) -> dict[str, Any]:
+    normalised = json.loads(json.dumps(proof_status, sort_keys=True, separators=(',', ':')))
+    normalised.pop('proof_manifest_sha256', None)
+    return normalised
+
+
 def build_proof_publication_status(*, repo_root: Path) -> dict[str, Any]:
     artifact_root = repo_root / 'compiler_verification_project' / 'artifacts'
     public_result = load_json(artifact_root / 'public_headline_result.json')
     environment_contract = load_json(artifact_root / 'proof_environment_contract.json')
     proof_status = build_proof_status_report(repo_root)
+    proof_manifest = load_json(repo_root / proof_status['proof_manifest'])
+    proof_status_without_manifest_digest = _normalise_proof_status_for_publication(proof_status)
     systems = proof_status['systems']
     stale_systems = list(proof_status['stale_systems'])
     blocker_rows = [
@@ -54,8 +62,9 @@ def build_proof_publication_status(*, repo_root: Path) -> dict[str, Any]:
         'public_headline_resource_digest_matches_proof_status_input': (
             public_result['bound_documents']['resource_certificate_sha256'] == proof_status['resource_certificate_sha256']
         ),
-        'proof_manifest_digest_matches_environment_contract': (
-            environment_contract['proof_manifest']['sha256'] == proof_status['proof_manifest_sha256']
+        'proof_manifest_path_matches_environment_contract': (
+            environment_contract['proof_manifest']['path'] == proof_status['proof_manifest']
+            and environment_contract['proof_manifest']['file_count'] > 0
         ),
         'environment_contract_has_current_publication_gates': (
             environment_contract['pass'] is True
@@ -78,8 +87,8 @@ def build_proof_publication_status(*, repo_root: Path) -> dict[str, Any]:
         'scope': 'checked publication freshness status for the public reusable-chunk proof bundle',
         'publication_ready': proof_status['all_current'],
         'selected_result': public_result['selected_result'],
-        'proof_status_sha256': _canonical_sha256(proof_status),
-        'proof_status': proof_status,
+        'proof_status_sha256': _canonical_sha256(proof_status_without_manifest_digest),
+        'proof_status': proof_status_without_manifest_digest,
         'publication_blockers': blocker_rows,
         'publication_gate_commands': publication_commands,
         'source_artifacts': {
@@ -93,13 +102,14 @@ def build_proof_publication_status(*, repo_root: Path) -> dict[str, Any]:
             },
             'proof_manifest': {
                 'path': proof_status['proof_manifest'],
-                'sha256': proof_status['proof_manifest_sha256'],
+                'file_count': len(proof_manifest['files']),
             },
         },
         'checks': checks,
         'pass': all(checks.values()),
         'notes': [
             'pass means the publication status was derived consistently; publication_ready is the separate freshness verdict.',
+            'The publication artifact records proof-manifest path and file count; proof_status.py remains the authority for manifest freshness.',
             'When publication_ready is false, the public result remains a checked resource candidate but not a current compressed/Groth16 proof claim.',
         ],
     }

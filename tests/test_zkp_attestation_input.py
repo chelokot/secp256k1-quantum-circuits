@@ -74,6 +74,7 @@ def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None
     payload = _reusable_chunk_payload()
     claim = payload['claim_summary']
     family = payload['family_summary']
+    family_document = payload['family_document']['payload']
     leaf_document = payload['leaf_document']
     resource_document = payload['resource_certificate_document']
     compiler_parameters_document = payload['compiler_parameters_document']
@@ -89,11 +90,18 @@ def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None
     non_clifford_derivation = resource_document['payload']['non_clifford_derivation']
     counted_resource_ir = resource_document['payload']['counted_resource_ir']
     proof_register_contract = payload['proof_register_contract']
+    phase_shells = json.loads((REPO_ROOT / 'compiler_verification_project' / 'artifacts' / 'phase_shell_lowerings.json').read_text())
+    phase_shell = next(row for row in phase_shells['families'] if row['name'] == family_document['phase_shell'])
     assert payload['selected_family_name'].endswith('__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1')
     assert claim['expected_full_oracle_non_clifford'] == non_clifford_derivation['candidate_total_non_clifford']
     assert claim['expected_total_logical_qubits'] == qubit_derivation['candidate_total_logical_qubits']
     assert family['arithmetic_slot_count'] == qubit_derivation['arithmetic_slot_count']
     assert family['lookup_workspace_qubits'] == qubit_derivation['lookup_workspace_qubits']
+    assert family_document['phase_shell_hadamards'] == phase_shell['hadamard_count']
+    assert family_document['phase_shell_measurements'] == phase_shell['measurement_count']
+    assert family_document['phase_shell_rotations'] == phase_shell['rotation_count']
+    assert family_document['phase_shell_rotation_depth'] == phase_shell['rotation_depth']
+    assert family_document['total_measurements'] == phase_shell['total_measurements']
     assert leaf_document['document_type'] == 'reusable_chunk_tail_leaf'
     assert resource_document['document_type'] == 'reusable_chunk_lowering'
     assert compiler_parameters_document['document_type'] == 'compiler_parameters'

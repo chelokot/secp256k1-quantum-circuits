@@ -27,6 +27,7 @@ from artifact_registry import BUILD_SUMMARY_ARTIFACT_PATHS, BUILD_SUMMARY_SCHEMA
 from arithmetic_lowering import arithmetic_kernel_summary, arithmetic_lowering_library, materialize_arithmetic_primitive_operations
 from arithmetic_operation_ir import ARITHMETIC_OPERATION_IR_SCHEMA, build_arithmetic_operation_ir
 from compiler_parameters import COMPILER_PARAMETERS_SCHEMA, build_compiler_parameters
+from constant_provenance import CONSTANT_PROVENANCE_SCHEMA, build_constant_provenance
 from fallback_frontier_stress import build_fallback_frontier_stress
 from lookup_lowering import lookup_lowering_library, lowered_lookup_semantic_summary, materialize_lookup_primitive_operations
 from modular_arithmetic_certificate import build_modular_arithmetic_certificate
@@ -205,6 +206,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'artifact_digest_tree': artifact_root / 'artifact_digest_tree.json',
         'proof_environment_contract': artifact_root / 'proof_environment_contract.json',
         'proof_publication_status': artifact_root / 'proof_publication_status.json',
+        'constant_provenance': artifact_root / 'constant_provenance.json',
     }
     if not all(path.exists() for path in required.values()):
         from project import build_all_artifacts, write_cain_transfer
@@ -219,6 +221,18 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         dump_json(
             artifact_root / 'proof_publication_status.json',
             build_proof_publication_status(repo_root=repo_root),
+        )
+        dump_json(
+            artifact_root / 'constant_provenance.json',
+            build_constant_provenance(
+                repo_root=repo_root,
+                compiler_parameters=load_json(artifact_root / 'compiler_parameters.json'),
+                phase_shell_lowerings=load_json(artifact_root / 'phase_shell_lowerings.json'),
+                reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
+                zkp_attestation_input=load_json(artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json'),
+                public_headline_result=load_json(artifact_root / 'public_headline_result.json'),
+                headline_resource_manifest=load_json(artifact_root / 'headline_resource_manifest.json'),
+            ),
         )
     return {name: _load_artifact(path) for name, path in required.items()}
 
@@ -2041,6 +2055,29 @@ def build_headline_resource_manifest_checks(artifacts: Mapping[str, Any]) -> Dic
     return _summarize_checks(checks)
 
 
+def build_constant_provenance_checks(artifacts: Mapping[str, Any], repo_root: Path) -> Dict[str, Any]:
+    provenance = artifacts['constant_provenance']
+    expected = build_constant_provenance(
+        repo_root=repo_root,
+        compiler_parameters=artifacts['compiler_parameters'],
+        phase_shell_lowerings=artifacts['phase_shell_lowerings'],
+        reusable_chunk_lowering=artifacts['reusable_chunk_lowering'],
+        zkp_attestation_input=artifacts['zkp_attestation_reusable_chunk_candidate_input'],
+        public_headline_result=artifacts['public_headline_result'],
+        headline_resource_manifest=artifacts['headline_resource_manifest'],
+    )
+    checks = [
+        _check('constant_provenance_matches_generator', provenance == expected, expected, provenance),
+        _check('constant_provenance_schema_is_current', provenance['schema'] == CONSTANT_PROVENANCE_SCHEMA, CONSTANT_PROVENANCE_SCHEMA, provenance['schema']),
+        _check('constant_provenance_source_rows_pass', all(row['pass'] for row in provenance['source_rows']), True, provenance['source_rows']),
+        _check('constant_provenance_forbidden_literals_absent', provenance['checks']['forbidden_historic_literals_absent'] is True, True, provenance['forbidden_literal_scan']),
+        _check('constant_provenance_zkp_resource_fields_are_derived', provenance['checks']['tracked_zkp_family_resource_fields_are_not_integer_literals'] is True, True, provenance['ast_literal_audits']),
+        _check('constant_provenance_candidate_beats_limits', provenance['checks']['candidate_beats_public_limits'] is True, True, provenance['checks']),
+        _check('constant_provenance_passes_internal_checks', provenance['pass'] is True and all(provenance['checks'].values()), True, provenance['checks']),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_primitive_multiplier_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     primitive = artifacts['primitive_multiplier_library']
     schedule = artifacts['full_raw32_oracle']
@@ -2292,7 +2329,7 @@ def build_proof_environment_contract_checks(artifacts: Mapping[str, Any], repo_r
         _check('proof_environment_contract_schema_is_current', contract['schema'] == PROOF_ENVIRONMENT_CONTRACT_SCHEMA, PROOF_ENVIRONMENT_CONTRACT_SCHEMA, contract['schema']),
         _check('proof_environment_contract_passes_internal_checks', contract['pass'] is True and all(contract['checks'].values()), True, contract['checks']),
         _check('proof_environment_contract_binds_public_headline_result', contract['public_headline_result']['sha256'] == sha256_path(repo_root / contract['public_headline_result']['path']), contract['public_headline_result'], contract['public_headline_result']),
-        _check('proof_environment_contract_binds_curated_proof_manifest', contract['proof_manifest']['sha256'] == sha256_path(repo_root / contract['proof_manifest']['path']) and contract['proof_manifest']['file_count'] > 0, contract['proof_manifest'], contract['proof_manifest']),
+        _check('proof_environment_contract_references_curated_proof_manifest_without_digest_cycle', (repo_root / contract['proof_manifest']['path']).exists() and 'sha256' not in contract['proof_manifest'] and contract['proof_manifest']['file_count'] > 0, 'existing proof manifest path without self-referential sha256 binding', contract['proof_manifest']),
         _check('proof_environment_contract_manifest_covers_checked_artifacts', all(row['manifest_record_present'] and row['manifest_sha256_matches_checked_record'] for row in checked_artifacts.values()), 'all checked artifacts in proof manifest with matching digest and size', checked_artifacts),
         _check('proof_environment_contract_has_no_prover_command_in_fast_gates', all(command['invokes_prover'] is False and '--prove' not in command.get('argv', []) and ' --prove' not in command.get('shell_command', '') for command in contract['command_contracts']), 'no --prove in contract commands', contract['command_contracts']),
         _check('proof_environment_contract_has_publication_freshness_gate', command_by_name['proof_status_publication_gate']['publication_gate'] is True and '--require-all-current' in command_by_name['proof_status_publication_gate']['argv'], 'proof_status.py --require-all-current', command_by_name['proof_status_publication_gate']),
@@ -2681,6 +2718,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'subcircuit_equivalence_checks': lambda: build_subcircuit_equivalence_checks(artifacts, repo_root),
         'headline_opcode_coverage_checks': lambda: build_headline_opcode_coverage_checks(artifacts),
         'headline_resource_manifest_checks': lambda: build_headline_resource_manifest_checks(artifacts),
+        'constant_provenance_checks': lambda: build_constant_provenance_checks(artifacts, repo_root),
         'primitive_multiplier_checks': lambda: build_primitive_multiplier_checks(artifacts),
         'frontier_checks': lambda: build_frontier_checks(artifacts),
         'build_summary_checks': lambda: build_build_summary_checks(artifacts, repo_root),
@@ -2699,12 +2737,18 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
     return {name: builders[name]() for name in selected_names}
 
 
-def build_verification_summary(case_count: int = 16, repo_root: Path | None = None) -> Dict[str, Any]:
-    effective_root = repo_root or Path(__file__).resolve().parents[2]
-    artifacts = load_compiler_artifacts(effective_root)
-    semantic = run_full_raw32_semantic_check(case_count=case_count)
-    integrity = build_integrity_report(effective_root, artifacts)
-    semantic_checks = build_semantic_replay_checks(semantic, effective_root, case_count)
+VERIFICATION_SUMMARY_SCHEMA = 'compiler-project-verification-summary-v13'
+
+
+def _compose_verification_summary(
+    *,
+    repo_root: Path,
+    artifacts: Mapping[str, Any],
+    semantic: Mapping[str, Any],
+    case_count: int,
+) -> Dict[str, Any]:
+    integrity = build_integrity_report(repo_root, artifacts)
+    semantic_checks = build_semantic_replay_checks(semantic, repo_root, case_count)
     invariant_groups = {
         **integrity,
         'semantic_replay_checks': semantic_checks,
@@ -2712,7 +2756,7 @@ def build_verification_summary(case_count: int = 16, repo_root: Path | None = No
     invariant_total = sum(group['total'] for group in invariant_groups.values())
     invariant_pass = sum(group['pass'] for group in invariant_groups.values())
     return {
-        'schema': 'compiler-project-verification-summary-v13',
+        'schema': VERIFICATION_SUMMARY_SCHEMA,
         'semantic_replay': semantic,
         **invariant_groups,
         'summary': {
@@ -2730,9 +2774,91 @@ def build_verification_summary(case_count: int = 16, repo_root: Path | None = No
     }
 
 
+def build_verification_summary(case_count: int = 16, repo_root: Path | None = None) -> Dict[str, Any]:
+    effective_root = repo_root or Path(__file__).resolve().parents[2]
+    artifacts = load_compiler_artifacts(effective_root)
+    semantic = run_full_raw32_semantic_check(case_count=case_count)
+    return _compose_verification_summary(
+        repo_root=effective_root,
+        artifacts=artifacts,
+        semantic=semantic,
+        case_count=case_count,
+    )
+
+
+def build_verification_summary_with_checked_semantic(repo_root: Path | None = None) -> Dict[str, Any]:
+    effective_root = repo_root or Path(__file__).resolve().parents[2]
+    summary_path = effective_root / 'compiler_verification_project' / 'artifacts' / 'verification_summary.json'
+    existing = load_json(summary_path)
+    semantic = existing['semantic_replay']
+    case_count = int(semantic['summary']['random_cases'])
+    artifacts = load_compiler_artifacts(effective_root)
+    return _compose_verification_summary(
+        repo_root=effective_root,
+        artifacts=artifacts,
+        semantic=semantic,
+        case_count=case_count,
+    )
+
+
+def _summary_groups(summary: Mapping[str, Any]) -> Dict[str, Mapping[str, Any]]:
+    return {
+        name: group
+        for name, group in summary.items()
+        if isinstance(group, Mapping) and 'checks' in group
+    }
+
+
+def _refresh_summary_totals(summary: Dict[str, Any]) -> Dict[str, Any]:
+    semantic = summary['semantic_replay']
+    invariant_groups = _summary_groups(summary)
+    invariant_total = sum(group['total'] for group in invariant_groups.values())
+    invariant_pass = sum(group['pass'] for group in invariant_groups.values())
+    summary['summary'] = {
+        'semantic_cases': {
+            'total': semantic['summary']['total'],
+            'pass': semantic['summary']['pass'],
+        },
+        'invariant_checks': {
+            'total': invariant_total,
+            'pass': invariant_pass,
+        },
+        'total': semantic['summary']['total'] + invariant_total,
+        'pass': semantic['summary']['pass'] + invariant_pass,
+    }
+    return summary
+
+
+def refresh_verification_summary_groups(
+    group_names: Sequence[str],
+    repo_root: Path | None = None,
+) -> Dict[str, Any]:
+    effective_root = repo_root or Path(__file__).resolve().parents[2]
+    summary_path = effective_root / 'compiler_verification_project' / 'artifacts' / 'verification_summary.json'
+    existing = load_json(summary_path)
+    semantic = existing['semantic_replay']
+    case_count = int(semantic['summary']['random_cases'])
+    artifacts = load_compiler_artifacts(effective_root)
+    refreshed = build_integrity_report(effective_root, artifacts, group_names=group_names)
+    refreshed['semantic_replay_checks'] = build_semantic_replay_checks(semantic, effective_root, case_count)
+    updated = dict(existing)
+    updated['schema'] = VERIFICATION_SUMMARY_SCHEMA
+    updated.update(refreshed)
+    _refresh_summary_totals(updated)
+    dump_json(summary_path, updated)
+    return updated
+
+
 def write_verification_summary(case_count: int = 16, repo_root: Path | None = None) -> Dict[str, Any]:
     effective_root = repo_root or Path(__file__).resolve().parents[2]
     summary = build_verification_summary(case_count=case_count, repo_root=effective_root)
+    dump_json(effective_root / 'compiler_verification_project' / 'artifacts' / 'verification_summary.json', summary)
+    return summary
+
+
+def refresh_verification_summary_integrity(repo_root: Path | None = None) -> Dict[str, Any]:
+    effective_root = repo_root or Path(__file__).resolve().parents[2]
+    summary = build_verification_summary_with_checked_semantic(repo_root=effective_root)
     dump_json(effective_root / 'compiler_verification_project' / 'artifacts' / 'verification_summary.json', summary)
     return summary
 
@@ -2749,7 +2875,10 @@ def evaluate_mutated_verification_groups(
 
 __all__ = [
     'build_verification_summary',
+    'build_verification_summary_with_checked_semantic',
     'write_verification_summary',
+    'refresh_verification_summary_groups',
+    'refresh_verification_summary_integrity',
     'load_compiler_artifacts',
     'evaluate_mutated_verification_groups',
 ]

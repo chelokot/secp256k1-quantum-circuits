@@ -14,7 +14,13 @@ if str(SRC) not in sys.path:
 if str(ROOT_SRC) not in sys.path:
     sys.path.insert(0, str(ROOT_SRC))
 
-from integrity import build_integrity_report, load_compiler_artifacts, write_verification_summary  # noqa: E402
+from integrity import (  # noqa: E402
+    build_integrity_report,
+    load_compiler_artifacts,
+    refresh_verification_summary_groups,
+    refresh_verification_summary_integrity,
+    write_verification_summary,
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -30,11 +36,40 @@ def parse_args() -> argparse.Namespace:
         action='store_true',
         help='With --groups, print only group pass/total counts instead of full check payloads.',
     )
+    parser.add_argument(
+        '--refresh-integrity',
+        action='store_true',
+        help='Rewrite verification_summary.json by reusing and rechecking the checked semantic replay artifact.',
+    )
+    parser.add_argument(
+        '--refresh-groups',
+        nargs='+',
+        help='Rewrite verification_summary.json by refreshing only named groups plus semantic replay artifact checks.',
+    )
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
+    if args.refresh_groups:
+        payload = refresh_verification_summary_groups(args.refresh_groups, repo_root=PROJECT_ROOT)
+        print(json.dumps({
+            'summary': payload['summary'],
+            'semantic_replay': payload['semantic_replay']['summary'],
+            'refreshed_groups': args.refresh_groups,
+            'artifact': 'compiler_verification_project/artifacts/verification_summary.json',
+            'semantic_replay_mode': 'checked-artifact-reused',
+        }, indent=2))
+        return
+    if args.refresh_integrity:
+        payload = refresh_verification_summary_integrity(repo_root=PROJECT_ROOT)
+        print(json.dumps({
+            'summary': payload['summary'],
+            'semantic_replay': payload['semantic_replay']['summary'],
+            'artifact': 'compiler_verification_project/artifacts/verification_summary.json',
+            'semantic_replay_mode': 'checked-artifact-reused',
+        }, indent=2))
+        return
     if args.groups:
         artifacts = load_compiler_artifacts(PROJECT_ROOT)
         payload = build_integrity_report(PROJECT_ROOT, artifacts, group_names=args.groups)

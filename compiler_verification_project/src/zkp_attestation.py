@@ -124,6 +124,9 @@ def _resolve_family(frontier: Mapping[str, Any], family_name: str) -> Dict[str, 
 def _reusable_chunk_family_payload() -> Dict[str, Any]:
     lowering_path = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts' / 'reusable_chunk_lowering.json'
     lowering = json.loads(lowering_path.read_text())
+    phase_shell_path = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts' / 'phase_shell_lowerings.json'
+    phase_shells = json.loads(phase_shell_path.read_text())
+    phase_shell = next(row for row in phase_shells['families'] if row['name'] == 'semiclassical_qft_v1')
     non_clifford = lowering['non_clifford_derivation']
     qubits = lowering['qubit_derivation']
     leaf_call_count_total = int(lowering['stream_plan']['leaf_call_count_total'])
@@ -156,11 +159,11 @@ def _reusable_chunk_family_payload() -> Dict[str, Any]:
         'lookup_workspace_qubits': int(qubits['lookup_workspace_qubits']),
         'live_phase_bits': int(qubits['phase_qubits']),
         'total_logical_qubits': int(qubits['candidate_total_logical_qubits']),
-        'phase_shell_hadamards': 512,
-        'phase_shell_measurements': 512,
-        'phase_shell_rotations': 511,
-        'phase_shell_rotation_depth': 511,
-        'total_measurements': 0,
+        'phase_shell_hadamards': int(phase_shell['hadamard_count']),
+        'phase_shell_measurements': int(phase_shell['measurement_count']),
+        'phase_shell_rotations': int(phase_shell['rotation_count']),
+        'phase_shell_rotation_depth': int(phase_shell['rotation_depth']),
+        'total_measurements': int(phase_shell['total_measurements']),
         'notes': [
             'This family is the checked resource headline; compressed and Groth16 proof freshness is separately gated by proof_status.py --require-all-current.',
             'Its resource certificate is compiler_verification_project/artifacts/reusable_chunk_lowering.json.',

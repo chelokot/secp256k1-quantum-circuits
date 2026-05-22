@@ -47,15 +47,15 @@
   "bound_documents": {
     "claim_sha256": "2d15b306743caa81cb25d00cee5971841168ceffd13dfc49ed5d940582f82ad1",
     "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
-    "family_sha256": "d04c86b03248877ef7b62d3a1a6567dd823552d22f0b5b039e7109eb6315beaa",
+    "family_sha256": "d3cecc3c5c3ec6b7611057d6fb3608dd5e95d7020f66ac55d55e2066d9398eae",
     "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
     "resource_certificate_sha256": "8224f86922f043d3975b583d47bd82a2fe5ba5bc3d1bba4723bf9a7f493e07c7"
   },
   "checked_artifacts": {
     "input": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
-      "sha256": "f1e1f9ba216295c15dc35419d8ec37620a1cb6bf0c8b49d283e0d224d7bfa31c",
-      "bytes": 259409
+      "sha256": "ee9b14347de4089c31f180d56336fec6bae2b53977e1f4afe1ff67ee16f1346a",
+      "bytes": 259411
     },
     "claim": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json",
@@ -64,8 +64,8 @@
     },
     "family": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_family.json",
-      "sha256": "4b42252c535f7627602209dc1268e6a565fdeb68f716e44810ce6f1bdd19028a",
-      "bytes": 1655
+      "sha256": "f9e86c20b935cbfeb4b56fa36c7a9fbbecb0dcb328c4474c76d8a89960279abc",
+      "bytes": 1657
     },
     "case_corpus": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_cases.json",

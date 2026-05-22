@@ -69,6 +69,7 @@ What it does ship is:
 - `artifact_digest_tree.json` — chunked SHA-256/Merkle manifest for tracked large artifacts, generated from the checked tree so reviewers can verify large JSON/CSV/proof blobs by chunks rather than by one opaque file hash
 - `proof_environment_contract.json` — checked proof-environment contract binding required tools, no-prover edit-loop gates, publication freshness gates, direct compressed/Groth16 verifier commands, public-headline artifact digests, and curated proof-manifest records
 - `proof_publication_status.json` — checked publication-readiness artifact derived from the shared proof-status engine; it keeps `publication_ready` separate from resource-contract `pass`, records stale systems/blockers, and binds the public headline, proof manifest, and proof-environment contract
+- `constant_provenance.json` — release-critical constant provenance manifest binding the selected phase shell, headline resource totals, public limits, ZKP family document, public headline JSON, and counted-resource manifest back to their source artifacts while scanning for the previous hardcoded ZKP count pattern
 - `module_library.json` — arithmetic-kernel summary used by the frontier
 - `lookup_lowerings.json` — generated primitive-operation inventories for the named folded lookup families
 - `phase_shell_lowerings.json` — generated phase-operation inventories for the named full-register and semiclassical inverse-QFT shells
@@ -128,7 +129,10 @@ freshness gate after any resource-certificate or guest change.
 stream manifest. It expands the reusable-chunk counted-resource IR into term
 rows and liveness rows, reconstructs `36,957,412 / 1,199`, and prevents the
 older three-slot `materialized_circuit_manifest.json` from being mistaken for
-the promoted result.
+the promoted result. `constant_provenance.json` separately binds the release
+critical phase-shell counts, headline totals, and publication limits from their
+source artifacts into the ZKP candidate input and public headline document, and
+fails if those ZKP-family resource fields become integer literals again.
 
 `standard_qrom_lookup_assessment.json` records the standard-QROM status and
 rejects the old bitwise-banked path-select boundary as a public standard-QROM
@@ -239,6 +243,7 @@ python compiler_verification_project/scripts/build.py --target composition-artif
 python compiler_verification_project/scripts/build.py --target materialized-circuit-manifest
 python compiler_verification_project/scripts/build.py --target proof-environment-contract
 python compiler_verification_project/scripts/build.py --target proof-publication-status
+python compiler_verification_project/scripts/build.py --target constant-provenance
 python compiler_verification_project/scripts/build.py --target resource-zkp-and-public
 python compiler_verification_project/scripts/build.py --target zkp-and-public
 python compiler_verification_project/scripts/build.py --target release-candidate-zkp

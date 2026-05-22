@@ -156,7 +156,6 @@ class ReleaseInventoryTests(unittest.TestCase):
             'compiler_verification_project/artifacts/headline_opcode_coverage.json',
             'compiler_verification_project/artifacts/headline_resource_manifest.json',
             'compiler_verification_project/artifacts/public_headline_result.json',
-            'compiler_verification_project/artifacts/verification_summary.json',
             'compiler_verification_project/artifacts/exact_leaf_slot_allocation.json',
             'compiler_verification_project/artifacts/lookup_fed_leaf.json',
             'compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json',

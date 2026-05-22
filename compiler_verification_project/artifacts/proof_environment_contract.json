@@ -1,5 +1,5 @@
 {
-  "schema": "compiler-project-proof-environment-contract-v1",
+  "schema": "compiler-project-proof-environment-contract-v2",
   "scope": "checked reproducible proof-environment contract for public headline verification and rebuild gates",
   "tool_contract": {
     "required_tools": [
@@ -225,11 +225,11 @@
   "checked_artifacts": {
     "input": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
-      "sha256": "f1e1f9ba216295c15dc35419d8ec37620a1cb6bf0c8b49d283e0d224d7bfa31c",
-      "bytes": 259409,
+      "sha256": "ee9b14347de4089c31f180d56336fec6bae2b53977e1f4afe1ff67ee16f1346a",
+      "bytes": 259411,
       "manifest_record": {
-        "sha256": "f1e1f9ba216295c15dc35419d8ec37620a1cb6bf0c8b49d283e0d224d7bfa31c",
-        "bytes": 259409
+        "sha256": "ee9b14347de4089c31f180d56336fec6bae2b53977e1f4afe1ff67ee16f1346a",
+        "bytes": 259411
       },
       "manifest_record_present": true,
       "manifest_sha256_matches_checked_record": true
@@ -247,11 +247,11 @@
     },
     "family": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_family.json",
-      "sha256": "4b42252c535f7627602209dc1268e6a565fdeb68f716e44810ce6f1bdd19028a",
-      "bytes": 1655,
+      "sha256": "f9e86c20b935cbfeb4b56fa36c7a9fbbecb0dcb328c4474c76d8a89960279abc",
+      "bytes": 1657,
       "manifest_record": {
-        "sha256": "4b42252c535f7627602209dc1268e6a565fdeb68f716e44810ce6f1bdd19028a",
-        "bytes": 1655
+        "sha256": "f9e86c20b935cbfeb4b56fa36c7a9fbbecb0dcb328c4474c76d8a89960279abc",
+        "bytes": 1657
       },
       "manifest_record_present": true,
       "manifest_sha256_matches_checked_record": true
@@ -479,18 +479,17 @@
   },
   "proof_manifest": {
     "path": "artifacts/package/proof_manifest.json",
-    "sha256": "49d8ffadb816d8b7d19f4d88fc96539c52f90a1ca62a667ff39fcfc0423fb4a6",
-    "bytes": 38255,
     "schema": null,
-    "file_count": 200
+    "file_count": 201
   },
   "public_headline_result": {
     "path": "compiler_verification_project/artifacts/public_headline_result.json",
-    "sha256": "e4846b414540fb2244eefc422d676dd00e1a434b2421a216f00f8f38c65054a3",
+    "sha256": "9d62bccd114f671a7c5a4bd6f469eea05aebebcf39c0ff4068edd1bc7ea44cd8",
     "bytes": 13747
   },
   "notes": [
     "This artifact is deterministic and repository-bound; it is not a pinned container or Nix lock.",
+    "The proof manifest is checked for curated coverage but not hash-bound here; proof_status.py remains the authority for manifest freshness.",
     "Publication still requires proof_status.py --require-all-current plus compressed and Groth16 verification against checked artifacts.",
     "No command in this contract invokes --prove; proof rebuilds remain an explicit separate operation."
   ],

@@ -11886,21 +11886,21 @@
       {
         "name": "build_summary_schema_matches_current_version",
         "pass": 1,
-        "expected": "compiler-project-build-summary-v32",
-        "observed": "compiler-project-build-summary-v32"
+        "expected": "compiler-project-build-summary-v40",
+        "observed": "compiler-project-build-summary-v40"
       },
       {
         "name": "build_summary_artifact_paths_match_expected_set",
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "6aa5f87dd53bd0c8b9648e77118d42b64c3a6dc747b5ef2da7ca5a667beb8e25",
-          "size_bytes": 4441
+          "sha256": "d2894bba3b4d2de6af66be65304e8ecc88a5d07a797f809ad9b4f51edf2ddae0",
+          "size_bytes": 5225
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "6aa5f87dd53bd0c8b9648e77118d42b64c3a6dc747b5ef2da7ca5a667beb8e25",
-          "size_bytes": 4441
+          "sha256": "d2894bba3b4d2de6af66be65304e8ecc88a5d07a797f809ad9b4f51edf2ddae0",
+          "size_bytes": 5225
         }
       },
       {
@@ -11908,11 +11908,14 @@
         "pass": 1,
         "expected": [
           "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "compiler_verification_project/artifacts/arithmetic_operation_ir.json",
+          "compiler_verification_project/artifacts/artifact_digest_tree.json",
           "compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json",
           "compiler_verification_project/artifacts/azure_resource_estimator_results.json",
           "compiler_verification_project/artifacts/azure_resource_estimator_targets.json",
           "compiler_verification_project/artifacts/canonical_public_point.json",
           "compiler_verification_project/artifacts/compiler_parameters.json",
+          "compiler_verification_project/artifacts/constant_provenance.json",
           "compiler_verification_project/artifacts/exact_leaf_slot_allocation.json",
           "compiler_verification_project/artifacts/fallback_frontier_stress.json",
           "compiler_verification_project/artifacts/family_frontier.json",
@@ -11921,6 +11924,7 @@
           "compiler_verification_project/artifacts/full_raw32_oracle.json",
           "compiler_verification_project/artifacts/generated_block_inventories.json",
           "compiler_verification_project/artifacts/headline_opcode_coverage.json",
+          "compiler_verification_project/artifacts/headline_resource_manifest.json",
           "compiler_verification_project/artifacts/logical_resource_ledger.json",
           "compiler_verification_project/artifacts/lookup_fed_leaf.json",
           "compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json",
@@ -11933,10 +11937,14 @@
           "compiler_verification_project/artifacts/phase_shell_lowerings.json",
           "compiler_verification_project/artifacts/primitive_multiplier_library.json",
           "compiler_verification_project/artifacts/proof_corpus_profiles.json",
+          "compiler_verification_project/artifacts/proof_environment_contract.json",
+          "compiler_verification_project/artifacts/proof_publication_status.json",
           "compiler_verification_project/artifacts/public_google_baseline_source.json",
           "compiler_verification_project/artifacts/public_headline_result.json",
           "compiler_verification_project/artifacts/qroam_primitive_certificate.json",
+          "compiler_verification_project/artifacts/qroam_reference_crosscheck.json",
           "compiler_verification_project/artifacts/qubit_breakthrough_analysis.json",
+          "compiler_verification_project/artifacts/release_corpus_preflight.json",
           "compiler_verification_project/artifacts/resource_liveness_certificate.json",
           "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
           "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
@@ -11954,11 +11962,14 @@
         ],
         "observed": [
           "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "compiler_verification_project/artifacts/arithmetic_operation_ir.json",
+          "compiler_verification_project/artifacts/artifact_digest_tree.json",
           "compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json",
           "compiler_verification_project/artifacts/azure_resource_estimator_results.json",
           "compiler_verification_project/artifacts/azure_resource_estimator_targets.json",
           "compiler_verification_project/artifacts/canonical_public_point.json",
           "compiler_verification_project/artifacts/compiler_parameters.json",
+          "compiler_verification_project/artifacts/constant_provenance.json",
           "compiler_verification_project/artifacts/exact_leaf_slot_allocation.json",
           "compiler_verification_project/artifacts/fallback_frontier_stress.json",
           "compiler_verification_project/artifacts/family_frontier.json",
@@ -11967,6 +11978,7 @@
           "compiler_verification_project/artifacts/full_raw32_oracle.json",
           "compiler_verification_project/artifacts/generated_block_inventories.json",
           "compiler_verification_project/artifacts/headline_opcode_coverage.json",
+          "compiler_verification_project/artifacts/headline_resource_manifest.json",
           "compiler_verification_project/artifacts/logical_resource_ledger.json",
           "compiler_verification_project/artifacts/lookup_fed_leaf.json",
           "compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json",
@@ -11979,10 +11991,14 @@
           "compiler_verification_project/artifacts/phase_shell_lowerings.json",
           "compiler_verification_project/artifacts/primitive_multiplier_library.json",
           "compiler_verification_project/artifacts/proof_corpus_profiles.json",
+          "compiler_verification_project/artifacts/proof_environment_contract.json",
+          "compiler_verification_project/artifacts/proof_publication_status.json",
           "compiler_verification_project/artifacts/public_google_baseline_source.json",
           "compiler_verification_project/artifacts/public_headline_result.json",
           "compiler_verification_project/artifacts/qroam_primitive_certificate.json",
+          "compiler_verification_project/artifacts/qroam_reference_crosscheck.json",
           "compiler_verification_project/artifacts/qubit_breakthrough_analysis.json",
+          "compiler_verification_project/artifacts/release_corpus_preflight.json",
           "compiler_verification_project/artifacts/resource_liveness_certificate.json",
           "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
           "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
@@ -12010,10 +12026,10 @@
           "slot_allocation_family": "streamed_lookup_tail_leaf_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
           "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
-          "arithmetic_leaf_non_clifford": 1120212,
+          "arithmetic_leaf_non_clifford": 1126332,
           "direct_seed_non_clifford": 297,
           "per_leaf_lookup_non_clifford": 297,
-          "full_oracle_non_clifford": 34736076,
+          "full_oracle_non_clifford": 34925796,
           "arithmetic_slot_count": 3,
           "control_slot_count": 1,
           "borrowed_interface_qubits": 0,
@@ -12024,9 +12040,9 @@
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
           "phase_shell_rotation_depth": 511,
-          "total_measurements": 7301612,
-          "improvement_vs_google_low_qubit": 2.5909662334916588,
-          "improvement_vs_google_low_gate": 2.0151959593824014,
+          "total_measurements": 7491332,
+          "improvement_vs_google_low_qubit": 2.5768918767091233,
+          "improvement_vs_google_low_gate": 2.0042492374404293,
           "qubit_ratio_vs_google_low_qubit": 1.1494252873563218,
           "qubit_ratio_vs_google_low_gate": 1.3888888888888888,
           "notes": [
@@ -12045,10 +12061,10 @@
           "slot_allocation_family": "streamed_lookup_tail_leaf_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
           "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
-          "arithmetic_leaf_non_clifford": 1120212,
+          "arithmetic_leaf_non_clifford": 1126332,
           "direct_seed_non_clifford": 297,
           "per_leaf_lookup_non_clifford": 297,
-          "full_oracle_non_clifford": 34736076,
+          "full_oracle_non_clifford": 34925796,
           "arithmetic_slot_count": 3,
           "control_slot_count": 1,
           "borrowed_interface_qubits": 0,
@@ -12059,9 +12075,9 @@
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
           "phase_shell_rotation_depth": 511,
-          "total_measurements": 7301612,
-          "improvement_vs_google_low_qubit": 2.5909662334916588,
-          "improvement_vs_google_low_gate": 2.0151959593824014,
+          "total_measurements": 7491332,
+          "improvement_vs_google_low_qubit": 2.5768918767091233,
+          "improvement_vs_google_low_gate": 2.0042492374404293,
           "qubit_ratio_vs_google_low_qubit": 1.1494252873563218,
           "qubit_ratio_vs_google_low_gate": 1.3888888888888888,
           "notes": [
@@ -12084,10 +12100,10 @@
           "slot_allocation_family": "streamed_lookup_tail_leaf_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
           "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
-          "arithmetic_leaf_non_clifford": 1120212,
+          "arithmetic_leaf_non_clifford": 1126332,
           "direct_seed_non_clifford": 297,
           "per_leaf_lookup_non_clifford": 297,
-          "full_oracle_non_clifford": 34736076,
+          "full_oracle_non_clifford": 34925796,
           "arithmetic_slot_count": 3,
           "control_slot_count": 1,
           "borrowed_interface_qubits": 0,
@@ -12098,9 +12114,9 @@
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
           "phase_shell_rotation_depth": 511,
-          "total_measurements": 7301612,
-          "improvement_vs_google_low_qubit": 2.5909662334916588,
-          "improvement_vs_google_low_gate": 2.0151959593824014,
+          "total_measurements": 7491332,
+          "improvement_vs_google_low_qubit": 2.5768918767091233,
+          "improvement_vs_google_low_gate": 2.0042492374404293,
           "qubit_ratio_vs_google_low_qubit": 1.1494252873563218,
           "qubit_ratio_vs_google_low_gate": 1.3888888888888888,
           "notes": [
@@ -12119,10 +12135,10 @@
           "slot_allocation_family": "streamed_lookup_tail_leaf_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
           "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
-          "arithmetic_leaf_non_clifford": 1120212,
+          "arithmetic_leaf_non_clifford": 1126332,
           "direct_seed_non_clifford": 297,
           "per_leaf_lookup_non_clifford": 297,
-          "full_oracle_non_clifford": 34736076,
+          "full_oracle_non_clifford": 34925796,
           "arithmetic_slot_count": 3,
           "control_slot_count": 1,
           "borrowed_interface_qubits": 0,
@@ -12133,9 +12149,9 @@
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
           "phase_shell_rotation_depth": 511,
-          "total_measurements": 7301612,
-          "improvement_vs_google_low_qubit": 2.5909662334916588,
-          "improvement_vs_google_low_gate": 2.0151959593824014,
+          "total_measurements": 7491332,
+          "improvement_vs_google_low_qubit": 2.5768918767091233,
+          "improvement_vs_google_low_gate": 2.0042492374404293,
           "qubit_ratio_vs_google_low_qubit": 1.1494252873563218,
           "qubit_ratio_vs_google_low_gate": 1.3888888888888888,
           "notes": [
@@ -12158,10 +12174,10 @@
           "slot_allocation_family": "streamed_lookup_tail_leaf_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
           "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
-          "arithmetic_leaf_non_clifford": 1120212,
+          "arithmetic_leaf_non_clifford": 1126332,
           "direct_seed_non_clifford": 297,
           "per_leaf_lookup_non_clifford": 297,
-          "full_oracle_non_clifford": 34736076,
+          "full_oracle_non_clifford": 34925796,
           "arithmetic_slot_count": 3,
           "control_slot_count": 1,
           "borrowed_interface_qubits": 0,
@@ -12172,9 +12188,9 @@
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
           "phase_shell_rotation_depth": 511,
-          "total_measurements": 7301612,
-          "improvement_vs_google_low_qubit": 2.5909662334916588,
-          "improvement_vs_google_low_gate": 2.0151959593824014,
+          "total_measurements": 7491332,
+          "improvement_vs_google_low_qubit": 2.5768918767091233,
+          "improvement_vs_google_low_gate": 2.0042492374404293,
           "qubit_ratio_vs_google_low_qubit": 1.1494252873563218,
           "qubit_ratio_vs_google_low_gate": 1.3888888888888888,
           "notes": [
@@ -12193,10 +12209,10 @@
           "slot_allocation_family": "streamed_lookup_tail_leaf_v1",
           "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1",
           "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",
-          "arithmetic_leaf_non_clifford": 1120212,
+          "arithmetic_leaf_non_clifford": 1126332,
           "direct_seed_non_clifford": 297,
           "per_leaf_lookup_non_clifford": 297,
-          "full_oracle_non_clifford": 34736076,
+          "full_oracle_non_clifford": 34925796,
           "arithmetic_slot_count": 3,
           "control_slot_count": 1,
           "borrowed_interface_qubits": 0,
@@ -12207,9 +12223,9 @@
           "phase_shell_measurements": 512,
           "phase_shell_rotations": 511,
           "phase_shell_rotation_depth": 511,
-          "total_measurements": 7301612,
-          "improvement_vs_google_low_qubit": 2.5909662334916588,
-          "improvement_vs_google_low_gate": 2.0151959593824014,
+          "total_measurements": 7491332,
+          "improvement_vs_google_low_qubit": 2.5768918767091233,
+          "improvement_vs_google_low_gate": 2.0042492374404293,
           "qubit_ratio_vs_google_low_qubit": 1.1494252873563218,
           "qubit_ratio_vs_google_low_gate": 1.3888888888888888,
           "notes": [
@@ -12370,21 +12386,21 @@
     ]
   },
   "public_headline_result_checks": {
-    "pass": 9,
-    "total": 9,
+    "pass": 10,
+    "total": 10,
     "checks": [
       {
         "name": "public_headline_result_matches_generator",
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "08937a385987f5c18af17e4c160c430bb314963f11c2ad74b0d6000c6476b65f",
-          "size_bytes": 10610
+          "sha256": "1297ddec922d44f376ea904e621a47a89287e24eeb64691933fc418e9610b138",
+          "size_bytes": 12188
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "08937a385987f5c18af17e4c160c430bb314963f11c2ad74b0d6000c6476b65f",
-          "size_bytes": 10610
+          "sha256": "1297ddec922d44f376ea904e621a47a89287e24eeb64691933fc418e9610b138",
+          "size_bytes": 12188
         }
       },
       {
@@ -12402,12 +12418,18 @@
           "checks": {
             "public_values_match_input_claim": false,
             "all_fixtures_bind_same_public_values": false,
+            "fixtures_bind_checked_input_digest": false,
             "compressed_fixture_binds_checked_proof_binary": true,
             "groth16_fixture_binds_checked_proof_and_verifier_key": true,
             "reusable_chunk_lowering_is_proven_for_public_headline": true,
             "reusable_chunk_executable_liveness_binds_public_qubits": true,
             "reusable_chunk_counted_resource_ir_binds_public_totals": true,
+            "reusable_chunk_resource_contract_engine_unifies_liveness_and_capacity": true,
+            "headline_resource_manifest_binds_current_public_result": true,
+            "proof_register_contract_binds_prepared_leaf_to_resource_owners": true,
+            "compiler_parameters_document_binds_parameter_source": true,
             "reusable_chunk_binds_generated_qroam_primitive_certificate": true,
+            "reusable_chunk_binds_independent_qroam_reference_crosscheck": true,
             "reusable_chunk_binds_modular_arithmetic_certificate": true,
             "reusable_chunk_tail_contract_is_proven_for_public_headline": true,
             "fits_strict_public_goal": true,
@@ -12416,16 +12438,34 @@
         }
       },
       {
+        "name": "public_headline_result_limits_match_compiler_parameters",
+        "pass": 1,
+        "expected": {
+          "non_clifford_limit_exclusive": 40000000,
+          "logical_qubit_limit_exclusive": 1200,
+          "proof_freshness_required_for_public_pass": true
+        },
+        "observed": {
+          "non_clifford_limit_exclusive": 40000000,
+          "logical_qubit_limit_exclusive": 1200,
+          "proof_freshness_required_for_public_pass": true
+        }
+      },
+      {
         "name": "public_headline_result_is_strict_40m_1200_candidate",
         "pass": 1,
         "expected": {
-          "non_clifford": 36767692,
+          "non_clifford": 36957412,
           "logical_qubits": 1199,
-          "strict_limits": true
+          "strict_limits": {
+            "non_clifford_limit_exclusive": 40000000,
+            "logical_qubit_limit_exclusive": 1200,
+            "proof_freshness_required_for_public_pass": true
+          }
         },
         "observed": {
           "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
-          "non_clifford": 36767692,
+          "non_clifford": 36957412,
           "logical_qubits": 1199,
           "case_count": 8,
           "passed_case_count": 8,
@@ -12433,25 +12473,16 @@
         }
       },
       {
-        "name": "public_headline_result_bindings_match_candidate_public_values",
+        "name": "public_headline_result_bindings_match_candidate_input_claim",
         "pass": 1,
         "expected": {
-          "schema": "compiler-project-zkp-attestation-public-v2",
-          "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
           "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
-          "claim_sha256": "2a098c6004436f393953eed4bcda8c000ad6c3bca81f1c91f2c7b57b3e0413e5",
-          "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
-          "family_sha256": "c1a1cd68e1c159353724cb3e21b98c65115b2add9930d247b3f5f0f85dd5ba20",
-          "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
-          "resource_certificate_sha256": "9e6761fddca97566eeaa5105241af14b07f4dbf2f287cbe01bb5e83605e73085",
-          "expected_full_oracle_non_clifford": 36767692,
-          "expected_total_logical_qubits": 1199,
-          "case_count": 8,
-          "passed_case_count": 8
+          "expected_full_oracle_non_clifford": 36957412,
+          "expected_total_logical_qubits": 1199
         },
         "observed": {
           "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
-          "non_clifford": 36767692,
+          "non_clifford": 36957412,
           "logical_qubits": 1199,
           "case_count": 8,
           "passed_case_count": 8,
@@ -13606,10 +13637,665 @@
       "pass": 30
     },
     "invariant_checks": {
-      "total": 365,
-      "pass": 365
+      "total": 404,
+      "pass": 404
     },
-    "total": 395,
-    "pass": 395
+    "total": 434,
+    "pass": 434
+  },
+  "headline_resource_manifest_checks": {
+    "pass": 7,
+    "total": 7,
+    "checks": [
+      {
+        "name": "headline_resource_manifest_matches_generator",
+        "pass": 1,
+        "expected": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "b875077ca6c1e91e12ab770ce20db313cd3ceb4b79f79ca2b3811ebf1ae7501d",
+          "size_bytes": 39082
+        },
+        "observed": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "b875077ca6c1e91e12ab770ce20db313cd3ceb4b79f79ca2b3811ebf1ae7501d",
+          "size_bytes": 39082
+        }
+      },
+      {
+        "name": "headline_resource_manifest_schema_is_current",
+        "pass": 1,
+        "expected": "compiler-project-headline-resource-manifest-v1",
+        "observed": "compiler-project-headline-resource-manifest-v1"
+      },
+      {
+        "name": "headline_resource_manifest_family_matches_candidate_input",
+        "pass": 1,
+        "expected": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+        "observed": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1"
+      },
+      {
+        "name": "headline_resource_manifest_binds_reusable_chunk_counted_ir",
+        "pass": 1,
+        "expected": "e814826e787174c05f62f34396fd02b1d77a8728f0c99051f74e1d60294d7188",
+        "observed": "e814826e787174c05f62f34396fd02b1d77a8728f0c99051f74e1d60294d7188"
+      },
+      {
+        "name": "headline_resource_manifest_reconstructs_public_non_clifford",
+        "pass": 1,
+        "expected": 36957412,
+        "observed": 36957412
+      },
+      {
+        "name": "headline_resource_manifest_reconstructs_public_qubits",
+        "pass": 1,
+        "expected": 1199,
+        "observed": 1199
+      },
+      {
+        "name": "headline_resource_manifest_expands_qroam_stream_instances",
+        "pass": 1,
+        "expected": {
+          "qroam_rows_expand_stream_plan_instances": true
+        },
+        "observed": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "b875077ca6c1e91e12ab770ce20db313cd3ceb4b79f79ca2b3811ebf1ae7501d",
+          "size_bytes": 39082
+        }
+      }
+    ]
+  },
+  "proof_publication_status_checks": {
+    "pass": 9,
+    "total": 9,
+    "checks": [
+      {
+        "name": "proof_publication_status_matches_generator",
+        "pass": 1,
+        "expected": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "e2f8aaa316520236c64f0351eb8739c84fd0aa236a3d05375f6a5eb712961063",
+          "size_bytes": 12347
+        },
+        "observed": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "e2f8aaa316520236c64f0351eb8739c84fd0aa236a3d05375f6a5eb712961063",
+          "size_bytes": 12347
+        }
+      },
+      {
+        "name": "proof_publication_status_schema_is_current",
+        "pass": 1,
+        "expected": "compiler-project-proof-publication-status-v3",
+        "observed": "compiler-project-proof-publication-status-v3"
+      },
+      {
+        "name": "proof_publication_status_passes_internal_checks",
+        "pass": 1,
+        "expected": true,
+        "observed": {
+          "proof_status_schema_is_current": true,
+          "proof_status_all_current_matches_stale_systems": true,
+          "proof_status_heavy_rebuild_steps_are_stale_proof_systems": true,
+          "public_headline_pass_matches_proof_status": true,
+          "public_headline_checked_input_digest_matches_proof_status": true,
+          "public_headline_resource_digest_matches_proof_status_input": true,
+          "proof_manifest_path_matches_environment_contract": true,
+          "environment_contract_has_current_publication_gates": true,
+          "stale_publication_has_explicit_blockers": true,
+          "publication_ready_requires_compressed_and_groth16_verification": true
+        }
+      },
+      {
+        "name": "proof_publication_status_ready_matches_proof_status",
+        "pass": 1,
+        "expected": false,
+        "observed": false
+      },
+      {
+        "name": "proof_publication_status_has_blockers_when_stale",
+        "pass": 1,
+        "expected": "blockers exist when publication_ready is false",
+        "observed": [
+          {
+            "system": "core",
+            "fixture_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_fixture_core.json",
+            "stale_reasons": [
+              "fixture_declares_no_input_metadata",
+              "fixture_resource_digest_does_not_match_current_input"
+            ],
+            "input_binding_status": "fixture_declares_no_input_metadata",
+            "resource_certificate_sha256": "9e6761fddca97566eeaa5105241af14b07f4dbf2f287cbe01bb5e83605e73085"
+          },
+          {
+            "system": "compressed",
+            "fixture_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_fixture_compressed.json",
+            "stale_reasons": [
+              "fixture_declares_no_input_metadata",
+              "fixture_resource_digest_does_not_match_current_input"
+            ],
+            "input_binding_status": "fixture_declares_no_input_metadata",
+            "resource_certificate_sha256": "9e6761fddca97566eeaa5105241af14b07f4dbf2f287cbe01bb5e83605e73085"
+          },
+          {
+            "system": "groth16",
+            "fixture_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_fixture_groth16.json",
+            "stale_reasons": [
+              "fixture_declares_no_input_metadata",
+              "fixture_public_values_do_not_match_checked_public_values",
+              "fixture_resource_digest_does_not_match_current_input"
+            ],
+            "input_binding_status": "fixture_declares_no_input_metadata",
+            "resource_certificate_sha256": "d37820bea8e18cab61a8db7ec90efd4fb12801e5398ae686648555bcf1065c53"
+          }
+        ]
+      },
+      {
+        "name": "proof_publication_status_public_headline_pass_matches_ready",
+        "pass": 1,
+        "expected": false,
+        "observed": false
+      },
+      {
+        "name": "proof_publication_status_records_compressed_and_groth16_gates",
+        "pass": 1,
+        "expected": "compressed and Groth16 publication gates",
+        "observed": [
+          "proof_status_publication_gate",
+          "fast_zkp_preflight_publication_gate",
+          "public_headline_compressed_verify",
+          "public_headline_groth16_verify",
+          "direct_compressed_verify",
+          "direct_groth16_verify"
+        ]
+      },
+      {
+        "name": "proof_publication_status_binds_environment_contract",
+        "pass": 1,
+        "expected": {
+          "path": "compiler_verification_project/artifacts/proof_environment_contract.json",
+          "sha256": "17d4c5351aec057d1be683085c2701f4d07eebdcdfc72c22cc1619551244ac4d"
+        },
+        "observed": {
+          "path": "compiler_verification_project/artifacts/proof_environment_contract.json",
+          "sha256": "17d4c5351aec057d1be683085c2701f4d07eebdcdfc72c22cc1619551244ac4d"
+        }
+      },
+      {
+        "name": "proof_publication_status_binds_public_headline_result",
+        "pass": 1,
+        "expected": {
+          "path": "compiler_verification_project/artifacts/public_headline_result.json",
+          "sha256": "9d62bccd114f671a7c5a4bd6f469eea05aebebcf39c0ff4068edd1bc7ea44cd8"
+        },
+        "observed": {
+          "path": "compiler_verification_project/artifacts/public_headline_result.json",
+          "sha256": "9d62bccd114f671a7c5a4bd6f469eea05aebebcf39c0ff4068edd1bc7ea44cd8"
+        }
+      }
+    ]
+  },
+  "proof_environment_contract_checks": {
+    "pass": 10,
+    "total": 10,
+    "checks": [
+      {
+        "name": "proof_environment_contract_matches_generator",
+        "pass": 1,
+        "expected": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "009d74e2ac8ada998b22eb38d46d06008d3be7e61a560f91cdb0919e2b219856",
+          "size_bytes": 16061
+        },
+        "observed": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "009d74e2ac8ada998b22eb38d46d06008d3be7e61a560f91cdb0919e2b219856",
+          "size_bytes": 16061
+        }
+      },
+      {
+        "name": "proof_environment_contract_schema_is_current",
+        "pass": 1,
+        "expected": "compiler-project-proof-environment-contract-v2",
+        "observed": "compiler-project-proof-environment-contract-v2"
+      },
+      {
+        "name": "proof_environment_contract_passes_internal_checks",
+        "pass": 1,
+        "expected": true,
+        "observed": {
+          "public_headline_result_metadata_is_self_consistent": true,
+          "public_headline_result_keeps_proof_freshness_separate": true,
+          "all_checked_artifacts_exist_and_match_digest": true,
+          "proof_manifest_records_public_headline_checked_artifacts": true,
+          "proof_manifest_records_match_public_headline_checked_artifacts": true,
+          "publication_freshness_gate_requires_all_current_proofs": true,
+          "fast_publication_gate_uses_current_proof_requirement": true,
+          "no_fast_or_metadata_command_invokes_prover": true,
+          "declared_invokes_prover_flags_match_commands": true,
+          "direct_verify_commands_bind_checked_input_and_proofs": true,
+          "tool_contract_lists_required_sp1_stack": true
+        }
+      },
+      {
+        "name": "proof_environment_contract_binds_public_headline_result",
+        "pass": 1,
+        "expected": {
+          "path": "compiler_verification_project/artifacts/public_headline_result.json",
+          "sha256": "9d62bccd114f671a7c5a4bd6f469eea05aebebcf39c0ff4068edd1bc7ea44cd8",
+          "bytes": 13747
+        },
+        "observed": {
+          "path": "compiler_verification_project/artifacts/public_headline_result.json",
+          "sha256": "9d62bccd114f671a7c5a4bd6f469eea05aebebcf39c0ff4068edd1bc7ea44cd8",
+          "bytes": 13747
+        }
+      },
+      {
+        "name": "proof_environment_contract_references_curated_proof_manifest_without_digest_cycle",
+        "pass": 1,
+        "expected": "existing proof manifest path without self-referential sha256 binding",
+        "observed": {
+          "path": "artifacts/package/proof_manifest.json",
+          "schema": null,
+          "file_count": 201
+        }
+      },
+      {
+        "name": "proof_environment_contract_manifest_covers_checked_artifacts",
+        "pass": 1,
+        "expected": "all checked artifacts in proof manifest with matching digest and size",
+        "observed": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "4954c993a60df5d303ad18e03c8089d4b54ed8634a43e760997cce924bc4c236",
+          "size_bytes": 9597
+        }
+      },
+      {
+        "name": "proof_environment_contract_has_no_prover_command_in_fast_gates",
+        "pass": 1,
+        "expected": "no --prove in contract commands",
+        "observed": [
+          {
+            "name": "environment_readiness_report",
+            "phase": "environment",
+            "argv": [
+              "python",
+              "compiler_verification_project/scripts/proof_environment_report.py",
+              "--require-ready"
+            ],
+            "cwd": ".",
+            "invokes_prover": false,
+            "publication_gate": false
+          },
+          {
+            "name": "proof_environment_contract_refresh",
+            "phase": "environment",
+            "argv": [
+              "python",
+              "compiler_verification_project/scripts/build.py",
+              "--target",
+              "proof-environment-contract"
+            ],
+            "cwd": ".",
+            "invokes_prover": false,
+            "publication_gate": false
+          },
+          {
+            "name": "proof_status_edit_loop",
+            "phase": "freshness",
+            "argv": [
+              "python",
+              "compiler_verification_project/scripts/proof_status.py"
+            ],
+            "cwd": ".",
+            "invokes_prover": false,
+            "publication_gate": false
+          },
+          {
+            "name": "proof_status_publication_gate",
+            "phase": "freshness",
+            "argv": [
+              "python",
+              "compiler_verification_project/scripts/proof_status.py",
+              "--require-all-current"
+            ],
+            "cwd": ".",
+            "invokes_prover": false,
+            "publication_gate": true
+          },
+          {
+            "name": "fast_zkp_preflight_edit_loop",
+            "phase": "fast_no_prover_preflight",
+            "argv": [
+              "python",
+              "compiler_verification_project/scripts/fast_zkp_preflight.py"
+            ],
+            "cwd": ".",
+            "invokes_prover": false,
+            "publication_gate": false
+          },
+          {
+            "name": "fast_zkp_preflight_publication_gate",
+            "phase": "fast_no_prover_preflight",
+            "argv": [
+              "python",
+              "compiler_verification_project/scripts/fast_zkp_preflight.py",
+              "--require-current-proofs"
+            ],
+            "cwd": ".",
+            "invokes_prover": false,
+            "publication_gate": true
+          },
+          {
+            "name": "release_candidate_input_refresh",
+            "phase": "input_generation",
+            "argv": [
+              "python",
+              "compiler_verification_project/scripts/build.py",
+              "--target",
+              "release-candidate-zkp"
+            ],
+            "cwd": ".",
+            "invokes_prover": false,
+            "publication_gate": false
+          },
+          {
+            "name": "public_headline_metadata_verify",
+            "phase": "metadata_verification",
+            "argv": [
+              "python",
+              "compiler_verification_project/scripts/verify_public_headline.py"
+            ],
+            "cwd": ".",
+            "invokes_prover": false,
+            "publication_gate": false
+          },
+          {
+            "name": "public_headline_compressed_verify",
+            "phase": "proof_verification",
+            "argv": [
+              "python",
+              "compiler_verification_project/scripts/verify_public_headline.py",
+              "--verify-compressed"
+            ],
+            "cwd": ".",
+            "invokes_prover": false,
+            "publication_gate": true
+          },
+          {
+            "name": "public_headline_groth16_verify",
+            "phase": "proof_verification",
+            "argv": [
+              "python",
+              "compiler_verification_project/scripts/verify_public_headline.py",
+              "--verify-groth16"
+            ],
+            "cwd": ".",
+            "invokes_prover": false,
+            "publication_gate": true
+          },
+          {
+            "name": "direct_compressed_verify",
+            "phase": "proof_verification",
+            "shell_command": "SP1_CIRCUIT_MODE=dev python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --verify-proof-input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin --system compressed --resource-profile safe --systemd-property TasksMax=128 --skip-build --input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json --output-dir compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate",
+            "cwd": ".",
+            "invokes_prover": false,
+            "publication_gate": true
+          },
+          {
+            "name": "direct_groth16_verify",
+            "phase": "proof_verification",
+            "shell_command": "SP1_CIRCUIT_MODE=dev python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --verify-proof-input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_groth16.bin --system groth16 --resource-profile safe --systemd-property TasksMax=128 --skip-build --groth16-verify-dir compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_groth16_verifier --input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json --output-dir compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate",
+            "cwd": ".",
+            "invokes_prover": false,
+            "publication_gate": true
+          }
+        ]
+      },
+      {
+        "name": "proof_environment_contract_has_publication_freshness_gate",
+        "pass": 1,
+        "expected": "proof_status.py --require-all-current",
+        "observed": {
+          "name": "proof_status_publication_gate",
+          "phase": "freshness",
+          "argv": [
+            "python",
+            "compiler_verification_project/scripts/proof_status.py",
+            "--require-all-current"
+          ],
+          "cwd": ".",
+          "invokes_prover": false,
+          "publication_gate": true
+        }
+      },
+      {
+        "name": "proof_environment_contract_has_checked_compressed_and_groth16_verifiers",
+        "pass": 1,
+        "expected": "direct checked compressed and Groth16 verify commands",
+        "observed": {
+          "compressed": {
+            "name": "direct_compressed_verify",
+            "phase": "proof_verification",
+            "shell_command": "SP1_CIRCUIT_MODE=dev python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --verify-proof-input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin --system compressed --resource-profile safe --systemd-property TasksMax=128 --skip-build --input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json --output-dir compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate",
+            "cwd": ".",
+            "invokes_prover": false,
+            "publication_gate": true
+          },
+          "groth16": {
+            "name": "direct_groth16_verify",
+            "phase": "proof_verification",
+            "shell_command": "SP1_CIRCUIT_MODE=dev python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --verify-proof-input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_groth16.bin --system groth16 --resource-profile safe --systemd-property TasksMax=128 --skip-build --groth16-verify-dir compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_groth16_verifier --input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json --output-dir compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate",
+            "cwd": ".",
+            "invokes_prover": false,
+            "publication_gate": true
+          }
+        }
+      },
+      {
+        "name": "proof_environment_contract_lists_required_tool_stack",
+        "pass": 1,
+        "expected": [
+          "cargo",
+          "clang",
+          "go",
+          "protoc",
+          "python",
+          "rustc"
+        ],
+        "observed": [
+          "cargo",
+          "clang",
+          "go",
+          "protoc",
+          "python",
+          "rustc"
+        ]
+      }
+    ]
+  },
+  "constant_provenance_checks": {
+    "pass": 7,
+    "total": 7,
+    "checks": [
+      {
+        "name": "constant_provenance_matches_generator",
+        "pass": 1,
+        "expected": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "4e1f3a5aeed1699ed536c5dba1f482aa165c1dd50af05626a9b0320b889c6a7e",
+          "size_bytes": 9608
+        },
+        "observed": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "4e1f3a5aeed1699ed536c5dba1f482aa165c1dd50af05626a9b0320b889c6a7e",
+          "size_bytes": 9608
+        }
+      },
+      {
+        "name": "constant_provenance_schema_is_current",
+        "pass": 1,
+        "expected": "compiler-project-constant-provenance-v1",
+        "observed": "compiler-project-constant-provenance-v1"
+      },
+      {
+        "name": "constant_provenance_source_rows_pass",
+        "pass": 1,
+        "expected": true,
+        "observed": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "64165d48f4b03e3193367c0d93f81187899dcc76fa5de6a59d39ff3e85e5d930",
+          "size_bytes": 7654
+        }
+      },
+      {
+        "name": "constant_provenance_forbidden_literals_absent",
+        "pass": 1,
+        "expected": true,
+        "observed": [
+          {
+            "name": "zkp_phase_shell_hadamards_literal",
+            "path": "compiler_verification_project/src/zkp_attestation.py",
+            "regex": "'phase_shell_hadamards'\\s*:\\s*512\\b",
+            "match_count": 0,
+            "matches": [],
+            "pass": true
+          },
+          {
+            "name": "zkp_phase_shell_measurements_literal",
+            "path": "compiler_verification_project/src/zkp_attestation.py",
+            "regex": "'phase_shell_measurements'\\s*:\\s*512\\b",
+            "match_count": 0,
+            "matches": [],
+            "pass": true
+          },
+          {
+            "name": "zkp_phase_shell_rotations_literal",
+            "path": "compiler_verification_project/src/zkp_attestation.py",
+            "regex": "'phase_shell_rotations'\\s*:\\s*511\\b",
+            "match_count": 0,
+            "matches": [],
+            "pass": true
+          },
+          {
+            "name": "zkp_phase_shell_rotation_depth_literal",
+            "path": "compiler_verification_project/src/zkp_attestation.py",
+            "regex": "'phase_shell_rotation_depth'\\s*:\\s*511\\b",
+            "match_count": 0,
+            "matches": [],
+            "pass": true
+          },
+          {
+            "name": "zkp_total_measurements_zero_literal",
+            "path": "compiler_verification_project/src/zkp_attestation.py",
+            "regex": "'total_measurements'\\s*:\\s*0\\b",
+            "match_count": 0,
+            "matches": [],
+            "pass": true
+          }
+        ]
+      },
+      {
+        "name": "constant_provenance_zkp_resource_fields_are_derived",
+        "pass": 1,
+        "expected": true,
+        "observed": [
+          {
+            "path": "compiler_verification_project/src/zkp_attestation.py",
+            "tracked_keys": [
+              "full_oracle_non_clifford",
+              "lookup_workspace_qubits",
+              "phase_shell_hadamards",
+              "phase_shell_measurements",
+              "phase_shell_rotation_depth",
+              "phase_shell_rotations",
+              "total_logical_qubits",
+              "total_measurements"
+            ],
+            "integer_literals": {},
+            "pass": true
+          }
+        ]
+      },
+      {
+        "name": "constant_provenance_candidate_beats_limits",
+        "pass": 1,
+        "expected": true,
+        "observed": {
+          "all_source_rows_match_consumers": true,
+          "forbidden_historic_literals_absent": true,
+          "tracked_zkp_family_resource_fields_are_not_integer_literals": true,
+          "candidate_beats_public_limits": true
+        }
+      },
+      {
+        "name": "constant_provenance_passes_internal_checks",
+        "pass": 1,
+        "expected": true,
+        "observed": {
+          "all_source_rows_match_consumers": true,
+          "forbidden_historic_literals_absent": true,
+          "tracked_zkp_family_resource_fields_are_not_integer_literals": true,
+          "candidate_beats_public_limits": true
+        }
+      }
+    ]
+  },
+  "artifact_digest_tree_checks": {
+    "pass": 5,
+    "total": 5,
+    "checks": [
+      {
+        "name": "artifact_digest_tree_matches_generator",
+        "pass": 1,
+        "expected": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "301ddf1495047abcb57417395feaea79614eafc5e9ffb634f26e2b88aa0de250",
+          "size_bytes": 16421
+        },
+        "observed": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "301ddf1495047abcb57417395feaea79614eafc5e9ffb634f26e2b88aa0de250",
+          "size_bytes": 16421
+        }
+      },
+      {
+        "name": "artifact_digest_tree_schema_is_current",
+        "pass": 1,
+        "expected": "compiler-project-artifact-digest-tree-v1",
+        "observed": "compiler-project-artifact-digest-tree-v1"
+      },
+      {
+        "name": "artifact_digest_tree_passes_internal_checks",
+        "pass": 1,
+        "expected": true,
+        "observed": {
+          "all_files_are_chunked": true,
+          "all_chunk_sizes_sum_to_file_size": true,
+          "large_artifact_set_is_non_empty": true
+        }
+      },
+      {
+        "name": "artifact_digest_tree_contains_only_large_tracked_files",
+        "pass": 1,
+        "expected": "tracked files above threshold",
+        "observed": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "ad2556db0979fdb1188d0af9c79bb8ca30e622d1424ff6e0a39ea3b1b3e54d26",
+          "size_bytes": 15973
+        }
+      },
+      {
+        "name": "artifact_digest_tree_chunks_reconstruct_file_sizes",
+        "pass": 1,
+        "expected": "chunk byte sums equal file bytes",
+        "observed": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "ad2556db0979fdb1188d0af9c79bb8ca30e622d1424ff6e0a39ea3b1b3e54d26",
+          "size_bytes": 15973
+        }
+      }
+    ]
   }
 }

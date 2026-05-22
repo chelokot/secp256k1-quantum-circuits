@@ -1,0 +1,331 @@
+{
+  "schema": "compiler-project-constant-provenance-v1",
+  "scope": "release-critical constants and headline resource counts",
+  "source_rows": [
+    {
+      "name": "selected_phase_shell_name",
+      "source_artifact": "compiler_verification_project/artifacts/compiler_parameters.json",
+      "source_pointer": "/phase_shell/selected_public_shell",
+      "value": "semiclassical_qft_v1",
+      "consumers": [
+        {
+          "name": "zkp_family_phase_shell",
+          "artifact": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
+          "pointer": "/family_document/payload/phase_shell",
+          "expected": "semiclassical_qft_v1",
+          "observed": "semiclassical_qft_v1",
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "phase_register_bits",
+      "source_artifact": "compiler_verification_project/artifacts/compiler_parameters.json",
+      "source_pointer": "/phase_shell/full_phase_register_bits",
+      "value": 512,
+      "consumers": [
+        {
+          "name": "phase_shell_lowering_register_bits",
+          "artifact": "compiler_verification_project/artifacts/phase_shell_lowerings.json",
+          "pointer": "/phase_register_bits",
+          "expected": 512,
+          "observed": 512,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "semiclassical_phase_shell_hadamards",
+      "source_artifact": "compiler_verification_project/artifacts/phase_shell_lowerings.json",
+      "source_pointer": "/families/1/hadamard_count",
+      "value": 512,
+      "consumers": [
+        {
+          "name": "zkp_family_document",
+          "artifact": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
+          "pointer": "/family_document/payload/phase_shell_hadamards",
+          "expected": 512,
+          "observed": 512,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "semiclassical_phase_shell_measurements",
+      "source_artifact": "compiler_verification_project/artifacts/phase_shell_lowerings.json",
+      "source_pointer": "/families/1/measurement_count",
+      "value": 512,
+      "consumers": [
+        {
+          "name": "zkp_family_document",
+          "artifact": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
+          "pointer": "/family_document/payload/phase_shell_measurements",
+          "expected": 512,
+          "observed": 512,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "semiclassical_phase_shell_rotations",
+      "source_artifact": "compiler_verification_project/artifacts/phase_shell_lowerings.json",
+      "source_pointer": "/families/1/rotation_count",
+      "value": 511,
+      "consumers": [
+        {
+          "name": "zkp_family_document",
+          "artifact": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
+          "pointer": "/family_document/payload/phase_shell_rotations",
+          "expected": 511,
+          "observed": 511,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "semiclassical_phase_shell_rotation_depth",
+      "source_artifact": "compiler_verification_project/artifacts/phase_shell_lowerings.json",
+      "source_pointer": "/families/1/rotation_depth",
+      "value": 511,
+      "consumers": [
+        {
+          "name": "zkp_family_document",
+          "artifact": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
+          "pointer": "/family_document/payload/phase_shell_rotation_depth",
+          "expected": 511,
+          "observed": 511,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "semiclassical_total_measurements",
+      "source_artifact": "compiler_verification_project/artifacts/phase_shell_lowerings.json",
+      "source_pointer": "/families/1/total_measurements",
+      "value": 512,
+      "consumers": [
+        {
+          "name": "zkp_family_document",
+          "artifact": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
+          "pointer": "/family_document/payload/total_measurements",
+          "expected": 512,
+          "observed": 512,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "candidate_total_non_clifford",
+      "source_artifact": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
+      "source_pointer": "/non_clifford_derivation/candidate_total_non_clifford",
+      "value": 36957412,
+      "consumers": [
+        {
+          "name": "zkp_family_document",
+          "artifact": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
+          "pointer": "/family_document/payload/full_oracle_non_clifford",
+          "expected": 36957412,
+          "observed": 36957412,
+          "pass": true
+        },
+        {
+          "name": "public_headline_result",
+          "artifact": "compiler_verification_project/artifacts/public_headline_result.json",
+          "pointer": "/selected_result/non_clifford",
+          "expected": 36957412,
+          "observed": 36957412,
+          "pass": true
+        },
+        {
+          "name": "headline_resource_manifest",
+          "artifact": "compiler_verification_project/artifacts/headline_resource_manifest.json",
+          "pointer": "/public_totals/non_clifford",
+          "expected": 36957412,
+          "observed": 36957412,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "candidate_total_logical_qubits",
+      "source_artifact": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
+      "source_pointer": "/qubit_derivation/candidate_total_logical_qubits",
+      "value": 1199,
+      "consumers": [
+        {
+          "name": "zkp_family_document",
+          "artifact": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
+          "pointer": "/family_document/payload/total_logical_qubits",
+          "expected": 1199,
+          "observed": 1199,
+          "pass": true
+        },
+        {
+          "name": "public_headline_result",
+          "artifact": "compiler_verification_project/artifacts/public_headline_result.json",
+          "pointer": "/selected_result/logical_qubits",
+          "expected": 1199,
+          "observed": 1199,
+          "pass": true
+        },
+        {
+          "name": "headline_resource_manifest",
+          "artifact": "compiler_verification_project/artifacts/headline_resource_manifest.json",
+          "pointer": "/public_totals/logical_qubits",
+          "expected": 1199,
+          "observed": 1199,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "candidate_family_name",
+      "source_artifact": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
+      "source_pointer": "/selected_family_name",
+      "value": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+      "consumers": [
+        {
+          "name": "zkp_family_document",
+          "artifact": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
+          "pointer": "/family_document/payload/name",
+          "expected": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+          "observed": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+          "pass": true
+        },
+        {
+          "name": "public_headline_result",
+          "artifact": "compiler_verification_project/artifacts/public_headline_result.json",
+          "pointer": "/selected_result/name",
+          "expected": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+          "observed": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+          "pass": true
+        },
+        {
+          "name": "headline_resource_manifest",
+          "artifact": "compiler_verification_project/artifacts/headline_resource_manifest.json",
+          "pointer": "/selected_family_name",
+          "expected": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+          "observed": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "non_clifford_public_limit",
+      "source_artifact": "compiler_verification_project/artifacts/compiler_parameters.json",
+      "source_pointer": "/public_headline_policy/non_clifford_limit_exclusive",
+      "value": 40000000,
+      "consumers": [
+        {
+          "name": "public_selection_policy",
+          "artifact": "compiler_verification_project/artifacts/public_headline_result.json",
+          "pointer": "/selection_policy/limits/non_clifford_limit_exclusive",
+          "expected": 40000000,
+          "observed": 40000000,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "logical_qubit_public_limit",
+      "source_artifact": "compiler_verification_project/artifacts/compiler_parameters.json",
+      "source_pointer": "/public_headline_policy/logical_qubit_limit_exclusive",
+      "value": 1200,
+      "consumers": [
+        {
+          "name": "public_selection_policy",
+          "artifact": "compiler_verification_project/artifacts/public_headline_result.json",
+          "pointer": "/selection_policy/limits/logical_qubit_limit_exclusive",
+          "expected": 1200,
+          "observed": 1200,
+          "pass": true
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "forbidden_literal_scan": [
+    {
+      "name": "zkp_phase_shell_hadamards_literal",
+      "path": "compiler_verification_project/src/zkp_attestation.py",
+      "regex": "'phase_shell_hadamards'\\s*:\\s*512\\b",
+      "match_count": 0,
+      "matches": [],
+      "pass": true
+    },
+    {
+      "name": "zkp_phase_shell_measurements_literal",
+      "path": "compiler_verification_project/src/zkp_attestation.py",
+      "regex": "'phase_shell_measurements'\\s*:\\s*512\\b",
+      "match_count": 0,
+      "matches": [],
+      "pass": true
+    },
+    {
+      "name": "zkp_phase_shell_rotations_literal",
+      "path": "compiler_verification_project/src/zkp_attestation.py",
+      "regex": "'phase_shell_rotations'\\s*:\\s*511\\b",
+      "match_count": 0,
+      "matches": [],
+      "pass": true
+    },
+    {
+      "name": "zkp_phase_shell_rotation_depth_literal",
+      "path": "compiler_verification_project/src/zkp_attestation.py",
+      "regex": "'phase_shell_rotation_depth'\\s*:\\s*511\\b",
+      "match_count": 0,
+      "matches": [],
+      "pass": true
+    },
+    {
+      "name": "zkp_total_measurements_zero_literal",
+      "path": "compiler_verification_project/src/zkp_attestation.py",
+      "regex": "'total_measurements'\\s*:\\s*0\\b",
+      "match_count": 0,
+      "matches": [],
+      "pass": true
+    }
+  ],
+  "ast_literal_audits": [
+    {
+      "path": "compiler_verification_project/src/zkp_attestation.py",
+      "tracked_keys": [
+        "full_oracle_non_clifford",
+        "lookup_workspace_qubits",
+        "phase_shell_hadamards",
+        "phase_shell_measurements",
+        "phase_shell_rotation_depth",
+        "phase_shell_rotations",
+        "total_logical_qubits",
+        "total_measurements"
+      ],
+      "integer_literals": {},
+      "pass": true
+    }
+  ],
+  "checks": {
+    "all_source_rows_match_consumers": true,
+    "forbidden_historic_literals_absent": true,
+    "tracked_zkp_family_resource_fields_are_not_integer_literals": true,
+    "candidate_beats_public_limits": true
+  },
+  "pass": true,
+  "boundary": {
+    "purpose": "This artifact prevents release-critical ZKP/headline constants from drifting into unchecked literals.",
+    "not_a_replacement_for": [
+      "primitive Clifford-complete circuit generation",
+      "fresh compressed or Groth16 proof generation"
+    ]
+  }
+}
