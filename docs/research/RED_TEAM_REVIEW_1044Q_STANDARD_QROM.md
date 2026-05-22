@@ -90,8 +90,9 @@ resource semantics and macro boundaries.
   - `compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json`
   - `compiler_verification_project/artifacts/zkp_attestation_public_values.json`
   - compressed and Groth16 fixtures/proofs.
-- `compiler_verification_project/scripts/verify.py --cases 16` reports exact
-  compiler verification `303/303`.
+- `compiler_verification_project/artifacts/verification_summary.json` currently
+  reports exact compiler verification `429/429`: `30/30` semantic cases and
+  `399/399` invariant checks.
 - `pytest -q` passed at the reviewed state.
 - The proof public values bind the selected family, leaf hash, case corpus hash,
   and the final numbers.
