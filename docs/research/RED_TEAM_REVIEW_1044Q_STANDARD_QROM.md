@@ -10,12 +10,13 @@ Headline under review:
 - `1,044` logical qubits
 - family: `folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1`
 
-Current post-remediation checked headline on this branch:
+Current post-remediation public headline on this branch:
 
-- `34,736,076` non-Clifford
-- `1,044` logical qubits
-- same family, now with explicit secp256k1 pseudo-Mersenne multiplication
-  reduction counted in the arithmetic lowering
+- `36,767,692` non-Clifford
+- `1,199` logical qubits
+- family:
+  `folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1`
+- selected by `compiler_verification_project/artifacts/public_headline_result.json`
 
 This document is intentionally adversarial. It is not a release note and not a
 claim that the result is false. It records every major place where an external
@@ -43,15 +44,15 @@ The strongest defensible statement is:
 
 > The repository currently contains a checked standard-QROM compiler-family
 > boundary whose artifacts, resource ledger, committed-document SP1 public
-> values, compressed proof, and Groth16 proof agree on `34,736,076 / 1,044`,
+> values, compressed proof, and Groth16 proof agree on `36,767,692 / 1,199`,
 > with claim/leaf/family/case/resource document hashes recomputed inside the
 > active ZKP guest.
 
 The weaker `32,879,331 / 1,044` statement is the historical verdict for commit
 `4d9fefed41ca0f6b5cf6528ce8366065fc6d557a`. The current branch has since moved
-the public claim to `34,736,076 / 1,044` after adding explicit modular-reduction
-cost, stronger ZKP resource binding, and in-guest committed-document hash
-binding.
+the public claim to `36,767,692 / 1,199` after adding explicit modular-reduction
+cost, stronger ZKP resource binding, in-guest committed-document hash binding,
+and the verified reusable-chunk four-slot candidate proof bundle.
 
 The statement that is not yet defensible without more engineering is:
 
@@ -1334,7 +1335,7 @@ Use:
 
 > Under the repository's checked standard-QROM compiler-family boundary, the
 > current artifacts and checked SP1 compressed/Groth16 proofs bind a
-> `34,736,076` non-Clifford / `1,044` logical-qubit result. This improves the
+> `36,767,692` non-Clifford / `1,199` logical-qubit result. This improves the
 > cited public Google 2026 resource lines numerically, but the proof boundary is
 > not identical to Google's hidden-circuit 9024-case SP1/Groth16 attestation and
 > the repository does not yet ship a Clifford-complete flattened full-Shor
@@ -1347,7 +1348,7 @@ resource model fixes the previous lookup/QROAM accounting failures. But the
 credible external claim is still narrower than the most excited internal
 phrasing:
 
-- strong: checked standard-QROM compiler-family boundary at `34,736,076 / 1,044`
+- strong: checked standard-QROM compiler-family boundary at `36,767,692 / 1,199`
 - not yet strong enough: Google-equivalent proof confidence
 - not yet strong enough: fully flattened primitive-gate Shor circuit
 - most urgent engineering gap: replace model consistency with one flat
@@ -1465,6 +1466,12 @@ Partially mitigated after review:
   Groth16 proof bundle, the wrap proof bundle, and the matching Groth16
   verifier key. Both explicit compressed and Groth16 verification commands have
   been run against those checked candidate artifacts.
+- `compiler_verification_project/artifacts/public_headline_result.json` now
+  selects that verified reusable-chunk bundle as the single public repository
+  headline. It records the checked proof files, verifier key, input/public-value
+  hashes, strict `<40M / <1200` checks, and exact comparison ratios against the
+  public Google baseline. The old `34,736,076 / 1,044` three-slot family remains
+  checked as a reference boundary, not the public headline.
 - `ZK-3`: proof binaries are now included in the curated proof manifest, but
   the checked JSON fixtures still intentionally keep the large binary proof
   payloads out-of-line.

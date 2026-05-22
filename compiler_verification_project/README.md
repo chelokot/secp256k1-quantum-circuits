@@ -89,27 +89,28 @@ What it does ship is:
 
 ## Current central boundary result
 
-- **central standard-QROM family:** `34,736,076 non-Clifford`, `1,044 logical qubits`
+- **public standard-QROAM headline:** `36,767,692 non-Clifford`, `1,199 logical qubits`
 
-The central family uses a standard QROAM coordinate-stream lookup boundary, an
-exact semiclassical-QFT phase shell, and the executable streamed lookup tail
-point-add leaf. The resulting live-qubit formula is:
+The public headline is selected in
+`compiler_verification_project/artifacts/public_headline_result.json`. It uses
+a reusable-chunk standard QROAMClean `K = 1` lookup boundary, an exact
+semiclassical-QFT phase shell, and the executable reusable-chunk point-add leaf.
+The resulting live-qubit formula is:
 
-`3 * 256 + 1 control + 274 lookup workspace + 1 phase = 1,044 logical qubits`
+`4 * 256 + 1 control + 173 lookup workspace + 1 phase = 1,199 logical qubits`
 
-The `274` lookup-workspace term is `18` folded-control qubits plus one
-256-bit QROAMClean coordinate target for `K = 1`; there are no junk registers
-at this low-workspace block size. The table-controlled `field_mul_lookup_*`
-kernels pay `65,536` non-Clifford operations per 256-bit coordinate stream:
-`32,768` for standard QROAM compute and `32,768` for measured uncompute. No
-field-sized lookup x/y output lane is free or borrowed from the interface.
+The `173` lookup-workspace term is `18` folded-control qubits plus one live
+155-bit QROAMClean chunk target for `K = 1`; there are no junk registers at
+this low-workspace block size. Each chunk stream pays `65,536` non-Clifford
+operations: `32,768` for standard QROAM compute and `32,768` for measured
+uncompute. No full field-sized lookup x/y output lane is free or borrowed from
+the interface.
 
-`logical_resource_ledger.json` reconstructs the peak from counted owners:
-`768` arithmetic-slot qubits, `1` control qubit, `274` lookup-workspace
-qubits, and `1` phase-shell qubit. It also records the standard-QROAM tradeoff:
-the lowest-qubit point below `24M` non-Clifford in this QROAMClean family is
-`23,980,781 / 4,884`, and no checked block-size row reaches both `<24M`
-non-Clifford and `<1700` logical qubits.
+The older `34,736,076 / 1,044` three-slot family remains checked as a reference
+boundary in `family_frontier.json`, `logical_resource_ledger.json`, and the
+root attestation bundle. The reusable-chunk candidate directory contains the
+checked core/compressed/Groth16 fixtures and proof bundles for the public
+`36,767,692 / 1,199` result.
 
 `standard_qrom_lookup_assessment.json` records the standard-QROM status and
 rejects the old bitwise-banked path-select boundary as a public standard-QROM
@@ -198,9 +199,11 @@ values.
 The checked Groth16 proving path is pinned to the vendored
 `compiler_verification_project/zkp_attestation/vendor/sp1-recursion-gnark-ffi`
 patch set, which is also part of the curated proof manifest.
-Its public values bind the current central standard-QROM family claim and the `8 / 8`
-deterministic public cases in
-`compiler_verification_project/artifacts/zkp_attestation_cases.json`.
+The root proof bundle binds the older three-slot reference family. The public
+headline proof bundle lives in
+`compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/`
+and binds the reusable-chunk `36,767,692 / 1,199` result with `8 / 8`
+deterministic public cases.
 
 This is similar in shape to Google's disclosure model, but it is still a proof
 at the repository exact-family boundary, not a primitive-gate full-Shor proof.

@@ -10007,14 +10007,14 @@
     ]
   },
   "build_summary_checks": {
-    "pass": 7,
-    "total": 7,
+    "pass": 8,
+    "total": 8,
     "checks": [
       {
         "name": "build_summary_schema_matches_current_version",
         "pass": 1,
-        "expected": "compiler-project-build-summary-v27",
-        "observed": "compiler-project-build-summary-v27"
+        "expected": "compiler-project-build-summary-v28",
+        "observed": "compiler-project-build-summary-v28"
       },
       {
         "name": "build_summary_artifact_paths_match_expected_set",
@@ -10056,6 +10056,7 @@
           "full_attack_inventory": "compiler_verification_project/artifacts/full_attack_inventory.json",
           "subcircuit_equivalence": "compiler_verification_project/artifacts/subcircuit_equivalence.json",
           "headline_opcode_coverage": "compiler_verification_project/artifacts/headline_opcode_coverage.json",
+          "public_headline_result": "compiler_verification_project/artifacts/public_headline_result.json",
           "azure_resource_estimator_logical_counts": "compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json",
           "azure_resource_estimator_targets": "compiler_verification_project/artifacts/azure_resource_estimator_targets.json",
           "azure_resource_estimator_results": "compiler_verification_project/artifacts/azure_resource_estimator_results.json"
@@ -10097,6 +10098,7 @@
           "full_attack_inventory": "compiler_verification_project/artifacts/full_attack_inventory.json",
           "subcircuit_equivalence": "compiler_verification_project/artifacts/subcircuit_equivalence.json",
           "headline_opcode_coverage": "compiler_verification_project/artifacts/headline_opcode_coverage.json",
+          "public_headline_result": "compiler_verification_project/artifacts/public_headline_result.json",
           "azure_resource_estimator_logical_counts": "compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json",
           "azure_resource_estimator_targets": "compiler_verification_project/artifacts/azure_resource_estimator_targets.json",
           "azure_resource_estimator_results": "compiler_verification_project/artifacts/azure_resource_estimator_results.json"
@@ -10130,6 +10132,7 @@
           "compiler_verification_project/artifacts/phase_shell_lowerings.json",
           "compiler_verification_project/artifacts/primitive_multiplier_library.json",
           "compiler_verification_project/artifacts/public_google_baseline_source.json",
+          "compiler_verification_project/artifacts/public_headline_result.json",
           "compiler_verification_project/artifacts/qubit_breakthrough_analysis.json",
           "compiler_verification_project/artifacts/resource_liveness_certificate.json",
           "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
@@ -10171,6 +10174,7 @@
           "compiler_verification_project/artifacts/phase_shell_lowerings.json",
           "compiler_verification_project/artifacts/primitive_multiplier_library.json",
           "compiler_verification_project/artifacts/public_google_baseline_source.json",
+          "compiler_verification_project/artifacts/public_headline_result.json",
           "compiler_verification_project/artifacts/qubit_breakthrough_analysis.json",
           "compiler_verification_project/artifacts/resource_liveness_certificate.json",
           "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
@@ -10415,6 +10419,158 @@
         "pass": 1,
         "expected": null,
         "observed": null
+      },
+      {
+        "name": "build_summary_names_public_headline_result_artifact",
+        "pass": 1,
+        "expected": "compiler_verification_project/artifacts/public_headline_result.json",
+        "observed": "compiler_verification_project/artifacts/public_headline_result.json"
+      }
+    ]
+  },
+  "public_headline_result_checks": {
+    "pass": 9,
+    "total": 9,
+    "checks": [
+      {
+        "name": "public_headline_result_matches_generator",
+        "pass": 1,
+        "expected": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "065b4e839dd118a3a79d99ea23a8ecd1a0d7d46fff23078b21fb38e38dd87442",
+          "size_bytes": 7765
+        },
+        "observed": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "065b4e839dd118a3a79d99ea23a8ecd1a0d7d46fff23078b21fb38e38dd87442",
+          "size_bytes": 7765
+        }
+      },
+      {
+        "name": "public_headline_result_schema_is_current",
+        "pass": 1,
+        "expected": "compiler-project-public-headline-result-v1",
+        "observed": "compiler-project-public-headline-result-v1"
+      },
+      {
+        "name": "public_headline_result_passes_internal_checks",
+        "pass": 1,
+        "expected": true,
+        "observed": {
+          "public_values_match_input_claim": true,
+          "all_fixtures_bind_same_public_values": true,
+          "compressed_fixture_binds_checked_proof_binary": true,
+          "groth16_fixture_binds_checked_proof_and_verifier_key": true,
+          "reusable_chunk_lowering_is_bound_by_checked_public_headline": true,
+          "reusable_chunk_tail_contract_is_bound_by_checked_public_headline": true,
+          "fits_strict_public_goal": true
+        }
+      },
+      {
+        "name": "public_headline_result_is_strict_40m_1200_candidate",
+        "pass": 1,
+        "expected": {
+          "non_clifford": 36767692,
+          "logical_qubits": 1199,
+          "strict_limits": true
+        },
+        "observed": {
+          "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+          "non_clifford": 36767692,
+          "logical_qubits": 1199,
+          "case_count": 8,
+          "passed_case_count": 8,
+          "document_digest_scheme": "compiler-project-semantic-json-sha256-v1"
+        }
+      },
+      {
+        "name": "public_headline_result_bindings_match_candidate_public_values",
+        "pass": 1,
+        "expected": {
+          "schema": "compiler-project-zkp-attestation-public-v2",
+          "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
+          "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+          "claim_sha256": "2a098c6004436f393953eed4bcda8c000ad6c3bca81f1c91f2c7b57b3e0413e5",
+          "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
+          "family_sha256": "345237abab722243c6a2ae1230e77b1c58c1a2e3248f0feab88ac3e074c8be1d",
+          "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
+          "resource_certificate_sha256": "aa83edcfc7e0fb2e9a15104652cfe6942f4a78cfba2b3f4c9cf50b0aae733e41",
+          "expected_full_oracle_non_clifford": 36767692,
+          "expected_total_logical_qubits": 1199,
+          "case_count": 8,
+          "passed_case_count": 8
+        },
+        "observed": {
+          "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+          "non_clifford": 36767692,
+          "logical_qubits": 1199,
+          "case_count": 8,
+          "passed_case_count": 8,
+          "document_digest_scheme": "compiler-project-semantic-json-sha256-v1"
+        }
+      },
+      {
+        "name": "public_headline_result_compressed_proof_hash_matches_file",
+        "pass": 1,
+        "expected": {
+          "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin",
+          "sha256": "6ed19ddb7e63d4745a96979ef73427c2581ffc846818e335480ef228808ad961",
+          "bytes": 1273162
+        },
+        "observed": {
+          "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin",
+          "sha256": "6ed19ddb7e63d4745a96979ef73427c2581ffc846818e335480ef228808ad961",
+          "bytes": 1273162
+        }
+      },
+      {
+        "name": "public_headline_result_groth16_proof_hash_matches_file",
+        "pass": 1,
+        "expected": {
+          "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_groth16.bin",
+          "sha256": "c01fd39395d99428f633a163c2b265f6020618adb9a84fd849fd9a16e9ea081b",
+          "bytes": 2287
+        },
+        "observed": {
+          "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_groth16.bin",
+          "sha256": "c01fd39395d99428f633a163c2b265f6020618adb9a84fd849fd9a16e9ea081b",
+          "bytes": 2287
+        }
+      },
+      {
+        "name": "public_headline_result_groth16_vk_hash_matches_file",
+        "pass": 1,
+        "expected": {
+          "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_groth16_verifier/groth16_vk.bin",
+          "sha256": "4125fe6fab5e7d3af4bb9386f49589450a6d37f536e98650adca79768c469975",
+          "bytes": 492
+        },
+        "observed": {
+          "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_groth16_verifier/groth16_vk.bin",
+          "sha256": "4125fe6fab5e7d3af4bb9386f49589450a6d37f536e98650adca79768c469975",
+          "bytes": 492
+        }
+      },
+      {
+        "name": "public_headline_result_uses_bound_reusable_chunk_lowering",
+        "pass": 1,
+        "expected": true,
+        "observed": {
+          "executable_leaf_uses_four_arithmetic_slots": true,
+          "executable_leaf_has_reusable_chunk_scratch": true,
+          "no_full_coordinate_lanes_materialized": true,
+          "chunk_width_matches_strict_qubit_pressure": true,
+          "stream_count_derived_from_tables_and_chunks": true,
+          "whole_oracle_stream_count_derived_from_leaf_calls": true,
+          "per_stream_cost_matches_standard_qroamclean_k1": true,
+          "chunked_multiplier_partial_products_match_inherited_full_width_base": true,
+          "chunked_multiplier_high_chunk_zero_padding_is_explicit": true,
+          "chunked_multiplier_uses_single_reduction_per_consumer": true,
+          "non_clifford_matches_candidate": true,
+          "logical_qubits_match_candidate": true,
+          "owner_capacity_rows_cover_required_peak": true,
+          "fits_requested_limits": true
+        }
       }
     ]
   },
@@ -11516,10 +11672,10 @@
       "pass": 30
     },
     "invariant_checks": {
-      "total": 324,
-      "pass": 324
+      "total": 334,
+      "pass": 334
     },
-    "total": 354,
-    "pass": 354
+    "total": 364,
+    "pass": 364
   }
 }

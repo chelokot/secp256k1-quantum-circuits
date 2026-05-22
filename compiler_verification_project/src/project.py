@@ -2056,6 +2056,7 @@ def build_all_artifacts() -> Dict[str, Any]:
             'best_qubit_family': out['frontier']['best_qubit_family'],
             'best_google_low_gate_qubit_family': out['frontier']['best_google_low_gate_qubit_family'],
             'best_sub30m_qubit_family': out['frontier']['best_sub30m_qubit_family'],
+            'public_headline_result_artifact': 'compiler_verification_project/artifacts/public_headline_result.json',
         },
         'notes': [
             'The compiler project closes the classical-tail-elision gap and publishes exact whole-oracle counts for named compiler families with explicit arithmetic, lookup, and phase-shell lowerings, generated block inventories, a compositional FT IR layer, a full whole-oracle recount, internal subcircuit-equivalence witnesses, and exact leaf-interface families.',

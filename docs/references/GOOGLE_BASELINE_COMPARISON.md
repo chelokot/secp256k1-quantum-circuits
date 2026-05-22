@@ -22,34 +22,35 @@ The tracked public lines are:
 
 ## Standard-QROM compiler-family comparison against that baseline
 
-The repository's exact comparison layer is the compiler-family frontier in:
+The repository's exact comparison layer is the public headline wrapper in:
 
+- `compiler_verification_project/artifacts/public_headline_result.json`
 - `compiler_verification_project/artifacts/family_frontier.json`
 - `compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json`
 - `compiler_verification_project/artifacts/logical_resource_ledger.json`
 
-Its checked public headline is one central standard-QROM family:
+Its checked public headline is one standard-QROAM reusable-chunk family:
 
-- **central standard-QROM family:** `34,736,076 non-Clifford / 1,044 q`
+- **public standard-QROAM headline:** `36,767,692 non-Clifford / 1,199 q`
 
-The standard-QROM assessment records that the current central family uses a
-standard QROAM coordinate-stream primitive over the full 32768-entry folded
-coordinate domain. The ratios below are exact for that selected compiler family
-and the public Google rounded baseline.
+The public result artifact records the checked proof artifacts, the bound
+document hashes, and the exact ratios below. The older `34,736,076 / 1,044`
+three-slot family remains checked as a reference boundary, but it is not the
+single public headline.
 
 ## Exact non-Clifford comparison
 
-For the **central standard-QROM family**:
+For the **public standard-QROAM headline**:
 
-- **2.7373x** lower non-Clifford than the public low-qubit line
-- **2.1290x** lower non-Clifford than the public low-gate line
+- **2.4478x** lower non-Clifford than the public low-qubit line
+- **1.9038x** lower non-Clifford than the public low-gate line
 
 ## Exact qubit comparison
 
-The standard-QROM frontier beats both of Google's published qubit lines:
+The public headline beats both of Google's published qubit lines:
 
-- the central standard-QROM family is **156 qubits below** the public low-qubit line
-- the central standard-QROM family is **406 qubits below** the public low-gate line
+- the public standard-QROAM headline is **1 qubit below** the public low-qubit line
+- the public standard-QROAM headline is **251 qubits below** the public low-gate line
 
 The generated QROAMClean tradeoff ledger also records that, in the current
 standard-QROAM family, the lowest-qubit point below `24M` non-Clifford is

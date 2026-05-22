@@ -63,62 +63,51 @@ The root-level `compiler_verification_project/` is the repository's strongest
 exact layer below the ISA boundary. Its checked-in central whole-oracle result
 is:
 
-- **central standard-QROM family:** `34,736,076 non-Clifford`, `1,044 logical qubits`
+- **public standard-QROAM headline:** `36,767,692 non-Clifford`, `1,199 logical qubits`
 
 Those numbers are exact for the chosen compiler family, not a claim of global
-optimality or a Clifford-complete full-Shor netlist. The family uses standard
-QROAM coordinate streams over the full 32768-entry folded coordinate domain, an
-exact semiclassical-QFT phase shell, and the executable streamed lookup tail
-point-add leaf. The lookup workspace includes folded-control qubits plus the
-full QROAMClean coordinate target and junk-register capacity required by the
-selected block size; no field-sized lookup x/y lane is free or hidden. The repository also checks
-`compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json`,
-which records that the current central family is a standard-QROM primitive
-circuit at the counted lookup boundary, and
-`compiler_verification_project/artifacts/logical_resource_ledger.json`, which
-reconstructs peak live qubits from numeric owners and the same QROAMClean block
-size used for non-Clifford cost.
+optimality or a Clifford-complete full-Shor netlist. The public headline is the
+reusable-chunk four-slot family selected in
+`compiler_verification_project/artifacts/public_headline_result.json`. It uses
+standard QROAMClean `K = 1` chunk streams over the full 32768-entry folded
+coordinate domain, an exact semiclassical-QFT phase shell, and the executable
+`complete_a0_reusable_chunk_tail` point-add leaf. The counted lookup workspace
+includes folded-control qubits plus one live 155-bit QROAM chunk target and no
+free full-coordinate lookup lane. The older `34,736,076 / 1,044` three-slot
+family remains checked as a reference boundary, but it is no longer the single
+public headline.
 
-Against Google's published 2026 secp256k1 baseline, the central standard-QROM
+Against Google's published 2026 secp256k1 baseline, the public standard-QROAM
 result is:
 
-- **2.7373x** lower in non-Clifford cost than the public low-qubit line
-- **2.1290x** lower in non-Clifford cost than the public low-gate line
-- **156 qubits below** the public low-qubit line
-- **406 qubits below** the public low-gate line
+- **2.4478x** lower in non-Clifford cost than the public low-qubit line
+- **1.9038x** lower in non-Clifford cost than the public low-gate line
+- **1 qubit below** the public low-qubit line
+- **251 qubits below** the public low-gate line
 
 ### SP1 attestation layer
 
 The repository now also ships a Google-like attestation at the exact
-compiler-family boundary. The checked artifacts bind:
+compiler-family boundary. The public headline proof artifacts live under
+`compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/`
+and bind:
 
-- a hashed `streamed_lookup_tail_leaf.json` witness leaf
+- a hashed reusable-chunk executable witness leaf
 - a hashed selected family summary in
-  `compiler_verification_project/artifacts/zkp_attestation_family.json`
+  `compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_family.json`
 - a hashed deterministic public point-add case corpus in
-  `compiler_verification_project/artifacts/zkp_attestation_cases.json`
-- a hashed resource liveness certificate in
-  `compiler_verification_project/artifacts/resource_liveness_certificate.json`
+  `compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_cases.json`
+- a hashed reusable-chunk lowering/resource certificate
 
 The SP1 guest re-checks semantic hashes for those embedded typed documents,
 replays the leaf on every public case, checks the affine group law, and
 reconstructs the claimed exact non-Clifford and logical-qubit formulas. It also
 checks the resource certificate, including the derived owner-capacity section,
-before committing public values. The checked core fixture is
-`compiler_verification_project/artifacts/zkp_attestation_fixture_core.json`,
-the checked compressed fixture is
-`compiler_verification_project/artifacts/zkp_attestation_fixture_compressed.json`,
-and the checked Groth16 fixture is
-`compiler_verification_project/artifacts/zkp_attestation_fixture_groth16.json`.
-The repo also ships the checked compressed proof bundle at
-`compiler_verification_project/artifacts/zkp_attestation_proof_compressed.bin`,
-the checked Groth16 proof bundle at
-`compiler_verification_project/artifacts/zkp_attestation_proof_groth16.bin`
-plus the matching verifying key at
-`compiler_verification_project/artifacts/zkp_attestation_groth16_verifier/groth16_vk.bin`,
-so the checked proof can be re-verified locally without rebuilding the large
-vk-specific dev artifacts. Together these artifacts bind the current central
-standard-QROM family claim and `8 / 8` public cases.
+before committing public values. The checked core, compressed, and Groth16
+fixtures, compressed proof bundle, Groth16 proof bundle, wrap proof bundle, and
+matching Groth16 verifying key are all recorded in that candidate directory.
+Together these artifacts bind the public `36,767,692 / 1,199` claim and `8 / 8`
+public cases.
 This is similar in shape to Google's disclosure model, but it is still not a
 primitive-gate full-Shor proof.
 

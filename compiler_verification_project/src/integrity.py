@@ -31,6 +31,7 @@ from physical_estimator import (
     build_azure_estimator_target_payload,
     build_or_load_azure_estimator_results_payload,
 )
+from public_result import build_public_headline_result, write_public_headline_result
 from reusable_chunk_lowering import build_reusable_chunk_lowering
 from reusable_chunk_tail_candidate import build_reusable_chunk_tail_candidate
 from resource_ledger import build_logical_resource_ledger, qroam_clean_stream_cost
@@ -168,6 +169,8 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'whole_oracle_recount': artifact_root / 'whole_oracle_recount.json',
         'subcircuit_equivalence': artifact_root / 'subcircuit_equivalence.json',
         'headline_opcode_coverage': artifact_root / 'headline_opcode_coverage.json',
+        'public_headline_result': artifact_root / 'public_headline_result.json',
+        'zkp_attestation_reusable_chunk_candidate_public_values': artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_public_values.json',
         'build_summary': artifact_root / 'build_summary.json',
         'cain_exact_transfer': artifact_root / 'cain_exact_transfer.json',
         'azure_resource_estimator_logical_counts': artifact_root / 'azure_resource_estimator_logical_counts.json',
@@ -179,6 +182,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
 
         build_all_artifacts()
         write_cain_transfer()
+        write_public_headline_result(baseline=PUBLIC_GOOGLE_BASELINE)
     return {name: _load_artifact(path) for name, path in required.items()}
 
 
@@ -2011,6 +2015,31 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
             artifacts['family_frontier']['best_sub30m_qubit_family'],
             build_summary['headline']['best_sub30m_qubit_family'],
         ),
+        _check(
+            'build_summary_names_public_headline_result_artifact',
+            build_summary['headline']['public_headline_result_artifact'] == BUILD_SUMMARY_ARTIFACT_PATHS['public_headline_result'],
+            BUILD_SUMMARY_ARTIFACT_PATHS['public_headline_result'],
+            build_summary['headline'].get('public_headline_result_artifact'),
+        ),
+    ]
+    return _summarize_checks(checks)
+
+
+def build_public_headline_result_checks(artifacts: Mapping[str, Any], repo_root: Path) -> Dict[str, Any]:
+    public_result = artifacts['public_headline_result']
+    expected = build_public_headline_result(baseline=PUBLIC_GOOGLE_BASELINE)
+    selected = public_result['selected_result']
+    checked = public_result['checked_artifacts']
+    checks = [
+        _check('public_headline_result_matches_generator', public_result == expected, expected, public_result),
+        _check('public_headline_result_schema_is_current', public_result['schema'] == 'compiler-project-public-headline-result-v1', 'compiler-project-public-headline-result-v1', public_result['schema']),
+        _check('public_headline_result_passes_internal_checks', public_result['pass'] is True and all(public_result['checks'].values()), True, public_result['checks']),
+        _check('public_headline_result_is_strict_40m_1200_candidate', selected['non_clifford'] == 36_767_692 and selected['logical_qubits'] == 1_199 and selected['non_clifford'] < 40_000_000 and selected['logical_qubits'] < 1200, {'non_clifford': 36_767_692, 'logical_qubits': 1_199, 'strict_limits': True}, selected),
+        _check('public_headline_result_bindings_match_candidate_public_values', selected['name'] == artifacts['zkp_attestation_reusable_chunk_candidate_public_values']['selected_family_name'] and selected['non_clifford'] == artifacts['zkp_attestation_reusable_chunk_candidate_public_values']['expected_full_oracle_non_clifford'] and selected['logical_qubits'] == artifacts['zkp_attestation_reusable_chunk_candidate_public_values']['expected_total_logical_qubits'], artifacts['zkp_attestation_reusable_chunk_candidate_public_values'], selected),
+        _check('public_headline_result_compressed_proof_hash_matches_file', checked['compressed_proof']['sha256'] == sha256_path(repo_root / checked['compressed_proof']['path']) and checked['compressed_proof']['bytes'] == (repo_root / checked['compressed_proof']['path']).stat().st_size, checked['compressed_proof'], checked['compressed_proof']),
+        _check('public_headline_result_groth16_proof_hash_matches_file', checked['groth16_proof']['sha256'] == sha256_path(repo_root / checked['groth16_proof']['path']) and checked['groth16_proof']['bytes'] == (repo_root / checked['groth16_proof']['path']).stat().st_size, checked['groth16_proof'], checked['groth16_proof']),
+        _check('public_headline_result_groth16_vk_hash_matches_file', checked['groth16_verifier_key']['sha256'] == sha256_path(repo_root / checked['groth16_verifier_key']['path']) and checked['groth16_verifier_key']['bytes'] == (repo_root / checked['groth16_verifier_key']['path']).stat().st_size, checked['groth16_verifier_key'], checked['groth16_verifier_key']),
+        _check('public_headline_result_uses_bound_reusable_chunk_lowering', public_result['checks']['reusable_chunk_lowering_is_bound_by_checked_public_headline'] is True and artifacts['reusable_chunk_lowering']['pass'] is True, True, artifacts['reusable_chunk_lowering']['checks']),
     ]
     return _summarize_checks(checks)
 
@@ -2311,6 +2340,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'primitive_multiplier_checks': lambda: build_primitive_multiplier_checks(artifacts),
         'frontier_checks': lambda: build_frontier_checks(artifacts),
         'build_summary_checks': lambda: build_build_summary_checks(artifacts, repo_root),
+        'public_headline_result_checks': lambda: build_public_headline_result_checks(artifacts, repo_root),
         'cain_transfer_checks': lambda: build_cain_transfer_checks(artifacts),
         'azure_seed_checks': lambda: build_azure_seed_checks(artifacts),
         'physical_estimator_target_checks': lambda: build_physical_estimator_target_checks(artifacts),

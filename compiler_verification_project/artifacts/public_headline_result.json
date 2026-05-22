@@ -1,0 +1,148 @@
+{
+  "schema": "compiler-project-public-headline-result-v1",
+  "selected_result": {
+    "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+    "non_clifford": 36767692,
+    "logical_qubits": 1199,
+    "case_count": 8,
+    "passed_case_count": 8,
+    "document_digest_scheme": "compiler-project-semantic-json-sha256-v1"
+  },
+  "selection_policy": {
+    "role": "single public repository headline",
+    "reason": "Verified reusable-chunk four-slot contract is the strongest checked result that keeps non-Clifford below 40M and logical qubits strictly below 1200 under the strict standard-QROAM model.",
+    "supersedes_for_public_headline": [
+      "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1"
+    ],
+    "superseded_result_kept_as_reference": {
+      "non_clifford": 34736076,
+      "logical_qubits": 1044,
+      "reason": "Lower qubit count at the earlier three-slot compiler-family boundary, but not the selected stricter four-slot reusable-chunk public headline."
+    }
+  },
+  "comparison_to_public_google_baseline": {
+    "low_qubit": {
+      "baseline_non_clifford": 90000000,
+      "baseline_logical_qubits": 1200,
+      "non_clifford_improvement_ratio": 2.447801183713136,
+      "qubit_delta_vs_baseline": 1,
+      "beats_non_clifford": true,
+      "beats_logical_qubits": true
+    },
+    "low_gate": {
+      "baseline_non_clifford": 70000000,
+      "baseline_logical_qubits": 1450,
+      "non_clifford_improvement_ratio": 1.903845365110217,
+      "qubit_delta_vs_baseline": 251,
+      "beats_non_clifford": true,
+      "beats_logical_qubits": true
+    }
+  },
+  "bound_documents": {
+    "claim_sha256": "2a098c6004436f393953eed4bcda8c000ad6c3bca81f1c91f2c7b57b3e0413e5",
+    "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
+    "family_sha256": "345237abab722243c6a2ae1230e77b1c58c1a2e3248f0feab88ac3e074c8be1d",
+    "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
+    "resource_certificate_sha256": "aa83edcfc7e0fb2e9a15104652cfe6942f4a78cfba2b3f4c9cf50b0aae733e41"
+  },
+  "checked_artifacts": {
+    "input": {
+      "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
+      "sha256": "abf8f1179cd6bc9addb05466e39a3d74a120e07e719a4807d93296f56c391d7f",
+      "bytes": 37970
+    },
+    "public_values": {
+      "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_public_values.json",
+      "sha256": "4980f6dbaf7b7647b36e78d788b102cc6e62ad83f59e485e65ce21963458d36f",
+      "bytes": 851
+    },
+    "core_fixture": {
+      "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_fixture_core.json",
+      "sha256": "f18e8e636ac886f48b6ba35f5c66fb0da36b997aec68e0db6854b5761401ba3e",
+      "bytes": 1263,
+      "proof_system": "core",
+      "verification_key": "0x008c8a883ab4f716dd447aa5c549e129e5f70fc490371bfad6adb4cf40c30592",
+      "proof_path": null,
+      "proof_sha256": null,
+      "proof_size_bytes": null,
+      "verifier_key_path": null,
+      "verifier_key_sha256": null,
+      "verifier_key_size_bytes": null
+    },
+    "compressed_fixture": {
+      "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_fixture_compressed.json",
+      "sha256": "aa4da5d6046cd0311c7c872d5055b76368e3dcc022f71d91a2aac772a9973f54",
+      "bytes": 1449,
+      "proof_system": "compressed",
+      "verification_key": "0x008c8a883ab4f716dd447aa5c549e129e5f70fc490371bfad6adb4cf40c30592",
+      "proof_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin",
+      "proof_sha256": "6ed19ddb7e63d4745a96979ef73427c2581ffc846818e335480ef228808ad961",
+      "proof_size_bytes": 1273162,
+      "verifier_key_path": null,
+      "verifier_key_sha256": null,
+      "verifier_key_size_bytes": null
+    },
+    "groth16_fixture": {
+      "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_fixture_groth16.json",
+      "sha256": "de76f75c63667c86b0760c730296dabaeafbc3d6a8d869cdcaa88108a5060cc2",
+      "bytes": 2339,
+      "proof_system": "groth16",
+      "verification_key": "0x008c8a883ab4f716dd447aa5c549e129e5f70fc490371bfad6adb4cf40c30592",
+      "proof_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_groth16.bin",
+      "proof_sha256": "c01fd39395d99428f633a163c2b265f6020618adb9a84fd849fd9a16e9ea081b",
+      "proof_size_bytes": 2287,
+      "verifier_key_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_groth16_verifier/groth16_vk.bin",
+      "verifier_key_sha256": "4125fe6fab5e7d3af4bb9386f49589450a6d37f536e98650adca79768c469975",
+      "verifier_key_size_bytes": 492
+    },
+    "compressed_proof": {
+      "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin",
+      "sha256": "6ed19ddb7e63d4745a96979ef73427c2581ffc846818e335480ef228808ad961",
+      "bytes": 1273162
+    },
+    "groth16_proof": {
+      "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_groth16.bin",
+      "sha256": "c01fd39395d99428f633a163c2b265f6020618adb9a84fd849fd9a16e9ea081b",
+      "bytes": 2287
+    },
+    "wrap_proof": {
+      "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_wrap_proof.bin",
+      "sha256": "2a3213e7c4ac907dc1730f759e1b6b5da77eb0006b1f7a5c4b1bd988578e31d8",
+      "bytes": 1341550
+    },
+    "groth16_verifier_key": {
+      "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_groth16_verifier/groth16_vk.bin",
+      "sha256": "4125fe6fab5e7d3af4bb9386f49589450a6d37f536e98650adca79768c469975",
+      "bytes": 492
+    },
+    "reusable_chunk_lowering": {
+      "path": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
+      "sha256": "d45b3deb024604347bc615aebaf415b8990b96d8a5f2c7679ca2b62809430d9d",
+      "bytes": 15654
+    },
+    "reusable_chunk_tail_candidate": {
+      "path": "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
+      "sha256": "a17d99eb7e74e39228b3623efb6ab19e94502d41459caede3b324255e9c920e5",
+      "bytes": 6204
+    }
+  },
+  "verification_commands": {
+    "compressed": "SP1_CIRCUIT_MODE=dev python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --verify-proof-input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin --system compressed --resource-profile safe --systemd-property TasksMax=128 --skip-build --input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json --output-dir compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate",
+    "groth16": "SP1_CIRCUIT_MODE=dev python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --verify-proof-input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_groth16.bin --system groth16 --resource-profile safe --systemd-property TasksMax=128 --skip-build --groth16-verify-dir compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_groth16_verifier --input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json --output-dir compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate"
+  },
+  "checks": {
+    "public_values_match_input_claim": true,
+    "all_fixtures_bind_same_public_values": true,
+    "compressed_fixture_binds_checked_proof_binary": true,
+    "groth16_fixture_binds_checked_proof_and_verifier_key": true,
+    "reusable_chunk_lowering_is_bound_by_checked_public_headline": true,
+    "reusable_chunk_tail_contract_is_bound_by_checked_public_headline": true,
+    "fits_strict_public_goal": true
+  },
+  "pass": true,
+  "boundary": [
+    "This is a checked standard-QROAM compiler-family boundary, not a Clifford-complete flattened full-Shor netlist.",
+    "The checked proof uses an 8-case public point-add corpus, not Google's hidden-circuit 9024-case disclosure boundary.",
+    "The proof binds and executes the reusable-chunk contract and resource certificate; it does not by itself prove an external physical runtime."
+  ]
+}

@@ -133,6 +133,29 @@ def test_checked_reusable_chunk_candidate_fixtures_match_public_values() -> None
     _assert_attestation_fixtures_match_public_values(artifact_dir, expected)
 
 
+def test_public_headline_result_binds_reusable_chunk_candidate_artifacts() -> None:
+    artifact_dir = REPO_ROOT / 'compiler_verification_project' / 'artifacts'
+    public_result = json.loads((artifact_dir / 'public_headline_result.json').read_text())
+    selected = public_result['selected_result']
+    public_values = json.loads((artifact_dir / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_public_values.json').read_text())
+    assert public_result['pass'] is True
+    assert all(public_result['checks'].values())
+    assert selected['non_clifford'] == 36_767_692
+    assert selected['logical_qubits'] == 1_199
+    assert selected['non_clifford'] < 40_000_000
+    assert selected['logical_qubits'] < 1200
+    assert selected['name'] == public_values['selected_family_name']
+    assert selected['non_clifford'] == public_values['expected_full_oracle_non_clifford']
+    assert selected['logical_qubits'] == public_values['expected_total_logical_qubits']
+    checked = public_result['checked_artifacts']
+    for key in ('compressed_proof', 'groth16_proof', 'wrap_proof', 'groth16_verifier_key'):
+        record = checked[key]
+        path = REPO_ROOT / record['path']
+        data = path.read_bytes()
+        assert record['sha256'] == hashlib.sha256(data).hexdigest()
+        assert record['bytes'] == len(data)
+
+
 def test_zkp_attestation_cases_match_leaf_and_group_law() -> None:
     payload = build_zkp_attestation_input(case_count=8)
     leaf = build_streamed_lookup_tail_leaf()
