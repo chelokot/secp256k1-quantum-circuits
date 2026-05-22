@@ -76,7 +76,7 @@ resource semantics and macro boundaries.
 | --- | --- | --- | --- | --- |
 | ZK-1 | P0 reviewed-state; remediated on current branch | Reviewed SP1 prepared path did not recompute sidecar hashes; current path now recomputes committed claim/leaf/family/case/resource hashes in guest | This used to let public values carry hash labels trusted from the input builder; current tests reject stale digest labels and mutated committed payloads | Keep full committed documents in the guest input and keep negative digest/payload tests |
 | ZK-2 | P0 | ZKP executes high-level field/macro semantics, not primitive QROAM/arithmetic lowerings | The proof checks point-add behavior for prepared cases, but not that the resource-counted primitive circuit implements that behavior | Feed the same resource IR into the guest or prove a separate lowering certificate |
-| RES-1 | P0 | `complete_a0_all_streamed_tail` hides internal liveness behind a macro boundary | The `1,044` qubit result depends on internal temporaries not increasing peak live qubits | Flatten macro into scheduled IR and derive peak from that IR |
+| RES-1 | P0 partially mitigated | The public reusable-chunk leaf now traces the counted `qchunk` scratch lane, but still hides deeper field-arithmetic temporaries behind macro boundaries | The `1,199` qubit result no longer has a free/named-only `qchunk` owner, but it still depends on the compact modular-arithmetic and tail-macro contracts rather than a single Clifford-complete flat schedule | Flatten the reusable tail and modular arithmetic into scheduled IR and derive peak from that IR |
 | RES-2 | P0 partially mitigated | Modular field arithmetic costs are now digest-bound operation streams, but still not a generated modular circuit | Rust semantics applies `% p`; arithmetic lowering counts abstract add/sub/mul kernels whose modular-reduction completeness must still be trusted below the compact operation IR | Generate modular add/sub/mul circuits including reduction and count them |
 | RES-3 | P0 partially mitigated | The public reusable-chunk resource ledger now has a guest-checked contract engine over counted IR, executable liveness, and owner capacity, but still lacks a Clifford-complete flat netlist | It now catches counted/executable liveness drift and owner-capacity underprovisioning, but the deepest macro/arithmetic temporaries are still below a model boundary | Keep moving toward one flat liveness engine over QROAM target/junk, macro scratch, phase/control wires, and generated modular arithmetic netlists |
 | ZK-3 | P1 remediated for out-of-line proof binding | Checked compressed fixture JSON keeps `proof: null` while binary proof is separate | Large compressed proof bytes remain out-of-line, but fixtures now bind proof/verifier-key path, size, digest, and curated proof-manifest records | Keep `proof_status.py` manifest cross-checks and fixture metadata tests in the release gate |
@@ -163,36 +163,38 @@ reductions. It does not by itself make the proof a full primitive-gate Shor
 circuit proof; the remaining high-severity issues are the resource/lowering
 and flat-liveness boundaries below.
 
-### 1. The all-streamed tail macro is trusted as a counted liveness boundary
+### 1. The reusable tail is still partly trusted as a counted liveness boundary
 
-The 1044-qubit result depends on replacing a multi-register leaf body with a
-single macro opcode:
+The historical 1044-qubit result depended on replacing a multi-register leaf
+body with one macro opcode:
 
 - `complete_a0_all_streamed_tail`
 - live arithmetic slots: `qx`, `qy`, `qz`
 - peak arithmetic register file: `3 * 256 = 768`
 
-The macro is counted with a large internal non-Clifford cost, but its internal
-temporaries are not exposed as simultaneous live leaf-owned field registers.
-This is plausible as a compiler-family boundary, but it is not the same as
-flattening the macro into a scheduled reversible circuit and deriving peak
-liveness from that flat circuit.
+The current public headline no longer uses that three-slot leaf as the public
+claim. It uses `complete_a0_reusable_chunk_tail` with four arithmetic slots:
+`qx`, `qy`, `qz`, and `qchunk`. The `qchunk` lane is now semantically traced in
+the executable leaf and counted live concurrently with the QROAM target. That
+closes the named-only/free-scratch version of this issue, but the reusable tail
+still relies on compact modular-arithmetic and tail-macro contracts rather than
+a single flattened Clifford-complete schedule.
 
 Where trust enters:
 
-- `compiler_verification_project/src/lookup_fed_leaf.py` defines the executable
-  leaf with one macro opcode.
+- `compiler_verification_project/src/reusable_chunk_tail_candidate.py` defines
+  the current executable reusable-chunk leaf and its traced `qchunk` contract.
 - `compiler_verification_project/src/arithmetic_lowering.py` assigns the macro
   internal work and cost.
-- `compiler_verification_project/src/project.py` assigns only three arithmetic
-  slots to the leaf.
+- `compiler_verification_project/src/reusable_chunk_lowering.py` assigns four
+  arithmetic slots and derives the public `1,199`-qubit peak.
 - `compiler_verification_project/src/integrity.py` checks consistency with those
   same generators.
 
 Required hardening:
 
-- Flatten `complete_a0_all_streamed_tail` into an explicit primitive/lower-level
-  IR with named temporary wires.
+- Flatten `complete_a0_reusable_chunk_tail` and the modular field kernels into
+  an explicit primitive/lower-level IR with named temporary wires.
 - Run liveness on the flattened IR, not on the macro-level executable leaf.
 - Prove that any temporary scratch inside the macro is either sequentially
   reused inside an already counted owner or explicitly added to peak live
