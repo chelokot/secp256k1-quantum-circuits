@@ -55,6 +55,7 @@ from common import (  # noqa: E402
     sha256_bytes,
     sha256_path,
 )
+from artifact_digest_tree import build_artifact_digest_tree  # noqa: E402
 from artifact_registry import BUILD_SUMMARY_ARTIFACT_PATHS, BUILD_SUMMARY_SCHEMA  # noqa: E402
 from baselines import load_public_google_baseline_artifact, load_public_google_baseline_lines  # noqa: E402
 from arithmetic_lowering import DEFAULT_QROAM_CLEAN_BLOCK_SIZE, arithmetic_kernel_summary, arithmetic_lowering_library  # noqa: E402
@@ -2075,6 +2076,8 @@ def build_all_artifacts() -> Dict[str, Any]:
         logical_counts_payload=out['azure_resource_estimator_logical_counts'],
         target_payload=out['azure_resource_estimator_targets'],
     )
+    out['artifact_digest_tree'] = build_artifact_digest_tree(repo_root=PROJECT_ROOT)
+    dump_json(project_artifact_path('artifact_digest_tree.json'), out['artifact_digest_tree'])
 
     build_summary = {
         'schema': BUILD_SUMMARY_SCHEMA,

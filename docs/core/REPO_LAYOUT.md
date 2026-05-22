@@ -72,6 +72,7 @@ Key files:
 - `compiler_verification_project/artifacts/qroam_primitive_certificate.json`
 - `compiler_verification_project/artifacts/qroam_reference_crosscheck.json`
 - `compiler_verification_project/artifacts/reusable_chunk_lowering.json`
+- `compiler_verification_project/artifacts/artifact_digest_tree.json`
 - `compiler_verification_project/artifacts/zkp_attestation_family.json`
 - `compiler_verification_project/artifacts/zkp_attestation_fixture_groth16.json`
 - `compiler_verification_project/artifacts/zkp_attestation_proof_groth16.bin`

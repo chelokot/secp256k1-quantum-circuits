@@ -62,6 +62,7 @@ What it does ship is:
 - `qroam_primitive_certificate.json` — generated QROAMClean `K=1` primitive-count certificate for the selected reusable chunk stream, including traversed compute/cleanup segment counts and target/junk workspace
 - `qroam_reference_crosscheck.json` — independent QROAMClean gate/workspace reference calculation plus reduced-domain table-select semantics; it separately checks the actual 155-bit reusable chunk stream and the full-field 256-bit ledger sweep before binding into the reusable-chunk resource document
 - `resource_liveness_certificate.json` — ZKP-bound liveness certificate deriving owner-capacity requirements from executable leaf liveness, QROAMClean workspace, and phase-shell lowering artifacts
+- `artifact_digest_tree.json` — chunked SHA-256/Merkle manifest for tracked large artifacts, generated from the checked tree so reviewers can verify large JSON/CSV/proof blobs by chunks rather than by one opaque file hash
 - `module_library.json` — arithmetic-kernel summary used by the frontier
 - `lookup_lowerings.json` — generated primitive-operation inventories for the named folded lookup families
 - `phase_shell_lowerings.json` — generated phase-operation inventories for the named full-register and semiclassical inverse-QFT shells
@@ -79,7 +80,7 @@ What it does ship is:
 - `azure_resource_estimator_results.json` — recorded Microsoft Resource Estimator outputs for every exact family under every checked target profile
 - `cain_exact_transfer.json` — heuristic physical transfer for the exact families
 - `azure_resource_estimator_logical_counts.json` — logicalCounts-style handoff artifact for physical estimators
-- `zkp_attestation_input.json` — prepared SP1 attestation bundle carrying the public document digests, a compiled point-add leaf, and the deterministic public cases for the selected standard-QROM family claim
+- `zkp_attestation_input.json` — prepared SP1 attestation bundle carrying the public document digests, a compiled point-add leaf, a proof-register/resource-owner contract, and the deterministic public cases for the selected standard-QROM family claim
 - `zkp_attestation_claim.json` — standalone public claim derived from the selected exact family
 - `zkp_attestation_family.json` — selected standard-QROM family summary bound by the checked SP1 guest
 - `zkp_attestation_cases.json` — deterministic public point-add cases used by the checked SP1 guest

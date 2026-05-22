@@ -48,8 +48,8 @@
   "checked_artifacts": {
     "input": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
-      "sha256": "bad011cfdac4a16fba6c64e3214aedf62eaf1347260b630dc200877c86e357e8",
-      "bytes": 124374
+      "sha256": "52dd3b43a3b25664f15bdfb31b9e6896b8c1f2d57da5f50f726937229fe1c7e3",
+      "bytes": 129167
     },
     "claim": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json",
@@ -189,6 +189,7 @@
     "reusable_chunk_lowering_is_proven_for_public_headline": true,
     "reusable_chunk_executable_liveness_binds_public_qubits": true,
     "reusable_chunk_counted_resource_ir_binds_public_totals": true,
+    "proof_register_contract_binds_prepared_leaf_to_resource_owners": true,
     "reusable_chunk_binds_generated_qroam_primitive_certificate": true,
     "reusable_chunk_binds_independent_qroam_reference_crosscheck": true,
     "reusable_chunk_binds_modular_arithmetic_certificate": true,

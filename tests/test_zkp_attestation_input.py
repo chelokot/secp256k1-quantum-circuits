@@ -78,6 +78,7 @@ def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None
     qubit_derivation = resource_document['payload']['qubit_derivation']
     non_clifford_derivation = resource_document['payload']['non_clifford_derivation']
     counted_resource_ir = resource_document['payload']['counted_resource_ir']
+    proof_register_contract = payload['proof_register_contract']
     assert payload['selected_family_name'].endswith('__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1')
     assert claim['expected_full_oracle_non_clifford'] == non_clifford_derivation['candidate_total_non_clifford']
     assert claim['expected_total_logical_qubits'] == qubit_derivation['candidate_total_logical_qubits']
@@ -119,6 +120,29 @@ def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None
     assert counted_resource_ir['recomputed_peak_live_qubits'] == qubit_derivation['candidate_total_logical_qubits']
     assert sum(row['total_non_clifford'] for row in counted_resource_ir['non_clifford_terms']) == claim['expected_full_oracle_non_clifford']
     assert max(row['total_live_qubits'] for row in counted_resource_ir['liveness_intervals']) == claim['expected_total_logical_qubits']
+    assert proof_register_contract['pass'] is True
+    assert proof_register_contract['checks']['every_register_has_declared_contract_class'] is True
+    assert proof_register_contract['checks']['every_unclassified_written_register_is_rejected'] is True
+    assert proof_register_contract['checks']['semantic_lookup_constants_are_not_materialized_full_coordinate_lanes'] is True
+    assert len(proof_register_contract['register_rows']) == payload['prepared_leaf']['register_count']
+    counted_registers = {
+        row['register']
+        for row in proof_register_contract['register_rows']
+        if row['resource_class'] == 'counted_quantum_wire'
+    }
+    assert {'qx', 'qy', 'qz', 'qchunk', 'f_lookup_inf'}.issubset(counted_registers)
+    written_registers = {
+        row['register']
+        for row in proof_register_contract['register_rows']
+        if row['is_written_by_instruction']
+    }
+    assert {'qx', 'qy', 'qz', 'qchunk', 'f_lookup_inf'}.issubset(written_registers)
+    semantic_lookup_registers = {
+        row['register']
+        for row in proof_register_contract['register_rows']
+        if row['resource_class'] == 'semantic_lookup_constant'
+    }
+    assert semantic_lookup_registers == {'lookup_x', 'lookup_y'}
     assert resource_document['payload']['pass'] is True
 
 

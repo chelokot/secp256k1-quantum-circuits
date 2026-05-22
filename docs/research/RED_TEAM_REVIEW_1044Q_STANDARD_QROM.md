@@ -677,20 +677,26 @@ Remaining boundary:
 
 ### Register list in the proof compiler
 
-The proof compiler starts with:
+The proof compiler used to start from a bespoke hardcoded register universe.
+The current branch derives proof register IDs from the leaf interface,
+lookup-interface slots, arithmetic slots, and resource wire catalog, then emits
+`proof_register_contract` into the SP1 input.
 
-`['Q.X', 'Q.Y', 'Q.Z', 'k', 'lookup_x', 'lookup_y', 'lookup_meta', 'qx', 'qy', 'qz']`
+Current hardening:
 
-Risk:
+- The contract classifies every prepared proof register as a counted quantum
+  wire, carried input alias, semantic lookup constant, or lookup metadata
+  interface.
+- The SP1 guest recomputes the set of written registers from `prepared_leaf`,
+  rejects unclassified registers, rejects unowned written quantum registers, and
+  requires counted registers to carry a positive qubit capacity and owner.
+- `lookup_x` and `lookup_y` are explicitly semantic lookup constants, not hidden
+  full-coordinate quantum lanes.
 
-- This is a bespoke register universe for the SP1 guest, not derived from the
-  same liveness/resource engine.
+Remaining boundary:
 
-Required hardening:
-
-- Generate proof register IDs from the same IR that drives liveness and
-  resource accounting.
-- Fail if the proof guest sees a register that has no resource owner.
+- This is still a proof-register contract around the prepared leaf, not a
+  single primitive-circuit IR that also executes the arithmetic and QROAM gates.
 
 ### Field size and curve constants
 
@@ -811,8 +817,10 @@ Evidence:
 - `execute_leaf` uses BigUint field operations with `% modulus`.
 - `CompleteA0AllStreamedTail` is one Rust match arm that computes algebraic
   temporaries directly.
-- `arithmetic_lowerings.json` and QROAM cost artifacts are not inputs to the
-  guest execution loop.
+- The SP1 input now carries resource certificates, QROAM certificates,
+  counted-resource IR, and a proof-register contract, and the guest validates
+  them. The guest execution loop still executes high-level field/macro
+  semantics rather than the primitive arithmetic/QROAM gate list itself.
 
 Impact:
 
@@ -1420,6 +1428,21 @@ Exit criterion:
 
 - Git diffs are reviewable, artifacts remain machine-verifiable, and no single
   checked blob approaches GitHub warning limits.
+
+Current remediation:
+
+- `compiler_verification_project/artifacts/artifact_digest_tree.json` now
+  records every tracked file at or above the large-artifact threshold, split
+  into deterministic 1MiB chunks with per-chunk SHA-256, full-file SHA-256, and
+  a Merkle root.
+- `artifact_digest_tree_checks` regenerates that manifest from the checked tree
+  and fails on omitted files, changed chunk bytes, changed file sizes, or stale
+  Merkle roots.
+
+Still open:
+
+- This is a reviewability and verification manifest, not yet a replacement of
+  the largest flat JSON/CSV artifacts with compressed archive payloads.
 
 ### P2: Better mutation testing
 

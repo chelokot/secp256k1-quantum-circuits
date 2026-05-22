@@ -3229,7 +3229,7 @@
       },
       {
         "kind": "bool_from_flag",
-        "dst": 10,
+        "dst": 11,
         "flags": 6,
         "bit": 0
       },
@@ -3241,12 +3241,162 @@
         "x": 7,
         "y": 8,
         "z": 9,
-        "scratch": 11,
+        "scratch": 10,
         "chunk_bits": 155,
         "chunk_count": 2,
         "b3": 21
       }
     ]
+  },
+  "proof_register_contract": {
+    "schema": "compiler-project-proof-register-contract-v1",
+    "derivation": "proof register map derived from leaf interface/arithmetic slots and checked resource wire catalog",
+    "resource_certificate_schema": "compiler-project-reusable-chunk-lowering-v2",
+    "register_rows": [
+      {
+        "register": "Q.X",
+        "register_id": 0,
+        "resource_class": "carried_input_alias",
+        "is_written_by_instruction": false,
+        "quantum_counted": false,
+        "owner_id": null,
+        "qubits": 0,
+        "role": "semantic_input_alias_loaded_into_counted_slots"
+      },
+      {
+        "register": "Q.Y",
+        "register_id": 1,
+        "resource_class": "carried_input_alias",
+        "is_written_by_instruction": false,
+        "quantum_counted": false,
+        "owner_id": null,
+        "qubits": 0,
+        "role": "semantic_input_alias_loaded_into_counted_slots"
+      },
+      {
+        "register": "Q.Z",
+        "register_id": 2,
+        "resource_class": "carried_input_alias",
+        "is_written_by_instruction": false,
+        "quantum_counted": false,
+        "owner_id": null,
+        "qubits": 0,
+        "role": "semantic_input_alias_loaded_into_counted_slots"
+      },
+      {
+        "register": "k",
+        "register_id": 3,
+        "resource_class": "carried_input_alias",
+        "is_written_by_instruction": false,
+        "quantum_counted": false,
+        "owner_id": null,
+        "qubits": 0,
+        "role": "semantic_input_alias_loaded_into_counted_slots"
+      },
+      {
+        "register": "lookup_x",
+        "register_id": 4,
+        "resource_class": "semantic_lookup_constant",
+        "is_written_by_instruction": false,
+        "quantum_counted": false,
+        "owner_id": null,
+        "qubits": 0,
+        "role": "semantic_table_value_not_materialized_as_full_coordinate_lane"
+      },
+      {
+        "register": "lookup_y",
+        "register_id": 5,
+        "resource_class": "semantic_lookup_constant",
+        "is_written_by_instruction": false,
+        "quantum_counted": false,
+        "owner_id": null,
+        "qubits": 0,
+        "role": "semantic_table_value_not_materialized_as_full_coordinate_lane"
+      },
+      {
+        "register": "lookup_meta",
+        "register_id": 6,
+        "resource_class": "lookup_metadata_interface",
+        "is_written_by_instruction": true,
+        "quantum_counted": false,
+        "owner_id": null,
+        "qubits": 0,
+        "role": "semantic_lookup_metadata_decoded_into_counted_control_flag"
+      },
+      {
+        "register": "qx",
+        "register_id": 7,
+        "resource_class": "counted_quantum_wire",
+        "is_written_by_instruction": true,
+        "quantum_counted": true,
+        "owner_id": "arithmetic_slot_register_file",
+        "qubits": 256,
+        "role": "field_arithmetic_slot"
+      },
+      {
+        "register": "qy",
+        "register_id": 8,
+        "resource_class": "counted_quantum_wire",
+        "is_written_by_instruction": true,
+        "quantum_counted": true,
+        "owner_id": "arithmetic_slot_register_file",
+        "qubits": 256,
+        "role": "field_arithmetic_slot"
+      },
+      {
+        "register": "qz",
+        "register_id": 9,
+        "resource_class": "counted_quantum_wire",
+        "is_written_by_instruction": true,
+        "quantum_counted": true,
+        "owner_id": "arithmetic_slot_register_file",
+        "qubits": 256,
+        "role": "field_arithmetic_slot"
+      },
+      {
+        "register": "qchunk",
+        "register_id": 10,
+        "resource_class": "counted_quantum_wire",
+        "is_written_by_instruction": true,
+        "quantum_counted": true,
+        "owner_id": "arithmetic_slot_register_file",
+        "qubits": 256,
+        "role": "field_arithmetic_slot"
+      },
+      {
+        "register": "f_lookup_inf",
+        "register_id": 11,
+        "resource_class": "counted_quantum_wire",
+        "is_written_by_instruction": true,
+        "quantum_counted": true,
+        "owner_id": "control_slot_register_file",
+        "qubits": 1,
+        "role": "leaf_control_flag"
+      }
+    ],
+    "written_register_ids": [
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "unclassified_registers": [],
+    "unowned_written_quantum_registers": [],
+    "semantic_lookup_registers_not_materialized": [
+      "lookup_x",
+      "lookup_y"
+    ],
+    "checks": {
+      "register_ids_are_contiguous": true,
+      "register_rows_match_prepared_leaf_count": true,
+      "every_register_has_declared_contract_class": true,
+      "every_unclassified_written_register_is_rejected": true,
+      "semantic_lookup_constants_are_not_materialized_full_coordinate_lanes": true,
+      "all_counted_rows_reference_wire_catalog_owner": true
+    },
+    "pass": true
   },
   "prepared_case_corpus": {
     "field_modulus_hex": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",

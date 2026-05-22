@@ -22,6 +22,7 @@ from common import (
     sha256_bytes,
     sha256_path,
 )
+from artifact_digest_tree import ARTIFACT_DIGEST_TREE_SCHEMA, build_artifact_digest_tree
 from artifact_registry import BUILD_SUMMARY_ARTIFACT_PATHS, BUILD_SUMMARY_SCHEMA
 from arithmetic_lowering import arithmetic_kernel_summary, arithmetic_lowering_library, materialize_arithmetic_primitive_operations
 from compiler_parameters import COMPILER_PARAMETERS_SCHEMA, build_compiler_parameters
@@ -186,6 +187,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'azure_resource_estimator_logical_counts': artifact_root / 'azure_resource_estimator_logical_counts.json',
         'azure_resource_estimator_targets': artifact_root / 'azure_resource_estimator_targets.json',
         'azure_resource_estimator_results': artifact_root / 'azure_resource_estimator_results.json',
+        'artifact_digest_tree': artifact_root / 'artifact_digest_tree.json',
     }
     if not all(path.exists() for path in required.values()):
         from project import build_all_artifacts, write_cain_transfer
@@ -2168,6 +2170,23 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
     return _summarize_checks(checks)
 
 
+def build_artifact_digest_tree_checks(artifacts: Mapping[str, Any], repo_root: Path) -> Dict[str, Any]:
+    digest_tree = artifacts['artifact_digest_tree']
+    expected = build_artifact_digest_tree(
+        repo_root=repo_root,
+        size_threshold_bytes=int(digest_tree['size_threshold_bytes']),
+        chunk_size_bytes=int(digest_tree['chunk_size_bytes']),
+    )
+    checks = [
+        _check('artifact_digest_tree_matches_generator', digest_tree == expected, expected, digest_tree),
+        _check('artifact_digest_tree_schema_is_current', digest_tree['schema'] == ARTIFACT_DIGEST_TREE_SCHEMA, ARTIFACT_DIGEST_TREE_SCHEMA, digest_tree['schema']),
+        _check('artifact_digest_tree_passes_internal_checks', digest_tree['pass'] is True and all(digest_tree['checks'].values()), True, digest_tree['checks']),
+        _check('artifact_digest_tree_contains_only_large_tracked_files', all(row['bytes'] >= digest_tree['size_threshold_bytes'] and (repo_root / row['path']).exists() for row in digest_tree['files']), 'tracked files above threshold', digest_tree['files']),
+        _check('artifact_digest_tree_chunks_reconstruct_file_sizes', all(sum(chunk['bytes'] for chunk in row['chunks']) == row['bytes'] for row in digest_tree['files']), 'chunk byte sums equal file bytes', digest_tree['files']),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_proof_corpus_profile_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     profiles = artifacts['proof_corpus_profiles']
     expected = build_proof_corpus_profiles()
@@ -2504,6 +2523,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'primitive_multiplier_checks': lambda: build_primitive_multiplier_checks(artifacts),
         'frontier_checks': lambda: build_frontier_checks(artifacts),
         'build_summary_checks': lambda: build_build_summary_checks(artifacts, repo_root),
+        'artifact_digest_tree_checks': lambda: build_artifact_digest_tree_checks(artifacts, repo_root),
         'proof_corpus_profile_checks': lambda: build_proof_corpus_profile_checks(artifacts),
         'public_headline_result_checks': lambda: build_public_headline_result_checks(artifacts, repo_root),
         'cain_transfer_checks': lambda: build_cain_transfer_checks(artifacts),

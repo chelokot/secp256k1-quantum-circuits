@@ -16,6 +16,7 @@ if str(ROOT_SRC) not in sys.path:
 
 from baselines import load_public_google_baseline_lines  # noqa: E402
 from common import dump_json, load_json  # noqa: E402
+from artifact_digest_tree import build_artifact_digest_tree  # noqa: E402
 from artifact_registry import BUILD_SUMMARY_ARTIFACT_PATHS, BUILD_SUMMARY_SCHEMA  # noqa: E402
 from project import FIELD_BITS, build_all_artifacts, write_cain_transfer  # noqa: E402
 from public_result import write_public_headline_result  # noqa: E402
@@ -62,6 +63,11 @@ def build_qroam_reference() -> None:
     dump_json(artifact_dir / 'qroam_reference_crosscheck.json', payload)
 
 
+def build_digest_tree() -> None:
+    artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
+    dump_json(artifact_dir / 'artifact_digest_tree.json', build_artifact_digest_tree(repo_root=PROJECT_ROOT))
+
+
 def build_summary_artifact() -> None:
     artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
     frontier = load_json(artifact_dir / 'family_frontier.json')
@@ -87,7 +93,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--target',
-        choices=('all', 'core-artifacts', 'build-summary', 'qroam-reference', 'reusable-chunk-resource', 'zkp', 'candidate-zkp', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'),
+        choices=('all', 'core-artifacts', 'build-summary', 'artifact-digest-tree', 'qroam-reference', 'reusable-chunk-resource', 'zkp', 'candidate-zkp', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'),
         default='all',
     )
     args = parser.parse_args()
@@ -98,6 +104,9 @@ def main() -> None:
     if args.target in ('build-summary',):
         build_summary_artifact()
         payload['build_summary_artifact'] = 'compiler_verification_project/artifacts/build_summary.json'
+    if args.target in ('artifact-digest-tree',):
+        build_digest_tree()
+        payload['artifact_digest_tree'] = 'compiler_verification_project/artifacts/artifact_digest_tree.json'
     if args.target in ('qroam-reference', 'resource-zkp-and-public'):
         build_qroam_reference()
         payload['qroam_reference_crosscheck'] = 'compiler_verification_project/artifacts/qroam_reference_crosscheck.json'
@@ -116,6 +125,7 @@ def main() -> None:
         'target': args.target,
         'build_summary': payload['frontier']['best_gate_family'] if 'frontier' in payload else None,
         'build_summary_artifact': payload.get('build_summary_artifact'),
+        'artifact_digest_tree': payload.get('artifact_digest_tree'),
         'qroam_reference_crosscheck': payload.get('qroam_reference_crosscheck'),
         'reusable_chunk_lowering': payload.get('reusable_chunk_lowering'),
         'public_headline_result': payload.get('public_headline_result'),

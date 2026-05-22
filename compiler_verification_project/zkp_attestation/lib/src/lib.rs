@@ -1809,6 +1809,7 @@ pub struct PreparedAttestationInput {
     pub claim_summary: PreparedClaimSummary,
     pub family_summary: PreparedFamilySummary,
     pub prepared_leaf: CompiledLeaf,
+    pub proof_register_contract: SemanticJsonPayload,
     pub prepared_case_corpus: PreparedCaseCorpus,
     pub notes: Vec<String>,
 }
@@ -3946,6 +3947,133 @@ fn validate_resource_certificate(
     );
 }
 
+fn compiled_leaf_written_registers(leaf: &CompiledLeaf) -> BTreeSet<u64> {
+    let mut written = BTreeSet::new();
+    for instruction in &leaf.instructions {
+        match instruction {
+            CompiledInstruction::CompleteA0StreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                ..
+            }
+            | CompiledInstruction::CompleteA0FullyStreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                ..
+            }
+            | CompiledInstruction::CompleteA0AllStreamedTail {
+                out_x,
+                out_y,
+                out_z,
+                ..
+            } => {
+                written.insert(*out_x as u64);
+                written.insert(*out_y as u64);
+                written.insert(*out_z as u64);
+            }
+            CompiledInstruction::CompleteA0ReusableChunkTail {
+                out_x,
+                out_y,
+                out_z,
+                scratch,
+                ..
+            } => {
+                written.insert(*out_x as u64);
+                written.insert(*out_y as u64);
+                written.insert(*out_z as u64);
+                written.insert(*scratch as u64);
+            }
+            CompiledInstruction::Copy { dst, .. }
+            | CompiledInstruction::BoolFromFlag { dst, .. }
+            | CompiledInstruction::ClearBoolFromFlag { dst, .. }
+            | CompiledInstruction::FieldMul { dst, .. }
+            | CompiledInstruction::FieldMulLookupX { dst, .. }
+            | CompiledInstruction::FieldMulLookupY { dst, .. }
+            | CompiledInstruction::FieldMulLookupSum { dst, .. }
+            | CompiledInstruction::FieldAdd { dst, .. }
+            | CompiledInstruction::FieldSub { dst, .. }
+            | CompiledInstruction::FieldSubSum { dst, .. }
+            | CompiledInstruction::FieldTriple { dst, .. }
+            | CompiledInstruction::MulConst { dst, .. }
+            | CompiledInstruction::SelectFieldIfFlag { dst, .. } => {
+                written.insert(*dst as u64);
+            }
+        }
+    }
+    written
+}
+
+fn validate_proof_register_contract(contract: &Value, prepared_leaf: &CompiledLeaf) {
+    assert_eq!(
+        json_string_field(contract, "schema"),
+        "compiler-project-proof-register-contract-v1"
+    );
+    assert!(json_bool_field(contract, "pass"));
+    let checks = json_object_field(contract, "checks")
+        .as_object()
+        .expect("proof register contract checks must be an object");
+    assert!(
+        checks.values().all(|value| value.as_bool() == Some(true)),
+        "proof register contract contains a failing check"
+    );
+    assert!(
+        json_array_field(contract, "unclassified_registers").is_empty(),
+        "proof register contract must not contain unclassified registers"
+    );
+    assert!(
+        json_array_field(contract, "unowned_written_quantum_registers").is_empty(),
+        "proof register contract must not contain unowned written quantum registers"
+    );
+    let rows = json_array_field(contract, "register_rows");
+    assert_eq!(rows.len(), prepared_leaf.register_count);
+    let written = compiled_leaf_written_registers(prepared_leaf);
+    let contract_written: BTreeSet<u64> = json_array_field(contract, "written_register_ids")
+        .iter()
+        .map(|value| value.as_u64().expect("written register id must be u64"))
+        .collect();
+    assert_eq!(contract_written, written);
+    let mut seen_ids = BTreeSet::new();
+    let mut semantic_lookup_registers = BTreeSet::new();
+    for row in rows {
+        let register_id = json_u64_field(row, "register_id");
+        assert!(register_id < prepared_leaf.register_count as u64);
+        assert!(seen_ids.insert(register_id));
+        let is_written = json_bool_field(row, "is_written_by_instruction");
+        assert_eq!(is_written, written.contains(&register_id));
+        match json_string_field(row, "resource_class") {
+            "counted_quantum_wire" => {
+                assert!(json_bool_field(row, "quantum_counted"));
+                assert!(
+                    json_u64_field(row, "qubits") > 0,
+                    "counted proof register must carry positive qubit capacity"
+                );
+                assert!(
+                    row.get("owner_id").and_then(Value::as_str).is_some(),
+                    "counted proof register must name a resource owner"
+                );
+            }
+            "carried_input_alias" => {
+                assert!(!json_bool_field(row, "quantum_counted"));
+                assert!(!is_written);
+            }
+            "semantic_lookup_constant" => {
+                assert!(!json_bool_field(row, "quantum_counted"));
+                assert!(!is_written);
+                semantic_lookup_registers.insert(json_string_field(row, "register").to_owned());
+            }
+            "lookup_metadata_interface" => {
+                assert!(!json_bool_field(row, "quantum_counted"));
+            }
+            other => panic!("unexpected proof register resource class: {other}"),
+        }
+    }
+    assert_eq!(seen_ids.len(), prepared_leaf.register_count);
+    assert!(semantic_lookup_registers.contains("lookup_x"));
+    assert!(semantic_lookup_registers.contains("lookup_y"));
+}
+
 fn validate_reusable_chunk_lowering(
     certificate: &Value,
     claim: &PreparedClaimSummary,
@@ -4729,6 +4857,7 @@ pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValue
         prepared_case_corpus_from_case_corpus(&case_corpus_document)
     );
     assert_eq!(input.prepared_leaf, compile_leaf(&leaf_document));
+    validate_proof_register_contract(&input.proof_register_contract.0, &input.prepared_leaf);
     assert_eq!(claim_document.selected_family_name, family_document.name);
     assert_eq!(
         claim_document.expected_case_count,
@@ -5058,6 +5187,15 @@ mod tests {
 
     #[test]
     #[should_panic]
+    fn prepared_attestation_rejects_forged_proof_register_contract() {
+        let mut input = checked_reusable_chunk_input();
+        input.proof_register_contract.0["register_rows"][7]["resource_class"] =
+            serde_json::json!("semantic_lookup_constant");
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
     fn prepared_attestation_rejects_mutated_prepared_case_corpus() {
         let mut input = checked_input();
         input.prepared_case_corpus.cases[0].case_id = "forged_case".to_owned();
@@ -5139,6 +5277,15 @@ mod tests {
         input.resource_certificate_document.payload.0["qroam_reference_crosscheck"]
             ["ledger_selected_reference"]["junk_register_qubits"] = serde_json::json!(1);
         refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_proof_register_contract_forgery() {
+        let mut input = checked_reusable_chunk_input();
+        input.proof_register_contract.0["register_rows"][0]["resource_class"] =
+            serde_json::json!("unclassified");
         run_prepared_attestation(&input);
     }
 

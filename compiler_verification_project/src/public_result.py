@@ -125,6 +125,13 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             and sum(term['total_non_clifford'] for term in counted_resource_ir['non_clifford_terms']) == non_clifford
             and max(interval['total_live_qubits'] for interval in counted_resource_ir['liveness_intervals']) == qubits
         ),
+        'proof_register_contract_binds_prepared_leaf_to_resource_owners': (
+            input_payload['proof_register_contract']['pass'] is True
+            and len(input_payload['proof_register_contract']['register_rows']) == input_payload['prepared_leaf']['register_count']
+            and input_payload['proof_register_contract']['checks']['every_register_has_declared_contract_class'] is True
+            and input_payload['proof_register_contract']['checks']['every_unclassified_written_register_is_rejected'] is True
+            and input_payload['proof_register_contract']['checks']['semantic_lookup_constants_are_not_materialized_full_coordinate_lanes'] is True
+        ),
         'reusable_chunk_binds_generated_qroam_primitive_certificate': (
             qroam_primitive['pass'] is True
             and lowering['qroam_primitive_certificate'] == qroam_primitive

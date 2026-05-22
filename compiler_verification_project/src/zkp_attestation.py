@@ -308,14 +308,26 @@ def _ensure_defined_register(
     return register_ids[name]
 
 
-def _compile_leaf_for_proof(leaf: Mapping[str, Any]) -> Dict[str, Any]:
-    register_ids = {
-        name: index
-        for index, name in enumerate(
-            ['Q.X', 'Q.Y', 'Q.Z', 'k', 'lookup_x', 'lookup_y', 'lookup_meta', 'qx', 'qy', 'qz']
-        )
-    }
-    defined = {'Q.X', 'Q.Y', 'Q.Z', 'k', 'lookup_x', 'lookup_y', 'lookup_meta'}
+def _initial_proof_register_ids(leaf: Mapping[str, Any]) -> Dict[str, int]:
+    initial_names = (
+        list(leaf['interface_wires'])
+        + ['lookup_x', 'lookup_y']
+        + list(leaf['lookup_interface_slots'])
+        + list(leaf['arithmetic_slots'])
+    )
+    register_ids: Dict[str, int] = {}
+    for name in initial_names:
+        register_name = str(name)
+        if register_name not in register_ids:
+            register_ids[register_name] = len(register_ids)
+    return register_ids
+
+
+def _compile_leaf_for_proof_materials(leaf: Mapping[str, Any]) -> Dict[str, Any]:
+    register_ids = _initial_proof_register_ids(leaf)
+    defined = set(str(name) for name in leaf['interface_wires'])
+    defined.update({'lookup_x', 'lookup_y'})
+    defined.update(str(name) for name in leaf['lookup_interface_slots'])
     compiled_instructions: List[Dict[str, Any]] = []
     for instruction in sorted(leaf['instructions'], key=lambda row: int(row['pc'])):
         op = str(instruction['op'])
@@ -526,7 +538,7 @@ def _compile_leaf_for_proof(leaf: Mapping[str, Any]) -> Dict[str, Any]:
     for output_name in ['qx', 'qy', 'qz']:
         if output_name not in defined:
             raise KeyError(f'missing output register: {output_name}')
-    return {
+    prepared_leaf = {
         'register_count': len(register_ids),
         'input_qx': register_ids['Q.X'],
         'input_qy': register_ids['Q.Y'],
@@ -540,6 +552,122 @@ def _compile_leaf_for_proof(leaf: Mapping[str, Any]) -> Dict[str, Any]:
         'output_qz': register_ids['qz'],
         'skip_on_lookup_infinity': leaf.get('lookup_infinity_policy') == 'boundary_noop',
         'instructions': compiled_instructions,
+    }
+    return {
+        'prepared_leaf': prepared_leaf,
+        'register_ids': dict(register_ids),
+    }
+
+
+def _compile_leaf_for_proof(leaf: Mapping[str, Any]) -> Dict[str, Any]:
+    return _compile_leaf_for_proof_materials(leaf)['prepared_leaf']
+
+
+def _written_register_ids(prepared_leaf: Mapping[str, Any]) -> set[int]:
+    written: set[int] = set()
+    for instruction in prepared_leaf['instructions']:
+        kind = str(instruction['kind'])
+        if kind in {
+            'complete_a0_streamed_tail',
+            'complete_a0_fully_streamed_tail',
+            'complete_a0_all_streamed_tail',
+        }:
+            written.update(int(instruction[key]) for key in ('out_x', 'out_y', 'out_z'))
+        elif kind == 'complete_a0_reusable_chunk_tail':
+            written.update(int(instruction[key]) for key in ('out_x', 'out_y', 'out_z', 'scratch'))
+        else:
+            written.add(int(instruction['dst']))
+    return written
+
+
+def _build_proof_register_contract(
+    *,
+    leaf: Mapping[str, Any],
+    prepared_leaf: Mapping[str, Any],
+    register_ids: Mapping[str, int],
+    resource_certificate: Mapping[str, Any],
+) -> Dict[str, Any]:
+    executable_liveness = resource_certificate.get('executable_liveness', {})
+    counted_ir = resource_certificate.get('counted_resource_ir', {})
+    wire_catalog = dict(counted_ir.get('wire_catalog') or executable_liveness.get('wire_catalog') or {})
+    interface_wires = set(str(name) for name in leaf['interface_wires'])
+    lookup_interface_wires = set(str(name) for name in leaf['lookup_interface_slots'])
+    semantic_lookup_registers = {'lookup_x', 'lookup_y'}
+    written_ids = _written_register_ids(prepared_leaf)
+    rows: List[Dict[str, Any]] = []
+    unclassified_registers: List[str] = []
+    unowned_written_quantum_registers: List[str] = []
+    for name, register_id in sorted(register_ids.items(), key=lambda row: row[1]):
+        wire = wire_catalog.get(name)
+        is_written = int(register_id) in written_ids
+        if wire is not None:
+            resource_class = 'counted_quantum_wire'
+            owner_id = str(wire['owner_id'])
+            qubits = int(wire['qubits'])
+            role = str(wire['role'])
+            quantum_counted = True
+        elif name in interface_wires:
+            resource_class = 'carried_input_alias'
+            owner_id = None
+            qubits = 0
+            role = 'semantic_input_alias_loaded_into_counted_slots'
+            quantum_counted = False
+        elif name in semantic_lookup_registers:
+            resource_class = 'semantic_lookup_constant'
+            owner_id = None
+            qubits = 0
+            role = 'semantic_table_value_not_materialized_as_full_coordinate_lane'
+            quantum_counted = False
+        elif name in lookup_interface_wires:
+            resource_class = 'lookup_metadata_interface'
+            owner_id = None
+            qubits = 0
+            role = 'semantic_lookup_metadata_decoded_into_counted_control_flag'
+            quantum_counted = False
+        else:
+            resource_class = 'unclassified'
+            owner_id = None
+            qubits = 0
+            role = 'missing_resource_contract'
+            quantum_counted = False
+            unclassified_registers.append(name)
+        if is_written and resource_class == 'unclassified':
+            unowned_written_quantum_registers.append(name)
+        rows.append({
+            'register': name,
+            'register_id': int(register_id),
+            'resource_class': resource_class,
+            'is_written_by_instruction': is_written,
+            'quantum_counted': quantum_counted,
+            'owner_id': owner_id,
+            'qubits': qubits,
+            'role': role,
+        })
+    semantic_lookup_materialized_set = semantic_lookup_registers.intersection(wire_catalog)
+    semantic_lookup_materialized = sorted(semantic_lookup_materialized_set)
+    register_count = int(prepared_leaf['register_count'])
+    checks = {
+        'register_ids_are_contiguous': sorted(register_ids.values()) == list(range(register_count)),
+        'register_rows_match_prepared_leaf_count': len(rows) == register_count,
+        'every_register_has_declared_contract_class': not unclassified_registers,
+        'every_unclassified_written_register_is_rejected': not unowned_written_quantum_registers,
+        'semantic_lookup_constants_are_not_materialized_full_coordinate_lanes': not semantic_lookup_materialized,
+        'all_counted_rows_reference_wire_catalog_owner': all(
+            row['resource_class'] != 'counted_quantum_wire' or row['register'] in wire_catalog
+            for row in rows
+        ),
+    }
+    return {
+        'schema': 'compiler-project-proof-register-contract-v1',
+        'derivation': 'proof register map derived from leaf interface/arithmetic slots and checked resource wire catalog',
+        'resource_certificate_schema': resource_certificate['schema'],
+        'register_rows': rows,
+        'written_register_ids': sorted(written_ids),
+        'unclassified_registers': unclassified_registers,
+        'unowned_written_quantum_registers': unowned_written_quantum_registers,
+        'semantic_lookup_registers_not_materialized': sorted(semantic_lookup_registers - semantic_lookup_materialized_set),
+        'checks': checks,
+        'pass': all(checks.values()),
     }
 
 
@@ -724,7 +852,14 @@ def _build_zkp_attestation_materials(
         artifact_path='compiler_verification_project/artifacts/zkp_attestation_claim.json',
         payload=public_claim,
     )
-    prepared_leaf = _compile_leaf_for_proof(leaf)
+    proof_leaf_materials = _compile_leaf_for_proof_materials(leaf)
+    prepared_leaf = proof_leaf_materials['prepared_leaf']
+    proof_register_contract = _build_proof_register_contract(
+        leaf=leaf,
+        prepared_leaf=prepared_leaf,
+        register_ids=proof_leaf_materials['register_ids'],
+        resource_certificate=resource_certificate,
+    )
     prepared_case_corpus = _prepared_case_corpus(case_corpus)
     return {
         'input': {
@@ -764,6 +899,7 @@ def _build_zkp_attestation_materials(
                 'total_logical_qubits': int(family_payload['total_logical_qubits']),
             },
             'prepared_leaf': prepared_leaf,
+            'proof_register_contract': proof_register_contract,
             'prepared_case_corpus': prepared_case_corpus,
             'notes': [
                 'The proof input carries both the committed source documents and proof-ready reductions.',
