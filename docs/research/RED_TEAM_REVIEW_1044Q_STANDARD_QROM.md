@@ -1622,6 +1622,12 @@ Current remediation:
   profile resolver as the build script, public-headline policy mutation tests
   mutate the checked policy value rather than restating `1199`, and IBM context
   tests derive headline strings from `public_headline_result.json`.
+- The release preproof unit tests no longer restate the current
+  `36,957,412 / 1,199` headline or the release case count. They derive the
+  mocked execute public values from `public_headline_result.json` and the
+  release proof-corpus resolver, and the active `tests/`, `src/`, and
+  `scripts/` gates no longer contain those headline literals as independent
+  pass conditions.
 
 ### P1: Reproducible proof environment
 

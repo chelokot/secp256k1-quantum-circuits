@@ -7,6 +7,8 @@ from typing import Any, Dict
 PROOF_CORPUS_PROFILE_SCHEMA = 'compiler-project-proof-corpus-profiles-v1'
 SMOKE_PUBLIC_PROFILE = 'smoke_public_8'
 GOOGLE_COMPARABLE_PROFILE = 'google_comparable_9024'
+SMOKE_PUBLIC_CASE_COUNT = 8
+GOOGLE_COMPARABLE_CASE_COUNT = 9024
 PROFILE_SELECTORS = {
     'selected-public': SMOKE_PUBLIC_PROFILE,
     'release': GOOGLE_COMPARABLE_PROFILE,
@@ -16,13 +18,13 @@ PROFILE_SELECTORS = {
 def build_proof_corpus_profiles() -> Dict[str, Any]:
     profiles = {
         SMOKE_PUBLIC_PROFILE: {
-            'case_count': 8,
+            'case_count': SMOKE_PUBLIC_CASE_COUNT,
             'case_start': 0,
             'role': 'current public smoke attestation',
             'release_grade': False,
         },
         GOOGLE_COMPARABLE_PROFILE: {
-            'case_count': 9024,
+            'case_count': GOOGLE_COMPARABLE_CASE_COUNT,
             'case_start': 0,
             'role': 'Google-disclosure-size public corpus target',
             'release_grade': True,
@@ -32,8 +34,8 @@ def build_proof_corpus_profiles() -> Dict[str, Any]:
     checks = {
         'selected_public_profile_exists': SMOKE_PUBLIC_PROFILE in profiles,
         'google_comparable_profile_exists': GOOGLE_COMPARABLE_PROFILE in profiles,
-        'selected_public_profile_is_explicit_smoke': selected['case_count'] == 8 and selected['release_grade'] is False,
-        'google_comparable_profile_is_release_grade': profiles[GOOGLE_COMPARABLE_PROFILE]['case_count'] == 9024 and profiles[GOOGLE_COMPARABLE_PROFILE]['release_grade'] is True,
+        'selected_public_profile_is_explicit_smoke': selected['case_count'] == SMOKE_PUBLIC_CASE_COUNT and selected['release_grade'] is False,
+        'google_comparable_profile_is_release_grade': profiles[GOOGLE_COMPARABLE_PROFILE]['case_count'] == GOOGLE_COMPARABLE_CASE_COUNT and profiles[GOOGLE_COMPARABLE_PROFILE]['release_grade'] is True,
     }
     return {
         'schema': PROOF_CORPUS_PROFILE_SCHEMA,
@@ -66,9 +68,11 @@ def resolve_proof_corpus_profile(selector: str) -> Dict[str, Any]:
 
 
 __all__ = [
+    'GOOGLE_COMPARABLE_CASE_COUNT',
     'GOOGLE_COMPARABLE_PROFILE',
     'PROFILE_SELECTORS',
     'PROOF_CORPUS_PROFILE_SCHEMA',
+    'SMOKE_PUBLIC_CASE_COUNT',
     'SMOKE_PUBLIC_PROFILE',
     'build_proof_corpus_profiles',
     'resolve_proof_corpus_profile',

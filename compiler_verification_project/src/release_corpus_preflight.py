@@ -26,7 +26,7 @@ from common import (  # noqa: E402
     sha256_bytes,
 )
 from lookup_fed_leaf import execute_leaf_contract  # noqa: E402
-from proof_corpus_profiles import GOOGLE_COMPARABLE_PROFILE  # noqa: E402
+from proof_corpus_profiles import GOOGLE_COMPARABLE_CASE_COUNT, GOOGLE_COMPARABLE_PROFILE  # noqa: E402
 
 
 PointAffine = Optional[Tuple[int, int]]
@@ -140,7 +140,7 @@ def build_release_corpus_preflight(
     checks = {
         'release_profile_is_google_comparable_9024': (
             proof_corpus_profiles['release_profile'] == GOOGLE_COMPARABLE_PROFILE
-            and case_count == 9024
+            and case_count == GOOGLE_COMPARABLE_CASE_COUNT
             and release_profile['release_grade'] is True
         ),
         'all_edge_categories_present': expected_categories.issubset(category_counts),

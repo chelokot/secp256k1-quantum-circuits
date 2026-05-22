@@ -20,8 +20,6 @@ if str(ROOT_SRC) not in sys.path:
 
 from common import sha256_path  # noqa: E402
 from proof_corpus_profiles import resolve_proof_corpus_profile  # noqa: E402
-from zkp_attestation import write_zkp_attestation_inputs  # noqa: E402
-
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -63,18 +61,32 @@ def parse_args() -> argparse.Namespace:
 
 def build_release_input(output_dir: Path) -> dict[str, Any]:
     profile = resolve_proof_corpus_profile('release')
-    payload = write_zkp_attestation_inputs(
-        family_name='reusable-chunk',
-        case_count=int(profile['case_count']),
-        case_start=int(profile['case_start']),
-        output_dir=output_dir,
+    command = [
+        sys.executable,
+        'compiler_verification_project/scripts/build_zkp_attestation_input.py',
+        '--family',
+        'reusable-chunk',
+        '--profile',
+        'release',
+        '--output-dir',
+        str(output_dir),
+    ]
+    completed = subprocess.run(
+        command,
+        cwd=PROJECT_ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
     )
+    builder_report = parse_json_object(completed.stdout)
     input_path = output_dir / 'zkp_attestation_input.json'
+    payload = json.loads(input_path.read_text())
     return {
         'profile': profile['name'],
         'profile_release_grade': bool(profile['release_grade']),
         'case_start': int(profile['case_start']),
-        'case_count': int(payload['prepared_case_corpus']['case_count']),
+        'case_count': int(builder_report['case_count']),
+        'builder_command': command,
         'input_path': str(input_path),
         'input_sha256': sha256_path(input_path),
         'selected_family_name': payload['selected_family_name'],
@@ -86,7 +98,7 @@ def build_release_input(output_dir: Path) -> dict[str, Any]:
     }
 
 
-def parse_guarded_runner_json(stdout: str) -> dict[str, Any]:
+def parse_json_object(stdout: str) -> dict[str, Any]:
     for index, character in enumerate(stdout):
         if character != '{':
             continue
@@ -97,6 +109,10 @@ def parse_guarded_runner_json(stdout: str) -> dict[str, Any]:
         if isinstance(payload, dict):
             return payload
     raise ValueError('guarded runner output did not contain a JSON object')
+
+
+def parse_guarded_runner_json(stdout: str) -> dict[str, Any]:
+    return parse_json_object(stdout)
 
 
 def execute_release_input(
@@ -169,7 +185,9 @@ def main() -> int:
     output_dir, temporary = planned_output_dir(args)
     try:
         output_dir.mkdir(parents=True, exist_ok=True)
+        print(f'[release-candidate-preproof] building release input in {output_dir}', file=sys.stderr, flush=True)
         input_report = build_release_input(output_dir)
+        print('[release-candidate-preproof] finished release input build', file=sys.stderr, flush=True)
         report: dict[str, Any] = {
             'schema': 'compiler-project-release-candidate-preproof-v1',
             'proof_invoked': False,
@@ -177,12 +195,14 @@ def main() -> int:
             'input': input_report,
         }
         if args.execute:
+            print('[release-candidate-preproof] starting SP1 execute-only replay', file=sys.stderr, flush=True)
             report['execute'] = execute_release_input(
                 input_path=Path(input_report['input_path']),
                 output_dir=output_dir,
                 resource_profile=args.resource_profile,
                 skip_build=args.skip_build,
             )
+            print('[release-candidate-preproof] finished SP1 execute-only replay', file=sys.stderr, flush=True)
         print(json.dumps(report, indent=2, sort_keys=True))
         return 0
     finally:

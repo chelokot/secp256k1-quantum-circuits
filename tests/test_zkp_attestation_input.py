@@ -18,7 +18,7 @@ if str(ROOT_SRC) not in sys.path:
 
 from common import SECP_P, add_affine, affine_to_proj, proj_to_affine  # noqa: E402
 from lookup_fed_leaf import build_streamed_lookup_tail_leaf, execute_leaf_contract  # noqa: E402
-from proof_corpus_profiles import GOOGLE_COMPARABLE_PROFILE, resolve_proof_corpus_profile, selected_public_case_count  # noqa: E402
+from proof_corpus_profiles import GOOGLE_COMPARABLE_CASE_COUNT, GOOGLE_COMPARABLE_PROFILE, resolve_proof_corpus_profile, selected_public_case_count  # noqa: E402
 from zkp_attestation import DIGEST_SCHEME, build_zkp_attestation_input, write_zkp_attestation_inputs  # noqa: E402
 
 
@@ -410,7 +410,7 @@ def test_zkp_attestation_bundle_supports_alternate_output_dir(tmp_path: Path) ->
 def test_release_profile_selector_resolves_google_comparable_corpus() -> None:
     profile = resolve_proof_corpus_profile('release')
     assert profile['name'] == GOOGLE_COMPARABLE_PROFILE
-    assert profile['case_count'] == 9024
+    assert profile['case_count'] == GOOGLE_COMPARABLE_CASE_COUNT
     assert profile['case_start'] == 0
     assert profile['release_grade'] is True
 

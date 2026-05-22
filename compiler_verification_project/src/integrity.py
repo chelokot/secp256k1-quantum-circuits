@@ -36,7 +36,7 @@ from physical_estimator import (
     build_azure_estimator_target_payload,
     build_or_load_azure_estimator_results_payload,
 )
-from proof_corpus_profiles import GOOGLE_COMPARABLE_PROFILE, SMOKE_PUBLIC_PROFILE, build_proof_corpus_profiles
+from proof_corpus_profiles import GOOGLE_COMPARABLE_CASE_COUNT, GOOGLE_COMPARABLE_PROFILE, SMOKE_PUBLIC_PROFILE, build_proof_corpus_profiles
 from proof_environment_contract import PROOF_ENVIRONMENT_CONTRACT_SCHEMA, build_proof_environment_contract
 from proof_publication_status import PROOF_PUBLICATION_STATUS_SCHEMA, build_proof_publication_status
 from public_result import build_public_headline_result, write_public_headline_result
@@ -2391,7 +2391,7 @@ def build_release_corpus_preflight_checks(artifacts: Mapping[str, Any]) -> Dict[
         _check('release_corpus_preflight_matches_generator', preflight == expected, expected, preflight),
         _check('release_corpus_preflight_schema_is_current', preflight['schema'] == 'compiler-project-release-corpus-preflight-v1', 'compiler-project-release-corpus-preflight-v1', preflight['schema']),
         _check('release_corpus_preflight_passes_internal_checks', preflight['pass'] is True and all(preflight['checks'].values()), True, preflight['checks']),
-        _check('release_corpus_preflight_runs_google_comparable_case_count', preflight['case_count'] == release['case_count'] == 9024 and preflight['release_grade'] is True, release, {'case_count': preflight['case_count'], 'release_grade': preflight['release_grade']}),
+        _check('release_corpus_preflight_runs_google_comparable_case_count', preflight['case_count'] == release['case_count'] == GOOGLE_COMPARABLE_CASE_COUNT and preflight['release_grade'] is True, release, {'case_count': preflight['case_count'], 'release_grade': preflight['release_grade']}),
         _check('release_corpus_preflight_covers_forced_edge_categories', set(preflight['category_counts']) == {'accumulator_infinity', 'doubling', 'inverse', 'lookup_infinity', 'random', 'zero_zero'}, 'all forced edge categories plus random', preflight['category_counts']),
         _check('release_corpus_preflight_has_stable_stream_digest', isinstance(preflight['case_stream_sha256'], str) and len(preflight['case_stream_sha256']) == 64, '64 hex chars', preflight['case_stream_sha256']),
     ]
