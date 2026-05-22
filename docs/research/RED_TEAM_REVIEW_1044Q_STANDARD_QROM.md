@@ -1578,13 +1578,20 @@ Current remediation:
   stream costs, and phase-shell count drift without invoking SP1.
 - `compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json`
   now gives the promoted reusable-chunk candidate its own deterministic
-  run-length primitive stream boundary. It reconstructs `36,957,412 / 1,199`,
-  expands all `186` public QROAM streams through the generated QROAM segment
-  certificate, binds selected phase-shell rows, and is itself bound by
-  `public_engine_manifest.json` and `public_headline_result.json`. This still is
-  not a Clifford-complete full netlist, but it removes the previous situation
-  where the only materialized circuit manifest described the superseded
-  three-slot frontier family.
+  run-length primitive stream boundary and a canonical flat operation-index
+  netlist commitment. It reconstructs `36,957,412 / 1,199`, stores all
+  `5,461` run-length rows and matching liveness/owner rows, expands all `186`
+  public QROAM streams through the generated QROAM segment certificate, and
+  commits to `39,370,727` primitive operations over `40` deterministic
+  flat-index segments. `public_engine_manifest.json` binds the flat segment
+  Merkle root and `public_headline_result.json` now takes headline totals from
+  the engine/materialized outputs while treating formula rows as consistency
+  snapshots. This removes the previous situation where the only materialized
+  circuit manifest described the superseded three-slot frontier family. The
+  remaining caveat is narrower: the checked flat-index stream is an expandable
+  primitive-instruction commitment with macro/source-row liveness binding, not a
+  physical placement/routing schedule or a multi-gigabyte checked-in TSV with
+  one line per primitive operation.
 - `compiler_verification_project/artifacts/arithmetic_operation_ir.json` now
   reconstructs arithmetic block/stage/kernel/selected-leaf primitive counts from
   materialized operation streams and digests. The resource-liveness certificate
@@ -1607,13 +1614,20 @@ Current remediation:
 
 Still open:
 
-- This is a counted-resource IR and arithmetic operation-stream digest layer,
-  not yet one Clifford-complete executable primitive circuit netlist shared by
-  semantics, lowering, liveness, and SP1 execution.
-- The ZKP still proves the semantic point-add boundary plus resource-certificate
-  consistency. It is stronger than handwritten formula trust, but not yet the
-  same confidence class as a proof that executes the full resource-counted
-  primitive circuit.
+- The repo now has a single public flat-index primitive-operation commitment for
+  counting and liveness, but the semantic executor still runs the point-add
+  boundary contract rather than simulating every one of the `39,370,727`
+  primitive instructions. The next confidence jump is to make the same flat
+  stream executable at the primitive-op layer, at least under a reduced-width
+  test harness.
+- The checked flat-index stream binds liveness/owner rows per contribution and
+  recomputes owner sums from the wire catalog, but arithmetic rows still inherit
+  macro/stage wire scopes. A reviewer can still ask for per-Toffoli operand
+  wires for every arithmetic primitive, not only stage-level source rows.
+- The ZKP still proves the semantic point-add boundary plus resource-engine
+  consistency. It is stronger than handwritten formula trust and now references
+  the flat-index engine output, but it is not yet the same confidence class as a
+  proof that executes the full resource-counted primitive circuit.
 
 ### P1: QROM/QROAM reference cross-check
 
@@ -1791,8 +1805,10 @@ Use:
 > result, and `proof_status.py --require-all-current` is the release gate for
 > checked SP1 compressed/Groth16 proof freshness. This improves the cited public
 > Google 2026 resource lines numerically, but the proof boundary is not
-> identical to Google's hidden-circuit 9024-case SP1/Groth16 attestation and the
-> repository does not yet ship a Clifford-complete flattened full-Shor netlist.
+> identical to Google's hidden-circuit 9024-case SP1/Groth16 attestation. The
+> repository now ships a flat-index primitive-operation commitment for the
+> public candidate, but it still does not prove a physical full-Shor execution
+> schedule or SP1 execution of every primitive operation.
 
 ## Bottom Line
 
@@ -1886,9 +1902,11 @@ Fixed after review:
   by `public_headline_result.json` plus integrity checks. The repo also emits
   `public_candidate_materialized_circuit_manifest.json` for the promoted
   result, so the public candidate has its own checked run-length primitive
-  stream instead of relying on the older
-  `34,925,796 / 1,044` materialized frontier family. These are still
-  counted/run-length stream manifests, not a Clifford-complete per-gate netlist.
+  stream and flat-index segment commitment instead of relying on the older
+  `34,925,796 / 1,044` materialized frontier family. The current artifact
+  commits to the complete public operation-index range and segment roots; the
+  remaining red-team ask is per-primitive arithmetic operand wires and primitive
+  execution, not another resource formula.
 
 Partially mitigated after review:
 

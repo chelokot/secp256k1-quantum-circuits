@@ -138,9 +138,17 @@ summary and streamed lookup tail point-add leaf. The guest:
   deterministic case corpus, and resource liveness certificate,
 - replays the exact streamed lookup tail point-add contract on every public case,
 - checks the affine group law for every case, and
-- reconstructs the claimed full-oracle non-Clifford and logical-qubit totals
-  from the selected family summary, including the resource certificate's
-  derived owner-capacity obligations, before committing public values.
+- checks that the public claim summary matches the resource-engine totals,
+  including derived owner-capacity obligations, before committing public values.
+
+The no-ZKP public engine layer is the audit-first source of the current resource
+claim. `public_candidate_materialized_circuit_manifest.json` stores the
+run-length primitive rows, liveness/owner rows, and a flat operation-index
+commitment for the promoted reusable-chunk candidate. The checked flat-index
+stream covers `39,370,727` primitive operations over `40` deterministic
+segments; `public_engine_manifest.json` binds that segment root alongside the
+instruction, wire, schedule, owner-capacity, resource-term, semantic-boundary,
+arithmetic-IR, QROAM, and phase-shell evidence.
 
 The checked JSON sidecars remain the audit-friendly source-of-truth inputs for
 that bundle. The candidate directory records core, compressed, and Groth16

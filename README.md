@@ -102,15 +102,17 @@ and bind:
 - a hashed reusable-chunk lowering/resource certificate
 
 The SP1 guest re-checks semantic hashes for those embedded typed documents,
-replays the leaf on every public case, checks the affine group law, and
-reconstructs the claimed exact non-Clifford and logical-qubit formulas. It also
-checks the resource certificate, including executable interval liveness,
-qchunk/QROAM-target concurrency, no full-coordinate lookup lane, and numeric
-owner capacity. The current-headline counted-resource stream is separately
-materialized in
+replays the leaf on every public case, checks the affine group law, and checks
+that the public claim summary matches the resource-engine output embedded in
+the reusable-chunk resource document. Formula rows remain as consistency
+snapshots, not as the primary public-result source. The no-ZKP engine path also
+checks executable interval liveness, qchunk/QROAM-target concurrency, no
+full-coordinate lookup lane, numeric owner capacity, and the current
+flat-index primitive netlist commitment. The current-headline counted-resource
+stream is separately materialized in
 `compiler_verification_project/artifacts/headline_resource_manifest.json`, so
-the promoted `36,957,412 / 1,199` result is not backed by the older
-three-slot materialized manifest by accident. It also validates the committed compiler-parameter document
+the promoted `36,957,412 / 1,199` result is not backed by the older three-slot
+materialized manifest by accident. It also validates the committed compiler-parameter document
 before committing public values. `compiler_verification_project/artifacts/constant_provenance.json`
 binds the selected phase-shell counts, headline totals, and publication limits
 from their source artifacts into the ZKP family document and public headline
@@ -127,18 +129,23 @@ stale until rebuilt against the current resource digest.
 The compiler artifacts also include `public_candidate_materialized_circuit_manifest.json`
 and `public_engine_manifest.json`, a no-ZKP engine gate for the current public
 candidate. The public-candidate materialized manifest expands the reusable
-claim into deterministic run-length primitive rows, including all 186 QROAM
-streams over the generated QROAMClean segment certificate. The public engine
-manifest then binds that stream, executable instruction rows, wires, schedule
-events, owner-capacity rows, resource terms, semantic-boundary evidence,
-arithmetic operation IR, the generated QROAMClean `K = 1` primitive certificate,
-and the selected semiclassical phase shell into the same public claim layer.
+claim into deterministic run-length primitive rows and a canonical flat
+operation-index netlist commitment. The current checked flat-index stream covers
+`39,370,727` primitive operations over `40` deterministic segments; each segment
+binds the contributing run-length rows, operation-index ranges, liveness rows,
+derived owner-qubit sums, all 186 QROAM streams over the generated QROAMClean
+segment certificate, arithmetic-operation IR rows, lookup-base rows, and the
+selected phase-shell rows. The public engine manifest then binds that flat
+stream, executable instruction rows, wires, schedule events, owner-capacity
+rows, resource terms, semantic-boundary evidence, arithmetic operation IR, the
+generated QROAMClean `K = 1` primitive certificate, and the selected
+semiclassical phase shell into the same public claim layer.
 The QROAM reference keeps the selected 155-bit reusable chunk stream separate
 from the 256-bit full-field ledger sweep, so reviewers can audit the selected
 lookup stream and the field-multiplication pseudo-Mersenne reduction without
 treating them as loose spreadsheet constants.
 This is similar in shape to Google's disclosure model, but it is still not a
-primitive-gate full-Shor proof.
+physical-layout or runtime proof for a complete full-Shor machine.
 
 ### Primary audited mainline
 
@@ -344,9 +351,10 @@ focused Python mutation tests. The public engine manifest also binds semantic
 boundary evidence: the streamed-tail edge-case equivalence, reusable-tail toy
 semantic/scratch trace, 9024-case release corpus preflight, and checked smoke
 case categories. It also binds the public-candidate materialized run-length
-stream plus primitive-operation evidence from the arithmetic operation IR,
-QROAM primitive certificate, and phase-shell lowering so drift in those
-generated streams fails before any prover is considered. Add
+stream, the flat-index netlist segment root, and primitive-operation evidence
+from the arithmetic operation IR, QROAM primitive certificate, and phase-shell
+lowering so drift in those generated streams fails before any prover is
+considered. Add
 `--include-rust` when you also want the SP1
 attestation-library reusable-chunk unit tests, still without proving.
 After compressed/Groth16 proof rebuilds, run the same preflight with
