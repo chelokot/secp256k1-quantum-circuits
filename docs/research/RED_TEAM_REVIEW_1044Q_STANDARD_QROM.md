@@ -577,6 +577,11 @@ Every checked fixture now carries explicit sidecar metadata:
 
 `tests/test_zkp_attestation_input.py` verifies those fixture fields against the
 checked binary proof bundles and checked Groth16 verifier key.
+`compiler_verification_project/scripts/proof_status.py` also reports
+`input_binding_status` and `stale_reasons` per proof system, so stale checked
+fixtures cannot look fresh merely because the sidecar proof/key digests match.
+The current stale fixtures correctly report `missing_fixture_input_metadata`
+until a real proof rebuild emits proof-time input hashes.
 
 This is not a mathematical bug. The binary proof verified locally. But it is a
 release-packaging weakness:
@@ -590,6 +595,9 @@ Required hardening:
 
 - Keep proof and verifier-key sidecar metadata in every fixture and keep tests
   verifying the metadata against checked binary files.
+- Do not backfill stale fixtures with the current input hash. A fixture may
+  claim `matches_current_input` only after the proof was actually generated or
+  verified against that input.
 
 ## Hardcoded Numbers And Computations
 

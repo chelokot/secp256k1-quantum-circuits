@@ -32,6 +32,20 @@ def test_proof_status_reports_fixture_freshness_without_running_provers() -> Non
         assert isinstance(status['current'], bool)
         assert isinstance(status['input_digest_matches_fixture'], bool)
         assert status['observed_input_sha256'] == report['candidate_input_sha256']
+        assert status['input_binding_status'] in {
+            'matches_current_input',
+            'missing_fixture_input_metadata',
+            'fixture_input_file_missing',
+            'fixture_input_file_digest_mismatch',
+            'points_to_stale_input_artifact',
+        }
+        assert isinstance(status['stale_reasons'], list)
+        if status['input_binding_status'] == 'missing_fixture_input_metadata':
+            assert status['input_path'] is None
+            assert status['input_file_exists'] is None
+            assert status['fixture_input_observed_sha256'] is None
+        if status['input_binding_status'] != 'matches_current_input':
+            assert status['input_binding_status'] in status['stale_reasons']
         assert isinstance(status['public_values_match_current'], bool)
         assert isinstance(status['resource_digest_matches_input'], bool)
         proof_current = status['proof_sha256_matches_fixture']
@@ -46,6 +60,7 @@ def test_proof_status_reports_fixture_freshness_without_running_provers() -> Non
             and status['resource_digest_matches_input']
             and proof_current and key_current
         )
+        assert status['current'] == (status['stale_reasons'] == [])
     assert report['all_current'] == (report['stale_systems'] == [])
     assert report['all_current'] == all(status['current'] for status in report['systems'].values())
 

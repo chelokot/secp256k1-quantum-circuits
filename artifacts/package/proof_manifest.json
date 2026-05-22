@@ -515,8 +515,8 @@
       "bytes": 2405
     },
     "compiler_verification_project/scripts/proof_status.py": {
-      "sha256": "bf0615953903bc2791a7a43bd50ff825526c465bb237a873f588b93d33cdafa1",
-      "bytes": 6441
+      "sha256": "a9658686b7b11ab40cd55466192b0c87f1f9f72e3252f0de42acd878f461cda2",
+      "bytes": 8597
     },
     "compiler_verification_project/artifacts/build_summary.json": {
       "sha256": "a44357610c94362adb64939fbff796201bcab6be1f8ddd5ae0fc2bffa0665ad1",

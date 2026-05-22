@@ -91,6 +91,32 @@ def fixture_status(system: str, input_payload: dict[str, Any], public_values: di
     input_path = CANDIDATE_ROOT / 'zkp_attestation_input.json'
     input_sha256 = sha256_path(input_path)
     input_size = input_path.stat().st_size
+    fixture_input_path = fixture.get('input_path')
+    fixture_input_file_exists = None
+    fixture_input_observed_sha256 = None
+    fixture_input_observed_size = None
+    if fixture_input_path is None:
+        input_binding_status = 'missing_fixture_input_metadata'
+    else:
+        fixture_input_file = PROJECT_ROOT / fixture_input_path
+        fixture_input_file_exists = fixture_input_file.exists()
+        if fixture_input_file_exists:
+            fixture_input_observed_sha256 = sha256_path(fixture_input_file)
+            fixture_input_observed_size = fixture_input_file.stat().st_size
+        if not fixture_input_file_exists:
+            input_binding_status = 'fixture_input_file_missing'
+        elif (
+            fixture_input_observed_sha256 != fixture.get('input_sha256')
+            or fixture_input_observed_size != fixture.get('input_size_bytes')
+        ):
+            input_binding_status = 'fixture_input_file_digest_mismatch'
+        elif (
+            fixture.get('input_sha256') == input_sha256
+            and fixture.get('input_size_bytes') == input_size
+        ):
+            input_binding_status = 'matches_current_input'
+        else:
+            input_binding_status = 'points_to_stale_input_artifact'
     input_digest_matches_fixture = (
         fixture.get('input_sha256') == input_sha256
         and fixture.get('input_size_bytes') == input_size
@@ -113,17 +139,34 @@ def fixture_status(system: str, input_payload: dict[str, Any], public_values: di
         and proof_current
         and key_current
     )
+    stale_reasons = []
+    if input_binding_status != 'matches_current_input':
+        stale_reasons.append(input_binding_status)
+    if not public_values_match_current:
+        stale_reasons.append('fixture_public_values_do_not_match_checked_public_values')
+    if not resource_digest_matches_input:
+        stale_reasons.append('fixture_resource_digest_does_not_match_current_input')
+    if not proof_current:
+        stale_reasons.append('proof_binary_does_not_match_fixture')
+    if not key_current:
+        stale_reasons.append('verifier_key_does_not_match_fixture')
     return {
         'system': system,
         'current': current,
         'verification_key': fixture['verification_key'],
-        'input_path': fixture.get('input_path'),
+        'input_path': fixture_input_path,
+        'input_file_exists': fixture_input_file_exists,
         'input_sha256': fixture.get('input_sha256'),
+        'input_size_bytes': fixture.get('input_size_bytes'),
         'observed_input_sha256': input_sha256,
+        'fixture_input_observed_sha256': fixture_input_observed_sha256,
+        'fixture_input_observed_size_bytes': fixture_input_observed_size,
+        'input_binding_status': input_binding_status,
         'input_digest_matches_fixture': input_digest_matches_fixture,
         'resource_certificate_sha256': fixture_public_values['resource_certificate_sha256'],
         'public_values_match_current': public_values_match_current,
         'resource_digest_matches_input': resource_digest_matches_input,
+        'stale_reasons': stale_reasons,
         **proof_status,
         **key_status,
     }
