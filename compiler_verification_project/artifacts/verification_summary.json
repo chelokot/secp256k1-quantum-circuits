@@ -6101,21 +6101,21 @@
     ]
   },
   "reusable_chunk_lowering_checks": {
-    "pass": 13,
-    "total": 13,
+    "pass": 15,
+    "total": 15,
     "checks": [
       {
         "name": "reusable_chunk_lowering_matches_generator",
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "27343e16b0c24bd8229a5d7ff67a656c9e73c247b2c16f4490e665164a49161c",
-          "size_bytes": 11856
+          "sha256": "02f9906ec4294b238156ea04c0c8eda53507a08aade0bacc4d8fb56bf002666b",
+          "size_bytes": 18592
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "27343e16b0c24bd8229a5d7ff67a656c9e73c247b2c16f4490e665164a49161c",
-          "size_bytes": 11856
+          "sha256": "02f9906ec4294b238156ea04c0c8eda53507a08aade0bacc4d8fb56bf002666b",
+          "size_bytes": 18592
         }
       },
       {
@@ -6148,6 +6148,8 @@
           "non_clifford_matches_candidate": true,
           "logical_qubits_match_candidate": true,
           "owner_capacity_rows_cover_required_peak": true,
+          "executable_liveness_peak_matches_candidate": true,
+          "executable_liveness_owner_peaks_match_capacity": true,
           "fits_requested_limits": true
         }
       },
@@ -6527,6 +6529,35 @@
           ],
           "required_global_peak_qubits": 1199,
           "capacity_global_peak_qubits": 1199
+        }
+      },
+      {
+        "name": "reusable_chunk_lowering_executable_liveness_reconstructs_peak",
+        "pass": 1,
+        "expected": {
+          "global_peak_live_qubits": 1199,
+          "owner_peaks_equal_capacity": true
+        },
+        "observed": {
+          "summary": "payload omitted from verification summary because it exceeds the inline size limit",
+          "sha256": "06de12d5fb1752e76e1b1e291f9bcdab02befb1c93f2bfba7fdab5a3bdaef0c0",
+          "size_bytes": 6609
+        }
+      },
+      {
+        "name": "reusable_chunk_lowering_executable_liveness_counts_qchunk_and_qroam_target_concurrently",
+        "pass": 1,
+        "expected": {
+          "qchunk_and_qroam_target_concurrent": true,
+          "full_coordinate_lane_live": false
+        },
+        "observed": {
+          "every_wire_has_exactly_one_owner": true,
+          "every_owner_is_declared": true,
+          "owner_peaks_fit_capacity": true,
+          "global_peak_equals_sum_of_interval_liveness": true,
+          "qroam_target_and_qchunk_are_concurrently_live": true,
+          "no_full_coordinate_lane_wire_is_live": true
         }
       },
       {
@@ -10437,13 +10468,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "d7fb56d244977d30d8e944482573f2a37aa79dcbac1f49fea527361583efe6b1",
-          "size_bytes": 9456
+          "sha256": "e3829010bcebfa6e01751d4fb2ac70dbd97cc0bb4545f3664c9d637af8167299",
+          "size_bytes": 9605
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "d7fb56d244977d30d8e944482573f2a37aa79dcbac1f49fea527361583efe6b1",
-          "size_bytes": 9456
+          "sha256": "e3829010bcebfa6e01751d4fb2ac70dbd97cc0bb4545f3664c9d637af8167299",
+          "size_bytes": 9605
         }
       },
       {
@@ -10462,6 +10493,7 @@
           "compressed_fixture_binds_checked_proof_binary": true,
           "groth16_fixture_binds_checked_proof_and_verifier_key": true,
           "reusable_chunk_lowering_is_proven_for_public_headline": true,
+          "reusable_chunk_executable_liveness_binds_public_qubits": true,
           "reusable_chunk_tail_contract_is_proven_for_public_headline": true,
           "fits_strict_public_goal": true
         }
@@ -10494,7 +10526,7 @@
           "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
           "family_sha256": "c1a1cd68e1c159353724cb3e21b98c65115b2add9930d247b3f5f0f85dd5ba20",
           "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
-          "resource_certificate_sha256": "115d8161c48048c81da2cadb7f4f0cc12dce241e4a272586fca463d9a5e76439",
+          "resource_certificate_sha256": "d37820bea8e18cab61a8db7ec90efd4fb12801e5398ae686648555bcf1065c53",
           "expected_full_oracle_non_clifford": 36767692,
           "expected_total_logical_qubits": 1199,
           "case_count": 8,
@@ -10514,12 +10546,12 @@
         "pass": 1,
         "expected": {
           "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin",
-          "sha256": "c167a585b3ffd82751ee0889e66c26dee34fdeb83e932849c438c933db3277f0",
+          "sha256": "49d81633c8d60d99f30d0874effc1687856eeddc74b7df578535ab5313d566e3",
           "bytes": 1273162
         },
         "observed": {
           "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin",
-          "sha256": "c167a585b3ffd82751ee0889e66c26dee34fdeb83e932849c438c933db3277f0",
+          "sha256": "49d81633c8d60d99f30d0874effc1687856eeddc74b7df578535ab5313d566e3",
           "bytes": 1273162
         }
       },
@@ -10528,13 +10560,13 @@
         "pass": 1,
         "expected": {
           "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_groth16.bin",
-          "sha256": "50b23255eceb8672db00f01e1b73b314cc24726afe0b008083447079ba6063c3",
-          "bytes": 2287
+          "sha256": "95e5f291652d6f1864cc22fb259cd87b335e204d28b8955f3e7e255ff4f75fc2",
+          "bytes": 2285
         },
         "observed": {
           "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_groth16.bin",
-          "sha256": "50b23255eceb8672db00f01e1b73b314cc24726afe0b008083447079ba6063c3",
-          "bytes": 2287
+          "sha256": "95e5f291652d6f1864cc22fb259cd87b335e204d28b8955f3e7e255ff4f75fc2",
+          "bytes": 2285
         }
       },
       {
@@ -11657,10 +11689,10 @@
       "pass": 30
     },
     "invariant_checks": {
-      "total": 334,
-      "pass": 334
+      "total": 336,
+      "pass": 336
     },
-    "total": 364,
-    "pass": 364
+    "total": 366,
+    "pass": 366
   }
 }

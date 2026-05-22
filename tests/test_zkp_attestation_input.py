@@ -40,6 +40,7 @@ def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None
     family = payload['family_summary']
     leaf_document = payload['leaf_document']
     resource_document = payload['resource_certificate_document']
+    liveness = resource_document['payload']['executable_liveness']
     primitive_contract = resource_document['payload']['chunked_multiplier_primitive_contract']
     assert payload['selected_family_name'].endswith('__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1')
     assert claim['expected_full_oracle_non_clifford'] == 36_767_692
@@ -55,6 +56,11 @@ def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None
     assert primitive_contract['chunk_effective_bits'] == [155, 101]
     assert primitive_contract['table_multiplier_partial_products_per_leaf'] == 327_680
     assert resource_document['payload']['owner_capacity']['capacity_global_peak_qubits'] == 1_199
+    assert liveness['pass'] is True
+    assert liveness['global_peak_live_qubits'] == 1_199
+    assert liveness['owner_peak_live_qubits'] == liveness['owner_capacity_qubits']
+    assert liveness['checks']['qroam_target_and_qchunk_are_concurrently_live'] is True
+    assert liveness['checks']['no_full_coordinate_lane_wire_is_live'] is True
     assert resource_document['payload']['pass'] is True
 
 
@@ -142,6 +148,7 @@ def test_public_headline_result_binds_reusable_chunk_candidate_artifacts() -> No
     assert public_result['pass'] is True
     assert all(public_result['checks'].values())
     assert public_result['checks']['reusable_chunk_lowering_is_proven_for_public_headline'] is True
+    assert public_result['checks']['reusable_chunk_executable_liveness_binds_public_qubits'] is True
     assert public_result['checks']['reusable_chunk_tail_contract_is_proven_for_public_headline'] is True
     assert selected['non_clifford'] == 36_767_692
     assert selected['logical_qubits'] == 1_199

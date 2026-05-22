@@ -1694,9 +1694,9 @@ Qubit implication:
 - the same proxy is compatible with a constant-size shell workspace rather than
   a `254`-qubit tmpand ladder,
 - under the current standard-QROAMClean accounting, this improves only the
-  arithmetic-shell term; the whole-oracle qubit picture is still dominated by
-  the five field-sized arithmetic slots rather than by the `274`-qubit lookup
-  workspace term.
+  arithmetic-shell term; the promoted reusable-chunk whole-oracle qubit picture
+  is still dominated by the four field-sized arithmetic slots rather than by
+  the `173`-qubit lookup workspace term.
 
 Interpretation:
 

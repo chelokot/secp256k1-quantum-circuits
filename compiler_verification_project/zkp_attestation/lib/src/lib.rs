@@ -4070,6 +4070,150 @@ fn validate_reusable_chunk_lowering(
     assert_eq!(required_peak_total, claim.expected_total_logical_qubits);
     assert_eq!(capacity_peak_total, claim.expected_total_logical_qubits);
 
+    let executable_liveness = json_object_field(certificate, "executable_liveness");
+    assert_eq!(
+        json_string_field(executable_liveness, "schema"),
+        "compiler-project-reusable-chunk-executable-liveness-v1"
+    );
+    assert!(json_bool_field(executable_liveness, "pass"));
+    let liveness_checks = json_object_field(executable_liveness, "checks")
+        .as_object()
+        .expect("executable liveness checks must be an object");
+    assert!(
+        liveness_checks
+            .values()
+            .all(|value| value.as_bool() == Some(true)),
+        "executable liveness contains a failing check"
+    );
+    assert!(json_bool_field(
+        json_object_field(executable_liveness, "checks"),
+        "qroam_target_and_qchunk_are_concurrently_live"
+    ));
+    assert!(json_bool_field(
+        json_object_field(executable_liveness, "checks"),
+        "no_full_coordinate_lane_wire_is_live"
+    ));
+    assert_eq!(
+        json_u64_field(executable_liveness, "global_peak_live_qubits"),
+        claim.expected_total_logical_qubits
+    );
+    assert!(
+        json_array_field(executable_liveness, "duplicate_owner_wires").is_empty(),
+        "executable liveness must not assign a wire to multiple owners"
+    );
+    assert!(
+        json_array_field(executable_liveness, "unknown_owner_wires").is_empty(),
+        "executable liveness must not use unknown owners"
+    );
+    assert!(
+        json_array_field(executable_liveness, "over_capacity_owners").is_empty(),
+        "executable liveness owner peaks must fit capacity"
+    );
+    let liveness_owner_capacity = json_object_field(executable_liveness, "owner_capacity_qubits")
+        .as_object()
+        .expect("executable liveness owner_capacity_qubits must be an object");
+    let liveness_owner_peak = json_object_field(executable_liveness, "owner_peak_live_qubits")
+        .as_object()
+        .expect("executable liveness owner_peak_live_qubits must be an object");
+    assert_eq!(liveness_owner_capacity.len(), owner_ids.len());
+    assert_eq!(liveness_owner_peak.len(), owner_ids.len());
+    for row in json_array_field(owner_capacity, "rows") {
+        let owner_id = json_string_field(row, "owner_id");
+        let capacity = json_u64_field(row, "logical_qubits");
+        assert_eq!(
+            liveness_owner_capacity
+                .get(owner_id)
+                .and_then(Value::as_u64),
+            Some(capacity)
+        );
+        assert_eq!(
+            liveness_owner_peak.get(owner_id).and_then(Value::as_u64),
+            Some(capacity)
+        );
+    }
+    let wire_catalog = json_object_field(executable_liveness, "wire_catalog")
+        .as_object()
+        .expect("executable liveness wire_catalog must be an object");
+    for (wire_id, wire) in wire_catalog {
+        assert_eq!(json_string_field(wire, "wire_id"), wire_id);
+        let owner_id = json_string_field(wire, "owner_id");
+        let qubits = json_u64_field(wire, "qubits");
+        assert!(owner_ids.contains(owner_id));
+        assert!(qubits > 0);
+        assert!(
+            wire_id != "lookup_x" && wire_id != "lookup_y" && wire_id != "lookup_x_plus_y",
+            "full lookup coordinate lanes must not be live"
+        );
+    }
+    let mut recomputed_owner_peak: BTreeMap<String, u64> = BTreeMap::new();
+    let mut peak_total = 0u64;
+    let mut peak_interval_id = String::new();
+    let mut qchunk_qroam_concurrent = false;
+    for interval in json_array_field(executable_liveness, "intervals") {
+        let interval_id = json_string_field(interval, "interval_id");
+        let mut interval_owner_live: BTreeMap<String, u64> = BTreeMap::new();
+        let mut interval_total = 0u64;
+        let mut interval_has_qchunk = false;
+        let mut interval_has_qroam_target = false;
+        for wire_id_value in json_array_field(interval, "live_wire_ids") {
+            let wire_id = wire_id_value
+                .as_str()
+                .expect("live_wire_ids entries must be strings");
+            let wire = wire_catalog
+                .get(wire_id)
+                .expect("live_wire_ids entry must exist in wire_catalog");
+            let owner_id = json_string_field(wire, "owner_id");
+            let qubits = json_u64_field(wire, "qubits");
+            if wire_id == "qchunk" {
+                interval_has_qchunk = true;
+                assert_eq!(qubits, claim.field_bits as u64);
+            }
+            if wire_id.starts_with("qroam_chunk_target__") {
+                interval_has_qroam_target = true;
+                assert_eq!(
+                    qubits,
+                    json_u64_field(qroam_model, "target_register_qubits")
+                );
+            }
+            *interval_owner_live.entry(owner_id.to_owned()).or_insert(0) += qubits;
+            interval_total += qubits;
+        }
+        let recorded_owner_live = json_object_field(interval, "owner_live_qubits")
+            .as_object()
+            .expect("interval owner_live_qubits must be an object");
+        assert_eq!(recorded_owner_live.len(), interval_owner_live.len());
+        for (owner_id, live_qubits) in &interval_owner_live {
+            assert_eq!(
+                recorded_owner_live.get(owner_id).and_then(Value::as_u64),
+                Some(*live_qubits)
+            );
+            let entry = recomputed_owner_peak.entry(owner_id.clone()).or_insert(0);
+            *entry = (*entry).max(*live_qubits);
+        }
+        assert_eq!(
+            json_u64_field(interval, "total_live_qubits"),
+            interval_total
+        );
+        if interval_total > peak_total {
+            peak_total = interval_total;
+            peak_interval_id = interval_id.to_owned();
+        }
+        qchunk_qroam_concurrent |= interval_has_qchunk && interval_has_qroam_target;
+    }
+    assert!(qchunk_qroam_concurrent);
+    assert_eq!(peak_total, claim.expected_total_logical_qubits);
+    assert_eq!(
+        json_string_field(executable_liveness, "global_peak_interval_id"),
+        peak_interval_id
+    );
+    for owner_id in &owner_ids {
+        let capacity = liveness_owner_capacity
+            .get(owner_id)
+            .and_then(Value::as_u64)
+            .expect("missing executable liveness owner capacity");
+        assert_eq!(recomputed_owner_peak.get(owner_id).copied(), Some(capacity));
+    }
+
     let checks = json_object_field(certificate, "checks")
         .as_object()
         .expect("reusable chunk lowering checks must be an object");
@@ -4326,7 +4470,7 @@ pub fn fixture_json(
 
 #[cfg(test)]
 mod tests {
-    use super::{run_prepared_attestation, PreparedAttestationInput};
+    use super::{run_prepared_attestation, semantic_payload_sha256, PreparedAttestationInput};
 
     fn checked_input() -> PreparedAttestationInput {
         serde_json::from_str(include_str!(
@@ -4340,6 +4484,15 @@ mod tests {
             "../../../artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json"
         ))
         .expect("failed to parse checked-in reusable-chunk prepared attestation input")
+    }
+
+    fn refresh_resource_certificate_digest(input: &mut PreparedAttestationInput) {
+        let digest = semantic_payload_sha256(
+            &input.resource_certificate_document.document_type,
+            &input.resource_certificate_document.payload,
+        );
+        input.resource_certificate_document.sha256 = digest.clone();
+        input.resource_certificate_sha256 = digest;
     }
 
     #[test]
@@ -4477,6 +4630,30 @@ mod tests {
         let mut input = checked_input();
         input.resource_certificate_document.payload.0["derived_owner_capacity"]["rows"][0]
             ["capacity_qubits"] = serde_json::json!(767);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_reusable_chunk_liveness_false_check() {
+        let mut input = checked_reusable_chunk_input();
+        input.resource_certificate_document.payload.0["executable_liveness"]["checks"]
+            ["qroam_target_and_qchunk_are_concurrently_live"] = serde_json::json!(false);
+        refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_reusable_chunk_liveness_underreported_qroam_target() {
+        let mut input = checked_reusable_chunk_input();
+        input.resource_certificate_document.payload.0["executable_liveness"]["wire_catalog"]
+            ["qroam_chunk_target__lookup_x__chunk_0"]["qubits"] = serde_json::json!(154);
+        input.resource_certificate_document.payload.0["executable_liveness"]["intervals"][3]
+            ["owner_live_qubits"]["lookup_workspace"] = serde_json::json!(172);
+        input.resource_certificate_document.payload.0["executable_liveness"]["intervals"][3]
+            ["total_live_qubits"] = serde_json::json!(1198);
+        refresh_resource_certificate_digest(&mut input);
         run_prepared_attestation(&input);
     }
 }

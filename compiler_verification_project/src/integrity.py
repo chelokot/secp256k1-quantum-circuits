@@ -1267,6 +1267,7 @@ def build_reusable_chunk_lowering_checks(artifacts: Mapping[str, Any]) -> Dict[s
     qubits = lowering['qubit_derivation']
     non_clifford = lowering['non_clifford_derivation']
     owners = lowering['owner_capacity']
+    executable_liveness = lowering['executable_liveness']
     checks = [
         _check('reusable_chunk_lowering_matches_generator', lowering == expected, expected, lowering),
         _check('reusable_chunk_lowering_schema_is_current', lowering['schema'] == 'compiler-project-reusable-chunk-lowering-v2', 'compiler-project-reusable-chunk-lowering-v2', lowering['schema']),
@@ -1280,6 +1281,8 @@ def build_reusable_chunk_lowering_checks(artifacts: Mapping[str, Any]) -> Dict[s
         _check('reusable_chunk_lowering_reconstructs_non_clifford_candidate', non_clifford['qroam_chunk_streams'] == 186 and non_clifford['qroam_chunk_non_clifford'] == 12189696 and non_clifford['candidate_total_non_clifford'] == artifacts['reusable_chunk_tail_candidate']['production_resource_candidate']['candidate_total_non_clifford'] == 36767692, {'qroam_chunk_streams': 186, 'candidate_total_non_clifford': 36767692}, non_clifford),
         _check('reusable_chunk_lowering_reconstructs_qubit_candidate', qubits['arithmetic_slot_count'] == 4 and qubits['arithmetic_slot_qubits'] == 1024 and qubits['lookup_workspace_qubits'] == 173 and qubits['candidate_total_logical_qubits'] == artifacts['reusable_chunk_tail_candidate']['production_resource_candidate']['candidate_total_logical_qubits'] == 1199, {'arithmetic_slot_qubits': 1024, 'lookup_workspace_qubits': 173, 'candidate_total_logical_qubits': 1199}, qubits),
         _check('reusable_chunk_lowering_owner_capacity_is_numeric', owners['required_global_peak_qubits'] == 1199 and owners['capacity_global_peak_qubits'] == 1199 and all(row['capacity_pass'] is True and row['logical_qubits'] >= row['required_peak_qubits'] for row in owners['rows']), {'required_global_peak_qubits': 1199, 'capacity_global_peak_qubits': 1199}, owners),
+        _check('reusable_chunk_lowering_executable_liveness_reconstructs_peak', executable_liveness['pass'] is True and executable_liveness['global_peak_live_qubits'] == 1199 and executable_liveness['owner_peak_live_qubits'] == executable_liveness['owner_capacity_qubits'], {'global_peak_live_qubits': 1199, 'owner_peaks_equal_capacity': True}, executable_liveness),
+        _check('reusable_chunk_lowering_executable_liveness_counts_qchunk_and_qroam_target_concurrently', executable_liveness['checks']['qroam_target_and_qchunk_are_concurrently_live'] is True and executable_liveness['checks']['no_full_coordinate_lane_wire_is_live'] is True, {'qchunk_and_qroam_target_concurrent': True, 'full_coordinate_lane_live': False}, executable_liveness['checks']),
         _check('reusable_chunk_lowering_records_zkp_and_release_evidence', len(lowering['public_claim_evidence']) >= 2, '>= 2', lowering['public_claim_evidence']),
     ]
     return _summarize_checks(checks)

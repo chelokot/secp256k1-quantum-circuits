@@ -10,12 +10,14 @@ metadata, together with deterministic audits, finite-model checks, and a
 separate exact compiler-family oracle subproject that closes the
 classical-tail-elision gap for a fully quantum raw-32 schedule. It now also
 ships an SP1 attestation bundle for one selected standard-QROM family claim at
-that same boundary. The current `34,736,076 / 1,044` result is a standard-QROM
-compiler-family result at the counted lookup boundary and below 1600 logical
-qubits. The generated QROAMClean tradeoff ledger still records the higher-space
-rows needed for the older `<24M` non-Clifford target; the repository headline is
-the single checked central family bound by the executable leaf, resource ledger,
-and ZKP public values.
+that same boundary. The current public headline is the reusable-chunk
+standard-QROAM family at `36,767,692` non-Clifford operations and `1,199`
+logical qubits. The older `34,736,076 / 1,044` family remains checked as a
+reference boundary, but not as the promoted public claim. The generated
+QROAMClean tradeoff ledger still records the higher-space rows needed for the
+older `<24M` non-Clifford target; the repository headline is the single checked
+central family bound by the executable leaf, resource ledger, and ZKP public
+values.
 
 ## Exact layers
 
@@ -141,7 +143,10 @@ For the promoted reusable-chunk public headline, run
 `python compiler_verification_project/scripts/verify_public_headline.py` to
 validate the checked headline artifact, candidate input, public values,
 source-document semantic hashes, fixture records, proof-binary digests, wrap
-proof, and Groth16 verifier key from the checked branch state.
+proof, and Groth16 verifier key from the checked branch state. The promoted
+candidate resource certificate also carries executable interval liveness for
+the reusable-chunk leaf, and the guest recomputes the peak live-qubit total from
+those intervals before accepting the public values.
 
 This is similar in shape to Google's disclosure model, but it proves a public
 deterministic point-add corpus at the repository exact-family boundary rather

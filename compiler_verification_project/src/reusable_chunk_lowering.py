@@ -20,6 +20,174 @@ def _owner(owner_id: str, logical_qubits: int, source: str, required: Mapping[st
     }
 
 
+def _wire(wire_id: str, owner_id: str, qubits: int, role: str) -> Dict[str, Any]:
+    return {
+        'wire_id': wire_id,
+        'owner_id': owner_id,
+        'qubits': int(qubits),
+        'role': role,
+    }
+
+
+def _interval(interval_id: str, label: str, live_wire_ids: List[str], wire_catalog: Mapping[str, Dict[str, Any]]) -> Dict[str, Any]:
+    owner_peaks: Dict[str, int] = {}
+    for wire_id in live_wire_ids:
+        wire = wire_catalog[wire_id]
+        owner_peaks[wire['owner_id']] = owner_peaks.get(wire['owner_id'], 0) + int(wire['qubits'])
+    return {
+        'interval_id': interval_id,
+        'label': label,
+        'live_wire_ids': live_wire_ids,
+        'owner_live_qubits': owner_peaks,
+        'total_live_qubits': sum(owner_peaks.values()),
+    }
+
+
+def _owner_peak(intervals: List[Dict[str, Any]], wire_catalog: Mapping[str, Dict[str, Any]]) -> Dict[str, int]:
+    owner_ids = sorted({wire_catalog[wire_id]['owner_id'] for interval in intervals for wire_id in interval['live_wire_ids']})
+    return {
+        owner_id: max(int(interval['owner_live_qubits'].get(owner_id, 0)) for interval in intervals)
+        for owner_id in owner_ids
+    }
+
+
+def _build_executable_liveness_certificate(
+    *,
+    executable_leaf: Mapping[str, Any],
+    stream_rows: List[Dict[str, Any]],
+    owners: List[Dict[str, Any]],
+    field_bits: int,
+    folded_control_qubits: int,
+    control_qubits: int,
+    phase_qubits: int,
+) -> Dict[str, Any]:
+    arithmetic_owner = 'arithmetic_slot_register_file'
+    lookup_owner = 'lookup_workspace'
+    control_owner = 'control_slot_register_file'
+    phase_owner = 'phase_shell_live_register'
+    wire_catalog: Dict[str, Dict[str, Any]] = {}
+    duplicate_wire_definitions: List[str] = []
+
+    def register_wire(wire: Dict[str, Any]) -> str:
+        wire_id = str(wire['wire_id'])
+        previous = wire_catalog.get(wire_id)
+        if previous is not None and previous != wire:
+            duplicate_wire_definitions.append(wire_id)
+        wire_catalog[wire_id] = wire
+        return wire_id
+
+    arithmetic_wires = [
+        register_wire(_wire(slot, arithmetic_owner, field_bits, 'field_arithmetic_slot'))
+        for slot in executable_leaf['arithmetic_slots']
+    ]
+    carried_wires = [
+        slot
+        for slot in executable_leaf['arithmetic_slots']
+        if slot != executable_leaf['chunk_contract']['reusable_chunk_slot']
+    ]
+    control_wires = [
+        register_wire(_wire(slot, control_owner, 1, 'leaf_control_flag'))
+        for slot in executable_leaf['control_slots']
+    ]
+    folded_lookup_wire = register_wire(
+        _wire(
+            'folded_lookup_control_workspace',
+            lookup_owner,
+            folded_control_qubits,
+            'folded_lookup_decode_control_workspace',
+        )
+    )
+    phase_wire = register_wire(_wire('semiclassical_qft_live_phase_bit', phase_owner, phase_qubits, 'live_phase_bit'))
+    intervals: List[Dict[str, Any]] = [
+        _interval('pc0_2_load_carried_inputs', 'load Q.X/Q.Y/Q.Z into carried field slots', carried_wires + [phase_wire], wire_catalog),
+        _interval(
+            'pc3_lookup_meta',
+            'lookup metadata and folded lookup controls',
+            carried_wires + [folded_lookup_wire, phase_wire],
+            wire_catalog,
+        ),
+        _interval(
+            'pc4_lookup_infinity_flag',
+            'derive lookup-infinity flag from metadata',
+            carried_wires + [folded_lookup_wire] + control_wires + [phase_wire],
+            wire_catalog,
+        ),
+    ]
+    for index, row in enumerate(stream_rows):
+        target_wire = register_wire(
+            _wire(
+                f"qroam_chunk_target__{row['table']}__chunk_{row['chunk_index']}",
+                lookup_owner,
+                int(row['live_target_qubits']),
+                'standard_qroamclean_k1_chunk_target',
+            )
+        )
+        junk_qubits = int(row['junk_register_qubits'])
+        junk_wires = []
+        if junk_qubits:
+            junk_wires.append(
+                register_wire(
+                    _wire(
+                        f"qroam_chunk_junk__{row['table']}__chunk_{row['chunk_index']}",
+                        lookup_owner,
+                        junk_qubits,
+                        'standard_qroamclean_junk_registers',
+                    )
+                )
+            )
+        intervals.append(
+            _interval(
+                f"pc5_stream_{index:02d}_{row['table']}_chunk_{row['chunk_index']}",
+                f"load, consume, and uncompute {row['table']} chunk {row['chunk_index']}",
+                arithmetic_wires + [folded_lookup_wire, target_wire] + junk_wires + control_wires + [phase_wire],
+                wire_catalog,
+            )
+        )
+    owner_capacity = {owner['owner_id']: int(owner['logical_qubits']) for owner in owners}
+    owner_peak = _owner_peak(intervals, wire_catalog)
+    all_wire_ids = [wire_id for interval in intervals for wire_id in interval['live_wire_ids']]
+    duplicate_owner_wires = sorted(set(duplicate_wire_definitions))
+    unknown_owner_wires = sorted(
+        wire_id for wire_id in set(all_wire_ids)
+        if wire_catalog[wire_id]['owner_id'] not in owner_capacity
+    )
+    over_capacity_owners = sorted(
+        owner_id for owner_id, peak in owner_peak.items()
+        if peak > owner_capacity[owner_id]
+    )
+    peak_interval = max(intervals, key=lambda interval: int(interval['total_live_qubits']))
+    checks = {
+        'every_wire_has_exactly_one_owner': not duplicate_owner_wires,
+        'every_owner_is_declared': not unknown_owner_wires,
+        'owner_peaks_fit_capacity': not over_capacity_owners,
+        'global_peak_equals_sum_of_interval_liveness': int(peak_interval['total_live_qubits']) == max(int(interval['total_live_qubits']) for interval in intervals),
+        'qroam_target_and_qchunk_are_concurrently_live': any(
+            executable_leaf['chunk_contract']['reusable_chunk_slot'] in interval['live_wire_ids']
+            and any(str(wire_id).startswith('qroam_chunk_target__') for wire_id in interval['live_wire_ids'])
+            for interval in intervals
+        ),
+        'no_full_coordinate_lane_wire_is_live': not any(
+            wire_id in ('lookup_x', 'lookup_y', 'lookup_x_plus_y')
+            for wire_id in set(all_wire_ids)
+        ),
+    }
+    return {
+        'schema': 'compiler-project-reusable-chunk-executable-liveness-v1',
+        'derivation': 'interval liveness derived from executable reusable-chunk leaf, stream plan rows, and declared counted owners',
+        'wire_catalog': wire_catalog,
+        'intervals': intervals,
+        'owner_peak_live_qubits': owner_peak,
+        'owner_capacity_qubits': owner_capacity,
+        'global_peak_interval_id': peak_interval['interval_id'],
+        'global_peak_live_qubits': int(peak_interval['total_live_qubits']),
+        'duplicate_owner_wires': duplicate_owner_wires,
+        'unknown_owner_wires': unknown_owner_wires,
+        'over_capacity_owners': over_capacity_owners,
+        'checks': checks,
+        'pass': all(checks.values()),
+    }
+
+
 def _kernel_by_opcode(arithmetic_lowerings: Mapping[str, Any], opcode: str) -> Mapping[str, Any]:
     return next(kernel for kernel in arithmetic_lowerings['kernels'] if kernel['opcode'] == opcode)
 
@@ -201,6 +369,15 @@ def build_reusable_chunk_lowering(
             {'semiclassical_qft_live_phase_bit': phase_qubits},
         ),
     ]
+    executable_liveness = _build_executable_liveness_certificate(
+        executable_leaf=executable_leaf,
+        stream_rows=stream_rows,
+        owners=owners,
+        field_bits=int(field_bits),
+        folded_control_qubits=folded_control_qubits,
+        control_qubits=control_qubits,
+        phase_qubits=phase_qubits,
+    )
     owner_required_total = sum(int(owner['required_peak_qubits']) for owner in owners)
     owner_capacity_total = sum(int(owner['logical_qubits']) for owner in owners)
     checks = {
@@ -217,6 +394,8 @@ def build_reusable_chunk_lowering(
         'non_clifford_matches_candidate': total_non_clifford == int(candidate['candidate_total_non_clifford']) == int(stress_candidate['candidate_total_non_clifford']),
         'logical_qubits_match_candidate': total_logical_qubits == int(candidate['candidate_total_logical_qubits']) == int(stress_candidate['candidate_total_logical_qubits']),
         'owner_capacity_rows_cover_required_peak': owner_required_total <= owner_capacity_total == total_logical_qubits and all(bool(owner['capacity_pass']) for owner in owners),
+        'executable_liveness_peak_matches_candidate': executable_liveness['pass'] is True and int(executable_liveness['global_peak_live_qubits']) == total_logical_qubits,
+        'executable_liveness_owner_peaks_match_capacity': executable_liveness['owner_peak_live_qubits'] == executable_liveness['owner_capacity_qubits'],
         'fits_requested_limits': total_non_clifford < 40_000_000 and total_logical_qubits < 1200,
     }
     return {
@@ -288,6 +467,7 @@ def build_reusable_chunk_lowering(
             'required_global_peak_qubits': owner_required_total,
             'capacity_global_peak_qubits': owner_capacity_total,
         },
+        'executable_liveness': executable_liveness,
         'checks': checks,
         'pass': all(checks.values()),
         'public_claim_evidence': [

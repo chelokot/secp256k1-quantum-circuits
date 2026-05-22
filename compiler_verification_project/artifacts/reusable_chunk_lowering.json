@@ -399,6 +399,295 @@
     "required_global_peak_qubits": 1199,
     "capacity_global_peak_qubits": 1199
   },
+  "executable_liveness": {
+    "schema": "compiler-project-reusable-chunk-executable-liveness-v1",
+    "derivation": "interval liveness derived from executable reusable-chunk leaf, stream plan rows, and declared counted owners",
+    "wire_catalog": {
+      "qx": {
+        "wire_id": "qx",
+        "owner_id": "arithmetic_slot_register_file",
+        "qubits": 256,
+        "role": "field_arithmetic_slot"
+      },
+      "qy": {
+        "wire_id": "qy",
+        "owner_id": "arithmetic_slot_register_file",
+        "qubits": 256,
+        "role": "field_arithmetic_slot"
+      },
+      "qz": {
+        "wire_id": "qz",
+        "owner_id": "arithmetic_slot_register_file",
+        "qubits": 256,
+        "role": "field_arithmetic_slot"
+      },
+      "qchunk": {
+        "wire_id": "qchunk",
+        "owner_id": "arithmetic_slot_register_file",
+        "qubits": 256,
+        "role": "field_arithmetic_slot"
+      },
+      "f_lookup_inf": {
+        "wire_id": "f_lookup_inf",
+        "owner_id": "control_slot_register_file",
+        "qubits": 1,
+        "role": "leaf_control_flag"
+      },
+      "folded_lookup_control_workspace": {
+        "wire_id": "folded_lookup_control_workspace",
+        "owner_id": "lookup_workspace",
+        "qubits": 18,
+        "role": "folded_lookup_decode_control_workspace"
+      },
+      "semiclassical_qft_live_phase_bit": {
+        "wire_id": "semiclassical_qft_live_phase_bit",
+        "owner_id": "phase_shell_live_register",
+        "qubits": 1,
+        "role": "live_phase_bit"
+      },
+      "qroam_chunk_target__lookup_x__chunk_0": {
+        "wire_id": "qroam_chunk_target__lookup_x__chunk_0",
+        "owner_id": "lookup_workspace",
+        "qubits": 155,
+        "role": "standard_qroamclean_k1_chunk_target"
+      },
+      "qroam_chunk_target__lookup_x__chunk_1": {
+        "wire_id": "qroam_chunk_target__lookup_x__chunk_1",
+        "owner_id": "lookup_workspace",
+        "qubits": 155,
+        "role": "standard_qroamclean_k1_chunk_target"
+      },
+      "qroam_chunk_target__lookup_y__chunk_0": {
+        "wire_id": "qroam_chunk_target__lookup_y__chunk_0",
+        "owner_id": "lookup_workspace",
+        "qubits": 155,
+        "role": "standard_qroamclean_k1_chunk_target"
+      },
+      "qroam_chunk_target__lookup_y__chunk_1": {
+        "wire_id": "qroam_chunk_target__lookup_y__chunk_1",
+        "owner_id": "lookup_workspace",
+        "qubits": 155,
+        "role": "standard_qroamclean_k1_chunk_target"
+      },
+      "qroam_chunk_target__lookup_x_plus_y__chunk_0": {
+        "wire_id": "qroam_chunk_target__lookup_x_plus_y__chunk_0",
+        "owner_id": "lookup_workspace",
+        "qubits": 155,
+        "role": "standard_qroamclean_k1_chunk_target"
+      },
+      "qroam_chunk_target__lookup_x_plus_y__chunk_1": {
+        "wire_id": "qroam_chunk_target__lookup_x_plus_y__chunk_1",
+        "owner_id": "lookup_workspace",
+        "qubits": 155,
+        "role": "standard_qroamclean_k1_chunk_target"
+      }
+    },
+    "intervals": [
+      {
+        "interval_id": "pc0_2_load_carried_inputs",
+        "label": "load Q.X/Q.Y/Q.Z into carried field slots",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 768,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 769
+      },
+      {
+        "interval_id": "pc3_lookup_meta",
+        "label": "lookup metadata and folded lookup controls",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "folded_lookup_control_workspace",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 768,
+          "lookup_workspace": 18,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 787
+      },
+      {
+        "interval_id": "pc4_lookup_infinity_flag",
+        "label": "derive lookup-infinity flag from metadata",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "folded_lookup_control_workspace",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 768,
+          "lookup_workspace": 18,
+          "control_slot_register_file": 1,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 788
+      },
+      {
+        "interval_id": "pc5_stream_00_lookup_x_chunk_0",
+        "label": "load, consume, and uncompute lookup_x chunk 0",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_x__chunk_0",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 1024,
+          "lookup_workspace": 173,
+          "control_slot_register_file": 1,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 1199
+      },
+      {
+        "interval_id": "pc5_stream_01_lookup_x_chunk_1",
+        "label": "load, consume, and uncompute lookup_x chunk 1",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_x__chunk_1",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 1024,
+          "lookup_workspace": 173,
+          "control_slot_register_file": 1,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 1199
+      },
+      {
+        "interval_id": "pc5_stream_02_lookup_y_chunk_0",
+        "label": "load, consume, and uncompute lookup_y chunk 0",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_y__chunk_0",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 1024,
+          "lookup_workspace": 173,
+          "control_slot_register_file": 1,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 1199
+      },
+      {
+        "interval_id": "pc5_stream_03_lookup_y_chunk_1",
+        "label": "load, consume, and uncompute lookup_y chunk 1",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_y__chunk_1",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 1024,
+          "lookup_workspace": 173,
+          "control_slot_register_file": 1,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 1199
+      },
+      {
+        "interval_id": "pc5_stream_04_lookup_x_plus_y_chunk_0",
+        "label": "load, consume, and uncompute lookup_x_plus_y chunk 0",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_x_plus_y__chunk_0",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 1024,
+          "lookup_workspace": 173,
+          "control_slot_register_file": 1,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 1199
+      },
+      {
+        "interval_id": "pc5_stream_05_lookup_x_plus_y_chunk_1",
+        "label": "load, consume, and uncompute lookup_x_plus_y chunk 1",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_x_plus_y__chunk_1",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 1024,
+          "lookup_workspace": 173,
+          "control_slot_register_file": 1,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 1199
+      }
+    ],
+    "owner_peak_live_qubits": {
+      "arithmetic_slot_register_file": 1024,
+      "control_slot_register_file": 1,
+      "lookup_workspace": 173,
+      "phase_shell_live_register": 1
+    },
+    "owner_capacity_qubits": {
+      "arithmetic_slot_register_file": 1024,
+      "lookup_workspace": 173,
+      "control_slot_register_file": 1,
+      "phase_shell_live_register": 1
+    },
+    "global_peak_interval_id": "pc5_stream_00_lookup_x_chunk_0",
+    "global_peak_live_qubits": 1199,
+    "duplicate_owner_wires": [],
+    "unknown_owner_wires": [],
+    "over_capacity_owners": [],
+    "checks": {
+      "every_wire_has_exactly_one_owner": true,
+      "every_owner_is_declared": true,
+      "owner_peaks_fit_capacity": true,
+      "global_peak_equals_sum_of_interval_liveness": true,
+      "qroam_target_and_qchunk_are_concurrently_live": true,
+      "no_full_coordinate_lane_wire_is_live": true
+    },
+    "pass": true
+  },
   "checks": {
     "executable_leaf_uses_four_arithmetic_slots": true,
     "executable_leaf_has_reusable_chunk_scratch": true,
@@ -413,6 +702,8 @@
     "non_clifford_matches_candidate": true,
     "logical_qubits_match_candidate": true,
     "owner_capacity_rows_cover_required_peak": true,
+    "executable_liveness_peak_matches_candidate": true,
+    "executable_liveness_owner_peaks_match_capacity": true,
     "fits_requested_limits": true
   },
   "pass": true,

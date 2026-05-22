@@ -1461,22 +1461,28 @@ Partially mitigated after review:
   6 chunk streams per leaf from the executable leaf's three coordinate tables
   and two chunks, prices each stream with standard QROAMClean `K=1` (`65,536`
   non-Clifford, `155` target qubits, zero junk), reconstructs `36,767,692`
-  non-Clifford operations and `1,199` logical qubits, and assigns numeric
-  capacity to every counted owner. It also closes the inherited-arithmetic-base
-  objection at the counted primitive-block level: each table-controlled
-  multiplier has low/high effective chunk widths `155 + 101 = 256`, so its
-  partial-product grid is exactly the inherited full-width `65,536`
-  non-Clifford grid, while the high chunk's 54 zero-padded QROAM target lanes
-  are still charged in lookup workspace/cost. This fixes the previous class of
-  width/workspace mix-ups for the reusable-chunk candidate.
+  non-Clifford operations and `1,199` logical qubits, assigns numeric capacity
+  to every counted owner, and now carries an executable interval-liveness
+  certificate. That certificate derives the peak from live wires, not a
+  hand-picked register list: it keeps the fourth field slot `qchunk` live
+  concurrently with the QROAM chunk target, proves no full-coordinate
+  `lookup_x`/`lookup_y` lane is live, and reconstructs the owner peaks
+  `1024 + 173 + 1 + 1 = 1199`. It also closes the
+  inherited-arithmetic-base objection at the counted primitive-block level:
+  each table-controlled multiplier has low/high effective chunk widths
+  `155 + 101 = 256`, so its partial-product grid is exactly the inherited
+  full-width `65,536` non-Clifford grid, while the high chunk's 54 zero-padded
+  QROAM target lanes are still charged in lookup workspace/cost. This fixes the
+  previous class of width/workspace mix-ups for the reusable-chunk candidate.
 - `compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/`
   now contains a checked candidate ZKP input bundle, and the Rust guest library
   accepts it in `run_prepared_attestation`. This means the native guest path
   binds and executes `complete_a0_reusable_chunk_tail`, commits
-  `reusable_chunk_lowering.json`, and returns public values
-  `36,767,692 / 1,199`. The candidate directory now also contains checked
-  core, compressed, and Groth16 fixtures, the compressed proof bundle, the
-  Groth16 proof bundle, the wrap proof bundle, and the matching Groth16
+  `reusable_chunk_lowering.json`, recomputes the executable-liveness peak from
+  the certificate's interval rows, rejects failing liveness checks, and returns
+  public values `36,767,692 / 1,199`. The candidate directory now also contains
+  checked core, compressed, and Groth16 fixtures, the compressed proof bundle,
+  the Groth16 proof bundle, the wrap proof bundle, and the matching Groth16
   verifier key. Both explicit compressed and Groth16 verification commands have
   been run against those checked candidate artifacts.
 - `compiler_verification_project/artifacts/public_headline_result.json` now

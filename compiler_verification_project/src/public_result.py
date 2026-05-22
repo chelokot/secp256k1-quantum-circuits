@@ -69,6 +69,7 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
     groth16_fixture = _load(CANDIDATE_ROOT / 'zkp_attestation_fixture_groth16.json')
     lowering = _load(ARTIFACT_ROOT / 'reusable_chunk_lowering.json')
     tail_candidate = _load(ARTIFACT_ROOT / 'reusable_chunk_tail_candidate.json')
+    executable_liveness = lowering['executable_liveness']
     non_clifford = int(public_values['expected_full_oracle_non_clifford'])
     qubits = int(public_values['expected_total_logical_qubits'])
     checks = {
@@ -104,6 +105,13 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             and lowering['pass'] is True
             and lowering['non_clifford_derivation']['candidate_total_non_clifford'] == non_clifford
             and lowering['qubit_derivation']['candidate_total_logical_qubits'] == qubits
+        ),
+        'reusable_chunk_executable_liveness_binds_public_qubits': (
+            executable_liveness['pass'] is True
+            and executable_liveness['global_peak_live_qubits'] == qubits
+            and executable_liveness['owner_peak_live_qubits'] == executable_liveness['owner_capacity_qubits']
+            and executable_liveness['checks']['qroam_target_and_qchunk_are_concurrently_live'] is True
+            and executable_liveness['checks']['no_full_coordinate_lane_wire_is_live'] is True
         ),
         'reusable_chunk_tail_contract_is_proven_for_public_headline': (
             tail_candidate['status'] == 'proven_public_headline'
@@ -173,6 +181,7 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
                 'public headline result status and strict <40M / <1200 bounds',
                 'checked input, public values, sidecar documents, fixtures, proof binaries, wrap proof, and Groth16 verifier-key digests',
                 'semantic hashes for committed claim, leaf, family, case corpus, and resource-certificate documents',
+                'executable liveness peak, qchunk/QROAM-target concurrency, and owner-capacity checks',
                 'fixture-to-proof and fixture-to-verifier-key binding',
             ],
         },

@@ -14,12 +14,12 @@
     "family_sha256": "c1a1cd68e1c159353724cb3e21b98c65115b2add9930d247b3f5f0f85dd5ba20",
     "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
     "passed_case_count": 8,
-    "resource_certificate_sha256": "115d8161c48048c81da2cadb7f4f0cc12dce241e4a272586fca463d9a5e76439",
+    "resource_certificate_sha256": "d37820bea8e18cab61a8db7ec90efd4fb12801e5398ae686648555bcf1065c53",
     "schema": "compiler-project-zkp-attestation-public-v2",
     "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1"
   },
   "schema": "compiler-project-zkp-attestation-fixture-v1",
-  "verification_key": "0x00c5b6eefe7a460d81d60dbf0c553720c6985be8e3d74d331b0ef2628b10abcb",
+  "verification_key": "0x000468e7e74d2eccde25e6af5576efe93dfa7056aabd1e535598774df7a2c832",
   "verifier_key_path": null,
   "verifier_key_sha256": null,
   "verifier_key_size_bytes": null

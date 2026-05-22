@@ -102,10 +102,11 @@ and bind:
 The SP1 guest re-checks semantic hashes for those embedded typed documents,
 replays the leaf on every public case, checks the affine group law, and
 reconstructs the claimed exact non-Clifford and logical-qubit formulas. It also
-checks the resource certificate, including the derived owner-capacity section,
-before committing public values. The checked core, compressed, and Groth16
-fixtures, compressed proof bundle, Groth16 proof bundle, wrap proof bundle, and
-matching Groth16 verifying key are all recorded in that candidate directory.
+checks the resource certificate, including executable interval liveness,
+qchunk/QROAM-target concurrency, no full-coordinate lookup lane, and numeric
+owner capacity, before committing public values. The checked core, compressed,
+and Groth16 fixtures, compressed proof bundle, Groth16 proof bundle, wrap proof
+bundle, and matching Groth16 verifying key are all recorded in that candidate directory.
 Together these artifacts bind the public `36,767,692 / 1,199` claim and `8 / 8`
 public cases.
 This is similar in shape to Google's disclosure model, but it is still not a
