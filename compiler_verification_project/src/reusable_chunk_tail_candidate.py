@@ -14,7 +14,7 @@ from tail_macro_reversibility import (
     _subgroup_points,
     _tail_map,
 )
-from verifier import exec_netlist
+from verifier import exec_netlist_with_trace
 
 
 PRODUCTION_CHUNK_BITS = 155
@@ -72,6 +72,41 @@ def _chunked_const_mul(value: int, constant: int, modulus: int, chunk_bits: int,
     for index, chunk in enumerate(_split_chunks(constant, chunk_bits, chunk_count)):
         total += int(value) * int(chunk) * pow(2, index * int(chunk_bits), modulus)
     return total % int(modulus)
+
+
+def _expected_scratch_events(
+    *,
+    modulus: int,
+    lookup_x: int,
+    lookup_y: int,
+    chunk_bits: int,
+    chunk_count: int,
+) -> List[Dict[str, Any]]:
+    constants = [
+        ('lookup_x_plus_y', (int(lookup_x) + int(lookup_y)) % int(modulus)),
+        ('lookup_x', int(lookup_x)),
+        ('lookup_x', int(lookup_x)),
+        ('lookup_y', int(lookup_y)),
+        ('lookup_y', int(lookup_y)),
+    ]
+    events: List[Dict[str, Any]] = []
+    for consumer, constant in constants:
+        for chunk_index, chunk in enumerate(_split_chunks(constant, chunk_bits, chunk_count)):
+            events.append({
+                'event': 'chunk_load',
+                'consumer': consumer,
+                'scratch_register': 'qchunk',
+                'chunk_index': chunk_index,
+                'chunk_value': int(chunk),
+            })
+        events.append({
+            'event': 'scratch_reset',
+            'consumer': consumer,
+            'scratch_register': 'qchunk',
+            'chunk_index': int(chunk_count),
+            'chunk_value': 0,
+        })
+    return events
 
 
 def _chunked_tail_map(
@@ -136,6 +171,8 @@ def _toy_semantic_row(curve: Mapping[str, Any]) -> Dict[str, Any]:
     }
     semantic_failures = []
     executable_failures = []
+    scratch_trace_failures = []
+    scratch_trace_checked = 0
     candidate_leaf = build_reusable_chunk_tail_leaf(
         chunk_bits=chunk_bits,
         chunk_count=chunk_count,
@@ -162,7 +199,37 @@ def _toy_semantic_row(curve: Mapping[str, Any]) -> Dict[str, Any]:
                     chunk_count=chunk_count,
                 )
                 reference_triple = _tail_map(modulus, curve_b, lookup[0], lookup[1], *input_triple)
-                executable_triple = exec_netlist(candidate_leaf['instructions'], modulus, input_triple, lookup, 1)
+                executable_triple, executable_trace = exec_netlist_with_trace(
+                    candidate_leaf['instructions'],
+                    modulus,
+                    input_triple,
+                    lookup,
+                    1,
+                    {5},
+                )
+                scratch_trace_checked += 1
+                expected_events = _expected_scratch_events(
+                    modulus=modulus,
+                    lookup_x=lookup[0],
+                    lookup_y=lookup[1],
+                    chunk_bits=chunk_bits,
+                    chunk_count=chunk_count,
+                )
+                observed_after = executable_trace[5]['after'] if 'after' in executable_trace[5] else executable_trace[5]
+                observed_events = observed_after.get('__chunk_scratch_events', [])
+                if (
+                    observed_events != expected_events
+                    or observed_after.get('qchunk') != 0
+                ) and len(scratch_trace_failures) < 4:
+                    scratch_trace_failures.append({
+                        'lookup_affine': list(lookup),
+                        'accumulator_affine': None if accumulator is None else list(accumulator),
+                        'expected_event_count': len(expected_events),
+                        'observed_event_count': len(observed_events),
+                        'expected_events': expected_events,
+                        'observed_events': observed_events,
+                        'final_scratch_value': observed_after.get('qchunk'),
+                    })
             expected_affine = _add_points(accumulator, lookup, modulus)
             output_affine = _projective_to_affine(output_triple, modulus)
             reference_affine = _projective_to_affine(reference_triple, modulus)
@@ -204,8 +271,11 @@ def _toy_semantic_row(curve: Mapping[str, Any]) -> Dict[str, Any]:
         'category_totals': category_totals,
         'semantic_pass': not semantic_failures,
         'executable_pass': not executable_failures,
+        'scratch_trace_pass': not scratch_trace_failures,
+        'scratch_trace_checked': scratch_trace_checked,
         'semantic_failure_examples': semantic_failures,
         'executable_failure_examples': executable_failures,
+        'scratch_trace_failure_examples': scratch_trace_failures,
     }
 
 
@@ -229,11 +299,24 @@ def build_reusable_chunk_tail_candidate(
             },
             'full_coordinate_lanes_materialized': 0,
         },
+        'scratch_execution_contract': {
+            'scratch_register': 'qchunk',
+            'opcode': 'complete_a0_reusable_chunk_tail',
+            'table_controlled_multiplier_count_per_leaf': 5,
+            'chunk_loads_per_multiplier': PRODUCTION_CHUNK_COUNT,
+            'chunk_load_events_per_leaf': 5 * PRODUCTION_CHUNK_COUNT,
+            'scratch_resets_per_leaf': 5,
+            'final_scratch_value': 0,
+            'trace_event_key': '__chunk_scratch_events',
+            'bound_by_toy_semantic_equivalence': True,
+        },
         'executable_leaf_contract': build_reusable_chunk_tail_leaf(),
         'toy_semantic_equivalence': {
             'rows': toy_rows,
             'all_rows_semantic': all(bool(row['semantic_pass']) for row in toy_rows),
             'all_rows_executable': all(bool(row['executable_pass']) for row in toy_rows),
+            'all_rows_scratch_trace': all(bool(row['scratch_trace_pass']) for row in toy_rows),
+            'scratch_trace_checked': sum(int(row['scratch_trace_checked']) for row in toy_rows),
             'total_boundary_pairs': sum(int(row['total_boundary_pairs']) for row in toy_rows),
             'category_totals': {
                 category: sum(int(row['category_totals'][category]) for row in toy_rows)

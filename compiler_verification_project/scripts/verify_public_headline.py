@@ -273,6 +273,8 @@ def build_metadata_report() -> dict[str, Any]:
     executable_liveness = lowering['executable_liveness']
     check(checks, 'reusable_chunk_executable_liveness_recomputes_public_peak', executable_liveness['pass'] is True and executable_liveness['global_peak_live_qubits'] == selected['logical_qubits'], selected['logical_qubits'], executable_liveness)
     check(checks, 'reusable_chunk_executable_liveness_counts_qchunk_and_qroam_target_concurrently', executable_liveness['checks']['qroam_target_and_qchunk_are_concurrently_live'] is True and executable_liveness['checks']['no_full_coordinate_lane_wire_is_live'] is True, {'qchunk_and_qroam_target_concurrent': True, 'full_coordinate_lane_live': False}, executable_liveness['checks'])
+    scratch_execution_contract = lowering['executable_contract']['scratch_execution_contract']
+    check(checks, 'reusable_chunk_executes_counted_qchunk_scratch_contract', scratch_execution_contract == tail_candidate['scratch_execution_contract'] and lowering['checks']['executable_leaf_executes_reusable_chunk_scratch_contract'] is True and tail_candidate['toy_semantic_equivalence']['all_rows_scratch_trace'] is True, tail_candidate['scratch_execution_contract'], scratch_execution_contract)
     counted_resource_ir = lowering['counted_resource_ir']
     check(checks, 'reusable_chunk_counted_resource_ir_recomputes_public_totals', counted_resource_ir['pass'] is True and counted_resource_ir['recomputed_total_non_clifford'] == selected['non_clifford'] and counted_resource_ir['recomputed_peak_live_qubits'] == selected['logical_qubits'], {'non_clifford': selected['non_clifford'], 'logical_qubits': selected['logical_qubits']}, counted_resource_ir)
     resource_contract_engine = lowering['resource_contract_engine']

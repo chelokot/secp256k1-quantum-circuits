@@ -3045,7 +3045,9 @@ fn projective_matches_affine(point: &PointProj, expected: &PointAffine, modulus:
     }
 }
 
-fn chunked_const_mul(
+fn chunked_const_mul_with_scratch(
+    registers: &mut [BigUint],
+    scratch: RegisterId,
     value: &BigUint,
     constant: &BigUint,
     modulus: &BigUint,
@@ -3057,9 +3059,11 @@ fn chunked_const_mul(
     for chunk_index in 0..chunk_count {
         let shift = chunk_bits * chunk_index;
         let chunk = (constant >> shift) & &mask;
+        registers[scratch] = chunk;
         let scale = (BigUint::one() << shift) % modulus;
-        total = (total + value * chunk * scale) % modulus;
+        total = (total + value * &registers[scratch] * scale) % modulus;
     }
+    registers[scratch] = BigUint::zero();
     total
 }
 
@@ -3252,30 +3256,41 @@ fn execute_leaf(
                 registers[*scratch] = BigUint::zero();
                 let lookup_sum = (&lookup_x + &lookup_y) % modulus;
                 let accumulator_sum = (&registers[*x] + &registers[*y]) % modulus;
-                let h = chunked_const_mul(
+                let x_value = registers[*x].clone();
+                let y_value = registers[*y].clone();
+                let z_value = registers[*z].clone();
+                let h = chunked_const_mul_with_scratch(
+                    &mut registers,
+                    *scratch,
                     &accumulator_sum,
                     &lookup_sum,
                     modulus,
                     *chunk_bits,
                     *chunk_count,
                 );
-                let a = chunked_const_mul(
-                    &registers[*x],
+                let a = chunked_const_mul_with_scratch(
+                    &mut registers,
+                    *scratch,
+                    &x_value,
                     &lookup_x,
                     modulus,
                     *chunk_bits,
                     *chunk_count,
                 );
-                let zx = chunked_const_mul(
-                    &registers[*z],
+                let zx = chunked_const_mul_with_scratch(
+                    &mut registers,
+                    *scratch,
+                    &z_value,
                     &lookup_x,
                     modulus,
                     *chunk_bits,
                     *chunk_count,
                 );
-                let c = (BigUint::from(*b3) * ((&registers[*x] + &zx) % modulus)) % modulus;
-                let i = chunked_const_mul(
-                    &registers[*y],
+                let c = (BigUint::from(*b3) * ((&x_value + &zx) % modulus)) % modulus;
+                let i = chunked_const_mul_with_scratch(
+                    &mut registers,
+                    *scratch,
+                    &y_value,
                     &lookup_y,
                     modulus,
                     *chunk_bits,
@@ -3284,15 +3299,17 @@ fn execute_leaf(
                 let k_minus_a = mod_sub(&h, &a, modulus);
                 let k = mod_sub(&k_minus_a, &i, modulus);
                 let l = (BigUint::from(3u32) * &a) % modulus;
-                let yz = chunked_const_mul(
-                    &registers[*z],
+                let yz = chunked_const_mul_with_scratch(
+                    &mut registers,
+                    *scratch,
+                    &z_value,
                     &lookup_y,
                     modulus,
                     *chunk_bits,
                     *chunk_count,
                 );
-                let e = (&registers[*y] + yz) % modulus;
-                let f = (BigUint::from(*b3) * &registers[*z]) % modulus;
+                let e = (&y_value + yz) % modulus;
+                let f = (BigUint::from(*b3) * &z_value) % modulus;
                 let m = (&i + &f) % modulus;
                 let n = mod_sub(&i, &f, modulus);
                 registers[*out_x] =
@@ -4345,6 +4362,29 @@ fn validate_reusable_chunk_lowering(
         json_u64_field(chunk_contract, "full_coordinate_lanes_materialized"),
         0
     );
+    let scratch_contract = json_object_field(executable, "scratch_execution_contract");
+    assert_eq!(json_string_field(scratch_contract, "scratch_register"), "qchunk");
+    assert_eq!(
+        json_string_field(scratch_contract, "opcode"),
+        "complete_a0_reusable_chunk_tail"
+    );
+    assert_eq!(
+        json_u64_field(scratch_contract, "chunk_loads_per_multiplier"),
+        chunk_count
+    );
+    assert_eq!(
+        json_u64_field(scratch_contract, "chunk_load_events_per_leaf"),
+        5 * chunk_count
+    );
+    assert_eq!(
+        json_u64_field(scratch_contract, "scratch_resets_per_leaf"),
+        5
+    );
+    assert_eq!(json_u64_field(scratch_contract, "final_scratch_value"), 0);
+    assert!(json_bool_field(
+        scratch_contract,
+        "bound_by_toy_semantic_equivalence"
+    ));
 
     let stream_plan = json_object_field(certificate, "stream_plan");
     let coordinate_tables = json_array_field(stream_plan, "coordinate_tables");
@@ -5779,6 +5819,16 @@ mod tests {
         let mut input = checked_reusable_chunk_input();
         input.resource_certificate_document.payload.0["executable_liveness"]["checks"]
             ["qroam_target_and_qchunk_are_concurrently_live"] = serde_json::json!(false);
+        refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_reusable_chunk_scratch_contract_forgery() {
+        let mut input = checked_reusable_chunk_input();
+        input.resource_certificate_document.payload.0["executable_contract"]
+            ["scratch_execution_contract"]["chunk_load_events_per_leaf"] = serde_json::json!(9);
         refresh_resource_certificate_digest(&mut input);
         run_prepared_attestation(&input);
     }

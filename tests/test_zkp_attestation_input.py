@@ -83,6 +83,7 @@ def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None
     qroam_reference = resource_document['payload']['qroam_reference_crosscheck']
     modular_certificate = resource_document['payload']['modular_arithmetic_certificate']
     stream_plan = resource_document['payload']['stream_plan']
+    scratch_execution_contract = resource_document['payload']['executable_contract']['scratch_execution_contract']
     qroam_model = resource_document['payload']['standard_qroamclean_k1_model']
     qubit_derivation = resource_document['payload']['qubit_derivation']
     non_clifford_derivation = resource_document['payload']['non_clifford_derivation']
@@ -131,6 +132,10 @@ def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None
     assert liveness['owner_peak_live_qubits'] == liveness['owner_capacity_qubits']
     assert liveness['checks']['qroam_target_and_qchunk_are_concurrently_live'] is True
     assert liveness['checks']['no_full_coordinate_lane_wire_is_live'] is True
+    assert scratch_execution_contract['scratch_register'] == 'qchunk'
+    assert scratch_execution_contract['chunk_load_events_per_leaf'] == 5 * stream_plan['chunk_count']
+    assert scratch_execution_contract['final_scratch_value'] == 0
+    assert resource_document['payload']['checks']['executable_leaf_executes_reusable_chunk_scratch_contract'] is True
     assert counted_resource_ir['pass'] is True
     assert counted_resource_ir['recomputed_total_non_clifford'] == non_clifford_derivation['candidate_total_non_clifford']
     assert counted_resource_ir['recomputed_peak_live_qubits'] == qubit_derivation['candidate_total_logical_qubits']

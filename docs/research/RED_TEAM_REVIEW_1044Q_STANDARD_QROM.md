@@ -79,7 +79,7 @@ resource semantics and macro boundaries.
 | RES-1 | P0 | `complete_a0_all_streamed_tail` hides internal liveness behind a macro boundary | The `1,044` qubit result depends on internal temporaries not increasing peak live qubits | Flatten macro into scheduled IR and derive peak from that IR |
 | RES-2 | P0 partially mitigated | Modular field arithmetic costs are now digest-bound operation streams, but still not a generated modular circuit | Rust semantics applies `% p`; arithmetic lowering counts abstract add/sub/mul kernels whose modular-reduction completeness must still be trusted below the compact operation IR | Generate modular add/sub/mul circuits including reduction and count them |
 | RES-3 | P0 partially mitigated | The public reusable-chunk resource ledger now has a guest-checked contract engine over counted IR, executable liveness, and owner capacity, but still lacks a Clifford-complete flat netlist | It now catches counted/executable liveness drift and owner-capacity underprovisioning, but the deepest macro/arithmetic temporaries are still below a model boundary | Keep moving toward one flat liveness engine over QROAM target/junk, macro scratch, phase/control wires, and generated modular arithmetic netlists |
-| ZK-3 | P1 | Checked compressed fixture JSON has `proof: null` while binary proof is separate | Verifiability exists, but the human-readable fixture does not itself contain the proof payload | Put digest/size/path of proof binaries into fixtures and manifest; verify them in tests |
+| ZK-3 | P1 remediated for out-of-line proof binding | Checked compressed fixture JSON keeps `proof: null` while binary proof is separate | Large compressed proof bytes remain out-of-line, but fixtures now bind proof/verifier-key path, size, digest, and curated proof-manifest records | Keep `proof_status.py` manifest cross-checks and fixture metadata tests in the release gate |
 | GOV-1 | P1 | Many release-critical constants are scattered in tests/source/docs | Drift and accidental self-confirming tests remain possible | Versioned parameter/baseline artifacts imported everywhere |
 
 ## What Is Actually Strong
@@ -1548,6 +1548,11 @@ Current remediation:
   named baseline rows instead of using the legacy `90M`, `70M`, `1200`, or
   `1450` key names as independent sources of truth. Legacy keys remain in the
   artifact only as compatibility views.
+- Release-corpus build tests now derive the 9024-case target from
+  `proof_corpus_profiles.json`, release-candidate build tests use the same
+  profile resolver as the build script, public-headline policy mutation tests
+  mutate the checked policy value rather than restating `1199`, and IBM context
+  tests derive headline strings from `public_headline_result.json`.
 
 ### P1: Reproducible proof environment
 
@@ -1800,6 +1805,12 @@ Partially mitigated after review:
   now also contains an executable candidate leaf using
   `complete_a0_reusable_chunk_tail` with a fourth scratch slot `qchunk`, and the
   toy check executes that leaf through `exec_netlist`.
+- The executable candidate leaf now also traces the `qchunk` scratch contract:
+  for every non-lookup-infinity boundary pair it records each table-controlled
+  chunk load into `qchunk`, requires the expected low/high chunks for
+  `lookup_x`, `lookup_y`, and `lookup_x + lookup_y`, and verifies that `qchunk`
+  resets to zero after each consumer. Integrity mutation tests reject a forged
+  scratch-trace pass bit, so `qchunk` is no longer only a named liveness owner.
 - `compiler_verification_project/artifacts/reusable_chunk_lowering.json` now
   records the candidate's generated lowering/resource contract. It derives the
   6 chunk streams per leaf from the executable leaf's three coordinate tables

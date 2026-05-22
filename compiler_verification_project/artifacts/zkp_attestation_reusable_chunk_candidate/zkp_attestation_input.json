@@ -6,7 +6,7 @@
   "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
   "family_sha256": "d04c86b03248877ef7b62d3a1a6567dd823552d22f0b5b039e7109eb6315beaa",
   "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
-  "resource_certificate_sha256": "54086b48934386ca62fdabca7b8bda2e72dc6fb225d688349c3e2a680dce6f00",
+  "resource_certificate_sha256": "8224f86922f043d3975b583d47bd82a2fe5ba5bc3d1bba4723bf9a7f493e07c7",
   "compiler_parameters_sha256": "5d17d0fcc6fb8967cc5b02f916bd8c7da717c8b160486bc128bf3d81a7c8f517",
   "claim_document": {
     "document_type": "attestation_claim",
@@ -315,7 +315,7 @@
     "document_type": "reusable_chunk_lowering",
     "artifact_path": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "54086b48934386ca62fdabca7b8bda2e72dc6fb225d688349c3e2a680dce6f00",
+    "sha256": "8224f86922f043d3975b583d47bd82a2fe5ba5bc3d1bba4723bf9a7f493e07c7",
     "payload": {
       "schema": "compiler-project-reusable-chunk-lowering-v2",
       "status": "proven_public_headline",
@@ -345,6 +345,17 @@
           "b3": 21,
           "full_coordinate_lanes_materialized": 0,
           "reusable_chunk_slot": "qchunk"
+        },
+        "scratch_execution_contract": {
+          "scratch_register": "qchunk",
+          "opcode": "complete_a0_reusable_chunk_tail",
+          "table_controlled_multiplier_count_per_leaf": 5,
+          "chunk_loads_per_multiplier": 2,
+          "chunk_load_events_per_leaf": 10,
+          "scratch_resets_per_leaf": 5,
+          "final_scratch_value": 0,
+          "trace_event_key": "__chunk_scratch_events",
+          "bound_by_toy_semantic_equivalence": true
         },
         "lookup_constant_sources": [
           "lookup_x",
@@ -6424,6 +6435,7 @@
       "checks": {
         "executable_leaf_uses_four_arithmetic_slots": true,
         "executable_leaf_has_reusable_chunk_scratch": true,
+        "executable_leaf_executes_reusable_chunk_scratch_contract": true,
         "no_full_coordinate_lanes_materialized": true,
         "chunk_width_matches_strict_qubit_pressure": true,
         "stream_count_derived_from_tables_and_chunks": true,

@@ -54,6 +54,6 @@ def test_compiler_parameters_reject_forged_lookup_policy() -> None:
 
 def test_compiler_parameters_reject_forged_public_headline_policy() -> None:
     forged = deepcopy(build_compiler_parameters())
-    forged['public_headline_policy']['logical_qubit_limit_exclusive'] = 1199
+    forged['public_headline_policy']['logical_qubit_limit_exclusive'] -= 1
     checks = build_compiler_parameter_checks(_artifacts(forged))
     assert checks['pass'] < checks['total']

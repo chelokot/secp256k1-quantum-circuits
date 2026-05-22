@@ -37,14 +37,17 @@ def _minimal_artifacts(preflight: dict) -> dict:
 
 def test_release_corpus_preflight_matches_generator_and_covers_9024_cases() -> None:
     artifact = _load_artifact('release_corpus_preflight.json')
+    profiles = _load_artifact('proof_corpus_profiles.json')
+    release_profile = profiles['profiles'][profiles['release_profile']]
     expected = build_release_corpus_preflight(
         leaf=_load_artifact('streamed_lookup_tail_leaf.json'),
-        proof_corpus_profiles=_load_artifact('proof_corpus_profiles.json'),
+        proof_corpus_profiles=profiles,
     )
     checks = build_release_corpus_preflight_checks(_minimal_artifacts(artifact))
     assert artifact == expected
     assert artifact['pass'] is True
-    assert artifact['case_count'] == 9024
+    assert artifact['case_count'] == release_profile['case_count']
+    assert release_profile['release_grade'] is True
     assert checks['pass'] == checks['total']
     assert set(artifact['category_counts']) == {
         'accumulator_infinity',

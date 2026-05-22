@@ -237,6 +237,23 @@ def test_mutated_reusable_chunk_lookup_infinity_boundary_coverage_is_detected() 
     assert groups['reusable_chunk_tail_candidate_checks']['pass'] < groups['reusable_chunk_tail_candidate_checks']['total']
 
 
+def test_mutated_reusable_chunk_qchunk_scratch_trace_is_detected() -> None:
+    artifacts = _artifacts_for_mutation('reusable_chunk_tail_candidate')
+    semantic = artifacts['reusable_chunk_tail_candidate']['toy_semantic_equivalence']
+    semantic['all_rows_scratch_trace'] = False
+    semantic['rows'][0]['scratch_trace_pass'] = False
+    groups = _evaluate_mutation(artifacts, 'reusable_chunk_tail_candidate_checks')
+    assert groups['reusable_chunk_tail_candidate_checks']['pass'] < groups['reusable_chunk_tail_candidate_checks']['total']
+
+
+def test_mutated_reusable_chunk_scratch_trace_contract_is_detected() -> None:
+    artifacts = _artifacts_for_mutation('reusable_chunk_tail_candidate')
+    artifacts['reusable_chunk_tail_candidate']['toy_semantic_equivalence']['all_rows_scratch_trace'] = False
+    artifacts['reusable_chunk_tail_candidate']['scratch_execution_contract']['final_scratch_value'] = 1
+    groups = _evaluate_mutation(artifacts, 'reusable_chunk_tail_candidate_checks')
+    assert groups['reusable_chunk_tail_candidate_checks']['pass'] < groups['reusable_chunk_tail_candidate_checks']['total']
+
+
 def test_mutated_reusable_chunk_lowering_capacity_is_detected() -> None:
     artifacts = _artifacts_for_mutation('reusable_chunk_lowering')
     lookup_owner = next(row for row in artifacts['reusable_chunk_lowering']['owner_capacity']['rows'] if row['owner_id'] == 'lookup_workspace')
@@ -249,6 +266,13 @@ def test_mutated_reusable_chunk_macro_scratch_wire_is_detected() -> None:
     artifacts = _artifacts_for_mutation('reusable_chunk_lowering')
     contract = artifacts['reusable_chunk_lowering']['executable_contract']
     contract['arithmetic_slots'].remove(contract['chunk_contract']['reusable_chunk_slot'])
+    groups = _evaluate_mutation(artifacts, 'reusable_chunk_lowering_checks')
+    assert groups['reusable_chunk_lowering_checks']['pass'] < groups['reusable_chunk_lowering_checks']['total']
+
+
+def test_mutated_reusable_chunk_lowering_scratch_execution_contract_is_detected() -> None:
+    artifacts = _artifacts_for_mutation('reusable_chunk_lowering')
+    artifacts['reusable_chunk_lowering']['executable_contract']['scratch_execution_contract']['chunk_load_events_per_leaf'] -= 1
     groups = _evaluate_mutation(artifacts, 'reusable_chunk_lowering_checks')
     assert groups['reusable_chunk_lowering_checks']['pass'] < groups['reusable_chunk_lowering_checks']['total']
 

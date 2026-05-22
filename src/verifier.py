@@ -79,6 +79,39 @@ def _chunked_const_mul(value: int, constant: int, p: int, chunk_bits: int, chunk
     return total % p
 
 
+def _chunked_const_mul_with_scratch(
+    env: Dict[str, Any],
+    scratch_name: str,
+    consumer: str,
+    value: int,
+    constant: int,
+    p: int,
+    chunk_bits: int,
+    chunk_count: int,
+) -> int:
+    total = 0
+    events = env.setdefault('__chunk_scratch_events', [])
+    for index, chunk in enumerate(_split_chunks(constant, chunk_bits, chunk_count)):
+        env[scratch_name] = int(chunk)
+        events.append({
+            'event': 'chunk_load',
+            'consumer': consumer,
+            'scratch_register': scratch_name,
+            'chunk_index': index,
+            'chunk_value': int(env[scratch_name]),
+        })
+        total += int(value) * int(env[scratch_name]) * pow(2, index * int(chunk_bits), p)
+    env[scratch_name] = 0
+    events.append({
+        'event': 'scratch_reset',
+        'consumer': consumer,
+        'scratch_register': scratch_name,
+        'chunk_index': int(chunk_count),
+        'chunk_value': 0,
+    })
+    return total % p
+
+
 def _apply_instruction(env: Dict[str, Any], ins: Dict[str, Any], p: int) -> None:
     op = ins['op']
     dst = ins.get('dst')
@@ -205,18 +238,19 @@ def _apply_instruction(env: Dict[str, Any], ins: Dict[str, Any], p: int) -> None
         x_acc = env[src['x']]
         y_acc = env[src['y']]
         z_acc = env[src['z']]
+        scratch = src['scratch']
         lookup_x = env['T.x'][env['k']]
         lookup_y = env['T.y'][env['k']]
         lookup_sum = (lookup_x + lookup_y) % p
         g = (x_acc + y_acc) % p
-        h = _chunked_const_mul(g, lookup_sum, p, chunk_bits, chunk_count)
-        a = _chunked_const_mul(x_acc, lookup_x, p, chunk_bits, chunk_count)
-        zx = _chunked_const_mul(z_acc, lookup_x, p, chunk_bits, chunk_count)
+        h = _chunked_const_mul_with_scratch(env, scratch, 'lookup_x_plus_y', g, lookup_sum, p, chunk_bits, chunk_count)
+        a = _chunked_const_mul_with_scratch(env, scratch, 'lookup_x', x_acc, lookup_x, p, chunk_bits, chunk_count)
+        zx = _chunked_const_mul_with_scratch(env, scratch, 'lookup_x', z_acc, lookup_x, p, chunk_bits, chunk_count)
         c = (b3 * (x_acc + zx)) % p
-        i = _chunked_const_mul(y_acc, lookup_y, p, chunk_bits, chunk_count)
+        i = _chunked_const_mul_with_scratch(env, scratch, 'lookup_y', y_acc, lookup_y, p, chunk_bits, chunk_count)
         k = (h - a - i) % p
         l = (3 * a) % p
-        yz = _chunked_const_mul(z_acc, lookup_y, p, chunk_bits, chunk_count)
+        yz = _chunked_const_mul_with_scratch(env, scratch, 'lookup_y', z_acc, lookup_y, p, chunk_bits, chunk_count)
         e = (y_acc + yz) % p
         f = (b3 * z_acc) % p
         m = (i + f) % p

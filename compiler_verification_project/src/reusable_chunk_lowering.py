@@ -350,6 +350,8 @@ def build_reusable_chunk_lowering(
 ) -> Dict[str, Any]:
     candidate = reusable_chunk_tail_candidate['production_resource_candidate']
     executable_leaf = reusable_chunk_tail_candidate['executable_leaf_contract']
+    scratch_execution_contract = reusable_chunk_tail_candidate['scratch_execution_contract']
+    toy_semantics = reusable_chunk_tail_candidate['toy_semantic_equivalence']
     stress_candidate = fallback_frontier_stress['reusable_chunked_coordinate_candidate']
     stress_chunking = fallback_frontier_stress['chunked_coordinate_qroam_counterfactual']
     ledger_sweep = logical_resource_ledger['qroam_clean_tradeoff_sweep']
@@ -479,6 +481,18 @@ def build_reusable_chunk_lowering(
     checks = {
         'executable_leaf_uses_four_arithmetic_slots': arithmetic_slot_count == 4,
         'executable_leaf_has_reusable_chunk_scratch': executable_leaf['chunk_contract']['reusable_chunk_slot'] in executable_leaf['arithmetic_slots'],
+        'executable_leaf_executes_reusable_chunk_scratch_contract': (
+            scratch_execution_contract['scratch_register'] == executable_leaf['chunk_contract']['reusable_chunk_slot']
+            and scratch_execution_contract['opcode'] == executable_leaf['instructions'][-1]['op']
+            and int(scratch_execution_contract['table_controlled_multiplier_count_per_leaf']) == 5
+            and int(scratch_execution_contract['chunk_loads_per_multiplier']) == chunk_count
+            and int(scratch_execution_contract['chunk_load_events_per_leaf']) == 5 * chunk_count
+            and int(scratch_execution_contract['scratch_resets_per_leaf']) == 5
+            and int(scratch_execution_contract['final_scratch_value']) == 0
+            and scratch_execution_contract['bound_by_toy_semantic_equivalence'] is True
+            and toy_semantics['all_rows_scratch_trace'] is True
+            and int(toy_semantics['scratch_trace_checked']) == int(toy_semantics['total_boundary_pairs']) - int(toy_semantics['category_totals']['lookup_infinity'])
+        ),
         'no_full_coordinate_lanes_materialized': int(executable_leaf['chunk_contract']['full_coordinate_lanes_materialized']) == 0 and all(int(row['full_coordinate_lane_materialized']) == 0 for row in stream_rows),
         'chunk_width_matches_strict_qubit_pressure': chunk_bits == int(stress_chunking['max_qroam_target_bits_per_live_chunk']),
         'stream_count_derived_from_tables_and_chunks': chunk_streams_per_leaf == len(table_names) * chunk_count == int(candidate['chunk_streams_per_leaf']),
@@ -555,6 +569,7 @@ def build_reusable_chunk_lowering(
             'arithmetic_slots': list(executable_leaf['arithmetic_slots']),
             'control_slots': list(executable_leaf['control_slots']),
             'chunk_contract': dict(executable_leaf['chunk_contract']),
+            'scratch_execution_contract': dict(scratch_execution_contract),
             'lookup_constant_sources': table_names,
         },
         'stream_plan': {

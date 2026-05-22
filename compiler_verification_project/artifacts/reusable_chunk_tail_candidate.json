@@ -24,6 +24,17 @@
     },
     "full_coordinate_lanes_materialized": 0
   },
+  "scratch_execution_contract": {
+    "scratch_register": "qchunk",
+    "opcode": "complete_a0_reusable_chunk_tail",
+    "table_controlled_multiplier_count_per_leaf": 5,
+    "chunk_loads_per_multiplier": 2,
+    "chunk_load_events_per_leaf": 10,
+    "scratch_resets_per_leaf": 5,
+    "final_scratch_value": 0,
+    "trace_event_key": "__chunk_scratch_events",
+    "bound_by_toy_semantic_equivalence": true
+  },
   "executable_leaf_contract": {
     "schema": "compiler-project-reusable-chunk-tail-leaf-candidate-v1",
     "variant": "a0_complete_reusable_chunk_tail_candidate",
@@ -126,8 +137,11 @@
         },
         "semantic_pass": true,
         "executable_pass": true,
+        "scratch_trace_pass": true,
+        "scratch_trace_checked": 3660,
         "semantic_failure_examples": [],
-        "executable_failure_examples": []
+        "executable_failure_examples": [],
+        "scratch_trace_failure_examples": []
       },
       {
         "curve": "toy127_b11",
@@ -144,8 +158,11 @@
         },
         "semantic_pass": true,
         "executable_pass": true,
+        "scratch_trace_pass": true,
+        "scratch_trace_checked": 16002,
         "semantic_failure_examples": [],
-        "executable_failure_examples": []
+        "executable_failure_examples": [],
+        "scratch_trace_failure_examples": []
       },
       {
         "curve": "toy181_b3",
@@ -162,8 +179,11 @@
         },
         "semantic_pass": true,
         "executable_pass": true,
+        "scratch_trace_pass": true,
+        "scratch_trace_checked": 32580,
         "semantic_failure_examples": [],
-        "executable_failure_examples": []
+        "executable_failure_examples": [],
+        "scratch_trace_failure_examples": []
       },
       {
         "curve": "toy241_b29",
@@ -180,12 +200,17 @@
         },
         "semantic_pass": true,
         "executable_pass": true,
+        "scratch_trace_pass": true,
+        "scratch_trace_checked": 57840,
         "semantic_failure_examples": [],
-        "executable_failure_examples": []
+        "executable_failure_examples": [],
+        "scratch_trace_failure_examples": []
       }
     ],
     "all_rows_semantic": true,
     "all_rows_executable": true,
+    "all_rows_scratch_trace": true,
+    "scratch_trace_checked": 110082,
     "total_boundary_pairs": 110692,
     "category_totals": {
       "ordinary": 108264,

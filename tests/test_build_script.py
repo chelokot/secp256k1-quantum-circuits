@@ -20,6 +20,7 @@ def test_build_targets_include_no_prover_release_candidate() -> None:
 
 def test_release_candidate_zkp_uses_release_profile(monkeypatch: Any) -> None:
     calls: list[dict[str, Any]] = []
+    profile = MODULE.resolve_proof_corpus_profile('release')
 
     def fake_write_zkp_attestation_inputs(**kwargs: Any) -> None:
         calls.append(kwargs)
@@ -30,8 +31,8 @@ def test_release_candidate_zkp_uses_release_profile(monkeypatch: Any) -> None:
     assert calls == [
         {
             'family_name': 'reusable-chunk',
-            'case_count': 9024,
-            'case_start': 0,
+            'case_count': profile['case_count'],
+            'case_start': profile['case_start'],
             'output_dir': REPO_ROOT
             / 'compiler_verification_project'
             / 'artifacts'

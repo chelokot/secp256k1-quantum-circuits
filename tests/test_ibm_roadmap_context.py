@@ -59,9 +59,12 @@ class IBMRoadmapContextTests(unittest.TestCase):
         )
 
     def test_docs_preserve_favorable_but_bounded_ibm_claim(self):
+        selected = self.headline['selected_result']
+        non_clifford = f"{selected['non_clifford']:,}"
+        logical_qubits = f"{selected['logical_qubits']:,}"
         for text in [self.readme, self.reference_note]:
-            self.assertIn('36,957,412', text)
-            self.assertIn('1,199', text)
+            self.assertIn(non_clifford, text)
+            self.assertIn(logical_qubits, text)
             self.assertIn('Starling', text)
             self.assertIn('Blue Jay', text)
             self.assertRegex(text, r'not (as )?a claim|not claimed')
