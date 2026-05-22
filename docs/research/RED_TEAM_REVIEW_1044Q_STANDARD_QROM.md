@@ -1522,6 +1522,10 @@ Current remediation:
   engine-derived owner peaks. Rust guest tests reject a counted/executable
   liveness drift and counted/resource-contract engine digest drift even when the
   resource-certificate digest is refreshed.
+- The public-headline verifier now independently recomputes the
+  `counted_resource_ir`, executable-liveness, and owner-capacity digests recorded
+  by the resource contract engine, so this digest-drift class is visible in the
+  reviewer CLI before running SP1.
 - `compiler_verification_project/artifacts/arithmetic_operation_ir.json` now
   reconstructs arithmetic block/stage/kernel/selected-leaf primitive counts from
   materialized operation streams and digests. The resource-liveness certificate

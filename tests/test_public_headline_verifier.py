@@ -63,6 +63,10 @@ class PublicHeadlineVerifierTests(unittest.TestCase):
         report = json.loads(result.stdout)
         self.assertIn('checks', report)
         self.assertGreater(len(report['checks']), len(report['failed_checks']))
+        self.assertIn(
+            'reusable_chunk_resource_contract_engine_digests_recompute',
+            {check['name'] for check in report['checks']},
+        )
 
 
 if __name__ == '__main__':

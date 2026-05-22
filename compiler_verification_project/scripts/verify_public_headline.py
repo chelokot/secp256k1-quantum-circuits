@@ -99,6 +99,11 @@ def semantic_payload_sha256(document_type: str, payload: Any) -> str:
     return hasher.hexdigest()
 
 
+def canonical_sha256(payload: Any) -> str:
+    encoded = json.dumps(payload, sort_keys=True, separators=(',', ':'), ensure_ascii=True).encode('ascii')
+    return hashlib.sha256(encoded).hexdigest()
+
+
 def check(checks: list[dict[str, Any]], name: str, passed: bool, expected: Any, observed: Any) -> None:
     checks.append(
         {
@@ -286,6 +291,16 @@ def build_metadata_report() -> dict[str, Any]:
     check(checks, 'reusable_chunk_counted_resource_ir_recomputes_public_totals', counted_resource_ir['pass'] is True and counted_resource_ir['recomputed_total_non_clifford'] == selected['non_clifford'] and counted_resource_ir['recomputed_peak_live_qubits'] == selected['logical_qubits'], {'non_clifford': selected['non_clifford'], 'logical_qubits': selected['logical_qubits']}, counted_resource_ir)
     resource_contract_engine = lowering['resource_contract_engine']
     check(checks, 'reusable_chunk_resource_contract_engine_unifies_counted_and_executable_liveness', resource_contract_engine['pass'] is True and resource_contract_engine['peak_live_qubits'] == selected['logical_qubits'] and resource_contract_engine['owner_peak_live_qubits'] == resource_contract_engine['owner_capacity_qubits'], {'logical_qubits': selected['logical_qubits'], 'owner_peak_equals_capacity': True}, resource_contract_engine)
+    expected_resource_contract_digests = {
+        'counted_resource_ir_sha256': canonical_sha256(counted_resource_ir),
+        'executable_liveness_sha256': canonical_sha256(executable_liveness),
+        'owner_capacity_sha256': canonical_sha256(lowering['owner_capacity']),
+    }
+    observed_resource_contract_digests = {
+        key: resource_contract_engine[key]
+        for key in expected_resource_contract_digests
+    }
+    check(checks, 'reusable_chunk_resource_contract_engine_digests_recompute', observed_resource_contract_digests == expected_resource_contract_digests, expected_resource_contract_digests, observed_resource_contract_digests)
     proof_register_contract = input_payload['proof_register_contract']
     check(checks, 'proof_register_contract_binds_prepared_leaf_to_resource_owners', proof_register_contract['pass'] is True and len(proof_register_contract['register_rows']) == input_payload['prepared_leaf']['register_count'] and proof_register_contract['checks']['every_register_has_declared_contract_class'] is True and proof_register_contract['checks']['every_unclassified_written_register_is_rejected'] is True and proof_register_contract['checks']['semantic_lookup_constants_are_not_materialized_full_coordinate_lanes'] is True, 'prepared leaf register map has declared resource classes and counted written quantum owners', proof_register_contract)
     check(checks, 'compiler_parameters_document_binds_parameter_source', input_payload['compiler_parameters_document']['payload'] == compiler_parameters and input_payload['compiler_parameters_document']['sha256'] == input_payload['compiler_parameters_sha256'] and compiler_parameters['pass'] is True and len(compiler_parameters['parameter_digest_sha256']) == 64, 'committed compiler parameters document bound into proof input', input_payload['compiler_parameters_document'])
