@@ -15,6 +15,13 @@ from materialized_circuit import available_family_names, resolve_selected_family
 from project import compiler_family_frontier  # noqa: E402
 
 
+def checked_frontier_artifact() -> dict | None:
+    path = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts' / 'family_frontier.json'
+    if not path.exists():
+        return None
+    return json.loads(path.read_text())
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='Materialize exact generated whole-oracle operation streams for named compiler families.')
     parser.add_argument('--family', action='append', default=[], help='Family name to materialize. Supports best-gate and best-qubit aliases.')
@@ -27,7 +34,9 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    frontier = compiler_family_frontier()
+    frontier = checked_frontier_artifact() if args.list_families else None
+    if frontier is None:
+        frontier = compiler_family_frontier()
     if args.list_families:
         print(json.dumps({
             'available_families': available_family_names(frontier),

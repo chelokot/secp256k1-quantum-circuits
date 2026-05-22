@@ -14,7 +14,7 @@ COMPILER_SRC = REPO_ROOT / 'compiler_verification_project' / 'src'
 if str(COMPILER_SRC) not in sys.path:
     sys.path.insert(0, str(COMPILER_SRC))
 
-from materialized_circuit import build_materialized_family_manifest, iter_family_operation_stream, resolve_selected_family_names  # noqa: E402
+from materialized_circuit import MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, iter_family_operation_stream, resolve_selected_family_names  # noqa: E402
 
 
 def _frontier() -> dict:
@@ -42,10 +42,19 @@ def test_materialized_operation_stream_emits_seed_lookup_rows() -> None:
     assert all(row['gate'] in {'ccx', 'measurement'} for row in preview)
 
 
-def test_materialized_operation_stream_reconstructs_best_qubit_headline() -> None:
+def test_checked_materialized_manifest_reconstructs_best_qubit_headline() -> None:
     frontier = _frontier()
     family = frontier['best_qubit_family']
-    manifest = build_materialized_family_manifest(family['name'], frontier=frontier)
+    manifest = json.loads(
+        (
+            REPO_ROOT
+            / 'compiler_verification_project'
+            / 'artifacts'
+            / 'materialized_circuit_manifest.json'
+        ).read_text()
+    )
+    assert manifest['schema'] == MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA
+    assert manifest['family'] == family['name']
     assert manifest['gate_totals']['ccx'] == family['full_oracle_non_clifford']
     assert manifest['gate_totals']['measurement'] == family['total_measurements']
     assert all(manifest['reconstruction_checks'].values())

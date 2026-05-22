@@ -12,10 +12,10 @@ It does not promote modeled numbers to headline results. A direction is treated
 as promising here only if it survives the repository's actual accumulator,
 lookup, and scaffold semantics.
 
-## Current standard-QROM baseline
+## Historical three-slot standard-QROM reference
 
-As of the current compiler frontier, the repository's central standard-QROM
-point is:
+The repository keeps the older three-slot standard-QROM point as a checked
+reference boundary:
 
 - `34,925,796` non-Clifford
 - `1,044` logical qubits
@@ -23,7 +23,9 @@ point is:
 This is the family
 `folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1`
 in `compiler_verification_project/artifacts/family_frontier.json`.
-The lookup side of this point is now bound to the standard-QROAM coordinate-stream model; see
+The current public headline is the stricter reusable-chunk four-slot result
+selected by `compiler_verification_project/artifacts/public_headline_result.json`.
+The lookup side of this historical reference is bound to the standard-QROAM coordinate-stream model; see
 `compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json`
 for the checked standard-QROM status and
 `compiler_verification_project/artifacts/logical_resource_ledger.json` for the
@@ -291,7 +293,7 @@ Result:
 
 - the valid complete projective full-add body fits in `9` arithmetic slots, not
   in `8`,
-- this already exceeds the current central standard-QROM frontier's `6` arithmetic
+- this already exceeds the historical three-slot standard-QROM reference's `6` arithmetic
   slots before counting any lookup workspace or phase-shell bits.
 
 Interpretation:
@@ -700,7 +702,7 @@ Result for `n = 256`:
 
 Whole-oracle implication:
 
-- the current central standard-QROM point is `1044` logical qubits, which decomposes as
+- the historical three-slot standard-QROM reference is `1044` logical qubits, which decomposes as
   `3 * 256 + 274 + 1 + 1`,
 - a hypothetical `7`-slot arithmetic leaf with sequential tmpand-style zero
   tests lands at about `7 * 256 + 255 + 274 + 1 + 1 = 2323` logical qubits
@@ -766,7 +768,7 @@ Repository implication at `n = 256`:
   non-Clifford per retained addition,
 - across the current `28` retained additions this is about `43,036`
   non-Clifford total,
-- that is still tiny relative to the current central standard-QROM point,
+- that is still tiny relative to the historical three-slot standard-QROM reference,
 - if the predicate ancilla demand really stays in the `O(log*(n))` or
   minimal-qubit regime, the arithmetic shell would remain small, but the
   current standard-QROAMClean lookup workspace still keeps the whole-oracle
@@ -799,7 +801,7 @@ Status:
 What was checked locally:
 
 - translated the comparator-based predicate screen into whole-oracle headline
-  numbers using the current central standard-QROM decomposition
+  numbers using the historical three-slot standard-QROM decomposition
   `slots * 256 + 274 + 1 + 1`,
 - modeled the doubling predicate as two `3n`-style comparators plus one final
   one-bit conjunction at `n = 256`,
@@ -808,7 +810,7 @@ What was checked locally:
 Result:
 
 - the gate total remains essentially unchanged relative to the `34,925,796`
-  non-Clifford current standard-QROM baseline across the whole sweep,
+  non-Clifford historical three-slot standard-QROM baseline across the whole sweep,
 - the qubit totals are approximately:
   - `7` arithmetic slots: `2069..2076` logical qubits,
   - `6` arithmetic slots: `1813..1820` logical qubits,
@@ -869,7 +871,7 @@ Status:
 What was checked locally:
 
 - converted the `7`-slot floor into required effective field widths under the
-  current central standard-QROM whole-oracle overhead model
+  historical three-slot standard-QROM whole-oracle overhead model
   `slots * width + 274 + 1 + 1 + predicate_ancilla`,
 - swept a small predicate-ancilla range `1..8`.
 
@@ -1047,7 +1049,7 @@ Important limitation:
 - the carried-flag update rule has not yet been transcribed into a checked ISA
   lowering,
 - it may require one additional persistent control qubit relative to the
-  current central standard-QROM family, although that qubit impact is negligible
+  historical three-slot standard-QROM family, although that qubit impact is negligible
   compared to arithmetic-slot changes.
 
 Status:
@@ -1258,7 +1260,7 @@ Status:
 
 What was checked locally:
 
-- compared the candidate predicate overhead against the current central exact
+- compared the candidate predicate overhead against the historical three-slot exact
   point `34,925,796`,
 - kept the previous comparator-predicate estimate as a small perturbation
   relative to the standard-QROAM data-selection term,
@@ -1686,7 +1688,7 @@ Simple gate screen:
   non-Clifford,
 - across `28` retained additions this contributes about `57,344`
   non-Clifford total,
-- adding that to the current central standard-QROM point gives about
+- adding that to the historical three-slot standard-QROM reference gives about
   `22,811,175` non-Clifford before any further shell simplifications.
 
 Qubit implication:
@@ -1740,7 +1742,7 @@ What was checked locally:
 
 - priced the qubit effect of carrying explicit shell-state controls on top of a
   hypothetical `7`-slot retained-add leaf,
-- kept the current central standard-QROM family's fixed non-arithmetic budget:
+- kept the historical three-slot standard-QROM family's fixed non-arithmetic budget:
   `274` lookup workspace qubits and `1` live phase bit.
 
 Result:
@@ -1765,8 +1767,8 @@ What was checked locally:
 
 - priced the qubit effect of rescuing torsion-based alternative models by moving
   from `Fp` arithmetic to `Fp^d` arithmetic,
-- kept the same optimistic `7` arithmetic-slot target and the current central
-  standard-QROM family's fixed non-arithmetic budget.
+- kept the same optimistic `7` arithmetic-slot target and the historical
+  three-slot standard-QROM family's fixed non-arithmetic budget.
 
 Result:
 
@@ -1924,14 +1926,14 @@ Interpretation:
 
 What was checked locally:
 
-- combined the then-current central exact point with:
+- combined the then-historical three-slot exact point with:
   - the `phase_a` pruning screen,
   - the earlier zero-test proxy,
   - the arithmetic headline of the Rondepierre `a = 0` core.
 
 Arithmetic-only proxy:
 
-- then-current central exact point:
+- then-historical three-slot exact point:
   `22,753,831` non-Clifford,
 - current complete leaf: `11` multiplication-equivalent field products,
 - Rondepierre `a = 0` core: `9`,
@@ -2040,7 +2042,7 @@ Refined optimistic proxy:
 Interpretation:
 
 - even a concrete staged-shell selection network keeps the Jacobian-shell line
-  far below the current central standard-QROM point in this rough proxy,
+  far below the historical three-slot standard-QROM reference in this rough proxy,
 - this makes the remaining uncertainty overwhelmingly semantic rather than
   arithmetic-cost-driven.
 

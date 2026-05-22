@@ -1751,8 +1751,10 @@ Partially mitigated after review:
   measurements. The manifest now splits that stream into `43` deterministic
   million-operation-or-smaller digest segments with Merkle root
   `5ff61670bb4d1a394cb15b57b3c917687c092083654bb8738e47f2f0f1589188`.
-  That manifest is included in the build summary, curated proof manifest,
-  resource liveness certificate, and SP1 guest resource-certificate checks.
+  That manifest is schema-versioned, has a no-prover
+  `build.py --target materialized-circuit-manifest` refresh path, and is
+  included in the build summary, curated proof manifest, resource liveness
+  certificate, and SP1 guest resource-certificate checks.
   This is still a digest/manifest over the stream rather than a checked
   tens-of-millions-row TSV dump.
 - `RES-1`: `complete_a0_all_streamed_tail` is no longer only a single opaque

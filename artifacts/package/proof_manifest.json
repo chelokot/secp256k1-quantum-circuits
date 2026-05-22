@@ -175,8 +175,8 @@
       "bytes": 9368
     },
     "compiler_verification_project/README.md": {
-      "sha256": "a96a09d8e643b17af5068696c5f0dfb8234cf39fcf707e211e1873ce314ba967",
-      "bytes": 26063
+      "sha256": "83501d709e798f294a6402688f0df35e335c59fdf956773845c1ffff8236d2c8",
+      "bytes": 26299
     },
     "compiler_verification_project/src/artifact_registry.py": {
       "sha256": "24d3c3dec3569a5454835fc7e0cbeee90ee5691fe8fbf0e06378373a13c44411",
@@ -203,8 +203,8 @@
       "bytes": 26931
     },
     "compiler_verification_project/src/integrity.py": {
-      "sha256": "3a813ff23524adb627e318d3f0f9a5bdc191dd6a7069b86fe58bd0386101f347",
-      "bytes": 187484
+      "sha256": "3a04ad80dc3ceb5bbe73ded2d0842794aef87d5b53587e880c5c9c8e53410a6f",
+      "bytes": 187790
     },
     "compiler_verification_project/src/generated_block_inventory.py": {
       "sha256": "9a5a8cdc5369e43cb88df726d08fbc88ba727a43b72962388357546b8d382d89",
@@ -223,8 +223,8 @@
       "bytes": 38865
     },
     "compiler_verification_project/src/materialized_circuit.py": {
-      "sha256": "7caa2d64b24d4392d1dd3488ad787d74f7089e83a952a3b40da31c6f8940a19d",
-      "bytes": 16944
+      "sha256": "b8612adf2ff6665785ec13b8d68f86d26f14274e971da903703e21487f865972",
+      "bytes": 17135
     },
     "compiler_verification_project/src/modular_arithmetic_certificate.py": {
       "sha256": "216d3031aa3989ddf7b366d3a0a37cdcb5940568f94dbd57a99218ecbbfcd1d6",
@@ -307,8 +307,8 @@
       "bytes": 46705
     },
     "compiler_verification_project/scripts/build.py": {
-      "sha256": "4befb6570a93ad07fa1f958c519d5153c06f6100bbc79f7612fcf6fe5d85c403",
-      "bytes": 15547
+      "sha256": "2d87e72e642b2c94f17d4451cad0207ad7ccaf43887d6120ca3ab3e106f89e36",
+      "bytes": 16406
     },
     "compiler_verification_project/scripts/build_zkp_attestation_input.py": {
       "sha256": "aad1d7866c704594ce66dfe6abc39b87d3e9550bb9f01f0a20b3c33926981a61",
@@ -647,8 +647,8 @@
       "bytes": 523746
     },
     "compiler_verification_project/artifacts/materialized_circuit_manifest.json": {
-      "sha256": "a728786cb75c448c250acb6f622335ceb93120f55e34f733b0401e44f3b6d065",
-      "bytes": 27179
+      "sha256": "b23f07e51a9d3813bfcda41af3e2f5909c93588266390b80aa853a59b13c587f",
+      "bytes": 27244
     },
     "compiler_verification_project/artifacts/qubit_breakthrough_analysis.json": {
       "sha256": "c6097947f7b4a7123c20b028a22df1808ec51c3150b5a610c56517994b757c65",

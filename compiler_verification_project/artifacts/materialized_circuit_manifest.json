@@ -1,4 +1,5 @@
 {
+  "schema": "compiler-project-materialized-circuit-manifest-v1",
   "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
   "summary": "Central standard-QROAM lookup family: folded lookup control with standard QROAM coordinate streams consumed by table-controlled arithmetic kernels. / Space-compressed shell that uses a Griffiths\u2013Niu-style semiclassical inverse QFT and reuses a single phase qubit. / Executable streamed lookup leaf with table-fed coordinate multipliers, boundary no-op semantics, and a counted multi-output complete-add tail.",
   "lookup_family": "folded_standard_qroam_streamed_coordinate_v1",

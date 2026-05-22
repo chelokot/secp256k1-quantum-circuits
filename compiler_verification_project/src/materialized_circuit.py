@@ -21,6 +21,7 @@ from phase_shell_lowering import materialize_phase_operations, phase_shell_lower
 
 STREAM_COLUMNS = ['stream_index', 'family', 'scope', 'invocation', 'source', 'gate', 'operand_0', 'operand_1', 'operand_2']
 DEFAULT_SEGMENT_SIZE = 1_000_000
+MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA = 'compiler-project-materialized-circuit-manifest-v1'
 
 
 def _empty_gate_totals() -> Dict[str, int]:
@@ -333,6 +334,7 @@ def build_materialized_family_manifest(
         })
     segment_hashes = [segment['sha256'] for segment in segments]
     return {
+        'schema': MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA,
         'family': family_name,
         'summary': family['summary'],
         'lookup_family': family['lookup_family'],
@@ -387,6 +389,7 @@ def write_materialized_family_circuit(
 
 
 __all__ = [
+    'MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA',
     'available_family_names',
     'build_materialized_family_manifest',
     'iter_family_operation_stream',

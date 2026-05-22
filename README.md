@@ -260,6 +260,7 @@ From the repository root:
 python scripts/verify_all.py
 python compiler_verification_project/scripts/build.py
 python compiler_verification_project/scripts/build.py --target composition-artifacts
+python compiler_verification_project/scripts/build.py --target materialized-circuit-manifest
 python compiler_verification_project/scripts/build.py --target resource-zkp-and-public
 python compiler_verification_project/scripts/build.py --target zkp-and-public
 python compiler_verification_project/scripts/build.py --target release-candidate-zkp
@@ -288,6 +289,8 @@ artifact. Use `build.py --target composition-artifacts` after changing resource
 or frontier accounting that feeds the composition layer; it refreshes
 `full_attack_inventory.json`, `subcircuit_equivalence.json`, and
 `headline_opcode_coverage.json` without touching any prover. Use
+`build.py --target materialized-circuit-manifest` to refresh the segmented
+operation-stream digest/Merkle manifest without a full rebuild. Use
 `build.py --target zkp-and-public` when only attestation wrapping metadata
 changed.
 Checked artifact tests reuse existing build/verification summaries by default;
