@@ -28,12 +28,44 @@ from resource_certificate import build_resource_liveness_certificate  # noqa: E4
 from reusable_chunk_lowering import build_reusable_chunk_lowering  # noqa: E402
 from subcircuit_equivalence import build_subcircuit_equivalence_artifact  # noqa: E402
 from zkp_attestation import write_zkp_attestation_inputs  # noqa: E402
+from proof_corpus_profiles import resolve_proof_corpus_profile  # noqa: E402
+
+BUILD_TARGETS = (
+    'all',
+    'core-artifacts',
+    'build-summary',
+    'artifact-digest-tree',
+    'release-corpus-preflight',
+    'arithmetic-operation-ir',
+    'resource-liveness-certificate',
+    'resource-stack',
+    'composition-artifacts',
+    'qroam-reference',
+    'reusable-chunk-resource',
+    'zkp',
+    'candidate-zkp',
+    'release-candidate-zkp',
+    'public-headline',
+    'zkp-and-public',
+    'resource-zkp-and-public',
+)
 
 
 def build_candidate_zkp() -> None:
     candidate_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts' / 'zkp_attestation_reusable_chunk_candidate'
     write_zkp_attestation_inputs(
         family_name='reusable-chunk',
+        output_dir=candidate_dir,
+    )
+
+
+def build_release_candidate_zkp() -> None:
+    candidate_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts' / 'zkp_attestation_release_candidate'
+    profile = resolve_proof_corpus_profile('release')
+    write_zkp_attestation_inputs(
+        family_name='reusable-chunk',
+        case_count=int(profile['case_count']),
+        case_start=int(profile['case_start']),
         output_dir=candidate_dir,
     )
 
@@ -200,7 +232,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--target',
-        choices=('all', 'core-artifacts', 'build-summary', 'artifact-digest-tree', 'release-corpus-preflight', 'arithmetic-operation-ir', 'resource-liveness-certificate', 'resource-stack', 'composition-artifacts', 'qroam-reference', 'reusable-chunk-resource', 'zkp', 'candidate-zkp', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'),
+        choices=BUILD_TARGETS,
         default='all',
     )
     args = parser.parse_args()
@@ -238,6 +270,9 @@ def main() -> None:
     if args.target in ('all', 'candidate-zkp', 'zkp-and-public', 'resource-zkp-and-public'):
         build_candidate_zkp()
         payload['zkp_attestation_reusable_chunk_candidate'] = 'compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json'
+    if args.target in ('release-candidate-zkp',):
+        build_release_candidate_zkp()
+        payload['zkp_attestation_release_candidate'] = 'compiler_verification_project/artifacts/zkp_attestation_release_candidate/zkp_attestation_input.json'
     if args.target in ('all', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
         build_public_headline()
         payload['public_headline_result'] = 'compiler_verification_project/artifacts/public_headline_result.json'
@@ -257,6 +292,7 @@ def main() -> None:
         'public_headline_result': payload.get('public_headline_result'),
         'zkp_attestation_input': 'compiler_verification_project/artifacts/zkp_attestation_input.json' if 'zkp_attestation' in payload else None,
         'zkp_attestation_reusable_chunk_candidate_input': payload.get('zkp_attestation_reusable_chunk_candidate'),
+        'zkp_attestation_release_candidate_input': payload.get('zkp_attestation_release_candidate'),
         'artifact_dir': 'compiler_verification_project/artifacts',
     }, indent=2))
 

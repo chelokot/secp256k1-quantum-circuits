@@ -433,15 +433,17 @@ def build_modular_arithmetic_certificate_checks(artifacts: Mapping[str, Any]) ->
     )
     stage_certificate = certificate['field_mul_stage_count_certificate']
     opcode_certificate = certificate['opcode_count_certificate']
+    circuit_ir_certificate = certificate.get('executable_circuit_ir_count_certificate', {})
     reduced_cases = certificate['reduced_width_exhaustive_cases']
     checks = [
         _check('modular_arithmetic_certificate_matches_generator', certificate == expected, expected, certificate),
         _check('modular_arithmetic_certificate_schema_is_current', certificate['schema'] == 'compiler-project-modular-arithmetic-certificate-v1', 'compiler-project-modular-arithmetic-certificate-v1', certificate['schema']),
         _check('modular_arithmetic_certificate_passes_internal_checks', certificate['pass'] is True and all(certificate['checks'].values()), True, certificate['checks']),
         _check('modular_arithmetic_certificate_binds_secp256k1_modulus_shape', certificate['secp256k1_parameters']['field_bits'] == FIELD_BITS and certificate['secp256k1_parameters']['shift'] == 32 and certificate['secp256k1_parameters']['low_term'] == 977 and certificate['secp256k1_parameters']['canonical_subtract_passes'] == 2, {'field_bits': FIELD_BITS, 'shift': 32, 'low_term': 977, 'canonical_subtract_passes': 2}, certificate['secp256k1_parameters']),
+        _check('modular_arithmetic_certificate_executable_ir_counts_match_lowering', circuit_ir_certificate.get('counts_match_arithmetic_lowerings') is True and circuit_ir_certificate.get('observed_non_clifford_per_opcode') == circuit_ir_certificate.get('expected_non_clifford_per_opcode'), circuit_ir_certificate.get('expected_non_clifford_per_opcode'), circuit_ir_certificate),
         _check('modular_arithmetic_certificate_opcode_counts_match_modular_contracts', opcode_certificate['opcode_counts_match'] is True and opcode_certificate['observed_non_clifford_per_opcode'] == opcode_certificate['expected_non_clifford_per_opcode'] and opcode_certificate['expected_non_clifford_per_opcode']['field_add'] == 2 * (FIELD_BITS - 1) and opcode_certificate['expected_non_clifford_per_opcode']['mul_const'] == 6 * 2 * (FIELD_BITS - 1), {'field_add': 2 * (FIELD_BITS - 1), 'mul_const': 6 * 2 * (FIELD_BITS - 1)}, opcode_certificate),
         _check('modular_arithmetic_certificate_field_mul_stage_counts_match_lowering', stage_certificate['stage_counts_match'] is True and stage_certificate['observed_stage_ccx'] == stage_certificate['expected_stage_ccx'] and stage_certificate['observed_total_ccx'] == stage_certificate['expected_total_ccx'], stage_certificate['expected_stage_ccx'], stage_certificate),
-        _check('modular_arithmetic_certificate_reduced_width_cases_are_exhaustive', all(row['pass'] is True and row['rows_checked'] == row['modulus'] * row['modulus'] for row in reduced_cases), 'all reduced-width rows pass exhaustive p^2 testing', reduced_cases),
+        _check('modular_arithmetic_certificate_reduced_width_cases_are_exhaustive', all(row['pass'] is True and row['rows_checked'] == row['modulus'] * row['modulus'] and row['circuit_ir']['schema'] == 'compiler-project-executable-modular-circuit-ir-v1' for row in reduced_cases), 'all reduced-width rows pass exhaustive p^2 testing through executable modular circuit IR', reduced_cases),
     ]
     return _summarize_checks(checks)
 

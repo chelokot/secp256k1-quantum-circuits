@@ -1446,6 +1446,10 @@ Current remediation:
   target from `proof_corpus_profiles.json` and writes a release candidate input
   bundle without invoking SP1 proving. This removes another manual `--cases
   9024` step from the final proof rebuild path.
+- `build.py --target release-candidate-zkp` now exposes the same 9024-case
+  release candidate bundle as a first-class no-prover build target, so the final
+  proof rebuild input is produced by the checked build system rather than by an
+  ad hoc command line.
 
 Still open:
 
@@ -1484,6 +1488,11 @@ Current remediation:
   reconstructs arithmetic block/stage/kernel/selected-leaf primitive counts from
   materialized operation streams and digests. The resource-liveness certificate
   embeds the full compact arithmetic IR, and fast integrity checks regenerate it.
+- `modular_arithmetic_certificate.json` now also carries an executable
+  modular-circuit IR for canonical add/sub, double-sub, triple, multiplication
+  by 21, and pseudo-Mersenne multiplication. Reduced-width exhaustive tests run
+  through that IR, and the 256-bit IR opcode counts are checked against
+  `arithmetic_lowerings.json` and the reusable-chunk public headline metadata.
 
 Still open:
 
@@ -1693,14 +1702,16 @@ Fixed after review:
   `34,736,076 / 1,044` rather than leaving prime-field reduction implicit; the
   later canonical modular add/sub correction moved the checked three-slot
   reference to `34,925,796 / 1,044`.
-- `RES-2`: `modular_arithmetic_certificate.json` now independently reconstructs
-  the 256-bit `field_mul` reduction stage counts from
-  `arithmetic_lowerings.json` and exhaustively executes reduced-width
-  pseudo-Mersenne analogues over `23^2` and `53^2` input pairs for add, sub,
-  multiplication, and multiplication by `21`. Integrity checks and narrow tests
-  reject forged reduction-stage counts and forged reduced-width results. The
-  reusable-chunk resource certificate embeds this certificate, and the SP1 guest
-  validates it before accepting the public resource digest.
+- `RES-2`: `modular_arithmetic_certificate.json` now carries an
+  `executable_modular_circuit_ir` for add, sub, sub-sum, triple, multiplication
+  by `21`, and pseudo-Mersenne multiplication. The 256-bit IR derives the
+  opcode non-Clifford counts checked against `arithmetic_lowerings.json`, and
+  the same IR is executed exhaustively on reduced-width pseudo-Mersenne
+  analogues over `23^2` and `53^2` input pairs. Integrity checks and narrow
+  tests reject forged IR count bindings, forged reduction-stage counts, and
+  forged reduced-width results. The reusable-chunk resource certificate embeds
+  this certificate, and the SP1 guest validates it before accepting the public
+  resource digest.
 - `RES-2`: `arithmetic_operation_ir.json` now provides a compact typed
   arithmetic operation-stream layer. It materializes every arithmetic lowering
   block into canonical primitive-operation streams, records per-block stream

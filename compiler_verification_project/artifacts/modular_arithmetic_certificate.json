@@ -9,6 +9,554 @@
     "low_term": 977,
     "canonical_subtract_passes": 2
   },
+  "executable_modular_circuit_ir": {
+    "schema": "compiler-project-executable-modular-circuit-ir-v1",
+    "field_bits": 256,
+    "pseudo_mersenne": {
+      "shift": 32,
+      "low_term": 977,
+      "canonical_subtract_passes": 2,
+      "low_term_chain_steps": 14,
+      "second_fold_width": 43
+    },
+    "mul_const_21_addition_chain": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      20,
+      21
+    ],
+    "operations": [
+      {
+        "opcode": "field_add",
+        "semantic": "canonical modular addition",
+        "steps": [
+          {
+            "name": "carry_ladder",
+            "kind": "ripple_carry",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "compute raw sum carry path",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          },
+          {
+            "name": "conditional_subtract_modulus",
+            "kind": "conditional_modulus_correction",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "canonicalize raw sum by subtracting p when needed",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          }
+        ],
+        "primitive_counts_total": {
+          "ccx": 510,
+          "cx": 0,
+          "x": 0,
+          "measurement": 510
+        },
+        "non_clifford_total": 510
+      },
+      {
+        "opcode": "field_sub",
+        "semantic": "canonical modular subtraction",
+        "steps": [
+          {
+            "name": "borrow_ladder",
+            "kind": "ripple_borrow",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "compute raw difference borrow path",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          },
+          {
+            "name": "conditional_add_modulus",
+            "kind": "conditional_modulus_correction",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "canonicalize raw difference by adding p when needed",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          }
+        ],
+        "primitive_counts_total": {
+          "ccx": 510,
+          "cx": 0,
+          "x": 0,
+          "measurement": 510
+        },
+        "non_clifford_total": 510
+      },
+      {
+        "opcode": "field_sub_sum",
+        "semantic": "two sequential canonical modular subtractions",
+        "steps": [
+          {
+            "name": "first_subtract_borrow_ladder",
+            "kind": "ripple_borrow",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "compute raw difference borrow path",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          },
+          {
+            "name": "first_subtract_conditional_add_modulus",
+            "kind": "conditional_modulus_correction",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "canonicalize raw difference by adding p when needed",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          },
+          {
+            "name": "second_subtract_borrow_ladder",
+            "kind": "ripple_borrow",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "compute raw difference borrow path",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          },
+          {
+            "name": "second_subtract_conditional_add_modulus",
+            "kind": "conditional_modulus_correction",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "canonicalize raw difference by adding p when needed",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          }
+        ],
+        "primitive_counts_total": {
+          "ccx": 1020,
+          "cx": 0,
+          "x": 0,
+          "measurement": 1020
+        },
+        "non_clifford_total": 1020
+      },
+      {
+        "opcode": "field_triple",
+        "semantic": "two sequential canonical modular additions for 3a",
+        "steps": [
+          {
+            "name": "first_add_carry_ladder",
+            "kind": "ripple_carry",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "compute raw sum carry path",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          },
+          {
+            "name": "first_add_conditional_subtract_modulus",
+            "kind": "conditional_modulus_correction",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "canonicalize raw sum by subtracting p when needed",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          },
+          {
+            "name": "second_add_carry_ladder",
+            "kind": "ripple_carry",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "compute raw sum carry path",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          },
+          {
+            "name": "second_add_conditional_subtract_modulus",
+            "kind": "conditional_modulus_correction",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "canonicalize raw sum by subtracting p when needed",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          }
+        ],
+        "primitive_counts_total": {
+          "ccx": 1020,
+          "cx": 0,
+          "x": 0,
+          "measurement": 1020
+        },
+        "non_clifford_total": 1020
+      },
+      {
+        "opcode": "mul_const",
+        "semantic": "fixed multiplication by 21 through canonical modular additions",
+        "steps": [
+          {
+            "name": "chain_1_to_2_carry_ladder",
+            "kind": "ripple_carry",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "compute raw sum carry path",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          },
+          {
+            "name": "chain_1_to_2_conditional_subtract_modulus",
+            "kind": "conditional_modulus_correction",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "canonicalize raw sum by subtracting p when needed",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          },
+          {
+            "name": "chain_2_to_4_carry_ladder",
+            "kind": "ripple_carry",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "compute raw sum carry path",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          },
+          {
+            "name": "chain_2_to_4_conditional_subtract_modulus",
+            "kind": "conditional_modulus_correction",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "canonicalize raw sum by subtracting p when needed",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          },
+          {
+            "name": "chain_4_to_8_carry_ladder",
+            "kind": "ripple_carry",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "compute raw sum carry path",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          },
+          {
+            "name": "chain_4_to_8_conditional_subtract_modulus",
+            "kind": "conditional_modulus_correction",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "canonicalize raw sum by subtracting p when needed",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          },
+          {
+            "name": "chain_8_to_16_carry_ladder",
+            "kind": "ripple_carry",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "compute raw sum carry path",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          },
+          {
+            "name": "chain_8_to_16_conditional_subtract_modulus",
+            "kind": "conditional_modulus_correction",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "canonicalize raw sum by subtracting p when needed",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          },
+          {
+            "name": "chain_16_to_20_carry_ladder",
+            "kind": "ripple_carry",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "compute raw sum carry path",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          },
+          {
+            "name": "chain_16_to_20_conditional_subtract_modulus",
+            "kind": "conditional_modulus_correction",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "canonicalize raw sum by subtracting p when needed",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          },
+          {
+            "name": "chain_20_to_21_carry_ladder",
+            "kind": "ripple_carry",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "compute raw sum carry path",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          },
+          {
+            "name": "chain_20_to_21_conditional_subtract_modulus",
+            "kind": "conditional_modulus_correction",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "canonicalize raw sum by subtracting p when needed",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          }
+        ],
+        "primitive_counts_total": {
+          "ccx": 3060,
+          "cx": 0,
+          "x": 0,
+          "measurement": 3060
+        },
+        "non_clifford_total": 3060
+      },
+      {
+        "opcode": "field_mul",
+        "semantic": "schoolbook multiplication followed by pseudo-Mersenne reduction",
+        "steps": [
+          {
+            "name": "partial_product_grid",
+            "kind": "schoolbook_partial_products",
+            "bit_count": 65536,
+            "repeat_count": 1,
+            "semantic": "one controlled interaction for each field-bit product",
+            "measured": false,
+            "primitive_counts_total": {
+              "ccx": 65536,
+              "cx": 0,
+              "x": 0,
+              "measurement": 0
+            }
+          },
+          {
+            "name": "controlled_add_path",
+            "kind": "controlled_accumulator_add",
+            "bit_count": 255,
+            "repeat_count": 1,
+            "semantic": "carry path for controlled add half of schoolbook multiplier",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 255,
+              "cx": 0,
+              "x": 0,
+              "measurement": 255
+            }
+          },
+          {
+            "name": "controlled_sub_path",
+            "kind": "controlled_accumulator_subtract",
+            "bit_count": 256,
+            "repeat_count": 1,
+            "semantic": "borrow path for controlled subtract half of schoolbook multiplier",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 256,
+              "cx": 0,
+              "x": 0,
+              "measurement": 256
+            }
+          },
+          {
+            "name": "pseudo_mersenne_first_fold",
+            "kind": "pseudo_mersenne_fold",
+            "bit_count": 287,
+            "repeat_count": 15,
+            "semantic": "fold high product half via 2^n = 2^shift + low_term",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 4305,
+              "cx": 0,
+              "x": 0,
+              "measurement": 4305
+            }
+          },
+          {
+            "name": "pseudo_mersenne_second_fold",
+            "kind": "pseudo_mersenne_fold",
+            "bit_count": 42,
+            "repeat_count": 15,
+            "semantic": "fold residual high component after first fold",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 630,
+              "cx": 0,
+              "x": 0,
+              "measurement": 630
+            }
+          },
+          {
+            "name": "pseudo_mersenne_canonicalize",
+            "kind": "conditional_modulus_correction",
+            "bit_count": 255,
+            "repeat_count": 2,
+            "semantic": "canonicalize product with bounded subtract-p passes",
+            "measured": true,
+            "primitive_counts_total": {
+              "ccx": 510,
+              "cx": 0,
+              "x": 0,
+              "measurement": 510
+            }
+          }
+        ],
+        "primitive_counts_total": {
+          "ccx": 71492,
+          "cx": 0,
+          "x": 0,
+          "measurement": 5956
+        },
+        "non_clifford_total": 71492
+      }
+    ],
+    "non_clifford_by_opcode": {
+      "field_add": 510,
+      "field_sub": 510,
+      "field_sub_sum": 1020,
+      "field_triple": 1020,
+      "mul_const": 3060,
+      "field_mul": 71492
+    }
+  },
+  "executable_circuit_ir_count_certificate": {
+    "ir_schema": "compiler-project-executable-modular-circuit-ir-v1",
+    "expected_non_clifford_per_opcode": {
+      "field_add": 510,
+      "field_sub": 510,
+      "field_sub_sum": 1020,
+      "field_triple": 1020,
+      "mul_const": 3060,
+      "field_mul": 71492
+    },
+    "observed_non_clifford_per_opcode": {
+      "field_add": 510,
+      "field_sub": 510,
+      "field_sub_sum": 1020,
+      "field_triple": 1020,
+      "mul_const": 3060,
+      "field_mul": 71492
+    },
+    "counts_match_arithmetic_lowerings": true
+  },
   "opcode_count_certificate": {
     "field_bits": 256,
     "modular_add_correction_policy": "carry ladder plus conditional subtract-p correction",
@@ -73,487 +621,1425 @@
       "operations_checked": [
         "add",
         "sub",
+        "sub_sum",
+        "triple",
         "mul",
         "mul_const_21"
       ],
+      "circuit_ir": {
+        "schema": "compiler-project-executable-modular-circuit-ir-v1",
+        "field_bits": 5,
+        "pseudo_mersenne": {
+          "shift": 2,
+          "low_term": 5,
+          "canonical_subtract_passes": 2,
+          "low_term_chain_steps": 3,
+          "second_fold_width": 6
+        },
+        "mul_const_21_addition_chain": [
+          1,
+          2,
+          4,
+          8,
+          16,
+          20,
+          21
+        ],
+        "operations": [
+          {
+            "opcode": "field_add",
+            "semantic": "canonical modular addition",
+            "steps": [
+              {
+                "name": "carry_ladder",
+                "kind": "ripple_carry",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "compute raw sum carry path",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              },
+              {
+                "name": "conditional_subtract_modulus",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "canonicalize raw sum by subtracting p when needed",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              }
+            ],
+            "primitive_counts_total": {
+              "ccx": 8,
+              "cx": 0,
+              "x": 0,
+              "measurement": 8
+            },
+            "non_clifford_total": 8
+          },
+          {
+            "opcode": "field_sub",
+            "semantic": "canonical modular subtraction",
+            "steps": [
+              {
+                "name": "borrow_ladder",
+                "kind": "ripple_borrow",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "compute raw difference borrow path",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              },
+              {
+                "name": "conditional_add_modulus",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "canonicalize raw difference by adding p when needed",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              }
+            ],
+            "primitive_counts_total": {
+              "ccx": 8,
+              "cx": 0,
+              "x": 0,
+              "measurement": 8
+            },
+            "non_clifford_total": 8
+          },
+          {
+            "opcode": "field_sub_sum",
+            "semantic": "two sequential canonical modular subtractions",
+            "steps": [
+              {
+                "name": "first_subtract_borrow_ladder",
+                "kind": "ripple_borrow",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "compute raw difference borrow path",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              },
+              {
+                "name": "first_subtract_conditional_add_modulus",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "canonicalize raw difference by adding p when needed",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              },
+              {
+                "name": "second_subtract_borrow_ladder",
+                "kind": "ripple_borrow",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "compute raw difference borrow path",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              },
+              {
+                "name": "second_subtract_conditional_add_modulus",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "canonicalize raw difference by adding p when needed",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              }
+            ],
+            "primitive_counts_total": {
+              "ccx": 16,
+              "cx": 0,
+              "x": 0,
+              "measurement": 16
+            },
+            "non_clifford_total": 16
+          },
+          {
+            "opcode": "field_triple",
+            "semantic": "two sequential canonical modular additions for 3a",
+            "steps": [
+              {
+                "name": "first_add_carry_ladder",
+                "kind": "ripple_carry",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "compute raw sum carry path",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              },
+              {
+                "name": "first_add_conditional_subtract_modulus",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "canonicalize raw sum by subtracting p when needed",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              },
+              {
+                "name": "second_add_carry_ladder",
+                "kind": "ripple_carry",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "compute raw sum carry path",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              },
+              {
+                "name": "second_add_conditional_subtract_modulus",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "canonicalize raw sum by subtracting p when needed",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              }
+            ],
+            "primitive_counts_total": {
+              "ccx": 16,
+              "cx": 0,
+              "x": 0,
+              "measurement": 16
+            },
+            "non_clifford_total": 16
+          },
+          {
+            "opcode": "mul_const",
+            "semantic": "fixed multiplication by 21 through canonical modular additions",
+            "steps": [
+              {
+                "name": "chain_1_to_2_carry_ladder",
+                "kind": "ripple_carry",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "compute raw sum carry path",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              },
+              {
+                "name": "chain_1_to_2_conditional_subtract_modulus",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "canonicalize raw sum by subtracting p when needed",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              },
+              {
+                "name": "chain_2_to_4_carry_ladder",
+                "kind": "ripple_carry",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "compute raw sum carry path",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              },
+              {
+                "name": "chain_2_to_4_conditional_subtract_modulus",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "canonicalize raw sum by subtracting p when needed",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              },
+              {
+                "name": "chain_4_to_8_carry_ladder",
+                "kind": "ripple_carry",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "compute raw sum carry path",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              },
+              {
+                "name": "chain_4_to_8_conditional_subtract_modulus",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "canonicalize raw sum by subtracting p when needed",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              },
+              {
+                "name": "chain_8_to_16_carry_ladder",
+                "kind": "ripple_carry",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "compute raw sum carry path",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              },
+              {
+                "name": "chain_8_to_16_conditional_subtract_modulus",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "canonicalize raw sum by subtracting p when needed",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              },
+              {
+                "name": "chain_16_to_20_carry_ladder",
+                "kind": "ripple_carry",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "compute raw sum carry path",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              },
+              {
+                "name": "chain_16_to_20_conditional_subtract_modulus",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "canonicalize raw sum by subtracting p when needed",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              },
+              {
+                "name": "chain_20_to_21_carry_ladder",
+                "kind": "ripple_carry",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "compute raw sum carry path",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              },
+              {
+                "name": "chain_20_to_21_conditional_subtract_modulus",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "canonicalize raw sum by subtracting p when needed",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              }
+            ],
+            "primitive_counts_total": {
+              "ccx": 48,
+              "cx": 0,
+              "x": 0,
+              "measurement": 48
+            },
+            "non_clifford_total": 48
+          },
+          {
+            "opcode": "field_mul",
+            "semantic": "schoolbook multiplication followed by pseudo-Mersenne reduction",
+            "steps": [
+              {
+                "name": "partial_product_grid",
+                "kind": "schoolbook_partial_products",
+                "bit_count": 25,
+                "repeat_count": 1,
+                "semantic": "one controlled interaction for each field-bit product",
+                "measured": false,
+                "primitive_counts_total": {
+                  "ccx": 25,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 0
+                }
+              },
+              {
+                "name": "controlled_add_path",
+                "kind": "controlled_accumulator_add",
+                "bit_count": 4,
+                "repeat_count": 1,
+                "semantic": "carry path for controlled add half of schoolbook multiplier",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 4,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 4
+                }
+              },
+              {
+                "name": "controlled_sub_path",
+                "kind": "controlled_accumulator_subtract",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "borrow path for controlled subtract half of schoolbook multiplier",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              },
+              {
+                "name": "pseudo_mersenne_first_fold",
+                "kind": "pseudo_mersenne_fold",
+                "bit_count": 6,
+                "repeat_count": 4,
+                "semantic": "fold high product half via 2^n = 2^shift + low_term",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 24,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 24
+                }
+              },
+              {
+                "name": "pseudo_mersenne_second_fold",
+                "kind": "pseudo_mersenne_fold",
+                "bit_count": 5,
+                "repeat_count": 4,
+                "semantic": "fold residual high component after first fold",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 20,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 20
+                }
+              },
+              {
+                "name": "pseudo_mersenne_canonicalize",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 4,
+                "repeat_count": 2,
+                "semantic": "canonicalize product with bounded subtract-p passes",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 8,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 8
+                }
+              }
+            ],
+            "primitive_counts_total": {
+              "ccx": 86,
+              "cx": 0,
+              "x": 0,
+              "measurement": 61
+            },
+            "non_clifford_total": 86
+          }
+        ],
+        "non_clifford_by_opcode": {
+          "field_add": 8,
+          "field_sub": 8,
+          "field_sub_sum": 16,
+          "field_triple": 16,
+          "mul_const": 48,
+          "field_mul": 86
+        }
+      },
       "sample_traces": [
         {
           "left": 0,
           "right": 0,
-          "add_trace": {
-            "raw_sum": 0,
-            "did_subtract_modulus": false,
+          "add_execution": {
+            "opcode": "field_add",
+            "semantic": "canonical modular addition",
+            "step_names": [
+              "carry_ladder",
+              "conditional_subtract_modulus"
+            ],
+            "non_clifford_total": 8,
+            "trace": {
+              "raw_sum": 0,
+              "did_subtract_modulus": false,
+              "canonical": 0
+            },
             "canonical": 0
           },
-          "sub_trace": {
-            "raw_difference": 0,
-            "did_add_modulus": false,
+          "sub_execution": {
+            "opcode": "field_sub",
+            "semantic": "canonical modular subtraction",
+            "step_names": [
+              "borrow_ladder",
+              "conditional_add_modulus"
+            ],
+            "non_clifford_total": 8,
+            "trace": {
+              "raw_difference": 0,
+              "did_add_modulus": false,
+              "canonical": 0
+            },
             "canonical": 0
           },
-          "product_trace": {
-            "input": 0,
-            "modulus": 23,
-            "first_high": 0,
-            "first_fold": 0,
-            "second_high": 0,
-            "second_fold": 0,
-            "subtract_trace": [
-              {
-                "did_subtract": false,
-                "value_after_pass": 0
+          "sub_sum_execution": {
+            "opcode": "field_sub_sum",
+            "semantic": "two sequential canonical modular subtractions",
+            "step_names": [
+              "first_subtract_borrow_ladder",
+              "first_subtract_conditional_add_modulus",
+              "second_subtract_borrow_ladder",
+              "second_subtract_conditional_add_modulus"
+            ],
+            "non_clifford_total": 16,
+            "trace": {
+              "first_subtract": {
+                "raw_difference": 0,
+                "did_add_modulus": false,
+                "canonical": 0
               },
-              {
-                "did_subtract": false,
-                "value_after_pass": 0
+              "second_subtract": {
+                "raw_difference": 0,
+                "did_add_modulus": false,
+                "canonical": 0
               }
-            ],
+            },
             "canonical": 0
           },
-          "mul_const_21_trace": {
-            "constant": 21,
-            "addition_chain": [
-              1,
-              2,
-              4,
-              8,
-              16,
-              20,
-              21
+          "triple_execution": {
+            "opcode": "field_triple",
+            "semantic": "two sequential canonical modular additions for 3a",
+            "step_names": [
+              "first_add_carry_ladder",
+              "first_add_conditional_subtract_modulus",
+              "second_add_carry_ladder",
+              "second_add_conditional_subtract_modulus"
             ],
-            "steps": [
-              {
-                "from": 1,
-                "to": 2,
-                "delta": 1,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
+            "non_clifford_total": 16,
+            "trace": {
+              "first_add": {
+                "raw_sum": 0,
+                "did_subtract_modulus": false,
+                "canonical": 0
               },
-              {
-                "from": 2,
-                "to": 4,
-                "delta": 2,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              },
-              {
-                "from": 4,
-                "to": 8,
-                "delta": 4,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              },
-              {
-                "from": 8,
-                "to": 16,
-                "delta": 8,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              },
-              {
-                "from": 16,
-                "to": 20,
-                "delta": 4,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              },
-              {
-                "from": 20,
-                "to": 21,
-                "delta": 1,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
+              "second_add": {
+                "raw_sum": 0,
+                "did_subtract_modulus": false,
+                "canonical": 0
               }
+            },
+            "canonical": 0
+          },
+          "product_execution": {
+            "opcode": "field_mul",
+            "semantic": "schoolbook multiplication followed by pseudo-Mersenne reduction",
+            "step_names": [
+              "partial_product_grid",
+              "controlled_add_path",
+              "controlled_sub_path",
+              "pseudo_mersenne_first_fold",
+              "pseudo_mersenne_second_fold",
+              "pseudo_mersenne_canonicalize"
             ],
+            "non_clifford_total": 86,
+            "trace": {
+              "input": 0,
+              "modulus": 23,
+              "first_high": 0,
+              "first_fold": 0,
+              "second_high": 0,
+              "second_fold": 0,
+              "subtract_trace": [
+                {
+                  "did_subtract": false,
+                  "value_after_pass": 0
+                },
+                {
+                  "did_subtract": false,
+                  "value_after_pass": 0
+                }
+              ],
+              "canonical": 0
+            },
+            "canonical": 0
+          },
+          "mul_const_21_execution": {
+            "opcode": "mul_const",
+            "semantic": "fixed multiplication by 21 through canonical modular additions",
+            "step_names": [
+              "chain_1_to_2_carry_ladder",
+              "chain_1_to_2_conditional_subtract_modulus",
+              "chain_2_to_4_carry_ladder",
+              "chain_2_to_4_conditional_subtract_modulus",
+              "chain_4_to_8_carry_ladder",
+              "chain_4_to_8_conditional_subtract_modulus",
+              "chain_8_to_16_carry_ladder",
+              "chain_8_to_16_conditional_subtract_modulus",
+              "chain_16_to_20_carry_ladder",
+              "chain_16_to_20_conditional_subtract_modulus",
+              "chain_20_to_21_carry_ladder",
+              "chain_20_to_21_conditional_subtract_modulus"
+            ],
+            "non_clifford_total": 48,
+            "trace": {
+              "constant": 21,
+              "addition_chain": [
+                1,
+                2,
+                4,
+                8,
+                16,
+                20,
+                21
+              ],
+              "steps": [
+                {
+                  "from": 1,
+                  "to": 2,
+                  "delta": 1,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 2,
+                  "to": 4,
+                  "delta": 2,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 4,
+                  "to": 8,
+                  "delta": 4,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 8,
+                  "to": 16,
+                  "delta": 8,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 16,
+                  "to": 20,
+                  "delta": 4,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 20,
+                  "to": 21,
+                  "delta": 1,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                }
+              ],
+              "canonical": 0
+            },
             "canonical": 0
           }
         },
         {
           "left": 0,
           "right": 2,
-          "add_trace": {
-            "raw_sum": 2,
-            "did_subtract_modulus": false,
+          "add_execution": {
+            "opcode": "field_add",
+            "semantic": "canonical modular addition",
+            "step_names": [
+              "carry_ladder",
+              "conditional_subtract_modulus"
+            ],
+            "non_clifford_total": 8,
+            "trace": {
+              "raw_sum": 2,
+              "did_subtract_modulus": false,
+              "canonical": 2
+            },
             "canonical": 2
           },
-          "sub_trace": {
-            "raw_difference": -2,
-            "did_add_modulus": true,
+          "sub_execution": {
+            "opcode": "field_sub",
+            "semantic": "canonical modular subtraction",
+            "step_names": [
+              "borrow_ladder",
+              "conditional_add_modulus"
+            ],
+            "non_clifford_total": 8,
+            "trace": {
+              "raw_difference": -2,
+              "did_add_modulus": true,
+              "canonical": 21
+            },
             "canonical": 21
           },
-          "product_trace": {
-            "input": 0,
-            "modulus": 23,
-            "first_high": 0,
-            "first_fold": 0,
-            "second_high": 0,
-            "second_fold": 0,
-            "subtract_trace": [
-              {
-                "did_subtract": false,
-                "value_after_pass": 0
-              },
-              {
-                "did_subtract": false,
-                "value_after_pass": 0
-              }
+          "sub_sum_execution": {
+            "opcode": "field_sub_sum",
+            "semantic": "two sequential canonical modular subtractions",
+            "step_names": [
+              "first_subtract_borrow_ladder",
+              "first_subtract_conditional_add_modulus",
+              "second_subtract_borrow_ladder",
+              "second_subtract_conditional_add_modulus"
             ],
+            "non_clifford_total": 16,
+            "trace": {
+              "first_subtract": {
+                "raw_difference": -2,
+                "did_add_modulus": true,
+                "canonical": 21
+              },
+              "second_subtract": {
+                "raw_difference": 19,
+                "did_add_modulus": false,
+                "canonical": 19
+              }
+            },
+            "canonical": 19
+          },
+          "triple_execution": {
+            "opcode": "field_triple",
+            "semantic": "two sequential canonical modular additions for 3a",
+            "step_names": [
+              "first_add_carry_ladder",
+              "first_add_conditional_subtract_modulus",
+              "second_add_carry_ladder",
+              "second_add_conditional_subtract_modulus"
+            ],
+            "non_clifford_total": 16,
+            "trace": {
+              "first_add": {
+                "raw_sum": 0,
+                "did_subtract_modulus": false,
+                "canonical": 0
+              },
+              "second_add": {
+                "raw_sum": 0,
+                "did_subtract_modulus": false,
+                "canonical": 0
+              }
+            },
             "canonical": 0
           },
-          "mul_const_21_trace": {
-            "constant": 21,
-            "addition_chain": [
-              1,
-              2,
-              4,
-              8,
-              16,
-              20,
-              21
+          "product_execution": {
+            "opcode": "field_mul",
+            "semantic": "schoolbook multiplication followed by pseudo-Mersenne reduction",
+            "step_names": [
+              "partial_product_grid",
+              "controlled_add_path",
+              "controlled_sub_path",
+              "pseudo_mersenne_first_fold",
+              "pseudo_mersenne_second_fold",
+              "pseudo_mersenne_canonicalize"
             ],
-            "steps": [
-              {
-                "from": 1,
-                "to": 2,
-                "delta": 1,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
+            "non_clifford_total": 86,
+            "trace": {
+              "input": 0,
+              "modulus": 23,
+              "first_high": 0,
+              "first_fold": 0,
+              "second_high": 0,
+              "second_fold": 0,
+              "subtract_trace": [
+                {
+                  "did_subtract": false,
+                  "value_after_pass": 0
+                },
+                {
+                  "did_subtract": false,
+                  "value_after_pass": 0
                 }
-              },
-              {
-                "from": 2,
-                "to": 4,
-                "delta": 2,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              },
-              {
-                "from": 4,
-                "to": 8,
-                "delta": 4,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              },
-              {
-                "from": 8,
-                "to": 16,
-                "delta": 8,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              },
-              {
-                "from": 16,
-                "to": 20,
-                "delta": 4,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              },
-              {
-                "from": 20,
-                "to": 21,
-                "delta": 1,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              }
+              ],
+              "canonical": 0
+            },
+            "canonical": 0
+          },
+          "mul_const_21_execution": {
+            "opcode": "mul_const",
+            "semantic": "fixed multiplication by 21 through canonical modular additions",
+            "step_names": [
+              "chain_1_to_2_carry_ladder",
+              "chain_1_to_2_conditional_subtract_modulus",
+              "chain_2_to_4_carry_ladder",
+              "chain_2_to_4_conditional_subtract_modulus",
+              "chain_4_to_8_carry_ladder",
+              "chain_4_to_8_conditional_subtract_modulus",
+              "chain_8_to_16_carry_ladder",
+              "chain_8_to_16_conditional_subtract_modulus",
+              "chain_16_to_20_carry_ladder",
+              "chain_16_to_20_conditional_subtract_modulus",
+              "chain_20_to_21_carry_ladder",
+              "chain_20_to_21_conditional_subtract_modulus"
             ],
+            "non_clifford_total": 48,
+            "trace": {
+              "constant": 21,
+              "addition_chain": [
+                1,
+                2,
+                4,
+                8,
+                16,
+                20,
+                21
+              ],
+              "steps": [
+                {
+                  "from": 1,
+                  "to": 2,
+                  "delta": 1,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 2,
+                  "to": 4,
+                  "delta": 2,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 4,
+                  "to": 8,
+                  "delta": 4,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 8,
+                  "to": 16,
+                  "delta": 8,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 16,
+                  "to": 20,
+                  "delta": 4,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 20,
+                  "to": 21,
+                  "delta": 1,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                }
+              ],
+              "canonical": 0
+            },
             "canonical": 0
           }
         },
         {
           "left": 0,
           "right": 22,
-          "add_trace": {
-            "raw_sum": 22,
-            "did_subtract_modulus": false,
+          "add_execution": {
+            "opcode": "field_add",
+            "semantic": "canonical modular addition",
+            "step_names": [
+              "carry_ladder",
+              "conditional_subtract_modulus"
+            ],
+            "non_clifford_total": 8,
+            "trace": {
+              "raw_sum": 22,
+              "did_subtract_modulus": false,
+              "canonical": 22
+            },
             "canonical": 22
           },
-          "sub_trace": {
-            "raw_difference": -22,
-            "did_add_modulus": true,
+          "sub_execution": {
+            "opcode": "field_sub",
+            "semantic": "canonical modular subtraction",
+            "step_names": [
+              "borrow_ladder",
+              "conditional_add_modulus"
+            ],
+            "non_clifford_total": 8,
+            "trace": {
+              "raw_difference": -22,
+              "did_add_modulus": true,
+              "canonical": 1
+            },
             "canonical": 1
           },
-          "product_trace": {
-            "input": 0,
-            "modulus": 23,
-            "first_high": 0,
-            "first_fold": 0,
-            "second_high": 0,
-            "second_fold": 0,
-            "subtract_trace": [
-              {
-                "did_subtract": false,
-                "value_after_pass": 0
-              },
-              {
-                "did_subtract": false,
-                "value_after_pass": 0
-              }
+          "sub_sum_execution": {
+            "opcode": "field_sub_sum",
+            "semantic": "two sequential canonical modular subtractions",
+            "step_names": [
+              "first_subtract_borrow_ladder",
+              "first_subtract_conditional_add_modulus",
+              "second_subtract_borrow_ladder",
+              "second_subtract_conditional_add_modulus"
             ],
+            "non_clifford_total": 16,
+            "trace": {
+              "first_subtract": {
+                "raw_difference": -22,
+                "did_add_modulus": true,
+                "canonical": 1
+              },
+              "second_subtract": {
+                "raw_difference": -21,
+                "did_add_modulus": true,
+                "canonical": 2
+              }
+            },
+            "canonical": 2
+          },
+          "triple_execution": {
+            "opcode": "field_triple",
+            "semantic": "two sequential canonical modular additions for 3a",
+            "step_names": [
+              "first_add_carry_ladder",
+              "first_add_conditional_subtract_modulus",
+              "second_add_carry_ladder",
+              "second_add_conditional_subtract_modulus"
+            ],
+            "non_clifford_total": 16,
+            "trace": {
+              "first_add": {
+                "raw_sum": 0,
+                "did_subtract_modulus": false,
+                "canonical": 0
+              },
+              "second_add": {
+                "raw_sum": 0,
+                "did_subtract_modulus": false,
+                "canonical": 0
+              }
+            },
             "canonical": 0
           },
-          "mul_const_21_trace": {
-            "constant": 21,
-            "addition_chain": [
-              1,
-              2,
-              4,
-              8,
-              16,
-              20,
-              21
+          "product_execution": {
+            "opcode": "field_mul",
+            "semantic": "schoolbook multiplication followed by pseudo-Mersenne reduction",
+            "step_names": [
+              "partial_product_grid",
+              "controlled_add_path",
+              "controlled_sub_path",
+              "pseudo_mersenne_first_fold",
+              "pseudo_mersenne_second_fold",
+              "pseudo_mersenne_canonicalize"
             ],
-            "steps": [
-              {
-                "from": 1,
-                "to": 2,
-                "delta": 1,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
+            "non_clifford_total": 86,
+            "trace": {
+              "input": 0,
+              "modulus": 23,
+              "first_high": 0,
+              "first_fold": 0,
+              "second_high": 0,
+              "second_fold": 0,
+              "subtract_trace": [
+                {
+                  "did_subtract": false,
+                  "value_after_pass": 0
+                },
+                {
+                  "did_subtract": false,
+                  "value_after_pass": 0
                 }
-              },
-              {
-                "from": 2,
-                "to": 4,
-                "delta": 2,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              },
-              {
-                "from": 4,
-                "to": 8,
-                "delta": 4,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              },
-              {
-                "from": 8,
-                "to": 16,
-                "delta": 8,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              },
-              {
-                "from": 16,
-                "to": 20,
-                "delta": 4,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              },
-              {
-                "from": 20,
-                "to": 21,
-                "delta": 1,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              }
+              ],
+              "canonical": 0
+            },
+            "canonical": 0
+          },
+          "mul_const_21_execution": {
+            "opcode": "mul_const",
+            "semantic": "fixed multiplication by 21 through canonical modular additions",
+            "step_names": [
+              "chain_1_to_2_carry_ladder",
+              "chain_1_to_2_conditional_subtract_modulus",
+              "chain_2_to_4_carry_ladder",
+              "chain_2_to_4_conditional_subtract_modulus",
+              "chain_4_to_8_carry_ladder",
+              "chain_4_to_8_conditional_subtract_modulus",
+              "chain_8_to_16_carry_ladder",
+              "chain_8_to_16_conditional_subtract_modulus",
+              "chain_16_to_20_carry_ladder",
+              "chain_16_to_20_conditional_subtract_modulus",
+              "chain_20_to_21_carry_ladder",
+              "chain_20_to_21_conditional_subtract_modulus"
             ],
+            "non_clifford_total": 48,
+            "trace": {
+              "constant": 21,
+              "addition_chain": [
+                1,
+                2,
+                4,
+                8,
+                16,
+                20,
+                21
+              ],
+              "steps": [
+                {
+                  "from": 1,
+                  "to": 2,
+                  "delta": 1,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 2,
+                  "to": 4,
+                  "delta": 2,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 4,
+                  "to": 8,
+                  "delta": 4,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 8,
+                  "to": 16,
+                  "delta": 8,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 16,
+                  "to": 20,
+                  "delta": 4,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 20,
+                  "to": 21,
+                  "delta": 1,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                }
+              ],
+              "canonical": 0
+            },
             "canonical": 0
           }
         },
         {
           "left": 1,
           "right": 0,
-          "add_trace": {
-            "raw_sum": 1,
-            "did_subtract_modulus": false,
-            "canonical": 1
-          },
-          "sub_trace": {
-            "raw_difference": 1,
-            "did_add_modulus": false,
-            "canonical": 1
-          },
-          "product_trace": {
-            "input": 0,
-            "modulus": 23,
-            "first_high": 0,
-            "first_fold": 0,
-            "second_high": 0,
-            "second_fold": 0,
-            "subtract_trace": [
-              {
-                "did_subtract": false,
-                "value_after_pass": 0
-              },
-              {
-                "did_subtract": false,
-                "value_after_pass": 0
-              }
+          "add_execution": {
+            "opcode": "field_add",
+            "semantic": "canonical modular addition",
+            "step_names": [
+              "carry_ladder",
+              "conditional_subtract_modulus"
             ],
+            "non_clifford_total": 8,
+            "trace": {
+              "raw_sum": 1,
+              "did_subtract_modulus": false,
+              "canonical": 1
+            },
+            "canonical": 1
+          },
+          "sub_execution": {
+            "opcode": "field_sub",
+            "semantic": "canonical modular subtraction",
+            "step_names": [
+              "borrow_ladder",
+              "conditional_add_modulus"
+            ],
+            "non_clifford_total": 8,
+            "trace": {
+              "raw_difference": 1,
+              "did_add_modulus": false,
+              "canonical": 1
+            },
+            "canonical": 1
+          },
+          "sub_sum_execution": {
+            "opcode": "field_sub_sum",
+            "semantic": "two sequential canonical modular subtractions",
+            "step_names": [
+              "first_subtract_borrow_ladder",
+              "first_subtract_conditional_add_modulus",
+              "second_subtract_borrow_ladder",
+              "second_subtract_conditional_add_modulus"
+            ],
+            "non_clifford_total": 16,
+            "trace": {
+              "first_subtract": {
+                "raw_difference": 1,
+                "did_add_modulus": false,
+                "canonical": 1
+              },
+              "second_subtract": {
+                "raw_difference": 1,
+                "did_add_modulus": false,
+                "canonical": 1
+              }
+            },
+            "canonical": 1
+          },
+          "triple_execution": {
+            "opcode": "field_triple",
+            "semantic": "two sequential canonical modular additions for 3a",
+            "step_names": [
+              "first_add_carry_ladder",
+              "first_add_conditional_subtract_modulus",
+              "second_add_carry_ladder",
+              "second_add_conditional_subtract_modulus"
+            ],
+            "non_clifford_total": 16,
+            "trace": {
+              "first_add": {
+                "raw_sum": 2,
+                "did_subtract_modulus": false,
+                "canonical": 2
+              },
+              "second_add": {
+                "raw_sum": 3,
+                "did_subtract_modulus": false,
+                "canonical": 3
+              }
+            },
+            "canonical": 3
+          },
+          "product_execution": {
+            "opcode": "field_mul",
+            "semantic": "schoolbook multiplication followed by pseudo-Mersenne reduction",
+            "step_names": [
+              "partial_product_grid",
+              "controlled_add_path",
+              "controlled_sub_path",
+              "pseudo_mersenne_first_fold",
+              "pseudo_mersenne_second_fold",
+              "pseudo_mersenne_canonicalize"
+            ],
+            "non_clifford_total": 86,
+            "trace": {
+              "input": 0,
+              "modulus": 23,
+              "first_high": 0,
+              "first_fold": 0,
+              "second_high": 0,
+              "second_fold": 0,
+              "subtract_trace": [
+                {
+                  "did_subtract": false,
+                  "value_after_pass": 0
+                },
+                {
+                  "did_subtract": false,
+                  "value_after_pass": 0
+                }
+              ],
+              "canonical": 0
+            },
             "canonical": 0
           },
-          "mul_const_21_trace": {
-            "constant": 21,
-            "addition_chain": [
-              1,
-              2,
-              4,
-              8,
-              16,
-              20,
-              21
+          "mul_const_21_execution": {
+            "opcode": "mul_const",
+            "semantic": "fixed multiplication by 21 through canonical modular additions",
+            "step_names": [
+              "chain_1_to_2_carry_ladder",
+              "chain_1_to_2_conditional_subtract_modulus",
+              "chain_2_to_4_carry_ladder",
+              "chain_2_to_4_conditional_subtract_modulus",
+              "chain_4_to_8_carry_ladder",
+              "chain_4_to_8_conditional_subtract_modulus",
+              "chain_8_to_16_carry_ladder",
+              "chain_8_to_16_conditional_subtract_modulus",
+              "chain_16_to_20_carry_ladder",
+              "chain_16_to_20_conditional_subtract_modulus",
+              "chain_20_to_21_carry_ladder",
+              "chain_20_to_21_conditional_subtract_modulus"
             ],
-            "steps": [
-              {
-                "from": 1,
-                "to": 2,
-                "delta": 1,
-                "left": 1,
-                "right": 1,
-                "add_trace": {
-                  "raw_sum": 2,
-                  "did_subtract_modulus": false,
-                  "canonical": 2
+            "non_clifford_total": 48,
+            "trace": {
+              "constant": 21,
+              "addition_chain": [
+                1,
+                2,
+                4,
+                8,
+                16,
+                20,
+                21
+              ],
+              "steps": [
+                {
+                  "from": 1,
+                  "to": 2,
+                  "delta": 1,
+                  "left": 1,
+                  "right": 1,
+                  "add_trace": {
+                    "raw_sum": 2,
+                    "did_subtract_modulus": false,
+                    "canonical": 2
+                  }
+                },
+                {
+                  "from": 2,
+                  "to": 4,
+                  "delta": 2,
+                  "left": 2,
+                  "right": 2,
+                  "add_trace": {
+                    "raw_sum": 4,
+                    "did_subtract_modulus": false,
+                    "canonical": 4
+                  }
+                },
+                {
+                  "from": 4,
+                  "to": 8,
+                  "delta": 4,
+                  "left": 4,
+                  "right": 4,
+                  "add_trace": {
+                    "raw_sum": 8,
+                    "did_subtract_modulus": false,
+                    "canonical": 8
+                  }
+                },
+                {
+                  "from": 8,
+                  "to": 16,
+                  "delta": 8,
+                  "left": 8,
+                  "right": 8,
+                  "add_trace": {
+                    "raw_sum": 16,
+                    "did_subtract_modulus": false,
+                    "canonical": 16
+                  }
+                },
+                {
+                  "from": 16,
+                  "to": 20,
+                  "delta": 4,
+                  "left": 16,
+                  "right": 4,
+                  "add_trace": {
+                    "raw_sum": 20,
+                    "did_subtract_modulus": false,
+                    "canonical": 20
+                  }
+                },
+                {
+                  "from": 20,
+                  "to": 21,
+                  "delta": 1,
+                  "left": 20,
+                  "right": 1,
+                  "add_trace": {
+                    "raw_sum": 21,
+                    "did_subtract_modulus": false,
+                    "canonical": 21
+                  }
                 }
-              },
-              {
-                "from": 2,
-                "to": 4,
-                "delta": 2,
-                "left": 2,
-                "right": 2,
-                "add_trace": {
-                  "raw_sum": 4,
-                  "did_subtract_modulus": false,
-                  "canonical": 4
-                }
-              },
-              {
-                "from": 4,
-                "to": 8,
-                "delta": 4,
-                "left": 4,
-                "right": 4,
-                "add_trace": {
-                  "raw_sum": 8,
-                  "did_subtract_modulus": false,
-                  "canonical": 8
-                }
-              },
-              {
-                "from": 8,
-                "to": 16,
-                "delta": 8,
-                "left": 8,
-                "right": 8,
-                "add_trace": {
-                  "raw_sum": 16,
-                  "did_subtract_modulus": false,
-                  "canonical": 16
-                }
-              },
-              {
-                "from": 16,
-                "to": 20,
-                "delta": 4,
-                "left": 16,
-                "right": 4,
-                "add_trace": {
-                  "raw_sum": 20,
-                  "did_subtract_modulus": false,
-                  "canonical": 20
-                }
-              },
-              {
-                "from": 20,
-                "to": 21,
-                "delta": 1,
-                "left": 20,
-                "right": 1,
-                "add_trace": {
-                  "raw_sum": 21,
-                  "did_subtract_modulus": false,
-                  "canonical": 21
-                }
-              }
-            ],
+              ],
+              "canonical": 21
+            },
             "canonical": 21
           }
         }
@@ -570,487 +2056,1425 @@
       "operations_checked": [
         "add",
         "sub",
+        "sub_sum",
+        "triple",
         "mul",
         "mul_const_21"
       ],
+      "circuit_ir": {
+        "schema": "compiler-project-executable-modular-circuit-ir-v1",
+        "field_bits": 6,
+        "pseudo_mersenne": {
+          "shift": 3,
+          "low_term": 3,
+          "canonical_subtract_passes": 2,
+          "low_term_chain_steps": 2,
+          "second_fold_width": 6
+        },
+        "mul_const_21_addition_chain": [
+          1,
+          2,
+          4,
+          8,
+          16,
+          20,
+          21
+        ],
+        "operations": [
+          {
+            "opcode": "field_add",
+            "semantic": "canonical modular addition",
+            "steps": [
+              {
+                "name": "carry_ladder",
+                "kind": "ripple_carry",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "compute raw sum carry path",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              },
+              {
+                "name": "conditional_subtract_modulus",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "canonicalize raw sum by subtracting p when needed",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              }
+            ],
+            "primitive_counts_total": {
+              "ccx": 10,
+              "cx": 0,
+              "x": 0,
+              "measurement": 10
+            },
+            "non_clifford_total": 10
+          },
+          {
+            "opcode": "field_sub",
+            "semantic": "canonical modular subtraction",
+            "steps": [
+              {
+                "name": "borrow_ladder",
+                "kind": "ripple_borrow",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "compute raw difference borrow path",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              },
+              {
+                "name": "conditional_add_modulus",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "canonicalize raw difference by adding p when needed",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              }
+            ],
+            "primitive_counts_total": {
+              "ccx": 10,
+              "cx": 0,
+              "x": 0,
+              "measurement": 10
+            },
+            "non_clifford_total": 10
+          },
+          {
+            "opcode": "field_sub_sum",
+            "semantic": "two sequential canonical modular subtractions",
+            "steps": [
+              {
+                "name": "first_subtract_borrow_ladder",
+                "kind": "ripple_borrow",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "compute raw difference borrow path",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              },
+              {
+                "name": "first_subtract_conditional_add_modulus",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "canonicalize raw difference by adding p when needed",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              },
+              {
+                "name": "second_subtract_borrow_ladder",
+                "kind": "ripple_borrow",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "compute raw difference borrow path",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              },
+              {
+                "name": "second_subtract_conditional_add_modulus",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "canonicalize raw difference by adding p when needed",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              }
+            ],
+            "primitive_counts_total": {
+              "ccx": 20,
+              "cx": 0,
+              "x": 0,
+              "measurement": 20
+            },
+            "non_clifford_total": 20
+          },
+          {
+            "opcode": "field_triple",
+            "semantic": "two sequential canonical modular additions for 3a",
+            "steps": [
+              {
+                "name": "first_add_carry_ladder",
+                "kind": "ripple_carry",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "compute raw sum carry path",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              },
+              {
+                "name": "first_add_conditional_subtract_modulus",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "canonicalize raw sum by subtracting p when needed",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              },
+              {
+                "name": "second_add_carry_ladder",
+                "kind": "ripple_carry",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "compute raw sum carry path",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              },
+              {
+                "name": "second_add_conditional_subtract_modulus",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "canonicalize raw sum by subtracting p when needed",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              }
+            ],
+            "primitive_counts_total": {
+              "ccx": 20,
+              "cx": 0,
+              "x": 0,
+              "measurement": 20
+            },
+            "non_clifford_total": 20
+          },
+          {
+            "opcode": "mul_const",
+            "semantic": "fixed multiplication by 21 through canonical modular additions",
+            "steps": [
+              {
+                "name": "chain_1_to_2_carry_ladder",
+                "kind": "ripple_carry",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "compute raw sum carry path",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              },
+              {
+                "name": "chain_1_to_2_conditional_subtract_modulus",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "canonicalize raw sum by subtracting p when needed",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              },
+              {
+                "name": "chain_2_to_4_carry_ladder",
+                "kind": "ripple_carry",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "compute raw sum carry path",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              },
+              {
+                "name": "chain_2_to_4_conditional_subtract_modulus",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "canonicalize raw sum by subtracting p when needed",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              },
+              {
+                "name": "chain_4_to_8_carry_ladder",
+                "kind": "ripple_carry",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "compute raw sum carry path",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              },
+              {
+                "name": "chain_4_to_8_conditional_subtract_modulus",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "canonicalize raw sum by subtracting p when needed",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              },
+              {
+                "name": "chain_8_to_16_carry_ladder",
+                "kind": "ripple_carry",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "compute raw sum carry path",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              },
+              {
+                "name": "chain_8_to_16_conditional_subtract_modulus",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "canonicalize raw sum by subtracting p when needed",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              },
+              {
+                "name": "chain_16_to_20_carry_ladder",
+                "kind": "ripple_carry",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "compute raw sum carry path",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              },
+              {
+                "name": "chain_16_to_20_conditional_subtract_modulus",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "canonicalize raw sum by subtracting p when needed",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              },
+              {
+                "name": "chain_20_to_21_carry_ladder",
+                "kind": "ripple_carry",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "compute raw sum carry path",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              },
+              {
+                "name": "chain_20_to_21_conditional_subtract_modulus",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "canonicalize raw sum by subtracting p when needed",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              }
+            ],
+            "primitive_counts_total": {
+              "ccx": 60,
+              "cx": 0,
+              "x": 0,
+              "measurement": 60
+            },
+            "non_clifford_total": 60
+          },
+          {
+            "opcode": "field_mul",
+            "semantic": "schoolbook multiplication followed by pseudo-Mersenne reduction",
+            "steps": [
+              {
+                "name": "partial_product_grid",
+                "kind": "schoolbook_partial_products",
+                "bit_count": 36,
+                "repeat_count": 1,
+                "semantic": "one controlled interaction for each field-bit product",
+                "measured": false,
+                "primitive_counts_total": {
+                  "ccx": 36,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 0
+                }
+              },
+              {
+                "name": "controlled_add_path",
+                "kind": "controlled_accumulator_add",
+                "bit_count": 5,
+                "repeat_count": 1,
+                "semantic": "carry path for controlled add half of schoolbook multiplier",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 5,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 5
+                }
+              },
+              {
+                "name": "controlled_sub_path",
+                "kind": "controlled_accumulator_subtract",
+                "bit_count": 6,
+                "repeat_count": 1,
+                "semantic": "borrow path for controlled subtract half of schoolbook multiplier",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 6,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 6
+                }
+              },
+              {
+                "name": "pseudo_mersenne_first_fold",
+                "kind": "pseudo_mersenne_fold",
+                "bit_count": 8,
+                "repeat_count": 3,
+                "semantic": "fold high product half via 2^n = 2^shift + low_term",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 24,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 24
+                }
+              },
+              {
+                "name": "pseudo_mersenne_second_fold",
+                "kind": "pseudo_mersenne_fold",
+                "bit_count": 5,
+                "repeat_count": 3,
+                "semantic": "fold residual high component after first fold",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 15,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 15
+                }
+              },
+              {
+                "name": "pseudo_mersenne_canonicalize",
+                "kind": "conditional_modulus_correction",
+                "bit_count": 5,
+                "repeat_count": 2,
+                "semantic": "canonicalize product with bounded subtract-p passes",
+                "measured": true,
+                "primitive_counts_total": {
+                  "ccx": 10,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 10
+                }
+              }
+            ],
+            "primitive_counts_total": {
+              "ccx": 96,
+              "cx": 0,
+              "x": 0,
+              "measurement": 60
+            },
+            "non_clifford_total": 96
+          }
+        ],
+        "non_clifford_by_opcode": {
+          "field_add": 10,
+          "field_sub": 10,
+          "field_sub_sum": 20,
+          "field_triple": 20,
+          "mul_const": 60,
+          "field_mul": 96
+        }
+      },
       "sample_traces": [
         {
           "left": 0,
           "right": 0,
-          "add_trace": {
-            "raw_sum": 0,
-            "did_subtract_modulus": false,
+          "add_execution": {
+            "opcode": "field_add",
+            "semantic": "canonical modular addition",
+            "step_names": [
+              "carry_ladder",
+              "conditional_subtract_modulus"
+            ],
+            "non_clifford_total": 10,
+            "trace": {
+              "raw_sum": 0,
+              "did_subtract_modulus": false,
+              "canonical": 0
+            },
             "canonical": 0
           },
-          "sub_trace": {
-            "raw_difference": 0,
-            "did_add_modulus": false,
+          "sub_execution": {
+            "opcode": "field_sub",
+            "semantic": "canonical modular subtraction",
+            "step_names": [
+              "borrow_ladder",
+              "conditional_add_modulus"
+            ],
+            "non_clifford_total": 10,
+            "trace": {
+              "raw_difference": 0,
+              "did_add_modulus": false,
+              "canonical": 0
+            },
             "canonical": 0
           },
-          "product_trace": {
-            "input": 0,
-            "modulus": 53,
-            "first_high": 0,
-            "first_fold": 0,
-            "second_high": 0,
-            "second_fold": 0,
-            "subtract_trace": [
-              {
-                "did_subtract": false,
-                "value_after_pass": 0
+          "sub_sum_execution": {
+            "opcode": "field_sub_sum",
+            "semantic": "two sequential canonical modular subtractions",
+            "step_names": [
+              "first_subtract_borrow_ladder",
+              "first_subtract_conditional_add_modulus",
+              "second_subtract_borrow_ladder",
+              "second_subtract_conditional_add_modulus"
+            ],
+            "non_clifford_total": 20,
+            "trace": {
+              "first_subtract": {
+                "raw_difference": 0,
+                "did_add_modulus": false,
+                "canonical": 0
               },
-              {
-                "did_subtract": false,
-                "value_after_pass": 0
+              "second_subtract": {
+                "raw_difference": 0,
+                "did_add_modulus": false,
+                "canonical": 0
               }
-            ],
+            },
             "canonical": 0
           },
-          "mul_const_21_trace": {
-            "constant": 21,
-            "addition_chain": [
-              1,
-              2,
-              4,
-              8,
-              16,
-              20,
-              21
+          "triple_execution": {
+            "opcode": "field_triple",
+            "semantic": "two sequential canonical modular additions for 3a",
+            "step_names": [
+              "first_add_carry_ladder",
+              "first_add_conditional_subtract_modulus",
+              "second_add_carry_ladder",
+              "second_add_conditional_subtract_modulus"
             ],
-            "steps": [
-              {
-                "from": 1,
-                "to": 2,
-                "delta": 1,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
+            "non_clifford_total": 20,
+            "trace": {
+              "first_add": {
+                "raw_sum": 0,
+                "did_subtract_modulus": false,
+                "canonical": 0
               },
-              {
-                "from": 2,
-                "to": 4,
-                "delta": 2,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              },
-              {
-                "from": 4,
-                "to": 8,
-                "delta": 4,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              },
-              {
-                "from": 8,
-                "to": 16,
-                "delta": 8,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              },
-              {
-                "from": 16,
-                "to": 20,
-                "delta": 4,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              },
-              {
-                "from": 20,
-                "to": 21,
-                "delta": 1,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
+              "second_add": {
+                "raw_sum": 0,
+                "did_subtract_modulus": false,
+                "canonical": 0
               }
+            },
+            "canonical": 0
+          },
+          "product_execution": {
+            "opcode": "field_mul",
+            "semantic": "schoolbook multiplication followed by pseudo-Mersenne reduction",
+            "step_names": [
+              "partial_product_grid",
+              "controlled_add_path",
+              "controlled_sub_path",
+              "pseudo_mersenne_first_fold",
+              "pseudo_mersenne_second_fold",
+              "pseudo_mersenne_canonicalize"
             ],
+            "non_clifford_total": 96,
+            "trace": {
+              "input": 0,
+              "modulus": 53,
+              "first_high": 0,
+              "first_fold": 0,
+              "second_high": 0,
+              "second_fold": 0,
+              "subtract_trace": [
+                {
+                  "did_subtract": false,
+                  "value_after_pass": 0
+                },
+                {
+                  "did_subtract": false,
+                  "value_after_pass": 0
+                }
+              ],
+              "canonical": 0
+            },
+            "canonical": 0
+          },
+          "mul_const_21_execution": {
+            "opcode": "mul_const",
+            "semantic": "fixed multiplication by 21 through canonical modular additions",
+            "step_names": [
+              "chain_1_to_2_carry_ladder",
+              "chain_1_to_2_conditional_subtract_modulus",
+              "chain_2_to_4_carry_ladder",
+              "chain_2_to_4_conditional_subtract_modulus",
+              "chain_4_to_8_carry_ladder",
+              "chain_4_to_8_conditional_subtract_modulus",
+              "chain_8_to_16_carry_ladder",
+              "chain_8_to_16_conditional_subtract_modulus",
+              "chain_16_to_20_carry_ladder",
+              "chain_16_to_20_conditional_subtract_modulus",
+              "chain_20_to_21_carry_ladder",
+              "chain_20_to_21_conditional_subtract_modulus"
+            ],
+            "non_clifford_total": 60,
+            "trace": {
+              "constant": 21,
+              "addition_chain": [
+                1,
+                2,
+                4,
+                8,
+                16,
+                20,
+                21
+              ],
+              "steps": [
+                {
+                  "from": 1,
+                  "to": 2,
+                  "delta": 1,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 2,
+                  "to": 4,
+                  "delta": 2,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 4,
+                  "to": 8,
+                  "delta": 4,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 8,
+                  "to": 16,
+                  "delta": 8,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 16,
+                  "to": 20,
+                  "delta": 4,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 20,
+                  "to": 21,
+                  "delta": 1,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                }
+              ],
+              "canonical": 0
+            },
             "canonical": 0
           }
         },
         {
           "left": 0,
           "right": 2,
-          "add_trace": {
-            "raw_sum": 2,
-            "did_subtract_modulus": false,
+          "add_execution": {
+            "opcode": "field_add",
+            "semantic": "canonical modular addition",
+            "step_names": [
+              "carry_ladder",
+              "conditional_subtract_modulus"
+            ],
+            "non_clifford_total": 10,
+            "trace": {
+              "raw_sum": 2,
+              "did_subtract_modulus": false,
+              "canonical": 2
+            },
             "canonical": 2
           },
-          "sub_trace": {
-            "raw_difference": -2,
-            "did_add_modulus": true,
+          "sub_execution": {
+            "opcode": "field_sub",
+            "semantic": "canonical modular subtraction",
+            "step_names": [
+              "borrow_ladder",
+              "conditional_add_modulus"
+            ],
+            "non_clifford_total": 10,
+            "trace": {
+              "raw_difference": -2,
+              "did_add_modulus": true,
+              "canonical": 51
+            },
             "canonical": 51
           },
-          "product_trace": {
-            "input": 0,
-            "modulus": 53,
-            "first_high": 0,
-            "first_fold": 0,
-            "second_high": 0,
-            "second_fold": 0,
-            "subtract_trace": [
-              {
-                "did_subtract": false,
-                "value_after_pass": 0
-              },
-              {
-                "did_subtract": false,
-                "value_after_pass": 0
-              }
+          "sub_sum_execution": {
+            "opcode": "field_sub_sum",
+            "semantic": "two sequential canonical modular subtractions",
+            "step_names": [
+              "first_subtract_borrow_ladder",
+              "first_subtract_conditional_add_modulus",
+              "second_subtract_borrow_ladder",
+              "second_subtract_conditional_add_modulus"
             ],
+            "non_clifford_total": 20,
+            "trace": {
+              "first_subtract": {
+                "raw_difference": -2,
+                "did_add_modulus": true,
+                "canonical": 51
+              },
+              "second_subtract": {
+                "raw_difference": 49,
+                "did_add_modulus": false,
+                "canonical": 49
+              }
+            },
+            "canonical": 49
+          },
+          "triple_execution": {
+            "opcode": "field_triple",
+            "semantic": "two sequential canonical modular additions for 3a",
+            "step_names": [
+              "first_add_carry_ladder",
+              "first_add_conditional_subtract_modulus",
+              "second_add_carry_ladder",
+              "second_add_conditional_subtract_modulus"
+            ],
+            "non_clifford_total": 20,
+            "trace": {
+              "first_add": {
+                "raw_sum": 0,
+                "did_subtract_modulus": false,
+                "canonical": 0
+              },
+              "second_add": {
+                "raw_sum": 0,
+                "did_subtract_modulus": false,
+                "canonical": 0
+              }
+            },
             "canonical": 0
           },
-          "mul_const_21_trace": {
-            "constant": 21,
-            "addition_chain": [
-              1,
-              2,
-              4,
-              8,
-              16,
-              20,
-              21
+          "product_execution": {
+            "opcode": "field_mul",
+            "semantic": "schoolbook multiplication followed by pseudo-Mersenne reduction",
+            "step_names": [
+              "partial_product_grid",
+              "controlled_add_path",
+              "controlled_sub_path",
+              "pseudo_mersenne_first_fold",
+              "pseudo_mersenne_second_fold",
+              "pseudo_mersenne_canonicalize"
             ],
-            "steps": [
-              {
-                "from": 1,
-                "to": 2,
-                "delta": 1,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
+            "non_clifford_total": 96,
+            "trace": {
+              "input": 0,
+              "modulus": 53,
+              "first_high": 0,
+              "first_fold": 0,
+              "second_high": 0,
+              "second_fold": 0,
+              "subtract_trace": [
+                {
+                  "did_subtract": false,
+                  "value_after_pass": 0
+                },
+                {
+                  "did_subtract": false,
+                  "value_after_pass": 0
                 }
-              },
-              {
-                "from": 2,
-                "to": 4,
-                "delta": 2,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              },
-              {
-                "from": 4,
-                "to": 8,
-                "delta": 4,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              },
-              {
-                "from": 8,
-                "to": 16,
-                "delta": 8,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              },
-              {
-                "from": 16,
-                "to": 20,
-                "delta": 4,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              },
-              {
-                "from": 20,
-                "to": 21,
-                "delta": 1,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              }
+              ],
+              "canonical": 0
+            },
+            "canonical": 0
+          },
+          "mul_const_21_execution": {
+            "opcode": "mul_const",
+            "semantic": "fixed multiplication by 21 through canonical modular additions",
+            "step_names": [
+              "chain_1_to_2_carry_ladder",
+              "chain_1_to_2_conditional_subtract_modulus",
+              "chain_2_to_4_carry_ladder",
+              "chain_2_to_4_conditional_subtract_modulus",
+              "chain_4_to_8_carry_ladder",
+              "chain_4_to_8_conditional_subtract_modulus",
+              "chain_8_to_16_carry_ladder",
+              "chain_8_to_16_conditional_subtract_modulus",
+              "chain_16_to_20_carry_ladder",
+              "chain_16_to_20_conditional_subtract_modulus",
+              "chain_20_to_21_carry_ladder",
+              "chain_20_to_21_conditional_subtract_modulus"
             ],
+            "non_clifford_total": 60,
+            "trace": {
+              "constant": 21,
+              "addition_chain": [
+                1,
+                2,
+                4,
+                8,
+                16,
+                20,
+                21
+              ],
+              "steps": [
+                {
+                  "from": 1,
+                  "to": 2,
+                  "delta": 1,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 2,
+                  "to": 4,
+                  "delta": 2,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 4,
+                  "to": 8,
+                  "delta": 4,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 8,
+                  "to": 16,
+                  "delta": 8,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 16,
+                  "to": 20,
+                  "delta": 4,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 20,
+                  "to": 21,
+                  "delta": 1,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                }
+              ],
+              "canonical": 0
+            },
             "canonical": 0
           }
         },
         {
           "left": 0,
           "right": 52,
-          "add_trace": {
-            "raw_sum": 52,
-            "did_subtract_modulus": false,
+          "add_execution": {
+            "opcode": "field_add",
+            "semantic": "canonical modular addition",
+            "step_names": [
+              "carry_ladder",
+              "conditional_subtract_modulus"
+            ],
+            "non_clifford_total": 10,
+            "trace": {
+              "raw_sum": 52,
+              "did_subtract_modulus": false,
+              "canonical": 52
+            },
             "canonical": 52
           },
-          "sub_trace": {
-            "raw_difference": -52,
-            "did_add_modulus": true,
+          "sub_execution": {
+            "opcode": "field_sub",
+            "semantic": "canonical modular subtraction",
+            "step_names": [
+              "borrow_ladder",
+              "conditional_add_modulus"
+            ],
+            "non_clifford_total": 10,
+            "trace": {
+              "raw_difference": -52,
+              "did_add_modulus": true,
+              "canonical": 1
+            },
             "canonical": 1
           },
-          "product_trace": {
-            "input": 0,
-            "modulus": 53,
-            "first_high": 0,
-            "first_fold": 0,
-            "second_high": 0,
-            "second_fold": 0,
-            "subtract_trace": [
-              {
-                "did_subtract": false,
-                "value_after_pass": 0
-              },
-              {
-                "did_subtract": false,
-                "value_after_pass": 0
-              }
+          "sub_sum_execution": {
+            "opcode": "field_sub_sum",
+            "semantic": "two sequential canonical modular subtractions",
+            "step_names": [
+              "first_subtract_borrow_ladder",
+              "first_subtract_conditional_add_modulus",
+              "second_subtract_borrow_ladder",
+              "second_subtract_conditional_add_modulus"
             ],
+            "non_clifford_total": 20,
+            "trace": {
+              "first_subtract": {
+                "raw_difference": -52,
+                "did_add_modulus": true,
+                "canonical": 1
+              },
+              "second_subtract": {
+                "raw_difference": -51,
+                "did_add_modulus": true,
+                "canonical": 2
+              }
+            },
+            "canonical": 2
+          },
+          "triple_execution": {
+            "opcode": "field_triple",
+            "semantic": "two sequential canonical modular additions for 3a",
+            "step_names": [
+              "first_add_carry_ladder",
+              "first_add_conditional_subtract_modulus",
+              "second_add_carry_ladder",
+              "second_add_conditional_subtract_modulus"
+            ],
+            "non_clifford_total": 20,
+            "trace": {
+              "first_add": {
+                "raw_sum": 0,
+                "did_subtract_modulus": false,
+                "canonical": 0
+              },
+              "second_add": {
+                "raw_sum": 0,
+                "did_subtract_modulus": false,
+                "canonical": 0
+              }
+            },
             "canonical": 0
           },
-          "mul_const_21_trace": {
-            "constant": 21,
-            "addition_chain": [
-              1,
-              2,
-              4,
-              8,
-              16,
-              20,
-              21
+          "product_execution": {
+            "opcode": "field_mul",
+            "semantic": "schoolbook multiplication followed by pseudo-Mersenne reduction",
+            "step_names": [
+              "partial_product_grid",
+              "controlled_add_path",
+              "controlled_sub_path",
+              "pseudo_mersenne_first_fold",
+              "pseudo_mersenne_second_fold",
+              "pseudo_mersenne_canonicalize"
             ],
-            "steps": [
-              {
-                "from": 1,
-                "to": 2,
-                "delta": 1,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
+            "non_clifford_total": 96,
+            "trace": {
+              "input": 0,
+              "modulus": 53,
+              "first_high": 0,
+              "first_fold": 0,
+              "second_high": 0,
+              "second_fold": 0,
+              "subtract_trace": [
+                {
+                  "did_subtract": false,
+                  "value_after_pass": 0
+                },
+                {
+                  "did_subtract": false,
+                  "value_after_pass": 0
                 }
-              },
-              {
-                "from": 2,
-                "to": 4,
-                "delta": 2,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              },
-              {
-                "from": 4,
-                "to": 8,
-                "delta": 4,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              },
-              {
-                "from": 8,
-                "to": 16,
-                "delta": 8,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              },
-              {
-                "from": 16,
-                "to": 20,
-                "delta": 4,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              },
-              {
-                "from": 20,
-                "to": 21,
-                "delta": 1,
-                "left": 0,
-                "right": 0,
-                "add_trace": {
-                  "raw_sum": 0,
-                  "did_subtract_modulus": false,
-                  "canonical": 0
-                }
-              }
+              ],
+              "canonical": 0
+            },
+            "canonical": 0
+          },
+          "mul_const_21_execution": {
+            "opcode": "mul_const",
+            "semantic": "fixed multiplication by 21 through canonical modular additions",
+            "step_names": [
+              "chain_1_to_2_carry_ladder",
+              "chain_1_to_2_conditional_subtract_modulus",
+              "chain_2_to_4_carry_ladder",
+              "chain_2_to_4_conditional_subtract_modulus",
+              "chain_4_to_8_carry_ladder",
+              "chain_4_to_8_conditional_subtract_modulus",
+              "chain_8_to_16_carry_ladder",
+              "chain_8_to_16_conditional_subtract_modulus",
+              "chain_16_to_20_carry_ladder",
+              "chain_16_to_20_conditional_subtract_modulus",
+              "chain_20_to_21_carry_ladder",
+              "chain_20_to_21_conditional_subtract_modulus"
             ],
+            "non_clifford_total": 60,
+            "trace": {
+              "constant": 21,
+              "addition_chain": [
+                1,
+                2,
+                4,
+                8,
+                16,
+                20,
+                21
+              ],
+              "steps": [
+                {
+                  "from": 1,
+                  "to": 2,
+                  "delta": 1,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 2,
+                  "to": 4,
+                  "delta": 2,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 4,
+                  "to": 8,
+                  "delta": 4,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 8,
+                  "to": 16,
+                  "delta": 8,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 16,
+                  "to": 20,
+                  "delta": 4,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                },
+                {
+                  "from": 20,
+                  "to": 21,
+                  "delta": 1,
+                  "left": 0,
+                  "right": 0,
+                  "add_trace": {
+                    "raw_sum": 0,
+                    "did_subtract_modulus": false,
+                    "canonical": 0
+                  }
+                }
+              ],
+              "canonical": 0
+            },
             "canonical": 0
           }
         },
         {
           "left": 1,
           "right": 0,
-          "add_trace": {
-            "raw_sum": 1,
-            "did_subtract_modulus": false,
-            "canonical": 1
-          },
-          "sub_trace": {
-            "raw_difference": 1,
-            "did_add_modulus": false,
-            "canonical": 1
-          },
-          "product_trace": {
-            "input": 0,
-            "modulus": 53,
-            "first_high": 0,
-            "first_fold": 0,
-            "second_high": 0,
-            "second_fold": 0,
-            "subtract_trace": [
-              {
-                "did_subtract": false,
-                "value_after_pass": 0
-              },
-              {
-                "did_subtract": false,
-                "value_after_pass": 0
-              }
+          "add_execution": {
+            "opcode": "field_add",
+            "semantic": "canonical modular addition",
+            "step_names": [
+              "carry_ladder",
+              "conditional_subtract_modulus"
             ],
+            "non_clifford_total": 10,
+            "trace": {
+              "raw_sum": 1,
+              "did_subtract_modulus": false,
+              "canonical": 1
+            },
+            "canonical": 1
+          },
+          "sub_execution": {
+            "opcode": "field_sub",
+            "semantic": "canonical modular subtraction",
+            "step_names": [
+              "borrow_ladder",
+              "conditional_add_modulus"
+            ],
+            "non_clifford_total": 10,
+            "trace": {
+              "raw_difference": 1,
+              "did_add_modulus": false,
+              "canonical": 1
+            },
+            "canonical": 1
+          },
+          "sub_sum_execution": {
+            "opcode": "field_sub_sum",
+            "semantic": "two sequential canonical modular subtractions",
+            "step_names": [
+              "first_subtract_borrow_ladder",
+              "first_subtract_conditional_add_modulus",
+              "second_subtract_borrow_ladder",
+              "second_subtract_conditional_add_modulus"
+            ],
+            "non_clifford_total": 20,
+            "trace": {
+              "first_subtract": {
+                "raw_difference": 1,
+                "did_add_modulus": false,
+                "canonical": 1
+              },
+              "second_subtract": {
+                "raw_difference": 1,
+                "did_add_modulus": false,
+                "canonical": 1
+              }
+            },
+            "canonical": 1
+          },
+          "triple_execution": {
+            "opcode": "field_triple",
+            "semantic": "two sequential canonical modular additions for 3a",
+            "step_names": [
+              "first_add_carry_ladder",
+              "first_add_conditional_subtract_modulus",
+              "second_add_carry_ladder",
+              "second_add_conditional_subtract_modulus"
+            ],
+            "non_clifford_total": 20,
+            "trace": {
+              "first_add": {
+                "raw_sum": 2,
+                "did_subtract_modulus": false,
+                "canonical": 2
+              },
+              "second_add": {
+                "raw_sum": 3,
+                "did_subtract_modulus": false,
+                "canonical": 3
+              }
+            },
+            "canonical": 3
+          },
+          "product_execution": {
+            "opcode": "field_mul",
+            "semantic": "schoolbook multiplication followed by pseudo-Mersenne reduction",
+            "step_names": [
+              "partial_product_grid",
+              "controlled_add_path",
+              "controlled_sub_path",
+              "pseudo_mersenne_first_fold",
+              "pseudo_mersenne_second_fold",
+              "pseudo_mersenne_canonicalize"
+            ],
+            "non_clifford_total": 96,
+            "trace": {
+              "input": 0,
+              "modulus": 53,
+              "first_high": 0,
+              "first_fold": 0,
+              "second_high": 0,
+              "second_fold": 0,
+              "subtract_trace": [
+                {
+                  "did_subtract": false,
+                  "value_after_pass": 0
+                },
+                {
+                  "did_subtract": false,
+                  "value_after_pass": 0
+                }
+              ],
+              "canonical": 0
+            },
             "canonical": 0
           },
-          "mul_const_21_trace": {
-            "constant": 21,
-            "addition_chain": [
-              1,
-              2,
-              4,
-              8,
-              16,
-              20,
-              21
+          "mul_const_21_execution": {
+            "opcode": "mul_const",
+            "semantic": "fixed multiplication by 21 through canonical modular additions",
+            "step_names": [
+              "chain_1_to_2_carry_ladder",
+              "chain_1_to_2_conditional_subtract_modulus",
+              "chain_2_to_4_carry_ladder",
+              "chain_2_to_4_conditional_subtract_modulus",
+              "chain_4_to_8_carry_ladder",
+              "chain_4_to_8_conditional_subtract_modulus",
+              "chain_8_to_16_carry_ladder",
+              "chain_8_to_16_conditional_subtract_modulus",
+              "chain_16_to_20_carry_ladder",
+              "chain_16_to_20_conditional_subtract_modulus",
+              "chain_20_to_21_carry_ladder",
+              "chain_20_to_21_conditional_subtract_modulus"
             ],
-            "steps": [
-              {
-                "from": 1,
-                "to": 2,
-                "delta": 1,
-                "left": 1,
-                "right": 1,
-                "add_trace": {
-                  "raw_sum": 2,
-                  "did_subtract_modulus": false,
-                  "canonical": 2
+            "non_clifford_total": 60,
+            "trace": {
+              "constant": 21,
+              "addition_chain": [
+                1,
+                2,
+                4,
+                8,
+                16,
+                20,
+                21
+              ],
+              "steps": [
+                {
+                  "from": 1,
+                  "to": 2,
+                  "delta": 1,
+                  "left": 1,
+                  "right": 1,
+                  "add_trace": {
+                    "raw_sum": 2,
+                    "did_subtract_modulus": false,
+                    "canonical": 2
+                  }
+                },
+                {
+                  "from": 2,
+                  "to": 4,
+                  "delta": 2,
+                  "left": 2,
+                  "right": 2,
+                  "add_trace": {
+                    "raw_sum": 4,
+                    "did_subtract_modulus": false,
+                    "canonical": 4
+                  }
+                },
+                {
+                  "from": 4,
+                  "to": 8,
+                  "delta": 4,
+                  "left": 4,
+                  "right": 4,
+                  "add_trace": {
+                    "raw_sum": 8,
+                    "did_subtract_modulus": false,
+                    "canonical": 8
+                  }
+                },
+                {
+                  "from": 8,
+                  "to": 16,
+                  "delta": 8,
+                  "left": 8,
+                  "right": 8,
+                  "add_trace": {
+                    "raw_sum": 16,
+                    "did_subtract_modulus": false,
+                    "canonical": 16
+                  }
+                },
+                {
+                  "from": 16,
+                  "to": 20,
+                  "delta": 4,
+                  "left": 16,
+                  "right": 4,
+                  "add_trace": {
+                    "raw_sum": 20,
+                    "did_subtract_modulus": false,
+                    "canonical": 20
+                  }
+                },
+                {
+                  "from": 20,
+                  "to": 21,
+                  "delta": 1,
+                  "left": 20,
+                  "right": 1,
+                  "add_trace": {
+                    "raw_sum": 21,
+                    "did_subtract_modulus": false,
+                    "canonical": 21
+                  }
                 }
-              },
-              {
-                "from": 2,
-                "to": 4,
-                "delta": 2,
-                "left": 2,
-                "right": 2,
-                "add_trace": {
-                  "raw_sum": 4,
-                  "did_subtract_modulus": false,
-                  "canonical": 4
-                }
-              },
-              {
-                "from": 4,
-                "to": 8,
-                "delta": 4,
-                "left": 4,
-                "right": 4,
-                "add_trace": {
-                  "raw_sum": 8,
-                  "did_subtract_modulus": false,
-                  "canonical": 8
-                }
-              },
-              {
-                "from": 8,
-                "to": 16,
-                "delta": 8,
-                "left": 8,
-                "right": 8,
-                "add_trace": {
-                  "raw_sum": 16,
-                  "did_subtract_modulus": false,
-                  "canonical": 16
-                }
-              },
-              {
-                "from": 16,
-                "to": 20,
-                "delta": 4,
-                "left": 16,
-                "right": 4,
-                "add_trace": {
-                  "raw_sum": 20,
-                  "did_subtract_modulus": false,
-                  "canonical": 20
-                }
-              },
-              {
-                "from": 20,
-                "to": 21,
-                "delta": 1,
-                "left": 20,
-                "right": 1,
-                "add_trace": {
-                  "raw_sum": 21,
-                  "did_subtract_modulus": false,
-                  "canonical": 21
-                }
-              }
-            ],
+              ],
+              "canonical": 21
+            },
             "canonical": 21
           }
         }
@@ -1062,12 +3486,13 @@
   "checks": {
     "secp256k1_modulus_matches_common_constant": true,
     "opcode_counts_match_modular_operation_contracts": true,
+    "executable_circuit_ir_counts_match_arithmetic_lowering": true,
     "field_mul_stage_counts_match_arithmetic_lowering": true,
     "reduced_width_cases_exhaustive_pass": true
   },
   "pass": true,
   "boundary": [
-    "This certificate executes the modular reduction algorithm on reduced-width pseudo-Mersenne analogues and binds the 256-bit stage counts back to arithmetic_lowerings.json.",
+    "This certificate executes the same modular-circuit IR on reduced-width pseudo-Mersenne analogues and binds the 256-bit IR counts back to arithmetic_lowerings.json.",
     "It is not yet a Clifford-complete reversible netlist for every arithmetic opcode."
   ]
 }

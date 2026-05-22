@@ -370,6 +370,7 @@ def build_reusable_chunk_lowering(
     qroam_reference_selected = qroam_reference_crosscheck['selected_reference']
     modular_stage_certificate = modular_arithmetic_certificate['field_mul_stage_count_certificate']
     modular_opcode_certificate = modular_arithmetic_certificate['opcode_count_certificate']
+    modular_circuit_certificate = modular_arithmetic_certificate['executable_circuit_ir_count_certificate']
     reduced_width_cases = modular_arithmetic_certificate['reduced_width_exhaustive_cases']
     table_names = list(executable_leaf['lookup_constant_sources'])
     consumer_plan = reusable_chunk_tail_candidate['semantic_model']['consumer_plan']
@@ -509,6 +510,8 @@ def build_reusable_chunk_lowering(
             and modular_arithmetic_certificate['secp256k1_parameters']['shift'] == 32
             and modular_arithmetic_certificate['secp256k1_parameters']['low_term'] == 977
             and modular_arithmetic_certificate['secp256k1_parameters']['canonical_subtract_passes'] == 2
+            and modular_circuit_certificate['counts_match_arithmetic_lowerings'] is True
+            and modular_circuit_certificate['observed_non_clifford_per_opcode'] == modular_circuit_certificate['expected_non_clifford_per_opcode']
             and modular_opcode_certificate['opcode_counts_match'] is True
             and modular_opcode_certificate['observed_non_clifford_per_opcode'] == modular_opcode_certificate['expected_non_clifford_per_opcode']
             and int(modular_opcode_certificate['observed_non_clifford_per_opcode']['field_add']) == 2 * (int(field_bits) - 1)

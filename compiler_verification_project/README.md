@@ -231,6 +231,7 @@ python compiler_verification_project/scripts/build.py
 python compiler_verification_project/scripts/build.py --target composition-artifacts
 python compiler_verification_project/scripts/build.py --target resource-zkp-and-public
 python compiler_verification_project/scripts/build.py --target zkp-and-public
+python compiler_verification_project/scripts/build.py --target release-candidate-zkp
 python compiler_verification_project/scripts/verify.py --cases 16
 python compiler_verification_project/scripts/proof_status.py
 python compiler_verification_project/scripts/fast_zkp_preflight.py
@@ -253,7 +254,8 @@ changed.
 Checked artifact tests reuse existing build/verification summaries by default;
 set `SECP256K1_OPEN_AUDIT_FORCE_REBUILD=1` only when you intentionally want a
 test run to regenerate those summaries.
-Use `build_zkp_attestation_input.py --profile release` to prepare the 9024-case
+Use `build.py --target release-candidate-zkp` or
+`build_zkp_attestation_input.py --profile release` to prepare the 9024-case
 Google-comparable input bundle without invoking SP1 proving.
 Use `fast_zkp_preflight.py` for the ordinary resource/ZKP edit loop. It runs
 `proof_status.py`, the targeted integrity groups, focused pytest coverage, and

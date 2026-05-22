@@ -197,8 +197,13 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             and lowering['checks']['modular_arithmetic_certificate_binds_counted_field_mul'] is True
             and modular_arithmetic['field_mul_stage_count_certificate']['stage_counts_match'] is True
             and modular_arithmetic['field_mul_stage_count_certificate']['observed_total_ccx'] == modular_arithmetic['field_mul_stage_count_certificate']['expected_total_ccx']
+            and modular_arithmetic['executable_circuit_ir_count_certificate']['counts_match_arithmetic_lowerings'] is True
+            and modular_arithmetic['executable_circuit_ir_count_certificate']['observed_non_clifford_per_opcode'] == modular_arithmetic['executable_circuit_ir_count_certificate']['expected_non_clifford_per_opcode']
             and modular_arithmetic['opcode_count_certificate']['opcode_counts_match'] is True
             and modular_arithmetic['opcode_count_certificate']['observed_non_clifford_per_opcode'] == modular_arithmetic['opcode_count_certificate']['expected_non_clifford_per_opcode']
+            and modular_arithmetic['executable_modular_circuit_ir']['schema'] == 'compiler-project-executable-modular-circuit-ir-v1'
+            and modular_arithmetic['executable_circuit_ir_count_certificate']['counts_match_arithmetic_lowerings'] is True
+            and modular_arithmetic['executable_circuit_ir_count_certificate']['observed_non_clifford_per_opcode'] == modular_arithmetic['executable_circuit_ir_count_certificate']['expected_non_clifford_per_opcode']
         ),
         'reusable_chunk_tail_contract_is_proven_for_public_headline': (
             tail_candidate['status'] == 'proven_public_headline'
