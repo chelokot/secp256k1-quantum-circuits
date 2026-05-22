@@ -278,6 +278,9 @@ def build_public_engine_manifest_artifact() -> None:
         streamed_lookup_tail_leaf_equivalence=load_json(artifact_dir / 'streamed_lookup_tail_leaf_equivalence.json'),
         release_corpus_preflight=load_json(artifact_dir / 'release_corpus_preflight.json'),
         zkp_attestation_input=candidate_input,
+        arithmetic_operation_ir=load_json(artifact_dir / 'arithmetic_operation_ir.json'),
+        qroam_primitive_certificate=load_json(artifact_dir / 'qroam_primitive_certificate.json'),
+        phase_shell_lowerings=load_json(artifact_dir / 'phase_shell_lowerings.json'),
         selected_family_name=candidate_input['selected_family_name'],
     )
     dump_json(artifact_dir / 'public_engine_manifest.json', payload)

@@ -244,6 +244,9 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 streamed_lookup_tail_leaf_equivalence=load_json(artifact_root / 'streamed_lookup_tail_leaf_equivalence.json'),
                 release_corpus_preflight=load_json(artifact_root / 'release_corpus_preflight.json'),
                 zkp_attestation_input=load_json(artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json'),
+                arithmetic_operation_ir=load_json(artifact_root / 'arithmetic_operation_ir.json'),
+                qroam_primitive_certificate=load_json(artifact_root / 'qroam_primitive_certificate.json'),
+                phase_shell_lowerings=load_json(artifact_root / 'phase_shell_lowerings.json'),
                 selected_family_name=load_json(artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json')['selected_family_name'],
             ),
         )
@@ -2091,6 +2094,9 @@ def build_public_engine_manifest_checks(artifacts: Mapping[str, Any]) -> Dict[st
         streamed_lookup_tail_leaf_equivalence=artifacts['streamed_lookup_tail_leaf_equivalence'],
         release_corpus_preflight=artifacts['release_corpus_preflight'],
         zkp_attestation_input=artifacts['zkp_attestation_reusable_chunk_candidate_input'],
+        arithmetic_operation_ir=artifacts['arithmetic_operation_ir'],
+        qroam_primitive_certificate=artifacts['qroam_primitive_certificate'],
+        phase_shell_lowerings=artifacts['phase_shell_lowerings'],
         selected_family_name=selected_family_name,
     )
     executable_resource_engine = lowering['executable_resource_engine']
@@ -2105,6 +2111,7 @@ def build_public_engine_manifest_checks(artifacts: Mapping[str, Any]) -> Dict[st
         _check('public_engine_manifest_instruction_schedule_and_wire_streams_are_nonempty', manifest['instruction_stream']['row_count'] > 0 and manifest['schedule_stream']['row_count'] > 0 and manifest['wire_catalog_stream']['row_count'] > 0, '> 0 rows', {'instruction_rows': manifest['instruction_stream']['row_count'], 'schedule_rows': manifest['schedule_stream']['row_count'], 'wire_rows': manifest['wire_catalog_stream']['row_count']}),
         _check('public_engine_manifest_fast_contract_is_no_zkp', manifest['fast_no_zkp_contract']['prover_required'] is False and manifest['fast_no_zkp_contract']['verify_group'] == 'public_engine_manifest_checks', {'prover_required': False, 'verify_group': 'public_engine_manifest_checks'}, manifest['fast_no_zkp_contract']),
         _check('public_engine_manifest_binds_semantic_boundary_evidence', manifest['semantic_boundary_evidence']['streamed_lookup_tail_leaf_equivalence']['pass'] == manifest['semantic_boundary_evidence']['streamed_lookup_tail_leaf_equivalence']['total'] and manifest['semantic_boundary_evidence']['release_corpus_preflight']['case_count'] == GOOGLE_COMPARABLE_CASE_COUNT and all(manifest['semantic_boundary_evidence']['smoke_case_corpus']['category_counts'].get(category, 0) > 0 for category in manifest['semantic_boundary_evidence']['required_categories']) and all(manifest['semantic_boundary_evidence']['release_corpus_preflight']['category_counts'].get(category, 0) > 0 for category in manifest['semantic_boundary_evidence']['required_categories']), 'semantic boundary evidence covers required categories in smoke and release corpora', manifest['semantic_boundary_evidence']),
+        _check('public_engine_manifest_binds_primitive_operation_evidence', manifest['primitive_operation_evidence']['arithmetic_operation_ir']['pass'] is True and manifest['primitive_operation_evidence']['qroam_primitive_certificate']['pass'] is True and manifest['primitive_operation_evidence']['qroam_primitive_certificate']['whole_oracle_non_clifford'] == lowering['non_clifford_derivation']['qroam_chunk_non_clifford'] and manifest['primitive_operation_evidence']['phase_shell']['name'] in selected_family_name, 'primitive operation evidence binds arithmetic, qroam, and phase shell sources', manifest['primitive_operation_evidence']),
         _check('public_engine_manifest_passes_internal_checks', manifest['pass'] is True and all(manifest['checks'].values()), True, manifest['checks']),
     ]
     return _summarize_checks(checks)

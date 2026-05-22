@@ -175,8 +175,8 @@
       "bytes": 9368
     },
     "compiler_verification_project/README.md": {
-      "sha256": "d00d3774103678eaaf07e056db8ad703495434162a20240768ec6ded17092e34",
-      "bytes": 29618
+      "sha256": "22aa0e6f5a3a1ff9f88ee2a2086448dd7e7d711dedbc252b669ef75623437d7e",
+      "bytes": 30189
     },
     "compiler_verification_project/src/artifact_registry.py": {
       "sha256": "792af41f8884b0d25d86605c11a062ac7b0b1209295c8f48844e27e55c04a1fd",
@@ -207,8 +207,8 @@
       "bytes": 26931
     },
     "compiler_verification_project/src/integrity.py": {
-      "sha256": "49b4c30ca989c59e178a99c50c2b77a344e72aeadea28b554151f74592d035bf",
-      "bytes": 214594
+      "sha256": "6892038f2ec6909d003eab134bcc3712e9ef94c8017fcf181b6581467b66bc10",
+      "bytes": 215750
     },
     "compiler_verification_project/src/generated_block_inventory.py": {
       "sha256": "9a5a8cdc5369e43cb88df726d08fbc88ba727a43b72962388357546b8d382d89",
@@ -223,8 +223,8 @@
       "bytes": 5617
     },
     "compiler_verification_project/src/public_engine_manifest.py": {
-      "sha256": "fc535769872640fc0124406b39fff250c5a2e80257007137579ebf7499a17ff0",
-      "bytes": 14678
+      "sha256": "ba6283d0eae8ad9f9c0ae2b5f0db48f7b0f7d1d72dbf0a6019aece1e38fda019",
+      "bytes": 22877
     },
     "compiler_verification_project/src/lookup_fed_leaf.py": {
       "sha256": "92a9532e751d92bf151074e44be390e591e41afd948cde842447321460da2acc",
@@ -339,8 +339,8 @@
       "bytes": 48173
     },
     "compiler_verification_project/scripts/build.py": {
-      "sha256": "ba29da643401c3177d38f04859eac8813410375a003ebecbd4f06bb11b984bdd",
-      "bytes": 22341
+      "sha256": "5f40c379085084761f5c756694d69bb8481afc3b16ec5273ee97ec72db21ce08",
+      "bytes": 22615
     },
     "compiler_verification_project/scripts/build_zkp_attestation_input.py": {
       "sha256": "aad1d7866c704594ce66dfe6abc39b87d3e9550bb9f01f0a20b3c33926981a61",
@@ -711,11 +711,11 @@
       "bytes": 51805
     },
     "compiler_verification_project/artifacts/public_engine_manifest.json": {
-      "sha256": "b09630878791962c4d0cfd26cef7faba3d310b31ccc81cdff8ed5d1e1ed74bff",
-      "bytes": 17590
+      "sha256": "6f9576069296d58174d71849eb1f034c699de5102412e3967031493b20df69e0",
+      "bytes": 19597
     },
     "compiler_verification_project/artifacts/public_headline_result.json": {
-      "sha256": "735925324952ae3f0cf1aa691d3cf85c53fcd134c47c11d30dd912bbd5dd89ad",
+      "sha256": "ca58219a8e9b3c85861a1a7c965cd38bb79a4e02e8d34ba86941322a1b938333",
       "bytes": 14168
     },
     "compiler_verification_project/artifacts/cain_exact_transfer.json": {

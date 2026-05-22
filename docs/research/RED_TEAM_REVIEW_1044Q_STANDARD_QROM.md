@@ -1569,6 +1569,13 @@ Current remediation:
   toy semantic/scratch trace over 110,692 boundary pairs, the 9,024-case release
   corpus preflight, and the checked smoke corpus must all cover random,
   doubling, inverse, accumulator-infinity, and lookup-infinity categories.
+- The public engine manifest also binds primitive-operation evidence into the
+  no-ZKP gate: the selected arithmetic tail opcode must match the generated
+  arithmetic operation IR counts, the QROAMClean stream cost/workspace must
+  match the selected compiler policy and reusable-chunk stream terms, and the
+  phase shell must match the compiler-parameter and family-document payloads.
+  Focused mutation tests now reject forged arithmetic counts, forged QROAM
+  stream costs, and phase-shell count drift without invoking SP1.
 - `compiler_verification_project/artifacts/arithmetic_operation_ir.json` now
   reconstructs arithmetic block/stage/kernel/selected-leaf primitive counts from
   materialized operation streams and digests. The resource-liveness certificate

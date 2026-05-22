@@ -187,8 +187,8 @@
     },
     "public_engine_manifest": {
       "path": "compiler_verification_project/artifacts/public_engine_manifest.json",
-      "sha256": "b09630878791962c4d0cfd26cef7faba3d310b31ccc81cdff8ed5d1e1ed74bff",
-      "bytes": 17590
+      "sha256": "6f9576069296d58174d71849eb1f034c699de5102412e3967031493b20df69e0",
+      "bytes": 19597
     }
   },
   "verification_commands": {

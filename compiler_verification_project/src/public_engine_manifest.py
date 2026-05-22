@@ -6,6 +6,8 @@ import hashlib
 import json
 from typing import Any, Dict, List, Mapping
 
+from proof_corpus_profiles import GOOGLE_COMPARABLE_CASE_COUNT
+
 
 PUBLIC_ENGINE_MANIFEST_SCHEMA = 'compiler-project-public-engine-manifest-v1'
 
@@ -110,6 +112,9 @@ def build_public_engine_manifest(
     streamed_lookup_tail_leaf_equivalence: Mapping[str, Any],
     release_corpus_preflight: Mapping[str, Any],
     zkp_attestation_input: Mapping[str, Any],
+    arithmetic_operation_ir: Mapping[str, Any],
+    qroam_primitive_certificate: Mapping[str, Any],
+    phase_shell_lowerings: Mapping[str, Any],
     selected_family_name: str,
 ) -> Dict[str, Any]:
     executable_resource_engine = reusable_chunk_lowering['executable_resource_engine']
@@ -127,6 +132,11 @@ def build_public_engine_manifest(
         for category, count in sorted(release_corpus_preflight['category_counts'].items())
     }
     smoke_case_category_counts = _case_category_counts(list(zkp_attestation_input['prepared_case_corpus']['cases']))
+    compiler_parameters = zkp_attestation_input['compiler_parameters_document']['payload']
+    family_payload = zkp_attestation_input['family_document']['payload']
+    selected_phase_shell_name = str(compiler_parameters['phase_shell']['selected_public_shell'])
+    phase_register_bits = int(compiler_parameters['phase_shell']['full_phase_register_bits'])
+    selected_qroam_block_size = int(compiler_parameters['lookup_policy']['standard_qroamclean_block_size'])
     semantic_required_categories = [
         'random',
         'doubling',
@@ -134,6 +144,18 @@ def build_public_engine_manifest(
         'accumulator_infinity',
         'lookup_infinity',
     ]
+    tail_opcode = str(reusable_chunk_lowering['chunked_multiplier_primitive_contract']['source_arithmetic_kernel'])
+    arithmetic_tail_row = next(
+        row
+        for row in arithmetic_operation_ir['leaf_arithmetic_summary']['rows']
+        if row['opcode'] == tail_opcode
+    )
+    qroam_counts = qroam_primitive_certificate['traversed_counts']
+    selected_phase_shell = next(
+        row
+        for row in phase_shell_lowerings['families']
+        if row['name'] == selected_phase_shell_name
+    )
 
     instruction_rows = _instruction_rows(list(executable_contract['instruction_stream']))
     wire_rows = _wire_rows(executable_liveness['wire_catalog'])
@@ -197,12 +219,48 @@ def build_public_engine_manifest(
         ),
         'release_corpus_preflight_covers_required_categories': (
             release_corpus_preflight['pass'] is True
-            and int(release_corpus_preflight['case_count']) == 9024
+            and int(release_corpus_preflight['case_count']) == GOOGLE_COMPARABLE_CASE_COUNT
             and all(release_category_counts.get(category, 0) > 0 for category in semantic_required_categories)
         ),
         'smoke_case_corpus_covers_required_categories': (
             int(zkp_attestation_input['prepared_case_corpus']['case_count']) == len(zkp_attestation_input['prepared_case_corpus']['cases'])
             and all(smoke_case_category_counts.get(category, 0) > 0 for category in semantic_required_categories)
+        ),
+        'arithmetic_operation_ir_binds_tail_opcode': (
+            arithmetic_operation_ir['pass'] is True
+            and arithmetic_tail_row['opcode'] == tail_opcode
+            and int(reusable_chunk_lowering['chunked_multiplier_primitive_contract']['chunk_bits']) == int(reusable_chunk_lowering['executable_contract']['chunk_contract']['chunk_bits'])
+            and int(arithmetic_operation_ir['leaf_arithmetic_summary']['leaf_opcode_histogram'][tail_opcode]) == int(arithmetic_tail_row['leaf_instance_count'])
+            and int(arithmetic_tail_row['kernel_operation_count']) == sum(int(value) for value in arithmetic_tail_row['primitive_counts_total'].values())
+            and int(arithmetic_tail_row['kernel_non_clifford_per_instance']) == int(arithmetic_tail_row['primitive_counts_total']['ccx'])
+            and int(arithmetic_operation_ir['leaf_arithmetic_summary']['non_clifford_total']) == int(arithmetic_tail_row['primitive_counts_total']['ccx'])
+        ),
+        'qroam_primitive_stream_binds_stream_terms': (
+            qroam_primitive_certificate['pass'] is True
+            and int(qroam_primitive_certificate['parameters']['block_size']) == selected_qroam_block_size
+            and int(qroam_primitive_certificate['qroamclean_cost_model']['block_size']) == selected_qroam_block_size
+            and int(qroam_primitive_certificate['parameters']['target_bits']) == int(reusable_chunk_lowering['stream_plan']['chunk_bits'])
+            and int(qroam_counts['per_stream_non_clifford']) == int(qroam_primitive_certificate['qroamclean_cost_model']['lookup_compute_non_clifford']) + int(qroam_primitive_certificate['qroamclean_cost_model']['measured_uncompute_non_clifford'])
+            and int(qroam_counts['per_stream_non_clifford']) == int(reusable_chunk_lowering['non_clifford_derivation']['per_chunk_stream_non_clifford'])
+            and int(qroam_counts['target_register_qubits']) == int(reusable_chunk_lowering['stream_plan']['chunk_bits'])
+            and int(qroam_counts['junk_register_qubits']) == int(reusable_chunk_lowering['qubit_derivation']['qroam_clean_junk_register_qubits'])
+            and int(qroam_counts['junk_register_qubits']) == int(qroam_primitive_certificate['qroamclean_cost_model']['junk_register_qubits'])
+            and int(qroam_counts['per_stream_non_clifford']) * int(reusable_chunk_lowering['stream_plan']['whole_oracle_chunk_streams']) == int(reusable_chunk_lowering['non_clifford_derivation']['qroam_chunk_non_clifford'])
+        ),
+        'phase_shell_primitive_counts_bind_public_family': (
+            selected_phase_shell['name'] == family_payload['phase_shell']
+            and selected_phase_shell['name'] in selected_family_name
+            and int(phase_shell_lowerings['phase_register_bits']) == phase_register_bits
+            and int(selected_phase_shell['live_quantum_bits']) == int(reusable_chunk_lowering['qubit_derivation']['phase_qubits'])
+            and int(selected_phase_shell['live_quantum_bits']) == int(family_payload['live_phase_bits'])
+            and int(selected_phase_shell['hadamard_count']) == phase_register_bits
+            and int(selected_phase_shell['hadamard_count']) == int(family_payload['phase_shell_hadamards'])
+            and int(selected_phase_shell['total_measurements']) == phase_register_bits
+            and int(selected_phase_shell['total_measurements']) == int(family_payload['phase_shell_measurements'])
+            and int(selected_phase_shell['single_qubit_rotation_count']) == phase_register_bits - 1
+            and int(selected_phase_shell['single_qubit_rotation_count']) == int(family_payload['phase_shell_rotations'])
+            and int(selected_phase_shell['rotation_depth']) == int(family_payload['phase_shell_rotation_depth'])
+            and int(selected_phase_shell['controlled_rotation_count']) == int(selected_phase_shell['total_rotations']) - int(selected_phase_shell['single_qubit_rotation_count'])
         ),
     }
     return {
@@ -285,6 +343,48 @@ def build_public_engine_manifest(
                 'case_corpus_sha256': zkp_attestation_input['case_corpus_sha256'],
                 'case_count': int(zkp_attestation_input['prepared_case_corpus']['case_count']),
                 'category_counts': smoke_case_category_counts,
+            },
+        },
+        'primitive_operation_evidence': {
+            'arithmetic_operation_ir': {
+                'schema': arithmetic_operation_ir['schema'],
+                'sha256': _sha256_payload(arithmetic_operation_ir),
+                'pass': bool(arithmetic_operation_ir['pass']),
+                'tail_opcode': tail_opcode,
+                'tail_kernel_stage_digest_sha256': arithmetic_tail_row['kernel_stage_digest_sha256'],
+                'tail_kernel_operation_count': int(arithmetic_tail_row['kernel_operation_count']),
+                'tail_kernel_non_clifford_per_instance': int(arithmetic_tail_row['kernel_non_clifford_per_instance']),
+                'tail_primitive_counts_total': {
+                    key: int(value)
+                    for key, value in sorted(arithmetic_tail_row['primitive_counts_total'].items())
+                },
+                'leaf_arithmetic_operation_stream_sha256': arithmetic_operation_ir['leaf_arithmetic_summary']['operation_stream_sha256'],
+            },
+            'qroam_primitive_certificate': {
+                'schema': qroam_primitive_certificate['schema'],
+                'sha256': _sha256_payload(qroam_primitive_certificate),
+                'pass': bool(qroam_primitive_certificate['pass']),
+                'operation_schema': qroam_primitive_certificate['operation_stream']['operation_schema'],
+                'segment_count': int(qroam_primitive_certificate['operation_stream']['segment_count']),
+                'segment_merkle_root_sha256': qroam_primitive_certificate['operation_stream']['segment_merkle_root_sha256'],
+                'block_size': int(qroam_primitive_certificate['parameters']['block_size']),
+                'per_stream_non_clifford': int(qroam_counts['per_stream_non_clifford']),
+                'target_register_qubits': int(qroam_counts['target_register_qubits']),
+                'junk_register_qubits': int(qroam_counts['junk_register_qubits']),
+                'whole_oracle_streams': int(reusable_chunk_lowering['stream_plan']['whole_oracle_chunk_streams']),
+                'whole_oracle_non_clifford': int(qroam_counts['per_stream_non_clifford']) * int(reusable_chunk_lowering['stream_plan']['whole_oracle_chunk_streams']),
+            },
+            'phase_shell': {
+                'schema': phase_shell_lowerings['schema'],
+                'sha256': _sha256_payload(phase_shell_lowerings),
+                'name': selected_phase_shell['name'],
+                'phase_register_bits': phase_register_bits,
+                'live_quantum_bits': int(selected_phase_shell['live_quantum_bits']),
+                'hadamard_count': int(selected_phase_shell['hadamard_count']),
+                'total_measurements': int(selected_phase_shell['total_measurements']),
+                'single_qubit_rotation_count': int(selected_phase_shell['single_qubit_rotation_count']),
+                'controlled_rotation_count': int(selected_phase_shell['controlled_rotation_count']),
+                'rotation_depth': int(selected_phase_shell['rotation_depth']),
             },
         },
         'fast_no_zkp_contract': {

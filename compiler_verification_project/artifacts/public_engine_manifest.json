@@ -610,6 +610,50 @@
       }
     }
   },
+  "primitive_operation_evidence": {
+    "arithmetic_operation_ir": {
+      "schema": "compiler-project-arithmetic-operation-ir-v1",
+      "sha256": "185214c75f615b530dd63c2972c4a76bf2ba3c94624659736c7187a36ee8392e",
+      "pass": true,
+      "tail_opcode": "complete_a0_all_streamed_tail",
+      "tail_kernel_stage_digest_sha256": "cf8315d24ba29b996c07d044a94bf53770f612cfbc3aa990c902cb97a02288d6",
+      "tail_kernel_operation_count": 1367928,
+      "tail_kernel_non_clifford_per_instance": 1126332,
+      "tail_primitive_counts_total": {
+        "ccx": 1126332,
+        "cx": 0,
+        "measurement": 241596,
+        "x": 0
+      },
+      "leaf_arithmetic_operation_stream_sha256": "2b27b16d06561f6d6835fbb0dfcd02d6b0f1a3b54b9b888220af1d53561d76c6"
+    },
+    "qroam_primitive_certificate": {
+      "schema": "compiler-project-qroam-k1-primitive-certificate-v1",
+      "sha256": "9a97e536aa4e15e25873adf187db977910a0ef8fb03914958d409940a54eb125",
+      "pass": true,
+      "operation_schema": "qroamclean-k1-unary-iteration-step-v1",
+      "segment_count": 16,
+      "segment_merkle_root_sha256": "4adf8b1389ac2ad67551a4a058377b919ac446b88ae22da3ab68bc84f2156cb5",
+      "block_size": 1,
+      "per_stream_non_clifford": 65536,
+      "target_register_qubits": 155,
+      "junk_register_qubits": 0,
+      "whole_oracle_streams": 186,
+      "whole_oracle_non_clifford": 12189696
+    },
+    "phase_shell": {
+      "schema": "compiler-project-phase-shell-lowerings-v2",
+      "sha256": "4411ea5f699e5950a32783f2232796a63987efb5d939f98ac400f4f02ddd415b",
+      "name": "semiclassical_qft_v1",
+      "phase_register_bits": 512,
+      "live_quantum_bits": 1,
+      "hadamard_count": 512,
+      "total_measurements": 512,
+      "single_qubit_rotation_count": 511,
+      "controlled_rotation_count": 0,
+      "rotation_depth": 511
+    }
+  },
   "fast_no_zkp_contract": {
     "build_target": "public-engine-manifest",
     "verify_group": "public_engine_manifest_checks",
@@ -629,7 +673,10 @@
     "streamed_tail_equivalence_covers_required_categories": true,
     "toy_tail_semantics_cover_required_categories": true,
     "release_corpus_preflight_covers_required_categories": true,
-    "smoke_case_corpus_covers_required_categories": true
+    "smoke_case_corpus_covers_required_categories": true,
+    "arithmetic_operation_ir_binds_tail_opcode": true,
+    "qroam_primitive_stream_binds_stream_terms": true,
+    "phase_shell_primitive_counts_bind_public_family": true
   },
   "pass": true
 }

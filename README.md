@@ -124,12 +124,16 @@ the release gate before claiming current proof freshness. Together these
 artifacts define the public `36,957,412 / 1,199` candidate claim and `8 / 8`
 public cases, while the checked compressed/Groth16 proofs remain explicitly
 stale until rebuilt against the current resource digest.
-The compiler artifacts also include proof-bound generated QROAM,
-independent QROAM reference, and modular-arithmetic certificates. The QROAM
-reference keeps the selected 155-bit reusable chunk stream separate from the
-256-bit full-field ledger sweep, so reviewers can audit the selected lookup
-stream and the field-multiplication pseudo-Mersenne reduction without treating
-them as loose spreadsheet constants.
+The compiler artifacts also include `public_engine_manifest.json`, a no-ZKP
+engine gate that re-materializes executable instruction rows, wires, schedule
+events, owner-capacity rows, resource terms, semantic-boundary evidence, and
+primitive-operation evidence for the current public candidate. That manifest
+binds the arithmetic operation IR, the generated QROAMClean `K = 1` primitive
+certificate, and the selected semiclassical phase shell into the same public
+claim layer. The QROAM reference keeps the selected 155-bit reusable chunk
+stream separate from the 256-bit full-field ledger sweep, so reviewers can
+audit the selected lookup stream and the field-multiplication pseudo-Mersenne
+reduction without treating them as loose spreadsheet constants.
 This is similar in shape to Google's disclosure model, but it is still not a
 primitive-gate full-Shor proof.
 
@@ -336,7 +340,10 @@ manifest, public headline, and proof runbook/status metadata, and then runs the
 focused Python mutation tests. The public engine manifest also binds semantic
 boundary evidence: the streamed-tail edge-case equivalence, reusable-tail toy
 semantic/scratch trace, 9024-case release corpus preflight, and checked smoke
-case categories. Add `--include-rust` when you also want the SP1
+case categories. It also binds primitive-operation evidence from the arithmetic
+operation IR, QROAM primitive certificate, and phase-shell lowering so drift in
+those generated streams fails before any prover is considered. Add
+`--include-rust` when you also want the SP1
 attestation-library reusable-chunk unit tests, still without proving.
 After compressed/Groth16 proof rebuilds, run the same preflight with
 `--require-current-proofs` to make stale checked proof fixtures a hard failure
