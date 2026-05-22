@@ -3632,6 +3632,35 @@ fn json_array_field<'a>(value: &'a Value, key: &str) -> &'a Vec<Value> {
         .unwrap_or_else(|| panic!("resource certificate field is not an array: {key}"))
 }
 
+fn sha256_hex(bytes: &[u8]) -> String {
+    let mut hasher = Sha256::new();
+    hasher.update(bytes);
+    hex::encode(hasher.finalize())
+}
+
+fn merkle_root_from_hex_leaves(leaves: &[String]) -> String {
+    if leaves.is_empty() {
+        return sha256_hex(b"");
+    }
+    let mut level = leaves.to_vec();
+    while level.len() > 1 {
+        if level.len() % 2 == 1 {
+            let last = level
+                .last()
+                .expect("non-empty Merkle level must have a last leaf")
+                .clone();
+            level.push(last);
+        }
+        level = level
+            .chunks(2)
+            .map(|pair| sha256_hex(format!("{}{}", pair[0], pair[1]).as_bytes()))
+            .collect();
+    }
+    level
+        .pop()
+        .expect("non-empty Merkle tree must produce a root")
+}
+
 fn json_primitive_counts(value: &Value, key: &str) -> BTreeMap<String, u64> {
     let object = json_object_field(value, key);
     let mut counts = BTreeMap::new();
@@ -4864,8 +4893,11 @@ fn validate_reusable_chunk_lowering(
     );
     let mut qroam_compute_ccx = 0u64;
     let mut qroam_cleanup_ccx = 0u64;
+    let mut qroam_segment_hashes = Vec::new();
     for segment in qroam_segments {
-        assert_eq!(json_string_field(segment, "sha256").len(), 64);
+        let segment_hash = json_string_field(segment, "sha256");
+        assert_eq!(segment_hash.len(), 64);
+        qroam_segment_hashes.push(segment_hash.to_owned());
         assert_eq!(
             json_u64_field(segment, "operation_count"),
             json_u64_field(segment, "end_address_exclusive")
@@ -4881,6 +4913,10 @@ fn validate_reusable_chunk_lowering(
             other => panic!("unexpected QROAM primitive phase: {other}"),
         }
     }
+    assert_eq!(
+        merkle_root_from_hex_leaves(&qroam_segment_hashes),
+        json_string_field(qroam_operation_stream, "segment_merkle_root_sha256")
+    );
     assert_eq!(
         qroam_compute_ccx,
         json_u64_field(qroam_traversed, "lookup_compute_non_clifford")
@@ -6149,6 +6185,16 @@ mod tests {
         let mut input = checked_reusable_chunk_input();
         input.resource_certificate_document.payload.0["qroam_primitive_certificate"]
             ["wire_catalog"]["target_register"]["qubits"] = serde_json::json!(154);
+        refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_reusable_chunk_qroam_segment_root_forgery() {
+        let mut input = checked_reusable_chunk_input();
+        input.resource_certificate_document.payload.0["qroam_primitive_certificate"]
+            ["operation_stream"]["segment_merkle_root_sha256"] = serde_json::json!("00".repeat(32));
         refresh_resource_certificate_digest(&mut input);
         run_prepared_attestation(&input);
     }

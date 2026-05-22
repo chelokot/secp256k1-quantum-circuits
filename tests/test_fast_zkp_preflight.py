@@ -21,6 +21,7 @@ def test_fast_zkp_preflight_plan_has_no_prover_commands() -> None:
     assert '--prove' not in rendered
     assert 'run_zkp_attestation_guarded.py' not in rendered
     assert 'proof_publication_status_checks' in rendered
+    assert 'qroam_primitive_certificate_checks' in rendered
 
 
 def test_fast_zkp_preflight_skip_cargo_removes_rust_step() -> None:

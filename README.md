@@ -346,8 +346,9 @@ ordinary verification pass cannot accidentally start a multi-hour proof.
 reviewer entrypoint for the checked public headline: by default it validates
 the public result, input, public values, source-document hashes, fixture
 records, proof-binary digests, wrap proof, and Groth16 verifier key from the
-checked branch state. Add `--verify-compressed` or `--verify-groth16` to run
-the corresponding checked proof verifier as well. During source churn this
+checked branch state and prints a compact blocker report. Add `--verbose` for
+the full per-check JSON, or add `--verify-compressed` / `--verify-groth16` to
+run the corresponding checked proof verifier as well. During source churn this
 command is allowed to fail because stale checked proof artifacts no longer bind
 the current input; use `proof_status.py` first to see whether the failure is an
 expected freshness gate.

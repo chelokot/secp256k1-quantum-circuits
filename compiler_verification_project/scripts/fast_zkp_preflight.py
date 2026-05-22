@@ -17,6 +17,7 @@ VERIFY_GROUPS = (
     'compiler_parameter_checks',
     'arithmetic_operation_ir_checks',
     'modular_arithmetic_certificate_checks',
+    'qroam_primitive_certificate_checks',
     'release_corpus_preflight_checks',
     'reusable_chunk_lowering_checks',
     'headline_resource_manifest_checks',

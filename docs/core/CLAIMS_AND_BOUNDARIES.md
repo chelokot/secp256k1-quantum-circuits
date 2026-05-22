@@ -156,8 +156,10 @@ For the promoted reusable-chunk public headline, run
 `python compiler_verification_project/scripts/verify_public_headline.py` to
 validate the checked headline artifact, candidate input, public values,
 source-document semantic hashes, fixture records, proof-binary digests, wrap
-proof, and Groth16 verifier key from the checked branch state. The promoted
-candidate resource certificate also carries executable interval liveness for
+proof, and Groth16 verifier key from the checked branch state. The default
+output is a compact blocker report; pass `--verbose` when a reviewer needs the
+full per-check JSON payload. The promoted candidate resource certificate also
+carries executable interval liveness for
 the reusable-chunk leaf, and the guest recomputes the peak live-qubit total from
 those intervals before accepting the public values. It also validates the
 embedded generated QROAM primitive certificate and modular arithmetic

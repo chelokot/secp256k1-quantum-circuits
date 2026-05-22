@@ -91,8 +91,8 @@ resource semantics and macro boundaries.
   - `compiler_verification_project/artifacts/zkp_attestation_public_values.json`
   - compressed and Groth16 fixtures/proofs.
 - `compiler_verification_project/artifacts/verification_summary.json` currently
-  reports exact compiler verification `429/429`: `30/30` semantic cases and
-  `399/399` invariant checks.
+  reports exact compiler verification `452/452`: `30/30` semantic cases and
+  `422/422` invariant checks.
 - `pytest -q` passed at the reviewed state.
 - The proof public values bind the selected family, leaf hash, case corpus hash,
   and the final numbers.
@@ -998,9 +998,10 @@ Evidence:
 - `reusable_chunk_lowering.json` embeds both certificates and checks that they
   match the QROAMClean `K = 1` model used by the public candidate.
 - The SP1 guest validates the embedded certificates, recomputes segment CCX
-  totals by phase, checks target/junk workspace fields against the public
-  QROAM model and independent reference row, and rejects count/workspace
-  mutations in negative tests.
+  totals by phase, rebuilds the segment Merkle root from the embedded segment
+  hashes, checks target/junk workspace fields against the public QROAM model
+  and independent reference row, and rejects count/workspace/root mutations in
+  negative tests.
 
 Impact:
 
@@ -1028,7 +1029,9 @@ Evidence:
 - The script validates `public_headline_result.json`, checked input/public
   values, source-document semantic hashes, fixture records, compressed proof
   digest, Groth16 proof digest, wrap proof digest, and Groth16 verifier-key
-  digest from the checked branch state.
+  digest from the checked branch state. The normal CLI output is now a compact
+  blocker report, with the full per-check JSON kept behind `--verbose`, so stale
+  proof failures surface as a short audit list rather than a huge payload dump.
 - Optional `--verify-compressed` and `--verify-groth16` flags invoke the
   corresponding checked proof verifier against the checked proof bundle.
 - `zkp_attestation_fixture_compressed.json` still keeps the large proof payload
@@ -1526,6 +1529,10 @@ Current remediation:
   operands from operation ordinals, so the IR's operand-capacity profile is no
   longer inflated by generator event numbering. The SP1 guest now validates
   those generator contracts instead of trusting the artifact's `pass` field.
+- `qroam_primitive_certificate_checks` is now part of the fast ZKP preflight,
+  and the SP1 guest reconstructs the QROAM primitive segment Merkle root from
+  the embedded segment hashes before accepting the reusable-chunk resource
+  certificate.
 - `modular_arithmetic_certificate.json` now also carries an executable
   modular-circuit IR for canonical add/sub, double-sub, triple, multiplication
   by 21, and pseudo-Mersenne multiplication. Reduced-width exhaustive tests run

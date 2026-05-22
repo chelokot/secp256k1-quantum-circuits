@@ -370,6 +370,50 @@ def run_external_verification(system: str, resource_profile: str, systemd_proper
     }
 
 
+def compact_report(report: dict[str, Any]) -> dict[str, Any]:
+    proof_freshness = report['proof_freshness']
+    return {
+        'schema': report['schema'],
+        'pass': report['pass'],
+        'metadata_pass': report['metadata_pass'],
+        'selected_result': report['selected_result'],
+        'bound_documents': report['bound_documents'],
+        'checked_proofs': report['checked_proofs'],
+        'check_count': report['check_count'],
+        'failed_check_count': len(report['failed_checks']),
+        'failed_checks': [
+            {
+                'name': check['name'],
+                'expected': check['expected'],
+                'observed': check['observed'],
+            }
+            for check in report['failed_checks']
+        ],
+        'proof_freshness': {
+            'all_current': proof_freshness['all_current'],
+            'stale_systems': proof_freshness['stale_systems'],
+            'heavy_rebuild_steps_remaining': proof_freshness['heavy_rebuild_steps_remaining'],
+            'candidate_input': proof_freshness['candidate_input'],
+            'candidate_input_sha256': proof_freshness['candidate_input_sha256'],
+            'resource_certificate_sha256': proof_freshness['resource_certificate_sha256'],
+            'public_values_resource_certificate_sha256': proof_freshness[
+                'public_values_resource_certificate_sha256'
+            ],
+            'systems': {
+                system: {
+                    'current': status['current'],
+                    'fixture_path': status['fixture_path'],
+                    'input_binding_status': status['input_binding_status'],
+                    'stale_reasons': status['stale_reasons'],
+                    'resource_certificate_sha256': status['resource_certificate_sha256'],
+                }
+                for system, status in proof_freshness['systems'].items()
+            },
+        },
+        'proof_verifications': report['proof_verifications'],
+    }
+
+
 def main() -> int:
     args = parse_args()
     report = build_metadata_report()
@@ -380,9 +424,8 @@ def main() -> int:
         proof_verifications.append(run_external_verification('groth16', args.resource_profile, args.systemd_property))
     report['proof_verifications'] = proof_verifications
     report['pass'] = report['metadata_pass'] and all(item['pass'] for item in proof_verifications)
-    if report['pass'] and not args.verbose:
-        report.pop('checks')
-    print(json.dumps(report, indent=2, sort_keys=True))
+    printable = report if args.verbose else compact_report(report)
+    print(json.dumps(printable, indent=2, sort_keys=True))
     return 0 if report['pass'] else 1
 
 

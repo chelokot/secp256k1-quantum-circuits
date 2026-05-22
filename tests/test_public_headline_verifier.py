@@ -49,7 +49,20 @@ class PublicHeadlineVerifierTests(unittest.TestCase):
             report['checked_proofs']['groth16_verifier_key_sha256'],
             '4125fe6fab5e7d3af4bb9386f49589450a6d37f536e98650adca79768c469975',
         )
+        self.assertNotIn('checks', report)
+        self.assertLess(len(result.stdout.splitlines()), 400)
+
+    def test_public_headline_verifier_verbose_keeps_full_check_payload(self):
+        result = subprocess.run(
+            [sys.executable, 'compiler_verification_project/scripts/verify_public_headline.py', '--verbose'],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(result.returncode, 1)
+        report = json.loads(result.stdout)
         self.assertIn('checks', report)
+        self.assertGreater(len(report['checks']), len(report['failed_checks']))
 
 
 if __name__ == '__main__':

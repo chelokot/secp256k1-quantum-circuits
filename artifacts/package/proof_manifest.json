@@ -339,8 +339,8 @@
       "bytes": 2584
     },
     "compiler_verification_project/scripts/fast_zkp_preflight.py": {
-      "sha256": "e552de5c1950ef4623a6a665df749fbc9086cab85f9e69cd6e84b5ba808e83a3",
-      "bytes": 4688
+      "sha256": "d101ee24683603819364371c25307168d87419c25d98f452110c7023ed944c03",
+      "bytes": 4730
     },
     "compiler_verification_project/scripts/proof_environment_report.py": {
       "sha256": "d0f7ba45a677a950c4404c603361cc1235d850d7072330b25524175723fa9538",
@@ -351,8 +351,8 @@
       "bytes": 18800
     },
     "compiler_verification_project/scripts/verify_public_headline.py": {
-      "sha256": "28e5fb8526060690782dc03b1df11567fb9224f4b7b8a935d5f3f0e46416c98d",
-      "bytes": 23452
+      "sha256": "a759f4d18a80c5c073bc7d536869dbe0774f5b760b718fff0d9af937f34a8a2d",
+      "bytes": 25414
     },
     "compiler_verification_project/scripts/verify.py": {
       "sha256": "f727078f7ca76d20ed7ab8eeb50bb86596432ec0d34980ed924a93eccd21c736",
@@ -371,8 +371,8 @@
       "bytes": 324
     },
     "compiler_verification_project/zkp_attestation/lib/src/lib.rs": {
-      "sha256": "05fa4f994656278d964f2343517b98390f5271e5d3da0b02b6e1aac5a0752091",
-      "bytes": 232853
+      "sha256": "b000a430d9d57f548fa2f57e7c90040520f25bf8b2c45932e6e42bcbd046e6d4",
+      "bytes": 234429
     },
     "compiler_verification_project/zkp_attestation/program/Cargo.toml": {
       "sha256": "ad4e8d80b5b8e2865b14cd9a46fd218ea02973b45387fc4100b314883af25a84",
