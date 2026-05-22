@@ -237,6 +237,7 @@ python compiler_verification_project/scripts/fast_zkp_preflight.py
 python compiler_verification_project/scripts/proof_environment_report.py
 python compiler_verification_project/scripts/verify_public_headline.py
 python compiler_verification_project/scripts/build_zkp_attestation_input.py --cases 8
+python compiler_verification_project/scripts/build_zkp_attestation_input.py --profile release --output-dir compiler_verification_project/artifacts/zkp_attestation_release_candidate
 python compiler_verification_project/scripts/materialize_exact_circuits.py
 ```
 
@@ -252,11 +253,16 @@ changed.
 Checked artifact tests reuse existing build/verification summaries by default;
 set `SECP256K1_OPEN_AUDIT_FORCE_REBUILD=1` only when you intentionally want a
 test run to regenerate those summaries.
+Use `build_zkp_attestation_input.py --profile release` to prepare the 9024-case
+Google-comparable input bundle without invoking SP1 proving.
 Use `fast_zkp_preflight.py` for the ordinary resource/ZKP edit loop. It runs
 `proof_status.py`, the targeted integrity groups, focused pytest coverage, and
 the attestation-library Rust unit tests, and it rejects any command plan that
 would invoke a prover. The targeted integrity groups include the 9024-case
 release-corpus preflight, so corpus drift is caught before spending prover time.
+For a publication gate after proof rebuilds, add `--require-current-proofs`;
+this changes only the freshness check to `proof_status.py --require-all-current`
+and still does not invoke a prover.
 Use `proof_environment_report.py` before a compressed/Groth16 rebuild; it emits
 a JSON readiness report for the local Rust/SP1/protobuf/clang/Go toolchain and
 can fail closed with `--require-ready`.

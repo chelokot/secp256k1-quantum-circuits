@@ -27,12 +27,20 @@ def test_fast_zkp_preflight_skip_cargo_removes_rust_step() -> None:
     assert all(step['name'] != 'attestation_lib_cargo_test' for step in commands)
 
 
+def test_fast_zkp_preflight_can_require_current_checked_proofs() -> None:
+    commands = MODULE.command_plan(skip_cargo=True, require_current_proofs=True)
+    proof_status = next(step for step in commands if step['name'] == 'proof_status')
+    assert proof_status['command'][-1] == '--require-all-current'
+    MODULE.assert_no_heavy_prover_commands(commands)
+
+
 def test_fast_zkp_preflight_parse_args_supports_dry_run() -> None:
     original_argv = sys.argv
     try:
-        sys.argv = ['fast_zkp_preflight.py', '--skip-cargo', '--dry-run-json']
+        sys.argv = ['fast_zkp_preflight.py', '--skip-cargo', '--require-current-proofs', '--dry-run-json']
         args = MODULE.parse_args()
     finally:
         sys.argv = original_argv
     assert args.skip_cargo is True
+    assert args.require_current_proofs is True
     assert args.dry_run_json is True

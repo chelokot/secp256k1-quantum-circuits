@@ -268,6 +268,7 @@ python compiler_verification_project/scripts/fast_zkp_preflight.py
 python compiler_verification_project/scripts/proof_environment_report.py
 python compiler_verification_project/scripts/verify_public_headline.py
 python compiler_verification_project/scripts/build_zkp_attestation_input.py --cases 8
+python compiler_verification_project/scripts/build_zkp_attestation_input.py --profile release --output-dir compiler_verification_project/artifacts/zkp_attestation_release_candidate
 python compiler_verification_project/scripts/materialize_exact_circuits.py
 python scripts/compare_cain_2026.py
 ```
@@ -291,12 +292,17 @@ changed.
 Checked artifact tests reuse existing build/verification summaries by default;
 set `SECP256K1_OPEN_AUDIT_FORCE_REBUILD=1` only when you intentionally want a
 test run to regenerate those summaries.
+Use `build_zkp_attestation_input.py --profile release` to prepare the 9024-case
+Google-comparable input bundle without invoking SP1 proving.
 Use `compiler_verification_project/scripts/fast_zkp_preflight.py` as the normal
 ZKP/resource edit-loop gate. It runs `proof_status.py`, targeted integrity
 groups, focused pytest tests, and the attestation-library Rust unit tests, and
 it has an internal guard that rejects any command plan containing a prover. The
 fast gate also rebuild-checks the 9024-case release-corpus preflight as semantic
 evidence only; it is not a substitute for compressed/Groth16 proof freshness.
+After compressed/Groth16 proof rebuilds, run the same preflight with
+`--require-current-proofs` to make stale checked proof fixtures a hard failure
+without starting another proof.
 
 See `compiler_verification_project/README.md` for the SP1 execute/prove
 commands that reproduce the checked attestation bundle.

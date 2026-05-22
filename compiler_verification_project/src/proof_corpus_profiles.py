@@ -7,6 +7,10 @@ from typing import Any, Dict
 PROOF_CORPUS_PROFILE_SCHEMA = 'compiler-project-proof-corpus-profiles-v1'
 SMOKE_PUBLIC_PROFILE = 'smoke_public_8'
 GOOGLE_COMPARABLE_PROFILE = 'google_comparable_9024'
+PROFILE_SELECTORS = {
+    'selected-public': SMOKE_PUBLIC_PROFILE,
+    'release': GOOGLE_COMPARABLE_PROFILE,
+}
 
 
 def build_proof_corpus_profiles() -> Dict[str, Any]:
@@ -50,10 +54,23 @@ def selected_public_case_count() -> int:
     return int(profiles['profiles'][profiles['selected_public_profile']]['case_count'])
 
 
+def resolve_proof_corpus_profile(selector: str) -> Dict[str, Any]:
+    profile_key = PROFILE_SELECTORS.get(selector, selector)
+    profiles = build_proof_corpus_profiles()
+    if profile_key not in profiles['profiles']:
+        raise KeyError(f'unknown proof corpus profile: {selector}')
+    return {
+        'name': profile_key,
+        **profiles['profiles'][profile_key],
+    }
+
+
 __all__ = [
     'GOOGLE_COMPARABLE_PROFILE',
+    'PROFILE_SELECTORS',
     'PROOF_CORPUS_PROFILE_SCHEMA',
     'SMOKE_PUBLIC_PROFILE',
     'build_proof_corpus_profiles',
+    'resolve_proof_corpus_profile',
     'selected_public_case_count',
 ]

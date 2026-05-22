@@ -1442,6 +1442,10 @@ Current remediation:
 - `release_corpus_preflight_checks` regenerates that digest from the checked
   leaf and proof-corpus profile, so a release-size semantic-corpus drift fails a
   fast integrity group before any compressed/Groth16 work starts.
+- `build_zkp_attestation_input.py --profile release` now resolves the 9024-case
+  target from `proof_corpus_profiles.json` and writes a release candidate input
+  bundle without invoking SP1 proving. This removes another manual `--cases
+  9024` step from the final proof rebuild path.
 
 Still open:
 
@@ -1553,6 +1557,10 @@ Current remediation:
   missing prerequisites, such as absent `protoc`, before a long proof rebuild.
 - `fast_zkp_preflight.py` is the default no-prover edit-loop gate and refuses a
   command plan that would invoke `--prove` or the guarded prover wrapper.
+- The same preflight now has `--require-current-proofs`, which switches the
+  freshness step to `proof_status.py --require-all-current` while preserving the
+  no-prover command guard. This gives a single publication-gate command after
+  proof rebuilds and a nonblocking edit-loop command before proof rebuilds.
 
 Still open:
 

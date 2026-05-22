@@ -30,11 +30,18 @@ PYTEST_TARGETS = (
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='Run the fast ZKP/resource preflight without invoking provers.')
     parser.add_argument('--skip-cargo', action='store_true', help='Skip Rust unit tests for the SP1 attestation library.')
+    parser.add_argument('--require-current-proofs', action='store_true', help='Fail the preflight unless checked core/compressed/Groth16 fixtures bind the current input.')
     parser.add_argument('--dry-run-json', action='store_true', help='Print the command plan as JSON instead of running it.')
     return parser.parse_args()
 
 
-def command_plan(skip_cargo: bool) -> list[dict[str, Any]]:
+def command_plan(skip_cargo: bool, *, require_current_proofs: bool = False) -> list[dict[str, Any]]:
+    proof_status_command = [
+        sys.executable,
+        'compiler_verification_project/scripts/proof_status.py',
+    ]
+    if require_current_proofs:
+        proof_status_command.append('--require-all-current')
     commands = [
         {
             'name': 'proof_environment_report',
@@ -45,10 +52,7 @@ def command_plan(skip_cargo: bool) -> list[dict[str, Any]]:
         },
         {
             'name': 'proof_status',
-            'command': [
-                sys.executable,
-                'compiler_verification_project/scripts/proof_status.py',
-            ],
+            'command': proof_status_command,
         },
         {
             'name': 'integrity_groups',
@@ -97,7 +101,7 @@ def assert_no_heavy_prover_commands(commands: list[dict[str, Any]]) -> None:
 
 def main() -> None:
     args = parse_args()
-    commands = command_plan(args.skip_cargo)
+    commands = command_plan(args.skip_cargo, require_current_proofs=args.require_current_proofs)
     assert_no_heavy_prover_commands(commands)
     if args.dry_run_json:
         print(json.dumps({'schema': 'compiler-project-fast-zkp-preflight-v1', 'commands': commands}, indent=2))

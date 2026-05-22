@@ -175,8 +175,8 @@
       "bytes": 9368
     },
     "compiler_verification_project/README.md": {
-      "sha256": "f0c16585638796c2b00b09a313f7ef7897d3957bf5143d28253aa1a89edd2e8c",
-      "bytes": 25417
+      "sha256": "4f21f9fc6023217f43749176980b49f91afc25f1407c93ee9aacd90e6aea9681",
+      "bytes": 25933
     },
     "compiler_verification_project/src/artifact_registry.py": {
       "sha256": "24d3c3dec3569a5454835fc7e0cbeee90ee5691fe8fbf0e06378373a13c44411",
@@ -243,8 +243,8 @@
       "bytes": 116066
     },
     "compiler_verification_project/src/proof_corpus_profiles.py": {
-      "sha256": "355ee38ec82ac32d5284fac167b61a3616832723d82e1c77d743d29bef33ea20",
-      "bytes": 2189
+      "sha256": "f86483496f66911015e3217726f3a85dcb08d5a8b2921b6e64a19781fc60b655",
+      "bytes": 2744
     },
     "compiler_verification_project/src/public_result.py": {
       "sha256": "b17b00f90b762a28414be38d116d0fab5249c391ece858139866ec0b20c6033c",
@@ -311,12 +311,12 @@
       "bytes": 14572
     },
     "compiler_verification_project/scripts/build_zkp_attestation_input.py": {
-      "sha256": "57bc7439172fd78b17affcdc40bff368d96791653ee1267f5e7eafb5dba306f2",
-      "bytes": 1972
+      "sha256": "aad1d7866c704594ce66dfe6abc39b87d3e9550bb9f01f0a20b3c33926981a61",
+      "bytes": 2584
     },
     "compiler_verification_project/scripts/fast_zkp_preflight.py": {
-      "sha256": "cadeba871eb93acbdf4caaeee4e3f875d33befb40583e3a484e118a073f95708",
-      "bytes": 3508
+      "sha256": "7625f95e56e79367a80a171d5480cc0956fa1b4681529ad0e13e1eb73d8ac245",
+      "bytes": 3889
     },
     "compiler_verification_project/scripts/proof_environment_report.py": {
       "sha256": "5f0de4f580bf378dfd37ebd5217b0a051a3d65c39c94d83ceea27576e6c871e9",

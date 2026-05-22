@@ -18,7 +18,7 @@ if str(ROOT_SRC) not in sys.path:
 
 from common import SECP_P, add_affine, affine_to_proj, proj_to_affine  # noqa: E402
 from lookup_fed_leaf import build_streamed_lookup_tail_leaf, execute_leaf_contract  # noqa: E402
-from proof_corpus_profiles import selected_public_case_count  # noqa: E402
+from proof_corpus_profiles import GOOGLE_COMPARABLE_PROFILE, resolve_proof_corpus_profile, selected_public_case_count  # noqa: E402
 from zkp_attestation import DIGEST_SCHEME, build_zkp_attestation_input, write_zkp_attestation_inputs  # noqa: E402
 
 
@@ -392,6 +392,38 @@ def test_zkp_attestation_bundle_supports_alternate_output_dir(tmp_path: Path) ->
     assert json.loads((tmp_path / 'zkp_attestation_family.json').read_text())['name'] == payload['selected_family_name']
     assert json.loads((tmp_path / 'zkp_attestation_cases.json').read_text())['case_count'] == payload['prepared_case_corpus']['case_count']
     assert payload['resource_certificate_document']['payload']['pass'] is True
+
+
+def test_release_profile_selector_resolves_google_comparable_corpus() -> None:
+    profile = resolve_proof_corpus_profile('release')
+    assert profile['name'] == GOOGLE_COMPARABLE_PROFILE
+    assert profile['case_count'] == 9024
+    assert profile['case_start'] == 0
+    assert profile['release_grade'] is True
+
+
+def test_zkp_attestation_input_cli_profile_overrides_cases(tmp_path: Path) -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            'compiler_verification_project/scripts/build_zkp_attestation_input.py',
+            '--profile',
+            'release',
+            '--cases',
+            '2',
+            '--output-dir',
+            str(tmp_path),
+        ],
+        cwd=REPO_ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    summary = json.loads(result.stdout)
+    assert summary['profile'] == GOOGLE_COMPARABLE_PROFILE
+    assert summary['profile_release_grade'] is True
+    assert summary['case_count'] == 2
+    assert json.loads((tmp_path / 'zkp_attestation_cases.json').read_text())['case_count'] == 2
 
 
 def test_zkp_attestation_case_start_selects_late_case_ids() -> None:

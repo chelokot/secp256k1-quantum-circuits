@@ -11,24 +11,34 @@ SRC = PROJECT_ROOT / 'compiler_verification_project' / 'src'
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from zkp_attestation import DEFAULT_CASE_COUNT, write_zkp_attestation_inputs  # noqa: E402
+from proof_corpus_profiles import PROFILE_SELECTORS, resolve_proof_corpus_profile  # noqa: E402
+from zkp_attestation import write_zkp_attestation_inputs  # noqa: E402
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='Build the compiler-project ZK attestation input bundle.')
     parser.add_argument('--family', default='best-gate', help='Compiler family name or alias (best-gate, best-qubit).')
-    parser.add_argument('--cases', type=int, default=DEFAULT_CASE_COUNT, help='Deterministic point-add case count.')
-    parser.add_argument('--case-start', type=int, default=0, help='Starting deterministic case index within the public corpus.')
+    parser.add_argument(
+        '--profile',
+        default='selected-public',
+        choices=tuple(PROFILE_SELECTORS) + tuple(PROFILE_SELECTORS.values()),
+        help='Proof-corpus profile selector from proof_corpus_profiles.json.',
+    )
+    parser.add_argument('--cases', type=int, help='Override the selected proof-corpus profile case count.')
+    parser.add_argument('--case-start', type=int, help='Override the selected proof-corpus profile start index.')
     parser.add_argument('--output-dir', type=Path, help='Optional output directory for the generated input, claim, and case artifacts.')
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
+    profile = resolve_proof_corpus_profile(args.profile)
+    case_count = int(profile['case_count']) if args.cases is None else args.cases
+    case_start = int(profile['case_start']) if args.case_start is None else args.case_start
     payload = write_zkp_attestation_inputs(
         family_name=args.family,
-        case_count=args.cases,
-        case_start=args.case_start,
+        case_count=case_count,
+        case_start=case_start,
         output_dir=args.output_dir,
     )
     artifact_root = args.output_dir if args.output_dir is not None else PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
@@ -39,7 +49,9 @@ def main() -> None:
         'family_sha256': payload['family_sha256'],
         'case_corpus_sha256': payload['case_corpus_sha256'],
         'selected_family_name': payload['selected_family_name'],
-        'case_start': args.case_start,
+        'profile': profile['name'],
+        'profile_release_grade': profile['release_grade'],
+        'case_start': case_start,
         'case_count': payload['prepared_case_corpus']['case_count'],
     }, indent=2))
 
