@@ -108,22 +108,41 @@ def _primitive_operand_contract(
     }
 
 
-def _arithmetic_stage_operand_domains(stage: Mapping[str, Any]) -> List[Dict[str, Any]]:
-    max_operand_slots = max(
-        int(block['operand_profile']['operand_slots_required'])
-        for block in stage['blocks']
-    )
-    domains = [
+def _arithmetic_block_operand_domains(stage: Mapping[str, Any], block: Mapping[str, Any]) -> List[Dict[str, Any]]:
+    operand_slots = int(block['operand_profile']['operand_slots_required'])
+    gate_arities = block['operand_profile']['gate_arities']
+    if gate_arities.get('ccx') == [2]:
+        return [
+            {
+                'domain_id': f"{stage['stage']}:{block['block']}:left_field_bits",
+                'owner_id': 'arithmetic_slot_register_file',
+                'wire_template': 'arithmetic_slot_register_file.left_input.bit[{left_bit}]',
+                'operand_index_min': 0,
+                'operand_index_max_exclusive': operand_slots,
+                'row_instance_to_operand_index': 'left_bit = row_instance_ordinal // operand_slots_required',
+                'role': str(stage['category']),
+            },
+            {
+                'domain_id': f"{stage['stage']}:{block['block']}:right_field_bits",
+                'owner_id': 'arithmetic_slot_register_file',
+                'wire_template': 'arithmetic_slot_register_file.right_input.bit[{right_bit}]',
+                'operand_index_min': 0,
+                'operand_index_max_exclusive': operand_slots,
+                'row_instance_to_operand_index': 'right_bit = row_instance_ordinal % operand_slots_required',
+                'role': str(stage['category']),
+            },
+        ]
+    return [
         {
-            'domain_id': f"{stage['stage']}:arithmetic_field_slots",
+            'domain_id': f"{stage['stage']}:{block['block']}:arithmetic_field_bits",
             'owner_id': 'arithmetic_slot_register_file',
             'wire_template': 'arithmetic_slot_register_file.bit[{operand_index}]',
             'operand_index_min': 0,
-            'operand_index_max_exclusive': max_operand_slots,
+            'operand_index_max_exclusive': operand_slots,
+            'row_instance_to_operand_index': 'operand_index = row_instance_ordinal % operand_slots_required',
             'role': str(stage['category']),
         }
     ]
-    return domains
 
 
 def _public_candidate_stream_hash(rows: List[Mapping[str, Any]]) -> str:
@@ -791,29 +810,33 @@ def _public_base_run_length_rows(
         for stage in arithmetic_kernel['stages']:
             if stage['category'] == 'streamed_lookup_data_select':
                 continue
-            rows.extend(_count_rows_from_primitive_counts(
-                row_index=len(rows),
-                scope='arithmetic_leaf_stage',
-                source=f"arithmetic_operation_ir:{arithmetic_kernel['opcode']}:{stage['stage']}:leaf_call_{leaf_call_index}",
-                primitive_counts=stage['primitive_counts_total'],
-                provenance_payload={
-                    'arithmetic_kernel': arithmetic_kernel['opcode'],
-                    'leaf_call_index': leaf_call_index,
-                    'stage': stage['stage'],
-                    'stage_category': stage['category'],
-                    'operation_start': int(stage['operation_start']),
-                    'operation_end_exclusive': int(stage['operation_end_exclusive']),
-                    'block_digest_sha256': stage['block_digest_sha256'],
-                    'primitive_counts_total': stage['primitive_counts_total'],
-                },
-                operand_domains=_arithmetic_stage_operand_domains(stage),
-                source_kind='arithmetic_operation_ir',
-                extra={
-                    'leaf_call_index': leaf_call_index,
-                    'arithmetic_stage': str(stage['stage']),
-                    'arithmetic_category': str(stage['category']),
-                },
-            ))
+            for block in stage['blocks']:
+                rows.extend(_count_rows_from_primitive_counts(
+                    row_index=len(rows),
+                    scope='arithmetic_leaf_block',
+                    source=f"arithmetic_operation_ir:{arithmetic_kernel['opcode']}:{stage['stage']}:{block['block']}:leaf_call_{leaf_call_index}",
+                    primitive_counts=block['primitive_counts_total'],
+                    provenance_payload={
+                        'arithmetic_kernel': arithmetic_kernel['opcode'],
+                        'leaf_call_index': leaf_call_index,
+                        'stage': stage['stage'],
+                        'stage_category': stage['category'],
+                        'block': block['block'],
+                        'operation_start': int(block['operation_start']),
+                        'operation_end_exclusive': int(block['operation_end_exclusive']),
+                        'operation_stream_sha256': block['operation_stream_sha256'],
+                        'primitive_counts_total': block['primitive_counts_total'],
+                        'operand_profile': block['operand_profile'],
+                    },
+                    operand_domains=_arithmetic_block_operand_domains(stage, block),
+                    source_kind='arithmetic_operation_ir',
+                    extra={
+                        'leaf_call_index': leaf_call_index,
+                        'arithmetic_stage': str(stage['stage']),
+                        'arithmetic_block': str(block['block']),
+                        'arithmetic_category': str(stage['category']),
+                    },
+                ))
     for row_index, row in enumerate(rows):
         row['row_index'] = row_index
     return rows
@@ -919,10 +942,10 @@ def build_public_candidate_materialized_circuit_manifest(
         operation_rows=rows,
         liveness_rows=liveness_rows,
     )
-    base_rows = [row for row in rows if row['scope'] in ('direct_seed_base', 'lookup_leaf_base', 'arithmetic_leaf_stage')]
+    base_rows = [row for row in rows if row['scope'] in ('direct_seed_base', 'lookup_leaf_base', 'arithmetic_leaf_block')]
     direct_seed_rows = [row for row in rows if row['scope'] == 'direct_seed_base']
     lookup_leaf_rows = [row for row in rows if row['scope'] == 'lookup_leaf_base']
-    arithmetic_leaf_rows = [row for row in rows if row['scope'] == 'arithmetic_leaf_stage']
+    arithmetic_leaf_rows = [row for row in rows if row['scope'] == 'arithmetic_leaf_block']
     qroam_rows = [row for row in rows if row['scope'] == 'qroam_chunk_stream']
     phase_rows = [row for row in rows if row['scope'] == 'phase_shell']
     non_clifford_total = sum(int(row['non_clifford_count']) for row in rows)
@@ -1091,7 +1114,7 @@ def build_public_candidate_materialized_circuit_manifest(
         'base_row_count': len(base_rows),
         'direct_seed_row_count': len(direct_seed_rows),
         'lookup_leaf_base_row_count': len(lookup_leaf_rows),
-        'arithmetic_leaf_stage_row_count': len(arithmetic_leaf_rows),
+        'arithmetic_leaf_block_row_count': len(arithmetic_leaf_rows),
         'qroam_segment_row_count': len(qroam_rows),
         'phase_row_count': len(phase_rows),
         'gate_totals': gate_totals,
@@ -1134,7 +1157,7 @@ def build_public_candidate_materialized_circuit_manifest(
             'selected_kernel_stage_digest_sha256': selected_arithmetic_kernel['stage_digest_sha256'],
             'generated_non_qroam_non_clifford_per_leaf': arithmetic_generated_non_qroam_per_leaf,
             'replaced_streamed_qroam_non_clifford_per_leaf': arithmetic_generated_streamed_qroam_per_leaf,
-            'expanded_stage_rows': len(arithmetic_leaf_rows),
+            'expanded_block_rows': len(arithmetic_leaf_rows),
         },
         'lookup_base_evidence': {
             'name': selected_lookup_family['name'],

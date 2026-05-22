@@ -92,7 +92,7 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert manifest['materialized_liveness']['peak_live_qubits'] == reusable['qubit_derivation']['candidate_total_logical_qubits']
     assert manifest['direct_seed_row_count'] == 2
     assert manifest['lookup_leaf_base_row_count'] == 2 * reusable['stream_plan']['leaf_call_count_total']
-    assert manifest['arithmetic_leaf_stage_row_count'] > reusable['stream_plan']['leaf_call_count_total']
+    assert manifest['arithmetic_leaf_block_row_count'] > reusable['stream_plan']['leaf_call_count_total']
     assert manifest['qroam_expansion']['stream_instances'] == reusable['stream_plan']['whole_oracle_chunk_streams']
     assert manifest['qroam_expansion']['non_clifford'] == reusable['non_clifford_derivation']['qroam_chunk_non_clifford']
     assert manifest['qroam_segment_row_count'] == manifest['qroam_expansion']['stream_instances'] * manifest['qroam_expansion']['segments_per_stream']
@@ -119,8 +119,9 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert manifest['checks']['phase_liveness_uses_phase_load_interval_without_lookup_target'] is True
     assert manifest['materialized_liveness']['preview_head'][0]['total_live_qubits'] < manifest['public_totals']['logical_qubits']
     assert 'arithmetic_leaf_base' not in {row['scope'] for row in manifest['preview_head'] + manifest['preview_tail']}
-    first_arithmetic_row = next(row for row in manifest['run_length_rows'] if row['scope'] == 'arithmetic_leaf_stage')
+    first_arithmetic_row = next(row for row in manifest['run_length_rows'] if row['scope'] == 'arithmetic_leaf_block')
     assert first_arithmetic_row['primitive_operand_contract']['owner_ids'] == ['arithmetic_slot_register_file']
+    assert first_arithmetic_row['arithmetic_block']
     first_qroam_row = next(row for row in manifest['run_length_rows'] if row['scope'] == 'qroam_chunk_stream')
     assert first_qroam_row['primitive_operand_contract']['owner_ids'] == ['arithmetic_slot_register_file', 'lookup_workspace']
     assert manifest['flat_netlist']['segments'][0]['contributions'][0]['primitive_operand_contract_sha256']
@@ -148,7 +149,7 @@ def test_public_candidate_materialized_manifest_rejects_arithmetic_stage_drift()
     arithmetic_operation_ir = _artifact('arithmetic_operation_ir.json')
     tail = next(row for row in arithmetic_operation_ir['kernels'] if row['opcode'] == 'complete_a0_all_streamed_tail')
     stage = next(row for row in tail['stages'] if row['category'] != 'streamed_lookup_data_select')
-    stage['primitive_counts_total']['ccx'] += 1
+    stage['blocks'][0]['primitive_counts_total']['ccx'] += 1
     candidate_input = _candidate_input()
     observed = build_public_candidate_materialized_circuit_manifest(
         reusable_chunk_lowering=_artifact('reusable_chunk_lowering.json'),
