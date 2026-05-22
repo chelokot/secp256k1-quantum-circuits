@@ -34,11 +34,25 @@
       "non_clifford": 70000000
     }
   },
+  "baseline_transfer_ranges": {
+    "low_qubit": {
+      "runtime_days_if_baseline_maps_to_10d_min": 3.880644,
+      "runtime_days_if_baseline_maps_to_10d_max": 3.880644,
+      "same_density_physical_qubits_if_baseline_maps_to_26k_min": 22620.0,
+      "same_density_physical_qubits_if_baseline_maps_to_26k_max": 22620.0
+    },
+    "low_gate": {
+      "runtime_days_if_baseline_maps_to_10d_min": 4.989399428571429,
+      "runtime_days_if_baseline_maps_to_10d_max": 4.989399428571429,
+      "same_density_physical_qubits_if_baseline_maps_to_26k_min": 18720.0,
+      "same_density_physical_qubits_if_baseline_maps_to_26k_max": 18720.0
+    }
+  },
   "headline_ranges": {
-    "time_efficient_days_if_90M_min": 3.859564,
-    "time_efficient_days_if_90M_max": 3.859564,
-    "time_efficient_days_if_70M_min": 4.962296571428571,
-    "time_efficient_days_if_70M_max": 4.962296571428571,
+    "time_efficient_days_if_90M_min": 3.880644,
+    "time_efficient_days_if_90M_max": 3.880644,
+    "time_efficient_days_if_70M_min": 4.989399428571429,
+    "time_efficient_days_if_70M_max": 4.989399428571429,
     "same_density_physical_qubits_if_1200_min": 22620.0,
     "same_density_physical_qubits_if_1200_max": 22620.0,
     "same_density_physical_qubits_if_1450_min": 18720.0,
@@ -47,12 +61,28 @@
   "cases": [
     {
       "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
-      "exact_non_clifford": 34736076,
+      "exact_non_clifford": 34925796,
       "exact_logical_qubits": 1044,
+      "baseline_transfers": {
+        "low_qubit": {
+          "baseline": "low_qubit",
+          "baseline_non_clifford": 90000000,
+          "baseline_logical_qubits": 1200,
+          "heuristic_time_efficient_days_if_baseline_maps_to_10d": 3.880644,
+          "same_density_physical_qubits_if_baseline_maps_to_26k": 22620.0
+        },
+        "low_gate": {
+          "baseline": "low_gate",
+          "baseline_non_clifford": 70000000,
+          "baseline_logical_qubits": 1450,
+          "heuristic_time_efficient_days_if_baseline_maps_to_10d": 4.989399428571429,
+          "same_density_physical_qubits_if_baseline_maps_to_26k": 18720.0
+        }
+      },
       "runtime_transfer": {
         "assumption": "Fixed physical architecture, cycle time, and parallelization regime; runtime scales with exact-family non-Clifford ratio.",
-        "time_efficient_days_if_90M_maps_to_10d": 3.859564,
-        "time_efficient_days_if_70M_maps_to_10d": 4.962296571428571
+        "time_efficient_days_if_90M_maps_to_10d": 3.880644,
+        "time_efficient_days_if_70M_maps_to_10d": 4.989399428571429
       },
       "space_transfer": {
         "assumption": "Logical-to-physical density is inherited from the cited Cain reference line.",

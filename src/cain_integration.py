@@ -28,21 +28,20 @@ def build_cain_integration_summary(repo_root: Path) -> Dict[str, Any]:
     family_rows = {entry['name']: entry for entry in frontier['families']}
 
     cases: List[Dict[str, Any]] = []
-    runtime_90m_values: List[float] = []
-    runtime_70m_values: List[float] = []
-    time_efficient_space_values: List[float] = []
-    low_gate_space_values: List[float] = []
+    baseline_runtime_values: Dict[str, List[float]] = {name: [] for name in google_baseline}
+    baseline_space_values: Dict[str, List[float]] = {name: [] for name in google_baseline}
 
     for transfer_row in exact_transfer['families']:
         family = family_rows[transfer_row['family']]
-        runtime_90m_values.append(transfer_row['heuristic_time_efficient_days_if_90M_maps_to_10d'])
-        runtime_70m_values.append(transfer_row['heuristic_time_efficient_days_if_70M_maps_to_10d'])
-        time_efficient_space_values.append(transfer_row['same_density_physical_qubits_if_1200_maps_to_26k'])
-        low_gate_space_values.append(transfer_row['same_density_physical_qubits_if_1450_maps_to_26k'])
+        baseline_transfers = transfer_row['baseline_transfers']
+        for baseline_name, baseline_transfer in baseline_transfers.items():
+            baseline_runtime_values[baseline_name].append(baseline_transfer['heuristic_time_efficient_days_if_baseline_maps_to_10d'])
+            baseline_space_values[baseline_name].append(baseline_transfer['same_density_physical_qubits_if_baseline_maps_to_26k'])
         cases.append({
             'family': transfer_row['family'],
             'exact_non_clifford': family['full_oracle_non_clifford'],
             'exact_logical_qubits': family['total_logical_qubits'],
+            'baseline_transfers': baseline_transfers,
             'runtime_transfer': {
                 'assumption': 'Fixed physical architecture, cycle time, and parallelization regime; runtime scales with exact-family non-Clifford ratio.',
                 'time_efficient_days_if_90M_maps_to_10d': transfer_row['heuristic_time_efficient_days_if_90M_maps_to_10d'],
@@ -55,10 +54,27 @@ def build_cain_integration_summary(repo_root: Path) -> Dict[str, Any]:
             },
         })
 
-    runtime_values = runtime_90m_values + runtime_70m_values
-    space_values = time_efficient_space_values + low_gate_space_values
+    runtime_values = [
+        value
+        for values in baseline_runtime_values.values()
+        for value in values
+    ]
+    space_values = [
+        value
+        for values in baseline_space_values.values()
+        for value in values
+    ]
     publication_runtime_range = f'{min(runtime_values):.1f}-{max(runtime_values):.1f} days'
     publication_space_range = f'{min(space_values) / 1000:.1f}k-{max(space_values) / 1000:.1f}k physical qubits'
+    baseline_ranges = {
+        baseline_name: {
+            'runtime_days_if_baseline_maps_to_10d_min': min(baseline_runtime_values[baseline_name]),
+            'runtime_days_if_baseline_maps_to_10d_max': max(baseline_runtime_values[baseline_name]),
+            'same_density_physical_qubits_if_baseline_maps_to_26k_min': min(baseline_space_values[baseline_name]),
+            'same_density_physical_qubits_if_baseline_maps_to_26k_max': max(baseline_space_values[baseline_name]),
+        }
+        for baseline_name in google_baseline
+    }
 
     return {
         'integration_name': 'cain_2026_neutral_atom_transfer_exact_family_v2',
@@ -72,15 +88,16 @@ def build_cain_integration_summary(repo_root: Path) -> Dict[str, Any]:
             'cain_2026': CAIN_2026,
         },
         'public_google_baseline': google_baseline,
+        'baseline_transfer_ranges': baseline_ranges,
         'headline_ranges': {
-            'time_efficient_days_if_90M_min': min(runtime_90m_values),
-            'time_efficient_days_if_90M_max': max(runtime_90m_values),
-            'time_efficient_days_if_70M_min': min(runtime_70m_values),
-            'time_efficient_days_if_70M_max': max(runtime_70m_values),
-            'same_density_physical_qubits_if_1200_min': min(time_efficient_space_values),
-            'same_density_physical_qubits_if_1200_max': max(time_efficient_space_values),
-            'same_density_physical_qubits_if_1450_min': min(low_gate_space_values),
-            'same_density_physical_qubits_if_1450_max': max(low_gate_space_values),
+            'time_efficient_days_if_90M_min': baseline_ranges['low_qubit']['runtime_days_if_baseline_maps_to_10d_min'],
+            'time_efficient_days_if_90M_max': baseline_ranges['low_qubit']['runtime_days_if_baseline_maps_to_10d_max'],
+            'time_efficient_days_if_70M_min': baseline_ranges['low_gate']['runtime_days_if_baseline_maps_to_10d_min'],
+            'time_efficient_days_if_70M_max': baseline_ranges['low_gate']['runtime_days_if_baseline_maps_to_10d_max'],
+            'same_density_physical_qubits_if_1200_min': baseline_ranges['low_qubit']['same_density_physical_qubits_if_baseline_maps_to_26k_min'],
+            'same_density_physical_qubits_if_1200_max': baseline_ranges['low_qubit']['same_density_physical_qubits_if_baseline_maps_to_26k_max'],
+            'same_density_physical_qubits_if_1450_min': baseline_ranges['low_gate']['same_density_physical_qubits_if_baseline_maps_to_26k_min'],
+            'same_density_physical_qubits_if_1450_max': baseline_ranges['low_gate']['same_density_physical_qubits_if_baseline_maps_to_26k_max'],
         },
         'cases': cases,
         'publication_safe_summary': {

@@ -228,6 +228,7 @@ From the repository root:
 
 ```bash
 python compiler_verification_project/scripts/build.py
+python compiler_verification_project/scripts/build.py --target composition-artifacts
 python compiler_verification_project/scripts/build.py --target resource-zkp-and-public
 python compiler_verification_project/scripts/build.py --target zkp-and-public
 python compiler_verification_project/scripts/verify.py --cases 16
@@ -242,8 +243,12 @@ python compiler_verification_project/scripts/materialize_exact_circuits.py
 Use `build.py --target resource-zkp-and-public` for the normal reusable-chunk
 resource edit loop: it refreshes `reusable_chunk_lowering.json`, the candidate
 ZKP input bundle, and the public headline JSON without rebuilding every compiler
-artifact. Use `build.py --target zkp-and-public` when only attestation wrapping
-metadata changed.
+artifact. Use `build.py --target composition-artifacts` after changing resource
+or frontier accounting that feeds the composition layer; it refreshes
+`full_attack_inventory.json`, `subcircuit_equivalence.json`, and
+`headline_opcode_coverage.json` without touching any prover. Use
+`build.py --target zkp-and-public` when only attestation wrapping metadata
+changed.
 Checked artifact tests reuse existing build/verification summaries by default;
 set `SECP256K1_OPEN_AUDIT_FORCE_REBUILD=1` only when you intentionally want a
 test run to regenerate those summaries.

@@ -78,10 +78,10 @@
       },
       "requires_subcircuit_equivalence": true,
       "requires_arithmetic_lowering": true,
-      "arithmetic_lowering_non_clifford_per_kernel": 1120212,
+      "arithmetic_lowering_non_clifford_per_kernel": 1126332,
       "macro_leaf_sigma": {
         "row_count": 66,
-        "whole_oracle_non_clifford": 34726572
+        "whole_oracle_non_clifford": 34916292
       },
       "requires_edge_case_leaf_equivalence": true,
       "passes_required_coverage": true

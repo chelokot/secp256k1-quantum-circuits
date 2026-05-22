@@ -1558,27 +1558,33 @@ def table_manifests() -> Dict[str, Any]:
 
 
 
-def full_attack_inventory() -> Dict[str, Any]:
-    frontier = compiler_family_frontier()
+def full_attack_inventory(
+    *,
+    frontier: Optional[Dict[str, Any]] = None,
+    generated_block_inventories: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
+    if frontier is None:
+        frontier = compiler_family_frontier()
     schedule = raw32_schedule()
     kernel = arithmetic_kernel_library()
     hist = kernel['leaf_opcode_histogram']
     leaf_calls = schedule['summary']['leaf_call_count_total']
-    arithmetic_lowerings = arithmetic_lowering_library(
-        field_bits=FIELD_BITS,
-        leaf_opcode_histogram=kernel['leaf_opcode_histogram'],
-        qroam_domain_size=FOLDED_MAG_DOMAIN,
-    )
-    phase_shell_lowerings = phase_shell_lowering_library(FULL_PHASE_REGISTER_BITS)
-    generated_block_inventories = build_generated_block_inventories_payload(
-        schedule=schedule,
-        kernel=kernel,
-        arithmetic_lowerings=arithmetic_lowerings,
-        lookup_lowerings=lookup_lowering_library(),
-        phase_shells=phase_shell_lowerings['families'],
-        field_bits=FIELD_BITS,
-        public_google_baseline=PUBLIC_GOOGLE_BASELINE,
-    )
+    if generated_block_inventories is None:
+        arithmetic_lowerings = arithmetic_lowering_library(
+            field_bits=FIELD_BITS,
+            leaf_opcode_histogram=kernel['leaf_opcode_histogram'],
+            qroam_domain_size=FOLDED_MAG_DOMAIN,
+        )
+        phase_shell_lowerings = phase_shell_lowering_library(FULL_PHASE_REGISTER_BITS)
+        generated_block_inventories = build_generated_block_inventories_payload(
+            schedule=schedule,
+            kernel=kernel,
+            arithmetic_lowerings=arithmetic_lowerings,
+            lookup_lowerings=lookup_lowering_library(),
+            phase_shells=phase_shell_lowerings['families'],
+            field_bits=FIELD_BITS,
+            public_google_baseline=PUBLIC_GOOGLE_BASELINE,
+        )
     return {
         'schema': 'compiler-project-full-attack-inventory-v6',
         'schedule': schedule,
@@ -2227,8 +2233,19 @@ def build_cain_transfer_payload(frontier: Optional[Dict[str, Any]] = None) -> Di
     for family in frontier['families']:
         nc = int(family['full_oracle_non_clifford'])
         logical = int(family['total_logical_qubits'])
+        baseline_transfers = {
+            baseline_name: {
+                'baseline': baseline_name,
+                'baseline_non_clifford': int(baseline_row['non_clifford']),
+                'baseline_logical_qubits': int(baseline_row['logical_qubits']),
+                'heuristic_time_efficient_days_if_baseline_maps_to_10d': (10.0 * nc) / int(baseline_row['non_clifford']),
+                'same_density_physical_qubits_if_baseline_maps_to_26k': (26_000.0 * logical) / int(baseline_row['logical_qubits']),
+            }
+            for baseline_name, baseline_row in baseline.items()
+        }
         out_rows.append({
             'family': family['name'],
+            'baseline_transfers': baseline_transfers,
             'heuristic_time_efficient_days_if_90M_maps_to_10d': (10.0 * nc) / int(low_qubit['non_clifford']),
             'heuristic_time_efficient_days_if_70M_maps_to_10d': (10.0 * nc) / int(low_gate['non_clifford']),
             'same_density_physical_qubits_if_1200_maps_to_26k': (26_000.0 * logical) / int(low_qubit['logical_qubits']),

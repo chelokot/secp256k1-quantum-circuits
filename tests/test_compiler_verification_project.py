@@ -228,10 +228,34 @@ def test_mutated_reusable_chunk_tail_candidate_is_detected() -> None:
     assert groups['reusable_chunk_tail_candidate_checks']['pass'] < groups['reusable_chunk_tail_candidate_checks']['total']
 
 
+def test_mutated_reusable_chunk_lookup_infinity_boundary_coverage_is_detected() -> None:
+    artifacts = _artifacts_for_mutation('reusable_chunk_tail_candidate')
+    semantic = artifacts['reusable_chunk_tail_candidate']['toy_semantic_equivalence']
+    semantic['category_totals']['lookup_infinity'] = 0
+    semantic['rows'][0]['category_totals']['lookup_infinity'] = 0
+    groups = _evaluate_mutation(artifacts, 'reusable_chunk_tail_candidate_checks')
+    assert groups['reusable_chunk_tail_candidate_checks']['pass'] < groups['reusable_chunk_tail_candidate_checks']['total']
+
+
 def test_mutated_reusable_chunk_lowering_capacity_is_detected() -> None:
     artifacts = _artifacts_for_mutation('reusable_chunk_lowering')
     lookup_owner = next(row for row in artifacts['reusable_chunk_lowering']['owner_capacity']['rows'] if row['owner_id'] == 'lookup_workspace')
     lookup_owner['logical_qubits'] -= 1
+    groups = _evaluate_mutation(artifacts, 'reusable_chunk_lowering_checks')
+    assert groups['reusable_chunk_lowering_checks']['pass'] < groups['reusable_chunk_lowering_checks']['total']
+
+
+def test_mutated_reusable_chunk_macro_scratch_wire_is_detected() -> None:
+    artifacts = _artifacts_for_mutation('reusable_chunk_lowering')
+    contract = artifacts['reusable_chunk_lowering']['executable_contract']
+    contract['arithmetic_slots'].remove(contract['chunk_contract']['reusable_chunk_slot'])
+    groups = _evaluate_mutation(artifacts, 'reusable_chunk_lowering_checks')
+    assert groups['reusable_chunk_lowering_checks']['pass'] < groups['reusable_chunk_lowering_checks']['total']
+
+
+def test_mutated_reusable_chunk_qroam_block_size_split_is_detected() -> None:
+    artifacts = _artifacts_for_mutation('reusable_chunk_lowering')
+    artifacts['reusable_chunk_lowering']['standard_qroamclean_k1_model']['block_size'] += 1
     groups = _evaluate_mutation(artifacts, 'reusable_chunk_lowering_checks')
     assert groups['reusable_chunk_lowering_checks']['pass'] < groups['reusable_chunk_lowering_checks']['total']
 
@@ -381,5 +405,14 @@ def test_mutated_physical_estimator_result_is_detected() -> None:
 def test_mutated_subcircuit_equivalence_is_detected() -> None:
     artifacts = _artifacts_for_mutation('subcircuit_equivalence')
     artifacts['subcircuit_equivalence']['whole_oracle_composition_equivalence']['families'][0]['frontier_full_oracle_non_clifford'] += 1
+    groups = _evaluate_mutation(artifacts, 'subcircuit_equivalence_checks')
+    assert groups['subcircuit_equivalence_checks']['pass'] < groups['subcircuit_equivalence_checks']['total']
+
+
+def test_mutated_boundary_noop_policy_is_detected() -> None:
+    artifacts = _artifacts_for_mutation('subcircuit_equivalence')
+    boundary_noop = artifacts['subcircuit_equivalence']['boundary_noop_equivalence']
+    boundary_noop['policy'] = 'leaf_internal_select'
+    boundary_noop['lookup_infinity_cases_seen'] = 0
     groups = _evaluate_mutation(artifacts, 'subcircuit_equivalence_checks')
     assert groups['subcircuit_equivalence_checks']['pass'] < groups['subcircuit_equivalence_checks']['total']

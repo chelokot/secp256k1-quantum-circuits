@@ -1525,6 +1525,17 @@ Exit criterion:
 
 - Docs and tests import baseline data rather than repeating constants.
 
+Current remediation:
+
+- `data/public_google_baseline.json` is already the versioned source artifact
+  for the public Google low-qubit and low-gate rows. The Cain transfer payload
+  now also carries normalized `baseline_transfers` keyed by those baseline row
+  names, and `results/cain_2026_integration_summary.json` exposes
+  `baseline_transfer_ranges`. The Cain tests validate formulas through those
+  named baseline rows instead of using the legacy `90M`, `70M`, `1200`, or
+  `1450` key names as independent sources of truth. Legacy keys remain in the
+  artifact only as compatibility views.
+
 ### P1: Reproducible proof environment
 
 Package proof generation and verification in a container or Nix/uv lock.
@@ -1595,6 +1606,17 @@ Current remediation:
   proof-corpus case count without updating public values fails
   `proof_corpus_profile_checks`, and altering the field width in only
   `compiler_parameters.json` fails `compiler_parameter_checks`.
+- The same mutation suite now covers the remaining listed drift classes:
+  removing the reusable `qchunk` macro scratch wire, changing QROAM block size
+  in only the reusable lowering model, deleting lookup-infinity boundary
+  coverage from the reusable tail candidate, and changing the boundary no-op
+  policy in the subcircuit equivalence artifact all fail their corresponding
+  integrity groups.
+- The build script now has a fast `composition-artifacts` target for the
+  previously easy-to-miss downstream resource artifacts:
+  `full_attack_inventory.json`, `subcircuit_equivalence.json`, and
+  `headline_opcode_coverage.json`. It gives resource-accounting edits a prover-free
+  refresh path before any compressed/Groth16 rebuild is considered.
 
 ## Recommended Public Wording
 

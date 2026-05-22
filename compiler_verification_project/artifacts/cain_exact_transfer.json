@@ -3,8 +3,24 @@
   "families": [
     {
       "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
-      "heuristic_time_efficient_days_if_90M_maps_to_10d": 3.859564,
-      "heuristic_time_efficient_days_if_70M_maps_to_10d": 4.962296571428571,
+      "baseline_transfers": {
+        "low_qubit": {
+          "baseline": "low_qubit",
+          "baseline_non_clifford": 90000000,
+          "baseline_logical_qubits": 1200,
+          "heuristic_time_efficient_days_if_baseline_maps_to_10d": 3.880644,
+          "same_density_physical_qubits_if_baseline_maps_to_26k": 22620.0
+        },
+        "low_gate": {
+          "baseline": "low_gate",
+          "baseline_non_clifford": 70000000,
+          "baseline_logical_qubits": 1450,
+          "heuristic_time_efficient_days_if_baseline_maps_to_10d": 4.989399428571429,
+          "same_density_physical_qubits_if_baseline_maps_to_26k": 18720.0
+        }
+      },
+      "heuristic_time_efficient_days_if_90M_maps_to_10d": 3.880644,
+      "heuristic_time_efficient_days_if_70M_maps_to_10d": 4.989399428571429,
       "same_density_physical_qubits_if_1200_maps_to_26k": 22620.0,
       "same_density_physical_qubits_if_1450_maps_to_26k": 18720.0
     }

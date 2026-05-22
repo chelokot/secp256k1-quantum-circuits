@@ -19,12 +19,14 @@ from common import dump_json, load_json  # noqa: E402
 from artifact_digest_tree import build_artifact_digest_tree  # noqa: E402
 from artifact_registry import BUILD_SUMMARY_ARTIFACT_PATHS, BUILD_SUMMARY_SCHEMA  # noqa: E402
 from arithmetic_operation_ir import build_arithmetic_operation_ir  # noqa: E402
-from project import FIELD_BITS, build_all_artifacts, build_resource_stack_artifacts, write_cain_transfer  # noqa: E402
+from headline_opcode_coverage import build_headline_opcode_coverage  # noqa: E402
+from project import FIELD_BITS, build_all_artifacts, build_resource_stack_artifacts, full_attack_inventory, write_cain_transfer  # noqa: E402
 from public_result import write_public_headline_result  # noqa: E402
 from qroam_reference_crosscheck import build_qroam_reference_crosscheck  # noqa: E402
 from release_corpus_preflight import build_release_corpus_preflight  # noqa: E402
 from resource_certificate import build_resource_liveness_certificate  # noqa: E402
 from reusable_chunk_lowering import build_reusable_chunk_lowering  # noqa: E402
+from subcircuit_equivalence import build_subcircuit_equivalence_artifact  # noqa: E402
 from zkp_attestation import write_zkp_attestation_inputs  # noqa: E402
 
 
@@ -127,6 +129,38 @@ def build_qroam_reference() -> None:
     dump_json(artifact_dir / 'qroam_reference_crosscheck.json', payload)
 
 
+def build_composition_artifacts() -> dict:
+    artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
+    generated_block_inventories = load_json(artifact_dir / 'generated_block_inventories.json')
+    frontier = load_json(artifact_dir / 'family_frontier.json')
+    full_inventory = full_attack_inventory(
+        frontier=frontier,
+        generated_block_inventories=generated_block_inventories,
+    )
+    dump_json(artifact_dir / 'full_attack_inventory.json', full_inventory)
+    subcircuit = build_subcircuit_equivalence_artifact(
+        arithmetic_lowerings=load_json(artifact_dir / 'arithmetic_lowerings.json'),
+        lookup_lowerings=load_json(artifact_dir / 'lookup_lowerings.json'),
+        generated_block_inventories=generated_block_inventories,
+        frontier=frontier,
+        full_attack_inventory=full_inventory,
+    )
+    dump_json(artifact_dir / 'subcircuit_equivalence.json', subcircuit)
+    headline = build_headline_opcode_coverage(
+        leaf=load_json(artifact_dir / 'streamed_lookup_tail_leaf.json'),
+        streamed_lookup_tail_leaf_equivalence=load_json(artifact_dir / 'streamed_lookup_tail_leaf_equivalence.json'),
+        subcircuit_equivalence=subcircuit,
+        arithmetic_lowerings=load_json(artifact_dir / 'arithmetic_lowerings.json'),
+        resource_liveness_certificate=load_json(artifact_dir / 'resource_liveness_certificate.json'),
+    )
+    dump_json(artifact_dir / 'headline_opcode_coverage.json', headline)
+    return {
+        'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
+        'subcircuit_equivalence': 'compiler_verification_project/artifacts/subcircuit_equivalence.json',
+        'headline_opcode_coverage': 'compiler_verification_project/artifacts/headline_opcode_coverage.json',
+    }
+
+
 def build_digest_tree() -> None:
     artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
     dump_json(artifact_dir / 'artifact_digest_tree.json', build_artifact_digest_tree(repo_root=PROJECT_ROOT))
@@ -166,7 +200,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--target',
-        choices=('all', 'core-artifacts', 'build-summary', 'artifact-digest-tree', 'release-corpus-preflight', 'arithmetic-operation-ir', 'resource-liveness-certificate', 'resource-stack', 'qroam-reference', 'reusable-chunk-resource', 'zkp', 'candidate-zkp', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'),
+        choices=('all', 'core-artifacts', 'build-summary', 'artifact-digest-tree', 'release-corpus-preflight', 'arithmetic-operation-ir', 'resource-liveness-certificate', 'resource-stack', 'composition-artifacts', 'qroam-reference', 'reusable-chunk-resource', 'zkp', 'candidate-zkp', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'),
         default='all',
     )
     args = parser.parse_args()
@@ -194,6 +228,8 @@ def main() -> None:
     if args.target in ('qroam-reference',):
         build_qroam_reference()
         payload['qroam_reference_crosscheck'] = 'compiler_verification_project/artifacts/qroam_reference_crosscheck.json'
+    if args.target in ('composition-artifacts',):
+        payload.update(build_composition_artifacts())
     if args.target in ('reusable-chunk-resource',):
         build_reusable_chunk_resource()
         payload['reusable_chunk_lowering'] = 'compiler_verification_project/artifacts/reusable_chunk_lowering.json'
@@ -214,6 +250,9 @@ def main() -> None:
         'arithmetic_operation_ir': payload.get('arithmetic_operation_ir'),
         'resource_liveness_certificate': payload.get('resource_liveness_certificate'),
         'qroam_reference_crosscheck': payload.get('qroam_reference_crosscheck'),
+        'full_attack_inventory': payload.get('full_attack_inventory'),
+        'subcircuit_equivalence': payload.get('subcircuit_equivalence'),
+        'headline_opcode_coverage': payload.get('headline_opcode_coverage'),
         'reusable_chunk_lowering': payload.get('reusable_chunk_lowering'),
         'public_headline_result': payload.get('public_headline_result'),
         'zkp_attestation_input': 'compiler_verification_project/artifacts/zkp_attestation_input.json' if 'zkp_attestation' in payload else None,

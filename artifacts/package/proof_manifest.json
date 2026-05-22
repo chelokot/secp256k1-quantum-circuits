@@ -175,8 +175,8 @@
       "bytes": 9368
     },
     "compiler_verification_project/README.md": {
-      "sha256": "4e5743c8fd5350e116d33e25bd95a136292bac3f1006739fb0fd510a033db30f",
-      "bytes": 25066
+      "sha256": "f0c16585638796c2b00b09a313f7ef7897d3957bf5143d28253aa1a89edd2e8c",
+      "bytes": 25417
     },
     "compiler_verification_project/src/artifact_registry.py": {
       "sha256": "24d3c3dec3569a5454835fc7e0cbeee90ee5691fe8fbf0e06378373a13c44411",
@@ -239,8 +239,8 @@
       "bytes": 12143
     },
     "compiler_verification_project/src/project.py": {
-      "sha256": "3784d001b9d239ae181fb93bfc17bd42ddfdf0def069f6e40b6ae9ae509ea3cb",
-      "bytes": 115157
+      "sha256": "563afe300826cc533958837e1c32c2279599536dbddac8df9d8fc431916b6e19",
+      "bytes": 116066
     },
     "compiler_verification_project/src/proof_corpus_profiles.py": {
       "sha256": "355ee38ec82ac32d5284fac167b61a3616832723d82e1c77d743d29bef33ea20",
@@ -307,8 +307,8 @@
       "bytes": 46705
     },
     "compiler_verification_project/scripts/build.py": {
-      "sha256": "8b6542740864ac11d1d6b94f49ae867a18c2fabbe5559caba1895add48842fdf",
-      "bytes": 12216
+      "sha256": "2b35d890a90b0ca293f24be8f436d29f6ac4841729a25958f5a08a8d99883f5e",
+      "bytes": 14572
     },
     "compiler_verification_project/scripts/build_zkp_attestation_input.py": {
       "sha256": "57bc7439172fd78b17affcdc40bff368d96791653ee1267f5e7eafb5dba306f2",
@@ -655,11 +655,11 @@
       "bytes": 10437
     },
     "compiler_verification_project/artifacts/subcircuit_equivalence.json": {
-      "sha256": "7c61a33fdecf06eaa07bb81ace540145f4ff3ba4a46082442c39a8057512af8f",
-      "bytes": 15988
+      "sha256": "a65646cd64ecf4b456a82908aec3872b2aaf0931b278a439ceefd0233ea89f7f",
+      "bytes": 15990
     },
     "compiler_verification_project/artifacts/headline_opcode_coverage.json": {
-      "sha256": "5c35f01de8412081453f3feec155e5c8fadd3b43f9c90d96433053fc9b5a30dc",
+      "sha256": "b4457fb45fadf207b0e248619e30610f350ba03d06254c4862fdb9c7a1677f99",
       "bytes": 4183
     },
     "compiler_verification_project/artifacts/public_headline_result.json": {
@@ -671,8 +671,8 @@
       "bytes": 518171
     },
     "compiler_verification_project/artifacts/cain_exact_transfer.json": {
-      "sha256": "02ab9b452578ee476755b828351c983e4e848802a78eba33db23b1d016ca6cea",
-      "bytes": 840
+      "sha256": "126c58839562506c0d13c7392f79ebf22899f6e140e8416ed4b9a546a2416e71",
+      "bytes": 1501
     },
     "compiler_verification_project/artifacts/azure_resource_estimator_logical_counts.json": {
       "sha256": "a0d98031a8cf116c6e3dcf77b0df47de5e195dae96e455bc78ef16f1f6ec4b47",
