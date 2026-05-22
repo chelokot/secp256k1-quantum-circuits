@@ -16,6 +16,7 @@ SPEC.loader.exec_module(MODULE)
 def test_fast_zkp_preflight_plan_has_no_prover_commands() -> None:
     commands = MODULE.command_plan(skip_cargo=False)
     MODULE.assert_no_heavy_prover_commands(commands)
+    assert commands[0]['name'] == 'proof_environment_report'
     rendered = '\n'.join(' '.join(step['command']) for step in commands)
     assert '--prove' not in rendered
     assert 'run_zkp_attestation_guarded.py' not in rendered

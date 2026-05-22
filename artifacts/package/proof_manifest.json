@@ -299,8 +299,8 @@
       "bytes": 1972
     },
     "compiler_verification_project/scripts/fast_zkp_preflight.py": {
-      "sha256": "c80efb0c3b23357356e50c75ea98a057a396aac47082fc739707cc8576662f1d",
-      "bytes": 3282
+      "sha256": "cadeba871eb93acbdf4caaeee4e3f875d33befb40583e3a484e118a073f95708",
+      "bytes": 3508
     },
     "compiler_verification_project/scripts/proof_environment_report.py": {
       "sha256": "ccd151434d16a283db82f7e9ff91b4caff162d3edc259c7fbf007382ca82a094",

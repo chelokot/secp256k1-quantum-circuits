@@ -37,6 +37,13 @@ def parse_args() -> argparse.Namespace:
 def command_plan(skip_cargo: bool) -> list[dict[str, Any]]:
     commands = [
         {
+            'name': 'proof_environment_report',
+            'command': [
+                sys.executable,
+                'compiler_verification_project/scripts/proof_environment_report.py',
+            ],
+        },
+        {
             'name': 'proof_status',
             'command': [
                 sys.executable,
