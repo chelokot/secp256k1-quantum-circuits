@@ -815,6 +815,13 @@ def _build_zkp_attestation_materials(
         artifact_path=resource_artifact_path,
         payload=resource_certificate,
     )
+    compiler_parameters_path = 'compiler_verification_project/artifacts/compiler_parameters.json'
+    compiler_parameters = json.loads((PROJECT_ROOT / compiler_parameters_path).read_text())
+    compiler_parameters_blob = _committed_payload(
+        document_type='compiler_parameters',
+        artifact_path=compiler_parameters_path,
+        payload=compiler_parameters,
+    )
     family_blob = _committed_payload(
         document_type='compiler_family_summary',
         artifact_path='compiler_verification_project/artifacts/zkp_attestation_family.json',
@@ -890,11 +897,13 @@ def _build_zkp_attestation_materials(
             'family_sha256': family_blob['sha256'],
             'case_corpus_sha256': case_blob['sha256'],
             'resource_certificate_sha256': resource_certificate_blob['sha256'],
+            'compiler_parameters_sha256': compiler_parameters_blob['sha256'],
             'claim_document': claim_blob,
             'leaf_document': leaf_blob,
             'family_document': family_blob,
             'case_corpus_document': case_blob,
             'resource_certificate_document': resource_certificate_blob,
+            'compiler_parameters_document': compiler_parameters_blob,
             'claim_summary': {
                 'field_bits': int(public_claim['field_bits']),
                 'leaf_call_count_total': int(public_claim['leaf_call_count_total']),

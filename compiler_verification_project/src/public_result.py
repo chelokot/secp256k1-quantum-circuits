@@ -71,6 +71,7 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
     qroam_primitive = _load(ARTIFACT_ROOT / 'qroam_primitive_certificate.json')
     qroam_reference = _load(ARTIFACT_ROOT / 'qroam_reference_crosscheck.json')
     modular_arithmetic = _load(ARTIFACT_ROOT / 'modular_arithmetic_certificate.json')
+    compiler_parameters = _load(ARTIFACT_ROOT / 'compiler_parameters.json')
     proof_corpus_profiles = _load(ARTIFACT_ROOT / 'proof_corpus_profiles.json')
     tail_candidate = _load(ARTIFACT_ROOT / 'reusable_chunk_tail_candidate.json')
     executable_liveness = lowering['executable_liveness']
@@ -131,6 +132,13 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             and input_payload['proof_register_contract']['checks']['every_register_has_declared_contract_class'] is True
             and input_payload['proof_register_contract']['checks']['every_unclassified_written_register_is_rejected'] is True
             and input_payload['proof_register_contract']['checks']['semantic_lookup_constants_are_not_materialized_full_coordinate_lanes'] is True
+        ),
+        'compiler_parameters_document_binds_parameter_source': (
+            input_payload['compiler_parameters_document']['payload'] == compiler_parameters
+            and input_payload['compiler_parameters_document']['sha256'] == input_payload['compiler_parameters_sha256']
+            and compiler_parameters['pass'] is True
+            and isinstance(compiler_parameters['parameter_digest_sha256'], str)
+            and len(compiler_parameters['parameter_digest_sha256']) == 64
         ),
         'reusable_chunk_binds_generated_qroam_primitive_certificate': (
             qroam_primitive['pass'] is True
@@ -201,6 +209,7 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             'family': _file_record('compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_family.json'),
             'case_corpus': _file_record('compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_cases.json'),
             'proof_corpus_profiles': _file_record('compiler_verification_project/artifacts/proof_corpus_profiles.json'),
+            'compiler_parameters': _file_record('compiler_verification_project/artifacts/compiler_parameters.json'),
             'public_values': _file_record('compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_public_values.json'),
             'core_fixture': _fixture_record('zkp_attestation_fixture_core.json'),
             'compressed_fixture': _fixture_record('zkp_attestation_fixture_compressed.json'),

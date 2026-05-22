@@ -1801,11 +1801,13 @@ pub struct PreparedAttestationInput {
     pub family_sha256: String,
     pub case_corpus_sha256: String,
     pub resource_certificate_sha256: String,
+    pub compiler_parameters_sha256: String,
     pub claim_document: CommittedDocument<SemanticJsonPayload>,
     pub leaf_document: CommittedDocument<SemanticJsonPayload>,
     pub family_document: CommittedDocument<SemanticJsonPayload>,
     pub case_corpus_document: CommittedDocument<SemanticJsonPayload>,
     pub resource_certificate_document: CommittedDocument<SemanticJsonPayload>,
+    pub compiler_parameters_document: CommittedDocument<SemanticJsonPayload>,
     pub claim_summary: PreparedClaimSummary,
     pub family_summary: PreparedFamilySummary,
     pub prepared_leaf: CompiledLeaf,
@@ -4827,6 +4829,30 @@ pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValue
         },
         &input.resource_certificate_sha256,
     );
+    validate_committed_value_document(
+        &input.compiler_parameters_document,
+        "compiler_parameters",
+        &input.compiler_parameters_sha256,
+    );
+    let compiler_parameters = &input.compiler_parameters_document.payload.0;
+    assert_eq!(
+        json_string_field(compiler_parameters, "schema"),
+        "compiler-project-parameters-v1"
+    );
+    assert!(json_bool_field(compiler_parameters, "pass"));
+    assert_eq!(
+        json_string_field(compiler_parameters, "parameter_digest_sha256").len(),
+        64
+    );
+    let compiler_parameter_checks = json_object_field(compiler_parameters, "checks")
+        .as_object()
+        .expect("compiler parameter checks must be an object");
+    assert!(
+        compiler_parameter_checks
+            .values()
+            .all(|value| value.as_bool() == Some(true)),
+        "compiler parameter document contains a failing check"
+    );
 
     let claim_document: ClaimDocument = decode_committed_payload(&input.claim_document);
     let leaf_document: LeafDocument = decode_committed_payload(&input.leaf_document);
@@ -5156,6 +5182,14 @@ mod tests {
     fn prepared_attestation_rejects_stale_resource_certificate_digest() {
         let mut input = checked_input();
         input.resource_certificate_sha256 = "00".repeat(32);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_stale_compiler_parameters_digest() {
+        let mut input = checked_input();
+        input.compiler_parameters_sha256 = "00".repeat(32);
         run_prepared_attestation(&input);
     }
 

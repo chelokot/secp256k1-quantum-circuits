@@ -48,8 +48,8 @@
   "checked_artifacts": {
     "input": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
-      "sha256": "52dd3b43a3b25664f15bdfb31b9e6896b8c1f2d57da5f50f726937229fe1c7e3",
-      "bytes": 129167
+      "sha256": "a98ae33806e40c5bd806385005069cf4f54418e2f109f2853756082f004406ae",
+      "bytes": 131396
     },
     "claim": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json",
@@ -70,6 +70,11 @@
       "path": "compiler_verification_project/artifacts/proof_corpus_profiles.json",
       "sha256": "9c42de1999f9271f212c16d835c510ee307a28a27ab87e94c115798fb7ecd952",
       "bytes": 1009
+    },
+    "compiler_parameters": {
+      "path": "compiler_verification_project/artifacts/compiler_parameters.json",
+      "sha256": "a99149110447657ade0bc9ed5437d6f8edb40a1ce5b94ae0b815add6ca9d9f50",
+      "bytes": 1608
     },
     "public_values": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_public_values.json",
@@ -190,6 +195,7 @@
     "reusable_chunk_executable_liveness_binds_public_qubits": true,
     "reusable_chunk_counted_resource_ir_binds_public_totals": true,
     "proof_register_contract_binds_prepared_leaf_to_resource_owners": true,
+    "compiler_parameters_document_binds_parameter_source": true,
     "reusable_chunk_binds_generated_qroam_primitive_certificate": true,
     "reusable_chunk_binds_independent_qroam_reference_crosscheck": true,
     "reusable_chunk_binds_modular_arithmetic_certificate": true,

@@ -668,12 +668,17 @@ Current remediation:
   and reusable-chunk policy in one versioned artifact with a stable parameter
   digest. `compiler_parameter_checks` ties that artifact back to the schedule,
   logical-resource ledger, and reusable-chunk lowering.
+- The prepared ZKP input now carries a committed `compiler_parameters_document`
+  plus `compiler_parameters_sha256`; the SP1 guest validates that document's
+  semantic digest, schema, internal checks, and stable parameter digest before
+  accepting the attestation.
 
 Remaining boundary:
 
-- Not every downstream artifact carries the parameter digest yet. The digest is
-  checked centrally and should be propagated into every release-critical
-  artifact before final publication.
+- The parameter document is now bound into the proof input and public headline
+  metadata, but not every older supporting artifact carries the digest inline.
+  Continue propagating it into non-headline support artifacts as they are
+  touched.
 
 ### Register list in the proof compiler
 

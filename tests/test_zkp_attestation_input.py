@@ -68,6 +68,7 @@ def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None
     family = payload['family_summary']
     leaf_document = payload['leaf_document']
     resource_document = payload['resource_certificate_document']
+    compiler_parameters_document = payload['compiler_parameters_document']
     liveness = resource_document['payload']['executable_liveness']
     primitive_contract = resource_document['payload']['chunked_multiplier_primitive_contract']
     qroam_primitive = resource_document['payload']['qroam_primitive_certificate']
@@ -86,6 +87,10 @@ def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None
     assert family['lookup_workspace_qubits'] == qubit_derivation['lookup_workspace_qubits']
     assert leaf_document['document_type'] == 'reusable_chunk_tail_leaf'
     assert resource_document['document_type'] == 'reusable_chunk_lowering'
+    assert compiler_parameters_document['document_type'] == 'compiler_parameters'
+    assert payload['compiler_parameters_sha256'] == compiler_parameters_document['sha256']
+    assert compiler_parameters_document['payload']['pass'] is True
+    assert compiler_parameters_document['payload']['parameter_digest_sha256']
     assert resource_document['payload']['status'] == 'proven_public_headline'
     assert payload['prepared_leaf']['instructions'][-1]['kind'] == 'complete_a0_reusable_chunk_tail'
     assert payload['prepared_leaf']['instructions'][-1]['chunk_bits'] == stream_plan['chunk_bits']
