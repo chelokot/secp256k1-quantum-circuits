@@ -80,6 +80,10 @@ def test_public_engine_manifest_reconstructs_checked_artifact() -> None:
     assert expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['flat_operation_count'] > expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['run_length_row_count']
     assert expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['flat_segment_count'] > 1
     assert len(expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['flat_segment_merkle_root_sha256']) == 64
+    flat_probe = expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['flat_execution_probe']
+    assert flat_probe['probe_count'] >= 15
+    assert len(flat_probe['probe_stream_sha256']) == 64
+    assert all(flat_probe['checks'].values())
 
 
 def test_public_engine_manifest_rejects_engine_total_drift() -> None:
@@ -128,6 +132,14 @@ def test_public_engine_manifest_rejects_phase_shell_drift() -> None:
 def test_public_engine_manifest_rejects_public_candidate_materialized_drift() -> None:
     public_candidate_materialized = _load('public_candidate_materialized_circuit_manifest.json')
     public_candidate_materialized['public_totals']['non_clifford'] -= 1
+    observed = _build_manifest(public_candidate_materialized=public_candidate_materialized)
+    assert observed['checks']['public_candidate_materialized_stream_binds_engine_totals'] is False
+    assert observed['pass'] is False
+
+
+def test_public_engine_manifest_rejects_flat_execution_probe_drift() -> None:
+    public_candidate_materialized = _load('public_candidate_materialized_circuit_manifest.json')
+    public_candidate_materialized['flat_execution_probe']['checks']['probe_operand_indices_within_domains'] = False
     observed = _build_manifest(public_candidate_materialized=public_candidate_materialized)
     assert observed['checks']['public_candidate_materialized_stream_binds_engine_totals'] is False
     assert observed['pass'] is False

@@ -23,6 +23,19 @@ STREAM_COLUMNS = ['stream_index', 'family', 'scope', 'invocation', 'source', 'ga
 DEFAULT_SEGMENT_SIZE = 1_000_000
 MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA = 'compiler-project-materialized-circuit-manifest-v1'
 PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA = 'compiler-project-public-candidate-materialized-circuit-manifest-v1'
+PUBLIC_CANDIDATE_FLAT_NETLIST_COLUMNS = [
+    'operation_index',
+    'run_length_row_index',
+    'row_instance_ordinal',
+    'scope',
+    'source',
+    'gate',
+    'operand_wires',
+    'liveness_interval_id',
+    'total_live_qubits',
+    'primitive_operand_contract_sha256',
+    'liveness_binding_sha256',
+]
 PUBLIC_CANDIDATE_STREAM_COLUMNS = [
     'row_index',
     'scope',
@@ -45,6 +58,7 @@ PUBLIC_CANDIDATE_LIVENESS_COLUMNS = [
     'owner_capacity_pass',
 ]
 PUBLIC_CANDIDATE_FLAT_SEGMENT_SIZE = 1_000_000
+PUBLIC_CANDIDATE_FLAT_PROBE_WIDTH = 4
 
 
 def _empty_gate_totals() -> Dict[str, int]:
@@ -254,6 +268,364 @@ def _flat_netlist_commitment(
         'gate_totals': flat_gate_totals,
         'non_clifford_count': flat_non_clifford,
         'segments': segments,
+    }
+
+
+def _wire_from_domain(domain: Mapping[str, Any], operand_index: int, row_instance_ordinal: int) -> Dict[str, Any]:
+    template = str(domain['wire_template'])
+    wire_id = template.format(
+        operand_index=int(operand_index),
+        left_bit=int(operand_index),
+        right_bit=int(operand_index),
+        row_instance_ordinal=int(row_instance_ordinal),
+    )
+    return {
+        'domain_id': str(domain['domain_id']),
+        'owner_id': str(domain['owner_id']),
+        'role': str(domain['role']),
+        'operand_index': int(operand_index),
+        'wire_id': wire_id,
+    }
+
+
+def _operation_domain_wires(row: Mapping[str, Any], row_instance_ordinal: int) -> List[Dict[str, Any]]:
+    domains = row['primitive_operand_contract']['operand_domains']
+    wires: List[Dict[str, Any]] = []
+    for domain in domains:
+        domain_min = int(domain['operand_index_min'])
+        domain_max = int(domain['operand_index_max_exclusive'])
+        domain_width = domain_max - domain_min
+        rule = str(domain.get('row_instance_to_operand_index', 'operand_index = row_instance_ordinal % operand_domain_width'))
+        if domain_width <= 0:
+            operand_index = domain_min
+        elif 'left_bit = row_instance_ordinal // operand_slots_required' in rule:
+            operand_index = domain_min + (int(row_instance_ordinal) // domain_width)
+        elif 'right_bit = row_instance_ordinal % operand_slots_required' in rule:
+            operand_index = domain_min + (int(row_instance_ordinal) % domain_width)
+        else:
+            operand_index = domain_min + (int(row_instance_ordinal) % domain_width)
+        wires.append(_wire_from_domain(domain, operand_index, int(row_instance_ordinal)))
+    return wires
+
+
+def iter_public_candidate_flat_netlist(
+    operation_rows: List[Mapping[str, Any]],
+    liveness_rows: List[Mapping[str, Any]],
+    *,
+    start: int = 0,
+    stop: Optional[int] = None,
+) -> Iterator[Dict[str, Any]]:
+    if start < 0:
+        raise ValueError('start must be non-negative')
+    row_by_index = {int(row['row_index']): row for row in liveness_rows}
+    operation_index = 0
+    for row in operation_rows:
+        row_total = int(row['total_count'])
+        row_start = operation_index
+        row_end = row_start + row_total
+        requested_stop = row_end if stop is None else min(int(stop), row_end)
+        if requested_stop > start and row_total > 0:
+            local_start = max(int(start), row_start) - row_start
+            local_stop = requested_stop - row_start
+            liveness = row_by_index[int(row['row_index'])]
+            for row_instance_ordinal in range(local_start, local_stop):
+                yield {
+                    'operation_index': row_start + row_instance_ordinal,
+                    'run_length_row_index': int(row['row_index']),
+                    'row_instance_ordinal': row_instance_ordinal,
+                    'scope': str(row['scope']),
+                    'source': str(row['source']),
+                    'gate': str(row['gate']),
+                    'operand_wires': _operation_domain_wires(row, row_instance_ordinal),
+                    'liveness': {
+                        'interval_id': str(liveness['interval_id']),
+                        'live_wire_ids': list(liveness['live_wire_ids']),
+                        'derived_owner_live_qubits': dict(liveness['derived_owner_live_qubits']),
+                        'total_live_qubits': int(liveness['total_live_qubits']),
+                    },
+                    'primitive_operand_contract_sha256': str(row['primitive_operand_contract_sha256']),
+                    'liveness_binding_sha256': _sha256_payload(liveness),
+                }
+        operation_index = row_end
+        if stop is not None and operation_index >= int(stop):
+            break
+
+
+def _encoded_public_candidate_flat_operation(row: Mapping[str, Any]) -> str:
+    encoded = [
+        int(row['operation_index']),
+        int(row['run_length_row_index']),
+        int(row['row_instance_ordinal']),
+        str(row['scope']),
+        str(row['source']),
+        str(row['gate']),
+        _canonical_json(row['operand_wires']),
+        str(row['liveness']['interval_id']),
+        int(row['liveness']['total_live_qubits']),
+        str(row['primitive_operand_contract_sha256']),
+        str(row['liveness_binding_sha256']),
+    ]
+    return '\t'.join(str(value) for value in encoded) + '\n'
+
+
+def write_public_candidate_flat_netlist(
+    manifest: Mapping[str, Any],
+    output_path: Path,
+    *,
+    gzip_output: bool = True,
+    start: int = 0,
+    stop: Optional[int] = None,
+) -> Dict[str, Any]:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    opener = gzip.open if gzip_output else open
+    row_count = 0
+    stream_hash = hashlib.sha256()
+    header = '\t'.join(PUBLIC_CANDIDATE_FLAT_NETLIST_COLUMNS) + '\n'
+    stream_hash.update(header.encode('ascii'))
+    with opener(output_path, 'wt', encoding='utf-8') as handle:
+        handle.write(header)
+        for row in iter_public_candidate_flat_netlist(
+            list(manifest['run_length_rows']),
+            list(manifest['materialized_liveness']['rows']),
+            start=start,
+            stop=stop,
+        ):
+            encoded_row = _encoded_public_candidate_flat_operation(row)
+            handle.write(encoded_row)
+            stream_hash.update(encoded_row.encode('utf-8'))
+            row_count += 1
+    return {
+        'schema': 'compiler-project-public-candidate-flat-netlist-export-v1',
+        'source_manifest_schema': manifest['schema'],
+        'source_manifest_sha256': _sha256_payload(manifest),
+        'columns': PUBLIC_CANDIDATE_FLAT_NETLIST_COLUMNS,
+        'path': str(output_path),
+        'gzip': bool(gzip_output),
+        'start': int(start),
+        'stop': None if stop is None else int(stop),
+        'row_count': row_count,
+        'sha256': stream_hash.hexdigest(),
+    }
+
+
+def _segment_contribution_for_operation(flat_netlist: Mapping[str, Any], operation_index: int) -> Mapping[str, Any]:
+    for segment in flat_netlist['segments']:
+        if int(segment['operation_start']) <= int(operation_index) < int(segment['operation_end_exclusive']):
+            for contribution in segment['contributions']:
+                if int(contribution['operation_start']) <= int(operation_index) < int(contribution['operation_end_exclusive']):
+                    return contribution
+    raise KeyError(f'operation index is not covered by flat netlist segments: {operation_index}')
+
+
+def _probe_ordinals(total_count: int) -> List[int]:
+    if total_count <= 0:
+        return []
+    return sorted({0, int(total_count) // 2, int(total_count) - 1})
+
+
+def _probe_rows(rows: List[Mapping[str, Any]]) -> List[Mapping[str, Any]]:
+    selected: List[Mapping[str, Any]] = []
+
+    def add(row: Mapping[str, Any]) -> None:
+        if int(row['row_index']) not in {int(existing['row_index']) for existing in selected}:
+            selected.append(row)
+
+    for scope in ('direct_seed_base', 'lookup_leaf_base', 'arithmetic_leaf_block', 'qroam_chunk_stream', 'phase_shell'):
+        add(next(row for row in rows if row['scope'] == scope))
+    two_domain_arithmetic = next(
+        (
+            row
+            for row in rows
+            if row['scope'] == 'arithmetic_leaf_block'
+            and len(row['primitive_operand_contract']['operand_domains']) == 2
+        ),
+        None,
+    )
+    if two_domain_arithmetic is not None:
+        add(two_domain_arithmetic)
+    return selected
+
+
+def _row_operation_starts(rows: List[Mapping[str, Any]]) -> Dict[int, int]:
+    starts: Dict[int, int] = {}
+    cursor = 0
+    for row in rows:
+        starts[int(row['row_index'])] = cursor
+        cursor += int(row['total_count'])
+    return starts
+
+
+def _reduced_arithmetic_probe(row: Mapping[str, Any], probe_width: int) -> Dict[str, Any]:
+    domains = row['primitive_operand_contract']['operand_domains']
+    if row['scope'] != 'arithmetic_leaf_block' or len(domains) != 2:
+        return {
+            'applies': False,
+            'pass': True,
+        }
+    width = min(
+        int(probe_width),
+        int(domains[0]['operand_index_max_exclusive']) - int(domains[0]['operand_index_min']),
+        int(domains[1]['operand_index_max_exclusive']) - int(domains[1]['operand_index_min']),
+    )
+    full_right_width = int(domains[1]['operand_index_max_exclusive']) - int(domains[1]['operand_index_min'])
+    ordinals = [
+        left * full_right_width + right
+        for left in range(width)
+        for right in range(width)
+    ]
+    observed_pairs = [
+        tuple(wire['operand_index'] for wire in _operation_domain_wires(row, ordinal))
+        for ordinal in ordinals
+    ]
+    expected_pairs = [
+        (left, right)
+        for left in range(width)
+        for right in range(width)
+    ]
+    return {
+        'applies': True,
+        'probe_width': width,
+        'observed_pairs': observed_pairs,
+        'expected_pairs': expected_pairs,
+        'pass': observed_pairs == expected_pairs,
+    }
+
+
+def _flat_execution_probe(
+    *,
+    rows: List[Mapping[str, Any]],
+    liveness_rows: List[Mapping[str, Any]],
+    flat_netlist: Mapping[str, Any],
+    owner_capacity_by_id: Mapping[str, int],
+) -> Dict[str, Any]:
+    row_starts = _row_operation_starts(rows)
+    liveness_by_row = {int(row['row_index']): row for row in liveness_rows}
+    probes: List[Dict[str, Any]] = []
+    reduced_checks = []
+    for row in _probe_rows(rows):
+        reduced_checks.append(_reduced_arithmetic_probe(row, PUBLIC_CANDIDATE_FLAT_PROBE_WIDTH))
+        for row_instance_ordinal in _probe_ordinals(int(row['total_count'])):
+            operation_index = row_starts[int(row['row_index'])] + row_instance_ordinal
+            operation = next(iter_public_candidate_flat_netlist(
+                rows,
+                liveness_rows,
+                start=operation_index,
+                stop=operation_index + 1,
+            ))
+            contribution = _segment_contribution_for_operation(flat_netlist, operation_index)
+            operand_wires = operation['operand_wires']
+            derived_owner_live_qubits = operation['liveness']['derived_owner_live_qubits']
+            probes.append({
+                'operation_index': operation_index,
+                'run_length_row_index': int(row['row_index']),
+                'row_instance_ordinal': row_instance_ordinal,
+                'scope': operation['scope'],
+                'gate': operation['gate'],
+                'operand_wires': operand_wires,
+                'segment_contribution': {
+                    'operation_start': int(contribution['operation_start']),
+                    'operation_end_exclusive': int(contribution['operation_end_exclusive']),
+                    'primitive_operand_contract_sha256': str(contribution['primitive_operand_contract_sha256']),
+                    'liveness_binding_sha256': str(contribution['liveness_binding_sha256']),
+                },
+                'checks': {
+                    'operation_matches_requested_index': int(operation['operation_index']) == operation_index,
+                    'segment_contribution_covers_operation': (
+                        int(contribution['run_length_row_index']) == int(row['row_index'])
+                        and int(contribution['row_instance_start']) <= row_instance_ordinal < int(contribution['row_instance_end_exclusive'])
+                    ),
+                    'segment_binds_operand_contract': str(contribution['primitive_operand_contract_sha256']) == str(row['primitive_operand_contract_sha256']),
+                    'segment_binds_liveness': str(contribution['liveness_binding_sha256']) == _sha256_payload(liveness_by_row[int(row['row_index'])]),
+                    'operand_indices_within_domains': all(
+                        int(domain['operand_index_min']) <= int(wire['operand_index']) < int(domain['operand_index_max_exclusive'])
+                        for domain, wire in zip(row['primitive_operand_contract']['operand_domains'], operand_wires)
+                    ),
+                    'operand_owners_are_live': all(
+                        str(wire['owner_id']) in derived_owner_live_qubits
+                        for wire in operand_wires
+                    ),
+                    'live_owner_capacity_covers_operands': all(
+                        str(wire['owner_id']) in derived_owner_live_qubits
+                        and str(wire['owner_id']) in owner_capacity_by_id
+                        and int(derived_owner_live_qubits[str(wire['owner_id'])]) <= int(owner_capacity_by_id[str(wire['owner_id'])])
+                        for wire in operand_wires
+                    ),
+                },
+            })
+    probe_digest = hashlib.sha256()
+    for probe in probes:
+        probe_digest.update((_canonical_json({
+            'operation_index': probe['operation_index'],
+            'run_length_row_index': probe['run_length_row_index'],
+            'row_instance_ordinal': probe['row_instance_ordinal'],
+            'scope': probe['scope'],
+            'gate': probe['gate'],
+            'operand_wires': probe['operand_wires'],
+            'checks': probe['checks'],
+        }) + '\n').encode('ascii'))
+    qroam_domain_capacity_checks = []
+    arithmetic_domain_capacity_checks = []
+    for row in rows:
+        domains = row['primitive_operand_contract']['operand_domains']
+        if row['scope'] == 'qroam_chunk_stream':
+            target_domain = next(domain for domain in domains if domain['role'] == 'qroam_target_or_unary_step')
+            qroam_domain_capacity_checks.append({
+                'row_index': int(row['row_index']),
+                'total_count': int(row['total_count']),
+                'target_domain_width': int(target_domain['operand_index_max_exclusive']) - int(target_domain['operand_index_min']),
+                'pass': int(row['total_count']) == int(target_domain['operand_index_max_exclusive']) - int(target_domain['operand_index_min']),
+            })
+        if row['scope'] == 'arithmetic_leaf_block' and len(domains) == 2:
+            domain_product = 1
+            for domain in domains:
+                domain_product *= int(domain['operand_index_max_exclusive']) - int(domain['operand_index_min'])
+            arithmetic_domain_capacity_checks.append({
+                'row_index': int(row['row_index']),
+                'total_count': int(row['total_count']),
+                'domain_product': domain_product,
+                'repeat_count': int(row['total_count']) // domain_product if domain_product else 0,
+                'pass': domain_product > 0 and int(row['total_count']) % domain_product == 0,
+            })
+    return {
+        'schema': 'compiler-project-flat-netlist-execution-probe-v1',
+        'source_flat_netlist_schema': flat_netlist['schema'],
+        'probe_width': PUBLIC_CANDIDATE_FLAT_PROBE_WIDTH,
+        'probe_count': len(probes),
+        'probe_stream_sha256': probe_digest.hexdigest(),
+        'probes': probes,
+        'reduced_arithmetic_probes': reduced_checks,
+        'qroam_domain_capacity_checks': qroam_domain_capacity_checks,
+        'arithmetic_domain_capacity_checks': arithmetic_domain_capacity_checks,
+        'checks': {
+            'probe_operations_bind_segment_contributions': all(
+                probe['checks']['operation_matches_requested_index']
+                and probe['checks']['segment_contribution_covers_operation']
+                and probe['checks']['segment_binds_operand_contract']
+                and probe['checks']['segment_binds_liveness']
+                for probe in probes
+            ),
+            'probe_operand_indices_within_domains': all(
+                probe['checks']['operand_indices_within_domains']
+                for probe in probes
+            ),
+            'probe_operand_owners_are_live_and_within_capacity': all(
+                probe['checks']['operand_owners_are_live']
+                and probe['checks']['live_owner_capacity_covers_operands']
+                for probe in probes
+            ),
+            'reduced_schoolbook_operand_grid_executes_cartesian_prefix': all(
+                check['pass'] is True
+                for check in reduced_checks
+            ),
+            'qroam_target_domain_width_matches_each_stream_segment': all(
+                check['pass'] is True
+                for check in qroam_domain_capacity_checks
+            ),
+            'arithmetic_two_operand_domain_product_matches_row_total': all(
+                check['pass'] is True
+                for check in arithmetic_domain_capacity_checks
+            ),
+        },
     }
 
 
@@ -989,6 +1361,12 @@ def build_public_candidate_materialized_circuit_manifest(
         for row in reusable_chunk_lowering['owner_capacity']['rows']
     }
     wire_catalog = reusable_chunk_lowering['executable_liveness']['wire_catalog']
+    flat_execution_probe = _flat_execution_probe(
+        rows=rows,
+        liveness_rows=liveness_rows,
+        flat_netlist=flat_netlist,
+        owner_capacity_by_id=owner_capacity_by_id,
+    )
     checks = {
         'selected_family_matches_public_input': selected_family_name == zkp_attestation_input['selected_family_name'],
         'source_engines_pass': (
@@ -1073,6 +1451,12 @@ def build_public_candidate_materialized_circuit_manifest(
             for segment in flat_netlist['segments']
             for contribution in segment['contributions']
         ),
+        'flat_execution_probe_operations_bind_segment_contributions': flat_execution_probe['checks']['probe_operations_bind_segment_contributions'] is True,
+        'flat_execution_probe_operand_indices_within_domains': flat_execution_probe['checks']['probe_operand_indices_within_domains'] is True,
+        'flat_execution_probe_operand_owners_are_live_and_within_capacity': flat_execution_probe['checks']['probe_operand_owners_are_live_and_within_capacity'] is True,
+        'flat_execution_probe_reduced_schoolbook_grid_executes': flat_execution_probe['checks']['reduced_schoolbook_operand_grid_executes_cartesian_prefix'] is True,
+        'flat_execution_probe_qroam_target_width_matches_segments': flat_execution_probe['checks']['qroam_target_domain_width_matches_each_stream_segment'] is True,
+        'flat_execution_probe_arithmetic_two_operand_domains_match_rows': flat_execution_probe['checks']['arithmetic_two_operand_domain_product_matches_row_total'] is True,
         'qroam_liveness_bindings_use_matching_chunk_target': all(
             f"qroam_chunk_target__{row['table']}__chunk_{row['chunk_index']}" in liveness_rows[int(row['row_index'])]['live_wire_ids']
             for row in qroam_rows
@@ -1136,6 +1520,7 @@ def build_public_candidate_materialized_circuit_manifest(
             'preview_tail': liveness_rows[-8:],
         },
         'flat_netlist': flat_netlist,
+        'flat_execution_probe': flat_execution_probe,
         'qroam_expansion': {
             'stream_instances': qroam_stream_term_instances,
             'segments_per_stream': qroam_segment_count,
@@ -1175,6 +1560,7 @@ def build_public_candidate_materialized_circuit_manifest(
         'pass': all(checks.values()),
         'boundary': [
             'This artifact defines the canonical flat operation-index netlist for the current public candidate with run-length contributions, liveness, and owner bindings.',
+            'The flat_execution_probe section is generated by executing representative operation indices through the same expandable flat-netlist API used for the full stream.',
             'It is intentionally stored as an expandable segmented commitment rather than a checked-in multi-gigabyte TSV with one physical line per primitive instruction.',
         ],
     }
@@ -1208,7 +1594,9 @@ __all__ = [
     'available_family_names',
     'build_materialized_family_manifest',
     'build_public_candidate_materialized_circuit_manifest',
+    'iter_public_candidate_flat_netlist',
     'iter_family_operation_stream',
     'resolve_selected_family_names',
+    'write_public_candidate_flat_netlist',
     'write_materialized_family_circuit',
 ]

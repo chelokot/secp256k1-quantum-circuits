@@ -273,6 +273,7 @@ def build_public_engine_manifest(
             and int(public_candidate_materialized_circuit_manifest['materialized_liveness']['peak_live_qubits']) == public_totals['logical_qubits']
             and int(public_candidate_materialized_circuit_manifest['flat_netlist']['non_clifford_count']) == public_totals['non_clifford']
             and public_candidate_materialized_circuit_manifest['flat_netlist']['gate_totals']['ccx'] == public_totals['non_clifford']
+            and all(bool(value) for value in public_candidate_materialized_circuit_manifest['flat_execution_probe']['checks'].values())
         ),
     }
     return {
@@ -371,6 +372,15 @@ def build_public_engine_manifest(
                 'flat_operation_count': int(public_candidate_materialized_circuit_manifest['flat_netlist']['operation_count']),
                 'flat_segment_count': int(public_candidate_materialized_circuit_manifest['flat_netlist']['segment_count']),
                 'flat_segment_merkle_root_sha256': public_candidate_materialized_circuit_manifest['flat_netlist']['segment_merkle_root_sha256'],
+                'flat_execution_probe': {
+                    'schema': public_candidate_materialized_circuit_manifest['flat_execution_probe']['schema'],
+                    'probe_count': int(public_candidate_materialized_circuit_manifest['flat_execution_probe']['probe_count']),
+                    'probe_stream_sha256': public_candidate_materialized_circuit_manifest['flat_execution_probe']['probe_stream_sha256'],
+                    'checks': {
+                        key: bool(value)
+                        for key, value in sorted(public_candidate_materialized_circuit_manifest['flat_execution_probe']['checks'].items())
+                    },
+                },
                 'non_clifford': int(public_candidate_materialized_circuit_manifest['public_totals']['non_clifford']),
                 'peak_live_qubits': int(public_candidate_materialized_circuit_manifest['materialized_liveness']['peak_live_qubits']),
             },

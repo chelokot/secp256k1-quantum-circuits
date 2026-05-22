@@ -4,6 +4,7 @@ import itertools
 import json
 import subprocess
 import sys
+import gzip
 from pathlib import Path
 
 from support import ensure_compiler_project_build_summary
@@ -14,7 +15,7 @@ COMPILER_SRC = REPO_ROOT / 'compiler_verification_project' / 'src'
 if str(COMPILER_SRC) not in sys.path:
     sys.path.insert(0, str(COMPILER_SRC))
 
-from materialized_circuit import MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, build_public_candidate_materialized_circuit_manifest, iter_family_operation_stream, resolve_selected_family_names  # noqa: E402
+from materialized_circuit import MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, build_public_candidate_materialized_circuit_manifest, iter_family_operation_stream, iter_public_candidate_flat_netlist, resolve_selected_family_names  # noqa: E402
 
 
 def _frontier() -> dict:
@@ -109,6 +110,12 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert manifest['checks']['primitive_operand_contracts_cover_all_run_length_rows'] is True
     assert manifest['checks']['primitive_operand_contract_owners_are_known_and_live'] is True
     assert manifest['checks']['flat_netlist_binds_operand_contract_hashes'] is True
+    assert manifest['checks']['flat_execution_probe_operations_bind_segment_contributions'] is True
+    assert manifest['checks']['flat_execution_probe_operand_indices_within_domains'] is True
+    assert manifest['checks']['flat_execution_probe_operand_owners_are_live_and_within_capacity'] is True
+    assert manifest['checks']['flat_execution_probe_reduced_schoolbook_grid_executes'] is True
+    assert manifest['checks']['flat_execution_probe_qroam_target_width_matches_segments'] is True
+    assert manifest['checks']['flat_execution_probe_arithmetic_two_operand_domains_match_rows'] is True
     assert manifest['checks']['direct_seed_liveness_excludes_qroam_target_and_chunk'] is True
     assert manifest['checks']['lookup_leaf_liveness_excludes_qroam_target_and_chunk'] is True
     assert manifest['checks']['generated_base_rows_match_public_non_qroam_derivation'] is True
@@ -125,6 +132,56 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     first_qroam_row = next(row for row in manifest['run_length_rows'] if row['scope'] == 'qroam_chunk_stream')
     assert first_qroam_row['primitive_operand_contract']['owner_ids'] == ['arithmetic_slot_register_file', 'lookup_workspace']
     assert manifest['flat_netlist']['segments'][0]['contributions'][0]['primitive_operand_contract_sha256']
+    probe = manifest['flat_execution_probe']
+    assert probe['schema'] == 'compiler-project-flat-netlist-execution-probe-v1'
+    assert probe['probe_count'] >= 15
+    assert all(probe['checks'].values())
+    assert any(row['applies'] is True and row['pass'] is True for row in probe['reduced_arithmetic_probes'])
+
+
+def test_public_candidate_flat_netlist_iterator_emits_concrete_operand_wires() -> None:
+    manifest = _artifact('public_candidate_materialized_circuit_manifest.json')
+    arithmetic_row = next(
+        row
+        for row in manifest['run_length_rows']
+        if row['scope'] == 'arithmetic_leaf_block'
+        and len(row['primitive_operand_contract']['operand_domains']) == 2
+    )
+    start = sum(int(row['total_count']) for row in manifest['run_length_rows'][:int(arithmetic_row['row_index'])])
+    operations = list(iter_public_candidate_flat_netlist(
+        manifest['run_length_rows'],
+        manifest['materialized_liveness']['rows'],
+        start=start,
+        stop=start + 6,
+    ))
+    assert [operation['operation_index'] for operation in operations] == list(range(start, start + 6))
+    assert [tuple(wire['operand_index'] for wire in operation['operand_wires']) for operation in operations] == [
+        (0, 0),
+        (0, 1),
+        (0, 2),
+        (0, 3),
+        (0, 4),
+        (0, 5),
+    ]
+    assert all(operation['primitive_operand_contract_sha256'] == arithmetic_row['primitive_operand_contract_sha256'] for operation in operations)
+    assert all(operation['liveness']['total_live_qubits'] == manifest['public_totals']['logical_qubits'] for operation in operations)
+
+
+def test_public_candidate_materialized_manifest_rejects_qroam_domain_width_drift() -> None:
+    qroam = _artifact('qroam_primitive_certificate.json')
+    qroam['operation_stream']['segments'][0]['end_address_exclusive'] -= 1
+    candidate_input = _candidate_input()
+    observed = build_public_candidate_materialized_circuit_manifest(
+        reusable_chunk_lowering=_artifact('reusable_chunk_lowering.json'),
+        arithmetic_operation_ir=_artifact('arithmetic_operation_ir.json'),
+        lookup_lowerings=_artifact('lookup_lowerings.json'),
+        qroam_primitive_certificate=qroam,
+        phase_shell_lowerings=_artifact('phase_shell_lowerings.json'),
+        zkp_attestation_input=candidate_input,
+        selected_family_name=candidate_input['selected_family_name'],
+    )
+    assert observed['checks']['flat_execution_probe_qroam_target_width_matches_segments'] is False
+    assert observed['pass'] is False
 
 
 def test_public_candidate_materialized_manifest_rejects_qroam_segment_drift() -> None:
@@ -258,3 +315,34 @@ def test_materialized_circuit_script_lists_available_families() -> None:
         * len(frontier['slot_allocation_families'])
     )
     assert len(payload['available_families']) == expected_family_count
+
+
+def test_materialized_circuit_script_exports_public_candidate_flat_netlist_slice(tmp_path: Path) -> None:
+    output_dir = tmp_path / 'flat-export'
+    output = subprocess.check_output(
+        [
+            sys.executable,
+            'compiler_verification_project/scripts/materialize_exact_circuits.py',
+            '--public-candidate-flat-netlist',
+            '--slice-start',
+            '0',
+            '--slice-count',
+            '5',
+            '--output-dir',
+            str(output_dir),
+        ],
+        cwd=REPO_ROOT,
+        text=True,
+    )
+    payload = json.loads(output)
+    export = payload['public_candidate_flat_netlist']
+    assert export['schema'] == 'compiler-project-public-candidate-flat-netlist-export-v1'
+    assert export['row_count'] == 5
+    exported_path = Path(export['path'])
+    if not exported_path.is_absolute():
+        exported_path = REPO_ROOT / exported_path
+    with gzip.open(exported_path, 'rt', encoding='utf-8') as handle:
+        lines = handle.readlines()
+    assert len(lines) == 6
+    assert lines[0].startswith('operation_index\trun_length_row_index\trow_instance_ordinal')
+    assert lines[1].startswith('0\t0\t0\tdirect_seed_base')

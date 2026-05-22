@@ -135,8 +135,11 @@ operation-index netlist commitment. The current checked flat-index stream covers
 binds the contributing run-length rows, operation-index ranges, liveness rows,
 derived owner-qubit sums, all 186 QROAM streams over the generated QROAMClean
 segment certificate, arithmetic-operation IR rows, lookup-base rows, and the
-selected phase-shell rows. The public engine manifest then binds that flat
-stream, executable instruction rows, wires, schedule events, owner-capacity
+selected phase-shell rows. The same manifest executes representative operation
+indices through the expandable flat-netlist API, checking concrete operand
+wires, segment/liveness bindings, QROAM target-domain widths, and the reduced
+schoolbook Cartesian operand grid. The public engine manifest then binds that
+flat stream, executable instruction rows, wires, schedule events, owner-capacity
 rows, resource terms, semantic-boundary evidence, arithmetic operation IR, the
 generated QROAMClean `K = 1` primitive certificate, and the selected
 semiclassical phase shell into the same public claim layer.
@@ -283,6 +286,7 @@ python compiler_verification_project/scripts/build.py
 python compiler_verification_project/scripts/build.py --target composition-artifacts
 python compiler_verification_project/scripts/build.py --target materialized-circuit-manifest
 python compiler_verification_project/scripts/build.py --target public-engine-manifest
+python compiler_verification_project/scripts/materialize_exact_circuits.py --public-candidate-flat-netlist --slice-start 0 --slice-count 1000
 python compiler_verification_project/scripts/build.py --target proof-environment-contract
 python compiler_verification_project/scripts/build.py --target proof-publication-status
 python compiler_verification_project/scripts/build.py --target resource-zkp-and-public

@@ -148,7 +148,11 @@ commitment for the promoted reusable-chunk candidate. The checked flat-index
 stream covers `39,370,727` primitive operations over `40` deterministic
 segments; `public_engine_manifest.json` binds that segment root alongside the
 instruction, wire, schedule, owner-capacity, resource-term, semantic-boundary,
-arithmetic-IR, QROAM, and phase-shell evidence.
+arithmetic-IR, QROAM, and phase-shell evidence. The materialized manifest also
+executes representative flat operation indices through the same expandable
+netlist API used for full export, checking concrete operand wires, segment and
+liveness bindings, QROAM target-domain widths, and a reduced schoolbook
+Cartesian operand grid.
 
 The checked JSON sidecars remain the audit-friendly source-of-truth inputs for
 that bundle. The candidate directory records core, compressed, and Groth16
