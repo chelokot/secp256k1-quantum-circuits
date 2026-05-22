@@ -90,14 +90,20 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert manifest['public_totals']['logical_qubits'] == reusable['qubit_derivation']['candidate_total_logical_qubits']
     assert manifest['liveness_binding_row_count'] == manifest['run_length_row_count']
     assert manifest['materialized_liveness']['peak_live_qubits'] == reusable['qubit_derivation']['candidate_total_logical_qubits']
-    assert manifest['base_row_count'] == reusable['stream_plan']['leaf_call_count_total'] + 1
+    assert manifest['direct_seed_row_count'] == 2
+    assert manifest['lookup_leaf_base_row_count'] == 2 * reusable['stream_plan']['leaf_call_count_total']
+    assert manifest['arithmetic_leaf_stage_row_count'] > reusable['stream_plan']['leaf_call_count_total']
     assert manifest['qroam_expansion']['stream_instances'] == reusable['stream_plan']['whole_oracle_chunk_streams']
     assert manifest['qroam_expansion']['non_clifford'] == reusable['non_clifford_derivation']['qroam_chunk_non_clifford']
     assert manifest['qroam_segment_row_count'] == manifest['qroam_expansion']['stream_instances'] * manifest['qroam_expansion']['segments_per_stream']
     assert manifest['checks']['qroam_liveness_bindings_use_matching_chunk_target'] is True
     assert manifest['checks']['direct_seed_liveness_excludes_qroam_target_and_chunk'] is True
+    assert manifest['checks']['lookup_leaf_liveness_excludes_qroam_target_and_chunk'] is True
+    assert manifest['checks']['generated_base_rows_match_public_non_qroam_derivation'] is True
+    assert manifest['checks']['arithmetic_rows_exclude_replaced_streamed_qroam_stages'] is True
     assert manifest['checks']['phase_liveness_uses_phase_load_interval_without_lookup_target'] is True
     assert manifest['materialized_liveness']['preview_head'][0]['total_live_qubits'] < manifest['public_totals']['logical_qubits']
+    assert 'arithmetic_leaf_base' not in {row['scope'] for row in manifest['preview_head'] + manifest['preview_tail']}
 
 
 def test_public_candidate_materialized_manifest_rejects_qroam_segment_drift() -> None:
@@ -107,6 +113,7 @@ def test_public_candidate_materialized_manifest_rejects_qroam_segment_drift() ->
     observed = build_public_candidate_materialized_circuit_manifest(
         reusable_chunk_lowering=_artifact('reusable_chunk_lowering.json'),
         arithmetic_operation_ir=_artifact('arithmetic_operation_ir.json'),
+        lookup_lowerings=_artifact('lookup_lowerings.json'),
         qroam_primitive_certificate=qroam,
         phase_shell_lowerings=_artifact('phase_shell_lowerings.json'),
         zkp_attestation_input=candidate_input,
@@ -114,6 +121,46 @@ def test_public_candidate_materialized_manifest_rejects_qroam_segment_drift() ->
     )
     assert observed['checks']['non_clifford_total_matches_public_candidate'] is False
     assert observed['checks']['qroam_rows_sum_to_public_qroam_derivation'] is False
+    assert observed['pass'] is False
+
+
+def test_public_candidate_materialized_manifest_rejects_arithmetic_stage_drift() -> None:
+    arithmetic_operation_ir = _artifact('arithmetic_operation_ir.json')
+    tail = next(row for row in arithmetic_operation_ir['kernels'] if row['opcode'] == 'complete_a0_all_streamed_tail')
+    stage = next(row for row in tail['stages'] if row['category'] != 'streamed_lookup_data_select')
+    stage['primitive_counts_total']['ccx'] += 1
+    candidate_input = _candidate_input()
+    observed = build_public_candidate_materialized_circuit_manifest(
+        reusable_chunk_lowering=_artifact('reusable_chunk_lowering.json'),
+        arithmetic_operation_ir=arithmetic_operation_ir,
+        lookup_lowerings=_artifact('lookup_lowerings.json'),
+        qroam_primitive_certificate=_artifact('qroam_primitive_certificate.json'),
+        phase_shell_lowerings=_artifact('phase_shell_lowerings.json'),
+        zkp_attestation_input=candidate_input,
+        selected_family_name=candidate_input['selected_family_name'],
+    )
+    assert observed['checks']['non_clifford_total_matches_public_candidate'] is False
+    assert observed['checks']['generated_base_rows_match_public_non_qroam_derivation'] is False
+    assert observed['pass'] is False
+
+
+def test_public_candidate_materialized_manifest_rejects_lookup_base_drift() -> None:
+    lookup_lowerings = _artifact('lookup_lowerings.json')
+    family = next(row for row in lookup_lowerings['families'] if row['name'] == 'folded_standard_qroam_streamed_coordinate_v1')
+    family['primitive_counts_total']['ccx'] -= 1
+    candidate_input = _candidate_input()
+    observed = build_public_candidate_materialized_circuit_manifest(
+        reusable_chunk_lowering=_artifact('reusable_chunk_lowering.json'),
+        arithmetic_operation_ir=_artifact('arithmetic_operation_ir.json'),
+        lookup_lowerings=lookup_lowerings,
+        qroam_primitive_certificate=_artifact('qroam_primitive_certificate.json'),
+        phase_shell_lowerings=_artifact('phase_shell_lowerings.json'),
+        zkp_attestation_input=candidate_input,
+        selected_family_name=candidate_input['selected_family_name'],
+    )
+    assert observed['checks']['non_clifford_total_matches_public_candidate'] is False
+    assert observed['checks']['generated_base_rows_match_public_non_qroam_derivation'] is False
+    assert observed['checks']['generated_base_rows_bind_family_snapshot'] is False
     assert observed['pass'] is False
 
 

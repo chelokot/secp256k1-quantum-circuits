@@ -243,6 +243,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
             build_public_candidate_materialized_circuit_manifest(
                 reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
                 arithmetic_operation_ir=load_json(artifact_root / 'arithmetic_operation_ir.json'),
+                lookup_lowerings=load_json(artifact_root / 'lookup_lowerings.json'),
                 qroam_primitive_certificate=load_json(artifact_root / 'qroam_primitive_certificate.json'),
                 phase_shell_lowerings=load_json(artifact_root / 'phase_shell_lowerings.json'),
                 zkp_attestation_input=load_json(artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json'),

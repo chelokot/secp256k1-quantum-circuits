@@ -9,7 +9,8 @@
     "gate",
     "instance_count",
     "total_count",
-    "non_clifford_count"
+    "non_clifford_count",
+    "provenance_sha256"
   ],
   "liveness_binding_encoding": [
     "row_index",
@@ -23,22 +24,26 @@
     "reusable_chunk_lowering_sha256": "9aabe0bab16494379a2b7e7064c57977051e0a52e440e5422af59df63ea5b0b2",
     "counted_resource_ir_sha256": "e814826e787174c05f62f34396fd02b1d77a8728f0c99051f74e1d60294d7188",
     "arithmetic_operation_ir_sha256": "185214c75f615b530dd63c2972c4a76bf2ba3c94624659736c7187a36ee8392e",
+    "lookup_lowerings_sha256": "70e8ff627f0c537f73162c1d3ccf259a94c3dd756568947c7b4f3cf4665a5637",
     "qroam_primitive_certificate_sha256": "9a97e536aa4e15e25873adf187db977910a0ef8fb03914958d409940a54eb125",
     "phase_shell_lowerings_sha256": "4411ea5f699e5950a32783f2232796a63987efb5d939f98ac400f4f02ddd415b",
     "zkp_attestation_input_sha256": "9efa691c75eba975d9ae0034db20c59ced8ce1dcc01f314b486aea9f958abbc1"
   },
-  "operation_stream_sha256": "79ba35018a46288bf3aacbb12c7e4328e1e3c970c43b596e39c01bbb9f5d086b",
-  "liveness_binding_stream_sha256": "f537f991db58742c17d128e11c5c4d19ed4505e485ce72ad309f6e92218df860",
-  "run_length_row_count": 3011,
-  "liveness_binding_row_count": 3011,
-  "base_row_count": 32,
+  "operation_stream_sha256": "772bfdb9ddee01fe5be20594cc7a9551905d51bb3292d12aac7147c8e3f26469",
+  "liveness_binding_stream_sha256": "7e45cbff0cfbbfb44cc3dbc52772587ab3a632bbf0eddf18ec969b99bb833f89",
+  "run_length_row_count": 5461,
+  "liveness_binding_row_count": 5461,
+  "base_row_count": 2482,
+  "direct_seed_row_count": 2,
+  "lookup_leaf_base_row_count": 62,
+  "arithmetic_leaf_stage_row_count": 2418,
   "qroam_segment_row_count": 2976,
   "phase_row_count": 3,
   "gate_totals": {
     "ccx": 36957412,
     "cx": 0,
     "x": 0,
-    "measurement": 512,
+    "measurement": 2412292,
     "hadamard": 512,
     "single_qubit_rotation": 511,
     "controlled_rotation": 0
@@ -86,73 +91,67 @@
       },
       {
         "row_index": 1,
-        "scope": "arithmetic_leaf_base",
-        "interval_id": "pc5_stream_00_lookup_x_chunk_0",
+        "scope": "direct_seed_base",
+        "interval_id": "pc4_lookup_infinity_flag",
         "live_wire_ids": [
           "qx",
           "qy",
           "qz",
-          "qchunk",
           "folded_lookup_control_workspace",
-          "qroam_chunk_target__lookup_x__chunk_0",
           "f_lookup_inf",
           "semiclassical_qft_live_phase_bit"
         ],
         "owner_live_qubits": {
-          "arithmetic_slot_register_file": 1024,
+          "arithmetic_slot_register_file": 768,
           "control_slot_register_file": 1,
-          "lookup_workspace": 173,
+          "lookup_workspace": 18,
           "phase_shell_live_register": 1
         },
-        "total_live_qubits": 1199
+        "total_live_qubits": 788
       },
       {
         "row_index": 2,
-        "scope": "arithmetic_leaf_base",
-        "interval_id": "pc5_stream_00_lookup_x_chunk_0",
+        "scope": "lookup_leaf_base",
+        "interval_id": "pc4_lookup_infinity_flag",
         "live_wire_ids": [
           "qx",
           "qy",
           "qz",
-          "qchunk",
           "folded_lookup_control_workspace",
-          "qroam_chunk_target__lookup_x__chunk_0",
           "f_lookup_inf",
           "semiclassical_qft_live_phase_bit"
         ],
         "owner_live_qubits": {
-          "arithmetic_slot_register_file": 1024,
+          "arithmetic_slot_register_file": 768,
           "control_slot_register_file": 1,
-          "lookup_workspace": 173,
+          "lookup_workspace": 18,
           "phase_shell_live_register": 1
         },
-        "total_live_qubits": 1199
+        "total_live_qubits": 788
       },
       {
         "row_index": 3,
-        "scope": "arithmetic_leaf_base",
-        "interval_id": "pc5_stream_00_lookup_x_chunk_0",
+        "scope": "lookup_leaf_base",
+        "interval_id": "pc4_lookup_infinity_flag",
         "live_wire_ids": [
           "qx",
           "qy",
           "qz",
-          "qchunk",
           "folded_lookup_control_workspace",
-          "qroam_chunk_target__lookup_x__chunk_0",
           "f_lookup_inf",
           "semiclassical_qft_live_phase_bit"
         ],
         "owner_live_qubits": {
-          "arithmetic_slot_register_file": 1024,
+          "arithmetic_slot_register_file": 768,
           "control_slot_register_file": 1,
-          "lookup_workspace": 173,
+          "lookup_workspace": 18,
           "phase_shell_live_register": 1
         },
-        "total_live_qubits": 1199
+        "total_live_qubits": 788
       },
       {
         "row_index": 4,
-        "scope": "arithmetic_leaf_base",
+        "scope": "arithmetic_leaf_stage",
         "interval_id": "pc5_stream_00_lookup_x_chunk_0",
         "live_wire_ids": [
           "qx",
@@ -174,7 +173,7 @@
       },
       {
         "row_index": 5,
-        "scope": "arithmetic_leaf_base",
+        "scope": "arithmetic_leaf_stage",
         "interval_id": "pc5_stream_00_lookup_x_chunk_0",
         "live_wire_ids": [
           "qx",
@@ -196,7 +195,7 @@
       },
       {
         "row_index": 6,
-        "scope": "arithmetic_leaf_base",
+        "scope": "arithmetic_leaf_stage",
         "interval_id": "pc5_stream_00_lookup_x_chunk_0",
         "live_wire_ids": [
           "qx",
@@ -218,7 +217,7 @@
       },
       {
         "row_index": 7,
-        "scope": "arithmetic_leaf_base",
+        "scope": "arithmetic_leaf_stage",
         "interval_id": "pc5_stream_00_lookup_x_chunk_0",
         "live_wire_ids": [
           "qx",
@@ -241,7 +240,7 @@
     ],
     "preview_tail": [
       {
-        "row_index": 3003,
+        "row_index": 5453,
         "scope": "qroam_chunk_stream",
         "interval_id": "pc5_stream_05_lookup_x_plus_y_chunk_1",
         "live_wire_ids": [
@@ -263,7 +262,7 @@
         "total_live_qubits": 1199
       },
       {
-        "row_index": 3004,
+        "row_index": 5454,
         "scope": "qroam_chunk_stream",
         "interval_id": "pc5_stream_05_lookup_x_plus_y_chunk_1",
         "live_wire_ids": [
@@ -285,7 +284,7 @@
         "total_live_qubits": 1199
       },
       {
-        "row_index": 3005,
+        "row_index": 5455,
         "scope": "qroam_chunk_stream",
         "interval_id": "pc5_stream_05_lookup_x_plus_y_chunk_1",
         "live_wire_ids": [
@@ -307,7 +306,7 @@
         "total_live_qubits": 1199
       },
       {
-        "row_index": 3006,
+        "row_index": 5456,
         "scope": "qroam_chunk_stream",
         "interval_id": "pc5_stream_05_lookup_x_plus_y_chunk_1",
         "live_wire_ids": [
@@ -329,7 +328,7 @@
         "total_live_qubits": 1199
       },
       {
-        "row_index": 3007,
+        "row_index": 5457,
         "scope": "qroam_chunk_stream",
         "interval_id": "pc5_stream_05_lookup_x_plus_y_chunk_1",
         "live_wire_ids": [
@@ -351,7 +350,7 @@
         "total_live_qubits": 1199
       },
       {
-        "row_index": 3008,
+        "row_index": 5458,
         "scope": "phase_shell",
         "interval_id": "pc0_2_load_carried_inputs",
         "live_wire_ids": [
@@ -367,7 +366,7 @@
         "total_live_qubits": 769
       },
       {
-        "row_index": 3009,
+        "row_index": 5459,
         "scope": "phase_shell",
         "interval_id": "pc0_2_load_carried_inputs",
         "live_wire_ids": [
@@ -383,7 +382,7 @@
         "total_live_qubits": 769
       },
       {
-        "row_index": 3010,
+        "row_index": 5460,
         "scope": "phase_shell",
         "interval_id": "pc0_2_load_carried_inputs",
         "live_wire_ids": [
@@ -417,98 +416,130 @@
     "schema": "compiler-project-arithmetic-operation-ir-v1",
     "operation_stream_sha256": "2b27b16d06561f6d6835fbb0dfcd02d6b0f1a3b54b9b888220af1d53561d76c6",
     "non_clifford_total": 1126332,
-    "note": "Arithmetic primitive rows are still represented by the public non-QROAM base run until the full reusable-tail macro is flattened."
+    "selected_kernel": "complete_a0_all_streamed_tail",
+    "selected_kernel_stage_digest_sha256": "cf8315d24ba29b996c07d044a94bf53770f612cfbc3aa990c902cb97a02288d6",
+    "generated_non_qroam_non_clifford_per_leaf": 798652,
+    "replaced_streamed_qroam_non_clifford_per_leaf": 327680,
+    "expanded_stage_rows": 2418
+  },
+  "lookup_base_evidence": {
+    "name": "folded_standard_qroam_streamed_coordinate_v1",
+    "primitive_counts_total": {
+      "ccx": 297,
+      "cx": 0,
+      "measurement": 42,
+      "x": 0
+    },
+    "direct_seed_non_clifford": 297,
+    "per_leaf_base_non_clifford": 297,
+    "expanded_leaf_rows": 62
   },
   "preview_head": [
     {
       "row_index": 0,
       "scope": "direct_seed_base",
-      "source": "zkp_family_document.direct_seed_non_clifford",
+      "source": "lookup_lowerings:folded_standard_qroam_streamed_coordinate_v1:direct_seed",
       "gate": "ccx",
       "instance_count": 297,
       "total_count": 297,
-      "non_clifford_count": 297
+      "non_clifford_count": 297,
+      "provenance_sha256": "a799d85f301647b67c38a8ea295005e83785d79b33febcc9b51e5e0aff24846d"
     },
     {
       "row_index": 1,
-      "scope": "arithmetic_leaf_base",
-      "source": "zkp_family_document.arithmetic_leaf_non_clifford:leaf_call_0",
-      "gate": "ccx",
-      "instance_count": 798949,
-      "total_count": 798949,
-      "non_clifford_count": 798949,
-      "leaf_call_index": 0
+      "scope": "direct_seed_base",
+      "source": "lookup_lowerings:folded_standard_qroam_streamed_coordinate_v1:direct_seed",
+      "gate": "measurement",
+      "instance_count": 42,
+      "total_count": 42,
+      "non_clifford_count": 0,
+      "provenance_sha256": "10e86488442be1499e66cb18dc02326b3d1e05936740e70fbeb05051a4c948a3"
     },
     {
       "row_index": 2,
-      "scope": "arithmetic_leaf_base",
-      "source": "zkp_family_document.arithmetic_leaf_non_clifford:leaf_call_1",
+      "scope": "lookup_leaf_base",
+      "source": "lookup_lowerings:folded_standard_qroam_streamed_coordinate_v1:leaf_call_0",
       "gate": "ccx",
-      "instance_count": 798949,
-      "total_count": 798949,
-      "non_clifford_count": 798949,
-      "leaf_call_index": 1
+      "instance_count": 297,
+      "total_count": 297,
+      "non_clifford_count": 297,
+      "provenance_sha256": "d85efe2b29f4388847bb397756f25dbed6f9bbe3f811864bb5ee1445ae866b09",
+      "leaf_call_index": 0
     },
     {
       "row_index": 3,
-      "scope": "arithmetic_leaf_base",
-      "source": "zkp_family_document.arithmetic_leaf_non_clifford:leaf_call_2",
-      "gate": "ccx",
-      "instance_count": 798949,
-      "total_count": 798949,
-      "non_clifford_count": 798949,
-      "leaf_call_index": 2
+      "scope": "lookup_leaf_base",
+      "source": "lookup_lowerings:folded_standard_qroam_streamed_coordinate_v1:leaf_call_0",
+      "gate": "measurement",
+      "instance_count": 42,
+      "total_count": 42,
+      "non_clifford_count": 0,
+      "provenance_sha256": "0d861852f7ba3c0b74e3b68027a8931bde5d171654b8ead0cfc4ff99ce457391",
+      "leaf_call_index": 0
     },
     {
       "row_index": 4,
-      "scope": "arithmetic_leaf_base",
-      "source": "zkp_family_document.arithmetic_leaf_non_clifford:leaf_call_3",
+      "scope": "arithmetic_leaf_stage",
+      "source": "arithmetic_operation_ir:complete_a0_all_streamed_tail:tail_derive_g:leaf_call_0",
       "gate": "ccx",
-      "instance_count": 798949,
-      "total_count": 798949,
-      "non_clifford_count": 798949,
-      "leaf_call_index": 3
+      "instance_count": 510,
+      "total_count": 510,
+      "non_clifford_count": 510,
+      "provenance_sha256": "7e41f8fd8fe96d1271d82cb1f12ed1be48936a71d987459494fa8133329b36f5",
+      "leaf_call_index": 0,
+      "arithmetic_stage": "tail_derive_g",
+      "arithmetic_category": "tail_combine"
     },
     {
       "row_index": 5,
-      "scope": "arithmetic_leaf_base",
-      "source": "zkp_family_document.arithmetic_leaf_non_clifford:leaf_call_4",
-      "gate": "ccx",
-      "instance_count": 798949,
-      "total_count": 798949,
-      "non_clifford_count": 798949,
-      "leaf_call_index": 4
+      "scope": "arithmetic_leaf_stage",
+      "source": "arithmetic_operation_ir:complete_a0_all_streamed_tail:tail_derive_g:leaf_call_0",
+      "gate": "measurement",
+      "instance_count": 510,
+      "total_count": 510,
+      "non_clifford_count": 0,
+      "provenance_sha256": "a5cdcf39341f5e5a21a2fada963ac0c8f645c75595875dfe99d9fc655490e437",
+      "leaf_call_index": 0,
+      "arithmetic_stage": "tail_derive_g",
+      "arithmetic_category": "tail_combine"
     },
     {
       "row_index": 6,
-      "scope": "arithmetic_leaf_base",
-      "source": "zkp_family_document.arithmetic_leaf_non_clifford:leaf_call_5",
+      "scope": "arithmetic_leaf_stage",
+      "source": "arithmetic_operation_ir:complete_a0_all_streamed_tail:tail_h_partial_products:leaf_call_0",
       "gate": "ccx",
-      "instance_count": 798949,
-      "total_count": 798949,
-      "non_clifford_count": 798949,
-      "leaf_call_index": 5
+      "instance_count": 65536,
+      "total_count": 65536,
+      "non_clifford_count": 65536,
+      "provenance_sha256": "4ef0c100c06f742e2ff99724a3965ea430c551ab12452268e52aedb40aa47275",
+      "leaf_call_index": 0,
+      "arithmetic_stage": "tail_h_partial_products",
+      "arithmetic_category": "schoolbook_grid"
     },
     {
       "row_index": 7,
-      "scope": "arithmetic_leaf_base",
-      "source": "zkp_family_document.arithmetic_leaf_non_clifford:leaf_call_6",
+      "scope": "arithmetic_leaf_stage",
+      "source": "arithmetic_operation_ir:complete_a0_all_streamed_tail:tail_h_controlled_add_path:leaf_call_0",
       "gate": "ccx",
-      "instance_count": 798949,
-      "total_count": 798949,
-      "non_clifford_count": 798949,
-      "leaf_call_index": 6
+      "instance_count": 255,
+      "total_count": 255,
+      "non_clifford_count": 255,
+      "provenance_sha256": "99f25c8b760eef5fea3bee13a57246a962a2a0bb4e82d085460ef1c81b01faf8",
+      "leaf_call_index": 0,
+      "arithmetic_stage": "tail_h_controlled_add_path",
+      "arithmetic_category": "controlled_add"
     }
   ],
   "preview_tail": [
     {
-      "row_index": 3003,
+      "row_index": 5453,
       "scope": "qroam_chunk_stream",
       "source": "qroam_stream__lookup_x_plus_y__chunk_1:30:measured_uncompute:12288-16384",
       "gate": "ccx",
       "instance_count": 4096,
       "total_count": 4096,
       "non_clifford_count": 4096,
+      "provenance_sha256": "834ec01e6225628189bf6a73b2943c6859f497c221cbe5b485d8bfe4cc927b6a",
       "term_id": "qroam_stream__lookup_x_plus_y__chunk_1",
       "term_instance_index": 30,
       "table": "lookup_x_plus_y",
@@ -517,13 +548,14 @@
       "qroam_segment_sha256": "d1d6aafdf22b7743fe5260cfe26828f10358be735b9bd90f785becccb5aed381"
     },
     {
-      "row_index": 3004,
+      "row_index": 5454,
       "scope": "qroam_chunk_stream",
       "source": "qroam_stream__lookup_x_plus_y__chunk_1:30:measured_uncompute:16384-20480",
       "gate": "ccx",
       "instance_count": 4096,
       "total_count": 4096,
       "non_clifford_count": 4096,
+      "provenance_sha256": "e2214e138db0dc8a1af4ac0b2b91051b313a4a8a2deedf27c3e5d413ff894b8f",
       "term_id": "qroam_stream__lookup_x_plus_y__chunk_1",
       "term_instance_index": 30,
       "table": "lookup_x_plus_y",
@@ -532,13 +564,14 @@
       "qroam_segment_sha256": "63ae4140a030cd2ef5cf28622482da0f8906ff9074dfab64a0c0c30b0455420b"
     },
     {
-      "row_index": 3005,
+      "row_index": 5455,
       "scope": "qroam_chunk_stream",
       "source": "qroam_stream__lookup_x_plus_y__chunk_1:30:measured_uncompute:20480-24576",
       "gate": "ccx",
       "instance_count": 4096,
       "total_count": 4096,
       "non_clifford_count": 4096,
+      "provenance_sha256": "88c38fcdcce0990d0fc7a29c0bae5fefc66bbb7177489d993fc3a5d8547c1e7f",
       "term_id": "qroam_stream__lookup_x_plus_y__chunk_1",
       "term_instance_index": 30,
       "table": "lookup_x_plus_y",
@@ -547,13 +580,14 @@
       "qroam_segment_sha256": "6e892de8e10699eb5b98d9802370eadc0e2ad051a4722fb46100fc659568c72b"
     },
     {
-      "row_index": 3006,
+      "row_index": 5456,
       "scope": "qroam_chunk_stream",
       "source": "qroam_stream__lookup_x_plus_y__chunk_1:30:measured_uncompute:24576-28672",
       "gate": "ccx",
       "instance_count": 4096,
       "total_count": 4096,
       "non_clifford_count": 4096,
+      "provenance_sha256": "87253e120fa115671d5f869d08e2bbbbd00dfc2655e68d090244b65ff618c1d1",
       "term_id": "qroam_stream__lookup_x_plus_y__chunk_1",
       "term_instance_index": 30,
       "table": "lookup_x_plus_y",
@@ -562,13 +596,14 @@
       "qroam_segment_sha256": "ef58ff7cdee2902843ea435dd13e768fcc9ce6270d63dae1a10ee80760a9c39e"
     },
     {
-      "row_index": 3007,
+      "row_index": 5457,
       "scope": "qroam_chunk_stream",
       "source": "qroam_stream__lookup_x_plus_y__chunk_1:30:measured_uncompute:28672-32768",
       "gate": "ccx",
       "instance_count": 4096,
       "total_count": 4096,
       "non_clifford_count": 4096,
+      "provenance_sha256": "55d638d072a8492cc72512fc1d7e20b704b3316590fe463025cfff63b3825e48",
       "term_id": "qroam_stream__lookup_x_plus_y__chunk_1",
       "term_instance_index": 30,
       "table": "lookup_x_plus_y",
@@ -577,31 +612,34 @@
       "qroam_segment_sha256": "a5be377d32d8cf09f694e21d435a0ef049c7d87dcba56ba62ea4d50e23da21ba"
     },
     {
-      "row_index": 3008,
+      "row_index": 5458,
       "scope": "phase_shell",
       "source": "semiclassical_qft_v1:adaptive_basis_updates:aggregated_classical_phase_updates",
       "gate": "single_qubit_rotation",
       "instance_count": 511,
       "total_count": 511,
-      "non_clifford_count": 0
+      "non_clifford_count": 0,
+      "provenance_sha256": "a84e6cde24279260999deb1348e9b0eb30777d33880a6225d77c85565fea25f9"
     },
     {
-      "row_index": 3009,
+      "row_index": 5459,
       "scope": "phase_shell",
       "source": "semiclassical_qft_v1:basis_change_and_measurement:terminal_hadamards",
       "gate": "hadamard",
       "instance_count": 512,
       "total_count": 512,
-      "non_clifford_count": 0
+      "non_clifford_count": 0,
+      "provenance_sha256": "d9dce7de205cf41d74be2b484dc5663886a27c05c33a2eb842a051ad6bc5387c"
     },
     {
-      "row_index": 3010,
+      "row_index": 5460,
       "scope": "phase_shell",
       "source": "semiclassical_qft_v1:basis_change_and_measurement:terminal_measurements",
       "gate": "measurement",
       "instance_count": 512,
       "total_count": 512,
-      "non_clifford_count": 0
+      "non_clifford_count": 0,
+      "provenance_sha256": "b7df77cf987412ca2f9eb6b2188532c1b875a5c5e9f3c35160543575854129c4"
     }
   ],
   "checks": {
@@ -611,12 +649,16 @@
     "qroam_rows_expand_every_public_stream_segment": true,
     "qroam_rows_sum_to_public_qroam_derivation": true,
     "base_rows_match_public_non_qroam_derivation": true,
+    "generated_base_rows_match_public_non_qroam_derivation": true,
+    "arithmetic_rows_exclude_replaced_streamed_qroam_stages": true,
+    "generated_base_rows_bind_family_snapshot": true,
     "phase_rows_bind_selected_phase_shell": true,
     "liveness_bindings_cover_all_materialized_rows": true,
     "liveness_bindings_use_known_wires_and_capacity": true,
     "liveness_bindings_reconstruct_public_peak": true,
     "qroam_liveness_bindings_use_matching_chunk_target": true,
     "direct_seed_liveness_excludes_qroam_target_and_chunk": true,
+    "lookup_leaf_liveness_excludes_qroam_target_and_chunk": true,
     "phase_liveness_uses_phase_load_interval_without_lookup_target": true
   },
   "pass": true,

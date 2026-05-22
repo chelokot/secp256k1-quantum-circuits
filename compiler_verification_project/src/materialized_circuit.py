@@ -31,6 +31,7 @@ PUBLIC_CANDIDATE_STREAM_COLUMNS = [
     'instance_count',
     'total_count',
     'non_clifford_count',
+    'provenance_sha256',
 ]
 PUBLIC_CANDIDATE_LIVENESS_COLUMNS = [
     'row_index',
@@ -427,6 +428,13 @@ def _phase_run_length_rows(phase_shell: Mapping[str, Any], row_index: int) -> Li
                     'instance_count': int(count),
                     'total_count': int(count),
                     'non_clifford_count': 0,
+                    'provenance_sha256': _sha256_payload({
+                        'phase_shell': phase_shell['name'],
+                        'stage': stage['name'],
+                        'block': block['name'],
+                        'gate': gate,
+                        'count': int(count),
+                    }),
                 })
     return rows
 
@@ -454,6 +462,11 @@ def _qroam_run_length_rows(
                     'instance_count': int(segment['operation_count']),
                     'total_count': int(segment['operation_count']),
                     'non_clifford_count': int(segment['ccx']),
+                    'provenance_sha256': _sha256_payload({
+                        'term_id': term['term_id'],
+                        'term_instance_index': instance_index,
+                        'segment': segment,
+                    }),
                     'term_id': str(term['term_id']),
                     'term_instance_index': instance_index,
                     'table': str(term['table']),
@@ -464,37 +477,116 @@ def _qroam_run_length_rows(
     return rows
 
 
+def _count_rows_from_primitive_counts(
+    *,
+    row_index: int,
+    scope: str,
+    source: str,
+    primitive_counts: Mapping[str, Any],
+    provenance_payload: Mapping[str, Any],
+    extra: Optional[Mapping[str, Any]] = None,
+) -> List[Dict[str, Any]]:
+    rows: List[Dict[str, Any]] = []
+    for gate, count in sorted(primitive_counts.items()):
+        gate_count = int(count)
+        if gate_count == 0:
+            continue
+        rows.append({
+            'row_index': row_index + len(rows),
+            'scope': scope,
+            'source': source,
+            'gate': str(gate),
+            'instance_count': gate_count,
+            'total_count': gate_count,
+            'non_clifford_count': gate_count if gate == 'ccx' else 0,
+            'provenance_sha256': _sha256_payload({
+                **provenance_payload,
+                'gate': gate,
+                'count': gate_count,
+            }),
+            **dict(extra or {}),
+        })
+    return rows
+
+
+def _selected_lookup_family(lookup_lowerings: Mapping[str, Any], selected_name: str) -> Mapping[str, Any]:
+    return next(row for row in lookup_lowerings['families'] if row['name'] == selected_name)
+
+
+def _selected_arithmetic_kernel(arithmetic_operation_ir: Mapping[str, Any]) -> Mapping[str, Any]:
+    leaf_rows = arithmetic_operation_ir['leaf_arithmetic_summary']['rows']
+    if len(leaf_rows) != 1:
+        raise ValueError('public materialized candidate expects one arithmetic leaf kernel')
+    opcode = str(leaf_rows[0]['opcode'])
+    return next(row for row in arithmetic_operation_ir['kernels'] if row['opcode'] == opcode)
+
+
 def _public_base_run_length_rows(
     *,
     reusable_chunk_lowering: Mapping[str, Any],
+    arithmetic_operation_ir: Mapping[str, Any],
+    lookup_lowerings: Mapping[str, Any],
     zkp_attestation_input: Mapping[str, Any],
 ) -> List[Dict[str, Any]]:
-    family_payload = zkp_attestation_input['family_document']['payload']
-    direct_seed_non_clifford = int(family_payload['direct_seed_non_clifford'])
-    arithmetic_leaf_non_clifford = int(family_payload['arithmetic_leaf_non_clifford'])
+    compiler_parameters = zkp_attestation_input['compiler_parameters_document']['payload']
+    lookup_family = _selected_lookup_family(
+        lookup_lowerings,
+        str(compiler_parameters['lookup_policy']['selected_public_lookup_family']),
+    )
+    arithmetic_kernel = _selected_arithmetic_kernel(arithmetic_operation_ir)
     leaf_call_count = int(reusable_chunk_lowering['stream_plan']['leaf_call_count_total'])
-    rows = [
-        {
-            'row_index': 0,
-            'scope': 'direct_seed_base',
-            'source': 'zkp_family_document.direct_seed_non_clifford',
-            'gate': 'ccx',
-            'instance_count': direct_seed_non_clifford,
-            'total_count': direct_seed_non_clifford,
-            'non_clifford_count': direct_seed_non_clifford,
-        }
-    ]
+    rows: List[Dict[str, Any]] = []
+    rows.extend(_count_rows_from_primitive_counts(
+        row_index=len(rows),
+        scope='direct_seed_base',
+        source=f"lookup_lowerings:{lookup_family['name']}:direct_seed",
+        primitive_counts=lookup_family['primitive_counts_total'],
+        provenance_payload={
+            'lookup_family': lookup_family['name'],
+            'usage': 'direct_seed',
+            'primitive_counts_total': lookup_family['primitive_counts_total'],
+        },
+    ))
     for leaf_call_index in range(leaf_call_count):
-        rows.append({
-            'row_index': len(rows),
-            'scope': 'arithmetic_leaf_base',
-            'source': f"zkp_family_document.arithmetic_leaf_non_clifford:leaf_call_{leaf_call_index}",
-            'gate': 'ccx',
-            'instance_count': arithmetic_leaf_non_clifford,
-            'total_count': arithmetic_leaf_non_clifford,
-            'non_clifford_count': arithmetic_leaf_non_clifford,
-            'leaf_call_index': leaf_call_index,
-        })
+        rows.extend(_count_rows_from_primitive_counts(
+            row_index=len(rows),
+            scope='lookup_leaf_base',
+            source=f"lookup_lowerings:{lookup_family['name']}:leaf_call_{leaf_call_index}",
+            primitive_counts=lookup_family['primitive_counts_total'],
+            provenance_payload={
+                'lookup_family': lookup_family['name'],
+                'usage': 'leaf_lookup_base',
+                'leaf_call_index': leaf_call_index,
+                'primitive_counts_total': lookup_family['primitive_counts_total'],
+            },
+            extra={'leaf_call_index': leaf_call_index},
+        ))
+        for stage in arithmetic_kernel['stages']:
+            if stage['category'] == 'streamed_lookup_data_select':
+                continue
+            rows.extend(_count_rows_from_primitive_counts(
+                row_index=len(rows),
+                scope='arithmetic_leaf_stage',
+                source=f"arithmetic_operation_ir:{arithmetic_kernel['opcode']}:{stage['stage']}:leaf_call_{leaf_call_index}",
+                primitive_counts=stage['primitive_counts_total'],
+                provenance_payload={
+                    'arithmetic_kernel': arithmetic_kernel['opcode'],
+                    'leaf_call_index': leaf_call_index,
+                    'stage': stage['stage'],
+                    'stage_category': stage['category'],
+                    'operation_start': int(stage['operation_start']),
+                    'operation_end_exclusive': int(stage['operation_end_exclusive']),
+                    'block_digest_sha256': stage['block_digest_sha256'],
+                    'primitive_counts_total': stage['primitive_counts_total'],
+                },
+                extra={
+                    'leaf_call_index': leaf_call_index,
+                    'arithmetic_stage': str(stage['stage']),
+                    'arithmetic_category': str(stage['category']),
+                },
+            ))
+    for row_index, row in enumerate(rows):
+        row['row_index'] = row_index
     return rows
 
 
@@ -522,7 +614,7 @@ def _liveness_binding_rows(
     for operation in operation_rows:
         if operation['scope'] == 'qroam_chunk_stream':
             interval_id = qroam_interval_by_chunk[(str(operation['table']), int(operation['chunk_index']))]
-        elif operation['scope'] == 'direct_seed_base':
+        elif operation['scope'] in ('direct_seed_base', 'lookup_leaf_base'):
             interval_id = direct_seed_interval_id
         elif operation['scope'] == 'phase_shell':
             interval_id = phase_interval_id
@@ -547,6 +639,7 @@ def build_public_candidate_materialized_circuit_manifest(
     *,
     reusable_chunk_lowering: Mapping[str, Any],
     arithmetic_operation_ir: Mapping[str, Any],
+    lookup_lowerings: Mapping[str, Any],
     qroam_primitive_certificate: Mapping[str, Any],
     phase_shell_lowerings: Mapping[str, Any],
     zkp_attestation_input: Mapping[str, Any],
@@ -560,6 +653,8 @@ def build_public_candidate_materialized_circuit_manifest(
     base_non_clifford = int(reusable_chunk_lowering['non_clifford_derivation']['base_non_clifford_without_streamed_qroam'])
     rows = _public_base_run_length_rows(
         reusable_chunk_lowering=reusable_chunk_lowering,
+        arithmetic_operation_ir=arithmetic_operation_ir,
+        lookup_lowerings=lookup_lowerings,
         zkp_attestation_input=zkp_attestation_input,
     )
     rows.extend(_qroam_run_length_rows(
@@ -572,7 +667,10 @@ def build_public_candidate_materialized_circuit_manifest(
         operation_rows=rows,
         reusable_chunk_lowering=reusable_chunk_lowering,
     )
-    base_rows = [row for row in rows if row['scope'] in ('direct_seed_base', 'arithmetic_leaf_base')]
+    base_rows = [row for row in rows if row['scope'] in ('direct_seed_base', 'lookup_leaf_base', 'arithmetic_leaf_stage')]
+    direct_seed_rows = [row for row in rows if row['scope'] == 'direct_seed_base']
+    lookup_leaf_rows = [row for row in rows if row['scope'] == 'lookup_leaf_base']
+    arithmetic_leaf_rows = [row for row in rows if row['scope'] == 'arithmetic_leaf_stage']
     qroam_rows = [row for row in rows if row['scope'] == 'qroam_chunk_stream']
     phase_rows = [row for row in rows if row['scope'] == 'phase_shell']
     non_clifford_total = sum(int(row['non_clifford_count']) for row in rows)
@@ -594,6 +692,23 @@ def build_public_candidate_materialized_circuit_manifest(
         for row in phase_rows
         if row['gate'] in ('single_qubit_rotation', 'controlled_rotation')
     )
+    selected_lookup_family = _selected_lookup_family(
+        lookup_lowerings,
+        str(compiler_parameters['lookup_policy']['selected_public_lookup_family']),
+    )
+    selected_arithmetic_kernel = _selected_arithmetic_kernel(arithmetic_operation_ir)
+    leaf_call_count = int(reusable_chunk_lowering['stream_plan']['leaf_call_count_total'])
+    arithmetic_generated_non_qroam_per_leaf = sum(
+        int(stage['primitive_counts_total']['ccx'])
+        for stage in selected_arithmetic_kernel['stages']
+        if stage['category'] != 'streamed_lookup_data_select'
+    )
+    arithmetic_generated_streamed_qroam_per_leaf = sum(
+        int(stage['primitive_counts_total']['ccx'])
+        for stage in selected_arithmetic_kernel['stages']
+        if stage['category'] == 'streamed_lookup_data_select'
+    )
+    lookup_base_non_clifford_per_leaf = int(selected_lookup_family['primitive_counts_total']['ccx'])
     owner_capacity_by_id = {
         str(row['owner_id']): int(row['logical_qubits'])
         for row in reusable_chunk_lowering['owner_capacity']['rows']
@@ -611,6 +726,23 @@ def build_public_candidate_materialized_circuit_manifest(
         'qroam_rows_expand_every_public_stream_segment': len(qroam_rows) == qroam_stream_term_instances * qroam_segment_count,
         'qroam_rows_sum_to_public_qroam_derivation': qroam_non_clifford_total == int(reusable_chunk_lowering['non_clifford_derivation']['qroam_chunk_non_clifford']),
         'base_rows_match_public_non_qroam_derivation': sum(int(row['non_clifford_count']) for row in base_rows) == base_non_clifford == int(public_totals['non_clifford']) - qroam_non_clifford_total,
+        'generated_base_rows_match_public_non_qroam_derivation': (
+            sum(int(row['non_clifford_count']) for row in direct_seed_rows) == lookup_base_non_clifford_per_leaf
+            and sum(int(row['non_clifford_count']) for row in lookup_leaf_rows) == lookup_base_non_clifford_per_leaf * leaf_call_count
+            and sum(int(row['non_clifford_count']) for row in arithmetic_leaf_rows) == arithmetic_generated_non_qroam_per_leaf * leaf_call_count
+            and sum(int(row['non_clifford_count']) for row in base_rows) == base_non_clifford
+        ),
+        'arithmetic_rows_exclude_replaced_streamed_qroam_stages': (
+            arithmetic_generated_streamed_qroam_per_leaf > 0
+            and not any(row.get('arithmetic_category') == 'streamed_lookup_data_select' for row in arithmetic_leaf_rows)
+        ),
+        'generated_base_rows_bind_family_snapshot': (
+            sum(int(row['non_clifford_count']) for row in direct_seed_rows) == int(zkp_attestation_input['family_document']['payload']['direct_seed_non_clifford'])
+            and (
+                lookup_base_non_clifford_per_leaf + arithmetic_generated_non_qroam_per_leaf
+                == int(zkp_attestation_input['family_document']['payload']['arithmetic_leaf_non_clifford'])
+            )
+        ),
         'phase_rows_bind_selected_phase_shell': (
             selected_phase_shell['name'] == zkp_attestation_input['family_document']['payload']['phase_shell']
             and phase_total_hadamards == int(selected_phase_shell['hadamard_count'])
@@ -636,6 +768,10 @@ def build_public_candidate_materialized_circuit_manifest(
             for row in rows
             if row['scope'] == 'direct_seed_base'
         ),
+        'lookup_leaf_liveness_excludes_qroam_target_and_chunk': all(
+            not any(str(wire_id).startswith('qroam_chunk_target__') or wire_id == 'qchunk' for wire_id in liveness_rows[int(row['row_index'])]['live_wire_ids'])
+            for row in lookup_leaf_rows
+        ),
         'phase_liveness_uses_phase_load_interval_without_lookup_target': all(
             'semiclassical_qft_live_phase_bit' in liveness_rows[int(row['row_index'])]['live_wire_ids']
             and not any(str(wire_id).startswith('qroam_chunk_target__') for wire_id in liveness_rows[int(row['row_index'])]['live_wire_ids'])
@@ -652,6 +788,7 @@ def build_public_candidate_materialized_circuit_manifest(
             'reusable_chunk_lowering_sha256': _sha256_payload(reusable_chunk_lowering),
             'counted_resource_ir_sha256': reusable_chunk_lowering['executable_resource_engine']['counted_resource_ir_sha256'],
             'arithmetic_operation_ir_sha256': _sha256_payload(arithmetic_operation_ir),
+            'lookup_lowerings_sha256': _sha256_payload(lookup_lowerings),
             'qroam_primitive_certificate_sha256': _sha256_payload(qroam_primitive_certificate),
             'phase_shell_lowerings_sha256': _sha256_payload(phase_shell_lowerings),
             'zkp_attestation_input_sha256': _sha256_payload(zkp_attestation_input),
@@ -661,6 +798,9 @@ def build_public_candidate_materialized_circuit_manifest(
         'run_length_row_count': len(rows),
         'liveness_binding_row_count': len(liveness_rows),
         'base_row_count': len(base_rows),
+        'direct_seed_row_count': len(direct_seed_rows),
+        'lookup_leaf_base_row_count': len(lookup_leaf_rows),
+        'arithmetic_leaf_stage_row_count': len(arithmetic_leaf_rows),
         'qroam_segment_row_count': len(qroam_rows),
         'phase_row_count': len(phase_rows),
         'gate_totals': gate_totals,
@@ -696,7 +836,21 @@ def build_public_candidate_materialized_circuit_manifest(
             'schema': arithmetic_operation_ir['schema'],
             'operation_stream_sha256': arithmetic_operation_ir['leaf_arithmetic_summary']['operation_stream_sha256'],
             'non_clifford_total': int(arithmetic_operation_ir['leaf_arithmetic_summary']['non_clifford_total']),
-            'note': 'Arithmetic primitive rows are still represented by the public non-QROAM base run until the full reusable-tail macro is flattened.',
+            'selected_kernel': selected_arithmetic_kernel['opcode'],
+            'selected_kernel_stage_digest_sha256': selected_arithmetic_kernel['stage_digest_sha256'],
+            'generated_non_qroam_non_clifford_per_leaf': arithmetic_generated_non_qroam_per_leaf,
+            'replaced_streamed_qroam_non_clifford_per_leaf': arithmetic_generated_streamed_qroam_per_leaf,
+            'expanded_stage_rows': len(arithmetic_leaf_rows),
+        },
+        'lookup_base_evidence': {
+            'name': selected_lookup_family['name'],
+            'primitive_counts_total': {
+                key: int(value)
+                for key, value in sorted(selected_lookup_family['primitive_counts_total'].items())
+            },
+            'direct_seed_non_clifford': sum(int(row['non_clifford_count']) for row in direct_seed_rows),
+            'per_leaf_base_non_clifford': lookup_base_non_clifford_per_leaf,
+            'expanded_leaf_rows': len(lookup_leaf_rows),
         },
         'preview_head': rows[:8],
         'preview_tail': rows[-8:],

@@ -264,6 +264,7 @@ def build_public_candidate_materialized_circuit_manifest_artifact() -> None:
     payload = build_public_candidate_materialized_circuit_manifest(
         reusable_chunk_lowering=load_json(artifact_dir / 'reusable_chunk_lowering.json'),
         arithmetic_operation_ir=load_json(artifact_dir / 'arithmetic_operation_ir.json'),
+        lookup_lowerings=load_json(artifact_dir / 'lookup_lowerings.json'),
         qroam_primitive_certificate=load_json(artifact_dir / 'qroam_primitive_certificate.json'),
         phase_shell_lowerings=load_json(artifact_dir / 'phase_shell_lowerings.json'),
         zkp_attestation_input=candidate_input,

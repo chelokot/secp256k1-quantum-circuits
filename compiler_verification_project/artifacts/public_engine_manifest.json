@@ -14,7 +14,7 @@
     "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
     "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
     "resource_contract_engine_sha256": "6ec61b5379cd1eb36a568423ffa43a79015c7f3c5dea53ec65cf1f80346b3d6f",
-    "public_candidate_materialized_circuit_manifest_sha256": "eb58d12975452b47fafd03a09ffc2e04becf496df61bc8ddea7f5befceb82ba2"
+    "public_candidate_materialized_circuit_manifest_sha256": "ef2b1fc6139c4703e3ffddb86b157c2a4fb36fe877144348ea91edb35746efe1"
   },
   "instruction_stream": {
     "encoding": [
@@ -614,12 +614,12 @@
   "primitive_operation_evidence": {
     "public_candidate_materialized_circuit_manifest": {
       "schema": "compiler-project-public-candidate-materialized-circuit-manifest-v1",
-      "sha256": "eb58d12975452b47fafd03a09ffc2e04becf496df61bc8ddea7f5befceb82ba2",
+      "sha256": "ef2b1fc6139c4703e3ffddb86b157c2a4fb36fe877144348ea91edb35746efe1",
       "pass": true,
-      "operation_stream_sha256": "79ba35018a46288bf3aacbb12c7e4328e1e3c970c43b596e39c01bbb9f5d086b",
-      "liveness_binding_stream_sha256": "f537f991db58742c17d128e11c5c4d19ed4505e485ce72ad309f6e92218df860",
-      "run_length_row_count": 3011,
-      "liveness_binding_row_count": 3011,
+      "operation_stream_sha256": "772bfdb9ddee01fe5be20594cc7a9551905d51bb3292d12aac7147c8e3f26469",
+      "liveness_binding_stream_sha256": "7e45cbff0cfbbfb44cc3dbc52772587ab3a632bbf0eddf18ec969b99bb833f89",
+      "run_length_row_count": 5461,
+      "liveness_binding_row_count": 5461,
       "qroam_segment_row_count": 2976,
       "non_clifford": 36957412,
       "peak_live_qubits": 1199
