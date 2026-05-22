@@ -5068,7 +5068,10 @@ pub fn fixture_json(
 
 #[cfg(test)]
 mod tests {
-    use super::{run_prepared_attestation, semantic_payload_sha256, PreparedAttestationInput};
+    use super::{
+        fixture_json, run_prepared_attestation, semantic_payload_sha256, FixtureArtifactMetadata,
+        PreparedAttestationInput,
+    };
 
     fn checked_input() -> PreparedAttestationInput {
         serde_json::from_str(include_str!(
@@ -5195,6 +5198,30 @@ mod tests {
         let mut input = checked_input();
         input.compiler_parameters_sha256 = "00".repeat(32);
         run_prepared_attestation(&input);
+    }
+
+    #[test]
+    fn fixture_json_binds_prepared_input_artifact() {
+        let input = checked_reusable_chunk_input();
+        let public_values = run_prepared_attestation(&input);
+        let input_artifact = FixtureArtifactMetadata {
+            path: "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json".to_owned(),
+            sha256: "a".repeat(64),
+            size_bytes: 123,
+        };
+        let fixture = serde_json::from_str::<serde_json::Value>(&fixture_json(
+            &public_values,
+            "0x00",
+            None,
+            "core",
+            Some(&input_artifact),
+            None,
+            None,
+        ))
+        .expect("fixture JSON must parse");
+        assert_eq!(fixture["input_path"], input_artifact.path);
+        assert_eq!(fixture["input_sha256"], input_artifact.sha256);
+        assert_eq!(fixture["input_size_bytes"], input_artifact.size_bytes);
     }
 
     #[test]

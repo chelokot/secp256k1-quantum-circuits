@@ -228,6 +228,7 @@ python compiler_verification_project/scripts/build.py --target resource-zkp-and-
 python compiler_verification_project/scripts/build.py --target zkp-and-public
 python compiler_verification_project/scripts/verify.py --cases 16
 python compiler_verification_project/scripts/proof_status.py
+python compiler_verification_project/scripts/fast_zkp_preflight.py
 python compiler_verification_project/scripts/verify_public_headline.py
 python compiler_verification_project/scripts/build_zkp_attestation_input.py --cases 8
 python compiler_verification_project/scripts/materialize_exact_circuits.py
@@ -241,6 +242,10 @@ metadata changed.
 Checked artifact tests reuse existing build/verification summaries by default;
 set `SECP256K1_OPEN_AUDIT_FORCE_REBUILD=1` only when you intentionally want a
 test run to regenerate those summaries.
+Use `fast_zkp_preflight.py` for the ordinary resource/ZKP edit loop. It runs
+`proof_status.py`, the targeted integrity groups, focused pytest coverage, and
+the attestation-library Rust unit tests, and it rejects any command plan that
+would invoke a prover.
 
 For a tight loop on one integrity layer, use `--groups` to avoid the semantic
 replay and artifact rewrite:
@@ -252,6 +257,9 @@ python compiler_verification_project/scripts/verify.py --summary --groups modula
 The reusable-chunk SP1 resource contract also embeds the modular-arithmetic,
 QROAM primitive, and independent QROAM reference certificates, so changing any
 of them invalidates the proof input until the proof layers are rebuilt.
+Proof fixtures are also expected to bind the exact prepared input by
+`input_sha256` and `input_size_bytes`; `proof_status.py` treats fixtures without
+that input digest as stale even if their proof binary digests still match.
 
 `materialize_exact_circuits.py` writes ignored whole-oracle operation streams
 for the selected exact compiler families under

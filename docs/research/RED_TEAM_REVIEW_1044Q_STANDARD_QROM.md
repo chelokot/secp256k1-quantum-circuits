@@ -679,6 +679,10 @@ Remaining boundary:
   metadata, but not every older supporting artifact carries the digest inline.
   Continue propagating it into non-headline support artifacts as they are
   touched.
+- `proof_status.py` now also requires each fixture to bind the exact prepared
+  input by `input_sha256` and `input_size_bytes`. A proof-only input change, such
+  as adding the compiler-parameter document, therefore cannot look current only
+  because the old public values still match.
 
 ### Register list in the proof compiler
 

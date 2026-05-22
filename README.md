@@ -261,6 +261,7 @@ python compiler_verification_project/scripts/build.py --target resource-zkp-and-
 python compiler_verification_project/scripts/build.py --target zkp-and-public
 python compiler_verification_project/scripts/verify.py --cases 16
 python compiler_verification_project/scripts/proof_status.py
+python compiler_verification_project/scripts/fast_zkp_preflight.py
 python compiler_verification_project/scripts/verify_public_headline.py
 python compiler_verification_project/scripts/build_zkp_attestation_input.py --cases 8
 python compiler_verification_project/scripts/materialize_exact_circuits.py
@@ -282,6 +283,10 @@ metadata changed.
 Checked artifact tests reuse existing build/verification summaries by default;
 set `SECP256K1_OPEN_AUDIT_FORCE_REBUILD=1` only when you intentionally want a
 test run to regenerate those summaries.
+Use `compiler_verification_project/scripts/fast_zkp_preflight.py` as the normal
+ZKP/resource edit-loop gate. It runs `proof_status.py`, targeted integrity
+groups, focused pytest tests, and the attestation-library Rust unit tests, and
+it has an internal guard that rejects any command plan containing a prover.
 
 See `compiler_verification_project/README.md` for the SP1 execute/prove
 commands that reproduce the checked attestation bundle.
