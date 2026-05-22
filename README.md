@@ -245,6 +245,7 @@ From the repository root:
 python scripts/verify_all.py
 python compiler_verification_project/scripts/build.py
 python compiler_verification_project/scripts/verify.py --cases 16
+python compiler_verification_project/scripts/verify_public_headline.py
 python compiler_verification_project/scripts/build_zkp_attestation_input.py --cases 8
 python compiler_verification_project/scripts/materialize_exact_circuits.py
 python scripts/compare_cain_2026.py
@@ -259,6 +260,12 @@ family.
 
 See `compiler_verification_project/README.md` for the SP1 execute/prove
 commands that reproduce the checked attestation bundle.
+`compiler_verification_project/scripts/verify_public_headline.py` is the fast
+reviewer entrypoint for the checked public headline: by default it validates
+the public result, input, public values, source-document hashes, fixture
+records, proof-binary digests, wrap proof, and Groth16 verifier key from the
+checked branch state. Add `--verify-compressed` or `--verify-groth16` to run
+the corresponding checked proof verifier as well.
 
 `make test` uses the built-in parallel test runner in `scripts/run_tests.py`;
 use `make test-sequential` for a single-process pytest run.

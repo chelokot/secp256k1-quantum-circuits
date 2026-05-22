@@ -51,6 +51,21 @@
       "sha256": "b6deabcfaa75089f40d105439d3a1306d7f2d9d60bb0e7a0cea7541be2362d27",
       "bytes": 38014
     },
+    "claim": {
+      "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json",
+      "sha256": "d6e5ffc0c39e2d66097a02ac644d3d5da0593162d2bfc0d5093479db742a837d",
+      "bytes": 1329
+    },
+    "family": {
+      "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_family.json",
+      "sha256": "52cde8ef62a25ca71d0b8cce331dc46e1471ca9e2e883fe81ad1b02b468d9117",
+      "bytes": 1643
+    },
+    "case_corpus": {
+      "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_cases.json",
+      "sha256": "3d3bef33a7133d468dc36821e0eca5e5dc1e4cc6b24f3d574a1719265f25c969",
+      "bytes": 5139
+    },
     "public_values": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_public_values.json",
       "sha256": "f21646dead6838be17db4698fe7143acd57cd849a7b769b22122869bb9210e98",
@@ -127,8 +142,22 @@
     }
   },
   "verification_commands": {
+    "metadata": "python compiler_verification_project/scripts/verify_public_headline.py",
+    "metadata_and_compressed": "python compiler_verification_project/scripts/verify_public_headline.py --verify-compressed",
+    "metadata_and_groth16": "python compiler_verification_project/scripts/verify_public_headline.py --verify-groth16",
     "compressed": "SP1_CIRCUIT_MODE=dev python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --verify-proof-input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin --system compressed --resource-profile safe --systemd-property TasksMax=128 --skip-build --input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json --output-dir compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate",
     "groth16": "SP1_CIRCUIT_MODE=dev python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --verify-proof-input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_groth16.bin --system groth16 --resource-profile safe --systemd-property TasksMax=128 --skip-build --groth16-verify-dir compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_groth16_verifier --input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json --output-dir compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate"
+  },
+  "reviewer_verification": {
+    "fast_metadata_command": "python compiler_verification_project/scripts/verify_public_headline.py",
+    "compressed_verification_command": "python compiler_verification_project/scripts/verify_public_headline.py --verify-compressed",
+    "groth16_verification_command": "python compiler_verification_project/scripts/verify_public_headline.py --verify-groth16",
+    "metadata_scope": [
+      "public headline result status and strict <40M / <1200 bounds",
+      "checked input, public values, sidecar documents, fixtures, proof binaries, wrap proof, and Groth16 verifier-key digests",
+      "semantic hashes for committed claim, leaf, family, case corpus, and resource-certificate documents",
+      "fixture-to-proof and fixture-to-verifier-key binding"
+    ]
   },
   "checks": {
     "public_values_match_input_claim": true,

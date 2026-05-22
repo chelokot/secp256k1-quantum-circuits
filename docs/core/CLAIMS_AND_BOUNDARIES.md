@@ -137,6 +137,11 @@ that bundle. The core, compressed, and Groth16 fixtures are checked proof-layer
 outputs for the same public claim, and the shipped Groth16 proof bundle plus
 verifying key allow cheap local re-verification from the repository without
 rebuilding the large vk-specific dev artifact tree.
+For the promoted reusable-chunk public headline, run
+`python compiler_verification_project/scripts/verify_public_headline.py` to
+validate the checked headline artifact, candidate input, public values,
+source-document semantic hashes, fixture records, proof-binary digests, wrap
+proof, and Groth16 verifier key from the checked branch state.
 
 This is similar in shape to Google's disclosure model, but it proves a public
 deterministic point-add corpus at the repository exact-family boundary rather

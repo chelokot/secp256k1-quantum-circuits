@@ -829,28 +829,41 @@ Best fix:
 - Generate the QROAM primitive IR locally and count it with the same liveness
   engine as the arithmetic.
 
-### REL-1: Release artifact packaging is not yet reviewer-proof
+### REL-1: Release artifact packaging is not fully containerized, but the public headline has a single verifier
 
 Evidence:
 
-- `zkp_attestation_fixture_compressed.json` has `proof: null`.
-- The actual compressed proof is in a binary file.
-- GitHub warned about large historical blobs during push.
+- `compiler_verification_project/scripts/verify_public_headline.py` now gives a
+  single fast reviewer entrypoint for the checked public headline.
+- The script validates `public_headline_result.json`, checked input/public
+  values, source-document semantic hashes, fixture records, compressed proof
+  digest, Groth16 proof digest, wrap proof digest, and Groth16 verifier-key
+  digest from the checked branch state.
+- Optional `--verify-compressed` and `--verify-groth16` flags invoke the
+  corresponding checked proof verifier against the checked proof bundle.
+- `zkp_attestation_fixture_compressed.json` still keeps the large proof payload
+  out-of-line; this is now an explicit digest-bound packaging choice rather
+  than an untracked binary sidecar.
 
 Impact:
 
-- Reviewers can verify with the right command, but the artifact package is not
-  self-describing enough for high-trust external circulation.
+- Reviewers no longer need to assemble the artifact-binding check by hand.
+- This does not yet solve reproducible proof environment packaging; a fresh
+  machine still needs the SP1/Rust/Go/protoc/libclang stack to run the optional
+  proof verifiers.
 
 Minimum fix:
 
-- Put proof binary digests and verifier-key digests in the fixture.
+- Done for proof binary and verifier-key digests, plus the one-command metadata
+  verifier.
 
 Best fix:
 
 - Ship a single release manifest with command transcript, binary digests,
   verifier-key digest, input digest, SP1 version, Rust toolchain digest, and
-  container digest.
+  container digest; or package proof verification in a container/Nix/uv lock so
+  a fresh machine can run metadata, compressed, and Groth16 verification
+  without local toolchain archaeology.
 
 ## Differences Versus Google's ZKP Confidence Model
 

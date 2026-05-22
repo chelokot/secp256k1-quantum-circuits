@@ -10437,13 +10437,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "6f555a0a01735cec5466b0f09276d38f9f9a3813dd0eb3ff768db241a73763a5",
-          "size_bytes": 7753
+          "sha256": "d7fb56d244977d30d8e944482573f2a37aa79dcbac1f49fea527361583efe6b1",
+          "size_bytes": 9456
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "6f555a0a01735cec5466b0f09276d38f9f9a3813dd0eb3ff768db241a73763a5",
-          "size_bytes": 7753
+          "sha256": "d7fb56d244977d30d8e944482573f2a37aa79dcbac1f49fea527361583efe6b1",
+          "size_bytes": 9456
         }
       },
       {

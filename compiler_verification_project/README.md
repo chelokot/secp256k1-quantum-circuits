@@ -215,6 +215,7 @@ From the repository root:
 ```bash
 python compiler_verification_project/scripts/build.py
 python compiler_verification_project/scripts/verify.py --cases 16
+python compiler_verification_project/scripts/verify_public_headline.py
 python compiler_verification_project/scripts/build_zkp_attestation_input.py --cases 8
 python compiler_verification_project/scripts/materialize_exact_circuits.py
 ```
@@ -228,6 +229,20 @@ materializes the central public standard-QROM family; use `--all-families` to du
 The SP1 workspace requires `sp1up` or `cargo-prove`, plus `protoc` and a
 working `libclang` for bindgen. The checked attestation bundle can be replayed
 with:
+
+```bash
+python compiler_verification_project/scripts/verify_public_headline.py
+python compiler_verification_project/scripts/verify_public_headline.py --verify-compressed
+python compiler_verification_project/scripts/verify_public_headline.py --verify-groth16
+```
+
+The first command is metadata-only and validates the public headline, checked
+input, public values, committed source-document semantic hashes, fixtures,
+proof-binary digests, wrap proof, and Groth16 verifier key from the checked
+branch state. The latter two commands additionally invoke the compressed or
+Groth16 verifier against the checked proof bundle.
+
+The lower-level guarded runner is:
 
 ```bash
 python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --execute

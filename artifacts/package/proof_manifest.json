@@ -175,8 +175,8 @@
       "bytes": 9155
     },
     "compiler_verification_project/README.md": {
-      "sha256": "41616893718351a4a1eec2f1f9c35cff00498522a806811d9ae157ea8d6c920f",
-      "bytes": 19186
+      "sha256": "21feaf1fb899a4979faf3b12d8dc5cb9a18253486299833aa9d28c276923910f",
+      "bytes": 19913
     },
     "compiler_verification_project/src/artifact_registry.py": {
       "sha256": "831d2e0d87e34aab3684a47241099d0d3e15f4de3ab4d2deb2c81f107c90273d",
@@ -227,8 +227,8 @@
       "bytes": 107139
     },
     "compiler_verification_project/src/public_result.py": {
-      "sha256": "1b020699ae0f0cd34f1d67657c3bfb8c49d3372acce5783a5801fe67ab501307",
-      "bytes": 11660
+      "sha256": "18ca6c36468fba7dc2df9672f1f67b4884d8f1c2f74b94e5003eb9a5c376d209",
+      "bytes": 13353
     },
     "compiler_verification_project/src/reusable_chunk_lowering.py": {
       "sha256": "9e39e011d402b6cb2dcc6efff11469ddf7a08a835189e73cf5cc86e174a11c52",
@@ -273,6 +273,10 @@
     "compiler_verification_project/scripts/run_zkp_attestation_guarded.py": {
       "sha256": "5866fe65c63a57ac6c9c8aca3672992d29f28b13c52975dba443c333ddc6b225",
       "bytes": 18179
+    },
+    "compiler_verification_project/scripts/verify_public_headline.py": {
+      "sha256": "396e54a95a9839accec582bb00a2e9e89a1da54c332e250cdbbf2f7590e611cd",
+      "bytes": 16118
     },
     "compiler_verification_project/scripts/verify.py": {
       "sha256": "54711aaab493f52468653a658b5d1796107d64ff660852d066e28d2b195b33cc",
@@ -575,11 +579,11 @@
       "bytes": 4183
     },
     "compiler_verification_project/artifacts/public_headline_result.json": {
-      "sha256": "b207968429db4c8d267e764d3360233a2996613bf1fbab9c48ff0c2d55a14011",
-      "bytes": 8713
+      "sha256": "8d36dd95d1df3f1901a31626ddd1211ab9139ddd6bc15de48792986334e672ec",
+      "bytes": 10603
     },
     "compiler_verification_project/artifacts/verification_summary.json": {
-      "sha256": "2e7efb8e3ed7cc281d7ae3dce253496240718854671cdd8cd6128943f5ed05ea",
+      "sha256": "50ed071de681bcbf29a406ab9d9efd838478829f1198ea034995279e145aba69",
       "bytes": 454830
     },
     "compiler_verification_project/artifacts/cain_exact_transfer.json": {

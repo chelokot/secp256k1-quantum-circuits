@@ -116,6 +116,7 @@ PROOF_MANIFEST_PATHS = [
     'compiler_verification_project/scripts/build.py',
     'compiler_verification_project/scripts/build_zkp_attestation_input.py',
     'compiler_verification_project/scripts/run_zkp_attestation_guarded.py',
+    'compiler_verification_project/scripts/verify_public_headline.py',
     'compiler_verification_project/scripts/verify.py',
     'compiler_verification_project/zkp_attestation/Cargo.toml',
     'compiler_verification_project/zkp_attestation/Cargo.lock',

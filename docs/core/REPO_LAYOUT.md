@@ -54,6 +54,7 @@ Key files:
 - `compiler_verification_project/scripts/build.py`
 - `compiler_verification_project/scripts/build_zkp_attestation_input.py`
 - `compiler_verification_project/scripts/run_zkp_attestation_guarded.py`
+- `compiler_verification_project/scripts/verify_public_headline.py`
 - `compiler_verification_project/scripts/verify.py`
 - `compiler_verification_project/src/project.py`
 - `compiler_verification_project/src/zkp_attestation.py`

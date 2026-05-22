@@ -144,6 +144,9 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
         },
         'checked_artifacts': {
             'input': _file_record('compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json'),
+            'claim': _file_record('compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json'),
+            'family': _file_record('compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_family.json'),
+            'case_corpus': _file_record('compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_cases.json'),
             'public_values': _file_record('compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_public_values.json'),
             'core_fixture': _fixture_record('zkp_attestation_fixture_core.json'),
             'compressed_fixture': _fixture_record('zkp_attestation_fixture_compressed.json'),
@@ -156,8 +159,22 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             'reusable_chunk_tail_candidate': _file_record('compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json'),
         },
         'verification_commands': {
+            'metadata': 'python compiler_verification_project/scripts/verify_public_headline.py',
+            'metadata_and_compressed': 'python compiler_verification_project/scripts/verify_public_headline.py --verify-compressed',
+            'metadata_and_groth16': 'python compiler_verification_project/scripts/verify_public_headline.py --verify-groth16',
             'compressed': 'SP1_CIRCUIT_MODE=dev python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --verify-proof-input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin --system compressed --resource-profile safe --systemd-property TasksMax=128 --skip-build --input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json --output-dir compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate',
             'groth16': 'SP1_CIRCUIT_MODE=dev python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --verify-proof-input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_groth16.bin --system groth16 --resource-profile safe --systemd-property TasksMax=128 --skip-build --groth16-verify-dir compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_groth16_verifier --input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json --output-dir compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate',
+        },
+        'reviewer_verification': {
+            'fast_metadata_command': 'python compiler_verification_project/scripts/verify_public_headline.py',
+            'compressed_verification_command': 'python compiler_verification_project/scripts/verify_public_headline.py --verify-compressed',
+            'groth16_verification_command': 'python compiler_verification_project/scripts/verify_public_headline.py --verify-groth16',
+            'metadata_scope': [
+                'public headline result status and strict <40M / <1200 bounds',
+                'checked input, public values, sidecar documents, fixtures, proof binaries, wrap proof, and Groth16 verifier-key digests',
+                'semantic hashes for committed claim, leaf, family, case corpus, and resource-certificate documents',
+                'fixture-to-proof and fixture-to-verifier-key binding',
+            ],
         },
         'checks': checks,
         'pass': all(checks.values()),

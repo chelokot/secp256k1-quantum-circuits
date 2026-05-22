@@ -96,6 +96,7 @@ class ReleaseInventoryTests(unittest.TestCase):
             'compiler_verification_project/README.md',
             'compiler_verification_project/scripts/build.py',
             'compiler_verification_project/scripts/verify.py',
+            'compiler_verification_project/scripts/verify_public_headline.py',
             'compiler_verification_project/src/artifact_registry.py',
             'compiler_verification_project/src/arithmetic_lowering.py',
             'compiler_verification_project/src/fallback_frontier_stress.py',
