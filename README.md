@@ -202,27 +202,29 @@ primary artifact in this repository is specialized to **secp256k1**.
 ## IBM Quantum roadmap context
 
 IBM is one of the clearest public hardware roadmaps to compare against because
-it states named milestones in logical qubits and gate-scale language rather
-than only in physical-qubit counts. IBM's public roadmap says that Starling is
-planned for 2029 as a fault-tolerant system with **200 logical qubits** and
-**100 million gates**, followed by Blue Jay at **2,000 logical qubits** and
-**1 billion gates** in the 2033+ roadmap window.
+it states named fault-tolerant milestones in logical-qubit and gate-scale
+language rather than only in physical-qubit counts. That makes IBM's roadmap
+especially useful for reading this repository's logical result as an
+engineering-scale signal, not just as an abstract asymptotic risk.
 
-Read against this repository's current secp256k1 compiler-family scale, that
-does not mean Starling is already a drop-in secp256k1 attack machine: the
-logical-qubit requirement here is still about one thousand logical qubits, and
-this repository reports non-Clifford gates rather than IBM's full logical-gate
-metric. The important comparison is more precise. The non-Clifford scale is
-already below the 100-million-gate class, while the qubit footprint points to a
-post-Starling, Blue Jay-class system as the first named IBM target with obvious
-space headroom.
+The current public headline here is **36,767,692 non-Clifford operations** and
+**1,199 logical qubits**. IBM's public roadmap frames Starling as a 2029
+fault-tolerant system with **200 logical qubits** and **100 million gates**,
+and Blue Jay as a 2033+ class system with about **2,000 logical qubits** and
+**1 billion gates**. Starling is therefore already in the right gate-scale
+conversation, but below this repository's current logical-qubit requirement.
+Blue Jay is the first named IBM target with natural logical-qubit headroom for
+this scale of secp256k1 circuit.
 
-That makes IBM's roadmap especially relevant for this repository: if IBM
-delivers the post-Starling logical-qubit and gate-scale targets it has publicly
-described, secp256k1 ECDLP moves from an abstract future risk into the scale of
-a named IBM fault-tolerant machine class. The repository keeps this as roadmap
-context, not as a claim that any current IBM processor can run the circuit.
-See `docs/references/IBM_QUANTUM_ROADMAP_CONTEXT.md` for sources and caveats.
+The favorable, bounded interpretation is: if IBM delivers the post-Starling
+logical-qubit and gate-scale targets it has publicly described, secp256k1 ECDLP
+resource estimates like this one stop being only long-range cryptographic
+warnings and become workloads that fit inside a named industrial
+fault-tolerant machine class. This is roadmap context, not a claim that Heron,
+Nighthawk, Starling, or any current IBM processor can run the full circuit
+today. The machine-readable source note is
+`data/ibm_quantum_roadmap_context.json`; the prose source map is
+`docs/references/IBM_QUANTUM_ROADMAP_CONTEXT.md`.
 
 ## Repository map
 

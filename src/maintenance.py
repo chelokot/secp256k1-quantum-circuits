@@ -50,6 +50,7 @@ VENDORED_GROTH16_FFI_PATHS = [
 
 PROOF_MANIFEST_PATHS = [
     'data/public_google_baseline.json',
+    'data/ibm_quantum_roadmap_context.json',
     'artifacts/README.md',
     'artifacts/circuits/optimized_pointadd_secp256k1.json',
     'artifacts/circuits/optimized_pointadd_family.json',

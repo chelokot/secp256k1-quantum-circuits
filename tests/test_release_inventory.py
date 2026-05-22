@@ -28,6 +28,7 @@ class ReleaseInventoryTests(unittest.TestCase):
             'CITATION.cff',
             'MANIFEST.sha256',
             'data/public_google_baseline.json',
+            'data/ibm_quantum_roadmap_context.json',
             'docs/core/CLAIMS_AND_BOUNDARIES.md',
             'docs/references/GOOGLE_BASELINE_COMPARISON.md',
             'docs/core/EXTENDED_VERIFICATION.md',

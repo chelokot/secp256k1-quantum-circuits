@@ -1,0 +1,158 @@
+{
+  "schema": "secp256k1-ibm-quantum-roadmap-context-v1",
+  "updated_utc": "2026-05-22",
+  "scope": "roadmap context only; not a physical runtime model and not a claim that current IBM hardware can run this repository's secp256k1 circuit",
+  "source_notice": "IBM Technology Atlas says roadmap information represents current intent and can change or be withdrawn.",
+  "sources": [
+    {
+      "id": "ibm_quantum_roadmap",
+      "title": "IBM Quantum Roadmap",
+      "url": "https://www.ibm.com/roadmaps/quantum/",
+      "used_for": [
+        "Nighthawk 2028 scale",
+        "Starling 2029 gate scale",
+        "Blue Jay 2033+ gate scale"
+      ]
+    },
+    {
+      "id": "ibm_quantum_2026_roadmap",
+      "title": "IBM Quantum 2026 roadmap page",
+      "url": "https://www.ibm.com/roadmaps/quantum/2026/",
+      "used_for": [
+        "roadmap change notice",
+        "Nighthawk near-term quantum-advantage platform",
+        "2026/2027/2028 Nighthawk gate targets",
+        "Loon and decoder stepping-stone context"
+      ]
+    },
+    {
+      "id": "ibm_quantum_hardware",
+      "title": "IBM Quantum hardware page",
+      "url": "https://www.ibm.com/quantum/hardware",
+      "used_for": [
+        "current Eagle and Heron processor qubit counts",
+        "System Two modular quantum-centric supercomputing description"
+      ]
+    },
+    {
+      "id": "ibm_nighthawk_heron_announcement",
+      "title": "IBM Quantum Nighthawk and Heron availability announcement",
+      "url": "https://quantum.cloud.ibm.com/announcements/en/product-updates/2026-01-05-nighthawk",
+      "used_for": [
+        "Nighthawk 120-qubit square-lattice device",
+        "Nighthawk as exploratory QPU",
+        "Heron r3 performance context"
+      ]
+    },
+    {
+      "id": "ibm_large_scale_ftqc_blog",
+      "title": "IBM large-scale fault-tolerant roadmap blog",
+      "url": "https://www.ibm.com/quantum/blog/large-scale-ftqc",
+      "used_for": [
+        "Starling as 2029 fault-tolerant system with 200 logical qubits and 100 million gates",
+        "modular architecture, real-time decoder, magic-state, and error-correction roadmap context"
+      ]
+    },
+    {
+      "id": "ibm_research_isscc_2026",
+      "title": "IBM Research ISSCC 2026 fault-tolerant quantum computing abstract",
+      "url": "https://research.ibm.com/publications/quantum-computing-toward-large-scale-920-am-fault-tolerant-quantum-computing",
+      "used_for": [
+        "200 logical qubits and 100 million quantum operations by 2029",
+        "2,000 logical qubits a few years later",
+        "quantum and HPC integration context"
+      ]
+    },
+    {
+      "id": "ibm_system_two_2033_blog",
+      "title": "IBM Quantum System Two / 2033 roadmap blog",
+      "url": "https://www.ibm.com/quantum/blog/quantum-roadmap-2033",
+      "used_for": [
+        "System Two modular architecture context",
+        "Blue Jay 2,000-qubit and 1-billion-gate target"
+      ]
+    }
+  ],
+  "current_hardware_context": {
+    "not_fault_tolerant_for_this_attack": true,
+    "processors": [
+      {
+        "name": "Eagle",
+        "physical_qubits": 127,
+        "source_id": "ibm_quantum_hardware"
+      },
+      {
+        "name": "Heron r1",
+        "physical_qubits": 133,
+        "source_id": "ibm_quantum_hardware"
+      },
+      {
+        "name": "Heron r2/r3",
+        "physical_qubits": 156,
+        "source_id": "ibm_quantum_hardware"
+      },
+      {
+        "name": "Nighthawk",
+        "physical_qubits": 120,
+        "topology": "square lattice",
+        "couplers": 218,
+        "source_id": "ibm_nighthawk_heron_announcement"
+      }
+    ]
+  },
+  "roadmap_milestones": {
+    "nighthawk_2026": {
+      "year": 2026,
+      "role": "near-term quantum-advantage platform, not fault-tolerant secp256k1 attack hardware",
+      "physical_qubits_per_module": 120,
+      "max_modules": 3,
+      "max_physical_qubits": 360,
+      "gate_target": 7500,
+      "source_id": "ibm_quantum_2026_roadmap"
+    },
+    "nighthawk_2028": {
+      "year": 2028,
+      "role": "pre-fault-tolerant scaling reference",
+      "max_physical_qubits": 1080,
+      "gate_target": 15000,
+      "source_id": "ibm_quantum_roadmap"
+    },
+    "starling_2029": {
+      "year": 2029,
+      "role": "first named IBM fault-tolerant system",
+      "logical_qubits": 200,
+      "gate_target": 100000000,
+      "source_id": "ibm_large_scale_ftqc_blog"
+    },
+    "blue_jay_2033_plus": {
+      "year": "2033+",
+      "role": "post-Starling fault-tolerant scale target",
+      "logical_qubits": 2000,
+      "gate_target": 1000000000,
+      "source_id": "ibm_research_isscc_2026"
+    }
+  },
+  "repo_headline_used_for_comparison": {
+    "non_clifford": 36767692,
+    "logical_qubits": 1199,
+    "source": "compiler_verification_project/artifacts/public_headline_result.json"
+  },
+  "derived_comparison": {
+    "starling_gate_scale_ratio_vs_repo_non_clifford": 2.7197790930145955,
+    "starling_logical_qubit_shortfall_vs_repo": 999,
+    "blue_jay_gate_scale_ratio_vs_repo_non_clifford": 27.197790930145956,
+    "blue_jay_logical_qubit_headroom_vs_repo": 801
+  },
+  "claims": [
+    "Current IBM processors are relevant as roadmap and software-stack context, not as machines that can run this secp256k1 circuit.",
+    "Starling is a strong gate-scale reference point because its 100-million-gate target is above this repository's non-Clifford count, but its 200 logical qubits are below the current logical-qubit requirement.",
+    "Blue Jay is the first named IBM roadmap target in the natural logical-qubit class of this repository's current secp256k1 resource estimate.",
+    "IBM's roadmap is unusually useful for cryptographic-risk interpretation because it publishes logical-qubit and gate-scale milestones rather than only physical-qubit counts."
+  ],
+  "non_claims": [
+    "No current IBM processor is claimed to run the attack.",
+    "The repository does not convert IBM gate targets into a wall-clock secp256k1 runtime.",
+    "The repository does not equate non-Clifford count with IBM's full logical-gate metric.",
+    "The repository does not treat roadmap targets as guaranteed deliveries."
+  ]
+}

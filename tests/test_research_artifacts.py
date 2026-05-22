@@ -21,6 +21,7 @@ class ResearchArtifactTests(unittest.TestCase):
         run_research_pass(REPO_ROOT)
         cls.lookup_summary = json.loads((REPO_ROOT / 'artifacts' / 'lookup' / 'lookup_signed_fold_summary.json').read_text())
         cls.matrix = json.loads((REPO_ROOT / 'results' / 'literature_matrix.json').read_text())
+        cls.physical_stack = json.loads((REPO_ROOT / 'results' / 'physical_stack_reference_points.json').read_text())
         cls.frontier = json.loads((REPO_ROOT / 'compiler_verification_project' / 'artifacts' / 'family_frontier.json').read_text())
 
     def test_exact_frontier_gate_advantage_is_derived(self):
@@ -57,6 +58,10 @@ class ResearchArtifactTests(unittest.TestCase):
             'low_zhu_2024_lookup_architecture',
         }:
             self.assertIn(key, ids)
+
+    def test_physical_stack_has_ibm_roadmap_context(self):
+        ids = {entry['id'] for entry in self.physical_stack['entries']}
+        self.assertIn('ibm_quantum_roadmap', ids)
 
 
 if __name__ == '__main__':

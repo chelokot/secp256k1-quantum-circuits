@@ -23,8 +23,9 @@ Links:
 - Cain et al. 2026, *Shor's algorithm is possible with as few as 10,000 reconfigurable atomic qubits*
 - Gouzien et al. 2023, *Performance Analysis of a Repetition Cat Code Architecture: Computing 256-bit Elliptic Curve Logarithm in 9 Hours with 126133 Cat Qubits*
 - Gu et al. 2025, *Resource analysis of Shor's elliptic curve algorithm with an improved quantum adder on a two-dimensional lattice*
-- IBM Quantum Roadmap, IBM Quantum hardware page, and IBM fault-tolerant
-  roadmap posts
+- IBM Quantum Roadmap, IBM Quantum hardware page, IBM Nighthawk/Heron
+  availability announcement, IBM Research ISSCC 2026 abstract, and IBM
+  fault-tolerant roadmap posts
 
 Role:
 
@@ -37,9 +38,16 @@ Links:
 
 - Cain et al. 2026: https://arxiv.org/abs/2603.28627
 - IBM Quantum Roadmap: https://www.ibm.com/roadmaps/quantum/
+- IBM Quantum 2026 roadmap: https://www.ibm.com/roadmaps/quantum/2026/
 - IBM Quantum hardware: https://www.ibm.com/quantum/hardware
+- IBM Nighthawk/Heron availability announcement: https://quantum.cloud.ibm.com/announcements/en/product-updates/2026-01-05-nighthawk
 - IBM large-scale fault-tolerant roadmap: https://www.ibm.com/quantum/blog/large-scale-ftqc
+- IBM Research ISSCC 2026 fault-tolerant quantum computing abstract: https://research.ibm.com/publications/quantum-computing-toward-large-scale-920-am-fault-tolerant-quantum-computing
 - IBM Quantum System Two / 2033 roadmap: https://www.ibm.com/quantum/blog/quantum-roadmap-2033
+
+Machine-readable IBM roadmap context:
+
+- `data/ibm_quantum_roadmap_context.json`
 
 ## Logical ECDLP, arithmetic, and lookup references
 

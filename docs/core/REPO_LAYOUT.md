@@ -12,6 +12,16 @@
 
 ## Artifact layer
 
+### `data/`
+
+Small source-data artifacts used by the documentation and generated
+comparisons:
+
+- `data/public_google_baseline.json` — public rounded Google baseline used for
+  repo-wide numeric comparisons
+- `data/ibm_quantum_roadmap_context.json` — source-backed IBM Starling/Blue Jay
+  roadmap facts and derived comparison to the current public headline
+
 ### `artifacts/`
 
 Primary optimized release with:

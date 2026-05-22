@@ -811,6 +811,12 @@ def build_physical_stack_reference(repo_root: Path) -> Dict[str, Any]:
                 "headline": "Reports 9 hours with 126,133 cat qubits for a 256-bit elliptic-curve logarithm under cat-code assumptions.",
                 "status_in_repo": "reference_only",
             },
+            {
+                "id": "ibm_quantum_roadmap",
+                "layer": "industrial_fault_tolerant_roadmap_context",
+                "headline": "IBM's named Starling and Blue Jay roadmap targets state logical-qubit and gate-scale milestones that can be compared to the repository's exact logical resource headline.",
+                "status_in_repo": "roadmap_context_only",
+            },
         ],
         "notes": [
             "These points live at different abstraction layers and should not be collapsed into a single apples-to-apples headline without major caveats.",

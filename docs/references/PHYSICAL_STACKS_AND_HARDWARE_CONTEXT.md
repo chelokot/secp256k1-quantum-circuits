@@ -54,10 +54,14 @@ Role here:
 - named industrial roadmap context stated in logical-qubit and gate-scale terms
 - Starling/Blue Jay comparison point for the repository's logical
   compiler-family totals
+- favorable but bounded hardware-roadmap interpretation: current IBM devices
+  are platform momentum, while Blue Jay is the first named IBM target with
+  natural logical-qubit headroom for the current public headline
 
 File:
 
 - `docs/references/IBM_QUANTUM_ROADMAP_CONTEXT.md`
+- `data/ibm_quantum_roadmap_context.json`
 
 ## How to read these layers
 
@@ -80,3 +84,5 @@ The repository keeps three different file classes:
 - `results/cain_2026_integration_summary.json` for approximate neutral-atom
   transfer
 - `results/physical_stack_reference_points.json` for cross-paper context
+- `data/ibm_quantum_roadmap_context.json` for source-backed IBM roadmap
+  milestones and derived Starling/Blue Jay comparisons
