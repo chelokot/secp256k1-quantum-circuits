@@ -7,6 +7,14 @@
   "expected_full_oracle_non_clifford": 36957412,
   "expected_total_logical_qubits": 1199,
   "expected_case_count": 8,
+  "resource_engine_summary": {
+    "source": "reusable_chunk_lowering.executable_resource_engine.public_totals",
+    "source_document_type": "reusable_chunk_lowering",
+    "source_sha256": "047500decb193aa262ae33fed728563dd18b2e8fcd9caa72deb310bea3d5ada5",
+    "non_clifford": 36957412,
+    "logical_qubits": 1199,
+    "matches_family_snapshot": true
+  },
   "non_clifford_formula": {
     "arithmetic_leaf_non_clifford": 798949,
     "per_leaf_lookup_non_clifford": 393216,

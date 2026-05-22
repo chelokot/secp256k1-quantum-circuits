@@ -3,8 +3,8 @@
   "scope": "tracked repository files at or above the configured large-artifact threshold",
   "size_threshold_bytes": 1048576,
   "chunk_size_bytes": 1048576,
-  "file_count": 10,
-  "repository_digest_sha256": "a3f8342a61eb318a0cf072c9a05f8699efde491b2b97f64c8b1e179fe6a5a181",
+  "file_count": 11,
+  "repository_digest_sha256": "0de3fd9ff2ad381563b7d87c6d742cf8666666e03aae2f7654cb82e38092b3fe",
   "files": [
     {
       "path": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
@@ -511,6 +511,82 @@
           "offset": 11534336,
           "bytes": 947507,
           "sha256": "88e27c421bc2508bd520453806b7ea94fe6d772cc0073a49f0205f0ced4bdf12"
+        }
+      ]
+    },
+    {
+      "path": "compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json",
+      "bytes": 11279098,
+      "sha256": "5e2f89276e4b7b7849f6b26bf7e3dd2cb34529b9e1aa0ec78e46f59b4c1a29b2",
+      "chunk_size_bytes": 1048576,
+      "chunk_count": 11,
+      "chunk_merkle_root_sha256": "9de695efa86bb74dd001088564d0d53d154e50b7acd7a94bd9f8e9b131cb9fe7",
+      "chunks": [
+        {
+          "index": 0,
+          "offset": 0,
+          "bytes": 1048576,
+          "sha256": "fa426491ee16e47702d1d99c83a9ff28e80110ee5b79a6485a5dd3a98f305439"
+        },
+        {
+          "index": 1,
+          "offset": 1048576,
+          "bytes": 1048576,
+          "sha256": "759ef7ecf3ef1cd3c0ea5c602afe0fea06f65eb029b80061e3ef494c69007a42"
+        },
+        {
+          "index": 2,
+          "offset": 2097152,
+          "bytes": 1048576,
+          "sha256": "af1a69156a9dfe2786e8e22eeda432adf0d595e121d25ee3ddd32226ce56fd29"
+        },
+        {
+          "index": 3,
+          "offset": 3145728,
+          "bytes": 1048576,
+          "sha256": "5530318a9b9b71562474893bd4a1711efbccd44ae3cc4854bd63d77574605bc8"
+        },
+        {
+          "index": 4,
+          "offset": 4194304,
+          "bytes": 1048576,
+          "sha256": "e74b93b6d408a6e7dd38dd72017f5781583e6724f345cb70a1971891232a1b6c"
+        },
+        {
+          "index": 5,
+          "offset": 5242880,
+          "bytes": 1048576,
+          "sha256": "ce960cd96add42add85ff2d22fb71c4ed516074d96584dbd4a399042a84547cd"
+        },
+        {
+          "index": 6,
+          "offset": 6291456,
+          "bytes": 1048576,
+          "sha256": "6e4febc8cfcf71643257db3ed7750cdcfb116cfb5afc4542f31b559cb5970255"
+        },
+        {
+          "index": 7,
+          "offset": 7340032,
+          "bytes": 1048576,
+          "sha256": "21778d60b8796bae8ac37dfde80da069386c7ba6472b0f75420a938a7f346246"
+        },
+        {
+          "index": 8,
+          "offset": 8388608,
+          "bytes": 1048576,
+          "sha256": "f55b4c504230713b2389450099d50b61f9c269550d60e0e23521d5da7b9e7a53"
+        },
+        {
+          "index": 9,
+          "offset": 9437184,
+          "bytes": 1048576,
+          "sha256": "c8b44f49bfdcbac4dc909e3a6670de3a23146c2de7e7cf0b680520d8e04adee2"
+        },
+        {
+          "index": 10,
+          "offset": 10485760,
+          "bytes": 793338,
+          "sha256": "d494951e418a48bd4a4fee068c184ee7dad5fee4f137b0818be19d1d9ccc713d"
         }
       ]
     },

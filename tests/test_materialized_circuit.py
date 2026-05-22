@@ -96,7 +96,16 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert manifest['qroam_expansion']['stream_instances'] == reusable['stream_plan']['whole_oracle_chunk_streams']
     assert manifest['qroam_expansion']['non_clifford'] == reusable['non_clifford_derivation']['qroam_chunk_non_clifford']
     assert manifest['qroam_segment_row_count'] == manifest['qroam_expansion']['stream_instances'] * manifest['qroam_expansion']['segments_per_stream']
+    assert len(manifest['run_length_rows']) == manifest['run_length_row_count']
+    assert len(manifest['materialized_liveness']['rows']) == manifest['liveness_binding_row_count']
+    assert manifest['flat_netlist']['operation_count'] == sum(manifest['gate_totals'].values())
+    assert manifest['flat_netlist']['gate_totals'] == manifest['gate_totals']
+    assert manifest['flat_netlist']['non_clifford_count'] == manifest['public_totals']['non_clifford']
+    assert manifest['flat_netlist']['segment_count'] == len(manifest['flat_netlist']['segments'])
     assert manifest['checks']['qroam_liveness_bindings_use_matching_chunk_target'] is True
+    assert manifest['checks']['flat_netlist_expands_all_run_length_rows'] is True
+    assert manifest['checks']['flat_netlist_gate_totals_match_run_length_rows'] is True
+    assert manifest['checks']['flat_netlist_non_clifford_matches_public_candidate'] is True
     assert manifest['checks']['direct_seed_liveness_excludes_qroam_target_and_chunk'] is True
     assert manifest['checks']['lookup_leaf_liveness_excludes_qroam_target_and_chunk'] is True
     assert manifest['checks']['generated_base_rows_match_public_non_qroam_derivation'] is True

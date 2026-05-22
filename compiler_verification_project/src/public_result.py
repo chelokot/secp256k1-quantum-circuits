@@ -94,6 +94,8 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
     counted_resource_ir = lowering['counted_resource_ir']
     resource_contract_engine = lowering['resource_contract_engine']
     superseded_reference = family_frontier['best_qubit_family']
+    engine_public_totals = public_engine_manifest['public_totals']
+    materialized_public_totals = public_candidate_materialized_manifest['public_totals']
     current_values = {
         'schema': public_values['schema'],
         'selected_family_name': input_payload['selected_family_name'],
@@ -103,8 +105,8 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
         'family_sha256': input_payload['family_sha256'],
         'case_corpus_sha256': input_payload['case_corpus_sha256'],
         'resource_certificate_sha256': input_payload['resource_certificate_sha256'],
-        'expected_full_oracle_non_clifford': int(input_payload['claim_summary']['expected_full_oracle_non_clifford']),
-        'expected_total_logical_qubits': int(input_payload['claim_summary']['expected_total_logical_qubits']),
+        'expected_full_oracle_non_clifford': int(engine_public_totals['non_clifford']),
+        'expected_total_logical_qubits': int(engine_public_totals['logical_qubits']),
         'case_count': int(input_payload['prepared_case_corpus']['case_count']),
         'passed_case_count': int(input_payload['prepared_case_corpus']['case_count']),
     }
@@ -119,6 +121,21 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             and public_values['resource_certificate_sha256'] == input_payload['resource_certificate_sha256']
             and non_clifford == int(input_payload['claim_summary']['expected_full_oracle_non_clifford'])
             and qubits == int(input_payload['claim_summary']['expected_total_logical_qubits'])
+        ),
+        'public_headline_totals_come_from_engine_output': (
+            public_engine_manifest['pass'] is True
+            and public_candidate_materialized_manifest['pass'] is True
+            and non_clifford == int(engine_public_totals['non_clifford'])
+            and qubits == int(engine_public_totals['logical_qubits'])
+            and non_clifford == int(materialized_public_totals['non_clifford'])
+            and qubits == int(materialized_public_totals['logical_qubits'])
+        ),
+        'input_claim_summary_is_engine_snapshot_not_primary_formula': (
+            input_payload['claim_summary']['resource_engine_summary']['non_clifford'] == non_clifford
+            and input_payload['claim_summary']['resource_engine_summary']['logical_qubits'] == qubits
+            and input_payload['claim_summary']['resource_engine_summary']['matches_family_snapshot'] is True
+            and int(input_payload['claim_summary']['non_clifford_formula']['reconstructed_total']) == non_clifford
+            and int(input_payload['claim_summary']['logical_qubit_formula']['reconstructed_total']) == qubits
         ),
         'all_fixtures_bind_same_public_values': (
             core_fixture['public_values'] == public_values

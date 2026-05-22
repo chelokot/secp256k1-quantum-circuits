@@ -54,6 +54,10 @@ def test_zkp_attestation_input_reconstructs_public_claim() -> None:
     arithmetic_operation_ir = resource_document['payload']['arithmetic_operation_ir']
     non_clifford = claim['non_clifford_formula']
     qubits = claim['logical_qubit_formula']
+    engine = claim['resource_engine_summary']
+    assert engine['source'] == 'compiler_family_summary'
+    assert engine['non_clifford'] == claim['expected_full_oracle_non_clifford']
+    assert engine['logical_qubits'] == claim['expected_total_logical_qubits']
     assert non_clifford['reconstructed_total'] == family['full_oracle_non_clifford']
     assert claim['expected_full_oracle_non_clifford'] == family['full_oracle_non_clifford']
     assert qubits['reconstructed_total'] == family['total_logical_qubits']
@@ -105,6 +109,10 @@ def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None
     assert payload['selected_family_name'].endswith('__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1')
     assert claim['expected_full_oracle_non_clifford'] == non_clifford_derivation['candidate_total_non_clifford']
     assert claim['expected_total_logical_qubits'] == qubit_derivation['candidate_total_logical_qubits']
+    assert claim['resource_engine_summary']['source'] == 'reusable_chunk_lowering.executable_resource_engine.public_totals'
+    assert claim['resource_engine_summary']['non_clifford'] == resource_document['payload']['executable_resource_engine']['public_totals']['non_clifford']
+    assert claim['resource_engine_summary']['logical_qubits'] == resource_document['payload']['executable_resource_engine']['public_totals']['logical_qubits']
+    assert claim['resource_engine_summary']['matches_family_snapshot'] is True
     assert len(direct_seed_values) == 1
     assert family['direct_seed_non_clifford'] == next(iter(direct_seed_values))
     assert family['arithmetic_slot_count'] == qubit_derivation['arithmetic_slot_count']

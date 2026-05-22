@@ -2,7 +2,7 @@
   "schema": "compiler-project-zkp-attestation-input-v5",
   "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
   "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
-  "claim_sha256": "2d15b306743caa81cb25d00cee5971841168ceffd13dfc49ed5d940582f82ad1",
+  "claim_sha256": "294e6c67160442bc75696d7c6a67598b06fcb402444a89cec24556e5699d80b1",
   "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
   "family_sha256": "d3cecc3c5c3ec6b7611057d6fb3608dd5e95d7020f66ac55d55e2066d9398eae",
   "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
@@ -12,7 +12,7 @@
     "document_type": "attestation_claim",
     "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_claim.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "2d15b306743caa81cb25d00cee5971841168ceffd13dfc49ed5d940582f82ad1",
+    "sha256": "294e6c67160442bc75696d7c6a67598b06fcb402444a89cec24556e5699d80b1",
     "payload": {
       "schema": "compiler-project-zkp-attestation-claim-v1",
       "selected_family_alias": "reusable-chunk",
@@ -22,6 +22,14 @@
       "expected_full_oracle_non_clifford": 36957412,
       "expected_total_logical_qubits": 1199,
       "expected_case_count": 8,
+      "resource_engine_summary": {
+        "source": "reusable_chunk_lowering.executable_resource_engine.public_totals",
+        "source_document_type": "reusable_chunk_lowering",
+        "source_sha256": "047500decb193aa262ae33fed728563dd18b2e8fcd9caa72deb310bea3d5ada5",
+        "non_clifford": 36957412,
+        "logical_qubits": 1199,
+        "matches_family_snapshot": true
+      },
       "non_clifford_formula": {
         "arithmetic_leaf_non_clifford": 798949,
         "per_leaf_lookup_non_clifford": 393216,
@@ -7008,6 +7016,14 @@
     "expected_full_oracle_non_clifford": 36957412,
     "expected_total_logical_qubits": 1199,
     "expected_case_count": 8,
+    "resource_engine_summary": {
+      "source": "reusable_chunk_lowering.executable_resource_engine.public_totals",
+      "source_document_type": "reusable_chunk_lowering",
+      "source_sha256": "047500decb193aa262ae33fed728563dd18b2e8fcd9caa72deb310bea3d5ada5",
+      "non_clifford": 36957412,
+      "logical_qubits": 1199,
+      "matches_family_snapshot": true
+    },
     "non_clifford_formula": {
       "arithmetic_leaf_non_clifford": 798949,
       "per_leaf_lookup_non_clifford": 393216,

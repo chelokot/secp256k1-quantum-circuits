@@ -862,15 +862,35 @@ def _build_zkp_attestation_materials(
         + int(family['lookup_workspace_qubits'])
         + int(family['live_phase_bits'])
     )
+    resource_engine_totals = resource_certificate.get('executable_resource_engine', {}).get('public_totals')
+    if resource_engine_totals is None:
+        resource_engine_non_clifford = int(family_payload['full_oracle_non_clifford'])
+        resource_engine_logical_qubits = int(family_payload['total_logical_qubits'])
+        resource_engine_source = 'compiler_family_summary'
+    else:
+        resource_engine_non_clifford = int(resource_engine_totals['non_clifford'])
+        resource_engine_logical_qubits = int(resource_engine_totals['logical_qubits'])
+        resource_engine_source = f'{resource_document_type}.executable_resource_engine.public_totals'
     public_claim = {
         'schema': 'compiler-project-zkp-attestation-claim-v1',
         'selected_family_alias': family_name,
         'selected_family_name': family_payload['name'],
         'field_bits': 256,
         'leaf_call_count_total': leaf_call_count_total,
-        'expected_full_oracle_non_clifford': int(family_payload['full_oracle_non_clifford']),
-        'expected_total_logical_qubits': int(family_payload['total_logical_qubits']),
+        'expected_full_oracle_non_clifford': resource_engine_non_clifford,
+        'expected_total_logical_qubits': resource_engine_logical_qubits,
         'expected_case_count': int(case_corpus['case_count']),
+        'resource_engine_summary': {
+            'source': resource_engine_source,
+            'source_document_type': resource_document_type,
+            'source_sha256': resource_certificate_blob['sha256'],
+            'non_clifford': resource_engine_non_clifford,
+            'logical_qubits': resource_engine_logical_qubits,
+            'matches_family_snapshot': (
+                resource_engine_non_clifford == int(family_payload['full_oracle_non_clifford'])
+                and resource_engine_logical_qubits == int(family_payload['total_logical_qubits'])
+            ),
+        },
         'non_clifford_formula': {
             'arithmetic_leaf_non_clifford': int(family_payload['arithmetic_leaf_non_clifford']),
             'per_leaf_lookup_non_clifford': int(family_payload['per_leaf_lookup_non_clifford']),
@@ -932,6 +952,7 @@ def _build_zkp_attestation_materials(
                 'expected_full_oracle_non_clifford': int(public_claim['expected_full_oracle_non_clifford']),
                 'expected_total_logical_qubits': int(public_claim['expected_total_logical_qubits']),
                 'expected_case_count': int(public_claim['expected_case_count']),
+                'resource_engine_summary': dict(public_claim['resource_engine_summary']),
                 'non_clifford_formula': dict(public_claim['non_clifford_formula']),
                 'logical_qubit_formula': dict(public_claim['logical_qubit_formula']),
             },

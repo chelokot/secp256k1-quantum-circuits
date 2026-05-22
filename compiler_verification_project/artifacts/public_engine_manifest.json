@@ -14,7 +14,7 @@
     "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
     "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
     "resource_contract_engine_sha256": "6ec61b5379cd1eb36a568423ffa43a79015c7f3c5dea53ec65cf1f80346b3d6f",
-    "public_candidate_materialized_circuit_manifest_sha256": "c8b88d815db3c5ae8c9d60a41094b79fe96e2778aeb2311a8c39e081f465e873"
+    "public_candidate_materialized_circuit_manifest_sha256": "d4a91c5efa8f3fb41224b1456decb960a2d694388d520fdf768654f7254758fb"
   },
   "instruction_stream": {
     "encoding": [
@@ -598,7 +598,7 @@
       }
     },
     "smoke_case_corpus": {
-      "input_sha256": "9efa691c75eba975d9ae0034db20c59ced8ce1dcc01f314b486aea9f958abbc1",
+      "input_sha256": "07c3ebc9e9ca9d338f6e5ffeb58605e0def6d4d1686df4284cd067d70b660b6d",
       "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
       "case_count": 8,
       "category_counts": {
@@ -614,13 +614,16 @@
   "primitive_operation_evidence": {
     "public_candidate_materialized_circuit_manifest": {
       "schema": "compiler-project-public-candidate-materialized-circuit-manifest-v1",
-      "sha256": "c8b88d815db3c5ae8c9d60a41094b79fe96e2778aeb2311a8c39e081f465e873",
+      "sha256": "d4a91c5efa8f3fb41224b1456decb960a2d694388d520fdf768654f7254758fb",
       "pass": true,
       "operation_stream_sha256": "772bfdb9ddee01fe5be20594cc7a9551905d51bb3292d12aac7147c8e3f26469",
       "liveness_binding_stream_sha256": "5033526d6defd26bb37deafabd8def72ef9a07f98940b2e3bebb96014b4fe042",
       "run_length_row_count": 5461,
       "liveness_binding_row_count": 5461,
       "qroam_segment_row_count": 2976,
+      "flat_operation_count": 39370727,
+      "flat_segment_count": 40,
+      "flat_segment_merkle_root_sha256": "ffb3ab3e4616094d86a82a947d9c327d74af8208f1f35f203c285a24fb9fe761",
       "non_clifford": 36957412,
       "peak_live_qubits": 1199
     },

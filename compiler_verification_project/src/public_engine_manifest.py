@@ -271,6 +271,8 @@ def build_public_engine_manifest(
             and public_candidate_materialized_circuit_manifest['source_digests']['counted_resource_ir_sha256'] == executable_resource_engine['counted_resource_ir_sha256']
             and int(public_candidate_materialized_circuit_manifest['qroam_expansion']['non_clifford']) == int(reusable_chunk_lowering['non_clifford_derivation']['qroam_chunk_non_clifford'])
             and int(public_candidate_materialized_circuit_manifest['materialized_liveness']['peak_live_qubits']) == public_totals['logical_qubits']
+            and int(public_candidate_materialized_circuit_manifest['flat_netlist']['non_clifford_count']) == public_totals['non_clifford']
+            and public_candidate_materialized_circuit_manifest['flat_netlist']['gate_totals']['ccx'] == public_totals['non_clifford']
         ),
     }
     return {
@@ -366,6 +368,9 @@ def build_public_engine_manifest(
                 'run_length_row_count': int(public_candidate_materialized_circuit_manifest['run_length_row_count']),
                 'liveness_binding_row_count': int(public_candidate_materialized_circuit_manifest['liveness_binding_row_count']),
                 'qroam_segment_row_count': int(public_candidate_materialized_circuit_manifest['qroam_segment_row_count']),
+                'flat_operation_count': int(public_candidate_materialized_circuit_manifest['flat_netlist']['operation_count']),
+                'flat_segment_count': int(public_candidate_materialized_circuit_manifest['flat_netlist']['segment_count']),
+                'flat_segment_merkle_root_sha256': public_candidate_materialized_circuit_manifest['flat_netlist']['segment_merkle_root_sha256'],
                 'non_clifford': int(public_candidate_materialized_circuit_manifest['public_totals']['non_clifford']),
                 'peak_live_qubits': int(public_candidate_materialized_circuit_manifest['materialized_liveness']['peak_live_qubits']),
             },

@@ -43,6 +43,7 @@ PUBLIC_CANDIDATE_LIVENESS_COLUMNS = [
     'total_live_qubits',
     'owner_capacity_pass',
 ]
+PUBLIC_CANDIDATE_FLAT_SEGMENT_SIZE = 1_000_000
 
 
 def _empty_gate_totals() -> Dict[str, int]:
@@ -100,6 +101,100 @@ def _public_candidate_liveness_hash(rows: List[Mapping[str, Any]]) -> str:
     for row in rows:
         digest.update(('\t'.join(_canonical_json(row[column]) for column in PUBLIC_CANDIDATE_LIVENESS_COLUMNS) + '\n').encode('ascii'))
     return digest.hexdigest()
+
+
+def _flat_segment_hash(contributions: List[Mapping[str, Any]]) -> str:
+    digest = hashlib.sha256()
+    digest.update(b'compiler-project-public-candidate-flat-segment-v1\n')
+    for contribution in contributions:
+        digest.update((_canonical_json(contribution) + '\n').encode('ascii'))
+    return digest.hexdigest()
+
+
+def _flat_netlist_commitment(
+    *,
+    operation_rows: List[Mapping[str, Any]],
+    liveness_rows: List[Mapping[str, Any]],
+    segment_size: int = PUBLIC_CANDIDATE_FLAT_SEGMENT_SIZE,
+) -> Dict[str, Any]:
+    if segment_size <= 0:
+        raise ValueError('segment_size must be positive')
+    liveness_hash_by_row = {
+        int(row['row_index']): _sha256_payload(row)
+        for row in liveness_rows
+    }
+    operation_count = sum(int(row['total_count']) for row in operation_rows)
+    flat_gate_totals = _empty_gate_totals()
+    flat_non_clifford = 0
+    segments: List[Dict[str, Any]] = []
+    row_index = 0
+    row_offset = 0
+    operation_cursor = 0
+    while operation_cursor < operation_count:
+        segment_start = operation_cursor
+        segment_end = min(segment_start + segment_size, operation_count)
+        segment_gate_totals = _empty_gate_totals()
+        segment_non_clifford = 0
+        contributions: List[Dict[str, Any]] = []
+        while operation_cursor < segment_end:
+            row = operation_rows[row_index]
+            row_total = int(row['total_count'])
+            take = min(row_total - row_offset, segment_end - operation_cursor)
+            gate = str(row['gate'])
+            contribution = {
+                'run_length_row_index': int(row['row_index']),
+                'operation_start': operation_cursor,
+                'operation_end_exclusive': operation_cursor + take,
+                'row_instance_start': row_offset,
+                'row_instance_end_exclusive': row_offset + take,
+                'scope': str(row['scope']),
+                'gate': gate,
+                'source': str(row['source']),
+                'liveness_binding_sha256': liveness_hash_by_row[int(row['row_index'])],
+            }
+            contributions.append(contribution)
+            segment_gate_totals[gate] += take
+            flat_gate_totals[gate] += take
+            if gate == 'ccx':
+                segment_non_clifford += take
+                flat_non_clifford += take
+            operation_cursor += take
+            row_offset += take
+            if row_offset == row_total:
+                row_index += 1
+                row_offset = 0
+        segments.append({
+            'segment_index': len(segments),
+            'operation_start': segment_start,
+            'operation_end_exclusive': segment_end,
+            'operation_count': segment_end - segment_start,
+            'contribution_count': len(contributions),
+            'gate_totals': segment_gate_totals,
+            'non_clifford_count': segment_non_clifford,
+            'sha256': _flat_segment_hash(contributions),
+            'contributions': contributions,
+        })
+    return {
+        'schema': 'compiler-project-public-candidate-flat-index-netlist-v1',
+        'operation_schema': [
+            'operation_index',
+            'run_length_row_index',
+            'row_instance_ordinal',
+            'gate',
+            'scope',
+            'source',
+            'live_wire_ids',
+            'derived_owner_live_qubits',
+        ],
+        'expansion_rule': 'Each segment contribution expands to one primitive instruction for every operation_index in [operation_start, operation_end_exclusive); row_instance_ordinal is the corresponding offset inside the contributing run-length row.',
+        'segment_size': segment_size,
+        'operation_count': operation_count,
+        'segment_count': len(segments),
+        'segment_merkle_root_sha256': _merkle_root([segment['sha256'] for segment in segments]),
+        'gate_totals': flat_gate_totals,
+        'non_clifford_count': flat_non_clifford,
+        'segments': segments,
+    }
 
 
 def _project_defaults() -> Dict[str, Any]:
@@ -688,6 +783,10 @@ def build_public_candidate_materialized_circuit_manifest(
         operation_rows=rows,
         reusable_chunk_lowering=reusable_chunk_lowering,
     )
+    flat_netlist = _flat_netlist_commitment(
+        operation_rows=rows,
+        liveness_rows=liveness_rows,
+    )
     base_rows = [row for row in rows if row['scope'] in ('direct_seed_base', 'lookup_leaf_base', 'arithmetic_leaf_stage')]
     direct_seed_rows = [row for row in rows if row['scope'] == 'direct_seed_base']
     lookup_leaf_rows = [row for row in rows if row['scope'] == 'lookup_leaf_base']
@@ -794,6 +893,14 @@ def build_public_candidate_materialized_circuit_manifest(
             for liveness in liveness_rows
         ),
         'liveness_bindings_reconstruct_public_peak': max(int(row['total_live_qubits']) for row in liveness_rows) == int(public_totals['logical_qubits']),
+        'flat_netlist_expands_all_run_length_rows': (
+            flat_netlist['operation_count'] == sum(int(row['total_count']) for row in rows)
+            and sum(int(segment['operation_count']) for segment in flat_netlist['segments']) == flat_netlist['operation_count']
+            and flat_netlist['segments'][0]['operation_start'] == 0
+            and flat_netlist['segments'][-1]['operation_end_exclusive'] == flat_netlist['operation_count']
+        ),
+        'flat_netlist_gate_totals_match_run_length_rows': flat_netlist['gate_totals'] == gate_totals,
+        'flat_netlist_non_clifford_matches_public_candidate': flat_netlist['non_clifford_count'] == int(public_totals['non_clifford']),
         'qroam_liveness_bindings_use_matching_chunk_target': all(
             f"qroam_chunk_target__{row['table']}__chunk_{row['chunk_index']}" in liveness_rows[int(row['row_index'])]['live_wire_ids']
             for row in qroam_rows
@@ -839,6 +946,7 @@ def build_public_candidate_materialized_circuit_manifest(
         'qroam_segment_row_count': len(qroam_rows),
         'phase_row_count': len(phase_rows),
         'gate_totals': gate_totals,
+        'run_length_rows': rows,
         'public_totals': {
             'non_clifford': non_clifford_total,
             'logical_qubits': int(public_totals['logical_qubits']),
@@ -851,9 +959,11 @@ def build_public_candidate_materialized_circuit_manifest(
                 if int(row['total_live_qubits']) == int(public_totals['logical_qubits'])
             }),
             'owner_capacity_qubits': owner_capacity_by_id,
+            'rows': liveness_rows,
             'preview_head': liveness_rows[:8],
             'preview_tail': liveness_rows[-8:],
         },
+        'flat_netlist': flat_netlist,
         'qroam_expansion': {
             'stream_instances': qroam_stream_term_instances,
             'segments_per_stream': qroam_segment_count,
@@ -892,8 +1002,8 @@ def build_public_candidate_materialized_circuit_manifest(
         'checks': checks,
         'pass': all(checks.values()),
         'boundary': [
-            'This is a deterministic run-length primitive stream for the current public candidate, not yet a Clifford-complete flat netlist.',
-            'It prevents the public candidate from relying on the superseded materialized frontier manifest while the full flat engine is developed.',
+            'This artifact defines the canonical flat operation-index netlist for the current public candidate with run-length contributions, liveness, and owner bindings.',
+            'It is intentionally stored as an expandable segmented commitment rather than a checked-in multi-gigabyte TSV with one physical line per primitive instruction.',
         ],
     }
 
