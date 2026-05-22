@@ -30,3 +30,10 @@ def test_proof_environment_report_require_ready_flag_is_parsed() -> None:
     assert args.require_ready is False
     args = MODULE.parse_args(['--require-ready'])
     assert args.require_ready is True
+
+
+def test_proof_environment_report_resolves_env_configured_protoc(tmp_path, monkeypatch) -> None:
+    protoc = tmp_path / 'protoc'
+    protoc.write_text('#!/bin/sh\n')
+    monkeypatch.setenv('PROTOC', str(protoc))
+    assert MODULE._resolve_executable({'name': 'protoc', 'command': ['protoc', '--version'], 'env_var': 'PROTOC'}) == str(protoc)

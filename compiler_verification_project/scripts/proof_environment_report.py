@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import shutil
 import subprocess
 from pathlib import Path
@@ -31,6 +32,8 @@ REQUIRED_TOOLS = (
     {
         'name': 'protoc',
         'command': ['protoc', '--version'],
+        'fallback_executable': '/tmp/protoc-34.1/bin/protoc',
+        'env_var': 'PROTOC',
         'required_for': 'SP1 prover-types protobuf build scripts',
     },
     {
@@ -59,8 +62,20 @@ OPTIONAL_TOOLS = (
 )
 
 
+def _resolve_executable(tool: dict[str, Any]) -> str | None:
+    env_var = tool.get('env_var')
+    if env_var is not None:
+        configured = os.environ.get(str(env_var))
+        if configured and Path(configured).exists():
+            return configured
+    fallback = tool.get('fallback_executable')
+    if fallback is not None and Path(str(fallback)).exists():
+        return str(fallback)
+    return shutil.which(tool['command'][0])
+
+
 def _probe(tool: dict[str, Any], *, required: bool) -> dict[str, Any]:
-    executable = shutil.which(tool['command'][0])
+    executable = _resolve_executable(tool)
     if executable is None:
         return {
             'name': tool['name'],
@@ -73,8 +88,9 @@ def _probe(tool: dict[str, Any], *, required: bool) -> dict[str, Any]:
             'error': 'not found on PATH',
         }
     try:
+        command = [executable, *tool['command'][1:]]
         result = subprocess.run(
-            tool['command'],
+            command,
             cwd=REPO_ROOT,
             check=False,
             stdout=subprocess.PIPE,

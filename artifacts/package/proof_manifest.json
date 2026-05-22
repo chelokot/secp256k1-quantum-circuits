@@ -303,8 +303,8 @@
       "bytes": 3508
     },
     "compiler_verification_project/scripts/proof_environment_report.py": {
-      "sha256": "ccd151434d16a283db82f7e9ff91b4caff162d3edc259c7fbf007382ca82a094",
-      "bytes": 4430
+      "sha256": "5f0de4f580bf378dfd37ebd5217b0a051a3d65c39c94d83ceea27576e6c871e9",
+      "bytes": 5009
     },
     "compiler_verification_project/scripts/run_zkp_attestation_guarded.py": {
       "sha256": "54e7eb7ded6c1461433771ac35884a7b1ee4a22dc03f1529c95c0a886b40fe6c",
