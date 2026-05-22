@@ -22,12 +22,16 @@ def test_proof_status_reports_fixture_freshness_without_running_provers() -> Non
     report = json.loads(result.stdout)
     assert report['schema'] == 'compiler-project-proof-status-v1'
     assert isinstance(report['input_and_public_values_match'], bool)
+    assert isinstance(report['candidate_input_sha256'], str)
+    assert report['compiler_parameters_sha256'] == report['compiler_parameters_document_sha256']
     assert set(report['systems']) == {'core', 'compressed', 'groth16'}
     assert set(report['stale_systems']).issubset({'core', 'compressed', 'groth16'})
     assert set(report['heavy_rebuild_steps_remaining']).issubset({'compressed', 'groth16'})
     for status in report['systems'].values():
         assert status['system'] in {'core', 'compressed', 'groth16'}
         assert isinstance(status['current'], bool)
+        assert isinstance(status['input_digest_matches_fixture'], bool)
+        assert status['observed_input_sha256'] == report['candidate_input_sha256']
         assert isinstance(status['public_values_match_current'], bool)
         assert isinstance(status['resource_digest_matches_input'], bool)
         proof_current = status['proof_sha256_matches_fixture']
@@ -37,7 +41,9 @@ def test_proof_status_reports_fixture_freshness_without_running_provers() -> Non
         if key_current is None:
             key_current = True
         assert status['current'] == (
-            status['public_values_match_current'] and status['resource_digest_matches_input']
+            status['input_digest_matches_fixture']
+            and status['public_values_match_current']
+            and status['resource_digest_matches_input']
             and proof_current and key_current
         )
     assert report['all_current'] == (report['stale_systems'] == [])

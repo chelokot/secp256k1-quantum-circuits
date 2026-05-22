@@ -266,6 +266,39 @@ def test_parse_args_accepts_compressed_system() -> None:
         sys.argv = original_argv
     assert args.prove is True
     assert args.system == 'compressed'
+    assert args.allow_heavy_proof is False
+
+
+def test_heavy_proof_policy_rejects_accidental_compressed_prove() -> None:
+    class Args:
+        prove = True
+        system = 'compressed'
+        allow_heavy_proof = False
+
+    try:
+        MODULE.validate_heavy_proof_policy(Args())
+    except SystemExit as exc:
+        assert 'heavy release-gate operation' in str(exc)
+        return
+    raise AssertionError('expected accidental compressed proving to be rejected')
+
+
+def test_heavy_proof_policy_allows_explicit_groth16_release_gate() -> None:
+    class Args:
+        prove = True
+        system = 'groth16'
+        allow_heavy_proof = True
+
+    MODULE.validate_heavy_proof_policy(Args())
+
+
+def test_heavy_proof_policy_allows_groth16_verification_without_flag() -> None:
+    class Args:
+        prove = False
+        system = 'groth16'
+        allow_heavy_proof = False
+
+    MODULE.validate_heavy_proof_policy(Args())
 
 
 def test_parse_args_uses_absolute_defaults() -> None:

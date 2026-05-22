@@ -106,9 +106,10 @@ replays the leaf on every public case, checks the affine group law, and
 reconstructs the claimed exact non-Clifford and logical-qubit formulas. It also
 checks the resource certificate, including executable interval liveness,
 qchunk/QROAM-target concurrency, no full-coordinate lookup lane, and numeric
-owner capacity, before committing public values. The candidate directory records
-core, compressed, and Groth16 fixtures, compressed/Groth16 proof bundles, the
-wrap proof bundle, and the matching Groth16 verifying key. During source churn,
+owner capacity. It also validates the committed compiler-parameter document
+before committing public values. The candidate directory records core,
+compressed, and Groth16 fixtures, compressed/Groth16 proof bundles, the wrap
+proof bundle, and the matching Groth16 verifying key. During source churn,
 `compiler_verification_project/scripts/proof_status.py` is the authority for
 whether those proof layers still bind the current input; after the latest
 resource-certificate binding changes, final compressed/Groth16 rebuild remains
@@ -287,12 +288,18 @@ commands that reproduce the checked attestation bundle.
 `compiler_verification_project/scripts/proof_status.py` is the cheap preflight
 for proof freshness: it compares the current candidate input, public values,
 fixtures, proof binaries, and verifier key without invoking any prover.
+Compressed and Groth16 proving are not part of the edit loop; the guarded
+runner requires `--allow-heavy-proof` for those release-gate operations so an
+ordinary verification pass cannot accidentally start a multi-hour proof.
 `compiler_verification_project/scripts/verify_public_headline.py` is the fast
 reviewer entrypoint for the checked public headline: by default it validates
 the public result, input, public values, source-document hashes, fixture
 records, proof-binary digests, wrap proof, and Groth16 verifier key from the
 checked branch state. Add `--verify-compressed` or `--verify-groth16` to run
-the corresponding checked proof verifier as well.
+the corresponding checked proof verifier as well. During source churn this
+command is allowed to fail because stale checked proof artifacts no longer bind
+the current input; use `proof_status.py` first to see whether the failure is an
+expected freshness gate.
 
 `make test` uses the built-in parallel test runner in `scripts/run_tests.py`;
 use `make test-sequential` for a single-process pytest run.

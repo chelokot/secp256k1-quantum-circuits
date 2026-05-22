@@ -134,6 +134,9 @@ def verify_fixture_record(
     for key in (
         'proof_system',
         'verification_key',
+        'input_path',
+        'input_sha256',
+        'input_size_bytes',
         'proof_path',
         'proof_sha256',
         'proof_size_bytes',
@@ -141,7 +144,21 @@ def verify_fixture_record(
         'verifier_key_sha256',
         'verifier_key_size_bytes',
     ):
-        check(checks, f'{label}_record_{key}_matches_fixture', record[key] == fixture[key], fixture[key], record[key])
+        check(checks, f'{label}_record_{key}_matches_fixture', record.get(key) == fixture.get(key), fixture.get(key), record.get(key))
+    check(
+        checks,
+        f'{label}_fixture_binds_checked_input',
+        fixture.get('input_sha256') == sha256_path(CANDIDATE_ROOT / 'zkp_attestation_input.json')
+        and fixture.get('input_size_bytes') == (CANDIDATE_ROOT / 'zkp_attestation_input.json').stat().st_size,
+        {
+            'input_sha256': sha256_path(CANDIDATE_ROOT / 'zkp_attestation_input.json'),
+            'input_size_bytes': (CANDIDATE_ROOT / 'zkp_attestation_input.json').stat().st_size,
+        },
+        {
+            'input_sha256': fixture.get('input_sha256'),
+            'input_size_bytes': fixture.get('input_size_bytes'),
+        },
+    )
     if fixture['proof_path'] is not None:
         proof_path = checked_path(fixture['proof_path'])
         proof_observed = {

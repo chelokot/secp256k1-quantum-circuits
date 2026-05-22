@@ -88,6 +88,13 @@ def fixture_status(system: str, input_payload: dict[str, Any], public_values: di
     proof_status = proof_file_status(fixture)
     key_status = verifier_key_status(fixture)
     fixture_public_values = fixture['public_values']
+    input_path = CANDIDATE_ROOT / 'zkp_attestation_input.json'
+    input_sha256 = sha256_path(input_path)
+    input_size = input_path.stat().st_size
+    input_digest_matches_fixture = (
+        fixture.get('input_sha256') == input_sha256
+        and fixture.get('input_size_bytes') == input_size
+    )
     public_values_match_current = fixture_public_values == public_values
     resource_digest_matches_input = (
         fixture_public_values['resource_certificate_sha256']
@@ -99,11 +106,21 @@ def fixture_status(system: str, input_payload: dict[str, Any], public_values: di
     key_current = key_status['verifier_key_sha256_matches_fixture']
     if key_current is None:
         key_current = True
-    current = public_values_match_current and resource_digest_matches_input and proof_current and key_current
+    current = (
+        input_digest_matches_fixture
+        and public_values_match_current
+        and resource_digest_matches_input
+        and proof_current
+        and key_current
+    )
     return {
         'system': system,
         'current': current,
         'verification_key': fixture['verification_key'],
+        'input_path': fixture.get('input_path'),
+        'input_sha256': fixture.get('input_sha256'),
+        'observed_input_sha256': input_sha256,
+        'input_digest_matches_fixture': input_digest_matches_fixture,
         'resource_certificate_sha256': fixture_public_values['resource_certificate_sha256'],
         'public_values_match_current': public_values_match_current,
         'resource_digest_matches_input': resource_digest_matches_input,
@@ -123,6 +140,9 @@ def build_report() -> dict[str, Any]:
     return {
         'schema': 'compiler-project-proof-status-v1',
         'candidate_input': 'compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json',
+        'candidate_input_sha256': sha256_path(CANDIDATE_ROOT / 'zkp_attestation_input.json'),
+        'compiler_parameters_sha256': input_payload['compiler_parameters_sha256'],
+        'compiler_parameters_document_sha256': input_payload['compiler_parameters_document']['sha256'],
         'resource_certificate_sha256': input_payload['resource_certificate_sha256'],
         'public_values_resource_certificate_sha256': public_values['resource_certificate_sha256'],
         'input_and_public_values_match': input_payload['resource_certificate_sha256'] == public_values['resource_certificate_sha256'],

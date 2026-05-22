@@ -36,6 +36,9 @@ def _fixture_record(fixture_name: str) -> Dict[str, Any]:
     record = _file_record(relative_path)
     record['proof_system'] = fixture['proof_system']
     record['verification_key'] = fixture['verification_key']
+    record['input_path'] = fixture.get('input_path')
+    record['input_sha256'] = fixture.get('input_sha256')
+    record['input_size_bytes'] = fixture.get('input_size_bytes')
     record['proof_path'] = fixture['proof_path']
     record['proof_sha256'] = fixture['proof_sha256']
     record['proof_size_bytes'] = fixture['proof_size_bytes']
@@ -92,6 +95,13 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             core_fixture['public_values'] == public_values
             and compressed_fixture['public_values'] == public_values
             and groth16_fixture['public_values'] == public_values
+        ),
+        'fixtures_bind_checked_input_digest': (
+            all(
+                fixture.get('input_sha256') == _sha256_path(CANDIDATE_ROOT / 'zkp_attestation_input.json')
+                and fixture.get('input_size_bytes') == (CANDIDATE_ROOT / 'zkp_attestation_input.json').stat().st_size
+                for fixture in (core_fixture, compressed_fixture, groth16_fixture)
+            )
         ),
         'compressed_fixture_binds_checked_proof_binary': (
             compressed_fixture['proof_path'] == 'compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin'

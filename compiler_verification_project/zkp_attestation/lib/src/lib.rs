@@ -5043,6 +5043,7 @@ pub fn fixture_json(
     verifying_key: &str,
     proof_hex: Option<&str>,
     system: &str,
+    input_artifact: Option<&FixtureArtifactMetadata>,
     proof_artifact: Option<&FixtureArtifactMetadata>,
     verifier_key_artifact: Option<&FixtureArtifactMetadata>,
 ) -> String {
@@ -5051,6 +5052,9 @@ pub fn fixture_json(
         "proof_system": system,
         "verification_key": verifying_key,
         "public_values": public_values,
+        "input_path": input_artifact.map(|metadata| metadata.path.clone()),
+        "input_sha256": input_artifact.map(|metadata| metadata.sha256.clone()),
+        "input_size_bytes": input_artifact.map(|metadata| metadata.size_bytes),
         "proof": proof_hex,
         "proof_path": proof_artifact.map(|metadata| metadata.path.clone()),
         "proof_sha256": proof_artifact.map(|metadata| metadata.sha256.clone()),

@@ -138,6 +138,11 @@ def parse_args() -> argparse.Namespace:
         help='Optional path to a saved wrap proof bundle for Groth16 retries that skip shrink_wrap.',
     )
     parser.add_argument('--resource-profile', choices=('safe', 'balanced', 'throughput', 'full'), default='balanced')
+    parser.add_argument(
+        '--allow-heavy-proof',
+        action='store_true',
+        help='Required for compressed or Groth16 proving. Verification and execute-only runs do not need it.',
+    )
     parser.add_argument('--write-core-fixture', action='store_true')
     parser.add_argument('--skip-build', action='store_true')
     parser.add_argument('--unsafe-no-host-limits', action='store_true')
@@ -157,6 +162,14 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument('--print-command', action='store_true')
     return parser.parse_args()
+
+
+def validate_heavy_proof_policy(args: argparse.Namespace) -> None:
+    if args.prove and args.system in ('compressed', 'groth16') and not args.allow_heavy_proof:
+        raise SystemExit(
+            'compressed/Groth16 proving is a heavy release-gate operation; '
+            'run fast build/verify/proof_status checks first, then pass --allow-heavy-proof explicitly'
+        )
 
 
 def default_tool_env(env: dict[str, str]) -> None:
@@ -464,6 +477,7 @@ def main() -> None:
     args = parse_args()
     if sum(bool(flag) for flag in (args.execute, args.prove, args.verify_proof_input)) != 1:
         raise SystemExit('specify exactly one of --execute, --prove, or --verify-proof-input')
+    validate_heavy_proof_policy(args)
     env = guarded_env(args.resource_profile, args.sp1_env)
     if args.prove and 'RUST_LOG' not in env:
         env['RUST_LOG'] = 'sp1_prover=info,sp1_sdk=info'

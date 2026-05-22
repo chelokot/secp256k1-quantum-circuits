@@ -80,7 +80,7 @@ What it does ship is:
 - `azure_resource_estimator_results.json` — recorded Microsoft Resource Estimator outputs for every exact family under every checked target profile
 - `cain_exact_transfer.json` — heuristic physical transfer for the exact families
 - `azure_resource_estimator_logical_counts.json` — logicalCounts-style handoff artifact for physical estimators
-- `zkp_attestation_input.json` — prepared SP1 attestation bundle carrying the public document digests, a compiled point-add leaf, a proof-register/resource-owner contract, and the deterministic public cases for the selected standard-QROM family claim
+- `zkp_attestation_input.json` — prepared SP1 attestation bundle carrying the public document digests, committed compiler parameters, a compiled point-add leaf, a proof-register/resource-owner contract, and the deterministic public cases for the selected standard-QROM family claim
 - `zkp_attestation_claim.json` — standalone public claim derived from the selected exact family
 - `zkp_attestation_family.json` — selected standard-QROM family summary bound by the checked SP1 guest
 - `zkp_attestation_cases.json` — deterministic public point-add cases used by the checked SP1 guest
@@ -275,12 +275,20 @@ prover command. It reports whether core, compressed, and Groth16 fixtures still
 bind the current candidate input and checked proof binaries. The
 `--require-all-current` flag is a final-gate check: it exits nonzero when any
 proof layer is stale, without trying to rebuild it.
+Compressed and Groth16 proving are deliberately gated out of the ordinary
+development loop: `run_zkp_attestation_guarded.py` refuses those proof systems
+unless `--allow-heavy-proof` is present. Use that flag only after the fast
+build, targeted `verify.py --groups ...`, `proof_status.py`, and metadata
+checks are already clean enough to justify spending prover time.
 
 The first command is metadata-only and validates the public headline, checked
 input, public values, committed source-document semantic hashes, fixtures,
 proof-binary digests, wrap proof, and Groth16 verifier key from the checked
 branch state. The latter two commands additionally invoke the compressed or
-Groth16 verifier against the checked proof bundle.
+Groth16 verifier against the checked proof bundle. While source artifacts are
+ahead of the checked proof bundles, the metadata command is expected to fail on
+freshness and fixture-input binding checks; `proof_status.py` gives the cheap
+diagnostic without invoking a verifier or prover.
 
 The lower-level guarded runner is:
 
@@ -288,10 +296,6 @@ The lower-level guarded runner is:
 python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --execute
 python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --execute --write-core-fixture
 python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --prove --system core
-python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --prove --system compressed
-python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --prove --system groth16
-python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --prove --system groth16 --compressed-proof-input /tmp/zkp_attestation_proof_compressed.bin
-python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --prove --system groth16 --wrap-proof-input /tmp/zkp_attestation_wrap_proof.bin
 python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --verify-proof-input /tmp/zkp_attestation_proof_groth16.bin --system groth16
 python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --verify-proof-input compiler_verification_project/artifacts/zkp_attestation_proof_groth16.bin --system groth16
 ```
@@ -324,12 +328,14 @@ re-verified cheaply with `--verify-proof-input`. A typical local flow is:
 python compiler_verification_project/scripts/run_zkp_attestation_guarded.py \
   --skip-build \
   --resource-profile safe \
+  --allow-heavy-proof \
   --prove --system compressed \
   --output-dir /tmp/zkp-attestation-compressed
 
 python compiler_verification_project/scripts/run_zkp_attestation_guarded.py \
   --skip-build \
   --resource-profile safe \
+  --allow-heavy-proof \
   --prove --system groth16 \
   --compressed-proof-input /tmp/zkp-attestation-compressed/zkp_attestation_proof_compressed.bin \
   --output-dir /tmp/zkp-attestation-groth16
@@ -337,6 +343,7 @@ python compiler_verification_project/scripts/run_zkp_attestation_guarded.py \
 python compiler_verification_project/scripts/run_zkp_attestation_guarded.py \
   --skip-build \
   --resource-profile safe \
+  --allow-heavy-proof \
   --prove --system groth16 \
   --wrap-proof-input /tmp/zkp-attestation-groth16/zkp_attestation_wrap_proof.bin \
   --output-dir /tmp/zkp-attestation-groth16-retry

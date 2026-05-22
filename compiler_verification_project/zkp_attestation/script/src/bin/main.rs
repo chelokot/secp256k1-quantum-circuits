@@ -355,6 +355,7 @@ fn main() {
     } else {
         None
     };
+    let input_artifact = fixture_artifact_metadata(&resolve_path(&args.input));
     let output_dir = prepare_output_dir(&args.output_dir);
 
     if args.execute {
@@ -389,6 +390,7 @@ fn main() {
                 &pk.verifying_key().bytes32().to_string(),
                 None,
                 proof_system_name(args.system),
+                Some(&input_artifact),
                 None,
                 None,
             );
@@ -704,6 +706,7 @@ fn main() {
         &verifying_key,
         proof_hex.as_deref(),
         proof_system_name(args.system),
+        Some(&input_artifact),
         proof_artifact.as_ref(),
         verifier_key_artifact.as_ref(),
     );
