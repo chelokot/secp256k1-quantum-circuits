@@ -18,6 +18,7 @@ def test_build_targets_include_no_prover_release_candidate() -> None:
     assert 'materialized-circuit-manifest' in MODULE.BUILD_TARGETS
     assert 'headline-resource-manifest' in MODULE.BUILD_TARGETS
     assert 'public-engine-manifest' in MODULE.BUILD_TARGETS
+    assert 'engine-completion-audit' in MODULE.BUILD_TARGETS
 
 
 def test_release_candidate_zkp_uses_release_profile(monkeypatch: Any) -> None:

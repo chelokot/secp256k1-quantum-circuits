@@ -170,6 +170,17 @@ materialized/public engine layer is generated from compiler parameters and
 resource artifacts, not from the ZKP input, leaving ZKP as a downstream
 publication wrapper rather than an upstream claim source.
 
+`engine_completion_audit.json` is the current machine-readable answer to
+"is this already the full Clifford-complete engine?". It is generated from the
+materialized/public engine artifacts and passes only when the headline totals,
+source binding, operand ownership, QROAM primitive cost, semantic corpus, and
+tail auxiliary evidence are coherent. It deliberately keeps
+`clifford_complete_goal_achieved = false` while three macro boundaries remain:
+modular arithmetic physical lowering, tail macro schedule/reversibility as
+auxiliary artifacts, and the final ZKP input bundle not yet being a direct
+single-engine product. That artifact prevents the repository from silently
+promoting a materialized boundary result into a stronger full-engine claim.
+
 The checked JSON sidecars remain the audit-friendly source-of-truth inputs for
 that bundle. The candidate directory records core, compressed, and Groth16
 fixtures plus the shipped Groth16 proof bundle and verifying key. Those files

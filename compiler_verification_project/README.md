@@ -68,6 +68,7 @@ What it does ship is:
 - `resource_liveness_certificate.json` — ZKP-bound liveness certificate deriving owner-capacity requirements from executable leaf liveness, QROAMClean workspace, and phase-shell lowering artifacts
 - `public_candidate_materialized_circuit_manifest.json` — no-ZKP public-candidate primitive-stream manifest binding the reusable-chunk headline to deterministic base, QROAM-segment, phase-shell rows, concrete operand wires, liveness/owner bindings, and a full materialized flat-netlist digest derived by scanning every emitted primitive operation
 - `public_engine_manifest.json` — no-ZKP public engine manifest deriving public totals from the public-candidate `materialized_flat_netlist`, then binding executable instruction/wire/schedule/owner/resource-term streams, the flat execution probe, compiler parameters, semantic-boundary evidence, and primitive-operation evidence from arithmetic operation IR, QROAM primitive certificate, and phase-shell lowering; this artifact no longer consumes the ZKP input
+- `engine_completion_audit.json` — no-ZKP completion/status audit generated from the materialized public engine artifacts; it passes only when public totals, source bindings, QROAM costs, owner/liveness probes, and semantic boundary evidence are coherent, and it keeps `clifford_complete_goal_achieved` false while modular arithmetic, tail macro, and single-engine ZKP-input derivation remain explicit macro boundaries
 - `artifact_digest_tree.json` — chunked SHA-256/Merkle manifest for tracked large artifacts, generated from the checked tree so reviewers can verify large JSON/CSV/proof blobs by chunks rather than by one opaque file hash
 - `proof_environment_contract.json` — checked proof-environment contract binding required tools, no-prover edit-loop gates, publication freshness gates, direct compressed/Groth16 verifier commands, public-headline artifact digests, and curated proof-manifest records
 - `proof_publication_status.json` — checked publication-readiness artifact derived from the shared proof-status engine; it keeps `publication_ready` separate from resource-contract `pass`, records stale systems/blockers, and binds the public headline, proof manifest, and proof-environment contract
@@ -323,11 +324,15 @@ python compiler_verification_project/scripts/verify.py --summary --groups modula
 The reusable-chunk SP1 resource contract also embeds the modular-arithmetic,
 QROAM primitive, and independent QROAM reference certificates, so changing any
 of them invalidates the proof input until the proof layers are rebuilt.
-For the no-prover engine loop, `public_engine_manifest.json` is the tighter
-artifact: `fast_engine_verify.py` regenerates it, checks the public-candidate
+For the no-prover engine loop, `public_engine_manifest.json` and
+`engine_completion_audit.json` are the tighter artifacts:
+`fast_engine_verify.py` regenerates them, checks the public-candidate
 materialized flat stream and semantic evidence, and rejects
 arithmetic-operation, QROAM-cost/workspace, or phase-shell drift before
-compressed or Groth16 proof work is relevant.
+compressed or Groth16 proof work is relevant. The completion audit also rejects
+false full-completion claims: a passing audit currently means the public claim
+is materialized and source-bound with explicit remaining macro boundaries, not
+that the full Clifford-complete engine goal is done.
 Proof fixtures are also expected to bind the exact prepared input by
 `input_path`, `input_sha256`, and `input_size_bytes`; `proof_status.py` treats
 fixtures that explicitly declare no input metadata, or that omit those fields,

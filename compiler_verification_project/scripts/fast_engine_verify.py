@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -13,6 +14,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 VERIFY_GROUPS = [
     'reusable_chunk_lowering_checks',
     'public_engine_manifest_checks',
+    'engine_completion_audit_checks',
     'headline_resource_manifest_checks',
     'public_headline_result_checks',
     'reusable_chunk_tail_candidate_checks',
@@ -23,6 +25,7 @@ VERIFY_GROUPS = [
 
 PYTEST_TARGETS = [
     'tests/test_public_engine_manifest.py',
+    'tests/test_engine_completion_audit.py',
     'tests/test_materialized_circuit.py',
     'tests/test_release_corpus_preflight.py',
     'tests/test_headline_resource_manifest.py',
@@ -37,6 +40,22 @@ PYTEST_TARGETS = [
 def _run(argv: list[str], *, cwd: Path = PROJECT_ROOT) -> None:
     print(f"[fast-engine] {' '.join(argv)}", flush=True)
     subprocess.run(argv, cwd=cwd, check=True)
+
+
+def _pytest_command() -> list[str]:
+    probe = subprocess.run(
+        [sys.executable, '-m', 'pytest', '--version'],
+        cwd=PROJECT_ROOT,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    if probe.returncode == 0:
+        return [sys.executable, '-m', 'pytest']
+    pytest_path = shutil.which('pytest')
+    if pytest_path is None:
+        raise SystemExit('pytest is not importable by this Python and no pytest executable was found on PATH')
+    return [pytest_path]
 
 
 def main() -> None:
@@ -56,7 +75,7 @@ def main() -> None:
         *VERIFY_GROUPS,
     ])
     if not args.skip_pytest:
-        _run([sys.executable, '-m', 'pytest', '-q', *PYTEST_TARGETS])
+        _run([*_pytest_command(), '-q', *PYTEST_TARGETS])
     if args.include_rust:
         _run(
             ['cargo', 'test', '-p', 'secp256k1-zkp-attestation-lib', 'reusable_chunk'],

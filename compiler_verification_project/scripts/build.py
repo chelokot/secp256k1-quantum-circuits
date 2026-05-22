@@ -21,6 +21,7 @@ from artifact_digest_tree import build_artifact_digest_tree  # noqa: E402
 from artifact_registry import BUILD_SUMMARY_ARTIFACT_PATHS, BUILD_SUMMARY_SCHEMA  # noqa: E402
 from arithmetic_operation_ir import build_arithmetic_operation_ir  # noqa: E402
 from constant_provenance import build_constant_provenance  # noqa: E402
+from engine_completion_audit import build_engine_completion_audit  # noqa: E402
 from headline_opcode_coverage import build_headline_opcode_coverage  # noqa: E402
 from headline_resource_manifest import build_headline_resource_manifest  # noqa: E402
 from materialized_circuit import build_materialized_family_manifest, build_public_candidate_materialized_circuit_manifest  # noqa: E402
@@ -50,6 +51,7 @@ BUILD_TARGETS = (
     'public-candidate-materialized-circuit-manifest',
     'headline-resource-manifest',
     'public-engine-manifest',
+    'engine-completion-audit',
     'arithmetic-operation-ir',
     'resource-liveness-certificate',
     'resource-stack',
@@ -346,6 +348,28 @@ def build_public_engine_manifest_artifact() -> None:
     dump_json(artifact_dir / 'public_engine_manifest.json', payload)
 
 
+def build_engine_completion_audit_artifact() -> None:
+    artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
+    compiler_parameters = load_json(artifact_dir / 'compiler_parameters.json')
+    payload = build_engine_completion_audit(
+        public_engine_manifest=load_json(artifact_dir / 'public_engine_manifest.json'),
+        public_candidate_materialized_circuit_manifest=load_json(artifact_dir / 'public_candidate_materialized_circuit_manifest.json'),
+        reusable_chunk_lowering=load_json(artifact_dir / 'reusable_chunk_lowering.json'),
+        arithmetic_operation_ir=load_json(artifact_dir / 'arithmetic_operation_ir.json'),
+        lookup_lowerings=load_json(artifact_dir / 'lookup_lowerings.json'),
+        qroam_primitive_certificate=load_json(artifact_dir / 'qroam_primitive_certificate.json'),
+        phase_shell_lowerings=load_json(artifact_dir / 'phase_shell_lowerings.json'),
+        release_corpus_preflight=load_json(artifact_dir / 'release_corpus_preflight.json'),
+        streamed_lookup_tail_leaf_equivalence=load_json(artifact_dir / 'streamed_lookup_tail_leaf_equivalence.json'),
+        modular_arithmetic_certificate=load_json(artifact_dir / 'modular_arithmetic_certificate.json'),
+        tail_macro_liveness=load_json(artifact_dir / 'tail_macro_liveness.json'),
+        tail_macro_reversibility=load_json(artifact_dir / 'tail_macro_reversibility.json'),
+        tail_macro_schedule_search=load_json(artifact_dir / 'tail_macro_schedule_search.json'),
+        compiler_parameters=compiler_parameters,
+    )
+    dump_json(artifact_dir / 'engine_completion_audit.json', payload)
+
+
 def build_summary_artifact() -> None:
     artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
     frontier = load_json(artifact_dir / 'family_frontier.json')
@@ -409,6 +433,9 @@ def main() -> None:
     if args.target in ('public-engine-manifest',):
         build_public_engine_manifest_artifact()
         payload['public_engine_manifest'] = 'compiler_verification_project/artifacts/public_engine_manifest.json'
+    if args.target in ('engine-completion-audit',):
+        build_engine_completion_audit_artifact()
+        payload['engine_completion_audit'] = 'compiler_verification_project/artifacts/engine_completion_audit.json'
     if args.target in ('resource-stack', 'resource-zkp-and-public'):
         payload.update(build_resource_stack())
     if args.target in ('arithmetic-operation-ir',):
@@ -437,6 +464,8 @@ def main() -> None:
         payload['public_candidate_materialized_circuit_manifest'] = 'compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json'
         build_public_engine_manifest_artifact()
         payload['public_engine_manifest'] = 'compiler_verification_project/artifacts/public_engine_manifest.json'
+        build_engine_completion_audit_artifact()
+        payload['engine_completion_audit'] = 'compiler_verification_project/artifacts/engine_completion_audit.json'
         build_candidate_zkp()
         payload['zkp_attestation_reusable_chunk_candidate'] = 'compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json'
     if args.target in ('release-candidate-zkp',):
@@ -465,6 +494,7 @@ def main() -> None:
         'public_candidate_materialized_circuit_manifest': payload.get('public_candidate_materialized_circuit_manifest'),
         'headline_resource_manifest': payload.get('headline_resource_manifest'),
         'public_engine_manifest': payload.get('public_engine_manifest'),
+        'engine_completion_audit': payload.get('engine_completion_audit'),
         'arithmetic_operation_ir': payload.get('arithmetic_operation_ir'),
         'resource_liveness_certificate': payload.get('resource_liveness_certificate'),
         'qroam_reference_crosscheck': payload.get('qroam_reference_crosscheck'),

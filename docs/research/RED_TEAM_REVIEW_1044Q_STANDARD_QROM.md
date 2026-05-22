@@ -1593,6 +1593,15 @@ Current remediation:
   primitive-instruction commitment with macro/source-row liveness binding, not a
   physical placement/routing schedule or a multi-gigabyte checked-in TSV with
   one line per primitive operation.
+- `compiler_verification_project/artifacts/engine_completion_audit.json` now
+  makes that caveat machine-readable. It regenerates the public totals from the
+  materialized flat netlist, checks that all `6,425` run-length rows are
+  source-bound by kind, rechecks the standard-QROAM cost link, and keeps
+  `clifford_complete_goal_achieved = false` while modular arithmetic physical
+  lowering, tail macro schedule/reversibility, and single-engine ZKP-input
+  derivation remain explicit macro boundaries. The fast engine loop now includes
+  this audit, so a future patch cannot silently promote the current boundary
+  result into a stronger full-engine claim by editing prose alone.
 - `compiler_verification_project/artifacts/arithmetic_operation_ir.json` now
   reconstructs arithmetic block/stage/kernel/selected-leaf primitive counts from
   materialized operation streams and digests. The resource-liveness certificate

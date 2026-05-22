@@ -509,17 +509,28 @@
       },
       "manifest_record_present": true,
       "manifest_sha256_matches_checked_record": true
+    },
+    "engine_completion_audit": {
+      "path": "compiler_verification_project/artifacts/engine_completion_audit.json",
+      "sha256": "a90993f020775de576d22ccd5424c7c329ce7ca4e20daa8c3bd67cfb22bf9ee4",
+      "bytes": 6237,
+      "manifest_record": {
+        "sha256": "a90993f020775de576d22ccd5424c7c329ce7ca4e20daa8c3bd67cfb22bf9ee4",
+        "bytes": 6237
+      },
+      "manifest_record_present": true,
+      "manifest_sha256_matches_checked_record": true
     }
   },
   "proof_manifest": {
     "path": "artifacts/package/proof_manifest.json",
     "schema": null,
-    "file_count": 207
+    "file_count": 209
   },
   "public_headline_result": {
     "path": "compiler_verification_project/artifacts/public_headline_result.json",
-    "sha256": "9f7c776d2bfadaca4c30eb228232e4af746bc163c934f4f9652dbcd4e0529370",
-    "bytes": 14909
+    "sha256": "fbbd922d33790cd85b8f19b8b4db5bffe15eb0b5da839955f5173c81c37294e4",
+    "bytes": 15229
   },
   "notes": [
     "This artifact is deterministic and repository-bound; it is not a pinned container or Nix lock.",

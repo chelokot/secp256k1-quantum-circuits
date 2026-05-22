@@ -1,0 +1,119 @@
+{
+  "schema": "compiler-project-engine-completion-audit-v1",
+  "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+  "overall_status": "materialized_flat_public_claim_with_explicit_remaining_macro_boundaries",
+  "clifford_complete_goal_achieved": false,
+  "public_totals": {
+    "non_clifford": 36957412,
+    "logical_qubits": 1199,
+    "operation_count": 39370727,
+    "source": "public_candidate_materialized_circuit_manifest.materialized_flat_netlist"
+  },
+  "source_digests": {
+    "arithmetic_operation_ir_sha256": "185214c75f615b530dd63c2972c4a76bf2ba3c94624659736c7187a36ee8392e",
+    "compiler_parameters_sha256": "f25239aab49a172397565757d9495c47ea7e88959451bc291d06f0ba37bbb374",
+    "lookup_lowerings_sha256": "70e8ff627f0c537f73162c1d3ccf259a94c3dd756568947c7b4f3cf4665a5637",
+    "modular_arithmetic_certificate_sha256": "9f192725352a30686ae1c553ae292b27e5bbe7104cb760383420f713ab457d3d",
+    "phase_shell_lowerings_sha256": "4411ea5f699e5950a32783f2232796a63987efb5d939f98ac400f4f02ddd415b",
+    "public_candidate_materialized_circuit_manifest_sha256": "ff09eeb21ccf51bf84d6c91ef828ea61dca8617f20055250f9c377a6882b8d14",
+    "public_engine_manifest_sha256": "54cb5b7354aa50f995ea93a769b2706ff9a04d9b6d2243b6966c8ab7f6400424",
+    "qroam_primitive_certificate_sha256": "9a97e536aa4e15e25873adf187db977910a0ef8fb03914958d409940a54eb125",
+    "release_corpus_preflight_sha256": "e8cc293c4fc4702e1fbc0bfcb9b8749515de99a348ecbf55ed123d68738c2f3a",
+    "reusable_chunk_lowering_sha256": "9aabe0bab16494379a2b7e7064c57977051e0a52e440e5422af59df63ea5b0b2",
+    "streamed_lookup_tail_leaf_equivalence_sha256": "90f1880c839d7892eab0b748683d3186cbea9811409a4ab090c9d60d8cca0db3",
+    "tail_macro_liveness_sha256": "5f60042f2ae891387583cc6ee10cb6fdd11aeef460eadac18c6e512712736cb1",
+    "tail_macro_reversibility_sha256": "a5474f2a4b950577da8013b0023ead318a7ea92610406fce869c3adac4d0830a",
+    "tail_macro_schedule_search_sha256": "f3af1926dd886d4c8a25831821657bcef57c3b589daddec08957cab7b1dcf81b"
+  },
+  "source_binding_summary": {
+    "rows_checked": 6425,
+    "rows_by_source_kind": {
+      "arithmetic_operation_ir": 3286,
+      "lookup_lowering_block": 160,
+      "phase_shell_lowering": 3,
+      "qroam_primitive_certificate": 2976
+    },
+    "failure_count": 0
+  },
+  "materialized_flat_netlist": {
+    "operation_count": 39370727,
+    "non_clifford_count": 36957412,
+    "peak_live_qubits": 1199,
+    "operation_stream_sha256": "6e61988359eb402fba94b28ff092ebc2b3e313592cdb9d852cd691fa24eb68af",
+    "segment_merkle_root_sha256": "959477863c6e668de12eb7f4a06687b8682e7200cc72d353a6ef89d26c9e559c",
+    "exact_operation_stream_materialized": true
+  },
+  "covered_boundaries": [
+    {
+      "name": "public_totals",
+      "status": "derived_from_materialized_flat_netlist",
+      "evidence": "public_engine_manifest.public_totals + public_candidate_materialized_circuit_manifest.materialized_flat_netlist"
+    },
+    {
+      "name": "flat_primitive_stream_counts",
+      "status": "materialized_and_counted",
+      "evidence": "materialized_flat_netlist.operation_stream_sha256"
+    },
+    {
+      "name": "primitive_operand_wires_and_owner_liveness",
+      "status": "checked_for_emitted_run_length_rows",
+      "evidence": "operand_parent_binding + flat_execution_probe operand checks"
+    },
+    {
+      "name": "source_operation_binding",
+      "status": "per_row_source_bound",
+      "evidence": "operand_source_binding rows_by_source_kind"
+    },
+    {
+      "name": "standard_qroam_primitive_costs",
+      "status": "qroamclean_k1_bound",
+      "evidence": "qroam_primitive_certificate.qroamclean_cost_model"
+    },
+    {
+      "name": "point_add_semantic_boundary",
+      "status": "release_corpus_and_equivalence_checked",
+      "evidence": "streamed_lookup_tail_leaf_equivalence + release_corpus_preflight"
+    }
+  ],
+  "remaining_macro_boundaries": [
+    {
+      "name": "modular_arithmetic_physical_lowering",
+      "status": "macro_certificate_bound_not_single_flat_executable_source",
+      "required_to_close": "Emit modular arithmetic operations directly into the canonical executable flat IR and derive arithmetic primitive rows only from that stream.",
+      "current_evidence": "arithmetic_operation_ir + modular_arithmetic_certificate"
+    },
+    {
+      "name": "tail_macro_schedule_and_reversibility",
+      "status": "auxiliary_artifact_bound_not_eliminated",
+      "required_to_close": "Make tail macro liveness, reversibility, and schedule search outputs internal checks of the canonical executable IR.",
+      "current_evidence": "tail_macro_liveness + tail_macro_reversibility + tail_macro_schedule_search"
+    },
+    {
+      "name": "single_engine_zkp_input_derivation",
+      "status": "public_totals_engine_bound_but_zkp_bundle_still_document_bundle_oriented",
+      "required_to_close": "Have ZKP input bind the canonical engine artifact as the only authoritative resource document.",
+      "current_evidence": "public_engine_manifest + checked attestation input bundle"
+    }
+  ],
+  "checks": {
+    "public_totals_derive_from_materialized_flat_netlist": true,
+    "materialized_flat_stream_is_exact_and_counted": true,
+    "run_length_rows_are_primitive_complete": true,
+    "operand_domains_bind_counted_live_wires": true,
+    "source_binding_covers_every_run_length_row": true,
+    "qroam_rows_bind_standard_qroam_primitive_costs": true,
+    "lookup_rows_are_per_block_source_bound": true,
+    "arithmetic_rows_are_operation_ir_bound": true,
+    "phase_rows_are_lowering_bound": true,
+    "semantic_boundary_cases_cover_public_point_add_boundary": true,
+    "tail_macro_auxiliary_artifacts_are_current": true,
+    "fast_path_is_no_zkp": true,
+    "remaining_macro_boundaries_are_explicit": true,
+    "public_claim_not_marked_full_clifford_complete_until_macro_boundaries_flattened": true
+  },
+  "pass": true,
+  "notes": [
+    "This audit passing means the current public claim is internally source-bound and the remaining macro boundaries are explicit.",
+    "It does not mean the full thread goal is complete; clifford_complete_goal_achieved remains false until the remaining macro boundaries are eliminated."
+  ]
+}

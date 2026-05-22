@@ -126,9 +126,9 @@ the release gate before claiming current proof freshness. Together these
 artifacts define the public `36,957,412 / 1,199` candidate claim and `8 / 8`
 public cases, while the checked compressed/Groth16 proofs remain explicitly
 stale until rebuilt against the current resource digest.
-The compiler artifacts also include `public_candidate_materialized_circuit_manifest.json`
-and `public_engine_manifest.json`, a no-ZKP engine gate for the current public
-candidate. The public-candidate materialized manifest expands the reusable
+The compiler artifacts also include `public_candidate_materialized_circuit_manifest.json`,
+`public_engine_manifest.json`, and `engine_completion_audit.json`, the no-ZKP
+engine gate for the current public candidate. The public-candidate materialized manifest expands the reusable
 claim into deterministic run-length primitive rows and then scans the full
 materialized primitive stream: every emitted operation has concrete operand
 wires, parent-wire bindings, liveness interval, and owner-qubit total. The
@@ -148,7 +148,14 @@ that point back to counted live parent wires such as `qx`, `qy`, `qz`,
 `qchunk`, folded lookup workspace, the active QROAM chunk target, and the
 semiclassical phase bit, and require each run-length row to bind to a concrete
 arithmetic block, lookup block, QROAM segment, or phase-shell block rather than
-only to a family-level count. The public engine manifest then binds that
+only to a family aggregate. The completion audit is intentionally stricter than
+the headline: it passes only when those source bindings are current and the
+remaining macro boundaries are explicit, while keeping
+`clifford_complete_goal_achieved = false` until modular arithmetic, the tail
+macro, and the final ZKP input contract are all internal products of one
+canonical executable flat IR.
+
+The public engine manifest then binds that
 materialized flat stream, executable instruction rows, wires, schedule events,
 owner-capacity rows, resource terms, semantic-boundary evidence, arithmetic
 operation IR, the generated QROAMClean `K = 1` primitive certificate, and the
@@ -333,7 +340,9 @@ resource edit loop: it refreshes `reusable_chunk_lowering.json`,
 `public_engine_manifest.json`, the candidate ZKP input bundle, and the public
 headline JSON without rebuilding every compiler artifact. Use
 `build.py --target public-engine-manifest` after changing only the no-ZKP public
-engine manifest layer. Use `build.py --target composition-artifacts` after changing resource
+engine manifest layer. Use `build.py --target engine-completion-audit` after
+changing only the no-ZKP completion/status layer that classifies covered engine
+boundaries and remaining macro boundaries. Use `build.py --target composition-artifacts` after changing resource
 or frontier accounting that feeds the composition layer; it refreshes
 `full_attack_inventory.json`, `subcircuit_equivalence.json`, and
 `headline_opcode_coverage.json` without touching any prover. Use

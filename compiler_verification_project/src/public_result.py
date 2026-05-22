@@ -83,6 +83,7 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
     headline_resource_manifest = _load(ARTIFACT_ROOT / 'headline_resource_manifest.json')
     public_candidate_materialized_manifest = _load(ARTIFACT_ROOT / 'public_candidate_materialized_circuit_manifest.json')
     public_engine_manifest = _load(ARTIFACT_ROOT / 'public_engine_manifest.json')
+    engine_completion_audit = _load(ARTIFACT_ROOT / 'engine_completion_audit.json')
     compiler_parameters = _load(ARTIFACT_ROOT / 'compiler_parameters.json')
     family_frontier = _load(ARTIFACT_ROOT / 'family_frontier.json')
     public_policy = compiler_parameters['public_headline_policy']
@@ -106,6 +107,7 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
         'case_corpus_sha256': input_payload['case_corpus_sha256'],
         'resource_certificate_sha256': input_payload['resource_certificate_sha256'],
         'public_engine_manifest_sha256': input_payload['public_engine_manifest_sha256'],
+        'engine_completion_audit_sha256': _sha256_payload(engine_completion_audit),
         'expected_full_oracle_non_clifford': int(engine_public_totals['non_clifford']),
         'expected_total_logical_qubits': int(engine_public_totals['logical_qubits']),
         'case_count': int(input_payload['prepared_case_corpus']['case_count']),
@@ -225,6 +227,19 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             and public_candidate_materialized_manifest['source_digests']['counted_resource_ir_sha256'] == resource_contract_engine['counted_resource_ir_sha256']
             and public_candidate_materialized_manifest['qroam_expansion']['non_clifford'] == lowering['non_clifford_derivation']['qroam_chunk_non_clifford']
         ),
+        'engine_completion_audit_binds_current_public_result_and_remaining_boundaries': (
+            engine_completion_audit['pass'] is True
+            and engine_completion_audit['selected_family_name'] == current_values['selected_family_name']
+            and engine_completion_audit['public_totals']['non_clifford'] == non_clifford
+            and engine_completion_audit['public_totals']['logical_qubits'] == qubits
+            and engine_completion_audit['public_totals']['source'] == 'public_candidate_materialized_circuit_manifest.materialized_flat_netlist'
+            and engine_completion_audit['clifford_complete_goal_achieved'] is False
+            and len(engine_completion_audit['remaining_macro_boundaries']) > 0
+            and engine_completion_audit['checks']['remaining_macro_boundaries_are_explicit'] is True
+            and engine_completion_audit['checks']['public_claim_not_marked_full_clifford_complete_until_macro_boundaries_flattened'] is True
+            and engine_completion_audit['source_digests']['public_engine_manifest_sha256'] == _sha256_payload(public_engine_manifest)
+            and engine_completion_audit['source_digests']['public_candidate_materialized_circuit_manifest_sha256'] == _sha256_payload(public_candidate_materialized_manifest)
+        ),
         'proof_register_contract_binds_prepared_leaf_to_resource_owners': (
             input_payload['proof_register_contract']['pass'] is True
             and len(input_payload['proof_register_contract']['register_rows']) == input_payload['prepared_leaf']['register_count']
@@ -335,6 +350,7 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             'headline_resource_manifest': _file_record('compiler_verification_project/artifacts/headline_resource_manifest.json'),
             'public_candidate_materialized_circuit_manifest': _file_record('compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json'),
             'public_engine_manifest': _file_record('compiler_verification_project/artifacts/public_engine_manifest.json'),
+            'engine_completion_audit': _file_record('compiler_verification_project/artifacts/engine_completion_audit.json'),
         },
         'verification_commands': {
             'metadata': 'python compiler_verification_project/scripts/verify_public_headline.py',
