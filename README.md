@@ -333,7 +333,10 @@ Use `compiler_verification_project/scripts/fast_engine_verify.py` for the
 engine-only no-ZKP loop. It rebuilds the current public resource artifacts,
 verifies the reusable engine, public engine manifest, headline resource
 manifest, public headline, and proof runbook/status metadata, and then runs the
-focused Python mutation tests. Add `--include-rust` when you also want the SP1
+focused Python mutation tests. The public engine manifest also binds semantic
+boundary evidence: the streamed-tail edge-case equivalence, reusable-tail toy
+semantic/scratch trace, 9024-case release corpus preflight, and checked smoke
+case categories. Add `--include-rust` when you also want the SP1
 attestation-library reusable-chunk unit tests, still without proving.
 After compressed/Groth16 proof rebuilds, run the same preflight with
 `--require-current-proofs` to make stale checked proof fixtures a hard failure

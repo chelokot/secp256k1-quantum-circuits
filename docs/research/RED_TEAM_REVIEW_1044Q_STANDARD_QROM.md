@@ -1564,6 +1564,11 @@ Current remediation:
   from `reusable_chunk_lowering.json`. `public_headline_result.json` records this
   artifact as checked evidence, and `fast_engine_verify.py` exercises the
   no-prover edit-loop checks plus mutation tests.
+- The same public engine manifest now binds semantic-boundary evidence into the
+  no-ZKP gate: the 80/80 streamed-tail edge-case equivalence, the reusable-tail
+  toy semantic/scratch trace over 110,692 boundary pairs, the 9,024-case release
+  corpus preflight, and the checked smoke corpus must all cover random,
+  doubling, inverse, accumulator-infinity, and lookup-infinity categories.
 - `compiler_verification_project/artifacts/arithmetic_operation_ir.json` now
   reconstructs arithmetic block/stage/kernel/selected-leaf primitive counts from
   materialized operation streams and digests. The resource-liveness certificate

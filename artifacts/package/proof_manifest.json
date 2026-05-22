@@ -207,8 +207,8 @@
       "bytes": 26931
     },
     "compiler_verification_project/src/integrity.py": {
-      "sha256": "166362bdc3e2b7707b03a01641d5aa79ad1d94521578ebedeedbd23a6c63919b",
-      "bytes": 212892
+      "sha256": "49b4c30ca989c59e178a99c50c2b77a344e72aeadea28b554151f74592d035bf",
+      "bytes": 214594
     },
     "compiler_verification_project/src/generated_block_inventory.py": {
       "sha256": "9a5a8cdc5369e43cb88df726d08fbc88ba727a43b72962388357546b8d382d89",
@@ -223,8 +223,8 @@
       "bytes": 5617
     },
     "compiler_verification_project/src/public_engine_manifest.py": {
-      "sha256": "1473b0da780934f6890460f462433873634ffe37f77aa85fbdb1a9c65d79af72",
-      "bytes": 9559
+      "sha256": "fc535769872640fc0124406b39fff250c5a2e80257007137579ebf7499a17ff0",
+      "bytes": 14678
     },
     "compiler_verification_project/src/lookup_fed_leaf.py": {
       "sha256": "92a9532e751d92bf151074e44be390e591e41afd948cde842447321460da2acc",
@@ -339,16 +339,16 @@
       "bytes": 48173
     },
     "compiler_verification_project/scripts/build.py": {
-      "sha256": "e25a65e430b589bcfc436aa3e1b46bbc5ac2105d34882f4432491aac0fd6e375",
-      "bytes": 21982
+      "sha256": "ba29da643401c3177d38f04859eac8813410375a003ebecbd4f06bb11b984bdd",
+      "bytes": 22341
     },
     "compiler_verification_project/scripts/build_zkp_attestation_input.py": {
       "sha256": "aad1d7866c704594ce66dfe6abc39b87d3e9550bb9f01f0a20b3c33926981a61",
       "bytes": 2584
     },
     "compiler_verification_project/scripts/fast_engine_verify.py": {
-      "sha256": "7f98901bc96ed7f87e6d7c00fe52d98ebc92e8f5364fd6837110aa19e9f765e4",
-      "bytes": 2071
+      "sha256": "4c47d8cb8ba47f2fb4281d631dda730dfc432e4825214a2674b286f8cdadc0d1",
+      "bytes": 2318
     },
     "compiler_verification_project/scripts/fast_zkp_preflight.py": {
       "sha256": "29b965b663f0e2beba3c20eda76b9798751453f2b7cc28ec85e6ed68a64c7c1b",
@@ -711,11 +711,11 @@
       "bytes": 51805
     },
     "compiler_verification_project/artifacts/public_engine_manifest.json": {
-      "sha256": "100a9c40453a859494c822544ed36301a0ef9ec7f044019d373f0db362167315",
-      "bytes": 14928
+      "sha256": "b09630878791962c4d0cfd26cef7faba3d310b31ccc81cdff8ed5d1e1ed74bff",
+      "bytes": 17590
     },
     "compiler_verification_project/artifacts/public_headline_result.json": {
-      "sha256": "fb53f525fac62c6e56296fb26db9ae169f5f3f012a9dc848d6d4d5299933fc0f",
+      "sha256": "735925324952ae3f0cf1aa691d3cf85c53fcd134c47c11d30dd912bbd5dd89ad",
       "bytes": 14168
     },
     "compiler_verification_project/artifacts/cain_exact_transfer.json": {

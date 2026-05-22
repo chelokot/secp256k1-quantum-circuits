@@ -529,6 +529,87 @@
       }
     ]
   },
+  "semantic_boundary_evidence": {
+    "required_categories": [
+      "random",
+      "doubling",
+      "inverse",
+      "accumulator_infinity",
+      "lookup_infinity"
+    ],
+    "streamed_lookup_tail_leaf_equivalence": {
+      "schema": "compiler-project-streamed-lookup-tail-leaf-equivalence-v1",
+      "sha256": "90f1880c839d7892eab0b748683d3186cbea9811409a4ab090c9d60d8cca0db3",
+      "total": 80,
+      "pass": 80,
+      "categories": {
+        "random": {
+          "total": 16,
+          "pass": 16
+        },
+        "doubling": {
+          "total": 16,
+          "pass": 16
+        },
+        "inverse": {
+          "total": 16,
+          "pass": 16
+        },
+        "accumulator_infinity": {
+          "total": 16,
+          "pass": 16
+        },
+        "lookup_infinity": {
+          "total": 16,
+          "pass": 16
+        }
+      }
+    },
+    "reusable_chunk_tail_toy_semantics": {
+      "schema": "compiler-project-reusable-chunk-tail-candidate-v1",
+      "sha256": "f0dfb7f935adbf20cf115f4a2ed522ec4729aa9c9b0e50b88df6f8bf40154f78",
+      "total_boundary_pairs": 110692,
+      "scratch_trace_checked": 110082,
+      "category_totals": {
+        "accumulator_infinity": 606,
+        "doubling": 606,
+        "inverse": 606,
+        "lookup_infinity": 610,
+        "ordinary": 108264
+      },
+      "all_rows_semantic": true,
+      "all_rows_executable": true,
+      "all_rows_scratch_trace": true
+    },
+    "release_corpus_preflight": {
+      "schema": "compiler-project-release-corpus-preflight-v1",
+      "sha256": "e8cc293c4fc4702e1fbc0bfcb9b8749515de99a348ecbf55ed123d68738c2f3a",
+      "profile": "google_comparable_9024",
+      "case_count": 9024,
+      "case_stream_sha256": "6d7087400f8be5e36be84f17f57492783847c03762f0523c2c057b7e9c4fefe6",
+      "category_counts": {
+        "accumulator_infinity": 564,
+        "doubling": 564,
+        "inverse": 564,
+        "lookup_infinity": 564,
+        "random": 6204,
+        "zero_zero": 564
+      }
+    },
+    "smoke_case_corpus": {
+      "input_sha256": "9efa691c75eba975d9ae0034db20c59ced8ce1dcc01f314b486aea9f958abbc1",
+      "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
+      "case_count": 8,
+      "category_counts": {
+        "accumulator_infinity": 1,
+        "doubling": 1,
+        "inverse": 1,
+        "lookup_infinity": 1,
+        "random": 3,
+        "zero_zero": 1
+      }
+    }
+  },
   "fast_no_zkp_contract": {
     "build_target": "public-engine-manifest",
     "verify_group": "public_engine_manifest_checks",
@@ -544,7 +625,11 @@
     "schedule_rows_bind_instruction_stream": true,
     "wire_rows_cover_liveness_catalog": true,
     "owner_rows_cover_capacity_catalog": true,
-    "resource_terms_sum_to_public_total": true
+    "resource_terms_sum_to_public_total": true,
+    "streamed_tail_equivalence_covers_required_categories": true,
+    "toy_tail_semantics_cover_required_categories": true,
+    "release_corpus_preflight_covers_required_categories": true,
+    "smoke_case_corpus_covers_required_categories": true
   },
   "pass": true
 }

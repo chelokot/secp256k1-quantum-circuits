@@ -390,6 +390,13 @@ def test_mutated_public_engine_manifest_is_detected() -> None:
     assert groups['public_engine_manifest_checks']['pass'] < groups['public_engine_manifest_checks']['total']
 
 
+def test_mutated_public_engine_manifest_semantic_evidence_is_detected() -> None:
+    artifacts = _artifacts_for_mutation('public_engine_manifest')
+    artifacts['public_engine_manifest']['semantic_boundary_evidence']['release_corpus_preflight']['category_counts']['lookup_infinity'] = 0
+    groups = _evaluate_mutation(artifacts, 'public_engine_manifest_checks')
+    assert groups['public_engine_manifest_checks']['pass'] < groups['public_engine_manifest_checks']['total']
+
+
 def test_mutated_phase_shell_lowering_is_detected() -> None:
     artifacts = _artifacts_for_mutation('phase_shell_lowerings')
     artifacts['phase_shell_lowerings']['families'][0]['stages'][0]['blocks'][0]['phase_operation_generator']['phase_bits'] -= 1

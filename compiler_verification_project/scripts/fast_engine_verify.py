@@ -15,14 +15,18 @@ VERIFY_GROUPS = [
     'public_engine_manifest_checks',
     'headline_resource_manifest_checks',
     'public_headline_result_checks',
+    'reusable_chunk_tail_candidate_checks',
+    'release_corpus_preflight_checks',
     'proof_environment_contract_checks',
     'proof_publication_status_checks',
 ]
 
 PYTEST_TARGETS = [
     'tests/test_public_engine_manifest.py',
+    'tests/test_release_corpus_preflight.py',
     'tests/test_headline_resource_manifest.py',
     'tests/test_compiler_verification_project.py::test_mutated_public_engine_manifest_is_detected',
+    'tests/test_compiler_verification_project.py::test_mutated_public_engine_manifest_semantic_evidence_is_detected',
     'tests/test_compiler_verification_project.py::test_mutated_reusable_chunk_executable_resource_engine_drift_is_detected',
     'tests/test_compiler_verification_project.py::test_mutated_reusable_chunk_schedule_source_instruction_drift_is_detected',
     'tests/test_public_headline_verifier.py',

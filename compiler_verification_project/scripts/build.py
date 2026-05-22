@@ -274,6 +274,10 @@ def build_public_engine_manifest_artifact() -> None:
     )
     payload = build_public_engine_manifest(
         reusable_chunk_lowering=load_json(artifact_dir / 'reusable_chunk_lowering.json'),
+        reusable_chunk_tail_candidate=load_json(artifact_dir / 'reusable_chunk_tail_candidate.json'),
+        streamed_lookup_tail_leaf_equivalence=load_json(artifact_dir / 'streamed_lookup_tail_leaf_equivalence.json'),
+        release_corpus_preflight=load_json(artifact_dir / 'release_corpus_preflight.json'),
+        zkp_attestation_input=candidate_input,
         selected_family_name=candidate_input['selected_family_name'],
     )
     dump_json(artifact_dir / 'public_engine_manifest.json', payload)

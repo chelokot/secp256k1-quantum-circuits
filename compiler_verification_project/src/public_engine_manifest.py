@@ -95,9 +95,21 @@ def _resource_term_rows(counted_resource_ir: Mapping[str, Any]) -> List[Dict[str
     ]
 
 
+def _case_category_counts(cases: List[Mapping[str, Any]]) -> Dict[str, int]:
+    counts: Dict[str, int] = {}
+    for case in cases:
+        category = str(case['category'])
+        counts[category] = counts.get(category, 0) + 1
+    return dict(sorted(counts.items()))
+
+
 def build_public_engine_manifest(
     *,
     reusable_chunk_lowering: Mapping[str, Any],
+    reusable_chunk_tail_candidate: Mapping[str, Any],
+    streamed_lookup_tail_leaf_equivalence: Mapping[str, Any],
+    release_corpus_preflight: Mapping[str, Any],
+    zkp_attestation_input: Mapping[str, Any],
     selected_family_name: str,
 ) -> Dict[str, Any]:
     executable_resource_engine = reusable_chunk_lowering['executable_resource_engine']
@@ -108,6 +120,20 @@ def build_public_engine_manifest(
     counted_resource_engine = reusable_chunk_lowering['counted_resource_engine']
     resource_contract_engine = reusable_chunk_lowering['resource_contract_engine']
     owner_capacity = reusable_chunk_lowering['owner_capacity']
+    toy_semantics = reusable_chunk_tail_candidate['toy_semantic_equivalence']
+    streamed_equivalence_summary = streamed_lookup_tail_leaf_equivalence['summary']
+    release_category_counts = {
+        str(category): int(count)
+        for category, count in sorted(release_corpus_preflight['category_counts'].items())
+    }
+    smoke_case_category_counts = _case_category_counts(list(zkp_attestation_input['prepared_case_corpus']['cases']))
+    semantic_required_categories = [
+        'random',
+        'doubling',
+        'inverse',
+        'accumulator_infinity',
+        'lookup_infinity',
+    ]
 
     instruction_rows = _instruction_rows(list(executable_contract['instruction_stream']))
     wire_rows = _wire_rows(executable_liveness['wire_catalog'])
@@ -152,6 +178,32 @@ def build_public_engine_manifest(
         'wire_rows_cover_liveness_catalog': len(wire_rows) == len(executable_liveness['wire_catalog']),
         'owner_rows_cover_capacity_catalog': len(owner_rows) == len(owner_capacity['rows']),
         'resource_terms_sum_to_public_total': sum(row['total_non_clifford'] for row in resource_term_rows) == public_totals['non_clifford'],
+        'streamed_tail_equivalence_covers_required_categories': (
+            int(streamed_equivalence_summary['pass']) == int(streamed_equivalence_summary['total'])
+            and all(
+                category in streamed_equivalence_summary['categories']
+                and int(streamed_equivalence_summary['categories'][category]['pass']) == int(streamed_equivalence_summary['categories'][category]['total'])
+                and int(streamed_equivalence_summary['categories'][category]['total']) > 0
+                for category in semantic_required_categories
+            )
+        ),
+        'toy_tail_semantics_cover_required_categories': (
+            toy_semantics['all_rows_semantic'] is True
+            and toy_semantics['all_rows_executable'] is True
+            and toy_semantics['all_rows_scratch_trace'] is True
+            and int(toy_semantics['total_boundary_pairs']) == sum(int(value) for value in toy_semantics['category_totals'].values())
+            and all(int(toy_semantics['category_totals'][category]) > 0 for category in ('doubling', 'inverse', 'accumulator_infinity', 'lookup_infinity'))
+            and int(toy_semantics['category_totals']['ordinary']) > 0
+        ),
+        'release_corpus_preflight_covers_required_categories': (
+            release_corpus_preflight['pass'] is True
+            and int(release_corpus_preflight['case_count']) == 9024
+            and all(release_category_counts.get(category, 0) > 0 for category in semantic_required_categories)
+        ),
+        'smoke_case_corpus_covers_required_categories': (
+            int(zkp_attestation_input['prepared_case_corpus']['case_count']) == len(zkp_attestation_input['prepared_case_corpus']['cases'])
+            and all(smoke_case_category_counts.get(category, 0) > 0 for category in semantic_required_categories)
+        ),
     }
     return {
         'schema': PUBLIC_ENGINE_MANIFEST_SCHEMA,
@@ -197,6 +249,43 @@ def build_public_engine_manifest(
             'expanded_non_clifford_instances': sum(row['instances'] for row in resource_term_rows),
             'sha256': _stream_hash(resource_term_rows, term_columns),
             'rows': resource_term_rows,
+        },
+        'semantic_boundary_evidence': {
+            'required_categories': semantic_required_categories,
+            'streamed_lookup_tail_leaf_equivalence': {
+                'schema': streamed_lookup_tail_leaf_equivalence['schema'],
+                'sha256': _sha256_payload(streamed_lookup_tail_leaf_equivalence),
+                'total': int(streamed_equivalence_summary['total']),
+                'pass': int(streamed_equivalence_summary['pass']),
+                'categories': streamed_equivalence_summary['categories'],
+            },
+            'reusable_chunk_tail_toy_semantics': {
+                'schema': reusable_chunk_tail_candidate['schema'],
+                'sha256': _sha256_payload(reusable_chunk_tail_candidate),
+                'total_boundary_pairs': int(toy_semantics['total_boundary_pairs']),
+                'scratch_trace_checked': int(toy_semantics['scratch_trace_checked']),
+                'category_totals': {
+                    category: int(count)
+                    for category, count in sorted(toy_semantics['category_totals'].items())
+                },
+                'all_rows_semantic': bool(toy_semantics['all_rows_semantic']),
+                'all_rows_executable': bool(toy_semantics['all_rows_executable']),
+                'all_rows_scratch_trace': bool(toy_semantics['all_rows_scratch_trace']),
+            },
+            'release_corpus_preflight': {
+                'schema': release_corpus_preflight['schema'],
+                'sha256': _sha256_payload(release_corpus_preflight),
+                'profile': release_corpus_preflight['profile'],
+                'case_count': int(release_corpus_preflight['case_count']),
+                'case_stream_sha256': release_corpus_preflight['case_stream_sha256'],
+                'category_counts': release_category_counts,
+            },
+            'smoke_case_corpus': {
+                'input_sha256': _sha256_payload(zkp_attestation_input),
+                'case_corpus_sha256': zkp_attestation_input['case_corpus_sha256'],
+                'case_count': int(zkp_attestation_input['prepared_case_corpus']['case_count']),
+                'category_counts': smoke_case_category_counts,
+            },
         },
         'fast_no_zkp_contract': {
             'build_target': 'public-engine-manifest',
