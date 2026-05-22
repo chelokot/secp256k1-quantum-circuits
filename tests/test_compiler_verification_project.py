@@ -170,6 +170,21 @@ def test_mutated_qubit_breakthrough_analysis_is_detected() -> None:
     assert groups['qubit_breakthrough_checks']['pass'] < groups['qubit_breakthrough_checks']['total']
 
 
+def test_mutated_compiler_parameter_field_width_is_detected() -> None:
+    artifacts = _artifacts_for_mutation('compiler_parameters')
+    artifacts['compiler_parameters']['field']['field_bits'] += 1
+    groups = _evaluate_mutation(artifacts, 'compiler_parameter_checks')
+    assert groups['compiler_parameter_checks']['pass'] < groups['compiler_parameter_checks']['total']
+
+
+def test_mutated_proof_corpus_profile_case_count_is_detected() -> None:
+    artifacts = _artifacts_for_mutation('proof_corpus_profiles')
+    selected_name = artifacts['proof_corpus_profiles']['selected_public_profile']
+    artifacts['proof_corpus_profiles']['profiles'][selected_name]['case_count'] += 1
+    groups = _evaluate_mutation(artifacts, 'proof_corpus_profile_checks')
+    assert groups['proof_corpus_profile_checks']['pass'] < groups['proof_corpus_profile_checks']['total']
+
+
 def test_mutated_lookup_lowering_stage_is_detected() -> None:
     artifacts = _artifacts_for_mutation('lookup_lowerings')
     artifacts['lookup_lowerings']['families'][0]['stages'][1]['blocks'][0]['primitive_operation_generator']['bit_count'] += 1

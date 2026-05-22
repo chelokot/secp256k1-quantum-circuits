@@ -601,6 +601,7 @@ def streamed_lookup_table_multiplier_resource(
     arithmetic = arithmetic_lowerings if arithmetic_lowerings is not None else arithmetic_lowering_library(
         FIELD_BITS,
         leaf_opcode_histogram(),
+        qroam_domain_size=FOLDED_MAG_DOMAIN,
     )
     lookup = lookup_lowerings if lookup_lowerings is not None else lookup_lowering_library()
     kernel_lookup = {kernel['opcode']: kernel for kernel in arithmetic['kernels']}
@@ -856,6 +857,7 @@ def arithmetic_kernel_library() -> Dict[str, Any]:
         arithmetic_lowering_library(
             field_bits=FIELD_BITS,
             leaf_opcode_histogram=leaf_opcode_histogram(),
+            qroam_domain_size=FOLDED_MAG_DOMAIN,
         )
     )
 
@@ -866,6 +868,7 @@ def primitive_multiplier_library() -> Dict[str, Any]:
     arithmetic_lowerings = arithmetic_lowering_library(
         field_bits=FIELD_BITS,
         leaf_opcode_histogram=kernel['leaf_opcode_histogram'],
+        qroam_domain_size=FOLDED_MAG_DOMAIN,
     )
     field_mul_kernel = next(row for row in arithmetic_lowerings['kernels'] if row['opcode'] == 'field_mul')
     leaf = central_executable_leaf()
@@ -1207,6 +1210,7 @@ def compiler_family_frontier() -> Dict[str, Any]:
     arithmetic_lowerings = arithmetic_lowering_library(
         field_bits=FIELD_BITS,
         leaf_opcode_histogram=kernel['leaf_opcode_histogram'],
+        qroam_domain_size=FOLDED_MAG_DOMAIN,
     )
     lookup_lowerings = lookup_lowering_library()
     phase_shell_lowerings = phase_shell_lowering_library(FULL_PHASE_REGISTER_BITS)
@@ -1563,6 +1567,7 @@ def full_attack_inventory() -> Dict[str, Any]:
     arithmetic_lowerings = arithmetic_lowering_library(
         field_bits=FIELD_BITS,
         leaf_opcode_histogram=kernel['leaf_opcode_histogram'],
+        qroam_domain_size=FOLDED_MAG_DOMAIN,
     )
     phase_shell_lowerings = phase_shell_lowering_library(FULL_PHASE_REGISTER_BITS)
     generated_block_inventories = build_generated_block_inventories_payload(
@@ -1884,6 +1889,7 @@ def build_all_artifacts() -> Dict[str, Any]:
     arithmetic_lowerings = arithmetic_lowering_library(
         field_bits=FIELD_BITS,
         leaf_opcode_histogram=leaf_opcode_histogram(),
+        qroam_domain_size=FOLDED_MAG_DOMAIN,
     )
     phase_shell_lowerings = phase_shell_lowering_library(FULL_PHASE_REGISTER_BITS)
     phase_shell_rows = phase_shell_family_summary(phase_shell_lowerings)
@@ -2116,6 +2122,7 @@ def build_resource_stack_artifacts() -> Dict[str, Any]:
     arithmetic_lowerings = arithmetic_lowering_library(
         field_bits=FIELD_BITS,
         leaf_opcode_histogram=leaf_opcode_histogram(),
+        qroam_domain_size=FOLDED_MAG_DOMAIN,
     )
     phase_shell_lowerings = phase_shell_lowering_library(FULL_PHASE_REGISTER_BITS)
     phase_shell_rows = phase_shell_family_summary(phase_shell_lowerings)

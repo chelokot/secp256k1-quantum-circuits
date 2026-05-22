@@ -57,10 +57,11 @@ def _merkle_root(leaf_hashes: List[str]) -> str:
 
 
 def _project_defaults() -> Dict[str, Any]:
-    from project import FIELD_BITS, FULL_PHASE_REGISTER_BITS, central_executable_leaf, compiler_family_frontier, leaf_opcode_histogram, raw32_schedule
+    from project import FIELD_BITS, FOLDED_MAG_DOMAIN, FULL_PHASE_REGISTER_BITS, central_executable_leaf, compiler_family_frontier, leaf_opcode_histogram, raw32_schedule
 
     return {
         'field_bits': FIELD_BITS,
+        'qroam_domain_size': FOLDED_MAG_DOMAIN,
         'phase_bits': FULL_PHASE_REGISTER_BITS,
         'frontier': compiler_family_frontier(),
         'leaf': central_executable_leaf(),
@@ -195,6 +196,7 @@ def iter_family_operation_stream(
     lookup_lowerings: Optional[Mapping[str, Any]] = None,
     phase_shell_lowerings: Optional[Mapping[str, Any]] = None,
     field_bits: Optional[int] = None,
+    qroam_domain_size: Optional[int] = None,
     phase_bits: Optional[int] = None,
     leaf_histogram: Optional[Mapping[str, int]] = None,
 ) -> Iterator[Dict[str, Any]]:
@@ -207,6 +209,7 @@ def iter_family_operation_stream(
         or lookup_lowerings is None
         or phase_shell_lowerings is None
         or field_bits is None
+        or qroam_domain_size is None
         or phase_bits is None
         or leaf_histogram is None
     ):
@@ -216,12 +219,17 @@ def iter_family_operation_stream(
     resolved_schedule = schedule if schedule is not None else defaults['schedule']
     resolved_leaf = leaf if leaf is not None else defaults['leaf']
     resolved_field_bits = int(field_bits if field_bits is not None else defaults['field_bits'])
+    resolved_qroam_domain_size = int(qroam_domain_size if qroam_domain_size is not None else defaults['qroam_domain_size'])
     resolved_phase_bits = int(phase_bits if phase_bits is not None else defaults['phase_bits'])
     resolved_leaf_histogram = leaf_histogram if leaf_histogram is not None else defaults['leaf_opcode_histogram']
     resolved_arithmetic_lowerings = (
         arithmetic_lowerings
         if arithmetic_lowerings is not None
-        else arithmetic_lowering_library(field_bits=resolved_field_bits, leaf_opcode_histogram=resolved_leaf_histogram)
+        else arithmetic_lowering_library(
+            field_bits=resolved_field_bits,
+            leaf_opcode_histogram=resolved_leaf_histogram,
+            qroam_domain_size=resolved_qroam_domain_size,
+        )
     )
     resolved_lookup_lowerings = lookup_lowerings if lookup_lowerings is not None else lookup_lowering_library()
     resolved_phase_shell_lowerings = (

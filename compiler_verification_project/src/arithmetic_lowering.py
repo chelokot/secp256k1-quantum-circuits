@@ -449,7 +449,7 @@ def _field_mul_kernel(field_bits: int) -> Dict[str, Any]:
     )
 
 
-def _standard_qroam_coordinate_stream_cost(field_bits: int, domain_size: int = 32768, block_size: int = DEFAULT_QROAM_CLEAN_BLOCK_SIZE) -> Dict[str, int]:
+def _standard_qroam_coordinate_stream_cost(field_bits: int, domain_size: int, block_size: int = DEFAULT_QROAM_CLEAN_BLOCK_SIZE) -> Dict[str, int]:
     lookup_compute = (domain_size + block_size - 1) // block_size + (block_size - 1) * field_bits
     measured_uncompute = (domain_size + block_size - 1) // block_size + (block_size - 1)
     junk_register_count = block_size - 1
@@ -469,8 +469,8 @@ def _standard_qroam_coordinate_stream_cost(field_bits: int, domain_size: int = 3
         'total_non_clifford': lookup_compute + measured_uncompute,
     }
 
-def _streamed_lookup_bit_oracle_stage(field_bits: int, bit_source: str, qroam_block_size: int) -> Dict[str, Any]:
-    cost = _standard_qroam_coordinate_stream_cost(field_bits, block_size=qroam_block_size)
+def _streamed_lookup_bit_oracle_stage(field_bits: int, bit_source: str, qroam_block_size: int, qroam_domain_size: int) -> Dict[str, Any]:
+    cost = _standard_qroam_coordinate_stream_cost(field_bits, domain_size=qroam_domain_size, block_size=qroam_block_size)
     compute_block = _block(
         name=f'streamed_{bit_source}_standard_qroam_compute',
         summary=f'Standard QROAM compute for one selected {bit_source} coordinate stream.',
@@ -524,12 +524,15 @@ def _renamed_field_mul_kernel(
     note: str,
     lookup_bit_source: str | None = None,
     qroam_block_size: int = DEFAULT_QROAM_CLEAN_BLOCK_SIZE,
+    qroam_domain_size: int | None = None,
 ) -> Dict[str, Any]:
     kernel = deepcopy(_field_mul_kernel(field_bits))
     kernel['opcode'] = opcode
     kernel['summary'] = summary
     if lookup_bit_source is not None:
-        kernel['stages'].insert(0, _streamed_lookup_bit_oracle_stage(field_bits, lookup_bit_source, qroam_block_size))
+        if qroam_domain_size is None:
+            raise ValueError('qroam_domain_size is required for streamed lookup arithmetic kernels')
+        kernel['stages'].insert(0, _streamed_lookup_bit_oracle_stage(field_bits, lookup_bit_source, qroam_block_size, qroam_domain_size))
         primitive_totals = {
             key: sum(int(stage['primitive_counts_total'][key]) for stage in kernel['stages'])
             for key in ('ccx', 'cx', 'x', 'measurement')
@@ -598,7 +601,7 @@ def _field_triple_kernel(field_bits: int) -> Dict[str, Any]:
     )
 
 
-def _complete_a0_streamed_tail_kernel(field_bits: int, qroam_block_size: int) -> Dict[str, Any]:
+def _complete_a0_streamed_tail_kernel(field_bits: int, qroam_block_size: int, qroam_domain_size: int) -> Dict[str, Any]:
     streamed_i = deepcopy(_renamed_field_mul_kernel(
         field_bits,
         'field_mul_lookup_y',
@@ -606,6 +609,7 @@ def _complete_a0_streamed_tail_kernel(field_bits: int, qroam_block_size: int) ->
         'This stage is counted inside the macro because I is not materialized as a standalone leaf field value.',
         lookup_bit_source='lookup_y',
         qroam_block_size=qroam_block_size,
+        qroam_domain_size=qroam_domain_size,
     )['stages'])
     streamed_yz = deepcopy(_renamed_field_mul_kernel(
         field_bits,
@@ -614,6 +618,7 @@ def _complete_a0_streamed_tail_kernel(field_bits: int, qroam_block_size: int) ->
         'This stage is counted inside the macro because yZ is not materialized as a standalone leaf field value.',
         lookup_bit_source='lookup_y',
         qroam_block_size=qroam_block_size,
+        qroam_domain_size=qroam_domain_size,
     )['stages'])
     for stage in streamed_i:
         stage['name'] = f"tail_i_{stage['name']}"
@@ -776,7 +781,7 @@ def _complete_a0_streamed_tail_kernel(field_bits: int, qroam_block_size: int) ->
     )
 
 
-def _complete_a0_fully_streamed_tail_kernel(field_bits: int, qroam_block_size: int) -> Dict[str, Any]:
+def _complete_a0_fully_streamed_tail_kernel(field_bits: int, qroam_block_size: int, qroam_domain_size: int) -> Dict[str, Any]:
     streamed_a = deepcopy(_renamed_field_mul_kernel(
         field_bits,
         'field_mul_lookup_x',
@@ -784,6 +789,7 @@ def _complete_a0_fully_streamed_tail_kernel(field_bits: int, qroam_block_size: i
         'This stage is counted inside the macro because A is not materialized as a standalone leaf field value.',
         lookup_bit_source='lookup_x',
         qroam_block_size=qroam_block_size,
+        qroam_domain_size=qroam_domain_size,
     )['stages'])
     streamed_zx = deepcopy(_renamed_field_mul_kernel(
         field_bits,
@@ -792,6 +798,7 @@ def _complete_a0_fully_streamed_tail_kernel(field_bits: int, qroam_block_size: i
         'This stage is counted inside the macro because Zx is not materialized as a standalone leaf field value.',
         lookup_bit_source='lookup_x',
         qroam_block_size=qroam_block_size,
+        qroam_domain_size=qroam_domain_size,
     )['stages'])
     for stage in streamed_a:
         stage['name'] = f"tail_a_{stage['name']}"
@@ -815,7 +822,7 @@ def _complete_a0_fully_streamed_tail_kernel(field_bits: int, qroam_block_size: i
             'The checked field constant is 3b = 21, whose monotone addition chain has six canonical field-add steps.',
         ],
     )
-    streamed_tail = _complete_a0_streamed_tail_kernel(field_bits, qroam_block_size)
+    streamed_tail = _complete_a0_streamed_tail_kernel(field_bits, qroam_block_size, qroam_domain_size)
     inherited_stages = deepcopy(streamed_tail['stages'])
     for stage in inherited_stages:
         stage['name'] = f"fully_streamed_{stage['name']}"
@@ -840,7 +847,7 @@ def _complete_a0_fully_streamed_tail_kernel(field_bits: int, qroam_block_size: i
     )
 
 
-def _complete_a0_all_streamed_tail_kernel(field_bits: int, qroam_block_size: int) -> Dict[str, Any]:
+def _complete_a0_all_streamed_tail_kernel(field_bits: int, qroam_block_size: int, qroam_domain_size: int) -> Dict[str, Any]:
     derive_g = _block(
         name='derive_g_modular_adder',
         summary='One canonical field-adder for G = X + Y inside the all-streamed tail macro.',
@@ -857,10 +864,11 @@ def _complete_a0_all_streamed_tail_kernel(field_bits: int, qroam_block_size: int
         'This stage is counted inside the macro because H is not materialized as a standalone leaf field value.',
         lookup_bit_source='lookup_x_plus_y',
         qroam_block_size=qroam_block_size,
+        qroam_domain_size=qroam_domain_size,
     )['stages'])
     for stage in streamed_h:
         stage['name'] = f"tail_h_{stage['name']}"
-    inherited_stages = deepcopy(_complete_a0_fully_streamed_tail_kernel(field_bits, qroam_block_size)['stages'])
+    inherited_stages = deepcopy(_complete_a0_fully_streamed_tail_kernel(field_bits, qroam_block_size, qroam_domain_size)['stages'])
     for stage in inherited_stages:
         stage['name'] = f"all_streamed_{stage['name']}"
     return _kernel(
@@ -920,7 +928,10 @@ def arithmetic_lowering_library(
     field_bits: int,
     leaf_opcode_histogram: Mapping[str, int],
     qroam_block_size: int = DEFAULT_QROAM_CLEAN_BLOCK_SIZE,
+    qroam_domain_size: int | None = None,
 ) -> Dict[str, Any]:
+    if qroam_domain_size is None:
+        raise ValueError('qroam_domain_size must be supplied by the compiler parameter source')
     kernels = [
         _field_mul_kernel(field_bits),
         _renamed_field_mul_kernel(
@@ -930,6 +941,7 @@ def arithmetic_lowering_library(
             'The streamed lookup coordinate is a table-controlled constant input and is not counted as a leaf field wire.',
             lookup_bit_source='lookup_x',
             qroam_block_size=qroam_block_size,
+            qroam_domain_size=qroam_domain_size,
         ),
         _renamed_field_mul_kernel(
             field_bits,
@@ -938,6 +950,7 @@ def arithmetic_lowering_library(
             'The streamed lookup coordinate is a table-controlled constant input and is not counted as a leaf field wire.',
             lookup_bit_source='lookup_y',
             qroam_block_size=qroam_block_size,
+            qroam_domain_size=qroam_domain_size,
         ),
         _renamed_field_mul_kernel(
             field_bits,
@@ -946,14 +959,15 @@ def arithmetic_lowering_library(
             'The streamed lookup sum is a table-controlled constant input and is not counted as a leaf field wire.',
             lookup_bit_source='lookup_x_plus_y',
             qroam_block_size=qroam_block_size,
+            qroam_domain_size=qroam_domain_size,
         ),
         _field_add_kernel(field_bits),
         _field_sub_kernel(field_bits),
         _field_sub_sum_kernel(field_bits),
         _field_triple_kernel(field_bits),
-        _complete_a0_streamed_tail_kernel(field_bits, qroam_block_size),
-        _complete_a0_fully_streamed_tail_kernel(field_bits, qroam_block_size),
-        _complete_a0_all_streamed_tail_kernel(field_bits, qroam_block_size),
+        _complete_a0_streamed_tail_kernel(field_bits, qroam_block_size, qroam_domain_size),
+        _complete_a0_fully_streamed_tail_kernel(field_bits, qroam_block_size, qroam_domain_size),
+        _complete_a0_all_streamed_tail_kernel(field_bits, qroam_block_size, qroam_domain_size),
         _mul_const_kernel(field_bits, 21),
         _field_select_kernel(field_bits),
     ]

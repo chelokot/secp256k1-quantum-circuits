@@ -1511,6 +1511,11 @@ Current remediation:
   test constants. This does not replace an external implementation, but it
   removes another self-confirming hardcoded-parameter path from the selected
   QROAM checks.
+- The arithmetic lowering generator now requires its QROAM domain size from the
+  compiler parameter source. The old hidden `32768` default was removed from
+  `_standard_qroam_coordinate_stream_cost`, so changing the folded magnitude
+  domain must flow through the project constants and integrity checks rather
+  than silently preserving the old table size inside arithmetic lowering.
 
 ### P1: Baseline source package
 
@@ -1582,6 +1587,14 @@ Exit criterion:
 
 - Each class fails at the earliest relevant layer and in the full release
   pipeline.
+
+Current remediation:
+
+- `tests/test_compiler_verification_project.py` now includes model-level
+  mutation tests for two previously listed drift classes: changing the selected
+  proof-corpus case count without updating public values fails
+  `proof_corpus_profile_checks`, and altering the field width in only
+  `compiler_parameters.json` fails `compiler_parameter_checks`.
 
 ## Recommended Public Wording
 

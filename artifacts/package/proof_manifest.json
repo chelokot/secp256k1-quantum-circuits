@@ -187,8 +187,8 @@
       "bytes": 3923
     },
     "compiler_verification_project/src/arithmetic_lowering.py": {
-      "sha256": "93bbb69376804aab1c075be6a9522345c29a603332f6477177648a0bd9faad5d",
-      "bytes": 47224
+      "sha256": "a2832ae2cfae719d599032107ecb429e9b722524e2837724c16e877a953f3d69",
+      "bytes": 48182
     },
     "compiler_verification_project/src/arithmetic_operation_ir.py": {
       "sha256": "da433d62281944a2358ddfa7b6b7704ce0f9d582805a55391466b3ade4f75d90",
@@ -203,8 +203,8 @@
       "bytes": 26931
     },
     "compiler_verification_project/src/integrity.py": {
-      "sha256": "6f74379ef7223e521f538de4ea0180e526ff2dab6ea6867696f4ff207db40e93",
-      "bytes": 186842
+      "sha256": "a2972ed293a7f74826b6a6d1fbf968a56b60e82391e96b758438956273cd497f",
+      "bytes": 186887
     },
     "compiler_verification_project/src/generated_block_inventory.py": {
       "sha256": "9a5a8cdc5369e43cb88df726d08fbc88ba727a43b72962388357546b8d382d89",
@@ -223,8 +223,8 @@
       "bytes": 38865
     },
     "compiler_verification_project/src/materialized_circuit.py": {
-      "sha256": "b9b540e437703f96d64a767b87b97b6d21d4505aae9dac8c07c6b700d667edcb",
-      "bytes": 16578
+      "sha256": "7caa2d64b24d4392d1dd3488ad787d74f7089e83a952a3b40da31c6f8940a19d",
+      "bytes": 16944
     },
     "compiler_verification_project/src/modular_arithmetic_certificate.py": {
       "sha256": "83d27408f978acc2f9456f2d244a7fe3370810650aad9079495b6a463192e78f",
@@ -239,8 +239,8 @@
       "bytes": 12143
     },
     "compiler_verification_project/src/project.py": {
-      "sha256": "5af89d5049dbed8c5aa791c0cf55cb5b165da152480de8c33d46af113cce895c",
-      "bytes": 114838
+      "sha256": "3784d001b9d239ae181fb93bfc17bd42ddfdf0def069f6e40b6ae9ae509ea3cb",
+      "bytes": 115157
     },
     "compiler_verification_project/src/proof_corpus_profiles.py": {
       "sha256": "355ee38ec82ac32d5284fac167b61a3616832723d82e1c77d743d29bef33ea20",

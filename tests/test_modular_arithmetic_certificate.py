@@ -19,13 +19,14 @@ if str(COMPILER_SRC) not in sys.path:
 
 from integrity import build_modular_arithmetic_certificate_checks  # noqa: E402
 from modular_arithmetic_certificate import build_modular_arithmetic_certificate, pseudo_mersenne_reduce  # noqa: E402
-from project import FIELD_BITS, arithmetic_lowering_library, leaf_opcode_histogram  # noqa: E402
+from project import FIELD_BITS, FOLDED_MAG_DOMAIN, arithmetic_lowering_library, leaf_opcode_histogram  # noqa: E402
 
 
 def _arithmetic_lowerings() -> dict:
     return arithmetic_lowering_library(
         field_bits=FIELD_BITS,
         leaf_opcode_histogram=leaf_opcode_histogram(),
+        qroam_domain_size=FOLDED_MAG_DOMAIN,
     )
 
 

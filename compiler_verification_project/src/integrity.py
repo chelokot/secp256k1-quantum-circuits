@@ -347,6 +347,7 @@ def build_arithmetic_kernel_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
     expected_lowerings = arithmetic_lowering_library(
         field_bits=FIELD_BITS,
         leaf_opcode_histogram=leaf_opcode_histogram(),
+        qroam_domain_size=FOLDED_MAG_DOMAIN,
     )
     expected_kernel = arithmetic_kernel_summary(expected_lowerings)
     kernel_lookup = {row['opcode']: row for row in arithmetic_lowerings['kernels']}
