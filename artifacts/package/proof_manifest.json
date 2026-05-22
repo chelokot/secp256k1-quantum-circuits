@@ -235,8 +235,8 @@
       "bytes": 38865
     },
     "compiler_verification_project/src/materialized_circuit.py": {
-      "sha256": "f4277947c4711664653523dd1e8e2b26e4aab059c2708c04fd8b238bd201693c",
-      "bytes": 49236
+      "sha256": "79f1ec58717e97323bcde9a39bf694274c22718f611110f1f1565e677ef3aec5",
+      "bytes": 56344
     },
     "compiler_verification_project/src/modular_arithmetic_certificate.py": {
       "sha256": "216d3031aa3989ddf7b366d3a0a37cdcb5940568f94dbd57a99218ecbbfcd1d6",
@@ -695,8 +695,8 @@
       "bytes": 27244
     },
     "compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json": {
-      "sha256": "5e2f89276e4b7b7849f6b26bf7e3dd2cb34529b9e1aa0ec78e46f59b4c1a29b2",
-      "bytes": 11279098
+      "sha256": "57983672a1ca19f00b5d164668c7df9be08d8c6f3caf0dbe321a5a3e3aa8b42e",
+      "bytes": 18781558
     },
     "compiler_verification_project/artifacts/qubit_breakthrough_analysis.json": {
       "sha256": "3133426aa9630b6895e1116866ae416725315c493840004a2a40b5f95cb38cfb",
@@ -715,11 +715,11 @@
       "bytes": 51805
     },
     "compiler_verification_project/artifacts/public_engine_manifest.json": {
-      "sha256": "98539dd95d1445f16215051306b11d7d0549b9545881be0a52053f35a098a5ac",
+      "sha256": "e4c4b7172497cb60bfe4abec2afd6d418b4cd80002d24aab53731923866ea751",
       "bytes": 20619
     },
     "compiler_verification_project/artifacts/public_headline_result.json": {
-      "sha256": "d8d8847c0b31f4e01bf977043396a5dd26c49032214fcd0185bc4794aea7c4fb",
+      "sha256": "97b081d8ed4e549db5c3574d149e05ac335633368dbdd6643bfc7331f40ec010",
       "bytes": 14660
     },
     "compiler_verification_project/artifacts/cain_exact_transfer.json": {
@@ -739,8 +739,8 @@
       "bytes": 42211
     },
     "compiler_verification_project/artifacts/artifact_digest_tree.json": {
-      "sha256": "fe8fd878ea104e1a00609afe85a0c469dc18a28d8e219c948fffe1db94cb5def",
-      "bytes": 26612
+      "sha256": "5d4e6b5ec285da6ac5ee7c7f05d4f2290136332fc783144ffdd376a5242f129e",
+      "bytes": 27935
     },
     "compiler_verification_project/artifacts/zkp_attestation_input.json": {
       "sha256": "aa63efbcef20e5ee978565e066a28178c8c122ecee90bd46383f968aa8b4e5e4",

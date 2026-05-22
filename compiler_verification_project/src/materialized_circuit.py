@@ -32,6 +32,7 @@ PUBLIC_CANDIDATE_STREAM_COLUMNS = [
     'total_count',
     'non_clifford_count',
     'provenance_sha256',
+    'primitive_operand_contract_sha256',
 ]
 PUBLIC_CANDIDATE_LIVENESS_COLUMNS = [
     'row_index',
@@ -85,6 +86,44 @@ def _canonical_json(payload: Any) -> str:
 
 def _sha256_payload(payload: Any) -> str:
     return hashlib.sha256(_canonical_json(payload).encode('ascii')).hexdigest()
+
+
+def _primitive_operand_contract(
+    *,
+    scope: str,
+    gate: str,
+    source_kind: str,
+    operand_domains: List[Mapping[str, Any]],
+    source_digest: str,
+) -> Dict[str, Any]:
+    owner_ids = sorted({str(domain['owner_id']) for domain in operand_domains})
+    return {
+        'schema': 'compiler-project-primitive-operand-contract-v1',
+        'scope': scope,
+        'gate': gate,
+        'source_kind': source_kind,
+        'source_digest_sha256': source_digest,
+        'owner_ids': owner_ids,
+        'operand_domains': [dict(domain) for domain in operand_domains],
+    }
+
+
+def _arithmetic_stage_operand_domains(stage: Mapping[str, Any]) -> List[Dict[str, Any]]:
+    max_operand_slots = max(
+        int(block['operand_profile']['operand_slots_required'])
+        for block in stage['blocks']
+    )
+    domains = [
+        {
+            'domain_id': f"{stage['stage']}:arithmetic_field_slots",
+            'owner_id': 'arithmetic_slot_register_file',
+            'wire_template': 'arithmetic_slot_register_file.bit[{operand_index}]',
+            'operand_index_min': 0,
+            'operand_index_max_exclusive': max_operand_slots,
+            'role': str(stage['category']),
+        }
+    ]
+    return domains
 
 
 def _public_candidate_stream_hash(rows: List[Mapping[str, Any]]) -> str:
@@ -151,6 +190,8 @@ def _flat_netlist_commitment(
                 'gate': gate,
                 'source': str(row['source']),
                 'liveness_binding_sha256': liveness_hash_by_row[int(row['row_index'])],
+                'primitive_operand_contract_sha256': str(row['primitive_operand_contract_sha256']),
+                'primitive_operand_owner_ids': list(row['primitive_operand_contract']['owner_ids']),
             }
             contributions.append(contribution)
             segment_gate_totals[gate] += take
@@ -517,6 +558,29 @@ def _phase_run_length_rows(phase_shell: Mapping[str, Any], row_index: int) -> Li
             for gate, count in sorted(block['count_profile_total'].items()):
                 if gate == 'rotation_depth' or int(count) == 0:
                     continue
+                provenance = {
+                    'phase_shell': phase_shell['name'],
+                    'stage': stage['name'],
+                    'block': block['name'],
+                    'gate': gate,
+                    'count': int(count),
+                }
+                contract = _primitive_operand_contract(
+                    scope='phase_shell',
+                    gate=gate,
+                    source_kind='phase_shell_lowering',
+                    source_digest=_sha256_payload(provenance),
+                    operand_domains=[
+                        {
+                            'domain_id': 'semiclassical_qft_live_phase_bit',
+                            'owner_id': 'phase_shell_live_register',
+                            'wire_template': 'semiclassical_qft_live_phase_bit',
+                            'operand_index_min': 0,
+                            'operand_index_max_exclusive': 1,
+                            'role': 'phase_shell_live_qubit',
+                        }
+                    ],
+                )
                 rows.append({
                     'row_index': row_index + len(rows),
                     'scope': 'phase_shell',
@@ -525,13 +589,9 @@ def _phase_run_length_rows(phase_shell: Mapping[str, Any], row_index: int) -> Li
                     'instance_count': int(count),
                     'total_count': int(count),
                     'non_clifford_count': 0,
-                    'provenance_sha256': _sha256_payload({
-                        'phase_shell': phase_shell['name'],
-                        'stage': stage['name'],
-                        'block': block['name'],
-                        'gate': gate,
-                        'count': int(count),
-                    }),
+                    'provenance_sha256': _sha256_payload(provenance),
+                    'primitive_operand_contract': contract,
+                    'primitive_operand_contract_sha256': _sha256_payload(contract),
                 })
     return rows
 
@@ -551,6 +611,35 @@ def _qroam_run_length_rows(
     for term in qroam_terms:
         for instance_index in range(int(term['instances'])):
             for segment in qroam_primitive_certificate['operation_stream']['segments']:
+                provenance = {
+                    'term_id': term['term_id'],
+                    'term_instance_index': instance_index,
+                    'segment': segment,
+                }
+                contract = _primitive_operand_contract(
+                    scope='qroam_chunk_stream',
+                    gate='ccx',
+                    source_kind='qroam_primitive_certificate',
+                    source_digest=str(segment['sha256']),
+                    operand_domains=[
+                        {
+                            'domain_id': f"{term['table']}:chunk_{term['chunk_index']}:qroam_target",
+                            'owner_id': 'lookup_workspace',
+                            'wire_template': f"qroam_chunk_target__{term['table']}__chunk_{term['chunk_index']}.bit[{{operand_index}}]",
+                            'operand_index_min': int(segment['start_address']),
+                            'operand_index_max_exclusive': int(segment['end_address_exclusive']),
+                            'role': 'qroam_target_or_unary_step',
+                        },
+                        {
+                            'domain_id': 'qchunk',
+                            'owner_id': 'arithmetic_slot_register_file',
+                            'wire_template': 'qchunk.bit[{operand_index}]',
+                            'operand_index_min': 0,
+                            'operand_index_max_exclusive': int(reusable_chunk_lowering['stream_plan']['chunk_bits']),
+                            'role': 'qroam_chunk_consumer_register',
+                        },
+                    ],
+                )
                 rows.append({
                     'row_index': row_index + len(rows),
                     'scope': 'qroam_chunk_stream',
@@ -559,11 +648,9 @@ def _qroam_run_length_rows(
                     'instance_count': int(segment['operation_count']),
                     'total_count': int(segment['operation_count']),
                     'non_clifford_count': int(segment['ccx']),
-                    'provenance_sha256': _sha256_payload({
-                        'term_id': term['term_id'],
-                        'term_instance_index': instance_index,
-                        'segment': segment,
-                    }),
+                    'provenance_sha256': _sha256_payload(provenance),
+                    'primitive_operand_contract': contract,
+                    'primitive_operand_contract_sha256': _sha256_payload(contract),
                     'term_id': str(term['term_id']),
                     'term_instance_index': instance_index,
                     'table': str(term['table']),
@@ -581,6 +668,8 @@ def _count_rows_from_primitive_counts(
     source: str,
     primitive_counts: Mapping[str, Any],
     provenance_payload: Mapping[str, Any],
+    operand_domains: List[Mapping[str, Any]],
+    source_kind: str,
     extra: Optional[Mapping[str, Any]] = None,
 ) -> List[Dict[str, Any]]:
     rows: List[Dict[str, Any]] = []
@@ -588,6 +677,19 @@ def _count_rows_from_primitive_counts(
         gate_count = int(count)
         if gate_count == 0:
             continue
+        provenance = {
+            **provenance_payload,
+            'gate': gate,
+            'count': gate_count,
+        }
+        provenance_sha256 = _sha256_payload(provenance)
+        contract = _primitive_operand_contract(
+            scope=scope,
+            gate=str(gate),
+            source_kind=source_kind,
+            source_digest=provenance_sha256,
+            operand_domains=operand_domains,
+        )
         rows.append({
             'row_index': row_index + len(rows),
             'scope': scope,
@@ -596,11 +698,9 @@ def _count_rows_from_primitive_counts(
             'instance_count': gate_count,
             'total_count': gate_count,
             'non_clifford_count': gate_count if gate == 'ccx' else 0,
-            'provenance_sha256': _sha256_payload({
-                **provenance_payload,
-                'gate': gate,
-                'count': gate_count,
-            }),
+            'provenance_sha256': provenance_sha256,
+            'primitive_operand_contract': contract,
+            'primitive_operand_contract_sha256': _sha256_payload(contract),
             **dict(extra or {}),
         })
     return rows
@@ -632,6 +732,32 @@ def _public_base_run_length_rows(
     )
     arithmetic_kernel = _selected_arithmetic_kernel(arithmetic_operation_ir)
     leaf_call_count = int(reusable_chunk_lowering['stream_plan']['leaf_call_count_total'])
+    lookup_operand_domains = [
+        {
+            'domain_id': 'folded_lookup_control_workspace',
+            'owner_id': 'lookup_workspace',
+            'wire_template': 'folded_lookup_control_workspace.bit[{operand_index}]',
+            'operand_index_min': 0,
+            'operand_index_max_exclusive': 18,
+            'role': 'folded_lookup_decode_control',
+        },
+        {
+            'domain_id': 'lookup_conditioned_arithmetic_slots',
+            'owner_id': 'arithmetic_slot_register_file',
+            'wire_template': 'qx_qy_qz.bit[{operand_index}]',
+            'operand_index_min': 0,
+            'operand_index_max_exclusive': 768,
+            'role': 'lookup_infinity_and_conditional_y_negation_target',
+        },
+        {
+            'domain_id': 'lookup_infinity_flag',
+            'owner_id': 'control_slot_register_file',
+            'wire_template': 'f_lookup_inf',
+            'operand_index_min': 0,
+            'operand_index_max_exclusive': 1,
+            'role': 'lookup_boundary_control_flag',
+        },
+    ]
     rows: List[Dict[str, Any]] = []
     rows.extend(_count_rows_from_primitive_counts(
         row_index=len(rows),
@@ -643,6 +769,8 @@ def _public_base_run_length_rows(
             'usage': 'direct_seed',
             'primitive_counts_total': lookup_family['primitive_counts_total'],
         },
+        operand_domains=lookup_operand_domains,
+        source_kind='lookup_lowering',
     ))
     for leaf_call_index in range(leaf_call_count):
         rows.extend(_count_rows_from_primitive_counts(
@@ -656,6 +784,8 @@ def _public_base_run_length_rows(
                 'leaf_call_index': leaf_call_index,
                 'primitive_counts_total': lookup_family['primitive_counts_total'],
             },
+            operand_domains=lookup_operand_domains,
+            source_kind='lookup_lowering',
             extra={'leaf_call_index': leaf_call_index},
         ))
         for stage in arithmetic_kernel['stages']:
@@ -676,6 +806,8 @@ def _public_base_run_length_rows(
                     'block_digest_sha256': stage['block_digest_sha256'],
                     'primitive_counts_total': stage['primitive_counts_total'],
                 },
+                operand_domains=_arithmetic_stage_operand_domains(stage),
+                source_kind='arithmetic_operation_ir',
                 extra={
                     'leaf_call_index': leaf_call_index,
                     'arithmetic_stage': str(stage['stage']),
@@ -901,6 +1033,23 @@ def build_public_candidate_materialized_circuit_manifest(
         ),
         'flat_netlist_gate_totals_match_run_length_rows': flat_netlist['gate_totals'] == gate_totals,
         'flat_netlist_non_clifford_matches_public_candidate': flat_netlist['non_clifford_count'] == int(public_totals['non_clifford']),
+        'primitive_operand_contracts_cover_all_run_length_rows': all(
+            row['primitive_operand_contract']['schema'] == 'compiler-project-primitive-operand-contract-v1'
+            and row['primitive_operand_contract']['gate'] == row['gate']
+            and row['primitive_operand_contract_sha256'] == _sha256_payload(row['primitive_operand_contract'])
+            for row in rows
+        ),
+        'primitive_operand_contract_owners_are_known_and_live': all(
+            all(owner_id in owner_capacity_by_id for owner_id in row['primitive_operand_contract']['owner_ids'])
+            and set(row['primitive_operand_contract']['owner_ids']).issubset(set(liveness_rows[int(row['row_index'])]['derived_owner_live_qubits']))
+            for row in rows
+        ),
+        'flat_netlist_binds_operand_contract_hashes': all(
+            contribution['primitive_operand_contract_sha256'] == rows[int(contribution['run_length_row_index'])]['primitive_operand_contract_sha256']
+            and contribution['primitive_operand_owner_ids'] == rows[int(contribution['run_length_row_index'])]['primitive_operand_contract']['owner_ids']
+            for segment in flat_netlist['segments']
+            for contribution in segment['contributions']
+        ),
         'qroam_liveness_bindings_use_matching_chunk_target': all(
             f"qroam_chunk_target__{row['table']}__chunk_{row['chunk_index']}" in liveness_rows[int(row['row_index'])]['live_wire_ids']
             for row in qroam_rows

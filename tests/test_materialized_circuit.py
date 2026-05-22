@@ -106,6 +106,9 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert manifest['checks']['flat_netlist_expands_all_run_length_rows'] is True
     assert manifest['checks']['flat_netlist_gate_totals_match_run_length_rows'] is True
     assert manifest['checks']['flat_netlist_non_clifford_matches_public_candidate'] is True
+    assert manifest['checks']['primitive_operand_contracts_cover_all_run_length_rows'] is True
+    assert manifest['checks']['primitive_operand_contract_owners_are_known_and_live'] is True
+    assert manifest['checks']['flat_netlist_binds_operand_contract_hashes'] is True
     assert manifest['checks']['direct_seed_liveness_excludes_qroam_target_and_chunk'] is True
     assert manifest['checks']['lookup_leaf_liveness_excludes_qroam_target_and_chunk'] is True
     assert manifest['checks']['generated_base_rows_match_public_non_qroam_derivation'] is True
@@ -116,6 +119,11 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert manifest['checks']['phase_liveness_uses_phase_load_interval_without_lookup_target'] is True
     assert manifest['materialized_liveness']['preview_head'][0]['total_live_qubits'] < manifest['public_totals']['logical_qubits']
     assert 'arithmetic_leaf_base' not in {row['scope'] for row in manifest['preview_head'] + manifest['preview_tail']}
+    first_arithmetic_row = next(row for row in manifest['run_length_rows'] if row['scope'] == 'arithmetic_leaf_stage')
+    assert first_arithmetic_row['primitive_operand_contract']['owner_ids'] == ['arithmetic_slot_register_file']
+    first_qroam_row = next(row for row in manifest['run_length_rows'] if row['scope'] == 'qroam_chunk_stream')
+    assert first_qroam_row['primitive_operand_contract']['owner_ids'] == ['arithmetic_slot_register_file', 'lookup_workspace']
+    assert manifest['flat_netlist']['segments'][0]['contributions'][0]['primitive_operand_contract_sha256']
 
 
 def test_public_candidate_materialized_manifest_rejects_qroam_segment_drift() -> None:
@@ -210,6 +218,26 @@ def test_public_candidate_materialized_manifest_rejects_duplicate_live_wire() ->
     )
     assert observed['checks']['liveness_bindings_have_unique_live_wires'] is False
     assert observed['checks']['liveness_bindings_recompute_owner_sums_from_wire_catalog'] is False
+    assert observed['pass'] is False
+
+
+def test_public_candidate_materialized_manifest_rejects_operand_owner_not_live() -> None:
+    reusable = _artifact('reusable_chunk_lowering.json')
+    interval = next(row for row in reusable['executable_liveness']['intervals'] if row['interval_id'] == 'pc4_lookup_infinity_flag')
+    interval['live_wire_ids'] = [wire_id for wire_id in interval['live_wire_ids'] if wire_id != 'folded_lookup_control_workspace']
+    interval['owner_live_qubits'].pop('lookup_workspace')
+    interval['total_live_qubits'] -= 18
+    candidate_input = _candidate_input()
+    observed = build_public_candidate_materialized_circuit_manifest(
+        reusable_chunk_lowering=reusable,
+        arithmetic_operation_ir=_artifact('arithmetic_operation_ir.json'),
+        lookup_lowerings=_artifact('lookup_lowerings.json'),
+        qroam_primitive_certificate=_artifact('qroam_primitive_certificate.json'),
+        phase_shell_lowerings=_artifact('phase_shell_lowerings.json'),
+        zkp_attestation_input=candidate_input,
+        selected_family_name=candidate_input['selected_family_name'],
+    )
+    assert observed['checks']['primitive_operand_contract_owners_are_known_and_live'] is False
     assert observed['pass'] is False
 
 
