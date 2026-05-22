@@ -162,6 +162,18 @@ def test_public_engine_manifest_binds_strict_primitive_completeness_report() -> 
     observed = _build_manifest(public_candidate_materialized=public_candidate_materialized)
     strict_report = observed['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['strict_primitive_completeness']
     assert observed['checks']['strict_primitive_completeness_report_is_bound'] is True
-    assert strict_report['clifford_complete'] is False
+    assert strict_report['clifford_complete'] is True
     assert strict_report['rows_checked'] == public_candidate_materialized['run_length_row_count']
-    assert strict_report['incomplete_row_count'] > 0
+    assert strict_report['incomplete_row_count'] == 0
+
+
+def test_public_engine_manifest_rejects_strict_primitive_completeness_drift() -> None:
+    public_candidate_materialized = _load('public_candidate_materialized_circuit_manifest.json')
+    public_candidate_materialized['strict_primitive_completeness']['clifford_complete'] = False
+    public_candidate_materialized['strict_primitive_completeness']['incomplete_row_count'] = 1
+    public_candidate_materialized['strict_primitive_completeness']['incomplete_by_scope_gate'] = {
+        'qroam_chunk_stream:ccx': 1,
+    }
+    observed = _build_manifest(public_candidate_materialized=public_candidate_materialized)
+    assert observed['checks']['strict_primitive_completeness_report_is_bound'] is False
+    assert observed['pass'] is False

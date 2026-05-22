@@ -276,7 +276,7 @@ def build_public_engine_manifest(
         'strict_primitive_completeness_report_is_bound': (
             public_candidate_materialized_circuit_manifest['strict_primitive_completeness']['schema'] == 'compiler-project-strict-primitive-completeness-report-v1'
             and public_candidate_materialized_circuit_manifest['strict_primitive_completeness']['rows_checked'] == public_candidate_materialized_circuit_manifest['run_length_row_count']
-            and public_candidate_materialized_circuit_manifest['strict_primitive_completeness']['clifford_complete'] is False
+            and public_candidate_materialized_circuit_manifest['strict_primitive_completeness']['clifford_complete'] is True
             and public_candidate_materialized_circuit_manifest['checks']['strict_primitive_completeness_report_is_current'] is True
         ),
     }

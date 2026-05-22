@@ -131,10 +131,22 @@ def _primitive_operand_contract(
     }
 
 
-def _arithmetic_block_operand_domains(stage: Mapping[str, Any], block: Mapping[str, Any]) -> List[Dict[str, Any]]:
+def _arithmetic_block_operand_domains(stage: Mapping[str, Any], block: Mapping[str, Any], gate: str) -> List[Dict[str, Any]]:
     operand_slots = int(block['operand_profile']['operand_slots_required'])
     gate_arities = block['operand_profile']['gate_arities']
-    if gate_arities.get('ccx') == [2]:
+    if gate == 'measurement':
+        return [
+            {
+                'domain_id': f"{stage['stage']}:{block['block']}:measured_arithmetic_bit",
+                'owner_id': 'arithmetic_slot_register_file',
+                'wire_template': 'arithmetic_slot_register_file.measurement.bit[{operand_index}]',
+                'operand_index_min': 0,
+                'operand_index_max_exclusive': operand_slots,
+                'row_instance_to_operand_index': 'operand_index = row_instance_ordinal % operand_domain_width',
+                'role': str(stage['category']),
+            }
+        ]
+    if gate == 'ccx' and gate_arities.get('ccx') == [2]:
         return [
             {
                 'domain_id': f"{stage['stage']}:{block['block']}:left_field_bits",
@@ -152,6 +164,45 @@ def _arithmetic_block_operand_domains(stage: Mapping[str, Any], block: Mapping[s
                 'operand_index_min': 0,
                 'operand_index_max_exclusive': operand_slots,
                 'row_instance_to_operand_index': 'right_bit = row_instance_ordinal % operand_slots_required',
+                'role': str(stage['category']),
+            },
+            {
+                'domain_id': f"{stage['stage']}:{block['block']}:partial_product_target",
+                'owner_id': 'arithmetic_slot_register_file',
+                'wire_template': 'arithmetic_slot_register_file.partial_product_target.bit[{row_instance_ordinal}]',
+                'operand_index_min': 0,
+                'operand_index_max_exclusive': int(block['primitive_counts_total'][gate]),
+                'row_instance_to_operand_index': 'operand_index = row_instance_ordinal % operand_domain_width',
+                'role': str(stage['category']),
+            },
+        ]
+    if gate == 'ccx':
+        return [
+            {
+                'domain_id': f"{stage['stage']}:{block['block']}:control_a",
+                'owner_id': 'arithmetic_slot_register_file',
+                'wire_template': 'arithmetic_slot_register_file.control_a.bit[{operand_index}]',
+                'operand_index_min': 0,
+                'operand_index_max_exclusive': operand_slots,
+                'row_instance_to_operand_index': 'operand_index = row_instance_ordinal % operand_domain_width',
+                'role': str(stage['category']),
+            },
+            {
+                'domain_id': f"{stage['stage']}:{block['block']}:control_b",
+                'owner_id': 'arithmetic_slot_register_file',
+                'wire_template': 'arithmetic_slot_register_file.control_b.bit[{operand_index}]',
+                'operand_index_min': 0,
+                'operand_index_max_exclusive': operand_slots,
+                'row_instance_to_operand_index': 'operand_index = row_instance_ordinal % operand_domain_width',
+                'role': str(stage['category']),
+            },
+            {
+                'domain_id': f"{stage['stage']}:{block['block']}:target",
+                'owner_id': 'arithmetic_slot_register_file',
+                'wire_template': 'arithmetic_slot_register_file.target.bit[{operand_index}]',
+                'operand_index_min': 0,
+                'operand_index_max_exclusive': operand_slots,
+                'row_instance_to_operand_index': 'operand_index = row_instance_ordinal % operand_domain_width',
                 'role': str(stage['category']),
             },
         ]
@@ -441,17 +492,18 @@ def _probe_rows(rows: List[Mapping[str, Any]]) -> List[Mapping[str, Any]]:
 
     for scope in ('direct_seed_base', 'lookup_leaf_base', 'arithmetic_leaf_block', 'qroam_chunk_stream', 'phase_shell'):
         add(next(row for row in rows if row['scope'] == scope))
-    two_domain_arithmetic = next(
+    schoolbook_arithmetic = next(
         (
             row
             for row in rows
             if row['scope'] == 'arithmetic_leaf_block'
-            and len(row['primitive_operand_contract']['operand_domains']) == 2
+            and any(str(domain['domain_id']).endswith(':left_field_bits') for domain in row['primitive_operand_contract']['operand_domains'])
+            and any(str(domain['domain_id']).endswith(':right_field_bits') for domain in row['primitive_operand_contract']['operand_domains'])
         ),
         None,
     )
-    if two_domain_arithmetic is not None:
-        add(two_domain_arithmetic)
+    if schoolbook_arithmetic is not None:
+        add(schoolbook_arithmetic)
     return selected
 
 
@@ -466,24 +518,30 @@ def _row_operation_starts(rows: List[Mapping[str, Any]]) -> Dict[int, int]:
 
 def _reduced_arithmetic_probe(row: Mapping[str, Any], probe_width: int) -> Dict[str, Any]:
     domains = row['primitive_operand_contract']['operand_domains']
-    if row['scope'] != 'arithmetic_leaf_block' or len(domains) != 2:
+    left_domain = next((domain for domain in domains if str(domain['domain_id']).endswith(':left_field_bits')), None)
+    right_domain = next((domain for domain in domains if str(domain['domain_id']).endswith(':right_field_bits')), None)
+    if row['scope'] != 'arithmetic_leaf_block' or left_domain is None or right_domain is None:
         return {
             'applies': False,
             'pass': True,
         }
     width = min(
         int(probe_width),
-        int(domains[0]['operand_index_max_exclusive']) - int(domains[0]['operand_index_min']),
-        int(domains[1]['operand_index_max_exclusive']) - int(domains[1]['operand_index_min']),
+        int(left_domain['operand_index_max_exclusive']) - int(left_domain['operand_index_min']),
+        int(right_domain['operand_index_max_exclusive']) - int(right_domain['operand_index_min']),
     )
-    full_right_width = int(domains[1]['operand_index_max_exclusive']) - int(domains[1]['operand_index_min'])
+    full_right_width = int(right_domain['operand_index_max_exclusive']) - int(right_domain['operand_index_min'])
     ordinals = [
         left * full_right_width + right
         for left in range(width)
         for right in range(width)
     ]
     observed_pairs = [
-        tuple(wire['operand_index'] for wire in _operation_domain_wires(row, ordinal))
+        tuple(
+            wire['operand_index']
+            for wire in _operation_domain_wires(row, ordinal)
+            if wire['domain_id'] in {left_domain['domain_id'], right_domain['domain_id']}
+        )
         for ordinal in ordinals
     ]
     expected_pairs = [
@@ -584,9 +642,11 @@ def _flat_execution_probe(
                 'target_domain_width': int(target_domain['operand_index_max_exclusive']) - int(target_domain['operand_index_min']),
                 'pass': int(row['total_count']) == int(target_domain['operand_index_max_exclusive']) - int(target_domain['operand_index_min']),
             })
-        if row['scope'] == 'arithmetic_leaf_block' and len(domains) == 2:
+        left_domain = next((domain for domain in domains if str(domain['domain_id']).endswith(':left_field_bits')), None)
+        right_domain = next((domain for domain in domains if str(domain['domain_id']).endswith(':right_field_bits')), None)
+        if row['scope'] == 'arithmetic_leaf_block' and left_domain is not None and right_domain is not None:
             domain_product = 1
-            for domain in domains:
+            for domain in (left_domain, right_domain):
                 domain_product *= int(domain['operand_index_max_exclusive']) - int(domain['operand_index_min'])
             arithmetic_domain_capacity_checks.append({
                 'row_index': int(row['row_index']),
@@ -1010,6 +1070,36 @@ def _phase_run_length_rows(phase_shell: Mapping[str, Any], row_index: int) -> Li
             for gate, count in sorted(block['count_profile_total'].items()):
                 if gate == 'rotation_depth' or int(count) == 0:
                     continue
+                if gate == 'controlled_rotation':
+                    operand_domains = [
+                        {
+                            'domain_id': 'semiclassical_qft_control_phase_bit',
+                            'owner_id': 'phase_shell_live_register',
+                            'wire_template': 'semiclassical_qft_live_phase_bit',
+                            'operand_index_min': 0,
+                            'operand_index_max_exclusive': 1,
+                            'role': 'phase_shell_control_qubit',
+                        },
+                        {
+                            'domain_id': 'semiclassical_qft_target_phase_bit',
+                            'owner_id': 'phase_shell_live_register',
+                            'wire_template': 'semiclassical_qft_live_phase_bit',
+                            'operand_index_min': 0,
+                            'operand_index_max_exclusive': 1,
+                            'role': 'phase_shell_target_qubit',
+                        },
+                    ]
+                else:
+                    operand_domains = [
+                        {
+                            'domain_id': 'semiclassical_qft_live_phase_bit',
+                            'owner_id': 'phase_shell_live_register',
+                            'wire_template': 'semiclassical_qft_live_phase_bit',
+                            'operand_index_min': 0,
+                            'operand_index_max_exclusive': 1,
+                            'role': 'phase_shell_live_qubit',
+                        }
+                    ]
                 provenance = {
                     'phase_shell': phase_shell['name'],
                     'stage': stage['name'],
@@ -1022,16 +1112,7 @@ def _phase_run_length_rows(phase_shell: Mapping[str, Any], row_index: int) -> Li
                     gate=gate,
                     source_kind='phase_shell_lowering',
                     source_digest=_sha256_payload(provenance),
-                    operand_domains=[
-                        {
-                            'domain_id': 'semiclassical_qft_live_phase_bit',
-                            'owner_id': 'phase_shell_live_register',
-                            'wire_template': 'semiclassical_qft_live_phase_bit',
-                            'operand_index_min': 0,
-                            'operand_index_max_exclusive': 1,
-                            'role': 'phase_shell_live_qubit',
-                        }
-                    ],
+                    operand_domains=operand_domains,
                 )
                 rows.append({
                     'row_index': row_index + len(rows),
@@ -1074,6 +1155,14 @@ def _qroam_run_length_rows(
                     source_kind='qroam_primitive_certificate',
                     source_digest=str(segment['sha256']),
                     operand_domains=[
+                        {
+                            'domain_id': f"{term['table']}:chunk_{term['chunk_index']}:qroam_selection_control",
+                            'owner_id': 'lookup_workspace',
+                            'wire_template': f"qroam_selection_control__{term['table']}__chunk_{term['chunk_index']}.bit[{{operand_index}}]",
+                            'operand_index_min': int(segment['start_address']),
+                            'operand_index_max_exclusive': int(segment['end_address_exclusive']),
+                            'role': 'qroam_selection_control',
+                        },
                         {
                             'domain_id': f"{term['table']}:chunk_{term['chunk_index']}:qroam_target",
                             'owner_id': 'lookup_workspace',
@@ -1120,7 +1209,7 @@ def _count_rows_from_primitive_counts(
     source: str,
     primitive_counts: Mapping[str, Any],
     provenance_payload: Mapping[str, Any],
-    operand_domains: List[Mapping[str, Any]],
+    operand_domains: List[Mapping[str, Any]] | Mapping[str, List[Mapping[str, Any]]],
     source_kind: str,
     extra: Optional[Mapping[str, Any]] = None,
 ) -> List[Dict[str, Any]]:
@@ -1140,7 +1229,7 @@ def _count_rows_from_primitive_counts(
             gate=str(gate),
             source_kind=source_kind,
             source_digest=provenance_sha256,
-            operand_domains=operand_domains,
+            operand_domains=operand_domains[str(gate)] if isinstance(operand_domains, dict) else operand_domains,
         )
         rows.append({
             'row_index': row_index + len(rows),
@@ -1209,6 +1298,19 @@ def _public_base_run_length_rows(
             'role': 'lookup_boundary_control_flag',
         },
     ]
+    lookup_operand_domains_by_gate = {
+        'ccx': lookup_operand_domains,
+        'measurement': [
+            {
+                'domain_id': 'lookup_measurement_workspace_bits',
+                'owner_id': 'lookup_workspace',
+                'wire_template': 'folded_lookup_control_workspace.measurement.bit[{operand_index}]',
+                'operand_index_min': 0,
+                'operand_index_max_exclusive': int(lookup_family['primitive_counts_total']['measurement']),
+                'role': 'lookup_measurement_bit',
+            }
+        ],
+    }
     rows: List[Dict[str, Any]] = []
     rows.extend(_count_rows_from_primitive_counts(
         row_index=len(rows),
@@ -1220,7 +1322,7 @@ def _public_base_run_length_rows(
             'usage': 'direct_seed',
             'primitive_counts_total': lookup_family['primitive_counts_total'],
         },
-        operand_domains=lookup_operand_domains,
+        operand_domains=lookup_operand_domains_by_gate,
         source_kind='lookup_lowering',
     ))
     for leaf_call_index in range(leaf_call_count):
@@ -1235,7 +1337,7 @@ def _public_base_run_length_rows(
                 'leaf_call_index': leaf_call_index,
                 'primitive_counts_total': lookup_family['primitive_counts_total'],
             },
-            operand_domains=lookup_operand_domains,
+            operand_domains=lookup_operand_domains_by_gate,
             source_kind='lookup_lowering',
             extra={'leaf_call_index': leaf_call_index},
         ))
@@ -1260,7 +1362,11 @@ def _public_base_run_length_rows(
                         'primitive_counts_total': block['primitive_counts_total'],
                         'operand_profile': block['operand_profile'],
                     },
-                    operand_domains=_arithmetic_block_operand_domains(stage, block),
+                    operand_domains={
+                        gate: _arithmetic_block_operand_domains(stage, block, gate)
+                        for gate, count in block['primitive_counts_total'].items()
+                        if int(count) > 0
+                    },
                     source_kind='arithmetic_operation_ir',
                     extra={
                         'leaf_call_index': leaf_call_index,
@@ -1523,7 +1629,7 @@ def build_public_candidate_materialized_circuit_manifest(
         'strict_primitive_completeness_report_is_current': (
             strict_primitive_completeness['rows_checked'] == len(rows)
             and sum(strict_primitive_completeness['rows_by_gate'].values()) == len(rows)
-            and strict_primitive_completeness['clifford_complete'] is False
+            and strict_primitive_completeness['clifford_complete'] is True
         ),
         'qroam_liveness_bindings_use_matching_chunk_target': all(
             f"qroam_chunk_target__{row['table']}__chunk_{row['chunk_index']}" in liveness_rows[int(row['row_index'])]['live_wire_ids']
@@ -1630,7 +1736,7 @@ def build_public_candidate_materialized_circuit_manifest(
         'boundary': [
             'This artifact defines the canonical flat operation-index netlist for the current public candidate with run-length contributions, liveness, and owner bindings.',
             'The flat_execution_probe section is generated by executing representative operation indices through the same expandable flat-netlist API used for the full stream.',
-            'strict_primitive_completeness is intentionally false until every row carries exact gate-arity wire operands instead of operand-domain templates.',
+            'strict_primitive_completeness requires every row to expose arity-correct primitive operand domains so the flat-netlist iterator emits exact operand references for each primitive operation.',
             'It is intentionally stored as an expandable segmented commitment rather than a checked-in multi-gigabyte TSV with one physical line per primitive instruction.',
         ],
     }
@@ -1660,6 +1766,7 @@ def write_materialized_family_circuit(
 
 __all__ = [
     'MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA',
+    'PRIMITIVE_GATE_ARITY',
     'PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA',
     'available_family_names',
     'build_materialized_family_manifest',

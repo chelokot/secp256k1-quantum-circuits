@@ -138,7 +138,10 @@ segment certificate, arithmetic-operation IR rows, lookup-base rows, and the
 selected phase-shell rows. The same manifest executes representative operation
 indices through the expandable flat-netlist API, checking concrete operand
 wires, segment/liveness bindings, QROAM target-domain widths, and the reduced
-schoolbook Cartesian operand grid. The public engine manifest then binds that
+schoolbook Cartesian operand grid. It also carries a strict primitive-completeness
+report: every run-length primitive row now has the gate-arity operand domains
+needed for the flat iterator to emit one concrete operand reference per gate
+input, including QROAM `ccx` rows and arithmetic `ccx` rows. The public engine manifest then binds that
 flat stream, executable instruction rows, wires, schedule events, owner-capacity
 rows, resource terms, semantic-boundary evidence, arithmetic operation IR, the
 generated QROAMClean `K = 1` primitive certificate, and the selected

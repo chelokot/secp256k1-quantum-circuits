@@ -15,7 +15,7 @@ COMPILER_SRC = REPO_ROOT / 'compiler_verification_project' / 'src'
 if str(COMPILER_SRC) not in sys.path:
     sys.path.insert(0, str(COMPILER_SRC))
 
-from materialized_circuit import MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, build_public_candidate_materialized_circuit_manifest, iter_family_operation_stream, iter_public_candidate_flat_netlist, resolve_selected_family_names  # noqa: E402
+from materialized_circuit import MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, PRIMITIVE_GATE_ARITY, PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, build_public_candidate_materialized_circuit_manifest, iter_family_operation_stream, iter_public_candidate_flat_netlist, resolve_selected_family_names  # noqa: E402
 
 
 def _frontier() -> dict:
@@ -171,9 +171,13 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     strict_completeness = manifest['strict_primitive_completeness']
     assert strict_completeness['schema'] == 'compiler-project-strict-primitive-completeness-report-v1'
     assert strict_completeness['rows_checked'] == manifest['run_length_row_count']
-    assert strict_completeness['clifford_complete'] is False
-    assert strict_completeness['incomplete_row_count'] > 0
-    assert 'arithmetic_leaf_block:ccx' in strict_completeness['incomplete_by_scope_gate']
+    assert strict_completeness['clifford_complete'] is True
+    assert strict_completeness['incomplete_row_count'] == 0
+    assert strict_completeness['incomplete_by_scope_gate'] == {}
+    assert all(
+        len(row['primitive_operand_contract']['operand_domains']) == PRIMITIVE_GATE_ARITY[row['gate']]
+        for row in manifest['run_length_rows']
+    )
 
 
 def test_public_candidate_flat_netlist_iterator_emits_concrete_operand_wires() -> None:
@@ -182,7 +186,8 @@ def test_public_candidate_flat_netlist_iterator_emits_concrete_operand_wires() -
         row
         for row in manifest['run_length_rows']
         if row['scope'] == 'arithmetic_leaf_block'
-        and len(row['primitive_operand_contract']['operand_domains']) == 2
+        and any(str(domain['domain_id']).endswith(':left_field_bits') for domain in row['primitive_operand_contract']['operand_domains'])
+        and any(str(domain['domain_id']).endswith(':right_field_bits') for domain in row['primitive_operand_contract']['operand_domains'])
     )
     start = sum(int(row['total_count']) for row in manifest['run_length_rows'][:int(arithmetic_row['row_index'])])
     operations = list(iter_public_candidate_flat_netlist(
@@ -192,7 +197,7 @@ def test_public_candidate_flat_netlist_iterator_emits_concrete_operand_wires() -
         stop=start + 6,
     ))
     assert [operation['operation_index'] for operation in operations] == list(range(start, start + 6))
-    assert [tuple(wire['operand_index'] for wire in operation['operand_wires']) for operation in operations] == [
+    assert [tuple(wire['operand_index'] for wire in operation['operand_wires'][:2]) for operation in operations] == [
         (0, 0),
         (0, 1),
         (0, 2),
@@ -200,7 +205,27 @@ def test_public_candidate_flat_netlist_iterator_emits_concrete_operand_wires() -
         (0, 4),
         (0, 5),
     ]
+    assert all(len(operation['operand_wires']) == 3 for operation in operations)
     assert all(operation['primitive_operand_contract_sha256'] == arithmetic_row['primitive_operand_contract_sha256'] for operation in operations)
+    assert all(operation['liveness']['total_live_qubits'] == manifest['public_totals']['logical_qubits'] for operation in operations)
+
+
+def test_public_candidate_flat_netlist_iterator_emits_qroam_three_operands() -> None:
+    manifest = _artifact('public_candidate_materialized_circuit_manifest.json')
+    qroam_row = next(row for row in manifest['run_length_rows'] if row['scope'] == 'qroam_chunk_stream')
+    start = sum(int(row['total_count']) for row in manifest['run_length_rows'][:int(qroam_row['row_index'])])
+    operations = list(iter_public_candidate_flat_netlist(
+        manifest['run_length_rows'],
+        manifest['materialized_liveness']['rows'],
+        start=start,
+        stop=start + 3,
+    ))
+    assert all(len(operation['operand_wires']) == 3 for operation in operations)
+    assert [wire['role'] for wire in operations[0]['operand_wires']] == [
+        'qroam_selection_control',
+        'qroam_target_or_unary_step',
+        'qroam_chunk_consumer_register',
+    ]
     assert all(operation['liveness']['total_live_qubits'] == manifest['public_totals']['logical_qubits'] for operation in operations)
 
 

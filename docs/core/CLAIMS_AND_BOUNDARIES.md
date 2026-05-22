@@ -152,7 +152,10 @@ arithmetic-IR, QROAM, and phase-shell evidence. The materialized manifest also
 executes representative flat operation indices through the same expandable
 netlist API used for full export, checking concrete operand wires, segment and
 liveness bindings, QROAM target-domain widths, and a reduced schoolbook
-Cartesian operand grid. The public engine manifest derives the public
+Cartesian operand grid. Its strict primitive-completeness report now requires
+every run-length primitive row to expose gate-arity operand domains, so QROAM
+`ccx`, arithmetic `ccx`, measurement, and phase rows all expand through the
+same concrete-operand iterator. The public engine manifest derives the public
 non-Clifford count from that flat netlist and the public qubit count from the
 materialized liveness peak; reusable-resource totals are checked against those
 values as snapshots. The materialized/public engine layer is generated from
