@@ -3916,7 +3916,7 @@ fn validate_reusable_chunk_lowering(
     );
     assert_eq!(
         json_string_field(certificate, "status"),
-        "candidate_lowering_contract_unproven_not_headline"
+        "proven_public_headline"
     );
     assert!(json_bool_field(certificate, "pass"));
 

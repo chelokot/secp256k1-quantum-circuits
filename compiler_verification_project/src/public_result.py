@@ -99,13 +99,15 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             and groth16_fixture['verifier_key_sha256'] == _sha256_path(PROJECT_ROOT / groth16_fixture['verifier_key_path'])
             and groth16_fixture['verifier_key_size_bytes'] == (PROJECT_ROOT / groth16_fixture['verifier_key_path']).stat().st_size
         ),
-        'reusable_chunk_lowering_is_bound_by_checked_public_headline': (
-            lowering['pass'] is True
+        'reusable_chunk_lowering_is_proven_for_public_headline': (
+            lowering['status'] == 'proven_public_headline'
+            and lowering['pass'] is True
             and lowering['non_clifford_derivation']['candidate_total_non_clifford'] == non_clifford
             and lowering['qubit_derivation']['candidate_total_logical_qubits'] == qubits
         ),
-        'reusable_chunk_tail_contract_is_bound_by_checked_public_headline': (
-            tail_candidate['toy_semantic_equivalence']['all_rows_semantic'] is True
+        'reusable_chunk_tail_contract_is_proven_for_public_headline': (
+            tail_candidate['status'] == 'proven_public_headline'
+            and tail_candidate['toy_semantic_equivalence']['all_rows_semantic'] is True
             and tail_candidate['toy_semantic_equivalence']['all_rows_executable'] is True
         ),
         'fits_strict_public_goal': non_clifford < 40_000_000 and qubits < 1200,

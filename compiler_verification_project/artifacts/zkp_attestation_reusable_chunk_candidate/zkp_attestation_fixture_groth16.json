@@ -1,7 +1,7 @@
 {
-  "proof": "0x4125fe6f0000000000000000000000000000000000000000000000000000000000000000002f850ee998974d6cc00e50cd0814b098c05bfade466d28573240d057f2535200000000000000000000000000000000000000000000000000000000000000000894e907e6a4a043fdc5c3587bbb8bdad0fc6eebc4b9a0a87262aac058a1b2760c1d817688c1a8b457e34a57947e1392b16223691742458475c5dfc111d2d2e4093383cea56a685911a1415b8a1fdb0ef2bffd43326b69d73708d6934d50057c1f46e9ef913638486f5df10c1bfb8be59a08645bab11c486b3cbd788d9536fa8117eab077a0d8c707e56d8f4a15ddd784cd388a48f425b65458941c1d22aee8026c946727f93acb406cddd1b8575310f4c21cb88e92dfaee01ae2ad2b24614831fc41b97fc14e659c3a444ad3d686c8996c4a46f58806805ae71942ec10897532e4300af1d97c565e8ff00606e8b6d165f83d9e32dde3b6c6c4b582356b49108",
+  "proof": "0x4125fe6f0000000000000000000000000000000000000000000000000000000000000000002f850ee998974d6cc00e50cd0814b098c05bfade466d28573240d057f2535200000000000000000000000000000000000000000000000000000000000000000225f42b30148d2490aa930100269131a30876c77620f7ac8c2986185c6042f71fac2159252af23a20ce7cb2ae10c3b1148ea9e5117064e3ce0635b7780883f12f51d1d3bc1015a54ba9bee549cb0c6df9390595d98645f12ec44c2bae7e0ce20fc52f81da7bb7db184513bff82117aefeba963515e655e3149f89450bc8e2d60eaecf22786eaeaf28a03d05bec454e6b77d7875cd62f3f61773be9eb6ed640412a010a0dc27f01a4f1fb0f1990b1e91bb76cfed066897ff5e7c3416c00ce9aa1ac576af4b2a04f5d9856c5bde1b2b34eefc57084c1c5a1097cb05bbce2c7ba908e9e47ade678d1944b99cd160e8f2c1f58795352e95e2d22752b27156e22a07",
   "proof_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_groth16.bin",
-  "proof_sha256": "c01fd39395d99428f633a163c2b265f6020618adb9a84fd849fd9a16e9ea081b",
+  "proof_sha256": "50b23255eceb8672db00f01e1b73b314cc24726afe0b008083447079ba6063c3",
   "proof_size_bytes": 2287,
   "proof_system": "groth16",
   "public_values": {
@@ -11,15 +11,15 @@
     "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
     "expected_full_oracle_non_clifford": 36767692,
     "expected_total_logical_qubits": 1199,
-    "family_sha256": "345237abab722243c6a2ae1230e77b1c58c1a2e3248f0feab88ac3e074c8be1d",
+    "family_sha256": "c1a1cd68e1c159353724cb3e21b98c65115b2add9930d247b3f5f0f85dd5ba20",
     "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
     "passed_case_count": 8,
-    "resource_certificate_sha256": "aa83edcfc7e0fb2e9a15104652cfe6942f4a78cfba2b3f4c9cf50b0aae733e41",
+    "resource_certificate_sha256": "115d8161c48048c81da2cadb7f4f0cc12dce241e4a272586fca463d9a5e76439",
     "schema": "compiler-project-zkp-attestation-public-v2",
     "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1"
   },
   "schema": "compiler-project-zkp-attestation-fixture-v1",
-  "verification_key": "0x008c8a883ab4f716dd447aa5c549e129e5f70fc490371bfad6adb4cf40c30592",
+  "verification_key": "0x00c5b6eefe7a460d81d60dbf0c553720c6985be8e3d74d331b0ef2628b10abcb",
   "verifier_key_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_groth16_verifier/groth16_vk.bin",
   "verifier_key_sha256": "4125fe6fab5e7d3af4bb9386f49589450a6d37f536e98650adca79768c469975",
   "verifier_key_size_bytes": 492

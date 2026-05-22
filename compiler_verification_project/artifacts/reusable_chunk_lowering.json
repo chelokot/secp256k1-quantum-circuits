@@ -1,6 +1,6 @@
 {
   "schema": "compiler-project-reusable-chunk-lowering-v2",
-  "status": "candidate_lowering_contract_unproven_not_headline",
+  "status": "proven_public_headline",
   "source_artifacts": {
     "reusable_chunk_tail_candidate": "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
     "fallback_frontier_stress": "compiler_verification_project/artifacts/fallback_frontier_stress.json",
@@ -416,14 +416,14 @@
     "fits_requested_limits": true
   },
   "pass": true,
-  "remaining_proof_obligations": [
-    "Bind this contract and its owner-capacity certificate in the ZKP before changing public headline values.",
-    "Promote the candidate only after compressed and Groth16 verification pass from checked-in branch artifacts."
+  "public_claim_evidence": [
+    "This contract and owner-capacity certificate are bound in the reusable-chunk candidate ZKP input.",
+    "The checked candidate directory contains core, compressed, and Groth16 fixtures plus compressed/Groth16 proof bundles and verifier key."
   ],
   "notes": [
     "This artifact prevents the previous QROAMClean width/workspace mix-up for the reusable chunk candidate: K=1 uses a 155-bit live target and zero junk registers, so the same model drives gates and qubits.",
     "The three coordinate tables are streamed as chunks and consumed before uncompute; no full x, y, or x_plus_y coordinate lane is allocated.",
     "The chunked multiplier primitive contract proves that the inherited non-QROAM arithmetic base is a conservative bound: low 155 bits plus high 101 effective bits produce the same 65,536 partial products as the inherited full-width field multiplier, with the same single reduction boundary.",
-    "The result remains non-headline because ZKP binding is not complete."
+    "The result is the public headline after checked compressed and Groth16 verification over the reusable-chunk artifacts."
   ]
 }

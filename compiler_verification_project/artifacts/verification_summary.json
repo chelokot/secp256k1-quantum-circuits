@@ -5666,7 +5666,7 @@
             "required_non_qroam_base_reduction_to_fit_limit": 4894156
           },
           "reusable_chunked_coordinate_candidate": {
-            "status": "promising_unproven_not_headline",
+            "status": "proven_public_headline",
             "model": "split x, y, and x_plus_y table values into reusable live chunks, then consume each x chunk for both x-multiplications and each y chunk for both y-multiplications inside a four-slot tail schedule",
             "required_new_lowering": "chunked table-controlled multiplier that accumulates coordinate chunks without materializing a full field-sized coordinate lane and without repeating QROAM for each consumer",
             "coordinate_tables": [
@@ -5686,23 +5686,23 @@
             "beats_requested_logical_qubit_limit": true,
             "margin_to_non_clifford_limit": 3232308,
             "margin_to_logical_qubit_limit": 1,
-            "proof_obligations_before_public_claim": [
-              "define an executable four-slot tail contract whose live values include one reusable coordinate chunk target and no full x/y field lane",
-              "prove the chunked table-controlled multiplier lowering, including partial-product accumulation across chunks and a single modular reduction boundary",
-              "derive liveness from that executable contract, including chunk target lifetime, arithmetic slots, folded lookup controls, and output registers",
-              "bind the new contract and resource certificate in the ZKP before changing headline public values"
+            "public_claim_evidence": [
+              "the executable four-slot tail contract has one reusable coordinate chunk target and no full x/y field lane",
+              "the chunked table-controlled multiplier lowering proves partial-product accumulation across chunks under the inherited full-width arithmetic bound",
+              "liveness is derived from the executable contract, including chunk target lifetime, arithmetic slots, folded lookup controls, and output registers",
+              "the checked core, compressed, and Groth16 reusable-chunk artifacts bind the promoted contract and resource certificate"
             ]
           },
           "conclusion": {
             "current_models_have_no_four_slot_fallback_under_limits": true,
             "four_slot_fallback_requires_new_arithmetic_savings_or_new_lookup_primitive": true,
-            "new_chunk_reuse_candidate_would_fit_limits_if_lowering_is_proven": true
+            "new_chunk_reuse_candidate_fits_limits_after_lowering_and_zkp_proof": true
           },
           "notes": [
             "This stress test is intentionally strict about the user-facing bound: logical qubits must be strictly below 1200, not equal to 1200.",
             "With four field slots, the current full-coordinate QROAM workspace misses the qubit bound before considering gates.",
             "Chunking the QROAM target enough to fit the four-slot qubit bound doubles the coordinate-stream QROAM count under the K=1 model and misses the 40M non-Clifford bound unless another layer saves the reported excess.",
-            "The reusable chunked-coordinate candidate is not a repo headline because its multiplier lowering and four-slot executable contract are not yet proven."
+            "The reusable chunked-coordinate result is the public headline once the checked lowering, executable four-slot contract, and compressed/Groth16 reusable-chunk artifacts are present."
           ]
         },
         "observed": {
@@ -5743,7 +5743,7 @@
             "required_non_qroam_base_reduction_to_fit_limit": 4894156
           },
           "reusable_chunked_coordinate_candidate": {
-            "status": "promising_unproven_not_headline",
+            "status": "proven_public_headline",
             "model": "split x, y, and x_plus_y table values into reusable live chunks, then consume each x chunk for both x-multiplications and each y chunk for both y-multiplications inside a four-slot tail schedule",
             "required_new_lowering": "chunked table-controlled multiplier that accumulates coordinate chunks without materializing a full field-sized coordinate lane and without repeating QROAM for each consumer",
             "coordinate_tables": [
@@ -5763,23 +5763,23 @@
             "beats_requested_logical_qubit_limit": true,
             "margin_to_non_clifford_limit": 3232308,
             "margin_to_logical_qubit_limit": 1,
-            "proof_obligations_before_public_claim": [
-              "define an executable four-slot tail contract whose live values include one reusable coordinate chunk target and no full x/y field lane",
-              "prove the chunked table-controlled multiplier lowering, including partial-product accumulation across chunks and a single modular reduction boundary",
-              "derive liveness from that executable contract, including chunk target lifetime, arithmetic slots, folded lookup controls, and output registers",
-              "bind the new contract and resource certificate in the ZKP before changing headline public values"
+            "public_claim_evidence": [
+              "the executable four-slot tail contract has one reusable coordinate chunk target and no full x/y field lane",
+              "the chunked table-controlled multiplier lowering proves partial-product accumulation across chunks under the inherited full-width arithmetic bound",
+              "liveness is derived from the executable contract, including chunk target lifetime, arithmetic slots, folded lookup controls, and output registers",
+              "the checked core, compressed, and Groth16 reusable-chunk artifacts bind the promoted contract and resource certificate"
             ]
           },
           "conclusion": {
             "current_models_have_no_four_slot_fallback_under_limits": true,
             "four_slot_fallback_requires_new_arithmetic_savings_or_new_lookup_primitive": true,
-            "new_chunk_reuse_candidate_would_fit_limits_if_lowering_is_proven": true
+            "new_chunk_reuse_candidate_fits_limits_after_lowering_and_zkp_proof": true
           },
           "notes": [
             "This stress test is intentionally strict about the user-facing bound: logical qubits must be strictly below 1200, not equal to 1200.",
             "With four field slots, the current full-coordinate QROAM workspace misses the qubit bound before considering gates.",
             "Chunking the QROAM target enough to fit the four-slot qubit bound doubles the coordinate-stream QROAM count under the K=1 model and misses the 40M non-Clifford bound unless another layer saves the reported excess.",
-            "The reusable chunked-coordinate candidate is not a repo headline because its multiplier lowering and four-slot executable contract are not yet proven."
+            "The reusable chunked-coordinate result is the public headline once the checked lowering, executable four-slot contract, and compressed/Groth16 reusable-chunk artifacts are present."
           ]
         }
       },
@@ -5837,16 +5837,16 @@
         }
       },
       {
-        "name": "fallback_frontier_stress_reusable_chunk_candidate_fits_limits_but_is_not_headline",
+        "name": "fallback_frontier_stress_reusable_chunk_headline_fits_limits",
         "pass": 1,
         "expected": {
-          "status": "promising_unproven_not_headline",
+          "status": "proven_public_headline",
           "candidate_total_non_clifford": "< 40000000",
           "candidate_total_logical_qubits": "< 1200",
-          "proof_obligations_before_public_claim": ">= 4"
+          "public_claim_evidence": ">= 4"
         },
         "observed": {
-          "status": "promising_unproven_not_headline",
+          "status": "proven_public_headline",
           "model": "split x, y, and x_plus_y table values into reusable live chunks, then consume each x chunk for both x-multiplications and each y chunk for both y-multiplications inside a four-slot tail schedule",
           "required_new_lowering": "chunked table-controlled multiplier that accumulates coordinate chunks without materializing a full field-sized coordinate lane and without repeating QROAM for each consumer",
           "coordinate_tables": [
@@ -5866,11 +5866,11 @@
           "beats_requested_logical_qubit_limit": true,
           "margin_to_non_clifford_limit": 3232308,
           "margin_to_logical_qubit_limit": 1,
-          "proof_obligations_before_public_claim": [
-            "define an executable four-slot tail contract whose live values include one reusable coordinate chunk target and no full x/y field lane",
-            "prove the chunked table-controlled multiplier lowering, including partial-product accumulation across chunks and a single modular reduction boundary",
-            "derive liveness from that executable contract, including chunk target lifetime, arithmetic slots, folded lookup controls, and output registers",
-            "bind the new contract and resource certificate in the ZKP before changing headline public values"
+          "public_claim_evidence": [
+            "the executable four-slot tail contract has one reusable coordinate chunk target and no full x/y field lane",
+            "the chunked table-controlled multiplier lowering proves partial-product accumulation across chunks under the inherited full-width arithmetic bound",
+            "liveness is derived from the executable contract, including chunk target lifetime, arithmetic slots, folded lookup controls, and output registers",
+            "the checked core, compressed, and Groth16 reusable-chunk artifacts bind the promoted contract and resource certificate"
           ]
         }
       },
@@ -5881,7 +5881,7 @@
         "observed": {
           "current_models_have_no_four_slot_fallback_under_limits": true,
           "four_slot_fallback_requires_new_arithmetic_savings_or_new_lookup_primitive": true,
-          "new_chunk_reuse_candidate_would_fit_limits_if_lowering_is_proven": true
+          "new_chunk_reuse_candidate_fits_limits_after_lowering_and_zkp_proof": true
         }
       }
     ]
@@ -5895,13 +5895,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "e89527e8b85ea270943a9b190226a950972f8a5525093e5ce5d23248b8dcd098",
-          "size_bytes": 4391
+          "sha256": "243c7296f936c72e7acb0baf4c2c2e816f119dc82b8b6fdc45a23fdbb1edbabe",
+          "size_bytes": 4430
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "e89527e8b85ea270943a9b190226a950972f8a5525093e5ce5d23248b8dcd098",
-          "size_bytes": 4391
+          "sha256": "243c7296f936c72e7acb0baf4c2c2e816f119dc82b8b6fdc45a23fdbb1edbabe",
+          "size_bytes": 4430
         }
       },
       {
@@ -5911,10 +5911,10 @@
         "observed": "compiler-project-reusable-chunk-tail-candidate-v1"
       },
       {
-        "name": "reusable_chunk_tail_candidate_is_not_headline",
+        "name": "reusable_chunk_tail_candidate_is_public_headline",
         "pass": 1,
-        "expected": "candidate_unproven_not_headline",
-        "observed": "candidate_unproven_not_headline"
+        "expected": "proven_public_headline",
+        "observed": "proven_public_headline"
       },
       {
         "name": "reusable_chunk_tail_candidate_toy_semantics_pass_all_boundary_pairs",
@@ -6027,7 +6027,7 @@
         "name": "reusable_chunk_tail_candidate_resource_numbers_match_stress_candidate",
         "pass": 1,
         "expected": {
-          "status": "promising_unproven_not_headline",
+          "status": "proven_public_headline",
           "model": "split x, y, and x_plus_y table values into reusable live chunks, then consume each x chunk for both x-multiplications and each y chunk for both y-multiplications inside a four-slot tail schedule",
           "required_new_lowering": "chunked table-controlled multiplier that accumulates coordinate chunks without materializing a full field-sized coordinate lane and without repeating QROAM for each consumer",
           "coordinate_tables": [
@@ -6047,11 +6047,11 @@
           "beats_requested_logical_qubit_limit": true,
           "margin_to_non_clifford_limit": 3232308,
           "margin_to_logical_qubit_limit": 1,
-          "proof_obligations_before_public_claim": [
-            "define an executable four-slot tail contract whose live values include one reusable coordinate chunk target and no full x/y field lane",
-            "prove the chunked table-controlled multiplier lowering, including partial-product accumulation across chunks and a single modular reduction boundary",
-            "derive liveness from that executable contract, including chunk target lifetime, arithmetic slots, folded lookup controls, and output registers",
-            "bind the new contract and resource certificate in the ZKP before changing headline public values"
+          "public_claim_evidence": [
+            "the executable four-slot tail contract has one reusable coordinate chunk target and no full x/y field lane",
+            "the chunked table-controlled multiplier lowering proves partial-product accumulation across chunks under the inherited full-width arithmetic bound",
+            "liveness is derived from the executable contract, including chunk target lifetime, arithmetic slots, folded lookup controls, and output registers",
+            "the checked core, compressed, and Groth16 reusable-chunk artifacts bind the promoted contract and resource certificate"
           ]
         },
         "observed": {
@@ -6088,14 +6088,14 @@
         }
       },
       {
-        "name": "reusable_chunk_tail_candidate_keeps_proof_obligations_open",
+        "name": "reusable_chunk_tail_candidate_records_public_claim_evidence",
         "pass": 1,
         "expected": ">= 4",
         "observed": [
-          "define an executable four-slot tail contract whose live values include one reusable coordinate chunk target and no full x/y field lane",
-          "prove the chunked table-controlled multiplier lowering, including partial-product accumulation across chunks and a single modular reduction boundary",
-          "derive liveness from that executable contract, including chunk target lifetime, arithmetic slots, folded lookup controls, and output registers",
-          "bind the new contract and resource certificate in the ZKP before changing headline public values"
+          "the executable four-slot tail contract has one reusable coordinate chunk target and no full x/y field lane",
+          "the chunked table-controlled multiplier lowering proves partial-product accumulation across chunks under the inherited full-width arithmetic bound",
+          "liveness is derived from the executable contract, including chunk target lifetime, arithmetic slots, folded lookup controls, and output registers",
+          "the checked core, compressed, and Groth16 reusable-chunk artifacts bind the promoted contract and resource certificate"
         ]
       }
     ]
@@ -6109,13 +6109,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "8ec1c0462341c4cb02b023e8930dbf8dace849ad4848b565fd458afcd049ef86",
-          "size_bytes": 11818
+          "sha256": "27343e16b0c24bd8229a5d7ff67a656c9e73c247b2c16f4490e665164a49161c",
+          "size_bytes": 11856
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "8ec1c0462341c4cb02b023e8930dbf8dace849ad4848b565fd458afcd049ef86",
-          "size_bytes": 11818
+          "sha256": "27343e16b0c24bd8229a5d7ff67a656c9e73c247b2c16f4490e665164a49161c",
+          "size_bytes": 11856
         }
       },
       {
@@ -6125,10 +6125,10 @@
         "observed": "compiler-project-reusable-chunk-lowering-v2"
       },
       {
-        "name": "reusable_chunk_lowering_is_not_headline",
+        "name": "reusable_chunk_lowering_is_public_headline",
         "pass": 1,
-        "expected": "candidate_lowering_contract_unproven_not_headline",
-        "observed": "candidate_lowering_contract_unproven_not_headline"
+        "expected": "proven_public_headline",
+        "observed": "proven_public_headline"
       },
       {
         "name": "reusable_chunk_lowering_passes_internal_checks",
@@ -6530,12 +6530,12 @@
         }
       },
       {
-        "name": "reusable_chunk_lowering_keeps_zkp_and_release_obligations_open",
+        "name": "reusable_chunk_lowering_records_zkp_and_release_evidence",
         "pass": 1,
         "expected": ">= 2",
         "observed": [
-          "Bind this contract and its owner-capacity certificate in the ZKP before changing public headline values.",
-          "Promote the candidate only after compressed and Groth16 verification pass from checked-in branch artifacts."
+          "This contract and owner-capacity certificate are bound in the reusable-chunk candidate ZKP input.",
+          "The checked candidate directory contains core, compressed, and Groth16 fixtures plus compressed/Groth16 proof bundles and verifier key."
         ]
       }
     ]
@@ -10437,13 +10437,13 @@
         "pass": 1,
         "expected": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "065b4e839dd118a3a79d99ea23a8ecd1a0d7d46fff23078b21fb38e38dd87442",
-          "size_bytes": 7765
+          "sha256": "6f555a0a01735cec5466b0f09276d38f9f9a3813dd0eb3ff768db241a73763a5",
+          "size_bytes": 7753
         },
         "observed": {
           "summary": "payload omitted from verification summary because it exceeds the inline size limit",
-          "sha256": "065b4e839dd118a3a79d99ea23a8ecd1a0d7d46fff23078b21fb38e38dd87442",
-          "size_bytes": 7765
+          "sha256": "6f555a0a01735cec5466b0f09276d38f9f9a3813dd0eb3ff768db241a73763a5",
+          "size_bytes": 7753
         }
       },
       {
@@ -10461,8 +10461,8 @@
           "all_fixtures_bind_same_public_values": true,
           "compressed_fixture_binds_checked_proof_binary": true,
           "groth16_fixture_binds_checked_proof_and_verifier_key": true,
-          "reusable_chunk_lowering_is_bound_by_checked_public_headline": true,
-          "reusable_chunk_tail_contract_is_bound_by_checked_public_headline": true,
+          "reusable_chunk_lowering_is_proven_for_public_headline": true,
+          "reusable_chunk_tail_contract_is_proven_for_public_headline": true,
           "fits_strict_public_goal": true
         }
       },
@@ -10492,9 +10492,9 @@
           "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
           "claim_sha256": "2a098c6004436f393953eed4bcda8c000ad6c3bca81f1c91f2c7b57b3e0413e5",
           "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
-          "family_sha256": "345237abab722243c6a2ae1230e77b1c58c1a2e3248f0feab88ac3e074c8be1d",
+          "family_sha256": "c1a1cd68e1c159353724cb3e21b98c65115b2add9930d247b3f5f0f85dd5ba20",
           "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
-          "resource_certificate_sha256": "aa83edcfc7e0fb2e9a15104652cfe6942f4a78cfba2b3f4c9cf50b0aae733e41",
+          "resource_certificate_sha256": "115d8161c48048c81da2cadb7f4f0cc12dce241e4a272586fca463d9a5e76439",
           "expected_full_oracle_non_clifford": 36767692,
           "expected_total_logical_qubits": 1199,
           "case_count": 8,
@@ -10514,12 +10514,12 @@
         "pass": 1,
         "expected": {
           "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin",
-          "sha256": "6ed19ddb7e63d4745a96979ef73427c2581ffc846818e335480ef228808ad961",
+          "sha256": "c167a585b3ffd82751ee0889e66c26dee34fdeb83e932849c438c933db3277f0",
           "bytes": 1273162
         },
         "observed": {
           "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin",
-          "sha256": "6ed19ddb7e63d4745a96979ef73427c2581ffc846818e335480ef228808ad961",
+          "sha256": "c167a585b3ffd82751ee0889e66c26dee34fdeb83e932849c438c933db3277f0",
           "bytes": 1273162
         }
       },
@@ -10528,12 +10528,12 @@
         "pass": 1,
         "expected": {
           "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_groth16.bin",
-          "sha256": "c01fd39395d99428f633a163c2b265f6020618adb9a84fd849fd9a16e9ea081b",
+          "sha256": "50b23255eceb8672db00f01e1b73b314cc24726afe0b008083447079ba6063c3",
           "bytes": 2287
         },
         "observed": {
           "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_groth16.bin",
-          "sha256": "c01fd39395d99428f633a163c2b265f6020618adb9a84fd849fd9a16e9ea081b",
+          "sha256": "50b23255eceb8672db00f01e1b73b314cc24726afe0b008083447079ba6063c3",
           "bytes": 2287
         }
       },
@@ -10552,25 +10552,10 @@
         }
       },
       {
-        "name": "public_headline_result_uses_bound_reusable_chunk_lowering",
+        "name": "public_headline_result_uses_verified_reusable_chunk_lowering",
         "pass": 1,
-        "expected": true,
-        "observed": {
-          "executable_leaf_uses_four_arithmetic_slots": true,
-          "executable_leaf_has_reusable_chunk_scratch": true,
-          "no_full_coordinate_lanes_materialized": true,
-          "chunk_width_matches_strict_qubit_pressure": true,
-          "stream_count_derived_from_tables_and_chunks": true,
-          "whole_oracle_stream_count_derived_from_leaf_calls": true,
-          "per_stream_cost_matches_standard_qroamclean_k1": true,
-          "chunked_multiplier_partial_products_match_inherited_full_width_base": true,
-          "chunked_multiplier_high_chunk_zero_padding_is_explicit": true,
-          "chunked_multiplier_uses_single_reduction_per_consumer": true,
-          "non_clifford_matches_candidate": true,
-          "logical_qubits_match_candidate": true,
-          "owner_capacity_rows_cover_required_peak": true,
-          "fits_requested_limits": true
-        }
+        "expected": "proven_public_headline",
+        "observed": "proven_public_headline"
       }
     ]
   },

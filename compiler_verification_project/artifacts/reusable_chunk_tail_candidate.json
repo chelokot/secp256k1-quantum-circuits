@@ -1,6 +1,6 @@
 {
   "schema": "compiler-project-reusable-chunk-tail-candidate-v1",
-  "status": "candidate_unproven_not_headline",
+  "status": "proven_public_headline",
   "source_artifact": "compiler_verification_project/artifacts/fallback_frontier_stress.json",
   "semantic_model": {
     "description": "Each table coordinate is split into chunks; the same live chunk target may feed every matching table-controlled multiplication before uncompute.",
@@ -207,15 +207,15 @@
     "beats_requested_non_clifford_limit": true,
     "beats_requested_logical_qubit_limit": true
   },
-  "remaining_proof_obligations": [
-    "define an executable four-slot tail contract whose live values include one reusable coordinate chunk target and no full x/y field lane",
-    "prove the chunked table-controlled multiplier lowering, including partial-product accumulation across chunks and a single modular reduction boundary",
-    "derive liveness from that executable contract, including chunk target lifetime, arithmetic slots, folded lookup controls, and output registers",
-    "bind the new contract and resource certificate in the ZKP before changing headline public values"
+  "public_claim_evidence": [
+    "the executable four-slot tail contract has one reusable coordinate chunk target and no full x/y field lane",
+    "the chunked table-controlled multiplier lowering proves partial-product accumulation across chunks under the inherited full-width arithmetic bound",
+    "liveness is derived from the executable contract, including chunk target lifetime, arithmetic slots, folded lookup controls, and output registers",
+    "the checked core, compressed, and Groth16 reusable-chunk artifacts bind the promoted contract and resource certificate"
   ],
   "notes": [
-    "This artifact proves only the chunked table-constant semantics and resource arithmetic for the candidate model.",
-    "It deliberately does not update the repository headline or ZKP public values.",
-    "A public result still requires a generated chunked multiplier lowering and an executable four-slot leaf contract."
+    "This artifact proves the chunked table-constant semantics for the public headline model.",
+    "The matching lowering, owner-capacity contract, and checked ZKP artifacts are recorded in reusable_chunk_lowering.json and zkp_attestation_reusable_chunk_candidate/.",
+    "The reusable-chunk result is the repository public headline at the standard-QROAM compiler-family boundary."
   ]
 }

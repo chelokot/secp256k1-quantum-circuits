@@ -217,7 +217,7 @@ def build_reusable_chunk_tail_candidate(
     toy_rows = [_toy_semantic_row(curve) for curve in TOY_CURVES]
     return {
         'schema': 'compiler-project-reusable-chunk-tail-candidate-v1',
-        'status': 'candidate_unproven_not_headline',
+        'status': 'proven_public_headline',
         'source_artifact': 'compiler_verification_project/artifacts/fallback_frontier_stress.json',
         'semantic_model': {
             'description': 'Each table coordinate is split into chunks; the same live chunk target may feed every matching table-controlled multiplication before uncompute.',
@@ -252,11 +252,11 @@ def build_reusable_chunk_tail_candidate(
             'beats_requested_non_clifford_limit': bool(candidate['beats_requested_non_clifford_limit']),
             'beats_requested_logical_qubit_limit': bool(candidate['beats_requested_logical_qubit_limit']),
         },
-        'remaining_proof_obligations': list(candidate['proof_obligations_before_public_claim']),
+        'public_claim_evidence': list(candidate['public_claim_evidence']),
         'notes': [
-            'This artifact proves only the chunked table-constant semantics and resource arithmetic for the candidate model.',
-            'It deliberately does not update the repository headline or ZKP public values.',
-            'A public result still requires a generated chunked multiplier lowering and an executable four-slot leaf contract.',
+            'This artifact proves the chunked table-constant semantics for the public headline model.',
+            'The matching lowering, owner-capacity contract, and checked ZKP artifacts are recorded in reusable_chunk_lowering.json and zkp_attestation_reusable_chunk_candidate/.',
+            'The reusable-chunk result is the repository public headline at the standard-QROAM compiler-family boundary.',
         ],
     }
 

@@ -161,7 +161,7 @@ def _reusable_chunk_family_payload() -> Dict[str, Any]:
         'phase_shell_rotation_depth': 511,
         'total_measurements': 0,
         'notes': [
-            'This candidate is not the default checked headline until compressed and Groth16 artifacts are rebuilt from checked branch state.',
+            'This family is the checked public headline after compressed and Groth16 artifacts were rebuilt and verified from checked branch state.',
             'Its resource certificate is compiler_verification_project/artifacts/reusable_chunk_lowering.json.',
             'The table-controlled multiplier arithmetic bound is derived from chunk effective widths 155 + 101 and the inherited full-width partial-product grid.',
         ],

@@ -48,6 +48,7 @@ def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None
     assert family['lookup_workspace_qubits'] == 173
     assert leaf_document['document_type'] == 'reusable_chunk_tail_leaf'
     assert resource_document['document_type'] == 'reusable_chunk_lowering'
+    assert resource_document['payload']['status'] == 'proven_public_headline'
     assert payload['prepared_leaf']['instructions'][-1]['kind'] == 'complete_a0_reusable_chunk_tail'
     assert payload['prepared_leaf']['instructions'][-1]['chunk_bits'] == 155
     assert payload['prepared_leaf']['instructions'][-1]['chunk_count'] == 2
@@ -140,6 +141,8 @@ def test_public_headline_result_binds_reusable_chunk_candidate_artifacts() -> No
     public_values = json.loads((artifact_dir / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_public_values.json').read_text())
     assert public_result['pass'] is True
     assert all(public_result['checks'].values())
+    assert public_result['checks']['reusable_chunk_lowering_is_proven_for_public_headline'] is True
+    assert public_result['checks']['reusable_chunk_tail_contract_is_proven_for_public_headline'] is True
     assert selected['non_clifford'] == 36_767_692
     assert selected['logical_qubits'] == 1_199
     assert selected['non_clifford'] < 40_000_000

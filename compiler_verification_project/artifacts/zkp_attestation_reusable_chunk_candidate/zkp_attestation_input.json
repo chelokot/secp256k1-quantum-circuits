@@ -4,9 +4,9 @@
   "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
   "claim_sha256": "2a098c6004436f393953eed4bcda8c000ad6c3bca81f1c91f2c7b57b3e0413e5",
   "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
-  "family_sha256": "345237abab722243c6a2ae1230e77b1c58c1a2e3248f0feab88ac3e074c8be1d",
+  "family_sha256": "c1a1cd68e1c159353724cb3e21b98c65115b2add9930d247b3f5f0f85dd5ba20",
   "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
-  "resource_certificate_sha256": "aa83edcfc7e0fb2e9a15104652cfe6942f4a78cfba2b3f4c9cf50b0aae733e41",
+  "resource_certificate_sha256": "115d8161c48048c81da2cadb7f4f0cc12dce241e4a272586fca463d9a5e76439",
   "claim_document": {
     "document_type": "attestation_claim",
     "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_claim.json",
@@ -140,7 +140,7 @@
     "document_type": "compiler_family_summary",
     "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_family.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "345237abab722243c6a2ae1230e77b1c58c1a2e3248f0feab88ac3e074c8be1d",
+    "sha256": "c1a1cd68e1c159353724cb3e21b98c65115b2add9930d247b3f5f0f85dd5ba20",
     "payload": {
       "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
       "summary": "Candidate reusable-chunk standard-QROAM family: four arithmetic slots, one reusable 155-bit QROAM chunk target, chunked table-controlled coordinate multipliers, and semiclassical QFT.",
@@ -165,7 +165,7 @@
       "phase_shell_rotation_depth": 511,
       "total_measurements": 0,
       "notes": [
-        "This candidate is not the default checked headline until compressed and Groth16 artifacts are rebuilt from checked branch state.",
+        "This family is the checked public headline after compressed and Groth16 artifacts were rebuilt and verified from checked branch state.",
         "Its resource certificate is compiler_verification_project/artifacts/reusable_chunk_lowering.json.",
         "The table-controlled multiplier arithmetic bound is derived from chunk effective widths 155 + 101 and the inherited full-width partial-product grid."
       ]
@@ -314,10 +314,10 @@
     "document_type": "reusable_chunk_lowering",
     "artifact_path": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "aa83edcfc7e0fb2e9a15104652cfe6942f4a78cfba2b3f4c9cf50b0aae733e41",
+    "sha256": "115d8161c48048c81da2cadb7f4f0cc12dce241e4a272586fca463d9a5e76439",
     "payload": {
       "schema": "compiler-project-reusable-chunk-lowering-v2",
-      "status": "candidate_lowering_contract_unproven_not_headline",
+      "status": "proven_public_headline",
       "source_artifacts": {
         "reusable_chunk_tail_candidate": "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
         "fallback_frontier_stress": "compiler_verification_project/artifacts/fallback_frontier_stress.json",
@@ -733,15 +733,15 @@
         "fits_requested_limits": true
       },
       "pass": true,
-      "remaining_proof_obligations": [
-        "Bind this contract and its owner-capacity certificate in the ZKP before changing public headline values.",
-        "Promote the candidate only after compressed and Groth16 verification pass from checked-in branch artifacts."
+      "public_claim_evidence": [
+        "This contract and owner-capacity certificate are bound in the reusable-chunk candidate ZKP input.",
+        "The checked candidate directory contains core, compressed, and Groth16 fixtures plus compressed/Groth16 proof bundles and verifier key."
       ],
       "notes": [
         "This artifact prevents the previous QROAMClean width/workspace mix-up for the reusable chunk candidate: K=1 uses a 155-bit live target and zero junk registers, so the same model drives gates and qubits.",
         "The three coordinate tables are streamed as chunks and consumed before uncompute; no full x, y, or x_plus_y coordinate lane is allocated.",
         "The chunked multiplier primitive contract proves that the inherited non-QROAM arithmetic base is a conservative bound: low 155 bits plus high 101 effective bits produce the same 65,536 partial products as the inherited full-width field multiplier, with the same single reduction boundary.",
-        "The result remains non-headline because ZKP binding is not complete."
+        "The result is the public headline after checked compressed and Groth16 verification over the reusable-chunk artifacts."
       ]
     }
   },

@@ -41,27 +41,27 @@
   "bound_documents": {
     "claim_sha256": "2a098c6004436f393953eed4bcda8c000ad6c3bca81f1c91f2c7b57b3e0413e5",
     "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
-    "family_sha256": "345237abab722243c6a2ae1230e77b1c58c1a2e3248f0feab88ac3e074c8be1d",
+    "family_sha256": "c1a1cd68e1c159353724cb3e21b98c65115b2add9930d247b3f5f0f85dd5ba20",
     "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
-    "resource_certificate_sha256": "aa83edcfc7e0fb2e9a15104652cfe6942f4a78cfba2b3f4c9cf50b0aae733e41"
+    "resource_certificate_sha256": "115d8161c48048c81da2cadb7f4f0cc12dce241e4a272586fca463d9a5e76439"
   },
   "checked_artifacts": {
     "input": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
-      "sha256": "abf8f1179cd6bc9addb05466e39a3d74a120e07e719a4807d93296f56c391d7f",
-      "bytes": 37970
+      "sha256": "b6deabcfaa75089f40d105439d3a1306d7f2d9d60bb0e7a0cea7541be2362d27",
+      "bytes": 38014
     },
     "public_values": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_public_values.json",
-      "sha256": "4980f6dbaf7b7647b36e78d788b102cc6e62ad83f59e485e65ce21963458d36f",
+      "sha256": "f21646dead6838be17db4698fe7143acd57cd849a7b769b22122869bb9210e98",
       "bytes": 851
     },
     "core_fixture": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_fixture_core.json",
-      "sha256": "f18e8e636ac886f48b6ba35f5c66fb0da36b997aec68e0db6854b5761401ba3e",
+      "sha256": "ebea972924acbd3c31c8ba241477d298e901176786a9bff0925a10d0c1ee4bf0",
       "bytes": 1263,
       "proof_system": "core",
-      "verification_key": "0x008c8a883ab4f716dd447aa5c549e129e5f70fc490371bfad6adb4cf40c30592",
+      "verification_key": "0x00c5b6eefe7a460d81d60dbf0c553720c6985be8e3d74d331b0ef2628b10abcb",
       "proof_path": null,
       "proof_sha256": null,
       "proof_size_bytes": null,
@@ -71,12 +71,12 @@
     },
     "compressed_fixture": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_fixture_compressed.json",
-      "sha256": "aa4da5d6046cd0311c7c872d5055b76368e3dcc022f71d91a2aac772a9973f54",
+      "sha256": "62cca05666eb7f5902469cb7ffe51e986802deba8e481fb9e7d79492fb051b65",
       "bytes": 1449,
       "proof_system": "compressed",
-      "verification_key": "0x008c8a883ab4f716dd447aa5c549e129e5f70fc490371bfad6adb4cf40c30592",
+      "verification_key": "0x00c5b6eefe7a460d81d60dbf0c553720c6985be8e3d74d331b0ef2628b10abcb",
       "proof_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin",
-      "proof_sha256": "6ed19ddb7e63d4745a96979ef73427c2581ffc846818e335480ef228808ad961",
+      "proof_sha256": "c167a585b3ffd82751ee0889e66c26dee34fdeb83e932849c438c933db3277f0",
       "proof_size_bytes": 1273162,
       "verifier_key_path": null,
       "verifier_key_sha256": null,
@@ -84,12 +84,12 @@
     },
     "groth16_fixture": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_fixture_groth16.json",
-      "sha256": "de76f75c63667c86b0760c730296dabaeafbc3d6a8d869cdcaa88108a5060cc2",
+      "sha256": "30180759e89a33858e00d08f456281ed1bbe272afebf10f6d28328aab6e21984",
       "bytes": 2339,
       "proof_system": "groth16",
-      "verification_key": "0x008c8a883ab4f716dd447aa5c549e129e5f70fc490371bfad6adb4cf40c30592",
+      "verification_key": "0x00c5b6eefe7a460d81d60dbf0c553720c6985be8e3d74d331b0ef2628b10abcb",
       "proof_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_groth16.bin",
-      "proof_sha256": "c01fd39395d99428f633a163c2b265f6020618adb9a84fd849fd9a16e9ea081b",
+      "proof_sha256": "50b23255eceb8672db00f01e1b73b314cc24726afe0b008083447079ba6063c3",
       "proof_size_bytes": 2287,
       "verifier_key_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_groth16_verifier/groth16_vk.bin",
       "verifier_key_sha256": "4125fe6fab5e7d3af4bb9386f49589450a6d37f536e98650adca79768c469975",
@@ -97,17 +97,17 @@
     },
     "compressed_proof": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin",
-      "sha256": "6ed19ddb7e63d4745a96979ef73427c2581ffc846818e335480ef228808ad961",
+      "sha256": "c167a585b3ffd82751ee0889e66c26dee34fdeb83e932849c438c933db3277f0",
       "bytes": 1273162
     },
     "groth16_proof": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_groth16.bin",
-      "sha256": "c01fd39395d99428f633a163c2b265f6020618adb9a84fd849fd9a16e9ea081b",
+      "sha256": "50b23255eceb8672db00f01e1b73b314cc24726afe0b008083447079ba6063c3",
       "bytes": 2287
     },
     "wrap_proof": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_wrap_proof.bin",
-      "sha256": "2a3213e7c4ac907dc1730f759e1b6b5da77eb0006b1f7a5c4b1bd988578e31d8",
+      "sha256": "e263f01039ce41af9966226e1cff3adab70535ce10e67a5e8c8e5e636fea19fb",
       "bytes": 1341550
     },
     "groth16_verifier_key": {
@@ -117,13 +117,13 @@
     },
     "reusable_chunk_lowering": {
       "path": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
-      "sha256": "d45b3deb024604347bc615aebaf415b8990b96d8a5f2c7679ca2b62809430d9d",
-      "bytes": 15654
+      "sha256": "9615370f2f986027da1f979c4f747b3e79ab8951d91b57c5482ca16300f10354",
+      "bytes": 15692
     },
     "reusable_chunk_tail_candidate": {
       "path": "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
-      "sha256": "a17d99eb7e74e39228b3623efb6ab19e94502d41459caede3b324255e9c920e5",
-      "bytes": 6204
+      "sha256": "b5f1e893dd70d9fe04d3993d8d2acba86d93680e6f6cbd86d0284085cefc8645",
+      "bytes": 6243
     }
   },
   "verification_commands": {
@@ -135,8 +135,8 @@
     "all_fixtures_bind_same_public_values": true,
     "compressed_fixture_binds_checked_proof_binary": true,
     "groth16_fixture_binds_checked_proof_and_verifier_key": true,
-    "reusable_chunk_lowering_is_bound_by_checked_public_headline": true,
-    "reusable_chunk_tail_contract_is_bound_by_checked_public_headline": true,
+    "reusable_chunk_lowering_is_proven_for_public_headline": true,
+    "reusable_chunk_tail_contract_is_proven_for_public_headline": true,
     "fits_strict_public_goal": true
   },
   "pass": true,

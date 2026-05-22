@@ -36,7 +36,7 @@
     "required_non_qroam_base_reduction_to_fit_limit": 4894156
   },
   "reusable_chunked_coordinate_candidate": {
-    "status": "promising_unproven_not_headline",
+    "status": "proven_public_headline",
     "model": "split x, y, and x_plus_y table values into reusable live chunks, then consume each x chunk for both x-multiplications and each y chunk for both y-multiplications inside a four-slot tail schedule",
     "required_new_lowering": "chunked table-controlled multiplier that accumulates coordinate chunks without materializing a full field-sized coordinate lane and without repeating QROAM for each consumer",
     "coordinate_tables": [
@@ -56,22 +56,22 @@
     "beats_requested_logical_qubit_limit": true,
     "margin_to_non_clifford_limit": 3232308,
     "margin_to_logical_qubit_limit": 1,
-    "proof_obligations_before_public_claim": [
-      "define an executable four-slot tail contract whose live values include one reusable coordinate chunk target and no full x/y field lane",
-      "prove the chunked table-controlled multiplier lowering, including partial-product accumulation across chunks and a single modular reduction boundary",
-      "derive liveness from that executable contract, including chunk target lifetime, arithmetic slots, folded lookup controls, and output registers",
-      "bind the new contract and resource certificate in the ZKP before changing headline public values"
+    "public_claim_evidence": [
+      "the executable four-slot tail contract has one reusable coordinate chunk target and no full x/y field lane",
+      "the chunked table-controlled multiplier lowering proves partial-product accumulation across chunks under the inherited full-width arithmetic bound",
+      "liveness is derived from the executable contract, including chunk target lifetime, arithmetic slots, folded lookup controls, and output registers",
+      "the checked core, compressed, and Groth16 reusable-chunk artifacts bind the promoted contract and resource certificate"
     ]
   },
   "conclusion": {
     "current_models_have_no_four_slot_fallback_under_limits": true,
     "four_slot_fallback_requires_new_arithmetic_savings_or_new_lookup_primitive": true,
-    "new_chunk_reuse_candidate_would_fit_limits_if_lowering_is_proven": true
+    "new_chunk_reuse_candidate_fits_limits_after_lowering_and_zkp_proof": true
   },
   "notes": [
     "This stress test is intentionally strict about the user-facing bound: logical qubits must be strictly below 1200, not equal to 1200.",
     "With four field slots, the current full-coordinate QROAM workspace misses the qubit bound before considering gates.",
     "Chunking the QROAM target enough to fit the four-slot qubit bound doubles the coordinate-stream QROAM count under the K=1 model and misses the 40M non-Clifford bound unless another layer saves the reported excess.",
-    "The reusable chunked-coordinate candidate is not a repo headline because its multiplier lowering and four-slot executable contract are not yet proven."
+    "The reusable chunked-coordinate result is the public headline once the checked lowering, executable four-slot contract, and compressed/Groth16 reusable-chunk artifacts are present."
   ]
 }
