@@ -293,6 +293,14 @@ def build_public_engine_manifest(
             and public_candidate_materialized_circuit_manifest['checks']['operand_parent_binding_report_is_current'] is True
             and public_candidate_materialized_circuit_manifest['checks']['primitive_operand_domains_bind_counted_live_parent_wires'] is True
         ),
+        'operand_source_binding_report_is_bound': (
+            public_candidate_materialized_circuit_manifest['operand_source_binding']['schema'] == 'compiler-project-operand-source-binding-report-v1'
+            and public_candidate_materialized_circuit_manifest['operand_source_binding']['rows_checked'] == public_candidate_materialized_circuit_manifest['run_length_row_count']
+            and public_candidate_materialized_circuit_manifest['operand_source_binding']['failure_count'] == 0
+            and public_candidate_materialized_circuit_manifest['operand_source_binding']['pass'] is True
+            and public_candidate_materialized_circuit_manifest['checks']['operand_source_binding_report_is_current'] is True
+            and public_candidate_materialized_circuit_manifest['checks']['primitive_operand_rows_bind_source_operation_blocks'] is True
+        ),
     }
     return {
         'schema': PUBLIC_ENGINE_MANIFEST_SCHEMA,
@@ -427,6 +435,16 @@ def build_public_engine_manifest(
                     'rows_checked': int(public_candidate_materialized_circuit_manifest['operand_parent_binding']['rows_checked']),
                     'domains_checked': int(public_candidate_materialized_circuit_manifest['operand_parent_binding']['domains_checked']),
                     'failure_count': int(public_candidate_materialized_circuit_manifest['operand_parent_binding']['failure_count']),
+                },
+                'operand_source_binding': {
+                    'schema': public_candidate_materialized_circuit_manifest['operand_source_binding']['schema'],
+                    'pass': bool(public_candidate_materialized_circuit_manifest['operand_source_binding']['pass']),
+                    'rows_checked': int(public_candidate_materialized_circuit_manifest['operand_source_binding']['rows_checked']),
+                    'rows_by_source_kind': {
+                        key: int(value)
+                        for key, value in sorted(public_candidate_materialized_circuit_manifest['operand_source_binding']['rows_by_source_kind'].items())
+                    },
+                    'failure_count': int(public_candidate_materialized_circuit_manifest['operand_source_binding']['failure_count']),
                 },
                 'non_clifford': int(public_candidate_materialized_circuit_manifest['public_totals']['non_clifford']),
                 'peak_live_qubits': int(public_candidate_materialized_circuit_manifest['materialized_liveness']['peak_live_qubits']),

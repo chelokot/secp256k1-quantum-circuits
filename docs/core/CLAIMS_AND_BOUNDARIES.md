@@ -160,8 +160,11 @@ run-length primitive row to expose gate-arity operand domains, so QROAM `ccx`,
 arithmetic `ccx`, measurement, and phase rows all expand through the same
 concrete-operand iterator. Its operand-parent binding report additionally
 checks that every operand domain maps to counted live parent wires with matching
-owners and enough parent-wire capacity. The public engine manifest derives the
-public non-Clifford count and public qubit count from `materialized_flat_netlist`;
+owners and enough parent-wire capacity. Its operand-source binding report
+checks that every row binds to a concrete arithmetic block, lookup block, QROAM
+segment, or phase-shell block, and that lookup-family aggregate counts still
+match their block streams. The public engine manifest derives the public
+non-Clifford count and public qubit count from `materialized_flat_netlist`;
 reusable-resource totals are checked against those values as snapshots. The
 materialized/public engine layer is generated from compiler parameters and
 resource artifacts, not from the ZKP input, leaving ZKP as a downstream

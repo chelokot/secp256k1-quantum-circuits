@@ -141,11 +141,14 @@ lookup-base rows, and the selected phase-shell rows. The same manifest executes
 representative operation indices through the flat-netlist API, checking
 concrete operand wires, segment/liveness bindings, QROAM target-domain widths,
 and the reduced schoolbook Cartesian operand grid. It also carries a strict
-primitive-completeness report and an operand-parent binding report, so QROAM
-`ccx`, arithmetic `ccx`, measurement, and phase rows expand to gate-arity
-operand references that point back to counted live parent wires such as `qx`,
-`qy`, `qz`, `qchunk`, folded lookup workspace, the active QROAM chunk target,
-and the semiclassical phase bit. The public engine manifest then binds that
+primitive-completeness report, an operand-parent binding report, and an
+operand-source binding report. Those reports require QROAM `ccx`, arithmetic
+`ccx`, measurement, and phase rows to expand to gate-arity operand references
+that point back to counted live parent wires such as `qx`, `qy`, `qz`,
+`qchunk`, folded lookup workspace, the active QROAM chunk target, and the
+semiclassical phase bit, and require each run-length row to bind to a concrete
+arithmetic block, lookup block, QROAM segment, or phase-shell block rather than
+only to a family-level count. The public engine manifest then binds that
 materialized flat stream, executable instruction rows, wires, schedule events,
 owner-capacity rows, resource terms, semantic-boundary evidence, arithmetic
 operation IR, the generated QROAMClean `K = 1` primitive certificate, and the

@@ -5870,6 +5870,17 @@ fn validate_public_engine_manifest(
         json_string_field(materialized_flat_netlist, "operation_stream_sha256").len() == 64,
         "materialized flat netlist operation stream digest must be bound"
     );
+    let operand_source_binding = json_object_field(public_materialized, "operand_source_binding");
+    assert_eq!(
+        json_string_field(operand_source_binding, "schema"),
+        "compiler-project-operand-source-binding-report-v1"
+    );
+    assert!(json_bool_field(operand_source_binding, "pass"));
+    assert_eq!(
+        json_u64_field(operand_source_binding, "rows_checked"),
+        json_u64_field(public_materialized, "run_length_row_count")
+    );
+    assert_eq!(json_u64_field(operand_source_binding, "failure_count"), 0);
     assert!(json_bool_field(
         json_object_field(primitive_evidence, "arithmetic_operation_ir"),
         "pass"
@@ -6567,6 +6578,21 @@ mod tests {
             .0["primitive_operation_evidence"]["public_candidate_materialized_circuit_manifest"]
             ["materialized_flat_netlist"]["exact_operation_stream_materialized"] =
             serde_json::json!(false);
+        refresh_public_engine_manifest_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_public_engine_manifest_operand_source_binding_forgery() {
+        let mut input = checked_reusable_chunk_input();
+        input
+            .public_engine_manifest_document
+            .as_mut()
+            .expect("reusable-chunk fixture must carry public engine manifest")
+            .payload
+            .0["primitive_operation_evidence"]["public_candidate_materialized_circuit_manifest"]
+            ["operand_source_binding"]["pass"] = serde_json::json!(false);
         refresh_public_engine_manifest_digest(&mut input);
         run_prepared_attestation(&input);
     }

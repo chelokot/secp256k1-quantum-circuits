@@ -135,7 +135,10 @@ the promoted result. `public_candidate_materialized_circuit_manifest.json`
 adds the current public candidate's own primitive-stream boundary: one
 non-QROAM base run, all expanded QROAM segment runs, the selected phase-shell
 rows, and a materialized flat stream whose public totals are computed from the
-emitted primitive operations rather than from side formulas. `constant_provenance.json` separately binds the release
+emitted primitive operations rather than from side formulas. Lookup-base rows
+are source-bound per lowering block, not just by family-level totals, and the
+operand-source binding report rejects block-stream or aggregate-count drift.
+`constant_provenance.json` separately binds the release
 critical phase-shell counts, headline totals, and publication limits from their
 source artifacts into the ZKP candidate input and public headline document, and
 fails if those ZKP-family resource fields become integer literals again.

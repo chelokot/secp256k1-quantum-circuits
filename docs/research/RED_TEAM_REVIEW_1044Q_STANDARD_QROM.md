@@ -1580,7 +1580,7 @@ Current remediation:
   now gives the promoted reusable-chunk candidate its own deterministic
   run-length primitive stream boundary plus a materialized flat primitive
   stream with concrete operand wires and row liveness. It reconstructs
-  `36,957,412 / 1,199`, stores all `5,461` run-length rows and matching
+  `36,957,412 / 1,199`, stores all `6,425` source-bound run-length rows and matching
   liveness/owner rows, expands all `186` public QROAM streams through the
   generated QROAM segment certificate, and derives totals by scanning
   `39,370,727` primitive operations over deterministic full-stream segments.

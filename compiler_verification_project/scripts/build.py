@@ -287,8 +287,20 @@ def build_public_candidate_materialized_circuit_manifest_artifact() -> None:
     if existing_path.exists():
         existing = load_json(existing_path)
         existing_flat = existing.get('materialized_flat_netlist')
+        lightweight_payload = build_public_candidate_materialized_circuit_manifest(
+            reusable_chunk_lowering=reusable_chunk_lowering,
+            arithmetic_operation_ir=arithmetic_operation_ir,
+            lookup_lowerings=lookup_lowerings,
+            qroam_primitive_certificate=qroam_primitive_certificate,
+            phase_shell_lowerings=phase_shell_lowerings,
+            compiler_parameters=compiler_parameters,
+            selected_family_name=compiler_parameters['public_headline_policy']['selected_public_family_name'],
+            include_materialized_flat_netlist=False,
+        )
         if (
             existing.get('source_digests') == source_digests
+            and existing.get('operation_stream_sha256') == lightweight_payload['operation_stream_sha256']
+            and existing.get('liveness_binding_stream_sha256') == lightweight_payload['liveness_binding_stream_sha256']
             and isinstance(existing_flat, dict)
             and existing_flat.get('exact_operation_stream_materialized') is True
         ):

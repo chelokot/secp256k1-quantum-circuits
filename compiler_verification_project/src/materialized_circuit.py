@@ -1077,6 +1077,181 @@ def _operand_parent_binding_report(
     }
 
 
+def _operand_source_binding_report(
+    *,
+    rows: List[Mapping[str, Any]],
+    selected_lookup_family: Mapping[str, Any],
+    selected_arithmetic_kernel: Mapping[str, Any],
+    qroam_primitive_certificate: Mapping[str, Any],
+    selected_phase_shell: Mapping[str, Any],
+) -> Dict[str, Any]:
+    lookup_blocks = {
+        (str(stage['name']), str(block['name'])): (stage, block)
+        for stage in selected_lookup_family['stages']
+        for block in stage.get('blocks', [])
+    }
+    arithmetic_blocks = {
+        (str(stage['stage']), str(block['block'])): (stage, block)
+        for stage in selected_arithmetic_kernel['stages']
+        for block in stage['blocks']
+    }
+    qroam_segments = {
+        str(segment['sha256']): segment
+        for segment in qroam_primitive_certificate['operation_stream']['segments']
+    }
+    phase_blocks = {
+        (str(stage['name']), str(block['name'])): (stage, block)
+        for stage in selected_phase_shell['stages']
+        for block in stage['blocks']
+    }
+    rows_by_source_kind: Dict[str, int] = {}
+    failures: List[Dict[str, Any]] = []
+
+    def record_global_failure(source_kind: str, reasons: List[str]) -> None:
+        if not reasons:
+            return
+        failures.append({
+            'row_index': -1,
+            'scope': 'source_artifact',
+            'source': source_kind,
+            'gate': '',
+            'source_kind': source_kind,
+            'reasons': reasons,
+        })
+
+    def record_failure(row: Mapping[str, Any], reasons: List[str]) -> None:
+        if not reasons:
+            return
+        failures.append({
+            'row_index': int(row['row_index']),
+            'scope': str(row['scope']),
+            'source': str(row['source']),
+            'gate': str(row['gate']),
+            'source_kind': str(row['primitive_operand_contract']['source_kind']),
+            'reasons': reasons,
+        })
+
+    lookup_block_totals = _empty_gate_totals()
+    for _, block in lookup_blocks.values():
+        for gate, count in block['primitive_counts_total'].items():
+            lookup_block_totals[gate] += int(count)
+    record_global_failure(
+        'lookup_lowering_block',
+        [
+            'lookup_family_primitive_counts_do_not_match_block_sum'
+        ] if any(
+            int(selected_lookup_family['primitive_counts_total'].get(gate, 0)) != lookup_block_totals.get(gate, 0)
+            for gate in selected_lookup_family['primitive_counts_total']
+        ) else [],
+    )
+
+    arithmetic_block_totals = _empty_gate_totals()
+    for _, block in arithmetic_blocks.values():
+        for gate, count in block['primitive_counts_total'].items():
+            arithmetic_block_totals[gate] += int(count)
+    record_global_failure(
+        'arithmetic_operation_ir',
+        [
+            'arithmetic_kernel_primitive_counts_do_not_match_block_sum'
+        ] if any(
+            int(selected_arithmetic_kernel['primitive_counts_total'].get(gate, 0)) != arithmetic_block_totals.get(gate, 0)
+            for gate in selected_arithmetic_kernel['primitive_counts_total']
+        ) else [],
+    )
+
+    for row in rows:
+        gate = str(row['gate'])
+        source_kind = str(row['primitive_operand_contract']['source_kind'])
+        rows_by_source_kind[source_kind] = rows_by_source_kind.get(source_kind, 0) + 1
+        reasons: List[str] = []
+        if row['scope'] in ('direct_seed_base', 'lookup_leaf_base'):
+            stage_name = str(row.get('lookup_stage', ''))
+            block_name = str(row.get('lookup_block', ''))
+            block_entry = lookup_blocks.get((stage_name, block_name))
+            if source_kind != 'lookup_lowering_block':
+                reasons.append('wrong_lookup_source_kind')
+            if block_entry is None:
+                reasons.append('missing_lookup_block')
+            else:
+                _, block = block_entry
+                expected_count = int(block['primitive_counts_total'].get(gate, 0))
+                if int(row['total_count']) != expected_count:
+                    reasons.append('lookup_block_gate_count_mismatch')
+                if str(row.get('lookup_block_operation_stream_sha256')) != str(block['primitive_operation_stream']['sha256']):
+                    reasons.append('lookup_block_stream_digest_mismatch')
+                if int(block['primitive_operation_stream']['operation_count']) != sum(int(value) for value in block['primitive_counts_total'].values()):
+                    reasons.append('lookup_block_operation_count_mismatch')
+        elif row['scope'] == 'arithmetic_leaf_block':
+            stage_name = str(row.get('arithmetic_stage', ''))
+            block_name = str(row.get('arithmetic_block', ''))
+            block_entry = arithmetic_blocks.get((stage_name, block_name))
+            if source_kind != 'arithmetic_operation_ir':
+                reasons.append('wrong_arithmetic_source_kind')
+            if block_entry is None:
+                reasons.append('missing_arithmetic_block')
+            else:
+                _, block = block_entry
+                expected_count = int(block['primitive_counts_total'].get(gate, 0))
+                if int(row['total_count']) != expected_count:
+                    reasons.append('arithmetic_block_gate_count_mismatch')
+                if int(block['operation_count']) != int(block['operation_end_exclusive']) - int(block['operation_start']):
+                    reasons.append('arithmetic_block_operation_span_mismatch')
+                if int(block['operation_count']) != sum(int(value) for value in block['primitive_counts_total'].values()):
+                    reasons.append('arithmetic_block_operation_count_mismatch')
+                if len(str(block['operation_stream_sha256'])) != 64:
+                    reasons.append('arithmetic_block_stream_digest_missing')
+        elif row['scope'] == 'qroam_chunk_stream':
+            segment = qroam_segments.get(str(row.get('qroam_segment_sha256', '')))
+            if source_kind != 'qroam_primitive_certificate':
+                reasons.append('wrong_qroam_source_kind')
+            if segment is None:
+                reasons.append('missing_qroam_segment')
+            else:
+                if int(row['total_count']) != int(segment['operation_count']):
+                    reasons.append('qroam_segment_operation_count_mismatch')
+                if int(row['non_clifford_count']) != int(segment['ccx']):
+                    reasons.append('qroam_segment_ccx_mismatch')
+                if str(row.get('qroam_phase')) != str(segment['phase']):
+                    reasons.append('qroam_segment_phase_mismatch')
+                if str(row['primitive_operand_contract']['source_digest_sha256']) != str(segment['sha256']):
+                    reasons.append('qroam_operand_contract_digest_mismatch')
+        elif row['scope'] == 'phase_shell':
+            source_parts = str(row['source']).split(':')
+            block_entry = None
+            if len(source_parts) == 3:
+                block_entry = phase_blocks.get((source_parts[1], source_parts[2]))
+            if source_kind != 'phase_shell_lowering':
+                reasons.append('wrong_phase_source_kind')
+            if block_entry is None:
+                reasons.append('missing_phase_block')
+            else:
+                _, block = block_entry
+                expected_count = int(block['count_profile_total'].get(gate, 0))
+                if int(row['total_count']) != expected_count:
+                    reasons.append('phase_block_gate_count_mismatch')
+                if int(block['phase_operation_stream']['operation_count']) != sum(
+                    int(value)
+                    for key, value in block['count_profile_total'].items()
+                    if key != 'rotation_depth'
+                ):
+                    reasons.append('phase_block_operation_count_mismatch')
+        else:
+            reasons.append('unknown_scope')
+        record_failure(row, reasons)
+    return {
+        'schema': 'compiler-project-operand-source-binding-report-v1',
+        'definition': 'Every public-candidate run-length row must bind to a concrete source operation block or QROAM segment, not only to an aggregate family/resource formula.',
+        'rows_checked': len(rows),
+        'rows_by_source_kind': {
+            key: int(value)
+            for key, value in sorted(rows_by_source_kind.items())
+        },
+        'failure_count': len(failures),
+        'sample_failures': failures[:32],
+        'pass': len(failures) == 0,
+    }
+
+
 def _project_defaults() -> Dict[str, Any]:
     from project import FIELD_BITS, FOLDED_MAG_DOMAIN, FULL_PHASE_REGISTER_BITS, central_executable_leaf, compiler_family_frontier, leaf_opcode_histogram, raw32_schedule
 
@@ -1616,19 +1791,7 @@ def _selected_arithmetic_kernel(arithmetic_operation_ir: Mapping[str, Any]) -> M
     return next(row for row in arithmetic_operation_ir['kernels'] if row['opcode'] == opcode)
 
 
-def _public_base_run_length_rows(
-    *,
-    reusable_chunk_lowering: Mapping[str, Any],
-    arithmetic_operation_ir: Mapping[str, Any],
-    lookup_lowerings: Mapping[str, Any],
-    compiler_parameters: Mapping[str, Any],
-) -> List[Dict[str, Any]]:
-    lookup_family = _selected_lookup_family(
-        lookup_lowerings,
-        str(compiler_parameters['lookup_policy']['selected_public_lookup_family']),
-    )
-    arithmetic_kernel = _selected_arithmetic_kernel(arithmetic_operation_ir)
-    leaf_call_count = int(reusable_chunk_lowering['stream_plan']['leaf_call_count_total'])
+def _lookup_operand_domains_by_gate(lookup_family: Mapping[str, Any]) -> Dict[str, List[Mapping[str, Any]]]:
     lookup_operand_domains = [
         {
             'domain_id': 'folded_lookup_control_workspace',
@@ -1670,7 +1833,7 @@ def _public_base_run_length_rows(
             ),
         },
     ]
-    lookup_operand_domains_by_gate = {
+    return {
         'ccx': lookup_operand_domains,
         'measurement': [
             {
@@ -1688,35 +1851,82 @@ def _public_base_run_length_rows(
             }
         ],
     }
+
+
+def _lookup_base_run_length_rows(
+    *,
+    row_index: int,
+    lookup_family: Mapping[str, Any],
+    usage: str,
+    leaf_call_index: Optional[int] = None,
+) -> List[Dict[str, Any]]:
     rows: List[Dict[str, Any]] = []
-    rows.extend(_count_rows_from_primitive_counts(
+    operand_domains_by_gate = _lookup_operand_domains_by_gate(lookup_family)
+    for stage in lookup_family['stages']:
+        for block in stage.get('blocks', []):
+            primitive_counts = block['primitive_counts_total']
+            if not any(int(count) > 0 for count in primitive_counts.values()):
+                continue
+            extra = {
+                'lookup_family': str(lookup_family['name']),
+                'lookup_stage': str(stage['name']),
+                'lookup_block': str(block['name']),
+                'lookup_block_operation_stream_sha256': str(block['primitive_operation_stream']['sha256']),
+            }
+            if leaf_call_index is not None:
+                extra['leaf_call_index'] = int(leaf_call_index)
+            rows.extend(_count_rows_from_primitive_counts(
+                row_index=row_index + len(rows),
+                scope='direct_seed_base' if usage == 'direct_seed' else 'lookup_leaf_base',
+                source=f"lookup_lowerings:{lookup_family['name']}:{stage['name']}:{block['name']}:{usage}",
+                primitive_counts=primitive_counts,
+                provenance_payload={
+                    'lookup_family': lookup_family['name'],
+                    'usage': usage,
+                    'leaf_call_index': leaf_call_index,
+                    'stage': stage['name'],
+                    'stage_category': stage['category'],
+                    'block': block['name'],
+                    'operation_stream_sha256': block['primitive_operation_stream']['sha256'],
+                    'primitive_operation_encoding': block['primitive_operation_encoding'],
+                    'primitive_counts_total': primitive_counts,
+                },
+                operand_domains={
+                    gate: operand_domains_by_gate[gate]
+                    for gate, count in primitive_counts.items()
+                    if int(count) > 0
+                },
+                source_kind='lookup_lowering_block',
+                extra=extra,
+            ))
+    return rows
+
+
+def _public_base_run_length_rows(
+    *,
+    reusable_chunk_lowering: Mapping[str, Any],
+    arithmetic_operation_ir: Mapping[str, Any],
+    lookup_lowerings: Mapping[str, Any],
+    compiler_parameters: Mapping[str, Any],
+) -> List[Dict[str, Any]]:
+    lookup_family = _selected_lookup_family(
+        lookup_lowerings,
+        str(compiler_parameters['lookup_policy']['selected_public_lookup_family']),
+    )
+    arithmetic_kernel = _selected_arithmetic_kernel(arithmetic_operation_ir)
+    leaf_call_count = int(reusable_chunk_lowering['stream_plan']['leaf_call_count_total'])
+    rows: List[Dict[str, Any]] = []
+    rows.extend(_lookup_base_run_length_rows(
         row_index=len(rows),
-        scope='direct_seed_base',
-        source=f"lookup_lowerings:{lookup_family['name']}:direct_seed",
-        primitive_counts=lookup_family['primitive_counts_total'],
-        provenance_payload={
-            'lookup_family': lookup_family['name'],
-            'usage': 'direct_seed',
-            'primitive_counts_total': lookup_family['primitive_counts_total'],
-        },
-        operand_domains=lookup_operand_domains_by_gate,
-        source_kind='lookup_lowering',
+        lookup_family=lookup_family,
+        usage='direct_seed',
     ))
     for leaf_call_index in range(leaf_call_count):
-        rows.extend(_count_rows_from_primitive_counts(
+        rows.extend(_lookup_base_run_length_rows(
             row_index=len(rows),
-            scope='lookup_leaf_base',
-            source=f"lookup_lowerings:{lookup_family['name']}:leaf_call_{leaf_call_index}",
-            primitive_counts=lookup_family['primitive_counts_total'],
-            provenance_payload={
-                'lookup_family': lookup_family['name'],
-                'usage': 'leaf_lookup_base',
-                'leaf_call_index': leaf_call_index,
-                'primitive_counts_total': lookup_family['primitive_counts_total'],
-            },
-            operand_domains=lookup_operand_domains_by_gate,
-            source_kind='lookup_lowering',
-            extra={'leaf_call_index': leaf_call_index},
+            lookup_family=lookup_family,
+            usage='leaf_lookup_base',
+            leaf_call_index=leaf_call_index,
         ))
         for stage in arithmetic_kernel['stages']:
             if stage['category'] == 'streamed_lookup_data_select':
@@ -1934,6 +2144,13 @@ def build_public_candidate_materialized_circuit_manifest(
         liveness_rows=liveness_rows,
         wire_catalog=wire_catalog,
     )
+    operand_source_binding = _operand_source_binding_report(
+        rows=rows,
+        selected_lookup_family=selected_lookup_family,
+        selected_arithmetic_kernel=selected_arithmetic_kernel,
+        qroam_primitive_certificate=qroam_primitive_certificate,
+        selected_phase_shell=selected_phase_shell,
+    )
     checks = {
         'selected_family_matches_compiler_parameters': selected_family_name == compiler_parameters['public_headline_policy']['selected_public_family_name'],
         'source_engines_pass': (
@@ -2046,6 +2263,7 @@ def build_public_candidate_materialized_circuit_manifest(
             for row in rows
         ),
         'primitive_operand_domains_bind_counted_live_parent_wires': operand_parent_binding['pass'] is True,
+        'primitive_operand_rows_bind_source_operation_blocks': operand_source_binding['pass'] is True,
         'flat_netlist_binds_operand_contract_hashes': all(
             contribution['primitive_operand_contract_sha256'] == rows[int(contribution['run_length_row_index'])]['primitive_operand_contract_sha256']
             and contribution['primitive_operand_owner_ids'] == rows[int(contribution['run_length_row_index'])]['primitive_operand_contract']['owner_ids']
@@ -2067,6 +2285,16 @@ def build_public_candidate_materialized_circuit_manifest(
             operand_parent_binding['rows_checked'] == len(rows)
             and operand_parent_binding['domains_checked'] == sum(len(row['primitive_operand_contract']['operand_domains']) for row in rows)
             and operand_parent_binding['pass'] is True
+        ),
+        'operand_source_binding_report_is_current': (
+            operand_source_binding['rows_checked'] == len(rows)
+            and operand_source_binding['pass'] is True
+            and set(operand_source_binding['rows_by_source_kind']) == {
+                'arithmetic_operation_ir',
+                'lookup_lowering_block',
+                'phase_shell_lowering',
+                'qroam_primitive_certificate',
+            }
         ),
         'qroam_liveness_bindings_use_matching_chunk_target': all(
             f"qroam_chunk_target__{row['table']}__chunk_{row['chunk_index']}" in liveness_rows[int(row['row_index'])]['live_wire_ids']
@@ -2135,6 +2363,7 @@ def build_public_candidate_materialized_circuit_manifest(
         'flat_execution_probe': flat_execution_probe,
         'strict_primitive_completeness': strict_primitive_completeness,
         'operand_parent_binding': operand_parent_binding,
+        'operand_source_binding': operand_source_binding,
         'qroam_expansion': {
             'stream_instances': qroam_stream_term_instances,
             'segments_per_stream': qroam_segment_count,
@@ -2175,6 +2404,7 @@ def build_public_candidate_materialized_circuit_manifest(
         'boundary': [
             'This artifact defines the canonical flat operation-index netlist for the current public candidate with run-length contributions, liveness, and owner bindings.',
             'materialized_flat_netlist is the checked full primitive stream: the build scans every emitted primitive operation with concrete operand wires and derives the public non-Clifford and peak-live-qubit totals from that stream.',
+            'operand_source_binding requires every run-length row to bind to a source arithmetic block, lookup block, QROAM segment, or phase-shell block rather than only to an aggregate family count.',
             'The flat_execution_probe section is generated by executing representative operation indices through the same expandable flat-netlist API used for the full stream.',
             'strict_primitive_completeness requires every row to expose arity-correct primitive operand domains so the flat-netlist iterator emits exact operand references for each primitive operation.',
             'The full stream is stored as exact segment hashes and previews in JSON; materialize_exact_circuits.py can export physical TSV slices or the entire stream when an audit wants lines on disk.',

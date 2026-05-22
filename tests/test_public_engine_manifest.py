@@ -193,12 +193,37 @@ def test_public_engine_manifest_binds_operand_parent_binding_report() -> None:
     assert parent_report['failure_count'] == 0
 
 
+def test_public_engine_manifest_binds_operand_source_binding_report() -> None:
+    public_candidate_materialized = _load('public_candidate_materialized_circuit_manifest.json')
+    observed = _build_manifest(public_candidate_materialized=public_candidate_materialized)
+    source_report = observed['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['operand_source_binding']
+    assert observed['checks']['operand_source_binding_report_is_bound'] is True
+    assert source_report['pass'] is True
+    assert source_report['rows_checked'] == public_candidate_materialized['run_length_row_count']
+    assert source_report['failure_count'] == 0
+    assert set(source_report['rows_by_source_kind']) == {
+        'arithmetic_operation_ir',
+        'lookup_lowering_block',
+        'phase_shell_lowering',
+        'qroam_primitive_certificate',
+    }
+
+
 def test_public_engine_manifest_rejects_operand_parent_binding_drift() -> None:
     public_candidate_materialized = _load('public_candidate_materialized_circuit_manifest.json')
     public_candidate_materialized['operand_parent_binding']['pass'] = False
     public_candidate_materialized['operand_parent_binding']['failure_count'] = 1
     observed = _build_manifest(public_candidate_materialized=public_candidate_materialized)
     assert observed['checks']['operand_parent_binding_report_is_bound'] is False
+    assert observed['pass'] is False
+
+
+def test_public_engine_manifest_rejects_operand_source_binding_drift() -> None:
+    public_candidate_materialized = _load('public_candidate_materialized_circuit_manifest.json')
+    public_candidate_materialized['operand_source_binding']['pass'] = False
+    public_candidate_materialized['operand_source_binding']['failure_count'] = 1
+    observed = _build_manifest(public_candidate_materialized=public_candidate_materialized)
+    assert observed['checks']['operand_source_binding_report_is_bound'] is False
     assert observed['pass'] is False
 
 

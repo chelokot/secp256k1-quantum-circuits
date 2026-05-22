@@ -122,8 +122,17 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert manifest['public_totals']['logical_qubits'] == reusable['qubit_derivation']['candidate_total_logical_qubits']
     assert manifest['liveness_binding_row_count'] == manifest['run_length_row_count']
     assert manifest['materialized_liveness']['peak_live_qubits'] == reusable['qubit_derivation']['candidate_total_logical_qubits']
-    assert manifest['direct_seed_row_count'] == 2
-    assert manifest['lookup_leaf_base_row_count'] == 2 * reusable['stream_plan']['leaf_call_count_total']
+    lookup_lowerings = _artifact('lookup_lowerings.json')
+    lookup_family = next(row for row in lookup_lowerings['families'] if row['name'] == 'folded_standard_qroam_streamed_coordinate_v1')
+    lookup_rows_per_call = sum(
+        1
+        for stage in lookup_family['stages']
+        for block in stage.get('blocks', [])
+        for count in block['primitive_counts_total'].values()
+        if int(count) > 0
+    )
+    assert manifest['direct_seed_row_count'] == lookup_rows_per_call
+    assert manifest['lookup_leaf_base_row_count'] == lookup_rows_per_call * reusable['stream_plan']['leaf_call_count_total']
     assert manifest['arithmetic_leaf_block_row_count'] > reusable['stream_plan']['leaf_call_count_total']
     assert manifest['qroam_expansion']['stream_instances'] == reusable['stream_plan']['whole_oracle_chunk_streams']
     assert manifest['qroam_expansion']['non_clifford'] == reusable['non_clifford_derivation']['qroam_chunk_non_clifford']
@@ -154,6 +163,7 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert manifest['checks']['primitive_operand_contracts_cover_all_run_length_rows'] is True
     assert manifest['checks']['primitive_operand_contract_owners_are_known_and_live'] is True
     assert manifest['checks']['primitive_operand_domains_bind_counted_live_parent_wires'] is True
+    assert manifest['checks']['primitive_operand_rows_bind_source_operation_blocks'] is True
     assert manifest['checks']['flat_netlist_binds_operand_contract_hashes'] is True
     assert manifest['checks']['flat_execution_probe_operations_bind_segment_contributions'] is True
     assert manifest['checks']['flat_execution_probe_operand_indices_within_domains'] is True
@@ -163,6 +173,7 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert manifest['checks']['flat_execution_probe_arithmetic_two_operand_domains_match_rows'] is True
     assert manifest['checks']['strict_primitive_completeness_report_is_current'] is True
     assert manifest['checks']['operand_parent_binding_report_is_current'] is True
+    assert manifest['checks']['operand_source_binding_report_is_current'] is True
     assert manifest['checks']['direct_seed_liveness_excludes_qroam_target_and_chunk'] is True
     assert manifest['checks']['lookup_leaf_liveness_excludes_qroam_target_and_chunk'] is True
     assert manifest['checks']['generated_base_rows_match_public_non_qroam_derivation'] is True
@@ -195,6 +206,17 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert parent_binding['pass'] is True
     assert parent_binding['failure_count'] == 0
     assert parent_binding['domains_checked'] == sum(len(row['primitive_operand_contract']['operand_domains']) for row in manifest['run_length_rows'])
+    source_binding = manifest['operand_source_binding']
+    assert source_binding['schema'] == 'compiler-project-operand-source-binding-report-v1'
+    assert source_binding['pass'] is True
+    assert source_binding['failure_count'] == 0
+    assert source_binding['rows_checked'] == manifest['run_length_row_count']
+    assert set(source_binding['rows_by_source_kind']) == {
+        'arithmetic_operation_ir',
+        'lookup_lowering_block',
+        'phase_shell_lowering',
+        'qroam_primitive_certificate',
+    }
     assert all(
         len(row['primitive_operand_contract']['operand_domains']) == PRIMITIVE_GATE_ARITY[row['gate']]
         for row in manifest['run_length_rows']
@@ -311,8 +333,9 @@ def test_public_candidate_materialized_manifest_rejects_arithmetic_stage_drift()
         qroam_primitive=_artifact('qroam_primitive_certificate.json'),
         phase_shell=_artifact('phase_shell_lowerings.json'),
     )
-    assert observed['checks']['non_clifford_total_matches_public_candidate'] is False
-    assert observed['checks']['generated_base_rows_match_public_non_qroam_derivation'] is False
+    assert observed['checks']['primitive_operand_rows_bind_source_operation_blocks'] is False
+    assert observed['checks']['operand_source_binding_report_is_current'] is False
+    assert observed['operand_source_binding']['failure_count'] > 0
     assert observed['pass'] is False
 
 
@@ -327,8 +350,27 @@ def test_public_candidate_materialized_manifest_rejects_lookup_base_drift() -> N
         qroam_primitive=_artifact('qroam_primitive_certificate.json'),
         phase_shell=_artifact('phase_shell_lowerings.json'),
     )
-    assert observed['checks']['non_clifford_total_matches_public_candidate'] is False
-    assert observed['checks']['generated_base_rows_match_public_non_qroam_derivation'] is False
+    assert observed['checks']['primitive_operand_rows_bind_source_operation_blocks'] is False
+    assert observed['checks']['operand_source_binding_report_is_current'] is False
+    assert observed['operand_source_binding']['failure_count'] > 0
+    assert observed['pass'] is False
+
+
+def test_public_candidate_materialized_manifest_rejects_lookup_block_stream_drift() -> None:
+    lookup_lowerings = _artifact('lookup_lowerings.json')
+    family = next(row for row in lookup_lowerings['families'] if row['name'] == 'folded_standard_qroam_streamed_coordinate_v1')
+    block = family['stages'][0]['blocks'][0]
+    block['primitive_operation_stream']['operation_count'] += 1
+    observed = _build_public_candidate_materialized(
+        reusable=_artifact('reusable_chunk_lowering.json'),
+        arithmetic_operation_ir=_artifact('arithmetic_operation_ir.json'),
+        lookup_lowerings=lookup_lowerings,
+        qroam_primitive=_artifact('qroam_primitive_certificate.json'),
+        phase_shell=_artifact('phase_shell_lowerings.json'),
+    )
+    assert observed['checks']['primitive_operand_rows_bind_source_operation_blocks'] is False
+    assert observed['checks']['operand_source_binding_report_is_current'] is False
+    assert observed['operand_source_binding']['failure_count'] > 0
     assert observed['pass'] is False
 
 
