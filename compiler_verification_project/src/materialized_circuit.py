@@ -516,10 +516,16 @@ def _liveness_binding_rows(
         if event['event_type'] == 'qroam_chunk_load_consume_uncompute'
     }
     peak_interval_id = str(reusable_chunk_lowering['executable_liveness']['global_peak_interval_id'])
+    direct_seed_interval_id = 'pc4_lookup_infinity_flag'
+    phase_interval_id = 'pc0_2_load_carried_inputs'
     rows: List[Dict[str, Any]] = []
     for operation in operation_rows:
         if operation['scope'] == 'qroam_chunk_stream':
             interval_id = qroam_interval_by_chunk[(str(operation['table']), int(operation['chunk_index']))]
+        elif operation['scope'] == 'direct_seed_base':
+            interval_id = direct_seed_interval_id
+        elif operation['scope'] == 'phase_shell':
+            interval_id = phase_interval_id
         else:
             interval_id = peak_interval_id
         interval = intervals[interval_id]
@@ -624,6 +630,16 @@ def build_public_candidate_materialized_circuit_manifest(
         'qroam_liveness_bindings_use_matching_chunk_target': all(
             f"qroam_chunk_target__{row['table']}__chunk_{row['chunk_index']}" in liveness_rows[int(row['row_index'])]['live_wire_ids']
             for row in qroam_rows
+        ),
+        'direct_seed_liveness_excludes_qroam_target_and_chunk': all(
+            not any(str(wire_id).startswith('qroam_chunk_target__') or wire_id == 'qchunk' for wire_id in liveness_rows[int(row['row_index'])]['live_wire_ids'])
+            for row in rows
+            if row['scope'] == 'direct_seed_base'
+        ),
+        'phase_liveness_uses_phase_load_interval_without_lookup_target': all(
+            'semiclassical_qft_live_phase_bit' in liveness_rows[int(row['row_index'])]['live_wire_ids']
+            and not any(str(wire_id).startswith('qroam_chunk_target__') for wire_id in liveness_rows[int(row['row_index'])]['live_wire_ids'])
+            for row in phase_rows
         ),
     }
     return {

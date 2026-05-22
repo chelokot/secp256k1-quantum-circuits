@@ -28,7 +28,7 @@
     "zkp_attestation_input_sha256": "9efa691c75eba975d9ae0034db20c59ced8ce1dcc01f314b486aea9f958abbc1"
   },
   "operation_stream_sha256": "79ba35018a46288bf3aacbb12c7e4328e1e3c970c43b596e39c01bbb9f5d086b",
-  "liveness_binding_stream_sha256": "aa64b88076d95f525ee017c4968ef24b15a1c6596ff9abc67db25fb6202d3610",
+  "liveness_binding_stream_sha256": "f537f991db58742c17d128e11c5c4d19ed4505e485ce72ad309f6e92218df860",
   "run_length_row_count": 3011,
   "liveness_binding_row_count": 3011,
   "base_row_count": 32,
@@ -67,24 +67,22 @@
       {
         "row_index": 0,
         "scope": "direct_seed_base",
-        "interval_id": "pc5_stream_00_lookup_x_chunk_0",
+        "interval_id": "pc4_lookup_infinity_flag",
         "live_wire_ids": [
           "qx",
           "qy",
           "qz",
-          "qchunk",
           "folded_lookup_control_workspace",
-          "qroam_chunk_target__lookup_x__chunk_0",
           "f_lookup_inf",
           "semiclassical_qft_live_phase_bit"
         ],
         "owner_live_qubits": {
-          "arithmetic_slot_register_file": 1024,
+          "arithmetic_slot_register_file": 768,
           "control_slot_register_file": 1,
-          "lookup_workspace": 173,
+          "lookup_workspace": 18,
           "phase_shell_live_register": 1
         },
-        "total_live_qubits": 1199
+        "total_live_qubits": 788
       },
       {
         "row_index": 1,
@@ -355,68 +353,50 @@
       {
         "row_index": 3008,
         "scope": "phase_shell",
-        "interval_id": "pc5_stream_00_lookup_x_chunk_0",
+        "interval_id": "pc0_2_load_carried_inputs",
         "live_wire_ids": [
           "qx",
           "qy",
           "qz",
-          "qchunk",
-          "folded_lookup_control_workspace",
-          "qroam_chunk_target__lookup_x__chunk_0",
-          "f_lookup_inf",
           "semiclassical_qft_live_phase_bit"
         ],
         "owner_live_qubits": {
-          "arithmetic_slot_register_file": 1024,
-          "control_slot_register_file": 1,
-          "lookup_workspace": 173,
+          "arithmetic_slot_register_file": 768,
           "phase_shell_live_register": 1
         },
-        "total_live_qubits": 1199
+        "total_live_qubits": 769
       },
       {
         "row_index": 3009,
         "scope": "phase_shell",
-        "interval_id": "pc5_stream_00_lookup_x_chunk_0",
+        "interval_id": "pc0_2_load_carried_inputs",
         "live_wire_ids": [
           "qx",
           "qy",
           "qz",
-          "qchunk",
-          "folded_lookup_control_workspace",
-          "qroam_chunk_target__lookup_x__chunk_0",
-          "f_lookup_inf",
           "semiclassical_qft_live_phase_bit"
         ],
         "owner_live_qubits": {
-          "arithmetic_slot_register_file": 1024,
-          "control_slot_register_file": 1,
-          "lookup_workspace": 173,
+          "arithmetic_slot_register_file": 768,
           "phase_shell_live_register": 1
         },
-        "total_live_qubits": 1199
+        "total_live_qubits": 769
       },
       {
         "row_index": 3010,
         "scope": "phase_shell",
-        "interval_id": "pc5_stream_00_lookup_x_chunk_0",
+        "interval_id": "pc0_2_load_carried_inputs",
         "live_wire_ids": [
           "qx",
           "qy",
           "qz",
-          "qchunk",
-          "folded_lookup_control_workspace",
-          "qroam_chunk_target__lookup_x__chunk_0",
-          "f_lookup_inf",
           "semiclassical_qft_live_phase_bit"
         ],
         "owner_live_qubits": {
-          "arithmetic_slot_register_file": 1024,
-          "control_slot_register_file": 1,
-          "lookup_workspace": 173,
+          "arithmetic_slot_register_file": 768,
           "phase_shell_live_register": 1
         },
-        "total_live_qubits": 1199
+        "total_live_qubits": 769
       }
     ]
   },
@@ -635,7 +615,9 @@
     "liveness_bindings_cover_all_materialized_rows": true,
     "liveness_bindings_use_known_wires_and_capacity": true,
     "liveness_bindings_reconstruct_public_peak": true,
-    "qroam_liveness_bindings_use_matching_chunk_target": true
+    "qroam_liveness_bindings_use_matching_chunk_target": true,
+    "direct_seed_liveness_excludes_qroam_target_and_chunk": true,
+    "phase_liveness_uses_phase_load_interval_without_lookup_target": true
   },
   "pass": true,
   "boundary": [

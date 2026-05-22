@@ -95,6 +95,9 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert manifest['qroam_expansion']['non_clifford'] == reusable['non_clifford_derivation']['qroam_chunk_non_clifford']
     assert manifest['qroam_segment_row_count'] == manifest['qroam_expansion']['stream_instances'] * manifest['qroam_expansion']['segments_per_stream']
     assert manifest['checks']['qroam_liveness_bindings_use_matching_chunk_target'] is True
+    assert manifest['checks']['direct_seed_liveness_excludes_qroam_target_and_chunk'] is True
+    assert manifest['checks']['phase_liveness_uses_phase_load_interval_without_lookup_target'] is True
+    assert manifest['materialized_liveness']['preview_head'][0]['total_live_qubits'] < manifest['public_totals']['logical_qubits']
 
 
 def test_public_candidate_materialized_manifest_rejects_qroam_segment_drift() -> None:
