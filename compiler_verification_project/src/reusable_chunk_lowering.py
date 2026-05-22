@@ -4,6 +4,10 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Mapping
 
+from compiler_parameters import (
+    PUBLIC_HEADLINE_LOGICAL_QUBIT_LIMIT_EXCLUSIVE,
+    PUBLIC_HEADLINE_NON_CLIFFORD_LIMIT_EXCLUSIVE,
+)
 from resource_ledger import qroam_clean_stream_cost
 from resource_ir_engine import evaluate_counted_resource_ir, evaluate_resource_contract
 
@@ -365,6 +369,7 @@ def build_reusable_chunk_lowering(
     qroam_traversed = qroam_primitive_certificate['traversed_counts']
     qroam_reference_selected = qroam_reference_crosscheck['selected_reference']
     modular_stage_certificate = modular_arithmetic_certificate['field_mul_stage_count_certificate']
+    modular_opcode_certificate = modular_arithmetic_certificate['opcode_count_certificate']
     reduced_width_cases = modular_arithmetic_certificate['reduced_width_exhaustive_cases']
     table_names = list(executable_leaf['lookup_constant_sources'])
     consumer_plan = reusable_chunk_tail_candidate['semantic_model']['consumer_plan']
@@ -504,6 +509,11 @@ def build_reusable_chunk_lowering(
             and modular_arithmetic_certificate['secp256k1_parameters']['shift'] == 32
             and modular_arithmetic_certificate['secp256k1_parameters']['low_term'] == 977
             and modular_arithmetic_certificate['secp256k1_parameters']['canonical_subtract_passes'] == 2
+            and modular_opcode_certificate['opcode_counts_match'] is True
+            and modular_opcode_certificate['observed_non_clifford_per_opcode'] == modular_opcode_certificate['expected_non_clifford_per_opcode']
+            and int(modular_opcode_certificate['observed_non_clifford_per_opcode']['field_add']) == 2 * (int(field_bits) - 1)
+            and int(modular_opcode_certificate['observed_non_clifford_per_opcode']['field_sub']) == 2 * (int(field_bits) - 1)
+            and int(modular_opcode_certificate['observed_non_clifford_per_opcode']['mul_const']) == 6 * 2 * (int(field_bits) - 1)
             and modular_stage_certificate['stage_counts_match'] is True
             and int(modular_stage_certificate['observed_total_ccx']) == int(_kernel_by_opcode(arithmetic_lowerings, 'field_mul')['exact_non_clifford_per_kernel'])
             and int(modular_stage_certificate['observed_total_ccx']) == int(modular_stage_certificate['expected_total_ccx'])
@@ -520,7 +530,10 @@ def build_reusable_chunk_lowering(
         'counted_resource_ir_recomputes_public_totals': counted_resource_ir['pass'] is True and int(counted_resource_ir['recomputed_total_non_clifford']) == total_non_clifford and int(counted_resource_ir['recomputed_peak_live_qubits']) == total_logical_qubits,
         'counted_resource_engine_recomputes_public_totals': counted_resource_engine['pass'] is True and int(counted_resource_engine['non_clifford_total_from_terms']) == total_non_clifford and int(counted_resource_engine['peak_live_qubits_from_intervals']) == total_logical_qubits,
         'resource_contract_engine_unifies_counted_and_executable_liveness': resource_contract_engine['pass'] is True and int(resource_contract_engine['peak_live_qubits']) == total_logical_qubits,
-        'fits_requested_limits': total_non_clifford < 40_000_000 and total_logical_qubits < 1200,
+        'fits_requested_limits': (
+            total_non_clifford < PUBLIC_HEADLINE_NON_CLIFFORD_LIMIT_EXCLUSIVE
+            and total_logical_qubits < PUBLIC_HEADLINE_LOGICAL_QUBIT_LIMIT_EXCLUSIVE
+        ),
     }
     return {
         'schema': 'compiler-project-reusable-chunk-lowering-v2',

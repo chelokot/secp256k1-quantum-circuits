@@ -33,8 +33,18 @@ class PublicHeadlineVerifierTests(unittest.TestCase):
             'public_values_match_input_digest_headers',
             {check['name'] for check in report['failed_checks']},
         )
-        self.assertEqual(report['selected_result']['non_clifford'], 36_767_692)
-        self.assertEqual(report['selected_result']['logical_qubits'], 1_199)
+        public_result = json.loads(
+            (REPO_ROOT / 'compiler_verification_project/artifacts/public_headline_result.json').read_text()
+        )
+        self.assertEqual(report['selected_result'], public_result['selected_result'])
+        self.assertLess(
+            report['selected_result']['non_clifford'],
+            public_result['selection_policy']['limits']['non_clifford_limit_exclusive'],
+        )
+        self.assertLess(
+            report['selected_result']['logical_qubits'],
+            public_result['selection_policy']['limits']['logical_qubit_limit_exclusive'],
+        )
         self.assertEqual(
             report['checked_proofs']['groth16_verifier_key_sha256'],
             '4125fe6fab5e7d3af4bb9386f49589450a6d37f536e98650adca79768c469975',

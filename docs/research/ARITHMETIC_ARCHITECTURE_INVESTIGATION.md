@@ -17,7 +17,7 @@ lookup, and scaffold semantics.
 As of the current compiler frontier, the repository's central standard-QROM
 point is:
 
-- `34,736,076` non-Clifford
+- `34,925,796` non-Clifford
 - `1,044` logical qubits
 
 This is the family
@@ -707,7 +707,7 @@ Whole-oracle implication:
   before any extra branch-control bookkeeping,
 - the same candidate with parallel zero-test scratch rises to about `2576`
   logical qubits,
-- the gate total barely moves relative to the `34,736,076` standard-QROM
+- the gate total barely moves relative to the `34,925,796` standard-QROM
   baseline unless the lookup-stream count or QROAM block-size choice changes,
   non-Clifford.
 
@@ -807,7 +807,7 @@ What was checked locally:
 
 Result:
 
-- the gate total remains essentially unchanged relative to the `34,736,076`
+- the gate total remains essentially unchanged relative to the `34,925,796`
   non-Clifford current standard-QROM baseline across the whole sweep,
 - the qubit totals are approximately:
   - `7` arithmetic slots: `2069..2076` logical qubits,
@@ -1259,7 +1259,7 @@ Status:
 What was checked locally:
 
 - compared the candidate predicate overhead against the current central exact
-  point `34,736,076`,
+  point `34,925,796`,
 - kept the previous comparator-predicate estimate as a small perturbation
   relative to the standard-QROAM data-selection term,
 - measured the remaining slack against the repository's practical gate caps.

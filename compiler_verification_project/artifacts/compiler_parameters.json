@@ -34,14 +34,20 @@
     "chunk_count": 2,
     "scratch_slot": "qchunk"
   },
+  "public_headline_policy": {
+    "non_clifford_limit_exclusive": 40000000,
+    "logical_qubit_limit_exclusive": 1200,
+    "proof_freshness_required_for_public_pass": true
+  },
   "checks": {
     "field_modulus_has_declared_bit_width": true,
     "pseudo_mersenne_identity_matches_modulus": true,
     "folded_domain_matches_magnitude_bits": true,
     "raw_window_span_matches_scalar_width": true,
     "qroamclean_selected_block_size_is_k1": true,
-    "reusable_chunk_policy_covers_field_width": true
+    "reusable_chunk_policy_covers_field_width": true,
+    "public_headline_limits_are_strict": true
   },
   "pass": true,
-  "parameter_digest_sha256": "8ecc453477263f7afc5a8bdd7ae438515ff163bb2dab61501bc82a2ea78b1b99"
+  "parameter_digest_sha256": "ff6e9ffc4411af58791855dc281723b57e8f462ee40d91f82d3ebb4aa9dda520"
 }

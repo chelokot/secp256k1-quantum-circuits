@@ -63,7 +63,7 @@ The root-level `compiler_verification_project/` is the repository's strongest
 exact layer below the ISA boundary. Its checked-in central whole-oracle result
 is:
 
-- **public standard-QROAM headline:** `36,767,692 non-Clifford`, `1,199 logical qubits`
+- **public standard-QROAM headline:** `36,957,412 non-Clifford`, `1,199 logical qubits`
 
 Those numbers are exact for the chosen compiler family, not a claim of global
 optimality or a Clifford-complete full-Shor netlist. The public headline is the
@@ -73,15 +73,15 @@ standard QROAMClean `K = 1` chunk streams over the full 32768-entry folded
 coordinate domain, an exact semiclassical-QFT phase shell, and the executable
 `complete_a0_reusable_chunk_tail` point-add leaf. The counted lookup workspace
 includes folded-control qubits plus one live 155-bit QROAM chunk target and no
-free full-coordinate lookup lane. The older `34,736,076 / 1,044` three-slot
+free full-coordinate lookup lane. The older `34,925,796 / 1,044` three-slot
 family remains checked as a reference boundary, but it is no longer the single
 public headline.
 
 Against Google's published 2026 secp256k1 baseline, the public standard-QROAM
 result is:
 
-- **2.4478x** lower in non-Clifford cost than the public low-qubit line
-- **1.9038x** lower in non-Clifford cost than the public low-gate line
+- **2.4352x** lower in non-Clifford cost than the public low-qubit line
+- **1.8941x** lower in non-Clifford cost than the public low-gate line
 - **1 qubit below** the public low-qubit line
 - **251 qubits below** the public low-gate line
 
@@ -114,7 +114,9 @@ proof bundle, and the matching Groth16 verifying key. During source churn,
 whether those proof layers still bind the current input; after the latest
 resource-certificate binding changes, final compressed/Groth16 rebuild remains
 the release gate before claiming current proof freshness. Together these
-artifacts define the public `36,767,692 / 1,199` claim and `8 / 8` public cases.
+artifacts define the public `36,957,412 / 1,199` candidate claim and `8 / 8`
+public cases, while the checked compressed/Groth16 proofs remain explicitly
+stale until rebuilt against the current resource digest.
 The compiler artifacts also include proof-bound generated QROAM,
 independent QROAM reference, and modular-arithmetic certificates. The QROAM
 reference keeps the selected 155-bit reusable chunk stream separate from the
@@ -220,7 +222,7 @@ language rather than only in physical-qubit counts. That makes IBM's roadmap
 especially useful for reading this repository's logical result as an
 engineering-scale signal, not just as an abstract asymptotic risk.
 
-The current public headline here is **36,767,692 non-Clifford operations** and
+The current public headline here is **36,957,412 non-Clifford operations** and
 **1,199 logical qubits**. IBM's public roadmap frames Starling as a 2029
 fault-tolerant system with **200 logical qubits** and **100 million gates**,
 and Blue Jay as a 2033+ class system with about **2,000 logical qubits** and

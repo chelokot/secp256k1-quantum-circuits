@@ -17,6 +17,8 @@ from common import SECP_B, SECP_G, SECP_N, SECP_P, sha256_bytes
 from reusable_chunk_tail_candidate import PRODUCTION_CHUNK_BITS, PRODUCTION_CHUNK_COUNT
 
 COMPILER_PARAMETERS_SCHEMA = 'compiler-project-parameters-v1'
+PUBLIC_HEADLINE_NON_CLIFFORD_LIMIT_EXCLUSIVE = 40_000_000
+PUBLIC_HEADLINE_LOGICAL_QUBIT_LIMIT_EXCLUSIVE = 1200
 
 
 def _digest_payload(payload: Dict[str, Any]) -> str:
@@ -60,6 +62,11 @@ def build_compiler_parameters() -> Dict[str, Any]:
             'chunk_count': PRODUCTION_CHUNK_COUNT,
             'scratch_slot': 'qchunk',
         },
+        'public_headline_policy': {
+            'non_clifford_limit_exclusive': PUBLIC_HEADLINE_NON_CLIFFORD_LIMIT_EXCLUSIVE,
+            'logical_qubit_limit_exclusive': PUBLIC_HEADLINE_LOGICAL_QUBIT_LIMIT_EXCLUSIVE,
+            'proof_freshness_required_for_public_pass': True,
+        },
     }
     checks = {
         'field_modulus_has_declared_bit_width': int(payload['field']['field_bits']) == 256,
@@ -68,14 +75,20 @@ def build_compiler_parameters() -> Dict[str, Any]:
         'raw_window_span_matches_scalar_width': payload['windowing']['raw_window_bits'] * payload['windowing']['full_raw_windows'] == 512,
         'qroamclean_selected_block_size_is_k1': payload['lookup_policy']['standard_qroamclean_block_size'] == 1,
         'reusable_chunk_policy_covers_field_width': payload['reusable_chunk_policy']['chunk_bits'] * payload['reusable_chunk_policy']['chunk_count'] >= payload['field']['field_bits'],
+        'public_headline_limits_are_strict': payload['public_headline_policy']['non_clifford_limit_exclusive'] == 40_000_000 and payload['public_headline_policy']['logical_qubit_limit_exclusive'] == 1200,
     }
     payload['checks'] = checks
     payload['pass'] = all(checks.values())
     payload['parameter_digest_sha256'] = _digest_payload({
         key: payload[key]
-        for key in ('schema', 'curve', 'field', 'windowing', 'phase_shell', 'lookup_policy', 'reusable_chunk_policy')
+        for key in ('schema', 'curve', 'field', 'windowing', 'phase_shell', 'lookup_policy', 'reusable_chunk_policy', 'public_headline_policy')
     })
     return payload
 
 
-__all__ = ['COMPILER_PARAMETERS_SCHEMA', 'build_compiler_parameters']
+__all__ = [
+    'COMPILER_PARAMETERS_SCHEMA',
+    'PUBLIC_HEADLINE_LOGICAL_QUBIT_LIMIT_EXCLUSIVE',
+    'PUBLIC_HEADLINE_NON_CLIFFORD_LIMIT_EXCLUSIVE',
+    'build_compiler_parameters',
+]

@@ -99,7 +99,7 @@ What it does ship is:
 
 ## Current central boundary result
 
-- **public standard-QROAM headline:** `36,767,692 non-Clifford`, `1,199 logical qubits`
+- **public standard-QROAM headline:** `36,957,412 non-Clifford`, `1,199 logical qubits`
 
 The public headline is selected in
 `compiler_verification_project/artifacts/public_headline_result.json`. It uses
@@ -116,11 +116,11 @@ operations: `32,768` for standard QROAM compute and `32,768` for measured
 uncompute. No full field-sized lookup x/y output lane is free or borrowed from
 the interface.
 
-The older `34,736,076 / 1,044` three-slot family remains checked as a reference
+The older `34,925,796 / 1,044` three-slot family remains checked as a reference
 boundary in `family_frontier.json`, `logical_resource_ledger.json`, and the
 root attestation bundle. The reusable-chunk candidate directory contains the
 core/compressed/Groth16 fixtures and proof bundles for the public
-`36,767,692 / 1,199` result; use `proof_status.py --require-all-current` as the
+`36,957,412 / 1,199` candidate result; use `proof_status.py --require-all-current` as the
 freshness gate after any resource-certificate or guest change.
 
 `standard_qrom_lookup_assessment.json` records the standard-QROM status and
@@ -216,8 +216,8 @@ patch set, which is also part of the curated proof manifest.
 The root proof bundle binds the older three-slot reference family. The public
 headline proof bundle lives in
 `compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/`
-and binds the reusable-chunk `36,767,692 / 1,199` result with `8 / 8`
-deterministic public cases.
+and must be rebuilt before it can bind the reusable-chunk `36,957,412 / 1,199`
+result with `8 / 8` deterministic public cases.
 
 This is similar in shape to Google's disclosure model, but it is still a proof
 at the repository exact-family boundary, not a primitive-gate full-Shor proof.

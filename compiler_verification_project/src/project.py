@@ -2112,6 +2112,103 @@ def build_all_artifacts() -> Dict[str, Any]:
     return out
 
 
+def build_resource_stack_artifacts() -> Dict[str, Any]:
+    arithmetic_lowerings = arithmetic_lowering_library(
+        field_bits=FIELD_BITS,
+        leaf_opcode_histogram=leaf_opcode_histogram(),
+    )
+    phase_shell_lowerings = phase_shell_lowering_library(FULL_PHASE_REGISTER_BITS)
+    phase_shell_rows = phase_shell_family_summary(phase_shell_lowerings)
+    lookup_lowerings = lookup_lowering_library()
+    generated_block_inventories = build_generated_block_inventories_payload(
+        schedule=raw32_schedule(),
+        kernel=arithmetic_kernel_library(),
+        arithmetic_lowerings=arithmetic_lowerings,
+        lookup_lowerings=lookup_lowerings,
+        phase_shells=phase_shell_lowerings['families'],
+        field_bits=FIELD_BITS,
+        public_google_baseline=PUBLIC_GOOGLE_BASELINE,
+    )
+    ft_ir_compositions = build_ft_ir_compositions_payload(
+        schedule=raw32_schedule(),
+        arithmetic_lowerings=arithmetic_lowerings,
+        lookup_lowerings=lookup_lowerings,
+        phase_shells=phase_shell_lowerings['families'],
+        generated_block_inventories=generated_block_inventories,
+        frontier=None,
+        field_bits=FIELD_BITS,
+    )
+    whole_oracle_recount = build_whole_oracle_recount_payload(
+        ft_ir_compositions=ft_ir_compositions,
+        public_google_baseline=PUBLIC_GOOGLE_BASELINE,
+    )
+    frontier = compiler_family_frontier()
+    streamed_lookup_resource = streamed_lookup_table_multiplier_resource(
+        arithmetic_lowerings=arithmetic_lowerings,
+        lookup_lowerings=lookup_lowerings,
+    )
+    logical_resource_ledger = build_logical_resource_ledger(
+        frontier=frontier,
+        generated_block_inventories=generated_block_inventories,
+        streamed_lookup_resource=streamed_lookup_resource,
+        field_bits=FIELD_BITS,
+        public_google_baseline=PUBLIC_GOOGLE_BASELINE,
+    )
+    fallback_frontier_stress = build_fallback_frontier_stress(
+        frontier=frontier,
+        logical_resource_ledger=logical_resource_ledger,
+        field_bits=FIELD_BITS,
+    )
+    reusable_chunk_tail_candidate = build_reusable_chunk_tail_candidate(
+        fallback_frontier_stress=fallback_frontier_stress,
+    )
+    qroam_primitive_certificate = build_qroam_k1_primitive_certificate(
+        domain_size=int(logical_resource_ledger['qroam_clean_tradeoff_sweep']['selected_row']['domain_size']),
+        target_bits=int(fallback_frontier_stress['chunked_coordinate_qroam_counterfactual']['max_qroam_target_bits_per_live_chunk']),
+        block_size=1,
+    )
+    qroam_reference_crosscheck = build_qroam_reference_crosscheck(
+        qroam_primitive_certificate=qroam_primitive_certificate,
+        logical_resource_ledger=logical_resource_ledger,
+    )
+    modular_arithmetic_certificate = build_modular_arithmetic_certificate(
+        arithmetic_lowerings=arithmetic_lowerings,
+        field_bits=FIELD_BITS,
+    )
+    reusable_chunk_lowering = build_reusable_chunk_lowering(
+        reusable_chunk_tail_candidate=reusable_chunk_tail_candidate,
+        fallback_frontier_stress=fallback_frontier_stress,
+        logical_resource_ledger=logical_resource_ledger,
+        arithmetic_lowerings=arithmetic_lowerings,
+        qroam_primitive_certificate=qroam_primitive_certificate,
+        qroam_reference_crosscheck=qroam_reference_crosscheck,
+        modular_arithmetic_certificate=modular_arithmetic_certificate,
+        field_bits=FIELD_BITS,
+    )
+    return {
+        'arithmetic_lowerings': arithmetic_lowerings,
+        'arithmetic_operation_ir': build_arithmetic_operation_ir(
+            arithmetic_lowerings=arithmetic_lowerings,
+            leaf_opcode_histogram=leaf_opcode_histogram(),
+        ),
+        'modular_arithmetic_certificate': modular_arithmetic_certificate,
+        'streamed_lookup_table_multiplier_resource': streamed_lookup_resource,
+        'arithmetic_kernel_library': arithmetic_kernel_library(),
+        'generated_block_inventories': generated_block_inventories,
+        'ft_ir_compositions': ft_ir_compositions,
+        'whole_oracle_recount': whole_oracle_recount,
+        'frontier': frontier,
+        'logical_resource_ledger': logical_resource_ledger,
+        'fallback_frontier_stress': fallback_frontier_stress,
+        'reusable_chunk_tail_candidate': reusable_chunk_tail_candidate,
+        'qroam_primitive_certificate': qroam_primitive_certificate,
+        'qroam_reference_crosscheck': qroam_reference_crosscheck,
+        'reusable_chunk_lowering': reusable_chunk_lowering,
+        'phase_shell_lowerings': phase_shell_lowerings,
+        'phase_shell_families': phase_shell_rows,
+    }
+
+
 
 def build_cain_transfer_payload(frontier: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     if frontier is None:

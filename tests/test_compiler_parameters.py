@@ -25,6 +25,7 @@ def _artifacts(parameters: dict) -> dict:
         'full_raw32_oracle': json.loads((artifact_root / 'full_raw32_oracle.json').read_text()),
         'logical_resource_ledger': json.loads((artifact_root / 'logical_resource_ledger.json').read_text()),
         'reusable_chunk_lowering': json.loads((artifact_root / 'reusable_chunk_lowering.json').read_text()),
+        'public_headline_result': json.loads((artifact_root / 'public_headline_result.json').read_text()),
     }
 
 
@@ -47,5 +48,12 @@ def test_compiler_parameters_reject_forged_reusable_chunk_policy() -> None:
 def test_compiler_parameters_reject_forged_lookup_policy() -> None:
     forged = deepcopy(build_compiler_parameters())
     forged['lookup_policy']['standard_qroamclean_block_size'] += 1
+    checks = build_compiler_parameter_checks(_artifacts(forged))
+    assert checks['pass'] < checks['total']
+
+
+def test_compiler_parameters_reject_forged_public_headline_policy() -> None:
+    forged = deepcopy(build_compiler_parameters())
+    forged['public_headline_policy']['logical_qubit_limit_exclusive'] = 1199
     checks = build_compiler_parameter_checks(_artifacts(forged))
     assert checks['pass'] < checks['total']

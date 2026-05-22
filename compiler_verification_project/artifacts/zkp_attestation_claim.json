@@ -4,17 +4,17 @@
   "selected_family_name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
   "field_bits": 256,
   "leaf_call_count_total": 31,
-  "expected_full_oracle_non_clifford": 34736076,
+  "expected_full_oracle_non_clifford": 34925796,
   "expected_total_logical_qubits": 1044,
   "expected_case_count": 8,
   "non_clifford_formula": {
-    "arithmetic_leaf_non_clifford": 1120212,
+    "arithmetic_leaf_non_clifford": 1126332,
     "per_leaf_lookup_non_clifford": 297,
     "direct_seed_non_clifford": 297,
     "leaf_call_count_total": 31,
-    "arithmetic_component": 34726572,
+    "arithmetic_component": 34916292,
     "lookup_component": 9207,
-    "reconstructed_total": 34736076
+    "reconstructed_total": 34925796
   },
   "logical_qubit_formula": {
     "field_bits": 256,

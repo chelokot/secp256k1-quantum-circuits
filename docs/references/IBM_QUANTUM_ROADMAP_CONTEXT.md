@@ -49,13 +49,13 @@ as scale alignment, not as a completed IBM runtime estimate.
 The current public headline is selected by
 `compiler_verification_project/artifacts/public_headline_result.json`:
 
-- `36,767,692` non-Clifford operations
+- `36,957,412` non-Clifford operations
 - `1,199` logical qubits
 
 Against the IBM roadmap facts encoded in
 `data/ibm_quantum_roadmap_context.json`:
 
-- Starling's 100-million-gate scale is about `2.72x` this repository's
+- Starling's 100-million-gate scale is about `2.71x` this repository's
   non-Clifford count, but Starling's 200 logical qubits are below the current
   logical-qubit requirement.
 - Blue Jay's 1-billion-gate scale is about `27.20x` this repository's

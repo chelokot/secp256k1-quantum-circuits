@@ -10,6 +10,7 @@ from arithmetic_lowering import (
     SECP256K1_PSEUDO_MERSENNE_SHIFT,
 )
 from common import SECP_P
+from derived_resources import minimal_addition_chain
 
 
 def pseudo_mersenne_modulus(field_bits: int, shift: int, low_term: int) -> int:
@@ -59,6 +60,10 @@ def _field_mul_kernel(arithmetic_lowerings: Mapping[str, Any]) -> Mapping[str, A
     return next(row for row in arithmetic_lowerings['kernels'] if row['opcode'] == 'field_mul')
 
 
+def _kernel(arithmetic_lowerings: Mapping[str, Any], opcode: str) -> Mapping[str, Any]:
+    return next(row for row in arithmetic_lowerings['kernels'] if row['opcode'] == opcode)
+
+
 def _stage_count_certificate(arithmetic_lowerings: Mapping[str, Any], field_bits: int) -> Dict[str, Any]:
     chain_steps = _binary_addition_chain_step_count(SECP256K1_PSEUDO_MERSENNE_LOW_TERM)
     second_fold_width = (
@@ -91,6 +96,79 @@ def _stage_count_certificate(arithmetic_lowerings: Mapping[str, Any], field_bits
     }
 
 
+def _opcode_count_certificate(arithmetic_lowerings: Mapping[str, Any], field_bits: int) -> Dict[str, Any]:
+    modular_add = 2 * (int(field_bits) - 1)
+    modular_sub = 2 * (int(field_bits) - 1)
+    chain = minimal_addition_chain(21)
+    expected = {
+        'field_add': modular_add,
+        'field_sub': modular_sub,
+        'field_sub_sum': 2 * modular_sub,
+        'field_triple': 2 * modular_add,
+        'mul_const': (len(chain) - 1) * modular_add,
+        'field_mul': _stage_count_certificate(arithmetic_lowerings, field_bits)['expected_total_ccx'],
+    }
+    observed = {
+        opcode: int(_kernel(arithmetic_lowerings, opcode)['exact_non_clifford_per_kernel'])
+        for opcode in expected
+    }
+    return {
+        'field_bits': int(field_bits),
+        'modular_add_correction_policy': 'carry ladder plus conditional subtract-p correction',
+        'modular_sub_correction_policy': 'borrow ladder plus conditional add-p correction',
+        'mul_const_21_addition_chain': chain,
+        'expected_non_clifford_per_opcode': expected,
+        'observed_non_clifford_per_opcode': observed,
+        'opcode_counts_match': observed == expected,
+    }
+
+
+def _modular_add_trace(left: int, right: int, modulus: int) -> Dict[str, Any]:
+    raw = int(left) + int(right)
+    corrected = raw - int(modulus) if raw >= int(modulus) else raw
+    return {
+        'raw_sum': raw,
+        'did_subtract_modulus': raw >= int(modulus),
+        'canonical': corrected,
+    }
+
+
+def _modular_sub_trace(left: int, right: int, modulus: int) -> Dict[str, Any]:
+    raw = int(left) - int(right)
+    corrected = raw + int(modulus) if raw < 0 else raw
+    return {
+        'raw_difference': raw,
+        'did_add_modulus': raw < 0,
+        'canonical': corrected,
+    }
+
+
+def _mul_const_trace(value: int, constant: int, modulus: int) -> Dict[str, Any]:
+    chain = minimal_addition_chain(constant)
+    values = {1: int(value) % int(modulus)}
+    steps = []
+    for previous, current in zip(chain, chain[1:]):
+        delta = current - previous
+        left = values[previous]
+        right = values[delta] if delta in values else (delta * int(value)) % int(modulus)
+        trace = _modular_add_trace(left, right, modulus)
+        values[current] = trace['canonical']
+        steps.append({
+            'from': previous,
+            'to': current,
+            'delta': delta,
+            'left': left,
+            'right': right,
+            'add_trace': trace,
+        })
+    return {
+        'constant': int(constant),
+        'addition_chain': chain,
+        'steps': steps,
+        'canonical': values[int(constant)],
+    }
+
+
 def _exhaustive_case(field_bits: int, shift: int, low_term: int) -> Dict[str, Any]:
     modulus = pseudo_mersenne_modulus(field_bits, shift, low_term)
     rows_checked = 0
@@ -113,17 +191,14 @@ def _exhaustive_case(field_bits: int, shift: int, low_term: int) -> Dict[str, An
                 'mul': (left * right) % modulus,
                 'mul_const_21': (left * 21) % modulus,
             }
+            add_trace = _modular_add_trace(left, right, modulus)
+            sub_trace = _modular_sub_trace(left, right, modulus)
+            const_trace = _mul_const_trace(left, 21, modulus)
             observed = {
-                'add': (left + right) % modulus,
-                'sub': (left - right) % modulus,
+                'add': add_trace['canonical'],
+                'sub': sub_trace['canonical'],
                 'mul': product,
-                'mul_const_21': pseudo_mersenne_reduce(
-                    left * 21,
-                    field_bits=field_bits,
-                    shift=shift,
-                    low_term=low_term,
-                    subtract_passes=SECP256K1_CANONICAL_SUBTRACT_PASSES,
-                )['canonical'],
+                'mul_const_21': const_trace['canonical'],
             }
             if checks != observed:
                 failures.append({'left': left, 'right': right, 'expected': checks, 'observed': observed})
@@ -131,7 +206,10 @@ def _exhaustive_case(field_bits: int, shift: int, low_term: int) -> Dict[str, An
                 sample_traces.append({
                     'left': left,
                     'right': right,
+                    'add_trace': add_trace,
+                    'sub_trace': sub_trace,
                     'product_trace': product_trace,
+                    'mul_const_21_trace': const_trace,
                 })
     return {
         'field_bits': int(field_bits),
@@ -153,12 +231,14 @@ def build_modular_arithmetic_certificate(*, arithmetic_lowerings: Mapping[str, A
         SECP256K1_PSEUDO_MERSENNE_LOW_TERM,
     )
     stage_counts = _stage_count_certificate(arithmetic_lowerings, field_bits)
+    opcode_counts = _opcode_count_certificate(arithmetic_lowerings, field_bits)
     reduced_width_cases = [
         _exhaustive_case(field_bits=5, shift=2, low_term=5),
         _exhaustive_case(field_bits=6, shift=3, low_term=3),
     ]
     checks = {
         'secp256k1_modulus_matches_common_constant': secp_modulus == SECP_P,
+        'opcode_counts_match_modular_operation_contracts': bool(opcode_counts['opcode_counts_match']),
         'field_mul_stage_counts_match_arithmetic_lowering': bool(stage_counts['stage_counts_match']),
         'reduced_width_cases_exhaustive_pass': all(row['pass'] for row in reduced_width_cases),
     }
@@ -173,6 +253,7 @@ def build_modular_arithmetic_certificate(*, arithmetic_lowerings: Mapping[str, A
             'low_term': SECP256K1_PSEUDO_MERSENNE_LOW_TERM,
             'canonical_subtract_passes': SECP256K1_CANONICAL_SUBTRACT_PASSES,
         },
+        'opcode_count_certificate': opcode_counts,
         'field_mul_stage_count_certificate': stage_counts,
         'reduced_width_exhaustive_cases': reduced_width_cases,
         'checks': checks,

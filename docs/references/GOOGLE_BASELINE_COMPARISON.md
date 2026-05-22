@@ -31,10 +31,10 @@ The repository's exact comparison layer is the public headline wrapper in:
 
 Its checked public headline is one standard-QROAM reusable-chunk family:
 
-- **public standard-QROAM headline:** `36,767,692 non-Clifford / 1,199 q`
+- **public standard-QROAM headline:** `36,957,412 non-Clifford / 1,199 q`
 
 The public result artifact records the checked proof artifacts, the bound
-document hashes, and the exact ratios below. The older `34,736,076 / 1,044`
+document hashes, and the exact ratios below. The older `34,925,796 / 1,044`
 three-slot family remains checked as a reference boundary, but it is not the
 single public headline.
 
@@ -42,8 +42,8 @@ single public headline.
 
 For the **public standard-QROAM headline**:
 
-- **2.4478x** lower non-Clifford than the public low-qubit line
-- **1.9038x** lower non-Clifford than the public low-gate line
+- **2.4352x** lower non-Clifford than the public low-qubit line
+- **1.8941x** lower non-Clifford than the public low-gate line
 
 ## Exact qubit comparison
 

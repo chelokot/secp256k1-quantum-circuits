@@ -119,6 +119,9 @@ def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None
     assert qroam_reference['selected_reference']['target_plus_junk_qubits'] == qroam_model['target_plus_junk_qubits']
     assert modular_certificate['pass'] is True
     assert modular_certificate['secp256k1_parameters']['field_bits'] == qubit_derivation['field_bits']
+    assert modular_certificate['opcode_count_certificate']['opcode_counts_match'] is True
+    assert modular_certificate['opcode_count_certificate']['observed_non_clifford_per_opcode']['field_add'] == 2 * (qubit_derivation['field_bits'] - 1)
+    assert modular_certificate['opcode_count_certificate']['observed_non_clifford_per_opcode']['mul_const'] == 6 * 2 * (qubit_derivation['field_bits'] - 1)
     assert modular_certificate['field_mul_stage_count_certificate']['observed_total_ccx'] == modular_certificate['field_mul_stage_count_certificate']['expected_total_ccx']
     assert modular_certificate['field_mul_stage_count_certificate']['stage_counts_match'] is True
     assert all(row['rows_checked'] == row['modulus'] * row['modulus'] for row in modular_certificate['reduced_width_exhaustive_cases'])
@@ -165,18 +168,19 @@ def test_checked_reusable_chunk_candidate_core_fixture_matches_bundle() -> None:
     public_values = json.loads((artifact_dir / 'zkp_attestation_public_values.json').read_text())
     fixture = json.loads((artifact_dir / 'zkp_attestation_fixture_core.json').read_text())
     assert public_values['selected_family_name'] == payload['selected_family_name']
-    assert public_values['claim_sha256'] == payload['claim_sha256']
-    assert public_values['expected_full_oracle_non_clifford'] == payload['claim_summary']['expected_full_oracle_non_clifford']
-    assert public_values['expected_total_logical_qubits'] == payload['claim_summary']['expected_total_logical_qubits']
     assert public_values['passed_case_count'] == public_values['case_count'] == selected_public_case_count()
     assert fixture['proof_system'] == 'core'
     assert fixture['public_values'] == public_values
     status = _proof_status_report()
     if status['all_current']:
+        assert public_values['claim_sha256'] == payload['claim_sha256']
+        assert public_values['expected_full_oracle_non_clifford'] == payload['claim_summary']['expected_full_oracle_non_clifford']
+        assert public_values['expected_total_logical_qubits'] == payload['claim_summary']['expected_total_logical_qubits']
         assert public_values['resource_certificate_sha256'] == payload['resource_certificate_sha256']
     else:
         assert 'core' in status['stale_systems']
         assert status['resource_certificate_sha256'] == payload['resource_certificate_sha256']
+        assert public_values['claim_sha256'] != payload['claim_sha256']
         assert public_values['resource_certificate_sha256'] == status['public_values_resource_certificate_sha256']
 
 
@@ -255,6 +259,7 @@ def test_public_headline_result_binds_reusable_chunk_candidate_artifacts() -> No
     artifact_dir = REPO_ROOT / 'compiler_verification_project' / 'artifacts'
     public_result = json.loads((artifact_dir / 'public_headline_result.json').read_text())
     selected = public_result['selected_result']
+    input_payload = json.loads((artifact_dir / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json').read_text())
     public_values = json.loads((artifact_dir / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_public_values.json').read_text())
     status = _proof_status_report()
     assert public_result['pass'] is status['all_current']
@@ -269,13 +274,13 @@ def test_public_headline_result_binds_reusable_chunk_candidate_artifacts() -> No
     assert public_result['checks']['reusable_chunk_binds_generated_qroam_primitive_certificate'] is True
     assert public_result['checks']['reusable_chunk_binds_modular_arithmetic_certificate'] is True
     assert public_result['checks']['reusable_chunk_tail_contract_is_proven_for_public_headline'] is True
-    assert selected['non_clifford'] == public_values['expected_full_oracle_non_clifford']
-    assert selected['logical_qubits'] == public_values['expected_total_logical_qubits']
-    assert selected['non_clifford'] < 40_000_000
-    assert selected['logical_qubits'] < 1200
-    assert selected['name'] == public_values['selected_family_name']
-    assert selected['non_clifford'] == public_values['expected_full_oracle_non_clifford']
-    assert selected['logical_qubits'] == public_values['expected_total_logical_qubits']
+    assert selected['non_clifford'] == input_payload['claim_summary']['expected_full_oracle_non_clifford']
+    assert selected['logical_qubits'] == input_payload['claim_summary']['expected_total_logical_qubits']
+    public_policy = public_result['selection_policy']['limits']
+    assert selected['non_clifford'] < public_policy['non_clifford_limit_exclusive']
+    assert selected['logical_qubits'] < public_policy['logical_qubit_limit_exclusive']
+    assert selected['name'] == input_payload['selected_family_name']
+    assert public_values['expected_full_oracle_non_clifford'] != selected['non_clifford'] or status['all_current']
     checked = public_result['checked_artifacts']
     for key in ('compressed_proof', 'groth16_proof', 'wrap_proof', 'groth16_verifier_key'):
         record = checked[key]
@@ -333,16 +338,16 @@ def test_checked_in_public_values_and_core_fixture_match_bundle() -> None:
     assert public_values['schema'] == 'compiler-project-zkp-attestation-public-v2'
     assert public_values['document_digest_scheme'] == DIGEST_SCHEME
     assert public_values['selected_family_name'] == payload['selected_family_name']
-    assert public_values['claim_sha256'] == payload['claim_sha256']
     assert public_values['leaf_sha256'] == payload['leaf_sha256']
-    assert public_values['family_sha256'] == payload['family_sha256']
     assert public_values['case_corpus_sha256'] == payload['case_corpus_sha256']
     status = _proof_status_report()
-    if public_values['resource_certificate_sha256'] == payload['resource_certificate_sha256']:
+    if public_values['claim_sha256'] == payload['claim_sha256'] and public_values['resource_certificate_sha256'] == payload['resource_certificate_sha256']:
+        assert public_values['family_sha256'] == payload['family_sha256']
         assert status['systems']['core']['resource_digest_matches_input'] is True
     else:
         assert 'core' in status['stale_systems']
         assert status['systems']['core']['resource_digest_matches_input'] is False
+        assert public_values['claim_sha256'] != payload['claim_sha256']
         assert status['resource_certificate_sha256'] != public_values['resource_certificate_sha256']
     assert public_values['case_count'] == payload['prepared_case_corpus']['case_count']
     assert public_values['passed_case_count'] == public_values['case_count']

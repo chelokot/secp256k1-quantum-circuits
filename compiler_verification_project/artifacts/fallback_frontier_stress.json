@@ -6,7 +6,7 @@
   },
   "current_selected_family": {
     "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
-    "full_oracle_non_clifford": 34736076,
+    "full_oracle_non_clifford": 34925796,
     "total_logical_qubits": 1044,
     "arithmetic_slot_count": 3,
     "lookup_workspace_qubits": 274
@@ -28,12 +28,12 @@
     "chunks_per_coordinate_stream": 2,
     "whole_oracle_stream_count_before_chunking": 155,
     "per_chunk_stream_non_clifford": 65536,
-    "base_non_clifford_without_streamed_qroam": 24577996,
+    "base_non_clifford_without_streamed_qroam": 24767716,
     "chunked_qroam_non_clifford": 20316160,
-    "chunked_total_non_clifford": 44894156,
+    "chunked_total_non_clifford": 45083876,
     "chunked_total_logical_qubits": 1199,
-    "non_clifford_excess_over_limit": 4894156,
-    "required_non_qroam_base_reduction_to_fit_limit": 4894156
+    "non_clifford_excess_over_limit": 5083876,
+    "required_non_qroam_base_reduction_to_fit_limit": 5083876
   },
   "reusable_chunked_coordinate_candidate": {
     "status": "proven_public_headline",
@@ -48,13 +48,13 @@
     "chunk_streams_per_leaf": 6,
     "leaf_call_count_total": 31,
     "per_chunk_stream_non_clifford": 65536,
-    "base_non_clifford_without_streamed_qroam": 24577996,
+    "base_non_clifford_without_streamed_qroam": 24767716,
     "chunked_qroam_non_clifford": 12189696,
-    "candidate_total_non_clifford": 36767692,
+    "candidate_total_non_clifford": 36957412,
     "candidate_total_logical_qubits": 1199,
     "beats_requested_non_clifford_limit": true,
     "beats_requested_logical_qubit_limit": true,
-    "margin_to_non_clifford_limit": 3232308,
+    "margin_to_non_clifford_limit": 3042588,
     "margin_to_logical_qubit_limit": 1,
     "public_claim_evidence": [
       "the executable four-slot tail contract has one reusable coordinate chunk target and no full x/y field lane",

@@ -63,6 +63,28 @@ def _ladder_operations(bit_count: int, include_measurement: bool) -> List[Primit
     return primitive_operations
 
 
+def _repeat_operations(operations: List[PrimitiveOperation], repeat_count: int) -> List[PrimitiveOperation]:
+    return [
+        operation
+        for _ in range(int(repeat_count))
+        for operation in operations
+    ]
+
+
+def _field_modular_add_operations(field_bits: int) -> List[PrimitiveOperation]:
+    return (
+        _ladder_operations(field_bits - 1, include_measurement=True)
+        + _ladder_operations(field_bits - 1, include_measurement=True)
+    )
+
+
+def _field_modular_sub_operations(field_bits: int) -> List[PrimitiveOperation]:
+    return (
+        _ladder_operations(field_bits - 1, include_measurement=True)
+        + _ladder_operations(field_bits - 1, include_measurement=True)
+    )
+
+
 def _field_mul_partial_product_operations(field_bits: int) -> List[PrimitiveOperation]:
     primitive_operations: List[PrimitiveOperation] = []
     for left_bit in range(field_bits):
@@ -165,13 +187,13 @@ def _kernel(opcode: str, summary: str, stages: List[Dict[str, Any]], notes: List
 
 def _field_add_kernel(field_bits: int) -> Dict[str, Any]:
     ladder = _block(
-        name='temporary_and_carry_ladder',
-        summary='One temporary logical-AND edge per carry transition in the ripple-carry adder.',
-        instance_count=field_bits - 1,
-        primitive_operations=_ladder_operations(field_bits - 1, include_measurement=True),
+        name='modular_add_carry_and_correction_ladders',
+        summary='Carry ladder plus conditional subtract-p correction for canonical modular field addition.',
+        instance_count=2 * (field_bits - 1),
+        primitive_operations=_field_modular_add_operations(field_bits),
         notes=[
-            'This stage follows the temporary logical-AND carry pattern used for n-bit addition.',
-            'The local measurement-reset path is counted inside the same stage inventory.',
+            'The first ladder computes the n-bit add carry path.',
+            'The second ladder accounts for the canonical conditional subtract-p correction, so this is a mod-p add rather than only a modulo-2^n add.',
         ],
     )
     return _kernel(
@@ -180,26 +202,27 @@ def _field_add_kernel(field_bits: int) -> Dict[str, Any]:
         stages=[
             _stage(
                 name='carry_resolution',
-                summary='Temporary logical-AND carry ladder for the field-adder kernel.',
+                summary='Temporary logical-AND carry ladder and canonical subtract-p correction for the field-adder kernel.',
                 category='adder',
                 blocks=[ladder],
-                notes=['The adder kernel is counted as a single carry-resolution stage because the repository only prices non-Clifford work at this layer.'],
+                notes=['The adder kernel is counted as a canonical mod-p operation, not only a ring add modulo 2^n.'],
             )
         ],
         notes=[
-            'The kernel contributes n-1 non-Clifford operations for a 256-bit field addition.',
+            'The kernel contributes 2(n-1) non-Clifford operations for a 256-bit canonical field addition.',
         ],
     )
 
 
 def _field_sub_kernel(field_bits: int) -> Dict[str, Any]:
     ladder = _block(
-        name='temporary_and_borrow_ladder',
-        summary='One temporary logical-AND edge per borrow transition in the ripple-carry subtractor.',
-        instance_count=field_bits - 1,
-        primitive_operations=_ladder_operations(field_bits - 1, include_measurement=True),
+        name='modular_sub_borrow_and_correction_ladders',
+        summary='Borrow ladder plus conditional add-p correction for canonical modular field subtraction.',
+        instance_count=2 * (field_bits - 1),
+        primitive_operations=_field_modular_sub_operations(field_bits),
         notes=[
-            'The subtractor reuses the same n-1 temporary logical-AND structure as the adder, interpreted as a borrow ladder.',
+            'The first ladder computes the n-bit borrow path.',
+            'The second ladder accounts for the canonical conditional add-p correction, so this is a mod-p subtract rather than only a modulo-2^n subtract.',
         ],
     )
     return _kernel(
@@ -208,14 +231,14 @@ def _field_sub_kernel(field_bits: int) -> Dict[str, Any]:
         stages=[
             _stage(
                 name='borrow_resolution',
-                summary='Temporary logical-AND borrow ladder for the field-subtractor kernel.',
+                summary='Temporary logical-AND borrow ladder and canonical add-p correction for the field-subtractor kernel.',
                 category='subtractor',
                 blocks=[ladder],
-                notes=['The subtractor kernel is counted as a single borrow-resolution stage at the non-Clifford layer.'],
+                notes=['The subtractor kernel is counted as a canonical mod-p operation, not only a ring subtract modulo 2^n.'],
             )
         ],
         notes=[
-            'The kernel contributes n-1 non-Clifford operations for a 256-bit field subtraction.',
+            'The kernel contributes 2(n-1) non-Clifford operations for a 256-bit canonical field subtraction.',
         ],
     )
 
@@ -257,9 +280,9 @@ def _mul_const_kernel(field_bits: int, const_value: int) -> Dict[str, Any]:
                 name=f'chain_step_{left}_to_{right}',
                 summary=f'One field-add kernel step in the monotone addition chain {left} -> {right}.',
                 instance_count=1,
-                primitive_operations=_ladder_operations(field_bits - 1, include_measurement=True),
+                primitive_operations=_field_modular_add_operations(field_bits),
                 notes=[
-                    'Each chain step reuses the checked field-add kernel cost over the same 256-bit register width.',
+                    'Each chain step reuses the checked canonical field-add kernel cost over the same 256-bit register width.',
                 ],
             )
         )
@@ -519,14 +542,13 @@ def _renamed_field_mul_kernel(
 
 def _field_sub_sum_kernel(field_bits: int) -> Dict[str, Any]:
     two_subtractors = _block(
-        name='two_borrow_ladders',
-        summary='Two 256-bit borrow ladders for a - b - c inside one field register.',
-        instance_count=2 * (field_bits - 1),
-        primitive_operations=_ladder_operations(field_bits - 1, include_measurement=True)
-        + _ladder_operations(field_bits - 1, include_measurement=True),
+        name='two_modular_subtractors',
+        summary='Two canonical modular subtractors for a - b - c inside one field register.',
+        instance_count=4 * (field_bits - 1),
+        primitive_operations=_repeat_operations(_field_modular_sub_operations(field_bits), 2),
         notes=[
             'The streamed lookup tail uses this fused opcode for K = H - A - I.',
-            'It is counted as exactly two field-subtractor kernels over the same field width.',
+            'It is counted as exactly two canonical field-subtractor kernels over the same field width.',
         ],
     )
     return _kernel(
@@ -535,28 +557,27 @@ def _field_sub_sum_kernel(field_bits: int) -> Dict[str, Any]:
         stages=[
             _stage(
                 name='borrow_resolution_pair',
-                summary='Two sequential temporary logical-AND borrow ladders.',
+                summary='Two sequential canonical modular subtractors.',
                 category='subtractor',
                 blocks=[two_subtractors],
                 notes=['The fused instruction is a scheduling contract; its non-Clifford count is the sum of two ordinary subtractor kernels.'],
             )
         ],
         notes=[
-            'The kernel contributes 2(n-1) non-Clifford operations for a 256-bit field value.',
+            'The kernel contributes 4(n-1) non-Clifford operations for a 256-bit field value.',
         ],
     )
 
 
 def _field_triple_kernel(field_bits: int) -> Dict[str, Any]:
     two_adders = _block(
-        name='two_carry_ladders',
-        summary='Two 256-bit carry ladders for 3a = a + a + a inside one field register.',
-        instance_count=2 * (field_bits - 1),
-        primitive_operations=_ladder_operations(field_bits - 1, include_measurement=True)
-        + _ladder_operations(field_bits - 1, include_measurement=True),
+        name='two_modular_adders',
+        summary='Two canonical modular adders for 3a = a + a + a inside one field register.',
+        instance_count=4 * (field_bits - 1),
+        primitive_operations=_repeat_operations(_field_modular_add_operations(field_bits), 2),
         notes=[
             'The streamed lookup tail uses this fused opcode for L = 3A.',
-            'It is counted as exactly two field-adder kernels over the same field width.',
+            'It is counted as exactly two canonical field-adder kernels over the same field width.',
         ],
     )
     return _kernel(
@@ -565,14 +586,14 @@ def _field_triple_kernel(field_bits: int) -> Dict[str, Any]:
         stages=[
             _stage(
                 name='carry_resolution_pair',
-                summary='Two sequential temporary logical-AND carry ladders.',
+                summary='Two sequential canonical modular adders.',
                 category='adder',
                 blocks=[two_adders],
                 notes=['The fused instruction is a scheduling contract; its non-Clifford count is the sum of two ordinary adder kernels.'],
             )
         ],
         notes=[
-            'The kernel contributes 2(n-1) non-Clifford operations for a 256-bit field value.',
+            'The kernel contributes 4(n-1) non-Clifford operations for a 256-bit field value.',
         ],
     )
 
@@ -599,21 +620,19 @@ def _complete_a0_streamed_tail_kernel(field_bits: int, qroam_block_size: int) ->
     for stage in streamed_yz:
         stage['name'] = f"tail_yz_{stage['name']}"
     derive_k = _block(
-        name='derive_k_borrow_ladders',
-        summary='Two field-subtract ladders for K = H - A - I inside the streamed tail macro.',
-        instance_count=2 * (field_bits - 1),
-        primitive_operations=_ladder_operations(field_bits - 1, include_measurement=True)
-        + _ladder_operations(field_bits - 1, include_measurement=True),
+        name='derive_k_modular_subtractors',
+        summary='Two canonical field-subtractors for K = H - A - I inside the streamed tail macro.',
+        instance_count=4 * (field_bits - 1),
+        primitive_operations=_repeat_operations(_field_modular_sub_operations(field_bits), 2),
         notes=[
             'This is the same two-subtraction cost as the standalone field_sub_sum kernel.',
         ],
     )
     derive_l = _block(
-        name='derive_l_carry_ladders',
-        summary='Two field-add ladders for L = 3A inside the streamed tail macro.',
-        instance_count=2 * (field_bits - 1),
-        primitive_operations=_ladder_operations(field_bits - 1, include_measurement=True)
-        + _ladder_operations(field_bits - 1, include_measurement=True),
+        name='derive_l_modular_adders',
+        summary='Two canonical field-adders for L = 3A inside the streamed tail macro.',
+        instance_count=4 * (field_bits - 1),
+        primitive_operations=_repeat_operations(_field_modular_add_operations(field_bits), 2),
         notes=[
             'This is the same two-addition cost as the standalone field_triple kernel.',
         ],
@@ -621,25 +640,17 @@ def _complete_a0_streamed_tail_kernel(field_bits: int, qroam_block_size: int) ->
     fixed_f = _block(
         name='fixed_21z_chain',
         summary='Fixed multiplication F = 21Z inside the streamed tail macro.',
-        instance_count=6 * (field_bits - 1),
-        primitive_operations=[
-            operation
-            for _ in range(6)
-            for operation in _ladder_operations(field_bits - 1, include_measurement=True)
-        ],
+        instance_count=12 * (field_bits - 1),
+        primitive_operations=_repeat_operations(_field_modular_add_operations(field_bits), 6),
         notes=[
-            'The checked field constant is 3b = 21, whose monotone addition chain has six field-add steps.',
+            'The checked field constant is 3b = 21, whose monotone addition chain has six canonical field-add steps.',
         ],
     )
     internal_combines = _block(
         name='three_internal_combine_ladders',
-        summary='Three field add/sub combines for E = Y + yZ, M = I + F, and N = I - F.',
-        instance_count=3 * (field_bits - 1),
-        primitive_operations=[
-            operation
-            for _ in range(3)
-            for operation in _ladder_operations(field_bits - 1, include_measurement=True)
-        ],
+        summary='Three canonical field add/sub combines for E = Y + yZ, M = I + F, and N = I - F.',
+        instance_count=6 * (field_bits - 1),
+        primitive_operations=_repeat_operations(_field_modular_add_operations(field_bits), 3),
         notes=[
             'These combines are inside the macro boundary because E, M, and N are never standalone counted field wires.',
         ],
@@ -685,13 +696,9 @@ def _complete_a0_streamed_tail_kernel(field_bits: int, qroam_block_size: int) ->
     )
     output_combine = _block(
         name='three_output_combine_ladders',
-        summary='Three field add/sub combine ladders for X3, Y3, and Z3 after the six products.',
-        instance_count=3 * (field_bits - 1),
-        primitive_operations=[
-            operation
-            for _ in range(3)
-            for operation in _ladder_operations(field_bits - 1, include_measurement=True)
-        ],
+        summary='Three canonical field add/sub combine ladders for X3, Y3, and Z3 after the six products.',
+        instance_count=6 * (field_bits - 1),
+        primitive_operations=_repeat_operations(_field_modular_add_operations(field_bits), 3),
         notes=[
             'The output combines are counted as three ordinary field add/sub kernels.',
         ],
@@ -791,10 +798,10 @@ def _complete_a0_fully_streamed_tail_kernel(field_bits: int, qroam_block_size: i
     for stage in streamed_zx:
         stage['name'] = f"tail_zx_{stage['name']}"
     derive_c_input = _block(
-        name='derive_c_input_carry_ladder',
-        summary='One field-add ladder for C input X + Zx inside the fully streamed tail macro.',
-        instance_count=field_bits - 1,
-        primitive_operations=_ladder_operations(field_bits - 1, include_measurement=True),
+        name='derive_c_input_modular_adder',
+        summary='One canonical field-adder for C input X + Zx inside the fully streamed tail macro.',
+        instance_count=2 * (field_bits - 1),
+        primitive_operations=_field_modular_add_operations(field_bits),
         notes=[
             'This is the same cost as the standalone field_add kernel, moved inside the macro boundary.',
         ],
@@ -802,14 +809,10 @@ def _complete_a0_fully_streamed_tail_kernel(field_bits: int, qroam_block_size: i
     derive_c_fixed = _block(
         name='derive_c_fixed_21_chain',
         summary='Fixed multiplication C = 21(X + Zx) inside the fully streamed tail macro.',
-        instance_count=6 * (field_bits - 1),
-        primitive_operations=[
-            operation
-            for _ in range(6)
-            for operation in _ladder_operations(field_bits - 1, include_measurement=True)
-        ],
+        instance_count=12 * (field_bits - 1),
+        primitive_operations=_repeat_operations(_field_modular_add_operations(field_bits), 6),
         notes=[
-            'The checked field constant is 3b = 21, whose monotone addition chain has six field-add steps.',
+            'The checked field constant is 3b = 21, whose monotone addition chain has six canonical field-add steps.',
         ],
     )
     streamed_tail = _complete_a0_streamed_tail_kernel(field_bits, qroam_block_size)
@@ -839,10 +842,10 @@ def _complete_a0_fully_streamed_tail_kernel(field_bits: int, qroam_block_size: i
 
 def _complete_a0_all_streamed_tail_kernel(field_bits: int, qroam_block_size: int) -> Dict[str, Any]:
     derive_g = _block(
-        name='derive_g_carry_ladder',
-        summary='One field-add ladder for G = X + Y inside the all-streamed tail macro.',
-        instance_count=field_bits - 1,
-        primitive_operations=_ladder_operations(field_bits - 1, include_measurement=True),
+        name='derive_g_modular_adder',
+        summary='One canonical field-adder for G = X + Y inside the all-streamed tail macro.',
+        instance_count=2 * (field_bits - 1),
+        primitive_operations=_field_modular_add_operations(field_bits),
         notes=[
             'This is the same cost as the standalone field_add kernel, moved inside the macro boundary.',
         ],

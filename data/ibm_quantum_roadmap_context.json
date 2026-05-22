@@ -133,14 +133,14 @@
     }
   },
   "repo_headline_used_for_comparison": {
-    "non_clifford": 36767692,
+    "non_clifford": 36957412,
     "logical_qubits": 1199,
     "source": "compiler_verification_project/artifacts/public_headline_result.json"
   },
   "derived_comparison": {
-    "starling_gate_scale_ratio_vs_repo_non_clifford": 2.7197790930145955,
+    "starling_gate_scale_ratio_vs_repo_non_clifford": 2.705817171397175,
     "starling_logical_qubit_shortfall_vs_repo": 999,
-    "blue_jay_gate_scale_ratio_vs_repo_non_clifford": 27.197790930145956,
+    "blue_jay_gate_scale_ratio_vs_repo_non_clifford": 27.058171713971745,
     "blue_jay_logical_qubit_headroom_vs_repo": 801
   },
   "claims": [

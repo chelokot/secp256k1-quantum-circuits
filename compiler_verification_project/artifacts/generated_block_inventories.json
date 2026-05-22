@@ -52,8 +52,8 @@
   },
   "shared_arithmetic_blocks": [
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_derive_g__derive_g_carry_ladder",
-      "summary": "One field-add ladder for G = X + Y inside the all-streamed tail macro.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_derive_g__derive_g_modular_adder",
+      "summary": "One canonical field-adder for G = X + Y inside the all-streamed tail macro.",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -62,20 +62,20 @@
         "x": 0,
         "measurement": 1
       },
-      "base_instance_count": 255,
+      "base_instance_count": 510,
       "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 7905,
+      "whole_oracle_instance_count": 15810,
       "primitive_counts_total": {
-        "ccx": 7905,
+        "ccx": 15810,
         "cx": 0,
         "x": 0,
-        "measurement": 7905
+        "measurement": 15810
       },
-      "non_clifford_total": 7905,
+      "non_clifford_total": 15810,
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "tail_derive_g",
         "stage_category": "tail_combine",
@@ -106,7 +106,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "tail_h_streamed_lookup_x_plus_y_standard_qroam_oracle",
         "stage_category": "streamed_lookup_data_select",
@@ -137,7 +137,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "tail_h_streamed_lookup_x_plus_y_standard_qroam_oracle",
         "stage_category": "streamed_lookup_data_select",
@@ -168,7 +168,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "tail_h_partial_products",
         "stage_category": "schoolbook_grid",
@@ -199,7 +199,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "tail_h_controlled_add_path",
         "stage_category": "controlled_add",
@@ -230,7 +230,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "tail_h_controlled_sub_path",
         "stage_category": "controlled_subtract",
@@ -261,7 +261,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "tail_h_pseudo_mersenne_first_fold",
         "stage_category": "pseudo_mersenne_reduction",
@@ -292,7 +292,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "tail_h_pseudo_mersenne_first_fold",
         "stage_category": "pseudo_mersenne_reduction",
@@ -323,7 +323,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "tail_h_pseudo_mersenne_second_fold",
         "stage_category": "pseudo_mersenne_reduction",
@@ -354,7 +354,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "tail_h_pseudo_mersenne_second_fold",
         "stage_category": "pseudo_mersenne_reduction",
@@ -385,7 +385,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "tail_h_pseudo_mersenne_canonicalize",
         "stage_category": "canonical_mod_p_reduction",
@@ -416,7 +416,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_tail_a_streamed_lookup_x_standard_qroam_oracle",
         "stage_category": "streamed_lookup_data_select",
@@ -447,7 +447,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_tail_a_streamed_lookup_x_standard_qroam_oracle",
         "stage_category": "streamed_lookup_data_select",
@@ -478,7 +478,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_tail_a_partial_products",
         "stage_category": "schoolbook_grid",
@@ -509,7 +509,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_tail_a_controlled_add_path",
         "stage_category": "controlled_add",
@@ -540,7 +540,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_tail_a_controlled_sub_path",
         "stage_category": "controlled_subtract",
@@ -571,7 +571,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_tail_a_pseudo_mersenne_first_fold",
         "stage_category": "pseudo_mersenne_reduction",
@@ -602,7 +602,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_tail_a_pseudo_mersenne_first_fold",
         "stage_category": "pseudo_mersenne_reduction",
@@ -633,7 +633,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_tail_a_pseudo_mersenne_second_fold",
         "stage_category": "pseudo_mersenne_reduction",
@@ -664,7 +664,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_tail_a_pseudo_mersenne_second_fold",
         "stage_category": "pseudo_mersenne_reduction",
@@ -695,7 +695,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_tail_a_pseudo_mersenne_canonicalize",
         "stage_category": "canonical_mod_p_reduction",
@@ -726,7 +726,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_tail_zx_streamed_lookup_x_standard_qroam_oracle",
         "stage_category": "streamed_lookup_data_select",
@@ -757,7 +757,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_tail_zx_streamed_lookup_x_standard_qroam_oracle",
         "stage_category": "streamed_lookup_data_select",
@@ -788,7 +788,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_tail_zx_partial_products",
         "stage_category": "schoolbook_grid",
@@ -819,7 +819,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_tail_zx_controlled_add_path",
         "stage_category": "controlled_add",
@@ -850,7 +850,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_tail_zx_controlled_sub_path",
         "stage_category": "controlled_subtract",
@@ -881,7 +881,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_tail_zx_pseudo_mersenne_first_fold",
         "stage_category": "pseudo_mersenne_reduction",
@@ -912,7 +912,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_tail_zx_pseudo_mersenne_first_fold",
         "stage_category": "pseudo_mersenne_reduction",
@@ -943,7 +943,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_tail_zx_pseudo_mersenne_second_fold",
         "stage_category": "pseudo_mersenne_reduction",
@@ -974,7 +974,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_tail_zx_pseudo_mersenne_second_fold",
         "stage_category": "pseudo_mersenne_reduction",
@@ -1005,7 +1005,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_tail_zx_pseudo_mersenne_canonicalize",
         "stage_category": "canonical_mod_p_reduction",
@@ -1013,8 +1013,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_derive_c__derive_c_input_carry_ladder",
-      "summary": "One field-add ladder for C input X + Zx inside the fully streamed tail macro.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_derive_c__derive_c_input_modular_adder",
+      "summary": "One canonical field-adder for C input X + Zx inside the fully streamed tail macro.",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -1023,20 +1023,20 @@
         "x": 0,
         "measurement": 1
       },
-      "base_instance_count": 255,
+      "base_instance_count": 510,
       "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 7905,
+      "whole_oracle_instance_count": 15810,
       "primitive_counts_total": {
-        "ccx": 7905,
+        "ccx": 15810,
         "cx": 0,
         "x": 0,
-        "measurement": 7905
+        "measurement": 15810
       },
-      "non_clifford_total": 7905,
+      "non_clifford_total": 15810,
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_tail_derive_c",
         "stage_category": "tail_combine",
@@ -1054,20 +1054,20 @@
         "x": 0,
         "measurement": 1
       },
-      "base_instance_count": 1530,
+      "base_instance_count": 3060,
       "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 47430,
+      "whole_oracle_instance_count": 94860,
       "primitive_counts_total": {
-        "ccx": 47430,
+        "ccx": 94860,
         "cx": 0,
         "x": 0,
-        "measurement": 47430
+        "measurement": 94860
       },
-      "non_clifford_total": 47430,
+      "non_clifford_total": 94860,
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_tail_derive_c",
         "stage_category": "tail_combine",
@@ -1098,7 +1098,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_i_streamed_lookup_y_standard_qroam_oracle",
         "stage_category": "streamed_lookup_data_select",
@@ -1129,7 +1129,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_i_streamed_lookup_y_standard_qroam_oracle",
         "stage_category": "streamed_lookup_data_select",
@@ -1160,7 +1160,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_i_partial_products",
         "stage_category": "schoolbook_grid",
@@ -1191,7 +1191,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_i_controlled_add_path",
         "stage_category": "controlled_add",
@@ -1222,7 +1222,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_i_controlled_sub_path",
         "stage_category": "controlled_subtract",
@@ -1253,7 +1253,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold",
         "stage_category": "pseudo_mersenne_reduction",
@@ -1284,7 +1284,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold",
         "stage_category": "pseudo_mersenne_reduction",
@@ -1315,7 +1315,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold",
         "stage_category": "pseudo_mersenne_reduction",
@@ -1346,7 +1346,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold",
         "stage_category": "pseudo_mersenne_reduction",
@@ -1377,7 +1377,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_i_pseudo_mersenne_canonicalize",
         "stage_category": "canonical_mod_p_reduction",
@@ -1385,8 +1385,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_derive_k_l__derive_k_borrow_ladders",
-      "summary": "Two field-subtract ladders for K = H - A - I inside the streamed tail macro.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_derive_k_l__derive_k_modular_subtractors",
+      "summary": "Two canonical field-subtractors for K = H - A - I inside the streamed tail macro.",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -1395,20 +1395,20 @@
         "x": 0,
         "measurement": 1
       },
-      "base_instance_count": 510,
+      "base_instance_count": 1020,
       "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 15810,
+      "whole_oracle_instance_count": 31620,
       "primitive_counts_total": {
-        "ccx": 15810,
+        "ccx": 31620,
         "cx": 0,
         "x": 0,
-        "measurement": 15810
+        "measurement": 31620
       },
-      "non_clifford_total": 15810,
+      "non_clifford_total": 31620,
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_derive_k_l",
         "stage_category": "tail_combine",
@@ -1416,8 +1416,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_derive_k_l__derive_l_carry_ladders",
-      "summary": "Two field-add ladders for L = 3A inside the streamed tail macro.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_derive_k_l__derive_l_modular_adders",
+      "summary": "Two canonical field-adders for L = 3A inside the streamed tail macro.",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -1426,20 +1426,20 @@
         "x": 0,
         "measurement": 1
       },
-      "base_instance_count": 510,
+      "base_instance_count": 1020,
       "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 15810,
+      "whole_oracle_instance_count": 31620,
       "primitive_counts_total": {
-        "ccx": 15810,
+        "ccx": 31620,
         "cx": 0,
         "x": 0,
-        "measurement": 15810
+        "measurement": 31620
       },
-      "non_clifford_total": 15810,
+      "non_clifford_total": 31620,
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_derive_k_l",
         "stage_category": "tail_combine",
@@ -1470,7 +1470,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_yz_streamed_lookup_y_standard_qroam_oracle",
         "stage_category": "streamed_lookup_data_select",
@@ -1501,7 +1501,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_yz_streamed_lookup_y_standard_qroam_oracle",
         "stage_category": "streamed_lookup_data_select",
@@ -1532,7 +1532,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_yz_partial_products",
         "stage_category": "schoolbook_grid",
@@ -1563,7 +1563,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_yz_controlled_add_path",
         "stage_category": "controlled_add",
@@ -1594,7 +1594,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_yz_controlled_sub_path",
         "stage_category": "controlled_subtract",
@@ -1625,7 +1625,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold",
         "stage_category": "pseudo_mersenne_reduction",
@@ -1656,7 +1656,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold",
         "stage_category": "pseudo_mersenne_reduction",
@@ -1687,7 +1687,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold",
         "stage_category": "pseudo_mersenne_reduction",
@@ -1718,7 +1718,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold",
         "stage_category": "pseudo_mersenne_reduction",
@@ -1749,7 +1749,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_yz_pseudo_mersenne_canonicalize",
         "stage_category": "canonical_mod_p_reduction",
@@ -1759,6 +1759,37 @@
     {
       "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_fixed_21z__fixed_21z_chain",
       "summary": "Fixed multiplication F = 21Z inside the streamed tail macro.",
+      "category": "arithmetic_non_clifford",
+      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+      "primitive_counts_per_instance": {
+        "ccx": 1,
+        "cx": 0,
+        "x": 0,
+        "measurement": 1
+      },
+      "base_instance_count": 3060,
+      "schedule_multiplier": 31,
+      "whole_oracle_instance_count": 94860,
+      "primitive_counts_total": {
+        "ccx": 94860,
+        "cx": 0,
+        "x": 0,
+        "measurement": 94860
+      },
+      "non_clifford_total": 94860,
+      "metadata": {
+        "opcode": "complete_a0_all_streamed_tail",
+        "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
+        "kernel_non_clifford_per_instance": 1126332,
+        "per_leaf_instance_count": 1,
+        "stage": "all_streamed_fully_streamed_tail_fixed_21z",
+        "stage_category": "mul_const",
+        "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+      }
+    },
+    {
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_internal_combines__three_internal_combine_ladders",
+      "summary": "Three canonical field add/sub combines for E = Y + yZ, M = I + F, and N = I - F.",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -1780,38 +1811,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
-        "per_leaf_instance_count": 1,
-        "stage": "all_streamed_fully_streamed_tail_fixed_21z",
-        "stage_category": "mul_const",
-        "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
-      }
-    },
-    {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_internal_combines__three_internal_combine_ladders",
-      "summary": "Three field add/sub combines for E = Y + yZ, M = I + F, and N = I - F.",
-      "category": "arithmetic_non_clifford",
-      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-      "primitive_counts_per_instance": {
-        "ccx": 1,
-        "cx": 0,
-        "x": 0,
-        "measurement": 1
-      },
-      "base_instance_count": 765,
-      "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 23715,
-      "primitive_counts_total": {
-        "ccx": 23715,
-        "cx": 0,
-        "x": 0,
-        "measurement": 23715
-      },
-      "non_clifford_total": 23715,
-      "metadata": {
-        "opcode": "complete_a0_all_streamed_tail",
-        "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_internal_combines",
         "stage_category": "tail_combine",
@@ -1842,7 +1842,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_partial_products",
         "stage_category": "schoolbook_grid",
@@ -1873,7 +1873,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_controlled_add_path",
         "stage_category": "controlled_add",
@@ -1904,7 +1904,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_controlled_sub_path",
         "stage_category": "controlled_subtract",
@@ -1935,7 +1935,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_pseudo_mersenne_first_fold",
         "stage_category": "pseudo_mersenne_reduction",
@@ -1966,7 +1966,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_pseudo_mersenne_first_fold",
         "stage_category": "pseudo_mersenne_reduction",
@@ -1997,7 +1997,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_pseudo_mersenne_second_fold",
         "stage_category": "pseudo_mersenne_reduction",
@@ -2028,7 +2028,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_pseudo_mersenne_second_fold",
         "stage_category": "pseudo_mersenne_reduction",
@@ -2059,7 +2059,7 @@
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_pseudo_mersenne_canonicalize",
         "stage_category": "canonical_mod_p_reduction",
@@ -2068,7 +2068,7 @@
     },
     {
       "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_output_combine__three_output_combine_ladders",
-      "summary": "Three field add/sub combine ladders for X3, Y3, and Z3 after the six products.",
+      "summary": "Three canonical field add/sub combine ladders for X3, Y3, and Z3 after the six products.",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -2077,20 +2077,20 @@
         "x": 0,
         "measurement": 1
       },
-      "base_instance_count": 765,
+      "base_instance_count": 1530,
       "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 23715,
+      "whole_oracle_instance_count": 47430,
       "primitive_counts_total": {
-        "ccx": 23715,
+        "ccx": 47430,
         "cx": 0,
         "x": 0,
-        "measurement": 23715
+        "measurement": 47430
       },
-      "non_clifford_total": 23715,
+      "non_clifford_total": 47430,
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1120212,
+        "kernel_non_clifford_per_instance": 1126332,
         "per_leaf_instance_count": 1,
         "stage": "all_streamed_fully_streamed_tail_output_combine",
         "stage_category": "tail_combine",
@@ -2107,8 +2107,8 @@
       "phase_shell": "semiclassical_qft_v1",
       "non_clifford_blocks": [
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_derive_g__derive_g_carry_ladder",
-          "summary": "One field-add ladder for G = X + Y inside the all-streamed tail macro.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_derive_g__derive_g_modular_adder",
+          "summary": "One canonical field-adder for G = X + Y inside the all-streamed tail macro.",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -2117,20 +2117,20 @@
             "x": 0,
             "measurement": 1
           },
-          "base_instance_count": 255,
+          "base_instance_count": 510,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 7905,
+          "whole_oracle_instance_count": 15810,
           "primitive_counts_total": {
-            "ccx": 7905,
+            "ccx": 15810,
             "cx": 0,
             "x": 0,
-            "measurement": 7905
+            "measurement": 15810
           },
-          "non_clifford_total": 7905,
+          "non_clifford_total": 15810,
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "tail_derive_g",
             "stage_category": "tail_combine",
@@ -2161,7 +2161,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "tail_h_streamed_lookup_x_plus_y_standard_qroam_oracle",
             "stage_category": "streamed_lookup_data_select",
@@ -2192,7 +2192,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "tail_h_streamed_lookup_x_plus_y_standard_qroam_oracle",
             "stage_category": "streamed_lookup_data_select",
@@ -2223,7 +2223,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "tail_h_partial_products",
             "stage_category": "schoolbook_grid",
@@ -2254,7 +2254,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "tail_h_controlled_add_path",
             "stage_category": "controlled_add",
@@ -2285,7 +2285,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "tail_h_controlled_sub_path",
             "stage_category": "controlled_subtract",
@@ -2316,7 +2316,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "tail_h_pseudo_mersenne_first_fold",
             "stage_category": "pseudo_mersenne_reduction",
@@ -2347,7 +2347,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "tail_h_pseudo_mersenne_first_fold",
             "stage_category": "pseudo_mersenne_reduction",
@@ -2378,7 +2378,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "tail_h_pseudo_mersenne_second_fold",
             "stage_category": "pseudo_mersenne_reduction",
@@ -2409,7 +2409,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "tail_h_pseudo_mersenne_second_fold",
             "stage_category": "pseudo_mersenne_reduction",
@@ -2440,7 +2440,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "tail_h_pseudo_mersenne_canonicalize",
             "stage_category": "canonical_mod_p_reduction",
@@ -2471,7 +2471,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_tail_a_streamed_lookup_x_standard_qroam_oracle",
             "stage_category": "streamed_lookup_data_select",
@@ -2502,7 +2502,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_tail_a_streamed_lookup_x_standard_qroam_oracle",
             "stage_category": "streamed_lookup_data_select",
@@ -2533,7 +2533,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_tail_a_partial_products",
             "stage_category": "schoolbook_grid",
@@ -2564,7 +2564,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_tail_a_controlled_add_path",
             "stage_category": "controlled_add",
@@ -2595,7 +2595,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_tail_a_controlled_sub_path",
             "stage_category": "controlled_subtract",
@@ -2626,7 +2626,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_tail_a_pseudo_mersenne_first_fold",
             "stage_category": "pseudo_mersenne_reduction",
@@ -2657,7 +2657,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_tail_a_pseudo_mersenne_first_fold",
             "stage_category": "pseudo_mersenne_reduction",
@@ -2688,7 +2688,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_tail_a_pseudo_mersenne_second_fold",
             "stage_category": "pseudo_mersenne_reduction",
@@ -2719,7 +2719,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_tail_a_pseudo_mersenne_second_fold",
             "stage_category": "pseudo_mersenne_reduction",
@@ -2750,7 +2750,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_tail_a_pseudo_mersenne_canonicalize",
             "stage_category": "canonical_mod_p_reduction",
@@ -2781,7 +2781,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_tail_zx_streamed_lookup_x_standard_qroam_oracle",
             "stage_category": "streamed_lookup_data_select",
@@ -2812,7 +2812,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_tail_zx_streamed_lookup_x_standard_qroam_oracle",
             "stage_category": "streamed_lookup_data_select",
@@ -2843,7 +2843,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_tail_zx_partial_products",
             "stage_category": "schoolbook_grid",
@@ -2874,7 +2874,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_tail_zx_controlled_add_path",
             "stage_category": "controlled_add",
@@ -2905,7 +2905,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_tail_zx_controlled_sub_path",
             "stage_category": "controlled_subtract",
@@ -2936,7 +2936,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_tail_zx_pseudo_mersenne_first_fold",
             "stage_category": "pseudo_mersenne_reduction",
@@ -2967,7 +2967,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_tail_zx_pseudo_mersenne_first_fold",
             "stage_category": "pseudo_mersenne_reduction",
@@ -2998,7 +2998,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_tail_zx_pseudo_mersenne_second_fold",
             "stage_category": "pseudo_mersenne_reduction",
@@ -3029,7 +3029,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_tail_zx_pseudo_mersenne_second_fold",
             "stage_category": "pseudo_mersenne_reduction",
@@ -3060,7 +3060,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_tail_zx_pseudo_mersenne_canonicalize",
             "stage_category": "canonical_mod_p_reduction",
@@ -3068,8 +3068,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_derive_c__derive_c_input_carry_ladder",
-          "summary": "One field-add ladder for C input X + Zx inside the fully streamed tail macro.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_derive_c__derive_c_input_modular_adder",
+          "summary": "One canonical field-adder for C input X + Zx inside the fully streamed tail macro.",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -3078,20 +3078,20 @@
             "x": 0,
             "measurement": 1
           },
-          "base_instance_count": 255,
+          "base_instance_count": 510,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 7905,
+          "whole_oracle_instance_count": 15810,
           "primitive_counts_total": {
-            "ccx": 7905,
+            "ccx": 15810,
             "cx": 0,
             "x": 0,
-            "measurement": 7905
+            "measurement": 15810
           },
-          "non_clifford_total": 7905,
+          "non_clifford_total": 15810,
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_tail_derive_c",
             "stage_category": "tail_combine",
@@ -3109,20 +3109,20 @@
             "x": 0,
             "measurement": 1
           },
-          "base_instance_count": 1530,
+          "base_instance_count": 3060,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 47430,
+          "whole_oracle_instance_count": 94860,
           "primitive_counts_total": {
-            "ccx": 47430,
+            "ccx": 94860,
             "cx": 0,
             "x": 0,
-            "measurement": 47430
+            "measurement": 94860
           },
-          "non_clifford_total": 47430,
+          "non_clifford_total": 94860,
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_tail_derive_c",
             "stage_category": "tail_combine",
@@ -3153,7 +3153,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_i_streamed_lookup_y_standard_qroam_oracle",
             "stage_category": "streamed_lookup_data_select",
@@ -3184,7 +3184,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_i_streamed_lookup_y_standard_qroam_oracle",
             "stage_category": "streamed_lookup_data_select",
@@ -3215,7 +3215,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_i_partial_products",
             "stage_category": "schoolbook_grid",
@@ -3246,7 +3246,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_i_controlled_add_path",
             "stage_category": "controlled_add",
@@ -3277,7 +3277,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_i_controlled_sub_path",
             "stage_category": "controlled_subtract",
@@ -3308,7 +3308,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold",
             "stage_category": "pseudo_mersenne_reduction",
@@ -3339,7 +3339,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold",
             "stage_category": "pseudo_mersenne_reduction",
@@ -3370,7 +3370,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold",
             "stage_category": "pseudo_mersenne_reduction",
@@ -3401,7 +3401,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold",
             "stage_category": "pseudo_mersenne_reduction",
@@ -3432,7 +3432,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_i_pseudo_mersenne_canonicalize",
             "stage_category": "canonical_mod_p_reduction",
@@ -3440,8 +3440,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_derive_k_l__derive_k_borrow_ladders",
-          "summary": "Two field-subtract ladders for K = H - A - I inside the streamed tail macro.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_derive_k_l__derive_k_modular_subtractors",
+          "summary": "Two canonical field-subtractors for K = H - A - I inside the streamed tail macro.",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -3450,20 +3450,20 @@
             "x": 0,
             "measurement": 1
           },
-          "base_instance_count": 510,
+          "base_instance_count": 1020,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 15810,
+          "whole_oracle_instance_count": 31620,
           "primitive_counts_total": {
-            "ccx": 15810,
+            "ccx": 31620,
             "cx": 0,
             "x": 0,
-            "measurement": 15810
+            "measurement": 31620
           },
-          "non_clifford_total": 15810,
+          "non_clifford_total": 31620,
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_derive_k_l",
             "stage_category": "tail_combine",
@@ -3471,8 +3471,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_derive_k_l__derive_l_carry_ladders",
-          "summary": "Two field-add ladders for L = 3A inside the streamed tail macro.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_derive_k_l__derive_l_modular_adders",
+          "summary": "Two canonical field-adders for L = 3A inside the streamed tail macro.",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -3481,20 +3481,20 @@
             "x": 0,
             "measurement": 1
           },
-          "base_instance_count": 510,
+          "base_instance_count": 1020,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 15810,
+          "whole_oracle_instance_count": 31620,
           "primitive_counts_total": {
-            "ccx": 15810,
+            "ccx": 31620,
             "cx": 0,
             "x": 0,
-            "measurement": 15810
+            "measurement": 31620
           },
-          "non_clifford_total": 15810,
+          "non_clifford_total": 31620,
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_derive_k_l",
             "stage_category": "tail_combine",
@@ -3525,7 +3525,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_yz_streamed_lookup_y_standard_qroam_oracle",
             "stage_category": "streamed_lookup_data_select",
@@ -3556,7 +3556,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_yz_streamed_lookup_y_standard_qroam_oracle",
             "stage_category": "streamed_lookup_data_select",
@@ -3587,7 +3587,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_yz_partial_products",
             "stage_category": "schoolbook_grid",
@@ -3618,7 +3618,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_yz_controlled_add_path",
             "stage_category": "controlled_add",
@@ -3649,7 +3649,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_yz_controlled_sub_path",
             "stage_category": "controlled_subtract",
@@ -3680,7 +3680,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold",
             "stage_category": "pseudo_mersenne_reduction",
@@ -3711,7 +3711,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold",
             "stage_category": "pseudo_mersenne_reduction",
@@ -3742,7 +3742,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold",
             "stage_category": "pseudo_mersenne_reduction",
@@ -3773,7 +3773,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold",
             "stage_category": "pseudo_mersenne_reduction",
@@ -3804,7 +3804,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_yz_pseudo_mersenne_canonicalize",
             "stage_category": "canonical_mod_p_reduction",
@@ -3814,6 +3814,37 @@
         {
           "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_fixed_21z__fixed_21z_chain",
           "summary": "Fixed multiplication F = 21Z inside the streamed tail macro.",
+          "category": "arithmetic_non_clifford",
+          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+          "primitive_counts_per_instance": {
+            "ccx": 1,
+            "cx": 0,
+            "x": 0,
+            "measurement": 1
+          },
+          "base_instance_count": 3060,
+          "schedule_multiplier": 31,
+          "whole_oracle_instance_count": 94860,
+          "primitive_counts_total": {
+            "ccx": 94860,
+            "cx": 0,
+            "x": 0,
+            "measurement": 94860
+          },
+          "non_clifford_total": 94860,
+          "metadata": {
+            "opcode": "complete_a0_all_streamed_tail",
+            "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
+            "kernel_non_clifford_per_instance": 1126332,
+            "per_leaf_instance_count": 1,
+            "stage": "all_streamed_fully_streamed_tail_fixed_21z",
+            "stage_category": "mul_const",
+            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
+          }
+        },
+        {
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_internal_combines__three_internal_combine_ladders",
+          "summary": "Three canonical field add/sub combines for E = Y + yZ, M = I + F, and N = I - F.",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -3835,38 +3866,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
-            "per_leaf_instance_count": 1,
-            "stage": "all_streamed_fully_streamed_tail_fixed_21z",
-            "stage_category": "mul_const",
-            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
-          }
-        },
-        {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_internal_combines__three_internal_combine_ladders",
-          "summary": "Three field add/sub combines for E = Y + yZ, M = I + F, and N = I - F.",
-          "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-          "primitive_counts_per_instance": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "base_instance_count": 765,
-          "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 23715,
-          "primitive_counts_total": {
-            "ccx": 23715,
-            "cx": 0,
-            "x": 0,
-            "measurement": 23715
-          },
-          "non_clifford_total": 23715,
-          "metadata": {
-            "opcode": "complete_a0_all_streamed_tail",
-            "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_internal_combines",
             "stage_category": "tail_combine",
@@ -3897,7 +3897,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_partial_products",
             "stage_category": "schoolbook_grid",
@@ -3928,7 +3928,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_controlled_add_path",
             "stage_category": "controlled_add",
@@ -3959,7 +3959,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_controlled_sub_path",
             "stage_category": "controlled_subtract",
@@ -3990,7 +3990,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_pseudo_mersenne_first_fold",
             "stage_category": "pseudo_mersenne_reduction",
@@ -4021,7 +4021,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_pseudo_mersenne_first_fold",
             "stage_category": "pseudo_mersenne_reduction",
@@ -4052,7 +4052,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_pseudo_mersenne_second_fold",
             "stage_category": "pseudo_mersenne_reduction",
@@ -4083,7 +4083,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_pseudo_mersenne_second_fold",
             "stage_category": "pseudo_mersenne_reduction",
@@ -4114,7 +4114,7 @@
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_pseudo_mersenne_canonicalize",
             "stage_category": "canonical_mod_p_reduction",
@@ -4123,7 +4123,7 @@
         },
         {
           "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_output_combine__three_output_combine_ladders",
-          "summary": "Three field add/sub combine ladders for X3, Y3, and Z3 after the six products.",
+          "summary": "Three canonical field add/sub combine ladders for X3, Y3, and Z3 after the six products.",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -4132,20 +4132,20 @@
             "x": 0,
             "measurement": 1
           },
-          "base_instance_count": 765,
+          "base_instance_count": 1530,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 23715,
+          "whole_oracle_instance_count": 47430,
           "primitive_counts_total": {
-            "ccx": 23715,
+            "ccx": 47430,
             "cx": 0,
             "x": 0,
-            "measurement": 23715
+            "measurement": 47430
           },
-          "non_clifford_total": 23715,
+          "non_clifford_total": 47430,
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1120212,
+            "kernel_non_clifford_per_instance": 1126332,
             "per_leaf_instance_count": 1,
             "stage": "all_streamed_fully_streamed_tail_output_combine",
             "stage_category": "tail_combine",
@@ -4419,17 +4419,17 @@
         }
       ],
       "reconstruction": {
-        "arithmetic_leaf_non_clifford": 1120212,
+        "arithmetic_leaf_non_clifford": 1126332,
         "direct_seed_non_clifford": 297,
         "per_leaf_lookup_non_clifford": 297,
-        "full_oracle_non_clifford": 34736076,
+        "full_oracle_non_clifford": 34925796,
         "primitive_totals": {
-          "ccx": 34736076,
+          "ccx": 34925796,
           "cx": 0,
           "x": 0,
-          "measurement": 7301100
+          "measurement": 7490820
         },
-        "total_measurements": 7301612,
+        "total_measurements": 7491332,
         "phase_shell_hadamards": 512,
         "phase_shell_measurements": 512,
         "phase_shell_rotations": 511,
@@ -4447,17 +4447,17 @@
   "best_gate_family": {
     "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
     "reconstruction": {
-      "arithmetic_leaf_non_clifford": 1120212,
+      "arithmetic_leaf_non_clifford": 1126332,
       "direct_seed_non_clifford": 297,
       "per_leaf_lookup_non_clifford": 297,
-      "full_oracle_non_clifford": 34736076,
+      "full_oracle_non_clifford": 34925796,
       "primitive_totals": {
-        "ccx": 34736076,
+        "ccx": 34925796,
         "cx": 0,
         "x": 0,
-        "measurement": 7301100
+        "measurement": 7490820
       },
-      "total_measurements": 7301612,
+      "total_measurements": 7491332,
       "phase_shell_hadamards": 512,
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 511,
@@ -4473,17 +4473,17 @@
   "best_qubit_family": {
     "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
     "reconstruction": {
-      "arithmetic_leaf_non_clifford": 1120212,
+      "arithmetic_leaf_non_clifford": 1126332,
       "direct_seed_non_clifford": 297,
       "per_leaf_lookup_non_clifford": 297,
-      "full_oracle_non_clifford": 34736076,
+      "full_oracle_non_clifford": 34925796,
       "primitive_totals": {
-        "ccx": 34736076,
+        "ccx": 34925796,
         "cx": 0,
         "x": 0,
-        "measurement": 7301100
+        "measurement": 7490820
       },
-      "total_measurements": 7301612,
+      "total_measurements": 7491332,
       "phase_shell_hadamards": 512,
       "phase_shell_measurements": 512,
       "phase_shell_rotations": 511,

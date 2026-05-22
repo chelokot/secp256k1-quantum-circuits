@@ -5,14 +5,19 @@ from __future__ import annotations
 from math import ceil
 from typing import Any, Dict, Mapping
 
+from compiler_parameters import (
+    PUBLIC_HEADLINE_LOGICAL_QUBIT_LIMIT_EXCLUSIVE,
+    PUBLIC_HEADLINE_NON_CLIFFORD_LIMIT_EXCLUSIVE,
+)
+
 
 def build_fallback_frontier_stress(
     *,
     frontier: Mapping[str, Any],
     logical_resource_ledger: Mapping[str, Any],
     field_bits: int,
-    non_clifford_limit: int = 40_000_000,
-    logical_qubit_limit_exclusive: int = 1200,
+    non_clifford_limit: int = PUBLIC_HEADLINE_NON_CLIFFORD_LIMIT_EXCLUSIVE,
+    logical_qubit_limit_exclusive: int = PUBLIC_HEADLINE_LOGICAL_QUBIT_LIMIT_EXCLUSIVE,
 ) -> Dict[str, Any]:
     selected = frontier['best_qubit_family']
     ledger_sweep = logical_resource_ledger['qroam_clean_tradeoff_sweep']

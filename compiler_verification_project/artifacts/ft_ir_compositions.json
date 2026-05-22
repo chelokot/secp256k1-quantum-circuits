@@ -78,7 +78,7 @@
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "per_leaf_instance_count": 1,
-              "exact_non_clifford_per_kernel": 1120212
+              "exact_non_clifford_per_kernel": 1126332
             }
           },
           {
@@ -93,10 +93,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_derive_g__leaf__derive_g_carry_ladder",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_derive_g__leaf__derive_g_modular_adder",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "One field-add ladder for G = X + Y inside the all-streamed tail macro.",
+            "summary": "One canonical field-adder for G = X + Y inside the all-streamed tail macro.",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -109,7 +109,7 @@
                   "x": 0,
                   "measurement": 1
                 },
-                "base_instance_count": 255
+                "base_instance_count": 510
               }
             }
           },
@@ -986,10 +986,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_derive_c__leaf__derive_c_input_carry_ladder",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_derive_c__leaf__derive_c_input_modular_adder",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "One field-add ladder for C input X + Zx inside the fully streamed tail macro.",
+            "summary": "One canonical field-adder for C input X + Zx inside the fully streamed tail macro.",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -1002,7 +1002,7 @@
                   "x": 0,
                   "measurement": 1
                 },
-                "base_instance_count": 255
+                "base_instance_count": 510
               }
             }
           },
@@ -1023,7 +1023,7 @@
                   "x": 0,
                   "measurement": 1
                 },
-                "base_instance_count": 1530
+                "base_instance_count": 3060
               }
             }
           },
@@ -1326,10 +1326,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_derive_k_l__leaf__derive_k_borrow_ladders",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_derive_k_l__leaf__derive_k_modular_subtractors",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Two field-subtract ladders for K = H - A - I inside the streamed tail macro.",
+            "summary": "Two canonical field-subtractors for K = H - A - I inside the streamed tail macro.",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -1342,15 +1342,15 @@
                   "x": 0,
                   "measurement": 1
                 },
-                "base_instance_count": 510
+                "base_instance_count": 1020
               }
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_derive_k_l__leaf__derive_l_carry_ladders",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_derive_k_l__leaf__derive_l_modular_adders",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Two field-add ladders for L = 3A inside the streamed tail macro.",
+            "summary": "Two canonical field-adders for L = 3A inside the streamed tail macro.",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -1363,7 +1363,7 @@
                   "x": 0,
                   "measurement": 1
                 },
-                "base_instance_count": 510
+                "base_instance_count": 1020
               }
             }
           },
@@ -1682,7 +1682,7 @@
                   "x": 0,
                   "measurement": 1
                 },
-                "base_instance_count": 1530
+                "base_instance_count": 3060
               }
             }
           },
@@ -1701,7 +1701,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_internal_combines__leaf__three_internal_combine_ladders",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Three field add/sub combines for E = Y + yZ, M = I + F, and N = I - F.",
+            "summary": "Three canonical field add/sub combines for E = Y + yZ, M = I + F, and N = I - F.",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -1714,7 +1714,7 @@
                   "x": 0,
                   "measurement": 1
                 },
-                "base_instance_count": 765
+                "base_instance_count": 1530
               }
             }
           },
@@ -1967,7 +1967,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_output_combine__leaf__three_output_combine_ladders",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Three field add/sub combine ladders for X3, Y3, and Z3 after the six products.",
+            "summary": "Three canonical field add/sub combine ladders for X3, Y3, and Z3 after the six products.",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -1980,7 +1980,7 @@
                   "x": 0,
                   "measurement": 1
                 },
-                "base_instance_count": 765
+                "base_instance_count": 1530
               }
             }
           },
@@ -2384,7 +2384,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_derive_g",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_derive_g__leaf__derive_g_carry_ladder",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_derive_g__leaf__derive_g_modular_adder",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2755,7 +2755,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_derive_c",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_derive_c__leaf__derive_c_input_carry_ladder",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_derive_c__leaf__derive_c_input_modular_adder",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2895,14 +2895,14 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_derive_k_l",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_derive_k_l__leaf__derive_k_borrow_ladders",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_derive_k_l__leaf__derive_k_modular_subtractors",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_derive_k_l",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_derive_k_l__leaf__derive_l_carry_ladders",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_derive_k_l__leaf__derive_l_modular_adders",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -3357,10 +3357,10 @@
           "max_depth": 5,
           "root_in_degree": 0,
           "primitive_totals": {
-            "ccx": 34736076,
+            "ccx": 34925796,
             "cx": 0,
             "x": 0,
-            "measurement": 7301100
+            "measurement": 7490820
           },
           "logical_qubits_total": 1044,
           "phase_shell_hadamards": 512,
@@ -3371,7 +3371,7 @@
       },
       "leaf_sigma": [
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_derive_g__leaf__derive_g_carry_ladder",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_derive_g__leaf__derive_g_modular_adder",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -3379,7 +3379,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_derive_g",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_derive_g__leaf__derive_g_carry_ladder"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_derive_g__leaf__derive_g_modular_adder"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -3390,15 +3390,15 @@
               "x": 0,
               "measurement": 1
             },
-            "base_instance_count": 255
+            "base_instance_count": 510
           },
           "primitive_counts_total": {
-            "ccx": 7905,
+            "ccx": 15810,
             "cx": 0,
             "x": 0,
-            "measurement": 7905
+            "measurement": 15810
           },
-          "non_clifford_total": 7905
+          "non_clifford_total": 15810
         },
         {
           "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_streamed_lookup_x_plus_y_standard_qroam_oracle__leaf__streamed_lookup_x_plus_y_standard_qroam_compute",
@@ -4301,7 +4301,7 @@
           "non_clifford_total": 15810
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_derive_c__leaf__derive_c_input_carry_ladder",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_derive_c__leaf__derive_c_input_modular_adder",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -4309,7 +4309,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_derive_c",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_derive_c__leaf__derive_c_input_carry_ladder"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_derive_c__leaf__derive_c_input_modular_adder"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -4320,15 +4320,15 @@
               "x": 0,
               "measurement": 1
             },
-            "base_instance_count": 255
+            "base_instance_count": 510
           },
           "primitive_counts_total": {
-            "ccx": 7905,
+            "ccx": 15810,
             "cx": 0,
             "x": 0,
-            "measurement": 7905
+            "measurement": 15810
           },
-          "non_clifford_total": 7905
+          "non_clifford_total": 15810
         },
         {
           "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_derive_c__leaf__derive_c_fixed_21_chain",
@@ -4350,15 +4350,15 @@
               "x": 0,
               "measurement": 1
             },
-            "base_instance_count": 1530
+            "base_instance_count": 3060
           },
           "primitive_counts_total": {
-            "ccx": 47430,
+            "ccx": 94860,
             "cx": 0,
             "x": 0,
-            "measurement": 47430
+            "measurement": 94860
           },
-          "non_clifford_total": 47430
+          "non_clifford_total": 94860
         },
         {
           "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_streamed_lookup_y_standard_qroam_oracle__leaf__streamed_lookup_y_standard_qroam_compute",
@@ -4661,7 +4661,7 @@
           "non_clifford_total": 15810
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_derive_k_l__leaf__derive_k_borrow_ladders",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_derive_k_l__leaf__derive_k_modular_subtractors",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -4669,7 +4669,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_derive_k_l",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_derive_k_l__leaf__derive_k_borrow_ladders"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_derive_k_l__leaf__derive_k_modular_subtractors"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -4680,18 +4680,18 @@
               "x": 0,
               "measurement": 1
             },
-            "base_instance_count": 510
+            "base_instance_count": 1020
           },
           "primitive_counts_total": {
-            "ccx": 15810,
+            "ccx": 31620,
             "cx": 0,
             "x": 0,
-            "measurement": 15810
+            "measurement": 31620
           },
-          "non_clifford_total": 15810
+          "non_clifford_total": 31620
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_derive_k_l__leaf__derive_l_carry_ladders",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_derive_k_l__leaf__derive_l_modular_adders",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -4699,7 +4699,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_derive_k_l",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_derive_k_l__leaf__derive_l_carry_ladders"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_derive_k_l__leaf__derive_l_modular_adders"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -4710,15 +4710,15 @@
               "x": 0,
               "measurement": 1
             },
-            "base_instance_count": 510
+            "base_instance_count": 1020
           },
           "primitive_counts_total": {
-            "ccx": 15810,
+            "ccx": 31620,
             "cx": 0,
             "x": 0,
-            "measurement": 15810
+            "measurement": 31620
           },
-          "non_clifford_total": 15810
+          "non_clifford_total": 31620
         },
         {
           "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_streamed_lookup_y_standard_qroam_oracle__leaf__streamed_lookup_y_standard_qroam_compute",
@@ -5040,15 +5040,15 @@
               "x": 0,
               "measurement": 1
             },
-            "base_instance_count": 1530
+            "base_instance_count": 3060
           },
           "primitive_counts_total": {
-            "ccx": 47430,
+            "ccx": 94860,
             "cx": 0,
             "x": 0,
-            "measurement": 47430
+            "measurement": 94860
           },
-          "non_clifford_total": 47430
+          "non_clifford_total": 94860
         },
         {
           "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_internal_combines__leaf__three_internal_combine_ladders",
@@ -5070,15 +5070,15 @@
               "x": 0,
               "measurement": 1
             },
-            "base_instance_count": 765
+            "base_instance_count": 1530
           },
           "primitive_counts_total": {
-            "ccx": 23715,
+            "ccx": 47430,
             "cx": 0,
             "x": 0,
-            "measurement": 23715
+            "measurement": 47430
           },
-          "non_clifford_total": 23715
+          "non_clifford_total": 47430
         },
         {
           "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_partial_products__leaf__six_partial_product_grids",
@@ -5340,15 +5340,15 @@
               "x": 0,
               "measurement": 1
             },
-            "base_instance_count": 765
+            "base_instance_count": 1530
           },
           "primitive_counts_total": {
-            "ccx": 23715,
+            "ccx": 47430,
             "cx": 0,
             "x": 0,
-            "measurement": 23715
+            "measurement": 47430
           },
-          "non_clifford_total": 23715
+          "non_clifford_total": 47430
         },
         {
           "leaf_id": "repeated_lookup_cluster__stage__folded_word_classification__leaf__magnitude_all_zero_tree",
@@ -5643,12 +5643,12 @@
         }
       ],
       "reconstruction": {
-        "full_oracle_non_clifford": 34736076,
+        "full_oracle_non_clifford": 34925796,
         "primitive_totals": {
-          "ccx": 34736076,
+          "ccx": 34925796,
           "cx": 0,
           "x": 0,
-          "measurement": 7301100
+          "measurement": 7490820
         },
         "total_logical_qubits": 1044,
         "phase_shell_hadamards": 512,
@@ -5657,12 +5657,12 @@
         "phase_shell_rotation_depth": 511
       },
       "generated_block_inventory_reconstruction": {
-        "full_oracle_non_clifford": 34736076,
+        "full_oracle_non_clifford": 34925796,
         "primitive_totals": {
-          "ccx": 34736076,
+          "ccx": 34925796,
           "cx": 0,
           "x": 0,
-          "measurement": 7301100
+          "measurement": 7490820
         },
         "total_logical_qubits": 1044,
         "phase_shell_hadamards": 512,
@@ -5671,7 +5671,7 @@
         "phase_shell_rotation_depth": 511
       },
       "frontier_reconstruction": {
-        "full_oracle_non_clifford": 34736076,
+        "full_oracle_non_clifford": 34925796,
         "total_logical_qubits": 1044
       }
     }
@@ -5679,12 +5679,12 @@
   "best_gate_family": {
     "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
     "reconstruction": {
-      "full_oracle_non_clifford": 34736076,
+      "full_oracle_non_clifford": 34925796,
       "primitive_totals": {
-        "ccx": 34736076,
+        "ccx": 34925796,
         "cx": 0,
         "x": 0,
-        "measurement": 7301100
+        "measurement": 7490820
       },
       "total_logical_qubits": 1044,
       "phase_shell_hadamards": 512,
@@ -5696,12 +5696,12 @@
   "best_qubit_family": {
     "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
     "reconstruction": {
-      "full_oracle_non_clifford": 34736076,
+      "full_oracle_non_clifford": 34925796,
       "primitive_totals": {
-        "ccx": 34736076,
+        "ccx": 34925796,
         "cx": 0,
         "x": 0,
-        "measurement": 7301100
+        "measurement": 7490820
       },
       "total_logical_qubits": 1044,
       "phase_shell_hadamards": 512,

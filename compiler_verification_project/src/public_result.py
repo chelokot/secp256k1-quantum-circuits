@@ -75,13 +75,30 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
     qroam_reference = _load(ARTIFACT_ROOT / 'qroam_reference_crosscheck.json')
     modular_arithmetic = _load(ARTIFACT_ROOT / 'modular_arithmetic_certificate.json')
     compiler_parameters = _load(ARTIFACT_ROOT / 'compiler_parameters.json')
+    public_policy = compiler_parameters['public_headline_policy']
+    non_clifford_limit = int(public_policy['non_clifford_limit_exclusive'])
+    qubit_limit = int(public_policy['logical_qubit_limit_exclusive'])
     proof_corpus_profiles = _load(ARTIFACT_ROOT / 'proof_corpus_profiles.json')
     tail_candidate = _load(ARTIFACT_ROOT / 'reusable_chunk_tail_candidate.json')
     executable_liveness = lowering['executable_liveness']
     counted_resource_ir = lowering['counted_resource_ir']
     resource_contract_engine = lowering['resource_contract_engine']
-    non_clifford = int(public_values['expected_full_oracle_non_clifford'])
-    qubits = int(public_values['expected_total_logical_qubits'])
+    current_values = {
+        'schema': public_values['schema'],
+        'selected_family_name': input_payload['selected_family_name'],
+        'document_digest_scheme': input_payload['document_digest_scheme'],
+        'claim_sha256': input_payload['claim_sha256'],
+        'leaf_sha256': input_payload['leaf_sha256'],
+        'family_sha256': input_payload['family_sha256'],
+        'case_corpus_sha256': input_payload['case_corpus_sha256'],
+        'resource_certificate_sha256': input_payload['resource_certificate_sha256'],
+        'expected_full_oracle_non_clifford': int(input_payload['claim_summary']['expected_full_oracle_non_clifford']),
+        'expected_total_logical_qubits': int(input_payload['claim_summary']['expected_total_logical_qubits']),
+        'case_count': int(input_payload['prepared_case_corpus']['case_count']),
+        'passed_case_count': int(input_payload['prepared_case_corpus']['case_count']),
+    }
+    non_clifford = int(current_values['expected_full_oracle_non_clifford'])
+    qubits = int(current_values['expected_total_logical_qubits'])
     checks = {
         'public_values_match_input_claim': (
             public_values['claim_sha256'] == input_payload['claim_sha256']
@@ -178,48 +195,51 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             and lowering['checks']['modular_arithmetic_certificate_binds_counted_field_mul'] is True
             and modular_arithmetic['field_mul_stage_count_certificate']['stage_counts_match'] is True
             and modular_arithmetic['field_mul_stage_count_certificate']['observed_total_ccx'] == modular_arithmetic['field_mul_stage_count_certificate']['expected_total_ccx']
+            and modular_arithmetic['opcode_count_certificate']['opcode_counts_match'] is True
+            and modular_arithmetic['opcode_count_certificate']['observed_non_clifford_per_opcode'] == modular_arithmetic['opcode_count_certificate']['expected_non_clifford_per_opcode']
         ),
         'reusable_chunk_tail_contract_is_proven_for_public_headline': (
             tail_candidate['status'] == 'proven_public_headline'
             and tail_candidate['toy_semantic_equivalence']['all_rows_semantic'] is True
             and tail_candidate['toy_semantic_equivalence']['all_rows_executable'] is True
         ),
-        'fits_strict_public_goal': non_clifford < 40_000_000 and qubits < 1200,
+        'fits_strict_public_goal': non_clifford < non_clifford_limit and qubits < qubit_limit,
         'public_case_count_matches_selected_proof_profile': (
-            int(public_values['case_count'])
-            == int(public_values['passed_case_count'])
+            int(current_values['case_count'])
+            == int(current_values['passed_case_count'])
             == int(proof_corpus_profiles['profiles'][proof_corpus_profiles['selected_public_profile']]['case_count'])
         ),
     }
     return {
         'schema': 'compiler-project-public-headline-result-v1',
         'selected_result': {
-            'name': public_values['selected_family_name'],
+            'name': current_values['selected_family_name'],
             'non_clifford': non_clifford,
             'logical_qubits': qubits,
-            'case_count': int(public_values['case_count']),
-            'passed_case_count': int(public_values['passed_case_count']),
-            'document_digest_scheme': public_values['document_digest_scheme'],
+            'case_count': current_values['case_count'],
+            'passed_case_count': current_values['passed_case_count'],
+            'document_digest_scheme': current_values['document_digest_scheme'],
         },
         'selection_policy': {
             'role': 'single public repository headline',
-            'reason': 'Verified reusable-chunk four-slot contract is the strongest checked result that keeps non-Clifford below 40M and logical qubits strictly below 1200 under the strict standard-QROAM model.',
+            'reason': 'Verified reusable-chunk four-slot contract is the strongest checked result that keeps non-Clifford below the compiler-parameter headline limit and logical qubits strictly below the compiler-parameter headline limit under the strict standard-QROAM model.',
+            'limits': dict(public_policy),
             'supersedes_for_public_headline': [
                 'folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1',
             ],
             'superseded_result_kept_as_reference': {
-                'non_clifford': 34_736_076,
+                'non_clifford': 34_925_796,
                 'logical_qubits': 1_044,
                 'reason': 'Lower qubit count at the earlier three-slot compiler-family boundary, but not the selected stricter four-slot reusable-chunk public headline.',
             },
         },
-        'comparison_to_public_google_baseline': _comparison_rows(public_values, baseline),
+        'comparison_to_public_google_baseline': _comparison_rows(current_values, baseline),
         'bound_documents': {
-            'claim_sha256': public_values['claim_sha256'],
-            'leaf_sha256': public_values['leaf_sha256'],
-            'family_sha256': public_values['family_sha256'],
-            'case_corpus_sha256': public_values['case_corpus_sha256'],
-            'resource_certificate_sha256': public_values['resource_certificate_sha256'],
+            'claim_sha256': current_values['claim_sha256'],
+            'leaf_sha256': current_values['leaf_sha256'],
+            'family_sha256': current_values['family_sha256'],
+            'case_corpus_sha256': current_values['case_corpus_sha256'],
+            'resource_certificate_sha256': current_values['resource_certificate_sha256'],
         },
         'checked_artifacts': {
             'input': _file_record('compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json'),

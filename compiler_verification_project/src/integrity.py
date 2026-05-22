@@ -191,6 +191,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'subcircuit_equivalence': artifact_root / 'subcircuit_equivalence.json',
         'headline_opcode_coverage': artifact_root / 'headline_opcode_coverage.json',
         'public_headline_result': artifact_root / 'public_headline_result.json',
+        'zkp_attestation_reusable_chunk_candidate_input': artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json',
         'zkp_attestation_reusable_chunk_candidate_public_values': artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_public_values.json',
         'build_summary': artifact_root / 'build_summary.json',
         'cain_exact_transfer': artifact_root / 'cain_exact_transfer.json',
@@ -251,10 +252,12 @@ def build_compiler_parameter_checks(artifacts: Mapping[str, Any]) -> Dict[str, A
     windowing = parameters['windowing']
     lookup_policy = parameters['lookup_policy']
     reusable_chunk_policy = parameters['reusable_chunk_policy']
+    public_headline_policy = parameters['public_headline_policy']
     schedule = artifacts['full_raw32_oracle']
     selected_family = artifacts['logical_resource_ledger']['selected_family_summary']
     headline_family = artifacts['build_summary']['headline']['best_gate_family']
     reusable_chunk = artifacts['reusable_chunk_lowering']
+    public_headline = artifacts['public_headline_result']
     checks = [
         _check('compiler_parameters_match_generator', parameters == expected, expected, parameters),
         _check('compiler_parameters_schema_is_current', parameters['schema'] == COMPILER_PARAMETERS_SCHEMA, COMPILER_PARAMETERS_SCHEMA, parameters['schema']),
@@ -262,6 +265,7 @@ def build_compiler_parameter_checks(artifacts: Mapping[str, Any]) -> Dict[str, A
         _check('compiler_parameters_bind_project_field_and_window_constants', field['field_bits'] == FIELD_BITS and windowing['raw_window_bits'] == RAW_WINDOW_BITS and windowing['folded_magnitude_bits'] == FOLDED_MAG_BITS and windowing['folded_magnitude_domain'] == FOLDED_MAG_DOMAIN and windowing['full_raw_windows'] == schedule['raw_window_count'], {'field_bits': FIELD_BITS, 'raw_window_bits': RAW_WINDOW_BITS, 'folded_magnitude_domain': FOLDED_MAG_DOMAIN, 'full_raw_windows': schedule['raw_window_count']}, {'field': field, 'windowing': windowing}),
         _check('compiler_parameters_bind_lookup_resource_policy', lookup_policy['standard_qroamclean_block_size'] == selected_family['qroam_clean_block_size'] and lookup_policy['selected_public_lookup_family'] == headline_family['lookup_family'], {'selected_family_summary': selected_family, 'headline_family': headline_family}, lookup_policy),
         _check('compiler_parameters_bind_reusable_chunk_policy', reusable_chunk_policy['chunk_bits'] == reusable_chunk['stream_plan']['chunk_bits'] and reusable_chunk_policy['chunk_count'] == reusable_chunk['stream_plan']['chunk_count'] and reusable_chunk_policy['scratch_slot'] in reusable_chunk['executable_contract']['arithmetic_slots'], reusable_chunk['stream_plan'], reusable_chunk_policy),
+        _check('compiler_parameters_bind_public_headline_policy', public_headline['selection_policy']['limits'] == public_headline_policy and public_headline['selected_result']['non_clifford'] < public_headline_policy['non_clifford_limit_exclusive'] and public_headline['selected_result']['logical_qubits'] < public_headline_policy['logical_qubit_limit_exclusive'], public_headline_policy, public_headline['selection_policy']),
         _check('compiler_parameters_digest_is_stable_sha256', isinstance(parameters['parameter_digest_sha256'], str) and len(parameters['parameter_digest_sha256']) == 64, '64 hex chars', parameters['parameter_digest_sha256']),
     ]
     return _summarize_checks(checks)
@@ -427,12 +431,14 @@ def build_modular_arithmetic_certificate_checks(artifacts: Mapping[str, Any]) ->
         field_bits=FIELD_BITS,
     )
     stage_certificate = certificate['field_mul_stage_count_certificate']
+    opcode_certificate = certificate['opcode_count_certificate']
     reduced_cases = certificate['reduced_width_exhaustive_cases']
     checks = [
         _check('modular_arithmetic_certificate_matches_generator', certificate == expected, expected, certificate),
         _check('modular_arithmetic_certificate_schema_is_current', certificate['schema'] == 'compiler-project-modular-arithmetic-certificate-v1', 'compiler-project-modular-arithmetic-certificate-v1', certificate['schema']),
         _check('modular_arithmetic_certificate_passes_internal_checks', certificate['pass'] is True and all(certificate['checks'].values()), True, certificate['checks']),
         _check('modular_arithmetic_certificate_binds_secp256k1_modulus_shape', certificate['secp256k1_parameters']['field_bits'] == FIELD_BITS and certificate['secp256k1_parameters']['shift'] == 32 and certificate['secp256k1_parameters']['low_term'] == 977 and certificate['secp256k1_parameters']['canonical_subtract_passes'] == 2, {'field_bits': FIELD_BITS, 'shift': 32, 'low_term': 977, 'canonical_subtract_passes': 2}, certificate['secp256k1_parameters']),
+        _check('modular_arithmetic_certificate_opcode_counts_match_modular_contracts', opcode_certificate['opcode_counts_match'] is True and opcode_certificate['observed_non_clifford_per_opcode'] == opcode_certificate['expected_non_clifford_per_opcode'] and opcode_certificate['expected_non_clifford_per_opcode']['field_add'] == 2 * (FIELD_BITS - 1) and opcode_certificate['expected_non_clifford_per_opcode']['mul_const'] == 6 * 2 * (FIELD_BITS - 1), {'field_add': 2 * (FIELD_BITS - 1), 'mul_const': 6 * 2 * (FIELD_BITS - 1)}, opcode_certificate),
         _check('modular_arithmetic_certificate_field_mul_stage_counts_match_lowering', stage_certificate['stage_counts_match'] is True and stage_certificate['observed_stage_ccx'] == stage_certificate['expected_stage_ccx'] and stage_certificate['observed_total_ccx'] == stage_certificate['expected_total_ccx'], stage_certificate['expected_stage_ccx'], stage_certificate),
         _check('modular_arithmetic_certificate_reduced_width_cases_are_exhaustive', all(row['pass'] is True and row['rows_checked'] == row['modulus'] * row['modulus'] for row in reduced_cases), 'all reduced-width rows pass exhaustive p^2 testing', reduced_cases),
     ]
@@ -1303,6 +1309,9 @@ def build_logical_resource_ledger_checks(artifacts: Mapping[str, Any]) -> Dict[s
 
 def build_fallback_frontier_stress_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     stress = artifacts['fallback_frontier_stress']
+    public_policy = artifacts['compiler_parameters']['public_headline_policy']
+    non_clifford_limit = int(public_policy['non_clifford_limit_exclusive'])
+    qubit_limit = int(public_policy['logical_qubit_limit_exclusive'])
     expected = build_fallback_frontier_stress(
         frontier=artifacts['family_frontier'],
         logical_resource_ledger=artifacts['logical_resource_ledger'],
@@ -1314,10 +1323,10 @@ def build_fallback_frontier_stress_checks(artifacts: Mapping[str, Any]) -> Dict[
     checks = [
         _check('fallback_frontier_stress_matches_generator', stress == expected, expected, stress),
         _check('fallback_frontier_stress_schema_is_current', stress['schema'] == 'compiler-project-fallback-frontier-stress-v1', 'compiler-project-fallback-frontier-stress-v1', stress['schema']),
-        _check('fallback_frontier_stress_uses_strict_1200_limit', stress['limits']['logical_qubit_limit_exclusive'] == 1200, 1200, stress['limits']['logical_qubit_limit_exclusive']),
-        _check('fallback_frontier_stress_shows_four_full_coordinate_slots_miss_qubit_limit', pressure['current_four_slot_total_with_full_coordinate_qroam'] >= 1200 and pressure['lookup_workspace_reduction_needed_from_current'] > 0, {'four_slot_total': '>= 1200', 'workspace_reduction_needed': '> 0'}, pressure),
-        _check('fallback_frontier_stress_chunked_four_slot_counterfactual_misses_40m', chunked['chunked_total_logical_qubits'] < 1200 and chunked['chunked_total_non_clifford'] >= 40_000_000 and chunked['required_non_qroam_base_reduction_to_fit_limit'] > 0, {'chunked_total_logical_qubits': '< 1200', 'chunked_total_non_clifford': '>= 40000000', 'required_non_qroam_base_reduction_to_fit_limit': '> 0'}, chunked),
-        _check('fallback_frontier_stress_reusable_chunk_headline_fits_limits', reusable['status'] == 'proven_public_headline' and reusable['beats_requested_non_clifford_limit'] is True and reusable['beats_requested_logical_qubit_limit'] is True and reusable['candidate_total_non_clifford'] < 40_000_000 and reusable['candidate_total_logical_qubits'] < 1200 and len(reusable['public_claim_evidence']) >= 4, {'status': 'proven_public_headline', 'candidate_total_non_clifford': '< 40000000', 'candidate_total_logical_qubits': '< 1200', 'public_claim_evidence': '>= 4'}, reusable),
+        _check('fallback_frontier_stress_uses_compiler_parameter_limits', stress['limits'] == {'non_clifford_limit': non_clifford_limit, 'logical_qubit_limit_exclusive': qubit_limit}, public_policy, stress['limits']),
+        _check('fallback_frontier_stress_shows_four_full_coordinate_slots_miss_qubit_limit', pressure['current_four_slot_total_with_full_coordinate_qroam'] >= qubit_limit and pressure['lookup_workspace_reduction_needed_from_current'] > 0, {'four_slot_total': f'>= {qubit_limit}', 'workspace_reduction_needed': '> 0'}, pressure),
+        _check('fallback_frontier_stress_chunked_four_slot_counterfactual_misses_40m', chunked['chunked_total_logical_qubits'] < qubit_limit and chunked['chunked_total_non_clifford'] >= non_clifford_limit and chunked['required_non_qroam_base_reduction_to_fit_limit'] > 0, {'chunked_total_logical_qubits': f'< {qubit_limit}', 'chunked_total_non_clifford': f'>= {non_clifford_limit}', 'required_non_qroam_base_reduction_to_fit_limit': '> 0'}, chunked),
+        _check('fallback_frontier_stress_reusable_chunk_headline_fits_limits', reusable['status'] == 'proven_public_headline' and reusable['beats_requested_non_clifford_limit'] is True and reusable['beats_requested_logical_qubit_limit'] is True and reusable['candidate_total_non_clifford'] < non_clifford_limit and reusable['candidate_total_logical_qubits'] < qubit_limit and len(reusable['public_claim_evidence']) >= 4, {'status': 'proven_public_headline', 'candidate_total_non_clifford': f'< {non_clifford_limit}', 'candidate_total_logical_qubits': f'< {qubit_limit}', 'public_claim_evidence': '>= 4'}, reusable),
         _check('fallback_frontier_stress_conclusion_has_no_current_four_slot_fallback', stress['conclusion']['current_models_have_no_four_slot_fallback_under_limits'] is True, True, stress['conclusion']),
     ]
     return _summarize_checks(checks)
@@ -1330,6 +1339,7 @@ def build_reusable_chunk_tail_candidate_checks(artifacts: Mapping[str, Any]) -> 
     )
     semantic = candidate['toy_semantic_equivalence']
     production = candidate['production_resource_candidate']
+    public_policy = artifacts['compiler_parameters']['public_headline_policy']
     checks = [
         _check('reusable_chunk_tail_candidate_matches_generator', candidate == expected, expected, candidate),
         _check('reusable_chunk_tail_candidate_schema_is_current', candidate['schema'] == 'compiler-project-reusable-chunk-tail-candidate-v1', 'compiler-project-reusable-chunk-tail-candidate-v1', candidate['schema']),
@@ -1337,7 +1347,7 @@ def build_reusable_chunk_tail_candidate_checks(artifacts: Mapping[str, Any]) -> 
         _check('reusable_chunk_tail_candidate_toy_semantics_pass_all_boundary_pairs', semantic['all_rows_semantic'] is True and semantic['all_rows_executable'] is True and semantic['total_boundary_pairs'] == 110692 and all(row['semantic_pass'] is True and row['executable_pass'] is True for row in semantic['rows']), {'all_rows_semantic': True, 'all_rows_executable': True, 'total_boundary_pairs': 110692}, semantic),
         _check('reusable_chunk_tail_candidate_covers_edge_categories', all(semantic['category_totals'][category] > 0 for category in ('ordinary', 'doubling', 'inverse', 'accumulator_infinity', 'lookup_infinity')), 'all edge categories > 0', semantic['category_totals']),
         _check('reusable_chunk_tail_candidate_resource_numbers_match_stress_candidate', production['candidate_total_non_clifford'] == artifacts['fallback_frontier_stress']['reusable_chunked_coordinate_candidate']['candidate_total_non_clifford'] and production['candidate_total_logical_qubits'] == artifacts['fallback_frontier_stress']['reusable_chunked_coordinate_candidate']['candidate_total_logical_qubits'], artifacts['fallback_frontier_stress']['reusable_chunked_coordinate_candidate'], production),
-        _check('reusable_chunk_tail_candidate_fits_requested_limits_if_proven', production['beats_requested_non_clifford_limit'] is True and production['beats_requested_logical_qubit_limit'] is True and production['candidate_total_non_clifford'] < 40_000_000 and production['candidate_total_logical_qubits'] < 1200, {'non_clifford': '< 40000000', 'logical_qubits': '< 1200'}, production),
+        _check('reusable_chunk_tail_candidate_fits_requested_limits_if_proven', production['beats_requested_non_clifford_limit'] is True and production['beats_requested_logical_qubit_limit'] is True and production['candidate_total_non_clifford'] < public_policy['non_clifford_limit_exclusive'] and production['candidate_total_logical_qubits'] < public_policy['logical_qubit_limit_exclusive'], public_policy, production),
         _check('reusable_chunk_tail_candidate_records_public_claim_evidence', len(candidate['public_claim_evidence']) >= 4, '>= 4', candidate['public_claim_evidence']),
     ]
     return _summarize_checks(checks)
@@ -2271,12 +2281,20 @@ def build_public_headline_result_checks(artifacts: Mapping[str, Any], repo_root:
     expected = build_public_headline_result(baseline=PUBLIC_GOOGLE_BASELINE)
     selected = public_result['selected_result']
     checked = public_result['checked_artifacts']
+    public_policy = artifacts['compiler_parameters']['public_headline_policy']
+    candidate_input = artifacts['zkp_attestation_reusable_chunk_candidate_input']
+    candidate_values = {
+        'selected_family_name': candidate_input['selected_family_name'],
+        'expected_full_oracle_non_clifford': int(candidate_input['claim_summary']['expected_full_oracle_non_clifford']),
+        'expected_total_logical_qubits': int(candidate_input['claim_summary']['expected_total_logical_qubits']),
+    }
     checks = [
         _check('public_headline_result_matches_generator', public_result == expected, expected, public_result),
         _check('public_headline_result_schema_is_current', public_result['schema'] == 'compiler-project-public-headline-result-v1', 'compiler-project-public-headline-result-v1', public_result['schema']),
         _check('public_headline_result_pass_flag_matches_internal_checks', public_result['pass'] == all(public_result['checks'].values()), all(public_result['checks'].values()), {'pass': public_result['pass'], 'checks': public_result['checks']}),
-        _check('public_headline_result_is_strict_40m_1200_candidate', selected['non_clifford'] == artifacts['zkp_attestation_reusable_chunk_candidate_public_values']['expected_full_oracle_non_clifford'] and selected['logical_qubits'] == artifacts['zkp_attestation_reusable_chunk_candidate_public_values']['expected_total_logical_qubits'] and selected['non_clifford'] < 40_000_000 and selected['logical_qubits'] < 1200, {'non_clifford': artifacts['zkp_attestation_reusable_chunk_candidate_public_values']['expected_full_oracle_non_clifford'], 'logical_qubits': artifacts['zkp_attestation_reusable_chunk_candidate_public_values']['expected_total_logical_qubits'], 'strict_limits': True}, selected),
-        _check('public_headline_result_bindings_match_candidate_public_values', selected['name'] == artifacts['zkp_attestation_reusable_chunk_candidate_public_values']['selected_family_name'] and selected['non_clifford'] == artifacts['zkp_attestation_reusable_chunk_candidate_public_values']['expected_full_oracle_non_clifford'] and selected['logical_qubits'] == artifacts['zkp_attestation_reusable_chunk_candidate_public_values']['expected_total_logical_qubits'], artifacts['zkp_attestation_reusable_chunk_candidate_public_values'], selected),
+        _check('public_headline_result_limits_match_compiler_parameters', public_result['selection_policy']['limits'] == public_policy, public_policy, public_result['selection_policy']['limits']),
+        _check('public_headline_result_is_strict_40m_1200_candidate', selected['non_clifford'] == candidate_values['expected_full_oracle_non_clifford'] and selected['logical_qubits'] == candidate_values['expected_total_logical_qubits'] and selected['non_clifford'] < public_policy['non_clifford_limit_exclusive'] and selected['logical_qubits'] < public_policy['logical_qubit_limit_exclusive'], {'non_clifford': candidate_values['expected_full_oracle_non_clifford'], 'logical_qubits': candidate_values['expected_total_logical_qubits'], 'strict_limits': public_policy}, selected),
+        _check('public_headline_result_bindings_match_candidate_input_claim', selected['name'] == candidate_values['selected_family_name'] and selected['non_clifford'] == candidate_values['expected_full_oracle_non_clifford'] and selected['logical_qubits'] == candidate_values['expected_total_logical_qubits'], candidate_values, selected),
         _check('public_headline_result_compressed_proof_hash_matches_file', checked['compressed_proof']['sha256'] == sha256_path(repo_root / checked['compressed_proof']['path']) and checked['compressed_proof']['bytes'] == (repo_root / checked['compressed_proof']['path']).stat().st_size, checked['compressed_proof'], checked['compressed_proof']),
         _check('public_headline_result_groth16_proof_hash_matches_file', checked['groth16_proof']['sha256'] == sha256_path(repo_root / checked['groth16_proof']['path']) and checked['groth16_proof']['bytes'] == (repo_root / checked['groth16_proof']['path']).stat().st_size, checked['groth16_proof'], checked['groth16_proof']),
         _check('public_headline_result_groth16_vk_hash_matches_file', checked['groth16_verifier_key']['sha256'] == sha256_path(repo_root / checked['groth16_verifier_key']['path']) and checked['groth16_verifier_key']['bytes'] == (repo_root / checked['groth16_verifier_key']['path']).stat().st_size, checked['groth16_verifier_key'], checked['groth16_verifier_key']),

@@ -60,7 +60,7 @@ class IBMRoadmapContextTests(unittest.TestCase):
 
     def test_docs_preserve_favorable_but_bounded_ibm_claim(self):
         for text in [self.readme, self.reference_note]:
-            self.assertIn('36,767,692', text)
+            self.assertIn('36,957,412', text)
             self.assertIn('1,199', text)
             self.assertIn('Starling', text)
             self.assertIn('Blue Jay', text)

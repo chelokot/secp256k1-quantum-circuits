@@ -77,6 +77,18 @@ def test_modular_arithmetic_certificate_detects_forged_stage_count() -> None:
     assert checks['pass'] < checks['total']
 
 
+def test_modular_arithmetic_certificate_detects_forged_opcode_count() -> None:
+    arithmetic_lowerings = _arithmetic_lowerings()
+    certificate = build_modular_arithmetic_certificate(
+        arithmetic_lowerings=arithmetic_lowerings,
+        field_bits=FIELD_BITS,
+    )
+    forged = deepcopy(certificate)
+    forged['opcode_count_certificate']['observed_non_clifford_per_opcode']['field_add'] = FIELD_BITS - 1
+    checks = build_modular_arithmetic_certificate_checks(_artifacts(forged, arithmetic_lowerings))
+    assert checks['pass'] < checks['total']
+
+
 def test_modular_arithmetic_certificate_detects_forged_reduced_width_result() -> None:
     arithmetic_lowerings = _arithmetic_lowerings()
     certificate = build_modular_arithmetic_certificate(

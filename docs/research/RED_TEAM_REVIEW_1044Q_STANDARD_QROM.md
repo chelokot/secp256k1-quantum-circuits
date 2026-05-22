@@ -12,7 +12,7 @@ Headline under review:
 
 Current post-remediation public headline on this branch:
 
-- `36,767,692` non-Clifford
+- `36,957,412` non-Clifford
 - `1,199` logical qubits
 - family:
   `folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1`
@@ -44,7 +44,7 @@ The strongest defensible statement is:
 
 > The repository currently contains a checked standard-QROM compiler-family
 > boundary whose artifacts, resource ledger, committed-document SP1 public
-> values, and proof-freshness tooling define a `36,767,692 / 1,199` result,
+> values, and proof-freshness tooling define a `36,957,412 / 1,199` candidate result,
 > with claim/leaf/family/case/resource document hashes recomputed inside the
 > active ZKP guest. The current working tree intentionally marks the checked
 > compressed/Groth16 proof layers stale after resource-certificate changes until
@@ -52,9 +52,10 @@ The strongest defensible statement is:
 
 The weaker `32,879,331 / 1,044` statement is the historical verdict for commit
 `4d9fefed41ca0f6b5cf6528ce8366065fc6d557a`. The current branch has since moved
-the public claim to `36,767,692 / 1,199` after adding explicit modular-reduction
-cost, stronger ZKP resource binding, in-guest committed-document hash binding,
-and the reusable-chunk four-slot candidate proof bundle with explicit freshness
+the public claim to `36,957,412 / 1,199` after adding explicit modular-reduction
+cost for field multiplication and canonical modular add/sub correction costs,
+stronger ZKP resource binding, in-guest committed-document hash binding, and
+the reusable-chunk four-slot candidate proof bundle with explicit freshness
 checks.
 
 The statement that is not yet defensible without more engineering is:
@@ -693,7 +694,7 @@ Current remediation:
   from the owner-capacity/liveness certificate.
 - ZKP input tests now derive reusable-chunk headline totals, QROAM parameters,
   modular arithmetic stage totals, and liveness peaks from the bound resource
-  document and public values instead of restating `36,767,692`, `1,199`,
+  document and public values instead of restating `36,957,412`, `1,199`,
   `65,536`, `173`, or `71,492` as independent magic constants.
 - The SP1 guest reusable-chunk validator now derives chunk width, chunk count,
   QROAM target/junk capacity, per-stream non-Clifford totals, effective
@@ -1580,7 +1581,7 @@ Avoid:
 Use:
 
 > Under the repository's checked standard-QROM compiler-family boundary, the
-> current artifacts define a `36,767,692` non-Clifford / `1,199` logical-qubit
+> current artifacts define a `36,957,412` non-Clifford / `1,199` logical-qubit
 > result, and `proof_status.py --require-all-current` is the release gate for
 > checked SP1 compressed/Groth16 proof freshness. This improves the cited public
 > Google 2026 resource lines numerically, but the proof boundary is not
@@ -1594,7 +1595,7 @@ resource model fixes the previous lookup/QROAM accounting failures. But the
 credible external claim is still narrower than the most excited internal
 phrasing:
 
-- strong: checked standard-QROM compiler-family boundary at `36,767,692 / 1,199`
+- strong: checked standard-QROM compiler-family boundary at `36,957,412 / 1,199`
 - not yet strong enough: Google-equivalent proof confidence
 - not yet strong enough: fully flattened primitive-gate Shor circuit
 - most urgent engineering gap: replace model consistency with one flat
@@ -1635,7 +1636,9 @@ Fixed after review:
   pseudo-Mersenne reduction stages for `p = 2^256 - 2^32 - 977`, including the
   first fold, second narrow fold, and two canonical subtract-p passes. This
   moved the checked headline from `32,879,331 / 1,044` to
-  `34,736,076 / 1,044` rather than leaving prime-field reduction implicit.
+  `34,736,076 / 1,044` rather than leaving prime-field reduction implicit; the
+  later canonical modular add/sub correction moved the checked three-slot
+  reference to `34,925,796 / 1,044`.
 - `RES-2`: `modular_arithmetic_certificate.json` now independently reconstructs
   the 256-bit `field_mul` reduction stage counts from
   `arithmetic_lowerings.json` and exhaustively executes reduced-width
@@ -1659,7 +1662,7 @@ Fixed after review:
   `counted_resource_ir`, a committed counted-resource representation containing
   the non-Clifford terms and liveness intervals used for the public
   reusable-chunk headline. Integrity checks, `verify_public_headline.py`, and the
-  SP1 guest recompute `36,767,692` non-Clifford operations and the `1,199`
+  SP1 guest recompute `36,957,412` non-Clifford operations and the `1,199`
   live-qubit peak from that IR; guest tests reject forged counted-resource
   terms. The new `resource_contract_engine` additionally proves that the counted
   resource IR uses exactly the same wire catalog and interval liveness rows as
@@ -1679,7 +1682,7 @@ Partially mitigated after review:
   `compiler_verification_project/artifacts/materialized_circuit_manifest.json`,
   a selected-family primitive operation-stream manifest whose stream digest
   `a96f690cd1f4f3888f51dad42b80dcdda840ccfccbb900ed34517d9916355208`
-  reconstructs `42,038,711` operations, `34,736,076` CCX, and `7,301,612`
+  reconstructs `42,417,128` operations, `34,925,796` CCX, and `7,491,332`
   measurements. The manifest now splits that stream into `43` deterministic
   million-operation-or-smaller digest segments with Merkle root
   `5ff61670bb4d1a394cb15b57b3c917687c092083654bb8738e47f2f0f1589188`.
@@ -1718,7 +1721,7 @@ Partially mitigated after review:
   than hiding it in discussion: reusable chunked coordinate targets. If a
   155-bit QROAM target chunk can be loaded once per `lookup_x`, `lookup_y`, and
   `lookup_x_plus_y` chunk and reused across the matching consumers inside a
-  four-slot tail, the stress model gives `36,767,692` non-Clifford operations
+  four-slot tail, the stress model gives `36,957,412` non-Clifford operations
   and `1,199` logical qubits. This is not a headline result until the chunked
   table-controlled multiplier lowering, executable four-slot contract,
   liveness, resource certificate, and ZKP binding are built.
@@ -1734,7 +1737,7 @@ Partially mitigated after review:
   records the candidate's generated lowering/resource contract. It derives the
   6 chunk streams per leaf from the executable leaf's three coordinate tables
   and two chunks, prices each stream with standard QROAMClean `K=1` (`65,536`
-  non-Clifford, `155` target qubits, zero junk), reconstructs `36,767,692`
+  non-Clifford, `155` target qubits, zero junk), reconstructs `36,957,412`
   non-Clifford operations and `1,199` logical qubits, assigns numeric capacity
   to every counted owner, and now carries an executable interval-liveness
   certificate. That certificate derives the peak from live wires, not a
@@ -1754,7 +1757,7 @@ Partially mitigated after review:
   binds and executes `complete_a0_reusable_chunk_tail`, commits
   `reusable_chunk_lowering.json`, recomputes the executable-liveness peak from
   the certificate's interval rows, rejects failing liveness checks, and returns
-  public values `36,767,692 / 1,199`. The candidate directory also contains
+  current input claim `36,957,412 / 1,199`. The candidate directory also contains
   checked core, compressed, and Groth16 fixtures, the compressed proof bundle,
   the Groth16 proof bundle, the wrap proof bundle, and the matching Groth16
   verifier key. After the modular-arithmetic certificate was bound into the
@@ -1765,7 +1768,7 @@ Partially mitigated after review:
   It records the checked proof files, verifier key, input/public-value hashes,
   strict `<40M / <1200` checks, exact comparison ratios against the public
   Google baseline, and a failing `pass` flag while checked proofs are stale
-  against the current resource digest. The old `34,736,076 / 1,044` three-slot
+  against the current resource digest. The old `34,925,796 / 1,044` three-slot
   family remains checked as a reference boundary, not the public headline.
 - `ZK-3`: proof binaries are now included in the curated proof manifest, but
   the checked JSON fixtures still intentionally keep the large binary proof

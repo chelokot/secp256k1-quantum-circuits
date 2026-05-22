@@ -4601,9 +4601,44 @@ fn validate_reusable_chunk_lowering(
         json_string_field(secp_parameters, "modulus_hex"),
         "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f"
     );
+    let opcode_certificate = json_object_field(modular_certificate, "opcode_count_certificate");
+    assert!(json_bool_field(opcode_certificate, "opcode_counts_match"));
+    let chain = json_array_field(opcode_certificate, "mul_const_21_addition_chain");
+    let expected_chain = [1_u64, 2, 4, 8, 16, 20, 21];
+    assert_eq!(chain.len(), expected_chain.len());
+    for (index, expected_value) in expected_chain.iter().enumerate() {
+        assert_eq!(chain[index].as_u64(), Some(*expected_value));
+    }
+    let expected_opcode_counts = json_object_field(opcode_certificate, "expected_non_clifford_per_opcode")
+        .as_object()
+        .expect("expected opcode counts must be an object");
+    let observed_opcode_counts = json_object_field(opcode_certificate, "observed_non_clifford_per_opcode")
+        .as_object()
+        .expect("observed opcode counts must be an object");
+    assert_eq!(expected_opcode_counts.len(), observed_opcode_counts.len());
     let field_mul_stage =
         json_object_field(modular_certificate, "field_mul_stage_count_certificate");
     assert!(json_bool_field(field_mul_stage, "stage_counts_match"));
+    let modular_add_cost = 2 * (claim.field_bits as u64 - 1);
+    let field_mul_cost = json_u64_field(field_mul_stage, "expected_total_ccx");
+    let expected_opcode_costs = BTreeMap::from([
+        ("field_add", modular_add_cost),
+        ("field_sub", modular_add_cost),
+        ("field_sub_sum", 2 * modular_add_cost),
+        ("field_triple", 2 * modular_add_cost),
+        ("mul_const", 6 * modular_add_cost),
+        ("field_mul", field_mul_cost),
+    ]);
+    for (opcode, expected_cost) in expected_opcode_costs {
+        assert_eq!(
+            expected_opcode_counts.get(opcode).and_then(Value::as_u64),
+            Some(expected_cost)
+        );
+        assert_eq!(
+            observed_opcode_counts.get(opcode).and_then(Value::as_u64),
+            Some(expected_cost)
+        );
+    }
     let expected_stage_ccx = json_object_field(field_mul_stage, "expected_stage_ccx")
         .as_object()
         .expect("expected_stage_ccx must be an object");
@@ -5551,8 +5586,14 @@ mod tests {
             public_values.selected_family_name,
             "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1"
         );
-        assert_eq!(public_values.expected_full_oracle_non_clifford, 36_767_692);
-        assert_eq!(public_values.expected_total_logical_qubits, 1_199);
+        assert_eq!(
+            public_values.expected_full_oracle_non_clifford,
+            input.claim_summary.expected_full_oracle_non_clifford
+        );
+        assert_eq!(
+            public_values.expected_total_logical_qubits,
+            input.claim_summary.expected_total_logical_qubits
+        );
         assert_eq!(public_values.case_count, 8);
         assert_eq!(public_values.passed_case_count, 8);
     }
@@ -5851,6 +5892,17 @@ mod tests {
         let mut input = checked_reusable_chunk_input();
         input.resource_certificate_document.payload.0["modular_arithmetic_certificate"]
             ["field_mul_stage_count_certificate"]["observed_total_ccx"] = serde_json::json!(71_491);
+        refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_reusable_chunk_modular_opcode_count_forgery() {
+        let mut input = checked_reusable_chunk_input();
+        input.resource_certificate_document.payload.0["modular_arithmetic_certificate"]
+            ["opcode_count_certificate"]["observed_non_clifford_per_opcode"]["field_add"] =
+            serde_json::json!(255);
         refresh_resource_certificate_digest(&mut input);
         run_prepared_attestation(&input);
     }

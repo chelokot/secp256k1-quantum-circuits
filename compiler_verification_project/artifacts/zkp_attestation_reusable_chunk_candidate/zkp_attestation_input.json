@@ -2,34 +2,34 @@
   "schema": "compiler-project-zkp-attestation-input-v5",
   "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
   "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
-  "claim_sha256": "2a098c6004436f393953eed4bcda8c000ad6c3bca81f1c91f2c7b57b3e0413e5",
+  "claim_sha256": "2d15b306743caa81cb25d00cee5971841168ceffd13dfc49ed5d940582f82ad1",
   "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
-  "family_sha256": "8b28e7f1c9badc9860bc81f25fe14deb51f71d69396879a092e06c5da8c9e84e",
+  "family_sha256": "d04c86b03248877ef7b62d3a1a6567dd823552d22f0b5b039e7109eb6315beaa",
   "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
-  "resource_certificate_sha256": "d4b45b0a91f55d7685b8b7c5a43d92b4c2331694046648a041fb9432209715fa",
-  "compiler_parameters_sha256": "c1f43457e8d62dec274835b8edb2c0fc169097adb1a152aa61d5ed529b35b64b",
+  "resource_certificate_sha256": "b68c350c7973fc3126a010a5f0b6ebda65e3c4a6ac86dde42a45fcb8a82876f0",
+  "compiler_parameters_sha256": "5d17d0fcc6fb8967cc5b02f916bd8c7da717c8b160486bc128bf3d81a7c8f517",
   "claim_document": {
     "document_type": "attestation_claim",
     "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_claim.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "2a098c6004436f393953eed4bcda8c000ad6c3bca81f1c91f2c7b57b3e0413e5",
+    "sha256": "2d15b306743caa81cb25d00cee5971841168ceffd13dfc49ed5d940582f82ad1",
     "payload": {
       "schema": "compiler-project-zkp-attestation-claim-v1",
       "selected_family_alias": "reusable-chunk",
       "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
       "field_bits": 256,
       "leaf_call_count_total": 31,
-      "expected_full_oracle_non_clifford": 36767692,
+      "expected_full_oracle_non_clifford": 36957412,
       "expected_total_logical_qubits": 1199,
       "expected_case_count": 8,
       "non_clifford_formula": {
-        "arithmetic_leaf_non_clifford": 792829,
+        "arithmetic_leaf_non_clifford": 798949,
         "per_leaf_lookup_non_clifford": 393216,
         "direct_seed_non_clifford": 297,
         "leaf_call_count_total": 31,
-        "arithmetic_component": 24577699,
+        "arithmetic_component": 24767419,
         "lookup_component": 12189696,
-        "reconstructed_total": 36767692
+        "reconstructed_total": 36957412
       },
       "logical_qubit_formula": {
         "field_bits": 256,
@@ -141,7 +141,7 @@
     "document_type": "compiler_family_summary",
     "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_family.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "8b28e7f1c9badc9860bc81f25fe14deb51f71d69396879a092e06c5da8c9e84e",
+    "sha256": "d04c86b03248877ef7b62d3a1a6567dd823552d22f0b5b039e7109eb6315beaa",
     "payload": {
       "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
       "summary": "Candidate reusable-chunk standard-QROAM family: four arithmetic slots, one reusable 155-bit QROAM chunk target, chunked table-controlled coordinate multipliers, and semiclassical QFT.",
@@ -150,10 +150,10 @@
       "slot_allocation_family": "reusable_chunk_tail_leaf_v1",
       "arithmetic_kernel_family": "litinski_addsub_schoolbook_reusable_chunk_bound_v1",
       "lookup_family": "folded_standard_qroam_reusable_chunked_coordinate_v1",
-      "arithmetic_leaf_non_clifford": 792829,
+      "arithmetic_leaf_non_clifford": 798949,
       "direct_seed_non_clifford": 297,
       "per_leaf_lookup_non_clifford": 393216,
-      "full_oracle_non_clifford": 36767692,
+      "full_oracle_non_clifford": 36957412,
       "arithmetic_slot_count": 4,
       "control_slot_count": 1,
       "borrowed_interface_qubits": 0,
@@ -315,7 +315,7 @@
     "document_type": "reusable_chunk_lowering",
     "artifact_path": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "d4b45b0a91f55d7685b8b7c5a43d92b4c2331694046648a041fb9432209715fa",
+    "sha256": "b68c350c7973fc3126a010a5f0b6ebda65e3c4a6ac86dde42a45fcb8a82876f0",
     "payload": {
       "schema": "compiler-project-reusable-chunk-lowering-v2",
       "status": "proven_public_headline",
@@ -2002,6 +2002,37 @@
           "low_term": 977,
           "canonical_subtract_passes": 2
         },
+        "opcode_count_certificate": {
+          "field_bits": 256,
+          "modular_add_correction_policy": "carry ladder plus conditional subtract-p correction",
+          "modular_sub_correction_policy": "borrow ladder plus conditional add-p correction",
+          "mul_const_21_addition_chain": [
+            1,
+            2,
+            4,
+            8,
+            16,
+            20,
+            21
+          ],
+          "expected_non_clifford_per_opcode": {
+            "field_add": 510,
+            "field_sub": 510,
+            "field_sub_sum": 1020,
+            "field_triple": 1020,
+            "mul_const": 3060,
+            "field_mul": 71492
+          },
+          "observed_non_clifford_per_opcode": {
+            "field_add": 510,
+            "field_sub": 510,
+            "field_sub_sum": 1020,
+            "field_triple": 1020,
+            "mul_const": 3060,
+            "field_mul": 71492
+          },
+          "opcode_counts_match": true
+        },
         "field_mul_stage_count_certificate": {
           "chain_steps_for_low_term": 14,
           "second_fold_width": 43,
@@ -2042,6 +2073,16 @@
               {
                 "left": 0,
                 "right": 0,
+                "add_trace": {
+                  "raw_sum": 0,
+                  "did_subtract_modulus": false,
+                  "canonical": 0
+                },
+                "sub_trace": {
+                  "raw_difference": 0,
+                  "did_add_modulus": false,
+                  "canonical": 0
+                },
                 "product_trace": {
                   "input": 0,
                   "modulus": 23,
@@ -2057,6 +2098,93 @@
                     {
                       "did_subtract": false,
                       "value_after_pass": 0
+                    }
+                  ],
+                  "canonical": 0
+                },
+                "mul_const_21_trace": {
+                  "constant": 21,
+                  "addition_chain": [
+                    1,
+                    2,
+                    4,
+                    8,
+                    16,
+                    20,
+                    21
+                  ],
+                  "steps": [
+                    {
+                      "from": 1,
+                      "to": 2,
+                      "delta": 1,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 2,
+                      "to": 4,
+                      "delta": 2,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 4,
+                      "to": 8,
+                      "delta": 4,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 8,
+                      "to": 16,
+                      "delta": 8,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 16,
+                      "to": 20,
+                      "delta": 4,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 20,
+                      "to": 21,
+                      "delta": 1,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
                     }
                   ],
                   "canonical": 0
@@ -2065,6 +2193,16 @@
               {
                 "left": 0,
                 "right": 2,
+                "add_trace": {
+                  "raw_sum": 2,
+                  "did_subtract_modulus": false,
+                  "canonical": 2
+                },
+                "sub_trace": {
+                  "raw_difference": -2,
+                  "did_add_modulus": true,
+                  "canonical": 21
+                },
                 "product_trace": {
                   "input": 0,
                   "modulus": 23,
@@ -2080,6 +2218,93 @@
                     {
                       "did_subtract": false,
                       "value_after_pass": 0
+                    }
+                  ],
+                  "canonical": 0
+                },
+                "mul_const_21_trace": {
+                  "constant": 21,
+                  "addition_chain": [
+                    1,
+                    2,
+                    4,
+                    8,
+                    16,
+                    20,
+                    21
+                  ],
+                  "steps": [
+                    {
+                      "from": 1,
+                      "to": 2,
+                      "delta": 1,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 2,
+                      "to": 4,
+                      "delta": 2,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 4,
+                      "to": 8,
+                      "delta": 4,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 8,
+                      "to": 16,
+                      "delta": 8,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 16,
+                      "to": 20,
+                      "delta": 4,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 20,
+                      "to": 21,
+                      "delta": 1,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
                     }
                   ],
                   "canonical": 0
@@ -2088,6 +2313,16 @@
               {
                 "left": 0,
                 "right": 22,
+                "add_trace": {
+                  "raw_sum": 22,
+                  "did_subtract_modulus": false,
+                  "canonical": 22
+                },
+                "sub_trace": {
+                  "raw_difference": -22,
+                  "did_add_modulus": true,
+                  "canonical": 1
+                },
                 "product_trace": {
                   "input": 0,
                   "modulus": 23,
@@ -2103,6 +2338,93 @@
                     {
                       "did_subtract": false,
                       "value_after_pass": 0
+                    }
+                  ],
+                  "canonical": 0
+                },
+                "mul_const_21_trace": {
+                  "constant": 21,
+                  "addition_chain": [
+                    1,
+                    2,
+                    4,
+                    8,
+                    16,
+                    20,
+                    21
+                  ],
+                  "steps": [
+                    {
+                      "from": 1,
+                      "to": 2,
+                      "delta": 1,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 2,
+                      "to": 4,
+                      "delta": 2,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 4,
+                      "to": 8,
+                      "delta": 4,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 8,
+                      "to": 16,
+                      "delta": 8,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 16,
+                      "to": 20,
+                      "delta": 4,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 20,
+                      "to": 21,
+                      "delta": 1,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
                     }
                   ],
                   "canonical": 0
@@ -2111,6 +2433,16 @@
               {
                 "left": 1,
                 "right": 0,
+                "add_trace": {
+                  "raw_sum": 1,
+                  "did_subtract_modulus": false,
+                  "canonical": 1
+                },
+                "sub_trace": {
+                  "raw_difference": 1,
+                  "did_add_modulus": false,
+                  "canonical": 1
+                },
                 "product_trace": {
                   "input": 0,
                   "modulus": 23,
@@ -2129,6 +2461,93 @@
                     }
                   ],
                   "canonical": 0
+                },
+                "mul_const_21_trace": {
+                  "constant": 21,
+                  "addition_chain": [
+                    1,
+                    2,
+                    4,
+                    8,
+                    16,
+                    20,
+                    21
+                  ],
+                  "steps": [
+                    {
+                      "from": 1,
+                      "to": 2,
+                      "delta": 1,
+                      "left": 1,
+                      "right": 1,
+                      "add_trace": {
+                        "raw_sum": 2,
+                        "did_subtract_modulus": false,
+                        "canonical": 2
+                      }
+                    },
+                    {
+                      "from": 2,
+                      "to": 4,
+                      "delta": 2,
+                      "left": 2,
+                      "right": 2,
+                      "add_trace": {
+                        "raw_sum": 4,
+                        "did_subtract_modulus": false,
+                        "canonical": 4
+                      }
+                    },
+                    {
+                      "from": 4,
+                      "to": 8,
+                      "delta": 4,
+                      "left": 4,
+                      "right": 4,
+                      "add_trace": {
+                        "raw_sum": 8,
+                        "did_subtract_modulus": false,
+                        "canonical": 8
+                      }
+                    },
+                    {
+                      "from": 8,
+                      "to": 16,
+                      "delta": 8,
+                      "left": 8,
+                      "right": 8,
+                      "add_trace": {
+                        "raw_sum": 16,
+                        "did_subtract_modulus": false,
+                        "canonical": 16
+                      }
+                    },
+                    {
+                      "from": 16,
+                      "to": 20,
+                      "delta": 4,
+                      "left": 16,
+                      "right": 4,
+                      "add_trace": {
+                        "raw_sum": 20,
+                        "did_subtract_modulus": false,
+                        "canonical": 20
+                      }
+                    },
+                    {
+                      "from": 20,
+                      "to": 21,
+                      "delta": 1,
+                      "left": 20,
+                      "right": 1,
+                      "add_trace": {
+                        "raw_sum": 21,
+                        "did_subtract_modulus": false,
+                        "canonical": 21
+                      }
+                    }
+                  ],
+                  "canonical": 21
                 }
               }
             ],
@@ -2151,6 +2570,16 @@
               {
                 "left": 0,
                 "right": 0,
+                "add_trace": {
+                  "raw_sum": 0,
+                  "did_subtract_modulus": false,
+                  "canonical": 0
+                },
+                "sub_trace": {
+                  "raw_difference": 0,
+                  "did_add_modulus": false,
+                  "canonical": 0
+                },
                 "product_trace": {
                   "input": 0,
                   "modulus": 53,
@@ -2166,6 +2595,93 @@
                     {
                       "did_subtract": false,
                       "value_after_pass": 0
+                    }
+                  ],
+                  "canonical": 0
+                },
+                "mul_const_21_trace": {
+                  "constant": 21,
+                  "addition_chain": [
+                    1,
+                    2,
+                    4,
+                    8,
+                    16,
+                    20,
+                    21
+                  ],
+                  "steps": [
+                    {
+                      "from": 1,
+                      "to": 2,
+                      "delta": 1,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 2,
+                      "to": 4,
+                      "delta": 2,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 4,
+                      "to": 8,
+                      "delta": 4,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 8,
+                      "to": 16,
+                      "delta": 8,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 16,
+                      "to": 20,
+                      "delta": 4,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 20,
+                      "to": 21,
+                      "delta": 1,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
                     }
                   ],
                   "canonical": 0
@@ -2174,6 +2690,16 @@
               {
                 "left": 0,
                 "right": 2,
+                "add_trace": {
+                  "raw_sum": 2,
+                  "did_subtract_modulus": false,
+                  "canonical": 2
+                },
+                "sub_trace": {
+                  "raw_difference": -2,
+                  "did_add_modulus": true,
+                  "canonical": 51
+                },
                 "product_trace": {
                   "input": 0,
                   "modulus": 53,
@@ -2189,6 +2715,93 @@
                     {
                       "did_subtract": false,
                       "value_after_pass": 0
+                    }
+                  ],
+                  "canonical": 0
+                },
+                "mul_const_21_trace": {
+                  "constant": 21,
+                  "addition_chain": [
+                    1,
+                    2,
+                    4,
+                    8,
+                    16,
+                    20,
+                    21
+                  ],
+                  "steps": [
+                    {
+                      "from": 1,
+                      "to": 2,
+                      "delta": 1,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 2,
+                      "to": 4,
+                      "delta": 2,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 4,
+                      "to": 8,
+                      "delta": 4,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 8,
+                      "to": 16,
+                      "delta": 8,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 16,
+                      "to": 20,
+                      "delta": 4,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 20,
+                      "to": 21,
+                      "delta": 1,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
                     }
                   ],
                   "canonical": 0
@@ -2197,6 +2810,16 @@
               {
                 "left": 0,
                 "right": 52,
+                "add_trace": {
+                  "raw_sum": 52,
+                  "did_subtract_modulus": false,
+                  "canonical": 52
+                },
+                "sub_trace": {
+                  "raw_difference": -52,
+                  "did_add_modulus": true,
+                  "canonical": 1
+                },
                 "product_trace": {
                   "input": 0,
                   "modulus": 53,
@@ -2212,6 +2835,93 @@
                     {
                       "did_subtract": false,
                       "value_after_pass": 0
+                    }
+                  ],
+                  "canonical": 0
+                },
+                "mul_const_21_trace": {
+                  "constant": 21,
+                  "addition_chain": [
+                    1,
+                    2,
+                    4,
+                    8,
+                    16,
+                    20,
+                    21
+                  ],
+                  "steps": [
+                    {
+                      "from": 1,
+                      "to": 2,
+                      "delta": 1,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 2,
+                      "to": 4,
+                      "delta": 2,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 4,
+                      "to": 8,
+                      "delta": 4,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 8,
+                      "to": 16,
+                      "delta": 8,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 16,
+                      "to": 20,
+                      "delta": 4,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
+                    },
+                    {
+                      "from": 20,
+                      "to": 21,
+                      "delta": 1,
+                      "left": 0,
+                      "right": 0,
+                      "add_trace": {
+                        "raw_sum": 0,
+                        "did_subtract_modulus": false,
+                        "canonical": 0
+                      }
                     }
                   ],
                   "canonical": 0
@@ -2220,6 +2930,16 @@
               {
                 "left": 1,
                 "right": 0,
+                "add_trace": {
+                  "raw_sum": 1,
+                  "did_subtract_modulus": false,
+                  "canonical": 1
+                },
+                "sub_trace": {
+                  "raw_difference": 1,
+                  "did_add_modulus": false,
+                  "canonical": 1
+                },
                 "product_trace": {
                   "input": 0,
                   "modulus": 53,
@@ -2238,6 +2958,93 @@
                     }
                   ],
                   "canonical": 0
+                },
+                "mul_const_21_trace": {
+                  "constant": 21,
+                  "addition_chain": [
+                    1,
+                    2,
+                    4,
+                    8,
+                    16,
+                    20,
+                    21
+                  ],
+                  "steps": [
+                    {
+                      "from": 1,
+                      "to": 2,
+                      "delta": 1,
+                      "left": 1,
+                      "right": 1,
+                      "add_trace": {
+                        "raw_sum": 2,
+                        "did_subtract_modulus": false,
+                        "canonical": 2
+                      }
+                    },
+                    {
+                      "from": 2,
+                      "to": 4,
+                      "delta": 2,
+                      "left": 2,
+                      "right": 2,
+                      "add_trace": {
+                        "raw_sum": 4,
+                        "did_subtract_modulus": false,
+                        "canonical": 4
+                      }
+                    },
+                    {
+                      "from": 4,
+                      "to": 8,
+                      "delta": 4,
+                      "left": 4,
+                      "right": 4,
+                      "add_trace": {
+                        "raw_sum": 8,
+                        "did_subtract_modulus": false,
+                        "canonical": 8
+                      }
+                    },
+                    {
+                      "from": 8,
+                      "to": 16,
+                      "delta": 8,
+                      "left": 8,
+                      "right": 8,
+                      "add_trace": {
+                        "raw_sum": 16,
+                        "did_subtract_modulus": false,
+                        "canonical": 16
+                      }
+                    },
+                    {
+                      "from": 16,
+                      "to": 20,
+                      "delta": 4,
+                      "left": 16,
+                      "right": 4,
+                      "add_trace": {
+                        "raw_sum": 20,
+                        "did_subtract_modulus": false,
+                        "canonical": 20
+                      }
+                    },
+                    {
+                      "from": 20,
+                      "to": 21,
+                      "delta": 1,
+                      "left": 20,
+                      "right": 1,
+                      "add_trace": {
+                        "raw_sum": 21,
+                        "did_subtract_modulus": false,
+                        "canonical": 21
+                      }
+                    }
+                  ],
+                  "canonical": 21
                 }
               }
             ],
@@ -2247,6 +3054,7 @@
         ],
         "checks": {
           "secp256k1_modulus_matches_common_constant": true,
+          "opcode_counts_match_modular_operation_contracts": true,
           "field_mul_stage_counts_match_arithmetic_lowering": true,
           "reduced_width_cases_exhaustive_pass": true
         },
@@ -2424,11 +3232,11 @@
         }
       },
       "non_clifford_derivation": {
-        "base_non_clifford_without_streamed_qroam": 24577996,
+        "base_non_clifford_without_streamed_qroam": 24767716,
         "qroam_chunk_streams": 186,
         "per_chunk_stream_non_clifford": 65536,
         "qroam_chunk_non_clifford": 12189696,
-        "candidate_total_non_clifford": 36767692
+        "candidate_total_non_clifford": 36957412
       },
       "qubit_derivation": {
         "field_bits": 256,
@@ -2450,8 +3258,8 @@
             "term_id": "base_without_streamed_qroam",
             "category": "arithmetic_control_and_phase_base",
             "instances": 1,
-            "per_instance_non_clifford": 24577996,
-            "total_non_clifford": 24577996,
+            "per_instance_non_clifford": 24767716,
+            "total_non_clifford": 24767716,
             "source": "logical_resource_ledger.qroam_clean_tradeoff_sweep.base_non_clifford_without_streamed_qroam"
           },
           {
@@ -2765,7 +3573,7 @@
             "total_live_qubits": 1199
           }
         ],
-        "recomputed_total_non_clifford": 36767692,
+        "recomputed_total_non_clifford": 36957412,
         "recomputed_peak_live_qubits": 1199,
         "peak_interval_id": "pc5_stream_00_lookup_x_chunk_0",
         "checks": {
@@ -2779,11 +3587,11 @@
       "counted_resource_engine": {
         "schema": "compiler-project-counted-resource-ir-engine-v1",
         "input_schema": "compiler-project-reusable-chunk-counted-resource-ir-v1",
-        "counted_resource_ir_sha256": "7f4a9715038dc7dd151648e1a4b6546332ba190c2adbb5a240a67b28bb7404cd",
+        "counted_resource_ir_sha256": "e814826e787174c05f62f34396fd02b1d77a8728f0c99051f74e1d60294d7188",
         "term_count": 7,
         "wire_count": 13,
         "interval_count": 9,
-        "non_clifford_total_from_terms": 36767692,
+        "non_clifford_total_from_terms": 36957412,
         "peak_live_qubits_from_intervals": 1199,
         "peak_interval_id_from_intervals": "pc5_stream_00_lookup_x_chunk_0",
         "owner_peak_live_qubits_from_intervals": {
@@ -3153,7 +3961,7 @@
       },
       "resource_contract_engine": {
         "schema": "compiler-project-resource-contract-engine-v1",
-        "counted_resource_ir_sha256": "7f4a9715038dc7dd151648e1a4b6546332ba190c2adbb5a240a67b28bb7404cd",
+        "counted_resource_ir_sha256": "e814826e787174c05f62f34396fd02b1d77a8728f0c99051f74e1d60294d7188",
         "executable_liveness_sha256": "06de12d5fb1752e76e1b1e291f9bcdab02befb1c93f2bfba7fdab5a3bdaef0c0",
         "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
         "wire_count": 13,
@@ -3229,7 +4037,7 @@
     "document_type": "compiler_parameters",
     "artifact_path": "compiler_verification_project/artifacts/compiler_parameters.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "c1f43457e8d62dec274835b8edb2c0fc169097adb1a152aa61d5ed529b35b64b",
+    "sha256": "5d17d0fcc6fb8967cc5b02f916bd8c7da717c8b160486bc128bf3d81a7c8f517",
     "payload": {
       "schema": "compiler-project-parameters-v1",
       "curve": {
@@ -3266,32 +4074,38 @@
         "chunk_count": 2,
         "scratch_slot": "qchunk"
       },
+      "public_headline_policy": {
+        "non_clifford_limit_exclusive": 40000000,
+        "logical_qubit_limit_exclusive": 1200,
+        "proof_freshness_required_for_public_pass": true
+      },
       "checks": {
         "field_modulus_has_declared_bit_width": true,
         "pseudo_mersenne_identity_matches_modulus": true,
         "folded_domain_matches_magnitude_bits": true,
         "raw_window_span_matches_scalar_width": true,
         "qroamclean_selected_block_size_is_k1": true,
-        "reusable_chunk_policy_covers_field_width": true
+        "reusable_chunk_policy_covers_field_width": true,
+        "public_headline_limits_are_strict": true
       },
       "pass": true,
-      "parameter_digest_sha256": "8ecc453477263f7afc5a8bdd7ae438515ff163bb2dab61501bc82a2ea78b1b99"
+      "parameter_digest_sha256": "ff6e9ffc4411af58791855dc281723b57e8f462ee40d91f82d3ebb4aa9dda520"
     }
   },
   "claim_summary": {
     "field_bits": 256,
     "leaf_call_count_total": 31,
-    "expected_full_oracle_non_clifford": 36767692,
+    "expected_full_oracle_non_clifford": 36957412,
     "expected_total_logical_qubits": 1199,
     "expected_case_count": 8,
     "non_clifford_formula": {
-      "arithmetic_leaf_non_clifford": 792829,
+      "arithmetic_leaf_non_clifford": 798949,
       "per_leaf_lookup_non_clifford": 393216,
       "direct_seed_non_clifford": 297,
       "leaf_call_count_total": 31,
-      "arithmetic_component": 24577699,
+      "arithmetic_component": 24767419,
       "lookup_component": 12189696,
-      "reconstructed_total": 36767692
+      "reconstructed_total": 36957412
     },
     "logical_qubit_formula": {
       "field_bits": 256,
@@ -3306,10 +4120,10 @@
   },
   "family_summary": {
     "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
-    "arithmetic_leaf_non_clifford": 792829,
+    "arithmetic_leaf_non_clifford": 798949,
     "direct_seed_non_clifford": 297,
     "per_leaf_lookup_non_clifford": 393216,
-    "full_oracle_non_clifford": 36767692,
+    "full_oracle_non_clifford": 36957412,
     "arithmetic_slot_count": 4,
     "control_slot_count": 1,
     "borrowed_interface_qubits": 0,

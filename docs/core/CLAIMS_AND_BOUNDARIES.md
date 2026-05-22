@@ -11,13 +11,14 @@ separate exact compiler-family oracle subproject that closes the
 classical-tail-elision gap for a fully quantum raw-32 schedule. It now also
 ships an SP1 attestation bundle for one selected standard-QROM family claim at
 that same boundary. The current public headline is the reusable-chunk
-standard-QROAM family at `36,767,692` non-Clifford operations and `1,199`
-logical qubits. The older `34,736,076 / 1,044` family remains checked as a
+standard-QROAM family at `36,957,412` non-Clifford operations and `1,199`
+logical qubits. The older `34,925,796 / 1,044` family remains checked as a
 reference boundary, but not as the promoted public claim. The generated
 QROAMClean tradeoff ledger still records the higher-space rows needed for the
 older `<24M` non-Clifford target; the repository headline is the single checked
 central family bound by the executable leaf, resource ledger, and ZKP public
-values.
+values after the final compressed/Groth16 proof rebuild. Until then the proof
+freshness tooling intentionally marks the checked proof layers stale.
 
 ## Exact layers
 
