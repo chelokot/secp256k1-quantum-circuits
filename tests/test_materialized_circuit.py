@@ -88,6 +88,7 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert manifest['pass'] is True
     assert manifest['public_totals']['non_clifford'] == reusable['non_clifford_derivation']['candidate_total_non_clifford']
     assert manifest['public_totals']['logical_qubits'] == reusable['qubit_derivation']['candidate_total_logical_qubits']
+    assert manifest['base_row_count'] == reusable['stream_plan']['leaf_call_count_total'] + 1
     assert manifest['qroam_expansion']['stream_instances'] == reusable['stream_plan']['whole_oracle_chunk_streams']
     assert manifest['qroam_expansion']['non_clifford'] == reusable['non_clifford_derivation']['qroam_chunk_non_clifford']
     assert manifest['qroam_segment_row_count'] == manifest['qroam_expansion']['stream_instances'] * manifest['qroam_expansion']['segments_per_stream']

@@ -448,6 +448,40 @@ def _qroam_run_length_rows(
     return rows
 
 
+def _public_base_run_length_rows(
+    *,
+    reusable_chunk_lowering: Mapping[str, Any],
+    zkp_attestation_input: Mapping[str, Any],
+) -> List[Dict[str, Any]]:
+    family_payload = zkp_attestation_input['family_document']['payload']
+    direct_seed_non_clifford = int(family_payload['direct_seed_non_clifford'])
+    arithmetic_leaf_non_clifford = int(family_payload['arithmetic_leaf_non_clifford'])
+    leaf_call_count = int(reusable_chunk_lowering['stream_plan']['leaf_call_count_total'])
+    rows = [
+        {
+            'row_index': 0,
+            'scope': 'direct_seed_base',
+            'source': 'zkp_family_document.direct_seed_non_clifford',
+            'gate': 'ccx',
+            'instance_count': direct_seed_non_clifford,
+            'total_count': direct_seed_non_clifford,
+            'non_clifford_count': direct_seed_non_clifford,
+        }
+    ]
+    for leaf_call_index in range(leaf_call_count):
+        rows.append({
+            'row_index': len(rows),
+            'scope': 'arithmetic_leaf_base',
+            'source': f"zkp_family_document.arithmetic_leaf_non_clifford:leaf_call_{leaf_call_index}",
+            'gate': 'ccx',
+            'instance_count': arithmetic_leaf_non_clifford,
+            'total_count': arithmetic_leaf_non_clifford,
+            'non_clifford_count': arithmetic_leaf_non_clifford,
+            'leaf_call_index': leaf_call_index,
+        })
+    return rows
+
+
 def build_public_candidate_materialized_circuit_manifest(
     *,
     reusable_chunk_lowering: Mapping[str, Any],
@@ -463,23 +497,17 @@ def build_public_candidate_materialized_circuit_manifest(
     selected_phase_shell_name = str(compiler_parameters['phase_shell']['selected_public_shell'])
     selected_phase_shell = _selected_phase_shell(phase_shell_lowerings, selected_phase_shell_name)
     base_non_clifford = int(reusable_chunk_lowering['non_clifford_derivation']['base_non_clifford_without_streamed_qroam'])
-    rows: List[Dict[str, Any]] = [
-        {
-            'row_index': 0,
-            'scope': 'non_qroam_public_base',
-            'source': 'reusable_chunk_lowering.non_clifford_derivation.base_non_clifford_without_streamed_qroam',
-            'gate': 'ccx',
-            'instance_count': base_non_clifford,
-            'total_count': base_non_clifford,
-            'non_clifford_count': base_non_clifford,
-        }
-    ]
+    rows = _public_base_run_length_rows(
+        reusable_chunk_lowering=reusable_chunk_lowering,
+        zkp_attestation_input=zkp_attestation_input,
+    )
     rows.extend(_qroam_run_length_rows(
         reusable_chunk_lowering=reusable_chunk_lowering,
         qroam_primitive_certificate=qroam_primitive_certificate,
         row_index=len(rows),
     ))
     rows.extend(_phase_run_length_rows(selected_phase_shell, len(rows)))
+    base_rows = [row for row in rows if row['scope'] in ('direct_seed_base', 'arithmetic_leaf_base')]
     qroam_rows = [row for row in rows if row['scope'] == 'qroam_chunk_stream']
     phase_rows = [row for row in rows if row['scope'] == 'phase_shell']
     non_clifford_total = sum(int(row['non_clifford_count']) for row in rows)
@@ -512,7 +540,7 @@ def build_public_candidate_materialized_circuit_manifest(
         'non_clifford_total_matches_public_candidate': non_clifford_total == int(public_totals['non_clifford']),
         'qroam_rows_expand_every_public_stream_segment': len(qroam_rows) == qroam_stream_term_instances * qroam_segment_count,
         'qroam_rows_sum_to_public_qroam_derivation': qroam_non_clifford_total == int(reusable_chunk_lowering['non_clifford_derivation']['qroam_chunk_non_clifford']),
-        'base_row_matches_public_non_qroam_derivation': int(rows[0]['non_clifford_count']) == int(public_totals['non_clifford']) - qroam_non_clifford_total,
+        'base_rows_match_public_non_qroam_derivation': sum(int(row['non_clifford_count']) for row in base_rows) == base_non_clifford == int(public_totals['non_clifford']) - qroam_non_clifford_total,
         'phase_rows_bind_selected_phase_shell': (
             selected_phase_shell['name'] == zkp_attestation_input['family_document']['payload']['phase_shell']
             and phase_total_hadamards == int(selected_phase_shell['hadamard_count'])
@@ -535,6 +563,7 @@ def build_public_candidate_materialized_circuit_manifest(
         },
         'operation_stream_sha256': _public_candidate_stream_hash(rows),
         'run_length_row_count': len(rows),
+        'base_row_count': len(base_rows),
         'qroam_segment_row_count': len(qroam_rows),
         'phase_row_count': len(phase_rows),
         'gate_totals': gate_totals,

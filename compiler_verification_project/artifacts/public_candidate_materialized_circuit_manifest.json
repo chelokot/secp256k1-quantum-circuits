@@ -19,8 +19,9 @@
     "phase_shell_lowerings_sha256": "4411ea5f699e5950a32783f2232796a63987efb5d939f98ac400f4f02ddd415b",
     "zkp_attestation_input_sha256": "9efa691c75eba975d9ae0034db20c59ced8ce1dcc01f314b486aea9f958abbc1"
   },
-  "operation_stream_sha256": "cea1d5ae4197708ab4c2ae7954e77d047a7c440e4461cc5de091c07d7b82399c",
-  "run_length_row_count": 2980,
+  "operation_stream_sha256": "79ba35018a46288bf3aacbb12c7e4328e1e3c970c43b596e39c01bbb9f5d086b",
+  "run_length_row_count": 3011,
+  "base_row_count": 32,
   "qroam_segment_row_count": 2976,
   "phase_row_count": 3,
   "gate_totals": {
@@ -58,122 +59,87 @@
   "preview_head": [
     {
       "row_index": 0,
-      "scope": "non_qroam_public_base",
-      "source": "reusable_chunk_lowering.non_clifford_derivation.base_non_clifford_without_streamed_qroam",
+      "scope": "direct_seed_base",
+      "source": "zkp_family_document.direct_seed_non_clifford",
       "gate": "ccx",
-      "instance_count": 24767716,
-      "total_count": 24767716,
-      "non_clifford_count": 24767716
+      "instance_count": 297,
+      "total_count": 297,
+      "non_clifford_count": 297
     },
     {
       "row_index": 1,
-      "scope": "qroam_chunk_stream",
-      "source": "qroam_stream__lookup_x__chunk_0:0:compute:0-4096",
+      "scope": "arithmetic_leaf_base",
+      "source": "zkp_family_document.arithmetic_leaf_non_clifford:leaf_call_0",
       "gate": "ccx",
-      "instance_count": 4096,
-      "total_count": 4096,
-      "non_clifford_count": 4096,
-      "term_id": "qroam_stream__lookup_x__chunk_0",
-      "term_instance_index": 0,
-      "table": "lookup_x",
-      "chunk_index": 0,
-      "qroam_phase": "compute",
-      "qroam_segment_sha256": "5a3205fe608b5f245e42f64f40e4414cdac537178b30602588232e2be016ad13"
+      "instance_count": 798949,
+      "total_count": 798949,
+      "non_clifford_count": 798949,
+      "leaf_call_index": 0
     },
     {
       "row_index": 2,
-      "scope": "qroam_chunk_stream",
-      "source": "qroam_stream__lookup_x__chunk_0:0:compute:4096-8192",
+      "scope": "arithmetic_leaf_base",
+      "source": "zkp_family_document.arithmetic_leaf_non_clifford:leaf_call_1",
       "gate": "ccx",
-      "instance_count": 4096,
-      "total_count": 4096,
-      "non_clifford_count": 4096,
-      "term_id": "qroam_stream__lookup_x__chunk_0",
-      "term_instance_index": 0,
-      "table": "lookup_x",
-      "chunk_index": 0,
-      "qroam_phase": "compute",
-      "qroam_segment_sha256": "a594f084c6f3cf3a603c4eab021a14ca4e229e24a7e33b98e320c5aea344419d"
+      "instance_count": 798949,
+      "total_count": 798949,
+      "non_clifford_count": 798949,
+      "leaf_call_index": 1
     },
     {
       "row_index": 3,
-      "scope": "qroam_chunk_stream",
-      "source": "qroam_stream__lookup_x__chunk_0:0:compute:8192-12288",
+      "scope": "arithmetic_leaf_base",
+      "source": "zkp_family_document.arithmetic_leaf_non_clifford:leaf_call_2",
       "gate": "ccx",
-      "instance_count": 4096,
-      "total_count": 4096,
-      "non_clifford_count": 4096,
-      "term_id": "qroam_stream__lookup_x__chunk_0",
-      "term_instance_index": 0,
-      "table": "lookup_x",
-      "chunk_index": 0,
-      "qroam_phase": "compute",
-      "qroam_segment_sha256": "aef30cf3b3b2f4a74b3b101694b8c95f5ee05905dc016db44817d91a43a841f9"
+      "instance_count": 798949,
+      "total_count": 798949,
+      "non_clifford_count": 798949,
+      "leaf_call_index": 2
     },
     {
       "row_index": 4,
-      "scope": "qroam_chunk_stream",
-      "source": "qroam_stream__lookup_x__chunk_0:0:compute:12288-16384",
+      "scope": "arithmetic_leaf_base",
+      "source": "zkp_family_document.arithmetic_leaf_non_clifford:leaf_call_3",
       "gate": "ccx",
-      "instance_count": 4096,
-      "total_count": 4096,
-      "non_clifford_count": 4096,
-      "term_id": "qroam_stream__lookup_x__chunk_0",
-      "term_instance_index": 0,
-      "table": "lookup_x",
-      "chunk_index": 0,
-      "qroam_phase": "compute",
-      "qroam_segment_sha256": "73d586c06888b85ea1960b6a0ff67aa3fc6e366149b1c967a98314c3d216390d"
+      "instance_count": 798949,
+      "total_count": 798949,
+      "non_clifford_count": 798949,
+      "leaf_call_index": 3
     },
     {
       "row_index": 5,
-      "scope": "qroam_chunk_stream",
-      "source": "qroam_stream__lookup_x__chunk_0:0:compute:16384-20480",
+      "scope": "arithmetic_leaf_base",
+      "source": "zkp_family_document.arithmetic_leaf_non_clifford:leaf_call_4",
       "gate": "ccx",
-      "instance_count": 4096,
-      "total_count": 4096,
-      "non_clifford_count": 4096,
-      "term_id": "qroam_stream__lookup_x__chunk_0",
-      "term_instance_index": 0,
-      "table": "lookup_x",
-      "chunk_index": 0,
-      "qroam_phase": "compute",
-      "qroam_segment_sha256": "c68fc829523acf80461b5d4d9626b8a9491b288ef04782cedd757f3a57070ed8"
+      "instance_count": 798949,
+      "total_count": 798949,
+      "non_clifford_count": 798949,
+      "leaf_call_index": 4
     },
     {
       "row_index": 6,
-      "scope": "qroam_chunk_stream",
-      "source": "qroam_stream__lookup_x__chunk_0:0:compute:20480-24576",
+      "scope": "arithmetic_leaf_base",
+      "source": "zkp_family_document.arithmetic_leaf_non_clifford:leaf_call_5",
       "gate": "ccx",
-      "instance_count": 4096,
-      "total_count": 4096,
-      "non_clifford_count": 4096,
-      "term_id": "qroam_stream__lookup_x__chunk_0",
-      "term_instance_index": 0,
-      "table": "lookup_x",
-      "chunk_index": 0,
-      "qroam_phase": "compute",
-      "qroam_segment_sha256": "17ac86ace23504f00f06c2f46eec29356973b86302add49fa441aea643fc0bfe"
+      "instance_count": 798949,
+      "total_count": 798949,
+      "non_clifford_count": 798949,
+      "leaf_call_index": 5
     },
     {
       "row_index": 7,
-      "scope": "qroam_chunk_stream",
-      "source": "qroam_stream__lookup_x__chunk_0:0:compute:24576-28672",
+      "scope": "arithmetic_leaf_base",
+      "source": "zkp_family_document.arithmetic_leaf_non_clifford:leaf_call_6",
       "gate": "ccx",
-      "instance_count": 4096,
-      "total_count": 4096,
-      "non_clifford_count": 4096,
-      "term_id": "qroam_stream__lookup_x__chunk_0",
-      "term_instance_index": 0,
-      "table": "lookup_x",
-      "chunk_index": 0,
-      "qroam_phase": "compute",
-      "qroam_segment_sha256": "00d1ff812cc5c664e5420e998be6d486310f172f78e520cec5421e8f0283e6cd"
+      "instance_count": 798949,
+      "total_count": 798949,
+      "non_clifford_count": 798949,
+      "leaf_call_index": 6
     }
   ],
   "preview_tail": [
     {
-      "row_index": 2972,
+      "row_index": 3003,
       "scope": "qroam_chunk_stream",
       "source": "qroam_stream__lookup_x_plus_y__chunk_1:30:measured_uncompute:12288-16384",
       "gate": "ccx",
@@ -188,7 +154,7 @@
       "qroam_segment_sha256": "d1d6aafdf22b7743fe5260cfe26828f10358be735b9bd90f785becccb5aed381"
     },
     {
-      "row_index": 2973,
+      "row_index": 3004,
       "scope": "qroam_chunk_stream",
       "source": "qroam_stream__lookup_x_plus_y__chunk_1:30:measured_uncompute:16384-20480",
       "gate": "ccx",
@@ -203,7 +169,7 @@
       "qroam_segment_sha256": "63ae4140a030cd2ef5cf28622482da0f8906ff9074dfab64a0c0c30b0455420b"
     },
     {
-      "row_index": 2974,
+      "row_index": 3005,
       "scope": "qroam_chunk_stream",
       "source": "qroam_stream__lookup_x_plus_y__chunk_1:30:measured_uncompute:20480-24576",
       "gate": "ccx",
@@ -218,7 +184,7 @@
       "qroam_segment_sha256": "6e892de8e10699eb5b98d9802370eadc0e2ad051a4722fb46100fc659568c72b"
     },
     {
-      "row_index": 2975,
+      "row_index": 3006,
       "scope": "qroam_chunk_stream",
       "source": "qroam_stream__lookup_x_plus_y__chunk_1:30:measured_uncompute:24576-28672",
       "gate": "ccx",
@@ -233,7 +199,7 @@
       "qroam_segment_sha256": "ef58ff7cdee2902843ea435dd13e768fcc9ce6270d63dae1a10ee80760a9c39e"
     },
     {
-      "row_index": 2976,
+      "row_index": 3007,
       "scope": "qroam_chunk_stream",
       "source": "qroam_stream__lookup_x_plus_y__chunk_1:30:measured_uncompute:28672-32768",
       "gate": "ccx",
@@ -248,7 +214,7 @@
       "qroam_segment_sha256": "a5be377d32d8cf09f694e21d435a0ef049c7d87dcba56ba62ea4d50e23da21ba"
     },
     {
-      "row_index": 2977,
+      "row_index": 3008,
       "scope": "phase_shell",
       "source": "semiclassical_qft_v1:adaptive_basis_updates:aggregated_classical_phase_updates",
       "gate": "single_qubit_rotation",
@@ -257,7 +223,7 @@
       "non_clifford_count": 0
     },
     {
-      "row_index": 2978,
+      "row_index": 3009,
       "scope": "phase_shell",
       "source": "semiclassical_qft_v1:basis_change_and_measurement:terminal_hadamards",
       "gate": "hadamard",
@@ -266,7 +232,7 @@
       "non_clifford_count": 0
     },
     {
-      "row_index": 2979,
+      "row_index": 3010,
       "scope": "phase_shell",
       "source": "semiclassical_qft_v1:basis_change_and_measurement:terminal_measurements",
       "gate": "measurement",
@@ -281,7 +247,7 @@
     "non_clifford_total_matches_public_candidate": true,
     "qroam_rows_expand_every_public_stream_segment": true,
     "qroam_rows_sum_to_public_qroam_derivation": true,
-    "base_row_matches_public_non_qroam_derivation": true,
+    "base_rows_match_public_non_qroam_derivation": true,
     "phase_rows_bind_selected_phase_shell": true
   },
   "pass": true,
