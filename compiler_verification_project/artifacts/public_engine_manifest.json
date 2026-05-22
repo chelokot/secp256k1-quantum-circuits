@@ -7,7 +7,7 @@
   "public_totals": {
     "non_clifford": 36957412,
     "logical_qubits": 1199,
-    "source": "public_candidate_materialized_circuit_manifest.flat_netlist + materialized_liveness"
+    "source": "public_candidate_materialized_circuit_manifest.materialized_flat_netlist"
   },
   "source_digests": {
     "compiler_parameters_sha256": "f25239aab49a172397565757d9495c47ea7e88959451bc291d06f0ba37bbb374",
@@ -16,7 +16,7 @@
     "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
     "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
     "resource_contract_engine_sha256": "6ec61b5379cd1eb36a568423ffa43a79015c7f3c5dea53ec65cf1f80346b3d6f",
-    "public_candidate_materialized_circuit_manifest_sha256": "979d7df40fd2bdc2175ecc5bdacb6cc23b08dde736ed1c45eae2834ad41179f6"
+    "public_candidate_materialized_circuit_manifest_sha256": "9cc758924549a478da439d28e7f0dc4b910bd79b532c3f509c9893459e6eb405"
   },
   "instruction_stream": {
     "encoding": [
@@ -610,7 +610,7 @@
   "primitive_operation_evidence": {
     "public_candidate_materialized_circuit_manifest": {
       "schema": "compiler-project-public-candidate-materialized-circuit-manifest-v1",
-      "sha256": "979d7df40fd2bdc2175ecc5bdacb6cc23b08dde736ed1c45eae2834ad41179f6",
+      "sha256": "9cc758924549a478da439d28e7f0dc4b910bd79b532c3f509c9893459e6eb405",
       "pass": true,
       "operation_stream_sha256": "ac3036c4737ea0dac6859487744bea40a3f350a1cedaf121b81b090a04d542da",
       "liveness_binding_stream_sha256": "c328629396d401bba71a1245504aed03017cb77f16b47c2e323ed3e3ea9c918f",
@@ -620,6 +620,16 @@
       "flat_operation_count": 39370727,
       "flat_segment_count": 40,
       "flat_segment_merkle_root_sha256": "542751c08c59f6d66e4930c1ad55dbcc5e09ebf00d05e683d6b00a9f0951caf6",
+      "materialized_flat_netlist": {
+        "schema": "compiler-project-public-candidate-materialized-flat-netlist-v1",
+        "exact_operation_stream_materialized": true,
+        "operation_count": 39370727,
+        "operation_stream_sha256": "fbba92ee2367ed55dbe5e3e96caf562c84b96957d41acd59a97296482d9ba371",
+        "segment_count": 40,
+        "segment_merkle_root_sha256": "6b17645014fc265ec65750237f203179c47d401e41821454c1836dc0c4582f4f",
+        "non_clifford_count": 36957412,
+        "peak_live_qubits": 1199
+      },
       "flat_execution_probe": {
         "schema": "compiler-project-flat-netlist-execution-probe-v1",
         "probe_count": 18,

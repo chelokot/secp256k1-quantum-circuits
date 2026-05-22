@@ -2124,14 +2124,15 @@ def build_public_engine_manifest_checks(artifacts: Mapping[str, Any]) -> Dict[st
         _check('public_engine_manifest_binds_selected_family', manifest['selected_family_name'] == selected_family_name, selected_family_name, manifest['selected_family_name']),
         _check(
             'public_engine_manifest_derives_public_totals_from_materialized_flat_engine',
-            manifest['public_totals']['source'] == 'public_candidate_materialized_circuit_manifest.flat_netlist + materialized_liveness'
-            and manifest['public_totals']['non_clifford'] == artifacts['public_candidate_materialized_circuit_manifest']['flat_netlist']['non_clifford_count']
-            and manifest['public_totals']['logical_qubits'] == artifacts['public_candidate_materialized_circuit_manifest']['materialized_liveness']['peak_live_qubits']
+            manifest['public_totals']['source'] == 'public_candidate_materialized_circuit_manifest.materialized_flat_netlist'
+            and manifest['public_totals']['non_clifford'] == artifacts['public_candidate_materialized_circuit_manifest']['materialized_flat_netlist']['non_clifford_count']
+            and manifest['public_totals']['logical_qubits'] == artifacts['public_candidate_materialized_circuit_manifest']['materialized_flat_netlist']['peak_live_qubits']
+            and artifacts['public_candidate_materialized_circuit_manifest']['materialized_flat_netlist']['exact_operation_stream_materialized'] is True
             and manifest['checks']['public_totals_match_executable_resource_engine_snapshot'] is True,
             {
-                'source': 'public_candidate_materialized_circuit_manifest.flat_netlist + materialized_liveness',
-                'non_clifford': artifacts['public_candidate_materialized_circuit_manifest']['flat_netlist']['non_clifford_count'],
-                'logical_qubits': artifacts['public_candidate_materialized_circuit_manifest']['materialized_liveness']['peak_live_qubits'],
+                'source': 'public_candidate_materialized_circuit_manifest.materialized_flat_netlist',
+                'non_clifford': artifacts['public_candidate_materialized_circuit_manifest']['materialized_flat_netlist']['non_clifford_count'],
+                'logical_qubits': artifacts['public_candidate_materialized_circuit_manifest']['materialized_flat_netlist']['peak_live_qubits'],
             },
             manifest['public_totals'],
         ),

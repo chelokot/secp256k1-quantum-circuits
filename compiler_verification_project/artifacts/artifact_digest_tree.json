@@ -4,7 +4,7 @@
   "size_threshold_bytes": 1048576,
   "chunk_size_bytes": 1048576,
   "file_count": 11,
-  "repository_digest_sha256": "b213b5567cdc83c1a5b7b7f2be241ef534ea9d8bf33b1952475ccce9bfdf5154",
+  "repository_digest_sha256": "899cbe0a9c10ec3b0d3e959690582f585529cc379221315a18d6263e075672ef",
   "files": [
     {
       "path": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
@@ -222,11 +222,11 @@
     },
     {
       "path": "compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json",
-      "bytes": 29560836,
-      "sha256": "a7a3a93977f651ffc11d480d8875961a229d0b977f25c98799b5b224f87868c4",
+      "bytes": 29592961,
+      "sha256": "f4c3d3b7581397bc29c12a81c1beb2edccc6e3629f093f5c46c3c7ef214fee74",
       "chunk_size_bytes": 1048576,
       "chunk_count": 29,
-      "chunk_merkle_root_sha256": "a47420e9f47202be0432acef30342a836f94276ace2714bb5dd7973bd05b5bf8",
+      "chunk_merkle_root_sha256": "bf188d974d819b5105bd535fc85a0739f9c49594edebca487f078d98afe7973e",
       "chunks": [
         {
           "index": 0,
@@ -334,73 +334,73 @@
           "index": 17,
           "offset": 17825792,
           "bytes": 1048576,
-          "sha256": "ebb063fffceaa1fb3307bdbe20e7c9cbabe5d41fff1e0c3472ccd4ed84930ba7"
+          "sha256": "eb2c586a45649564a96f9351cdeb47de0150e3593ae0312128d1ac56ab0b5bd2"
         },
         {
           "index": 18,
           "offset": 18874368,
           "bytes": 1048576,
-          "sha256": "15814f19be71fb46c451c4b06203aa1054d18740255bb4a9a5d3ff1c620f0601"
+          "sha256": "d0996d17510ec17f1484b37040fe7030e873dc855ac40b85959267eb9cf449a4"
         },
         {
           "index": 19,
           "offset": 19922944,
           "bytes": 1048576,
-          "sha256": "c480ad68d7e8276d7d32a20f4a739fd57f4ba3b0c3cc470831f890b236b1c7c3"
+          "sha256": "6001ede59eb16191e34326a812ceb9c8780900f2b5f5c581f357d3b26ecfa3cf"
         },
         {
           "index": 20,
           "offset": 20971520,
           "bytes": 1048576,
-          "sha256": "394ce8e6227d11a0dc02bd3ee6d56e55a0b1327a33cb2e5fd6c348479f4f8fdf"
+          "sha256": "bb6fe1ab741041267119ad27e6bfe754860f53c0e81732425f48e3dea59d19f7"
         },
         {
           "index": 21,
           "offset": 22020096,
           "bytes": 1048576,
-          "sha256": "f3c65e1729df1875ecc6105794402c5215c49b564ab76d8cd0a5285d5f81c3f0"
+          "sha256": "1e841a352aa79265f27df8bf9c200cd2da0cba19f74edb550e0721b542ed3709"
         },
         {
           "index": 22,
           "offset": 23068672,
           "bytes": 1048576,
-          "sha256": "434b31b87b53475b464624a4eb52f9f553f6c4f66d443369b159a6449d967f96"
+          "sha256": "80159fb08d75b321f46e45f7b24a39994419e4a86d9afcd126d6a84d5531a708"
         },
         {
           "index": 23,
           "offset": 24117248,
           "bytes": 1048576,
-          "sha256": "f9698c131d7f0bfbb993e8eeb89cccc7d5ae593736d8454cf9a0e253ad82cc0b"
+          "sha256": "7621573924014bf805e42e3eaae9433bbba221cc5983f3d8110ec535a4ecec70"
         },
         {
           "index": 24,
           "offset": 25165824,
           "bytes": 1048576,
-          "sha256": "fc79a2e1a95a5fb260a04c13be638988a9e1db126435b3e98ddb6e0d57c08b3c"
+          "sha256": "0c638756e074774cc1ab9809a8c72582afc8be7a52dd794aa9ffb0a9ff36728a"
         },
         {
           "index": 25,
           "offset": 26214400,
           "bytes": 1048576,
-          "sha256": "0feb6db1289fa6e62f17bae72e6114dd356f49b37e767e2fa0fb182fe47187b8"
+          "sha256": "afd44582c108e5bd5ff4c6d779ed8298cb914a73cf32ec3305a03659fdf2b59c"
         },
         {
           "index": 26,
           "offset": 27262976,
           "bytes": 1048576,
-          "sha256": "a1ce4d0fbffe005c86c03a48614bfecbc83ed23686f23eec5f7a70d3d44892fb"
+          "sha256": "2c272dbe6e7ce64db465debc87c8bf580457327d8c87d7cc15343ac9af398498"
         },
         {
           "index": 27,
           "offset": 28311552,
           "bytes": 1048576,
-          "sha256": "8aea1a3ebdb570ff985ce9e95ceb132abe6ac6ac0433480eb35699c06a7b217a"
+          "sha256": "b48c02911e52f65ac76c3949fddd07a80a9a6c07b1aee516c0a04232b998ff8a"
         },
         {
           "index": 28,
           "offset": 29360128,
-          "bytes": 200708,
-          "sha256": "123070af1a4b4b404c7e9b8c0c2b7498a64cda18aaf5d199e37bc895cd5c124c"
+          "bytes": 232833,
+          "sha256": "2b742354353192d729637d5406e7477d1702b5da824eef22d62b63ceb442ec76"
         }
       ]
     },

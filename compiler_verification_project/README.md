@@ -66,8 +66,8 @@ What it does ship is:
 - `qroam_reference_crosscheck.json` — independent QROAMClean gate/workspace reference calculation plus reduced-domain table-select semantics; it separately checks the actual 155-bit reusable chunk stream and the full-field 256-bit ledger sweep before binding into the reusable-chunk resource document
 - `release_corpus_preflight.json` — fast 9024-case semantic preflight over the Google-comparable release target corpus, with forced edge-category counts and a rolling case-stream digest; this is release-size semantic evidence, not a ZKP proof
 - `resource_liveness_certificate.json` — ZKP-bound liveness certificate deriving owner-capacity requirements from executable leaf liveness, QROAMClean workspace, and phase-shell lowering artifacts
-- `public_candidate_materialized_circuit_manifest.json` — no-ZKP public-candidate run-length primitive stream manifest binding the reusable-chunk headline to deterministic base, QROAM-segment, phase-shell rows, expandable flat-netlist operation indices, liveness/owner bindings, and executable flat-operation probes
-- `public_engine_manifest.json` — no-ZKP public engine manifest deriving public totals from the public-candidate flat netlist plus materialized liveness peak, then binding executable instruction/wire/schedule/owner/resource-term streams, the flat execution probe, compiler parameters, semantic-boundary evidence, and primitive-operation evidence from arithmetic operation IR, QROAM primitive certificate, and phase-shell lowering; this artifact no longer consumes the ZKP input
+- `public_candidate_materialized_circuit_manifest.json` — no-ZKP public-candidate primitive-stream manifest binding the reusable-chunk headline to deterministic base, QROAM-segment, phase-shell rows, concrete operand wires, liveness/owner bindings, and a full materialized flat-netlist digest derived by scanning every emitted primitive operation
+- `public_engine_manifest.json` — no-ZKP public engine manifest deriving public totals from the public-candidate `materialized_flat_netlist`, then binding executable instruction/wire/schedule/owner/resource-term streams, the flat execution probe, compiler parameters, semantic-boundary evidence, and primitive-operation evidence from arithmetic operation IR, QROAM primitive certificate, and phase-shell lowering; this artifact no longer consumes the ZKP input
 - `artifact_digest_tree.json` — chunked SHA-256/Merkle manifest for tracked large artifacts, generated from the checked tree so reviewers can verify large JSON/CSV/proof blobs by chunks rather than by one opaque file hash
 - `proof_environment_contract.json` — checked proof-environment contract binding required tools, no-prover edit-loop gates, publication freshness gates, direct compressed/Groth16 verifier commands, public-headline artifact digests, and curated proof-manifest records
 - `proof_publication_status.json` — checked publication-readiness artifact derived from the shared proof-status engine; it keeps `publication_ready` separate from resource-contract `pass`, records stale systems/blockers, and binds the public headline, proof manifest, and proof-environment contract
@@ -132,9 +132,10 @@ stream manifest. It expands the reusable-chunk counted-resource IR into term
 rows and liveness rows, reconstructs `36,957,412 / 1,199`, and prevents the
 older three-slot `materialized_circuit_manifest.json` from being mistaken for
 the promoted result. `public_candidate_materialized_circuit_manifest.json`
-adds the current public candidate's own run-length primitive stream boundary:
-one non-QROAM base run, all expanded QROAM segment runs, and the selected
-phase-shell rows. `constant_provenance.json` separately binds the release
+adds the current public candidate's own primitive-stream boundary: one
+non-QROAM base run, all expanded QROAM segment runs, the selected phase-shell
+rows, and a materialized flat stream whose public totals are computed from the
+emitted primitive operations rather than from side formulas. `constant_provenance.json` separately binds the release
 critical phase-shell counts, headline totals, and publication limits from their
 source artifacts into the ZKP candidate input and public headline document, and
 fails if those ZKP-family resource fields become integer literals again.
@@ -321,9 +322,9 @@ QROAM primitive, and independent QROAM reference certificates, so changing any
 of them invalidates the proof input until the proof layers are rebuilt.
 For the no-prover engine loop, `public_engine_manifest.json` is the tighter
 artifact: `fast_engine_verify.py` regenerates it, checks the public-candidate
-materialized stream and semantic evidence, and rejects arithmetic-operation,
-QROAM-cost/workspace, or phase-shell drift before compressed or Groth16 proof
-work is relevant.
+materialized flat stream and semantic evidence, and rejects
+arithmetic-operation, QROAM-cost/workspace, or phase-shell drift before
+compressed or Groth16 proof work is relevant.
 Proof fixtures are also expected to bind the exact prepared input by
 `input_path`, `input_sha256`, and `input_size_bytes`; `proof_status.py` treats
 fixtures that explicitly declare no input metadata, or that omit those fields,

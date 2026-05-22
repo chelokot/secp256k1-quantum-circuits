@@ -115,7 +115,7 @@ def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None
     assert public_engine_document['document_type'] == 'public_engine_manifest'
     assert public_engine_manifest['pass'] is True
     assert public_engine_manifest['selected_family_name'] == payload['selected_family_name']
-    assert public_engine_manifest['public_totals']['source'] == 'public_candidate_materialized_circuit_manifest.flat_netlist + materialized_liveness'
+    assert public_engine_manifest['public_totals']['source'] == 'public_candidate_materialized_circuit_manifest.materialized_flat_netlist'
     assert claim['resource_engine_summary']['source'] == 'public_engine_manifest.public_totals'
     assert claim['resource_engine_summary']['source_document_type'] == 'public_engine_manifest'
     assert claim['resource_engine_summary']['source_sha256'] == payload['public_engine_manifest_sha256']

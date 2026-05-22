@@ -78,7 +78,7 @@ resource semantics and macro boundaries.
 | ZK-2 | P0 | ZKP executes high-level field/macro semantics, not primitive QROAM/arithmetic lowerings | The proof checks point-add behavior for prepared cases, but not that the resource-counted primitive circuit implements that behavior | Feed the same resource IR into the guest or prove a separate lowering certificate |
 | RES-1 | P0 partially mitigated | The public reusable-chunk leaf now traces the counted `qchunk` scratch lane, but still hides deeper field-arithmetic temporaries behind macro boundaries | The `1,199` qubit result no longer has a free/named-only `qchunk` owner, but it still depends on the compact modular-arithmetic and tail-macro contracts rather than a single Clifford-complete flat schedule | Flatten the reusable tail and modular arithmetic into scheduled IR and derive peak from that IR |
 | RES-2 | P0 partially mitigated | Modular field arithmetic costs are now digest-bound operation streams, but still not a generated modular circuit | Rust semantics applies `% p`; arithmetic lowering counts abstract add/sub/mul kernels whose modular-reduction completeness must still be trusted below the compact operation IR | Generate modular add/sub/mul circuits including reduction and count them |
-| RES-3 | P0 partially mitigated | The public reusable-chunk resource ledger now has a guest-checked contract engine over counted IR, executable liveness, and owner capacity, but still lacks a Clifford-complete flat netlist | It now catches counted/executable liveness drift and owner-capacity underprovisioning, but the deepest macro/arithmetic temporaries are still below a model boundary | Keep moving toward one flat liveness engine over QROAM target/junk, macro scratch, phase/control wires, and generated modular arithmetic netlists |
+| RES-3 | P0 materially improved; still below physical-layout FT schedule | The public reusable-chunk resource ledger now has a guest-checked contract engine and a materialized flat primitive stream over counted IR, executable liveness, owner capacity, QROAM target/chunk wires, arithmetic rows, lookup rows, and phase rows | It now catches counted/executable liveness drift, owner-capacity underprovisioning, and missing full-stream materialization, but the deepest arithmetic macro semantics are still certified by generated IR/certificates rather than a routed physical FT schedule | Keep reducing the remaining macro boundary by lowering modular arithmetic certificates into the same flat primitive stream |
 | ZK-3 | P1 remediated for out-of-line proof binding | Checked compressed fixture JSON keeps `proof: null` while binary proof is separate | Large compressed proof bytes remain out-of-line, but fixtures now bind proof/verifier-key path, size, digest, and curated proof-manifest records | Keep `proof_status.py` manifest cross-checks and fixture metadata tests in the release gate |
 | GOV-1 | P1 partially mitigated | Release-critical constants now have compiler-parameter and constant-provenance artifacts, but older support layers still contain some historical wording and derived summaries | The selected headline/ZKP path has drift checks, but a single flat circuit engine would still be stronger than cross-artifact provenance | Keep importing versioned parameter/provenance artifacts and remove remaining repeated constants opportunistically |
 
@@ -1578,12 +1578,13 @@ Current remediation:
   stream costs, and phase-shell count drift without invoking SP1.
 - `compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json`
   now gives the promoted reusable-chunk candidate its own deterministic
-  run-length primitive stream boundary and a canonical flat operation-index
-  netlist commitment. It reconstructs `36,957,412 / 1,199`, stores all
-  `5,461` run-length rows and matching liveness/owner rows, expands all `186`
-  public QROAM streams through the generated QROAM segment certificate, and
-  commits to `39,370,727` primitive operations over `40` deterministic
-  flat-index segments. `public_engine_manifest.json` binds the flat segment
+  run-length primitive stream boundary plus a materialized flat primitive
+  stream with concrete operand wires and row liveness. It reconstructs
+  `36,957,412 / 1,199`, stores all `5,461` run-length rows and matching
+  liveness/owner rows, expands all `186` public QROAM streams through the
+  generated QROAM segment certificate, and derives totals by scanning
+  `39,370,727` primitive operations over deterministic full-stream segments.
+  `public_engine_manifest.json` binds the materialized flat-stream digest and
   Merkle root and `public_headline_result.json` now takes headline totals from
   the engine/materialized outputs while treating formula rows as consistency
   snapshots. This removes the previous situation where the only materialized

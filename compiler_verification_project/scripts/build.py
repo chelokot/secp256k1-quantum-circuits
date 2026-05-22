@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -62,6 +63,14 @@ BUILD_TARGETS = (
     'zkp-and-public',
     'resource-zkp-and-public',
 )
+
+
+def _canonical_json(payload: object) -> str:
+    return json.dumps(payload, sort_keys=True, separators=(',', ':'), ensure_ascii=True)
+
+
+def _sha256_payload(payload: object) -> str:
+    return hashlib.sha256(_canonical_json(payload).encode('ascii')).hexdigest()
 
 
 def build_candidate_zkp() -> None:
@@ -259,14 +268,40 @@ def build_materialized_circuit_manifest_artifact() -> None:
 def build_public_candidate_materialized_circuit_manifest_artifact() -> None:
     artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
     compiler_parameters = load_json(artifact_dir / 'compiler_parameters.json')
+    reusable_chunk_lowering = load_json(artifact_dir / 'reusable_chunk_lowering.json')
+    arithmetic_operation_ir = load_json(artifact_dir / 'arithmetic_operation_ir.json')
+    lookup_lowerings = load_json(artifact_dir / 'lookup_lowerings.json')
+    qroam_primitive_certificate = load_json(artifact_dir / 'qroam_primitive_certificate.json')
+    phase_shell_lowerings = load_json(artifact_dir / 'phase_shell_lowerings.json')
+    source_digests = {
+        'reusable_chunk_lowering_sha256': _sha256_payload(reusable_chunk_lowering),
+        'counted_resource_ir_sha256': reusable_chunk_lowering['executable_resource_engine']['counted_resource_ir_sha256'],
+        'arithmetic_operation_ir_sha256': _sha256_payload(arithmetic_operation_ir),
+        'lookup_lowerings_sha256': _sha256_payload(lookup_lowerings),
+        'qroam_primitive_certificate_sha256': _sha256_payload(qroam_primitive_certificate),
+        'phase_shell_lowerings_sha256': _sha256_payload(phase_shell_lowerings),
+        'compiler_parameters_sha256': _sha256_payload(compiler_parameters),
+    }
+    existing_path = artifact_dir / 'public_candidate_materialized_circuit_manifest.json'
+    materialized_flat_netlist_override = None
+    if existing_path.exists():
+        existing = load_json(existing_path)
+        existing_flat = existing.get('materialized_flat_netlist')
+        if (
+            existing.get('source_digests') == source_digests
+            and isinstance(existing_flat, dict)
+            and existing_flat.get('exact_operation_stream_materialized') is True
+        ):
+            materialized_flat_netlist_override = existing_flat
     payload = build_public_candidate_materialized_circuit_manifest(
-        reusable_chunk_lowering=load_json(artifact_dir / 'reusable_chunk_lowering.json'),
-        arithmetic_operation_ir=load_json(artifact_dir / 'arithmetic_operation_ir.json'),
-        lookup_lowerings=load_json(artifact_dir / 'lookup_lowerings.json'),
-        qroam_primitive_certificate=load_json(artifact_dir / 'qroam_primitive_certificate.json'),
-        phase_shell_lowerings=load_json(artifact_dir / 'phase_shell_lowerings.json'),
+        reusable_chunk_lowering=reusable_chunk_lowering,
+        arithmetic_operation_ir=arithmetic_operation_ir,
+        lookup_lowerings=lookup_lowerings,
+        qroam_primitive_certificate=qroam_primitive_certificate,
+        phase_shell_lowerings=phase_shell_lowerings,
         compiler_parameters=compiler_parameters,
         selected_family_name=compiler_parameters['public_headline_policy']['selected_public_family_name'],
+        materialized_flat_netlist_override=materialized_flat_netlist_override,
     )
     dump_json(artifact_dir / 'public_candidate_materialized_circuit_manifest.json', payload)
 

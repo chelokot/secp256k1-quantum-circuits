@@ -129,33 +129,33 @@ stale until rebuilt against the current resource digest.
 The compiler artifacts also include `public_candidate_materialized_circuit_manifest.json`
 and `public_engine_manifest.json`, a no-ZKP engine gate for the current public
 candidate. The public-candidate materialized manifest expands the reusable
-claim into deterministic run-length primitive rows and a canonical flat
-operation-index netlist commitment. The current checked flat-index stream covers
-`39,370,727` primitive operations over `40` deterministic segments; each segment
-binds the contributing run-length rows, operation-index ranges, liveness rows,
-derived owner-qubit sums, all 186 QROAM streams over the generated QROAMClean
-segment certificate, arithmetic-operation IR rows, lookup-base rows, and the
-selected phase-shell rows. The same manifest executes representative operation
-indices through the expandable flat-netlist API, checking concrete operand
-wires, segment/liveness bindings, QROAM target-domain widths, and the reduced
-schoolbook Cartesian operand grid. It also carries a strict primitive-completeness
-report: every run-length primitive row now has the gate-arity operand domains
-needed for the flat iterator to emit one concrete operand reference per gate
-input, including QROAM `ccx` rows and arithmetic `ccx` rows. The companion
-operand-parent binding report proves those operands point back to counted live
-parent wires such as `qx`, `qy`, `qz`, `qchunk`, folded lookup workspace, the
-active QROAM chunk target, and the semiclassical phase bit, with parent bit
-indices inside the parent wire capacities. The public engine manifest then binds that
-flat stream, executable instruction rows, wires, schedule events, owner-capacity
-rows, resource terms, semantic-boundary evidence, arithmetic operation IR, the
-generated QROAMClean `K = 1` primitive certificate, and the selected
-semiclassical phase shell into the same public claim layer. Its public totals
-are derived from the flat netlist non-Clifford count and materialized liveness
-peak; the older reusable-resource totals are retained as cross-check snapshots,
-not as the authoritative source. The materialized flat engine and public engine
-are now built from compiler/resource artifacts rather than from the ZKP input,
-so the proof input can be treated as a downstream publication wrapper instead
-of an upstream resource source.
+claim into deterministic run-length primitive rows and then scans the full
+materialized primitive stream: every emitted operation has concrete operand
+wires, parent-wire bindings, liveness interval, and owner-qubit total. The
+checked stream covers `39,370,727` primitive operations over deterministic
+segments and carries a full-stream SHA-256 plus segment Merkle root. Segment
+and preview rows bind the contributing run-length rows, operation-index ranges,
+liveness rows, derived owner-qubit sums, all 186 QROAM streams over the
+generated QROAMClean segment certificate, arithmetic-operation IR rows,
+lookup-base rows, and the selected phase-shell rows. The same manifest executes
+representative operation indices through the flat-netlist API, checking
+concrete operand wires, segment/liveness bindings, QROAM target-domain widths,
+and the reduced schoolbook Cartesian operand grid. It also carries a strict
+primitive-completeness report and an operand-parent binding report, so QROAM
+`ccx`, arithmetic `ccx`, measurement, and phase rows expand to gate-arity
+operand references that point back to counted live parent wires such as `qx`,
+`qy`, `qz`, `qchunk`, folded lookup workspace, the active QROAM chunk target,
+and the semiclassical phase bit. The public engine manifest then binds that
+materialized flat stream, executable instruction rows, wires, schedule events,
+owner-capacity rows, resource terms, semantic-boundary evidence, arithmetic
+operation IR, the generated QROAMClean `K = 1` primitive certificate, and the
+selected semiclassical phase shell into the same public claim layer. Its public
+totals are derived from `materialized_flat_netlist`, while the older
+reusable-resource totals are retained as cross-check snapshots, not as the
+authoritative source. The materialized flat engine and public engine are built
+from compiler/resource artifacts rather than from the ZKP input, so the proof
+input can be treated as a downstream publication wrapper instead of an upstream
+resource source.
 The QROAM reference keeps the selected 155-bit reusable chunk stream separate
 from the 256-bit full-field ledger sweep, so reviewers can audit the selected
 lookup stream and the field-multiplication pseudo-Mersenne reduction without

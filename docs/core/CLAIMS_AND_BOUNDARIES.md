@@ -143,26 +143,29 @@ summary and streamed lookup tail point-add leaf. The guest:
 
 The no-ZKP public engine layer is the audit-first source of the current resource
 claim. `public_candidate_materialized_circuit_manifest.json` stores the
-run-length primitive rows, liveness/owner rows, and a flat operation-index
-commitment for the promoted reusable-chunk candidate. The checked flat-index
-stream covers `39,370,727` primitive operations over `40` deterministic
-segments; `public_engine_manifest.json` binds that segment root alongside the
+run-length primitive rows and liveness/owner rows, then scans the full
+materialized primitive stream for the promoted reusable-chunk candidate. Every
+emitted primitive operation has concrete operand wires, counted parent-wire
+bindings, liveness interval, and total live-qubit value. The checked stream
+covers `39,370,727` primitive operations over deterministic segments and binds
+that stream with a full SHA-256 digest plus segment Merkle root.
+`public_engine_manifest.json` binds the materialized stream alongside the
 instruction, wire, schedule, owner-capacity, resource-term, semantic-boundary,
 arithmetic-IR, QROAM, and phase-shell evidence. The materialized manifest also
-executes representative flat operation indices through the same expandable
-netlist API used for full export, checking concrete operand wires, segment and
-liveness bindings, QROAM target-domain widths, and a reduced schoolbook
-Cartesian operand grid. Its strict primitive-completeness report now requires
-every run-length primitive row to expose gate-arity operand domains, so QROAM
-`ccx`, arithmetic `ccx`, measurement, and phase rows all expand through the
-same concrete-operand iterator. Its operand-parent binding report additionally
+executes representative flat operation indices through the same netlist API
+used for full export, checking concrete operand wires, segment and liveness
+bindings, QROAM target-domain widths, and a reduced schoolbook Cartesian
+operand grid. Its strict primitive-completeness report requires every
+run-length primitive row to expose gate-arity operand domains, so QROAM `ccx`,
+arithmetic `ccx`, measurement, and phase rows all expand through the same
+concrete-operand iterator. Its operand-parent binding report additionally
 checks that every operand domain maps to counted live parent wires with matching
-owners and enough parent-wire capacity. The public engine manifest derives the public
-non-Clifford count from that flat netlist and the public qubit count from the
-materialized liveness peak; reusable-resource totals are checked against those
-values as snapshots. The materialized/public engine layer is generated from
-compiler parameters and resource artifacts, not from the ZKP input, leaving ZKP
-as a downstream publication wrapper rather than an upstream claim source.
+owners and enough parent-wire capacity. The public engine manifest derives the
+public non-Clifford count and public qubit count from `materialized_flat_netlist`;
+reusable-resource totals are checked against those values as snapshots. The
+materialized/public engine layer is generated from compiler parameters and
+resource artifacts, not from the ZKP input, leaving ZKP as a downstream
+publication wrapper rather than an upstream claim source.
 
 The checked JSON sidecars remain the audit-friendly source-of-truth inputs for
 that bundle. The candidate directory records core, compressed, and Groth16
@@ -196,10 +199,11 @@ than a hidden primitive-gate Shor circuit.
 
 ### A. Primitive-gate lookup realization
 
-The repository does not lower lookup memory into a bit-for-bit
-Clifford-complete qRAM or full Shor circuit. It does now bind the counted
-lookup-data path to a standard QROAM coordinate-stream primitive over the
-32768-entry folded coordinate domain.
+The repository does not lower lookup memory into a physical-layout qRAM or full
+period-finding stack. It does now bind the counted lookup-data path to a
+standard QROAM coordinate-stream primitive over the 32768-entry folded
+coordinate domain and materializes the selected compiler-family primitive
+stream used for the public non-Clifford and peak-live-qubit counts.
 
 For the streamed lookup tail result, the table-controlled arithmetic boundary
 is no longer free: `streamed_lookup_table_multiplier_resource.json` counts the
@@ -207,9 +211,11 @@ QROAMClean target and junk-register capacity in lookup workspace. The selected
 public reusable-chunk point uses `K = 1` and 155-bit coordinate chunks, so each
 chunk stream pays `65,536` non-Clifford operations, the live QROAM target is
 `155` qubits, and the total counted lookup workspace is `173` qubits after the
-18 folded-control qubits are included. The remaining boundary is that the
-repository does not ship a Clifford-complete flattened netlist for every
-arithmetic and lookup block.
+18 folded-control qubits are included. The remaining boundary is below the
+compiler-family primitive stream: arithmetic and lookup macro semantics are
+still represented by generated primitive-operation IR and certificates rather
+than by a physical-layout fault-tolerant schedule with routing, timing, and
+error-correction overheads.
 
 ### B. Boundary no-op and cleanup
 

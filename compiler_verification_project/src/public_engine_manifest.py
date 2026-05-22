@@ -168,9 +168,9 @@ def build_public_engine_manifest(
     term_columns = ['row_index', 'term_id', 'category', 'instances', 'per_instance_non_clifford', 'total_non_clifford', 'source']
 
     public_totals = {
-        'non_clifford': int(public_candidate_materialized_circuit_manifest['flat_netlist']['non_clifford_count']),
-        'logical_qubits': int(public_candidate_materialized_circuit_manifest['materialized_liveness']['peak_live_qubits']),
-        'source': 'public_candidate_materialized_circuit_manifest.flat_netlist + materialized_liveness',
+        'non_clifford': int(public_candidate_materialized_circuit_manifest['materialized_flat_netlist']['non_clifford_count']),
+        'logical_qubits': int(public_candidate_materialized_circuit_manifest['materialized_flat_netlist']['peak_live_qubits']),
+        'source': 'public_candidate_materialized_circuit_manifest.materialized_flat_netlist',
     }
     checks = {
         'executable_resource_engine_passes': executable_resource_engine['pass'] is True,
@@ -271,6 +271,12 @@ def build_public_engine_manifest(
             and int(public_candidate_materialized_circuit_manifest['materialized_liveness']['peak_live_qubits']) == public_totals['logical_qubits']
             and int(public_candidate_materialized_circuit_manifest['flat_netlist']['non_clifford_count']) == public_totals['non_clifford']
             and public_candidate_materialized_circuit_manifest['flat_netlist']['gate_totals']['ccx'] == public_totals['non_clifford']
+            and public_candidate_materialized_circuit_manifest['materialized_flat_netlist']['exact_operation_stream_materialized'] is True
+            and int(public_candidate_materialized_circuit_manifest['materialized_flat_netlist']['operation_count']) == int(public_candidate_materialized_circuit_manifest['flat_netlist']['operation_count'])
+            and int(public_candidate_materialized_circuit_manifest['materialized_flat_netlist']['non_clifford_count']) == public_totals['non_clifford']
+            and int(public_candidate_materialized_circuit_manifest['materialized_flat_netlist']['peak_live_qubits']) == public_totals['logical_qubits']
+            and public_candidate_materialized_circuit_manifest['checks']['materialized_flat_netlist_stream_is_exact'] is True
+            and public_candidate_materialized_circuit_manifest['checks']['materialized_flat_netlist_counts_match_index_netlist'] is True
             and all(bool(value) for value in public_candidate_materialized_circuit_manifest['flat_execution_probe']['checks'].values())
         ),
         'strict_primitive_completeness_report_is_bound': (
@@ -386,6 +392,16 @@ def build_public_engine_manifest(
                 'flat_operation_count': int(public_candidate_materialized_circuit_manifest['flat_netlist']['operation_count']),
                 'flat_segment_count': int(public_candidate_materialized_circuit_manifest['flat_netlist']['segment_count']),
                 'flat_segment_merkle_root_sha256': public_candidate_materialized_circuit_manifest['flat_netlist']['segment_merkle_root_sha256'],
+                'materialized_flat_netlist': {
+                    'schema': public_candidate_materialized_circuit_manifest['materialized_flat_netlist']['schema'],
+                    'exact_operation_stream_materialized': bool(public_candidate_materialized_circuit_manifest['materialized_flat_netlist']['exact_operation_stream_materialized']),
+                    'operation_count': int(public_candidate_materialized_circuit_manifest['materialized_flat_netlist']['operation_count']),
+                    'operation_stream_sha256': public_candidate_materialized_circuit_manifest['materialized_flat_netlist']['operation_stream_sha256'],
+                    'segment_count': int(public_candidate_materialized_circuit_manifest['materialized_flat_netlist']['segment_count']),
+                    'segment_merkle_root_sha256': public_candidate_materialized_circuit_manifest['materialized_flat_netlist']['segment_merkle_root_sha256'],
+                    'non_clifford_count': int(public_candidate_materialized_circuit_manifest['materialized_flat_netlist']['non_clifford_count']),
+                    'peak_live_qubits': int(public_candidate_materialized_circuit_manifest['materialized_flat_netlist']['peak_live_qubits']),
+                },
                 'flat_execution_probe': {
                     'schema': public_candidate_materialized_circuit_manifest['flat_execution_probe']['schema'],
                     'probe_count': int(public_candidate_materialized_circuit_manifest['flat_execution_probe']['probe_count']),

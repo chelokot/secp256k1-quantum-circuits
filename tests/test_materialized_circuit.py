@@ -65,6 +65,7 @@ def _build_public_candidate_materialized(
         phase_shell_lowerings=phase_shell or _artifact('phase_shell_lowerings.json'),
         compiler_parameters=resolved_compiler_parameters,
         selected_family_name=resolved_compiler_parameters['public_headline_policy']['selected_public_family_name'],
+        include_materialized_flat_netlist=False,
     )
 
 
@@ -116,7 +117,7 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert manifest['schema'] == PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA
     assert manifest['selected_family_name'] == _public_family_name()
     assert manifest['pass'] is True
-    assert manifest['public_totals']['source'] == 'public_candidate_materialized.flat_netlist.non_clifford_count + materialized_liveness.peak_live_qubits'
+    assert manifest['public_totals']['source'] == 'public_candidate_materialized.materialized_flat_netlist.non_clifford_count + materialized_flat_netlist.peak_live_qubits'
     assert manifest['public_totals']['non_clifford'] == reusable['non_clifford_derivation']['candidate_total_non_clifford']
     assert manifest['public_totals']['logical_qubits'] == reusable['qubit_derivation']['candidate_total_logical_qubits']
     assert manifest['liveness_binding_row_count'] == manifest['run_length_row_count']
@@ -133,10 +134,23 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert manifest['flat_netlist']['gate_totals'] == manifest['gate_totals']
     assert manifest['flat_netlist']['non_clifford_count'] == manifest['public_totals']['non_clifford']
     assert manifest['flat_netlist']['segment_count'] == len(manifest['flat_netlist']['segments'])
+    assert manifest['materialized_flat_netlist']['schema'] == 'compiler-project-public-candidate-materialized-flat-netlist-v1'
+    assert manifest['materialized_flat_netlist']['exact_operation_stream_materialized'] is True
+    assert manifest['materialized_flat_netlist']['operation_count'] == manifest['flat_netlist']['operation_count']
+    assert manifest['materialized_flat_netlist']['gate_totals'] == manifest['gate_totals']
+    assert manifest['materialized_flat_netlist']['non_clifford_count'] == manifest['public_totals']['non_clifford']
+    assert manifest['materialized_flat_netlist']['peak_live_qubits'] == manifest['public_totals']['logical_qubits']
+    assert manifest['materialized_flat_netlist']['segment_count'] == len(manifest['materialized_flat_netlist']['segments'])
+    assert len(manifest['materialized_flat_netlist']['operation_stream_sha256']) == 64
+    assert len(manifest['materialized_flat_netlist']['segment_merkle_root_sha256']) == 64
     assert manifest['checks']['qroam_liveness_bindings_use_matching_chunk_target'] is True
     assert manifest['checks']['flat_netlist_expands_all_run_length_rows'] is True
     assert manifest['checks']['flat_netlist_gate_totals_match_run_length_rows'] is True
     assert manifest['checks']['flat_netlist_non_clifford_matches_public_candidate'] is True
+    assert manifest['checks']['materialized_flat_netlist_stream_is_exact'] is True
+    assert manifest['checks']['materialized_flat_netlist_counts_match_index_netlist'] is True
+    assert manifest['checks']['materialized_flat_netlist_segments_cover_stream'] is True
+    assert manifest['checks']['materialized_flat_netlist_preview_rows_are_concrete'] is True
     assert manifest['checks']['primitive_operand_contracts_cover_all_run_length_rows'] is True
     assert manifest['checks']['primitive_operand_contract_owners_are_known_and_live'] is True
     assert manifest['checks']['primitive_operand_domains_bind_counted_live_parent_wires'] is True

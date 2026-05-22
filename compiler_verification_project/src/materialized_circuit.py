@@ -36,6 +36,33 @@ PUBLIC_CANDIDATE_FLAT_NETLIST_COLUMNS = [
     'primitive_operand_contract_sha256',
     'liveness_binding_sha256',
 ]
+PUBLIC_CANDIDATE_MATERIALIZED_FLAT_NETLIST_COLUMNS = [
+    'operation_index',
+    'run_length_row_index',
+    'row_instance_ordinal',
+    'scope',
+    'source',
+    'gate',
+    'operand_0_wire',
+    'operand_0_owner',
+    'operand_0_role',
+    'operand_0_parent_wire',
+    'operand_0_parent_bit',
+    'operand_1_wire',
+    'operand_1_owner',
+    'operand_1_role',
+    'operand_1_parent_wire',
+    'operand_1_parent_bit',
+    'operand_2_wire',
+    'operand_2_owner',
+    'operand_2_role',
+    'operand_2_parent_wire',
+    'operand_2_parent_bit',
+    'liveness_interval_id',
+    'total_live_qubits',
+    'primitive_operand_contract_sha256',
+    'liveness_binding_sha256',
+]
 PUBLIC_CANDIDATE_STREAM_COLUMNS = [
     'row_index',
     'scope',
@@ -357,6 +384,186 @@ def _flat_netlist_commitment(
         'gate_totals': flat_gate_totals,
         'non_clifford_count': flat_non_clifford,
         'segments': segments,
+    }
+
+
+def _materialized_operand_columns(operand_wires: List[Mapping[str, Any]], operand_index: int) -> List[str]:
+    if operand_index >= len(operand_wires):
+        return ['', '', '', '', '']
+    wire = operand_wires[operand_index]
+    return [
+        str(wire['wire_id']),
+        str(wire['owner_id']),
+        str(wire['role']),
+        str(wire['parent_wire_id']),
+        str(wire['parent_bit_index']),
+    ]
+
+
+def _compact_materialized_flat_operation(row: Mapping[str, Any]) -> Dict[str, Any]:
+    operand_wires = list(row['operand_wires'])
+    return {
+        'operation_index': int(row['operation_index']),
+        'run_length_row_index': int(row['run_length_row_index']),
+        'row_instance_ordinal': int(row['row_instance_ordinal']),
+        'scope': str(row['scope']),
+        'source': str(row['source']),
+        'gate': str(row['gate']),
+        'operand_wires': [
+            {
+                'wire_id': str(wire['wire_id']),
+                'owner_id': str(wire['owner_id']),
+                'role': str(wire['role']),
+                'parent_wire_id': str(wire['parent_wire_id']),
+                'parent_bit_index': int(wire['parent_bit_index']),
+            }
+            for wire in operand_wires
+        ],
+        'liveness_interval_id': str(row['liveness']['interval_id']),
+        'total_live_qubits': int(row['liveness']['total_live_qubits']),
+        'primitive_operand_contract_sha256': str(row['primitive_operand_contract_sha256']),
+        'liveness_binding_sha256': str(row['liveness_binding_sha256']),
+    }
+
+
+def _encoded_materialized_flat_operation(row: Mapping[str, Any]) -> str:
+    operand_wires = list(row['operand_wires'])
+    fields: List[str] = [
+        str(int(row['operation_index'])),
+        str(int(row['run_length_row_index'])),
+        str(int(row['row_instance_ordinal'])),
+        str(row['scope']),
+        str(row['source']),
+        str(row['gate']),
+    ]
+    fields.extend(_materialized_operand_columns(operand_wires, 0))
+    fields.extend(_materialized_operand_columns(operand_wires, 1))
+    fields.extend(_materialized_operand_columns(operand_wires, 2))
+    fields.extend([
+        str(row['liveness']['interval_id']),
+        str(int(row['liveness']['total_live_qubits'])),
+        str(row['primitive_operand_contract_sha256']),
+        str(row['liveness_binding_sha256']),
+    ])
+    return '\t'.join(fields) + '\n'
+
+
+def _new_materialized_flat_segment_digest() -> Any:
+    digest = hashlib.sha256()
+    digest.update(b'compiler-project-public-candidate-materialized-flat-segment-v1\n')
+    return digest
+
+
+def _materialized_flat_netlist_commitment(
+    *,
+    operation_rows: List[Mapping[str, Any]],
+    liveness_rows: List[Mapping[str, Any]],
+    segment_size: int = PUBLIC_CANDIDATE_FLAT_SEGMENT_SIZE,
+) -> Dict[str, Any]:
+    if segment_size <= 0:
+        raise ValueError('segment_size must be positive')
+    stream_digest = hashlib.sha256()
+    header = '\t'.join(PUBLIC_CANDIDATE_MATERIALIZED_FLAT_NETLIST_COLUMNS) + '\n'
+    stream_digest.update(header.encode('ascii'))
+    operation_count = 0
+    non_clifford_count = 0
+    peak_live_qubits = 0
+    gate_totals = _empty_gate_totals()
+    segment_digest = _new_materialized_flat_segment_digest()
+    segment_count = 0
+    segment_gate_totals = _empty_gate_totals()
+    segment_non_clifford = 0
+    segment_start = 0
+    segments: List[Dict[str, Any]] = []
+    preview_head: List[Dict[str, Any]] = []
+    preview_tail_operations: List[Dict[str, Any]] = []
+
+    for operation in iter_public_candidate_flat_netlist(operation_rows, liveness_rows):
+        encoded_row = _encoded_materialized_flat_operation(operation)
+        encoded_bytes = encoded_row.encode('utf-8')
+        stream_digest.update(encoded_bytes)
+        segment_digest.update(encoded_bytes)
+        segment_count += 1
+        operation_count += 1
+        gate = str(operation['gate'])
+        gate_totals[gate] += 1
+        segment_gate_totals[gate] += 1
+        if gate == 'ccx':
+            non_clifford_count += 1
+            segment_non_clifford += 1
+        peak_live_qubits = max(peak_live_qubits, int(operation['liveness']['total_live_qubits']))
+        if len(preview_head) < 4:
+            preview_head.append(_compact_materialized_flat_operation(operation))
+        preview_tail_operations.append(operation)
+        if len(preview_tail_operations) > 4:
+            preview_tail_operations.pop(0)
+        if segment_count == segment_size:
+            segments.append({
+                'segment_index': len(segments),
+                'operation_start': segment_start,
+                'operation_end_exclusive': operation_count,
+                'operation_count': segment_count,
+                'gate_totals': segment_gate_totals,
+                'non_clifford_count': segment_non_clifford,
+                'sha256': segment_digest.hexdigest(),
+            })
+            segment_digest = _new_materialized_flat_segment_digest()
+            segment_count = 0
+            segment_gate_totals = _empty_gate_totals()
+            segment_non_clifford = 0
+            segment_start = operation_count
+    if segment_count:
+        segments.append({
+            'segment_index': len(segments),
+            'operation_start': segment_start,
+            'operation_end_exclusive': operation_count,
+            'operation_count': segment_count,
+            'gate_totals': segment_gate_totals,
+            'non_clifford_count': segment_non_clifford,
+            'sha256': segment_digest.hexdigest(),
+        })
+    return {
+        'schema': 'compiler-project-public-candidate-materialized-flat-netlist-v1',
+        'definition': 'Fully materialized primitive operation stream: every primitive gate is emitted with concrete operand wires and row liveness, and totals are derived by scanning this stream.',
+        'columns': PUBLIC_CANDIDATE_MATERIALIZED_FLAT_NETLIST_COLUMNS,
+        'exact_operation_stream_materialized': True,
+        'segment_size': segment_size,
+        'operation_count': operation_count,
+        'segment_count': len(segments),
+        'operation_stream_sha256': stream_digest.hexdigest(),
+        'segment_merkle_root_sha256': _merkle_root([segment['sha256'] for segment in segments]),
+        'gate_totals': gate_totals,
+        'non_clifford_count': non_clifford_count,
+        'peak_live_qubits': peak_live_qubits,
+        'segments': segments,
+        'preview_head': preview_head,
+        'preview_tail': [
+            _compact_materialized_flat_operation(operation)
+            for operation in preview_tail_operations
+        ],
+    }
+
+
+def _omitted_materialized_flat_netlist_summary(
+    *,
+    flat_netlist: Mapping[str, Any],
+    liveness_rows: List[Mapping[str, Any]],
+) -> Dict[str, Any]:
+    return {
+        'schema': 'compiler-project-public-candidate-materialized-flat-netlist-v1',
+        'definition': 'Full primitive operation stream materialization was intentionally skipped for a lightweight mutation/unit build.',
+        'columns': PUBLIC_CANDIDATE_MATERIALIZED_FLAT_NETLIST_COLUMNS,
+        'exact_operation_stream_materialized': False,
+        'operation_count': int(flat_netlist['operation_count']),
+        'segment_count': int(flat_netlist['segment_count']),
+        'operation_stream_sha256': '',
+        'segment_merkle_root_sha256': '',
+        'gate_totals': dict(flat_netlist['gate_totals']),
+        'non_clifford_count': int(flat_netlist['non_clifford_count']),
+        'peak_live_qubits': max(int(row['total_live_qubits']) for row in liveness_rows),
+        'segments': [],
+        'preview_head': [],
+        'preview_tail': [],
     }
 
 
@@ -1623,6 +1830,8 @@ def build_public_candidate_materialized_circuit_manifest(
     phase_shell_lowerings: Mapping[str, Any],
     compiler_parameters: Mapping[str, Any],
     selected_family_name: str,
+    include_materialized_flat_netlist: bool = True,
+    materialized_flat_netlist_override: Optional[Mapping[str, Any]] = None,
 ) -> Dict[str, Any]:
     counted_resource_ir = reusable_chunk_lowering['counted_resource_ir']
     public_totals = reusable_chunk_lowering['executable_resource_engine']['public_totals']
@@ -1649,9 +1858,21 @@ def build_public_candidate_materialized_circuit_manifest(
         operation_rows=rows,
         liveness_rows=liveness_rows,
     )
+    if materialized_flat_netlist_override is not None:
+        materialized_flat_netlist = dict(materialized_flat_netlist_override)
+    elif include_materialized_flat_netlist:
+        materialized_flat_netlist = _materialized_flat_netlist_commitment(
+            operation_rows=rows,
+            liveness_rows=liveness_rows,
+        )
+    else:
+        materialized_flat_netlist = _omitted_materialized_flat_netlist_summary(
+            flat_netlist=flat_netlist,
+            liveness_rows=liveness_rows,
+        )
     materialized_public_totals = {
-        'non_clifford': int(flat_netlist['non_clifford_count']),
-        'logical_qubits': max(int(row['total_live_qubits']) for row in liveness_rows),
+        'non_clifford': int(materialized_flat_netlist['non_clifford_count']),
+        'logical_qubits': int(materialized_flat_netlist['peak_live_qubits']),
     }
     base_rows = [row for row in rows if row['scope'] in ('direct_seed_base', 'lookup_leaf_base', 'arithmetic_leaf_block')]
     direct_seed_rows = [row for row in rows if row['scope'] == 'direct_seed_base']
@@ -1779,6 +2000,40 @@ def build_public_candidate_materialized_circuit_manifest(
         ),
         'flat_netlist_gate_totals_match_run_length_rows': flat_netlist['gate_totals'] == gate_totals,
         'flat_netlist_non_clifford_matches_public_candidate': materialized_public_totals['non_clifford'] == int(public_totals['non_clifford']),
+        'materialized_flat_netlist_stream_is_exact': (
+            materialized_flat_netlist['exact_operation_stream_materialized'] is True
+            and materialized_flat_netlist['operation_count'] == flat_netlist['operation_count']
+            and materialized_flat_netlist['gate_totals'] == gate_totals
+            and materialized_flat_netlist['non_clifford_count'] == non_clifford_total
+            and materialized_flat_netlist['peak_live_qubits'] == materialized_public_totals['logical_qubits']
+            and materialized_flat_netlist['segment_count'] == len(materialized_flat_netlist['segments'])
+            and len(materialized_flat_netlist['operation_stream_sha256']) == 64
+            and len(materialized_flat_netlist['segment_merkle_root_sha256']) == 64
+        ),
+        'materialized_flat_netlist_counts_match_index_netlist': (
+            materialized_flat_netlist['operation_count'] == flat_netlist['operation_count']
+            and materialized_flat_netlist['gate_totals'] == flat_netlist['gate_totals']
+            and materialized_flat_netlist['non_clifford_count'] == flat_netlist['non_clifford_count']
+        ),
+        'materialized_flat_netlist_segments_cover_stream': (
+            materialized_flat_netlist['segment_count'] == len(materialized_flat_netlist['segments'])
+            and (
+                materialized_flat_netlist['operation_count'] == 0
+                or (
+                    materialized_flat_netlist['segments'][0]['operation_start'] == 0
+                    and materialized_flat_netlist['segments'][-1]['operation_end_exclusive'] == materialized_flat_netlist['operation_count']
+                    and sum(int(segment['operation_count']) for segment in materialized_flat_netlist['segments']) == materialized_flat_netlist['operation_count']
+                )
+            )
+        ),
+        'materialized_flat_netlist_preview_rows_are_concrete': (
+            materialized_flat_netlist['exact_operation_stream_materialized'] is True
+            and all(
+                len(operation['operand_wires']) == PRIMITIVE_GATE_ARITY[operation['gate']]
+                and all(str(wire['wire_id']) and str(wire['parent_wire_id']) for wire in operation['operand_wires'])
+                for operation in materialized_flat_netlist['preview_head'] + materialized_flat_netlist['preview_tail']
+            )
+        ),
         'primitive_operand_contracts_cover_all_run_length_rows': all(
             row['primitive_operand_contract']['schema'] == 'compiler-project-primitive-operand-contract-v1'
             and row['primitive_operand_contract']['gate'] == row['gate']
@@ -1861,7 +2116,7 @@ def build_public_candidate_materialized_circuit_manifest(
         'run_length_rows': rows,
         'public_totals': {
             **materialized_public_totals,
-            'source': 'public_candidate_materialized.flat_netlist.non_clifford_count + materialized_liveness.peak_live_qubits',
+            'source': 'public_candidate_materialized.materialized_flat_netlist.non_clifford_count + materialized_flat_netlist.peak_live_qubits',
         },
         'materialized_liveness': {
             'peak_live_qubits': materialized_public_totals['logical_qubits'],
@@ -1876,6 +2131,7 @@ def build_public_candidate_materialized_circuit_manifest(
             'preview_tail': liveness_rows[-8:],
         },
         'flat_netlist': flat_netlist,
+        'materialized_flat_netlist': materialized_flat_netlist,
         'flat_execution_probe': flat_execution_probe,
         'strict_primitive_completeness': strict_primitive_completeness,
         'operand_parent_binding': operand_parent_binding,
@@ -1918,9 +2174,10 @@ def build_public_candidate_materialized_circuit_manifest(
         'pass': all(checks.values()),
         'boundary': [
             'This artifact defines the canonical flat operation-index netlist for the current public candidate with run-length contributions, liveness, and owner bindings.',
+            'materialized_flat_netlist is the checked full primitive stream: the build scans every emitted primitive operation with concrete operand wires and derives the public non-Clifford and peak-live-qubit totals from that stream.',
             'The flat_execution_probe section is generated by executing representative operation indices through the same expandable flat-netlist API used for the full stream.',
             'strict_primitive_completeness requires every row to expose arity-correct primitive operand domains so the flat-netlist iterator emits exact operand references for each primitive operation.',
-            'It is intentionally stored as an expandable segmented commitment rather than a checked-in multi-gigabyte TSV with one physical line per primitive instruction.',
+            'The full stream is stored as exact segment hashes and previews in JSON; materialize_exact_circuits.py can export physical TSV slices or the entire stream when an audit wants lines on disk.',
         ],
     }
 

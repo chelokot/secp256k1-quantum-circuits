@@ -55,7 +55,7 @@ def test_public_engine_manifest_reconstructs_checked_artifact() -> None:
     assert observed == expected
     assert expected['schema'] == PUBLIC_ENGINE_MANIFEST_SCHEMA
     assert expected['pass'] is True
-    assert expected['public_totals']['source'] == 'public_candidate_materialized_circuit_manifest.flat_netlist + materialized_liveness'
+    assert expected['public_totals']['source'] == 'public_candidate_materialized_circuit_manifest.materialized_flat_netlist'
     assert expected['public_totals']['non_clifford'] == reusable['executable_resource_engine']['public_totals']['non_clifford']
     assert expected['public_totals']['logical_qubits'] == reusable['executable_resource_engine']['public_totals']['logical_qubits']
     assert expected['fast_no_zkp_contract']['prover_required'] is False
@@ -71,6 +71,13 @@ def test_public_engine_manifest_reconstructs_checked_artifact() -> None:
     assert expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['flat_operation_count'] > expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['run_length_row_count']
     assert expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['flat_segment_count'] > 1
     assert len(expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['flat_segment_merkle_root_sha256']) == 64
+    materialized_flat = expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['materialized_flat_netlist']
+    assert materialized_flat['exact_operation_stream_materialized'] is True
+    assert materialized_flat['operation_count'] == expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['flat_operation_count']
+    assert materialized_flat['non_clifford_count'] == reusable['non_clifford_derivation']['candidate_total_non_clifford']
+    assert materialized_flat['peak_live_qubits'] == reusable['qubit_derivation']['candidate_total_logical_qubits']
+    assert len(materialized_flat['operation_stream_sha256']) == 64
+    assert len(materialized_flat['segment_merkle_root_sha256']) == 64
     flat_probe = expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['flat_execution_probe']
     assert flat_probe['probe_count'] >= 15
     assert len(flat_probe['probe_stream_sha256']) == 64
@@ -139,12 +146,21 @@ def test_public_engine_manifest_rejects_public_candidate_materialized_drift() ->
 
 def test_public_engine_manifest_derives_totals_from_flat_materialized_engine() -> None:
     public_candidate_materialized = _load('public_candidate_materialized_circuit_manifest.json')
-    public_candidate_materialized['flat_netlist']['non_clifford_count'] -= 1
+    public_candidate_materialized['materialized_flat_netlist']['non_clifford_count'] -= 1
     observed = _build_manifest(public_candidate_materialized=public_candidate_materialized)
-    assert observed['public_totals']['non_clifford'] == public_candidate_materialized['flat_netlist']['non_clifford_count']
+    assert observed['public_totals']['non_clifford'] == public_candidate_materialized['materialized_flat_netlist']['non_clifford_count']
     assert observed['checks']['public_totals_match_executable_resource_engine_snapshot'] is False
     assert observed['checks']['public_totals_match_counted_resource_engine'] is False
     assert observed['checks']['resource_terms_sum_to_public_total'] is False
+    assert observed['checks']['public_candidate_materialized_stream_binds_engine_totals'] is False
+    assert observed['pass'] is False
+
+
+def test_public_engine_manifest_rejects_missing_full_materialized_netlist() -> None:
+    public_candidate_materialized = _load('public_candidate_materialized_circuit_manifest.json')
+    public_candidate_materialized['materialized_flat_netlist']['exact_operation_stream_materialized'] = False
+    public_candidate_materialized['checks']['materialized_flat_netlist_stream_is_exact'] = False
+    observed = _build_manifest(public_candidate_materialized=public_candidate_materialized)
     assert observed['checks']['public_candidate_materialized_stream_binds_engine_totals'] is False
     assert observed['pass'] is False
 

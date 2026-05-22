@@ -5790,7 +5790,7 @@ fn validate_public_engine_manifest(
     let public_totals = json_object_field(manifest, "public_totals");
     assert_eq!(
         json_string_field(public_totals, "source"),
-        "public_candidate_materialized_circuit_manifest.flat_netlist + materialized_liveness"
+        "public_candidate_materialized_circuit_manifest.materialized_flat_netlist"
     );
     assert_eq!(
         json_u64_field(public_totals, "non_clifford"),
@@ -5844,10 +5844,32 @@ fn validate_public_engine_manifest(
     );
 
     let primitive_evidence = json_object_field(manifest, "primitive_operation_evidence");
+    let public_materialized = json_object_field(
+        primitive_evidence,
+        "public_candidate_materialized_circuit_manifest",
+    );
+    assert!(json_bool_field(public_materialized, "pass"));
+    let materialized_flat_netlist = json_object_field(public_materialized, "materialized_flat_netlist");
     assert!(json_bool_field(
-        json_object_field(primitive_evidence, "public_candidate_materialized_circuit_manifest"),
-        "pass"
+        materialized_flat_netlist,
+        "exact_operation_stream_materialized"
     ));
+    assert_eq!(
+        json_u64_field(materialized_flat_netlist, "operation_count"),
+        json_u64_field(public_materialized, "flat_operation_count")
+    );
+    assert_eq!(
+        json_u64_field(materialized_flat_netlist, "non_clifford_count"),
+        claim.expected_full_oracle_non_clifford
+    );
+    assert_eq!(
+        json_u64_field(materialized_flat_netlist, "peak_live_qubits"),
+        claim.expected_total_logical_qubits
+    );
+    assert!(
+        json_string_field(materialized_flat_netlist, "operation_stream_sha256").len() == 64,
+        "materialized flat netlist operation stream digest must be bound"
+    );
     assert!(json_bool_field(
         json_object_field(primitive_evidence, "arithmetic_operation_ir"),
         "pass"
@@ -6528,6 +6550,22 @@ mod tests {
             .payload
             .0["primitive_operation_evidence"]["public_candidate_materialized_circuit_manifest"]
             ["flat_execution_probe"]["checks"]["probe_operations_bind_segment_contributions"] =
+            serde_json::json!(false);
+        refresh_public_engine_manifest_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_public_engine_manifest_materialized_flat_netlist_forgery() {
+        let mut input = checked_reusable_chunk_input();
+        input
+            .public_engine_manifest_document
+            .as_mut()
+            .expect("reusable-chunk fixture must carry public engine manifest")
+            .payload
+            .0["primitive_operation_evidence"]["public_candidate_materialized_circuit_manifest"]
+            ["materialized_flat_netlist"]["exact_operation_stream_materialized"] =
             serde_json::json!(false);
         refresh_public_engine_manifest_digest(&mut input);
         run_prepared_attestation(&input);
