@@ -121,6 +121,25 @@ def _resolve_family(frontier: Mapping[str, Any], family_name: str) -> Dict[str, 
     raise KeyError(f'unknown compiler family: {family_name}')
 
 
+def _direct_seed_non_clifford_from_inventory() -> int:
+    inventory_path = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts' / 'generated_block_inventories.json'
+    inventory = json.loads(inventory_path.read_text())
+    values = {
+        int(row['reconstruction']['direct_seed_non_clifford'])
+        for row in inventory['families']
+        if 'direct_seed_non_clifford' in row.get('reconstruction', {})
+    }
+    for selected_key in ('best_gate_family', 'best_qubit_family'):
+        selected = inventory[selected_key]
+        if 'direct_seed_non_clifford' in selected.get('reconstruction', {}):
+            values.add(int(selected['reconstruction']['direct_seed_non_clifford']))
+    if not values:
+        raise ValueError('generated block inventory does not expose direct-seed non-Clifford rows')
+    if len(values) != 1:
+        raise ValueError('generated block inventory does not have one direct-seed non-Clifford consensus value')
+    return next(iter(values))
+
+
 def _reusable_chunk_family_payload() -> Dict[str, Any]:
     lowering_path = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts' / 'reusable_chunk_lowering.json'
     lowering = json.loads(lowering_path.read_text())
@@ -130,7 +149,7 @@ def _reusable_chunk_family_payload() -> Dict[str, Any]:
     non_clifford = lowering['non_clifford_derivation']
     qubits = lowering['qubit_derivation']
     leaf_call_count_total = int(lowering['stream_plan']['leaf_call_count_total'])
-    direct_seed_non_clifford = 297
+    direct_seed_non_clifford = _direct_seed_non_clifford_from_inventory()
     per_leaf_lookup_non_clifford = (
         int(non_clifford['qroam_chunk_non_clifford']) // leaf_call_count_total
     )

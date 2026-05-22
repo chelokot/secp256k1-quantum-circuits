@@ -1628,6 +1628,10 @@ Current remediation:
   release proof-corpus resolver, and the active `tests/`, `src/`, and
   `scripts/` gates no longer contain those headline literals as independent
   pass conditions.
+- The reusable-family ZKP input builder no longer carries a local
+  `direct_seed_non_clifford = 297` literal. It derives that value from the
+  generated block-inventory reconstruction consensus, and the ZKP input test
+  verifies the reusable family document uses that generated source.
 
 ### P1: Reproducible proof environment
 

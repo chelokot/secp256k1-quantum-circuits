@@ -327,8 +327,8 @@
       "bytes": 4853
     },
     "compiler_verification_project/src/zkp_attestation.py": {
-      "sha256": "592f79f7bb2ceb9b7d9176c6e46900c0afc5c5e8c8713fd3c17779d86c6d2fd9",
-      "bytes": 47149
+      "sha256": "282d9ee52feccb30ea74000edfff697935815f01464672b640e5de6ffcba1b4e",
+      "bytes": 48173
     },
     "compiler_verification_project/scripts/build.py": {
       "sha256": "742316fac7f1bfcd29fe64fe3248f39d19d105153513f49ab54986cf70335877",

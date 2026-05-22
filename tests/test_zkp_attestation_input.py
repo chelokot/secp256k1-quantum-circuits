@@ -92,9 +92,21 @@ def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None
     proof_register_contract = payload['proof_register_contract']
     phase_shells = json.loads((REPO_ROOT / 'compiler_verification_project' / 'artifacts' / 'phase_shell_lowerings.json').read_text())
     phase_shell = next(row for row in phase_shells['families'] if row['name'] == family_document['phase_shell'])
+    generated_inventories = json.loads((REPO_ROOT / 'compiler_verification_project' / 'artifacts' / 'generated_block_inventories.json').read_text())
+    direct_seed_values = {
+        int(row['reconstruction']['direct_seed_non_clifford'])
+        for row in generated_inventories['families']
+        if 'direct_seed_non_clifford' in row.get('reconstruction', {})
+    }
+    for selected_key in ('best_gate_family', 'best_qubit_family'):
+        selected = generated_inventories[selected_key]
+        if 'direct_seed_non_clifford' in selected.get('reconstruction', {}):
+            direct_seed_values.add(int(selected['reconstruction']['direct_seed_non_clifford']))
     assert payload['selected_family_name'].endswith('__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1')
     assert claim['expected_full_oracle_non_clifford'] == non_clifford_derivation['candidate_total_non_clifford']
     assert claim['expected_total_logical_qubits'] == qubit_derivation['candidate_total_logical_qubits']
+    assert len(direct_seed_values) == 1
+    assert family['direct_seed_non_clifford'] == next(iter(direct_seed_values))
     assert family['arithmetic_slot_count'] == qubit_derivation['arithmetic_slot_count']
     assert family['lookup_workspace_qubits'] == qubit_derivation['lookup_workspace_qubits']
     assert family_document['phase_shell_hadamards'] == phase_shell['hadamard_count']
