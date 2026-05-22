@@ -10,7 +10,7 @@
   "resource_engine_summary": {
     "source": "public_engine_manifest.public_totals",
     "source_document_type": "public_engine_manifest",
-    "source_sha256": "6ead2d3f8f5aba28d5714fe79da513debd1101a3b7482f77af777d5e62ecb1a1",
+    "source_sha256": "8877716f1971d86c6c6a8c6831a24aca0180a18008ec780e52031d65468a2b7f",
     "non_clifford": 36957412,
     "logical_qubits": 1199,
     "matches_family_snapshot": true,

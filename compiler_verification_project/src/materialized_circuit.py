@@ -59,6 +59,15 @@ PUBLIC_CANDIDATE_LIVENESS_COLUMNS = [
 ]
 PUBLIC_CANDIDATE_FLAT_SEGMENT_SIZE = 1_000_000
 PUBLIC_CANDIDATE_FLAT_PROBE_WIDTH = 4
+PRIMITIVE_GATE_ARITY = {
+    'ccx': 3,
+    'cx': 2,
+    'x': 1,
+    'measurement': 1,
+    'hadamard': 1,
+    'single_qubit_rotation': 1,
+    'controlled_rotation': 2,
+}
 
 
 def _empty_gate_totals() -> Dict[str, int]:
@@ -626,6 +635,58 @@ def _flat_execution_probe(
                 for check in arithmetic_domain_capacity_checks
             ),
         },
+    }
+
+
+def _strict_primitive_completeness_report(rows: List[Mapping[str, Any]]) -> Dict[str, Any]:
+    incomplete_rows: List[Dict[str, Any]] = []
+    rows_by_gate: Dict[str, int] = {}
+    incomplete_by_scope_gate: Dict[str, int] = {}
+    for row in rows:
+        gate = str(row['gate'])
+        rows_by_gate[gate] = rows_by_gate.get(gate, 0) + 1
+        expected_arity = PRIMITIVE_GATE_ARITY[gate]
+        observed_arity = len(row['primitive_operand_contract']['operand_domains'])
+        if observed_arity == expected_arity:
+            continue
+        key = f"{row['scope']}:{gate}"
+        incomplete_by_scope_gate[key] = incomplete_by_scope_gate.get(key, 0) + 1
+        if len(incomplete_rows) < 16:
+            incomplete_rows.append({
+                'row_index': int(row['row_index']),
+                'scope': str(row['scope']),
+                'source': str(row['source']),
+                'gate': gate,
+                'total_count': int(row['total_count']),
+                'expected_operand_arity': expected_arity,
+                'observed_operand_domain_count': observed_arity,
+                'operand_domain_ids': [
+                    str(domain['domain_id'])
+                    for domain in row['primitive_operand_contract']['operand_domains']
+                ],
+            })
+    incomplete_row_count = sum(incomplete_by_scope_gate.values())
+    return {
+        'schema': 'compiler-project-strict-primitive-completeness-report-v1',
+        'definition': 'A Clifford-complete primitive netlist row must give the exact concrete wire operands required by the gate arity, not only owner/domain templates.',
+        'required_gate_arity': dict(PRIMITIVE_GATE_ARITY),
+        'rows_checked': len(rows),
+        'rows_by_gate': {
+            key: int(value)
+            for key, value in sorted(rows_by_gate.items())
+        },
+        'incomplete_row_count': incomplete_row_count,
+        'incomplete_by_scope_gate': {
+            key: int(value)
+            for key, value in sorted(incomplete_by_scope_gate.items())
+        },
+        'sample_incomplete_rows': incomplete_rows,
+        'clifford_complete': incomplete_row_count == 0,
+        'next_required_lowering': [
+            'Replace arithmetic operand-domain templates with exact control/target wires for every generated field-arithmetic primitive.',
+            'Replace lookup and QROAM operand-domain templates with exact address/control/target wires for every primitive gate.',
+            'Make this report a passing public-engine invariant before calling the result a Clifford-complete full netlist.',
+        ],
     }
 
 
@@ -1369,6 +1430,7 @@ def build_public_candidate_materialized_circuit_manifest(
         flat_netlist=flat_netlist,
         owner_capacity_by_id=owner_capacity_by_id,
     )
+    strict_primitive_completeness = _strict_primitive_completeness_report(rows)
     checks = {
         'selected_family_matches_compiler_parameters': selected_family_name == compiler_parameters['public_headline_policy']['selected_public_family_name'],
         'source_engines_pass': (
@@ -1458,6 +1520,11 @@ def build_public_candidate_materialized_circuit_manifest(
         'flat_execution_probe_reduced_schoolbook_grid_executes': flat_execution_probe['checks']['reduced_schoolbook_operand_grid_executes_cartesian_prefix'] is True,
         'flat_execution_probe_qroam_target_width_matches_segments': flat_execution_probe['checks']['qroam_target_domain_width_matches_each_stream_segment'] is True,
         'flat_execution_probe_arithmetic_two_operand_domains_match_rows': flat_execution_probe['checks']['arithmetic_two_operand_domain_product_matches_row_total'] is True,
+        'strict_primitive_completeness_report_is_current': (
+            strict_primitive_completeness['rows_checked'] == len(rows)
+            and sum(strict_primitive_completeness['rows_by_gate'].values()) == len(rows)
+            and strict_primitive_completeness['clifford_complete'] is False
+        ),
         'qroam_liveness_bindings_use_matching_chunk_target': all(
             f"qroam_chunk_target__{row['table']}__chunk_{row['chunk_index']}" in liveness_rows[int(row['row_index'])]['live_wire_ids']
             for row in qroam_rows
@@ -1522,6 +1589,7 @@ def build_public_candidate_materialized_circuit_manifest(
         },
         'flat_netlist': flat_netlist,
         'flat_execution_probe': flat_execution_probe,
+        'strict_primitive_completeness': strict_primitive_completeness,
         'qroam_expansion': {
             'stream_instances': qroam_stream_term_instances,
             'segments_per_stream': qroam_segment_count,
@@ -1562,6 +1630,7 @@ def build_public_candidate_materialized_circuit_manifest(
         'boundary': [
             'This artifact defines the canonical flat operation-index netlist for the current public candidate with run-length contributions, liveness, and owner bindings.',
             'The flat_execution_probe section is generated by executing representative operation indices through the same expandable flat-netlist API used for the full stream.',
+            'strict_primitive_completeness is intentionally false until every row carries exact gate-arity wire operands instead of operand-domain templates.',
             'It is intentionally stored as an expandable segmented commitment rather than a checked-in multi-gigabyte TSV with one physical line per primitive instruction.',
         ],
     }

@@ -155,3 +155,13 @@ def test_public_engine_manifest_rejects_flat_execution_probe_drift() -> None:
     observed = _build_manifest(public_candidate_materialized=public_candidate_materialized)
     assert observed['checks']['public_candidate_materialized_stream_binds_engine_totals'] is False
     assert observed['pass'] is False
+
+
+def test_public_engine_manifest_binds_strict_primitive_completeness_report() -> None:
+    public_candidate_materialized = _load('public_candidate_materialized_circuit_manifest.json')
+    observed = _build_manifest(public_candidate_materialized=public_candidate_materialized)
+    strict_report = observed['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['strict_primitive_completeness']
+    assert observed['checks']['strict_primitive_completeness_report_is_bound'] is True
+    assert strict_report['clifford_complete'] is False
+    assert strict_report['rows_checked'] == public_candidate_materialized['run_length_row_count']
+    assert strict_report['incomplete_row_count'] > 0

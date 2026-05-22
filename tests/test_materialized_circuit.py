@@ -146,6 +146,7 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert manifest['checks']['flat_execution_probe_reduced_schoolbook_grid_executes'] is True
     assert manifest['checks']['flat_execution_probe_qroam_target_width_matches_segments'] is True
     assert manifest['checks']['flat_execution_probe_arithmetic_two_operand_domains_match_rows'] is True
+    assert manifest['checks']['strict_primitive_completeness_report_is_current'] is True
     assert manifest['checks']['direct_seed_liveness_excludes_qroam_target_and_chunk'] is True
     assert manifest['checks']['lookup_leaf_liveness_excludes_qroam_target_and_chunk'] is True
     assert manifest['checks']['generated_base_rows_match_public_non_qroam_derivation'] is True
@@ -167,6 +168,12 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert probe['probe_count'] >= 15
     assert all(probe['checks'].values())
     assert any(row['applies'] is True and row['pass'] is True for row in probe['reduced_arithmetic_probes'])
+    strict_completeness = manifest['strict_primitive_completeness']
+    assert strict_completeness['schema'] == 'compiler-project-strict-primitive-completeness-report-v1'
+    assert strict_completeness['rows_checked'] == manifest['run_length_row_count']
+    assert strict_completeness['clifford_complete'] is False
+    assert strict_completeness['incomplete_row_count'] > 0
+    assert 'arithmetic_leaf_block:ccx' in strict_completeness['incomplete_by_scope_gate']
 
 
 def test_public_candidate_flat_netlist_iterator_emits_concrete_operand_wires() -> None:

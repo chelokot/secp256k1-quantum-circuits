@@ -16,7 +16,7 @@
     "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
     "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
     "resource_contract_engine_sha256": "6ec61b5379cd1eb36a568423ffa43a79015c7f3c5dea53ec65cf1f80346b3d6f",
-    "public_candidate_materialized_circuit_manifest_sha256": "4eddd3753dd1c98923fde8c0c80a1789186bbfefb0dc8249f97c29198ba00e3b"
+    "public_candidate_materialized_circuit_manifest_sha256": "5089adadc270544eb42c0e1dd586ec4d9ab8b5d3fd254f7892baf296d8d2c0c3"
   },
   "instruction_stream": {
     "encoding": [
@@ -610,7 +610,7 @@
   "primitive_operation_evidence": {
     "public_candidate_materialized_circuit_manifest": {
       "schema": "compiler-project-public-candidate-materialized-circuit-manifest-v1",
-      "sha256": "4eddd3753dd1c98923fde8c0c80a1789186bbfefb0dc8249f97c29198ba00e3b",
+      "sha256": "5089adadc270544eb42c0e1dd586ec4d9ab8b5d3fd254f7892baf296d8d2c0c3",
       "pass": true,
       "operation_stream_sha256": "9a5d6aaf0e537cec80bedaae07c93e85a04573c9b59d797f39d6da4fbaaa5ef9",
       "liveness_binding_stream_sha256": "c328629396d401bba71a1245504aed03017cb77f16b47c2e323ed3e3ea9c918f",
@@ -631,6 +631,18 @@
           "probe_operations_bind_segment_contributions": true,
           "qroam_target_domain_width_matches_each_stream_segment": true,
           "reduced_schoolbook_operand_grid_executes_cartesian_prefix": true
+        }
+      },
+      "strict_primitive_completeness": {
+        "schema": "compiler-project-strict-primitive-completeness-report-v1",
+        "clifford_complete": false,
+        "rows_checked": 6329,
+        "incomplete_row_count": 4744,
+        "incomplete_by_scope_gate": {
+          "arithmetic_leaf_block:ccx": 1736,
+          "direct_seed_base:measurement": 1,
+          "lookup_leaf_base:measurement": 31,
+          "qroam_chunk_stream:ccx": 2976
         }
       },
       "non_clifford": 36957412,
@@ -703,7 +715,8 @@
     "arithmetic_operation_ir_binds_tail_opcode": true,
     "qroam_primitive_stream_binds_stream_terms": true,
     "phase_shell_primitive_counts_bind_public_family": true,
-    "public_candidate_materialized_stream_binds_engine_totals": true
+    "public_candidate_materialized_stream_binds_engine_totals": true,
+    "strict_primitive_completeness_report_is_bound": true
   },
   "pass": true
 }

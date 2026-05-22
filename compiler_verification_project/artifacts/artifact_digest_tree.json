@@ -4,7 +4,7 @@
   "size_threshold_bytes": 1048576,
   "chunk_size_bytes": 1048576,
   "file_count": 11,
-  "repository_digest_sha256": "3087fdf69b0aa0fba2230a1fec77d14f41ef1bebe1a888d17bd87579896738f9",
+  "repository_digest_sha256": "17a65160c0112a5433f4166cd5d42065a630a86c649122961e0244eb8a5940d7",
   "files": [
     {
       "path": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
@@ -222,11 +222,11 @@
     },
     {
       "path": "compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json",
-      "bytes": 22915682,
-      "sha256": "a0b1181312779e8bc0f8a66cf7e4bf8b199f5d16626393dbfb576ba750db5842",
+      "bytes": 22925279,
+      "sha256": "8bc74ceed2a5a9376fca76771cb23f9847e2a196d7324a06a7bf0984a9a850b0",
       "chunk_size_bytes": 1048576,
       "chunk_count": 22,
-      "chunk_merkle_root_sha256": "04663155b51ef574ee547168a02f5b7ed6f70ac28632dcace99c6e2923af112d",
+      "chunk_merkle_root_sha256": "db101cf89c852cec8dece3617ffcc80535ebbd114f81482c10f2b3f9705d4fbe",
       "chunks": [
         {
           "index": 0,
@@ -357,8 +357,8 @@
         {
           "index": 21,
           "offset": 22020096,
-          "bytes": 895586,
-          "sha256": "14bf625370fec43d53594682cf65e4b267c7dd5c02eec2684ece5f711530c715"
+          "bytes": 905183,
+          "sha256": "5b1cfe1cac74a5cf7f24542113579a5c6783e3ab86929d96b5e562d640eac504"
         }
       ]
     },

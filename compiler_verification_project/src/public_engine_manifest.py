@@ -273,6 +273,12 @@ def build_public_engine_manifest(
             and public_candidate_materialized_circuit_manifest['flat_netlist']['gate_totals']['ccx'] == public_totals['non_clifford']
             and all(bool(value) for value in public_candidate_materialized_circuit_manifest['flat_execution_probe']['checks'].values())
         ),
+        'strict_primitive_completeness_report_is_bound': (
+            public_candidate_materialized_circuit_manifest['strict_primitive_completeness']['schema'] == 'compiler-project-strict-primitive-completeness-report-v1'
+            and public_candidate_materialized_circuit_manifest['strict_primitive_completeness']['rows_checked'] == public_candidate_materialized_circuit_manifest['run_length_row_count']
+            and public_candidate_materialized_circuit_manifest['strict_primitive_completeness']['clifford_complete'] is False
+            and public_candidate_materialized_circuit_manifest['checks']['strict_primitive_completeness_report_is_current'] is True
+        ),
     }
     return {
         'schema': PUBLIC_ENGINE_MANIFEST_SCHEMA,
@@ -379,6 +385,16 @@ def build_public_engine_manifest(
                     'checks': {
                         key: bool(value)
                         for key, value in sorted(public_candidate_materialized_circuit_manifest['flat_execution_probe']['checks'].items())
+                    },
+                },
+                'strict_primitive_completeness': {
+                    'schema': public_candidate_materialized_circuit_manifest['strict_primitive_completeness']['schema'],
+                    'clifford_complete': bool(public_candidate_materialized_circuit_manifest['strict_primitive_completeness']['clifford_complete']),
+                    'rows_checked': int(public_candidate_materialized_circuit_manifest['strict_primitive_completeness']['rows_checked']),
+                    'incomplete_row_count': int(public_candidate_materialized_circuit_manifest['strict_primitive_completeness']['incomplete_row_count']),
+                    'incomplete_by_scope_gate': {
+                        key: int(value)
+                        for key, value in sorted(public_candidate_materialized_circuit_manifest['strict_primitive_completeness']['incomplete_by_scope_gate'].items())
                     },
                 },
                 'non_clifford': int(public_candidate_materialized_circuit_manifest['public_totals']['non_clifford']),
