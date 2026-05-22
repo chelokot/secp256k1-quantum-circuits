@@ -20,6 +20,7 @@
       "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1"
     ],
     "superseded_result_kept_as_reference": {
+      "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
       "non_clifford": 34925796,
       "logical_qubits": 1044,
       "reason": "Lower qubit count at the earlier three-slot compiler-family boundary, but not the selected stricter four-slot reusable-chunk public headline."

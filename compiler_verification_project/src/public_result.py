@@ -75,6 +75,7 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
     qroam_reference = _load(ARTIFACT_ROOT / 'qroam_reference_crosscheck.json')
     modular_arithmetic = _load(ARTIFACT_ROOT / 'modular_arithmetic_certificate.json')
     compiler_parameters = _load(ARTIFACT_ROOT / 'compiler_parameters.json')
+    family_frontier = _load(ARTIFACT_ROOT / 'family_frontier.json')
     public_policy = compiler_parameters['public_headline_policy']
     non_clifford_limit = int(public_policy['non_clifford_limit_exclusive'])
     qubit_limit = int(public_policy['logical_qubit_limit_exclusive'])
@@ -83,6 +84,7 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
     executable_liveness = lowering['executable_liveness']
     counted_resource_ir = lowering['counted_resource_ir']
     resource_contract_engine = lowering['resource_contract_engine']
+    superseded_reference = family_frontier['best_qubit_family']
     current_values = {
         'schema': public_values['schema'],
         'selected_family_name': input_payload['selected_family_name'],
@@ -228,8 +230,9 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
                 'folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1',
             ],
             'superseded_result_kept_as_reference': {
-                'non_clifford': 34_925_796,
-                'logical_qubits': 1_044,
+                'name': superseded_reference['name'],
+                'non_clifford': int(superseded_reference['full_oracle_non_clifford']),
+                'logical_qubits': int(superseded_reference['total_logical_qubits']),
                 'reason': 'Lower qubit count at the earlier three-slot compiler-family boundary, but not the selected stricter four-slot reusable-chunk public headline.',
             },
         },
