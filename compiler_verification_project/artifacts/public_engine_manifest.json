@@ -1,0 +1,550 @@
+{
+  "schema": "compiler-project-public-engine-manifest-v1",
+  "scope": "current public reusable-chunk executable resource engine manifest",
+  "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+  "source_artifact": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
+  "engine_source_module": "compiler_verification_project/src/executable_resource_engine.py",
+  "public_totals": {
+    "non_clifford": 36957412,
+    "logical_qubits": 1199
+  },
+  "source_digests": {
+    "executable_resource_engine_sha256": "e8f2464d45c24334de1f1a3f9848dbdefffe9c36d76592be077912a17b627d31",
+    "counted_resource_ir_sha256": "e814826e787174c05f62f34396fd02b1d77a8728f0c99051f74e1d60294d7188",
+    "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
+    "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
+    "resource_contract_engine_sha256": "6ec61b5379cd1eb36a568423ffa43a79015c7f3c5dea53ec65cf1f80346b3d6f"
+  },
+  "instruction_stream": {
+    "encoding": [
+      "row_index",
+      "pc",
+      "op",
+      "reads",
+      "writes"
+    ],
+    "row_count": 6,
+    "sha256": "73889a1e514d3272f8444f7c8a214dc9b59cec9b959563c0918ba513ed306b85",
+    "rows": [
+      {
+        "row_index": 0,
+        "pc": 0,
+        "op": "load_input",
+        "reads": [],
+        "writes": []
+      },
+      {
+        "row_index": 1,
+        "pc": 1,
+        "op": "load_input",
+        "reads": [],
+        "writes": []
+      },
+      {
+        "row_index": 2,
+        "pc": 2,
+        "op": "load_input",
+        "reads": [],
+        "writes": []
+      },
+      {
+        "row_index": 3,
+        "pc": 3,
+        "op": "lookup_meta",
+        "reads": [],
+        "writes": []
+      },
+      {
+        "row_index": 4,
+        "pc": 4,
+        "op": "bool_from_flag",
+        "reads": [],
+        "writes": []
+      },
+      {
+        "row_index": 5,
+        "pc": 5,
+        "op": "complete_a0_reusable_chunk_tail",
+        "reads": [],
+        "writes": []
+      }
+    ]
+  },
+  "wire_catalog_stream": {
+    "encoding": [
+      "row_index",
+      "wire_id",
+      "owner_id",
+      "qubits",
+      "role"
+    ],
+    "row_count": 13,
+    "sha256": "d738d6fd6974ecdec6f0a351db272b1029eb3a6db20f536bdf6e31e7e805eb64",
+    "rows": [
+      {
+        "row_index": 0,
+        "wire_id": "f_lookup_inf",
+        "owner_id": "control_slot_register_file",
+        "qubits": 1,
+        "role": "leaf_control_flag"
+      },
+      {
+        "row_index": 1,
+        "wire_id": "folded_lookup_control_workspace",
+        "owner_id": "lookup_workspace",
+        "qubits": 18,
+        "role": "folded_lookup_decode_control_workspace"
+      },
+      {
+        "row_index": 2,
+        "wire_id": "qchunk",
+        "owner_id": "arithmetic_slot_register_file",
+        "qubits": 256,
+        "role": "field_arithmetic_slot"
+      },
+      {
+        "row_index": 3,
+        "wire_id": "qroam_chunk_target__lookup_x__chunk_0",
+        "owner_id": "lookup_workspace",
+        "qubits": 155,
+        "role": "standard_qroamclean_k1_chunk_target"
+      },
+      {
+        "row_index": 4,
+        "wire_id": "qroam_chunk_target__lookup_x__chunk_1",
+        "owner_id": "lookup_workspace",
+        "qubits": 155,
+        "role": "standard_qroamclean_k1_chunk_target"
+      },
+      {
+        "row_index": 5,
+        "wire_id": "qroam_chunk_target__lookup_x_plus_y__chunk_0",
+        "owner_id": "lookup_workspace",
+        "qubits": 155,
+        "role": "standard_qroamclean_k1_chunk_target"
+      },
+      {
+        "row_index": 6,
+        "wire_id": "qroam_chunk_target__lookup_x_plus_y__chunk_1",
+        "owner_id": "lookup_workspace",
+        "qubits": 155,
+        "role": "standard_qroamclean_k1_chunk_target"
+      },
+      {
+        "row_index": 7,
+        "wire_id": "qroam_chunk_target__lookup_y__chunk_0",
+        "owner_id": "lookup_workspace",
+        "qubits": 155,
+        "role": "standard_qroamclean_k1_chunk_target"
+      },
+      {
+        "row_index": 8,
+        "wire_id": "qroam_chunk_target__lookup_y__chunk_1",
+        "owner_id": "lookup_workspace",
+        "qubits": 155,
+        "role": "standard_qroamclean_k1_chunk_target"
+      },
+      {
+        "row_index": 9,
+        "wire_id": "qx",
+        "owner_id": "arithmetic_slot_register_file",
+        "qubits": 256,
+        "role": "field_arithmetic_slot"
+      },
+      {
+        "row_index": 10,
+        "wire_id": "qy",
+        "owner_id": "arithmetic_slot_register_file",
+        "qubits": 256,
+        "role": "field_arithmetic_slot"
+      },
+      {
+        "row_index": 11,
+        "wire_id": "qz",
+        "owner_id": "arithmetic_slot_register_file",
+        "qubits": 256,
+        "role": "field_arithmetic_slot"
+      },
+      {
+        "row_index": 12,
+        "wire_id": "semiclassical_qft_live_phase_bit",
+        "owner_id": "phase_shell_live_register",
+        "qubits": 1,
+        "role": "live_phase_bit"
+      }
+    ]
+  },
+  "schedule_stream": {
+    "encoding": [
+      "row_index",
+      "event_id",
+      "event_type",
+      "pc_range",
+      "source_instruction_pcs",
+      "source_instruction_ops",
+      "live_wire_ids"
+    ],
+    "row_count": 9,
+    "sha256": "c78b7e7018259d6a52814a3fcf7e4622f37c29d4fefbefc31c2b9ce93981ede3",
+    "rows": [
+      {
+        "row_index": 0,
+        "event_id": "pc0_2_load_carried_inputs",
+        "event_type": "load_carried_inputs",
+        "pc_range": [
+          0,
+          2
+        ],
+        "source_instruction_pcs": [
+          0,
+          1,
+          2
+        ],
+        "source_instruction_ops": [
+          "load_input",
+          "load_input",
+          "load_input"
+        ],
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "semiclassical_qft_live_phase_bit"
+        ]
+      },
+      {
+        "row_index": 1,
+        "event_id": "pc3_lookup_meta",
+        "event_type": "lookup_metadata",
+        "pc_range": [
+          3,
+          3
+        ],
+        "source_instruction_pcs": [
+          3
+        ],
+        "source_instruction_ops": [
+          "lookup_meta"
+        ],
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "folded_lookup_control_workspace",
+          "semiclassical_qft_live_phase_bit"
+        ]
+      },
+      {
+        "row_index": 2,
+        "event_id": "pc4_lookup_infinity_flag",
+        "event_type": "lookup_infinity_flag",
+        "pc_range": [
+          4,
+          4
+        ],
+        "source_instruction_pcs": [
+          4
+        ],
+        "source_instruction_ops": [
+          "bool_from_flag"
+        ],
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "folded_lookup_control_workspace",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ]
+      },
+      {
+        "row_index": 3,
+        "event_id": "pc5_stream_00_lookup_x_chunk_0",
+        "event_type": "qroam_chunk_load_consume_uncompute",
+        "pc_range": [
+          5,
+          5
+        ],
+        "source_instruction_pcs": [
+          5
+        ],
+        "source_instruction_ops": [
+          "complete_a0_reusable_chunk_tail"
+        ],
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_x__chunk_0",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ]
+      },
+      {
+        "row_index": 4,
+        "event_id": "pc5_stream_01_lookup_x_chunk_1",
+        "event_type": "qroam_chunk_load_consume_uncompute",
+        "pc_range": [
+          5,
+          5
+        ],
+        "source_instruction_pcs": [
+          5
+        ],
+        "source_instruction_ops": [
+          "complete_a0_reusable_chunk_tail"
+        ],
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_x__chunk_1",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ]
+      },
+      {
+        "row_index": 5,
+        "event_id": "pc5_stream_02_lookup_y_chunk_0",
+        "event_type": "qroam_chunk_load_consume_uncompute",
+        "pc_range": [
+          5,
+          5
+        ],
+        "source_instruction_pcs": [
+          5
+        ],
+        "source_instruction_ops": [
+          "complete_a0_reusable_chunk_tail"
+        ],
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_y__chunk_0",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ]
+      },
+      {
+        "row_index": 6,
+        "event_id": "pc5_stream_03_lookup_y_chunk_1",
+        "event_type": "qroam_chunk_load_consume_uncompute",
+        "pc_range": [
+          5,
+          5
+        ],
+        "source_instruction_pcs": [
+          5
+        ],
+        "source_instruction_ops": [
+          "complete_a0_reusable_chunk_tail"
+        ],
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_y__chunk_1",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ]
+      },
+      {
+        "row_index": 7,
+        "event_id": "pc5_stream_04_lookup_x_plus_y_chunk_0",
+        "event_type": "qroam_chunk_load_consume_uncompute",
+        "pc_range": [
+          5,
+          5
+        ],
+        "source_instruction_pcs": [
+          5
+        ],
+        "source_instruction_ops": [
+          "complete_a0_reusable_chunk_tail"
+        ],
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_x_plus_y__chunk_0",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ]
+      },
+      {
+        "row_index": 8,
+        "event_id": "pc5_stream_05_lookup_x_plus_y_chunk_1",
+        "event_type": "qroam_chunk_load_consume_uncompute",
+        "pc_range": [
+          5,
+          5
+        ],
+        "source_instruction_pcs": [
+          5
+        ],
+        "source_instruction_ops": [
+          "complete_a0_reusable_chunk_tail"
+        ],
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_x_plus_y__chunk_1",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ]
+      }
+    ]
+  },
+  "owner_capacity_stream": {
+    "encoding": [
+      "row_index",
+      "owner_id",
+      "logical_qubits",
+      "required_peak_qubits",
+      "capacity_pass"
+    ],
+    "row_count": 4,
+    "sha256": "a412f4a09585f39bf1a5b81d3dcbdfa5514084795872e25aa94d5503d0177023",
+    "rows": [
+      {
+        "row_index": 0,
+        "owner_id": "arithmetic_slot_register_file",
+        "logical_qubits": 1024,
+        "required_peak_qubits": 1024,
+        "capacity_pass": true
+      },
+      {
+        "row_index": 1,
+        "owner_id": "lookup_workspace",
+        "logical_qubits": 173,
+        "required_peak_qubits": 173,
+        "capacity_pass": true
+      },
+      {
+        "row_index": 2,
+        "owner_id": "control_slot_register_file",
+        "logical_qubits": 1,
+        "required_peak_qubits": 1,
+        "capacity_pass": true
+      },
+      {
+        "row_index": 3,
+        "owner_id": "phase_shell_live_register",
+        "logical_qubits": 1,
+        "required_peak_qubits": 1,
+        "capacity_pass": true
+      }
+    ]
+  },
+  "resource_term_stream": {
+    "encoding": [
+      "row_index",
+      "term_id",
+      "category",
+      "instances",
+      "per_instance_non_clifford",
+      "total_non_clifford",
+      "source"
+    ],
+    "row_count": 7,
+    "expanded_non_clifford_instances": 187,
+    "sha256": "912e9414bfdc72259b8553a3df17cf1bd62023e5d15b57e4297735deee061916",
+    "rows": [
+      {
+        "row_index": 0,
+        "term_id": "base_without_streamed_qroam",
+        "category": "arithmetic_control_and_phase_base",
+        "instances": 1,
+        "per_instance_non_clifford": 24767716,
+        "total_non_clifford": 24767716,
+        "source": "logical_resource_ledger.qroam_clean_tradeoff_sweep.base_non_clifford_without_streamed_qroam"
+      },
+      {
+        "row_index": 1,
+        "term_id": "qroam_stream__lookup_x__chunk_0",
+        "category": "qroam_chunk_stream",
+        "instances": 31,
+        "per_instance_non_clifford": 65536,
+        "total_non_clifford": 2031616,
+        "source": "stream_plan.rows"
+      },
+      {
+        "row_index": 2,
+        "term_id": "qroam_stream__lookup_x__chunk_1",
+        "category": "qroam_chunk_stream",
+        "instances": 31,
+        "per_instance_non_clifford": 65536,
+        "total_non_clifford": 2031616,
+        "source": "stream_plan.rows"
+      },
+      {
+        "row_index": 3,
+        "term_id": "qroam_stream__lookup_y__chunk_0",
+        "category": "qroam_chunk_stream",
+        "instances": 31,
+        "per_instance_non_clifford": 65536,
+        "total_non_clifford": 2031616,
+        "source": "stream_plan.rows"
+      },
+      {
+        "row_index": 4,
+        "term_id": "qroam_stream__lookup_y__chunk_1",
+        "category": "qroam_chunk_stream",
+        "instances": 31,
+        "per_instance_non_clifford": 65536,
+        "total_non_clifford": 2031616,
+        "source": "stream_plan.rows"
+      },
+      {
+        "row_index": 5,
+        "term_id": "qroam_stream__lookup_x_plus_y__chunk_0",
+        "category": "qroam_chunk_stream",
+        "instances": 31,
+        "per_instance_non_clifford": 65536,
+        "total_non_clifford": 2031616,
+        "source": "stream_plan.rows"
+      },
+      {
+        "row_index": 6,
+        "term_id": "qroam_stream__lookup_x_plus_y__chunk_1",
+        "category": "qroam_chunk_stream",
+        "instances": 31,
+        "per_instance_non_clifford": 65536,
+        "total_non_clifford": 2031616,
+        "source": "stream_plan.rows"
+      }
+    ]
+  },
+  "fast_no_zkp_contract": {
+    "build_target": "public-engine-manifest",
+    "verify_group": "public_engine_manifest_checks",
+    "prover_required": false
+  },
+  "checks": {
+    "executable_resource_engine_passes": true,
+    "counted_resource_engine_passes": true,
+    "resource_contract_engine_passes": true,
+    "public_totals_match_counted_resource_engine": true,
+    "public_totals_match_resource_contract_engine": true,
+    "engine_digests_match_bound_documents": true,
+    "schedule_rows_bind_instruction_stream": true,
+    "wire_rows_cover_liveness_catalog": true,
+    "owner_rows_cover_capacity_catalog": true,
+    "resource_terms_sum_to_public_total": true
+  },
+  "pass": true
+}

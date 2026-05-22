@@ -75,6 +75,7 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
     qroam_reference = _load(ARTIFACT_ROOT / 'qroam_reference_crosscheck.json')
     modular_arithmetic = _load(ARTIFACT_ROOT / 'modular_arithmetic_certificate.json')
     headline_resource_manifest = _load(ARTIFACT_ROOT / 'headline_resource_manifest.json')
+    public_engine_manifest = _load(ARTIFACT_ROOT / 'public_engine_manifest.json')
     compiler_parameters = _load(ARTIFACT_ROOT / 'compiler_parameters.json')
     family_frontier = _load(ARTIFACT_ROOT / 'family_frontier.json')
     public_policy = compiler_parameters['public_headline_policy']
@@ -172,6 +173,16 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             and headline_resource_manifest['public_totals']['logical_qubits'] == qubits
             and headline_resource_manifest['checks']['term_rows_sum_to_public_total'] is True
             and headline_resource_manifest['checks']['liveness_rows_peak_to_public_qubits'] is True
+        ),
+        'public_engine_manifest_binds_current_public_result': (
+            public_engine_manifest['pass'] is True
+            and public_engine_manifest['selected_family_name'] == current_values['selected_family_name']
+            and public_engine_manifest['public_totals']['non_clifford'] == non_clifford
+            and public_engine_manifest['public_totals']['logical_qubits'] == qubits
+            and public_engine_manifest['source_digests']['counted_resource_ir_sha256'] == resource_contract_engine['counted_resource_ir_sha256']
+            and public_engine_manifest['source_digests']['executable_liveness_sha256'] == resource_contract_engine['executable_liveness_sha256']
+            and public_engine_manifest['source_digests']['owner_capacity_sha256'] == resource_contract_engine['owner_capacity_sha256']
+            and public_engine_manifest['fast_no_zkp_contract']['prover_required'] is False
         ),
         'proof_register_contract_binds_prepared_leaf_to_resource_owners': (
             input_payload['proof_register_contract']['pass'] is True
@@ -280,6 +291,7 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             'reusable_chunk_lowering': _file_record('compiler_verification_project/artifacts/reusable_chunk_lowering.json'),
             'reusable_chunk_tail_candidate': _file_record('compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json'),
             'headline_resource_manifest': _file_record('compiler_verification_project/artifacts/headline_resource_manifest.json'),
+            'public_engine_manifest': _file_record('compiler_verification_project/artifacts/public_engine_manifest.json'),
         },
         'verification_commands': {
             'metadata': 'python compiler_verification_project/scripts/verify_public_headline.py',
@@ -299,6 +311,7 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
                 'generated QROAM K=1 primitive-count certificate bound into the reusable-chunk resource document',
                 'executable liveness peak, qchunk/QROAM-target concurrency, and owner-capacity checks',
                 'current-headline counted-resource stream manifest derived from reusable_chunk_lowering counted_resource_ir',
+                'public engine manifest binding instruction, wire, schedule, owner, and resource-term streams without invoking a prover',
                 'fixture-to-proof and fixture-to-verifier-key binding',
             ],
         },

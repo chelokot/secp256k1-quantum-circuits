@@ -34,6 +34,7 @@ from zkp_attestation import write_zkp_attestation_inputs  # noqa: E402
 from proof_corpus_profiles import resolve_proof_corpus_profile  # noqa: E402
 from proof_environment_contract import build_proof_environment_contract  # noqa: E402
 from proof_publication_status import build_proof_publication_status  # noqa: E402
+from public_engine_manifest import build_public_engine_manifest  # noqa: E402
 
 BUILD_TARGETS = (
     'all',
@@ -46,6 +47,7 @@ BUILD_TARGETS = (
     'release-corpus-preflight',
     'materialized-circuit-manifest',
     'headline-resource-manifest',
+    'public-engine-manifest',
     'arithmetic-operation-ir',
     'resource-liveness-certificate',
     'resource-stack',
@@ -265,6 +267,18 @@ def build_headline_resource_manifest_artifact() -> None:
     dump_json(artifact_dir / 'headline_resource_manifest.json', payload)
 
 
+def build_public_engine_manifest_artifact() -> None:
+    artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
+    candidate_input = load_json(
+        artifact_dir / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json'
+    )
+    payload = build_public_engine_manifest(
+        reusable_chunk_lowering=load_json(artifact_dir / 'reusable_chunk_lowering.json'),
+        selected_family_name=candidate_input['selected_family_name'],
+    )
+    dump_json(artifact_dir / 'public_engine_manifest.json', payload)
+
+
 def build_summary_artifact() -> None:
     artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
     frontier = load_json(artifact_dir / 'family_frontier.json')
@@ -322,6 +336,9 @@ def main() -> None:
     if args.target in ('headline-resource-manifest',):
         build_headline_resource_manifest_artifact()
         payload['headline_resource_manifest'] = 'compiler_verification_project/artifacts/headline_resource_manifest.json'
+    if args.target in ('public-engine-manifest',):
+        build_public_engine_manifest_artifact()
+        payload['public_engine_manifest'] = 'compiler_verification_project/artifacts/public_engine_manifest.json'
     if args.target in ('resource-stack', 'resource-zkp-and-public'):
         payload.update(build_resource_stack())
     if args.target in ('arithmetic-operation-ir',):
@@ -346,6 +363,8 @@ def main() -> None:
     if args.target in ('all', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
         build_headline_resource_manifest_artifact()
         payload['headline_resource_manifest'] = 'compiler_verification_project/artifacts/headline_resource_manifest.json'
+        build_public_engine_manifest_artifact()
+        payload['public_engine_manifest'] = 'compiler_verification_project/artifacts/public_engine_manifest.json'
     if args.target in ('release-candidate-zkp',):
         build_release_candidate_zkp()
         payload['zkp_attestation_release_candidate'] = 'compiler_verification_project/artifacts/zkp_attestation_release_candidate/zkp_attestation_input.json'
@@ -370,6 +389,7 @@ def main() -> None:
         'release_corpus_preflight': payload.get('release_corpus_preflight'),
         'materialized_circuit_manifest': payload.get('materialized_circuit_manifest'),
         'headline_resource_manifest': payload.get('headline_resource_manifest'),
+        'public_engine_manifest': payload.get('public_engine_manifest'),
         'arithmetic_operation_ir': payload.get('arithmetic_operation_ir'),
         'resource_liveness_certificate': payload.get('resource_liveness_certificate'),
         'qroam_reference_crosscheck': payload.get('qroam_reference_crosscheck'),

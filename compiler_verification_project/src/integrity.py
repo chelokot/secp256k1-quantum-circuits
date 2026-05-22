@@ -39,6 +39,7 @@ from physical_estimator import (
 from proof_corpus_profiles import GOOGLE_COMPARABLE_CASE_COUNT, GOOGLE_COMPARABLE_PROFILE, SMOKE_PUBLIC_PROFILE, build_proof_corpus_profiles
 from proof_environment_contract import PROOF_ENVIRONMENT_CONTRACT_SCHEMA, build_proof_environment_contract
 from proof_publication_status import PROOF_PUBLICATION_STATUS_SCHEMA, build_proof_publication_status
+from public_engine_manifest import PUBLIC_ENGINE_MANIFEST_SCHEMA, build_public_engine_manifest
 from public_result import build_public_headline_result, write_public_headline_result
 from qroam_primitive import build_qroam_k1_primitive_certificate
 from qroam_reference_crosscheck import QROAM_REFERENCE_CROSSCHECK_SCHEMA, build_qroam_reference_crosscheck
@@ -188,6 +189,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'resource_liveness_certificate': artifact_root / 'resource_liveness_certificate.json',
         'materialized_circuit_manifest': artifact_root / 'materialized_circuit_manifest.json',
         'headline_resource_manifest': artifact_root / 'headline_resource_manifest.json',
+        'public_engine_manifest': artifact_root / 'public_engine_manifest.json',
         'qubit_breakthrough_analysis': artifact_root / 'qubit_breakthrough_analysis.json',
         'full_attack_inventory': artifact_root / 'full_attack_inventory.json',
         'ft_ir_compositions': artifact_root / 'ft_ir_compositions.json',
@@ -232,6 +234,13 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 zkp_attestation_input=load_json(artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json'),
                 public_headline_result=load_json(artifact_root / 'public_headline_result.json'),
                 headline_resource_manifest=load_json(artifact_root / 'headline_resource_manifest.json'),
+            ),
+        )
+        dump_json(
+            artifact_root / 'public_engine_manifest.json',
+            build_public_engine_manifest(
+                reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
+                selected_family_name=load_json(artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json')['selected_family_name'],
             ),
         )
     return {name: _load_artifact(path) for name, path in required.items()}
@@ -2068,6 +2077,30 @@ def build_headline_resource_manifest_checks(artifacts: Mapping[str, Any]) -> Dic
     return _summarize_checks(checks)
 
 
+def build_public_engine_manifest_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    manifest = artifacts['public_engine_manifest']
+    lowering = artifacts['reusable_chunk_lowering']
+    selected_family_name = artifacts['zkp_attestation_reusable_chunk_candidate_input']['selected_family_name']
+    expected = build_public_engine_manifest(
+        reusable_chunk_lowering=lowering,
+        selected_family_name=selected_family_name,
+    )
+    executable_resource_engine = lowering['executable_resource_engine']
+    resource_contract_engine = lowering['resource_contract_engine']
+    checks = [
+        _check('public_engine_manifest_matches_generator', manifest == expected, expected, manifest),
+        _check('public_engine_manifest_schema_is_current', manifest['schema'] == PUBLIC_ENGINE_MANIFEST_SCHEMA, PUBLIC_ENGINE_MANIFEST_SCHEMA, manifest['schema']),
+        _check('public_engine_manifest_binds_selected_family', manifest['selected_family_name'] == selected_family_name, selected_family_name, manifest['selected_family_name']),
+        _check('public_engine_manifest_binds_engine_public_totals', manifest['public_totals'] == executable_resource_engine['public_totals'], executable_resource_engine['public_totals'], manifest['public_totals']),
+        _check('public_engine_manifest_binds_counted_ir_digest', manifest['source_digests']['counted_resource_ir_sha256'] == executable_resource_engine['counted_resource_ir_sha256'], executable_resource_engine['counted_resource_ir_sha256'], manifest['source_digests']['counted_resource_ir_sha256']),
+        _check('public_engine_manifest_binds_liveness_and_owner_digests', manifest['source_digests']['executable_liveness_sha256'] == resource_contract_engine['executable_liveness_sha256'] and manifest['source_digests']['owner_capacity_sha256'] == resource_contract_engine['owner_capacity_sha256'], {'executable_liveness_sha256': resource_contract_engine['executable_liveness_sha256'], 'owner_capacity_sha256': resource_contract_engine['owner_capacity_sha256']}, manifest['source_digests']),
+        _check('public_engine_manifest_instruction_schedule_and_wire_streams_are_nonempty', manifest['instruction_stream']['row_count'] > 0 and manifest['schedule_stream']['row_count'] > 0 and manifest['wire_catalog_stream']['row_count'] > 0, '> 0 rows', {'instruction_rows': manifest['instruction_stream']['row_count'], 'schedule_rows': manifest['schedule_stream']['row_count'], 'wire_rows': manifest['wire_catalog_stream']['row_count']}),
+        _check('public_engine_manifest_fast_contract_is_no_zkp', manifest['fast_no_zkp_contract']['prover_required'] is False and manifest['fast_no_zkp_contract']['verify_group'] == 'public_engine_manifest_checks', {'prover_required': False, 'verify_group': 'public_engine_manifest_checks'}, manifest['fast_no_zkp_contract']),
+        _check('public_engine_manifest_passes_internal_checks', manifest['pass'] is True and all(manifest['checks'].values()), True, manifest['checks']),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_constant_provenance_checks(artifacts: Mapping[str, Any], repo_root: Path) -> Dict[str, Any]:
     provenance = artifacts['constant_provenance']
     expected = build_constant_provenance(
@@ -2731,6 +2764,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'subcircuit_equivalence_checks': lambda: build_subcircuit_equivalence_checks(artifacts, repo_root),
         'headline_opcode_coverage_checks': lambda: build_headline_opcode_coverage_checks(artifacts),
         'headline_resource_manifest_checks': lambda: build_headline_resource_manifest_checks(artifacts),
+        'public_engine_manifest_checks': lambda: build_public_engine_manifest_checks(artifacts),
         'constant_provenance_checks': lambda: build_constant_provenance_checks(artifacts, repo_root),
         'primitive_multiplier_checks': lambda: build_primitive_multiplier_checks(artifacts),
         'frontier_checks': lambda: build_frontier_checks(artifacts),

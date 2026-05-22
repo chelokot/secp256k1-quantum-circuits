@@ -1557,6 +1557,13 @@ Current remediation:
   `counted_resource_ir`, executable-liveness, and owner-capacity digests recorded
   by the resource contract engine, so this digest-drift class is visible in the
   reviewer CLI before running SP1.
+- `compiler_verification_project/artifacts/public_engine_manifest.json` now
+  binds the current public engine layer into a no-ZKP artifact: executable
+  instruction rows, wire rows, schedule rows, owner-capacity rows, resource-term
+  rows, public totals, and the engine/resource-contract digests are regenerated
+  from `reusable_chunk_lowering.json`. `public_headline_result.json` records this
+  artifact as checked evidence, and `fast_engine_verify.py` exercises the
+  no-prover edit-loop checks plus mutation tests.
 - `compiler_verification_project/artifacts/arithmetic_operation_ir.json` now
   reconstructs arithmetic block/stage/kernel/selected-leaf primitive counts from
   materialized operation streams and digests. The resource-liveness certificate

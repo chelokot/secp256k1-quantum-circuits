@@ -48,6 +48,7 @@ BUILD_SUMMARY_ARTIFACT_PATHS: Dict[str, str] = {
     'resource_liveness_certificate': 'compiler_verification_project/artifacts/resource_liveness_certificate.json',
     'materialized_circuit_manifest': 'compiler_verification_project/artifacts/materialized_circuit_manifest.json',
     'headline_resource_manifest': 'compiler_verification_project/artifacts/headline_resource_manifest.json',
+    'public_engine_manifest': 'compiler_verification_project/artifacts/public_engine_manifest.json',
     'qubit_breakthrough_analysis': 'compiler_verification_project/artifacts/qubit_breakthrough_analysis.json',
     'full_attack_inventory': 'compiler_verification_project/artifacts/full_attack_inventory.json',
     'subcircuit_equivalence': 'compiler_verification_project/artifacts/subcircuit_equivalence.json',

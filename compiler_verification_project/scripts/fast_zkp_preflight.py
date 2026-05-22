@@ -21,6 +21,7 @@ VERIFY_GROUPS = (
     'release_corpus_preflight_checks',
     'reusable_chunk_lowering_checks',
     'headline_resource_manifest_checks',
+    'public_engine_manifest_checks',
     'constant_provenance_checks',
     'qroam_reference_crosscheck_checks',
 )
@@ -35,6 +36,7 @@ PYTEST_TARGETS = (
     'tests/test_release_corpus_preflight.py',
     'tests/test_arithmetic_operation_ir.py',
     'tests/test_headline_resource_manifest.py',
+    'tests/test_public_engine_manifest.py',
     'tests/test_constant_provenance.py',
     'tests/test_zkp_attestation_input.py::test_reusable_chunk_zkp_attestation_input_binds_candidate_contract',
     'tests/test_public_headline_verifier.py',

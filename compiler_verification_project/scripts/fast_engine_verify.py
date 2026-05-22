@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import subprocess
+import sys
+from pathlib import Path
+
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+
+VERIFY_GROUPS = [
+    'reusable_chunk_lowering_checks',
+    'public_engine_manifest_checks',
+    'headline_resource_manifest_checks',
+    'public_headline_result_checks',
+    'proof_environment_contract_checks',
+    'proof_publication_status_checks',
+]
+
+PYTEST_TARGETS = [
+    'tests/test_public_engine_manifest.py',
+    'tests/test_headline_resource_manifest.py',
+    'tests/test_compiler_verification_project.py::test_mutated_public_engine_manifest_is_detected',
+    'tests/test_compiler_verification_project.py::test_mutated_reusable_chunk_executable_resource_engine_drift_is_detected',
+    'tests/test_compiler_verification_project.py::test_mutated_reusable_chunk_schedule_source_instruction_drift_is_detected',
+    'tests/test_public_headline_verifier.py',
+]
+
+
+def _run(argv: list[str], *, cwd: Path = PROJECT_ROOT) -> None:
+    print(f"[fast-engine] {' '.join(argv)}", flush=True)
+    subprocess.run(argv, cwd=cwd, check=True)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--skip-build', action='store_true')
+    parser.add_argument('--skip-pytest', action='store_true')
+    parser.add_argument('--include-rust', action='store_true')
+    args = parser.parse_args()
+
+    if not args.skip_build:
+        _run([sys.executable, 'compiler_verification_project/scripts/build.py', '--target', 'resource-zkp-and-public'])
+    _run([
+        sys.executable,
+        'compiler_verification_project/scripts/verify.py',
+        '--summary',
+        '--groups',
+        *VERIFY_GROUPS,
+    ])
+    if not args.skip_pytest:
+        _run([sys.executable, '-m', 'pytest', '-q', *PYTEST_TARGETS])
+    if args.include_rust:
+        _run(
+            ['cargo', 'test', '-p', 'secp256k1-zkp-attestation-lib', 'reusable_chunk'],
+            cwd=PROJECT_ROOT / 'compiler_verification_project' / 'zkp_attestation',
+        )
+
+
+if __name__ == '__main__':
+    main()

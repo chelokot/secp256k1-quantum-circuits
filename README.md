@@ -268,6 +268,7 @@ python scripts/verify_all.py
 python compiler_verification_project/scripts/build.py
 python compiler_verification_project/scripts/build.py --target composition-artifacts
 python compiler_verification_project/scripts/build.py --target materialized-circuit-manifest
+python compiler_verification_project/scripts/build.py --target public-engine-manifest
 python compiler_verification_project/scripts/build.py --target proof-environment-contract
 python compiler_verification_project/scripts/build.py --target proof-publication-status
 python compiler_verification_project/scripts/build.py --target resource-zkp-and-public
@@ -275,6 +276,7 @@ python compiler_verification_project/scripts/build.py --target zkp-and-public
 python compiler_verification_project/scripts/build.py --target release-candidate-zkp
 python compiler_verification_project/scripts/verify.py --cases 16
 python compiler_verification_project/scripts/proof_status.py
+python compiler_verification_project/scripts/fast_engine_verify.py
 python compiler_verification_project/scripts/fast_zkp_preflight.py
 python compiler_verification_project/scripts/release_candidate_preproof.py --dry-run-json
 python compiler_verification_project/scripts/proof_environment_report.py
@@ -293,9 +295,11 @@ comparison family; use `--all-families` to dump every checked exact compiler
 family.
 
 Use `build.py --target resource-zkp-and-public` for the normal reusable-chunk
-resource edit loop: it refreshes `reusable_chunk_lowering.json`, the candidate
-ZKP input bundle, and the public headline JSON without rebuilding every compiler
-artifact. Use `build.py --target composition-artifacts` after changing resource
+resource edit loop: it refreshes `reusable_chunk_lowering.json`,
+`public_engine_manifest.json`, the candidate ZKP input bundle, and the public
+headline JSON without rebuilding every compiler artifact. Use
+`build.py --target public-engine-manifest` after changing only the no-ZKP public
+engine manifest layer. Use `build.py --target composition-artifacts` after changing resource
 or frontier accounting that feeds the composition layer; it refreshes
 `full_attack_inventory.json`, `subcircuit_equivalence.json`, and
 `headline_opcode_coverage.json` without touching any prover. Use
@@ -325,6 +329,12 @@ attestation-library Rust unit tests, and it has an internal guard that rejects
 any command plan containing a prover. The fast gate also rebuild-checks the
 9024-case release-corpus preflight as semantic evidence only; it is not a
 substitute for compressed/Groth16 proof freshness.
+Use `compiler_verification_project/scripts/fast_engine_verify.py` for the
+engine-only no-ZKP loop. It rebuilds the current public resource artifacts,
+verifies the reusable engine, public engine manifest, headline resource
+manifest, public headline, and proof runbook/status metadata, and then runs the
+focused Python mutation tests. Add `--include-rust` when you also want the SP1
+attestation-library reusable-chunk unit tests, still without proving.
 After compressed/Groth16 proof rebuilds, run the same preflight with
 `--require-current-proofs` to make stale checked proof fixtures a hard failure
 without starting another proof.
