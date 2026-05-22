@@ -341,8 +341,10 @@ repo now emits
 compact arithmetic operation-stream IR whose block, stage, kernel, and selected
 leaf totals are reconstructed from canonical primitive-operation streams and
 SHA-256 digests instead of copied totals. The checked
-`resource_liveness_certificate.json` embeds the arithmetic IR summary and leaf
-operation digest, and the SP1 guest rejects a forged arithmetic IR row even
+`resource_liveness_certificate.json` embeds the full compact arithmetic IR, and
+the SP1 guest recomputes block totals, stage totals, kernel totals, and the
+selected leaf arithmetic total before accepting the resource certificate. Guest
+tests reject forged arithmetic leaf rows and forged block-level totals even
 when the resource-certificate digest is refreshed. This is a useful guard
 against another manually summed arithmetic ledger, but it is still not a full
 Clifford-complete reversible modular-arithmetic netlist.
@@ -1623,9 +1625,10 @@ Fixed after review:
   block into canonical primitive-operation streams, records per-block stream
   digests, reconstructs stage/kernel/selected-leaf primitive totals from those
   streams, separates non-arithmetic leaf opcodes explicitly, and is embedded in
-  the resource liveness certificate. Integrity checks validate the artifact,
-  and a new guest negative test rejects a forged arithmetic operation-IR row
-  after refreshing the resource-certificate digest. This closes another
+  full compact form in the resource liveness certificate. Integrity checks
+  validate the artifact, and new guest negative tests reject both a forged
+  arithmetic operation-IR leaf row and a forged block-level total after
+  refreshing the resource-certificate digest. This closes another
   copied-total/manual-ledger path, while leaving the deeper full-netlist
   arithmetic objection open.
 - `ZK-2` / resource-IR binding: `reusable_chunk_lowering.json` now includes

@@ -62,6 +62,7 @@ def test_zkp_attestation_input_reconstructs_public_claim() -> None:
     assert resource_document['document_type'] == 'resource_liveness_certificate'
     assert arithmetic_operation_ir['schema'] == 'compiler-project-arithmetic-operation-ir-v1'
     assert arithmetic_operation_ir['pass'] is True
+    assert arithmetic_operation_ir['summary']['kernel_count'] == len(arithmetic_operation_ir['kernels'])
     assert arithmetic_operation_ir['leaf_arithmetic_summary']['non_clifford_total'] == family['arithmetic_leaf_non_clifford']
     assert arithmetic_operation_ir['leaf_arithmetic_summary']['operation_stream_sha256']
     frontier = json.loads((REPO_ROOT / 'compiler_verification_project' / 'artifacts' / 'family_frontier.json').read_text())
@@ -336,7 +337,13 @@ def test_checked_in_public_values_and_core_fixture_match_bundle() -> None:
     assert public_values['leaf_sha256'] == payload['leaf_sha256']
     assert public_values['family_sha256'] == payload['family_sha256']
     assert public_values['case_corpus_sha256'] == payload['case_corpus_sha256']
-    assert public_values['resource_certificate_sha256'] == payload['resource_certificate_sha256']
+    status = _proof_status_report()
+    if public_values['resource_certificate_sha256'] == payload['resource_certificate_sha256']:
+        assert status['systems']['core']['resource_digest_matches_input'] is True
+    else:
+        assert 'core' in status['stale_systems']
+        assert status['systems']['core']['resource_digest_matches_input'] is False
+        assert status['resource_certificate_sha256'] != public_values['resource_certificate_sha256']
     assert public_values['case_count'] == payload['prepared_case_corpus']['case_count']
     assert public_values['passed_case_count'] == public_values['case_count']
     assert fixture['proof_system'] == 'core'

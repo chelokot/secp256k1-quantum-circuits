@@ -409,20 +409,8 @@ def build_resource_liveness_certificate(
             ],
         },
         'arithmetic_operation_ir': {
-            'schema': arithmetic_operation_ir['schema'],
-            'source_artifacts': arithmetic_operation_ir['source_artifacts'],
-            'stream_encoding': arithmetic_operation_ir['stream_encoding'],
-            'summary': arithmetic_operation_ir['summary'],
-            'leaf_arithmetic_summary': {
-                'covered_opcode_count': int(arithmetic_operation_ir['leaf_arithmetic_summary']['covered_opcode_count']),
-                'non_arithmetic_leaf_opcodes': arithmetic_operation_ir['leaf_arithmetic_summary']['non_arithmetic_leaf_opcodes'],
-                'operation_stream_sha256': arithmetic_operation_ir['leaf_arithmetic_summary']['operation_stream_sha256'],
-                'primitive_counts_total': arithmetic_operation_ir['leaf_arithmetic_summary']['primitive_counts_total'],
-                'non_clifford_total': int(arithmetic_operation_ir['leaf_arithmetic_summary']['non_clifford_total']),
-                'rows': arithmetic_operation_ir['leaf_arithmetic_summary']['rows'],
-            },
-            'checks': arithmetic_operation_ir['checks'],
-            'pass': bool(arithmetic_operation_ir['pass']),
+            **arithmetic_operation_ir,
+            'binding_note': 'Full compact arithmetic operation IR is embedded in the ZKP-bound resource certificate so the guest can recompute block, stage, kernel, and selected-leaf arithmetic totals without trusting an external artifact path.',
         },
         'materialized_operation_stream': {
             'family': materialized_circuit_manifest['family'],

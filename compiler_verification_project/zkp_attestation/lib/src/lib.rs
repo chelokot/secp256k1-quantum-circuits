@@ -3926,6 +3926,163 @@ fn validate_resource_certificate(
         json_u64_field(arithmetic_ir_summary, "max_block_operand_slots_required") >= claim.field_bits as u64,
         "arithmetic operation IR operand profile must cover at least one field register"
     );
+    let primitive_count_keys = ["ccx", "cx", "x", "measurement"];
+    let mut observed_kernel_count = 0u64;
+    let mut observed_stage_count = 0u64;
+    let mut observed_block_count = 0u64;
+    let mut observed_kernel_operation_count = 0u64;
+    let mut max_block_operand_slots_required = 0u64;
+    let mut arithmetic_kernel_lookup: BTreeMap<String, (u64, u64, String)> = BTreeMap::new();
+    for kernel in json_array_field(arithmetic_operation_ir, "kernels") {
+        observed_kernel_count += 1;
+        let opcode = json_string_field(kernel, "opcode").to_owned();
+        let stages = json_array_field(kernel, "stages");
+        assert_eq!(
+            json_u64_field(kernel, "stage_count"),
+            stages.len() as u64,
+            "arithmetic operation IR kernel stage count mismatch: {opcode}"
+        );
+        let mut kernel_counts: BTreeMap<String, u64> = BTreeMap::new();
+        for key in primitive_count_keys {
+            kernel_counts.insert(key.to_owned(), 0);
+        }
+        let mut kernel_operation_cursor = 0u64;
+        for stage in stages {
+            observed_stage_count += 1;
+            let stage_name = json_string_field(stage, "stage").to_owned();
+            assert_eq!(json_string_field(stage, "kernel"), opcode.as_str());
+            assert_eq!(
+                json_u64_field(stage, "operation_start"),
+                kernel_operation_cursor,
+                "arithmetic operation IR stage start mismatch: {opcode}:{stage_name}"
+            );
+            let blocks = json_array_field(stage, "blocks");
+            assert_eq!(
+                json_u64_field(stage, "block_count"),
+                blocks.len() as u64,
+                "arithmetic operation IR stage block count mismatch: {opcode}:{stage_name}"
+            );
+            assert!(
+                json_string_field(stage, "block_digest_sha256").len() == 64,
+                "arithmetic operation IR stage must bind a block digest"
+            );
+            let mut stage_counts: BTreeMap<String, u64> = BTreeMap::new();
+            for key in primitive_count_keys {
+                stage_counts.insert(key.to_owned(), 0);
+            }
+            let mut stage_operation_cursor = json_u64_field(stage, "operation_start");
+            for block in blocks {
+                observed_block_count += 1;
+                let block_name = json_string_field(block, "block");
+                assert_eq!(json_string_field(block, "kernel"), opcode.as_str());
+                assert_eq!(json_string_field(block, "stage"), stage_name.as_str());
+                assert_eq!(
+                    json_u64_field(block, "operation_start"),
+                    stage_operation_cursor,
+                    "arithmetic operation IR block start mismatch: {opcode}:{stage_name}:{block_name}"
+                );
+                assert_eq!(
+                    json_u64_field(block, "operation_count"),
+                    json_u64_field(block, "operation_end_exclusive")
+                        - json_u64_field(block, "operation_start"),
+                    "arithmetic operation IR block operation count mismatch"
+                );
+                assert!(
+                    json_string_field(block, "operation_stream_sha256").len() == 64,
+                    "arithmetic operation IR block must bind an operation stream digest"
+                );
+                let operand_profile = json_object_field(block, "operand_profile");
+                assert_eq!(json_u64_field(operand_profile, "negative_operand_count"), 0);
+                assert_eq!(json_u64_field(operand_profile, "too_wide_operand_rows"), 0);
+                max_block_operand_slots_required = max_block_operand_slots_required
+                    .max(json_u64_field(operand_profile, "operand_slots_required"));
+                let block_counts = json_primitive_counts(block, "primitive_counts_total");
+                assert_eq!(
+                    block_counts,
+                    json_primitive_counts(block, "declared_primitive_counts_total"),
+                    "arithmetic operation IR block declared totals mismatch"
+                );
+                for key in primitive_count_keys {
+                    *stage_counts.get_mut(key).unwrap() += block_counts[key];
+                }
+                stage_operation_cursor = json_u64_field(block, "operation_end_exclusive");
+            }
+            assert_eq!(
+                stage_operation_cursor,
+                json_u64_field(stage, "operation_end_exclusive"),
+                "arithmetic operation IR stage end mismatch"
+            );
+            assert_eq!(
+                json_u64_field(stage, "operation_count"),
+                json_u64_field(stage, "operation_end_exclusive")
+                    - json_u64_field(stage, "operation_start"),
+                "arithmetic operation IR stage operation count mismatch"
+            );
+            assert_eq!(
+                stage_counts,
+                json_primitive_counts(stage, "primitive_counts_total"),
+                "arithmetic operation IR stage totals do not reconstruct"
+            );
+            assert_eq!(
+                stage_counts,
+                json_primitive_counts(stage, "declared_primitive_counts_total"),
+                "arithmetic operation IR stage declared totals mismatch"
+            );
+            for key in primitive_count_keys {
+                *kernel_counts.get_mut(key).unwrap() += stage_counts[key];
+            }
+            kernel_operation_cursor = json_u64_field(stage, "operation_end_exclusive");
+        }
+        assert_eq!(
+            kernel_operation_cursor,
+            json_u64_field(kernel, "operation_count"),
+            "arithmetic operation IR kernel operation count mismatch: {opcode}"
+        );
+        assert_eq!(
+            kernel_counts,
+            json_primitive_counts(kernel, "primitive_counts_total"),
+            "arithmetic operation IR kernel totals do not reconstruct: {opcode}"
+        );
+        assert_eq!(
+            kernel_counts,
+            json_primitive_counts(kernel, "declared_primitive_counts_total"),
+            "arithmetic operation IR kernel declared totals mismatch: {opcode}"
+        );
+        assert_eq!(
+            kernel_counts["ccx"],
+            json_u64_field(kernel, "exact_non_clifford_per_kernel"),
+            "arithmetic operation IR kernel non-Clifford mismatch: {opcode}"
+        );
+        observed_kernel_operation_count += json_u64_field(kernel, "operation_count");
+        arithmetic_kernel_lookup.insert(
+            opcode,
+            (
+                json_u64_field(kernel, "operation_count"),
+                json_u64_field(kernel, "exact_non_clifford_per_kernel"),
+                json_string_field(kernel, "stage_digest_sha256").to_owned(),
+            ),
+        );
+    }
+    assert_eq!(
+        observed_kernel_count,
+        json_u64_field(arithmetic_ir_summary, "kernel_count")
+    );
+    assert_eq!(
+        observed_stage_count,
+        json_u64_field(arithmetic_ir_summary, "stage_count")
+    );
+    assert_eq!(
+        observed_block_count,
+        json_u64_field(arithmetic_ir_summary, "block_count")
+    );
+    assert_eq!(
+        observed_kernel_operation_count,
+        json_u64_field(arithmetic_ir_summary, "kernel_operation_count_total")
+    );
+    assert_eq!(
+        max_block_operand_slots_required,
+        json_u64_field(arithmetic_ir_summary, "max_block_operand_slots_required")
+    );
     let arithmetic_leaf = json_object_field(arithmetic_operation_ir, "leaf_arithmetic_summary");
     assert_eq!(
         json_u64_field(arithmetic_leaf, "non_clifford_total"),
@@ -3943,25 +4100,46 @@ fn validate_resource_certificate(
         json_array_field(arithmetic_leaf, "non_arithmetic_leaf_opcodes").len() > 0,
         "arithmetic operation IR must explicitly separate non-arithmetic leaf opcodes"
     );
-    let mut arithmetic_row_non_clifford = 0u64;
+    let mut arithmetic_leaf_counts: BTreeMap<String, u64> = BTreeMap::new();
+    for key in primitive_count_keys {
+        arithmetic_leaf_counts.insert(key.to_owned(), 0);
+    }
     for row in json_array_field(arithmetic_leaf, "rows") {
         let opcode = json_string_field(row, "opcode");
         let primitive_counts = json_primitive_counts(row, "primitive_counts_total");
         let instance_count = json_u64_field(row, "leaf_instance_count");
         let per_instance = json_u64_field(row, "kernel_non_clifford_per_instance");
+        let (kernel_operation_count, kernel_non_clifford, kernel_stage_digest) =
+            arithmetic_kernel_lookup
+                .get(opcode)
+                .unwrap_or_else(|| panic!("leaf arithmetic row references unknown kernel: {opcode}"));
+        assert_eq!(
+            json_u64_field(row, "kernel_operation_count"),
+            *kernel_operation_count
+        );
+        assert_eq!(per_instance, *kernel_non_clifford);
         assert_eq!(
             primitive_counts["ccx"],
             instance_count * per_instance,
             "arithmetic operation IR row does not reconstruct: {opcode}"
         );
-        assert!(
-            json_string_field(row, "kernel_stage_digest_sha256").len() == 64,
-            "arithmetic operation IR row must bind a kernel stage digest"
+        assert_eq!(
+            json_string_field(row, "kernel_stage_digest_sha256"),
+            kernel_stage_digest.as_str(),
+            "arithmetic operation IR row must bind the referenced kernel stage digest"
         );
-        arithmetic_row_non_clifford += primitive_counts["ccx"];
+        for key in primitive_count_keys {
+            arithmetic_leaf_counts
+                .entry(key.to_owned())
+                .and_modify(|value| *value += primitive_counts[key]);
+        }
     }
     assert_eq!(
-        arithmetic_row_non_clifford,
+        arithmetic_leaf_counts,
+        json_primitive_counts(arithmetic_leaf, "primitive_counts_total")
+    );
+    assert_eq!(
+        arithmetic_leaf_counts["ccx"],
         family.arithmetic_leaf_non_clifford
     );
 
@@ -5453,6 +5631,17 @@ mod tests {
         let mut input = checked_input();
         input.resource_certificate_document.payload.0["arithmetic_operation_ir"]
             ["leaf_arithmetic_summary"]["rows"][0]["primitive_counts_total"]["ccx"] =
+            serde_json::json!(0);
+        refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_forged_arithmetic_operation_ir_block_total() {
+        let mut input = checked_input();
+        input.resource_certificate_document.payload.0["arithmetic_operation_ir"]["kernels"][0]
+            ["stages"][0]["blocks"][0]["primitive_counts_total"]["ccx"] =
             serde_json::json!(0);
         refresh_resource_certificate_digest(&mut input);
         run_prepared_attestation(&input);
