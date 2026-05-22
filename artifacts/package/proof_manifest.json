@@ -346,6 +346,10 @@
       "sha256": "d0f7ba45a677a950c4404c603361cc1235d850d7072330b25524175723fa9538",
       "bytes": 1100
     },
+    "compiler_verification_project/scripts/release_candidate_preproof.py": {
+      "sha256": "ba3dc1c102fdf243ea239b9ed444dcba38b306b20884d65f15f11d17ce9bd6ea",
+      "bytes": 6591
+    },
     "compiler_verification_project/scripts/run_zkp_attestation_guarded.py": {
       "sha256": "54e7eb7ded6c1461433771ac35884a7b1ee4a22dc03f1529c95c0a886b40fe6c",
       "bytes": 18800

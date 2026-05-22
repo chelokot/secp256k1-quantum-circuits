@@ -134,6 +134,7 @@ PROOF_MANIFEST_PATHS = [
     'compiler_verification_project/scripts/build_zkp_attestation_input.py',
     'compiler_verification_project/scripts/fast_zkp_preflight.py',
     'compiler_verification_project/scripts/proof_environment_report.py',
+    'compiler_verification_project/scripts/release_candidate_preproof.py',
     'compiler_verification_project/scripts/run_zkp_attestation_guarded.py',
     'compiler_verification_project/scripts/verify_public_headline.py',
     'compiler_verification_project/scripts/verify.py',

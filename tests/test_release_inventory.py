@@ -97,6 +97,7 @@ class ReleaseInventoryTests(unittest.TestCase):
             'compiler_verification_project/scripts/build.py',
             'compiler_verification_project/scripts/fast_zkp_preflight.py',
             'compiler_verification_project/scripts/proof_environment_report.py',
+            'compiler_verification_project/scripts/release_candidate_preproof.py',
             'compiler_verification_project/scripts/proof_status.py',
             'compiler_verification_project/scripts/verify.py',
             'compiler_verification_project/scripts/verify_public_headline.py',

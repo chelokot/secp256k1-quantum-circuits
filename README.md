@@ -276,6 +276,7 @@ python compiler_verification_project/scripts/build.py --target release-candidate
 python compiler_verification_project/scripts/verify.py --cases 16
 python compiler_verification_project/scripts/proof_status.py
 python compiler_verification_project/scripts/fast_zkp_preflight.py
+python compiler_verification_project/scripts/release_candidate_preproof.py --dry-run-json
 python compiler_verification_project/scripts/proof_environment_report.py
 python compiler_verification_project/scripts/verify_public_headline.py
 python compiler_verification_project/scripts/build_zkp_attestation_input.py --cases 8
@@ -312,6 +313,10 @@ test run to regenerate those summaries.
 Use `build.py --target release-candidate-zkp` or
 `build_zkp_attestation_input.py --profile release` to prepare the 9024-case
 Google-comparable input bundle without invoking SP1 proving.
+Use `compiler_verification_project/scripts/release_candidate_preproof.py` to
+build that 9024-case release input in an isolated output directory, and add
+`--execute` when you want the SP1 guest execute path over that input without
+invoking a prover.
 Use `compiler_verification_project/scripts/fast_zkp_preflight.py` as the normal
 ZKP/resource edit-loop gate. It runs `proof_status.py`, targeted integrity
 groups including `proof_environment_contract_checks` and
