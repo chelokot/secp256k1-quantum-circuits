@@ -67,6 +67,7 @@ What it does ship is:
 - `release_corpus_preflight.json` — fast 9024-case semantic preflight over the Google-comparable release target corpus, with forced edge-category counts and a rolling case-stream digest; this is release-size semantic evidence, not a ZKP proof
 - `resource_liveness_certificate.json` — ZKP-bound liveness certificate deriving owner-capacity requirements from executable leaf liveness, QROAMClean workspace, and phase-shell lowering artifacts
 - `artifact_digest_tree.json` — chunked SHA-256/Merkle manifest for tracked large artifacts, generated from the checked tree so reviewers can verify large JSON/CSV/proof blobs by chunks rather than by one opaque file hash
+- `proof_environment_contract.json` — checked proof-environment contract binding required tools, no-prover edit-loop gates, publication freshness gates, direct compressed/Groth16 verifier commands, public-headline artifact digests, and curated proof-manifest records
 - `module_library.json` — arithmetic-kernel summary used by the frontier
 - `lookup_lowerings.json` — generated primitive-operation inventories for the named folded lookup families
 - `phase_shell_lowerings.json` — generated phase-operation inventories for the named full-register and semiclassical inverse-QFT shells
@@ -230,6 +231,7 @@ From the repository root:
 python compiler_verification_project/scripts/build.py
 python compiler_verification_project/scripts/build.py --target composition-artifacts
 python compiler_verification_project/scripts/build.py --target materialized-circuit-manifest
+python compiler_verification_project/scripts/build.py --target proof-environment-contract
 python compiler_verification_project/scripts/build.py --target resource-zkp-and-public
 python compiler_verification_project/scripts/build.py --target zkp-and-public
 python compiler_verification_project/scripts/build.py --target release-candidate-zkp
@@ -252,8 +254,10 @@ or frontier accounting that feeds the composition layer; it refreshes
 `headline_opcode_coverage.json` without touching any prover. Use
 `build.py --target materialized-circuit-manifest` to refresh the segmented
 operation-stream digest/Merkle manifest without a full rebuild. Use
-`build.py --target zkp-and-public` when only attestation wrapping metadata
-changed.
+`build.py --target proof-environment-contract` after changing proof paths,
+runbook commands, proof manifest membership, or public-headline verification
+commands. Use `build.py --target zkp-and-public` when only attestation wrapping
+metadata changed.
 Checked artifact tests reuse existing build/verification summaries by default;
 set `SECP256K1_OPEN_AUDIT_FORCE_REBUILD=1` only when you intentionally want a
 test run to regenerate those summaries.
@@ -271,6 +275,11 @@ and still does not invoke a prover.
 Use `proof_environment_report.py` before a compressed/Groth16 rebuild; it emits
 a JSON readiness report for the local Rust/SP1/protobuf/clang/Go toolchain and
 can fail closed with `--require-ready`.
+`proof_environment_contract.json` is the checked runbook companion: integrity
+tests regenerate it, require proof-manifest records for all public-headline
+checked artifacts, require no `--prove` in fast/publication gates, and require
+direct compressed/Groth16 verification commands to point at the checked input,
+proof bundles, and Groth16 verifier-key directory.
 
 For a tight loop on one integrity layer, use `--groups` to avoid the semantic
 replay and artifact rewrite:
