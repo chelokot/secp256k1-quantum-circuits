@@ -1488,6 +1488,15 @@ Current remediation:
   release candidate bundle as a first-class no-prover build target, so the final
   proof rebuild input is produced by the checked build system rather than by an
   ad hoc command line.
+- `release_candidate_preproof.py --execute` is now the intended pre-proof gate
+  for this item: it builds the 9024-case release input in an isolated directory
+  and runs the SP1 guest execute path over that input without invoking
+  compressed or Groth16 proving. This catches guest/input/public-value failures
+  before spending prover time.
+- The SP1 public-values stream is now committed as explicit JSON bytes and the
+  host decoder accepts both that stable format and legacy checked bincode proof
+  bundles. This removes the previous execute-only host decode fragility from the
+  fast release-candidate gate.
 
 Still open:
 
@@ -1523,6 +1532,13 @@ Current remediation:
   engine-derived owner peaks. Rust guest tests reject a counted/executable
   liveness drift and counted/resource-contract engine digest drift even when the
   resource-certificate digest is refreshed.
+- `executable_liveness` is now derived from an embedded
+  `executable_schedule_ir` event stream. The schedule records the ordered
+  carried-input, lookup-metadata, lookup-infinity, and per-chunk QROAM
+  load/consume/uncompute events with live wires; integrity checks, the public
+  headline verifier, and the SP1 guest verify that liveness intervals come from
+  those events. This is not a Clifford-complete macro netlist yet, but it
+  removes another hand-maintained interval-only boundary.
 - The public-headline verifier now independently recomputes the
   `counted_resource_ir`, executable-liveness, and owner-capacity digests recorded
   by the resource contract engine, so this digest-drift class is visible in the

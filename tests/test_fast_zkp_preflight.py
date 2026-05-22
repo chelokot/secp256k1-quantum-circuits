@@ -20,6 +20,8 @@ def test_fast_zkp_preflight_plan_has_no_prover_commands() -> None:
     rendered = '\n'.join(' '.join(step['command']) for step in commands)
     assert '--prove' not in rendered
     assert 'run_zkp_attestation_guarded.py' not in rendered
+    assert 'release_candidate_preproof.py' in rendered
+    assert '--dry-run-json --execute --skip-build' in rendered
     assert 'proof_publication_status_checks' in rendered
     assert 'qroam_primitive_certificate_checks' in rendered
 

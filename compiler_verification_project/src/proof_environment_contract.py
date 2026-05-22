@@ -93,6 +93,14 @@ def _command_contracts(public_result: Mapping[str, Any]) -> list[dict[str, Any]]
             'publication_gate': False,
         },
         {
+            'name': 'release_candidate_preproof_execute',
+            'phase': 'fast_no_prover_preflight',
+            'argv': ['python', 'compiler_verification_project/scripts/release_candidate_preproof.py', '--execute'],
+            'cwd': '.',
+            'invokes_prover': False,
+            'publication_gate': False,
+        },
+        {
             'name': 'public_headline_metadata_verify',
             'phase': 'metadata_verification',
             'argv': verification['metadata'].split(' '),

@@ -250,6 +250,7 @@ python compiler_verification_project/scripts/build.py --target release-candidate
 python compiler_verification_project/scripts/verify.py --cases 16
 python compiler_verification_project/scripts/proof_status.py
 python compiler_verification_project/scripts/fast_zkp_preflight.py
+python compiler_verification_project/scripts/release_candidate_preproof.py --dry-run-json
 python compiler_verification_project/scripts/proof_environment_report.py
 python compiler_verification_project/scripts/verify_public_headline.py
 python compiler_verification_project/scripts/build_zkp_attestation_input.py --cases 8
@@ -278,6 +279,9 @@ test run to regenerate those summaries.
 Use `build.py --target release-candidate-zkp` or
 `build_zkp_attestation_input.py --profile release` to prepare the 9024-case
 Google-comparable input bundle without invoking SP1 proving.
+Use `release_candidate_preproof.py` to build that release input in an isolated
+directory, and add `--execute` to run the SP1 guest execute path over all 9024
+cases without invoking compressed or Groth16 proving.
 Use `fast_zkp_preflight.py` for the ordinary resource/ZKP edit loop. It runs
 `proof_status.py`, the targeted integrity groups, focused pytest coverage, and
 the attestation-library Rust unit tests, and it rejects any command plan that

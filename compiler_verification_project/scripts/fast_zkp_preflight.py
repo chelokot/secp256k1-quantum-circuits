@@ -38,6 +38,7 @@ PYTEST_TARGETS = (
     'tests/test_constant_provenance.py',
     'tests/test_zkp_attestation_input.py::test_reusable_chunk_zkp_attestation_input_binds_candidate_contract',
     'tests/test_public_headline_verifier.py',
+    'tests/test_release_candidate_preproof.py',
 )
 
 
@@ -67,6 +68,16 @@ def command_plan(skip_cargo: bool, *, require_current_proofs: bool = False) -> l
         {
             'name': 'proof_status',
             'command': proof_status_command,
+        },
+        {
+            'name': 'release_candidate_preproof_plan',
+            'command': [
+                sys.executable,
+                'compiler_verification_project/scripts/release_candidate_preproof.py',
+                '--dry-run-json',
+                '--execute',
+                '--skip-build',
+            ],
         },
         {
             'name': 'integrity_groups',

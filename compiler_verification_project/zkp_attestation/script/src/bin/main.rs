@@ -9,6 +9,7 @@ use secp256k1_zkp_attestation_lib::{
     fixture_json, FixtureArtifactMetadata, PreparedAttestationInput, PublicValues,
 };
 use sha2::{Digest, Sha256};
+use sp1_primitives::io::SP1PublicValues;
 use sp1_sdk::ProvingKey;
 use sp1_sdk::{
     blocking::{LightProver, ProveRequest, Prover, ProverClient},
@@ -211,6 +212,12 @@ fn write_public_values(public_values: &PublicValues, output_dir: &PathBuf) {
     .expect("failed to write public values");
 }
 
+fn decode_public_values(public_values: &SP1PublicValues) -> PublicValues {
+    serde_json::from_slice::<PublicValues>(public_values.as_slice())
+        .or_else(|_| bincode::deserialize::<PublicValues>(public_values.as_slice()))
+        .expect("failed to decode public values")
+}
+
 fn proof_bundle_path(output_dir: &PathBuf, system: ProofSystem) -> PathBuf {
     output_dir.join(format!(
         "zkp_attestation_proof_{}.bin",
@@ -368,12 +375,12 @@ fn main() {
         let mut stdin = SP1Stdin::new();
         stdin.write(input);
         let execute_started_at = log_stage_start("execute");
-        let (mut output, report) = client
+        let (output, report) = client
             .execute(ATTESTATION_ELF, stdin)
             .run()
             .expect("failed to execute attestation guest");
         let execute_seconds = log_stage_done("execute", execute_started_at);
-        let public_values: PublicValues = output.read();
+        let public_values = decode_public_values(&output);
         write_public_values(&public_values, &output_dir);
         if args.write_core_fixture {
             assert!(
@@ -492,8 +499,7 @@ fn main() {
             verifying_key = pk.verifying_key().bytes32().to_string();
         }
 
-        let mut proof_public_values = proof_bundle.public_values.clone();
-        let public_values: PublicValues = proof_public_values.read();
+        let public_values = decode_public_values(&proof_bundle.public_values);
         println!(
             "{}",
             serde_json::to_string_pretty(&serde_json::json!({
@@ -673,8 +679,7 @@ fn main() {
         )
     };
 
-    let mut proof_public_values = proof.public_values.clone();
-    let public_values: PublicValues = proof_public_values.read();
+    let public_values = decode_public_values(&proof.public_values);
     write_public_values(&public_values, &output_dir);
     let proof_bundle_path = match args.system {
         ProofSystem::Core => None,
@@ -739,9 +744,10 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
-    use super::{fixture_artifact_metadata, infer_groth16_verify_dir};
+    use super::{decode_public_values, fixture_artifact_metadata, infer_groth16_verify_dir};
     use crate::ATTESTATION_ELF;
     use secp256k1_zkp_attestation_lib::PublicValues;
+    use sp1_primitives::io::SP1PublicValues;
     use sp1_sdk::ProvingKey;
     use sp1_sdk::{blocking::Prover, HashableKey, SP1ProofWithPublicValues};
     use std::{
@@ -813,8 +819,7 @@ mod tests {
             .expect("failed to setup guest for checked fixture verification");
         let expected_verification_key = pk.verifying_key().bytes32().to_string();
 
-        let mut proof_public_values = bundle.public_values.clone();
-        let public_values: PublicValues = proof_public_values.read();
+        let public_values = decode_public_values(&bundle.public_values);
 
         assert_eq!(fixture["proof_system"], "groth16");
         assert_eq!(fixture["verification_key"], expected_verification_key);
@@ -849,6 +854,51 @@ mod tests {
         assert_eq!(
             fixture["public_values"],
             serde_json::to_value(public_values).expect("failed to encode public values")
+        );
+    }
+
+    fn sample_public_values() -> PublicValues {
+        PublicValues {
+            schema: "compiler-project-zkp-attestation-public-v2".to_string(),
+            document_digest_scheme: "compiler-project-semantic-json-sha256-v1".to_string(),
+            selected_family_name: "sample-family".to_string(),
+            claim_sha256: "00".repeat(32),
+            leaf_sha256: "11".repeat(32),
+            family_sha256: "22".repeat(32),
+            case_corpus_sha256: "33".repeat(32),
+            resource_certificate_sha256: "44".repeat(32),
+            expected_full_oracle_non_clifford: 36_957_412,
+            expected_total_logical_qubits: 1199,
+            case_count: 9024,
+            passed_case_count: 9024,
+        }
+    }
+
+    #[test]
+    fn decode_public_values_accepts_json_public_stream() {
+        let expected = sample_public_values();
+        let bytes =
+            serde_json::to_vec(&expected).expect("failed to serialize sample public values");
+        let decoded = decode_public_values(&SP1PublicValues::from(&bytes));
+        assert_eq!(decoded.schema, expected.schema);
+        assert_eq!(decoded.case_count, expected.case_count);
+        assert_eq!(
+            decoded.expected_full_oracle_non_clifford,
+            expected.expected_full_oracle_non_clifford
+        );
+    }
+
+    #[test]
+    fn decode_public_values_accepts_legacy_bincode_public_stream() {
+        let expected = sample_public_values();
+        let bytes =
+            bincode::serialize(&expected).expect("failed to serialize sample public values");
+        let decoded = decode_public_values(&SP1PublicValues::from(&bytes));
+        assert_eq!(decoded.schema, expected.schema);
+        assert_eq!(decoded.case_count, expected.case_count);
+        assert_eq!(
+            decoded.expected_total_logical_qubits,
+            expected.expected_total_logical_qubits
         );
     }
 }

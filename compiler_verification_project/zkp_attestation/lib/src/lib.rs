@@ -5386,6 +5386,34 @@ fn validate_reusable_chunk_lowering(
         json_object_field(executable_liveness, "checks"),
         "no_full_coordinate_lane_wire_is_live"
     ));
+    let executable_schedule = json_object_field(executable_liveness, "executable_schedule_ir");
+    assert_eq!(
+        json_string_field(executable_schedule, "schema"),
+        "compiler-project-reusable-chunk-executable-schedule-ir-v1"
+    );
+    assert!(json_bool_field(executable_schedule, "pass"));
+    let schedule_checks = json_object_field(executable_schedule, "checks")
+        .as_object()
+        .expect("executable schedule checks must be an object");
+    assert!(
+        schedule_checks
+            .values()
+            .all(|value| value.as_bool() == Some(true)),
+        "executable schedule contains a failing check"
+    );
+    assert_eq!(
+        json_string_field(executable_liveness, "source_schedule_schema"),
+        json_string_field(executable_schedule, "schema")
+    );
+    let schedule_events = json_array_field(executable_schedule, "events");
+    assert_eq!(
+        json_u64_field(executable_schedule, "event_count"),
+        schedule_events.len() as u64
+    );
+    assert_eq!(
+        json_u64_field(executable_liveness, "source_schedule_event_count"),
+        schedule_events.len() as u64
+    );
     assert_eq!(
         json_u64_field(executable_liveness, "global_peak_live_qubits"),
         claim.expected_total_logical_qubits
@@ -5427,11 +5455,23 @@ fn validate_reusable_chunk_lowering(
     let wire_catalog = json_object_field(executable_liveness, "wire_catalog")
         .as_object()
         .expect("executable liveness wire_catalog must be an object");
+    let schedule_wire_catalog = json_object_field(executable_schedule, "wire_catalog")
+        .as_object()
+        .expect("executable schedule wire_catalog must be an object");
+    assert_eq!(
+        wire_catalog, schedule_wire_catalog,
+        "executable schedule and executable liveness must use the same wire catalog"
+    );
     assert_eq!(
         counted_wire_catalog, wire_catalog,
         "counted_resource_ir and executable_liveness must use the same wire catalog"
     );
     let executable_intervals = json_array_field(executable_liveness, "intervals");
+    assert_eq!(
+        schedule_events.len(),
+        executable_intervals.len(),
+        "executable schedule and executable liveness must have the same event count"
+    );
     assert_eq!(
         counted_intervals.len(),
         executable_intervals.len(),
@@ -5456,6 +5496,24 @@ fn validate_reusable_chunk_lowering(
             json_u64_field(counted_interval, "total_live_qubits"),
             json_u64_field(executable_interval, "total_live_qubits")
         );
+    }
+    for (event, interval) in schedule_events.iter().zip(executable_intervals) {
+        assert_eq!(
+            json_string_field(event, "event_id"),
+            json_string_field(interval, "interval_id")
+        );
+        assert_eq!(
+            json_array_field(event, "live_wire_ids"),
+            json_array_field(interval, "live_wire_ids")
+        );
+        if json_string_field(event, "event_type") == "qroam_chunk_load_consume_uncompute" {
+            assert!(
+                json_array_field(event, "live_wire_ids")
+                    .iter()
+                    .any(|wire| wire.as_str() == Some("qchunk")),
+                "qchunk must be live during QROAM chunk stream events"
+            );
+        }
     }
     for (wire_id, wire) in wire_catalog {
         assert_eq!(json_string_field(wire, "wire_id"), wire_id);
@@ -6135,6 +6193,28 @@ mod tests {
         let mut input = checked_reusable_chunk_input();
         input.resource_certificate_document.payload.0["executable_liveness"]["checks"]
             ["qroam_target_and_qchunk_are_concurrently_live"] = serde_json::json!(false);
+        refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_reusable_chunk_schedule_liveness_drift() {
+        let mut input = checked_reusable_chunk_input();
+        let events = input.resource_certificate_document.payload.0["executable_liveness"]
+            ["executable_schedule_ir"]["events"]
+            .as_array_mut()
+            .expect("executable schedule events must be an array");
+        let stream_event = events
+            .iter_mut()
+            .find(|event| {
+                event["event_type"].as_str() == Some("qroam_chunk_load_consume_uncompute")
+            })
+            .expect("expected a QROAM stream schedule event");
+        let live_wires = stream_event["live_wire_ids"]
+            .as_array_mut()
+            .expect("schedule event live_wire_ids must be an array");
+        live_wires.retain(|wire| wire.as_str() != Some("qchunk"));
         refresh_resource_certificate_digest(&mut input);
         run_prepared_attestation(&input);
     }

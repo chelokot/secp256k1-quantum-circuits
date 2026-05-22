@@ -5790,7 +5790,7 @@
   },
   "executable_liveness": {
     "schema": "compiler-project-reusable-chunk-executable-liveness-v1",
-    "derivation": "interval liveness derived from executable reusable-chunk leaf, stream plan rows, and declared counted owners",
+    "derivation": "interval liveness derived from executable reusable-chunk schedule IR and declared counted owners",
     "wire_catalog": {
       "qx": {
         "wire_id": "qx",
@@ -5871,6 +5871,8 @@
         "role": "standard_qroamclean_k1_chunk_target"
       }
     },
+    "source_schedule_schema": "compiler-project-reusable-chunk-executable-schedule-ir-v1",
+    "source_schedule_event_count": 9,
     "intervals": [
       {
         "interval_id": "pc0_2_load_carried_inputs",
@@ -6075,12 +6077,281 @@
       "qroam_target_and_qchunk_are_concurrently_live": true,
       "no_full_coordinate_lane_wire_is_live": true
     },
-    "pass": true
+    "pass": true,
+    "executable_schedule_ir": {
+      "schema": "compiler-project-reusable-chunk-executable-schedule-ir-v1",
+      "derivation": "ordered executable schedule events are the source for reusable-chunk liveness intervals",
+      "wire_catalog": {
+        "qx": {
+          "wire_id": "qx",
+          "owner_id": "arithmetic_slot_register_file",
+          "qubits": 256,
+          "role": "field_arithmetic_slot"
+        },
+        "qy": {
+          "wire_id": "qy",
+          "owner_id": "arithmetic_slot_register_file",
+          "qubits": 256,
+          "role": "field_arithmetic_slot"
+        },
+        "qz": {
+          "wire_id": "qz",
+          "owner_id": "arithmetic_slot_register_file",
+          "qubits": 256,
+          "role": "field_arithmetic_slot"
+        },
+        "qchunk": {
+          "wire_id": "qchunk",
+          "owner_id": "arithmetic_slot_register_file",
+          "qubits": 256,
+          "role": "field_arithmetic_slot"
+        },
+        "f_lookup_inf": {
+          "wire_id": "f_lookup_inf",
+          "owner_id": "control_slot_register_file",
+          "qubits": 1,
+          "role": "leaf_control_flag"
+        },
+        "folded_lookup_control_workspace": {
+          "wire_id": "folded_lookup_control_workspace",
+          "owner_id": "lookup_workspace",
+          "qubits": 18,
+          "role": "folded_lookup_decode_control_workspace"
+        },
+        "semiclassical_qft_live_phase_bit": {
+          "wire_id": "semiclassical_qft_live_phase_bit",
+          "owner_id": "phase_shell_live_register",
+          "qubits": 1,
+          "role": "live_phase_bit"
+        },
+        "qroam_chunk_target__lookup_x__chunk_0": {
+          "wire_id": "qroam_chunk_target__lookup_x__chunk_0",
+          "owner_id": "lookup_workspace",
+          "qubits": 155,
+          "role": "standard_qroamclean_k1_chunk_target"
+        },
+        "qroam_chunk_target__lookup_x__chunk_1": {
+          "wire_id": "qroam_chunk_target__lookup_x__chunk_1",
+          "owner_id": "lookup_workspace",
+          "qubits": 155,
+          "role": "standard_qroamclean_k1_chunk_target"
+        },
+        "qroam_chunk_target__lookup_y__chunk_0": {
+          "wire_id": "qroam_chunk_target__lookup_y__chunk_0",
+          "owner_id": "lookup_workspace",
+          "qubits": 155,
+          "role": "standard_qroamclean_k1_chunk_target"
+        },
+        "qroam_chunk_target__lookup_y__chunk_1": {
+          "wire_id": "qroam_chunk_target__lookup_y__chunk_1",
+          "owner_id": "lookup_workspace",
+          "qubits": 155,
+          "role": "standard_qroamclean_k1_chunk_target"
+        },
+        "qroam_chunk_target__lookup_x_plus_y__chunk_0": {
+          "wire_id": "qroam_chunk_target__lookup_x_plus_y__chunk_0",
+          "owner_id": "lookup_workspace",
+          "qubits": 155,
+          "role": "standard_qroamclean_k1_chunk_target"
+        },
+        "qroam_chunk_target__lookup_x_plus_y__chunk_1": {
+          "wire_id": "qroam_chunk_target__lookup_x_plus_y__chunk_1",
+          "owner_id": "lookup_workspace",
+          "qubits": 155,
+          "role": "standard_qroamclean_k1_chunk_target"
+        }
+      },
+      "event_count": 9,
+      "events": [
+        {
+          "event_id": "pc0_2_load_carried_inputs",
+          "pc_range": [
+            0,
+            2
+          ],
+          "event_type": "load_carried_inputs",
+          "label": "load Q.X/Q.Y/Q.Z into carried field slots",
+          "live_wire_ids": [
+            "qx",
+            "qy",
+            "qz",
+            "semiclassical_qft_live_phase_bit"
+          ]
+        },
+        {
+          "event_id": "pc3_lookup_meta",
+          "pc_range": [
+            3,
+            3
+          ],
+          "event_type": "lookup_metadata",
+          "label": "lookup metadata and folded lookup controls",
+          "live_wire_ids": [
+            "qx",
+            "qy",
+            "qz",
+            "folded_lookup_control_workspace",
+            "semiclassical_qft_live_phase_bit"
+          ]
+        },
+        {
+          "event_id": "pc4_lookup_infinity_flag",
+          "pc_range": [
+            4,
+            4
+          ],
+          "event_type": "lookup_infinity_flag",
+          "label": "derive lookup-infinity flag from metadata",
+          "live_wire_ids": [
+            "qx",
+            "qy",
+            "qz",
+            "folded_lookup_control_workspace",
+            "f_lookup_inf",
+            "semiclassical_qft_live_phase_bit"
+          ]
+        },
+        {
+          "event_id": "pc5_stream_00_lookup_x_chunk_0",
+          "pc_range": [
+            5,
+            5
+          ],
+          "event_type": "qroam_chunk_load_consume_uncompute",
+          "label": "load, consume, and uncompute lookup_x chunk 0",
+          "live_wire_ids": [
+            "qx",
+            "qy",
+            "qz",
+            "qchunk",
+            "folded_lookup_control_workspace",
+            "qroam_chunk_target__lookup_x__chunk_0",
+            "f_lookup_inf",
+            "semiclassical_qft_live_phase_bit"
+          ],
+          "stream_table": "lookup_x",
+          "stream_chunk_index": 0
+        },
+        {
+          "event_id": "pc5_stream_01_lookup_x_chunk_1",
+          "pc_range": [
+            5,
+            5
+          ],
+          "event_type": "qroam_chunk_load_consume_uncompute",
+          "label": "load, consume, and uncompute lookup_x chunk 1",
+          "live_wire_ids": [
+            "qx",
+            "qy",
+            "qz",
+            "qchunk",
+            "folded_lookup_control_workspace",
+            "qroam_chunk_target__lookup_x__chunk_1",
+            "f_lookup_inf",
+            "semiclassical_qft_live_phase_bit"
+          ],
+          "stream_table": "lookup_x",
+          "stream_chunk_index": 1
+        },
+        {
+          "event_id": "pc5_stream_02_lookup_y_chunk_0",
+          "pc_range": [
+            5,
+            5
+          ],
+          "event_type": "qroam_chunk_load_consume_uncompute",
+          "label": "load, consume, and uncompute lookup_y chunk 0",
+          "live_wire_ids": [
+            "qx",
+            "qy",
+            "qz",
+            "qchunk",
+            "folded_lookup_control_workspace",
+            "qroam_chunk_target__lookup_y__chunk_0",
+            "f_lookup_inf",
+            "semiclassical_qft_live_phase_bit"
+          ],
+          "stream_table": "lookup_y",
+          "stream_chunk_index": 0
+        },
+        {
+          "event_id": "pc5_stream_03_lookup_y_chunk_1",
+          "pc_range": [
+            5,
+            5
+          ],
+          "event_type": "qroam_chunk_load_consume_uncompute",
+          "label": "load, consume, and uncompute lookup_y chunk 1",
+          "live_wire_ids": [
+            "qx",
+            "qy",
+            "qz",
+            "qchunk",
+            "folded_lookup_control_workspace",
+            "qroam_chunk_target__lookup_y__chunk_1",
+            "f_lookup_inf",
+            "semiclassical_qft_live_phase_bit"
+          ],
+          "stream_table": "lookup_y",
+          "stream_chunk_index": 1
+        },
+        {
+          "event_id": "pc5_stream_04_lookup_x_plus_y_chunk_0",
+          "pc_range": [
+            5,
+            5
+          ],
+          "event_type": "qroam_chunk_load_consume_uncompute",
+          "label": "load, consume, and uncompute lookup_x_plus_y chunk 0",
+          "live_wire_ids": [
+            "qx",
+            "qy",
+            "qz",
+            "qchunk",
+            "folded_lookup_control_workspace",
+            "qroam_chunk_target__lookup_x_plus_y__chunk_0",
+            "f_lookup_inf",
+            "semiclassical_qft_live_phase_bit"
+          ],
+          "stream_table": "lookup_x_plus_y",
+          "stream_chunk_index": 0
+        },
+        {
+          "event_id": "pc5_stream_05_lookup_x_plus_y_chunk_1",
+          "pc_range": [
+            5,
+            5
+          ],
+          "event_type": "qroam_chunk_load_consume_uncompute",
+          "label": "load, consume, and uncompute lookup_x_plus_y chunk 1",
+          "live_wire_ids": [
+            "qx",
+            "qy",
+            "qz",
+            "qchunk",
+            "folded_lookup_control_workspace",
+            "qroam_chunk_target__lookup_x_plus_y__chunk_1",
+            "f_lookup_inf",
+            "semiclassical_qft_live_phase_bit"
+          ],
+          "stream_table": "lookup_x_plus_y",
+          "stream_chunk_index": 1
+        }
+      ],
+      "checks": {
+        "event_ids_are_unique": true,
+        "all_event_wires_exist_in_catalog": true,
+        "qroam_stream_events_match_stream_rows": true,
+        "qchunk_live_during_each_qroam_stream_event": true,
+        "no_full_coordinate_lane_wire_is_scheduled": true
+      },
+      "pass": true
+    }
   },
   "resource_contract_engine": {
     "schema": "compiler-project-resource-contract-engine-v1",
     "counted_resource_ir_sha256": "e814826e787174c05f62f34396fd02b1d77a8728f0c99051f74e1d60294d7188",
-    "executable_liveness_sha256": "06de12d5fb1752e76e1b1e291f9bcdab02befb1c93f2bfba7fdab5a3bdaef0c0",
+    "executable_liveness_sha256": "3e0059254673837df11234af900a4e5a5d70135ae0d6fb9b99b1e6b62adfda4a",
     "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
     "wire_count": 13,
     "interval_count": 9,

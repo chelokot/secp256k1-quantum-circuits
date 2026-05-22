@@ -309,6 +309,18 @@ def test_mutated_reusable_chunk_counted_resource_ir_is_detected() -> None:
     assert groups['reusable_chunk_lowering_checks']['pass'] < groups['reusable_chunk_lowering_checks']['total']
 
 
+def test_mutated_reusable_chunk_schedule_liveness_drift_is_detected() -> None:
+    artifacts = _artifacts_for_mutation('reusable_chunk_lowering')
+    schedule_event = next(
+        event
+        for event in artifacts['reusable_chunk_lowering']['executable_liveness']['executable_schedule_ir']['events']
+        if event['event_type'] == 'qroam_chunk_load_consume_uncompute'
+    )
+    schedule_event['live_wire_ids'].remove('qchunk')
+    groups = _evaluate_mutation(artifacts, 'reusable_chunk_lowering_checks')
+    assert groups['reusable_chunk_lowering_checks']['pass'] < groups['reusable_chunk_lowering_checks']['total']
+
+
 def test_mutated_resource_certificate_owner_capacity_is_detected() -> None:
     artifacts = _artifacts_for_mutation('resource_liveness_certificate')
     artifacts['resource_liveness_certificate']['derived_owner_capacity']['rows'][0]['capacity_qubits'] -= 1

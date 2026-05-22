@@ -48,6 +48,39 @@ def _interval(interval_id: str, label: str, live_wire_ids: List[str], wire_catal
     }
 
 
+def _schedule_event(
+    *,
+    event_id: str,
+    pc_range: List[int],
+    event_type: str,
+    label: str,
+    live_wire_ids: List[str],
+    stream_table: str | None = None,
+    stream_chunk_index: int | None = None,
+) -> Dict[str, Any]:
+    event: Dict[str, Any] = {
+        'event_id': event_id,
+        'pc_range': [int(value) for value in pc_range],
+        'event_type': event_type,
+        'label': label,
+        'live_wire_ids': list(live_wire_ids),
+    }
+    if stream_table is not None:
+        event['stream_table'] = stream_table
+    if stream_chunk_index is not None:
+        event['stream_chunk_index'] = int(stream_chunk_index)
+    return event
+
+
+def _interval_from_schedule_event(event: Mapping[str, Any], wire_catalog: Mapping[str, Dict[str, Any]]) -> Dict[str, Any]:
+    return _interval(
+        str(event['event_id']),
+        str(event['label']),
+        [str(wire_id) for wire_id in event['live_wire_ids']],
+        wire_catalog,
+    )
+
+
 def _owner_peak(intervals: List[Dict[str, Any]], wire_catalog: Mapping[str, Dict[str, Any]]) -> Dict[str, int]:
     owner_ids = sorted({wire_catalog[wire_id]['owner_id'] for interval in intervals for wire_id in interval['live_wire_ids']})
     return {
@@ -165,19 +198,27 @@ def _build_executable_liveness_certificate(
         )
     )
     phase_wire = register_wire(_wire('semiclassical_qft_live_phase_bit', phase_owner, phase_qubits, 'live_phase_bit'))
-    intervals: List[Dict[str, Any]] = [
-        _interval('pc0_2_load_carried_inputs', 'load Q.X/Q.Y/Q.Z into carried field slots', carried_wires + [phase_wire], wire_catalog),
-        _interval(
-            'pc3_lookup_meta',
-            'lookup metadata and folded lookup controls',
-            carried_wires + [folded_lookup_wire, phase_wire],
-            wire_catalog,
+    events: List[Dict[str, Any]] = [
+        _schedule_event(
+            event_id='pc0_2_load_carried_inputs',
+            pc_range=[0, 2],
+            event_type='load_carried_inputs',
+            label='load Q.X/Q.Y/Q.Z into carried field slots',
+            live_wire_ids=carried_wires + [phase_wire],
         ),
-        _interval(
-            'pc4_lookup_infinity_flag',
-            'derive lookup-infinity flag from metadata',
-            carried_wires + [folded_lookup_wire] + control_wires + [phase_wire],
-            wire_catalog,
+        _schedule_event(
+            event_id='pc3_lookup_meta',
+            pc_range=[3, 3],
+            event_type='lookup_metadata',
+            label='lookup metadata and folded lookup controls',
+            live_wire_ids=carried_wires + [folded_lookup_wire, phase_wire],
+        ),
+        _schedule_event(
+            event_id='pc4_lookup_infinity_flag',
+            pc_range=[4, 4],
+            event_type='lookup_infinity_flag',
+            label='derive lookup-infinity flag from metadata',
+            live_wire_ids=carried_wires + [folded_lookup_wire] + control_wires + [phase_wire],
         ),
     ]
     for index, row in enumerate(stream_rows):
@@ -202,14 +243,48 @@ def _build_executable_liveness_certificate(
                     )
                 )
             )
-        intervals.append(
-            _interval(
-                f"pc5_stream_{index:02d}_{row['table']}_chunk_{row['chunk_index']}",
-                f"load, consume, and uncompute {row['table']} chunk {row['chunk_index']}",
-                arithmetic_wires + [folded_lookup_wire, target_wire] + junk_wires + control_wires + [phase_wire],
-                wire_catalog,
+        events.append(
+            _schedule_event(
+                event_id=f"pc5_stream_{index:02d}_{row['table']}_chunk_{row['chunk_index']}",
+                pc_range=[5, 5],
+                event_type='qroam_chunk_load_consume_uncompute',
+                label=f"load, consume, and uncompute {row['table']} chunk {row['chunk_index']}",
+                live_wire_ids=arithmetic_wires + [folded_lookup_wire, target_wire] + junk_wires + control_wires + [phase_wire],
+                stream_table=str(row['table']),
+                stream_chunk_index=int(row['chunk_index']),
             )
         )
+    schedule_wire_ids = sorted({wire_id for event in events for wire_id in event['live_wire_ids']})
+    event_ids = [str(event['event_id']) for event in events]
+    executable_schedule_ir = {
+        'schema': 'compiler-project-reusable-chunk-executable-schedule-ir-v1',
+        'derivation': 'ordered executable schedule events are the source for reusable-chunk liveness intervals',
+        'wire_catalog': wire_catalog,
+        'event_count': len(events),
+        'events': events,
+        'checks': {
+            'event_ids_are_unique': len(event_ids) == len(set(event_ids)),
+            'all_event_wires_exist_in_catalog': all(wire_id in wire_catalog for wire_id in schedule_wire_ids),
+            'qroam_stream_events_match_stream_rows': (
+                len([event for event in events if event['event_type'] == 'qroam_chunk_load_consume_uncompute'])
+                == len(stream_rows)
+            ),
+            'qchunk_live_during_each_qroam_stream_event': all(
+                executable_leaf['chunk_contract']['reusable_chunk_slot'] in event['live_wire_ids']
+                for event in events
+                if event['event_type'] == 'qroam_chunk_load_consume_uncompute'
+            ),
+            'no_full_coordinate_lane_wire_is_scheduled': not any(
+                wire_id in ('lookup_x', 'lookup_y', 'lookup_x_plus_y')
+                for wire_id in schedule_wire_ids
+            ),
+        },
+    }
+    executable_schedule_ir['pass'] = all(executable_schedule_ir['checks'].values())
+    intervals = [
+        _interval_from_schedule_event(event, wire_catalog)
+        for event in executable_schedule_ir['events']
+    ]
     owner_capacity = {owner['owner_id']: int(owner['logical_qubits']) for owner in owners}
     owner_peak = _owner_peak(intervals, wire_catalog)
     all_wire_ids = [wire_id for interval in intervals for wire_id in interval['live_wire_ids']]
@@ -240,8 +315,10 @@ def _build_executable_liveness_certificate(
     }
     return {
         'schema': 'compiler-project-reusable-chunk-executable-liveness-v1',
-        'derivation': 'interval liveness derived from executable reusable-chunk leaf, stream plan rows, and declared counted owners',
+        'derivation': 'interval liveness derived from executable reusable-chunk schedule IR and declared counted owners',
         'wire_catalog': wire_catalog,
+        'source_schedule_schema': executable_schedule_ir['schema'],
+        'source_schedule_event_count': executable_schedule_ir['event_count'],
         'intervals': intervals,
         'owner_peak_live_qubits': owner_peak,
         'owner_capacity_qubits': owner_capacity,
@@ -252,6 +329,7 @@ def _build_executable_liveness_certificate(
         'over_capacity_owners': over_capacity_owners,
         'checks': checks,
         'pass': all(checks.values()),
+        'executable_schedule_ir': executable_schedule_ir,
     }
 
 

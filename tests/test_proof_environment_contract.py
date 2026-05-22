@@ -43,6 +43,7 @@ def test_proof_environment_contract_has_no_implicit_prover_commands() -> None:
     assert contract['checks']['direct_verify_commands_bind_checked_input_and_proofs'] is True
     assert contract['checks']['publication_freshness_gate_requires_all_current_proofs'] is True
     assert contract['checks']['fast_publication_gate_uses_current_proof_requirement'] is True
+    assert any('release_candidate_preproof.py' in text and '--execute' in text for text in command_texts)
 
 
 def test_proof_environment_contract_integrity_rejects_manifest_drift() -> None:
