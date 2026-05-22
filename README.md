@@ -142,7 +142,10 @@ schoolbook Cartesian operand grid. The public engine manifest then binds that
 flat stream, executable instruction rows, wires, schedule events, owner-capacity
 rows, resource terms, semantic-boundary evidence, arithmetic operation IR, the
 generated QROAMClean `K = 1` primitive certificate, and the selected
-semiclassical phase shell into the same public claim layer.
+semiclassical phase shell into the same public claim layer. Its public totals
+are derived from the flat netlist non-Clifford count and materialized liveness
+peak; the older reusable-resource totals are retained as cross-check snapshots,
+not as the authoritative source.
 The QROAM reference keeps the selected 155-bit reusable chunk stream separate
 from the 256-bit full-field ledger sweep, so reviewers can audit the selected
 lookup stream and the field-multiplication pseudo-Mersenne reduction without

@@ -67,7 +67,9 @@ def test_public_engine_manifest_reconstructs_checked_artifact() -> None:
     assert observed == expected
     assert expected['schema'] == PUBLIC_ENGINE_MANIFEST_SCHEMA
     assert expected['pass'] is True
-    assert expected['public_totals'] == reusable['executable_resource_engine']['public_totals']
+    assert expected['public_totals']['source'] == 'public_candidate_materialized_circuit_manifest.flat_netlist + materialized_liveness'
+    assert expected['public_totals']['non_clifford'] == reusable['executable_resource_engine']['public_totals']['non_clifford']
+    assert expected['public_totals']['logical_qubits'] == reusable['executable_resource_engine']['public_totals']['logical_qubits']
     assert expected['fast_no_zkp_contract']['prover_required'] is False
     assert expected['semantic_boundary_evidence']['release_corpus_preflight']['case_count'] == GOOGLE_COMPARABLE_CASE_COUNT
     assert set(expected['semantic_boundary_evidence']['required_categories']).issubset(
@@ -90,8 +92,9 @@ def test_public_engine_manifest_rejects_engine_total_drift() -> None:
     reusable = _load('reusable_chunk_lowering.json')
     reusable['executable_resource_engine']['public_totals']['logical_qubits'] += 1
     observed = _build_manifest(reusable=reusable)
-    assert observed['checks']['public_totals_match_counted_resource_engine'] is False
-    assert observed['checks']['public_totals_match_resource_contract_engine'] is False
+    assert observed['checks']['public_totals_match_executable_resource_engine_snapshot'] is False
+    assert observed['checks']['public_totals_match_counted_resource_engine'] is True
+    assert observed['checks']['public_totals_match_resource_contract_engine'] is True
     assert observed['pass'] is False
 
 
@@ -133,6 +136,18 @@ def test_public_engine_manifest_rejects_public_candidate_materialized_drift() ->
     public_candidate_materialized = _load('public_candidate_materialized_circuit_manifest.json')
     public_candidate_materialized['public_totals']['non_clifford'] -= 1
     observed = _build_manifest(public_candidate_materialized=public_candidate_materialized)
+    assert observed['checks']['public_candidate_materialized_stream_binds_engine_totals'] is False
+    assert observed['pass'] is False
+
+
+def test_public_engine_manifest_derives_totals_from_flat_materialized_engine() -> None:
+    public_candidate_materialized = _load('public_candidate_materialized_circuit_manifest.json')
+    public_candidate_materialized['flat_netlist']['non_clifford_count'] -= 1
+    observed = _build_manifest(public_candidate_materialized=public_candidate_materialized)
+    assert observed['public_totals']['non_clifford'] == public_candidate_materialized['flat_netlist']['non_clifford_count']
+    assert observed['checks']['public_totals_match_executable_resource_engine_snapshot'] is False
+    assert observed['checks']['public_totals_match_counted_resource_engine'] is False
+    assert observed['checks']['resource_terms_sum_to_public_total'] is False
     assert observed['checks']['public_candidate_materialized_stream_binds_engine_totals'] is False
     assert observed['pass'] is False
 

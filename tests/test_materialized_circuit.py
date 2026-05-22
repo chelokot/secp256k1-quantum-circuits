@@ -87,6 +87,7 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert manifest['schema'] == PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA
     assert manifest['selected_family_name'] == _candidate_input()['selected_family_name']
     assert manifest['pass'] is True
+    assert manifest['public_totals']['source'] == 'public_candidate_materialized.flat_netlist.non_clifford_count + materialized_liveness.peak_live_qubits'
     assert manifest['public_totals']['non_clifford'] == reusable['non_clifford_derivation']['candidate_total_non_clifford']
     assert manifest['public_totals']['logical_qubits'] == reusable['qubit_derivation']['candidate_total_logical_qubits']
     assert manifest['liveness_binding_row_count'] == manifest['run_length_row_count']

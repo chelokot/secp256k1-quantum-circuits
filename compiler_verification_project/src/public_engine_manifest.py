@@ -171,13 +171,18 @@ def build_public_engine_manifest(
     term_columns = ['row_index', 'term_id', 'category', 'instances', 'per_instance_non_clifford', 'total_non_clifford', 'source']
 
     public_totals = {
-        'non_clifford': int(executable_resource_engine['public_totals']['non_clifford']),
-        'logical_qubits': int(executable_resource_engine['public_totals']['logical_qubits']),
+        'non_clifford': int(public_candidate_materialized_circuit_manifest['flat_netlist']['non_clifford_count']),
+        'logical_qubits': int(public_candidate_materialized_circuit_manifest['materialized_liveness']['peak_live_qubits']),
+        'source': 'public_candidate_materialized_circuit_manifest.flat_netlist + materialized_liveness',
     }
     checks = {
         'executable_resource_engine_passes': executable_resource_engine['pass'] is True,
         'counted_resource_engine_passes': counted_resource_engine['pass'] is True,
         'resource_contract_engine_passes': resource_contract_engine['pass'] is True,
+        'public_totals_match_executable_resource_engine_snapshot': (
+            public_totals['non_clifford'] == int(executable_resource_engine['public_totals']['non_clifford'])
+            and public_totals['logical_qubits'] == int(executable_resource_engine['public_totals']['logical_qubits'])
+        ),
         'public_totals_match_counted_resource_engine': (
             public_totals['non_clifford'] == int(counted_resource_engine['non_clifford_total_from_terms'])
             and public_totals['logical_qubits'] == int(counted_resource_engine['peak_live_qubits_from_intervals'])

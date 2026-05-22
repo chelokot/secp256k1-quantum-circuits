@@ -1314,6 +1314,10 @@ def build_public_candidate_materialized_circuit_manifest(
         operation_rows=rows,
         liveness_rows=liveness_rows,
     )
+    materialized_public_totals = {
+        'non_clifford': int(flat_netlist['non_clifford_count']),
+        'logical_qubits': max(int(row['total_live_qubits']) for row in liveness_rows),
+    }
     base_rows = [row for row in rows if row['scope'] in ('direct_seed_base', 'lookup_leaf_base', 'arithmetic_leaf_block')]
     direct_seed_rows = [row for row in rows if row['scope'] == 'direct_seed_base']
     lookup_leaf_rows = [row for row in rows if row['scope'] == 'lookup_leaf_base']
@@ -1425,7 +1429,7 @@ def build_public_candidate_materialized_circuit_manifest(
             and all(int(qubits) <= owner_capacity_by_id[owner_id] for owner_id, qubits in liveness['derived_owner_live_qubits'].items())
             for liveness in liveness_rows
         ),
-        'liveness_bindings_reconstruct_public_peak': max(int(row['total_live_qubits']) for row in liveness_rows) == int(public_totals['logical_qubits']),
+        'liveness_bindings_reconstruct_public_peak': materialized_public_totals['logical_qubits'] == int(public_totals['logical_qubits']),
         'flat_netlist_expands_all_run_length_rows': (
             flat_netlist['operation_count'] == sum(int(row['total_count']) for row in rows)
             and sum(int(segment['operation_count']) for segment in flat_netlist['segments']) == flat_netlist['operation_count']
@@ -1433,7 +1437,7 @@ def build_public_candidate_materialized_circuit_manifest(
             and flat_netlist['segments'][-1]['operation_end_exclusive'] == flat_netlist['operation_count']
         ),
         'flat_netlist_gate_totals_match_run_length_rows': flat_netlist['gate_totals'] == gate_totals,
-        'flat_netlist_non_clifford_matches_public_candidate': flat_netlist['non_clifford_count'] == int(public_totals['non_clifford']),
+        'flat_netlist_non_clifford_matches_public_candidate': materialized_public_totals['non_clifford'] == int(public_totals['non_clifford']),
         'primitive_operand_contracts_cover_all_run_length_rows': all(
             row['primitive_operand_contract']['schema'] == 'compiler-project-primitive-operand-contract-v1'
             and row['primitive_operand_contract']['gate'] == row['gate']
@@ -1504,15 +1508,15 @@ def build_public_candidate_materialized_circuit_manifest(
         'gate_totals': gate_totals,
         'run_length_rows': rows,
         'public_totals': {
-            'non_clifford': non_clifford_total,
-            'logical_qubits': int(public_totals['logical_qubits']),
+            **materialized_public_totals,
+            'source': 'public_candidate_materialized.flat_netlist.non_clifford_count + materialized_liveness.peak_live_qubits',
         },
         'materialized_liveness': {
-            'peak_live_qubits': max(int(row['total_live_qubits']) for row in liveness_rows),
+            'peak_live_qubits': materialized_public_totals['logical_qubits'],
             'peak_interval_ids': sorted({
                 str(row['interval_id'])
                 for row in liveness_rows
-                if int(row['total_live_qubits']) == int(public_totals['logical_qubits'])
+                if int(row['total_live_qubits']) == materialized_public_totals['logical_qubits']
             }),
             'owner_capacity_qubits': owner_capacity_by_id,
             'rows': liveness_rows,

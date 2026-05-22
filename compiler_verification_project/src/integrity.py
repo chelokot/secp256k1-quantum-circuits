@@ -2121,7 +2121,19 @@ def build_public_engine_manifest_checks(artifacts: Mapping[str, Any]) -> Dict[st
         _check('public_engine_manifest_matches_generator', manifest == expected, expected, manifest),
         _check('public_engine_manifest_schema_is_current', manifest['schema'] == PUBLIC_ENGINE_MANIFEST_SCHEMA, PUBLIC_ENGINE_MANIFEST_SCHEMA, manifest['schema']),
         _check('public_engine_manifest_binds_selected_family', manifest['selected_family_name'] == selected_family_name, selected_family_name, manifest['selected_family_name']),
-        _check('public_engine_manifest_binds_engine_public_totals', manifest['public_totals'] == executable_resource_engine['public_totals'], executable_resource_engine['public_totals'], manifest['public_totals']),
+        _check(
+            'public_engine_manifest_derives_public_totals_from_materialized_flat_engine',
+            manifest['public_totals']['source'] == 'public_candidate_materialized_circuit_manifest.flat_netlist + materialized_liveness'
+            and manifest['public_totals']['non_clifford'] == artifacts['public_candidate_materialized_circuit_manifest']['flat_netlist']['non_clifford_count']
+            and manifest['public_totals']['logical_qubits'] == artifacts['public_candidate_materialized_circuit_manifest']['materialized_liveness']['peak_live_qubits']
+            and manifest['checks']['public_totals_match_executable_resource_engine_snapshot'] is True,
+            {
+                'source': 'public_candidate_materialized_circuit_manifest.flat_netlist + materialized_liveness',
+                'non_clifford': artifacts['public_candidate_materialized_circuit_manifest']['flat_netlist']['non_clifford_count'],
+                'logical_qubits': artifacts['public_candidate_materialized_circuit_manifest']['materialized_liveness']['peak_live_qubits'],
+            },
+            manifest['public_totals'],
+        ),
         _check('public_engine_manifest_binds_counted_ir_digest', manifest['source_digests']['counted_resource_ir_sha256'] == executable_resource_engine['counted_resource_ir_sha256'], executable_resource_engine['counted_resource_ir_sha256'], manifest['source_digests']['counted_resource_ir_sha256']),
         _check('public_engine_manifest_binds_liveness_and_owner_digests', manifest['source_digests']['executable_liveness_sha256'] == resource_contract_engine['executable_liveness_sha256'] and manifest['source_digests']['owner_capacity_sha256'] == resource_contract_engine['owner_capacity_sha256'], {'executable_liveness_sha256': resource_contract_engine['executable_liveness_sha256'], 'owner_capacity_sha256': resource_contract_engine['owner_capacity_sha256']}, manifest['source_digests']),
         _check('public_engine_manifest_instruction_schedule_and_wire_streams_are_nonempty', manifest['instruction_stream']['row_count'] > 0 and manifest['schedule_stream']['row_count'] > 0 and manifest['wire_catalog_stream']['row_count'] > 0, '> 0 rows', {'instruction_rows': manifest['instruction_stream']['row_count'], 'schedule_rows': manifest['schedule_stream']['row_count'], 'wire_rows': manifest['wire_catalog_stream']['row_count']}),
