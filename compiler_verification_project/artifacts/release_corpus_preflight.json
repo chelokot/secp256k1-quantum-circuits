@@ -1,0 +1,186 @@
+{
+  "schema": "compiler-project-release-corpus-preflight-v1",
+  "profile": "google_comparable_9024",
+  "profile_role": "Google-disclosure-size public corpus target",
+  "release_grade": true,
+  "case_count": 9024,
+  "case_start": 0,
+  "leaf_case_seed_sha256": "27b1c651762927a913ab65cbcc63d54f649f84a124d6d636914b901f81eabea0",
+  "case_digest_scheme": "length-prefixed canonical-json rolling sha256 over every release preflight case",
+  "case_stream_sha256": "6d7087400f8be5e36be84f17f57492783847c03762f0523c2c057b7e9c4fefe6",
+  "category_counts": {
+    "accumulator_infinity": 564,
+    "doubling": 564,
+    "inverse": 564,
+    "lookup_infinity": 564,
+    "random": 6204,
+    "zero_zero": 564
+  },
+  "preview_head": [
+    {
+      "case_id": "zero_zero_0000",
+      "category": "zero_zero",
+      "accumulator": {
+        "infinity": true,
+        "x": null,
+        "y": null
+      },
+      "lookup": {
+        "infinity": true,
+        "x": null,
+        "y": null
+      },
+      "expected": {
+        "infinity": true,
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "case_id": "accumulator_infinity_0001",
+      "category": "accumulator_infinity",
+      "accumulator": {
+        "infinity": true,
+        "x": null,
+        "y": null
+      },
+      "lookup": {
+        "infinity": false,
+        "x": "4ec0a4ab1ab7b847d2efccd8ece309c8b6f41a01b7595c2adf7bac1ed0a4f4e1",
+        "y": "973f065f4921608c0261b2b60eb4cfb5ea7b5066339b23b2e2390304511cbc90"
+      },
+      "expected": {
+        "infinity": false,
+        "x": "4ec0a4ab1ab7b847d2efccd8ece309c8b6f41a01b7595c2adf7bac1ed0a4f4e1",
+        "y": "973f065f4921608c0261b2b60eb4cfb5ea7b5066339b23b2e2390304511cbc90"
+      }
+    },
+    {
+      "case_id": "lookup_infinity_0002",
+      "category": "lookup_infinity",
+      "accumulator": {
+        "infinity": false,
+        "x": "f165fcfafba975901a55e67e50c8632c3e3f0817fa31f209735d1a92452e92f1",
+        "y": "aa3bc4847601e3051a4e82ee056fa862e9af685d8b9dada13bd25f1a0b0860af"
+      },
+      "lookup": {
+        "infinity": true,
+        "x": null,
+        "y": null
+      },
+      "expected": {
+        "infinity": false,
+        "x": "f165fcfafba975901a55e67e50c8632c3e3f0817fa31f209735d1a92452e92f1",
+        "y": "aa3bc4847601e3051a4e82ee056fa862e9af685d8b9dada13bd25f1a0b0860af"
+      }
+    },
+    {
+      "case_id": "doubling_0003",
+      "category": "doubling",
+      "accumulator": {
+        "infinity": false,
+        "x": "948c9d88fc5f7da7d87d94e7e95e0b46e486d6b23956abd351f9c2bc6494b44e",
+        "y": "737c58ef51cd21ae1ea38f706d357135e0c864db3d11c618a329a11ecab80954"
+      },
+      "lookup": {
+        "infinity": false,
+        "x": "948c9d88fc5f7da7d87d94e7e95e0b46e486d6b23956abd351f9c2bc6494b44e",
+        "y": "737c58ef51cd21ae1ea38f706d357135e0c864db3d11c618a329a11ecab80954"
+      },
+      "expected": {
+        "infinity": false,
+        "x": "057c6d689b5284a7e2284030e363ba553edff58c0ce780184ab87a61ba93b49f",
+        "y": "8fa8f29b1580ba3f137fdab556bb26ca6d2d24fa052c1de0c154de276056cd2a"
+      }
+    }
+  ],
+  "preview_tail": [
+    {
+      "case_id": "random_9020",
+      "category": "random",
+      "accumulator": {
+        "infinity": false,
+        "x": "2c971a4eb6e41eece26c66de5ebf47311dda762caf7362684efb55368e141a9d",
+        "y": "bf693f6bda347007e381234a6432d16571b189bf6d556561924cc41b326d3cea"
+      },
+      "lookup": {
+        "infinity": false,
+        "x": "4c03329aa7bd392dfa458dc053b6a23ca1faa763616ab779e51aadb557db2aff",
+        "y": "a9c7d2fef3e167198c7bde2489eccff0a49d5b31fd3a363c256b059c9aac6bc4"
+      },
+      "expected": {
+        "infinity": false,
+        "x": "bcdef42eb3ceab509d9277949f8f47b12440102ca25862aefafa00cd966610f8",
+        "y": "7f462dc6ff519cd221cc05f67fc6511dc6bc90cccb2c268f35558fc80b12274d"
+      }
+    },
+    {
+      "case_id": "random_9021",
+      "category": "random",
+      "accumulator": {
+        "infinity": false,
+        "x": "45c4e9beb33a970d1ffb83f8bfa403ddce6f4e9b25b5364099ecc63fb7934a50",
+        "y": "ad87a2ebf0e87599002e2468540d5e8bbb2221f705b8e757dabb020e29a6fd13"
+      },
+      "lookup": {
+        "infinity": false,
+        "x": "b557cd46309807488741a3a67fc0bf56f775aad0e88a0755f834b18724815eeb",
+        "y": "15fc84b02f49f7672244cca1aa92f8552e57ce995033173e75ba7c68cd4f106a"
+      },
+      "expected": {
+        "infinity": false,
+        "x": "8f88a5cee478511da43b38c30dfef16fa99dafbe5cbdc2ca76034574fe9d7613",
+        "y": "22d1d6a09d13b614c3479857cd678791d800aa0d0d0fc1b5aba435d523a1c53f"
+      }
+    },
+    {
+      "case_id": "random_9022",
+      "category": "random",
+      "accumulator": {
+        "infinity": false,
+        "x": "44949660611480647b2e472058b3c5a8b3a7b0b4b8ab682a0d713b5568f373d9",
+        "y": "40ff7cdb6c80e62973a9688cb7bef1f00acda2b3e8d3f976fe835c5b59b63f5e"
+      },
+      "lookup": {
+        "infinity": false,
+        "x": "b54b08be50efb0a6cc73cb7a396325483690543e57931be6aeaed2881aa40fe0",
+        "y": "fe6a7750c3bcc0fe95bedfb77abc6a6dbd9a2c34e271d3143115f45e051c896a"
+      },
+      "expected": {
+        "infinity": false,
+        "x": "b0e4b940b10fb16805cd781c2ff53920ce7ab8cb3dfb4baaa9f7431e446f867d",
+        "y": "784a696eb5110ae756324721a76e8beeec87c43a84af3855367b1e4d71aefb93"
+      }
+    },
+    {
+      "case_id": "random_9023",
+      "category": "random",
+      "accumulator": {
+        "infinity": false,
+        "x": "8b65895eedc8217c6b79219ee354ff69ad9640f503468ce0e48de3af19a43db6",
+        "y": "418b67a9bf486bd0a547c824fd4565d17fc18546f1d5012239e7770149863584"
+      },
+      "lookup": {
+        "infinity": false,
+        "x": "86d6d1ac687425a0ceddb4034ee5d6a178378467b7691fdb24f2f089f5d28e13",
+        "y": "c5cdc49ea2d4c55a7bfa7b5f6b1a2a596bdb72f471246a78315e6d041702e45a"
+      },
+      "expected": {
+        "infinity": false,
+        "x": "82aab3a9a4ef9e014f42cb38168365a0996fca71f900443294b55e8adc95497f",
+        "y": "b4f0314182b2f7c7dd1f89119b88be202faa32bd1125ae256e964e0a6d2a87ac"
+      }
+    }
+  ],
+  "checks": {
+    "release_profile_is_google_comparable_9024": true,
+    "all_edge_categories_present": true,
+    "case_count_matches_profile": true,
+    "leaf_seed_is_canonical_sha256": true
+  },
+  "pass": true,
+  "boundary": [
+    "This is a fast release-size semantic preflight over the same executable point-add leaf contract; it is not a compressed or Groth16 proof.",
+    "The release proof remains stale/missing until proof_status.py reports the compressed and Groth16 layers current for this input."
+  ]
+}

@@ -52,6 +52,7 @@ What it does ship is:
 - `exact_leaf_slot_allocation.json` — exact versioned live-range allocation of the checked leaf
 - `compiler_parameters.json` — versioned curve/window/QROAM/reusable-chunk parameter source with a stable digest
 - `proof_corpus_profiles.json` — versioned ZKP case-corpus profiles: current public smoke profile and Google-comparable release target
+- `release_corpus_preflight.json` — fast deterministic 9024-case Google-comparable semantic preflight over the executable leaf, with edge-category counts and a rolling case-stream digest
 - `arithmetic_lowerings.json` — generated primitive-operation inventories for the named arithmetic-kernel family
 - `modular_arithmetic_certificate.json` — proof-bound reduced-width executable pseudo-Mersenne arithmetic certificate plus 256-bit field-mul stage-count binding
 - `tail_macro_liveness.json` — generated diagnostic liveness pressure test for the `complete_a0_all_streamed_tail` formula DAG and the remaining three-slot schedule obligation
@@ -61,6 +62,7 @@ What it does ship is:
 - `logical_resource_ledger.json` — generated peak-live-qubit owner ledger and QROAMClean block-size tradeoff sweep
 - `qroam_primitive_certificate.json` — generated QROAMClean `K=1` primitive-count certificate for the selected reusable chunk stream, including traversed compute/cleanup segment counts and target/junk workspace
 - `qroam_reference_crosscheck.json` — independent QROAMClean gate/workspace reference calculation plus reduced-domain table-select semantics; it separately checks the actual 155-bit reusable chunk stream and the full-field 256-bit ledger sweep before binding into the reusable-chunk resource document
+- `release_corpus_preflight.json` — fast 9024-case semantic preflight over the Google-comparable release target corpus, with forced edge-category counts and a rolling case-stream digest; this is release-size semantic evidence, not a ZKP proof
 - `resource_liveness_certificate.json` — ZKP-bound liveness certificate deriving owner-capacity requirements from executable leaf liveness, QROAMClean workspace, and phase-shell lowering artifacts
 - `artifact_digest_tree.json` — chunked SHA-256/Merkle manifest for tracked large artifacts, generated from the checked tree so reviewers can verify large JSON/CSV/proof blobs by chunks rather than by one opaque file hash
 - `module_library.json` — arithmetic-kernel summary used by the frontier
@@ -229,6 +231,7 @@ python compiler_verification_project/scripts/build.py --target zkp-and-public
 python compiler_verification_project/scripts/verify.py --cases 16
 python compiler_verification_project/scripts/proof_status.py
 python compiler_verification_project/scripts/fast_zkp_preflight.py
+python compiler_verification_project/scripts/proof_environment_report.py
 python compiler_verification_project/scripts/verify_public_headline.py
 python compiler_verification_project/scripts/build_zkp_attestation_input.py --cases 8
 python compiler_verification_project/scripts/materialize_exact_circuits.py
@@ -245,7 +248,11 @@ test run to regenerate those summaries.
 Use `fast_zkp_preflight.py` for the ordinary resource/ZKP edit loop. It runs
 `proof_status.py`, the targeted integrity groups, focused pytest coverage, and
 the attestation-library Rust unit tests, and it rejects any command plan that
-would invoke a prover.
+would invoke a prover. The targeted integrity groups include the 9024-case
+release-corpus preflight, so corpus drift is caught before spending prover time.
+Use `proof_environment_report.py` before a compressed/Groth16 rebuild; it emits
+a JSON readiness report for the local Rust/SP1/protobuf/clang/Go toolchain and
+can fail closed with `--require-ready`.
 
 For a tight loop on one integrity layer, use `--groups` to avoid the semantic
 replay and artifact rewrite:

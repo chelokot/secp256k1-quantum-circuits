@@ -438,8 +438,13 @@ Google's whitepaper appendix states that their proof uses `9024` random inputs
 chosen by a Fiat-Shamir process, and that the SP1 guest simulates the circuit on
 those 9024 cases. This is a major confidence gap.
 
-The repo has larger deterministic replay tests outside the proof, but those are
-not the same as a Groth16 proof over a 9024-case corpus.
+The repo now also ships
+`compiler_verification_project/artifacts/release_corpus_preflight.json`, a fast
+semantic preflight over the Google-comparable `9024`-case public release
+profile. It executes the same point-add leaf contract outside the proof,
+records forced edge-category counts, and binds the full case stream by rolling
+canonical-JSON SHA-256. That is useful release-size evidence, but it is still
+not the same as a compressed or Groth16 proof over a 9024-case corpus.
 
 Required hardening:
 
@@ -447,6 +452,8 @@ Required hardening:
   ideally `9024` cases for direct comparability.
 - Make proof-corpus size explicit in every public comparison table.
 - Never phrase `9024-case replay` as equivalent to `9024-case proof`.
+- Keep the 9024-case preflight in the fast gate so corpus drift is caught before
+  spending prover time.
 
 ### 8. The proof is public-case and deterministic, not hidden-circuit Fiat-Shamir
 
@@ -1390,6 +1397,24 @@ Exit criterion:
 - Public values show `case_count = 9024` and `passed_case_count = 9024`, or docs
   explicitly label the checked proof as an 8-case smoke attestation.
 
+Current remediation:
+
+- `compiler_verification_project/artifacts/release_corpus_preflight.json` now
+  runs the executable point-add leaf over the Google-comparable 9024-case profile
+  without invoking SP1 proving. It records edge-category counts, preview
+  head/tail cases, and a length-prefixed canonical-JSON rolling digest of the
+  whole case stream.
+- `release_corpus_preflight_checks` regenerates that digest from the checked
+  leaf and proof-corpus profile, so a release-size semantic-corpus drift fails a
+  fast integrity group before any compressed/Groth16 work starts.
+
+Still open:
+
+- The checked public proof remains an explicit 8-case smoke attestation until
+  compressed and Groth16 are rebuilt over the 9024-case release profile.
+- Until then, `release_corpus_preflight.json` is only release-size semantic
+  evidence and must not be described as a ZKP.
+
 ### P0: ZKP resource derivation from IR
 
 The SP1 guest should not only reconstruct formulas from family summaries. It
@@ -1427,6 +1452,20 @@ Exit criterion:
 
 - A fresh machine can verify compressed and Groth16 proof bundles and reproduce
   public values with one documented command sequence.
+
+Current remediation:
+
+- `compiler_verification_project/scripts/proof_environment_report.py` now emits a
+  machine-readable local readiness report for Python, Cargo, Rust, `protoc`,
+  clang/libclang-facing bindgen, Go, and optional SP1 helper tools. This catches
+  missing prerequisites, such as absent `protoc`, before a long proof rebuild.
+- `fast_zkp_preflight.py` is the default no-prover edit-loop gate and refuses a
+  command plan that would invoke `--prove` or the guarded prover wrapper.
+
+Still open:
+
+- This is a deterministic preflight and command split, not yet a pinned
+  container/Nix environment.
 
 ### P1: Digest tree for large artifacts
 

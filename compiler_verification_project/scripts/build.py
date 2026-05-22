@@ -21,6 +21,7 @@ from artifact_registry import BUILD_SUMMARY_ARTIFACT_PATHS, BUILD_SUMMARY_SCHEMA
 from project import FIELD_BITS, build_all_artifacts, write_cain_transfer  # noqa: E402
 from public_result import write_public_headline_result  # noqa: E402
 from qroam_reference_crosscheck import build_qroam_reference_crosscheck  # noqa: E402
+from release_corpus_preflight import build_release_corpus_preflight  # noqa: E402
 from reusable_chunk_lowering import build_reusable_chunk_lowering  # noqa: E402
 from zkp_attestation import write_zkp_attestation_inputs  # noqa: E402
 
@@ -68,6 +69,15 @@ def build_digest_tree() -> None:
     dump_json(artifact_dir / 'artifact_digest_tree.json', build_artifact_digest_tree(repo_root=PROJECT_ROOT))
 
 
+def build_release_corpus_preflight_artifact() -> None:
+    artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
+    payload = build_release_corpus_preflight(
+        leaf=load_json(artifact_dir / 'streamed_lookup_tail_leaf.json'),
+        proof_corpus_profiles=load_json(artifact_dir / 'proof_corpus_profiles.json'),
+    )
+    dump_json(artifact_dir / 'release_corpus_preflight.json', payload)
+
+
 def build_summary_artifact() -> None:
     artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
     frontier = load_json(artifact_dir / 'family_frontier.json')
@@ -93,7 +103,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--target',
-        choices=('all', 'core-artifacts', 'build-summary', 'artifact-digest-tree', 'qroam-reference', 'reusable-chunk-resource', 'zkp', 'candidate-zkp', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'),
+        choices=('all', 'core-artifacts', 'build-summary', 'artifact-digest-tree', 'release-corpus-preflight', 'qroam-reference', 'reusable-chunk-resource', 'zkp', 'candidate-zkp', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'),
         default='all',
     )
     args = parser.parse_args()
@@ -107,6 +117,9 @@ def main() -> None:
     if args.target in ('artifact-digest-tree',):
         build_digest_tree()
         payload['artifact_digest_tree'] = 'compiler_verification_project/artifacts/artifact_digest_tree.json'
+    if args.target in ('release-corpus-preflight',):
+        build_release_corpus_preflight_artifact()
+        payload['release_corpus_preflight'] = 'compiler_verification_project/artifacts/release_corpus_preflight.json'
     if args.target in ('qroam-reference', 'resource-zkp-and-public'):
         build_qroam_reference()
         payload['qroam_reference_crosscheck'] = 'compiler_verification_project/artifacts/qroam_reference_crosscheck.json'
@@ -126,6 +139,7 @@ def main() -> None:
         'build_summary': payload['frontier']['best_gate_family'] if 'frontier' in payload else None,
         'build_summary_artifact': payload.get('build_summary_artifact'),
         'artifact_digest_tree': payload.get('artifact_digest_tree'),
+        'release_corpus_preflight': payload.get('release_corpus_preflight'),
         'qroam_reference_crosscheck': payload.get('qroam_reference_crosscheck'),
         'reusable_chunk_lowering': payload.get('reusable_chunk_lowering'),
         'public_headline_result': payload.get('public_headline_result'),

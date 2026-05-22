@@ -86,6 +86,7 @@ from physical_estimator import (  # noqa: E402
 from proof_corpus_profiles import build_proof_corpus_profiles  # noqa: E402
 from qroam_primitive import build_qroam_k1_primitive_certificate  # noqa: E402
 from qroam_reference_crosscheck import build_qroam_reference_crosscheck  # noqa: E402
+from release_corpus_preflight import build_release_corpus_preflight  # noqa: E402
 from reusable_chunk_lowering import build_reusable_chunk_lowering  # noqa: E402
 from reusable_chunk_tail_candidate import build_reusable_chunk_tail_candidate  # noqa: E402
 from resource_ledger import build_logical_resource_ledger, qroam_clean_stream_cost  # noqa: E402
@@ -1949,6 +1950,10 @@ def build_all_artifacts() -> Dict[str, Any]:
         'whole_oracle_recount': whole_oracle_recount,
     }
     out['frontier'] = compiler_family_frontier()
+    out['release_corpus_preflight'] = build_release_corpus_preflight(
+        leaf=out['streamed_lookup_tail_leaf'],
+        proof_corpus_profiles=out['proof_corpus_profiles'],
+    )
     out['standard_qrom_lookup_assessment'] = standard_qrom_lookup_assessment(
         frontier=out['frontier'],
         lookup_lowerings=out['lookup_lowerings'],
@@ -2055,6 +2060,7 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('ft_ir_compositions.json'), out['ft_ir_compositions'])
     dump_json(project_artifact_path('whole_oracle_recount.json'), out['whole_oracle_recount'])
     dump_json(project_artifact_path('family_frontier.json'), out['frontier'])
+    dump_json(project_artifact_path('release_corpus_preflight.json'), out['release_corpus_preflight'])
     dump_json(project_artifact_path('standard_qrom_lookup_assessment.json'), out['standard_qrom_lookup_assessment'])
     dump_json(project_artifact_path('logical_resource_ledger.json'), out['logical_resource_ledger'])
     dump_json(project_artifact_path('fallback_frontier_stress.json'), out['fallback_frontier_stress'])

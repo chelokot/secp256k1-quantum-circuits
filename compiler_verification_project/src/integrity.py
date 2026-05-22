@@ -38,6 +38,7 @@ from proof_corpus_profiles import GOOGLE_COMPARABLE_PROFILE, SMOKE_PUBLIC_PROFIL
 from public_result import build_public_headline_result, write_public_headline_result
 from qroam_primitive import build_qroam_k1_primitive_certificate
 from qroam_reference_crosscheck import QROAM_REFERENCE_CROSSCHECK_SCHEMA, build_qroam_reference_crosscheck
+from release_corpus_preflight import build_release_corpus_preflight
 from reusable_chunk_lowering import build_reusable_chunk_lowering
 from reusable_chunk_tail_candidate import build_reusable_chunk_tail_candidate
 from resource_ledger import build_logical_resource_ledger, qroam_clean_stream_cost
@@ -178,6 +179,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'full_attack_inventory': artifact_root / 'full_attack_inventory.json',
         'ft_ir_compositions': artifact_root / 'ft_ir_compositions.json',
         'whole_oracle_recount': artifact_root / 'whole_oracle_recount.json',
+        'release_corpus_preflight': artifact_root / 'release_corpus_preflight.json',
         'subcircuit_equivalence': artifact_root / 'subcircuit_equivalence.json',
         'headline_opcode_coverage': artifact_root / 'headline_opcode_coverage.json',
         'public_headline_result': artifact_root / 'public_headline_result.json',
@@ -2204,6 +2206,24 @@ def build_proof_corpus_profile_checks(artifacts: Mapping[str, Any]) -> Dict[str,
     return _summarize_checks(checks)
 
 
+def build_release_corpus_preflight_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    preflight = artifacts['release_corpus_preflight']
+    expected = build_release_corpus_preflight(
+        leaf=artifacts['streamed_lookup_tail_leaf'],
+        proof_corpus_profiles=artifacts['proof_corpus_profiles'],
+    )
+    release = artifacts['proof_corpus_profiles']['profiles'][artifacts['proof_corpus_profiles']['release_profile']]
+    checks = [
+        _check('release_corpus_preflight_matches_generator', preflight == expected, expected, preflight),
+        _check('release_corpus_preflight_schema_is_current', preflight['schema'] == 'compiler-project-release-corpus-preflight-v1', 'compiler-project-release-corpus-preflight-v1', preflight['schema']),
+        _check('release_corpus_preflight_passes_internal_checks', preflight['pass'] is True and all(preflight['checks'].values()), True, preflight['checks']),
+        _check('release_corpus_preflight_runs_google_comparable_case_count', preflight['case_count'] == release['case_count'] == 9024 and preflight['release_grade'] is True, release, {'case_count': preflight['case_count'], 'release_grade': preflight['release_grade']}),
+        _check('release_corpus_preflight_covers_forced_edge_categories', set(preflight['category_counts']) == {'accumulator_infinity', 'doubling', 'inverse', 'lookup_infinity', 'random', 'zero_zero'}, 'all forced edge categories plus random', preflight['category_counts']),
+        _check('release_corpus_preflight_has_stable_stream_digest', isinstance(preflight['case_stream_sha256'], str) and len(preflight['case_stream_sha256']) == 64, '64 hex chars', preflight['case_stream_sha256']),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_public_headline_result_checks(artifacts: Mapping[str, Any], repo_root: Path) -> Dict[str, Any]:
     public_result = artifacts['public_headline_result']
     expected = build_public_headline_result(baseline=PUBLIC_GOOGLE_BASELINE)
@@ -2525,6 +2545,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'build_summary_checks': lambda: build_build_summary_checks(artifacts, repo_root),
         'artifact_digest_tree_checks': lambda: build_artifact_digest_tree_checks(artifacts, repo_root),
         'proof_corpus_profile_checks': lambda: build_proof_corpus_profile_checks(artifacts),
+        'release_corpus_preflight_checks': lambda: build_release_corpus_preflight_checks(artifacts),
         'public_headline_result_checks': lambda: build_public_headline_result_checks(artifacts, repo_root),
         'cain_transfer_checks': lambda: build_cain_transfer_checks(artifacts),
         'azure_seed_checks': lambda: build_azure_seed_checks(artifacts),

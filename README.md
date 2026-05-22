@@ -262,6 +262,7 @@ python compiler_verification_project/scripts/build.py --target zkp-and-public
 python compiler_verification_project/scripts/verify.py --cases 16
 python compiler_verification_project/scripts/proof_status.py
 python compiler_verification_project/scripts/fast_zkp_preflight.py
+python compiler_verification_project/scripts/proof_environment_report.py
 python compiler_verification_project/scripts/verify_public_headline.py
 python compiler_verification_project/scripts/build_zkp_attestation_input.py --cases 8
 python compiler_verification_project/scripts/materialize_exact_circuits.py
@@ -286,7 +287,9 @@ test run to regenerate those summaries.
 Use `compiler_verification_project/scripts/fast_zkp_preflight.py` as the normal
 ZKP/resource edit-loop gate. It runs `proof_status.py`, targeted integrity
 groups, focused pytest tests, and the attestation-library Rust unit tests, and
-it has an internal guard that rejects any command plan containing a prover.
+it has an internal guard that rejects any command plan containing a prover. The
+fast gate also rebuild-checks the 9024-case release-corpus preflight as semantic
+evidence only; it is not a substitute for compressed/Groth16 proof freshness.
 
 See `compiler_verification_project/README.md` for the SP1 execute/prove
 commands that reproduce the checked attestation bundle.
