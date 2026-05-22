@@ -999,9 +999,10 @@ Evidence:
   match the QROAMClean `K = 1` model used by the public candidate.
 - The SP1 guest validates the embedded certificates, recomputes segment CCX
   totals by phase, rebuilds the segment Merkle root from the embedded segment
-  hashes, checks target/junk workspace fields against the public QROAM model
-  and independent reference row, and rejects count/workspace/root mutations in
-  negative tests.
+  hashes, recomputes each deterministic segment digest from its phase/address
+  range, checks target/junk workspace fields against the public QROAM model and
+  independent reference row, and rejects count/workspace/root/segment-digest
+  mutations in negative tests.
 
 Impact:
 
