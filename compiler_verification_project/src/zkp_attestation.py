@@ -590,6 +590,25 @@ def _build_proof_register_contract(
     executable_liveness = resource_certificate.get('executable_liveness', {})
     counted_ir = resource_certificate.get('counted_resource_ir', {})
     wire_catalog = dict(counted_ir.get('wire_catalog') or executable_liveness.get('wire_catalog') or {})
+    if not wire_catalog:
+        field_bits = int(resource_certificate.get('field_bits', 256))
+        for slot in leaf['arithmetic_slots']:
+            slot_name = str(slot)
+            wire_catalog[slot_name] = {
+                'wire_id': slot_name,
+                'owner_id': 'arithmetic_slot_register_file',
+                'qubits': field_bits,
+                'role': 'field_arithmetic_slot',
+            }
+        for instruction in leaf['instructions']:
+            if str(instruction['op']) == 'bool_from_flag':
+                control_name = str(instruction['dst'])
+                wire_catalog[control_name] = {
+                    'wire_id': control_name,
+                    'owner_id': 'control_slot_register_file',
+                    'qubits': 1,
+                    'role': 'leaf_control_flag',
+                }
     interface_wires = set(str(name) for name in leaf['interface_wires'])
     lookup_interface_wires = set(str(name) for name in leaf['lookup_interface_slots'])
     semantic_lookup_registers = {'lookup_x', 'lookup_y'}

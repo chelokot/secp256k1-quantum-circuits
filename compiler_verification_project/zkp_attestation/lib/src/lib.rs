@@ -2445,33 +2445,23 @@ fn ensure_defined_register(
 
 fn compile_leaf(leaf: &LeafDocument) -> CompiledLeaf {
     let mut register_ids = BTreeMap::new();
-    for name in [
-        "Q.X",
-        "Q.Y",
-        "Q.Z",
-        "k",
-        "lookup_x",
-        "lookup_y",
-        "lookup_meta",
-        "qx",
-        "qy",
-        "qz",
-    ] {
-        let next_id = register_ids.len();
-        register_ids.insert(name.to_owned(), next_id);
+    let mut initial_registers = Vec::new();
+    initial_registers.extend(leaf.interface_wires.iter().cloned());
+    initial_registers.push("lookup_x".to_owned());
+    initial_registers.push("lookup_y".to_owned());
+    initial_registers.extend(leaf.lookup_interface_slots.iter().cloned());
+    initial_registers.extend(leaf.arithmetic_slots.iter().cloned());
+    for name in initial_registers {
+        if !register_ids.contains_key(&name) {
+            let next_id = register_ids.len();
+            register_ids.insert(name, next_id);
+        }
     }
     let mut defined = BTreeSet::new();
-    for name in [
-        "Q.X",
-        "Q.Y",
-        "Q.Z",
-        "k",
-        "lookup_x",
-        "lookup_y",
-        "lookup_meta",
-    ] {
-        defined.insert(name.to_owned());
-    }
+    defined.extend(leaf.interface_wires.iter().cloned());
+    defined.insert("lookup_x".to_owned());
+    defined.insert("lookup_y".to_owned());
+    defined.extend(leaf.lookup_interface_slots.iter().cloned());
     let mut sorted_instructions = leaf.instructions.clone();
     sorted_instructions.sort_by_key(|instruction| instruction.pc);
     let mut compiled = Vec::with_capacity(sorted_instructions.len());
