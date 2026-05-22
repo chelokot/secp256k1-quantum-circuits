@@ -43,6 +43,7 @@ def _build_manifest(
     arithmetic_operation_ir: dict | None = None,
     qroam_primitive: dict | None = None,
     phase_shell: dict | None = None,
+    public_candidate_materialized: dict | None = None,
 ) -> dict:
     resolved_candidate_input = candidate_input or _candidate_input()
     return build_public_engine_manifest(
@@ -54,6 +55,7 @@ def _build_manifest(
         arithmetic_operation_ir=arithmetic_operation_ir or _load('arithmetic_operation_ir.json'),
         qroam_primitive_certificate=qroam_primitive or _load('qroam_primitive_certificate.json'),
         phase_shell_lowerings=phase_shell or _load('phase_shell_lowerings.json'),
+        public_candidate_materialized_circuit_manifest=public_candidate_materialized or _load('public_candidate_materialized_circuit_manifest.json'),
         selected_family_name=resolved_candidate_input['selected_family_name'],
     )
 
@@ -73,6 +75,7 @@ def test_public_engine_manifest_reconstructs_checked_artifact() -> None:
     )
     assert expected['primitive_operation_evidence']['qroam_primitive_certificate']['whole_oracle_non_clifford'] == reusable['non_clifford_derivation']['qroam_chunk_non_clifford']
     assert expected['primitive_operation_evidence']['phase_shell']['phase_register_bits'] == expected['primitive_operation_evidence']['phase_shell']['hadamard_count']
+    assert expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['non_clifford'] == reusable['non_clifford_derivation']['candidate_total_non_clifford']
 
 
 def test_public_engine_manifest_rejects_engine_total_drift() -> None:
@@ -115,4 +118,12 @@ def test_public_engine_manifest_rejects_phase_shell_drift() -> None:
             row['hadamard_count'] -= 1
     observed = _build_manifest(phase_shell=phase_shell)
     assert observed['checks']['phase_shell_primitive_counts_bind_public_family'] is False
+    assert observed['pass'] is False
+
+
+def test_public_engine_manifest_rejects_public_candidate_materialized_drift() -> None:
+    public_candidate_materialized = _load('public_candidate_materialized_circuit_manifest.json')
+    public_candidate_materialized['public_totals']['non_clifford'] -= 1
+    observed = _build_manifest(public_candidate_materialized=public_candidate_materialized)
+    assert observed['checks']['public_candidate_materialized_stream_binds_engine_totals'] is False
     assert observed['pass'] is False

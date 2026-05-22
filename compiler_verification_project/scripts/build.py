@@ -22,7 +22,7 @@ from arithmetic_operation_ir import build_arithmetic_operation_ir  # noqa: E402
 from constant_provenance import build_constant_provenance  # noqa: E402
 from headline_opcode_coverage import build_headline_opcode_coverage  # noqa: E402
 from headline_resource_manifest import build_headline_resource_manifest  # noqa: E402
-from materialized_circuit import build_materialized_family_manifest  # noqa: E402
+from materialized_circuit import build_materialized_family_manifest, build_public_candidate_materialized_circuit_manifest  # noqa: E402
 from project import FIELD_BITS, build_all_artifacts, build_resource_stack_artifacts, full_attack_inventory, write_cain_transfer  # noqa: E402
 from public_result import write_public_headline_result  # noqa: E402
 from qroam_reference_crosscheck import build_qroam_reference_crosscheck  # noqa: E402
@@ -46,6 +46,7 @@ BUILD_TARGETS = (
     'constant-provenance',
     'release-corpus-preflight',
     'materialized-circuit-manifest',
+    'public-candidate-materialized-circuit-manifest',
     'headline-resource-manifest',
     'public-engine-manifest',
     'arithmetic-operation-ir',
@@ -255,6 +256,22 @@ def build_materialized_circuit_manifest_artifact() -> None:
     dump_json(artifact_dir / 'materialized_circuit_manifest.json', payload)
 
 
+def build_public_candidate_materialized_circuit_manifest_artifact() -> None:
+    artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
+    candidate_input = load_json(
+        artifact_dir / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json'
+    )
+    payload = build_public_candidate_materialized_circuit_manifest(
+        reusable_chunk_lowering=load_json(artifact_dir / 'reusable_chunk_lowering.json'),
+        arithmetic_operation_ir=load_json(artifact_dir / 'arithmetic_operation_ir.json'),
+        qroam_primitive_certificate=load_json(artifact_dir / 'qroam_primitive_certificate.json'),
+        phase_shell_lowerings=load_json(artifact_dir / 'phase_shell_lowerings.json'),
+        zkp_attestation_input=candidate_input,
+        selected_family_name=candidate_input['selected_family_name'],
+    )
+    dump_json(artifact_dir / 'public_candidate_materialized_circuit_manifest.json', payload)
+
+
 def build_headline_resource_manifest_artifact() -> None:
     artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
     candidate_input = load_json(
@@ -281,6 +298,7 @@ def build_public_engine_manifest_artifact() -> None:
         arithmetic_operation_ir=load_json(artifact_dir / 'arithmetic_operation_ir.json'),
         qroam_primitive_certificate=load_json(artifact_dir / 'qroam_primitive_certificate.json'),
         phase_shell_lowerings=load_json(artifact_dir / 'phase_shell_lowerings.json'),
+        public_candidate_materialized_circuit_manifest=load_json(artifact_dir / 'public_candidate_materialized_circuit_manifest.json'),
         selected_family_name=candidate_input['selected_family_name'],
     )
     dump_json(artifact_dir / 'public_engine_manifest.json', payload)
@@ -340,6 +358,9 @@ def main() -> None:
     if args.target in ('materialized-circuit-manifest',):
         build_materialized_circuit_manifest_artifact()
         payload['materialized_circuit_manifest'] = 'compiler_verification_project/artifacts/materialized_circuit_manifest.json'
+    if args.target in ('public-candidate-materialized-circuit-manifest',):
+        build_public_candidate_materialized_circuit_manifest_artifact()
+        payload['public_candidate_materialized_circuit_manifest'] = 'compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json'
     if args.target in ('headline-resource-manifest',):
         build_headline_resource_manifest_artifact()
         payload['headline_resource_manifest'] = 'compiler_verification_project/artifacts/headline_resource_manifest.json'
@@ -370,6 +391,8 @@ def main() -> None:
     if args.target in ('all', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
         build_headline_resource_manifest_artifact()
         payload['headline_resource_manifest'] = 'compiler_verification_project/artifacts/headline_resource_manifest.json'
+        build_public_candidate_materialized_circuit_manifest_artifact()
+        payload['public_candidate_materialized_circuit_manifest'] = 'compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json'
         build_public_engine_manifest_artifact()
         payload['public_engine_manifest'] = 'compiler_verification_project/artifacts/public_engine_manifest.json'
     if args.target in ('release-candidate-zkp',):
@@ -395,6 +418,7 @@ def main() -> None:
         'constant_provenance': payload.get('constant_provenance'),
         'release_corpus_preflight': payload.get('release_corpus_preflight'),
         'materialized_circuit_manifest': payload.get('materialized_circuit_manifest'),
+        'public_candidate_materialized_circuit_manifest': payload.get('public_candidate_materialized_circuit_manifest'),
         'headline_resource_manifest': payload.get('headline_resource_manifest'),
         'public_engine_manifest': payload.get('public_engine_manifest'),
         'arithmetic_operation_ir': payload.get('arithmetic_operation_ir'),

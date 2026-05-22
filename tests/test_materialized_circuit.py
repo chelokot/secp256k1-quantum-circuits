@@ -14,12 +14,28 @@ COMPILER_SRC = REPO_ROOT / 'compiler_verification_project' / 'src'
 if str(COMPILER_SRC) not in sys.path:
     sys.path.insert(0, str(COMPILER_SRC))
 
-from materialized_circuit import MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, iter_family_operation_stream, resolve_selected_family_names  # noqa: E402
+from materialized_circuit import MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, build_public_candidate_materialized_circuit_manifest, iter_family_operation_stream, resolve_selected_family_names  # noqa: E402
 
 
 def _frontier() -> dict:
     ensure_compiler_project_build_summary()
     return json.loads((REPO_ROOT / 'compiler_verification_project' / 'artifacts' / 'family_frontier.json').read_text())
+
+
+def _artifact(name: str) -> dict:
+    ensure_compiler_project_build_summary()
+    return json.loads((REPO_ROOT / 'compiler_verification_project' / 'artifacts' / name).read_text())
+
+
+def _candidate_input() -> dict:
+    ensure_compiler_project_build_summary()
+    return json.loads((
+        REPO_ROOT
+        / 'compiler_verification_project'
+        / 'artifacts'
+        / 'zkp_attestation_reusable_chunk_candidate'
+        / 'zkp_attestation_input.json'
+    ).read_text())
 
 
 def test_materialized_family_aliases_resolve_to_frontier_rows() -> None:
@@ -62,6 +78,36 @@ def test_checked_materialized_manifest_reconstructs_best_qubit_headline() -> Non
     assert manifest['segment_count'] == len(manifest['segments'])
     assert sum(segment['operation_count'] for segment in manifest['segments']) == manifest['operation_count']
     assert len(manifest['segment_merkle_root_sha256']) == 64
+
+
+def test_public_candidate_materialized_manifest_reconstructs_current_headline() -> None:
+    manifest = _artifact('public_candidate_materialized_circuit_manifest.json')
+    reusable = _artifact('reusable_chunk_lowering.json')
+    assert manifest['schema'] == PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA
+    assert manifest['selected_family_name'] == _candidate_input()['selected_family_name']
+    assert manifest['pass'] is True
+    assert manifest['public_totals']['non_clifford'] == reusable['non_clifford_derivation']['candidate_total_non_clifford']
+    assert manifest['public_totals']['logical_qubits'] == reusable['qubit_derivation']['candidate_total_logical_qubits']
+    assert manifest['qroam_expansion']['stream_instances'] == reusable['stream_plan']['whole_oracle_chunk_streams']
+    assert manifest['qroam_expansion']['non_clifford'] == reusable['non_clifford_derivation']['qroam_chunk_non_clifford']
+    assert manifest['qroam_segment_row_count'] == manifest['qroam_expansion']['stream_instances'] * manifest['qroam_expansion']['segments_per_stream']
+
+
+def test_public_candidate_materialized_manifest_rejects_qroam_segment_drift() -> None:
+    qroam = _artifact('qroam_primitive_certificate.json')
+    qroam['operation_stream']['segments'][0]['ccx'] -= 1
+    candidate_input = _candidate_input()
+    observed = build_public_candidate_materialized_circuit_manifest(
+        reusable_chunk_lowering=_artifact('reusable_chunk_lowering.json'),
+        arithmetic_operation_ir=_artifact('arithmetic_operation_ir.json'),
+        qroam_primitive_certificate=qroam,
+        phase_shell_lowerings=_artifact('phase_shell_lowerings.json'),
+        zkp_attestation_input=candidate_input,
+        selected_family_name=candidate_input['selected_family_name'],
+    )
+    assert observed['checks']['non_clifford_total_matches_public_candidate'] is False
+    assert observed['checks']['qroam_rows_sum_to_public_qroam_derivation'] is False
+    assert observed['pass'] is False
 
 
 def test_materialized_circuit_script_lists_available_families() -> None:

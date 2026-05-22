@@ -23,6 +23,7 @@ VERIFY_GROUPS = [
 
 PYTEST_TARGETS = [
     'tests/test_public_engine_manifest.py',
+    'tests/test_materialized_circuit.py',
     'tests/test_release_corpus_preflight.py',
     'tests/test_headline_resource_manifest.py',
     'tests/test_compiler_verification_project.py::test_mutated_public_engine_manifest_is_detected',

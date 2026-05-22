@@ -22,6 +22,16 @@ from phase_shell_lowering import materialize_phase_operations, phase_shell_lower
 STREAM_COLUMNS = ['stream_index', 'family', 'scope', 'invocation', 'source', 'gate', 'operand_0', 'operand_1', 'operand_2']
 DEFAULT_SEGMENT_SIZE = 1_000_000
 MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA = 'compiler-project-materialized-circuit-manifest-v1'
+PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA = 'compiler-project-public-candidate-materialized-circuit-manifest-v1'
+PUBLIC_CANDIDATE_STREAM_COLUMNS = [
+    'row_index',
+    'scope',
+    'source',
+    'gate',
+    'instance_count',
+    'total_count',
+    'non_clifford_count',
+]
 
 
 def _empty_gate_totals() -> Dict[str, int]:
@@ -55,6 +65,22 @@ def _merkle_root(leaf_hashes: List[str]) -> str:
             next_level.append(_merkle_parent(left, right))
         level = next_level
     return level[0]
+
+
+def _canonical_json(payload: Any) -> str:
+    return json.dumps(payload, sort_keys=True, separators=(',', ':'), ensure_ascii=True)
+
+
+def _sha256_payload(payload: Any) -> str:
+    return hashlib.sha256(_canonical_json(payload).encode('ascii')).hexdigest()
+
+
+def _public_candidate_stream_hash(rows: List[Mapping[str, Any]]) -> str:
+    digest = hashlib.sha256()
+    digest.update(('\t'.join(PUBLIC_CANDIDATE_STREAM_COLUMNS) + '\n').encode('ascii'))
+    for row in rows:
+        digest.update(('\t'.join(_canonical_json(row[column]) for column in PUBLIC_CANDIDATE_STREAM_COLUMNS) + '\n').encode('ascii'))
+    return digest.hexdigest()
 
 
 def _project_defaults() -> Dict[str, Any]:
@@ -366,6 +392,186 @@ def build_materialized_family_manifest(
     }
 
 
+def _selected_phase_shell(phase_shell_lowerings: Mapping[str, Any], selected_name: str) -> Mapping[str, Any]:
+    return next(row for row in phase_shell_lowerings['families'] if row['name'] == selected_name)
+
+
+def _phase_run_length_rows(phase_shell: Mapping[str, Any], row_index: int) -> List[Dict[str, Any]]:
+    rows: List[Dict[str, Any]] = []
+    for stage in phase_shell['stages']:
+        for block in stage['blocks']:
+            for gate, count in sorted(block['count_profile_total'].items()):
+                if gate == 'rotation_depth' or int(count) == 0:
+                    continue
+                rows.append({
+                    'row_index': row_index + len(rows),
+                    'scope': 'phase_shell',
+                    'source': f"{phase_shell['name']}:{stage['name']}:{block['name']}",
+                    'gate': gate,
+                    'instance_count': int(count),
+                    'total_count': int(count),
+                    'non_clifford_count': 0,
+                })
+    return rows
+
+
+def _qroam_run_length_rows(
+    *,
+    reusable_chunk_lowering: Mapping[str, Any],
+    qroam_primitive_certificate: Mapping[str, Any],
+    row_index: int,
+) -> List[Dict[str, Any]]:
+    rows: List[Dict[str, Any]] = []
+    qroam_terms = [
+        term
+        for term in reusable_chunk_lowering['counted_resource_ir']['non_clifford_terms']
+        if term['category'] == 'qroam_chunk_stream'
+    ]
+    for term in qroam_terms:
+        for instance_index in range(int(term['instances'])):
+            for segment in qroam_primitive_certificate['operation_stream']['segments']:
+                rows.append({
+                    'row_index': row_index + len(rows),
+                    'scope': 'qroam_chunk_stream',
+                    'source': f"{term['term_id']}:{instance_index}:{segment['phase']}:{segment['start_address']}-{segment['end_address_exclusive']}",
+                    'gate': 'ccx',
+                    'instance_count': int(segment['operation_count']),
+                    'total_count': int(segment['operation_count']),
+                    'non_clifford_count': int(segment['ccx']),
+                    'term_id': str(term['term_id']),
+                    'term_instance_index': instance_index,
+                    'table': str(term['table']),
+                    'chunk_index': int(term['chunk_index']),
+                    'qroam_phase': str(segment['phase']),
+                    'qroam_segment_sha256': str(segment['sha256']),
+                })
+    return rows
+
+
+def build_public_candidate_materialized_circuit_manifest(
+    *,
+    reusable_chunk_lowering: Mapping[str, Any],
+    arithmetic_operation_ir: Mapping[str, Any],
+    qroam_primitive_certificate: Mapping[str, Any],
+    phase_shell_lowerings: Mapping[str, Any],
+    zkp_attestation_input: Mapping[str, Any],
+    selected_family_name: str,
+) -> Dict[str, Any]:
+    counted_resource_ir = reusable_chunk_lowering['counted_resource_ir']
+    public_totals = reusable_chunk_lowering['executable_resource_engine']['public_totals']
+    compiler_parameters = zkp_attestation_input['compiler_parameters_document']['payload']
+    selected_phase_shell_name = str(compiler_parameters['phase_shell']['selected_public_shell'])
+    selected_phase_shell = _selected_phase_shell(phase_shell_lowerings, selected_phase_shell_name)
+    base_non_clifford = int(reusable_chunk_lowering['non_clifford_derivation']['base_non_clifford_without_streamed_qroam'])
+    rows: List[Dict[str, Any]] = [
+        {
+            'row_index': 0,
+            'scope': 'non_qroam_public_base',
+            'source': 'reusable_chunk_lowering.non_clifford_derivation.base_non_clifford_without_streamed_qroam',
+            'gate': 'ccx',
+            'instance_count': base_non_clifford,
+            'total_count': base_non_clifford,
+            'non_clifford_count': base_non_clifford,
+        }
+    ]
+    rows.extend(_qroam_run_length_rows(
+        reusable_chunk_lowering=reusable_chunk_lowering,
+        qroam_primitive_certificate=qroam_primitive_certificate,
+        row_index=len(rows),
+    ))
+    rows.extend(_phase_run_length_rows(selected_phase_shell, len(rows)))
+    qroam_rows = [row for row in rows if row['scope'] == 'qroam_chunk_stream']
+    phase_rows = [row for row in rows if row['scope'] == 'phase_shell']
+    non_clifford_total = sum(int(row['non_clifford_count']) for row in rows)
+    gate_totals = _empty_gate_totals()
+    for row in rows:
+        gate = str(row['gate'])
+        gate_totals[gate] += int(row['total_count'])
+    qroam_stream_term_instances = sum(
+        int(term['instances'])
+        for term in counted_resource_ir['non_clifford_terms']
+        if term['category'] == 'qroam_chunk_stream'
+    )
+    qroam_segment_count = int(qroam_primitive_certificate['operation_stream']['segment_count'])
+    qroam_non_clifford_total = sum(int(row['non_clifford_count']) for row in qroam_rows)
+    phase_total_measurements = sum(int(row['total_count']) for row in phase_rows if row['gate'] == 'measurement')
+    phase_total_hadamards = sum(int(row['total_count']) for row in phase_rows if row['gate'] == 'hadamard')
+    phase_total_rotations = sum(
+        int(row['total_count'])
+        for row in phase_rows
+        if row['gate'] in ('single_qubit_rotation', 'controlled_rotation')
+    )
+    checks = {
+        'selected_family_matches_public_input': selected_family_name == zkp_attestation_input['selected_family_name'],
+        'source_engines_pass': (
+            reusable_chunk_lowering['executable_resource_engine']['pass'] is True
+            and reusable_chunk_lowering['counted_resource_engine']['pass'] is True
+            and arithmetic_operation_ir['pass'] is True
+            and qroam_primitive_certificate['pass'] is True
+        ),
+        'non_clifford_total_matches_public_candidate': non_clifford_total == int(public_totals['non_clifford']),
+        'qroam_rows_expand_every_public_stream_segment': len(qroam_rows) == qroam_stream_term_instances * qroam_segment_count,
+        'qroam_rows_sum_to_public_qroam_derivation': qroam_non_clifford_total == int(reusable_chunk_lowering['non_clifford_derivation']['qroam_chunk_non_clifford']),
+        'base_row_matches_public_non_qroam_derivation': int(rows[0]['non_clifford_count']) == int(public_totals['non_clifford']) - qroam_non_clifford_total,
+        'phase_rows_bind_selected_phase_shell': (
+            selected_phase_shell['name'] == zkp_attestation_input['family_document']['payload']['phase_shell']
+            and phase_total_hadamards == int(selected_phase_shell['hadamard_count'])
+            and phase_total_measurements == int(selected_phase_shell['total_measurements'])
+            and phase_total_rotations == int(selected_phase_shell['total_rotations'])
+        ),
+    }
+    return {
+        'schema': PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA,
+        'scope': 'current public reusable-chunk candidate run-length primitive stream manifest',
+        'selected_family_name': selected_family_name,
+        'stream_encoding': PUBLIC_CANDIDATE_STREAM_COLUMNS,
+        'source_digests': {
+            'reusable_chunk_lowering_sha256': _sha256_payload(reusable_chunk_lowering),
+            'counted_resource_ir_sha256': reusable_chunk_lowering['executable_resource_engine']['counted_resource_ir_sha256'],
+            'arithmetic_operation_ir_sha256': _sha256_payload(arithmetic_operation_ir),
+            'qroam_primitive_certificate_sha256': _sha256_payload(qroam_primitive_certificate),
+            'phase_shell_lowerings_sha256': _sha256_payload(phase_shell_lowerings),
+            'zkp_attestation_input_sha256': _sha256_payload(zkp_attestation_input),
+        },
+        'operation_stream_sha256': _public_candidate_stream_hash(rows),
+        'run_length_row_count': len(rows),
+        'qroam_segment_row_count': len(qroam_rows),
+        'phase_row_count': len(phase_rows),
+        'gate_totals': gate_totals,
+        'public_totals': {
+            'non_clifford': non_clifford_total,
+            'logical_qubits': int(public_totals['logical_qubits']),
+        },
+        'qroam_expansion': {
+            'stream_instances': qroam_stream_term_instances,
+            'segments_per_stream': qroam_segment_count,
+            'expanded_segment_rows': len(qroam_rows),
+            'non_clifford': qroam_non_clifford_total,
+            'segment_merkle_root_sha256': qroam_primitive_certificate['operation_stream']['segment_merkle_root_sha256'],
+        },
+        'phase_shell_expansion': {
+            'name': selected_phase_shell['name'],
+            'hadamards': phase_total_hadamards,
+            'measurements': phase_total_measurements,
+            'rotations': phase_total_rotations,
+        },
+        'arithmetic_evidence': {
+            'schema': arithmetic_operation_ir['schema'],
+            'operation_stream_sha256': arithmetic_operation_ir['leaf_arithmetic_summary']['operation_stream_sha256'],
+            'non_clifford_total': int(arithmetic_operation_ir['leaf_arithmetic_summary']['non_clifford_total']),
+            'note': 'Arithmetic primitive rows are still represented by the public non-QROAM base run until the full reusable-tail macro is flattened.',
+        },
+        'preview_head': rows[:8],
+        'preview_tail': rows[-8:],
+        'checks': checks,
+        'pass': all(checks.values()),
+        'boundary': [
+            'This is a deterministic run-length primitive stream for the current public candidate, not yet a Clifford-complete flat netlist.',
+            'It prevents the public candidate from relying on the superseded materialized frontier manifest while the full flat engine is developed.',
+        ],
+    }
+
+
 def write_materialized_family_circuit(
     family_name: str,
     output_root: Path,
@@ -390,8 +596,10 @@ def write_materialized_family_circuit(
 
 __all__ = [
     'MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA',
+    'PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA',
     'available_family_names',
     'build_materialized_family_manifest',
+    'build_public_candidate_materialized_circuit_manifest',
     'iter_family_operation_stream',
     'resolve_selected_family_names',
     'write_materialized_family_circuit',

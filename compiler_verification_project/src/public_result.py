@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
 from typing import Any, Dict, Mapping
 
@@ -19,6 +20,11 @@ def _sha256_path(path: Path) -> str:
     from common import sha256_path
 
     return sha256_path(path)
+
+
+def _sha256_payload(payload: Any) -> str:
+    encoded = json.dumps(payload, sort_keys=True, separators=(',', ':'), ensure_ascii=True).encode('ascii')
+    return hashlib.sha256(encoded).hexdigest()
 
 
 def _file_record(relative_path: str) -> Dict[str, Any]:
@@ -75,6 +81,7 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
     qroam_reference = _load(ARTIFACT_ROOT / 'qroam_reference_crosscheck.json')
     modular_arithmetic = _load(ARTIFACT_ROOT / 'modular_arithmetic_certificate.json')
     headline_resource_manifest = _load(ARTIFACT_ROOT / 'headline_resource_manifest.json')
+    public_candidate_materialized_manifest = _load(ARTIFACT_ROOT / 'public_candidate_materialized_circuit_manifest.json')
     public_engine_manifest = _load(ARTIFACT_ROOT / 'public_engine_manifest.json')
     compiler_parameters = _load(ARTIFACT_ROOT / 'compiler_parameters.json')
     family_frontier = _load(ARTIFACT_ROOT / 'family_frontier.json')
@@ -180,9 +187,18 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             and public_engine_manifest['public_totals']['non_clifford'] == non_clifford
             and public_engine_manifest['public_totals']['logical_qubits'] == qubits
             and public_engine_manifest['source_digests']['counted_resource_ir_sha256'] == resource_contract_engine['counted_resource_ir_sha256']
+            and public_engine_manifest['source_digests']['public_candidate_materialized_circuit_manifest_sha256'] == _sha256_payload(public_candidate_materialized_manifest)
             and public_engine_manifest['source_digests']['executable_liveness_sha256'] == resource_contract_engine['executable_liveness_sha256']
             and public_engine_manifest['source_digests']['owner_capacity_sha256'] == resource_contract_engine['owner_capacity_sha256']
             and public_engine_manifest['fast_no_zkp_contract']['prover_required'] is False
+        ),
+        'public_candidate_materialized_manifest_binds_current_public_result': (
+            public_candidate_materialized_manifest['pass'] is True
+            and public_candidate_materialized_manifest['selected_family_name'] == current_values['selected_family_name']
+            and public_candidate_materialized_manifest['public_totals']['non_clifford'] == non_clifford
+            and public_candidate_materialized_manifest['public_totals']['logical_qubits'] == qubits
+            and public_candidate_materialized_manifest['source_digests']['counted_resource_ir_sha256'] == resource_contract_engine['counted_resource_ir_sha256']
+            and public_candidate_materialized_manifest['qroam_expansion']['non_clifford'] == lowering['non_clifford_derivation']['qroam_chunk_non_clifford']
         ),
         'proof_register_contract_binds_prepared_leaf_to_resource_owners': (
             input_payload['proof_register_contract']['pass'] is True
@@ -291,6 +307,7 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             'reusable_chunk_lowering': _file_record('compiler_verification_project/artifacts/reusable_chunk_lowering.json'),
             'reusable_chunk_tail_candidate': _file_record('compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json'),
             'headline_resource_manifest': _file_record('compiler_verification_project/artifacts/headline_resource_manifest.json'),
+            'public_candidate_materialized_circuit_manifest': _file_record('compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json'),
             'public_engine_manifest': _file_record('compiler_verification_project/artifacts/public_engine_manifest.json'),
         },
         'verification_commands': {

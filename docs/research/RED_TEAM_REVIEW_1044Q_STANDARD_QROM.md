@@ -1576,6 +1576,15 @@ Current remediation:
   phase shell must match the compiler-parameter and family-document payloads.
   Focused mutation tests now reject forged arithmetic counts, forged QROAM
   stream costs, and phase-shell count drift without invoking SP1.
+- `compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json`
+  now gives the promoted reusable-chunk candidate its own deterministic
+  run-length primitive stream boundary. It reconstructs `36,957,412 / 1,199`,
+  expands all `186` public QROAM streams through the generated QROAM segment
+  certificate, binds selected phase-shell rows, and is itself bound by
+  `public_engine_manifest.json` and `public_headline_result.json`. This still is
+  not a Clifford-complete full netlist, but it removes the previous situation
+  where the only materialized circuit manifest described the superseded
+  three-slot frontier family.
 - `compiler_verification_project/artifacts/arithmetic_operation_ir.json` now
   reconstructs arithmetic block/stage/kernel/selected-leaf primitive counts from
   materialized operation streams and digests. The resource-liveness certificate
@@ -1874,11 +1883,12 @@ Fixed after review:
   for the promoted reusable-chunk result. It expands the ZKP-bound
   `counted_resource_ir` into counted term rows and liveness rows, recomputes
   `36,957,412` non-Clifford operations and the `1,199`-qubit peak, and is bound
-  by `public_headline_result.json` plus integrity checks. This closes the
-  specific stale-evidence hazard where
-  `materialized_circuit_manifest.json` still describes the older checked
-  `34,925,796 / 1,044` three-slot frontier family. It is still a counted-resource
-  stream manifest, not a Clifford-complete per-gate netlist.
+  by `public_headline_result.json` plus integrity checks. The repo also emits
+  `public_candidate_materialized_circuit_manifest.json` for the promoted
+  result, so the public candidate has its own checked run-length primitive
+  stream instead of relying on the older
+  `34,925,796 / 1,044` materialized frontier family. These are still
+  counted/run-length stream manifests, not a Clifford-complete per-gate netlist.
 
 Partially mitigated after review:
 

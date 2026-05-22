@@ -115,6 +115,7 @@ def build_public_engine_manifest(
     arithmetic_operation_ir: Mapping[str, Any],
     qroam_primitive_certificate: Mapping[str, Any],
     phase_shell_lowerings: Mapping[str, Any],
+    public_candidate_materialized_circuit_manifest: Mapping[str, Any],
     selected_family_name: str,
 ) -> Dict[str, Any]:
     executable_resource_engine = reusable_chunk_lowering['executable_resource_engine']
@@ -262,6 +263,14 @@ def build_public_engine_manifest(
             and int(selected_phase_shell['rotation_depth']) == int(family_payload['phase_shell_rotation_depth'])
             and int(selected_phase_shell['controlled_rotation_count']) == int(selected_phase_shell['total_rotations']) - int(selected_phase_shell['single_qubit_rotation_count'])
         ),
+        'public_candidate_materialized_stream_binds_engine_totals': (
+            public_candidate_materialized_circuit_manifest['pass'] is True
+            and public_candidate_materialized_circuit_manifest['selected_family_name'] == selected_family_name
+            and int(public_candidate_materialized_circuit_manifest['public_totals']['non_clifford']) == public_totals['non_clifford']
+            and int(public_candidate_materialized_circuit_manifest['public_totals']['logical_qubits']) == public_totals['logical_qubits']
+            and public_candidate_materialized_circuit_manifest['source_digests']['counted_resource_ir_sha256'] == executable_resource_engine['counted_resource_ir_sha256']
+            and int(public_candidate_materialized_circuit_manifest['qroam_expansion']['non_clifford']) == int(reusable_chunk_lowering['non_clifford_derivation']['qroam_chunk_non_clifford'])
+        ),
     }
     return {
         'schema': PUBLIC_ENGINE_MANIFEST_SCHEMA,
@@ -276,6 +285,7 @@ def build_public_engine_manifest(
             'executable_liveness_sha256': executable_resource_engine['executable_liveness_sha256'],
             'owner_capacity_sha256': executable_resource_engine['owner_capacity_sha256'],
             'resource_contract_engine_sha256': executable_resource_engine['resource_contract_engine_sha256'],
+            'public_candidate_materialized_circuit_manifest_sha256': _sha256_payload(public_candidate_materialized_circuit_manifest),
         },
         'instruction_stream': {
             'encoding': instruction_columns,
@@ -346,6 +356,15 @@ def build_public_engine_manifest(
             },
         },
         'primitive_operation_evidence': {
+            'public_candidate_materialized_circuit_manifest': {
+                'schema': public_candidate_materialized_circuit_manifest['schema'],
+                'sha256': _sha256_payload(public_candidate_materialized_circuit_manifest),
+                'pass': bool(public_candidate_materialized_circuit_manifest['pass']),
+                'operation_stream_sha256': public_candidate_materialized_circuit_manifest['operation_stream_sha256'],
+                'run_length_row_count': int(public_candidate_materialized_circuit_manifest['run_length_row_count']),
+                'qroam_segment_row_count': int(public_candidate_materialized_circuit_manifest['qroam_segment_row_count']),
+                'non_clifford': int(public_candidate_materialized_circuit_manifest['public_totals']['non_clifford']),
+            },
             'arithmetic_operation_ir': {
                 'schema': arithmetic_operation_ir['schema'],
                 'sha256': _sha256_payload(arithmetic_operation_ir),

@@ -30,6 +30,7 @@ from compiler_parameters import COMPILER_PARAMETERS_SCHEMA, build_compiler_param
 from constant_provenance import CONSTANT_PROVENANCE_SCHEMA, build_constant_provenance
 from fallback_frontier_stress import build_fallback_frontier_stress
 from lookup_lowering import lookup_lowering_library, lowered_lookup_semantic_summary, materialize_lookup_primitive_operations
+from materialized_circuit import PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, build_public_candidate_materialized_circuit_manifest
 from modular_arithmetic_certificate import build_modular_arithmetic_certificate
 from phase_shell_lowering import materialize_phase_operations, phase_shell_family_summary, phase_shell_lowering_library
 from physical_estimator import (
@@ -188,6 +189,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'reusable_chunk_lowering': artifact_root / 'reusable_chunk_lowering.json',
         'resource_liveness_certificate': artifact_root / 'resource_liveness_certificate.json',
         'materialized_circuit_manifest': artifact_root / 'materialized_circuit_manifest.json',
+        'public_candidate_materialized_circuit_manifest': artifact_root / 'public_candidate_materialized_circuit_manifest.json',
         'headline_resource_manifest': artifact_root / 'headline_resource_manifest.json',
         'public_engine_manifest': artifact_root / 'public_engine_manifest.json',
         'qubit_breakthrough_analysis': artifact_root / 'qubit_breakthrough_analysis.json',
@@ -237,6 +239,17 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
             ),
         )
         dump_json(
+            artifact_root / 'public_candidate_materialized_circuit_manifest.json',
+            build_public_candidate_materialized_circuit_manifest(
+                reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
+                arithmetic_operation_ir=load_json(artifact_root / 'arithmetic_operation_ir.json'),
+                qroam_primitive_certificate=load_json(artifact_root / 'qroam_primitive_certificate.json'),
+                phase_shell_lowerings=load_json(artifact_root / 'phase_shell_lowerings.json'),
+                zkp_attestation_input=load_json(artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json'),
+                selected_family_name=load_json(artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json')['selected_family_name'],
+            ),
+        )
+        dump_json(
             artifact_root / 'public_engine_manifest.json',
             build_public_engine_manifest(
                 reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
@@ -247,6 +260,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 arithmetic_operation_ir=load_json(artifact_root / 'arithmetic_operation_ir.json'),
                 qroam_primitive_certificate=load_json(artifact_root / 'qroam_primitive_certificate.json'),
                 phase_shell_lowerings=load_json(artifact_root / 'phase_shell_lowerings.json'),
+                public_candidate_materialized_circuit_manifest=load_json(artifact_root / 'public_candidate_materialized_circuit_manifest.json'),
                 selected_family_name=load_json(artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json')['selected_family_name'],
             ),
         )
@@ -2097,6 +2111,7 @@ def build_public_engine_manifest_checks(artifacts: Mapping[str, Any]) -> Dict[st
         arithmetic_operation_ir=artifacts['arithmetic_operation_ir'],
         qroam_primitive_certificate=artifacts['qroam_primitive_certificate'],
         phase_shell_lowerings=artifacts['phase_shell_lowerings'],
+        public_candidate_materialized_circuit_manifest=artifacts['public_candidate_materialized_circuit_manifest'],
         selected_family_name=selected_family_name,
     )
     executable_resource_engine = lowering['executable_resource_engine']
@@ -2111,7 +2126,7 @@ def build_public_engine_manifest_checks(artifacts: Mapping[str, Any]) -> Dict[st
         _check('public_engine_manifest_instruction_schedule_and_wire_streams_are_nonempty', manifest['instruction_stream']['row_count'] > 0 and manifest['schedule_stream']['row_count'] > 0 and manifest['wire_catalog_stream']['row_count'] > 0, '> 0 rows', {'instruction_rows': manifest['instruction_stream']['row_count'], 'schedule_rows': manifest['schedule_stream']['row_count'], 'wire_rows': manifest['wire_catalog_stream']['row_count']}),
         _check('public_engine_manifest_fast_contract_is_no_zkp', manifest['fast_no_zkp_contract']['prover_required'] is False and manifest['fast_no_zkp_contract']['verify_group'] == 'public_engine_manifest_checks', {'prover_required': False, 'verify_group': 'public_engine_manifest_checks'}, manifest['fast_no_zkp_contract']),
         _check('public_engine_manifest_binds_semantic_boundary_evidence', manifest['semantic_boundary_evidence']['streamed_lookup_tail_leaf_equivalence']['pass'] == manifest['semantic_boundary_evidence']['streamed_lookup_tail_leaf_equivalence']['total'] and manifest['semantic_boundary_evidence']['release_corpus_preflight']['case_count'] == GOOGLE_COMPARABLE_CASE_COUNT and all(manifest['semantic_boundary_evidence']['smoke_case_corpus']['category_counts'].get(category, 0) > 0 for category in manifest['semantic_boundary_evidence']['required_categories']) and all(manifest['semantic_boundary_evidence']['release_corpus_preflight']['category_counts'].get(category, 0) > 0 for category in manifest['semantic_boundary_evidence']['required_categories']), 'semantic boundary evidence covers required categories in smoke and release corpora', manifest['semantic_boundary_evidence']),
-        _check('public_engine_manifest_binds_primitive_operation_evidence', manifest['primitive_operation_evidence']['arithmetic_operation_ir']['pass'] is True and manifest['primitive_operation_evidence']['qroam_primitive_certificate']['pass'] is True and manifest['primitive_operation_evidence']['qroam_primitive_certificate']['whole_oracle_non_clifford'] == lowering['non_clifford_derivation']['qroam_chunk_non_clifford'] and manifest['primitive_operation_evidence']['phase_shell']['name'] in selected_family_name, 'primitive operation evidence binds arithmetic, qroam, and phase shell sources', manifest['primitive_operation_evidence']),
+        _check('public_engine_manifest_binds_primitive_operation_evidence', manifest['primitive_operation_evidence']['arithmetic_operation_ir']['pass'] is True and manifest['primitive_operation_evidence']['qroam_primitive_certificate']['pass'] is True and manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['pass'] is True and manifest['primitive_operation_evidence']['qroam_primitive_certificate']['whole_oracle_non_clifford'] == lowering['non_clifford_derivation']['qroam_chunk_non_clifford'] and manifest['primitive_operation_evidence']['phase_shell']['name'] in selected_family_name, 'primitive operation evidence binds materialized public candidate, arithmetic, qroam, and phase shell sources', manifest['primitive_operation_evidence']),
         _check('public_engine_manifest_passes_internal_checks', manifest['pass'] is True and all(manifest['checks'].values()), True, manifest['checks']),
     ]
     return _summarize_checks(checks)
