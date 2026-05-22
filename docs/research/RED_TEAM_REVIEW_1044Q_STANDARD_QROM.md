@@ -1503,10 +1503,10 @@ Fixed after review:
 
 - `ZK-1`: the active SP1 input moved to schema
   `compiler-project-zkp-attestation-input-v5`. The guest now receives the full
-  committed claim, leaf, family, case-corpus, and resource-certificate
-  documents; recomputes their canonical SHA-256 digests; derives the prepared
-  claim summary, family summary, leaf program, and case corpus from those
-  documents; and publishes the recomputed hashes as public values.
+  committed claim, leaf, family, case-corpus, resource-certificate, and
+  compiler-parameter documents; recomputes their canonical SHA-256 digests;
+  derives the prepared claim summary, family summary, leaf program, and case
+  corpus from those documents; and publishes the recomputed public claim hashes.
 - The public values now include `resource_certificate_sha256`, binding the
   selected frontier, executable leaf liveness summary, QROAM workspace/cost
   checks, arithmetic lowering inventory, selected-family FT-IR leaf sigma, and
