@@ -11,6 +11,7 @@ from typing import Any
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 CANDIDATE_ROOT = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts' / 'zkp_attestation_reusable_chunk_candidate'
+PROOF_MANIFEST_PATH = PROJECT_ROOT / 'artifacts' / 'package' / 'proof_manifest.json'
 
 
 def parse_args() -> argparse.Namespace:
@@ -33,18 +34,52 @@ def sha256_path(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def proof_file_status(fixture: dict[str, Any]) -> dict[str, Any]:
+def proof_manifest_files() -> dict[str, Any]:
+    manifest = load_json(PROOF_MANIFEST_PATH)
+    return manifest['files']
+
+
+def manifest_file_status(relative_path: str | None, manifest_files: dict[str, Any]) -> dict[str, Any]:
+    if relative_path is None:
+        return {
+            'manifest_path': None,
+            'manifest_record_exists': None,
+            'manifest_sha256_matches_file': None,
+        }
+    path = PROJECT_ROOT / relative_path
+    record = manifest_files.get(relative_path)
+    exists = path.exists()
+    observed_sha256 = sha256_path(path) if exists else None
+    observed_size = path.stat().st_size if exists else None
+    return {
+        'manifest_path': relative_path,
+        'manifest_record_exists': record is not None,
+        'manifest_sha256_matches_file': (
+            record is not None
+            and exists
+            and record['sha256'] == observed_sha256
+            and record['bytes'] == observed_size
+        ),
+        'manifest_sha256': None if record is None else record['sha256'],
+        'manifest_size_bytes': None if record is None else record['bytes'],
+    }
+
+
+def proof_file_status(fixture: dict[str, Any], manifest_files: dict[str, Any]) -> dict[str, Any]:
     proof_path = fixture['proof_path']
     if proof_path is None:
         return {
             'proof_path': None,
             'proof_file_exists': None,
             'proof_sha256_matches_fixture': None,
+            'proof_manifest_record_exists': None,
+            'proof_manifest_sha256_matches_file': None,
         }
     path = PROJECT_ROOT / proof_path
     exists = path.exists()
     observed_sha256 = sha256_path(path) if exists else None
     observed_size = path.stat().st_size if exists else None
+    manifest_status = manifest_file_status(proof_path, manifest_files)
     return {
         'proof_path': proof_path,
         'proof_file_exists': exists,
@@ -55,21 +90,27 @@ def proof_file_status(fixture: dict[str, Any]) -> dict[str, Any]:
         ),
         'observed_proof_sha256': observed_sha256,
         'fixture_proof_sha256': fixture['proof_sha256'],
+        'proof_manifest_record_exists': manifest_status['manifest_record_exists'],
+        'proof_manifest_sha256_matches_file': manifest_status['manifest_sha256_matches_file'],
+        'proof_manifest_sha256': manifest_status.get('manifest_sha256'),
     }
 
 
-def verifier_key_status(fixture: dict[str, Any]) -> dict[str, Any]:
+def verifier_key_status(fixture: dict[str, Any], manifest_files: dict[str, Any]) -> dict[str, Any]:
     verifier_key_path = fixture['verifier_key_path']
     if verifier_key_path is None:
         return {
             'verifier_key_path': None,
             'verifier_key_file_exists': None,
             'verifier_key_sha256_matches_fixture': None,
+            'verifier_key_manifest_record_exists': None,
+            'verifier_key_manifest_sha256_matches_file': None,
         }
     path = PROJECT_ROOT / verifier_key_path
     exists = path.exists()
     observed_sha256 = sha256_path(path) if exists else None
     observed_size = path.stat().st_size if exists else None
+    manifest_status = manifest_file_status(verifier_key_path, manifest_files)
     return {
         'verifier_key_path': verifier_key_path,
         'verifier_key_file_exists': exists,
@@ -80,13 +121,18 @@ def verifier_key_status(fixture: dict[str, Any]) -> dict[str, Any]:
         ),
         'observed_verifier_key_sha256': observed_sha256,
         'fixture_verifier_key_sha256': fixture['verifier_key_sha256'],
+        'verifier_key_manifest_record_exists': manifest_status['manifest_record_exists'],
+        'verifier_key_manifest_sha256_matches_file': manifest_status['manifest_sha256_matches_file'],
+        'verifier_key_manifest_sha256': manifest_status.get('manifest_sha256'),
     }
 
 
-def fixture_status(system: str, input_payload: dict[str, Any], public_values: dict[str, Any]) -> dict[str, Any]:
-    fixture = load_json(CANDIDATE_ROOT / f'zkp_attestation_fixture_{system}.json')
-    proof_status = proof_file_status(fixture)
-    key_status = verifier_key_status(fixture)
+def fixture_status(system: str, input_payload: dict[str, Any], public_values: dict[str, Any], manifest_files: dict[str, Any]) -> dict[str, Any]:
+    fixture_relative_path = f'compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_fixture_{system}.json'
+    fixture = load_json(PROJECT_ROOT / fixture_relative_path)
+    proof_status = proof_file_status(fixture, manifest_files)
+    key_status = verifier_key_status(fixture, manifest_files)
+    fixture_manifest_status = manifest_file_status(fixture_relative_path, manifest_files)
     fixture_public_values = fixture['public_values']
     input_path = CANDIDATE_ROOT / 'zkp_attestation_input.json'
     input_sha256 = sha256_path(input_path)
@@ -146,12 +192,22 @@ def fixture_status(system: str, input_payload: dict[str, Any], public_values: di
     key_current = key_status['verifier_key_sha256_matches_fixture']
     if key_current is None:
         key_current = True
+    proof_manifest_current = proof_status['proof_manifest_sha256_matches_file']
+    if proof_manifest_current is None:
+        proof_manifest_current = True
+    key_manifest_current = key_status['verifier_key_manifest_sha256_matches_file']
+    if key_manifest_current is None:
+        key_manifest_current = True
+    fixture_manifest_current = fixture_manifest_status['manifest_sha256_matches_file']
     current = (
         input_digest_matches_fixture
         and public_values_match_current
         and resource_digest_matches_input
         and proof_current
         and key_current
+        and proof_manifest_current
+        and key_manifest_current
+        and fixture_manifest_current
     )
     stale_reasons = []
     if input_binding_status != 'matches_current_input':
@@ -164,9 +220,19 @@ def fixture_status(system: str, input_payload: dict[str, Any], public_values: di
         stale_reasons.append('proof_binary_does_not_match_fixture')
     if not key_current:
         stale_reasons.append('verifier_key_does_not_match_fixture')
+    if not fixture_manifest_current:
+        stale_reasons.append('fixture_json_does_not_match_proof_manifest')
+    if not proof_manifest_current:
+        stale_reasons.append('proof_binary_does_not_match_proof_manifest')
+    if not key_manifest_current:
+        stale_reasons.append('verifier_key_does_not_match_proof_manifest')
     return {
         'system': system,
         'current': current,
+        'fixture_path': fixture_relative_path,
+        'fixture_manifest_record_exists': fixture_manifest_status['manifest_record_exists'],
+        'fixture_manifest_sha256_matches_file': fixture_manifest_status['manifest_sha256_matches_file'],
+        'fixture_manifest_sha256': fixture_manifest_status.get('manifest_sha256'),
         'verification_key': fixture['verification_key'],
         'input_path': fixture_input_path,
         'input_file_exists': fixture_input_file_exists,
@@ -190,13 +256,16 @@ def fixture_status(system: str, input_payload: dict[str, Any], public_values: di
 def build_report() -> dict[str, Any]:
     input_payload = load_json(CANDIDATE_ROOT / 'zkp_attestation_input.json')
     public_values = load_json(CANDIDATE_ROOT / 'zkp_attestation_public_values.json')
+    manifest_files = proof_manifest_files()
     systems = {
-        system: fixture_status(system, input_payload, public_values)
+        system: fixture_status(system, input_payload, public_values, manifest_files)
         for system in ('core', 'compressed', 'groth16')
     }
     stale_systems = [system for system, status in systems.items() if not status['current']]
     return {
         'schema': 'compiler-project-proof-status-v1',
+        'proof_manifest': 'artifacts/package/proof_manifest.json',
+        'proof_manifest_sha256': sha256_path(PROOF_MANIFEST_PATH),
         'candidate_input': 'compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json',
         'candidate_input_sha256': sha256_path(CANDIDATE_ROOT / 'zkp_attestation_input.json'),
         'compiler_parameters_sha256': input_payload['compiler_parameters_sha256'],

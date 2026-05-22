@@ -285,7 +285,10 @@ of them invalidates the proof input until the proof layers are rebuilt.
 Proof fixtures are also expected to bind the exact prepared input by
 `input_path`, `input_sha256`, and `input_size_bytes`; `proof_status.py` treats
 fixtures that explicitly declare no input metadata, or that omit those fields,
-as stale even if their proof binary digests still match.
+as stale even if their proof binary digests still match. It also cross-checks
+fixture JSON, proof bundles, and the Groth16 verifier key against
+`artifacts/package/proof_manifest.json`, so the cheap freshness gate catches
+release-manifest drift without invoking a verifier or prover.
 
 `materialize_exact_circuits.py` writes ignored whole-oracle operation streams
 for the selected exact compiler families under

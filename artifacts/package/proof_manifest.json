@@ -175,8 +175,8 @@
       "bytes": 9368
     },
     "compiler_verification_project/README.md": {
-      "sha256": "83501d709e798f294a6402688f0df35e335c59fdf956773845c1ffff8236d2c8",
-      "bytes": 26299
+      "sha256": "df42d71bfcdaad5932792858ef1700f32292229804d4267d339f168f1982bfee",
+      "bytes": 26525
     },
     "compiler_verification_project/src/artifact_registry.py": {
       "sha256": "24d3c3dec3569a5454835fc7e0cbeee90ee5691fe8fbf0e06378373a13c44411",
@@ -515,8 +515,8 @@
       "bytes": 2405
     },
     "compiler_verification_project/scripts/proof_status.py": {
-      "sha256": "ff2e98f53957e43b056dcbfa49cdb999ad1031efe9cbb33acf53d270e0f197f1",
-      "bytes": 9282
+      "sha256": "a75cd972e9419a8df48d51287a75ee0432e4f72174e7c8068b4517c396b3055a",
+      "bytes": 13087
     },
     "compiler_verification_project/artifacts/build_summary.json": {
       "sha256": "84e3ca231a798a779b91b56cec5a735978b1f2ddb26f5d763f28ef49bbccf6ae",

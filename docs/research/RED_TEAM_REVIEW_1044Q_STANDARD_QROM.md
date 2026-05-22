@@ -1837,9 +1837,11 @@ Partially mitigated after review:
   Google baseline, and a failing `pass` flag while checked proofs are stale
   against the current resource digest. The old `34,925,796 / 1,044` three-slot
   family remains checked as a reference boundary, not the public headline.
-- `ZK-3`: proof binaries are now included in the curated proof manifest, but
-  the checked JSON fixtures still intentionally keep the large binary proof
-  payloads out-of-line.
+- `ZK-3`: proof binaries are now included in the curated proof manifest, and
+  `proof_status.py` cross-checks fixture JSON, proof binaries, Groth16 verifier
+  keys, and `artifacts/package/proof_manifest.json`. The checked JSON fixtures
+  still intentionally keep large compressed proof bytes out-of-line, but path,
+  size, and digest binding is now part of the cheap freshness gate.
 
 Still open:
 

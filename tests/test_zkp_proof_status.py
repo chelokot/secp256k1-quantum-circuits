@@ -21,6 +21,8 @@ def test_proof_status_reports_fixture_freshness_without_running_provers() -> Non
     )
     report = json.loads(result.stdout)
     assert report['schema'] == 'compiler-project-proof-status-v1'
+    assert report['proof_manifest'] == 'artifacts/package/proof_manifest.json'
+    assert isinstance(report['proof_manifest_sha256'], str)
     assert isinstance(report['input_and_public_values_match'], bool)
     assert isinstance(report['candidate_input_sha256'], str)
     assert report['compiler_parameters_sha256'] == report['compiler_parameters_document_sha256']
@@ -30,6 +32,9 @@ def test_proof_status_reports_fixture_freshness_without_running_provers() -> Non
     for status in report['systems'].values():
         assert status['system'] in {'core', 'compressed', 'groth16'}
         assert isinstance(status['current'], bool)
+        assert status['fixture_path'].endswith(f"zkp_attestation_fixture_{status['system']}.json")
+        assert status['fixture_manifest_record_exists'] is True
+        assert status['fixture_manifest_sha256_matches_file'] is True
         assert isinstance(status['input_digest_matches_fixture'], bool)
         assert status['observed_input_sha256'] == report['candidate_input_sha256']
         assert status['input_binding_status'] in {
@@ -60,11 +65,27 @@ def test_proof_status_reports_fixture_freshness_without_running_provers() -> Non
         key_current = status['verifier_key_sha256_matches_fixture']
         if key_current is None:
             key_current = True
+        proof_manifest_current = status['proof_manifest_sha256_matches_file']
+        if proof_manifest_current is None:
+            proof_manifest_current = True
+        key_manifest_current = status['verifier_key_manifest_sha256_matches_file']
+        if key_manifest_current is None:
+            key_manifest_current = True
+        if status['proof_path'] is not None:
+            assert status['proof_manifest_record_exists'] is True
+            assert status['proof_manifest_sha256_matches_file'] is True
+        if status['verifier_key_path'] is not None:
+            assert status['verifier_key_manifest_record_exists'] is True
+            assert status['verifier_key_manifest_sha256_matches_file'] is True
         assert status['current'] == (
             status['input_digest_matches_fixture']
             and status['public_values_match_current']
             and status['resource_digest_matches_input']
-            and proof_current and key_current
+            and proof_current
+            and key_current
+            and proof_manifest_current
+            and key_manifest_current
+            and status['fixture_manifest_sha256_matches_file']
         )
         assert status['current'] == (status['stale_reasons'] == [])
     assert report['all_current'] == (report['stale_systems'] == [])

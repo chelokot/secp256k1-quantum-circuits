@@ -313,7 +313,8 @@ See `compiler_verification_project/README.md` for the SP1 execute/prove
 commands that reproduce the checked attestation bundle.
 `compiler_verification_project/scripts/proof_status.py` is the cheap preflight
 for proof freshness: it compares the current candidate input, public values,
-fixtures, proof binaries, and verifier key without invoking any prover.
+fixtures, proof binaries, verifier key, and curated proof manifest without
+invoking any prover.
 Compressed and Groth16 proving are not part of the edit loop; the guarded
 runner requires `--allow-heavy-proof` for those release-gate operations so an
 ordinary verification pass cannot accidentally start a multi-hour proof.
