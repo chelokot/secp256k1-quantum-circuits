@@ -321,6 +321,21 @@ def test_mutated_reusable_chunk_schedule_liveness_drift_is_detected() -> None:
     assert groups['reusable_chunk_lowering_checks']['pass'] < groups['reusable_chunk_lowering_checks']['total']
 
 
+def test_mutated_reusable_chunk_schedule_source_instruction_drift_is_detected() -> None:
+    artifacts = _artifacts_for_mutation('reusable_chunk_lowering')
+    event = artifacts['reusable_chunk_lowering']['executable_liveness']['executable_schedule_ir']['events'][0]
+    event['source_instruction_ops'][0] = 'forged_load'
+    groups = _evaluate_mutation(artifacts, 'reusable_chunk_lowering_checks')
+    assert groups['reusable_chunk_lowering_checks']['pass'] < groups['reusable_chunk_lowering_checks']['total']
+
+
+def test_mutated_reusable_chunk_executable_resource_engine_drift_is_detected() -> None:
+    artifacts = _artifacts_for_mutation('reusable_chunk_lowering')
+    artifacts['reusable_chunk_lowering']['executable_resource_engine']['public_totals']['logical_qubits'] += 1
+    groups = _evaluate_mutation(artifacts, 'reusable_chunk_lowering_checks')
+    assert groups['reusable_chunk_lowering_checks']['pass'] < groups['reusable_chunk_lowering_checks']['total']
+
+
 def test_mutated_resource_certificate_owner_capacity_is_detected() -> None:
     artifacts = _artifacts_for_mutation('resource_liveness_certificate')
     artifacts['resource_liveness_certificate']['derived_owner_capacity']['rows'][0]['capacity_qubits'] -= 1

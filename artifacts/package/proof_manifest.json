@@ -207,8 +207,8 @@
       "bytes": 26931
     },
     "compiler_verification_project/src/integrity.py": {
-      "sha256": "9e5542b1ccb08fdafd938add43134adc1154c5a8bb8ffe730a4e084c2f08a5fb",
-      "bytes": 207410
+      "sha256": "9fea9056046eb8dfbc231af10df2c8744107430236187a5dfe2fa5d7cde9793f",
+      "bytes": 209192
     },
     "compiler_verification_project/src/generated_block_inventory.py": {
       "sha256": "9a5a8cdc5369e43cb88df726d08fbc88ba727a43b72962388357546b8d382d89",
@@ -299,8 +299,8 @@
       "bytes": 10661
     },
     "compiler_verification_project/src/reusable_chunk_lowering.py": {
-      "sha256": "76ab72a837536ba26b6c5e977754c294517622ceb873dc83455d2d5a7f5358b9",
-      "bytes": 40567
+      "sha256": "ed2341f37fc629ba201c1e43de74ce40f2fc1898cb105de64673e01b4682552b",
+      "bytes": 26892
     },
     "compiler_verification_project/src/reusable_chunk_tail_candidate.py": {
       "sha256": "8b416c9d3009400cc4a2c86ec6e6193a82128505014e3d9fa53171e7ecb7e931",
@@ -355,8 +355,8 @@
       "bytes": 18800
     },
     "compiler_verification_project/scripts/verify_public_headline.py": {
-      "sha256": "528c2654f83830e3f257515aca5daf46cb410c6c335d78442d212b9a449a11f3",
-      "bytes": 27095
+      "sha256": "2e1acb86d20a6cc78c8a38e23317e2458abe866816a7a8c5f7df035a2fca4752",
+      "bytes": 28729
     },
     "compiler_verification_project/scripts/verify.py": {
       "sha256": "f727078f7ca76d20ed7ab8eeb50bb86596432ec0d34980ed924a93eccd21c736",
@@ -375,8 +375,8 @@
       "bytes": 324
     },
     "compiler_verification_project/zkp_attestation/lib/src/lib.rs": {
-      "sha256": "938021b996e1b154d76606dae1e1906940849f07a5069bd213842af5973fc1cc",
-      "bytes": 240646
+      "sha256": "e694a5825622f91f19ebacc6aa14a130743416ba7230c6693a732afa85dbdaa0",
+      "bytes": 245475
     },
     "compiler_verification_project/zkp_attestation/program/Cargo.toml": {
       "sha256": "ad4e8d80b5b8e2865b14cd9a46fd218ea02973b45387fc4100b314883af25a84",
@@ -671,8 +671,8 @@
       "bytes": 39050
     },
     "compiler_verification_project/artifacts/reusable_chunk_lowering.json": {
-      "sha256": "7fdf92cd5884b5fb425b33928b1f78a3c761ec558d742a54925fa5926d41fc3f",
-      "bytes": 215677
+      "sha256": "003ed55b72b9ffdb62c33cdd533d78a26a5e539dd7cbcc8629d340db784bd4a5",
+      "bytes": 220807
     },
     "compiler_verification_project/artifacts/resource_liveness_certificate.json": {
       "sha256": "870cdc41cd1196c4b2201c790119add5dd62294eeb81f6563093944400c6ed1e",
@@ -699,7 +699,7 @@
       "bytes": 51805
     },
     "compiler_verification_project/artifacts/public_headline_result.json": {
-      "sha256": "9c05f89cc157ad59780b5c632a5d91a46b87d486e2aa5c28ad698230b0c659db",
+      "sha256": "8de7506f6da148161160882b8182ac054b028675d14d1bda11339f5d69c4d06d",
       "bytes": 13747
     },
     "compiler_verification_project/artifacts/cain_exact_transfer.json": {
@@ -739,8 +739,8 @@
       "bytes": 5139
     },
     "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json": {
-      "sha256": "82ae2a9f9588ae160ede17e859a935775e08238bd36aa544477d6ba6ebe0c5c9",
-      "bytes": 269263
+      "sha256": "4ad9153ffc44eb2c562cb3fd3e28911859295990df8e65adcc8905ed211fdf9c",
+      "bytes": 275201
     },
     "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json": {
       "sha256": "971fbcc49c40f4d1d963124949e0c5324adc33a80922fff65f38fe65ddc7a656",

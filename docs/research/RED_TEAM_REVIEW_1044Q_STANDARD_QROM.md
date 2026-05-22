@@ -1539,6 +1539,20 @@ Current remediation:
   headline verifier, and the SP1 guest verify that liveness intervals come from
   those events. This is not a Clifford-complete macro netlist yet, but it
   removes another hand-maintained interval-only boundary.
+- The reusable schedule now binds each event to executable leaf instruction
+  PCs/opcodes, and QROAM stream events are required to bind to the tail opcode
+  they are counting. Integrity checks, the public headline verifier, and the
+  SP1 guest reject source-instruction drift even if the resource-certificate
+  digest is refreshed.
+- The schedule/liveness/counting helpers were moved out of the reusable lowering
+  script into `compiler_verification_project/src/executable_resource_engine.py`.
+  The lowering now calls a single `build_reusable_chunk_resource_engine(...)`
+  entrypoint, and the artifact carries an `executable_resource_engine` summary
+  binding public totals to counted-IR, executable-liveness, owner-capacity, and
+  resource-contract digests. Integrity checks, the public headline verifier, and
+  the SP1 guest reject drift in that engine summary. Remaining P0 work is to
+  feed the engine a Clifford-complete flattened instruction stream rather than
+  the current compact leaf/macro boundary.
 - The public-headline verifier now independently recomputes the
   `counted_resource_ir`, executable-liveness, and owner-capacity digests recorded
   by the resource contract engine, so this digest-drift class is visible in the

@@ -4766,6 +4766,12 @@ fn validate_reusable_chunk_lowering(
         scratch_contract,
         "bound_by_toy_semantic_equivalence"
     ));
+    let executable_instruction_stream = json_array_field(executable, "instruction_stream");
+    let tail_instruction = executable_instruction_stream
+        .last()
+        .expect("executable instruction stream must not be empty");
+    let tail_instruction_pc = json_u64_field(tail_instruction, "pc");
+    let tail_instruction_op = json_string_field(tail_instruction, "op");
 
     let stream_plan = json_object_field(certificate, "stream_plan");
     let coordinate_tables = json_array_field(stream_plan, "coordinate_tables");
@@ -5415,6 +5421,17 @@ fn validate_reusable_chunk_lowering(
         schedule_events.len() as u64
     );
     assert_eq!(
+        json_array_field(executable_schedule, "source_leaf_instruction_stream"),
+        executable_instruction_stream
+    );
+    let mut source_instruction_ops = BTreeMap::new();
+    for instruction in executable_instruction_stream {
+        source_instruction_ops.insert(
+            json_u64_field(instruction, "pc"),
+            json_string_field(instruction, "op").to_owned(),
+        );
+    }
+    assert_eq!(
         json_u64_field(executable_liveness, "global_peak_live_qubits"),
         claim.expected_total_logical_qubits
     );
@@ -5507,11 +5524,36 @@ fn validate_reusable_chunk_lowering(
             json_array_field(interval, "live_wire_ids")
         );
         if json_string_field(event, "event_type") == "qroam_chunk_load_consume_uncompute" {
+            assert_eq!(json_array_field(event, "source_instruction_pcs").len(), 1);
+            assert_eq!(
+                json_array_field(event, "source_instruction_pcs")[0].as_u64(),
+                Some(tail_instruction_pc)
+            );
+            assert_eq!(json_array_field(event, "source_instruction_ops").len(), 1);
+            assert_eq!(
+                json_array_field(event, "source_instruction_ops")[0].as_str(),
+                Some(tail_instruction_op)
+            );
             assert!(
                 json_array_field(event, "live_wire_ids")
                     .iter()
                     .any(|wire| wire.as_str() == Some("qchunk")),
                 "qchunk must be live during QROAM chunk stream events"
+            );
+        }
+        let source_pcs = json_array_field(event, "source_instruction_pcs");
+        let source_ops = json_array_field(event, "source_instruction_ops");
+        assert_eq!(
+            source_pcs.len(),
+            source_ops.len(),
+            "schedule event source PC/op arrays must have equal length"
+        );
+        for (pc, op) in source_pcs.iter().zip(source_ops) {
+            let pc = pc.as_u64().expect("source_instruction_pcs entries must be u64");
+            assert_eq!(
+                source_instruction_ops.get(&pc).map(String::as_str),
+                op.as_str(),
+                "schedule event source op must match executable instruction stream"
             );
         }
     }
@@ -5656,6 +5698,52 @@ fn validate_reusable_chunk_lowering(
             .expect("resource_contract_engine owner capacity must be an object");
     assert_eq!(contract_owner_peaks, liveness_owner_peak);
     assert_eq!(contract_owner_capacity, liveness_owner_capacity);
+
+    let executable_resource_engine = json_object_field(certificate, "executable_resource_engine");
+    assert_eq!(
+        json_string_field(executable_resource_engine, "schema"),
+        "compiler-project-executable-resource-engine-v1"
+    );
+    assert!(json_bool_field(executable_resource_engine, "pass"));
+    assert_eq!(
+        json_string_field(executable_resource_engine, "engine_source_module"),
+        "compiler_verification_project/src/executable_resource_engine.py"
+    );
+    let executable_resource_public_totals =
+        json_object_field(executable_resource_engine, "public_totals");
+    assert_eq!(
+        json_u64_field(executable_resource_public_totals, "non_clifford"),
+        claim.expected_full_oracle_non_clifford
+    );
+    assert_eq!(
+        json_u64_field(executable_resource_public_totals, "logical_qubits"),
+        claim.expected_total_logical_qubits
+    );
+    assert_eq!(
+        json_string_field(executable_resource_engine, "counted_resource_ir_sha256"),
+        counted_resource_ir_sha256.as_str()
+    );
+    assert_eq!(
+        json_string_field(executable_resource_engine, "executable_liveness_sha256"),
+        json_string_field(resource_contract_engine, "executable_liveness_sha256")
+    );
+    assert_eq!(
+        json_string_field(executable_resource_engine, "owner_capacity_sha256"),
+        json_string_field(resource_contract_engine, "owner_capacity_sha256")
+    );
+    assert_eq!(
+        json_string_field(executable_resource_engine, "resource_contract_engine_sha256").len(),
+        64
+    );
+    let executable_resource_checks = json_object_field(executable_resource_engine, "checks")
+        .as_object()
+        .expect("executable_resource_engine checks must be an object");
+    assert!(
+        executable_resource_checks
+            .values()
+            .all(|value| value.as_bool() == Some(true)),
+        "executable_resource_engine contains a failing check"
+    );
 
     let checks = json_object_field(certificate, "checks")
         .as_object()
@@ -6215,6 +6303,27 @@ mod tests {
             .as_array_mut()
             .expect("schedule event live_wire_ids must be an array");
         live_wires.retain(|wire| wire.as_str() != Some("qchunk"));
+        refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_reusable_chunk_schedule_source_instruction_drift() {
+        let mut input = checked_reusable_chunk_input();
+        input.resource_certificate_document.payload.0["executable_liveness"]
+            ["executable_schedule_ir"]["events"][0]["source_instruction_ops"][0] =
+            serde_json::json!("forged_load");
+        refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_reusable_chunk_executable_resource_engine_drift() {
+        let mut input = checked_reusable_chunk_input();
+        input.resource_certificate_document.payload.0["executable_resource_engine"]
+            ["public_totals"]["logical_qubits"] = serde_json::json!(1200);
         refresh_resource_certificate_digest(&mut input);
         run_prepared_attestation(&input);
     }

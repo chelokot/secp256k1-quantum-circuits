@@ -6,7 +6,7 @@
   "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
   "family_sha256": "d3cecc3c5c3ec6b7611057d6fb3608dd5e95d7020f66ac55d55e2066d9398eae",
   "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
-  "resource_certificate_sha256": "0f9eaa9d3d14b323e9dfda6a4e44cae9a990fb1ec49012592d4d054702e9b5d0",
+  "resource_certificate_sha256": "047500decb193aa262ae33fed728563dd18b2e8fcd9caa72deb310bea3d5ada5",
   "compiler_parameters_sha256": "5d17d0fcc6fb8967cc5b02f916bd8c7da717c8b160486bc128bf3d81a7c8f517",
   "claim_document": {
     "document_type": "attestation_claim",
@@ -315,7 +315,7 @@
     "document_type": "reusable_chunk_lowering",
     "artifact_path": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "0f9eaa9d3d14b323e9dfda6a4e44cae9a990fb1ec49012592d4d054702e9b5d0",
+    "sha256": "047500decb193aa262ae33fed728563dd18b2e8fcd9caa72deb310bea3d5ada5",
     "payload": {
       "schema": "compiler-project-reusable-chunk-lowering-v2",
       "status": "proven_public_headline",
@@ -330,6 +330,62 @@
       "executable_contract": {
         "variant": "a0_complete_reusable_chunk_tail_candidate",
         "opcode": "complete_a0_reusable_chunk_tail",
+        "instruction_stream": [
+          {
+            "pc": 0,
+            "op": "load_input",
+            "dst": "qx",
+            "src": "Q.X"
+          },
+          {
+            "pc": 1,
+            "op": "load_input",
+            "dst": "qy",
+            "src": "Q.Y"
+          },
+          {
+            "pc": 2,
+            "op": "load_input",
+            "dst": "qz",
+            "src": "Q.Z"
+          },
+          {
+            "pc": 3,
+            "op": "lookup_meta",
+            "dst": "lookup_meta",
+            "src": {
+              "table": "T.meta",
+              "key": "k"
+            }
+          },
+          {
+            "pc": 4,
+            "op": "bool_from_flag",
+            "dst": "f_lookup_inf",
+            "src": {
+              "flags": "lookup_meta",
+              "bit": 0
+            }
+          },
+          {
+            "pc": 5,
+            "op": "complete_a0_reusable_chunk_tail",
+            "dst": [
+              "qx",
+              "qy",
+              "qz"
+            ],
+            "src": {
+              "x": "qx",
+              "y": "qy",
+              "z": "qz",
+              "scratch": "qchunk"
+            },
+            "chunk_bits": 155,
+            "chunk_count": 2,
+            "b3": 21
+          }
+        ],
         "arithmetic_slots": [
           "qx",
           "qy",
@@ -5686,6 +5742,34 @@
         "phase_qubits": 1,
         "candidate_total_logical_qubits": 1199
       },
+      "executable_resource_engine": {
+        "schema": "compiler-project-executable-resource-engine-v1",
+        "engine_source_module": "compiler_verification_project/src/executable_resource_engine.py",
+        "input_contract": {
+          "field_bits": 256,
+          "stream_row_count": 6,
+          "owner_count": 4,
+          "leaf_call_count_total": 31
+        },
+        "public_totals": {
+          "non_clifford": 36957412,
+          "logical_qubits": 1199
+        },
+        "counted_resource_ir_sha256": "e814826e787174c05f62f34396fd02b1d77a8728f0c99051f74e1d60294d7188",
+        "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
+        "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
+        "resource_contract_engine_sha256": "6ec61b5379cd1eb36a568423ffa43a79015c7f3c5dea53ec65cf1f80346b3d6f",
+        "checks": {
+          "executable_liveness_pass": true,
+          "counted_resource_ir_pass": true,
+          "counted_resource_engine_pass": true,
+          "resource_contract_engine_pass": true,
+          "non_clifford_total_matches_counted_engine": true,
+          "logical_qubit_total_matches_contract_engine": true,
+          "owner_capacity_total_matches_contract_engine": true
+        },
+        "pass": true
+      },
       "counted_resource_ir": {
         "schema": "compiler-project-reusable-chunk-counted-resource-ir-v1",
         "derivation": "single counted IR consumed by integrity checks and the SP1 guest for reusable-chunk headline non-Clifford and live-qubit totals",
@@ -6399,6 +6483,62 @@
         "executable_schedule_ir": {
           "schema": "compiler-project-reusable-chunk-executable-schedule-ir-v1",
           "derivation": "ordered executable schedule events are the source for reusable-chunk liveness intervals",
+          "source_leaf_instruction_stream": [
+            {
+              "pc": 0,
+              "op": "load_input",
+              "dst": "qx",
+              "src": "Q.X"
+            },
+            {
+              "pc": 1,
+              "op": "load_input",
+              "dst": "qy",
+              "src": "Q.Y"
+            },
+            {
+              "pc": 2,
+              "op": "load_input",
+              "dst": "qz",
+              "src": "Q.Z"
+            },
+            {
+              "pc": 3,
+              "op": "lookup_meta",
+              "dst": "lookup_meta",
+              "src": {
+                "table": "T.meta",
+                "key": "k"
+              }
+            },
+            {
+              "pc": 4,
+              "op": "bool_from_flag",
+              "dst": "f_lookup_inf",
+              "src": {
+                "flags": "lookup_meta",
+                "bit": 0
+              }
+            },
+            {
+              "pc": 5,
+              "op": "complete_a0_reusable_chunk_tail",
+              "dst": [
+                "qx",
+                "qy",
+                "qz"
+              ],
+              "src": {
+                "x": "qx",
+                "y": "qy",
+                "z": "qz",
+                "scratch": "qchunk"
+              },
+              "chunk_bits": 155,
+              "chunk_count": 2,
+              "b3": 21
+            }
+          ],
           "wire_catalog": {
             "qx": {
               "wire_id": "qx",
@@ -6487,6 +6627,16 @@
                 0,
                 2
               ],
+              "source_instruction_pcs": [
+                0,
+                1,
+                2
+              ],
+              "source_instruction_ops": [
+                "load_input",
+                "load_input",
+                "load_input"
+              ],
               "event_type": "load_carried_inputs",
               "label": "load Q.X/Q.Y/Q.Z into carried field slots",
               "live_wire_ids": [
@@ -6501,6 +6651,12 @@
               "pc_range": [
                 3,
                 3
+              ],
+              "source_instruction_pcs": [
+                3
+              ],
+              "source_instruction_ops": [
+                "lookup_meta"
               ],
               "event_type": "lookup_metadata",
               "label": "lookup metadata and folded lookup controls",
@@ -6518,6 +6674,12 @@
                 4,
                 4
               ],
+              "source_instruction_pcs": [
+                4
+              ],
+              "source_instruction_ops": [
+                "bool_from_flag"
+              ],
               "event_type": "lookup_infinity_flag",
               "label": "derive lookup-infinity flag from metadata",
               "live_wire_ids": [
@@ -6534,6 +6696,12 @@
               "pc_range": [
                 5,
                 5
+              ],
+              "source_instruction_pcs": [
+                5
+              ],
+              "source_instruction_ops": [
+                "complete_a0_reusable_chunk_tail"
               ],
               "event_type": "qroam_chunk_load_consume_uncompute",
               "label": "load, consume, and uncompute lookup_x chunk 0",
@@ -6556,6 +6724,12 @@
                 5,
                 5
               ],
+              "source_instruction_pcs": [
+                5
+              ],
+              "source_instruction_ops": [
+                "complete_a0_reusable_chunk_tail"
+              ],
               "event_type": "qroam_chunk_load_consume_uncompute",
               "label": "load, consume, and uncompute lookup_x chunk 1",
               "live_wire_ids": [
@@ -6576,6 +6750,12 @@
               "pc_range": [
                 5,
                 5
+              ],
+              "source_instruction_pcs": [
+                5
+              ],
+              "source_instruction_ops": [
+                "complete_a0_reusable_chunk_tail"
               ],
               "event_type": "qroam_chunk_load_consume_uncompute",
               "label": "load, consume, and uncompute lookup_y chunk 0",
@@ -6598,6 +6778,12 @@
                 5,
                 5
               ],
+              "source_instruction_pcs": [
+                5
+              ],
+              "source_instruction_ops": [
+                "complete_a0_reusable_chunk_tail"
+              ],
               "event_type": "qroam_chunk_load_consume_uncompute",
               "label": "load, consume, and uncompute lookup_y chunk 1",
               "live_wire_ids": [
@@ -6618,6 +6804,12 @@
               "pc_range": [
                 5,
                 5
+              ],
+              "source_instruction_pcs": [
+                5
+              ],
+              "source_instruction_ops": [
+                "complete_a0_reusable_chunk_tail"
               ],
               "event_type": "qroam_chunk_load_consume_uncompute",
               "label": "load, consume, and uncompute lookup_x_plus_y chunk 0",
@@ -6640,6 +6832,12 @@
                 5,
                 5
               ],
+              "source_instruction_pcs": [
+                5
+              ],
+              "source_instruction_ops": [
+                "complete_a0_reusable_chunk_tail"
+              ],
               "event_type": "qroam_chunk_load_consume_uncompute",
               "label": "load, consume, and uncompute lookup_x_plus_y chunk 1",
               "live_wire_ids": [
@@ -6659,7 +6857,10 @@
           "checks": {
             "event_ids_are_unique": true,
             "all_event_wires_exist_in_catalog": true,
+            "source_instruction_pcs_exist": true,
+            "source_instruction_ops_match_leaf": true,
             "qroam_stream_events_match_stream_rows": true,
+            "qroam_events_source_tail_instruction": true,
             "qchunk_live_during_each_qroam_stream_event": true,
             "no_full_coordinate_lane_wire_is_scheduled": true
           },
@@ -6669,7 +6870,7 @@
       "resource_contract_engine": {
         "schema": "compiler-project-resource-contract-engine-v1",
         "counted_resource_ir_sha256": "e814826e787174c05f62f34396fd02b1d77a8728f0c99051f74e1d60294d7188",
-        "executable_liveness_sha256": "3e0059254673837df11234af900a4e5a5d70135ae0d6fb9b99b1e6b62adfda4a",
+        "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
         "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
         "wire_count": 13,
         "interval_count": 9,
@@ -6726,6 +6927,7 @@
         "counted_resource_ir_recomputes_public_totals": true,
         "counted_resource_engine_recomputes_public_totals": true,
         "resource_contract_engine_unifies_counted_and_executable_liveness": true,
+        "executable_resource_engine_builds_resource_contract": true,
         "fits_requested_limits": true
       },
       "pass": true,
