@@ -1520,7 +1520,8 @@ Current remediation:
   checks that `counted_resource_ir` and executable liveness have the same wire
   catalog and same interval rows, then checks owner-capacity rows against the
   engine-derived owner peaks. Rust guest tests reject a counted/executable
-  liveness drift even when the resource-certificate digest is refreshed.
+  liveness drift and counted/resource-contract engine digest drift even when the
+  resource-certificate digest is refreshed.
 - `compiler_verification_project/artifacts/arithmetic_operation_ir.json` now
   reconstructs arithmetic block/stage/kernel/selected-leaf primitive counts from
   materialized operation streams and digests. The resource-liveness certificate

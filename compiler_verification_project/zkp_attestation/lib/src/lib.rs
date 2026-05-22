@@ -5253,6 +5253,8 @@ fn validate_reusable_chunk_lowering(
         json_string_field(counted_resource_engine, "counted_resource_ir_sha256").len(),
         64
     );
+    let counted_resource_ir_sha256 =
+        json_string_field(counted_resource_engine, "counted_resource_ir_sha256").to_owned();
     assert_eq!(
         json_u64_field(counted_resource_engine, "term_count"),
         json_array_field(counted_ir, "non_clifford_terms").len() as u64
@@ -5529,6 +5531,18 @@ fn validate_reusable_chunk_lowering(
     assert_eq!(
         json_u64_field(resource_contract_engine, "wire_count"),
         wire_catalog.len() as u64
+    );
+    assert_eq!(
+        json_string_field(resource_contract_engine, "counted_resource_ir_sha256"),
+        counted_resource_ir_sha256.as_str()
+    );
+    assert_eq!(
+        json_string_field(resource_contract_engine, "executable_liveness_sha256").len(),
+        64
+    );
+    assert_eq!(
+        json_string_field(resource_contract_engine, "owner_capacity_sha256").len(),
+        64
     );
     assert_eq!(
         json_u64_field(resource_contract_engine, "interval_count"),
@@ -6131,6 +6145,16 @@ mod tests {
         let mut input = checked_reusable_chunk_input();
         input.resource_certificate_document.payload.0["counted_resource_engine"]
             ["peak_live_qubits_from_intervals"] = serde_json::json!(1198);
+        refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_reusable_chunk_resource_engine_digest_drift() {
+        let mut input = checked_reusable_chunk_input();
+        input.resource_certificate_document.payload.0["resource_contract_engine"]
+            ["counted_resource_ir_sha256"] = serde_json::json!("00".repeat(32));
         refresh_resource_certificate_digest(&mut input);
         run_prepared_attestation(&input);
     }
