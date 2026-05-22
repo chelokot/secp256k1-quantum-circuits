@@ -74,6 +74,19 @@ def test_qroam_reference_crosscheck_keeps_chunk_and_full_field_widths_separate()
     assert selected['per_stream_non_clifford'] == ledger_selected['per_stream_non_clifford']
 
 
+def test_qroam_reference_crosscheck_toy_semantics_trace_unary_iteration() -> None:
+    artifact = _load_artifact('qroam_reference_crosscheck.json')
+    toy_case = artifact['toy_semantics'][0]
+    row = toy_case['rows'][2]
+    assert row['compute_operation_count'] == toy_case['domain_size']
+    assert row['measured_uncompute_operation_count'] == toy_case['domain_size']
+    assert len(row['compute_trace']) == toy_case['domain_size']
+    assert [step['match_control'] for step in row['compute_trace']].count(True) == 1
+    assert row['compute_trace'][2]['match_control'] is True
+    assert row['compute_trace'][-1]['target_after_step'] == row['expected_table_value']
+    assert row['target_after_measured_uncompute'] == 0
+
+
 def test_qroam_reference_crosscheck_checks_reject_forged_chunk_workspace() -> None:
     forged = deepcopy(_load_artifact('qroam_reference_crosscheck.json'))
     forged['selected_reference']['target_plus_junk_qubits'] -= 1

@@ -6,7 +6,7 @@
   "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
   "family_sha256": "8b28e7f1c9badc9860bc81f25fe14deb51f71d69396879a092e06c5da8c9e84e",
   "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
-  "resource_certificate_sha256": "de714ef88490ba507a10fe3efe518a70104fd66114d90b871829df181b60d68e",
+  "resource_certificate_sha256": "15e324662be5878ebe96d8091bec6786e508ef6e860d10c498adc42ac60bcfa7",
   "claim_document": {
     "document_type": "attestation_claim",
     "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_claim.json",
@@ -314,7 +314,7 @@
     "document_type": "reusable_chunk_lowering",
     "artifact_path": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "de714ef88490ba507a10fe3efe518a70104fd66114d90b871829df181b60d68e",
+    "sha256": "15e324662be5878ebe96d8091bec6786e508ef6e860d10c498adc42ac60bcfa7",
     "payload": {
       "schema": "compiler-project-reusable-chunk-lowering-v2",
       "status": "proven_public_headline",
@@ -1616,6 +1616,34 @@
               {
                 "selection": 0,
                 "expected_table_value": 5,
+                "compute_operation_count": 4,
+                "measured_uncompute_operation_count": 4,
+                "compute_trace": [
+                  {
+                    "address": 0,
+                    "match_control": true,
+                    "table_value": 5,
+                    "target_after_step": 5
+                  },
+                  {
+                    "address": 1,
+                    "match_control": false,
+                    "table_value": 1,
+                    "target_after_step": 5
+                  },
+                  {
+                    "address": 2,
+                    "match_control": false,
+                    "table_value": 7,
+                    "target_after_step": 5
+                  },
+                  {
+                    "address": 3,
+                    "match_control": false,
+                    "table_value": 7,
+                    "target_after_step": 5
+                  }
+                ],
                 "target_after_compute": 5,
                 "target_after_measured_uncompute": 0,
                 "pass": true
@@ -1623,6 +1651,34 @@
               {
                 "selection": 1,
                 "expected_table_value": 1,
+                "compute_operation_count": 4,
+                "measured_uncompute_operation_count": 4,
+                "compute_trace": [
+                  {
+                    "address": 0,
+                    "match_control": false,
+                    "table_value": 5,
+                    "target_after_step": 0
+                  },
+                  {
+                    "address": 1,
+                    "match_control": true,
+                    "table_value": 1,
+                    "target_after_step": 1
+                  },
+                  {
+                    "address": 2,
+                    "match_control": false,
+                    "table_value": 7,
+                    "target_after_step": 1
+                  },
+                  {
+                    "address": 3,
+                    "match_control": false,
+                    "table_value": 7,
+                    "target_after_step": 1
+                  }
+                ],
                 "target_after_compute": 1,
                 "target_after_measured_uncompute": 0,
                 "pass": true
@@ -1630,6 +1686,34 @@
               {
                 "selection": 2,
                 "expected_table_value": 7,
+                "compute_operation_count": 4,
+                "measured_uncompute_operation_count": 4,
+                "compute_trace": [
+                  {
+                    "address": 0,
+                    "match_control": false,
+                    "table_value": 5,
+                    "target_after_step": 0
+                  },
+                  {
+                    "address": 1,
+                    "match_control": false,
+                    "table_value": 1,
+                    "target_after_step": 0
+                  },
+                  {
+                    "address": 2,
+                    "match_control": true,
+                    "table_value": 7,
+                    "target_after_step": 7
+                  },
+                  {
+                    "address": 3,
+                    "match_control": false,
+                    "table_value": 7,
+                    "target_after_step": 7
+                  }
+                ],
                 "target_after_compute": 7,
                 "target_after_measured_uncompute": 0,
                 "pass": true
@@ -1637,6 +1721,34 @@
               {
                 "selection": 3,
                 "expected_table_value": 7,
+                "compute_operation_count": 4,
+                "measured_uncompute_operation_count": 4,
+                "compute_trace": [
+                  {
+                    "address": 0,
+                    "match_control": false,
+                    "table_value": 5,
+                    "target_after_step": 0
+                  },
+                  {
+                    "address": 1,
+                    "match_control": false,
+                    "table_value": 1,
+                    "target_after_step": 0
+                  },
+                  {
+                    "address": 2,
+                    "match_control": false,
+                    "table_value": 7,
+                    "target_after_step": 0
+                  },
+                  {
+                    "address": 3,
+                    "match_control": true,
+                    "table_value": 7,
+                    "target_after_step": 7
+                  }
+                ],
                 "target_after_compute": 7,
                 "target_after_measured_uncompute": 0,
                 "pass": true
@@ -1658,6 +1770,40 @@
               {
                 "selection": 0,
                 "expected_table_value": 5,
+                "compute_operation_count": 5,
+                "measured_uncompute_operation_count": 5,
+                "compute_trace": [
+                  {
+                    "address": 0,
+                    "match_control": true,
+                    "table_value": 5,
+                    "target_after_step": 5
+                  },
+                  {
+                    "address": 1,
+                    "match_control": false,
+                    "table_value": 9,
+                    "target_after_step": 5
+                  },
+                  {
+                    "address": 2,
+                    "match_control": false,
+                    "table_value": 15,
+                    "target_after_step": 5
+                  },
+                  {
+                    "address": 3,
+                    "match_control": false,
+                    "table_value": 7,
+                    "target_after_step": 5
+                  },
+                  {
+                    "address": 4,
+                    "match_control": false,
+                    "table_value": 1,
+                    "target_after_step": 5
+                  }
+                ],
                 "target_after_compute": 5,
                 "target_after_measured_uncompute": 0,
                 "pass": true
@@ -1665,6 +1811,40 @@
               {
                 "selection": 1,
                 "expected_table_value": 9,
+                "compute_operation_count": 5,
+                "measured_uncompute_operation_count": 5,
+                "compute_trace": [
+                  {
+                    "address": 0,
+                    "match_control": false,
+                    "table_value": 5,
+                    "target_after_step": 0
+                  },
+                  {
+                    "address": 1,
+                    "match_control": true,
+                    "table_value": 9,
+                    "target_after_step": 9
+                  },
+                  {
+                    "address": 2,
+                    "match_control": false,
+                    "table_value": 15,
+                    "target_after_step": 9
+                  },
+                  {
+                    "address": 3,
+                    "match_control": false,
+                    "table_value": 7,
+                    "target_after_step": 9
+                  },
+                  {
+                    "address": 4,
+                    "match_control": false,
+                    "table_value": 1,
+                    "target_after_step": 9
+                  }
+                ],
                 "target_after_compute": 9,
                 "target_after_measured_uncompute": 0,
                 "pass": true
@@ -1672,6 +1852,40 @@
               {
                 "selection": 2,
                 "expected_table_value": 15,
+                "compute_operation_count": 5,
+                "measured_uncompute_operation_count": 5,
+                "compute_trace": [
+                  {
+                    "address": 0,
+                    "match_control": false,
+                    "table_value": 5,
+                    "target_after_step": 0
+                  },
+                  {
+                    "address": 1,
+                    "match_control": false,
+                    "table_value": 9,
+                    "target_after_step": 0
+                  },
+                  {
+                    "address": 2,
+                    "match_control": true,
+                    "table_value": 15,
+                    "target_after_step": 15
+                  },
+                  {
+                    "address": 3,
+                    "match_control": false,
+                    "table_value": 7,
+                    "target_after_step": 15
+                  },
+                  {
+                    "address": 4,
+                    "match_control": false,
+                    "table_value": 1,
+                    "target_after_step": 15
+                  }
+                ],
                 "target_after_compute": 15,
                 "target_after_measured_uncompute": 0,
                 "pass": true
@@ -1679,6 +1893,40 @@
               {
                 "selection": 3,
                 "expected_table_value": 7,
+                "compute_operation_count": 5,
+                "measured_uncompute_operation_count": 5,
+                "compute_trace": [
+                  {
+                    "address": 0,
+                    "match_control": false,
+                    "table_value": 5,
+                    "target_after_step": 0
+                  },
+                  {
+                    "address": 1,
+                    "match_control": false,
+                    "table_value": 9,
+                    "target_after_step": 0
+                  },
+                  {
+                    "address": 2,
+                    "match_control": false,
+                    "table_value": 15,
+                    "target_after_step": 0
+                  },
+                  {
+                    "address": 3,
+                    "match_control": true,
+                    "table_value": 7,
+                    "target_after_step": 7
+                  },
+                  {
+                    "address": 4,
+                    "match_control": false,
+                    "table_value": 1,
+                    "target_after_step": 7
+                  }
+                ],
                 "target_after_compute": 7,
                 "target_after_measured_uncompute": 0,
                 "pass": true
@@ -1686,6 +1934,40 @@
               {
                 "selection": 4,
                 "expected_table_value": 1,
+                "compute_operation_count": 5,
+                "measured_uncompute_operation_count": 5,
+                "compute_trace": [
+                  {
+                    "address": 0,
+                    "match_control": false,
+                    "table_value": 5,
+                    "target_after_step": 0
+                  },
+                  {
+                    "address": 1,
+                    "match_control": false,
+                    "table_value": 9,
+                    "target_after_step": 0
+                  },
+                  {
+                    "address": 2,
+                    "match_control": false,
+                    "table_value": 15,
+                    "target_after_step": 0
+                  },
+                  {
+                    "address": 3,
+                    "match_control": false,
+                    "table_value": 7,
+                    "target_after_step": 0
+                  },
+                  {
+                    "address": 4,
+                    "match_control": true,
+                    "table_value": 1,
+                    "target_after_step": 1
+                  }
+                ],
                 "target_after_compute": 1,
                 "target_after_measured_uncompute": 0,
                 "pass": true

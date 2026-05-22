@@ -940,6 +940,34 @@
         {
           "selection": 0,
           "expected_table_value": 5,
+          "compute_operation_count": 4,
+          "measured_uncompute_operation_count": 4,
+          "compute_trace": [
+            {
+              "address": 0,
+              "match_control": true,
+              "table_value": 5,
+              "target_after_step": 5
+            },
+            {
+              "address": 1,
+              "match_control": false,
+              "table_value": 1,
+              "target_after_step": 5
+            },
+            {
+              "address": 2,
+              "match_control": false,
+              "table_value": 7,
+              "target_after_step": 5
+            },
+            {
+              "address": 3,
+              "match_control": false,
+              "table_value": 7,
+              "target_after_step": 5
+            }
+          ],
           "target_after_compute": 5,
           "target_after_measured_uncompute": 0,
           "pass": true
@@ -947,6 +975,34 @@
         {
           "selection": 1,
           "expected_table_value": 1,
+          "compute_operation_count": 4,
+          "measured_uncompute_operation_count": 4,
+          "compute_trace": [
+            {
+              "address": 0,
+              "match_control": false,
+              "table_value": 5,
+              "target_after_step": 0
+            },
+            {
+              "address": 1,
+              "match_control": true,
+              "table_value": 1,
+              "target_after_step": 1
+            },
+            {
+              "address": 2,
+              "match_control": false,
+              "table_value": 7,
+              "target_after_step": 1
+            },
+            {
+              "address": 3,
+              "match_control": false,
+              "table_value": 7,
+              "target_after_step": 1
+            }
+          ],
           "target_after_compute": 1,
           "target_after_measured_uncompute": 0,
           "pass": true
@@ -954,6 +1010,34 @@
         {
           "selection": 2,
           "expected_table_value": 7,
+          "compute_operation_count": 4,
+          "measured_uncompute_operation_count": 4,
+          "compute_trace": [
+            {
+              "address": 0,
+              "match_control": false,
+              "table_value": 5,
+              "target_after_step": 0
+            },
+            {
+              "address": 1,
+              "match_control": false,
+              "table_value": 1,
+              "target_after_step": 0
+            },
+            {
+              "address": 2,
+              "match_control": true,
+              "table_value": 7,
+              "target_after_step": 7
+            },
+            {
+              "address": 3,
+              "match_control": false,
+              "table_value": 7,
+              "target_after_step": 7
+            }
+          ],
           "target_after_compute": 7,
           "target_after_measured_uncompute": 0,
           "pass": true
@@ -961,6 +1045,34 @@
         {
           "selection": 3,
           "expected_table_value": 7,
+          "compute_operation_count": 4,
+          "measured_uncompute_operation_count": 4,
+          "compute_trace": [
+            {
+              "address": 0,
+              "match_control": false,
+              "table_value": 5,
+              "target_after_step": 0
+            },
+            {
+              "address": 1,
+              "match_control": false,
+              "table_value": 1,
+              "target_after_step": 0
+            },
+            {
+              "address": 2,
+              "match_control": false,
+              "table_value": 7,
+              "target_after_step": 0
+            },
+            {
+              "address": 3,
+              "match_control": true,
+              "table_value": 7,
+              "target_after_step": 7
+            }
+          ],
           "target_after_compute": 7,
           "target_after_measured_uncompute": 0,
           "pass": true
@@ -982,6 +1094,40 @@
         {
           "selection": 0,
           "expected_table_value": 5,
+          "compute_operation_count": 5,
+          "measured_uncompute_operation_count": 5,
+          "compute_trace": [
+            {
+              "address": 0,
+              "match_control": true,
+              "table_value": 5,
+              "target_after_step": 5
+            },
+            {
+              "address": 1,
+              "match_control": false,
+              "table_value": 9,
+              "target_after_step": 5
+            },
+            {
+              "address": 2,
+              "match_control": false,
+              "table_value": 15,
+              "target_after_step": 5
+            },
+            {
+              "address": 3,
+              "match_control": false,
+              "table_value": 7,
+              "target_after_step": 5
+            },
+            {
+              "address": 4,
+              "match_control": false,
+              "table_value": 1,
+              "target_after_step": 5
+            }
+          ],
           "target_after_compute": 5,
           "target_after_measured_uncompute": 0,
           "pass": true
@@ -989,6 +1135,40 @@
         {
           "selection": 1,
           "expected_table_value": 9,
+          "compute_operation_count": 5,
+          "measured_uncompute_operation_count": 5,
+          "compute_trace": [
+            {
+              "address": 0,
+              "match_control": false,
+              "table_value": 5,
+              "target_after_step": 0
+            },
+            {
+              "address": 1,
+              "match_control": true,
+              "table_value": 9,
+              "target_after_step": 9
+            },
+            {
+              "address": 2,
+              "match_control": false,
+              "table_value": 15,
+              "target_after_step": 9
+            },
+            {
+              "address": 3,
+              "match_control": false,
+              "table_value": 7,
+              "target_after_step": 9
+            },
+            {
+              "address": 4,
+              "match_control": false,
+              "table_value": 1,
+              "target_after_step": 9
+            }
+          ],
           "target_after_compute": 9,
           "target_after_measured_uncompute": 0,
           "pass": true
@@ -996,6 +1176,40 @@
         {
           "selection": 2,
           "expected_table_value": 15,
+          "compute_operation_count": 5,
+          "measured_uncompute_operation_count": 5,
+          "compute_trace": [
+            {
+              "address": 0,
+              "match_control": false,
+              "table_value": 5,
+              "target_after_step": 0
+            },
+            {
+              "address": 1,
+              "match_control": false,
+              "table_value": 9,
+              "target_after_step": 0
+            },
+            {
+              "address": 2,
+              "match_control": true,
+              "table_value": 15,
+              "target_after_step": 15
+            },
+            {
+              "address": 3,
+              "match_control": false,
+              "table_value": 7,
+              "target_after_step": 15
+            },
+            {
+              "address": 4,
+              "match_control": false,
+              "table_value": 1,
+              "target_after_step": 15
+            }
+          ],
           "target_after_compute": 15,
           "target_after_measured_uncompute": 0,
           "pass": true
@@ -1003,6 +1217,40 @@
         {
           "selection": 3,
           "expected_table_value": 7,
+          "compute_operation_count": 5,
+          "measured_uncompute_operation_count": 5,
+          "compute_trace": [
+            {
+              "address": 0,
+              "match_control": false,
+              "table_value": 5,
+              "target_after_step": 0
+            },
+            {
+              "address": 1,
+              "match_control": false,
+              "table_value": 9,
+              "target_after_step": 0
+            },
+            {
+              "address": 2,
+              "match_control": false,
+              "table_value": 15,
+              "target_after_step": 0
+            },
+            {
+              "address": 3,
+              "match_control": true,
+              "table_value": 7,
+              "target_after_step": 7
+            },
+            {
+              "address": 4,
+              "match_control": false,
+              "table_value": 1,
+              "target_after_step": 7
+            }
+          ],
           "target_after_compute": 7,
           "target_after_measured_uncompute": 0,
           "pass": true
@@ -1010,6 +1258,40 @@
         {
           "selection": 4,
           "expected_table_value": 1,
+          "compute_operation_count": 5,
+          "measured_uncompute_operation_count": 5,
+          "compute_trace": [
+            {
+              "address": 0,
+              "match_control": false,
+              "table_value": 5,
+              "target_after_step": 0
+            },
+            {
+              "address": 1,
+              "match_control": false,
+              "table_value": 9,
+              "target_after_step": 0
+            },
+            {
+              "address": 2,
+              "match_control": false,
+              "table_value": 15,
+              "target_after_step": 0
+            },
+            {
+              "address": 3,
+              "match_control": false,
+              "table_value": 7,
+              "target_after_step": 0
+            },
+            {
+              "address": 4,
+              "match_control": true,
+              "table_value": 1,
+              "target_after_step": 1
+            }
+          ],
           "target_after_compute": 1,
           "target_after_measured_uncompute": 0,
           "pass": true

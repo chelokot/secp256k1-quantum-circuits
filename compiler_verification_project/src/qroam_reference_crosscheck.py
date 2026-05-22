@@ -42,13 +42,30 @@ def _toy_table(domain_size: int, target_bits: int) -> List[int]:
 
 def _toy_semantic_case(domain_size: int, target_bits: int) -> Dict[str, Any]:
     table = _toy_table(domain_size, target_bits)
+    modulus = 1 << int(target_bits)
     rows = []
     for selection in range(domain_size):
-        target_after_compute = table[selection]
+        target = 0
+        compute_trace = []
+        for address, table_value in enumerate(table):
+            match_control = address == selection
+            if match_control:
+                target ^= table_value
+            target %= modulus
+            compute_trace.append({
+                'address': address,
+                'match_control': match_control,
+                'table_value': table_value,
+                'target_after_step': target,
+            })
+        target_after_compute = target
         target_after_measured_uncompute = 0
         rows.append({
             'selection': selection,
             'expected_table_value': table[selection],
+            'compute_operation_count': domain_size,
+            'measured_uncompute_operation_count': domain_size,
+            'compute_trace': compute_trace,
             'target_after_compute': target_after_compute,
             'target_after_measured_uncompute': target_after_measured_uncompute,
             'pass': (
