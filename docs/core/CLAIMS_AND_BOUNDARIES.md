@@ -155,7 +155,9 @@ liveness bindings, QROAM target-domain widths, and a reduced schoolbook
 Cartesian operand grid. Its strict primitive-completeness report now requires
 every run-length primitive row to expose gate-arity operand domains, so QROAM
 `ccx`, arithmetic `ccx`, measurement, and phase rows all expand through the
-same concrete-operand iterator. The public engine manifest derives the public
+same concrete-operand iterator. Its operand-parent binding report additionally
+checks that every operand domain maps to counted live parent wires with matching
+owners and enough parent-wire capacity. The public engine manifest derives the public
 non-Clifford count from that flat netlist and the public qubit count from the
 materialized liveness peak; reusable-resource totals are checked against those
 values as snapshots. The materialized/public engine layer is generated from

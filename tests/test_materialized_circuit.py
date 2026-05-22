@@ -139,6 +139,7 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert manifest['checks']['flat_netlist_non_clifford_matches_public_candidate'] is True
     assert manifest['checks']['primitive_operand_contracts_cover_all_run_length_rows'] is True
     assert manifest['checks']['primitive_operand_contract_owners_are_known_and_live'] is True
+    assert manifest['checks']['primitive_operand_domains_bind_counted_live_parent_wires'] is True
     assert manifest['checks']['flat_netlist_binds_operand_contract_hashes'] is True
     assert manifest['checks']['flat_execution_probe_operations_bind_segment_contributions'] is True
     assert manifest['checks']['flat_execution_probe_operand_indices_within_domains'] is True
@@ -147,6 +148,7 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert manifest['checks']['flat_execution_probe_qroam_target_width_matches_segments'] is True
     assert manifest['checks']['flat_execution_probe_arithmetic_two_operand_domains_match_rows'] is True
     assert manifest['checks']['strict_primitive_completeness_report_is_current'] is True
+    assert manifest['checks']['operand_parent_binding_report_is_current'] is True
     assert manifest['checks']['direct_seed_liveness_excludes_qroam_target_and_chunk'] is True
     assert manifest['checks']['lookup_leaf_liveness_excludes_qroam_target_and_chunk'] is True
     assert manifest['checks']['generated_base_rows_match_public_non_qroam_derivation'] is True
@@ -174,6 +176,11 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert strict_completeness['clifford_complete'] is True
     assert strict_completeness['incomplete_row_count'] == 0
     assert strict_completeness['incomplete_by_scope_gate'] == {}
+    parent_binding = manifest['operand_parent_binding']
+    assert parent_binding['schema'] == 'compiler-project-operand-parent-binding-report-v1'
+    assert parent_binding['pass'] is True
+    assert parent_binding['failure_count'] == 0
+    assert parent_binding['domains_checked'] == sum(len(row['primitive_operand_contract']['operand_domains']) for row in manifest['run_length_rows'])
     assert all(
         len(row['primitive_operand_contract']['operand_domains']) == PRIMITIVE_GATE_ARITY[row['gate']]
         for row in manifest['run_length_rows']
@@ -206,6 +213,10 @@ def test_public_candidate_flat_netlist_iterator_emits_concrete_operand_wires() -
         (0, 5),
     ]
     assert all(len(operation['operand_wires']) == 3 for operation in operations)
+    assert all(
+        len({(wire['parent_wire_id'], wire['parent_bit_index']) for wire in operation['operand_wires']}) == 3
+        for operation in operations
+    )
     assert all(operation['primitive_operand_contract_sha256'] == arithmetic_row['primitive_operand_contract_sha256'] for operation in operations)
     assert all(operation['liveness']['total_live_qubits'] == manifest['public_totals']['logical_qubits'] for operation in operations)
 
@@ -227,6 +238,22 @@ def test_public_candidate_flat_netlist_iterator_emits_qroam_three_operands() -> 
         'qroam_chunk_consumer_register',
     ]
     assert all(operation['liveness']['total_live_qubits'] == manifest['public_totals']['logical_qubits'] for operation in operations)
+
+
+def test_public_candidate_materialized_manifest_rejects_forged_operand_parent_owner() -> None:
+    reusable = _artifact('reusable_chunk_lowering.json')
+    reusable['executable_liveness']['wire_catalog']['qchunk']['owner_id'] = 'lookup_workspace'
+    observed = _build_public_candidate_materialized(
+        reusable=reusable,
+        arithmetic_operation_ir=_artifact('arithmetic_operation_ir.json'),
+        lookup_lowerings=_artifact('lookup_lowerings.json'),
+        qroam_primitive=_artifact('qroam_primitive_certificate.json'),
+        phase_shell=_artifact('phase_shell_lowerings.json'),
+    )
+    assert observed['checks']['primitive_operand_domains_bind_counted_live_parent_wires'] is False
+    assert observed['checks']['operand_parent_binding_report_is_current'] is False
+    assert observed['operand_parent_binding']['failure_count'] > 0
+    assert observed['pass'] is False
 
 
 def test_public_candidate_materialized_manifest_rejects_qroam_domain_width_drift() -> None:

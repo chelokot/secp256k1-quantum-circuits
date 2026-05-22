@@ -131,6 +131,27 @@ def _primitive_operand_contract(
     }
 
 
+def _parent_wire_domain(
+    *,
+    parent_wire_ids: List[str],
+    parent_bit_width: int,
+    parent_selection_rule: str,
+) -> Dict[str, Any]:
+    return {
+        'parent_wire_ids': list(parent_wire_ids),
+        'parent_bit_width': int(parent_bit_width),
+        'parent_selection_rule': parent_selection_rule,
+    }
+
+
+def _arithmetic_parent_domain(parent_wire_ids: List[str]) -> Dict[str, Any]:
+    return _parent_wire_domain(
+        parent_wire_ids=parent_wire_ids,
+        parent_bit_width=256,
+        parent_selection_rule='parent_wire_index = operand_index // parent_bit_width; parent_bit_index = operand_index % parent_bit_width',
+    )
+
+
 def _arithmetic_block_operand_domains(stage: Mapping[str, Any], block: Mapping[str, Any], gate: str) -> List[Dict[str, Any]]:
     operand_slots = int(block['operand_profile']['operand_slots_required'])
     gate_arities = block['operand_profile']['gate_arities']
@@ -144,6 +165,7 @@ def _arithmetic_block_operand_domains(stage: Mapping[str, Any], block: Mapping[s
                 'operand_index_max_exclusive': operand_slots,
                 'row_instance_to_operand_index': 'operand_index = row_instance_ordinal % operand_domain_width',
                 'role': str(stage['category']),
+                **_arithmetic_parent_domain(['qz']),
             }
         ]
     if gate == 'ccx' and gate_arities.get('ccx') == [2]:
@@ -156,6 +178,7 @@ def _arithmetic_block_operand_domains(stage: Mapping[str, Any], block: Mapping[s
                 'operand_index_max_exclusive': operand_slots,
                 'row_instance_to_operand_index': 'left_bit = row_instance_ordinal // operand_slots_required',
                 'role': str(stage['category']),
+                **_arithmetic_parent_domain(['qx']),
             },
             {
                 'domain_id': f"{stage['stage']}:{block['block']}:right_field_bits",
@@ -165,6 +188,7 @@ def _arithmetic_block_operand_domains(stage: Mapping[str, Any], block: Mapping[s
                 'operand_index_max_exclusive': operand_slots,
                 'row_instance_to_operand_index': 'right_bit = row_instance_ordinal % operand_slots_required',
                 'role': str(stage['category']),
+                **_arithmetic_parent_domain(['qy']),
             },
             {
                 'domain_id': f"{stage['stage']}:{block['block']}:partial_product_target",
@@ -174,6 +198,7 @@ def _arithmetic_block_operand_domains(stage: Mapping[str, Any], block: Mapping[s
                 'operand_index_max_exclusive': int(block['primitive_counts_total'][gate]),
                 'row_instance_to_operand_index': 'operand_index = row_instance_ordinal % operand_domain_width',
                 'role': str(stage['category']),
+                **_arithmetic_parent_domain(['qchunk']),
             },
         ]
     if gate == 'ccx':
@@ -186,6 +211,7 @@ def _arithmetic_block_operand_domains(stage: Mapping[str, Any], block: Mapping[s
                 'operand_index_max_exclusive': operand_slots,
                 'row_instance_to_operand_index': 'operand_index = row_instance_ordinal % operand_domain_width',
                 'role': str(stage['category']),
+                **_arithmetic_parent_domain(['qx']),
             },
             {
                 'domain_id': f"{stage['stage']}:{block['block']}:control_b",
@@ -195,6 +221,7 @@ def _arithmetic_block_operand_domains(stage: Mapping[str, Any], block: Mapping[s
                 'operand_index_max_exclusive': operand_slots,
                 'row_instance_to_operand_index': 'operand_index = row_instance_ordinal % operand_domain_width',
                 'role': str(stage['category']),
+                **_arithmetic_parent_domain(['qy']),
             },
             {
                 'domain_id': f"{stage['stage']}:{block['block']}:target",
@@ -204,6 +231,7 @@ def _arithmetic_block_operand_domains(stage: Mapping[str, Any], block: Mapping[s
                 'operand_index_max_exclusive': operand_slots,
                 'row_instance_to_operand_index': 'operand_index = row_instance_ordinal % operand_domain_width',
                 'role': str(stage['category']),
+                **_arithmetic_parent_domain(['qz']),
             },
         ]
     return [
@@ -215,6 +243,7 @@ def _arithmetic_block_operand_domains(stage: Mapping[str, Any], block: Mapping[s
             'operand_index_max_exclusive': operand_slots,
             'row_instance_to_operand_index': 'operand_index = row_instance_ordinal % operand_slots_required',
             'role': str(stage['category']),
+            **_arithmetic_parent_domain(['qx']),
         }
     ]
 
@@ -332,6 +361,15 @@ def _flat_netlist_commitment(
 
 
 def _wire_from_domain(domain: Mapping[str, Any], operand_index: int, row_instance_ordinal: int) -> Dict[str, Any]:
+    parent_wire_ids = [str(wire_id) for wire_id in domain.get('parent_wire_ids', [])]
+    parent_bit_width = int(domain.get('parent_bit_width', 0))
+    if parent_wire_ids and parent_bit_width > 0:
+        parent_offset = max(0, int(operand_index) - int(domain['operand_index_min']))
+        parent_wire_id = parent_wire_ids[(parent_offset // parent_bit_width) % len(parent_wire_ids)]
+        parent_bit_index = parent_offset % parent_bit_width
+    else:
+        parent_wire_id = ''
+        parent_bit_index = int(operand_index)
     template = str(domain['wire_template'])
     wire_id = template.format(
         operand_index=int(operand_index),
@@ -339,11 +377,15 @@ def _wire_from_domain(domain: Mapping[str, Any], operand_index: int, row_instanc
         right_bit=int(operand_index),
         row_instance_ordinal=int(row_instance_ordinal),
     )
+    if parent_wire_id:
+        wire_id = f'{parent_wire_id}.bit[{parent_bit_index}]'
     return {
         'domain_id': str(domain['domain_id']),
         'owner_id': str(domain['owner_id']),
         'role': str(domain['role']),
         'operand_index': int(operand_index),
+        'parent_wire_id': parent_wire_id,
+        'parent_bit_index': parent_bit_index,
         'wire_id': wire_id,
     }
 
@@ -564,6 +606,7 @@ def _flat_execution_probe(
     liveness_rows: List[Mapping[str, Any]],
     flat_netlist: Mapping[str, Any],
     owner_capacity_by_id: Mapping[str, int],
+    wire_catalog: Mapping[str, Any],
 ) -> Dict[str, Any]:
     row_starts = _row_operation_starts(rows)
     liveness_by_row = {int(row['row_index']): row for row in liveness_rows}
@@ -582,6 +625,11 @@ def _flat_execution_probe(
             contribution = _segment_contribution_for_operation(flat_netlist, operation_index)
             operand_wires = operation['operand_wires']
             derived_owner_live_qubits = operation['liveness']['derived_owner_live_qubits']
+            live_wire_ids = set(str(wire_id) for wire_id in operation['liveness']['live_wire_ids'])
+            parent_bit_refs = [
+                (str(wire['parent_wire_id']), int(wire['parent_bit_index']))
+                for wire in operand_wires
+            ]
             probes.append({
                 'operation_index': operation_index,
                 'run_length_row_index': int(row['row_index']),
@@ -610,6 +658,19 @@ def _flat_execution_probe(
                     'operand_owners_are_live': all(
                         str(wire['owner_id']) in derived_owner_live_qubits
                         for wire in operand_wires
+                    ),
+                    'operand_parent_wires_are_live': all(
+                        str(wire['parent_wire_id']) in live_wire_ids
+                        for wire in operand_wires
+                    ),
+                    'operand_parent_bits_are_within_capacity': all(
+                        str(wire['parent_wire_id']) in wire_catalog
+                        and int(wire['parent_bit_index']) < int(wire_catalog[str(wire['parent_wire_id'])]['qubits'])
+                        for wire in operand_wires
+                    ),
+                    'ccx_operands_use_distinct_parent_bits': (
+                        operation['gate'] != 'ccx'
+                        or len(parent_bit_refs) == len(set(parent_bit_refs))
                     ),
                     'live_owner_capacity_covers_operands': all(
                         str(wire['owner_id']) in derived_owner_live_qubits
@@ -679,6 +740,9 @@ def _flat_execution_probe(
             ),
             'probe_operand_owners_are_live_and_within_capacity': all(
                 probe['checks']['operand_owners_are_live']
+                and probe['checks']['operand_parent_wires_are_live']
+                and probe['checks']['operand_parent_bits_are_within_capacity']
+                and probe['checks']['ccx_operands_use_distinct_parent_bits']
                 and probe['checks']['live_owner_capacity_covers_operands']
                 for probe in probes
             ),
@@ -747,6 +811,62 @@ def _strict_primitive_completeness_report(rows: List[Mapping[str, Any]]) -> Dict
             'Replace lookup and QROAM operand-domain templates with exact address/control/target wires for every primitive gate.',
             'Make this report a passing public-engine invariant before calling the result a Clifford-complete full netlist.',
         ],
+    }
+
+
+def _operand_parent_binding_report(
+    *,
+    rows: List[Mapping[str, Any]],
+    liveness_rows: List[Mapping[str, Any]],
+    wire_catalog: Mapping[str, Any],
+) -> Dict[str, Any]:
+    failures: List[Dict[str, Any]] = []
+    liveness_by_row = {int(row['row_index']): row for row in liveness_rows}
+    domains_checked = 0
+    for row in rows:
+        liveness = liveness_by_row[int(row['row_index'])]
+        live_wire_ids = {str(wire_id) for wire_id in liveness['live_wire_ids']}
+        for domain in row['primitive_operand_contract']['operand_domains']:
+            domains_checked += 1
+            parent_wire_ids = [str(wire_id) for wire_id in domain.get('parent_wire_ids', [])]
+            parent_bit_width = int(domain.get('parent_bit_width', 0))
+            domain_failures: List[str] = []
+            if not parent_wire_ids:
+                domain_failures.append('missing_parent_wire_ids')
+            if parent_bit_width <= 0:
+                domain_failures.append('missing_parent_bit_width')
+            for parent_wire_id in parent_wire_ids:
+                if parent_wire_id not in wire_catalog:
+                    domain_failures.append(f'unknown_parent_wire:{parent_wire_id}')
+                    continue
+                wire = wire_catalog[parent_wire_id]
+                if str(wire['owner_id']) != str(domain['owner_id']):
+                    domain_failures.append(f'parent_owner_mismatch:{parent_wire_id}')
+                if parent_wire_id not in live_wire_ids:
+                    domain_failures.append(f'parent_not_live:{parent_wire_id}')
+                if parent_bit_width > int(wire['qubits']):
+                    domain_failures.append(f'parent_bit_width_exceeds_wire:{parent_wire_id}')
+            if domain_failures and len(failures) < 32:
+                failures.append({
+                    'row_index': int(row['row_index']),
+                    'scope': str(row['scope']),
+                    'gate': str(row['gate']),
+                    'domain_id': str(domain['domain_id']),
+                    'owner_id': str(domain['owner_id']),
+                    'parent_wire_ids': parent_wire_ids,
+                    'parent_bit_width': parent_bit_width,
+                    'failures': domain_failures,
+                })
+            elif domain_failures:
+                failures.append({'failures': domain_failures})
+    return {
+        'schema': 'compiler-project-operand-parent-binding-report-v1',
+        'definition': 'Every primitive operand domain must map to counted parent wires that are present in the executable wire catalog, owned by the same counted owner, live for the row liveness interval, and wide enough for the domain bit mapping.',
+        'rows_checked': len(rows),
+        'domains_checked': domains_checked,
+        'failure_count': len(failures),
+        'sample_failures': failures[:32],
+        'pass': len(failures) == 0,
     }
 
 
@@ -1079,6 +1199,11 @@ def _phase_run_length_rows(phase_shell: Mapping[str, Any], row_index: int) -> Li
                             'operand_index_min': 0,
                             'operand_index_max_exclusive': 1,
                             'role': 'phase_shell_control_qubit',
+                            **_parent_wire_domain(
+                                parent_wire_ids=['semiclassical_qft_live_phase_bit'],
+                                parent_bit_width=1,
+                                parent_selection_rule='single live semiclassical phase bit',
+                            ),
                         },
                         {
                             'domain_id': 'semiclassical_qft_target_phase_bit',
@@ -1087,6 +1212,11 @@ def _phase_run_length_rows(phase_shell: Mapping[str, Any], row_index: int) -> Li
                             'operand_index_min': 0,
                             'operand_index_max_exclusive': 1,
                             'role': 'phase_shell_target_qubit',
+                            **_parent_wire_domain(
+                                parent_wire_ids=['semiclassical_qft_live_phase_bit'],
+                                parent_bit_width=1,
+                                parent_selection_rule='single live semiclassical phase bit',
+                            ),
                         },
                     ]
                 else:
@@ -1098,6 +1228,11 @@ def _phase_run_length_rows(phase_shell: Mapping[str, Any], row_index: int) -> Li
                             'operand_index_min': 0,
                             'operand_index_max_exclusive': 1,
                             'role': 'phase_shell_live_qubit',
+                            **_parent_wire_domain(
+                                parent_wire_ids=['semiclassical_qft_live_phase_bit'],
+                                parent_bit_width=1,
+                                parent_selection_rule='single live semiclassical phase bit',
+                            ),
                         }
                     ]
                 provenance = {
@@ -1162,6 +1297,11 @@ def _qroam_run_length_rows(
                             'operand_index_min': int(segment['start_address']),
                             'operand_index_max_exclusive': int(segment['end_address_exclusive']),
                             'role': 'qroam_selection_control',
+                            **_parent_wire_domain(
+                                parent_wire_ids=['folded_lookup_control_workspace'],
+                                parent_bit_width=18,
+                                parent_selection_rule='folded QROAM selection controls reuse counted folded lookup-control workspace bits',
+                            ),
                         },
                         {
                             'domain_id': f"{term['table']}:chunk_{term['chunk_index']}:qroam_target",
@@ -1170,6 +1310,11 @@ def _qroam_run_length_rows(
                             'operand_index_min': int(segment['start_address']),
                             'operand_index_max_exclusive': int(segment['end_address_exclusive']),
                             'role': 'qroam_target_or_unary_step',
+                            **_parent_wire_domain(
+                                parent_wire_ids=[f"qroam_chunk_target__{term['table']}__chunk_{term['chunk_index']}"],
+                                parent_bit_width=int(qroam_primitive_certificate['parameters']['target_bits']),
+                                parent_selection_rule='selected QROAM target bit = operand offset modulo target_bits',
+                            ),
                         },
                         {
                             'domain_id': 'qchunk',
@@ -1178,6 +1323,11 @@ def _qroam_run_length_rows(
                             'operand_index_min': 0,
                             'operand_index_max_exclusive': int(reusable_chunk_lowering['stream_plan']['chunk_bits']),
                             'role': 'qroam_chunk_consumer_register',
+                            **_parent_wire_domain(
+                                parent_wire_ids=['qchunk'],
+                                parent_bit_width=int(reusable_chunk_lowering['stream_plan']['chunk_bits']),
+                                parent_selection_rule='qchunk consumer bit = operand offset modulo chunk_bits',
+                            ),
                         },
                     ],
                 )
@@ -1280,6 +1430,11 @@ def _public_base_run_length_rows(
             'operand_index_min': 0,
             'operand_index_max_exclusive': 18,
             'role': 'folded_lookup_decode_control',
+            **_parent_wire_domain(
+                parent_wire_ids=['folded_lookup_control_workspace'],
+                parent_bit_width=18,
+                parent_selection_rule='folded lookup-control bit = operand offset modulo 18',
+            ),
         },
         {
             'domain_id': 'lookup_conditioned_arithmetic_slots',
@@ -1288,6 +1443,11 @@ def _public_base_run_length_rows(
             'operand_index_min': 0,
             'operand_index_max_exclusive': 768,
             'role': 'lookup_infinity_and_conditional_y_negation_target',
+            **_parent_wire_domain(
+                parent_wire_ids=['qx', 'qy', 'qz'],
+                parent_bit_width=256,
+                parent_selection_rule='parent_wire_index = operand_index // field_bits; parent_bit_index = operand_index % field_bits',
+            ),
         },
         {
             'domain_id': 'lookup_infinity_flag',
@@ -1296,6 +1456,11 @@ def _public_base_run_length_rows(
             'operand_index_min': 0,
             'operand_index_max_exclusive': 1,
             'role': 'lookup_boundary_control_flag',
+            **_parent_wire_domain(
+                parent_wire_ids=['f_lookup_inf'],
+                parent_bit_width=1,
+                parent_selection_rule='single lookup infinity flag bit',
+            ),
         },
     ]
     lookup_operand_domains_by_gate = {
@@ -1308,6 +1473,11 @@ def _public_base_run_length_rows(
                 'operand_index_min': 0,
                 'operand_index_max_exclusive': int(lookup_family['primitive_counts_total']['measurement']),
                 'role': 'lookup_measurement_bit',
+                **_parent_wire_domain(
+                    parent_wire_ids=['folded_lookup_control_workspace'],
+                    parent_bit_width=18,
+                    parent_selection_rule='lookup measurement bits reuse counted folded lookup-control workspace bits',
+                ),
             }
         ],
     }
@@ -1535,8 +1705,14 @@ def build_public_candidate_materialized_circuit_manifest(
         liveness_rows=liveness_rows,
         flat_netlist=flat_netlist,
         owner_capacity_by_id=owner_capacity_by_id,
+        wire_catalog=wire_catalog,
     )
     strict_primitive_completeness = _strict_primitive_completeness_report(rows)
+    operand_parent_binding = _operand_parent_binding_report(
+        rows=rows,
+        liveness_rows=liveness_rows,
+        wire_catalog=wire_catalog,
+    )
     checks = {
         'selected_family_matches_compiler_parameters': selected_family_name == compiler_parameters['public_headline_policy']['selected_public_family_name'],
         'source_engines_pass': (
@@ -1614,6 +1790,7 @@ def build_public_candidate_materialized_circuit_manifest(
             and set(row['primitive_operand_contract']['owner_ids']).issubset(set(liveness_rows[int(row['row_index'])]['derived_owner_live_qubits']))
             for row in rows
         ),
+        'primitive_operand_domains_bind_counted_live_parent_wires': operand_parent_binding['pass'] is True,
         'flat_netlist_binds_operand_contract_hashes': all(
             contribution['primitive_operand_contract_sha256'] == rows[int(contribution['run_length_row_index'])]['primitive_operand_contract_sha256']
             and contribution['primitive_operand_owner_ids'] == rows[int(contribution['run_length_row_index'])]['primitive_operand_contract']['owner_ids']
@@ -1630,6 +1807,11 @@ def build_public_candidate_materialized_circuit_manifest(
             strict_primitive_completeness['rows_checked'] == len(rows)
             and sum(strict_primitive_completeness['rows_by_gate'].values()) == len(rows)
             and strict_primitive_completeness['clifford_complete'] is True
+        ),
+        'operand_parent_binding_report_is_current': (
+            operand_parent_binding['rows_checked'] == len(rows)
+            and operand_parent_binding['domains_checked'] == sum(len(row['primitive_operand_contract']['operand_domains']) for row in rows)
+            and operand_parent_binding['pass'] is True
         ),
         'qroam_liveness_bindings_use_matching_chunk_target': all(
             f"qroam_chunk_target__{row['table']}__chunk_{row['chunk_index']}" in liveness_rows[int(row['row_index'])]['live_wire_ids']
@@ -1696,6 +1878,7 @@ def build_public_candidate_materialized_circuit_manifest(
         'flat_netlist': flat_netlist,
         'flat_execution_probe': flat_execution_probe,
         'strict_primitive_completeness': strict_primitive_completeness,
+        'operand_parent_binding': operand_parent_binding,
         'qroam_expansion': {
             'stream_instances': qroam_stream_term_instances,
             'segments_per_stream': qroam_segment_count,

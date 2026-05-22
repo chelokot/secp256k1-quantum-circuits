@@ -141,7 +141,11 @@ wires, segment/liveness bindings, QROAM target-domain widths, and the reduced
 schoolbook Cartesian operand grid. It also carries a strict primitive-completeness
 report: every run-length primitive row now has the gate-arity operand domains
 needed for the flat iterator to emit one concrete operand reference per gate
-input, including QROAM `ccx` rows and arithmetic `ccx` rows. The public engine manifest then binds that
+input, including QROAM `ccx` rows and arithmetic `ccx` rows. The companion
+operand-parent binding report proves those operands point back to counted live
+parent wires such as `qx`, `qy`, `qz`, `qchunk`, folded lookup workspace, the
+active QROAM chunk target, and the semiclassical phase bit, with parent bit
+indices inside the parent wire capacities. The public engine manifest then binds that
 flat stream, executable instruction rows, wires, schedule events, owner-capacity
 rows, resource terms, semantic-boundary evidence, arithmetic operation IR, the
 generated QROAMClean `K = 1` primitive certificate, and the selected

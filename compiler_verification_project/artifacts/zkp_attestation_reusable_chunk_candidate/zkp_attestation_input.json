@@ -2,7 +2,7 @@
   "schema": "compiler-project-zkp-attestation-input-v5",
   "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
   "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
-  "claim_sha256": "16afefec6aa74fbf8e0a3e57b829be2fe3f09f78b81af095a1c901b5316d0ebd",
+  "claim_sha256": "10970b812af2e818a81decaf487d435040cb7474e4e26119eadae2ad3997fd80",
   "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
   "family_sha256": "d3cecc3c5c3ec6b7611057d6fb3608dd5e95d7020f66ac55d55e2066d9398eae",
   "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
@@ -12,7 +12,7 @@
     "document_type": "attestation_claim",
     "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_claim.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "16afefec6aa74fbf8e0a3e57b829be2fe3f09f78b81af095a1c901b5316d0ebd",
+    "sha256": "10970b812af2e818a81decaf487d435040cb7474e4e26119eadae2ad3997fd80",
     "payload": {
       "schema": "compiler-project-zkp-attestation-claim-v1",
       "selected_family_alias": "reusable-chunk",
@@ -25,7 +25,7 @@
       "resource_engine_summary": {
         "source": "public_engine_manifest.public_totals",
         "source_document_type": "public_engine_manifest",
-        "source_sha256": "45d8fc09631598e26cf539f237ee64e0c4e01bc8f876e0c1e92846001620642a",
+        "source_sha256": "463486fc578ce3a3c233197bb5ea5e74db532ad1e8de92a485ca039d600668f9",
         "non_clifford": 36957412,
         "logical_qubits": 1199,
         "matches_family_snapshot": true,
@@ -7022,7 +7022,7 @@
     "resource_engine_summary": {
       "source": "public_engine_manifest.public_totals",
       "source_document_type": "public_engine_manifest",
-      "source_sha256": "45d8fc09631598e26cf539f237ee64e0c4e01bc8f876e0c1e92846001620642a",
+      "source_sha256": "463486fc578ce3a3c233197bb5ea5e74db532ad1e8de92a485ca039d600668f9",
       "non_clifford": 36957412,
       "logical_qubits": 1199,
       "matches_family_snapshot": true,
@@ -7386,12 +7386,12 @@
     "The proof input carries both the committed source documents and proof-ready reductions.",
     "The guest recomputes every source-document digest and derives the prepared leaf/case reductions from those documents before publishing public values."
   ],
-  "public_engine_manifest_sha256": "45d8fc09631598e26cf539f237ee64e0c4e01bc8f876e0c1e92846001620642a",
+  "public_engine_manifest_sha256": "463486fc578ce3a3c233197bb5ea5e74db532ad1e8de92a485ca039d600668f9",
   "public_engine_manifest_document": {
     "document_type": "public_engine_manifest",
     "artifact_path": "compiler_verification_project/artifacts/public_engine_manifest.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "45d8fc09631598e26cf539f237ee64e0c4e01bc8f876e0c1e92846001620642a",
+    "sha256": "463486fc578ce3a3c233197bb5ea5e74db532ad1e8de92a485ca039d600668f9",
     "payload": {
       "schema": "compiler-project-public-engine-manifest-v1",
       "scope": "current public reusable-chunk executable resource engine manifest",
@@ -7410,7 +7410,7 @@
         "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
         "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
         "resource_contract_engine_sha256": "6ec61b5379cd1eb36a568423ffa43a79015c7f3c5dea53ec65cf1f80346b3d6f",
-        "public_candidate_materialized_circuit_manifest_sha256": "606ab31491e86e71e2ef15e83db0815d21b167199943c9978e037a277a5f41a5"
+        "public_candidate_materialized_circuit_manifest_sha256": "979d7df40fd2bdc2175ecc5bdacb6cc23b08dde736ed1c45eae2834ad41179f6"
       },
       "instruction_stream": {
         "encoding": [
@@ -8004,20 +8004,20 @@
       "primitive_operation_evidence": {
         "public_candidate_materialized_circuit_manifest": {
           "schema": "compiler-project-public-candidate-materialized-circuit-manifest-v1",
-          "sha256": "606ab31491e86e71e2ef15e83db0815d21b167199943c9978e037a277a5f41a5",
+          "sha256": "979d7df40fd2bdc2175ecc5bdacb6cc23b08dde736ed1c45eae2834ad41179f6",
           "pass": true,
-          "operation_stream_sha256": "73d3dc48eac95c77816db4ab2fde6dd529e311a050c1473a92030c08d35ff18c",
+          "operation_stream_sha256": "ac3036c4737ea0dac6859487744bea40a3f350a1cedaf121b81b090a04d542da",
           "liveness_binding_stream_sha256": "c328629396d401bba71a1245504aed03017cb77f16b47c2e323ed3e3ea9c918f",
           "run_length_row_count": 6329,
           "liveness_binding_row_count": 6329,
           "qroam_segment_row_count": 2976,
           "flat_operation_count": 39370727,
           "flat_segment_count": 40,
-          "flat_segment_merkle_root_sha256": "210d1bf1512e6ae8417cc146baccee1e162b0af40f6392b4211f0b70e50efa1b",
+          "flat_segment_merkle_root_sha256": "542751c08c59f6d66e4930c1ad55dbcc5e09ebf00d05e683d6b00a9f0951caf6",
           "flat_execution_probe": {
             "schema": "compiler-project-flat-netlist-execution-probe-v1",
             "probe_count": 18,
-            "probe_stream_sha256": "c86b528c04522b0c31fb47f2854e4c1f4cbb23efba8f5c61f0af6ad75dec5dcc",
+            "probe_stream_sha256": "586c103893d37b3c7a4deb5ca8c7b88549c99e0d04a84377b6ed2b9aec181841",
             "checks": {
               "arithmetic_two_operand_domain_product_matches_row_total": true,
               "probe_operand_indices_within_domains": true,
@@ -8033,6 +8033,13 @@
             "rows_checked": 6329,
             "incomplete_row_count": 0,
             "incomplete_by_scope_gate": {}
+          },
+          "operand_parent_binding": {
+            "schema": "compiler-project-operand-parent-binding-report-v1",
+            "pass": true,
+            "rows_checked": 6329,
+            "domains_checked": 15817,
+            "failure_count": 0
           },
           "non_clifford": 36957412,
           "peak_live_qubits": 1199
@@ -8105,7 +8112,8 @@
         "qroam_primitive_stream_binds_stream_terms": true,
         "phase_shell_primitive_counts_bind_public_family": true,
         "public_candidate_materialized_stream_binds_engine_totals": true,
-        "strict_primitive_completeness_report_is_bound": true
+        "strict_primitive_completeness_report_is_bound": true,
+        "operand_parent_binding_report_is_bound": true
       },
       "pass": true
     }

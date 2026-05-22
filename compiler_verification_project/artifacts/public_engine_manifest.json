@@ -16,7 +16,7 @@
     "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
     "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
     "resource_contract_engine_sha256": "6ec61b5379cd1eb36a568423ffa43a79015c7f3c5dea53ec65cf1f80346b3d6f",
-    "public_candidate_materialized_circuit_manifest_sha256": "606ab31491e86e71e2ef15e83db0815d21b167199943c9978e037a277a5f41a5"
+    "public_candidate_materialized_circuit_manifest_sha256": "979d7df40fd2bdc2175ecc5bdacb6cc23b08dde736ed1c45eae2834ad41179f6"
   },
   "instruction_stream": {
     "encoding": [
@@ -610,20 +610,20 @@
   "primitive_operation_evidence": {
     "public_candidate_materialized_circuit_manifest": {
       "schema": "compiler-project-public-candidate-materialized-circuit-manifest-v1",
-      "sha256": "606ab31491e86e71e2ef15e83db0815d21b167199943c9978e037a277a5f41a5",
+      "sha256": "979d7df40fd2bdc2175ecc5bdacb6cc23b08dde736ed1c45eae2834ad41179f6",
       "pass": true,
-      "operation_stream_sha256": "73d3dc48eac95c77816db4ab2fde6dd529e311a050c1473a92030c08d35ff18c",
+      "operation_stream_sha256": "ac3036c4737ea0dac6859487744bea40a3f350a1cedaf121b81b090a04d542da",
       "liveness_binding_stream_sha256": "c328629396d401bba71a1245504aed03017cb77f16b47c2e323ed3e3ea9c918f",
       "run_length_row_count": 6329,
       "liveness_binding_row_count": 6329,
       "qroam_segment_row_count": 2976,
       "flat_operation_count": 39370727,
       "flat_segment_count": 40,
-      "flat_segment_merkle_root_sha256": "210d1bf1512e6ae8417cc146baccee1e162b0af40f6392b4211f0b70e50efa1b",
+      "flat_segment_merkle_root_sha256": "542751c08c59f6d66e4930c1ad55dbcc5e09ebf00d05e683d6b00a9f0951caf6",
       "flat_execution_probe": {
         "schema": "compiler-project-flat-netlist-execution-probe-v1",
         "probe_count": 18,
-        "probe_stream_sha256": "c86b528c04522b0c31fb47f2854e4c1f4cbb23efba8f5c61f0af6ad75dec5dcc",
+        "probe_stream_sha256": "586c103893d37b3c7a4deb5ca8c7b88549c99e0d04a84377b6ed2b9aec181841",
         "checks": {
           "arithmetic_two_operand_domain_product_matches_row_total": true,
           "probe_operand_indices_within_domains": true,
@@ -639,6 +639,13 @@
         "rows_checked": 6329,
         "incomplete_row_count": 0,
         "incomplete_by_scope_gate": {}
+      },
+      "operand_parent_binding": {
+        "schema": "compiler-project-operand-parent-binding-report-v1",
+        "pass": true,
+        "rows_checked": 6329,
+        "domains_checked": 15817,
+        "failure_count": 0
       },
       "non_clifford": 36957412,
       "peak_live_qubits": 1199
@@ -711,7 +718,8 @@
     "qroam_primitive_stream_binds_stream_terms": true,
     "phase_shell_primitive_counts_bind_public_family": true,
     "public_candidate_materialized_stream_binds_engine_totals": true,
-    "strict_primitive_completeness_report_is_bound": true
+    "strict_primitive_completeness_report_is_bound": true,
+    "operand_parent_binding_report_is_bound": true
   },
   "pass": true
 }
