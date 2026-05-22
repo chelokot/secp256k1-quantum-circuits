@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Dict
 
 
-BUILD_SUMMARY_SCHEMA = 'compiler-project-build-summary-v36'
+BUILD_SUMMARY_SCHEMA = 'compiler-project-build-summary-v37'
 
 BUILD_SUMMARY_ARTIFACT_PATHS: Dict[str, str] = {
     'canonical_public_point': 'compiler_verification_project/artifacts/canonical_public_point.json',
@@ -56,6 +56,7 @@ BUILD_SUMMARY_ARTIFACT_PATHS: Dict[str, str] = {
     'azure_resource_estimator_targets': 'compiler_verification_project/artifacts/azure_resource_estimator_targets.json',
     'azure_resource_estimator_results': 'compiler_verification_project/artifacts/azure_resource_estimator_results.json',
     'artifact_digest_tree': 'compiler_verification_project/artifacts/artifact_digest_tree.json',
+    'proof_environment_contract': 'compiler_verification_project/artifacts/proof_environment_contract.json',
 }
 
 

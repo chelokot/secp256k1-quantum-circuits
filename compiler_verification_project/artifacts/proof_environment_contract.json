@@ -1,0 +1,500 @@
+{
+  "schema": "compiler-project-proof-environment-contract-v1",
+  "scope": "checked reproducible proof-environment contract for public headline verification and rebuild gates",
+  "tool_contract": {
+    "required_tools": [
+      {
+        "name": "python",
+        "command": [
+          "python3.12",
+          "--version"
+        ],
+        "required_for": "artifact generation and fast integrity checks"
+      },
+      {
+        "name": "cargo",
+        "command": [
+          "cargo",
+          "--version"
+        ],
+        "required_for": "SP1 attestation Rust workspace builds"
+      },
+      {
+        "name": "rustc",
+        "command": [
+          "rustc",
+          "--version"
+        ],
+        "required_for": "SP1 attestation Rust workspace builds"
+      },
+      {
+        "name": "protoc",
+        "command": [
+          "protoc",
+          "--version"
+        ],
+        "fallback_executable": "/tmp/protoc-34.1/bin/protoc",
+        "env_var": "PROTOC",
+        "required_for": "SP1 prover-types protobuf build scripts"
+      },
+      {
+        "name": "clang",
+        "command": [
+          "clang",
+          "--version"
+        ],
+        "required_for": "bindgen/libclang-backed SP1 dependencies"
+      },
+      {
+        "name": "go",
+        "command": [
+          "go",
+          "version"
+        ],
+        "required_for": "vendored gnark Groth16 wrapper build path"
+      }
+    ],
+    "optional_tools": [
+      {
+        "name": "cargo-prove",
+        "command": [
+          "cargo-prove",
+          "--version"
+        ],
+        "required_for": "native SP1 prove/verify command convenience"
+      },
+      {
+        "name": "sp1up",
+        "command": [
+          "sp1up",
+          "--version"
+        ],
+        "required_for": "SP1 toolchain installation convenience"
+      }
+    ],
+    "required_tool_names": [
+      "python",
+      "cargo",
+      "rustc",
+      "protoc",
+      "clang",
+      "go"
+    ],
+    "optional_tool_names": [
+      "cargo-prove",
+      "sp1up"
+    ]
+  },
+  "command_contracts": [
+    {
+      "name": "environment_readiness_report",
+      "phase": "environment",
+      "argv": [
+        "python",
+        "compiler_verification_project/scripts/proof_environment_report.py",
+        "--require-ready"
+      ],
+      "cwd": ".",
+      "invokes_prover": false,
+      "publication_gate": false
+    },
+    {
+      "name": "proof_environment_contract_refresh",
+      "phase": "environment",
+      "argv": [
+        "python",
+        "compiler_verification_project/scripts/build.py",
+        "--target",
+        "proof-environment-contract"
+      ],
+      "cwd": ".",
+      "invokes_prover": false,
+      "publication_gate": false
+    },
+    {
+      "name": "proof_status_edit_loop",
+      "phase": "freshness",
+      "argv": [
+        "python",
+        "compiler_verification_project/scripts/proof_status.py"
+      ],
+      "cwd": ".",
+      "invokes_prover": false,
+      "publication_gate": false
+    },
+    {
+      "name": "proof_status_publication_gate",
+      "phase": "freshness",
+      "argv": [
+        "python",
+        "compiler_verification_project/scripts/proof_status.py",
+        "--require-all-current"
+      ],
+      "cwd": ".",
+      "invokes_prover": false,
+      "publication_gate": true
+    },
+    {
+      "name": "fast_zkp_preflight_edit_loop",
+      "phase": "fast_no_prover_preflight",
+      "argv": [
+        "python",
+        "compiler_verification_project/scripts/fast_zkp_preflight.py"
+      ],
+      "cwd": ".",
+      "invokes_prover": false,
+      "publication_gate": false
+    },
+    {
+      "name": "fast_zkp_preflight_publication_gate",
+      "phase": "fast_no_prover_preflight",
+      "argv": [
+        "python",
+        "compiler_verification_project/scripts/fast_zkp_preflight.py",
+        "--require-current-proofs"
+      ],
+      "cwd": ".",
+      "invokes_prover": false,
+      "publication_gate": true
+    },
+    {
+      "name": "release_candidate_input_refresh",
+      "phase": "input_generation",
+      "argv": [
+        "python",
+        "compiler_verification_project/scripts/build.py",
+        "--target",
+        "release-candidate-zkp"
+      ],
+      "cwd": ".",
+      "invokes_prover": false,
+      "publication_gate": false
+    },
+    {
+      "name": "public_headline_metadata_verify",
+      "phase": "metadata_verification",
+      "argv": [
+        "python",
+        "compiler_verification_project/scripts/verify_public_headline.py"
+      ],
+      "cwd": ".",
+      "invokes_prover": false,
+      "publication_gate": false
+    },
+    {
+      "name": "public_headline_compressed_verify",
+      "phase": "proof_verification",
+      "argv": [
+        "python",
+        "compiler_verification_project/scripts/verify_public_headline.py",
+        "--verify-compressed"
+      ],
+      "cwd": ".",
+      "invokes_prover": false,
+      "publication_gate": true
+    },
+    {
+      "name": "public_headline_groth16_verify",
+      "phase": "proof_verification",
+      "argv": [
+        "python",
+        "compiler_verification_project/scripts/verify_public_headline.py",
+        "--verify-groth16"
+      ],
+      "cwd": ".",
+      "invokes_prover": false,
+      "publication_gate": true
+    },
+    {
+      "name": "direct_compressed_verify",
+      "phase": "proof_verification",
+      "shell_command": "SP1_CIRCUIT_MODE=dev python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --verify-proof-input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin --system compressed --resource-profile safe --systemd-property TasksMax=128 --skip-build --input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json --output-dir compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate",
+      "cwd": ".",
+      "invokes_prover": false,
+      "publication_gate": true
+    },
+    {
+      "name": "direct_groth16_verify",
+      "phase": "proof_verification",
+      "shell_command": "SP1_CIRCUIT_MODE=dev python compiler_verification_project/scripts/run_zkp_attestation_guarded.py --verify-proof-input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_groth16.bin --system groth16 --resource-profile safe --systemd-property TasksMax=128 --skip-build --groth16-verify-dir compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_groth16_verifier --input compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json --output-dir compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate",
+      "cwd": ".",
+      "invokes_prover": false,
+      "publication_gate": true
+    }
+  ],
+  "checked_artifacts": {
+    "input": {
+      "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
+      "sha256": "f1e1f9ba216295c15dc35419d8ec37620a1cb6bf0c8b49d283e0d224d7bfa31c",
+      "bytes": 259409,
+      "manifest_record": {
+        "sha256": "f1e1f9ba216295c15dc35419d8ec37620a1cb6bf0c8b49d283e0d224d7bfa31c",
+        "bytes": 259409
+      },
+      "manifest_record_present": true,
+      "manifest_sha256_matches_checked_record": true
+    },
+    "claim": {
+      "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json",
+      "sha256": "971fbcc49c40f4d1d963124949e0c5324adc33a80922fff65f38fe65ddc7a656",
+      "bytes": 1329,
+      "manifest_record": {
+        "sha256": "971fbcc49c40f4d1d963124949e0c5324adc33a80922fff65f38fe65ddc7a656",
+        "bytes": 1329
+      },
+      "manifest_record_present": true,
+      "manifest_sha256_matches_checked_record": true
+    },
+    "family": {
+      "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_family.json",
+      "sha256": "4b42252c535f7627602209dc1268e6a565fdeb68f716e44810ce6f1bdd19028a",
+      "bytes": 1655,
+      "manifest_record": {
+        "sha256": "4b42252c535f7627602209dc1268e6a565fdeb68f716e44810ce6f1bdd19028a",
+        "bytes": 1655
+      },
+      "manifest_record_present": true,
+      "manifest_sha256_matches_checked_record": true
+    },
+    "case_corpus": {
+      "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_cases.json",
+      "sha256": "3d3bef33a7133d468dc36821e0eca5e5dc1e4cc6b24f3d574a1719265f25c969",
+      "bytes": 5139,
+      "manifest_record": {
+        "sha256": "3d3bef33a7133d468dc36821e0eca5e5dc1e4cc6b24f3d574a1719265f25c969",
+        "bytes": 5139
+      },
+      "manifest_record_present": true,
+      "manifest_sha256_matches_checked_record": true
+    },
+    "proof_corpus_profiles": {
+      "path": "compiler_verification_project/artifacts/proof_corpus_profiles.json",
+      "sha256": "9c42de1999f9271f212c16d835c510ee307a28a27ab87e94c115798fb7ecd952",
+      "bytes": 1009,
+      "manifest_record": {
+        "sha256": "9c42de1999f9271f212c16d835c510ee307a28a27ab87e94c115798fb7ecd952",
+        "bytes": 1009
+      },
+      "manifest_record_present": true,
+      "manifest_sha256_matches_checked_record": true
+    },
+    "compiler_parameters": {
+      "path": "compiler_verification_project/artifacts/compiler_parameters.json",
+      "sha256": "b6fcb4e2e3b68a4657bc7a4590721bbd4792cb9d54e499b50cd1795446b604cf",
+      "bytes": 1832,
+      "manifest_record": {
+        "sha256": "b6fcb4e2e3b68a4657bc7a4590721bbd4792cb9d54e499b50cd1795446b604cf",
+        "bytes": 1832
+      },
+      "manifest_record_present": true,
+      "manifest_sha256_matches_checked_record": true
+    },
+    "public_values": {
+      "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_public_values.json",
+      "sha256": "bc43a3be29dfc4f278b23bdfbb996b657959b8e411db51ae4570d2ee48f012e4",
+      "bytes": 851,
+      "manifest_record": {
+        "sha256": "bc43a3be29dfc4f278b23bdfbb996b657959b8e411db51ae4570d2ee48f012e4",
+        "bytes": 851
+      },
+      "manifest_record_present": true,
+      "manifest_sha256_matches_checked_record": true
+    },
+    "core_fixture": {
+      "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_fixture_core.json",
+      "sha256": "eb6b7fac6e953fb5f384f6d3d4274f11f599879d8e380678d0290d62448e432b",
+      "bytes": 1338,
+      "proof_system": "core",
+      "verification_key": "0x00a045504797672214fb629c1fce35cf1b76690546c4b61b13de48098fc749a8",
+      "input_path": null,
+      "input_sha256": null,
+      "input_size_bytes": null,
+      "proof_path": null,
+      "proof_sha256": null,
+      "proof_size_bytes": null,
+      "verifier_key_path": null,
+      "verifier_key_sha256": null,
+      "verifier_key_size_bytes": null,
+      "manifest_record": {
+        "sha256": "eb6b7fac6e953fb5f384f6d3d4274f11f599879d8e380678d0290d62448e432b",
+        "bytes": 1338
+      },
+      "manifest_record_present": true,
+      "manifest_sha256_matches_checked_record": true
+    },
+    "compressed_fixture": {
+      "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_fixture_compressed.json",
+      "sha256": "1e29b89fcac4f00911a5d1572ce2460e1837947d734ceb6808f94743a0a7b3bf",
+      "bytes": 1524,
+      "proof_system": "compressed",
+      "verification_key": "0x00a045504797672214fb629c1fce35cf1b76690546c4b61b13de48098fc749a8",
+      "input_path": null,
+      "input_sha256": null,
+      "input_size_bytes": null,
+      "proof_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin",
+      "proof_sha256": "d66a8a10e4364f859d1207c1dc343d7c54a7c6a39a7058a7c05b1b5d7dd5c396",
+      "proof_size_bytes": 1273162,
+      "verifier_key_path": null,
+      "verifier_key_sha256": null,
+      "verifier_key_size_bytes": null,
+      "manifest_record": {
+        "sha256": "1e29b89fcac4f00911a5d1572ce2460e1837947d734ceb6808f94743a0a7b3bf",
+        "bytes": 1524
+      },
+      "manifest_record_present": true,
+      "manifest_sha256_matches_checked_record": true
+    },
+    "groth16_fixture": {
+      "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_fixture_groth16.json",
+      "sha256": "0b9ded6ac65245256a5ba2a82b4ea1cdaf586038febb849a63b0e570c43b6875",
+      "bytes": 2414,
+      "proof_system": "groth16",
+      "verification_key": "0x000468e7e74d2eccde25e6af5576efe93dfa7056aabd1e535598774df7a2c832",
+      "input_path": null,
+      "input_sha256": null,
+      "input_size_bytes": null,
+      "proof_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_groth16.bin",
+      "proof_sha256": "95e5f291652d6f1864cc22fb259cd87b335e204d28b8955f3e7e255ff4f75fc2",
+      "proof_size_bytes": 2285,
+      "verifier_key_path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_groth16_verifier/groth16_vk.bin",
+      "verifier_key_sha256": "4125fe6fab5e7d3af4bb9386f49589450a6d37f536e98650adca79768c469975",
+      "verifier_key_size_bytes": 492,
+      "manifest_record": {
+        "sha256": "0b9ded6ac65245256a5ba2a82b4ea1cdaf586038febb849a63b0e570c43b6875",
+        "bytes": 2414
+      },
+      "manifest_record_present": true,
+      "manifest_sha256_matches_checked_record": true
+    },
+    "compressed_proof": {
+      "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_compressed.bin",
+      "sha256": "d66a8a10e4364f859d1207c1dc343d7c54a7c6a39a7058a7c05b1b5d7dd5c396",
+      "bytes": 1273162,
+      "manifest_record": {
+        "sha256": "d66a8a10e4364f859d1207c1dc343d7c54a7c6a39a7058a7c05b1b5d7dd5c396",
+        "bytes": 1273162
+      },
+      "manifest_record_present": true,
+      "manifest_sha256_matches_checked_record": true
+    },
+    "groth16_proof": {
+      "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_proof_groth16.bin",
+      "sha256": "95e5f291652d6f1864cc22fb259cd87b335e204d28b8955f3e7e255ff4f75fc2",
+      "bytes": 2285,
+      "manifest_record": {
+        "sha256": "95e5f291652d6f1864cc22fb259cd87b335e204d28b8955f3e7e255ff4f75fc2",
+        "bytes": 2285
+      },
+      "manifest_record_present": true,
+      "manifest_sha256_matches_checked_record": true
+    },
+    "wrap_proof": {
+      "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_wrap_proof.bin",
+      "sha256": "09ed040ad545f74008f4185bead05912ebf30b9f628e8443a9f0e3eb3a4c6fbd",
+      "bytes": 1341550,
+      "manifest_record": {
+        "sha256": "09ed040ad545f74008f4185bead05912ebf30b9f628e8443a9f0e3eb3a4c6fbd",
+        "bytes": 1341550
+      },
+      "manifest_record_present": true,
+      "manifest_sha256_matches_checked_record": true
+    },
+    "groth16_verifier_key": {
+      "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_groth16_verifier/groth16_vk.bin",
+      "sha256": "4125fe6fab5e7d3af4bb9386f49589450a6d37f536e98650adca79768c469975",
+      "bytes": 492,
+      "manifest_record": {
+        "sha256": "4125fe6fab5e7d3af4bb9386f49589450a6d37f536e98650adca79768c469975",
+        "bytes": 492
+      },
+      "manifest_record_present": true,
+      "manifest_sha256_matches_checked_record": true
+    },
+    "qroam_primitive_certificate": {
+      "path": "compiler_verification_project/artifacts/qroam_primitive_certificate.json",
+      "sha256": "69d0ebe49b5d88c4627f3dd06f47e54ba7d67f9d4c4d32c96fdf8f2c82c1a9d1",
+      "bytes": 6369,
+      "manifest_record": {
+        "sha256": "69d0ebe49b5d88c4627f3dd06f47e54ba7d67f9d4c4d32c96fdf8f2c82c1a9d1",
+        "bytes": 6369
+      },
+      "manifest_record_present": true,
+      "manifest_sha256_matches_checked_record": true
+    },
+    "qroam_reference_crosscheck": {
+      "path": "compiler_verification_project/artifacts/qroam_reference_crosscheck.json",
+      "sha256": "cc2fac37d9f35bfeec913aba227673b68de665d896c45d7d9ebe57fab3111175",
+      "bytes": 39050,
+      "manifest_record": {
+        "sha256": "cc2fac37d9f35bfeec913aba227673b68de665d896c45d7d9ebe57fab3111175",
+        "bytes": 39050
+      },
+      "manifest_record_present": true,
+      "manifest_sha256_matches_checked_record": true
+    },
+    "modular_arithmetic_certificate": {
+      "path": "compiler_verification_project/artifacts/modular_arithmetic_certificate.json",
+      "sha256": "3ea8fbb67c8f47a70ace42d52c33cba7de7e4db9288d9f93a538cfbc65f4bf12",
+      "bytes": 111499,
+      "manifest_record": {
+        "sha256": "3ea8fbb67c8f47a70ace42d52c33cba7de7e4db9288d9f93a538cfbc65f4bf12",
+        "bytes": 111499
+      },
+      "manifest_record_present": true,
+      "manifest_sha256_matches_checked_record": true
+    },
+    "reusable_chunk_lowering": {
+      "path": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
+      "sha256": "17568e170d60bebc6e4bd0e29d76e83e9f9c044ac8d30bf167d9755c2c29c089",
+      "bytes": 206909,
+      "manifest_record": {
+        "sha256": "17568e170d60bebc6e4bd0e29d76e83e9f9c044ac8d30bf167d9755c2c29c089",
+        "bytes": 206909
+      },
+      "manifest_record_present": true,
+      "manifest_sha256_matches_checked_record": true
+    },
+    "reusable_chunk_tail_candidate": {
+      "path": "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
+      "sha256": "e719c4e3eec265b04925b65770573b86801f9f412f36f8dbfa35cb7401133530",
+      "bytes": 7212,
+      "manifest_record": {
+        "sha256": "e719c4e3eec265b04925b65770573b86801f9f412f36f8dbfa35cb7401133530",
+        "bytes": 7212
+      },
+      "manifest_record_present": true,
+      "manifest_sha256_matches_checked_record": true
+    }
+  },
+  "proof_manifest": {
+    "path": "artifacts/package/proof_manifest.json",
+    "sha256": "c7dc52b5b4fd52f3cdf9c0ed601e30d501e83abfeaa871a060528d862aa89a20",
+    "bytes": 37159,
+    "schema": null,
+    "file_count": 194
+  },
+  "public_headline_result": {
+    "path": "compiler_verification_project/artifacts/public_headline_result.json",
+    "sha256": "0d3880a507120cb186e4c7f86457536ac7547fb85a414726a061cd0288692a08",
+    "bytes": 13326
+  },
+  "notes": [
+    "This artifact is deterministic and repository-bound; it is not a pinned container or Nix lock.",
+    "Publication still requires proof_status.py --require-all-current plus compressed and Groth16 verification against checked artifacts.",
+    "No command in this contract invokes --prove; proof rebuilds remain an explicit separate operation."
+  ],
+  "checks": {
+    "public_headline_result_metadata_is_self_consistent": true,
+    "public_headline_result_keeps_proof_freshness_separate": true,
+    "all_checked_artifacts_exist_and_match_digest": true,
+    "proof_manifest_records_public_headline_checked_artifacts": true,
+    "proof_manifest_records_match_public_headline_checked_artifacts": true,
+    "publication_freshness_gate_requires_all_current_proofs": true,
+    "fast_publication_gate_uses_current_proof_requirement": true,
+    "no_fast_or_metadata_command_invokes_prover": true,
+    "declared_invokes_prover_flags_match_commands": true,
+    "direct_verify_commands_bind_checked_input_and_proofs": true,
+    "tool_contract_lists_required_sp1_stack": true
+  },
+  "pass": true
+}

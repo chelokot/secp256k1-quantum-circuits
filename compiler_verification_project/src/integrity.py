@@ -36,6 +36,7 @@ from physical_estimator import (
     build_or_load_azure_estimator_results_payload,
 )
 from proof_corpus_profiles import GOOGLE_COMPARABLE_PROFILE, SMOKE_PUBLIC_PROFILE, build_proof_corpus_profiles
+from proof_environment_contract import PROOF_ENVIRONMENT_CONTRACT_SCHEMA, build_proof_environment_contract
 from public_result import build_public_headline_result, write_public_headline_result
 from qroam_primitive import build_qroam_k1_primitive_certificate
 from qroam_reference_crosscheck import QROAM_REFERENCE_CROSSCHECK_SCHEMA, build_qroam_reference_crosscheck
@@ -199,6 +200,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'azure_resource_estimator_targets': artifact_root / 'azure_resource_estimator_targets.json',
         'azure_resource_estimator_results': artifact_root / 'azure_resource_estimator_results.json',
         'artifact_digest_tree': artifact_root / 'artifact_digest_tree.json',
+        'proof_environment_contract': artifact_root / 'proof_environment_contract.json',
     }
     if not all(path.exists() for path in required.values()):
         from project import build_all_artifacts, write_cain_transfer
@@ -206,6 +208,10 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         build_all_artifacts()
         write_cain_transfer()
         write_public_headline_result(baseline=PUBLIC_GOOGLE_BASELINE)
+        dump_json(
+            artifact_root / 'proof_environment_contract.json',
+            build_proof_environment_contract(repo_root=repo_root),
+        )
     return {name: _load_artifact(path) for name, path in required.items()}
 
 
@@ -2248,6 +2254,26 @@ def build_artifact_digest_tree_checks(artifacts: Mapping[str, Any], repo_root: P
     return _summarize_checks(checks)
 
 
+def build_proof_environment_contract_checks(artifacts: Mapping[str, Any], repo_root: Path) -> Dict[str, Any]:
+    contract = artifacts['proof_environment_contract']
+    expected = build_proof_environment_contract(repo_root=repo_root)
+    checked_artifacts = contract['checked_artifacts']
+    command_by_name = {command['name']: command for command in contract['command_contracts']}
+    checks = [
+        _check('proof_environment_contract_matches_generator', contract == expected, expected, contract),
+        _check('proof_environment_contract_schema_is_current', contract['schema'] == PROOF_ENVIRONMENT_CONTRACT_SCHEMA, PROOF_ENVIRONMENT_CONTRACT_SCHEMA, contract['schema']),
+        _check('proof_environment_contract_passes_internal_checks', contract['pass'] is True and all(contract['checks'].values()), True, contract['checks']),
+        _check('proof_environment_contract_binds_public_headline_result', contract['public_headline_result']['sha256'] == sha256_path(repo_root / contract['public_headline_result']['path']), contract['public_headline_result'], contract['public_headline_result']),
+        _check('proof_environment_contract_binds_curated_proof_manifest', contract['proof_manifest']['sha256'] == sha256_path(repo_root / contract['proof_manifest']['path']) and contract['proof_manifest']['file_count'] > 0, contract['proof_manifest'], contract['proof_manifest']),
+        _check('proof_environment_contract_manifest_covers_checked_artifacts', all(row['manifest_record_present'] and row['manifest_sha256_matches_checked_record'] for row in checked_artifacts.values()), 'all checked artifacts in proof manifest with matching digest and size', checked_artifacts),
+        _check('proof_environment_contract_has_no_prover_command_in_fast_gates', all(command['invokes_prover'] is False and '--prove' not in command.get('argv', []) and ' --prove' not in command.get('shell_command', '') for command in contract['command_contracts']), 'no --prove in contract commands', contract['command_contracts']),
+        _check('proof_environment_contract_has_publication_freshness_gate', command_by_name['proof_status_publication_gate']['publication_gate'] is True and '--require-all-current' in command_by_name['proof_status_publication_gate']['argv'], 'proof_status.py --require-all-current', command_by_name['proof_status_publication_gate']),
+        _check('proof_environment_contract_has_checked_compressed_and_groth16_verifiers', command_by_name['direct_compressed_verify']['publication_gate'] is True and command_by_name['direct_groth16_verify']['publication_gate'] is True and contract['checks']['direct_verify_commands_bind_checked_input_and_proofs'] is True, 'direct checked compressed and Groth16 verify commands', {'compressed': command_by_name['direct_compressed_verify'], 'groth16': command_by_name['direct_groth16_verify']}),
+        _check('proof_environment_contract_lists_required_tool_stack', set(contract['tool_contract']['required_tool_names']) == {'python', 'cargo', 'rustc', 'protoc', 'clang', 'go'}, ['cargo', 'clang', 'go', 'protoc', 'python', 'rustc'], sorted(contract['tool_contract']['required_tool_names'])),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_proof_corpus_profile_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     profiles = artifacts['proof_corpus_profiles']
     expected = build_proof_corpus_profiles()
@@ -2612,6 +2638,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'frontier_checks': lambda: build_frontier_checks(artifacts),
         'build_summary_checks': lambda: build_build_summary_checks(artifacts, repo_root),
         'artifact_digest_tree_checks': lambda: build_artifact_digest_tree_checks(artifacts, repo_root),
+        'proof_environment_contract_checks': lambda: build_proof_environment_contract_checks(artifacts, repo_root),
         'proof_corpus_profile_checks': lambda: build_proof_corpus_profile_checks(artifacts),
         'release_corpus_preflight_checks': lambda: build_release_corpus_preflight_checks(artifacts),
         'public_headline_result_checks': lambda: build_public_headline_result_checks(artifacts, repo_root),

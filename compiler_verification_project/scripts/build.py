@@ -30,12 +30,14 @@ from reusable_chunk_lowering import build_reusable_chunk_lowering  # noqa: E402
 from subcircuit_equivalence import build_subcircuit_equivalence_artifact  # noqa: E402
 from zkp_attestation import write_zkp_attestation_inputs  # noqa: E402
 from proof_corpus_profiles import resolve_proof_corpus_profile  # noqa: E402
+from proof_environment_contract import build_proof_environment_contract  # noqa: E402
 
 BUILD_TARGETS = (
     'all',
     'core-artifacts',
     'build-summary',
     'artifact-digest-tree',
+    'proof-environment-contract',
     'release-corpus-preflight',
     'materialized-circuit-manifest',
     'arithmetic-operation-ir',
@@ -200,6 +202,12 @@ def build_digest_tree() -> None:
     dump_json(artifact_dir / 'artifact_digest_tree.json', build_artifact_digest_tree(repo_root=PROJECT_ROOT))
 
 
+def build_proof_environment_contract_artifact() -> None:
+    artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
+    payload = build_proof_environment_contract(repo_root=PROJECT_ROOT)
+    dump_json(artifact_dir / 'proof_environment_contract.json', payload)
+
+
 def build_release_corpus_preflight_artifact() -> None:
     artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
     payload = build_release_corpus_preflight(
@@ -258,6 +266,9 @@ def main() -> None:
     if args.target in ('artifact-digest-tree',):
         build_digest_tree()
         payload['artifact_digest_tree'] = 'compiler_verification_project/artifacts/artifact_digest_tree.json'
+    if args.target in ('proof-environment-contract',):
+        build_proof_environment_contract_artifact()
+        payload['proof_environment_contract'] = 'compiler_verification_project/artifacts/proof_environment_contract.json'
     if args.target in ('release-corpus-preflight',):
         build_release_corpus_preflight_artifact()
         payload['release_corpus_preflight'] = 'compiler_verification_project/artifacts/release_corpus_preflight.json'
@@ -291,11 +302,15 @@ def main() -> None:
     if args.target in ('all', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
         build_public_headline()
         payload['public_headline_result'] = 'compiler_verification_project/artifacts/public_headline_result.json'
+    if args.target in ('all', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
+        build_proof_environment_contract_artifact()
+        payload['proof_environment_contract'] = 'compiler_verification_project/artifacts/proof_environment_contract.json'
     print(json.dumps({
         'target': args.target,
         'build_summary': payload['frontier']['best_gate_family'] if isinstance(payload.get('frontier'), dict) else None,
         'build_summary_artifact': payload.get('build_summary_artifact'),
         'artifact_digest_tree': payload.get('artifact_digest_tree'),
+        'proof_environment_contract': payload.get('proof_environment_contract'),
         'release_corpus_preflight': payload.get('release_corpus_preflight'),
         'materialized_circuit_manifest': payload.get('materialized_circuit_manifest'),
         'arithmetic_operation_ir': payload.get('arithmetic_operation_ir'),
