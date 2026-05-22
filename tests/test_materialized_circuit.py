@@ -101,6 +101,9 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert manifest['checks']['lookup_leaf_liveness_excludes_qroam_target_and_chunk'] is True
     assert manifest['checks']['generated_base_rows_match_public_non_qroam_derivation'] is True
     assert manifest['checks']['arithmetic_rows_exclude_replaced_streamed_qroam_stages'] is True
+    assert manifest['checks']['liveness_bindings_have_unique_live_wires'] is True
+    assert manifest['checks']['liveness_bindings_recompute_owner_sums_from_wire_catalog'] is True
+    assert manifest['checks']['liveness_bindings_recompute_owner_capacity_from_wire_catalog'] is True
     assert manifest['checks']['phase_liveness_uses_phase_load_interval_without_lookup_target'] is True
     assert manifest['materialized_liveness']['preview_head'][0]['total_live_qubits'] < manifest['public_totals']['logical_qubits']
     assert 'arithmetic_leaf_base' not in {row['scope'] for row in manifest['preview_head'] + manifest['preview_tail']}
@@ -161,6 +164,43 @@ def test_public_candidate_materialized_manifest_rejects_lookup_base_drift() -> N
     assert observed['checks']['non_clifford_total_matches_public_candidate'] is False
     assert observed['checks']['generated_base_rows_match_public_non_qroam_derivation'] is False
     assert observed['checks']['generated_base_rows_bind_family_snapshot'] is False
+    assert observed['pass'] is False
+
+
+def test_public_candidate_materialized_manifest_rejects_forged_liveness_owner_sum() -> None:
+    reusable = _artifact('reusable_chunk_lowering.json')
+    interval = next(row for row in reusable['executable_liveness']['intervals'] if row['interval_id'] == reusable['executable_liveness']['global_peak_interval_id'])
+    interval['owner_live_qubits']['lookup_workspace'] -= 1
+    candidate_input = _candidate_input()
+    observed = build_public_candidate_materialized_circuit_manifest(
+        reusable_chunk_lowering=reusable,
+        arithmetic_operation_ir=_artifact('arithmetic_operation_ir.json'),
+        lookup_lowerings=_artifact('lookup_lowerings.json'),
+        qroam_primitive_certificate=_artifact('qroam_primitive_certificate.json'),
+        phase_shell_lowerings=_artifact('phase_shell_lowerings.json'),
+        zkp_attestation_input=candidate_input,
+        selected_family_name=candidate_input['selected_family_name'],
+    )
+    assert observed['checks']['liveness_bindings_recompute_owner_sums_from_wire_catalog'] is False
+    assert observed['pass'] is False
+
+
+def test_public_candidate_materialized_manifest_rejects_duplicate_live_wire() -> None:
+    reusable = _artifact('reusable_chunk_lowering.json')
+    interval = next(row for row in reusable['executable_liveness']['intervals'] if row['interval_id'] == reusable['executable_liveness']['global_peak_interval_id'])
+    interval['live_wire_ids'].append(interval['live_wire_ids'][0])
+    candidate_input = _candidate_input()
+    observed = build_public_candidate_materialized_circuit_manifest(
+        reusable_chunk_lowering=reusable,
+        arithmetic_operation_ir=_artifact('arithmetic_operation_ir.json'),
+        lookup_lowerings=_artifact('lookup_lowerings.json'),
+        qroam_primitive_certificate=_artifact('qroam_primitive_certificate.json'),
+        phase_shell_lowerings=_artifact('phase_shell_lowerings.json'),
+        zkp_attestation_input=candidate_input,
+        selected_family_name=candidate_input['selected_family_name'],
+    )
+    assert observed['checks']['liveness_bindings_have_unique_live_wires'] is False
+    assert observed['checks']['liveness_bindings_recompute_owner_sums_from_wire_catalog'] is False
     assert observed['pass'] is False
 
 

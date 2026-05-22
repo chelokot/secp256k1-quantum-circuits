@@ -39,7 +39,9 @@ PUBLIC_CANDIDATE_LIVENESS_COLUMNS = [
     'interval_id',
     'live_wire_ids',
     'owner_live_qubits',
+    'derived_owner_live_qubits',
     'total_live_qubits',
+    'owner_capacity_pass',
 ]
 
 
@@ -610,6 +612,11 @@ def _liveness_binding_rows(
     peak_interval_id = str(reusable_chunk_lowering['executable_liveness']['global_peak_interval_id'])
     direct_seed_interval_id = 'pc4_lookup_infinity_flag'
     phase_interval_id = 'pc0_2_load_carried_inputs'
+    wire_catalog = reusable_chunk_lowering['executable_liveness']['wire_catalog']
+    owner_capacity_by_id = {
+        str(row['owner_id']): int(row['logical_qubits'])
+        for row in reusable_chunk_lowering['owner_capacity']['rows']
+    }
     rows: List[Dict[str, Any]] = []
     for operation in operation_rows:
         if operation['scope'] == 'qroam_chunk_stream':
@@ -621,16 +628,30 @@ def _liveness_binding_rows(
         else:
             interval_id = peak_interval_id
         interval = intervals[interval_id]
+        live_wire_ids = [str(wire_id) for wire_id in interval['live_wire_ids']]
+        derived_owner_live_qubits: Dict[str, int] = {}
+        for wire_id in live_wire_ids:
+            wire = wire_catalog[wire_id]
+            owner_id = str(wire['owner_id'])
+            derived_owner_live_qubits[owner_id] = derived_owner_live_qubits.get(owner_id, 0) + int(wire['qubits'])
         rows.append({
             'row_index': int(operation['row_index']),
             'scope': str(operation['scope']),
             'interval_id': interval_id,
-            'live_wire_ids': [str(wire_id) for wire_id in interval['live_wire_ids']],
+            'live_wire_ids': live_wire_ids,
             'owner_live_qubits': {
                 owner_id: int(qubits)
                 for owner_id, qubits in sorted(interval['owner_live_qubits'].items())
             },
+            'derived_owner_live_qubits': {
+                owner_id: int(qubits)
+                for owner_id, qubits in sorted(derived_owner_live_qubits.items())
+            },
             'total_live_qubits': int(interval['total_live_qubits']),
+            'owner_capacity_pass': all(
+                int(qubits) <= owner_capacity_by_id[owner_id]
+                for owner_id, qubits in derived_owner_live_qubits.items()
+            ),
         })
     return rows
 
@@ -756,6 +777,20 @@ def build_public_candidate_materialized_circuit_manifest(
         'liveness_bindings_use_known_wires_and_capacity': all(
             all(wire_id in wire_catalog for wire_id in liveness['live_wire_ids'])
             and all(int(qubits) <= owner_capacity_by_id[owner_id] for owner_id, qubits in liveness['owner_live_qubits'].items())
+            for liveness in liveness_rows
+        ),
+        'liveness_bindings_have_unique_live_wires': all(
+            len(liveness['live_wire_ids']) == len(set(liveness['live_wire_ids']))
+            for liveness in liveness_rows
+        ),
+        'liveness_bindings_recompute_owner_sums_from_wire_catalog': all(
+            liveness['derived_owner_live_qubits'] == liveness['owner_live_qubits']
+            and sum(int(qubits) for qubits in liveness['derived_owner_live_qubits'].values()) == int(liveness['total_live_qubits'])
+            for liveness in liveness_rows
+        ),
+        'liveness_bindings_recompute_owner_capacity_from_wire_catalog': all(
+            liveness['owner_capacity_pass'] is True
+            and all(int(qubits) <= owner_capacity_by_id[owner_id] for owner_id, qubits in liveness['derived_owner_live_qubits'].items())
             for liveness in liveness_rows
         ),
         'liveness_bindings_reconstruct_public_peak': max(int(row['total_live_qubits']) for row in liveness_rows) == int(public_totals['logical_qubits']),
