@@ -1577,11 +1577,19 @@ Current remediation:
   freshness step to `proof_status.py --require-all-current` while preserving the
   no-prover command guard. This gives a single publication-gate command after
   proof rebuilds and a nonblocking edit-loop command before proof rebuilds.
+- `compiler_verification_project/artifacts/proof_environment_contract.json` is
+  now a checked runbook contract, not prose. It binds required proof-tool
+  descriptors, no-prover edit-loop commands, publication freshness gates,
+  direct compressed/Groth16 verifier commands, public-headline checked artifact
+  digests, and the curated `proof_manifest.json` records. The integrity group
+  `proof_environment_contract_checks` regenerates this artifact, rejects
+  manifest drift, rejects publication gates that no longer require current
+  proofs, and rejects accidental `--prove` in the fast command contract.
 
 Still open:
 
-- This is a deterministic preflight and command split, not yet a pinned
-  container/Nix environment.
+- This is a deterministic preflight plus checked runbook contract, not yet a
+  pinned container/Nix environment.
 
 ### P1: Digest tree for large artifacts
 

@@ -175,8 +175,8 @@
       "bytes": 9368
     },
     "compiler_verification_project/README.md": {
-      "sha256": "df42d71bfcdaad5932792858ef1700f32292229804d4267d339f168f1982bfee",
-      "bytes": 26525
+      "sha256": "453863c906c1c2270b0d909f724508f76196d8d30404a20c023806b0701e13bf",
+      "bytes": 27413
     },
     "compiler_verification_project/src/artifact_registry.py": {
       "sha256": "bef56595a32556efff0eff0aa4fac3a0a50fdf243949df8b5c45d51dd1502abc",

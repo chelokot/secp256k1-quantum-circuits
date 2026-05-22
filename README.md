@@ -261,6 +261,7 @@ python scripts/verify_all.py
 python compiler_verification_project/scripts/build.py
 python compiler_verification_project/scripts/build.py --target composition-artifacts
 python compiler_verification_project/scripts/build.py --target materialized-circuit-manifest
+python compiler_verification_project/scripts/build.py --target proof-environment-contract
 python compiler_verification_project/scripts/build.py --target resource-zkp-and-public
 python compiler_verification_project/scripts/build.py --target zkp-and-public
 python compiler_verification_project/scripts/build.py --target release-candidate-zkp
@@ -291,8 +292,10 @@ or frontier accounting that feeds the composition layer; it refreshes
 `headline_opcode_coverage.json` without touching any prover. Use
 `build.py --target materialized-circuit-manifest` to refresh the segmented
 operation-stream digest/Merkle manifest without a full rebuild. Use
-`build.py --target zkp-and-public` when only attestation wrapping metadata
-changed.
+`build.py --target proof-environment-contract` after changing proof paths,
+runbook commands, proof manifest membership, or public-headline verification
+commands. Use `build.py --target zkp-and-public` when only attestation wrapping
+metadata changed.
 Checked artifact tests reuse existing build/verification summaries by default;
 set `SECP256K1_OPEN_AUDIT_FORCE_REBUILD=1` only when you intentionally want a
 test run to regenerate those summaries.
@@ -301,10 +304,11 @@ Use `build.py --target release-candidate-zkp` or
 Google-comparable input bundle without invoking SP1 proving.
 Use `compiler_verification_project/scripts/fast_zkp_preflight.py` as the normal
 ZKP/resource edit-loop gate. It runs `proof_status.py`, targeted integrity
-groups, focused pytest tests, and the attestation-library Rust unit tests, and
-it has an internal guard that rejects any command plan containing a prover. The
-fast gate also rebuild-checks the 9024-case release-corpus preflight as semantic
-evidence only; it is not a substitute for compressed/Groth16 proof freshness.
+groups including `proof_environment_contract_checks`, focused pytest tests, and
+the attestation-library Rust unit tests, and it has an internal guard that
+rejects any command plan containing a prover. The fast gate also rebuild-checks
+the 9024-case release-corpus preflight as semantic evidence only; it is not a
+substitute for compressed/Groth16 proof freshness.
 After compressed/Groth16 proof rebuilds, run the same preflight with
 `--require-current-proofs` to make stale checked proof fixtures a hard failure
 without starting another proof.
@@ -315,6 +319,10 @@ commands that reproduce the checked attestation bundle.
 for proof freshness: it compares the current candidate input, public values,
 fixtures, proof binaries, verifier key, and curated proof manifest without
 invoking any prover.
+`compiler_verification_project/artifacts/proof_environment_contract.json`
+binds the checked runbook layer: required tools, no-prover edit-loop commands,
+publication freshness gates, direct compressed/Groth16 verification commands,
+public-headline artifact digests, and curated proof-manifest records.
 Compressed and Groth16 proving are not part of the edit loop; the guarded
 runner requires `--allow-heavy-proof` for those release-gate operations so an
 ordinary verification pass cannot accidentally start a multi-hour proof.

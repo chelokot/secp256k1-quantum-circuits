@@ -468,7 +468,7 @@
   },
   "proof_manifest": {
     "path": "artifacts/package/proof_manifest.json",
-    "sha256": "c7dc52b5b4fd52f3cdf9c0ed601e30d501e83abfeaa871a060528d862aa89a20",
+    "sha256": "6b020bfad3bc84fd76cfc54021d205bd7aa70c537e66d8bfb9248236b81d5864",
     "bytes": 37159,
     "schema": null,
     "file_count": 194
