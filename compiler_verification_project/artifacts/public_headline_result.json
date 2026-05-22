@@ -89,8 +89,8 @@
     },
     "core_fixture": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_fixture_core.json",
-      "sha256": "0475d47cc358b5f195cf9853223297c53516050e91928a4dd89d787be8bb8f92",
-      "bytes": 1263,
+      "sha256": "eb6b7fac6e953fb5f384f6d3d4274f11f599879d8e380678d0290d62448e432b",
+      "bytes": 1338,
       "proof_system": "core",
       "verification_key": "0x00a045504797672214fb629c1fce35cf1b76690546c4b61b13de48098fc749a8",
       "input_path": null,
@@ -105,8 +105,8 @@
     },
     "compressed_fixture": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_fixture_compressed.json",
-      "sha256": "ddfd6559e299e8a31e95129b55eea84941516100338905ef7b9e2467b01cdccb",
-      "bytes": 1449,
+      "sha256": "1e29b89fcac4f00911a5d1572ce2460e1837947d734ceb6808f94743a0a7b3bf",
+      "bytes": 1524,
       "proof_system": "compressed",
       "verification_key": "0x00a045504797672214fb629c1fce35cf1b76690546c4b61b13de48098fc749a8",
       "input_path": null,
@@ -121,8 +121,8 @@
     },
     "groth16_fixture": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_fixture_groth16.json",
-      "sha256": "0217506aef80db3792d3b6f7c3f50434eceabe3e04ca96e38790a204c1561a01",
-      "bytes": 2339,
+      "sha256": "0b9ded6ac65245256a5ba2a82b4ea1cdaf586038febb849a63b0e570c43b6875",
+      "bytes": 2414,
       "proof_system": "groth16",
       "verification_key": "0x000468e7e74d2eccde25e6af5576efe93dfa7056aabd1e535598774df7a2c832",
       "input_path": null,

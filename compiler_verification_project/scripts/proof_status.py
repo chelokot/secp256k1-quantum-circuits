@@ -91,12 +91,26 @@ def fixture_status(system: str, input_payload: dict[str, Any], public_values: di
     input_path = CANDIDATE_ROOT / 'zkp_attestation_input.json'
     input_sha256 = sha256_path(input_path)
     input_size = input_path.stat().st_size
+    input_metadata_keys = ('input_path', 'input_sha256', 'input_size_bytes')
+    missing_input_metadata_keys = [key for key in input_metadata_keys if key not in fixture]
     fixture_input_path = fixture.get('input_path')
     fixture_input_file_exists = None
     fixture_input_observed_sha256 = None
     fixture_input_observed_size = None
-    if fixture_input_path is None:
-        input_binding_status = 'missing_fixture_input_metadata'
+    if missing_input_metadata_keys:
+        input_binding_status = 'fixture_input_metadata_fields_missing'
+    elif (
+        fixture_input_path is None
+        and fixture.get('input_sha256') is None
+        and fixture.get('input_size_bytes') is None
+    ):
+        input_binding_status = 'fixture_declares_no_input_metadata'
+    elif (
+        fixture_input_path is None
+        or fixture.get('input_sha256') is None
+        or fixture.get('input_size_bytes') is None
+    ):
+        input_binding_status = 'fixture_input_metadata_incomplete'
     else:
         fixture_input_file = PROJECT_ROOT / fixture_input_path
         fixture_input_file_exists = fixture_input_file.exists()
@@ -158,6 +172,7 @@ def fixture_status(system: str, input_payload: dict[str, Any], public_values: di
         'input_file_exists': fixture_input_file_exists,
         'input_sha256': fixture.get('input_sha256'),
         'input_size_bytes': fixture.get('input_size_bytes'),
+        'missing_input_metadata_keys': missing_input_metadata_keys,
         'observed_input_sha256': input_sha256,
         'fixture_input_observed_sha256': fixture_input_observed_sha256,
         'fixture_input_observed_size_bytes': fixture_input_observed_size,

@@ -18,6 +18,9 @@
     "schema": "compiler-project-zkp-attestation-public-v2",
     "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1"
   },
+  "input_path": null,
+  "input_sha256": null,
+  "input_size_bytes": null,
   "schema": "compiler-project-zkp-attestation-fixture-v1",
   "verification_key": "0x00a045504797672214fb629c1fce35cf1b76690546c4b61b13de48098fc749a8",
   "verifier_key_path": null,

@@ -231,8 +231,8 @@ def test_mutated_reusable_chunk_lowering_full_lane_is_detected() -> None:
 def test_mutated_reusable_chunk_lowering_high_chunk_width_is_detected() -> None:
     artifacts = _artifacts_for_mutation('reusable_chunk_lowering')
     primitive = artifacts['reusable_chunk_lowering']['chunked_multiplier_primitive_contract']
-    primitive['chunk_effective_bits'][1] = 155
-    primitive['table_multiplier_rows'][0]['chunk_rows'][1]['effective_constant_bits'] = 155
+    primitive['chunk_effective_bits'][1] = primitive['chunk_effective_bits'][0]
+    primitive['table_multiplier_rows'][0]['chunk_rows'][1]['effective_constant_bits'] = primitive['chunk_effective_bits'][0]
     groups = _evaluate_mutation(artifacts, 'reusable_chunk_lowering_checks')
     assert groups['reusable_chunk_lowering_checks']['pass'] < groups['reusable_chunk_lowering_checks']['total']
 

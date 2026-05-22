@@ -267,8 +267,9 @@ The reusable-chunk SP1 resource contract also embeds the modular-arithmetic,
 QROAM primitive, and independent QROAM reference certificates, so changing any
 of them invalidates the proof input until the proof layers are rebuilt.
 Proof fixtures are also expected to bind the exact prepared input by
-`input_sha256` and `input_size_bytes`; `proof_status.py` treats fixtures without
-that input digest as stale even if their proof binary digests still match.
+`input_path`, `input_sha256`, and `input_size_bytes`; `proof_status.py` treats
+fixtures that explicitly declare no input metadata, or that omit those fields,
+as stale even if their proof binary digests still match.
 
 `materialize_exact_circuits.py` writes ignored whole-oracle operation streams
 for the selected exact compiler families under

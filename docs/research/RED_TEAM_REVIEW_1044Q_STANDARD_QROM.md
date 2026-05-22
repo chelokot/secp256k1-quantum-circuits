@@ -581,8 +581,9 @@ checked binary proof bundles and checked Groth16 verifier key.
 `compiler_verification_project/scripts/proof_status.py` also reports
 `input_binding_status` and `stale_reasons` per proof system, so stale checked
 fixtures cannot look fresh merely because the sidecar proof/key digests match.
-The current stale fixtures correctly report `missing_fixture_input_metadata`
-until a real proof rebuild emits proof-time input hashes.
+The current stale fixtures explicitly declare null input metadata and correctly
+report `fixture_declares_no_input_metadata` until a real proof rebuild emits
+proof-time input hashes.
 
 This is not a mathematical bug. The binary proof verified locally. But it is a
 release-packaging weakness:
@@ -1500,6 +1501,16 @@ Exit criterion:
 - For selected parameters, internal QROAM cost/workspace matches an independent
   reference primitive, the 155-bit chunk stream is not conflated with the
   256-bit full-field ledger sweep, and mismatch fails CI.
+
+Current remediation:
+
+- The QROAM reference tests now import the selected domain size, K=1 block size,
+  field width, reusable chunk width, and ledger selected row from
+  `compiler_parameters.json`, `qroam_primitive_certificate.json`, and
+  `logical_resource_ledger.json` instead of restating those values as separate
+  test constants. This does not replace an external implementation, but it
+  removes another self-confirming hardcoded-parameter path from the selected
+  QROAM checks.
 
 ### P1: Baseline source package
 

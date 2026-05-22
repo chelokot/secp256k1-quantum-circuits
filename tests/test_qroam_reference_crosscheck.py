@@ -27,6 +27,18 @@ def _load_artifact(name: str) -> dict:
     return json.loads((ARTIFACTS / name).read_text())
 
 
+def _compiler_parameters() -> dict:
+    return _load_artifact('compiler_parameters.json')
+
+
+def _qroam_primitive_parameters() -> dict:
+    return _load_artifact('qroam_primitive_certificate.json')['parameters']
+
+
+def _ledger_selected_reference() -> dict:
+    return _load_artifact('logical_resource_ledger.json')['qroam_clean_tradeoff_sweep']['selected_row']
+
+
 def _minimal_artifacts(crosscheck: dict) -> dict:
     return {
         'qroam_reference_crosscheck': crosscheck,
@@ -36,17 +48,31 @@ def _minimal_artifacts(crosscheck: dict) -> dict:
 
 
 def test_reference_cost_exposes_qroamclean_gate_and_workspace_tradeoff() -> None:
-    k16 = reference_qroamclean_cost(domain_size=32768, target_bits=256, block_size=16)
-    assert k16['lookup_compute_non_clifford'] == 5888
-    assert k16['measured_uncompute_non_clifford'] == 2063
-    assert k16['per_stream_non_clifford'] == 7951
-    assert k16['junk_register_qubits'] == 3840
-    assert k16['target_plus_junk_qubits'] == 4096
+    parameters = _compiler_parameters()
+    domain_size = parameters['windowing']['folded_magnitude_domain']
+    field_bits = parameters['field']['field_bits']
+    comparison_block_size = parameters['lookup_policy']['standard_qroamclean_block_size'] * 16
+    k16 = reference_qroamclean_cost(
+        domain_size=domain_size,
+        target_bits=field_bits,
+        block_size=comparison_block_size,
+    )
+    address_blocks = (domain_size + comparison_block_size - 1) // comparison_block_size
+    assert k16['lookup_compute_non_clifford'] == address_blocks + (comparison_block_size - 1) * field_bits
+    assert k16['measured_uncompute_non_clifford'] == address_blocks + comparison_block_size - 1
+    assert k16['per_stream_non_clifford'] == k16['lookup_compute_non_clifford'] + k16['measured_uncompute_non_clifford']
+    assert k16['junk_register_qubits'] == (comparison_block_size - 1) * field_bits
+    assert k16['target_plus_junk_qubits'] == comparison_block_size * field_bits
 
-    k1_chunk = reference_qroamclean_cost(domain_size=32768, target_bits=155, block_size=1)
-    assert k1_chunk['per_stream_non_clifford'] == 65536
+    primitive_parameters = _qroam_primitive_parameters()
+    k1_chunk = reference_qroamclean_cost(
+        domain_size=primitive_parameters['domain_size'],
+        target_bits=primitive_parameters['target_bits'],
+        block_size=primitive_parameters['block_size'],
+    )
+    assert k1_chunk['per_stream_non_clifford'] == 2 * primitive_parameters['domain_size']
     assert k1_chunk['junk_register_qubits'] == 0
-    assert k1_chunk['target_plus_junk_qubits'] == 155
+    assert k1_chunk['target_plus_junk_qubits'] == primitive_parameters['target_bits']
 
 
 def test_qroam_reference_crosscheck_artifact_matches_generator() -> None:
@@ -63,14 +89,17 @@ def test_qroam_reference_crosscheck_artifact_matches_generator() -> None:
 
 def test_qroam_reference_crosscheck_keeps_chunk_and_full_field_widths_separate() -> None:
     artifact = _load_artifact('qroam_reference_crosscheck.json')
+    parameters = _compiler_parameters()
+    primitive_parameters = _qroam_primitive_parameters()
+    ledger_row = _ledger_selected_reference()
     selected = artifact['selected_reference']
     ledger_selected = artifact['ledger_selected_reference']
-    assert selected['domain_size'] == ledger_selected['domain_size'] == 32768
-    assert selected['block_size'] == ledger_selected['block_size'] == 1
-    assert selected['target_bits'] == 155
-    assert ledger_selected['target_bits'] == 256
-    assert selected['target_plus_junk_qubits'] == 155
-    assert ledger_selected['target_plus_junk_qubits'] == 256
+    assert selected['domain_size'] == ledger_selected['domain_size'] == parameters['windowing']['folded_magnitude_domain']
+    assert selected['block_size'] == ledger_selected['block_size'] == parameters['lookup_policy']['standard_qroamclean_block_size']
+    assert selected['target_bits'] == primitive_parameters['target_bits']
+    assert ledger_selected['target_bits'] == parameters['field']['field_bits'] == ledger_row['target_register_qubits']
+    assert selected['target_plus_junk_qubits'] == primitive_parameters['target_bits']
+    assert ledger_selected['target_plus_junk_qubits'] == ledger_row['target_plus_junk_qubits']
     assert selected['per_stream_non_clifford'] == ledger_selected['per_stream_non_clifford']
 
 

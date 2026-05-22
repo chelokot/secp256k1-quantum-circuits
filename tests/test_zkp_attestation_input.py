@@ -213,6 +213,15 @@ def _assert_attestation_fixtures_match_public_values(
             assert fixture['proof_path'] == proof_path
             assert fixture['proof_sha256'] == hashlib.sha256(proof_bytes).hexdigest()
             assert fixture['proof_size_bytes'] == len(proof_bytes)
+        assert {'input_path', 'input_sha256', 'input_size_bytes'}.issubset(fixture)
+        if fixture['input_path'] is None:
+            assert fixture['input_sha256'] is None
+            assert fixture['input_size_bytes'] is None
+        else:
+            input_file = REPO_ROOT / fixture['input_path']
+            input_bytes = input_file.read_bytes()
+            assert fixture['input_sha256'] == hashlib.sha256(input_bytes).hexdigest()
+            assert fixture['input_size_bytes'] == len(input_bytes)
         if verifier_key_path is None:
             assert fixture['verifier_key_path'] is None
             assert fixture['verifier_key_sha256'] is None

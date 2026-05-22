@@ -26,6 +26,7 @@ class DerivedResourcePipelineTests(unittest.TestCase):
         cls.expanded = json.loads((REPO_ROOT / 'artifacts' / 'circuits' / 'ecdlp_expanded_isa_optimized.json').read_text())
         cls.leaf = json.loads((REPO_ROOT / 'artifacts' / 'circuits' / 'optimized_pointadd_secp256k1.json').read_text())
         cls.lookup = json.loads((REPO_ROOT / 'artifacts' / 'lookup' / 'lookup_signed_fold_contract.json').read_text())
+        cls.compiler_parameters = json.loads((REPO_ROOT / 'compiler_verification_project' / 'artifacts' / 'compiler_parameters.json').read_text())
 
     def test_expanded_schedule_matches_leaf_and_scaffold(self):
         leaf_count = len(self.leaf['instructions'])
@@ -55,7 +56,7 @@ class DerivedResourcePipelineTests(unittest.TestCase):
 
     def test_default_lookup_cost_comes_from_folded_contract(self):
         positive_entries = self.lookup['table_shape']['x_coordinate_table_entries']
-        self.assertEqual(positive_entries, 32768)
+        self.assertEqual(positive_entries, self.compiler_parameters['windowing']['folded_magnitude_domain'])
         default_model_name = self.backend['default_model']
         default_model = next(model for model in self.backend['models'] if model['name'] == default_model_name)
         self.assertEqual(default_model['lookup_model']['non_clifford_per_channel_per_window'], positive_entries)

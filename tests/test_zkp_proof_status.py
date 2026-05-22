@@ -34,16 +34,22 @@ def test_proof_status_reports_fixture_freshness_without_running_provers() -> Non
         assert status['observed_input_sha256'] == report['candidate_input_sha256']
         assert status['input_binding_status'] in {
             'matches_current_input',
-            'missing_fixture_input_metadata',
+            'fixture_declares_no_input_metadata',
+            'fixture_input_metadata_fields_missing',
             'fixture_input_file_missing',
             'fixture_input_file_digest_mismatch',
+            'fixture_input_metadata_incomplete',
             'points_to_stale_input_artifact',
         }
         assert isinstance(status['stale_reasons'], list)
-        if status['input_binding_status'] == 'missing_fixture_input_metadata':
+        assert isinstance(status['missing_input_metadata_keys'], list)
+        if status['input_binding_status'] == 'fixture_declares_no_input_metadata':
+            assert status['missing_input_metadata_keys'] == []
             assert status['input_path'] is None
             assert status['input_file_exists'] is None
             assert status['fixture_input_observed_sha256'] is None
+        if status['input_binding_status'] == 'fixture_input_metadata_fields_missing':
+            assert status['missing_input_metadata_keys']
         if status['input_binding_status'] != 'matches_current_input':
             assert status['input_binding_status'] in status['stale_reasons']
         assert isinstance(status['public_values_match_current'], bool)
