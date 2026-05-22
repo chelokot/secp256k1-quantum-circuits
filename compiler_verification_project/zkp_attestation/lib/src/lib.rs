@@ -43,9 +43,21 @@ pub struct ClaimDocument {
     pub expected_full_oracle_non_clifford: u64,
     pub expected_total_logical_qubits: u64,
     pub expected_case_count: u32,
+    pub resource_engine_summary: ResourceEngineSummary,
     pub non_clifford_formula: NonCliffordFormula,
     pub logical_qubit_formula: LogicalQubitFormula,
     pub notes: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct ResourceEngineSummary {
+    pub source: String,
+    pub source_document_type: String,
+    pub source_sha256: String,
+    pub non_clifford: u64,
+    pub logical_qubits: u64,
+    pub matches_family_snapshot: bool,
+    pub matches_resource_certificate_snapshot: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -836,6 +848,7 @@ pub struct PreparedClaimSummary {
     pub expected_full_oracle_non_clifford: u64,
     pub expected_total_logical_qubits: u64,
     pub expected_case_count: u32,
+    pub resource_engine_summary: ResourceEngineSummary,
     pub non_clifford_formula: NonCliffordFormula,
     pub logical_qubit_formula: LogicalQubitFormula,
 }
@@ -1802,12 +1815,16 @@ pub struct PreparedAttestationInput {
     pub case_corpus_sha256: String,
     pub resource_certificate_sha256: String,
     pub compiler_parameters_sha256: String,
+    #[serde(default)]
+    pub public_engine_manifest_sha256: Option<String>,
     pub claim_document: CommittedDocument<SemanticJsonPayload>,
     pub leaf_document: CommittedDocument<SemanticJsonPayload>,
     pub family_document: CommittedDocument<SemanticJsonPayload>,
     pub case_corpus_document: CommittedDocument<SemanticJsonPayload>,
     pub resource_certificate_document: CommittedDocument<SemanticJsonPayload>,
     pub compiler_parameters_document: CommittedDocument<SemanticJsonPayload>,
+    #[serde(default)]
+    pub public_engine_manifest_document: Option<CommittedDocument<SemanticJsonPayload>>,
     pub claim_summary: PreparedClaimSummary,
     pub family_summary: PreparedFamilySummary,
     pub prepared_leaf: CompiledLeaf,
@@ -3531,6 +3548,7 @@ fn claim_summary_from_claim(claim: &ClaimDocument) -> PreparedClaimSummary {
         expected_full_oracle_non_clifford: claim.expected_full_oracle_non_clifford,
         expected_total_logical_qubits: claim.expected_total_logical_qubits,
         expected_case_count: claim.expected_case_count,
+        resource_engine_summary: claim.resource_engine_summary.clone(),
         non_clifford_formula: claim.non_clifford_formula.clone(),
         logical_qubit_formula: claim.logical_qubit_formula.clone(),
     }
@@ -5754,6 +5772,114 @@ fn validate_reusable_chunk_lowering(
     );
 }
 
+fn validate_public_engine_manifest(
+    manifest: &Value,
+    manifest_sha256: &str,
+    claim: &PreparedClaimSummary,
+    family: &PreparedFamilySummary,
+    resource_certificate: &Value,
+    compiler_parameters: &Value,
+) {
+    assert_eq!(
+        json_string_field(manifest, "schema"),
+        "compiler-project-public-engine-manifest-v1"
+    );
+    assert!(json_bool_field(manifest, "pass"));
+    assert_eq!(json_string_field(manifest, "selected_family_name"), family.name.as_str());
+
+    let public_totals = json_object_field(manifest, "public_totals");
+    assert_eq!(
+        json_string_field(public_totals, "source"),
+        "public_candidate_materialized_circuit_manifest.flat_netlist + materialized_liveness"
+    );
+    assert_eq!(
+        json_u64_field(public_totals, "non_clifford"),
+        claim.expected_full_oracle_non_clifford
+    );
+    assert_eq!(
+        json_u64_field(public_totals, "logical_qubits"),
+        claim.expected_total_logical_qubits
+    );
+
+    let summary = &claim.resource_engine_summary;
+    assert_eq!(summary.source, "public_engine_manifest.public_totals");
+    assert_eq!(summary.source_document_type, "public_engine_manifest");
+    assert_eq!(summary.source_sha256, manifest_sha256);
+    assert_eq!(summary.non_clifford, claim.expected_full_oracle_non_clifford);
+    assert_eq!(summary.logical_qubits, claim.expected_total_logical_qubits);
+    assert!(summary.matches_family_snapshot);
+    assert!(summary.matches_resource_certificate_snapshot);
+
+    let resource_totals = json_object_field(
+        json_object_field(resource_certificate, "executable_resource_engine"),
+        "public_totals",
+    );
+    assert_eq!(
+        json_u64_field(resource_totals, "non_clifford"),
+        claim.expected_full_oracle_non_clifford
+    );
+    assert_eq!(
+        json_u64_field(resource_totals, "logical_qubits"),
+        claim.expected_total_logical_qubits
+    );
+
+    let compiler_policy = json_object_field(compiler_parameters, "public_headline_policy");
+    assert_eq!(
+        json_string_field(compiler_policy, "selected_public_family_name"),
+        family.name.as_str()
+    );
+
+    let checks = json_object_field(manifest, "checks")
+        .as_object()
+        .expect("public engine manifest checks must be an object");
+    assert!(
+        checks.values().all(|value| value.as_bool() == Some(true)),
+        "public engine manifest contains a failing check"
+    );
+    let fast_contract = json_object_field(manifest, "fast_no_zkp_contract");
+    assert!(!json_bool_field(fast_contract, "prover_required"));
+    assert_eq!(
+        json_string_field(fast_contract, "verify_group"),
+        "public_engine_manifest_checks"
+    );
+
+    let primitive_evidence = json_object_field(manifest, "primitive_operation_evidence");
+    assert!(json_bool_field(
+        json_object_field(primitive_evidence, "public_candidate_materialized_circuit_manifest"),
+        "pass"
+    ));
+    assert!(json_bool_field(
+        json_object_field(primitive_evidence, "arithmetic_operation_ir"),
+        "pass"
+    ));
+    assert!(json_bool_field(
+        json_object_field(primitive_evidence, "qroam_primitive_certificate"),
+        "pass"
+    ));
+    let flat_probe = json_object_field(
+        json_object_field(primitive_evidence, "public_candidate_materialized_circuit_manifest"),
+        "flat_execution_probe",
+    );
+    let flat_probe_checks = json_object_field(flat_probe, "checks")
+        .as_object()
+        .expect("flat execution probe checks must be an object");
+    assert!(
+        flat_probe_checks
+            .values()
+            .all(|value| value.as_bool() == Some(true)),
+        "flat execution probe contains a failing check"
+    );
+
+    let semantic_evidence = json_object_field(manifest, "semantic_boundary_evidence");
+    let release_corpus = json_object_field(semantic_evidence, "release_corpus_preflight");
+    assert!(json_u64_field(release_corpus, "case_count") > 0);
+    let compiler_evidence = json_object_field(semantic_evidence, "compiler_parameters");
+    assert_eq!(
+        json_string_field(compiler_evidence, "selected_public_family_name"),
+        family.name.as_str()
+    );
+}
+
 pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValues {
     assert_eq!(input.schema, "compiler-project-zkp-attestation-input-v5");
     assert_eq!(input.document_digest_scheme, DIGEST_SCHEME);
@@ -5796,6 +5922,21 @@ pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValue
         "compiler_parameters",
         &input.compiler_parameters_sha256,
     );
+    if input.selected_family_name.contains("reusable_chunk") {
+        let public_engine_manifest = input
+            .public_engine_manifest_document
+            .as_ref()
+            .expect("reusable-chunk input must carry the public engine manifest");
+        let public_engine_manifest_sha256 = input
+            .public_engine_manifest_sha256
+            .as_ref()
+            .expect("reusable-chunk input must carry the public engine manifest digest");
+        validate_committed_value_document(
+            public_engine_manifest,
+            "public_engine_manifest",
+            public_engine_manifest_sha256,
+        );
+    }
     let compiler_parameters = &input.compiler_parameters_document.payload.0;
     assert_eq!(
         json_string_field(compiler_parameters, "schema"),
@@ -5849,6 +5990,22 @@ pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValue
             &input.resource_certificate_document.payload.0,
             claim,
             family,
+        );
+        validate_public_engine_manifest(
+            &input
+                .public_engine_manifest_document
+                .as_ref()
+                .expect("reusable-chunk input must carry the public engine manifest")
+                .payload
+                .0,
+            input
+                .public_engine_manifest_sha256
+                .as_ref()
+                .expect("reusable-chunk input must carry the public engine manifest digest"),
+            claim,
+            family,
+            &input.resource_certificate_document.payload.0,
+            compiler_parameters,
         );
     } else {
         validate_resource_certificate(
@@ -6058,6 +6215,16 @@ mod tests {
         input.resource_certificate_sha256 = digest;
     }
 
+    fn refresh_public_engine_manifest_digest(input: &mut PreparedAttestationInput) {
+        let document = input
+            .public_engine_manifest_document
+            .as_mut()
+            .expect("reusable-chunk fixture must carry public engine manifest");
+        let digest = semantic_payload_sha256(&document.document_type, &document.payload);
+        document.sha256 = digest.clone();
+        input.public_engine_manifest_sha256 = Some(digest);
+    }
+
     #[test]
     fn native_run_prepared_attestation_matches_checked_in_input_shape() {
         let input = checked_input();
@@ -6165,6 +6332,14 @@ mod tests {
     fn prepared_attestation_rejects_stale_compiler_parameters_digest() {
         let mut input = checked_input();
         input.compiler_parameters_sha256 = "00".repeat(32);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_stale_public_engine_manifest_digest() {
+        let mut input = checked_reusable_chunk_input();
+        input.public_engine_manifest_sha256 = Some("00".repeat(32));
         run_prepared_attestation(&input);
     }
 
@@ -6325,6 +6500,36 @@ mod tests {
         input.resource_certificate_document.payload.0["executable_resource_engine"]
             ["public_totals"]["logical_qubits"] = serde_json::json!(1200);
         refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_public_engine_manifest_total_forgery() {
+        let mut input = checked_reusable_chunk_input();
+        input
+            .public_engine_manifest_document
+            .as_mut()
+            .expect("reusable-chunk fixture must carry public engine manifest")
+            .payload
+            .0["public_totals"]["logical_qubits"] = serde_json::json!(1200);
+        refresh_public_engine_manifest_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_public_engine_manifest_flat_probe_forgery() {
+        let mut input = checked_reusable_chunk_input();
+        input
+            .public_engine_manifest_document
+            .as_mut()
+            .expect("reusable-chunk fixture must carry public engine manifest")
+            .payload
+            .0["primitive_operation_evidence"]["public_candidate_materialized_circuit_manifest"]
+            ["flat_execution_probe"]["checks"]["probe_operations_bind_segment_contributions"] =
+            serde_json::json!(false);
+        refresh_public_engine_manifest_digest(&mut input);
         run_prepared_attestation(&input);
     }
 

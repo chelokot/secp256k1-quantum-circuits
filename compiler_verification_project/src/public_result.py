@@ -105,6 +105,7 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
         'family_sha256': input_payload['family_sha256'],
         'case_corpus_sha256': input_payload['case_corpus_sha256'],
         'resource_certificate_sha256': input_payload['resource_certificate_sha256'],
+        'public_engine_manifest_sha256': input_payload['public_engine_manifest_sha256'],
         'expected_full_oracle_non_clifford': int(engine_public_totals['non_clifford']),
         'expected_total_logical_qubits': int(engine_public_totals['logical_qubits']),
         'case_count': int(input_payload['prepared_case_corpus']['case_count']),
@@ -133,7 +134,11 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
         'input_claim_summary_is_engine_snapshot_not_primary_formula': (
             input_payload['claim_summary']['resource_engine_summary']['non_clifford'] == non_clifford
             and input_payload['claim_summary']['resource_engine_summary']['logical_qubits'] == qubits
+            and input_payload['claim_summary']['resource_engine_summary']['source'] == 'public_engine_manifest.public_totals'
+            and input_payload['claim_summary']['resource_engine_summary']['source_document_type'] == 'public_engine_manifest'
+            and input_payload['claim_summary']['resource_engine_summary']['source_sha256'] == input_payload['public_engine_manifest_sha256']
             and input_payload['claim_summary']['resource_engine_summary']['matches_family_snapshot'] is True
+            and input_payload['claim_summary']['resource_engine_summary']['matches_resource_certificate_snapshot'] is True
             and int(input_payload['claim_summary']['non_clifford_formula']['reconstructed_total']) == non_clifford
             and int(input_payload['claim_summary']['logical_qubit_formula']['reconstructed_total']) == qubits
         ),
@@ -201,6 +206,9 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
         'public_engine_manifest_binds_current_public_result': (
             public_engine_manifest['pass'] is True
             and public_engine_manifest['selected_family_name'] == current_values['selected_family_name']
+            and input_payload['public_engine_manifest_document']['payload'] == public_engine_manifest
+            and input_payload['public_engine_manifest_document']['sha256'] == current_values['public_engine_manifest_sha256']
+            and input_payload['public_engine_manifest_document']['document_type'] == 'public_engine_manifest'
             and public_engine_manifest['public_totals']['non_clifford'] == non_clifford
             and public_engine_manifest['public_totals']['logical_qubits'] == qubits
             and public_engine_manifest['source_digests']['counted_resource_ir_sha256'] == resource_contract_engine['counted_resource_ir_sha256']
@@ -302,6 +310,7 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             'family_sha256': current_values['family_sha256'],
             'case_corpus_sha256': current_values['case_corpus_sha256'],
             'resource_certificate_sha256': current_values['resource_certificate_sha256'],
+            'public_engine_manifest_sha256': current_values['public_engine_manifest_sha256'],
         },
         'checked_artifacts': {
             'input': _file_record('compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json'),

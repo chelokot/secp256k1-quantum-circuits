@@ -844,6 +844,17 @@ def _build_zkp_attestation_materials(
         artifact_path=compiler_parameters_path,
         payload=compiler_parameters,
     )
+    public_engine_manifest_blob: Dict[str, Any] | None = None
+    if str(family_payload['slot_allocation_family']) == 'reusable_chunk_tail_leaf_v1':
+        public_engine_manifest_path = 'compiler_verification_project/artifacts/public_engine_manifest.json'
+        public_engine_manifest = json.loads((PROJECT_ROOT / public_engine_manifest_path).read_text())
+        public_engine_manifest_blob = _committed_payload(
+            document_type='public_engine_manifest',
+            artifact_path=public_engine_manifest_path,
+            payload=public_engine_manifest,
+        )
+    else:
+        public_engine_manifest = None
     family_blob = _committed_payload(
         document_type='compiler_family_summary',
         artifact_path='compiler_verification_project/artifacts/zkp_attestation_family.json',
@@ -862,15 +873,26 @@ def _build_zkp_attestation_materials(
         + int(family['lookup_workspace_qubits'])
         + int(family['live_phase_bits'])
     )
-    resource_engine_totals = resource_certificate.get('executable_resource_engine', {}).get('public_totals')
-    if resource_engine_totals is None:
+    if public_engine_manifest is not None:
+        resource_engine_totals = public_engine_manifest['public_totals']
+        resource_engine_non_clifford = int(resource_engine_totals['non_clifford'])
+        resource_engine_logical_qubits = int(resource_engine_totals['logical_qubits'])
+        resource_engine_source = 'public_engine_manifest.public_totals'
+        resource_engine_source_document_type = 'public_engine_manifest'
+        assert public_engine_manifest_blob is not None
+        resource_engine_source_sha256 = public_engine_manifest_blob['sha256']
+    else:
         resource_engine_non_clifford = int(family_payload['full_oracle_non_clifford'])
         resource_engine_logical_qubits = int(family_payload['total_logical_qubits'])
         resource_engine_source = 'compiler_family_summary'
-    else:
-        resource_engine_non_clifford = int(resource_engine_totals['non_clifford'])
-        resource_engine_logical_qubits = int(resource_engine_totals['logical_qubits'])
-        resource_engine_source = f'{resource_document_type}.executable_resource_engine.public_totals'
+        resource_engine_source_document_type = 'compiler_family_summary'
+        resource_engine_source_sha256 = family_blob['sha256']
+    resource_certificate_totals = resource_certificate.get('executable_resource_engine', {}).get('public_totals')
+    matches_resource_certificate_snapshot = (
+        resource_certificate_totals is not None
+        and resource_engine_non_clifford == int(resource_certificate_totals['non_clifford'])
+        and resource_engine_logical_qubits == int(resource_certificate_totals['logical_qubits'])
+    )
     public_claim = {
         'schema': 'compiler-project-zkp-attestation-claim-v1',
         'selected_family_alias': family_name,
@@ -882,14 +904,15 @@ def _build_zkp_attestation_materials(
         'expected_case_count': int(case_corpus['case_count']),
         'resource_engine_summary': {
             'source': resource_engine_source,
-            'source_document_type': resource_document_type,
-            'source_sha256': resource_certificate_blob['sha256'],
+            'source_document_type': resource_engine_source_document_type,
+            'source_sha256': resource_engine_source_sha256,
             'non_clifford': resource_engine_non_clifford,
             'logical_qubits': resource_engine_logical_qubits,
             'matches_family_snapshot': (
                 resource_engine_non_clifford == int(family_payload['full_oracle_non_clifford'])
                 and resource_engine_logical_qubits == int(family_payload['total_logical_qubits'])
             ),
+            'matches_resource_certificate_snapshot': matches_resource_certificate_snapshot,
         },
         'non_clifford_formula': {
             'arithmetic_leaf_non_clifford': int(family_payload['arithmetic_leaf_non_clifford']),
@@ -929,54 +952,58 @@ def _build_zkp_attestation_materials(
         resource_certificate=resource_certificate,
     )
     prepared_case_corpus = _prepared_case_corpus(case_corpus)
-    return {
-        'input': {
-            'schema': 'compiler-project-zkp-attestation-input-v5',
-            'document_digest_scheme': DIGEST_SCHEME,
-            'selected_family_name': family_payload['name'],
-            'claim_sha256': claim_blob['sha256'],
-            'leaf_sha256': leaf_blob['sha256'],
-            'family_sha256': family_blob['sha256'],
-            'case_corpus_sha256': case_blob['sha256'],
-            'resource_certificate_sha256': resource_certificate_blob['sha256'],
-            'compiler_parameters_sha256': compiler_parameters_blob['sha256'],
-            'claim_document': claim_blob,
-            'leaf_document': leaf_blob,
-            'family_document': family_blob,
-            'case_corpus_document': case_blob,
-            'resource_certificate_document': resource_certificate_blob,
-            'compiler_parameters_document': compiler_parameters_blob,
-            'claim_summary': {
-                'field_bits': int(public_claim['field_bits']),
-                'leaf_call_count_total': int(public_claim['leaf_call_count_total']),
-                'expected_full_oracle_non_clifford': int(public_claim['expected_full_oracle_non_clifford']),
-                'expected_total_logical_qubits': int(public_claim['expected_total_logical_qubits']),
-                'expected_case_count': int(public_claim['expected_case_count']),
-                'resource_engine_summary': dict(public_claim['resource_engine_summary']),
-                'non_clifford_formula': dict(public_claim['non_clifford_formula']),
-                'logical_qubit_formula': dict(public_claim['logical_qubit_formula']),
-            },
-            'family_summary': {
-                'name': family_payload['name'],
-                'arithmetic_leaf_non_clifford': int(family_payload['arithmetic_leaf_non_clifford']),
-                'direct_seed_non_clifford': int(family_payload['direct_seed_non_clifford']),
-                'per_leaf_lookup_non_clifford': int(family_payload['per_leaf_lookup_non_clifford']),
-                'full_oracle_non_clifford': int(family_payload['full_oracle_non_clifford']),
-                'arithmetic_slot_count': int(family_payload['arithmetic_slot_count']),
-                'control_slot_count': int(family_payload['control_slot_count']),
-                'borrowed_interface_qubits': borrowed_interface_qubits,
-                'lookup_workspace_qubits': int(family_payload['lookup_workspace_qubits']),
-                'live_phase_bits': int(family_payload['live_phase_bits']),
-                'total_logical_qubits': int(family_payload['total_logical_qubits']),
-            },
-            'prepared_leaf': prepared_leaf,
-            'proof_register_contract': proof_register_contract,
-            'prepared_case_corpus': prepared_case_corpus,
-            'notes': [
-                'The proof input carries both the committed source documents and proof-ready reductions.',
-                'The guest recomputes every source-document digest and derives the prepared leaf/case reductions from those documents before publishing public values.',
-            ],
+    input_payload: Dict[str, Any] = {
+        'schema': 'compiler-project-zkp-attestation-input-v5',
+        'document_digest_scheme': DIGEST_SCHEME,
+        'selected_family_name': family_payload['name'],
+        'claim_sha256': claim_blob['sha256'],
+        'leaf_sha256': leaf_blob['sha256'],
+        'family_sha256': family_blob['sha256'],
+        'case_corpus_sha256': case_blob['sha256'],
+        'resource_certificate_sha256': resource_certificate_blob['sha256'],
+        'compiler_parameters_sha256': compiler_parameters_blob['sha256'],
+        'claim_document': claim_blob,
+        'leaf_document': leaf_blob,
+        'family_document': family_blob,
+        'case_corpus_document': case_blob,
+        'resource_certificate_document': resource_certificate_blob,
+        'compiler_parameters_document': compiler_parameters_blob,
+        'claim_summary': {
+            'field_bits': int(public_claim['field_bits']),
+            'leaf_call_count_total': int(public_claim['leaf_call_count_total']),
+            'expected_full_oracle_non_clifford': int(public_claim['expected_full_oracle_non_clifford']),
+            'expected_total_logical_qubits': int(public_claim['expected_total_logical_qubits']),
+            'expected_case_count': int(public_claim['expected_case_count']),
+            'resource_engine_summary': dict(public_claim['resource_engine_summary']),
+            'non_clifford_formula': dict(public_claim['non_clifford_formula']),
+            'logical_qubit_formula': dict(public_claim['logical_qubit_formula']),
         },
+        'family_summary': {
+            'name': family_payload['name'],
+            'arithmetic_leaf_non_clifford': int(family_payload['arithmetic_leaf_non_clifford']),
+            'direct_seed_non_clifford': int(family_payload['direct_seed_non_clifford']),
+            'per_leaf_lookup_non_clifford': int(family_payload['per_leaf_lookup_non_clifford']),
+            'full_oracle_non_clifford': int(family_payload['full_oracle_non_clifford']),
+            'arithmetic_slot_count': int(family_payload['arithmetic_slot_count']),
+            'control_slot_count': int(family_payload['control_slot_count']),
+            'borrowed_interface_qubits': borrowed_interface_qubits,
+            'lookup_workspace_qubits': int(family_payload['lookup_workspace_qubits']),
+            'live_phase_bits': int(family_payload['live_phase_bits']),
+            'total_logical_qubits': int(family_payload['total_logical_qubits']),
+        },
+        'prepared_leaf': prepared_leaf,
+        'proof_register_contract': proof_register_contract,
+        'prepared_case_corpus': prepared_case_corpus,
+        'notes': [
+            'The proof input carries both the committed source documents and proof-ready reductions.',
+            'The guest recomputes every source-document digest and derives the prepared leaf/case reductions from those documents before publishing public values.',
+        ],
+    }
+    if public_engine_manifest_blob is not None:
+        input_payload['public_engine_manifest_sha256'] = public_engine_manifest_blob['sha256']
+        input_payload['public_engine_manifest_document'] = public_engine_manifest_blob
+    return {
+        'input': input_payload,
         'claim': public_claim,
         'family': family_payload,
         'cases': case_corpus,

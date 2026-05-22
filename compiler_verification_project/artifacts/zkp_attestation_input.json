@@ -2,17 +2,17 @@
   "schema": "compiler-project-zkp-attestation-input-v5",
   "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
   "selected_family_name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
-  "claim_sha256": "77868f6c7f68eb1020722f9c859baa1a7a9e451a6d267277132e94141a581a86",
+  "claim_sha256": "3ee6b6f2488e1fc9bb57d1676973ddaa1661ddbb293e366b4cacd1a5e81d55ed",
   "leaf_sha256": "a8b6d7dc3f45c85b450a373f90a174cf4cc3bdfe85520c56ee7ec8db2c5f6ab1",
   "family_sha256": "0b4986c9a0f5ceef844ba1ad18f7d6d5c83658bf02c6d0df65dc4fb256a33089",
   "case_corpus_sha256": "bf3cb3d15e8cb9ba158e800047936d62d83aba34191ca50d5e6138dff57dd28b",
   "resource_certificate_sha256": "e7c0bef85816bfd15cbfb0005ae245d96cfabb812514164bab30982c30bb4c90",
-  "compiler_parameters_sha256": "5d17d0fcc6fb8967cc5b02f916bd8c7da717c8b160486bc128bf3d81a7c8f517",
+  "compiler_parameters_sha256": "8015f87a4d334c61db0d2c8843fe12330db770a87e0c5c51e344347416a7555b",
   "claim_document": {
     "document_type": "attestation_claim",
     "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_claim.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "77868f6c7f68eb1020722f9c859baa1a7a9e451a6d267277132e94141a581a86",
+    "sha256": "3ee6b6f2488e1fc9bb57d1676973ddaa1661ddbb293e366b4cacd1a5e81d55ed",
     "payload": {
       "schema": "compiler-project-zkp-attestation-claim-v1",
       "selected_family_alias": "best-gate",
@@ -24,11 +24,12 @@
       "expected_case_count": 8,
       "resource_engine_summary": {
         "source": "compiler_family_summary",
-        "source_document_type": "resource_liveness_certificate",
-        "source_sha256": "e7c0bef85816bfd15cbfb0005ae245d96cfabb812514164bab30982c30bb4c90",
+        "source_document_type": "compiler_family_summary",
+        "source_sha256": "0b4986c9a0f5ceef844ba1ad18f7d6d5c83658bf02c6d0df65dc4fb256a33089",
         "non_clifford": 34925796,
         "logical_qubits": 1044,
-        "matches_family_snapshot": true
+        "matches_family_snapshot": true,
+        "matches_resource_certificate_snapshot": false
       },
       "non_clifford_formula": {
         "arithmetic_leaf_non_clifford": 1126332,
@@ -15887,7 +15888,7 @@
     "document_type": "compiler_parameters",
     "artifact_path": "compiler_verification_project/artifacts/compiler_parameters.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "5d17d0fcc6fb8967cc5b02f916bd8c7da717c8b160486bc128bf3d81a7c8f517",
+    "sha256": "8015f87a4d334c61db0d2c8843fe12330db770a87e0c5c51e344347416a7555b",
     "payload": {
       "schema": "compiler-project-parameters-v1",
       "curve": {
@@ -15925,6 +15926,7 @@
         "scratch_slot": "qchunk"
       },
       "public_headline_policy": {
+        "selected_public_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
         "non_clifford_limit_exclusive": 40000000,
         "logical_qubit_limit_exclusive": 1200,
         "proof_freshness_required_for_public_pass": true
@@ -15936,10 +15938,11 @@
         "raw_window_span_matches_scalar_width": true,
         "qroamclean_selected_block_size_is_k1": true,
         "reusable_chunk_policy_covers_field_width": true,
+        "selected_public_family_matches_reusable_chunk_policy": true,
         "public_headline_limits_are_strict": true
       },
       "pass": true,
-      "parameter_digest_sha256": "ff6e9ffc4411af58791855dc281723b57e8f462ee40d91f82d3ebb4aa9dda520"
+      "parameter_digest_sha256": "47f5bf03c24360d51e75ad4496f455a112b2a8abf7f93e3fef56d07780d5dd6e"
     }
   },
   "claim_summary": {
@@ -15950,11 +15953,12 @@
     "expected_case_count": 8,
     "resource_engine_summary": {
       "source": "compiler_family_summary",
-      "source_document_type": "resource_liveness_certificate",
-      "source_sha256": "e7c0bef85816bfd15cbfb0005ae245d96cfabb812514164bab30982c30bb4c90",
+      "source_document_type": "compiler_family_summary",
+      "source_sha256": "0b4986c9a0f5ceef844ba1ad18f7d6d5c83658bf02c6d0df65dc4fb256a33089",
       "non_clifford": 34925796,
       "logical_qubits": 1044,
-      "matches_family_snapshot": true
+      "matches_family_snapshot": true,
+      "matches_resource_certificate_snapshot": false
     },
     "non_clifford_formula": {
       "arithmetic_leaf_non_clifford": 1126332,

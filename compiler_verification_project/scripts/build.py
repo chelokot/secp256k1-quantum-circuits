@@ -380,7 +380,7 @@ def main() -> None:
         payload['reusable_chunk_lowering'] = 'compiler_verification_project/artifacts/reusable_chunk_lowering.json'
     if args.target in ('all', 'zkp', 'zkp-and-public'):
         payload['zkp_attestation'] = write_zkp_attestation_inputs()
-    if args.target in ('all', 'candidate-zkp', 'zkp-and-public', 'resource-zkp-and-public'):
+    if args.target in ('candidate-zkp',):
         build_candidate_zkp()
         payload['zkp_attestation_reusable_chunk_candidate'] = 'compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json'
     if args.target in ('all', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
@@ -390,6 +390,8 @@ def main() -> None:
         payload['public_candidate_materialized_circuit_manifest'] = 'compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json'
         build_public_engine_manifest_artifact()
         payload['public_engine_manifest'] = 'compiler_verification_project/artifacts/public_engine_manifest.json'
+        build_candidate_zkp()
+        payload['zkp_attestation_reusable_chunk_candidate'] = 'compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json'
     if args.target in ('release-candidate-zkp',):
         build_release_candidate_zkp()
         payload['zkp_attestation_release_candidate'] = 'compiler_verification_project/artifacts/zkp_attestation_release_candidate/zkp_attestation_input.json'

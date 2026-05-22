@@ -2,7 +2,7 @@
   "schema": "compiler-project-zkp-attestation-input-v5",
   "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
   "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
-  "claim_sha256": "294e6c67160442bc75696d7c6a67598b06fcb402444a89cec24556e5699d80b1",
+  "claim_sha256": "88d03c97317ad59f0c4a98fd63913c8ecca4e604fcfd5b34262037d57ee240c9",
   "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
   "family_sha256": "d3cecc3c5c3ec6b7611057d6fb3608dd5e95d7020f66ac55d55e2066d9398eae",
   "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
@@ -12,7 +12,7 @@
     "document_type": "attestation_claim",
     "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_claim.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "294e6c67160442bc75696d7c6a67598b06fcb402444a89cec24556e5699d80b1",
+    "sha256": "88d03c97317ad59f0c4a98fd63913c8ecca4e604fcfd5b34262037d57ee240c9",
     "payload": {
       "schema": "compiler-project-zkp-attestation-claim-v1",
       "selected_family_alias": "reusable-chunk",
@@ -23,12 +23,13 @@
       "expected_total_logical_qubits": 1199,
       "expected_case_count": 8,
       "resource_engine_summary": {
-        "source": "reusable_chunk_lowering.executable_resource_engine.public_totals",
-        "source_document_type": "reusable_chunk_lowering",
-        "source_sha256": "047500decb193aa262ae33fed728563dd18b2e8fcd9caa72deb310bea3d5ada5",
+        "source": "public_engine_manifest.public_totals",
+        "source_document_type": "public_engine_manifest",
+        "source_sha256": "6ead2d3f8f5aba28d5714fe79da513debd1101a3b7482f77af777d5e62ecb1a1",
         "non_clifford": 36957412,
         "logical_qubits": 1199,
-        "matches_family_snapshot": true
+        "matches_family_snapshot": true,
+        "matches_resource_certificate_snapshot": true
       },
       "non_clifford_formula": {
         "arithmetic_leaf_non_clifford": 798949,
@@ -7019,12 +7020,13 @@
     "expected_total_logical_qubits": 1199,
     "expected_case_count": 8,
     "resource_engine_summary": {
-      "source": "reusable_chunk_lowering.executable_resource_engine.public_totals",
-      "source_document_type": "reusable_chunk_lowering",
-      "source_sha256": "047500decb193aa262ae33fed728563dd18b2e8fcd9caa72deb310bea3d5ada5",
+      "source": "public_engine_manifest.public_totals",
+      "source_document_type": "public_engine_manifest",
+      "source_sha256": "6ead2d3f8f5aba28d5714fe79da513debd1101a3b7482f77af777d5e62ecb1a1",
       "non_clifford": 36957412,
       "logical_qubits": 1199,
-      "matches_family_snapshot": true
+      "matches_family_snapshot": true,
+      "matches_resource_certificate_snapshot": true
     },
     "non_clifford_formula": {
       "arithmetic_leaf_non_clifford": 798949,
@@ -7383,5 +7385,721 @@
   "notes": [
     "The proof input carries both the committed source documents and proof-ready reductions.",
     "The guest recomputes every source-document digest and derives the prepared leaf/case reductions from those documents before publishing public values."
-  ]
+  ],
+  "public_engine_manifest_sha256": "6ead2d3f8f5aba28d5714fe79da513debd1101a3b7482f77af777d5e62ecb1a1",
+  "public_engine_manifest_document": {
+    "document_type": "public_engine_manifest",
+    "artifact_path": "compiler_verification_project/artifacts/public_engine_manifest.json",
+    "digest_scheme": "compiler-project-semantic-json-sha256-v1",
+    "sha256": "6ead2d3f8f5aba28d5714fe79da513debd1101a3b7482f77af777d5e62ecb1a1",
+    "payload": {
+      "schema": "compiler-project-public-engine-manifest-v1",
+      "scope": "current public reusable-chunk executable resource engine manifest",
+      "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+      "source_artifact": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
+      "engine_source_module": "compiler_verification_project/src/executable_resource_engine.py",
+      "public_totals": {
+        "non_clifford": 36957412,
+        "logical_qubits": 1199,
+        "source": "public_candidate_materialized_circuit_manifest.flat_netlist + materialized_liveness"
+      },
+      "source_digests": {
+        "compiler_parameters_sha256": "f25239aab49a172397565757d9495c47ea7e88959451bc291d06f0ba37bbb374",
+        "executable_resource_engine_sha256": "e8f2464d45c24334de1f1a3f9848dbdefffe9c36d76592be077912a17b627d31",
+        "counted_resource_ir_sha256": "e814826e787174c05f62f34396fd02b1d77a8728f0c99051f74e1d60294d7188",
+        "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
+        "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
+        "resource_contract_engine_sha256": "6ec61b5379cd1eb36a568423ffa43a79015c7f3c5dea53ec65cf1f80346b3d6f",
+        "public_candidate_materialized_circuit_manifest_sha256": "4eddd3753dd1c98923fde8c0c80a1789186bbfefb0dc8249f97c29198ba00e3b"
+      },
+      "instruction_stream": {
+        "encoding": [
+          "row_index",
+          "pc",
+          "op",
+          "reads",
+          "writes"
+        ],
+        "row_count": 6,
+        "sha256": "73889a1e514d3272f8444f7c8a214dc9b59cec9b959563c0918ba513ed306b85",
+        "rows": [
+          {
+            "row_index": 0,
+            "pc": 0,
+            "op": "load_input",
+            "reads": [],
+            "writes": []
+          },
+          {
+            "row_index": 1,
+            "pc": 1,
+            "op": "load_input",
+            "reads": [],
+            "writes": []
+          },
+          {
+            "row_index": 2,
+            "pc": 2,
+            "op": "load_input",
+            "reads": [],
+            "writes": []
+          },
+          {
+            "row_index": 3,
+            "pc": 3,
+            "op": "lookup_meta",
+            "reads": [],
+            "writes": []
+          },
+          {
+            "row_index": 4,
+            "pc": 4,
+            "op": "bool_from_flag",
+            "reads": [],
+            "writes": []
+          },
+          {
+            "row_index": 5,
+            "pc": 5,
+            "op": "complete_a0_reusable_chunk_tail",
+            "reads": [],
+            "writes": []
+          }
+        ]
+      },
+      "wire_catalog_stream": {
+        "encoding": [
+          "row_index",
+          "wire_id",
+          "owner_id",
+          "qubits",
+          "role"
+        ],
+        "row_count": 13,
+        "sha256": "d738d6fd6974ecdec6f0a351db272b1029eb3a6db20f536bdf6e31e7e805eb64",
+        "rows": [
+          {
+            "row_index": 0,
+            "wire_id": "f_lookup_inf",
+            "owner_id": "control_slot_register_file",
+            "qubits": 1,
+            "role": "leaf_control_flag"
+          },
+          {
+            "row_index": 1,
+            "wire_id": "folded_lookup_control_workspace",
+            "owner_id": "lookup_workspace",
+            "qubits": 18,
+            "role": "folded_lookup_decode_control_workspace"
+          },
+          {
+            "row_index": 2,
+            "wire_id": "qchunk",
+            "owner_id": "arithmetic_slot_register_file",
+            "qubits": 256,
+            "role": "field_arithmetic_slot"
+          },
+          {
+            "row_index": 3,
+            "wire_id": "qroam_chunk_target__lookup_x__chunk_0",
+            "owner_id": "lookup_workspace",
+            "qubits": 155,
+            "role": "standard_qroamclean_k1_chunk_target"
+          },
+          {
+            "row_index": 4,
+            "wire_id": "qroam_chunk_target__lookup_x__chunk_1",
+            "owner_id": "lookup_workspace",
+            "qubits": 155,
+            "role": "standard_qroamclean_k1_chunk_target"
+          },
+          {
+            "row_index": 5,
+            "wire_id": "qroam_chunk_target__lookup_x_plus_y__chunk_0",
+            "owner_id": "lookup_workspace",
+            "qubits": 155,
+            "role": "standard_qroamclean_k1_chunk_target"
+          },
+          {
+            "row_index": 6,
+            "wire_id": "qroam_chunk_target__lookup_x_plus_y__chunk_1",
+            "owner_id": "lookup_workspace",
+            "qubits": 155,
+            "role": "standard_qroamclean_k1_chunk_target"
+          },
+          {
+            "row_index": 7,
+            "wire_id": "qroam_chunk_target__lookup_y__chunk_0",
+            "owner_id": "lookup_workspace",
+            "qubits": 155,
+            "role": "standard_qroamclean_k1_chunk_target"
+          },
+          {
+            "row_index": 8,
+            "wire_id": "qroam_chunk_target__lookup_y__chunk_1",
+            "owner_id": "lookup_workspace",
+            "qubits": 155,
+            "role": "standard_qroamclean_k1_chunk_target"
+          },
+          {
+            "row_index": 9,
+            "wire_id": "qx",
+            "owner_id": "arithmetic_slot_register_file",
+            "qubits": 256,
+            "role": "field_arithmetic_slot"
+          },
+          {
+            "row_index": 10,
+            "wire_id": "qy",
+            "owner_id": "arithmetic_slot_register_file",
+            "qubits": 256,
+            "role": "field_arithmetic_slot"
+          },
+          {
+            "row_index": 11,
+            "wire_id": "qz",
+            "owner_id": "arithmetic_slot_register_file",
+            "qubits": 256,
+            "role": "field_arithmetic_slot"
+          },
+          {
+            "row_index": 12,
+            "wire_id": "semiclassical_qft_live_phase_bit",
+            "owner_id": "phase_shell_live_register",
+            "qubits": 1,
+            "role": "live_phase_bit"
+          }
+        ]
+      },
+      "schedule_stream": {
+        "encoding": [
+          "row_index",
+          "event_id",
+          "event_type",
+          "pc_range",
+          "source_instruction_pcs",
+          "source_instruction_ops",
+          "live_wire_ids"
+        ],
+        "row_count": 9,
+        "sha256": "c78b7e7018259d6a52814a3fcf7e4622f37c29d4fefbefc31c2b9ce93981ede3",
+        "rows": [
+          {
+            "row_index": 0,
+            "event_id": "pc0_2_load_carried_inputs",
+            "event_type": "load_carried_inputs",
+            "pc_range": [
+              0,
+              2
+            ],
+            "source_instruction_pcs": [
+              0,
+              1,
+              2
+            ],
+            "source_instruction_ops": [
+              "load_input",
+              "load_input",
+              "load_input"
+            ],
+            "live_wire_ids": [
+              "qx",
+              "qy",
+              "qz",
+              "semiclassical_qft_live_phase_bit"
+            ]
+          },
+          {
+            "row_index": 1,
+            "event_id": "pc3_lookup_meta",
+            "event_type": "lookup_metadata",
+            "pc_range": [
+              3,
+              3
+            ],
+            "source_instruction_pcs": [
+              3
+            ],
+            "source_instruction_ops": [
+              "lookup_meta"
+            ],
+            "live_wire_ids": [
+              "qx",
+              "qy",
+              "qz",
+              "folded_lookup_control_workspace",
+              "semiclassical_qft_live_phase_bit"
+            ]
+          },
+          {
+            "row_index": 2,
+            "event_id": "pc4_lookup_infinity_flag",
+            "event_type": "lookup_infinity_flag",
+            "pc_range": [
+              4,
+              4
+            ],
+            "source_instruction_pcs": [
+              4
+            ],
+            "source_instruction_ops": [
+              "bool_from_flag"
+            ],
+            "live_wire_ids": [
+              "qx",
+              "qy",
+              "qz",
+              "folded_lookup_control_workspace",
+              "f_lookup_inf",
+              "semiclassical_qft_live_phase_bit"
+            ]
+          },
+          {
+            "row_index": 3,
+            "event_id": "pc5_stream_00_lookup_x_chunk_0",
+            "event_type": "qroam_chunk_load_consume_uncompute",
+            "pc_range": [
+              5,
+              5
+            ],
+            "source_instruction_pcs": [
+              5
+            ],
+            "source_instruction_ops": [
+              "complete_a0_reusable_chunk_tail"
+            ],
+            "live_wire_ids": [
+              "qx",
+              "qy",
+              "qz",
+              "qchunk",
+              "folded_lookup_control_workspace",
+              "qroam_chunk_target__lookup_x__chunk_0",
+              "f_lookup_inf",
+              "semiclassical_qft_live_phase_bit"
+            ]
+          },
+          {
+            "row_index": 4,
+            "event_id": "pc5_stream_01_lookup_x_chunk_1",
+            "event_type": "qroam_chunk_load_consume_uncompute",
+            "pc_range": [
+              5,
+              5
+            ],
+            "source_instruction_pcs": [
+              5
+            ],
+            "source_instruction_ops": [
+              "complete_a0_reusable_chunk_tail"
+            ],
+            "live_wire_ids": [
+              "qx",
+              "qy",
+              "qz",
+              "qchunk",
+              "folded_lookup_control_workspace",
+              "qroam_chunk_target__lookup_x__chunk_1",
+              "f_lookup_inf",
+              "semiclassical_qft_live_phase_bit"
+            ]
+          },
+          {
+            "row_index": 5,
+            "event_id": "pc5_stream_02_lookup_y_chunk_0",
+            "event_type": "qroam_chunk_load_consume_uncompute",
+            "pc_range": [
+              5,
+              5
+            ],
+            "source_instruction_pcs": [
+              5
+            ],
+            "source_instruction_ops": [
+              "complete_a0_reusable_chunk_tail"
+            ],
+            "live_wire_ids": [
+              "qx",
+              "qy",
+              "qz",
+              "qchunk",
+              "folded_lookup_control_workspace",
+              "qroam_chunk_target__lookup_y__chunk_0",
+              "f_lookup_inf",
+              "semiclassical_qft_live_phase_bit"
+            ]
+          },
+          {
+            "row_index": 6,
+            "event_id": "pc5_stream_03_lookup_y_chunk_1",
+            "event_type": "qroam_chunk_load_consume_uncompute",
+            "pc_range": [
+              5,
+              5
+            ],
+            "source_instruction_pcs": [
+              5
+            ],
+            "source_instruction_ops": [
+              "complete_a0_reusable_chunk_tail"
+            ],
+            "live_wire_ids": [
+              "qx",
+              "qy",
+              "qz",
+              "qchunk",
+              "folded_lookup_control_workspace",
+              "qroam_chunk_target__lookup_y__chunk_1",
+              "f_lookup_inf",
+              "semiclassical_qft_live_phase_bit"
+            ]
+          },
+          {
+            "row_index": 7,
+            "event_id": "pc5_stream_04_lookup_x_plus_y_chunk_0",
+            "event_type": "qroam_chunk_load_consume_uncompute",
+            "pc_range": [
+              5,
+              5
+            ],
+            "source_instruction_pcs": [
+              5
+            ],
+            "source_instruction_ops": [
+              "complete_a0_reusable_chunk_tail"
+            ],
+            "live_wire_ids": [
+              "qx",
+              "qy",
+              "qz",
+              "qchunk",
+              "folded_lookup_control_workspace",
+              "qroam_chunk_target__lookup_x_plus_y__chunk_0",
+              "f_lookup_inf",
+              "semiclassical_qft_live_phase_bit"
+            ]
+          },
+          {
+            "row_index": 8,
+            "event_id": "pc5_stream_05_lookup_x_plus_y_chunk_1",
+            "event_type": "qroam_chunk_load_consume_uncompute",
+            "pc_range": [
+              5,
+              5
+            ],
+            "source_instruction_pcs": [
+              5
+            ],
+            "source_instruction_ops": [
+              "complete_a0_reusable_chunk_tail"
+            ],
+            "live_wire_ids": [
+              "qx",
+              "qy",
+              "qz",
+              "qchunk",
+              "folded_lookup_control_workspace",
+              "qroam_chunk_target__lookup_x_plus_y__chunk_1",
+              "f_lookup_inf",
+              "semiclassical_qft_live_phase_bit"
+            ]
+          }
+        ]
+      },
+      "owner_capacity_stream": {
+        "encoding": [
+          "row_index",
+          "owner_id",
+          "logical_qubits",
+          "required_peak_qubits",
+          "capacity_pass"
+        ],
+        "row_count": 4,
+        "sha256": "a412f4a09585f39bf1a5b81d3dcbdfa5514084795872e25aa94d5503d0177023",
+        "rows": [
+          {
+            "row_index": 0,
+            "owner_id": "arithmetic_slot_register_file",
+            "logical_qubits": 1024,
+            "required_peak_qubits": 1024,
+            "capacity_pass": true
+          },
+          {
+            "row_index": 1,
+            "owner_id": "lookup_workspace",
+            "logical_qubits": 173,
+            "required_peak_qubits": 173,
+            "capacity_pass": true
+          },
+          {
+            "row_index": 2,
+            "owner_id": "control_slot_register_file",
+            "logical_qubits": 1,
+            "required_peak_qubits": 1,
+            "capacity_pass": true
+          },
+          {
+            "row_index": 3,
+            "owner_id": "phase_shell_live_register",
+            "logical_qubits": 1,
+            "required_peak_qubits": 1,
+            "capacity_pass": true
+          }
+        ]
+      },
+      "resource_term_stream": {
+        "encoding": [
+          "row_index",
+          "term_id",
+          "category",
+          "instances",
+          "per_instance_non_clifford",
+          "total_non_clifford",
+          "source"
+        ],
+        "row_count": 7,
+        "expanded_non_clifford_instances": 187,
+        "sha256": "912e9414bfdc72259b8553a3df17cf1bd62023e5d15b57e4297735deee061916",
+        "rows": [
+          {
+            "row_index": 0,
+            "term_id": "base_without_streamed_qroam",
+            "category": "arithmetic_control_and_phase_base",
+            "instances": 1,
+            "per_instance_non_clifford": 24767716,
+            "total_non_clifford": 24767716,
+            "source": "logical_resource_ledger.qroam_clean_tradeoff_sweep.base_non_clifford_without_streamed_qroam"
+          },
+          {
+            "row_index": 1,
+            "term_id": "qroam_stream__lookup_x__chunk_0",
+            "category": "qroam_chunk_stream",
+            "instances": 31,
+            "per_instance_non_clifford": 65536,
+            "total_non_clifford": 2031616,
+            "source": "stream_plan.rows"
+          },
+          {
+            "row_index": 2,
+            "term_id": "qroam_stream__lookup_x__chunk_1",
+            "category": "qroam_chunk_stream",
+            "instances": 31,
+            "per_instance_non_clifford": 65536,
+            "total_non_clifford": 2031616,
+            "source": "stream_plan.rows"
+          },
+          {
+            "row_index": 3,
+            "term_id": "qroam_stream__lookup_y__chunk_0",
+            "category": "qroam_chunk_stream",
+            "instances": 31,
+            "per_instance_non_clifford": 65536,
+            "total_non_clifford": 2031616,
+            "source": "stream_plan.rows"
+          },
+          {
+            "row_index": 4,
+            "term_id": "qroam_stream__lookup_y__chunk_1",
+            "category": "qroam_chunk_stream",
+            "instances": 31,
+            "per_instance_non_clifford": 65536,
+            "total_non_clifford": 2031616,
+            "source": "stream_plan.rows"
+          },
+          {
+            "row_index": 5,
+            "term_id": "qroam_stream__lookup_x_plus_y__chunk_0",
+            "category": "qroam_chunk_stream",
+            "instances": 31,
+            "per_instance_non_clifford": 65536,
+            "total_non_clifford": 2031616,
+            "source": "stream_plan.rows"
+          },
+          {
+            "row_index": 6,
+            "term_id": "qroam_stream__lookup_x_plus_y__chunk_1",
+            "category": "qroam_chunk_stream",
+            "instances": 31,
+            "per_instance_non_clifford": 65536,
+            "total_non_clifford": 2031616,
+            "source": "stream_plan.rows"
+          }
+        ]
+      },
+      "semantic_boundary_evidence": {
+        "required_categories": [
+          "random",
+          "doubling",
+          "inverse",
+          "accumulator_infinity",
+          "lookup_infinity"
+        ],
+        "streamed_lookup_tail_leaf_equivalence": {
+          "schema": "compiler-project-streamed-lookup-tail-leaf-equivalence-v1",
+          "sha256": "90f1880c839d7892eab0b748683d3186cbea9811409a4ab090c9d60d8cca0db3",
+          "total": 80,
+          "pass": 80,
+          "categories": {
+            "random": {
+              "total": 16,
+              "pass": 16
+            },
+            "doubling": {
+              "total": 16,
+              "pass": 16
+            },
+            "inverse": {
+              "total": 16,
+              "pass": 16
+            },
+            "accumulator_infinity": {
+              "total": 16,
+              "pass": 16
+            },
+            "lookup_infinity": {
+              "total": 16,
+              "pass": 16
+            }
+          }
+        },
+        "reusable_chunk_tail_toy_semantics": {
+          "schema": "compiler-project-reusable-chunk-tail-candidate-v1",
+          "sha256": "f0dfb7f935adbf20cf115f4a2ed522ec4729aa9c9b0e50b88df6f8bf40154f78",
+          "total_boundary_pairs": 110692,
+          "scratch_trace_checked": 110082,
+          "category_totals": {
+            "accumulator_infinity": 606,
+            "doubling": 606,
+            "inverse": 606,
+            "lookup_infinity": 610,
+            "ordinary": 108264
+          },
+          "all_rows_semantic": true,
+          "all_rows_executable": true,
+          "all_rows_scratch_trace": true
+        },
+        "release_corpus_preflight": {
+          "schema": "compiler-project-release-corpus-preflight-v1",
+          "sha256": "e8cc293c4fc4702e1fbc0bfcb9b8749515de99a348ecbf55ed123d68738c2f3a",
+          "profile": "google_comparable_9024",
+          "case_count": 9024,
+          "case_stream_sha256": "6d7087400f8be5e36be84f17f57492783847c03762f0523c2c057b7e9c4fefe6",
+          "category_counts": {
+            "accumulator_infinity": 564,
+            "doubling": 564,
+            "inverse": 564,
+            "lookup_infinity": 564,
+            "random": 6204,
+            "zero_zero": 564
+          }
+        },
+        "compiler_parameters": {
+          "schema": "compiler-project-parameters-v1",
+          "sha256": "f25239aab49a172397565757d9495c47ea7e88959451bc291d06f0ba37bbb374",
+          "selected_public_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+          "selected_public_phase_shell": "semiclassical_qft_v1",
+          "selected_qroamclean_block_size": 1
+        }
+      },
+      "primitive_operation_evidence": {
+        "public_candidate_materialized_circuit_manifest": {
+          "schema": "compiler-project-public-candidate-materialized-circuit-manifest-v1",
+          "sha256": "4eddd3753dd1c98923fde8c0c80a1789186bbfefb0dc8249f97c29198ba00e3b",
+          "pass": true,
+          "operation_stream_sha256": "9a5d6aaf0e537cec80bedaae07c93e85a04573c9b59d797f39d6da4fbaaa5ef9",
+          "liveness_binding_stream_sha256": "c328629396d401bba71a1245504aed03017cb77f16b47c2e323ed3e3ea9c918f",
+          "run_length_row_count": 6329,
+          "liveness_binding_row_count": 6329,
+          "qroam_segment_row_count": 2976,
+          "flat_operation_count": 39370727,
+          "flat_segment_count": 40,
+          "flat_segment_merkle_root_sha256": "9fe112db30588e052ca0e77b9e644433894c2404778aed73d5c78a5d8beae575",
+          "flat_execution_probe": {
+            "schema": "compiler-project-flat-netlist-execution-probe-v1",
+            "probe_count": 18,
+            "probe_stream_sha256": "b71978459de8428ac9329c5595ec274794a3adc6b02cd67de6b30a3320e1a747",
+            "checks": {
+              "arithmetic_two_operand_domain_product_matches_row_total": true,
+              "probe_operand_indices_within_domains": true,
+              "probe_operand_owners_are_live_and_within_capacity": true,
+              "probe_operations_bind_segment_contributions": true,
+              "qroam_target_domain_width_matches_each_stream_segment": true,
+              "reduced_schoolbook_operand_grid_executes_cartesian_prefix": true
+            }
+          },
+          "non_clifford": 36957412,
+          "peak_live_qubits": 1199
+        },
+        "arithmetic_operation_ir": {
+          "schema": "compiler-project-arithmetic-operation-ir-v1",
+          "sha256": "185214c75f615b530dd63c2972c4a76bf2ba3c94624659736c7187a36ee8392e",
+          "pass": true,
+          "tail_opcode": "complete_a0_all_streamed_tail",
+          "tail_kernel_stage_digest_sha256": "cf8315d24ba29b996c07d044a94bf53770f612cfbc3aa990c902cb97a02288d6",
+          "tail_kernel_operation_count": 1367928,
+          "tail_kernel_non_clifford_per_instance": 1126332,
+          "tail_primitive_counts_total": {
+            "ccx": 1126332,
+            "cx": 0,
+            "measurement": 241596,
+            "x": 0
+          },
+          "leaf_arithmetic_operation_stream_sha256": "2b27b16d06561f6d6835fbb0dfcd02d6b0f1a3b54b9b888220af1d53561d76c6"
+        },
+        "qroam_primitive_certificate": {
+          "schema": "compiler-project-qroam-k1-primitive-certificate-v1",
+          "sha256": "9a97e536aa4e15e25873adf187db977910a0ef8fb03914958d409940a54eb125",
+          "pass": true,
+          "operation_schema": "qroamclean-k1-unary-iteration-step-v1",
+          "segment_count": 16,
+          "segment_merkle_root_sha256": "4adf8b1389ac2ad67551a4a058377b919ac446b88ae22da3ab68bc84f2156cb5",
+          "block_size": 1,
+          "per_stream_non_clifford": 65536,
+          "target_register_qubits": 155,
+          "junk_register_qubits": 0,
+          "whole_oracle_streams": 186,
+          "whole_oracle_non_clifford": 12189696
+        },
+        "phase_shell": {
+          "schema": "compiler-project-phase-shell-lowerings-v2",
+          "sha256": "4411ea5f699e5950a32783f2232796a63987efb5d939f98ac400f4f02ddd415b",
+          "name": "semiclassical_qft_v1",
+          "phase_register_bits": 512,
+          "live_quantum_bits": 1,
+          "hadamard_count": 512,
+          "total_measurements": 512,
+          "single_qubit_rotation_count": 511,
+          "controlled_rotation_count": 0,
+          "rotation_depth": 511
+        }
+      },
+      "fast_no_zkp_contract": {
+        "build_target": "public-engine-manifest",
+        "verify_group": "public_engine_manifest_checks",
+        "prover_required": false
+      },
+      "checks": {
+        "executable_resource_engine_passes": true,
+        "counted_resource_engine_passes": true,
+        "resource_contract_engine_passes": true,
+        "public_totals_match_executable_resource_engine_snapshot": true,
+        "public_totals_match_counted_resource_engine": true,
+        "public_totals_match_resource_contract_engine": true,
+        "engine_digests_match_bound_documents": true,
+        "schedule_rows_bind_instruction_stream": true,
+        "wire_rows_cover_liveness_catalog": true,
+        "owner_rows_cover_capacity_catalog": true,
+        "resource_terms_sum_to_public_total": true,
+        "streamed_tail_equivalence_covers_required_categories": true,
+        "toy_tail_semantics_cover_required_categories": true,
+        "release_corpus_preflight_covers_required_categories": true,
+        "compiler_parameters_bind_selected_public_family": true,
+        "arithmetic_operation_ir_binds_tail_opcode": true,
+        "qroam_primitive_stream_binds_stream_terms": true,
+        "phase_shell_primitive_counts_bind_public_family": true,
+        "public_candidate_materialized_stream_binds_engine_totals": true
+      },
+      "pass": true
+    }
+  }
 }

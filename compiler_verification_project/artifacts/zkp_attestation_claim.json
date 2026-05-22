@@ -9,11 +9,12 @@
   "expected_case_count": 8,
   "resource_engine_summary": {
     "source": "compiler_family_summary",
-    "source_document_type": "resource_liveness_certificate",
-    "source_sha256": "e7c0bef85816bfd15cbfb0005ae245d96cfabb812514164bab30982c30bb4c90",
+    "source_document_type": "compiler_family_summary",
+    "source_sha256": "0b4986c9a0f5ceef844ba1ad18f7d6d5c83658bf02c6d0df65dc4fb256a33089",
     "non_clifford": 34925796,
     "logical_qubits": 1044,
-    "matches_family_snapshot": true
+    "matches_family_snapshot": true,
+    "matches_resource_certificate_snapshot": false
   },
   "non_clifford_formula": {
     "arithmetic_leaf_non_clifford": 1126332,

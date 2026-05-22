@@ -235,8 +235,14 @@ def build_metadata_report() -> dict[str, Any]:
     check(checks, 'public_headline_limits_match_compiler_parameters', public_result['selection_policy']['limits'] == public_policy, public_policy, public_result['selection_policy']['limits'])
     check(checks, 'public_headline_stays_under_strict_goal', selected['non_clifford'] < public_policy['non_clifford_limit_exclusive'] and selected['logical_qubits'] < public_policy['logical_qubit_limit_exclusive'], public_policy, selected)
     check(checks, 'public_headline_matches_current_input_claim', selected['name'] == input_payload['selected_family_name'] and selected['non_clifford'] == input_payload['claim_summary']['expected_full_oracle_non_clifford'] and selected['logical_qubits'] == input_payload['claim_summary']['expected_total_logical_qubits'], input_payload['claim_summary'], selected)
-    check(checks, 'public_values_match_input_digest_headers', all(public_values[key] == input_payload[key] == bound_documents[key] for key in bound_documents), bound_documents, {key: {'public_values': public_values[key], 'input': input_payload[key]} for key in bound_documents})
+    public_value_bound_documents = {
+        key: value
+        for key, value in bound_documents.items()
+        if key in public_values
+    }
+    check(checks, 'public_values_match_input_digest_headers', all(public_values[key] == input_payload[key] == public_value_bound_documents[key] for key in public_value_bound_documents), public_value_bound_documents, {key: {'public_values': public_values[key], 'input': input_payload[key]} for key in public_value_bound_documents})
     check(checks, 'public_headline_bound_documents_match_current_input', all(input_payload[key] == bound_documents[key] for key in bound_documents), bound_documents, {key: input_payload[key] for key in bound_documents})
+    check(checks, 'public_engine_manifest_bound_through_input_claim', input_payload['claim_summary']['resource_engine_summary']['source_sha256'] == input_payload['public_engine_manifest_sha256'] == bound_documents['public_engine_manifest_sha256'] and input_payload['public_engine_manifest_document']['sha256'] == bound_documents['public_engine_manifest_sha256'], bound_documents['public_engine_manifest_sha256'], input_payload['claim_summary']['resource_engine_summary'])
     selected_profile = proof_corpus_profiles['profiles'][proof_corpus_profiles['selected_public_profile']]
     check(checks, 'case_counts_match_selected_proof_profile_and_pass', selected['case_count'] == selected['passed_case_count'] == input_payload['prepared_case_corpus']['case_count'] == selected_profile['case_count'], selected_profile, {'selected': selected, 'input_case_count': input_payload['prepared_case_corpus']['case_count']})
 

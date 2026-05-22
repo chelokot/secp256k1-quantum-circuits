@@ -8,12 +8,13 @@
   "expected_total_logical_qubits": 1199,
   "expected_case_count": 8,
   "resource_engine_summary": {
-    "source": "reusable_chunk_lowering.executable_resource_engine.public_totals",
-    "source_document_type": "reusable_chunk_lowering",
-    "source_sha256": "047500decb193aa262ae33fed728563dd18b2e8fcd9caa72deb310bea3d5ada5",
+    "source": "public_engine_manifest.public_totals",
+    "source_document_type": "public_engine_manifest",
+    "source_sha256": "6ead2d3f8f5aba28d5714fe79da513debd1101a3b7482f77af777d5e62ecb1a1",
     "non_clifford": 36957412,
     "logical_qubits": 1199,
-    "matches_family_snapshot": true
+    "matches_family_snapshot": true,
+    "matches_resource_certificate_snapshot": true
   },
   "non_clifford_formula": {
     "arithmetic_leaf_non_clifford": 798949,
