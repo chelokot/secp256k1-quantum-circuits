@@ -270,6 +270,7 @@ def build_public_engine_manifest(
             and int(public_candidate_materialized_circuit_manifest['public_totals']['logical_qubits']) == public_totals['logical_qubits']
             and public_candidate_materialized_circuit_manifest['source_digests']['counted_resource_ir_sha256'] == executable_resource_engine['counted_resource_ir_sha256']
             and int(public_candidate_materialized_circuit_manifest['qroam_expansion']['non_clifford']) == int(reusable_chunk_lowering['non_clifford_derivation']['qroam_chunk_non_clifford'])
+            and int(public_candidate_materialized_circuit_manifest['materialized_liveness']['peak_live_qubits']) == public_totals['logical_qubits']
         ),
     }
     return {
@@ -361,9 +362,12 @@ def build_public_engine_manifest(
                 'sha256': _sha256_payload(public_candidate_materialized_circuit_manifest),
                 'pass': bool(public_candidate_materialized_circuit_manifest['pass']),
                 'operation_stream_sha256': public_candidate_materialized_circuit_manifest['operation_stream_sha256'],
+                'liveness_binding_stream_sha256': public_candidate_materialized_circuit_manifest['liveness_binding_stream_sha256'],
                 'run_length_row_count': int(public_candidate_materialized_circuit_manifest['run_length_row_count']),
+                'liveness_binding_row_count': int(public_candidate_materialized_circuit_manifest['liveness_binding_row_count']),
                 'qroam_segment_row_count': int(public_candidate_materialized_circuit_manifest['qroam_segment_row_count']),
                 'non_clifford': int(public_candidate_materialized_circuit_manifest['public_totals']['non_clifford']),
+                'peak_live_qubits': int(public_candidate_materialized_circuit_manifest['materialized_liveness']['peak_live_qubits']),
             },
             'arithmetic_operation_ir': {
                 'schema': arithmetic_operation_ir['schema'],

@@ -187,13 +187,13 @@
     },
     "public_candidate_materialized_circuit_manifest": {
       "path": "compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json",
-      "sha256": "50d307f7b4dbbcb04a825eb95a109035f18c93846e4569b7aea5a8b8bae4ab6e",
-      "bytes": 9103
+      "sha256": "8a17c721aa83e31be01ff666a7dc542864c75cb1902305defe7fbebcad135880",
+      "bytes": 20784
     },
     "public_engine_manifest": {
       "path": "compiler_verification_project/artifacts/public_engine_manifest.json",
-      "sha256": "d786b0a153afcf88323772886899cf10a211d680f06b1194f84fbd932ea17bb0",
-      "bytes": 20256
+      "sha256": "426a7e73b6621889cf2ab6f3a8f904d1c00ceba299fb6f7622e8ccb43da75d10",
+      "bytes": 20438
     }
   },
   "verification_commands": {

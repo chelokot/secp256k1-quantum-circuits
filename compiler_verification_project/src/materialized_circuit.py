@@ -32,6 +32,14 @@ PUBLIC_CANDIDATE_STREAM_COLUMNS = [
     'total_count',
     'non_clifford_count',
 ]
+PUBLIC_CANDIDATE_LIVENESS_COLUMNS = [
+    'row_index',
+    'scope',
+    'interval_id',
+    'live_wire_ids',
+    'owner_live_qubits',
+    'total_live_qubits',
+]
 
 
 def _empty_gate_totals() -> Dict[str, int]:
@@ -80,6 +88,14 @@ def _public_candidate_stream_hash(rows: List[Mapping[str, Any]]) -> str:
     digest.update(('\t'.join(PUBLIC_CANDIDATE_STREAM_COLUMNS) + '\n').encode('ascii'))
     for row in rows:
         digest.update(('\t'.join(_canonical_json(row[column]) for column in PUBLIC_CANDIDATE_STREAM_COLUMNS) + '\n').encode('ascii'))
+    return digest.hexdigest()
+
+
+def _public_candidate_liveness_hash(rows: List[Mapping[str, Any]]) -> str:
+    digest = hashlib.sha256()
+    digest.update(('\t'.join(PUBLIC_CANDIDATE_LIVENESS_COLUMNS) + '\n').encode('ascii'))
+    for row in rows:
+        digest.update(('\t'.join(_canonical_json(row[column]) for column in PUBLIC_CANDIDATE_LIVENESS_COLUMNS) + '\n').encode('ascii'))
     return digest.hexdigest()
 
 
@@ -482,6 +498,45 @@ def _public_base_run_length_rows(
     return rows
 
 
+def _liveness_binding_rows(
+    *,
+    operation_rows: List[Mapping[str, Any]],
+    reusable_chunk_lowering: Mapping[str, Any],
+) -> List[Dict[str, Any]]:
+    intervals = {
+        str(interval['interval_id']): interval
+        for interval in reusable_chunk_lowering['executable_liveness']['intervals']
+    }
+    qroam_interval_by_chunk = {
+        (
+            str(event['stream_table']),
+            int(event['stream_chunk_index']),
+        ): str(event['event_id'])
+        for event in reusable_chunk_lowering['executable_liveness']['executable_schedule_ir']['events']
+        if event['event_type'] == 'qroam_chunk_load_consume_uncompute'
+    }
+    peak_interval_id = str(reusable_chunk_lowering['executable_liveness']['global_peak_interval_id'])
+    rows: List[Dict[str, Any]] = []
+    for operation in operation_rows:
+        if operation['scope'] == 'qroam_chunk_stream':
+            interval_id = qroam_interval_by_chunk[(str(operation['table']), int(operation['chunk_index']))]
+        else:
+            interval_id = peak_interval_id
+        interval = intervals[interval_id]
+        rows.append({
+            'row_index': int(operation['row_index']),
+            'scope': str(operation['scope']),
+            'interval_id': interval_id,
+            'live_wire_ids': [str(wire_id) for wire_id in interval['live_wire_ids']],
+            'owner_live_qubits': {
+                owner_id: int(qubits)
+                for owner_id, qubits in sorted(interval['owner_live_qubits'].items())
+            },
+            'total_live_qubits': int(interval['total_live_qubits']),
+        })
+    return rows
+
+
 def build_public_candidate_materialized_circuit_manifest(
     *,
     reusable_chunk_lowering: Mapping[str, Any],
@@ -507,6 +562,10 @@ def build_public_candidate_materialized_circuit_manifest(
         row_index=len(rows),
     ))
     rows.extend(_phase_run_length_rows(selected_phase_shell, len(rows)))
+    liveness_rows = _liveness_binding_rows(
+        operation_rows=rows,
+        reusable_chunk_lowering=reusable_chunk_lowering,
+    )
     base_rows = [row for row in rows if row['scope'] in ('direct_seed_base', 'arithmetic_leaf_base')]
     qroam_rows = [row for row in rows if row['scope'] == 'qroam_chunk_stream']
     phase_rows = [row for row in rows if row['scope'] == 'phase_shell']
@@ -529,6 +588,11 @@ def build_public_candidate_materialized_circuit_manifest(
         for row in phase_rows
         if row['gate'] in ('single_qubit_rotation', 'controlled_rotation')
     )
+    owner_capacity_by_id = {
+        str(row['owner_id']): int(row['logical_qubits'])
+        for row in reusable_chunk_lowering['owner_capacity']['rows']
+    }
+    wire_catalog = reusable_chunk_lowering['executable_liveness']['wire_catalog']
     checks = {
         'selected_family_matches_public_input': selected_family_name == zkp_attestation_input['selected_family_name'],
         'source_engines_pass': (
@@ -547,12 +611,27 @@ def build_public_candidate_materialized_circuit_manifest(
             and phase_total_measurements == int(selected_phase_shell['total_measurements'])
             and phase_total_rotations == int(selected_phase_shell['total_rotations'])
         ),
+        'liveness_bindings_cover_all_materialized_rows': (
+            len(liveness_rows) == len(rows)
+            and [int(row['row_index']) for row in liveness_rows] == list(range(len(rows)))
+        ),
+        'liveness_bindings_use_known_wires_and_capacity': all(
+            all(wire_id in wire_catalog for wire_id in liveness['live_wire_ids'])
+            and all(int(qubits) <= owner_capacity_by_id[owner_id] for owner_id, qubits in liveness['owner_live_qubits'].items())
+            for liveness in liveness_rows
+        ),
+        'liveness_bindings_reconstruct_public_peak': max(int(row['total_live_qubits']) for row in liveness_rows) == int(public_totals['logical_qubits']),
+        'qroam_liveness_bindings_use_matching_chunk_target': all(
+            f"qroam_chunk_target__{row['table']}__chunk_{row['chunk_index']}" in liveness_rows[int(row['row_index'])]['live_wire_ids']
+            for row in qroam_rows
+        ),
     }
     return {
         'schema': PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA,
         'scope': 'current public reusable-chunk candidate run-length primitive stream manifest',
         'selected_family_name': selected_family_name,
         'stream_encoding': PUBLIC_CANDIDATE_STREAM_COLUMNS,
+        'liveness_binding_encoding': PUBLIC_CANDIDATE_LIVENESS_COLUMNS,
         'source_digests': {
             'reusable_chunk_lowering_sha256': _sha256_payload(reusable_chunk_lowering),
             'counted_resource_ir_sha256': reusable_chunk_lowering['executable_resource_engine']['counted_resource_ir_sha256'],
@@ -562,7 +641,9 @@ def build_public_candidate_materialized_circuit_manifest(
             'zkp_attestation_input_sha256': _sha256_payload(zkp_attestation_input),
         },
         'operation_stream_sha256': _public_candidate_stream_hash(rows),
+        'liveness_binding_stream_sha256': _public_candidate_liveness_hash(liveness_rows),
         'run_length_row_count': len(rows),
+        'liveness_binding_row_count': len(liveness_rows),
         'base_row_count': len(base_rows),
         'qroam_segment_row_count': len(qroam_rows),
         'phase_row_count': len(phase_rows),
@@ -570,6 +651,17 @@ def build_public_candidate_materialized_circuit_manifest(
         'public_totals': {
             'non_clifford': non_clifford_total,
             'logical_qubits': int(public_totals['logical_qubits']),
+        },
+        'materialized_liveness': {
+            'peak_live_qubits': max(int(row['total_live_qubits']) for row in liveness_rows),
+            'peak_interval_ids': sorted({
+                str(row['interval_id'])
+                for row in liveness_rows
+                if int(row['total_live_qubits']) == int(public_totals['logical_qubits'])
+            }),
+            'owner_capacity_qubits': owner_capacity_by_id,
+            'preview_head': liveness_rows[:8],
+            'preview_tail': liveness_rows[-8:],
         },
         'qroam_expansion': {
             'stream_instances': qroam_stream_term_instances,

@@ -11,6 +11,14 @@
     "total_count",
     "non_clifford_count"
   ],
+  "liveness_binding_encoding": [
+    "row_index",
+    "scope",
+    "interval_id",
+    "live_wire_ids",
+    "owner_live_qubits",
+    "total_live_qubits"
+  ],
   "source_digests": {
     "reusable_chunk_lowering_sha256": "9aabe0bab16494379a2b7e7064c57977051e0a52e440e5422af59df63ea5b0b2",
     "counted_resource_ir_sha256": "e814826e787174c05f62f34396fd02b1d77a8728f0c99051f74e1d60294d7188",
@@ -20,7 +28,9 @@
     "zkp_attestation_input_sha256": "9efa691c75eba975d9ae0034db20c59ced8ce1dcc01f314b486aea9f958abbc1"
   },
   "operation_stream_sha256": "79ba35018a46288bf3aacbb12c7e4328e1e3c970c43b596e39c01bbb9f5d086b",
+  "liveness_binding_stream_sha256": "aa64b88076d95f525ee017c4968ef24b15a1c6596ff9abc67db25fb6202d3610",
   "run_length_row_count": 3011,
+  "liveness_binding_row_count": 3011,
   "base_row_count": 32,
   "qroam_segment_row_count": 2976,
   "phase_row_count": 3,
@@ -36,6 +46,379 @@
   "public_totals": {
     "non_clifford": 36957412,
     "logical_qubits": 1199
+  },
+  "materialized_liveness": {
+    "peak_live_qubits": 1199,
+    "peak_interval_ids": [
+      "pc5_stream_00_lookup_x_chunk_0",
+      "pc5_stream_01_lookup_x_chunk_1",
+      "pc5_stream_02_lookup_y_chunk_0",
+      "pc5_stream_03_lookup_y_chunk_1",
+      "pc5_stream_04_lookup_x_plus_y_chunk_0",
+      "pc5_stream_05_lookup_x_plus_y_chunk_1"
+    ],
+    "owner_capacity_qubits": {
+      "arithmetic_slot_register_file": 1024,
+      "lookup_workspace": 173,
+      "control_slot_register_file": 1,
+      "phase_shell_live_register": 1
+    },
+    "preview_head": [
+      {
+        "row_index": 0,
+        "scope": "direct_seed_base",
+        "interval_id": "pc5_stream_00_lookup_x_chunk_0",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_x__chunk_0",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 1024,
+          "control_slot_register_file": 1,
+          "lookup_workspace": 173,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 1199
+      },
+      {
+        "row_index": 1,
+        "scope": "arithmetic_leaf_base",
+        "interval_id": "pc5_stream_00_lookup_x_chunk_0",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_x__chunk_0",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 1024,
+          "control_slot_register_file": 1,
+          "lookup_workspace": 173,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 1199
+      },
+      {
+        "row_index": 2,
+        "scope": "arithmetic_leaf_base",
+        "interval_id": "pc5_stream_00_lookup_x_chunk_0",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_x__chunk_0",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 1024,
+          "control_slot_register_file": 1,
+          "lookup_workspace": 173,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 1199
+      },
+      {
+        "row_index": 3,
+        "scope": "arithmetic_leaf_base",
+        "interval_id": "pc5_stream_00_lookup_x_chunk_0",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_x__chunk_0",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 1024,
+          "control_slot_register_file": 1,
+          "lookup_workspace": 173,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 1199
+      },
+      {
+        "row_index": 4,
+        "scope": "arithmetic_leaf_base",
+        "interval_id": "pc5_stream_00_lookup_x_chunk_0",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_x__chunk_0",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 1024,
+          "control_slot_register_file": 1,
+          "lookup_workspace": 173,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 1199
+      },
+      {
+        "row_index": 5,
+        "scope": "arithmetic_leaf_base",
+        "interval_id": "pc5_stream_00_lookup_x_chunk_0",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_x__chunk_0",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 1024,
+          "control_slot_register_file": 1,
+          "lookup_workspace": 173,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 1199
+      },
+      {
+        "row_index": 6,
+        "scope": "arithmetic_leaf_base",
+        "interval_id": "pc5_stream_00_lookup_x_chunk_0",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_x__chunk_0",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 1024,
+          "control_slot_register_file": 1,
+          "lookup_workspace": 173,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 1199
+      },
+      {
+        "row_index": 7,
+        "scope": "arithmetic_leaf_base",
+        "interval_id": "pc5_stream_00_lookup_x_chunk_0",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_x__chunk_0",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 1024,
+          "control_slot_register_file": 1,
+          "lookup_workspace": 173,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 1199
+      }
+    ],
+    "preview_tail": [
+      {
+        "row_index": 3003,
+        "scope": "qroam_chunk_stream",
+        "interval_id": "pc5_stream_05_lookup_x_plus_y_chunk_1",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_x_plus_y__chunk_1",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 1024,
+          "control_slot_register_file": 1,
+          "lookup_workspace": 173,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 1199
+      },
+      {
+        "row_index": 3004,
+        "scope": "qroam_chunk_stream",
+        "interval_id": "pc5_stream_05_lookup_x_plus_y_chunk_1",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_x_plus_y__chunk_1",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 1024,
+          "control_slot_register_file": 1,
+          "lookup_workspace": 173,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 1199
+      },
+      {
+        "row_index": 3005,
+        "scope": "qroam_chunk_stream",
+        "interval_id": "pc5_stream_05_lookup_x_plus_y_chunk_1",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_x_plus_y__chunk_1",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 1024,
+          "control_slot_register_file": 1,
+          "lookup_workspace": 173,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 1199
+      },
+      {
+        "row_index": 3006,
+        "scope": "qroam_chunk_stream",
+        "interval_id": "pc5_stream_05_lookup_x_plus_y_chunk_1",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_x_plus_y__chunk_1",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 1024,
+          "control_slot_register_file": 1,
+          "lookup_workspace": 173,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 1199
+      },
+      {
+        "row_index": 3007,
+        "scope": "qroam_chunk_stream",
+        "interval_id": "pc5_stream_05_lookup_x_plus_y_chunk_1",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_x_plus_y__chunk_1",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 1024,
+          "control_slot_register_file": 1,
+          "lookup_workspace": 173,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 1199
+      },
+      {
+        "row_index": 3008,
+        "scope": "phase_shell",
+        "interval_id": "pc5_stream_00_lookup_x_chunk_0",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_x__chunk_0",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 1024,
+          "control_slot_register_file": 1,
+          "lookup_workspace": 173,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 1199
+      },
+      {
+        "row_index": 3009,
+        "scope": "phase_shell",
+        "interval_id": "pc5_stream_00_lookup_x_chunk_0",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_x__chunk_0",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 1024,
+          "control_slot_register_file": 1,
+          "lookup_workspace": 173,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 1199
+      },
+      {
+        "row_index": 3010,
+        "scope": "phase_shell",
+        "interval_id": "pc5_stream_00_lookup_x_chunk_0",
+        "live_wire_ids": [
+          "qx",
+          "qy",
+          "qz",
+          "qchunk",
+          "folded_lookup_control_workspace",
+          "qroam_chunk_target__lookup_x__chunk_0",
+          "f_lookup_inf",
+          "semiclassical_qft_live_phase_bit"
+        ],
+        "owner_live_qubits": {
+          "arithmetic_slot_register_file": 1024,
+          "control_slot_register_file": 1,
+          "lookup_workspace": 173,
+          "phase_shell_live_register": 1
+        },
+        "total_live_qubits": 1199
+      }
+    ]
   },
   "qroam_expansion": {
     "stream_instances": 186,
@@ -248,7 +631,11 @@
     "qroam_rows_expand_every_public_stream_segment": true,
     "qroam_rows_sum_to_public_qroam_derivation": true,
     "base_rows_match_public_non_qroam_derivation": true,
-    "phase_rows_bind_selected_phase_shell": true
+    "phase_rows_bind_selected_phase_shell": true,
+    "liveness_bindings_cover_all_materialized_rows": true,
+    "liveness_bindings_use_known_wires_and_capacity": true,
+    "liveness_bindings_reconstruct_public_peak": true,
+    "qroam_liveness_bindings_use_matching_chunk_target": true
   },
   "pass": true,
   "boundary": [

@@ -76,6 +76,7 @@ def test_public_engine_manifest_reconstructs_checked_artifact() -> None:
     assert expected['primitive_operation_evidence']['qroam_primitive_certificate']['whole_oracle_non_clifford'] == reusable['non_clifford_derivation']['qroam_chunk_non_clifford']
     assert expected['primitive_operation_evidence']['phase_shell']['phase_register_bits'] == expected['primitive_operation_evidence']['phase_shell']['hadamard_count']
     assert expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['non_clifford'] == reusable['non_clifford_derivation']['candidate_total_non_clifford']
+    assert expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['peak_live_qubits'] == reusable['qubit_derivation']['candidate_total_logical_qubits']
 
 
 def test_public_engine_manifest_rejects_engine_total_drift() -> None:
