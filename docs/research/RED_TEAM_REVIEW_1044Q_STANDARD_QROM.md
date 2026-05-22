@@ -364,6 +364,21 @@ when the resource-certificate digest is refreshed. This is a useful guard
 against another manually summed arithmetic ledger, but it is still not a full
 Clifford-complete reversible modular-arithmetic netlist.
 
+Current additional hardening:
+
+- Generated repeated-ladder arithmetic blocks now use bit-index operands rather
+  than monotone operation ordinals. The arithmetic operation IR records a
+  generator operand contract for every generated block, and
+  `arithmetic_operation_ir_checks` plus the SP1 guest reject ladder streams
+  whose operand-domain profile no longer matches bit-index semantics. A Rust
+  negative test mutates this contract while refreshing the resource digest and
+  still fails in the guest.
+- The SP1 guest now validates the embedded
+  `executable_modular_circuit_ir` and
+  `executable_circuit_ir_count_certificate` directly: it reconstructs per-step,
+  per-operation, and per-opcode non-Clifford counts from the modular IR and
+  rejects forged IR step counts or forged executable-IR count certificates.
+
 Required hardening:
 
 - Replace arithmetic block count formulas with a primitive circuit builder.
@@ -942,8 +957,9 @@ Evidence:
   `arithmetic_lowerings.json`, and exhaustively executes reduced-width
   pseudo-Mersenne analogues for add/sub/mul/mul-by-21.
 - `reusable_chunk_lowering.json` embeds the modular certificate, its internal
-  check must pass, and the SP1 guest validates the embedded certificate before
-  accepting the reusable-chunk resource digest.
+  check must pass, and the SP1 guest validates the embedded certificate,
+  executable modular IR, and executable-IR count certificate before accepting
+  the reusable-chunk resource digest.
 
 Impact:
 
@@ -951,6 +967,9 @@ Impact:
   concrete mod-p reduction schedule, is narrowed by an executable certificate
   and forged-stage-count/reduced-case tests in both the Python integrity layer
   and the SP1 guest.
+- Forging the modular executable IR itself or the executable-IR count
+  certificate is now covered by Rust guest negative tests, not only by Python
+  artifact-regeneration checks.
 - A reviewer can still object that the counted arithmetic is an
   arithmetic-kernel model, not a Clifford-complete reversible netlist for every
   field opcode.
@@ -1503,11 +1522,17 @@ Current remediation:
   reconstructs arithmetic block/stage/kernel/selected-leaf primitive counts from
   materialized operation streams and digests. The resource-liveness certificate
   embeds the full compact arithmetic IR, and fast integrity checks regenerate it.
+  The generated-block operand contract also distinguishes bit-index ladder
+  operands from operation ordinals, so the IR's operand-capacity profile is no
+  longer inflated by generator event numbering. The SP1 guest now validates
+  those generator contracts instead of trusting the artifact's `pass` field.
 - `modular_arithmetic_certificate.json` now also carries an executable
   modular-circuit IR for canonical add/sub, double-sub, triple, multiplication
   by 21, and pseudo-Mersenne multiplication. Reduced-width exhaustive tests run
-  through that IR, and the 256-bit IR opcode counts are checked against
-  `arithmetic_lowerings.json` and the reusable-chunk public headline metadata.
+  through that IR, the 256-bit IR opcode counts are checked against
+  `arithmetic_lowerings.json` and the reusable-chunk public headline metadata,
+  and the SP1 guest now reconstructs the executable modular IR step/opcode
+  counts before accepting the resource certificate.
 
 Still open:
 

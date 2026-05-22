@@ -40,16 +40,28 @@ def materialize_arithmetic_primitive_operations(block: Mapping[str, Any]) -> Lis
         return list(block['primitive_operations'])
     generator = block['primitive_operation_generator']
     kind = str(generator['kind'])
-    count = int(generator['count'])
     if kind == 'repeated_gate':
+        count = int(generator['count'])
         return [_primitive_operation(str(generator['gate']), index) for index in range(count)]
     if kind == 'repeated_gate_with_measurement':
+        count = int(generator['count'])
         gate = str(generator['gate'])
         measurement_gate = str(generator['measurement_gate'])
         return [
             operation
             for index in range(count)
             for operation in (_primitive_operation(gate, index), _primitive_operation(measurement_gate, index))
+        ]
+    if kind == 'repeated_ladder_with_measurement':
+        gate = str(generator['gate'])
+        measurement_gate = str(generator['measurement_gate'])
+        bit_count = int(generator['bit_count'])
+        repeat_count = int(generator['repeat_count'])
+        return [
+            operation
+            for _ in range(repeat_count)
+            for bit_index in range(bit_count)
+            for operation in (_primitive_operation(gate, bit_index), _primitive_operation(measurement_gate, bit_index))
         ]
     raise ValueError(f'unknown arithmetic primitive operation generator kind: {kind}')
 
@@ -144,10 +156,11 @@ def _repeated_ladder_block(name: str, summary: str, bit_count: int, repeat_count
         summary=summary,
         instance_count=operation_count,
         primitive_operation_generator={
-            'kind': 'repeated_gate_with_measurement',
+            'kind': 'repeated_ladder_with_measurement',
             'gate': 'ccx',
             'measurement_gate': 'measurement',
-            'count': operation_count,
+            'bit_count': int(bit_count),
+            'repeat_count': int(repeat_count),
             'primitive_counts_total': _primitive_counts(ccx=operation_count, measurement=operation_count),
         },
         notes=notes,

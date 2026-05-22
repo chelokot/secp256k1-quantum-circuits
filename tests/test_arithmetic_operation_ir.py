@@ -37,6 +37,28 @@ def test_arithmetic_operation_ir_reconstructs_checked_artifact() -> None:
     assert observed['schema'] == ARITHMETIC_OPERATION_IR_SCHEMA
     assert observed['pass'] is True
     assert all(observed['checks'].values())
+    assert observed['summary']['generated_ladder_max_operand_slots_required'] == 287
+
+
+def test_arithmetic_operation_ir_ladder_generators_use_bit_indices() -> None:
+    observed = json.loads(
+        (REPO_ROOT / 'compiler_verification_project' / 'artifacts' / 'arithmetic_operation_ir.json').read_text()
+    )
+    ladder_contracts = [
+        block['source_contract']['generator_operand_contract']
+        for kernel in observed['kernels']
+        for stage in kernel['stages']
+        for block in stage['blocks']
+        if (
+            block['source_contract']['generator_operand_contract'] is not None
+            and block['source_contract']['generator_operand_contract']['kind'] == 'repeated_ladder_with_measurement'
+        )
+    ]
+    assert ladder_contracts
+    assert all(contract['pass'] is True for contract in ladder_contracts)
+    assert all(contract['operand_domain'] == 'ladder_bit_index' for contract in ladder_contracts)
+    assert max(contract['observed_operand_slots_required'] for contract in ladder_contracts) == 287
+    assert any(contract['repeat_count'] > 1 for contract in ladder_contracts)
 
 
 def test_arithmetic_operation_ir_rejects_forged_block_total() -> None:
@@ -48,3 +70,17 @@ def test_arithmetic_operation_ir_rejects_forged_block_total() -> None:
     )
     assert observed['pass'] is False
     assert observed['checks']['block_totals_match_materialized_operations'] is False
+
+
+def test_arithmetic_operation_ir_rejects_ladder_generator_shape_forgery() -> None:
+    lowerings = copy.deepcopy(_arithmetic_lowerings())
+    generator = lowerings['kernels'][0]['stages'][3]['blocks'][0]['primitive_operation_generator']
+    assert generator['kind'] == 'repeated_ladder_with_measurement'
+    generator['kind'] = 'repeated_gate_with_measurement'
+    generator['count'] = generator['bit_count'] * generator['repeat_count']
+    observed = build_arithmetic_operation_ir(
+        arithmetic_lowerings=lowerings,
+        leaf_opcode_histogram=leaf_opcode_histogram(),
+    )
+    assert observed['pass'] is False
+    assert observed['checks']['non_qroam_generated_ladders_use_typed_ladder_generator'] is False

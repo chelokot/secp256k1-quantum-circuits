@@ -3641,6 +3641,242 @@ fn json_primitive_counts(value: &Value, key: &str) -> BTreeMap<String, u64> {
     counts
 }
 
+fn validate_modular_arithmetic_certificate(
+    modular_certificate: &Value,
+    claim: &PreparedClaimSummary,
+) {
+    assert_eq!(
+        json_string_field(modular_certificate, "schema"),
+        "compiler-project-modular-arithmetic-certificate-v1"
+    );
+    assert!(json_bool_field(modular_certificate, "pass"));
+    let modular_checks = json_object_field(modular_certificate, "checks")
+        .as_object()
+        .expect("modular arithmetic certificate checks must be an object");
+    assert!(
+        modular_checks
+            .values()
+            .all(|value| value.as_bool() == Some(true)),
+        "modular arithmetic certificate contains a failing check"
+    );
+    let secp_parameters = json_object_field(modular_certificate, "secp256k1_parameters");
+    assert_eq!(
+        json_u64_field(secp_parameters, "field_bits"),
+        claim.field_bits as u64
+    );
+    assert_eq!(json_u64_field(secp_parameters, "shift"), 32);
+    assert_eq!(json_u64_field(secp_parameters, "low_term"), 977);
+    assert_eq!(
+        json_u64_field(secp_parameters, "canonical_subtract_passes"),
+        2
+    );
+    assert_eq!(
+        json_string_field(secp_parameters, "modulus_hex"),
+        "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f"
+    );
+    let opcode_certificate = json_object_field(modular_certificate, "opcode_count_certificate");
+    assert!(json_bool_field(opcode_certificate, "opcode_counts_match"));
+    let chain = json_array_field(opcode_certificate, "mul_const_21_addition_chain");
+    let expected_chain = [1_u64, 2, 4, 8, 16, 20, 21];
+    assert_eq!(chain.len(), expected_chain.len());
+    for (index, expected_value) in expected_chain.iter().enumerate() {
+        assert_eq!(chain[index].as_u64(), Some(*expected_value));
+    }
+    let field_mul_stage =
+        json_object_field(modular_certificate, "field_mul_stage_count_certificate");
+    assert!(json_bool_field(field_mul_stage, "stage_counts_match"));
+    let modular_add_cost = 2 * (claim.field_bits as u64 - 1);
+    let field_mul_cost = json_u64_field(field_mul_stage, "expected_total_ccx");
+    let expected_opcode_costs = BTreeMap::from([
+        ("field_add", modular_add_cost),
+        ("field_sub", modular_add_cost),
+        ("field_sub_sum", 2 * modular_add_cost),
+        ("field_triple", 2 * modular_add_cost),
+        ("mul_const", 6 * modular_add_cost),
+        ("field_mul", field_mul_cost),
+    ]);
+    let expected_opcode_counts =
+        json_object_field(opcode_certificate, "expected_non_clifford_per_opcode")
+            .as_object()
+            .expect("expected opcode counts must be an object");
+    let observed_opcode_counts =
+        json_object_field(opcode_certificate, "observed_non_clifford_per_opcode")
+            .as_object()
+            .expect("observed opcode counts must be an object");
+    assert_eq!(expected_opcode_counts.len(), observed_opcode_counts.len());
+    for (opcode, expected_cost) in &expected_opcode_costs {
+        assert_eq!(
+            expected_opcode_counts.get(*opcode).and_then(Value::as_u64),
+            Some(*expected_cost)
+        );
+        assert_eq!(
+            observed_opcode_counts.get(*opcode).and_then(Value::as_u64),
+            Some(*expected_cost)
+        );
+    }
+    let executable_ir = json_object_field(modular_certificate, "executable_modular_circuit_ir");
+    assert_eq!(
+        json_string_field(executable_ir, "schema"),
+        "compiler-project-executable-modular-circuit-ir-v1"
+    );
+    assert_eq!(
+        json_u64_field(executable_ir, "field_bits"),
+        claim.field_bits as u64
+    );
+    let pseudo_mersenne = json_object_field(executable_ir, "pseudo_mersenne");
+    assert_eq!(
+        json_u64_field(pseudo_mersenne, "shift"),
+        json_u64_field(secp_parameters, "shift")
+    );
+    assert_eq!(
+        json_u64_field(pseudo_mersenne, "low_term"),
+        json_u64_field(secp_parameters, "low_term")
+    );
+    assert_eq!(
+        json_u64_field(pseudo_mersenne, "canonical_subtract_passes"),
+        json_u64_field(secp_parameters, "canonical_subtract_passes")
+    );
+    let ir_chain = json_array_field(executable_ir, "mul_const_21_addition_chain");
+    assert_eq!(ir_chain.len(), expected_chain.len());
+    for (index, expected_value) in expected_chain.iter().enumerate() {
+        assert_eq!(ir_chain[index].as_u64(), Some(*expected_value));
+    }
+    let ir_opcode_counts = json_object_field(executable_ir, "non_clifford_by_opcode")
+        .as_object()
+        .expect("IR opcode counts must be an object");
+    let operations = json_array_field(executable_ir, "operations");
+    assert_eq!(operations.len(), expected_opcode_costs.len());
+    let mut seen_opcodes = BTreeSet::new();
+    for operation in operations {
+        let opcode = json_string_field(operation, "opcode");
+        let expected_cost = *expected_opcode_costs
+            .get(opcode)
+            .unwrap_or_else(|| panic!("unexpected modular circuit opcode: {opcode}"));
+        assert!(seen_opcodes.insert(opcode.to_owned()));
+        let steps = json_array_field(operation, "steps");
+        assert!(
+            !steps.is_empty(),
+            "modular circuit operation has no steps: {opcode}"
+        );
+        let mut step_counts: BTreeMap<String, u64> = BTreeMap::new();
+        for count_key in ["ccx", "cx", "x", "measurement"] {
+            step_counts.insert(count_key.to_owned(), 0);
+        }
+        for step in steps {
+            let bit_count = json_u64_field(step, "bit_count");
+            let repeat_count = json_u64_field(step, "repeat_count");
+            let measured = json_bool_field(step, "measured");
+            let step_counts_total = json_primitive_counts(step, "primitive_counts_total");
+            assert_eq!(step_counts_total["ccx"], bit_count * repeat_count);
+            assert_eq!(
+                step_counts_total["measurement"],
+                if measured {
+                    step_counts_total["ccx"]
+                } else {
+                    0
+                }
+            );
+            for count_key in ["ccx", "cx", "x", "measurement"] {
+                *step_counts.get_mut(count_key).unwrap() += step_counts_total[count_key];
+            }
+        }
+        assert_eq!(
+            step_counts,
+            json_primitive_counts(operation, "primitive_counts_total")
+        );
+        assert_eq!(
+            json_u64_field(operation, "non_clifford_total"),
+            step_counts["ccx"]
+        );
+        assert_eq!(step_counts["ccx"], expected_cost);
+        assert_eq!(
+            ir_opcode_counts.get(opcode).and_then(Value::as_u64),
+            Some(expected_cost)
+        );
+    }
+    assert_eq!(seen_opcodes.len(), expected_opcode_costs.len());
+    let circuit_ir_certificate = json_object_field(
+        modular_certificate,
+        "executable_circuit_ir_count_certificate",
+    );
+    assert_eq!(
+        json_string_field(circuit_ir_certificate, "ir_schema"),
+        json_string_field(executable_ir, "schema")
+    );
+    assert!(json_bool_field(
+        circuit_ir_certificate,
+        "counts_match_arithmetic_lowerings"
+    ));
+    let circuit_expected =
+        json_object_field(circuit_ir_certificate, "expected_non_clifford_per_opcode")
+            .as_object()
+            .expect("circuit IR expected counts must be an object");
+    let circuit_observed =
+        json_object_field(circuit_ir_certificate, "observed_non_clifford_per_opcode")
+            .as_object()
+            .expect("circuit IR observed counts must be an object");
+    assert_eq!(circuit_expected.len(), expected_opcode_costs.len());
+    assert_eq!(circuit_observed.len(), expected_opcode_costs.len());
+    for (opcode, expected_cost) in &expected_opcode_costs {
+        assert_eq!(
+            circuit_expected.get(*opcode).and_then(Value::as_u64),
+            Some(*expected_cost)
+        );
+        assert_eq!(
+            circuit_observed.get(*opcode).and_then(Value::as_u64),
+            Some(*expected_cost)
+        );
+    }
+    let expected_stage_ccx = json_object_field(field_mul_stage, "expected_stage_ccx")
+        .as_object()
+        .expect("expected_stage_ccx must be an object");
+    let observed_stage_ccx = json_object_field(field_mul_stage, "observed_stage_ccx")
+        .as_object()
+        .expect("observed_stage_ccx must be an object");
+    assert_eq!(expected_stage_ccx.len(), observed_stage_ccx.len());
+    let mut expected_total_ccx = 0u64;
+    let mut observed_total_ccx = 0u64;
+    for (stage_name, expected_value) in expected_stage_ccx {
+        let expected_ccx = expected_value
+            .as_u64()
+            .expect("expected field_mul stage count must be u64");
+        let observed_ccx = observed_stage_ccx
+            .get(stage_name)
+            .and_then(Value::as_u64)
+            .expect("observed field_mul stage count must be u64");
+        assert_eq!(observed_ccx, expected_ccx);
+        expected_total_ccx += expected_ccx;
+        observed_total_ccx += observed_ccx;
+    }
+    assert_eq!(
+        expected_total_ccx,
+        json_u64_field(field_mul_stage, "expected_total_ccx")
+    );
+    assert_eq!(
+        observed_total_ccx,
+        json_u64_field(field_mul_stage, "observed_total_ccx")
+    );
+    assert_eq!(
+        json_u64_field(field_mul_stage, "observed_total_ccx"),
+        json_u64_field(field_mul_stage, "expected_total_ccx")
+    );
+    for row in json_array_field(modular_certificate, "reduced_width_exhaustive_cases") {
+        assert!(json_bool_field(row, "pass"));
+        assert_eq!(
+            json_u64_field(row, "rows_checked"),
+            json_u64_field(row, "modulus") * json_u64_field(row, "modulus")
+        );
+        assert!(
+            json_array_field(row, "failures").is_empty(),
+            "reduced-width modular arithmetic case must not contain failures"
+        );
+        assert_eq!(
+            json_string_field(json_object_field(row, "circuit_ir"), "schema"),
+            "compiler-project-executable-modular-circuit-ir-v1"
+        );
+    }
+}
+
 fn validate_resource_certificate(
     certificate: &Value,
     claim: &PreparedClaimSummary,
@@ -3940,7 +4176,8 @@ fn validate_resource_certificate(
         "arithmetic operation IR must contain blocks"
     );
     assert!(
-        json_u64_field(arithmetic_ir_summary, "max_block_operand_slots_required") >= claim.field_bits as u64,
+        json_u64_field(arithmetic_ir_summary, "max_block_operand_slots_required")
+            >= claim.field_bits as u64,
         "arithmetic operation IR operand profile must cover at least one field register"
     );
     let primitive_count_keys = ["ccx", "cx", "x", "measurement"];
@@ -3949,6 +4186,7 @@ fn validate_resource_certificate(
     let mut observed_block_count = 0u64;
     let mut observed_kernel_operation_count = 0u64;
     let mut max_block_operand_slots_required = 0u64;
+    let mut generated_ladder_max_operand_slots_required = 0u64;
     let mut arithmetic_kernel_lookup: BTreeMap<String, (u64, u64, String)> = BTreeMap::new();
     for kernel in json_array_field(arithmetic_operation_ir, "kernels") {
         observed_kernel_count += 1;
@@ -4011,8 +4249,100 @@ fn validate_resource_certificate(
                 let operand_profile = json_object_field(block, "operand_profile");
                 assert_eq!(json_u64_field(operand_profile, "negative_operand_count"), 0);
                 assert_eq!(json_u64_field(operand_profile, "too_wide_operand_rows"), 0);
-                max_block_operand_slots_required = max_block_operand_slots_required
-                    .max(json_u64_field(operand_profile, "operand_slots_required"));
+                let operand_slots_required =
+                    json_u64_field(operand_profile, "operand_slots_required");
+                max_block_operand_slots_required =
+                    max_block_operand_slots_required.max(operand_slots_required);
+                let generator_contract = json_object_field(
+                    json_object_field(block, "source_contract"),
+                    "generator_operand_contract",
+                );
+                if !generator_contract.is_null() {
+                    assert!(json_bool_field(generator_contract, "pass"));
+                    assert_eq!(
+                        json_u64_field(generator_contract, "observed_operation_count"),
+                        json_u64_field(block, "operation_count")
+                    );
+                    assert_eq!(
+                        json_u64_field(generator_contract, "observed_operand_slots_required"),
+                        operand_slots_required
+                    );
+                    match json_string_field(generator_contract, "kind") {
+                        "repeated_ladder_with_measurement" => {
+                            assert_eq!(
+                                json_string_field(generator_contract, "operand_domain"),
+                                "ladder_bit_index"
+                            );
+                            let bit_count = json_u64_field(generator_contract, "bit_count");
+                            let repeat_count = json_u64_field(generator_contract, "repeat_count");
+                            assert_eq!(
+                                json_u64_field(generator_contract, "expected_operation_count"),
+                                2 * bit_count * repeat_count
+                            );
+                            assert_eq!(
+                                json_u64_field(
+                                    generator_contract,
+                                    "expected_operand_slots_required"
+                                ),
+                                bit_count
+                            );
+                            assert_eq!(operand_slots_required, bit_count);
+                            assert!(
+                                bit_count <= claim.field_bits as u64 + 32,
+                                "generated ladder operand domain must be bit-index bounded"
+                            );
+                            generated_ladder_max_operand_slots_required =
+                                generated_ladder_max_operand_slots_required.max(bit_count);
+                        }
+                        "repeated_gate" => {
+                            assert!(
+                                block_name.contains("qroam"),
+                                "event-index repeated gates are only accepted for QROAM blocks"
+                            );
+                            assert_eq!(
+                                json_string_field(generator_contract, "operand_domain"),
+                                "generator_event_index"
+                            );
+                            let count = json_u64_field(generator_contract, "count");
+                            assert_eq!(
+                                json_u64_field(generator_contract, "expected_operation_count"),
+                                count
+                            );
+                            assert_eq!(
+                                json_u64_field(
+                                    generator_contract,
+                                    "expected_operand_slots_required"
+                                ),
+                                count
+                            );
+                            assert_eq!(operand_slots_required, count);
+                        }
+                        "repeated_gate_with_measurement" => {
+                            assert!(
+                                block_name.contains("qroam"),
+                                "event-index repeated gates are only accepted for QROAM blocks"
+                            );
+                            assert_eq!(
+                                json_string_field(generator_contract, "operand_domain"),
+                                "generator_event_index"
+                            );
+                            let count = json_u64_field(generator_contract, "count");
+                            assert_eq!(
+                                json_u64_field(generator_contract, "expected_operation_count"),
+                                2 * count
+                            );
+                            assert_eq!(
+                                json_u64_field(
+                                    generator_contract,
+                                    "expected_operand_slots_required"
+                                ),
+                                count
+                            );
+                            assert_eq!(operand_slots_required, count);
+                        }
+                        kind => panic!("unknown arithmetic generator contract kind: {kind}"),
+                    }
+                }
                 let block_counts = json_primitive_counts(block, "primitive_counts_total");
                 assert_eq!(
                     block_counts,
@@ -4100,6 +4430,13 @@ fn validate_resource_certificate(
         max_block_operand_slots_required,
         json_u64_field(arithmetic_ir_summary, "max_block_operand_slots_required")
     );
+    assert_eq!(
+        generated_ladder_max_operand_slots_required,
+        json_u64_field(
+            arithmetic_ir_summary,
+            "generated_ladder_max_operand_slots_required"
+        )
+    );
     let arithmetic_leaf = json_object_field(arithmetic_operation_ir, "leaf_arithmetic_summary");
     assert_eq!(
         json_u64_field(arithmetic_leaf, "non_clifford_total"),
@@ -4127,9 +4464,9 @@ fn validate_resource_certificate(
         let instance_count = json_u64_field(row, "leaf_instance_count");
         let per_instance = json_u64_field(row, "kernel_non_clifford_per_instance");
         let (kernel_operation_count, kernel_non_clifford, kernel_stage_digest) =
-            arithmetic_kernel_lookup
-                .get(opcode)
-                .unwrap_or_else(|| panic!("leaf arithmetic row references unknown kernel: {opcode}"));
+            arithmetic_kernel_lookup.get(opcode).unwrap_or_else(|| {
+                panic!("leaf arithmetic row references unknown kernel: {opcode}")
+            });
         assert_eq!(
             json_u64_field(row, "kernel_operation_count"),
             *kernel_operation_count
@@ -4363,7 +4700,10 @@ fn validate_reusable_chunk_lowering(
         0
     );
     let scratch_contract = json_object_field(executable, "scratch_execution_contract");
-    assert_eq!(json_string_field(scratch_contract, "scratch_register"), "qchunk");
+    assert_eq!(
+        json_string_field(scratch_contract, "scratch_register"),
+        "qchunk"
+    );
     assert_eq!(
         json_string_field(scratch_contract, "opcode"),
         "complete_a0_reusable_chunk_tail"
@@ -4612,117 +4952,7 @@ fn validate_reusable_chunk_lowering(
     );
 
     let modular_certificate = json_object_field(certificate, "modular_arithmetic_certificate");
-    assert_eq!(
-        json_string_field(modular_certificate, "schema"),
-        "compiler-project-modular-arithmetic-certificate-v1"
-    );
-    assert!(json_bool_field(modular_certificate, "pass"));
-    let modular_checks = json_object_field(modular_certificate, "checks")
-        .as_object()
-        .expect("modular arithmetic certificate checks must be an object");
-    assert!(
-        modular_checks
-            .values()
-            .all(|value| value.as_bool() == Some(true)),
-        "modular arithmetic certificate contains a failing check"
-    );
-    let secp_parameters = json_object_field(modular_certificate, "secp256k1_parameters");
-    assert_eq!(
-        json_u64_field(secp_parameters, "field_bits"),
-        claim.field_bits as u64
-    );
-    assert_eq!(json_u64_field(secp_parameters, "shift"), 32);
-    assert_eq!(json_u64_field(secp_parameters, "low_term"), 977);
-    assert_eq!(
-        json_u64_field(secp_parameters, "canonical_subtract_passes"),
-        2
-    );
-    assert_eq!(
-        json_string_field(secp_parameters, "modulus_hex"),
-        "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f"
-    );
-    let opcode_certificate = json_object_field(modular_certificate, "opcode_count_certificate");
-    assert!(json_bool_field(opcode_certificate, "opcode_counts_match"));
-    let chain = json_array_field(opcode_certificate, "mul_const_21_addition_chain");
-    let expected_chain = [1_u64, 2, 4, 8, 16, 20, 21];
-    assert_eq!(chain.len(), expected_chain.len());
-    for (index, expected_value) in expected_chain.iter().enumerate() {
-        assert_eq!(chain[index].as_u64(), Some(*expected_value));
-    }
-    let expected_opcode_counts = json_object_field(opcode_certificate, "expected_non_clifford_per_opcode")
-        .as_object()
-        .expect("expected opcode counts must be an object");
-    let observed_opcode_counts = json_object_field(opcode_certificate, "observed_non_clifford_per_opcode")
-        .as_object()
-        .expect("observed opcode counts must be an object");
-    assert_eq!(expected_opcode_counts.len(), observed_opcode_counts.len());
-    let field_mul_stage =
-        json_object_field(modular_certificate, "field_mul_stage_count_certificate");
-    assert!(json_bool_field(field_mul_stage, "stage_counts_match"));
-    let modular_add_cost = 2 * (claim.field_bits as u64 - 1);
-    let field_mul_cost = json_u64_field(field_mul_stage, "expected_total_ccx");
-    let expected_opcode_costs = BTreeMap::from([
-        ("field_add", modular_add_cost),
-        ("field_sub", modular_add_cost),
-        ("field_sub_sum", 2 * modular_add_cost),
-        ("field_triple", 2 * modular_add_cost),
-        ("mul_const", 6 * modular_add_cost),
-        ("field_mul", field_mul_cost),
-    ]);
-    for (opcode, expected_cost) in expected_opcode_costs {
-        assert_eq!(
-            expected_opcode_counts.get(opcode).and_then(Value::as_u64),
-            Some(expected_cost)
-        );
-        assert_eq!(
-            observed_opcode_counts.get(opcode).and_then(Value::as_u64),
-            Some(expected_cost)
-        );
-    }
-    let expected_stage_ccx = json_object_field(field_mul_stage, "expected_stage_ccx")
-        .as_object()
-        .expect("expected_stage_ccx must be an object");
-    let observed_stage_ccx = json_object_field(field_mul_stage, "observed_stage_ccx")
-        .as_object()
-        .expect("observed_stage_ccx must be an object");
-    assert_eq!(expected_stage_ccx.len(), observed_stage_ccx.len());
-    let mut expected_total_ccx = 0u64;
-    let mut observed_total_ccx = 0u64;
-    for (stage_name, expected_value) in expected_stage_ccx {
-        let expected_ccx = expected_value
-            .as_u64()
-            .expect("expected field_mul stage count must be u64");
-        let observed_ccx = observed_stage_ccx
-            .get(stage_name)
-            .and_then(Value::as_u64)
-            .expect("observed field_mul stage count must be u64");
-        assert_eq!(observed_ccx, expected_ccx);
-        expected_total_ccx += expected_ccx;
-        observed_total_ccx += observed_ccx;
-    }
-    assert_eq!(
-        expected_total_ccx,
-        json_u64_field(field_mul_stage, "expected_total_ccx")
-    );
-    assert_eq!(
-        observed_total_ccx,
-        json_u64_field(field_mul_stage, "observed_total_ccx")
-    );
-    assert_eq!(
-        json_u64_field(field_mul_stage, "observed_total_ccx"),
-        json_u64_field(field_mul_stage, "expected_total_ccx")
-    );
-    for row in json_array_field(modular_certificate, "reduced_width_exhaustive_cases") {
-        assert!(json_bool_field(row, "pass"));
-        assert_eq!(
-            json_u64_field(row, "rows_checked"),
-            json_u64_field(row, "modulus") * json_u64_field(row, "modulus")
-        );
-        assert!(
-            json_array_field(row, "failures").is_empty(),
-            "reduced-width modular arithmetic case must not contain failures"
-        );
-    }
+    validate_modular_arithmetic_certificate(modular_certificate, claim);
 
     let primitive_contract =
         json_object_field(certificate, "chunked_multiplier_primitive_contract");
@@ -4943,9 +5173,9 @@ fn validate_reusable_chunk_lowering(
                 seen_live_wires.insert(wire_id.to_owned()),
                 "counted_resource_ir interval double-counts a live wire"
             );
-            let wire = counted_wire_catalog
-                .get(wire_id)
-                .unwrap_or_else(|| panic!("counted_resource_ir live wire missing from catalog: {wire_id}"));
+            let wire = counted_wire_catalog.get(wire_id).unwrap_or_else(|| {
+                panic!("counted_resource_ir live wire missing from catalog: {wire_id}")
+            });
             let owner_id = json_string_field(wire, "owner_id").to_owned();
             let qubits = json_u64_field(wire, "qubits");
             *owner_totals.entry(owner_id).or_insert(0) += qubits;
@@ -4967,7 +5197,9 @@ fn validate_reusable_chunk_lowering(
                     .expect("counted_resource_ir interval missing owner total"),
                 *qubits
             );
-            let current = owner_peak_from_wire_catalog.entry(owner_id.clone()).or_insert(0);
+            let current = owner_peak_from_wire_catalog
+                .entry(owner_id.clone())
+                .or_insert(0);
             *current = (*current).max(*qubits);
         }
     }
@@ -5147,7 +5379,9 @@ fn validate_reusable_chunk_lowering(
         executable_intervals.len(),
         "counted_resource_ir and executable_liveness must have the same interval count"
     );
-    for (counted_interval, executable_interval) in counted_intervals.iter().zip(executable_intervals) {
+    for (counted_interval, executable_interval) in
+        counted_intervals.iter().zip(executable_intervals)
+    {
         assert_eq!(
             json_string_field(counted_interval, "interval_id"),
             json_string_field(executable_interval, "interval_id")
@@ -5284,12 +5518,14 @@ fn validate_reusable_chunk_lowering(
             .all(|value| value.as_bool() == Some(true)),
         "resource_contract_engine contains a failing check"
     );
-    let contract_owner_peaks = json_object_field(resource_contract_engine, "owner_peak_live_qubits")
-        .as_object()
-        .expect("resource_contract_engine owner peaks must be an object");
-    let contract_owner_capacity = json_object_field(resource_contract_engine, "owner_capacity_qubits")
-        .as_object()
-        .expect("resource_contract_engine owner capacity must be an object");
+    let contract_owner_peaks =
+        json_object_field(resource_contract_engine, "owner_peak_live_qubits")
+            .as_object()
+            .expect("resource_contract_engine owner peaks must be an object");
+    let contract_owner_capacity =
+        json_object_field(resource_contract_engine, "owner_capacity_qubits")
+            .as_object()
+            .expect("resource_contract_engine owner capacity must be an object");
     assert_eq!(contract_owner_peaks, liveness_owner_peak);
     assert_eq!(contract_owner_capacity, liveness_owner_capacity);
 
@@ -5798,8 +6034,18 @@ mod tests {
     fn prepared_attestation_rejects_forged_arithmetic_operation_ir_block_total() {
         let mut input = checked_input();
         input.resource_certificate_document.payload.0["arithmetic_operation_ir"]["kernels"][0]
-            ["stages"][0]["blocks"][0]["primitive_counts_total"]["ccx"] =
-            serde_json::json!(0);
+            ["stages"][0]["blocks"][0]["primitive_counts_total"]["ccx"] = serde_json::json!(0);
+        refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_forged_arithmetic_ladder_operand_contract() {
+        let mut input = checked_input();
+        input.resource_certificate_document.payload.0["arithmetic_operation_ir"]["kernels"][0]
+            ["stages"][3]["blocks"][0]["source_contract"]["generator_operand_contract"]
+            ["operand_domain"] = serde_json::json!("generator_event_index");
         refresh_resource_certificate_digest(&mut input);
         run_prepared_attestation(&input);
     }
@@ -5860,8 +6106,8 @@ mod tests {
         let first_wire = input.resource_certificate_document.payload.0["counted_resource_ir"]
             ["liveness_intervals"][0]["live_wire_ids"][0]
             .clone();
-        input.resource_certificate_document.payload.0["counted_resource_ir"]
-            ["liveness_intervals"][0]["live_wire_ids"]
+        input.resource_certificate_document.payload.0["counted_resource_ir"]["liveness_intervals"]
+            [0]["live_wire_ids"]
             .as_array_mut()
             .expect("live_wire_ids must be an array")
             .push(first_wire);
@@ -5873,8 +6119,8 @@ mod tests {
     #[should_panic]
     fn prepared_attestation_rejects_reusable_chunk_counted_executable_liveness_drift() {
         let mut input = checked_reusable_chunk_input();
-        input.resource_certificate_document.payload.0["counted_resource_ir"]
-            ["liveness_intervals"][0]["live_wire_ids"]
+        input.resource_certificate_document.payload.0["counted_resource_ir"]["liveness_intervals"]
+            [0]["live_wire_ids"]
             .as_array_mut()
             .expect("live_wire_ids must be an array")
             .push(serde_json::json!("folded_lookup_control_workspace"));
@@ -5963,6 +6209,28 @@ mod tests {
         let mut input = checked_reusable_chunk_input();
         input.resource_certificate_document.payload.0["modular_arithmetic_certificate"]
             ["reduced_width_exhaustive_cases"][0]["pass"] = serde_json::json!(false);
+        refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_reusable_chunk_modular_executable_ir_forgery() {
+        let mut input = checked_reusable_chunk_input();
+        input.resource_certificate_document.payload.0["modular_arithmetic_certificate"]
+            ["executable_modular_circuit_ir"]["operations"][0]["steps"][0]["bit_count"] =
+            serde_json::json!(254);
+        refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_reusable_chunk_modular_ir_count_certificate_forgery() {
+        let mut input = checked_reusable_chunk_input();
+        input.resource_certificate_document.payload.0["modular_arithmetic_certificate"]
+            ["executable_circuit_ir_count_certificate"]["observed_non_clifford_per_opcode"]
+            ["field_mul"] = serde_json::json!(71_491);
         refresh_resource_certificate_digest(&mut input);
         run_prepared_attestation(&input);
     }

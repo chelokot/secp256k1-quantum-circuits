@@ -87,6 +87,72 @@ def _operation_profile(operations: List[List[Any]]) -> Dict[str, Any]:
     }
 
 
+def _generator_operand_contract(block: Mapping[str, Any], operation_count: int, profile: Mapping[str, Any]) -> Dict[str, Any] | None:
+    generator = block.get('primitive_operation_generator')
+    if generator is None:
+        return None
+    kind = str(generator['kind'])
+    if kind == 'repeated_ladder_with_measurement':
+        bit_count = int(generator['bit_count'])
+        repeat_count = int(generator['repeat_count'])
+        expected_operation_count = 2 * bit_count * repeat_count
+        expected_operand_slots = bit_count
+        return {
+            'kind': kind,
+            'operand_domain': 'ladder_bit_index',
+            'bit_count': bit_count,
+            'repeat_count': repeat_count,
+            'expected_operation_count': expected_operation_count,
+            'expected_operand_slots_required': expected_operand_slots,
+            'observed_operation_count': operation_count,
+            'observed_operand_slots_required': int(profile['operand_slots_required']),
+            'pass': (
+                operation_count == expected_operation_count
+                and int(profile['operand_slots_required']) == expected_operand_slots
+                and int(profile['negative_operand_count']) == 0
+                and profile['gate_arities'] == {'ccx': [1], 'measurement': [1]}
+            ),
+        }
+    if kind == 'repeated_gate':
+        count = int(generator['count'])
+        return {
+            'kind': kind,
+            'operand_domain': 'generator_event_index',
+            'count': count,
+            'expected_operation_count': count,
+            'expected_operand_slots_required': count,
+            'observed_operation_count': operation_count,
+            'observed_operand_slots_required': int(profile['operand_slots_required']),
+            'pass': (
+                operation_count == count
+                and int(profile['operand_slots_required']) == count
+                and int(profile['negative_operand_count']) == 0
+            ),
+        }
+    if kind == 'repeated_gate_with_measurement':
+        count = int(generator['count'])
+        return {
+            'kind': kind,
+            'operand_domain': 'generator_event_index',
+            'count': count,
+            'expected_operation_count': 2 * count,
+            'expected_operand_slots_required': count,
+            'observed_operation_count': operation_count,
+            'observed_operand_slots_required': int(profile['operand_slots_required']),
+            'pass': (
+                operation_count == 2 * count
+                and int(profile['operand_slots_required']) == count
+                and int(profile['negative_operand_count']) == 0
+                and profile['gate_arities'] == {'ccx': [1], 'measurement': [1]}
+            ),
+        }
+    return {
+        'kind': kind,
+        'operand_domain': 'unknown',
+        'pass': False,
+    }
+
+
 def _block_ir(
     *,
     kernel: str,
@@ -108,6 +174,7 @@ def _block_ir(
             ).encode()
         )
     profile = _operation_profile(operations)
+    generator_contract = _generator_operand_contract(block, len(operations), profile)
     return {
         'kernel': kernel,
         'stage': stage,
@@ -133,6 +200,7 @@ def _block_ir(
             'instance_count': int(block['instance_count']),
             'has_expanded_operations': 'primitive_operations' in block,
             'has_generator': 'primitive_operation_generator' in block,
+            'generator_operand_contract': generator_contract,
         },
     }
 
@@ -298,6 +366,23 @@ def build_arithmetic_operation_ir(
             int(block['operand_profile']['too_wide_operand_rows']) == 0
             for block in block_rows
         ),
+        'generator_operand_contracts_pass': all(
+            block['source_contract']['generator_operand_contract'] is None
+            or block['source_contract']['generator_operand_contract']['pass'] is True
+            for block in block_rows
+        ),
+        'repeated_ladder_generators_use_bit_index_operands': all(
+            block['source_contract']['generator_operand_contract'] is None
+            or block['source_contract']['generator_operand_contract']['kind'] != 'repeated_ladder_with_measurement'
+            or block['source_contract']['generator_operand_contract']['operand_domain'] == 'ladder_bit_index'
+            for block in block_rows
+        ),
+        'non_qroam_generated_ladders_use_typed_ladder_generator': all(
+            block['source_contract']['generator_operand_contract'] is None
+            or block['source_contract']['generator_operand_contract']['kind'] == 'repeated_ladder_with_measurement'
+            or 'qroam' in block['block']
+            for block in block_rows
+        ),
         'leaf_arithmetic_total_matches_lowering_reconstruction': (
             leaf_summary['primitive_counts_total']
             == arithmetic_lowerings['leaf_reconstruction']['primitive_totals']
@@ -325,6 +410,17 @@ def build_arithmetic_operation_ir(
             'max_block_operand_slots_required': max(
                 int(block['operand_profile']['operand_slots_required'])
                 for block in block_rows
+            ),
+            'generated_ladder_max_operand_slots_required': max(
+                (
+                    int(block['operand_profile']['operand_slots_required'])
+                    for block in block_rows
+                    if (
+                        block['source_contract']['generator_operand_contract'] is not None
+                        and block['source_contract']['generator_operand_contract']['kind'] == 'repeated_ladder_with_measurement'
+                    )
+                ),
+                default=0,
             ),
         },
         'leaf_arithmetic_summary': leaf_summary,
