@@ -5062,6 +5062,34 @@ fn validate_reusable_chunk_lowering(
     let wire_catalog = json_object_field(executable_liveness, "wire_catalog")
         .as_object()
         .expect("executable liveness wire_catalog must be an object");
+    assert_eq!(
+        counted_wire_catalog, wire_catalog,
+        "counted_resource_ir and executable_liveness must use the same wire catalog"
+    );
+    let executable_intervals = json_array_field(executable_liveness, "intervals");
+    assert_eq!(
+        counted_intervals.len(),
+        executable_intervals.len(),
+        "counted_resource_ir and executable_liveness must have the same interval count"
+    );
+    for (counted_interval, executable_interval) in counted_intervals.iter().zip(executable_intervals) {
+        assert_eq!(
+            json_string_field(counted_interval, "interval_id"),
+            json_string_field(executable_interval, "interval_id")
+        );
+        assert_eq!(
+            json_array_field(counted_interval, "live_wire_ids"),
+            json_array_field(executable_interval, "live_wire_ids")
+        );
+        assert_eq!(
+            json_object_field(counted_interval, "owner_live_qubits"),
+            json_object_field(executable_interval, "owner_live_qubits")
+        );
+        assert_eq!(
+            json_u64_field(counted_interval, "total_live_qubits"),
+            json_u64_field(executable_interval, "total_live_qubits")
+        );
+    }
     for (wire_id, wire) in wire_catalog {
         assert_eq!(json_string_field(wire, "wire_id"), wire_id);
         let owner_id = json_string_field(wire, "owner_id");
@@ -5079,6 +5107,7 @@ fn validate_reusable_chunk_lowering(
     let mut qchunk_qroam_concurrent = false;
     for interval in json_array_field(executable_liveness, "intervals") {
         let interval_id = json_string_field(interval, "interval_id");
+        let mut seen_live_wires = BTreeSet::new();
         let mut interval_owner_live: BTreeMap<String, u64> = BTreeMap::new();
         let mut interval_total = 0u64;
         let mut interval_has_qchunk = false;
@@ -5087,6 +5116,10 @@ fn validate_reusable_chunk_lowering(
             let wire_id = wire_id_value
                 .as_str()
                 .expect("live_wire_ids entries must be strings");
+            assert!(
+                seen_live_wires.insert(wire_id.to_owned()),
+                "executable_liveness interval double-counts a live wire"
+            );
             let wire = wire_catalog
                 .get(wire_id)
                 .expect("live_wire_ids entry must exist in wire_catalog");
@@ -5141,6 +5174,49 @@ fn validate_reusable_chunk_lowering(
             .expect("missing executable liveness owner capacity");
         assert_eq!(recomputed_owner_peak.get(owner_id).copied(), Some(capacity));
     }
+
+    let resource_contract_engine = json_object_field(certificate, "resource_contract_engine");
+    assert_eq!(
+        json_string_field(resource_contract_engine, "schema"),
+        "compiler-project-resource-contract-engine-v1"
+    );
+    assert!(json_bool_field(resource_contract_engine, "pass"));
+    assert_eq!(
+        json_u64_field(resource_contract_engine, "wire_count"),
+        wire_catalog.len() as u64
+    );
+    assert_eq!(
+        json_u64_field(resource_contract_engine, "interval_count"),
+        executable_intervals.len() as u64
+    );
+    assert_eq!(
+        json_u64_field(resource_contract_engine, "peak_live_qubits"),
+        claim.expected_total_logical_qubits
+    );
+    assert_eq!(
+        json_string_field(resource_contract_engine, "peak_interval_id"),
+        json_string_field(executable_liveness, "global_peak_interval_id")
+    );
+    assert!(json_array_field(resource_contract_engine, "over_capacity_owners").is_empty());
+    assert!(json_array_field(resource_contract_engine, "missing_capacity_owners").is_empty());
+    assert!(json_array_field(resource_contract_engine, "stale_required_owner_rows").is_empty());
+    let contract_checks = json_object_field(resource_contract_engine, "checks")
+        .as_object()
+        .expect("resource_contract_engine checks must be an object");
+    assert!(
+        contract_checks
+            .values()
+            .all(|value| value.as_bool() == Some(true)),
+        "resource_contract_engine contains a failing check"
+    );
+    let contract_owner_peaks = json_object_field(resource_contract_engine, "owner_peak_live_qubits")
+        .as_object()
+        .expect("resource_contract_engine owner peaks must be an object");
+    let contract_owner_capacity = json_object_field(resource_contract_engine, "owner_capacity_qubits")
+        .as_object()
+        .expect("resource_contract_engine owner capacity must be an object");
+    assert_eq!(contract_owner_peaks, liveness_owner_peak);
+    assert_eq!(contract_owner_capacity, liveness_owner_capacity);
 
     let checks = json_object_field(certificate, "checks")
         .as_object()
@@ -5698,6 +5774,24 @@ mod tests {
             .as_array_mut()
             .expect("live_wire_ids must be an array")
             .push(first_wire);
+        refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_reusable_chunk_counted_executable_liveness_drift() {
+        let mut input = checked_reusable_chunk_input();
+        input.resource_certificate_document.payload.0["counted_resource_ir"]
+            ["liveness_intervals"][0]["live_wire_ids"]
+            .as_array_mut()
+            .expect("live_wire_ids must be an array")
+            .push(serde_json::json!("folded_lookup_control_workspace"));
+        input.resource_certificate_document.payload.0["counted_resource_ir"]
+            ["liveness_intervals"][0]["owner_live_qubits"]["lookup_workspace"] =
+            serde_json::json!(18);
+        input.resource_certificate_document.payload.0["counted_resource_ir"]
+            ["liveness_intervals"][0]["total_live_qubits"] = serde_json::json!(787);
         refresh_resource_certificate_digest(&mut input);
         run_prepared_attestation(&input);
     }

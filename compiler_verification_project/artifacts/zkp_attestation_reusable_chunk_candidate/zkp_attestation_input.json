@@ -6,7 +6,7 @@
   "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
   "family_sha256": "8b28e7f1c9badc9860bc81f25fe14deb51f71d69396879a092e06c5da8c9e84e",
   "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
-  "resource_certificate_sha256": "c44bf2d3d7f54127571a48a09c26dcc26f48858d9cb74b6be696aa0d7a8f2598",
+  "resource_certificate_sha256": "d4b45b0a91f55d7685b8b7c5a43d92b4c2331694046648a041fb9432209715fa",
   "compiler_parameters_sha256": "c1f43457e8d62dec274835b8edb2c0fc169097adb1a152aa61d5ed529b35b64b",
   "claim_document": {
     "document_type": "attestation_claim",
@@ -315,7 +315,7 @@
     "document_type": "reusable_chunk_lowering",
     "artifact_path": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "c44bf2d3d7f54127571a48a09c26dcc26f48858d9cb74b6be696aa0d7a8f2598",
+    "sha256": "d4b45b0a91f55d7685b8b7c5a43d92b4c2331694046648a041fb9432209715fa",
     "payload": {
       "schema": "compiler-project-reusable-chunk-lowering-v2",
       "status": "proven_public_headline",
@@ -3151,6 +3151,43 @@
         },
         "pass": true
       },
+      "resource_contract_engine": {
+        "schema": "compiler-project-resource-contract-engine-v1",
+        "counted_resource_ir_sha256": "7f4a9715038dc7dd151648e1a4b6546332ba190c2adbb5a240a67b28bb7404cd",
+        "executable_liveness_sha256": "06de12d5fb1752e76e1b1e291f9bcdab02befb1c93f2bfba7fdab5a3bdaef0c0",
+        "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
+        "wire_count": 13,
+        "interval_count": 9,
+        "peak_live_qubits": 1199,
+        "peak_interval_id": "pc5_stream_00_lookup_x_chunk_0",
+        "owner_peak_live_qubits": {
+          "arithmetic_slot_register_file": 1024,
+          "control_slot_register_file": 1,
+          "lookup_workspace": 173,
+          "phase_shell_live_register": 1
+        },
+        "owner_capacity_qubits": {
+          "arithmetic_slot_register_file": 1024,
+          "control_slot_register_file": 1,
+          "lookup_workspace": 173,
+          "phase_shell_live_register": 1
+        },
+        "over_capacity_owners": [],
+        "missing_capacity_owners": [],
+        "stale_required_owner_rows": [],
+        "checks": {
+          "counted_engine_matches_recomputed_engine": true,
+          "counted_wire_catalog_matches_executable_liveness": true,
+          "counted_intervals_match_executable_liveness": true,
+          "counted_peak_matches_executable_peak": true,
+          "owner_peaks_match_executable_liveness": true,
+          "owner_capacity_matches_executable_liveness": true,
+          "owner_required_rows_match_engine_peaks": true,
+          "owner_capacity_covers_engine_peaks": true,
+          "owner_capacity_totals_match_engine_peak": true
+        },
+        "pass": true
+      },
       "checks": {
         "executable_leaf_uses_four_arithmetic_slots": true,
         "executable_leaf_has_reusable_chunk_scratch": true,
@@ -3172,6 +3209,7 @@
         "executable_liveness_owner_peaks_match_capacity": true,
         "counted_resource_ir_recomputes_public_totals": true,
         "counted_resource_engine_recomputes_public_totals": true,
+        "resource_contract_engine_unifies_counted_and_executable_liveness": true,
         "fits_requested_limits": true
       },
       "pass": true,

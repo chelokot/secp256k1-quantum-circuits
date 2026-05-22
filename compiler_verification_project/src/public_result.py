@@ -79,6 +79,7 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
     tail_candidate = _load(ARTIFACT_ROOT / 'reusable_chunk_tail_candidate.json')
     executable_liveness = lowering['executable_liveness']
     counted_resource_ir = lowering['counted_resource_ir']
+    resource_contract_engine = lowering['resource_contract_engine']
     non_clifford = int(public_values['expected_full_oracle_non_clifford'])
     qubits = int(public_values['expected_total_logical_qubits'])
     checks = {
@@ -135,6 +136,13 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             and counted_resource_ir['recomputed_peak_live_qubits'] == qubits
             and sum(term['total_non_clifford'] for term in counted_resource_ir['non_clifford_terms']) == non_clifford
             and max(interval['total_live_qubits'] for interval in counted_resource_ir['liveness_intervals']) == qubits
+        ),
+        'reusable_chunk_resource_contract_engine_unifies_liveness_and_capacity': (
+            resource_contract_engine['pass'] is True
+            and resource_contract_engine['peak_live_qubits'] == qubits
+            and resource_contract_engine['owner_peak_live_qubits'] == resource_contract_engine['owner_capacity_qubits']
+            and resource_contract_engine['checks']['counted_wire_catalog_matches_executable_liveness'] is True
+            and resource_contract_engine['checks']['counted_intervals_match_executable_liveness'] is True
         ),
         'proof_register_contract_binds_prepared_leaf_to_resource_owners': (
             input_payload['proof_register_contract']['pass'] is True

@@ -77,7 +77,7 @@ resource semantics and macro boundaries.
 | ZK-2 | P0 | ZKP executes high-level field/macro semantics, not primitive QROAM/arithmetic lowerings | The proof checks point-add behavior for prepared cases, but not that the resource-counted primitive circuit implements that behavior | Feed the same resource IR into the guest or prove a separate lowering certificate |
 | RES-1 | P0 | `complete_a0_all_streamed_tail` hides internal liveness behind a macro boundary | The `1,044` qubit result depends on internal temporaries not increasing peak live qubits | Flatten macro into scheduled IR and derive peak from that IR |
 | RES-2 | P0 partially mitigated | Modular field arithmetic costs are now digest-bound operation streams, but still not a generated modular circuit | Rust semantics applies `% p`; arithmetic lowering counts abstract add/sub/mul kernels whose modular-reduction completeness must still be trusted below the compact operation IR | Generate modular add/sub/mul circuits including reduction and count them |
-| RES-3 | P0 | Resource ledger is owner-summed, not global flat-schedule liveness | It proves owner totals agree, not that no hidden wire is live concurrently | One liveness engine over all wires, QROAM target/junk, macro scratch, and phase/control wires |
+| RES-3 | P0 partially mitigated | The public reusable-chunk resource ledger now has a guest-checked contract engine over counted IR, executable liveness, and owner capacity, but still lacks a Clifford-complete flat netlist | It now catches counted/executable liveness drift and owner-capacity underprovisioning, but the deepest macro/arithmetic temporaries are still below a model boundary | Keep moving toward one flat liveness engine over QROAM target/junk, macro scratch, phase/control wires, and generated modular arithmetic netlists |
 | ZK-3 | P1 | Checked compressed fixture JSON has `proof: null` while binary proof is separate | Verifiability exists, but the human-readable fixture does not itself contain the proof payload | Put digest/size/path of proof binaries into fixtures and manifest; verify them in tests |
 | GOV-1 | P1 | Many release-critical constants are scattered in tests/source/docs | Drift and accidental self-confirming tests remain possible | Versioned parameter/baseline artifacts imported everywhere |
 
@@ -270,6 +270,14 @@ concurrently, proves no full-coordinate lookup lane is live, and requires every
 owner peak to match its numeric capacity. The Rust SP1 guest walks this section
 and rejects underprovisioned owner capacity or forged QROAM-target liveness.
 
+The same artifact now includes `resource_contract_engine`, a separately
+recomputed contract layer over `counted_resource_ir`, `counted_resource_engine`,
+`executable_liveness`, and `owner_capacity`. The contract requires the counted
+wire catalog and live intervals to match the executable liveness certificate,
+recomputes the global peak and owner peaks, checks that each owner has explicit
+numeric capacity for its peak, and is validated by the SP1 guest before the
+resource digest is accepted.
+
 Remaining boundary:
 
 This is stronger than owner-summed prose, but it is still not a fully
@@ -289,7 +297,10 @@ Required hardening still open:
 
 - Keep moving toward one resource engine that consumes a flat scheduled IR and
   computes peak live qubits by interval analysis.
-- Keep owner labels as derived outputs of that engine.
+- Keep owner labels as derived outputs of that engine. The reusable-chunk public
+  headline now does this for the checked executable-liveness interval boundary;
+  the remaining work is pushing the same derivation below the macro/arithmetic
+  model boundary.
 - Extend the current derived owner-capacity checks down to bit-addressed macro
   scratch intervals when the macro lowering is flattened further.
 
@@ -1450,10 +1461,15 @@ Current remediation:
 - The SP1 guest validates the same counted-resource engine fields before
   accepting the resource digest. Rust negative tests now reject both a forged
   engine peak and an interval that double-counts a live wire.
+- The reusable-chunk artifact now also carries `resource_contract_engine`, which
+  checks that `counted_resource_ir` and executable liveness have the same wire
+  catalog and same interval rows, then checks owner-capacity rows against the
+  engine-derived owner peaks. Rust guest tests reject a counted/executable
+  liveness drift even when the resource-certificate digest is refreshed.
 - `compiler_verification_project/artifacts/arithmetic_operation_ir.json` now
   reconstructs arithmetic block/stage/kernel/selected-leaf primitive counts from
   materialized operation streams and digests. The resource-liveness certificate
-  embeds that arithmetic IR summary, and fast integrity checks regenerate it.
+  embeds the full compact arithmetic IR, and fast integrity checks regenerate it.
 
 Still open:
 
@@ -1637,7 +1653,10 @@ Fixed after review:
   reusable-chunk headline. Integrity checks, `verify_public_headline.py`, and the
   SP1 guest recompute `36,767,692` non-Clifford operations and the `1,199`
   live-qubit peak from that IR; guest tests reject forged counted-resource
-  terms. This does not make the repository a Clifford-complete full-Shor
+  terms. The new `resource_contract_engine` additionally proves that the counted
+  resource IR uses exactly the same wire catalog and interval liveness rows as
+  executable liveness, and that owner-capacity rows equal the engine-derived
+  owner peaks. This does not make the repository a Clifford-complete full-Shor
   primitive netlist, but it removes another parallel formula-only path from the
   public headline.
 
@@ -1750,11 +1769,11 @@ Still open:
   selected primitive operation stream, but not the tens-of-millions-row TSV gate
   list itself.
 - The deepest refactor remains mandatory before claiming Google-equivalent
-  hidden-circuit confidence: `counted_resource_ir` now ties the public resource
-  totals to a committed IR consumed by integrity checks and the SP1 guest, but
-  the same source engine still should emit the semantic leaf, primitive
-  lowering, artifact digests, and ZKP input without maintaining parallel
-  prepared and audit views.
+  hidden-circuit confidence: `counted_resource_ir` and `resource_contract_engine`
+  now tie public resource totals to executable liveness and owner capacity inside
+  integrity checks and the SP1 guest, but the same source engine still should
+  emit the semantic leaf, primitive lowering, artifact digests, and ZKP input
+  without maintaining parallel prepared and audit views.
 - Final publication still requires rebuilding core/compressed/Groth16 artifacts
   from the current checked input and making `proof_status.py --require-all-current`
   pass.

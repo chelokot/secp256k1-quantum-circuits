@@ -2833,6 +2833,43 @@
     },
     "pass": true
   },
+  "resource_contract_engine": {
+    "schema": "compiler-project-resource-contract-engine-v1",
+    "counted_resource_ir_sha256": "7f4a9715038dc7dd151648e1a4b6546332ba190c2adbb5a240a67b28bb7404cd",
+    "executable_liveness_sha256": "06de12d5fb1752e76e1b1e291f9bcdab02befb1c93f2bfba7fdab5a3bdaef0c0",
+    "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
+    "wire_count": 13,
+    "interval_count": 9,
+    "peak_live_qubits": 1199,
+    "peak_interval_id": "pc5_stream_00_lookup_x_chunk_0",
+    "owner_peak_live_qubits": {
+      "arithmetic_slot_register_file": 1024,
+      "control_slot_register_file": 1,
+      "lookup_workspace": 173,
+      "phase_shell_live_register": 1
+    },
+    "owner_capacity_qubits": {
+      "arithmetic_slot_register_file": 1024,
+      "control_slot_register_file": 1,
+      "lookup_workspace": 173,
+      "phase_shell_live_register": 1
+    },
+    "over_capacity_owners": [],
+    "missing_capacity_owners": [],
+    "stale_required_owner_rows": [],
+    "checks": {
+      "counted_engine_matches_recomputed_engine": true,
+      "counted_wire_catalog_matches_executable_liveness": true,
+      "counted_intervals_match_executable_liveness": true,
+      "counted_peak_matches_executable_peak": true,
+      "owner_peaks_match_executable_liveness": true,
+      "owner_capacity_matches_executable_liveness": true,
+      "owner_required_rows_match_engine_peaks": true,
+      "owner_capacity_covers_engine_peaks": true,
+      "owner_capacity_totals_match_engine_peak": true
+    },
+    "pass": true
+  },
   "checks": {
     "executable_leaf_uses_four_arithmetic_slots": true,
     "executable_leaf_has_reusable_chunk_scratch": true,
@@ -2854,6 +2891,7 @@
     "executable_liveness_owner_peaks_match_capacity": true,
     "counted_resource_ir_recomputes_public_totals": true,
     "counted_resource_engine_recomputes_public_totals": true,
+    "resource_contract_engine_unifies_counted_and_executable_liveness": true,
     "fits_requested_limits": true
   },
   "pass": true,

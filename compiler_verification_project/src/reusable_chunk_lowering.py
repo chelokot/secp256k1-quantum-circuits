@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Any, Dict, List, Mapping
 
 from resource_ledger import qroam_clean_stream_cost
-from resource_ir_engine import evaluate_counted_resource_ir
+from resource_ir_engine import evaluate_counted_resource_ir, evaluate_resource_contract
 
 
 def _owner(owner_id: str, logical_qubits: int, source: str, required: Mapping[str, int]) -> Dict[str, Any]:
@@ -459,6 +459,17 @@ def build_reusable_chunk_lowering(
     counted_resource_engine = evaluate_counted_resource_ir(counted_resource_ir)
     owner_required_total = sum(int(owner['required_peak_qubits']) for owner in owners)
     owner_capacity_total = sum(int(owner['logical_qubits']) for owner in owners)
+    owner_capacity_payload = {
+        'rows': owners,
+        'required_global_peak_qubits': owner_required_total,
+        'capacity_global_peak_qubits': owner_capacity_total,
+    }
+    resource_contract_engine = evaluate_resource_contract(
+        counted_resource_ir=counted_resource_ir,
+        counted_resource_engine=counted_resource_engine,
+        executable_liveness=executable_liveness,
+        owner_capacity=owner_capacity_payload,
+    )
     checks = {
         'executable_leaf_uses_four_arithmetic_slots': arithmetic_slot_count == 4,
         'executable_leaf_has_reusable_chunk_scratch': executable_leaf['chunk_contract']['reusable_chunk_slot'] in executable_leaf['arithmetic_slots'],
@@ -508,6 +519,7 @@ def build_reusable_chunk_lowering(
         'executable_liveness_owner_peaks_match_capacity': executable_liveness['owner_peak_live_qubits'] == executable_liveness['owner_capacity_qubits'],
         'counted_resource_ir_recomputes_public_totals': counted_resource_ir['pass'] is True and int(counted_resource_ir['recomputed_total_non_clifford']) == total_non_clifford and int(counted_resource_ir['recomputed_peak_live_qubits']) == total_logical_qubits,
         'counted_resource_engine_recomputes_public_totals': counted_resource_engine['pass'] is True and int(counted_resource_engine['non_clifford_total_from_terms']) == total_non_clifford and int(counted_resource_engine['peak_live_qubits_from_intervals']) == total_logical_qubits,
+        'resource_contract_engine_unifies_counted_and_executable_liveness': resource_contract_engine['pass'] is True and int(resource_contract_engine['peak_live_qubits']) == total_logical_qubits,
         'fits_requested_limits': total_non_clifford < 40_000_000 and total_logical_qubits < 1200,
     }
     return {
@@ -582,12 +594,9 @@ def build_reusable_chunk_lowering(
         },
         'counted_resource_ir': counted_resource_ir,
         'counted_resource_engine': counted_resource_engine,
-        'owner_capacity': {
-            'rows': owners,
-            'required_global_peak_qubits': owner_required_total,
-            'capacity_global_peak_qubits': owner_capacity_total,
-        },
+        'owner_capacity': owner_capacity_payload,
         'executable_liveness': executable_liveness,
+        'resource_contract_engine': resource_contract_engine,
         'checks': checks,
         'pass': all(checks.values()),
         'public_claim_evidence': [

@@ -44,7 +44,12 @@ from reusable_chunk_lowering import build_reusable_chunk_lowering
 from reusable_chunk_tail_candidate import build_reusable_chunk_tail_candidate
 from resource_ledger import build_logical_resource_ledger, qroam_clean_stream_cost
 from resource_certificate import build_resource_liveness_certificate
-from resource_ir_engine import RESOURCE_IR_ENGINE_SCHEMA, evaluate_counted_resource_ir
+from resource_ir_engine import (
+    RESOURCE_CONTRACT_ENGINE_SCHEMA,
+    RESOURCE_IR_ENGINE_SCHEMA,
+    evaluate_counted_resource_ir,
+    evaluate_resource_contract,
+)
 from tail_macro_liveness import build_tail_macro_liveness
 from tail_macro_reversibility import build_tail_macro_reversibility
 from tail_macro_schedule_search import build_tail_macro_schedule_search
@@ -1416,6 +1421,7 @@ def build_reusable_chunk_lowering_checks(artifacts: Mapping[str, Any]) -> Dict[s
     executable_liveness = lowering['executable_liveness']
     counted_resource_ir = lowering['counted_resource_ir']
     counted_resource_engine = lowering['counted_resource_engine']
+    resource_contract_engine = lowering['resource_contract_engine']
     qroam_model = lowering['standard_qroamclean_k1_model']
     primitive_contract = lowering['chunked_multiplier_primitive_contract']
     expected_stream_count = (
@@ -1458,6 +1464,8 @@ def build_reusable_chunk_lowering_checks(artifacts: Mapping[str, Any]) -> Dict[s
         _check('reusable_chunk_lowering_counted_resource_ir_recomputes_public_totals', counted_resource_ir['pass'] is True and counted_resource_ir['recomputed_total_non_clifford'] == non_clifford['candidate_total_non_clifford'] and counted_resource_ir['recomputed_peak_live_qubits'] == qubits['candidate_total_logical_qubits'] and len([term for term in counted_resource_ir['non_clifford_terms'] if term['category'] == 'qroam_chunk_stream']) == len(stream_plan['rows']), {'non_clifford': non_clifford['candidate_total_non_clifford'], 'peak_live_qubits': qubits['candidate_total_logical_qubits'], 'qroam_terms': len(stream_plan['rows'])}, counted_resource_ir),
         _check('reusable_chunk_lowering_counted_resource_engine_matches_generator', counted_resource_engine == evaluate_counted_resource_ir(counted_resource_ir), evaluate_counted_resource_ir(counted_resource_ir), counted_resource_engine),
         _check('reusable_chunk_lowering_counted_resource_engine_recomputes_public_totals', counted_resource_engine['schema'] == RESOURCE_IR_ENGINE_SCHEMA and counted_resource_engine['pass'] is True and counted_resource_engine['non_clifford_total_from_terms'] == non_clifford['candidate_total_non_clifford'] and counted_resource_engine['peak_live_qubits_from_intervals'] == qubits['candidate_total_logical_qubits'], {'schema': RESOURCE_IR_ENGINE_SCHEMA, 'non_clifford': non_clifford['candidate_total_non_clifford'], 'peak_live_qubits': qubits['candidate_total_logical_qubits']}, counted_resource_engine),
+        _check('reusable_chunk_lowering_resource_contract_engine_matches_generator', resource_contract_engine == evaluate_resource_contract(counted_resource_ir=counted_resource_ir, counted_resource_engine=counted_resource_engine, executable_liveness=executable_liveness, owner_capacity=owners), evaluate_resource_contract(counted_resource_ir=counted_resource_ir, counted_resource_engine=counted_resource_engine, executable_liveness=executable_liveness, owner_capacity=owners), resource_contract_engine),
+        _check('reusable_chunk_lowering_resource_contract_engine_unifies_counted_and_executable_liveness', resource_contract_engine['schema'] == RESOURCE_CONTRACT_ENGINE_SCHEMA and resource_contract_engine['pass'] is True and resource_contract_engine['peak_live_qubits'] == qubits['candidate_total_logical_qubits'] and resource_contract_engine['owner_peak_live_qubits'] == resource_contract_engine['owner_capacity_qubits'], {'schema': RESOURCE_CONTRACT_ENGINE_SCHEMA, 'peak_live_qubits': qubits['candidate_total_logical_qubits'], 'owner_peaks_equal_capacity': True}, resource_contract_engine),
         _check('reusable_chunk_lowering_records_zkp_and_release_evidence', len(lowering['public_claim_evidence']) >= 2, '>= 2', lowering['public_claim_evidence']),
     ]
     return _summarize_checks(checks)
