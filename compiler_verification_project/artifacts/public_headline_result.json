@@ -48,8 +48,8 @@
   "checked_artifacts": {
     "input": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
-      "sha256": "a98ae33806e40c5bd806385005069cf4f54418e2f109f2853756082f004406ae",
-      "bytes": 131396
+      "sha256": "52b8eb5d010cb4e7cf5f89f4b75724e70037114a7e6a6694e037a65f0bf8b551",
+      "bytes": 132822
     },
     "claim": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json",
@@ -166,8 +166,8 @@
     },
     "reusable_chunk_lowering": {
       "path": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
-      "sha256": "e495a2193b6f1fbaeed43086f013df1c608bed6b15fdb78675ecfd3b788d875f",
-      "bytes": 92404
+      "sha256": "a77795f7e122262d975f7cb72e375bd55e1cc7d06bed8964ff342ac5df1aa883",
+      "bytes": 93702
     },
     "reusable_chunk_tail_candidate": {
       "path": "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",

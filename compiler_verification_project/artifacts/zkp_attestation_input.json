@@ -6,7 +6,7 @@
   "leaf_sha256": "a8b6d7dc3f45c85b450a373f90a174cf4cc3bdfe85520c56ee7ec8db2c5f6ab1",
   "family_sha256": "49d7eb7a73ef6c715e2ea155c5c1e42efe6e8cfa322aeae509b3091d92097a94",
   "case_corpus_sha256": "bf3cb3d15e8cb9ba158e800047936d62d83aba34191ca50d5e6138dff57dd28b",
-  "resource_certificate_sha256": "7fd1b6e0055a5e52acf4434134a3872d619ca6ead30bf10e64ffeeb209cf1b62",
+  "resource_certificate_sha256": "8565f3f7a9ba31a5887d426dfda38f626d66688444eede8445e58d7bbdcfd1ba",
   "compiler_parameters_sha256": "c1f43457e8d62dec274835b8edb2c0fc169097adb1a152aa61d5ed529b35b64b",
   "claim_document": {
     "document_type": "attestation_claim",
@@ -341,7 +341,7 @@
     "document_type": "resource_liveness_certificate",
     "artifact_path": "compiler_verification_project/artifacts/resource_liveness_certificate.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "7fd1b6e0055a5e52acf4434134a3872d619ca6ead30bf10e64ffeeb209cf1b62",
+    "sha256": "8565f3f7a9ba31a5887d426dfda38f626d66688444eede8445e58d7bbdcfd1ba",
     "payload": {
       "schema": "compiler-project-resource-liveness-certificate-v3",
       "selected_family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
@@ -350,6 +350,7 @@
         "family_frontier": "compiler_verification_project/artifacts/family_frontier.json",
         "streamed_lookup_tail_leaf_slot_allocation": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json",
         "arithmetic_lowerings": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+        "arithmetic_operation_ir": "compiler_verification_project/artifacts/arithmetic_operation_ir.json",
         "streamed_lookup_table_multiplier_resource": "compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json",
         "logical_resource_ledger": "compiler_verification_project/artifacts/logical_resource_ledger.json",
         "ft_ir_compositions": "compiler_verification_project/artifacts/ft_ir_compositions.json",
@@ -2351,6 +2352,70 @@
           }
         ]
       },
+      "arithmetic_operation_ir": {
+        "schema": "compiler-project-arithmetic-operation-ir-v1",
+        "source_artifacts": {
+          "arithmetic_lowerings": "compiler_verification_project/artifacts/arithmetic_lowerings.json"
+        },
+        "stream_encoding": [
+          "kernel",
+          "stage",
+          "block",
+          "operation_index",
+          "gate",
+          "operand_0",
+          "operand_1",
+          "operand_2"
+        ],
+        "summary": {
+          "kernel_count": 13,
+          "stage_count": 143,
+          "block_count": 203,
+          "kernel_operation_count_total": 3970545,
+          "max_block_operand_slots_required": 32768
+        },
+        "leaf_arithmetic_summary": {
+          "covered_opcode_count": 1,
+          "non_arithmetic_leaf_opcodes": [
+            "bool_from_flag",
+            "load_input",
+            "lookup_meta"
+          ],
+          "operation_stream_sha256": "5c5ed40f101b3392bd1b8ea0c239c0edc702b2058b0cb17a0d0834ecfc111f6b",
+          "primitive_counts_total": {
+            "ccx": 1120212,
+            "cx": 0,
+            "x": 0,
+            "measurement": 235476
+          },
+          "non_clifford_total": 1120212,
+          "rows": [
+            {
+              "opcode": "complete_a0_all_streamed_tail",
+              "leaf_instance_count": 1,
+              "kernel_stage_digest_sha256": "43a65bb047e211fc1129021d748f1fdcdf8e16ff44bc92c4282b393b7bf3dbe5",
+              "kernel_operation_count": 1355688,
+              "kernel_non_clifford_per_instance": 1120212,
+              "primitive_counts_total": {
+                "ccx": 1120212,
+                "cx": 0,
+                "x": 0,
+                "measurement": 235476
+              }
+            }
+          ]
+        },
+        "checks": {
+          "kernel_totals_match_materialized_block_streams": true,
+          "stage_totals_match_materialized_block_streams": true,
+          "block_totals_match_materialized_operations": true,
+          "operation_rows_have_nonnegative_operands": true,
+          "operation_rows_fit_fixed_stream_encoding": true,
+          "leaf_arithmetic_total_matches_lowering_reconstruction": true,
+          "leaf_arithmetic_opcodes_are_covered": true
+        },
+        "pass": true
+      },
       "materialized_operation_stream": {
         "family": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
         "stream_encoding": [
@@ -2440,6 +2505,7 @@
         "qroam_cost_matches_non_clifford_model": true,
         "qroam_workspace_is_counted_not_borrowed": true,
         "arithmetic_leaf_non_clifford_matches_lowering_reconstruction": true,
+        "arithmetic_operation_ir_reconstructs_leaf_arithmetic": true,
         "tail_macro_has_explicit_internal_stage_inventory": true,
         "ft_ir_leaf_sigma_reconstructs_selected_headline": true,
         "ft_ir_leaf_sigma_matches_generated_inventory": true,

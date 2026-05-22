@@ -76,7 +76,7 @@ resource semantics and macro boundaries.
 | ZK-1 | P0 reviewed-state; remediated on current branch | Reviewed SP1 prepared path did not recompute sidecar hashes; current path now recomputes committed claim/leaf/family/case/resource hashes in guest | This used to let public values carry hash labels trusted from the input builder; current tests reject stale digest labels and mutated committed payloads | Keep full committed documents in the guest input and keep negative digest/payload tests |
 | ZK-2 | P0 | ZKP executes high-level field/macro semantics, not primitive QROAM/arithmetic lowerings | The proof checks point-add behavior for prepared cases, but not that the resource-counted primitive circuit implements that behavior | Feed the same resource IR into the guest or prove a separate lowering certificate |
 | RES-1 | P0 | `complete_a0_all_streamed_tail` hides internal liveness behind a macro boundary | The `1,044` qubit result depends on internal temporaries not increasing peak live qubits | Flatten macro into scheduled IR and derive peak from that IR |
-| RES-2 | P0 | Modular field arithmetic costs are model-level costs, not a generated modular circuit | Rust semantics applies `% p`; arithmetic lowering counts abstract add/sub/mul kernels whose modular-reduction completeness must be trusted | Generate modular add/sub/mul circuits including reduction and count them |
+| RES-2 | P0 partially mitigated | Modular field arithmetic costs are now digest-bound operation streams, but still not a generated modular circuit | Rust semantics applies `% p`; arithmetic lowering counts abstract add/sub/mul kernels whose modular-reduction completeness must still be trusted below the compact operation IR | Generate modular add/sub/mul circuits including reduction and count them |
 | RES-3 | P0 | Resource ledger is owner-summed, not global flat-schedule liveness | It proves owner totals agree, not that no hidden wire is live concurrently | One liveness engine over all wires, QROAM target/junk, macro scratch, and phase/control wires |
 | ZK-3 | P1 | Checked compressed fixture JSON has `proof: null` while binary proof is separate | Verifiability exists, but the human-readable fixture does not itself contain the proof payload | Put digest/size/path of proof binaries into fixtures and manifest; verify them in tests |
 | GOV-1 | P1 | Many release-critical constants are scattered in tests/source/docs | Drift and accidental self-confirming tests remain possible | Versioned parameter/baseline artifacts imported everywhere |
@@ -334,6 +334,18 @@ That leaves several questions for a hostile arithmetic reviewer:
 
 This is the most likely place where a quantum-arithmetic specialist will push
 after the lookup/QROAM fixes.
+
+Current hardening narrows, but does not eliminate, this trust boundary. The
+repo now emits
+`compiler_verification_project/artifacts/arithmetic_operation_ir.json`, a
+compact arithmetic operation-stream IR whose block, stage, kernel, and selected
+leaf totals are reconstructed from canonical primitive-operation streams and
+SHA-256 digests instead of copied totals. The checked
+`resource_liveness_certificate.json` embeds the arithmetic IR summary and leaf
+operation digest, and the SP1 guest rejects a forged arithmetic IR row even
+when the resource-certificate digest is refreshed. This is a useful guard
+against another manually summed arithmetic ledger, but it is still not a full
+Clifford-complete reversible modular-arithmetic netlist.
 
 Required hardening:
 
@@ -1425,6 +1437,32 @@ Exit criterion:
 - The guest computes non-Clifford and qubit totals from the committed circuit
   representation or from a separately proven resource certificate.
 
+Current remediation:
+
+- `compiler_verification_project/artifacts/reusable_chunk_lowering.json` now
+  carries `counted_resource_engine`, an independently recomputed report over
+  `counted_resource_ir`. The engine canonical-hashes the counted IR, recomputes
+  every non-Clifford term product and sum, walks interval live wires through the
+  wire catalog, rejects duplicate or unknown live wires, derives owner peaks,
+  and derives the global peak interval.
+- The SP1 guest validates the same counted-resource engine fields before
+  accepting the resource digest. Rust negative tests now reject both a forged
+  engine peak and an interval that double-counts a live wire.
+- `compiler_verification_project/artifacts/arithmetic_operation_ir.json` now
+  reconstructs arithmetic block/stage/kernel/selected-leaf primitive counts from
+  materialized operation streams and digests. The resource-liveness certificate
+  embeds that arithmetic IR summary, and fast integrity checks regenerate it.
+
+Still open:
+
+- This is a counted-resource IR and arithmetic operation-stream digest layer,
+  not yet one Clifford-complete executable primitive circuit netlist shared by
+  semantics, lowering, liveness, and SP1 execution.
+- The ZKP still proves the semantic point-add boundary plus resource-certificate
+  consistency. It is stronger than handwritten formula trust, but not yet the
+  same confidence class as a proof that executes the full resource-counted
+  primitive circuit.
+
 ### P1: QROM/QROAM reference cross-check
 
 Add a cross-check against an external QROM/QROAM implementation or a small
@@ -1580,6 +1618,16 @@ Fixed after review:
   reject forged reduction-stage counts and forged reduced-width results. The
   reusable-chunk resource certificate embeds this certificate, and the SP1 guest
   validates it before accepting the public resource digest.
+- `RES-2`: `arithmetic_operation_ir.json` now provides a compact typed
+  arithmetic operation-stream layer. It materializes every arithmetic lowering
+  block into canonical primitive-operation streams, records per-block stream
+  digests, reconstructs stage/kernel/selected-leaf primitive totals from those
+  streams, separates non-arithmetic leaf opcodes explicitly, and is embedded in
+  the resource liveness certificate. Integrity checks validate the artifact,
+  and a new guest negative test rejects a forged arithmetic operation-IR row
+  after refreshing the resource-certificate digest. This closes another
+  copied-total/manual-ledger path, while leaving the deeper full-netlist
+  arithmetic objection open.
 - `ZK-2` / resource-IR binding: `reusable_chunk_lowering.json` now includes
   `counted_resource_ir`, a committed counted-resource representation containing
   the non-Clifford terms and liveness intervals used for the public

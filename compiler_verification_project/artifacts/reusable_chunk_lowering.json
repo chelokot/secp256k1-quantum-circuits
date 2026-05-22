@@ -2458,6 +2458,37 @@
     },
     "pass": true
   },
+  "counted_resource_engine": {
+    "schema": "compiler-project-counted-resource-ir-engine-v1",
+    "input_schema": "compiler-project-reusable-chunk-counted-resource-ir-v1",
+    "counted_resource_ir_sha256": "7f4a9715038dc7dd151648e1a4b6546332ba190c2adbb5a240a67b28bb7404cd",
+    "term_count": 7,
+    "wire_count": 13,
+    "interval_count": 9,
+    "non_clifford_total_from_terms": 36767692,
+    "peak_live_qubits_from_intervals": 1199,
+    "peak_interval_id_from_intervals": "pc5_stream_00_lookup_x_chunk_0",
+    "owner_peak_live_qubits_from_intervals": {
+      "arithmetic_slot_register_file": 1024,
+      "control_slot_register_file": 1,
+      "lookup_workspace": 173,
+      "phase_shell_live_register": 1
+    },
+    "malformed_term_ids": [],
+    "unknown_live_wire_refs": [],
+    "duplicate_live_wire_refs": [],
+    "interval_sum_mismatches": [],
+    "checks": {
+      "term_products_match_totals": true,
+      "term_sum_matches_declared_total": true,
+      "all_live_wires_exist_in_catalog": true,
+      "intervals_do_not_double_count_wires": true,
+      "interval_owner_sums_match_wire_catalog": true,
+      "peak_matches_declared_peak": true,
+      "peak_interval_matches_declared_peak_interval": true
+    },
+    "pass": true
+  },
   "owner_capacity": {
     "rows": [
       {
@@ -2822,6 +2853,7 @@
     "executable_liveness_peak_matches_candidate": true,
     "executable_liveness_owner_peaks_match_capacity": true,
     "counted_resource_ir_recomputes_public_totals": true,
+    "counted_resource_engine_recomputes_public_totals": true,
     "fits_requested_limits": true
   },
   "pass": true,

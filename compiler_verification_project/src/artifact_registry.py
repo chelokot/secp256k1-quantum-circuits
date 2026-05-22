@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Dict
 
 
-BUILD_SUMMARY_SCHEMA = 'compiler-project-build-summary-v35'
+BUILD_SUMMARY_SCHEMA = 'compiler-project-build-summary-v36'
 
 BUILD_SUMMARY_ARTIFACT_PATHS: Dict[str, str] = {
     'canonical_public_point': 'compiler_verification_project/artifacts/canonical_public_point.json',
@@ -21,6 +21,7 @@ BUILD_SUMMARY_ARTIFACT_PATHS: Dict[str, str] = {
     'streamed_lookup_tail_leaf_equivalence': 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json',
     'streamed_lookup_tail_leaf_slot_allocation': 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json',
     'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
+    'arithmetic_operation_ir': 'compiler_verification_project/artifacts/arithmetic_operation_ir.json',
     'modular_arithmetic_certificate': 'compiler_verification_project/artifacts/modular_arithmetic_certificate.json',
     'tail_macro_liveness': 'compiler_verification_project/artifacts/tail_macro_liveness.json',
     'tail_macro_reversibility': 'compiler_verification_project/artifacts/tail_macro_reversibility.json',

@@ -152,6 +152,7 @@ def build_resource_liveness_certificate(
     frontier: Mapping[str, Any],
     streamed_lookup_tail_slot_allocation: Mapping[str, Any],
     arithmetic_lowerings: Mapping[str, Any],
+    arithmetic_operation_ir: Mapping[str, Any],
     streamed_lookup_resource: Mapping[str, Any],
     logical_resource_ledger: Mapping[str, Any],
     ft_ir_compositions: Mapping[str, Any],
@@ -270,6 +271,15 @@ def build_resource_liveness_certificate(
         'arithmetic_leaf_non_clifford_matches_lowering_reconstruction': int(
             leaf_reconstruction['arithmetic_leaf_non_clifford']
         ) == int(selected['arithmetic_leaf_non_clifford']),
+        'arithmetic_operation_ir_reconstructs_leaf_arithmetic': (
+            arithmetic_operation_ir['schema'] == 'compiler-project-arithmetic-operation-ir-v1'
+            and arithmetic_operation_ir['pass'] is True
+            and all(bool(value) for value in arithmetic_operation_ir['checks'].values())
+            and int(arithmetic_operation_ir['leaf_arithmetic_summary']['non_clifford_total'])
+            == int(selected['arithmetic_leaf_non_clifford'])
+            and arithmetic_operation_ir['leaf_arithmetic_summary']['primitive_counts_total']
+            == leaf_reconstruction['primitive_totals']
+        ),
         'tail_macro_has_explicit_internal_stage_inventory': (
             tail_kernel['opcode'] == 'complete_a0_all_streamed_tail'
             and int(tail_kernel['exact_non_clifford_per_kernel']) > 0
@@ -317,6 +327,7 @@ def build_resource_liveness_certificate(
             'family_frontier': 'compiler_verification_project/artifacts/family_frontier.json',
             'streamed_lookup_tail_leaf_slot_allocation': 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_slot_allocation.json',
             'arithmetic_lowerings': 'compiler_verification_project/artifacts/arithmetic_lowerings.json',
+            'arithmetic_operation_ir': 'compiler_verification_project/artifacts/arithmetic_operation_ir.json',
             'streamed_lookup_table_multiplier_resource': 'compiler_verification_project/artifacts/streamed_lookup_table_multiplier_resource.json',
             'logical_resource_ledger': 'compiler_verification_project/artifacts/logical_resource_ledger.json',
             'ft_ir_compositions': 'compiler_verification_project/artifacts/ft_ir_compositions.json',
@@ -396,6 +407,22 @@ def build_resource_liveness_certificate(
                 }
                 for stage in tail_kernel['stages']
             ],
+        },
+        'arithmetic_operation_ir': {
+            'schema': arithmetic_operation_ir['schema'],
+            'source_artifacts': arithmetic_operation_ir['source_artifacts'],
+            'stream_encoding': arithmetic_operation_ir['stream_encoding'],
+            'summary': arithmetic_operation_ir['summary'],
+            'leaf_arithmetic_summary': {
+                'covered_opcode_count': int(arithmetic_operation_ir['leaf_arithmetic_summary']['covered_opcode_count']),
+                'non_arithmetic_leaf_opcodes': arithmetic_operation_ir['leaf_arithmetic_summary']['non_arithmetic_leaf_opcodes'],
+                'operation_stream_sha256': arithmetic_operation_ir['leaf_arithmetic_summary']['operation_stream_sha256'],
+                'primitive_counts_total': arithmetic_operation_ir['leaf_arithmetic_summary']['primitive_counts_total'],
+                'non_clifford_total': int(arithmetic_operation_ir['leaf_arithmetic_summary']['non_clifford_total']),
+                'rows': arithmetic_operation_ir['leaf_arithmetic_summary']['rows'],
+            },
+            'checks': arithmetic_operation_ir['checks'],
+            'pass': bool(arithmetic_operation_ir['pass']),
         },
         'materialized_operation_stream': {
             'family': materialized_circuit_manifest['family'],

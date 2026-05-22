@@ -25,6 +25,7 @@ from common import (
 from artifact_digest_tree import ARTIFACT_DIGEST_TREE_SCHEMA, build_artifact_digest_tree
 from artifact_registry import BUILD_SUMMARY_ARTIFACT_PATHS, BUILD_SUMMARY_SCHEMA
 from arithmetic_lowering import arithmetic_kernel_summary, arithmetic_lowering_library, materialize_arithmetic_primitive_operations
+from arithmetic_operation_ir import ARITHMETIC_OPERATION_IR_SCHEMA, build_arithmetic_operation_ir
 from compiler_parameters import COMPILER_PARAMETERS_SCHEMA, build_compiler_parameters
 from fallback_frontier_stress import build_fallback_frontier_stress
 from lookup_lowering import lookup_lowering_library, lowered_lookup_semantic_summary, materialize_lookup_primitive_operations
@@ -43,6 +44,7 @@ from reusable_chunk_lowering import build_reusable_chunk_lowering
 from reusable_chunk_tail_candidate import build_reusable_chunk_tail_candidate
 from resource_ledger import build_logical_resource_ledger, qroam_clean_stream_cost
 from resource_certificate import build_resource_liveness_certificate
+from resource_ir_engine import RESOURCE_IR_ENGINE_SCHEMA, evaluate_counted_resource_ir
 from tail_macro_liveness import build_tail_macro_liveness
 from tail_macro_reversibility import build_tail_macro_reversibility
 from tail_macro_schedule_search import build_tail_macro_schedule_search
@@ -153,6 +155,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'streamed_lookup_tail_leaf_equivalence': artifact_root / 'streamed_lookup_tail_leaf_equivalence.json',
         'streamed_lookup_tail_leaf_slot_allocation': artifact_root / 'streamed_lookup_tail_leaf_slot_allocation.json',
         'arithmetic_lowerings': artifact_root / 'arithmetic_lowerings.json',
+        'arithmetic_operation_ir': artifact_root / 'arithmetic_operation_ir.json',
         'modular_arithmetic_certificate': artifact_root / 'modular_arithmetic_certificate.json',
         'tail_macro_liveness': artifact_root / 'tail_macro_liveness.json',
         'tail_macro_reversibility': artifact_root / 'tail_macro_reversibility.json',
@@ -427,6 +430,31 @@ def build_modular_arithmetic_certificate_checks(artifacts: Mapping[str, Any]) ->
         _check('modular_arithmetic_certificate_binds_secp256k1_modulus_shape', certificate['secp256k1_parameters']['field_bits'] == FIELD_BITS and certificate['secp256k1_parameters']['shift'] == 32 and certificate['secp256k1_parameters']['low_term'] == 977 and certificate['secp256k1_parameters']['canonical_subtract_passes'] == 2, {'field_bits': FIELD_BITS, 'shift': 32, 'low_term': 977, 'canonical_subtract_passes': 2}, certificate['secp256k1_parameters']),
         _check('modular_arithmetic_certificate_field_mul_stage_counts_match_lowering', stage_certificate['stage_counts_match'] is True and stage_certificate['observed_stage_ccx'] == stage_certificate['expected_stage_ccx'] and stage_certificate['observed_total_ccx'] == stage_certificate['expected_total_ccx'], stage_certificate['expected_stage_ccx'], stage_certificate),
         _check('modular_arithmetic_certificate_reduced_width_cases_are_exhaustive', all(row['pass'] is True and row['rows_checked'] == row['modulus'] * row['modulus'] for row in reduced_cases), 'all reduced-width rows pass exhaustive p^2 testing', reduced_cases),
+    ]
+    return _summarize_checks(checks)
+
+
+def build_arithmetic_operation_ir_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    arithmetic_ir = artifacts['arithmetic_operation_ir']
+    expected = build_arithmetic_operation_ir(
+        arithmetic_lowerings=artifacts['arithmetic_lowerings'],
+        leaf_opcode_histogram=leaf_opcode_histogram(),
+    )
+    leaf_summary = arithmetic_ir['leaf_arithmetic_summary']
+    kernel_rows = arithmetic_ir['kernels']
+    block_rows = [
+        block
+        for kernel in kernel_rows
+        for stage in kernel['stages']
+        for block in stage['blocks']
+    ]
+    checks = [
+        _check('arithmetic_operation_ir_matches_generator', arithmetic_ir == expected, expected, arithmetic_ir),
+        _check('arithmetic_operation_ir_schema_is_current', arithmetic_ir['schema'] == ARITHMETIC_OPERATION_IR_SCHEMA, ARITHMETIC_OPERATION_IR_SCHEMA, arithmetic_ir['schema']),
+        _check('arithmetic_operation_ir_passes_internal_checks', arithmetic_ir['pass'] is True and all(arithmetic_ir['checks'].values()), True, arithmetic_ir['checks']),
+        _check('arithmetic_operation_ir_leaf_total_matches_arithmetic_lowering', leaf_summary['primitive_counts_total'] == artifacts['arithmetic_lowerings']['leaf_reconstruction']['primitive_totals'] and leaf_summary['non_clifford_total'] == artifacts['arithmetic_lowerings']['leaf_reconstruction']['arithmetic_leaf_non_clifford'], artifacts['arithmetic_lowerings']['leaf_reconstruction'], leaf_summary),
+        _check('arithmetic_operation_ir_block_stream_digests_are_present', all(len(block['operation_stream_sha256']) == 64 for block in block_rows), '64 hex chars per block digest', [block['operation_stream_sha256'] for block in block_rows[:8]]),
+        _check('arithmetic_operation_ir_tracks_operand_capacity', arithmetic_ir['summary']['max_block_operand_slots_required'] >= FIELD_BITS and all(block['operand_profile']['negative_operand_count'] == 0 for block in block_rows), {'min_operand_slots_required': FIELD_BITS, 'negative_operands': 0}, arithmetic_ir['summary']),
     ]
     return _summarize_checks(checks)
 
@@ -1387,6 +1415,7 @@ def build_reusable_chunk_lowering_checks(artifacts: Mapping[str, Any]) -> Dict[s
     owners = lowering['owner_capacity']
     executable_liveness = lowering['executable_liveness']
     counted_resource_ir = lowering['counted_resource_ir']
+    counted_resource_engine = lowering['counted_resource_engine']
     qroam_model = lowering['standard_qroamclean_k1_model']
     primitive_contract = lowering['chunked_multiplier_primitive_contract']
     expected_stream_count = (
@@ -1427,6 +1456,8 @@ def build_reusable_chunk_lowering_checks(artifacts: Mapping[str, Any]) -> Dict[s
         _check('reusable_chunk_lowering_executable_liveness_reconstructs_peak', executable_liveness['pass'] is True and executable_liveness['global_peak_live_qubits'] == qubits['candidate_total_logical_qubits'] and executable_liveness['owner_peak_live_qubits'] == executable_liveness['owner_capacity_qubits'], {'global_peak_live_qubits': qubits['candidate_total_logical_qubits'], 'owner_peaks_equal_capacity': True}, executable_liveness),
         _check('reusable_chunk_lowering_executable_liveness_counts_qchunk_and_qroam_target_concurrently', executable_liveness['checks']['qroam_target_and_qchunk_are_concurrently_live'] is True and executable_liveness['checks']['no_full_coordinate_lane_wire_is_live'] is True, {'qchunk_and_qroam_target_concurrent': True, 'full_coordinate_lane_live': False}, executable_liveness['checks']),
         _check('reusable_chunk_lowering_counted_resource_ir_recomputes_public_totals', counted_resource_ir['pass'] is True and counted_resource_ir['recomputed_total_non_clifford'] == non_clifford['candidate_total_non_clifford'] and counted_resource_ir['recomputed_peak_live_qubits'] == qubits['candidate_total_logical_qubits'] and len([term for term in counted_resource_ir['non_clifford_terms'] if term['category'] == 'qroam_chunk_stream']) == len(stream_plan['rows']), {'non_clifford': non_clifford['candidate_total_non_clifford'], 'peak_live_qubits': qubits['candidate_total_logical_qubits'], 'qroam_terms': len(stream_plan['rows'])}, counted_resource_ir),
+        _check('reusable_chunk_lowering_counted_resource_engine_matches_generator', counted_resource_engine == evaluate_counted_resource_ir(counted_resource_ir), evaluate_counted_resource_ir(counted_resource_ir), counted_resource_engine),
+        _check('reusable_chunk_lowering_counted_resource_engine_recomputes_public_totals', counted_resource_engine['schema'] == RESOURCE_IR_ENGINE_SCHEMA and counted_resource_engine['pass'] is True and counted_resource_engine['non_clifford_total_from_terms'] == non_clifford['candidate_total_non_clifford'] and counted_resource_engine['peak_live_qubits_from_intervals'] == qubits['candidate_total_logical_qubits'], {'schema': RESOURCE_IR_ENGINE_SCHEMA, 'non_clifford': non_clifford['candidate_total_non_clifford'], 'peak_live_qubits': qubits['candidate_total_logical_qubits']}, counted_resource_engine),
         _check('reusable_chunk_lowering_records_zkp_and_release_evidence', len(lowering['public_claim_evidence']) >= 2, '>= 2', lowering['public_claim_evidence']),
     ]
     return _summarize_checks(checks)
@@ -1438,6 +1469,7 @@ def build_resource_liveness_certificate_checks(artifacts: Mapping[str, Any]) -> 
         frontier=artifacts['family_frontier'],
         streamed_lookup_tail_slot_allocation=artifacts['streamed_lookup_tail_leaf_slot_allocation'],
         arithmetic_lowerings=artifacts['arithmetic_lowerings'],
+        arithmetic_operation_ir=artifacts['arithmetic_operation_ir'],
         streamed_lookup_resource=artifacts['streamed_lookup_table_multiplier_resource'],
         logical_resource_ledger=artifacts['logical_resource_ledger'],
         ft_ir_compositions=artifacts['ft_ir_compositions'],
@@ -1448,6 +1480,7 @@ def build_resource_liveness_certificate_checks(artifacts: Mapping[str, Any]) -> 
     selected = artifacts['family_frontier']['best_qubit_family']
     primitive_ir = certificate['primitive_oracle_ir']
     owner_capacity = certificate['derived_owner_capacity']
+    arithmetic_operation_ir = certificate['arithmetic_operation_ir']
     checks = [
         _check('resource_liveness_certificate_matches_generator', certificate == expected, expected, certificate),
         _check('resource_liveness_certificate_schema_is_current', certificate['schema'] == 'compiler-project-resource-liveness-certificate-v3', 'compiler-project-resource-liveness-certificate-v3', certificate['schema']),
@@ -1463,6 +1496,7 @@ def build_resource_liveness_certificate_checks(artifacts: Mapping[str, Any]) -> 
         _check('resource_liveness_certificate_embeds_selected_ft_ir_leaf_sigma', primitive_ir['selected_family'] == selected['name'] and primitive_ir['source_schema'] == artifacts['ft_ir_compositions']['schema'] and primitive_ir['leaf_sigma_count'] == len(primitive_ir['leaf_sigma']), {'selected_family': selected['name'], 'source_schema': artifacts['ft_ir_compositions']['schema']}, {'selected_family': primitive_ir['selected_family'], 'source_schema': primitive_ir['source_schema'], 'leaf_sigma_count': primitive_ir['leaf_sigma_count']}),
         _check('resource_liveness_certificate_leaf_sigma_reconstructs_headline', primitive_ir['reconstruction_from_leaf_sigma']['full_oracle_non_clifford'] == selected['full_oracle_non_clifford'] and primitive_ir['reconstruction_from_leaf_sigma']['total_logical_qubits'] == selected['total_logical_qubits'], selected, primitive_ir['reconstruction_from_leaf_sigma']),
         _check('resource_liveness_certificate_binds_materialized_stream_manifest', certificate['materialized_operation_stream']['operation_stream_sha256'] == artifacts['materialized_circuit_manifest']['operation_stream_sha256'] and certificate['materialized_operation_stream']['gate_totals']['ccx'] == selected['full_oracle_non_clifford'], artifacts['materialized_circuit_manifest'], certificate['materialized_operation_stream']),
+        _check('resource_liveness_certificate_binds_arithmetic_operation_ir', arithmetic_operation_ir['schema'] == artifacts['arithmetic_operation_ir']['schema'] and arithmetic_operation_ir['summary'] == artifacts['arithmetic_operation_ir']['summary'] and arithmetic_operation_ir['leaf_arithmetic_summary']['non_clifford_total'] == selected['arithmetic_leaf_non_clifford'] and arithmetic_operation_ir['leaf_arithmetic_summary']['operation_stream_sha256'] == artifacts['arithmetic_operation_ir']['leaf_arithmetic_summary']['operation_stream_sha256'], artifacts['arithmetic_operation_ir']['leaf_arithmetic_summary'], arithmetic_operation_ir['leaf_arithmetic_summary']),
         _check('resource_liveness_certificate_tail_macro_expands_into_rows', primitive_ir['tail_macro_rows']['row_count'] > 0 and primitive_ir['tail_macro_rows']['whole_oracle_non_clifford'] == primitive_ir['tail_macro_rows']['per_leaf_non_clifford'] * primitive_ir['tail_macro_rows']['leaf_call_count_total'], True, primitive_ir['tail_macro_rows']),
         _check('resource_liveness_certificate_binds_materialized_segment_tree', certificate['materialized_operation_stream']['segment_merkle_root_sha256'] == artifacts['materialized_circuit_manifest']['segment_merkle_root_sha256'] and certificate['checks']['materialized_operation_stream_segments_cover_stream'] is True, artifacts['materialized_circuit_manifest']['segment_merkle_root_sha256'], certificate['materialized_operation_stream']),
     ]
@@ -2514,6 +2548,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'schedule_checks': lambda: build_schedule_checks(artifacts),
         'table_manifest_checks': lambda: build_table_manifest_checks(artifacts),
         'arithmetic_kernel_checks': lambda: build_arithmetic_kernel_checks(artifacts),
+        'arithmetic_operation_ir_checks': lambda: build_arithmetic_operation_ir_checks(artifacts),
         'modular_arithmetic_certificate_checks': lambda: build_modular_arithmetic_certificate_checks(artifacts),
         'cleanup_pair_checks': lambda: build_cleanup_pair_checks(artifacts),
         'lookup_lowering_checks': lambda: build_lookup_lowering_checks(artifacts),

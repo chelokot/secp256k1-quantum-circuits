@@ -50,6 +50,8 @@ def test_zkp_attestation_input_reconstructs_public_claim() -> None:
     payload = _default_payload()
     claim = payload['claim_summary']
     family = payload['family_summary']
+    resource_document = payload['resource_certificate_document']
+    arithmetic_operation_ir = resource_document['payload']['arithmetic_operation_ir']
     non_clifford = claim['non_clifford_formula']
     qubits = claim['logical_qubit_formula']
     assert non_clifford['reconstructed_total'] == family['full_oracle_non_clifford']
@@ -57,6 +59,11 @@ def test_zkp_attestation_input_reconstructs_public_claim() -> None:
     assert qubits['reconstructed_total'] == family['total_logical_qubits']
     assert claim['expected_total_logical_qubits'] == family['total_logical_qubits']
     assert family['name'].endswith('__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1')
+    assert resource_document['document_type'] == 'resource_liveness_certificate'
+    assert arithmetic_operation_ir['schema'] == 'compiler-project-arithmetic-operation-ir-v1'
+    assert arithmetic_operation_ir['pass'] is True
+    assert arithmetic_operation_ir['leaf_arithmetic_summary']['non_clifford_total'] == family['arithmetic_leaf_non_clifford']
+    assert arithmetic_operation_ir['leaf_arithmetic_summary']['operation_stream_sha256']
     frontier = json.loads((REPO_ROOT / 'compiler_verification_project' / 'artifacts' / 'family_frontier.json').read_text())
     assert family['full_oracle_non_clifford'] == frontier['best_gate_family']['full_oracle_non_clifford']
     assert family['total_logical_qubits'] == frontier['best_gate_family']['total_logical_qubits']

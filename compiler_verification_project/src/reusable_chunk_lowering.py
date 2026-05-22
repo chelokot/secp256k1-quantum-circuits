@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any, Dict, List, Mapping
 
 from resource_ledger import qroam_clean_stream_cost
+from resource_ir_engine import evaluate_counted_resource_ir
 
 
 def _owner(owner_id: str, logical_qubits: int, source: str, required: Mapping[str, int]) -> Dict[str, Any]:
@@ -455,6 +456,7 @@ def build_reusable_chunk_lowering(
         total_non_clifford=total_non_clifford,
         total_logical_qubits=total_logical_qubits,
     )
+    counted_resource_engine = evaluate_counted_resource_ir(counted_resource_ir)
     owner_required_total = sum(int(owner['required_peak_qubits']) for owner in owners)
     owner_capacity_total = sum(int(owner['logical_qubits']) for owner in owners)
     checks = {
@@ -505,6 +507,7 @@ def build_reusable_chunk_lowering(
         'executable_liveness_peak_matches_candidate': executable_liveness['pass'] is True and int(executable_liveness['global_peak_live_qubits']) == total_logical_qubits,
         'executable_liveness_owner_peaks_match_capacity': executable_liveness['owner_peak_live_qubits'] == executable_liveness['owner_capacity_qubits'],
         'counted_resource_ir_recomputes_public_totals': counted_resource_ir['pass'] is True and int(counted_resource_ir['recomputed_total_non_clifford']) == total_non_clifford and int(counted_resource_ir['recomputed_peak_live_qubits']) == total_logical_qubits,
+        'counted_resource_engine_recomputes_public_totals': counted_resource_engine['pass'] is True and int(counted_resource_engine['non_clifford_total_from_terms']) == total_non_clifford and int(counted_resource_engine['peak_live_qubits_from_intervals']) == total_logical_qubits,
         'fits_requested_limits': total_non_clifford < 40_000_000 and total_logical_qubits < 1200,
     }
     return {
@@ -578,6 +581,7 @@ def build_reusable_chunk_lowering(
             'candidate_total_logical_qubits': total_logical_qubits,
         },
         'counted_resource_ir': counted_resource_ir,
+        'counted_resource_engine': counted_resource_engine,
         'owner_capacity': {
             'rows': owners,
             'required_global_peak_qubits': owner_required_total,

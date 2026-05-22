@@ -3894,6 +3894,77 @@ fn validate_resource_certificate(
         "tail macro must be expanded into primitive leaf-sigma rows"
     );
 
+    let arithmetic_operation_ir = json_object_field(certificate, "arithmetic_operation_ir");
+    assert_eq!(
+        json_string_field(arithmetic_operation_ir, "schema"),
+        "compiler-project-arithmetic-operation-ir-v1"
+    );
+    assert!(json_bool_field(arithmetic_operation_ir, "pass"));
+    let arithmetic_ir_checks = json_object_field(arithmetic_operation_ir, "checks")
+        .as_object()
+        .expect("arithmetic operation IR checks must be an object");
+    assert!(
+        arithmetic_ir_checks
+            .values()
+            .all(|value| value.as_bool() == Some(true)),
+        "arithmetic operation IR contains a failing check"
+    );
+    let arithmetic_ir_summary = json_object_field(arithmetic_operation_ir, "summary");
+    assert!(
+        json_u64_field(arithmetic_ir_summary, "kernel_count") > 0,
+        "arithmetic operation IR must contain kernels"
+    );
+    assert!(
+        json_u64_field(arithmetic_ir_summary, "stage_count") > 0,
+        "arithmetic operation IR must contain stages"
+    );
+    assert!(
+        json_u64_field(arithmetic_ir_summary, "block_count") > 0,
+        "arithmetic operation IR must contain blocks"
+    );
+    assert!(
+        json_u64_field(arithmetic_ir_summary, "max_block_operand_slots_required") >= claim.field_bits as u64,
+        "arithmetic operation IR operand profile must cover at least one field register"
+    );
+    let arithmetic_leaf = json_object_field(arithmetic_operation_ir, "leaf_arithmetic_summary");
+    assert_eq!(
+        json_u64_field(arithmetic_leaf, "non_clifford_total"),
+        family.arithmetic_leaf_non_clifford
+    );
+    assert_eq!(
+        json_primitive_counts(arithmetic_leaf, "primitive_counts_total")["ccx"],
+        family.arithmetic_leaf_non_clifford
+    );
+    assert!(
+        json_string_field(arithmetic_leaf, "operation_stream_sha256").len() == 64,
+        "arithmetic leaf operation stream digest must be a sha256 hex digest"
+    );
+    assert!(
+        json_array_field(arithmetic_leaf, "non_arithmetic_leaf_opcodes").len() > 0,
+        "arithmetic operation IR must explicitly separate non-arithmetic leaf opcodes"
+    );
+    let mut arithmetic_row_non_clifford = 0u64;
+    for row in json_array_field(arithmetic_leaf, "rows") {
+        let opcode = json_string_field(row, "opcode");
+        let primitive_counts = json_primitive_counts(row, "primitive_counts_total");
+        let instance_count = json_u64_field(row, "leaf_instance_count");
+        let per_instance = json_u64_field(row, "kernel_non_clifford_per_instance");
+        assert_eq!(
+            primitive_counts["ccx"],
+            instance_count * per_instance,
+            "arithmetic operation IR row does not reconstruct: {opcode}"
+        );
+        assert!(
+            json_string_field(row, "kernel_stage_digest_sha256").len() == 64,
+            "arithmetic operation IR row must bind a kernel stage digest"
+        );
+        arithmetic_row_non_clifford += primitive_counts["ccx"];
+    }
+    assert_eq!(
+        arithmetic_row_non_clifford,
+        family.arithmetic_leaf_non_clifford
+    );
+
     let materialized_stream = json_object_field(certificate, "materialized_operation_stream");
     assert_eq!(
         json_string_field(materialized_stream, "family"),
@@ -4604,6 +4675,116 @@ fn validate_reusable_chunk_lowering(
         json_string_field(counted_ir, "peak_interval_id"),
         counted_peak_interval_id
     );
+    let counted_wire_catalog = json_object_field(counted_ir, "wire_catalog")
+        .as_object()
+        .expect("counted_resource_ir wire_catalog must be an object");
+    let mut owner_peak_from_wire_catalog: BTreeMap<String, u64> = BTreeMap::new();
+    for interval in counted_intervals {
+        let mut seen_live_wires = BTreeSet::new();
+        let mut owner_totals: BTreeMap<String, u64> = BTreeMap::new();
+        for wire_value in json_array_field(interval, "live_wire_ids") {
+            let wire_id = wire_value
+                .as_str()
+                .expect("counted_resource_ir live wire id must be a string");
+            assert!(
+                seen_live_wires.insert(wire_id.to_owned()),
+                "counted_resource_ir interval double-counts a live wire"
+            );
+            let wire = counted_wire_catalog
+                .get(wire_id)
+                .unwrap_or_else(|| panic!("counted_resource_ir live wire missing from catalog: {wire_id}"));
+            let owner_id = json_string_field(wire, "owner_id").to_owned();
+            let qubits = json_u64_field(wire, "qubits");
+            *owner_totals.entry(owner_id).or_insert(0) += qubits;
+        }
+        let interval_total = owner_totals.values().sum::<u64>();
+        assert_eq!(
+            interval_total,
+            json_u64_field(interval, "total_live_qubits")
+        );
+        let observed_owner_totals = json_object_field(interval, "owner_live_qubits")
+            .as_object()
+            .expect("counted_resource_ir interval owner_live_qubits must be an object");
+        assert_eq!(observed_owner_totals.len(), owner_totals.len());
+        for (owner_id, qubits) in &owner_totals {
+            assert_eq!(
+                observed_owner_totals
+                    .get(owner_id)
+                    .and_then(Value::as_u64)
+                    .expect("counted_resource_ir interval missing owner total"),
+                *qubits
+            );
+            let current = owner_peak_from_wire_catalog.entry(owner_id.clone()).or_insert(0);
+            *current = (*current).max(*qubits);
+        }
+    }
+    let counted_resource_engine = json_object_field(certificate, "counted_resource_engine");
+    assert_eq!(
+        json_string_field(counted_resource_engine, "schema"),
+        "compiler-project-counted-resource-ir-engine-v1"
+    );
+    assert!(json_bool_field(counted_resource_engine, "pass"));
+    assert_eq!(
+        json_string_field(counted_resource_engine, "input_schema"),
+        json_string_field(counted_ir, "schema")
+    );
+    assert_eq!(
+        json_string_field(counted_resource_engine, "counted_resource_ir_sha256").len(),
+        64
+    );
+    assert_eq!(
+        json_u64_field(counted_resource_engine, "term_count"),
+        json_array_field(counted_ir, "non_clifford_terms").len() as u64
+    );
+    assert_eq!(
+        json_u64_field(counted_resource_engine, "wire_count"),
+        counted_wire_catalog.len() as u64
+    );
+    assert_eq!(
+        json_u64_field(counted_resource_engine, "interval_count"),
+        counted_intervals.len() as u64
+    );
+    assert_eq!(
+        json_u64_field(counted_resource_engine, "non_clifford_total_from_terms"),
+        ir_non_clifford_total
+    );
+    assert_eq!(
+        json_u64_field(counted_resource_engine, "peak_live_qubits_from_intervals"),
+        counted_peak_live_qubits
+    );
+    assert_eq!(
+        json_string_field(counted_resource_engine, "peak_interval_id_from_intervals"),
+        counted_peak_interval_id
+    );
+    assert!(json_array_field(counted_resource_engine, "malformed_term_ids").is_empty());
+    assert!(json_array_field(counted_resource_engine, "unknown_live_wire_refs").is_empty());
+    assert!(json_array_field(counted_resource_engine, "duplicate_live_wire_refs").is_empty());
+    assert!(json_array_field(counted_resource_engine, "interval_sum_mismatches").is_empty());
+    let engine_checks = json_object_field(counted_resource_engine, "checks")
+        .as_object()
+        .expect("counted_resource_engine checks must be an object");
+    assert!(
+        engine_checks
+            .values()
+            .all(|value| value.as_bool() == Some(true)),
+        "counted_resource_engine contains a failing check"
+    );
+    let engine_owner_peak = json_object_field(
+        counted_resource_engine,
+        "owner_peak_live_qubits_from_intervals",
+    )
+    .as_object()
+    .expect("counted_resource_engine owner peaks must be an object");
+    assert_eq!(engine_owner_peak.len(), owner_peak_from_wire_catalog.len());
+    for (owner_id, qubits) in &owner_peak_from_wire_catalog {
+        assert_eq!(
+            engine_owner_peak
+                .get(owner_id)
+                .and_then(Value::as_u64)
+                .expect("counted_resource_engine missing owner peak"),
+            *qubits
+        );
+    }
 
     let owner_capacity = json_object_field(certificate, "owner_capacity");
     assert_eq!(
@@ -5268,6 +5449,17 @@ mod tests {
 
     #[test]
     #[should_panic]
+    fn prepared_attestation_rejects_forged_arithmetic_operation_ir() {
+        let mut input = checked_input();
+        input.resource_certificate_document.payload.0["arithmetic_operation_ir"]
+            ["leaf_arithmetic_summary"]["rows"][0]["primitive_counts_total"]["ccx"] =
+            serde_json::json!(0);
+        refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
     fn prepared_attestation_rejects_underprovisioned_owner_capacity() {
         let mut input = checked_input();
         input.resource_certificate_document.payload.0["derived_owner_capacity"]["rows"][0]
@@ -5291,6 +5483,32 @@ mod tests {
         let mut input = checked_reusable_chunk_input();
         input.resource_certificate_document.payload.0["counted_resource_ir"]
             ["non_clifford_terms"][1]["total_non_clifford"] = serde_json::json!(65_535);
+        refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_reusable_chunk_resource_engine_forgery() {
+        let mut input = checked_reusable_chunk_input();
+        input.resource_certificate_document.payload.0["counted_resource_engine"]
+            ["peak_live_qubits_from_intervals"] = serde_json::json!(1198);
+        refresh_resource_certificate_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_reusable_chunk_interval_double_count() {
+        let mut input = checked_reusable_chunk_input();
+        let first_wire = input.resource_certificate_document.payload.0["counted_resource_ir"]
+            ["liveness_intervals"][0]["live_wire_ids"][0]
+            .clone();
+        input.resource_certificate_document.payload.0["counted_resource_ir"]
+            ["liveness_intervals"][0]["live_wire_ids"]
+            .as_array_mut()
+            .expect("live_wire_ids must be an array")
+            .push(first_wire);
         refresh_resource_certificate_digest(&mut input);
         run_prepared_attestation(&input);
     }

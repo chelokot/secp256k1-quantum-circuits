@@ -18,10 +18,12 @@ from baselines import load_public_google_baseline_lines  # noqa: E402
 from common import dump_json, load_json  # noqa: E402
 from artifact_digest_tree import build_artifact_digest_tree  # noqa: E402
 from artifact_registry import BUILD_SUMMARY_ARTIFACT_PATHS, BUILD_SUMMARY_SCHEMA  # noqa: E402
+from arithmetic_operation_ir import build_arithmetic_operation_ir  # noqa: E402
 from project import FIELD_BITS, build_all_artifacts, write_cain_transfer  # noqa: E402
 from public_result import write_public_headline_result  # noqa: E402
 from qroam_reference_crosscheck import build_qroam_reference_crosscheck  # noqa: E402
 from release_corpus_preflight import build_release_corpus_preflight  # noqa: E402
+from resource_certificate import build_resource_liveness_certificate  # noqa: E402
 from reusable_chunk_lowering import build_reusable_chunk_lowering  # noqa: E402
 from zkp_attestation import write_zkp_attestation_inputs  # noqa: E402
 
@@ -53,6 +55,36 @@ def build_reusable_chunk_resource() -> None:
         field_bits=FIELD_BITS,
     )
     dump_json(artifact_dir / 'reusable_chunk_lowering.json', payload)
+
+
+def build_arithmetic_operation_ir_artifact() -> None:
+    artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
+    lowerings = load_json(artifact_dir / 'arithmetic_lowerings.json')
+    leaf_histogram = lowerings['leaf_reconstruction']['leaf_opcode_histogram']
+    dump_json(
+        artifact_dir / 'arithmetic_operation_ir.json',
+        build_arithmetic_operation_ir(
+            arithmetic_lowerings=lowerings,
+            leaf_opcode_histogram=leaf_histogram,
+        ),
+    )
+
+
+def build_resource_liveness_certificate_artifact() -> None:
+    artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
+    payload = build_resource_liveness_certificate(
+        frontier=load_json(artifact_dir / 'family_frontier.json'),
+        streamed_lookup_tail_slot_allocation=load_json(artifact_dir / 'streamed_lookup_tail_leaf_slot_allocation.json'),
+        arithmetic_lowerings=load_json(artifact_dir / 'arithmetic_lowerings.json'),
+        arithmetic_operation_ir=load_json(artifact_dir / 'arithmetic_operation_ir.json'),
+        streamed_lookup_resource=load_json(artifact_dir / 'streamed_lookup_table_multiplier_resource.json'),
+        logical_resource_ledger=load_json(artifact_dir / 'logical_resource_ledger.json'),
+        ft_ir_compositions=load_json(artifact_dir / 'ft_ir_compositions.json'),
+        phase_shell_lowerings=load_json(artifact_dir / 'phase_shell_lowerings.json'),
+        materialized_circuit_manifest=load_json(artifact_dir / 'materialized_circuit_manifest.json'),
+        field_bits=FIELD_BITS,
+    )
+    dump_json(artifact_dir / 'resource_liveness_certificate.json', payload)
 
 
 def build_qroam_reference() -> None:
@@ -103,7 +135,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--target',
-        choices=('all', 'core-artifacts', 'build-summary', 'artifact-digest-tree', 'release-corpus-preflight', 'qroam-reference', 'reusable-chunk-resource', 'zkp', 'candidate-zkp', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'),
+        choices=('all', 'core-artifacts', 'build-summary', 'artifact-digest-tree', 'release-corpus-preflight', 'arithmetic-operation-ir', 'resource-liveness-certificate', 'qroam-reference', 'reusable-chunk-resource', 'zkp', 'candidate-zkp', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'),
         default='all',
     )
     args = parser.parse_args()
@@ -120,6 +152,12 @@ def main() -> None:
     if args.target in ('release-corpus-preflight',):
         build_release_corpus_preflight_artifact()
         payload['release_corpus_preflight'] = 'compiler_verification_project/artifacts/release_corpus_preflight.json'
+    if args.target in ('arithmetic-operation-ir', 'resource-zkp-and-public'):
+        build_arithmetic_operation_ir_artifact()
+        payload['arithmetic_operation_ir'] = 'compiler_verification_project/artifacts/arithmetic_operation_ir.json'
+    if args.target in ('resource-liveness-certificate', 'resource-zkp-and-public'):
+        build_resource_liveness_certificate_artifact()
+        payload['resource_liveness_certificate'] = 'compiler_verification_project/artifacts/resource_liveness_certificate.json'
     if args.target in ('qroam-reference', 'resource-zkp-and-public'):
         build_qroam_reference()
         payload['qroam_reference_crosscheck'] = 'compiler_verification_project/artifacts/qroam_reference_crosscheck.json'
@@ -140,6 +178,8 @@ def main() -> None:
         'build_summary_artifact': payload.get('build_summary_artifact'),
         'artifact_digest_tree': payload.get('artifact_digest_tree'),
         'release_corpus_preflight': payload.get('release_corpus_preflight'),
+        'arithmetic_operation_ir': payload.get('arithmetic_operation_ir'),
+        'resource_liveness_certificate': payload.get('resource_liveness_certificate'),
         'qroam_reference_crosscheck': payload.get('qroam_reference_crosscheck'),
         'reusable_chunk_lowering': payload.get('reusable_chunk_lowering'),
         'public_headline_result': payload.get('public_headline_result'),

@@ -103,6 +103,7 @@ class ReleaseInventoryTests(unittest.TestCase):
             'compiler_verification_project/src/artifact_digest_tree.py',
             'compiler_verification_project/src/artifact_registry.py',
             'compiler_verification_project/src/arithmetic_lowering.py',
+            'compiler_verification_project/src/arithmetic_operation_ir.py',
             'compiler_verification_project/src/compiler_parameters.py',
             'compiler_verification_project/src/fallback_frontier_stress.py',
             'compiler_verification_project/src/integrity.py',
@@ -122,6 +123,7 @@ class ReleaseInventoryTests(unittest.TestCase):
             'compiler_verification_project/src/qroam_reference_crosscheck.py',
             'compiler_verification_project/src/release_corpus_preflight.py',
             'compiler_verification_project/src/resource_certificate.py',
+            'compiler_verification_project/src/resource_ir_engine.py',
             'compiler_verification_project/src/resource_ledger.py',
             'compiler_verification_project/src/reusable_chunk_lowering.py',
             'compiler_verification_project/src/reusable_chunk_tail_candidate.py',
@@ -137,6 +139,7 @@ class ReleaseInventoryTests(unittest.TestCase):
             'compiler_verification_project/artifacts/proof_corpus_profiles.json',
             'compiler_verification_project/artifacts/release_corpus_preflight.json',
             'compiler_verification_project/artifacts/arithmetic_lowerings.json',
+            'compiler_verification_project/artifacts/arithmetic_operation_ir.json',
             'compiler_verification_project/artifacts/modular_arithmetic_certificate.json',
             'compiler_verification_project/artifacts/family_frontier.json',
             'compiler_verification_project/artifacts/lookup_lowerings.json',
@@ -259,6 +262,11 @@ class ReleaseInventoryTests(unittest.TestCase):
     def test_proof_manifest_includes_custom_attestation_prover_sources(self):
         proof = json.loads((REPO_ROOT / 'artifacts' / 'package' / 'proof_manifest.json').read_text())
         required = [
+            'compiler_verification_project/src/arithmetic_operation_ir.py',
+            'compiler_verification_project/src/resource_certificate.py',
+            'compiler_verification_project/src/resource_ir_engine.py',
+            'compiler_verification_project/src/resource_ledger.py',
+            'compiler_verification_project/artifacts/arithmetic_operation_ir.json',
             'compiler_verification_project/zkp_attestation/script/src/core_only.rs',
             'compiler_verification_project/zkp_attestation/script/src/wrap_only.rs',
             'compiler_verification_project/zkp_attestation/vendor/sp1-recursion-gnark-ffi/build.rs',

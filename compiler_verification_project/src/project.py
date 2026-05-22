@@ -59,6 +59,7 @@ from artifact_digest_tree import build_artifact_digest_tree  # noqa: E402
 from artifact_registry import BUILD_SUMMARY_ARTIFACT_PATHS, BUILD_SUMMARY_SCHEMA  # noqa: E402
 from baselines import load_public_google_baseline_artifact, load_public_google_baseline_lines  # noqa: E402
 from arithmetic_lowering import DEFAULT_QROAM_CLEAN_BLOCK_SIZE, arithmetic_kernel_summary, arithmetic_lowering_library  # noqa: E402
+from arithmetic_operation_ir import build_arithmetic_operation_ir  # noqa: E402
 from compiler_parameters import build_compiler_parameters  # noqa: E402
 from fallback_frontier_stress import build_fallback_frontier_stress  # noqa: E402
 from ft_ir import build_ft_ir_compositions as build_ft_ir_compositions_single  # noqa: E402
@@ -1923,6 +1924,10 @@ def build_all_artifacts() -> Dict[str, Any]:
         'streamed_lookup_tail_leaf_equivalence': build_streamed_lookup_tail_leaf_equivalence(),
         'streamed_lookup_tail_slot_allocation': streamed_lookup_tail_leaf_slot_allocation(),
         'arithmetic_lowerings': arithmetic_lowerings,
+        'arithmetic_operation_ir': build_arithmetic_operation_ir(
+            arithmetic_lowerings=arithmetic_lowerings,
+            leaf_opcode_histogram=leaf_opcode_histogram(),
+        ),
         'modular_arithmetic_certificate': build_modular_arithmetic_certificate(
             arithmetic_lowerings=arithmetic_lowerings,
             field_bits=FIELD_BITS,
@@ -2009,6 +2014,7 @@ def build_all_artifacts() -> Dict[str, Any]:
         frontier=out['frontier'],
         streamed_lookup_tail_slot_allocation=out['streamed_lookup_tail_slot_allocation'],
         arithmetic_lowerings=out['arithmetic_lowerings'],
+        arithmetic_operation_ir=out['arithmetic_operation_ir'],
         streamed_lookup_resource=out['streamed_lookup_table_multiplier_resource'],
         logical_resource_ledger=out['logical_resource_ledger'],
         ft_ir_compositions=out['ft_ir_compositions'],
@@ -2045,6 +2051,7 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('streamed_lookup_tail_leaf_equivalence.json'), out['streamed_lookup_tail_leaf_equivalence'])
     dump_json(project_artifact_path('streamed_lookup_tail_leaf_slot_allocation.json'), out['streamed_lookup_tail_slot_allocation'])
     dump_json(project_artifact_path('arithmetic_lowerings.json'), out['arithmetic_lowerings'])
+    dump_json(project_artifact_path('arithmetic_operation_ir.json'), out['arithmetic_operation_ir'])
     dump_json(project_artifact_path('modular_arithmetic_certificate.json'), out['modular_arithmetic_certificate'])
     dump_json(project_artifact_path('tail_macro_liveness.json'), out['tail_macro_liveness'])
     dump_json(project_artifact_path('tail_macro_reversibility.json'), out['tail_macro_reversibility'])

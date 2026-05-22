@@ -40,6 +40,7 @@ What it does ship is:
 
 - an exact whole-oracle schedule,
 - exact arithmetic-kernel generated primitive-operation inventories,
+- compact arithmetic operation-stream digests for block/stage/kernel/leaf totals,
 - exact lookup-family choices with generated lowered primitive-operation inventories,
 - exact leaf slot allocation,
 - exact phase-shell families, and
@@ -54,6 +55,7 @@ What it does ship is:
 - `proof_corpus_profiles.json` — versioned ZKP case-corpus profiles: current public smoke profile and Google-comparable release target
 - `release_corpus_preflight.json` — fast deterministic 9024-case Google-comparable semantic preflight over the executable leaf, with edge-category counts and a rolling case-stream digest
 - `arithmetic_lowerings.json` — generated primitive-operation inventories for the named arithmetic-kernel family
+- `arithmetic_operation_ir.json` — compact arithmetic operation-stream IR: every arithmetic lowering block is materialized into a canonical primitive-operation stream with per-block digests and reconstructed stage/kernel/leaf totals
 - `modular_arithmetic_certificate.json` — proof-bound reduced-width executable pseudo-Mersenne arithmetic certificate plus 256-bit field-mul stage-count binding
 - `tail_macro_liveness.json` — generated diagnostic liveness pressure test for the `complete_a0_all_streamed_tail` formula DAG and the remaining three-slot schedule obligation
 - `tail_macro_reversibility.json` — generated raw-domain and valid-projective-subspace injectivity check for the tail macro's reversible boundary
