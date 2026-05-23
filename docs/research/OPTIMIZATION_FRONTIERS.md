@@ -23,12 +23,16 @@ which implementation gaps remain open.
 - checked standard-QROM lookup assessment binding the selected family to a
   standard-QROAM coordinate-stream primitive rather than the rejected
   bitwise-banked path-select model
+- unpromoted semantic six-slot tail candidate in `tail_macro_engine.json`,
+  using `(I,F) -> (M,N)` and `(E,K) -> (X3,Z3)` pair transforms with checked
+  determinant/replay evidence
 
 The main open directions are therefore:
 
-1. Clifford-complete arithmetic and lookup micro-expansion below the shipped generated compiler-family operation inventories
-2. external equivalence checking below the named arithmetic, lookup, and phase-shell blocks
-3. flatter end-to-end Shor fragments with external equivalence checking
+1. primitive resource lowering for the six-slot variable 2x2 in-place output matrix
+2. Clifford-complete arithmetic and lookup micro-expansion below the shipped generated compiler-family operation inventories
+3. external equivalence checking below the named arithmetic, lookup, and phase-shell blocks
+4. flatter end-to-end Shor fragments with external equivalence checking
 
 ## What would be overclaim
 

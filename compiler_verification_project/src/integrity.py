@@ -578,6 +578,8 @@ def build_tail_macro_engine_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
     fused_output_replay = engine['fused_output_replay_certificate']
     fused_output_lowering_contract = engine['fused_output_lowering_contract']
     fused_output_permutation = engine['fused_output_in_place_permutation_certificate']
+    six_slot_candidate = engine['six_slot_pair_output_candidate']
+    pair_output_determinant = engine['pair_output_determinant_certificate']
     slot_gap = engine['slot_gap']
     kernel_lookup = {
         kernel['opcode']: int(kernel['exact_non_clifford_per_kernel'])
@@ -737,6 +739,20 @@ def build_tail_macro_engine_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
             and fused_output_replay['checked_lookup_infinity_pairs'] > 0,
             'Y3-over-C zero-lift branch is backed by a secp256k1 L == 0 domain proof and lookup-infinity rows are replayed as bypasses',
             {'permutation': fused_output_permutation, 'replay': fused_output_replay},
+        ),
+        _check(
+            'tail_macro_engine_finds_unpromoted_six_slot_pair_output_candidate',
+            six_slot_candidate['pass'] is True
+            and six_slot_candidate['status'] == 'semantic_candidate_not_promoted_to_public_headline'
+            and six_slot_candidate['peak_field_slots'] == 6
+            and six_slot_candidate['terminal_live_values'] == ['X3', 'Y3', 'Z3']
+            and six_slot_candidate['replay_certificate']['checked_non_infinity_pairs'] == 110082
+            and six_slot_candidate['replay_certificate']['checked_lookup_infinity_pairs'] == 610
+            and pair_output_determinant['pass'] is True
+            and pair_output_determinant['matrix']['determinant_equals'] == '-Y3'
+            and pair_output_determinant['checks']['secp256k1_has_no_affine_y_zero_point'] is True,
+            'six-slot candidate uses (I,F)->(M,N) and (E,K)->(X3,Z3) pair permutations but is not promoted until the 2x2 primitive lowering is finalized',
+            six_slot_candidate,
         ),
     ]
     return _summarize_checks(checks)

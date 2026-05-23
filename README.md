@@ -184,6 +184,13 @@ result is now the primary strict headline in
 seven field slots and eventually make the ZKP guest/input consume that exact
 strict contract.
 
+`tail_macro_engine.json` now also carries an unpromoted semantic six-slot
+candidate. It combines `(I,F) -> (M,N)` as an in-place sum/difference pair and
+`(E,K) -> (X3,Z3)` as a pair-output matrix with determinant `-Y3`; the checked
+certificate proves the determinant precondition and the toy-boundary replay
+passes. The candidate is kept out of the public headline until the variable 2x2
+in-place matrix has a finalized primitive resource lowering and cost contract.
+
 The public engine manifest then binds that
 materialized flat stream, executable instruction rows, wires, schedule events,
 owner-capacity rows, resource terms, semantic-boundary evidence, arithmetic

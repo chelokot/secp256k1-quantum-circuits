@@ -57,7 +57,7 @@ What it does ship is:
 - `arithmetic_lowerings.json` — generated primitive-operation inventories for the named arithmetic-kernel family
 - `arithmetic_operation_ir.json` — compact arithmetic operation-stream IR: every arithmetic lowering block is materialized into a canonical primitive-operation stream with per-block digests and reconstructed stage/kernel/leaf totals; modular add/sub/mul kernels are generated from the embedded `executable_modular_circuit_ir`, the selected tail macro is bound to `tail_macro_engine`, and drift between those IRs and emitted arithmetic kernels is a fast-check failure
 - `modular_arithmetic_certificate.json` — proof-bound reduced-width executable pseudo-Mersenne arithmetic certificate plus 256-bit field-mul stage-count binding
-- `tail_macro_engine.json` — executable expanded field-operation contract for `complete_a0_all_streamed_tail`: formula rows, 23-op field-kernel stream, opcode histogram, tail non-Clifford total, strict nine-slot single-assignment fallback schedule, fixed-order and all-operand local-inverse overwrite screens, a reordered eight-slot local-inverse schedule, and a fused-output seven-slot schedule with generated slot assignment, replay certificate, and owner capacity
+- `tail_macro_engine.json` — executable expanded field-operation contract for `complete_a0_all_streamed_tail`: formula rows, 23-op field-kernel stream, opcode histogram, tail non-Clifford total, strict nine-slot single-assignment fallback schedule, fixed-order and all-operand local-inverse overwrite screens, a reordered eight-slot local-inverse schedule, a fused-output seven-slot schedule with generated slot assignment, replay certificate, and owner capacity, and an unpromoted semantic six-slot pair-output candidate
 - `tail_macro_liveness.json` — generated diagnostic liveness pressure test for the `complete_a0_all_streamed_tail` formula DAG and the remaining three-slot schedule obligation
 - `tail_macro_reversibility.json` — generated raw-domain and valid-projective-subspace injectivity check for the tail macro's reversible boundary
 - `streamed_lookup_table_multiplier_resource.json` — explicit table-controlled multiplier resource contract for streamed lookup coordinate bits
@@ -123,6 +123,13 @@ rejects the old unguarded `Y3` over `N` reuse with a concrete secp256k1
 `M == 0` witness, then records the selected zero-lifted in-place `Y3` over `C`
 field permutation with its counted `L == 0` guard, boundary replay, and cost
 reconstruction.
+
+The same artifact also records a semantic six-slot candidate. It uses the
+invertible pair transform `(I,F) -> (M,N)` and the pair-output matrix
+`(E,K) -> (X3,Z3)`, whose determinant is `-Y3`; the certificate proves the
+determinant precondition on the checked secp256k1 boundary and replays the toy
+boundary corpus. This candidate is intentionally not the public headline until
+the variable 2x2 in-place matrix has a finalized primitive resource lowering.
 
 The `173` lookup-workspace term is `18` folded-control qubits plus one live
 155-bit QROAMClean chunk target for `K = 1`; there are no junk registers at

@@ -411,6 +411,311 @@ def _apply_fused_output_in_place_screen(
     }
 
 
+def _secp256k1_pair_output_determinant_certificate(field_bits: int) -> Dict[str, Any]:
+    del field_bits
+    minus_curve_b = (-SECP_B) % SECP_P
+    no_affine_y_zero = pow(minus_curve_b, (SECP_P - 1) // 3, SECP_P) != 1
+    lookup_rows = []
+    inverse_branch_y3_nonzero = True
+    accumulator_infinity_y3_nonzero = True
+    sampled_boundary_y3_nonzero = True
+    checked_boundary_rows = 0
+    for base_id, cache, special_neg in _lookup_base_cache_rows():
+        non_infinity = 0
+        for word in range(WORD_SIZE):
+            lookup = folded_lookup_point_from_cache(word, cache, special_neg, SECP_P)
+            if lookup is None:
+                continue
+            non_infinity += 1
+            for case_name, accumulator in (
+                ('accumulator_infinity', None),
+                ('inverse', neg_affine(lookup, SECP_P)),
+            ):
+                trace = _tail_trace_for_affine(accumulator, lookup)
+                checked_boundary_rows += 1
+                if case_name == 'accumulator_infinity':
+                    accumulator_infinity_y3_nonzero = accumulator_infinity_y3_nonzero and trace['Y3'] % SECP_P != 0
+                else:
+                    inverse_branch_y3_nonzero = inverse_branch_y3_nonzero and trace['Y3'] % SECP_P != 0
+            if word in (1, 2, 3, 7, 123, 4567, WORD_SIZE - 1):
+                for scalar in (word + 1, word * 17 + 5):
+                    accumulator = mul_affine(scalar, SECP_G, SECP_P, SECP_B)
+                    trace = _tail_trace_for_affine(accumulator, lookup)
+                    checked_boundary_rows += 1
+                    sampled_boundary_y3_nonzero = sampled_boundary_y3_nonzero and trace['Y3'] % SECP_P != 0
+        lookup_rows.append({
+            'base_id': base_id,
+            'words_checked': WORD_SIZE,
+            'non_infinity_words': non_infinity,
+        })
+    checks = {
+        'secp256k1_has_no_affine_y_zero_point': no_affine_y_zero,
+        'accumulator_infinity_branch_has_nonzero_y3_for_all_checked_lookup_words': accumulator_infinity_y3_nonzero,
+        'inverse_branch_has_nonzero_y3_for_all_checked_lookup_words': inverse_branch_y3_nonzero,
+        'sampled_non_boundary_rows_have_nonzero_y3': sampled_boundary_y3_nonzero,
+    }
+    return {
+        'schema': 'compiler-project-secp256k1-pair-output-determinant-certificate-v1',
+        'matrix': {
+            'input_registers': ['E', 'K'],
+            'output_registers': ['X3', 'Z3'],
+            'rows': [
+                {'target': 'X3', 'coefficients': {'E': '-C', 'K': 'N'}},
+                {'target': 'Z3', 'coefficients': {'E': 'M', 'K': 'L'}},
+            ],
+            'determinant': '-C*L - N*M',
+            'determinant_equals': '-Y3',
+        },
+        'secp256k1_no_affine_y_zero_proof': {
+            'curve_equation': 'y^2 = x^3 + 7',
+            'claim': 'y == 0 would require x^3 == -7 mod p',
+            'minus_7_cubic_residue_check': pow(minus_curve_b, (SECP_P - 1) // 3, SECP_P),
+            'pass': no_affine_y_zero,
+        },
+        'lookup_word_checks': lookup_rows,
+        'checked_boundary_rows': checked_boundary_rows,
+        'checks': checks,
+        'pass': all(checks.values()),
+        'notes': [
+            'The in-place pair-output map (E,K) -> (X3,Z3) has determinant -Y3.',
+            'On the valid secp256k1 point-add boundary, Y3 == 0 would imply either an affine y == 0 curve point or a failed infinity branch; both are checked here.',
+            'This proves the semantic permutation precondition for a six-slot candidate, not a finalized low-level resource lowering for the 2x2 in-place matrix operation.',
+        ],
+    }
+
+
+def _six_slot_pair_output_candidate(
+    *,
+    field_bits: int,
+    kernel_non_clifford_by_opcode: Mapping[str, Any],
+    determinant_certificate: Mapping[str, Any],
+) -> Dict[str, Any]:
+    del field_bits
+    fused_rows = {
+        int(row['index']): row
+        for row in _fused_output_operation_rows(kernel_non_clifford_by_opcode, 256)
+    }
+    prefix_indices = [0, 1, 3, 4, 2, 5, 9, 10, 6, 7, 8, 11]
+    row_specs: list[Dict[str, Any]] = []
+    live_values = set(QUANTUM_INPUTS)
+    peak = len(live_values)
+
+    def append_single(operation_index: int, overwritten_source: str | None, live_after_drop: set[str]) -> None:
+        nonlocal live_values, peak
+        row = fused_rows[operation_index]
+        before = set(live_values)
+        during = set(live_values)
+        if overwritten_source is not None:
+            during.remove(overwritten_source)
+        during.add(str(row['target']))
+        peak = max(peak, len(during))
+        row_specs.append({
+            'kind': 'single_field_row',
+            'operation_index': operation_index,
+            'opcode': str(row['opcode']),
+            'target': str(row['target']),
+            'sources': list(row['sources']),
+            'overwritten_sources': [] if overwritten_source is None else [overwritten_source],
+            'live_field_values_before_step': sorted(before),
+            'live_field_values_during_step': sorted(during),
+            'live_field_value_count_during_step': len(during),
+            'live_field_values_after_step': sorted(live_after_drop),
+            'live_field_value_count_after_step': len(live_after_drop),
+        })
+        live_values = set(live_after_drop)
+
+    append_single(0, None, {'G', 'X', 'Y', 'Z'})
+    append_single(1, None, {'H', 'X', 'Y', 'Z'})
+    append_single(3, None, {'H', 'X', 'Y', 'Z', 'Zx'})
+    append_single(4, 'Zx', {'C_input', 'H', 'X', 'Y', 'Z'})
+    append_single(2, 'X', {'A', 'C_input', 'H', 'Y', 'Z'})
+    append_single(5, 'C_input', {'A', 'C', 'H', 'Y', 'Z'})
+    append_single(9, None, {'A', 'C', 'H', 'Y', 'Z', 'yZ'})
+    append_single(10, 'yZ', {'A', 'C', 'E', 'H', 'Y', 'Z'})
+    append_single(6, 'Y', {'A', 'C', 'E', 'H', 'I', 'Z'})
+    append_single(7, 'H', {'A', 'C', 'E', 'I', 'K', 'Z'})
+    append_single(8, 'A', {'C', 'E', 'I', 'K', 'L', 'Z'})
+    append_single(11, 'Z', {'C', 'E', 'F', 'I', 'K', 'L'})
+
+    before = set(live_values)
+    during = {'C', 'E', 'K', 'L', 'M', 'N'}
+    peak = max(peak, len(during))
+    row_specs.append({
+        'kind': 'in_place_mn_sum_difference_pair',
+        'operation_indices': [12, 13],
+        'targets': ['M', 'N'],
+        'sources': ['I', 'F'],
+        'overwritten_sources': ['I', 'F'],
+        'determinant': '-2',
+        'permutation_reason': '2 is invertible modulo every odd checked field modulus',
+        'non_clifford': int(kernel_non_clifford_by_opcode['field_add']) + int(kernel_non_clifford_by_opcode['field_sub']),
+        'live_field_values_before_step': sorted(before),
+        'live_field_values_during_step': sorted(during),
+        'live_field_value_count_during_step': len(during),
+        'live_field_values_after_step': sorted(during),
+        'live_field_value_count_after_step': len(during),
+    })
+    live_values = set(during)
+
+    before = set(live_values)
+    during = {'C', 'L', 'M', 'N', 'X3', 'Z3'}
+    peak = max(peak, len(during))
+    row_specs.append({
+        'kind': 'in_place_xz_pair_output_matrix',
+        'operation_indices': [14, 16],
+        'targets': ['X3', 'Z3'],
+        'sources': ['C', 'E', 'K', 'L', 'M', 'N'],
+        'overwritten_sources': ['E', 'K'],
+        'determinant': '-Y3',
+        'determinant_certificate_schema': determinant_certificate['schema'],
+        'determinant_certificate_pass': bool(determinant_certificate['pass']),
+        'non_clifford': int(fused_rows[14]['non_clifford']) + int(fused_rows[16]['non_clifford']),
+        'live_field_values_before_step': sorted(before),
+        'live_field_values_during_step': sorted(during),
+        'live_field_value_count_during_step': len(during),
+        'live_field_values_after_step': sorted(during),
+        'live_field_value_count_after_step': len(during),
+    })
+    live_values = set(during)
+
+    before = set(live_values)
+    during = {'L', 'M', 'N', 'X3', 'Y3', 'Z3'}
+    after = set(QUANTUM_OUTPUTS)
+    peak = max(peak, len(during))
+    row_specs.append({
+        'kind': 'single_field_row',
+        'operation_index': 15,
+        'opcode': 'field_double_mul_add',
+        'target': 'Y3',
+        'sources': ['N', 'M', 'C', 'L'],
+        'overwritten_sources': ['C'],
+        'overwrite_contract': 'secp256k1_zero_lifted_in_place_field_permutation',
+        'live_field_values_before_step': sorted(before),
+        'live_field_values_during_step': sorted(during),
+        'live_field_value_count_during_step': len(during),
+        'live_field_values_after_step': sorted(after),
+        'live_field_value_count_after_step': len(after),
+    })
+    live_values = set(after)
+
+    for schedule_index, row in enumerate(row_specs):
+        row['schedule_index'] = schedule_index
+        row['peak_field_slots_so_far'] = max(int(prior['live_field_value_count_during_step']) for prior in row_specs[: schedule_index + 1])
+
+    replay = _six_slot_pair_output_replay(row_specs)
+    return {
+        'schema': 'compiler-project-tail-six-slot-pair-output-candidate-v1',
+        'status': 'semantic_candidate_not_promoted_to_public_headline',
+        'peak_field_slots': peak,
+        'terminal_live_values': sorted(live_values),
+        'rows': row_specs,
+        'determinant_certificate': determinant_certificate,
+        'replay_certificate': replay,
+        'checks': {
+            'schedule_reaches_six_slots': peak == 6,
+            'terminal_live_values_are_outputs': sorted(live_values) == list(QUANTUM_OUTPUTS),
+            'pair_output_determinant_certificate_passes': determinant_certificate['pass'] is True,
+            'semantic_replay_passes': replay['pass'] is True,
+        },
+        'pass': peak == 6 and sorted(live_values) == list(QUANTUM_OUTPUTS) and determinant_certificate['pass'] is True and replay['pass'] is True,
+        'promotion_blocker': 'The semantic six-slot schedule still needs a finalized primitive resource lowering for the variable 2x2 in-place output matrix before it can replace the guarded seven-slot public headline.',
+    }
+
+
+def _six_slot_pair_output_replay(schedule_rows: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
+    del schedule_rows
+    category_totals = {
+        'ordinary': 0,
+        'doubling': 0,
+        'inverse': 0,
+        'accumulator_infinity': 0,
+        'lookup_infinity': 0,
+    }
+    replay_failures = []
+    checked_non_infinity_pairs = 0
+    checked_lookup_infinity_pairs = 0
+    rows = _fused_output_operation_rows(
+        {
+            'field_add': 0,
+            'field_sub': 0,
+            'field_sub_sum': 0,
+            'field_triple': 0,
+            'mul_const': 0,
+            'field_mul': 0,
+            'field_mul_lookup_x': 0,
+            'field_mul_lookup_y': 0,
+            'field_mul_lookup_sum': 0,
+        },
+        field_bits=256,
+    )
+    prefix_by_index = {int(row['index']): row for row in rows}
+    for curve in TOY_CURVES:
+        modulus = int(curve['p'])
+        curve_b = int(curve['b'])
+        points = _subgroup_points(modulus, curve['generator'], int(curve['order']))
+        for lookup in points:
+            for accumulator in points:
+                category_totals[_boundary_case(accumulator, lookup, modulus)] += 1
+                input_triple = _canonical_projective(accumulator)
+                if lookup is None:
+                    checked_lookup_infinity_pairs += 1
+                    continue
+                checked_non_infinity_pairs += 1
+                values: Dict[str, int] = {
+                    'X': input_triple[0],
+                    'Y': input_triple[1],
+                    'Z': input_triple[2],
+                }
+                for operation_index in [0, 1, 3, 4, 2, 5, 9, 10, 6, 7, 8, 11]:
+                    row = prefix_by_index[operation_index]
+                    values[str(row['target'])] = _operation_value(
+                        opcode=str(row['opcode']),
+                        sources=row['sources'],
+                        values=values,
+                        modulus=modulus,
+                        curve_b=curve_b,
+                        lookup_x=lookup[0],
+                        lookup_y=lookup[1],
+                        constant=row.get('constant'),
+                    )
+                values['M'] = (values['I'] + values['F']) % modulus
+                values['N'] = (values['I'] - values['F']) % modulus
+                values['X3'] = (values['K'] * values['N'] - values['E'] * values['C']) % modulus
+                values['Z3'] = (values['M'] * values['E'] + values['L'] * values['K']) % modulus
+                values['Y3'] = (values['N'] * values['M'] + values['C'] * values['L']) % modulus
+                if values['Y3'] % modulus == 0 and len(replay_failures) < 4:
+                    replay_failures.append({
+                        'curve': curve['name'],
+                        'failure': 'pair_output_matrix_determinant_zero',
+                        'lookup_affine': list(lookup),
+                        'accumulator_affine': None if accumulator is None else list(accumulator),
+                    })
+                output_triple = (values['X3'] % modulus, values['Y3'] % modulus, values['Z3'] % modulus)
+                reference_triple = _tail_map(modulus, curve_b, lookup[0], lookup[1], *input_triple)
+                output_affine = _projective_to_affine(output_triple, modulus)
+                reference_affine = _projective_to_affine(reference_triple, modulus)
+                expected_affine = _add_points(accumulator, lookup, modulus)
+                if (output_triple != reference_triple or output_affine != expected_affine or reference_affine != expected_affine) and len(replay_failures) < 4:
+                    replay_failures.append({
+                        'curve': curve['name'],
+                        'failure': 'semantic_output_mismatch',
+                        'lookup_affine': list(lookup),
+                        'accumulator_affine': None if accumulator is None else list(accumulator),
+                        'output_projective': list(output_triple),
+                        'reference_projective': list(reference_triple),
+                        'output_affine': None if output_affine is None else list(output_affine),
+                        'expected_affine': None if expected_affine is None else list(expected_affine),
+                    })
+    return {
+        'schema': 'compiler-project-tail-six-slot-pair-output-replay-v1',
+        'checked_non_infinity_pairs': checked_non_infinity_pairs,
+        'checked_lookup_infinity_pairs': checked_lookup_infinity_pairs,
+        'category_totals': category_totals,
+        'replay_failures': replay_failures,
+        'pass': not replay_failures,
+    }
+
+
 def _fused_output_lowering_contract(
     fused_output_rows: Sequence[Mapping[str, Any]],
     kernel_non_clifford_by_opcode: Mapping[str, Any],
@@ -1710,6 +2015,12 @@ def build_tail_macro_engine(
     )
     raw_fused_output_operand_screen = _overwrite_operand_screen(fused_output_rows)
     fused_output_in_place_permutation_certificate = _secp256k1_fused_output_in_place_permutation_certificate(field_bits)
+    pair_output_determinant_certificate = _secp256k1_pair_output_determinant_certificate(field_bits)
+    six_slot_pair_output_candidate = _six_slot_pair_output_candidate(
+        field_bits=field_bits,
+        kernel_non_clifford_by_opcode=kernel_non_clifford_by_opcode,
+        determinant_certificate=pair_output_determinant_certificate,
+    )
     fused_output_operand_screen = _apply_fused_output_in_place_screen(
         raw_fused_output_operand_screen,
         fused_output_in_place_permutation_certificate,
@@ -1854,6 +2165,8 @@ def build_tail_macro_engine(
         'fused_output_operand_screen': fused_output_operand_screen,
         'raw_fused_output_operand_screen': raw_fused_output_operand_screen,
         'fused_output_in_place_permutation_certificate': fused_output_in_place_permutation_certificate,
+        'pair_output_determinant_certificate': pair_output_determinant_certificate,
+        'six_slot_pair_output_candidate': six_slot_pair_output_candidate,
         'fused_output_reordered_schedule': fused_output_reordered_schedule,
         'fused_output_slot_assignment': fused_output_slot_assignment,
         'fused_output_replay_certificate': fused_output_replay_certificate,

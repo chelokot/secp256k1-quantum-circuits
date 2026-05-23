@@ -128,6 +128,15 @@ def test_tail_macro_engine_exposes_unclosed_three_slot_gap() -> None:
     assert checked['slot_gap']['fused_output_replay_pass'] is True
     assert checked['slot_gap']['destructive_candidate_peak_field_values'] == 8
     assert checked['completion_status'] == 'tail_cost_bound_to_expanded_field_operation_stream_but_in_place_schedule_unproven'
+    assert checked['six_slot_pair_output_candidate']['pass'] is True
+    assert checked['six_slot_pair_output_candidate']['peak_field_slots'] == 6
+    assert checked['six_slot_pair_output_candidate']['status'] == 'semantic_candidate_not_promoted_to_public_headline'
+    assert checked['six_slot_pair_output_candidate']['promotion_blocker']
+    assert checked['pair_output_determinant_certificate']['pass'] is True
+    assert checked['pair_output_determinant_certificate']['checks']['secp256k1_has_no_affine_y_zero_point'] is True
+    assert checked['pair_output_determinant_certificate']['matrix']['determinant_equals'] == '-Y3'
+    assert checked['six_slot_pair_output_candidate']['replay_certificate']['checked_non_infinity_pairs'] == 110082
+    assert checked['six_slot_pair_output_candidate']['replay_certificate']['checked_lookup_infinity_pairs'] == 610
 
 
 def test_tail_macro_engine_integrity_group_rejects_forged_cost() -> None:
@@ -167,3 +176,17 @@ def test_tail_macro_engine_proves_lookup_infinity_is_bypassed() -> None:
     assert replay['checked_lookup_infinity_pairs'] > 0
     assert any('Lookup-infinity cases are checked as the external boundary no-op' in note for note in replay['notes'])
     assert any('bypassed for lookup-infinity rows' in premise for premise in proof['premises'])
+
+
+def test_tail_macro_engine_six_slot_candidate_uses_pair_permutations() -> None:
+    checked = _load('tail_macro_engine.json')
+    candidate = checked['six_slot_pair_output_candidate']
+    kinds = [row['kind'] for row in candidate['rows']]
+
+    assert candidate['pass'] is True
+    assert candidate['terminal_live_values'] == ['X3', 'Y3', 'Z3']
+    assert 'in_place_mn_sum_difference_pair' in kinds
+    assert 'in_place_xz_pair_output_matrix' in kinds
+    assert max(row['live_field_value_count_during_step'] for row in candidate['rows']) == 6
+    assert candidate['determinant_certificate']['matrix']['input_registers'] == ['E', 'K']
+    assert candidate['determinant_certificate']['matrix']['output_registers'] == ['X3', 'Z3']

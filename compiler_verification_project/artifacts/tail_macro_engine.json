@@ -12845,6 +12845,786 @@
       "The L == 0 branch is required for accumulator-infinity boundary states; without it, Y3-over-C would not be a full field permutation."
     ]
   },
+  "pair_output_determinant_certificate": {
+    "schema": "compiler-project-secp256k1-pair-output-determinant-certificate-v1",
+    "matrix": {
+      "input_registers": [
+        "E",
+        "K"
+      ],
+      "output_registers": [
+        "X3",
+        "Z3"
+      ],
+      "rows": [
+        {
+          "target": "X3",
+          "coefficients": {
+            "E": "-C",
+            "K": "N"
+          }
+        },
+        {
+          "target": "Z3",
+          "coefficients": {
+            "E": "M",
+            "K": "L"
+          }
+        }
+      ],
+      "determinant": "-C*L - N*M",
+      "determinant_equals": "-Y3"
+    },
+    "secp256k1_no_affine_y_zero_proof": {
+      "curve_equation": "y^2 = x^3 + 7",
+      "claim": "y == 0 would require x^3 == -7 mod p",
+      "minus_7_cubic_residue_check": 55594575648329892869085402983802832744385952214688224221778511981742606582254,
+      "pass": true
+    },
+    "lookup_word_checks": [
+      {
+        "base_id": "g_window_0",
+        "words_checked": 65536,
+        "non_infinity_words": 65535
+      },
+      {
+        "base_id": "g_window_5",
+        "words_checked": 65536,
+        "non_infinity_words": 65535
+      },
+      {
+        "base_id": "g_window_10",
+        "words_checked": 65536,
+        "non_infinity_words": 65535
+      },
+      {
+        "base_id": "g_window_15",
+        "words_checked": 65536,
+        "non_infinity_words": 65535
+      }
+    ],
+    "checked_boundary_rows": 524336,
+    "checks": {
+      "secp256k1_has_no_affine_y_zero_point": true,
+      "accumulator_infinity_branch_has_nonzero_y3_for_all_checked_lookup_words": true,
+      "inverse_branch_has_nonzero_y3_for_all_checked_lookup_words": true,
+      "sampled_non_boundary_rows_have_nonzero_y3": true
+    },
+    "pass": true,
+    "notes": [
+      "The in-place pair-output map (E,K) -> (X3,Z3) has determinant -Y3.",
+      "On the valid secp256k1 point-add boundary, Y3 == 0 would imply either an affine y == 0 curve point or a failed infinity branch; both are checked here.",
+      "This proves the semantic permutation precondition for a six-slot candidate, not a finalized low-level resource lowering for the 2x2 in-place matrix operation."
+    ]
+  },
+  "six_slot_pair_output_candidate": {
+    "schema": "compiler-project-tail-six-slot-pair-output-candidate-v1",
+    "status": "semantic_candidate_not_promoted_to_public_headline",
+    "peak_field_slots": 6,
+    "terminal_live_values": [
+      "X3",
+      "Y3",
+      "Z3"
+    ],
+    "rows": [
+      {
+        "kind": "single_field_row",
+        "operation_index": 0,
+        "opcode": "field_add",
+        "target": "G",
+        "sources": [
+          "X",
+          "Y"
+        ],
+        "overwritten_sources": [],
+        "live_field_values_before_step": [
+          "X",
+          "Y",
+          "Z"
+        ],
+        "live_field_values_during_step": [
+          "G",
+          "X",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count_during_step": 4,
+        "live_field_values_after_step": [
+          "G",
+          "X",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count_after_step": 4,
+        "schedule_index": 0,
+        "peak_field_slots_so_far": 4
+      },
+      {
+        "kind": "single_field_row",
+        "operation_index": 1,
+        "opcode": "field_mul_lookup_sum",
+        "target": "H",
+        "sources": [
+          "G",
+          "lookup_x_plus_y"
+        ],
+        "overwritten_sources": [],
+        "live_field_values_before_step": [
+          "G",
+          "X",
+          "Y",
+          "Z"
+        ],
+        "live_field_values_during_step": [
+          "G",
+          "H",
+          "X",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count_during_step": 5,
+        "live_field_values_after_step": [
+          "H",
+          "X",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count_after_step": 4,
+        "schedule_index": 1,
+        "peak_field_slots_so_far": 5
+      },
+      {
+        "kind": "single_field_row",
+        "operation_index": 3,
+        "opcode": "field_mul_lookup_x",
+        "target": "Zx",
+        "sources": [
+          "Z",
+          "lookup_x"
+        ],
+        "overwritten_sources": [],
+        "live_field_values_before_step": [
+          "H",
+          "X",
+          "Y",
+          "Z"
+        ],
+        "live_field_values_during_step": [
+          "H",
+          "X",
+          "Y",
+          "Z",
+          "Zx"
+        ],
+        "live_field_value_count_during_step": 5,
+        "live_field_values_after_step": [
+          "H",
+          "X",
+          "Y",
+          "Z",
+          "Zx"
+        ],
+        "live_field_value_count_after_step": 5,
+        "schedule_index": 2,
+        "peak_field_slots_so_far": 5
+      },
+      {
+        "kind": "single_field_row",
+        "operation_index": 4,
+        "opcode": "field_add",
+        "target": "C_input",
+        "sources": [
+          "X",
+          "Zx"
+        ],
+        "overwritten_sources": [
+          "Zx"
+        ],
+        "live_field_values_before_step": [
+          "H",
+          "X",
+          "Y",
+          "Z",
+          "Zx"
+        ],
+        "live_field_values_during_step": [
+          "C_input",
+          "H",
+          "X",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count_during_step": 5,
+        "live_field_values_after_step": [
+          "C_input",
+          "H",
+          "X",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count_after_step": 5,
+        "schedule_index": 3,
+        "peak_field_slots_so_far": 5
+      },
+      {
+        "kind": "single_field_row",
+        "operation_index": 2,
+        "opcode": "field_mul_lookup_x",
+        "target": "A",
+        "sources": [
+          "X",
+          "lookup_x"
+        ],
+        "overwritten_sources": [
+          "X"
+        ],
+        "live_field_values_before_step": [
+          "C_input",
+          "H",
+          "X",
+          "Y",
+          "Z"
+        ],
+        "live_field_values_during_step": [
+          "A",
+          "C_input",
+          "H",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count_during_step": 5,
+        "live_field_values_after_step": [
+          "A",
+          "C_input",
+          "H",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count_after_step": 5,
+        "schedule_index": 4,
+        "peak_field_slots_so_far": 5
+      },
+      {
+        "kind": "single_field_row",
+        "operation_index": 5,
+        "opcode": "mul_const",
+        "target": "C",
+        "sources": [
+          "C_input"
+        ],
+        "overwritten_sources": [
+          "C_input"
+        ],
+        "live_field_values_before_step": [
+          "A",
+          "C_input",
+          "H",
+          "Y",
+          "Z"
+        ],
+        "live_field_values_during_step": [
+          "A",
+          "C",
+          "H",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count_during_step": 5,
+        "live_field_values_after_step": [
+          "A",
+          "C",
+          "H",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count_after_step": 5,
+        "schedule_index": 5,
+        "peak_field_slots_so_far": 5
+      },
+      {
+        "kind": "single_field_row",
+        "operation_index": 9,
+        "opcode": "field_mul_lookup_y",
+        "target": "yZ",
+        "sources": [
+          "Z",
+          "lookup_y"
+        ],
+        "overwritten_sources": [],
+        "live_field_values_before_step": [
+          "A",
+          "C",
+          "H",
+          "Y",
+          "Z"
+        ],
+        "live_field_values_during_step": [
+          "A",
+          "C",
+          "H",
+          "Y",
+          "Z",
+          "yZ"
+        ],
+        "live_field_value_count_during_step": 6,
+        "live_field_values_after_step": [
+          "A",
+          "C",
+          "H",
+          "Y",
+          "Z",
+          "yZ"
+        ],
+        "live_field_value_count_after_step": 6,
+        "schedule_index": 6,
+        "peak_field_slots_so_far": 6
+      },
+      {
+        "kind": "single_field_row",
+        "operation_index": 10,
+        "opcode": "field_add",
+        "target": "E",
+        "sources": [
+          "Y",
+          "yZ"
+        ],
+        "overwritten_sources": [
+          "yZ"
+        ],
+        "live_field_values_before_step": [
+          "A",
+          "C",
+          "H",
+          "Y",
+          "Z",
+          "yZ"
+        ],
+        "live_field_values_during_step": [
+          "A",
+          "C",
+          "E",
+          "H",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count_during_step": 6,
+        "live_field_values_after_step": [
+          "A",
+          "C",
+          "E",
+          "H",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count_after_step": 6,
+        "schedule_index": 7,
+        "peak_field_slots_so_far": 6
+      },
+      {
+        "kind": "single_field_row",
+        "operation_index": 6,
+        "opcode": "field_mul_lookup_y",
+        "target": "I",
+        "sources": [
+          "Y",
+          "lookup_y"
+        ],
+        "overwritten_sources": [
+          "Y"
+        ],
+        "live_field_values_before_step": [
+          "A",
+          "C",
+          "E",
+          "H",
+          "Y",
+          "Z"
+        ],
+        "live_field_values_during_step": [
+          "A",
+          "C",
+          "E",
+          "H",
+          "I",
+          "Z"
+        ],
+        "live_field_value_count_during_step": 6,
+        "live_field_values_after_step": [
+          "A",
+          "C",
+          "E",
+          "H",
+          "I",
+          "Z"
+        ],
+        "live_field_value_count_after_step": 6,
+        "schedule_index": 8,
+        "peak_field_slots_so_far": 6
+      },
+      {
+        "kind": "single_field_row",
+        "operation_index": 7,
+        "opcode": "field_sub_sum",
+        "target": "K",
+        "sources": [
+          "H",
+          "A",
+          "I"
+        ],
+        "overwritten_sources": [
+          "H"
+        ],
+        "live_field_values_before_step": [
+          "A",
+          "C",
+          "E",
+          "H",
+          "I",
+          "Z"
+        ],
+        "live_field_values_during_step": [
+          "A",
+          "C",
+          "E",
+          "I",
+          "K",
+          "Z"
+        ],
+        "live_field_value_count_during_step": 6,
+        "live_field_values_after_step": [
+          "A",
+          "C",
+          "E",
+          "I",
+          "K",
+          "Z"
+        ],
+        "live_field_value_count_after_step": 6,
+        "schedule_index": 9,
+        "peak_field_slots_so_far": 6
+      },
+      {
+        "kind": "single_field_row",
+        "operation_index": 8,
+        "opcode": "field_triple",
+        "target": "L",
+        "sources": [
+          "A"
+        ],
+        "overwritten_sources": [
+          "A"
+        ],
+        "live_field_values_before_step": [
+          "A",
+          "C",
+          "E",
+          "I",
+          "K",
+          "Z"
+        ],
+        "live_field_values_during_step": [
+          "C",
+          "E",
+          "I",
+          "K",
+          "L",
+          "Z"
+        ],
+        "live_field_value_count_during_step": 6,
+        "live_field_values_after_step": [
+          "C",
+          "E",
+          "I",
+          "K",
+          "L",
+          "Z"
+        ],
+        "live_field_value_count_after_step": 6,
+        "schedule_index": 10,
+        "peak_field_slots_so_far": 6
+      },
+      {
+        "kind": "single_field_row",
+        "operation_index": 11,
+        "opcode": "mul_const",
+        "target": "F",
+        "sources": [
+          "Z"
+        ],
+        "overwritten_sources": [
+          "Z"
+        ],
+        "live_field_values_before_step": [
+          "C",
+          "E",
+          "I",
+          "K",
+          "L",
+          "Z"
+        ],
+        "live_field_values_during_step": [
+          "C",
+          "E",
+          "F",
+          "I",
+          "K",
+          "L"
+        ],
+        "live_field_value_count_during_step": 6,
+        "live_field_values_after_step": [
+          "C",
+          "E",
+          "F",
+          "I",
+          "K",
+          "L"
+        ],
+        "live_field_value_count_after_step": 6,
+        "schedule_index": 11,
+        "peak_field_slots_so_far": 6
+      },
+      {
+        "kind": "in_place_mn_sum_difference_pair",
+        "operation_indices": [
+          12,
+          13
+        ],
+        "targets": [
+          "M",
+          "N"
+        ],
+        "sources": [
+          "I",
+          "F"
+        ],
+        "overwritten_sources": [
+          "I",
+          "F"
+        ],
+        "determinant": "-2",
+        "permutation_reason": "2 is invertible modulo every odd checked field modulus",
+        "non_clifford": 1020,
+        "live_field_values_before_step": [
+          "C",
+          "E",
+          "F",
+          "I",
+          "K",
+          "L"
+        ],
+        "live_field_values_during_step": [
+          "C",
+          "E",
+          "K",
+          "L",
+          "M",
+          "N"
+        ],
+        "live_field_value_count_during_step": 6,
+        "live_field_values_after_step": [
+          "C",
+          "E",
+          "K",
+          "L",
+          "M",
+          "N"
+        ],
+        "live_field_value_count_after_step": 6,
+        "schedule_index": 12,
+        "peak_field_slots_so_far": 6
+      },
+      {
+        "kind": "in_place_xz_pair_output_matrix",
+        "operation_indices": [
+          14,
+          16
+        ],
+        "targets": [
+          "X3",
+          "Z3"
+        ],
+        "sources": [
+          "C",
+          "E",
+          "K",
+          "L",
+          "M",
+          "N"
+        ],
+        "overwritten_sources": [
+          "E",
+          "K"
+        ],
+        "determinant": "-Y3",
+        "determinant_certificate_schema": "compiler-project-secp256k1-pair-output-determinant-certificate-v1",
+        "determinant_certificate_pass": true,
+        "non_clifford": 286988,
+        "live_field_values_before_step": [
+          "C",
+          "E",
+          "K",
+          "L",
+          "M",
+          "N"
+        ],
+        "live_field_values_during_step": [
+          "C",
+          "L",
+          "M",
+          "N",
+          "X3",
+          "Z3"
+        ],
+        "live_field_value_count_during_step": 6,
+        "live_field_values_after_step": [
+          "C",
+          "L",
+          "M",
+          "N",
+          "X3",
+          "Z3"
+        ],
+        "live_field_value_count_after_step": 6,
+        "schedule_index": 13,
+        "peak_field_slots_so_far": 6
+      },
+      {
+        "kind": "single_field_row",
+        "operation_index": 15,
+        "opcode": "field_double_mul_add",
+        "target": "Y3",
+        "sources": [
+          "N",
+          "M",
+          "C",
+          "L"
+        ],
+        "overwritten_sources": [
+          "C"
+        ],
+        "overwrite_contract": "secp256k1_zero_lifted_in_place_field_permutation",
+        "live_field_values_before_step": [
+          "C",
+          "L",
+          "M",
+          "N",
+          "X3",
+          "Z3"
+        ],
+        "live_field_values_during_step": [
+          "L",
+          "M",
+          "N",
+          "X3",
+          "Y3",
+          "Z3"
+        ],
+        "live_field_value_count_during_step": 6,
+        "live_field_values_after_step": [
+          "X3",
+          "Y3",
+          "Z3"
+        ],
+        "live_field_value_count_after_step": 3,
+        "schedule_index": 14,
+        "peak_field_slots_so_far": 6
+      }
+    ],
+    "determinant_certificate": {
+      "schema": "compiler-project-secp256k1-pair-output-determinant-certificate-v1",
+      "matrix": {
+        "input_registers": [
+          "E",
+          "K"
+        ],
+        "output_registers": [
+          "X3",
+          "Z3"
+        ],
+        "rows": [
+          {
+            "target": "X3",
+            "coefficients": {
+              "E": "-C",
+              "K": "N"
+            }
+          },
+          {
+            "target": "Z3",
+            "coefficients": {
+              "E": "M",
+              "K": "L"
+            }
+          }
+        ],
+        "determinant": "-C*L - N*M",
+        "determinant_equals": "-Y3"
+      },
+      "secp256k1_no_affine_y_zero_proof": {
+        "curve_equation": "y^2 = x^3 + 7",
+        "claim": "y == 0 would require x^3 == -7 mod p",
+        "minus_7_cubic_residue_check": 55594575648329892869085402983802832744385952214688224221778511981742606582254,
+        "pass": true
+      },
+      "lookup_word_checks": [
+        {
+          "base_id": "g_window_0",
+          "words_checked": 65536,
+          "non_infinity_words": 65535
+        },
+        {
+          "base_id": "g_window_5",
+          "words_checked": 65536,
+          "non_infinity_words": 65535
+        },
+        {
+          "base_id": "g_window_10",
+          "words_checked": 65536,
+          "non_infinity_words": 65535
+        },
+        {
+          "base_id": "g_window_15",
+          "words_checked": 65536,
+          "non_infinity_words": 65535
+        }
+      ],
+      "checked_boundary_rows": 524336,
+      "checks": {
+        "secp256k1_has_no_affine_y_zero_point": true,
+        "accumulator_infinity_branch_has_nonzero_y3_for_all_checked_lookup_words": true,
+        "inverse_branch_has_nonzero_y3_for_all_checked_lookup_words": true,
+        "sampled_non_boundary_rows_have_nonzero_y3": true
+      },
+      "pass": true,
+      "notes": [
+        "The in-place pair-output map (E,K) -> (X3,Z3) has determinant -Y3.",
+        "On the valid secp256k1 point-add boundary, Y3 == 0 would imply either an affine y == 0 curve point or a failed infinity branch; both are checked here.",
+        "This proves the semantic permutation precondition for a six-slot candidate, not a finalized low-level resource lowering for the 2x2 in-place matrix operation."
+      ]
+    },
+    "replay_certificate": {
+      "schema": "compiler-project-tail-six-slot-pair-output-replay-v1",
+      "checked_non_infinity_pairs": 110082,
+      "checked_lookup_infinity_pairs": 610,
+      "category_totals": {
+        "ordinary": 108264,
+        "doubling": 606,
+        "inverse": 606,
+        "accumulator_infinity": 606,
+        "lookup_infinity": 610
+      },
+      "replay_failures": [],
+      "pass": true
+    },
+    "checks": {
+      "schedule_reaches_six_slots": true,
+      "terminal_live_values_are_outputs": true,
+      "pair_output_determinant_certificate_passes": true,
+      "semantic_replay_passes": true
+    },
+    "pass": true,
+    "promotion_blocker": "The semantic six-slot schedule still needs a finalized primitive resource lowering for the variable 2x2 in-place output matrix before it can replace the guarded seven-slot public headline."
+  },
   "fused_output_reordered_schedule": {
     "schedule_model": "reordered_dag_local_inverse_overwrite_search",
     "status": "solution_found_with_boundary_replay_and_fused_output_lowering_contract",

@@ -205,6 +205,12 @@ domain, and keeps lookup-infinity rows on the checked external bypass path.
 seven-slot tail into the primary strict resource headline. The remaining
 optimization target is reducing the tail below seven field slots and then
 making the ZKP guest/input bind that same strict resource contract.
+The same `tail_macro_engine.json` artifact now records an unpromoted semantic
+six-slot candidate using the pair transforms `(I,F) -> (M,N)` and
+`(E,K) -> (X3,Z3)`. Its determinant certificate proves the pair-output matrix
+precondition `det = -Y3 != 0` on the checked secp256k1 boundary and the toy
+boundary replay passes, but the candidate remains below the claims line until
+the variable 2x2 in-place matrix has a finalized primitive resource lowering.
 That artifact prevents the repository from silently promoting a materialized
 boundary result into a stronger full-engine claim.
 
