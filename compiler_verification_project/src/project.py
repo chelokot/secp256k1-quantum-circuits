@@ -602,6 +602,7 @@ def streamed_lookup_table_multiplier_resource(
         FIELD_BITS,
         leaf_opcode_histogram(),
         qroam_domain_size=FOLDED_MAG_DOMAIN,
+        counted_arithmetic_slots=len(STREAMED_LOOKUP_TAIL_ARITHMETIC_SLOTS),
     )
     lookup = lookup_lowerings if lookup_lowerings is not None else lookup_lowering_library()
     kernel_lookup = {kernel['opcode']: kernel for kernel in arithmetic['kernels']}
@@ -858,6 +859,7 @@ def arithmetic_kernel_library() -> Dict[str, Any]:
             field_bits=FIELD_BITS,
             leaf_opcode_histogram=leaf_opcode_histogram(),
             qroam_domain_size=FOLDED_MAG_DOMAIN,
+            counted_arithmetic_slots=len(STREAMED_LOOKUP_TAIL_ARITHMETIC_SLOTS),
         )
     )
 
@@ -869,6 +871,7 @@ def primitive_multiplier_library() -> Dict[str, Any]:
         field_bits=FIELD_BITS,
         leaf_opcode_histogram=kernel['leaf_opcode_histogram'],
         qroam_domain_size=FOLDED_MAG_DOMAIN,
+        counted_arithmetic_slots=len(STREAMED_LOOKUP_TAIL_ARITHMETIC_SLOTS),
     )
     field_mul_kernel = next(row for row in arithmetic_lowerings['kernels'] if row['opcode'] == 'field_mul')
     leaf = central_executable_leaf()
@@ -1211,6 +1214,7 @@ def compiler_family_frontier() -> Dict[str, Any]:
         field_bits=FIELD_BITS,
         leaf_opcode_histogram=kernel['leaf_opcode_histogram'],
         qroam_domain_size=FOLDED_MAG_DOMAIN,
+        counted_arithmetic_slots=len(STREAMED_LOOKUP_TAIL_ARITHMETIC_SLOTS),
     )
     lookup_lowerings = lookup_lowering_library()
     phase_shell_lowerings = phase_shell_lowering_library(FULL_PHASE_REGISTER_BITS)
@@ -1574,6 +1578,7 @@ def full_attack_inventory(
             field_bits=FIELD_BITS,
             leaf_opcode_histogram=kernel['leaf_opcode_histogram'],
             qroam_domain_size=FOLDED_MAG_DOMAIN,
+            counted_arithmetic_slots=len(STREAMED_LOOKUP_TAIL_ARITHMETIC_SLOTS),
         )
         phase_shell_lowerings = phase_shell_lowering_library(FULL_PHASE_REGISTER_BITS)
         generated_block_inventories = build_generated_block_inventories_payload(
@@ -1896,6 +1901,7 @@ def build_all_artifacts() -> Dict[str, Any]:
         field_bits=FIELD_BITS,
         leaf_opcode_histogram=leaf_opcode_histogram(),
         qroam_domain_size=FOLDED_MAG_DOMAIN,
+        counted_arithmetic_slots=len(STREAMED_LOOKUP_TAIL_ARITHMETIC_SLOTS),
     )
     phase_shell_lowerings = phase_shell_lowering_library(FULL_PHASE_REGISTER_BITS)
     phase_shell_rows = phase_shell_family_summary(phase_shell_lowerings)
@@ -1936,6 +1942,7 @@ def build_all_artifacts() -> Dict[str, Any]:
         'streamed_lookup_tail_leaf_equivalence': build_streamed_lookup_tail_leaf_equivalence(),
         'streamed_lookup_tail_slot_allocation': streamed_lookup_tail_leaf_slot_allocation(),
         'arithmetic_lowerings': arithmetic_lowerings,
+        'tail_macro_engine': arithmetic_lowerings['tail_macro_engine'],
         'arithmetic_operation_ir': build_arithmetic_operation_ir(
             arithmetic_lowerings=arithmetic_lowerings,
             leaf_opcode_histogram=leaf_opcode_histogram(),
@@ -2063,6 +2070,7 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('streamed_lookup_tail_leaf_equivalence.json'), out['streamed_lookup_tail_leaf_equivalence'])
     dump_json(project_artifact_path('streamed_lookup_tail_leaf_slot_allocation.json'), out['streamed_lookup_tail_slot_allocation'])
     dump_json(project_artifact_path('arithmetic_lowerings.json'), out['arithmetic_lowerings'])
+    dump_json(project_artifact_path('tail_macro_engine.json'), out['tail_macro_engine'])
     dump_json(project_artifact_path('arithmetic_operation_ir.json'), out['arithmetic_operation_ir'])
     dump_json(project_artifact_path('modular_arithmetic_certificate.json'), out['modular_arithmetic_certificate'])
     dump_json(project_artifact_path('tail_macro_liveness.json'), out['tail_macro_liveness'])
@@ -2129,6 +2137,7 @@ def build_resource_stack_artifacts() -> Dict[str, Any]:
         field_bits=FIELD_BITS,
         leaf_opcode_histogram=leaf_opcode_histogram(),
         qroam_domain_size=FOLDED_MAG_DOMAIN,
+        counted_arithmetic_slots=len(STREAMED_LOOKUP_TAIL_ARITHMETIC_SLOTS),
     )
     phase_shell_lowerings = phase_shell_lowering_library(FULL_PHASE_REGISTER_BITS)
     phase_shell_rows = phase_shell_family_summary(phase_shell_lowerings)
@@ -2200,6 +2209,7 @@ def build_resource_stack_artifacts() -> Dict[str, Any]:
     )
     return {
         'arithmetic_lowerings': arithmetic_lowerings,
+        'tail_macro_engine': arithmetic_lowerings['tail_macro_engine'],
         'arithmetic_operation_ir': build_arithmetic_operation_ir(
             arithmetic_lowerings=arithmetic_lowerings,
             leaf_opcode_histogram=leaf_opcode_histogram(),

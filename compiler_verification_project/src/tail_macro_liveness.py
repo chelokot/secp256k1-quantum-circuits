@@ -5,35 +5,7 @@ from __future__ import annotations
 from collections import deque
 from typing import Any, Dict, Iterable, List, Optional, Sequence
 
-
-TAIL_MACRO_OPCODE = 'complete_a0_all_streamed_tail'
-TAIL_MACRO_FORMULA: Sequence[tuple[str, Sequence[str]]] = (
-    ('G', ('X', 'Y')),
-    ('H', ('G', 'lookup_x_plus_y')),
-    ('A', ('X', 'lookup_x')),
-    ('Zx', ('Z', 'lookup_x')),
-    ('C', ('X', 'Zx')),
-    ('I', ('Y', 'lookup_y')),
-    ('K', ('H', 'A', 'I')),
-    ('L', ('A',)),
-    ('yZ', ('lookup_y', 'Z')),
-    ('E', ('Y', 'yZ')),
-    ('F', ('Z',)),
-    ('M', ('I', 'F')),
-    ('N', ('I', 'F')),
-    ('KN', ('K', 'N')),
-    ('EC', ('E', 'C')),
-    ('NM', ('N', 'M')),
-    ('CL', ('C', 'L')),
-    ('ME', ('M', 'E')),
-    ('LK', ('L', 'K')),
-    ('X3', ('KN', 'EC')),
-    ('Y3', ('NM', 'CL')),
-    ('Z3', ('ME', 'LK')),
-)
-QUANTUM_INPUTS = ('X', 'Y', 'Z')
-TABLE_CONSTANTS = ('lookup_x', 'lookup_y', 'lookup_x_plus_y')
-QUANTUM_OUTPUTS = ('X3', 'Y3', 'Z3')
+from tail_macro_engine import QUANTUM_INPUTS, QUANTUM_OUTPUTS, TABLE_CONSTANTS, TAIL_MACRO_FORMULA, TAIL_MACRO_OPCODE
 
 
 def _last_uses(formula: Sequence[tuple[str, Sequence[str]]]) -> Dict[str, int]:

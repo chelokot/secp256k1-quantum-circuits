@@ -39,7 +39,10 @@ def test_arithmetic_operation_ir_reconstructs_checked_artifact() -> None:
     assert all(observed['checks'].values())
     assert observed['summary']['generated_ladder_max_operand_slots_required'] == 287
     assert observed['checks']['modular_kernels_derive_from_executable_modular_circuit_ir'] is True
+    assert observed['checks']['tail_macro_kernel_derives_from_tail_macro_engine'] is True
     assert observed['executable_modular_circuit_ir']['non_clifford_by_opcode']['field_mul'] == 71492
+    assert observed['tail_macro_engine']['expanded_field_operation_count'] == 23
+    assert observed['tail_macro_engine']['non_clifford_total'] == 1126332
 
 
 def test_arithmetic_operation_ir_ladder_generators_use_bit_indices() -> None:
@@ -97,3 +100,14 @@ def test_arithmetic_operation_ir_rejects_executable_modular_ir_drift() -> None:
     )
     assert observed['pass'] is False
     assert observed['checks']['modular_kernels_derive_from_executable_modular_circuit_ir'] is False
+
+
+def test_arithmetic_operation_ir_rejects_tail_macro_engine_drift() -> None:
+    lowerings = copy.deepcopy(_arithmetic_lowerings())
+    lowerings['tail_macro_engine']['non_clifford_total'] -= 1
+    observed = build_arithmetic_operation_ir(
+        arithmetic_lowerings=lowerings,
+        leaf_opcode_histogram=leaf_opcode_histogram(),
+    )
+    assert observed['pass'] is False
+    assert observed['checks']['tail_macro_kernel_derives_from_tail_macro_engine'] is False

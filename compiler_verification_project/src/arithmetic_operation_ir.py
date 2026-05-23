@@ -345,6 +345,7 @@ def build_arithmetic_operation_ir(
         for stage in kernel['stages']
     ]
     modular_circuit_ir = arithmetic_lowerings['executable_modular_circuit_ir']
+    tail_macro_engine = arithmetic_lowerings['tail_macro_engine']
     modular_opcodes = set(modular_circuit_ir['non_clifford_by_opcode'])
     kernel_by_opcode = {kernel['opcode']: kernel for kernel in kernels}
     checks = {
@@ -402,6 +403,14 @@ def build_arithmetic_operation_ir(
             and kernel_by_opcode[opcode]['primitive_counts_total']['ccx'] == int(modular_circuit_ir['non_clifford_by_opcode'][opcode])
             for opcode in modular_opcodes
         ),
+        'tail_macro_kernel_derives_from_tail_macro_engine': (
+            tail_macro_engine['pass'] is True
+            and tail_macro_engine['opcode'] in kernel_by_opcode
+            and int(kernel_by_opcode[tail_macro_engine['opcode']]['exact_non_clifford_per_kernel'])
+            == int(tail_macro_engine['non_clifford_total'])
+            and kernel_by_opcode[tail_macro_engine['opcode']]['primitive_counts_total']['ccx']
+            == int(tail_macro_engine['non_clifford_total'])
+        ),
     }
     return {
         'schema': ARITHMETIC_OPERATION_IR_SCHEMA,
@@ -416,6 +425,16 @@ def build_arithmetic_operation_ir(
             'field_bits': int(modular_circuit_ir['field_bits']),
             'operation_count': len(modular_circuit_ir['operations']),
             'non_clifford_by_opcode': dict(modular_circuit_ir['non_clifford_by_opcode']),
+        },
+        'tail_macro_engine': {
+            'schema': tail_macro_engine['schema'],
+            'opcode': tail_macro_engine['opcode'],
+            'expanded_field_operation_count': len(tail_macro_engine['expanded_field_operation_stream']),
+            'expanded_single_assignment_peak_field_values': tail_macro_engine['slot_gap']['expanded_single_assignment_peak_field_values'],
+            'counted_arithmetic_slots': tail_macro_engine['counted_arithmetic_slots'],
+            'opcode_histogram': dict(tail_macro_engine['opcode_histogram']),
+            'non_clifford_total': int(tail_macro_engine['non_clifford_total']),
+            'completion_status': tail_macro_engine['completion_status'],
         },
         'summary': {
             'kernel_count': len(kernels),
@@ -445,6 +464,7 @@ def build_arithmetic_operation_ir(
         'boundary': [
             'This is a compact arithmetic primitive-operation IR and digest layer; it is still not a Clifford-complete reversible arithmetic netlist.',
             'It removes another handwritten-total path by making block, stage, kernel, and selected-leaf arithmetic totals reconstruct from canonical operation streams.',
+            'The selected tail macro is now bound to tail_macro_engine: a single expanded field-operation stream owns the formula, opcode histogram, tail-kernel non-Clifford total, and explicit slot-gap status.',
         ],
     }
 

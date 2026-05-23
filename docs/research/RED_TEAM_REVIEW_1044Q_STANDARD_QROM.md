@@ -1314,14 +1314,20 @@ Best response:
 
 ### "The 3-slot macro is where the magic is hidden."
 
-This is the strongest technical objection. The tail macro is counted, but peak
-qubits are not derived from a flattened internal schedule.
+This remains the strongest technical objection, but it is now narrower. The
+tail macro cost is bound to `tail_macro_engine.json`, which expands
+`complete_a0_all_streamed_tail` into 23 field operations and checks the opcode
+histogram against the counted tail kernel. The unresolved part is the counted
+three-slot live-field claim: the expanded single-assignment stream peaks at
+eight field values, so a real in-place/permutation-extension schedule is still
+required before the three-slot headline should be treated as a full-engine
+primitive-circuit claim.
 
 Best response:
 
-- Build the flat macro IR.
-- Show internal temporaries are sequentially reused or counted.
-- Make a liveness heatmap for the macro.
+- Build the in-place tail schedule or count the extra field slots.
+- Make the executable schedule, liveness, and cost come from `tail_macro_engine`.
+- Keep the slot-gap check in the fast gate until this is closed.
 
 ### "Your ZKP proves only 8 cases."
 
@@ -1435,12 +1441,16 @@ Exit criterion:
 
 ### P0: Flatten the tail macro
 
-Expand `complete_a0_all_streamed_tail` into a scheduled IR.
+`tail_macro_engine.json` now expands `complete_a0_all_streamed_tail` into a
+field-operation IR and binds the non-Clifford total to the selected tail kernel.
+The remaining P0 is stricter: turn that expanded contract into an executable
+in-place schedule whose live field values fit the counted slots, or revise the
+headline resource budget.
 
 Exit criterion:
 
-- Peak live qubits remain below `1200` after internal scratch is included, or
-  the headline is revised.
+- Peak live qubits remain below `1200` after internal scratch and all tail
+  temporaries are included, or the headline is revised.
 
 ### P0: Prove modular arithmetic lowerings, not only point-add semantics
 
@@ -1597,9 +1607,10 @@ Current remediation:
   makes that caveat machine-readable. It regenerates the public totals from the
   materialized flat netlist, checks that all `5,805` run-length rows are
   source-bound by kind, rechecks the standard-QROAM cost link, checks that
-  modular arithmetic kernels derive from `executable_modular_circuit_ir`, and
-  keeps `clifford_complete_goal_achieved = false` while tail macro/global
-  schedule and single-engine ZKP-input derivation remain explicit macro
+  modular arithmetic kernels derive from `executable_modular_circuit_ir`, binds
+  the selected tail macro to `tail_macro_engine`, and keeps
+  `clifford_complete_goal_achieved = false` while the tail in-place schedule
+  and single-engine ZKP-input derivation remain explicit macro
   boundaries. The fast engine loop now includes this audit, so a future patch
   cannot silently promote the current boundary result into a stronger
   full-engine claim by editing prose alone.

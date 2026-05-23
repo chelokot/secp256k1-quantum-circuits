@@ -178,10 +178,17 @@ materialized/public engine artifacts and passes only when the headline totals,
 source binding, operand ownership, QROAM primitive cost, modular arithmetic IR
 generation, semantic corpus, and tail auxiliary evidence are coherent. It
 deliberately keeps `clifford_complete_goal_achieved = false` while the tail
-macro/global schedule and the final ZKP input bundle are not yet direct
+macro in-place schedule and the final ZKP input bundle are not yet direct
 single-engine products. Modular arithmetic is no longer a separate formula
 source: the arithmetic lowering embeds `executable_modular_circuit_ir`, emits
 the modular kernels from it, and the modular certificate consumes that same IR.
+The selected tail macro is also no longer only prose plus a stage inventory:
+`tail_macro_engine.json` expands the formula into a 23-operation field-kernel
+stream, binds that stream's opcode histogram to the counted tail kernel, and
+records that the expanded single-assignment stream peaks at eight field values
+against the currently counted three arithmetic slots. That leaves the honest
+remaining obligation as an in-place/permutation-extension tail schedule or a
+resource-budget increase, not an undocumented cost formula.
 That artifact prevents the repository from silently promoting a materialized
 boundary result into a stronger full-engine claim.
 

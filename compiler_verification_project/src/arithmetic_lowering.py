@@ -6,6 +6,7 @@ from copy import deepcopy
 from typing import Any, Dict, List, Mapping, Optional
 
 from derived_resources import minimal_addition_chain
+from tail_macro_engine import TAIL_MACRO_OPCODE, build_tail_macro_engine
 
 
 PrimitiveOperation = List[int | str]
@@ -1121,11 +1122,26 @@ def _leaf_reconstruction(leaf_opcode_histogram: Mapping[str, int], kernels: List
     }
 
 
+def _tail_macro_engine_from_kernels(field_bits: int, counted_arithmetic_slots: int, kernels: List[Dict[str, Any]]) -> Dict[str, Any]:
+    kernel_lookup = {kernel['opcode']: kernel for kernel in kernels}
+    selected_tail_kernel = kernel_lookup[TAIL_MACRO_OPCODE]
+    return build_tail_macro_engine(
+        field_bits=field_bits,
+        counted_arithmetic_slots=counted_arithmetic_slots,
+        kernel_non_clifford_by_opcode={
+            opcode: int(kernel['exact_non_clifford_per_kernel'])
+            for opcode, kernel in kernel_lookup.items()
+        },
+        selected_tail_kernel_non_clifford=int(selected_tail_kernel['exact_non_clifford_per_kernel']),
+    )
+
+
 def arithmetic_lowering_library(
     field_bits: int,
     leaf_opcode_histogram: Mapping[str, int],
     qroam_block_size: int = DEFAULT_QROAM_CLEAN_BLOCK_SIZE,
     qroam_domain_size: int | None = None,
+    counted_arithmetic_slots: int = 3,
 ) -> Dict[str, Any]:
     if qroam_domain_size is None:
         raise ValueError('qroam_domain_size must be supplied by the compiler parameter source')
@@ -1200,6 +1216,7 @@ def arithmetic_lowering_library(
             low_term=SECP256K1_PSEUDO_MERSENNE_LOW_TERM,
             subtract_passes=SECP256K1_CANONICAL_SUBTRACT_PASSES,
         ),
+        'tail_macro_engine': _tail_macro_engine_from_kernels(field_bits, counted_arithmetic_slots, kernels),
         'kernels': kernels,
         'leaf_reconstruction': _leaf_reconstruction(leaf_opcode_histogram, kernels),
     }

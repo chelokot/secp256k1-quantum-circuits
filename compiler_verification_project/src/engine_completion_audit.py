@@ -37,6 +37,7 @@ def build_engine_completion_audit(
     release_corpus_preflight: Mapping[str, Any],
     streamed_lookup_tail_leaf_equivalence: Mapping[str, Any],
     modular_arithmetic_certificate: Mapping[str, Any],
+    tail_macro_engine: Mapping[str, Any],
     tail_macro_liveness: Mapping[str, Any],
     tail_macro_reversibility: Mapping[str, Any],
     tail_macro_schedule_search: Mapping[str, Any],
@@ -135,6 +136,7 @@ def build_engine_completion_audit(
             rows_by_source_kind['arithmetic_operation_ir'] > 0
             and arithmetic_operation_ir['pass'] is True
             and arithmetic_operation_ir['checks']['modular_kernels_derive_from_executable_modular_circuit_ir'] is True
+            and arithmetic_operation_ir['checks']['tail_macro_kernel_derives_from_tail_macro_engine'] is True
             and int(arithmetic_leaf_summary['non_clifford_total']) == sum(
                 int(row['kernel_non_clifford_per_instance']) * int(row['leaf_instance_count'])
                 for row in arithmetic_leaf_summary['rows']
@@ -151,7 +153,10 @@ def build_engine_completion_audit(
             and all(release_categories.get(category, 0) > 0 for category in required_semantic_categories)
         ),
         'tail_macro_auxiliary_artifacts_are_current': (
-            tail_macro_liveness['pass'] is True
+            tail_macro_engine['pass'] is True
+            and tail_macro_engine['completion_status'] == 'tail_cost_bound_to_expanded_field_operation_stream_but_in_place_schedule_unproven'
+            and tail_macro_engine['checks']['counted_slots_cover_expanded_single_assignment_peak'] is False
+            and tail_macro_liveness['pass'] is True
             and tail_macro_reversibility['canonical_subgroup_domain']['all_checked_rows_injective'] is True
             and tail_macro_reversibility['fixed_lookup_reachable_orbit_domain']['all_checked_rows_injective'] is True
             and tail_macro_reversibility['canonical_boundary_translation_domain']['all_checked_rows_semantic'] is True
@@ -198,6 +203,11 @@ def build_engine_completion_audit(
             'evidence': 'arithmetic_lowerings.executable_modular_circuit_ir + arithmetic_operation_ir.executable_modular_circuit_ir + modular_arithmetic_certificate',
         },
         {
+            'name': 'tail_macro_cost_formula_binding',
+            'status': 'expanded_field_operation_stream_bound_to_tail_kernel_cost',
+            'evidence': 'tail_macro_engine + arithmetic_operation_ir.tail_macro_engine + arithmetic_lowerings.tail_macro_engine',
+        },
+        {
             'name': 'point_add_semantic_boundary',
             'status': 'release_corpus_and_equivalence_checked',
             'evidence': 'streamed_lookup_tail_leaf_equivalence + release_corpus_preflight',
@@ -206,9 +216,9 @@ def build_engine_completion_audit(
     remaining_macro_boundaries = [
         {
             'name': 'tail_macro_schedule_and_reversibility',
-            'status': 'global_schedule_boundary_not_eliminated',
-            'required_to_close': 'Inline the tail macro formula DAG into the canonical executable flat IR so tail liveness, reversibility, and schedule search are produced by the same engine pass that emits arithmetic primitive rows.',
-            'current_evidence': 'tail_macro_liveness + tail_macro_reversibility + tail_macro_schedule_search + arithmetic_operation_ir',
+            'status': 'in_place_three_slot_schedule_boundary_not_eliminated',
+            'required_to_close': 'Produce an executable in-place/permutation-extension tail schedule whose live field-value capacity is covered by the counted three arithmetic slots, or raise the counted resource budget to the expanded engine peak.',
+            'current_evidence': 'tail_macro_engine + tail_macro_liveness + tail_macro_reversibility + tail_macro_schedule_search + arithmetic_operation_ir',
         },
         {
             'name': 'single_engine_zkp_input_derivation',
@@ -234,6 +244,7 @@ def build_engine_completion_audit(
             'release_corpus_preflight': release_corpus_preflight,
             'streamed_lookup_tail_leaf_equivalence': streamed_lookup_tail_leaf_equivalence,
             'modular_arithmetic_certificate': modular_arithmetic_certificate,
+            'tail_macro_engine': tail_macro_engine,
             'tail_macro_liveness': tail_macro_liveness,
             'tail_macro_reversibility': tail_macro_reversibility,
             'tail_macro_schedule_search': tail_macro_schedule_search,

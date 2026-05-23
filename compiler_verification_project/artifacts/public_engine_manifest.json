@@ -16,7 +16,7 @@
     "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
     "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
     "resource_contract_engine_sha256": "6ec61b5379cd1eb36a568423ffa43a79015c7f3c5dea53ec65cf1f80346b3d6f",
-    "public_candidate_materialized_circuit_manifest_sha256": "476c6e33ee3b5122ae8294a974c72d5954834c0daf78120945fb97855233733d"
+    "public_candidate_materialized_circuit_manifest_sha256": "879013f50201cd9c2f74c3a067f9cc56a83bac33da74fd3e2b3fd259f5e0500c"
   },
   "instruction_stream": {
     "encoding": [
@@ -610,7 +610,7 @@
   "primitive_operation_evidence": {
     "public_candidate_materialized_circuit_manifest": {
       "schema": "compiler-project-public-candidate-materialized-circuit-manifest-v1",
-      "sha256": "476c6e33ee3b5122ae8294a974c72d5954834c0daf78120945fb97855233733d",
+      "sha256": "879013f50201cd9c2f74c3a067f9cc56a83bac33da74fd3e2b3fd259f5e0500c",
       "pass": true,
       "operation_stream_sha256": "f6c277d0689572f499fd8bbf985c6d70c036a329a7879b2b209523d9eb2ee478",
       "liveness_binding_stream_sha256": "52e1fa6386a8e076fc66c2cb2c0eb79d921aadc340c09c0d7ffb76be0dbea8b0",
@@ -674,7 +674,7 @@
     },
     "arithmetic_operation_ir": {
       "schema": "compiler-project-arithmetic-operation-ir-v1",
-      "sha256": "5f164fe0d16b070212142279a948b6ca9d8e90a8e16ec63c4ede54ae5de12f56",
+      "sha256": "7b721b38b2c4bbc3c7174770783d0737adedf017c2db5e24d05bb284afc5aec9",
       "pass": true,
       "tail_opcode": "complete_a0_all_streamed_tail",
       "tail_kernel_stage_digest_sha256": "e0656b24049a3d65b4d5b241da622c5c2a084996456b3815c3107701dd38e4c3",

@@ -1,0 +1,1209 @@
+{
+  "schema": "compiler-project-tail-macro-engine-v1",
+  "opcode": "complete_a0_all_streamed_tail",
+  "field_bits": 256,
+  "counted_arithmetic_slots": 3,
+  "quantum_inputs": [
+    "X",
+    "Y",
+    "Z"
+  ],
+  "table_constant_sources": [
+    "lookup_x",
+    "lookup_y",
+    "lookup_x_plus_y"
+  ],
+  "quantum_outputs": [
+    "X3",
+    "Y3",
+    "Z3"
+  ],
+  "formula_rows": [
+    {
+      "index": 0,
+      "target": "G",
+      "sources": [
+        "X",
+        "Y"
+      ],
+      "quantum_sources": [
+        "X",
+        "Y"
+      ],
+      "table_constant_sources": [],
+      "last_quantum_source_uses": {}
+    },
+    {
+      "index": 1,
+      "target": "H",
+      "sources": [
+        "G",
+        "lookup_x_plus_y"
+      ],
+      "quantum_sources": [
+        "G"
+      ],
+      "table_constant_sources": [
+        "lookup_x_plus_y"
+      ],
+      "last_quantum_source_uses": {
+        "G": 1
+      }
+    },
+    {
+      "index": 2,
+      "target": "A",
+      "sources": [
+        "X",
+        "lookup_x"
+      ],
+      "quantum_sources": [
+        "X"
+      ],
+      "table_constant_sources": [
+        "lookup_x"
+      ],
+      "last_quantum_source_uses": {}
+    },
+    {
+      "index": 3,
+      "target": "Zx",
+      "sources": [
+        "Z",
+        "lookup_x"
+      ],
+      "quantum_sources": [
+        "Z"
+      ],
+      "table_constant_sources": [
+        "lookup_x"
+      ],
+      "last_quantum_source_uses": {}
+    },
+    {
+      "index": 4,
+      "target": "C",
+      "sources": [
+        "X",
+        "Zx"
+      ],
+      "quantum_sources": [
+        "X",
+        "Zx"
+      ],
+      "table_constant_sources": [],
+      "last_quantum_source_uses": {
+        "X": 4,
+        "Zx": 4
+      }
+    },
+    {
+      "index": 5,
+      "target": "I",
+      "sources": [
+        "Y",
+        "lookup_y"
+      ],
+      "quantum_sources": [
+        "Y"
+      ],
+      "table_constant_sources": [
+        "lookup_y"
+      ],
+      "last_quantum_source_uses": {}
+    },
+    {
+      "index": 6,
+      "target": "K",
+      "sources": [
+        "H",
+        "A",
+        "I"
+      ],
+      "quantum_sources": [
+        "H",
+        "A",
+        "I"
+      ],
+      "table_constant_sources": [],
+      "last_quantum_source_uses": {
+        "H": 6
+      }
+    },
+    {
+      "index": 7,
+      "target": "L",
+      "sources": [
+        "A"
+      ],
+      "quantum_sources": [
+        "A"
+      ],
+      "table_constant_sources": [],
+      "last_quantum_source_uses": {
+        "A": 7
+      }
+    },
+    {
+      "index": 8,
+      "target": "yZ",
+      "sources": [
+        "lookup_y",
+        "Z"
+      ],
+      "quantum_sources": [
+        "Z"
+      ],
+      "table_constant_sources": [
+        "lookup_y"
+      ],
+      "last_quantum_source_uses": {}
+    },
+    {
+      "index": 9,
+      "target": "E",
+      "sources": [
+        "Y",
+        "yZ"
+      ],
+      "quantum_sources": [
+        "Y",
+        "yZ"
+      ],
+      "table_constant_sources": [],
+      "last_quantum_source_uses": {
+        "Y": 9,
+        "yZ": 9
+      }
+    },
+    {
+      "index": 10,
+      "target": "F",
+      "sources": [
+        "Z"
+      ],
+      "quantum_sources": [
+        "Z"
+      ],
+      "table_constant_sources": [],
+      "last_quantum_source_uses": {
+        "Z": 10
+      }
+    },
+    {
+      "index": 11,
+      "target": "M",
+      "sources": [
+        "I",
+        "F"
+      ],
+      "quantum_sources": [
+        "I",
+        "F"
+      ],
+      "table_constant_sources": [],
+      "last_quantum_source_uses": {}
+    },
+    {
+      "index": 12,
+      "target": "N",
+      "sources": [
+        "I",
+        "F"
+      ],
+      "quantum_sources": [
+        "I",
+        "F"
+      ],
+      "table_constant_sources": [],
+      "last_quantum_source_uses": {
+        "I": 12,
+        "F": 12
+      }
+    },
+    {
+      "index": 13,
+      "target": "KN",
+      "sources": [
+        "K",
+        "N"
+      ],
+      "quantum_sources": [
+        "K",
+        "N"
+      ],
+      "table_constant_sources": [],
+      "last_quantum_source_uses": {}
+    },
+    {
+      "index": 14,
+      "target": "EC",
+      "sources": [
+        "E",
+        "C"
+      ],
+      "quantum_sources": [
+        "E",
+        "C"
+      ],
+      "table_constant_sources": [],
+      "last_quantum_source_uses": {}
+    },
+    {
+      "index": 15,
+      "target": "NM",
+      "sources": [
+        "N",
+        "M"
+      ],
+      "quantum_sources": [
+        "N",
+        "M"
+      ],
+      "table_constant_sources": [],
+      "last_quantum_source_uses": {
+        "N": 15
+      }
+    },
+    {
+      "index": 16,
+      "target": "CL",
+      "sources": [
+        "C",
+        "L"
+      ],
+      "quantum_sources": [
+        "C",
+        "L"
+      ],
+      "table_constant_sources": [],
+      "last_quantum_source_uses": {
+        "C": 16
+      }
+    },
+    {
+      "index": 17,
+      "target": "ME",
+      "sources": [
+        "M",
+        "E"
+      ],
+      "quantum_sources": [
+        "M",
+        "E"
+      ],
+      "table_constant_sources": [],
+      "last_quantum_source_uses": {
+        "M": 17,
+        "E": 17
+      }
+    },
+    {
+      "index": 18,
+      "target": "LK",
+      "sources": [
+        "L",
+        "K"
+      ],
+      "quantum_sources": [
+        "L",
+        "K"
+      ],
+      "table_constant_sources": [],
+      "last_quantum_source_uses": {
+        "L": 18,
+        "K": 18
+      }
+    },
+    {
+      "index": 19,
+      "target": "X3",
+      "sources": [
+        "KN",
+        "EC"
+      ],
+      "quantum_sources": [
+        "KN",
+        "EC"
+      ],
+      "table_constant_sources": [],
+      "last_quantum_source_uses": {
+        "KN": 19,
+        "EC": 19
+      }
+    },
+    {
+      "index": 20,
+      "target": "Y3",
+      "sources": [
+        "NM",
+        "CL"
+      ],
+      "quantum_sources": [
+        "NM",
+        "CL"
+      ],
+      "table_constant_sources": [],
+      "last_quantum_source_uses": {
+        "NM": 20,
+        "CL": 20
+      }
+    },
+    {
+      "index": 21,
+      "target": "Z3",
+      "sources": [
+        "ME",
+        "LK"
+      ],
+      "quantum_sources": [
+        "ME",
+        "LK"
+      ],
+      "table_constant_sources": [],
+      "last_quantum_source_uses": {
+        "ME": 21,
+        "LK": 21
+      }
+    }
+  ],
+  "expanded_field_operation_stream": [
+    {
+      "index": 0,
+      "target": "G",
+      "formula_target": "G",
+      "opcode": "field_add",
+      "sources": [
+        "X",
+        "Y"
+      ],
+      "constant": null,
+      "non_clifford": 510
+    },
+    {
+      "index": 1,
+      "target": "H",
+      "formula_target": "H",
+      "opcode": "field_mul_lookup_sum",
+      "sources": [
+        "G",
+        "lookup_x_plus_y"
+      ],
+      "constant": null,
+      "non_clifford": 137028
+    },
+    {
+      "index": 2,
+      "target": "A",
+      "formula_target": "A",
+      "opcode": "field_mul_lookup_x",
+      "sources": [
+        "X",
+        "lookup_x"
+      ],
+      "constant": null,
+      "non_clifford": 137028
+    },
+    {
+      "index": 3,
+      "target": "Zx",
+      "formula_target": "Zx",
+      "opcode": "field_mul_lookup_x",
+      "sources": [
+        "Z",
+        "lookup_x"
+      ],
+      "constant": null,
+      "non_clifford": 137028
+    },
+    {
+      "index": 4,
+      "target": "C_input",
+      "formula_target": "C",
+      "opcode": "field_add",
+      "sources": [
+        "X",
+        "Zx"
+      ],
+      "constant": null,
+      "non_clifford": 510
+    },
+    {
+      "index": 5,
+      "target": "C",
+      "formula_target": "C",
+      "opcode": "mul_const",
+      "sources": [
+        "C_input"
+      ],
+      "constant": 21,
+      "non_clifford": 3060
+    },
+    {
+      "index": 6,
+      "target": "I",
+      "formula_target": "I",
+      "opcode": "field_mul_lookup_y",
+      "sources": [
+        "Y",
+        "lookup_y"
+      ],
+      "constant": null,
+      "non_clifford": 137028
+    },
+    {
+      "index": 7,
+      "target": "K",
+      "formula_target": "K",
+      "opcode": "field_sub_sum",
+      "sources": [
+        "H",
+        "A",
+        "I"
+      ],
+      "constant": null,
+      "non_clifford": 1020
+    },
+    {
+      "index": 8,
+      "target": "L",
+      "formula_target": "L",
+      "opcode": "field_triple",
+      "sources": [
+        "A"
+      ],
+      "constant": 3,
+      "non_clifford": 1020
+    },
+    {
+      "index": 9,
+      "target": "yZ",
+      "formula_target": "yZ",
+      "opcode": "field_mul_lookup_y",
+      "sources": [
+        "Z",
+        "lookup_y"
+      ],
+      "constant": null,
+      "non_clifford": 137028
+    },
+    {
+      "index": 10,
+      "target": "E",
+      "formula_target": "E",
+      "opcode": "field_add",
+      "sources": [
+        "Y",
+        "yZ"
+      ],
+      "constant": null,
+      "non_clifford": 510
+    },
+    {
+      "index": 11,
+      "target": "F",
+      "formula_target": "F",
+      "opcode": "mul_const",
+      "sources": [
+        "Z"
+      ],
+      "constant": 21,
+      "non_clifford": 3060
+    },
+    {
+      "index": 12,
+      "target": "M",
+      "formula_target": "M",
+      "opcode": "field_add",
+      "sources": [
+        "I",
+        "F"
+      ],
+      "constant": null,
+      "non_clifford": 510
+    },
+    {
+      "index": 13,
+      "target": "N",
+      "formula_target": "N",
+      "opcode": "field_sub",
+      "sources": [
+        "I",
+        "F"
+      ],
+      "constant": null,
+      "non_clifford": 510
+    },
+    {
+      "index": 14,
+      "target": "KN",
+      "formula_target": "KN",
+      "opcode": "field_mul",
+      "sources": [
+        "K",
+        "N"
+      ],
+      "constant": null,
+      "non_clifford": 71492
+    },
+    {
+      "index": 15,
+      "target": "EC",
+      "formula_target": "EC",
+      "opcode": "field_mul",
+      "sources": [
+        "E",
+        "C"
+      ],
+      "constant": null,
+      "non_clifford": 71492
+    },
+    {
+      "index": 16,
+      "target": "NM",
+      "formula_target": "NM",
+      "opcode": "field_mul",
+      "sources": [
+        "N",
+        "M"
+      ],
+      "constant": null,
+      "non_clifford": 71492
+    },
+    {
+      "index": 17,
+      "target": "CL",
+      "formula_target": "CL",
+      "opcode": "field_mul",
+      "sources": [
+        "C",
+        "L"
+      ],
+      "constant": null,
+      "non_clifford": 71492
+    },
+    {
+      "index": 18,
+      "target": "ME",
+      "formula_target": "ME",
+      "opcode": "field_mul",
+      "sources": [
+        "M",
+        "E"
+      ],
+      "constant": null,
+      "non_clifford": 71492
+    },
+    {
+      "index": 19,
+      "target": "LK",
+      "formula_target": "LK",
+      "opcode": "field_mul",
+      "sources": [
+        "L",
+        "K"
+      ],
+      "constant": null,
+      "non_clifford": 71492
+    },
+    {
+      "index": 20,
+      "target": "X3",
+      "formula_target": "X3",
+      "opcode": "field_sub",
+      "sources": [
+        "KN",
+        "EC"
+      ],
+      "constant": null,
+      "non_clifford": 510
+    },
+    {
+      "index": 21,
+      "target": "Y3",
+      "formula_target": "Y3",
+      "opcode": "field_add",
+      "sources": [
+        "NM",
+        "CL"
+      ],
+      "constant": null,
+      "non_clifford": 510
+    },
+    {
+      "index": 22,
+      "target": "Z3",
+      "formula_target": "Z3",
+      "opcode": "field_add",
+      "sources": [
+        "ME",
+        "LK"
+      ],
+      "constant": null,
+      "non_clifford": 510
+    }
+  ],
+  "expanded_field_value_universe": [
+    "A",
+    "C",
+    "CL",
+    "C_input",
+    "E",
+    "EC",
+    "F",
+    "G",
+    "H",
+    "I",
+    "K",
+    "KN",
+    "L",
+    "LK",
+    "M",
+    "ME",
+    "N",
+    "NM",
+    "X",
+    "X3",
+    "Y",
+    "Y3",
+    "Z",
+    "Z3",
+    "Zx",
+    "yZ"
+  ],
+  "opcode_histogram": {
+    "field_add": 6,
+    "field_mul": 6,
+    "field_mul_lookup_sum": 1,
+    "field_mul_lookup_x": 2,
+    "field_mul_lookup_y": 2,
+    "field_sub": 2,
+    "field_sub_sum": 1,
+    "field_triple": 1,
+    "mul_const": 2
+  },
+  "non_clifford_by_opcode": {
+    "field_add": 3060,
+    "field_mul": 428952,
+    "field_mul_lookup_sum": 137028,
+    "field_mul_lookup_x": 274056,
+    "field_mul_lookup_y": 274056,
+    "field_sub": 1020,
+    "field_sub_sum": 1020,
+    "field_triple": 1020,
+    "mul_const": 6120
+  },
+  "non_clifford_total": 1126332,
+  "selected_tail_kernel_non_clifford": 1126332,
+  "single_assignment_liveness": {
+    "schedule_model": "single_assignment_expanded_field_operation_stream",
+    "peak_live_field_values": 8,
+    "peak_step": "15:EC",
+    "peak_live_values": [
+      "C",
+      "E",
+      "EC",
+      "K",
+      "KN",
+      "L",
+      "M",
+      "N"
+    ],
+    "rows": [
+      {
+        "step": "initial",
+        "target": null,
+        "live_field_values": [
+          "X",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count": 3
+      },
+      {
+        "step": 0,
+        "target": "G",
+        "opcode": "field_add",
+        "sources": [
+          "X",
+          "Y"
+        ],
+        "expired_after_step": [],
+        "live_field_values": [
+          "G",
+          "X",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count": 4
+      },
+      {
+        "step": 1,
+        "target": "H",
+        "opcode": "field_mul_lookup_sum",
+        "sources": [
+          "G",
+          "lookup_x_plus_y"
+        ],
+        "expired_after_step": [
+          "G"
+        ],
+        "live_field_values": [
+          "H",
+          "X",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count": 4
+      },
+      {
+        "step": 2,
+        "target": "A",
+        "opcode": "field_mul_lookup_x",
+        "sources": [
+          "X",
+          "lookup_x"
+        ],
+        "expired_after_step": [],
+        "live_field_values": [
+          "A",
+          "H",
+          "X",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count": 5
+      },
+      {
+        "step": 3,
+        "target": "Zx",
+        "opcode": "field_mul_lookup_x",
+        "sources": [
+          "Z",
+          "lookup_x"
+        ],
+        "expired_after_step": [],
+        "live_field_values": [
+          "A",
+          "H",
+          "X",
+          "Y",
+          "Z",
+          "Zx"
+        ],
+        "live_field_value_count": 6
+      },
+      {
+        "step": 4,
+        "target": "C_input",
+        "opcode": "field_add",
+        "sources": [
+          "X",
+          "Zx"
+        ],
+        "expired_after_step": [
+          "X",
+          "Zx"
+        ],
+        "live_field_values": [
+          "A",
+          "C_input",
+          "H",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count": 5
+      },
+      {
+        "step": 5,
+        "target": "C",
+        "opcode": "mul_const",
+        "sources": [
+          "C_input"
+        ],
+        "expired_after_step": [
+          "C_input"
+        ],
+        "live_field_values": [
+          "A",
+          "C",
+          "H",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count": 5
+      },
+      {
+        "step": 6,
+        "target": "I",
+        "opcode": "field_mul_lookup_y",
+        "sources": [
+          "Y",
+          "lookup_y"
+        ],
+        "expired_after_step": [],
+        "live_field_values": [
+          "A",
+          "C",
+          "H",
+          "I",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count": 6
+      },
+      {
+        "step": 7,
+        "target": "K",
+        "opcode": "field_sub_sum",
+        "sources": [
+          "H",
+          "A",
+          "I"
+        ],
+        "expired_after_step": [
+          "H"
+        ],
+        "live_field_values": [
+          "A",
+          "C",
+          "I",
+          "K",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count": 6
+      },
+      {
+        "step": 8,
+        "target": "L",
+        "opcode": "field_triple",
+        "sources": [
+          "A"
+        ],
+        "expired_after_step": [
+          "A"
+        ],
+        "live_field_values": [
+          "C",
+          "I",
+          "K",
+          "L",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count": 6
+      },
+      {
+        "step": 9,
+        "target": "yZ",
+        "opcode": "field_mul_lookup_y",
+        "sources": [
+          "Z",
+          "lookup_y"
+        ],
+        "expired_after_step": [],
+        "live_field_values": [
+          "C",
+          "I",
+          "K",
+          "L",
+          "Y",
+          "Z",
+          "yZ"
+        ],
+        "live_field_value_count": 7
+      },
+      {
+        "step": 10,
+        "target": "E",
+        "opcode": "field_add",
+        "sources": [
+          "Y",
+          "yZ"
+        ],
+        "expired_after_step": [
+          "Y",
+          "yZ"
+        ],
+        "live_field_values": [
+          "C",
+          "E",
+          "I",
+          "K",
+          "L",
+          "Z"
+        ],
+        "live_field_value_count": 6
+      },
+      {
+        "step": 11,
+        "target": "F",
+        "opcode": "mul_const",
+        "sources": [
+          "Z"
+        ],
+        "expired_after_step": [
+          "Z"
+        ],
+        "live_field_values": [
+          "C",
+          "E",
+          "F",
+          "I",
+          "K",
+          "L"
+        ],
+        "live_field_value_count": 6
+      },
+      {
+        "step": 12,
+        "target": "M",
+        "opcode": "field_add",
+        "sources": [
+          "I",
+          "F"
+        ],
+        "expired_after_step": [],
+        "live_field_values": [
+          "C",
+          "E",
+          "F",
+          "I",
+          "K",
+          "L",
+          "M"
+        ],
+        "live_field_value_count": 7
+      },
+      {
+        "step": 13,
+        "target": "N",
+        "opcode": "field_sub",
+        "sources": [
+          "I",
+          "F"
+        ],
+        "expired_after_step": [
+          "F",
+          "I"
+        ],
+        "live_field_values": [
+          "C",
+          "E",
+          "K",
+          "L",
+          "M",
+          "N"
+        ],
+        "live_field_value_count": 6
+      },
+      {
+        "step": 14,
+        "target": "KN",
+        "opcode": "field_mul",
+        "sources": [
+          "K",
+          "N"
+        ],
+        "expired_after_step": [],
+        "live_field_values": [
+          "C",
+          "E",
+          "K",
+          "KN",
+          "L",
+          "M",
+          "N"
+        ],
+        "live_field_value_count": 7
+      },
+      {
+        "step": 15,
+        "target": "EC",
+        "opcode": "field_mul",
+        "sources": [
+          "E",
+          "C"
+        ],
+        "expired_after_step": [],
+        "live_field_values": [
+          "C",
+          "E",
+          "EC",
+          "K",
+          "KN",
+          "L",
+          "M",
+          "N"
+        ],
+        "live_field_value_count": 8
+      },
+      {
+        "step": 16,
+        "target": "NM",
+        "opcode": "field_mul",
+        "sources": [
+          "N",
+          "M"
+        ],
+        "expired_after_step": [
+          "N"
+        ],
+        "live_field_values": [
+          "C",
+          "E",
+          "EC",
+          "K",
+          "KN",
+          "L",
+          "M",
+          "NM"
+        ],
+        "live_field_value_count": 8
+      },
+      {
+        "step": 17,
+        "target": "CL",
+        "opcode": "field_mul",
+        "sources": [
+          "C",
+          "L"
+        ],
+        "expired_after_step": [
+          "C"
+        ],
+        "live_field_values": [
+          "CL",
+          "E",
+          "EC",
+          "K",
+          "KN",
+          "L",
+          "M",
+          "NM"
+        ],
+        "live_field_value_count": 8
+      },
+      {
+        "step": 18,
+        "target": "ME",
+        "opcode": "field_mul",
+        "sources": [
+          "M",
+          "E"
+        ],
+        "expired_after_step": [
+          "E",
+          "M"
+        ],
+        "live_field_values": [
+          "CL",
+          "EC",
+          "K",
+          "KN",
+          "L",
+          "ME",
+          "NM"
+        ],
+        "live_field_value_count": 7
+      },
+      {
+        "step": 19,
+        "target": "LK",
+        "opcode": "field_mul",
+        "sources": [
+          "L",
+          "K"
+        ],
+        "expired_after_step": [
+          "K",
+          "L"
+        ],
+        "live_field_values": [
+          "CL",
+          "EC",
+          "KN",
+          "LK",
+          "ME",
+          "NM"
+        ],
+        "live_field_value_count": 6
+      },
+      {
+        "step": 20,
+        "target": "X3",
+        "opcode": "field_sub",
+        "sources": [
+          "KN",
+          "EC"
+        ],
+        "expired_after_step": [
+          "EC",
+          "KN"
+        ],
+        "live_field_values": [
+          "CL",
+          "LK",
+          "ME",
+          "NM",
+          "X3"
+        ],
+        "live_field_value_count": 5
+      },
+      {
+        "step": 21,
+        "target": "Y3",
+        "opcode": "field_add",
+        "sources": [
+          "NM",
+          "CL"
+        ],
+        "expired_after_step": [
+          "CL",
+          "NM"
+        ],
+        "live_field_values": [
+          "LK",
+          "ME",
+          "X3",
+          "Y3"
+        ],
+        "live_field_value_count": 4
+      },
+      {
+        "step": 22,
+        "target": "Z3",
+        "opcode": "field_add",
+        "sources": [
+          "ME",
+          "LK"
+        ],
+        "expired_after_step": [
+          "LK",
+          "ME"
+        ],
+        "live_field_values": [
+          "X3",
+          "Y3",
+          "Z3"
+        ],
+        "live_field_value_count": 3
+      }
+    ]
+  },
+  "slot_gap": {
+    "expanded_single_assignment_peak_field_values": 8,
+    "counted_arithmetic_slots": 3,
+    "additional_field_slots_needed_without_in_place_schedule": 5,
+    "additional_logical_qubits_needed_without_in_place_schedule": 1280
+  },
+  "checks": {
+    "formula_targets_match_engine_targets": true,
+    "expanded_operation_stream_covers_formula_targets": true,
+    "non_clifford_total_matches_selected_tail_kernel": true,
+    "counted_slots_cover_expanded_single_assignment_peak": false
+  },
+  "pass": true,
+  "completion_status": "tail_cost_bound_to_expanded_field_operation_stream_but_in_place_schedule_unproven"
+}

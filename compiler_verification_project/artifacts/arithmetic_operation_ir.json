@@ -51,6 +51,26 @@
       "field_mul": 71492
     }
   },
+  "tail_macro_engine": {
+    "schema": "compiler-project-tail-macro-engine-v1",
+    "opcode": "complete_a0_all_streamed_tail",
+    "expanded_field_operation_count": 23,
+    "expanded_single_assignment_peak_field_values": 8,
+    "counted_arithmetic_slots": 3,
+    "opcode_histogram": {
+      "field_add": 6,
+      "field_mul": 6,
+      "field_mul_lookup_sum": 1,
+      "field_mul_lookup_x": 2,
+      "field_mul_lookup_y": 2,
+      "field_sub": 2,
+      "field_sub_sum": 1,
+      "field_triple": 1,
+      "mul_const": 2
+    },
+    "non_clifford_total": 1126332,
+    "completion_status": "tail_cost_bound_to_expanded_field_operation_stream_but_in_place_schedule_unproven"
+  },
   "summary": {
     "kernel_count": 13,
     "stage_count": 143,
@@ -12987,11 +13007,13 @@
     "non_qroam_generated_ladders_use_typed_ladder_generator": true,
     "leaf_arithmetic_total_matches_lowering_reconstruction": true,
     "leaf_arithmetic_opcodes_are_covered": true,
-    "modular_kernels_derive_from_executable_modular_circuit_ir": true
+    "modular_kernels_derive_from_executable_modular_circuit_ir": true,
+    "tail_macro_kernel_derives_from_tail_macro_engine": true
   },
   "pass": true,
   "boundary": [
     "This is a compact arithmetic primitive-operation IR and digest layer; it is still not a Clifford-complete reversible arithmetic netlist.",
-    "It removes another handwritten-total path by making block, stage, kernel, and selected-leaf arithmetic totals reconstruct from canonical operation streams."
+    "It removes another handwritten-total path by making block, stage, kernel, and selected-leaf arithmetic totals reconstruct from canonical operation streams.",
+    "The selected tail macro is now bound to tail_macro_engine: a single expanded field-operation stream owns the formula, opcode histogram, tail-kernel non-Clifford total, and explicit slot-gap status."
   ]
 }

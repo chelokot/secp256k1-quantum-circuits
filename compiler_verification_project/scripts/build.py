@@ -120,6 +120,7 @@ def build_resource_stack() -> dict:
     payload = build_resource_stack_artifacts()
     path_by_key = {
         'arithmetic_lowerings': 'arithmetic_lowerings.json',
+        'tail_macro_engine': 'tail_macro_engine.json',
         'arithmetic_operation_ir': 'arithmetic_operation_ir.json',
         'modular_arithmetic_certificate': 'modular_arithmetic_certificate.json',
         'streamed_lookup_table_multiplier_resource': 'streamed_lookup_table_multiplier_resource.json',
@@ -362,6 +363,7 @@ def build_engine_completion_audit_artifact() -> None:
         release_corpus_preflight=load_json(artifact_dir / 'release_corpus_preflight.json'),
         streamed_lookup_tail_leaf_equivalence=load_json(artifact_dir / 'streamed_lookup_tail_leaf_equivalence.json'),
         modular_arithmetic_certificate=load_json(artifact_dir / 'modular_arithmetic_certificate.json'),
+        tail_macro_engine=load_json(artifact_dir / 'tail_macro_engine.json'),
         tail_macro_liveness=load_json(artifact_dir / 'tail_macro_liveness.json'),
         tail_macro_reversibility=load_json(artifact_dir / 'tail_macro_reversibility.json'),
         tail_macro_schedule_search=load_json(artifact_dir / 'tail_macro_schedule_search.json'),

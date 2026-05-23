@@ -39,6 +39,7 @@ def _build_audit(
         release_corpus_preflight=_load('release_corpus_preflight.json'),
         streamed_lookup_tail_leaf_equivalence=_load('streamed_lookup_tail_leaf_equivalence.json'),
         modular_arithmetic_certificate=_load('modular_arithmetic_certificate.json'),
+        tail_macro_engine=_load('tail_macro_engine.json'),
         tail_macro_liveness=_load('tail_macro_liveness.json'),
         tail_macro_reversibility=_load('tail_macro_reversibility.json'),
         tail_macro_schedule_search=_load('tail_macro_schedule_search.json'),

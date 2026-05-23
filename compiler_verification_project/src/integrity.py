@@ -56,6 +56,7 @@ from resource_ir_engine import (
     evaluate_counted_resource_ir,
     evaluate_resource_contract,
 )
+from tail_macro_engine import build_tail_macro_engine
 from tail_macro_liveness import build_tail_macro_liveness
 from tail_macro_reversibility import build_tail_macro_reversibility
 from tail_macro_schedule_search import build_tail_macro_schedule_search
@@ -167,6 +168,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'streamed_lookup_tail_leaf_equivalence': artifact_root / 'streamed_lookup_tail_leaf_equivalence.json',
         'streamed_lookup_tail_leaf_slot_allocation': artifact_root / 'streamed_lookup_tail_leaf_slot_allocation.json',
         'arithmetic_lowerings': artifact_root / 'arithmetic_lowerings.json',
+        'tail_macro_engine': artifact_root / 'tail_macro_engine.json',
         'arithmetic_operation_ir': artifact_root / 'arithmetic_operation_ir.json',
         'modular_arithmetic_certificate': artifact_root / 'modular_arithmetic_certificate.json',
         'tail_macro_liveness': artifact_root / 'tail_macro_liveness.json',
@@ -280,6 +282,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 release_corpus_preflight=load_json(artifact_root / 'release_corpus_preflight.json'),
                 streamed_lookup_tail_leaf_equivalence=load_json(artifact_root / 'streamed_lookup_tail_leaf_equivalence.json'),
                 modular_arithmetic_certificate=load_json(artifact_root / 'modular_arithmetic_certificate.json'),
+                tail_macro_engine=load_json(artifact_root / 'tail_macro_engine.json'),
                 tail_macro_liveness=load_json(artifact_root / 'tail_macro_liveness.json'),
                 tail_macro_reversibility=load_json(artifact_root / 'tail_macro_reversibility.json'),
                 tail_macro_schedule_search=load_json(artifact_root / 'tail_macro_schedule_search.json'),
@@ -551,6 +554,38 @@ def build_arithmetic_operation_ir_checks(artifacts: Mapping[str, Any]) -> Dict[s
         _check('arithmetic_operation_ir_tracks_operand_capacity', arithmetic_ir['summary']['max_block_operand_slots_required'] >= FIELD_BITS and all(block['operand_profile']['negative_operand_count'] == 0 for block in block_rows), {'min_operand_slots_required': FIELD_BITS, 'negative_operands': 0}, arithmetic_ir['summary']),
         _check('arithmetic_operation_ir_generator_operand_contracts_pass', arithmetic_ir['checks']['generator_operand_contracts_pass'] is True and arithmetic_ir['checks']['repeated_ladder_generators_use_bit_index_operands'] is True and arithmetic_ir['checks']['non_qroam_generated_ladders_use_typed_ladder_generator'] is True, True, arithmetic_ir['checks']),
         _check('arithmetic_operation_ir_ladder_operands_are_bit_indices_not_operation_ordinals', arithmetic_ir['summary']['generated_ladder_max_operand_slots_required'] <= FIELD_BITS + 32, {'max_expected_ladder_operand_slots': FIELD_BITS + 32}, arithmetic_ir['summary']),
+    ]
+    return _summarize_checks(checks)
+
+
+def build_tail_macro_engine_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    engine = artifacts['tail_macro_engine']
+    kernel_lookup = {
+        kernel['opcode']: int(kernel['exact_non_clifford_per_kernel'])
+        for kernel in artifacts['arithmetic_lowerings']['kernels']
+    }
+    expected = build_tail_macro_engine(
+        field_bits=FIELD_BITS,
+        counted_arithmetic_slots=len(artifacts['streamed_lookup_tail_leaf']['arithmetic_slots']),
+        kernel_non_clifford_by_opcode=kernel_lookup,
+        selected_tail_kernel_non_clifford=kernel_lookup[engine['opcode']],
+    )
+    checks = [
+        _check('tail_macro_engine_matches_generator', engine == expected, expected, engine),
+        _check('tail_macro_engine_schema_is_current', engine['schema'] == 'compiler-project-tail-macro-engine-v1', 'compiler-project-tail-macro-engine-v1', engine['schema']),
+        _check(
+            'tail_macro_engine_cost_binds_selected_tail_kernel',
+            engine['pass'] is True
+            and engine['checks']['non_clifford_total_matches_selected_tail_kernel'] is True
+            and int(engine['non_clifford_total']) == kernel_lookup[engine['opcode']],
+            kernel_lookup[engine['opcode']],
+            {
+                'non_clifford_total': engine['non_clifford_total'],
+                'checks': engine['checks'],
+            },
+        ),
+        _check('tail_macro_engine_expands_every_formula_target', engine['checks']['expanded_operation_stream_covers_formula_targets'] is True and engine['expanded_field_operation_stream'][-3:][0]['target'] == 'X3' and engine['expanded_field_operation_stream'][-1]['target'] == 'Z3', 'expanded stream covers all formula targets through X3/Y3/Z3', engine['expanded_field_operation_stream'][-4:]),
+        _check('tail_macro_engine_exposes_unproven_three_slot_gap', engine['checks']['counted_slots_cover_expanded_single_assignment_peak'] is False and engine['slot_gap']['additional_field_slots_needed_without_in_place_schedule'] > 0, 'three counted slots do not cover expanded single-assignment peak', engine['slot_gap']),
     ]
     return _summarize_checks(checks)
 
@@ -2181,6 +2216,7 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
         release_corpus_preflight=artifacts['release_corpus_preflight'],
         streamed_lookup_tail_leaf_equivalence=artifacts['streamed_lookup_tail_leaf_equivalence'],
         modular_arithmetic_certificate=artifacts['modular_arithmetic_certificate'],
+        tail_macro_engine=artifacts['tail_macro_engine'],
         tail_macro_liveness=artifacts['tail_macro_liveness'],
         tail_macro_reversibility=artifacts['tail_macro_reversibility'],
         tail_macro_schedule_search=artifacts['tail_macro_schedule_search'],
@@ -2835,6 +2871,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'arithmetic_kernel_checks': lambda: build_arithmetic_kernel_checks(artifacts),
         'arithmetic_operation_ir_checks': lambda: build_arithmetic_operation_ir_checks(artifacts),
         'modular_arithmetic_certificate_checks': lambda: build_modular_arithmetic_certificate_checks(artifacts),
+        'tail_macro_engine_checks': lambda: build_tail_macro_engine_checks(artifacts),
         'cleanup_pair_checks': lambda: build_cleanup_pair_checks(artifacts),
         'lookup_lowering_checks': lambda: build_lookup_lowering_checks(artifacts),
         'phase_shell_lowering_checks': lambda: build_phase_shell_lowering_checks(artifacts),
