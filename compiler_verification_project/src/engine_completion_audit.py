@@ -163,6 +163,10 @@ def build_engine_completion_audit(
             and int(tail_macro_engine['destructive_candidate_schedule']['peak_field_slots']) < int(tail_macro_engine['expanded_slot_schedule']['peak_field_slots'])
             and tail_macro_engine['destructive_candidate_schedule']['local_inverse_certificate']['status'] == 'toy_boundary_local_inverse_check_not_full_reversible_proof'
             and int(tail_macro_engine['destructive_candidate_schedule']['local_inverse_certificate']['failing_row_count']) > 0
+            and tail_macro_engine['reordered_local_inverse_schedule']['status'] == 'solution_found_not_full_reversible_circuit_proof'
+            and tail_macro_engine['reordered_local_inverse_schedule']['solution_found'] is True
+            and int(tail_macro_engine['reordered_local_inverse_schedule']['peak_field_slots']) == 8
+            and int(tail_macro_engine['reordered_local_inverse_schedule']['invalid_overwrite_count']) == 0
             and tail_macro_liveness['pass'] is True
             and tail_macro_reversibility['canonical_subgroup_domain']['all_checked_rows_injective'] is True
             and tail_macro_reversibility['fixed_lookup_reachable_orbit_domain']['all_checked_rows_injective'] is True
@@ -221,8 +225,8 @@ def build_engine_completion_audit(
         },
         {
             'name': 'tail_macro_in_place_optimizer_signal',
-            'status': 'destructive_overwrite_candidate_generated_not_proven',
-            'evidence': 'tail_macro_engine.destructive_candidate_schedule',
+            'status': 'reordered_eight_slot_local_inverse_schedule_generated_not_full_circuit_proof',
+            'evidence': 'tail_macro_engine.reordered_local_inverse_schedule + tail_macro_engine.operand_overwrite_screen',
         },
         {
             'name': 'point_add_semantic_boundary',
@@ -234,7 +238,7 @@ def build_engine_completion_audit(
         {
             'name': 'tail_macro_schedule_and_reversibility',
             'status': 'in_place_three_slot_schedule_boundary_not_eliminated',
-            'required_to_close': 'Produce an executable in-place/permutation-extension tail schedule whose live field-value capacity is covered by the counted three arithmetic slots, or promote tail_macro_engine.expanded_slot_schedule into the public qubit budget.',
+            'required_to_close': 'Promote an executable reversible/permutation-extension tail schedule into the counted resource contract, or promote a generated expanded/reordered slot schedule into the public qubit budget.',
             'current_evidence': 'tail_macro_engine + tail_macro_liveness + tail_macro_reversibility + tail_macro_schedule_search + arithmetic_operation_ir',
         },
         {

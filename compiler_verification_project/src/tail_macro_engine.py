@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections import Counter
+from collections import Counter, deque
 from typing import Any, Dict, Mapping, Sequence
 
 from tail_macro_reversibility import TOY_CURVES, Point, _canonical_projective, _subgroup_points
@@ -558,10 +558,44 @@ def _expiring_source_choices(row: Mapping[str, Any]) -> list[str]:
     return sorted(choices)
 
 
-def _overwrite_choice_screen(rows: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
+def _overwrite_choice_screen_from_operand_screen(
+    rows: Sequence[Mapping[str, Any]],
+    operand_screen: Mapping[str, Any],
+) -> Dict[str, Any]:
+    expiring_choice_keys = {
+        (int(row['index']), overwritten_source)
+        for row in rows
+        for overwritten_source in _expiring_source_choices(row)
+    }
+    choices = [
+        dict(choice)
+        for choice in operand_screen['choices']
+        if (int(choice['index']), str(choice['overwritten_source'])) in expiring_choice_keys
+    ]
+    passing_choices = sum(1 for choice in choices if choice['pass'])
+    failing_choices = len(choices) - passing_choices
+    failing_indices = sorted({int(choice['index']) for choice in choices if not choice['pass']})
+    return {
+        'schema': 'compiler-project-tail-overwrite-choice-screen-v1',
+        'status': 'toy_boundary_expiring_source_choice_screen_not_full_reversible_proof',
+        'choice_count': len(choices),
+        'passing_choice_count': passing_choices,
+        'failing_choice_count': failing_choices,
+        'failing_row_indices': failing_indices,
+        'choices': choices,
+        'pass': failing_choices == 0,
+        'derived_from': operand_screen['schema'],
+        'notes': [
+            'This screen filters the all-operand overwrite screen down to the expiring source choices for the fixed formula order.',
+            'It distinguishes a bad overwrite-source choice from a true local non-invertibility blocker in the current formula order.',
+        ],
+    }
+
+
+def _overwrite_operand_screen(rows: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
     choices = []
     for row in rows:
-        for overwritten_source in _expiring_source_choices(row):
+        for overwritten_source in sorted(str(source) for source in row['sources'] if source not in TABLE_CONSTANTS):
             rule_row = dict(row)
             rule_row['overwritten_source'] = overwritten_source
             choices.append({
@@ -624,8 +658,8 @@ def _overwrite_choice_screen(rows: Sequence[Mapping[str, Any]]) -> Dict[str, Any
     failing_choices = len(choices) - passing_choices
     failing_indices = sorted({int(choice['index']) for choice in choices if not choice['pass']})
     return {
-        'schema': 'compiler-project-tail-overwrite-choice-screen-v1',
-        'status': 'toy_boundary_expiring_source_choice_screen_not_full_reversible_proof',
+        'schema': 'compiler-project-tail-overwrite-operand-screen-v1',
+        'status': 'toy_boundary_operand_choice_screen_not_full_reversible_proof',
         'choice_count': len(choices),
         'passing_choice_count': passing_choices,
         'failing_choice_count': failing_choices,
@@ -633,8 +667,167 @@ def _overwrite_choice_screen(rows: Sequence[Mapping[str, Any]]) -> Dict[str, Any
         'choices': choices,
         'pass': failing_choices == 0,
         'notes': [
-            'This screen checks every expiring source choice for each operation, not only the greedy destructive candidate choice.',
-            'It distinguishes a bad overwrite-source choice from a true local non-invertibility blocker in the current formula order.',
+            'This screen checks every quantum operand as a potential overwrite source, independent of the fixed formula order.',
+            'The reordered schedule search uses only operand choices that pass this screen.',
+        ],
+    }
+
+
+def _reconstruct_reordered_schedule(
+    terminal: tuple[int, frozenset[str]],
+    previous: Mapping[tuple[int, frozenset[str]], tuple[tuple[int, frozenset[str]] | None, Mapping[str, Any] | None]],
+) -> list[Dict[str, Any]]:
+    rows = []
+    state = terminal
+    while previous[state][0] is not None:
+        parent, action = previous[state]
+        assert action is not None
+        rows.append(dict(action))
+        assert parent is not None
+        state = parent
+    rows.reverse()
+    for schedule_index, row in enumerate(rows):
+        row['schedule_index'] = schedule_index
+    return rows
+
+
+def _reordered_local_inverse_schedule(
+    rows: Sequence[Mapping[str, Any]],
+    *,
+    operand_screen: Mapping[str, Any],
+    counted_arithmetic_slots: int,
+    field_bits: int,
+    max_peak_field_slots: int,
+) -> Dict[str, Any]:
+    operation_count = len(rows)
+    producer_by_value = {
+        str(row['target']): int(row['index'])
+        for row in rows
+    }
+    dependencies_by_index = []
+    for row in rows:
+        dependencies = []
+        for source in row['sources']:
+            source_name = str(source)
+            if source_name in TABLE_CONSTANTS:
+                continue
+            if source_name in producer_by_value:
+                dependencies.append(producer_by_value[source_name])
+        dependencies_by_index.append(tuple(dependencies))
+    overwrite_allowed = {
+        (int(choice['index']), str(choice['overwritten_source']))
+        for choice in operand_screen['choices']
+        if choice['pass'] is True
+    }
+    initial_state = (0, frozenset(QUANTUM_INPUTS))
+    queue = deque([(initial_state, len(QUANTUM_INPUTS))])
+    previous: Dict[tuple[int, frozenset[str]], tuple[tuple[int, frozenset[str]] | None, Mapping[str, Any] | None]] = {
+        initial_state: (None, None)
+    }
+    best_peak_by_state = {initial_state: len(QUANTUM_INPUTS)}
+    terminal = None
+    terminal_peak = None
+    while queue:
+        (completed_mask, live_values), peak_so_far = queue.popleft()
+        if all(output in live_values for output in QUANTUM_OUTPUTS):
+            terminal = (completed_mask, live_values)
+            terminal_peak = peak_so_far
+            break
+        for operation_index, row in enumerate(rows):
+            operation_bit = 1 << operation_index
+            if completed_mask & operation_bit:
+                continue
+            if any(not (completed_mask & (1 << dependency)) for dependency in dependencies_by_index[operation_index]):
+                continue
+            sources = [str(source) for source in row['sources'] if source not in TABLE_CONSTANTS]
+            if any(source not in live_values for source in sources):
+                continue
+            next_completed_mask = completed_mask | operation_bit
+            remaining_operation_indices = [
+                index
+                for index in range(operation_count)
+                if not (next_completed_mask & (1 << index))
+            ]
+            needed_after = set(QUANTUM_OUTPUTS)
+            for remaining_index in remaining_operation_indices:
+                for source in rows[remaining_index]['sources']:
+                    source_name = str(source)
+                    if source_name not in TABLE_CONSTANTS:
+                        needed_after.add(source_name)
+            expiring_sources = [
+                source
+                for source in sources
+                if source not in needed_after
+            ]
+            overwrite_options: list[str | None] = [None]
+            overwrite_options.extend(
+                source
+                for source in expiring_sources
+                if (operation_index, source) in overwrite_allowed
+            )
+            for overwritten_source in overwrite_options:
+                live_during = set(live_values)
+                if overwritten_source is not None:
+                    live_during.remove(overwritten_source)
+                live_during.add(str(row['target']))
+                peak = max(int(peak_so_far), len(live_during))
+                if peak > int(max_peak_field_slots):
+                    continue
+                live_after = set(live_during)
+                for value in list(live_after):
+                    if value not in needed_after and value != str(row['target']) and value not in QUANTUM_OUTPUTS:
+                        live_after.remove(value)
+                next_state = (next_completed_mask, frozenset(live_after))
+                if peak >= best_peak_by_state.get(next_state, 10**9):
+                    continue
+                best_peak_by_state[next_state] = peak
+                previous[next_state] = (
+                    (completed_mask, live_values),
+                    {
+                        'operation_index': operation_index,
+                        'opcode': str(row['opcode']),
+                        'target': str(row['target']),
+                        'sources': [str(source) for source in row['sources']],
+                        'overwritten_source': overwritten_source,
+                        'overwrite_local_inverse_screen': (
+                            None
+                            if overwritten_source is None
+                            else 'passed_operand_screen'
+                        ),
+                        'live_field_values_before_step': sorted(live_values),
+                        'live_field_values_during_step': sorted(live_during),
+                        'live_field_value_count_during_step': len(live_during),
+                        'live_field_values_after_step': sorted(live_after),
+                        'live_field_value_count_after_step': len(live_after),
+                        'peak_field_slots_so_far': peak,
+                    },
+                )
+                queue.append((next_state, peak))
+    solution_rows = None if terminal is None else _reconstruct_reordered_schedule(terminal, previous)
+    peak_field_slots = None if terminal_peak is None else int(terminal_peak)
+    additional_slots = None if peak_field_slots is None else max(0, peak_field_slots - int(counted_arithmetic_slots))
+    return {
+        'schedule_model': 'reordered_dag_local_inverse_overwrite_search',
+        'status': (
+            'solution_found_not_full_reversible_circuit_proof'
+            if terminal is not None
+            else 'no_solution_with_current_budget'
+        ),
+        'field_bits': int(field_bits),
+        'counted_arithmetic_slots': int(counted_arithmetic_slots),
+        'max_peak_field_slots_searched': int(max_peak_field_slots),
+        'solution_found': terminal is not None,
+        'states_visited': len(previous),
+        'peak_field_slots': peak_field_slots,
+        'additional_field_slots_over_counted_leaf': additional_slots,
+        'additional_logical_qubits_over_counted_leaf': None if additional_slots is None else additional_slots * int(field_bits),
+        'overwritten_row_count': 0 if solution_rows is None else sum(1 for row in solution_rows if row['overwritten_source'] is not None),
+        'invalid_overwrite_count': 0,
+        'terminal_live_values': None if terminal is None else sorted(terminal[1]),
+        'rows': solution_rows,
+        'notes': [
+            'This search reorders the expanded tail operation DAG and allows an overwrite only when the chosen operand passed the toy-boundary local inverse screen.',
+            'A solution is stronger than the fixed-order destructive candidate, but it is still a schedule-level certificate rather than a Clifford-complete reversible circuit implementation.',
         ],
     }
 
@@ -753,8 +946,19 @@ def build_tail_macro_engine(
     )
     overwrite_certificate = _overwrite_local_inverse_certificate(destructive_candidate_schedule['rows'])
     destructive_candidate_schedule['local_inverse_certificate'] = overwrite_certificate
-    overwrite_choice_screen = _overwrite_choice_screen(destructive_candidate_schedule['rows'])
+    operand_overwrite_screen = _overwrite_operand_screen(operation_rows)
+    overwrite_choice_screen = _overwrite_choice_screen_from_operand_screen(
+        destructive_candidate_schedule['rows'],
+        operand_overwrite_screen,
+    )
     destructive_candidate_schedule['overwrite_choice_screen'] = overwrite_choice_screen
+    reordered_local_inverse_schedule = _reordered_local_inverse_schedule(
+        operation_rows,
+        operand_screen=operand_overwrite_screen,
+        counted_arithmetic_slots=int(counted_arithmetic_slots),
+        field_bits=int(field_bits),
+        max_peak_field_slots=int(destructive_candidate_schedule['peak_field_slots']),
+    )
     locally_invertible_indices = {
         int(row['index'])
         for row in overwrite_certificate['rows']
@@ -818,8 +1022,13 @@ def build_tail_macro_engine(
             'destructive_candidate_overwrite_rows_locally_invertible': bool(overwrite_certificate['pass']),
             'local_inverse_pass_only_peak_field_values': int(local_inverse_pass_only_schedule['peak_field_slots']),
             'overwrite_choice_screen_pass': bool(overwrite_choice_screen['pass']),
+            'operand_overwrite_screen_pass': bool(operand_overwrite_screen['pass']),
+            'reordered_local_inverse_peak_field_values': reordered_local_inverse_schedule['peak_field_slots'],
+            'reordered_local_inverse_solution_found': bool(reordered_local_inverse_schedule['solution_found']),
         },
         'local_inverse_pass_only_schedule': local_inverse_pass_only_schedule,
+        'operand_overwrite_screen': operand_overwrite_screen,
+        'reordered_local_inverse_schedule': reordered_local_inverse_schedule,
         'checks': checks,
         'pass': all(value is True for value in required_checks.values()),
         'completion_status': (

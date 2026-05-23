@@ -172,7 +172,11 @@ only the 10 locally invertible rows still peaks at nine field slots, so the
 eight-slot optimizer signal currently depends on those unresolved blockers. The
 same artifact screens all 23 expiring-source overwrite choices; seven choices
 fail across rows 1, 16, 17, 18, and 19, so this is not just a bad greedy source
-selection.
+selection. A reordered DAG search then finds an eight-slot schedule with 10
+overwrites and zero invalid local-inverse overwrites by computing `X3` before
+the late `NM/CL/ME/LK` products. That is still a schedule-level certificate, not
+yet a promoted public qubit contract or a Clifford-complete reversible circuit
+implementation.
 
 The public engine manifest then binds that
 materialized flat stream, executable instruction rows, wires, schedule events,

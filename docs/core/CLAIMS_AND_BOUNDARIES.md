@@ -201,6 +201,11 @@ not yet isolated from the failing overwrite rows. The engine also screens all
 23 expiring-source overwrite choices; seven choices fail across rows 1, 16, 17,
 18, and 19, which rules out a simple alternate-source repair for the current
 operation order.
+The engine now also emits a reordered DAG schedule that reaches eight field
+slots with 10 overwrites and zero invalid local-inverse overwrites by computing
+`X3` before the late product pairings. This is progress against the eight-slot
+tail target, but it remains a schedule-level certificate until the reversible
+implementation and counted public resource contract consume that exact schedule.
 That artifact prevents the repository from silently promoting a materialized
 boundary result into a stronger full-engine claim.
 

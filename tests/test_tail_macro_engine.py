@@ -72,10 +72,22 @@ def test_tail_macro_engine_exposes_unclosed_three_slot_gap() -> None:
     assert checked['destructive_candidate_schedule']['overwrite_choice_screen']['passing_choice_count'] == 16
     assert checked['destructive_candidate_schedule']['overwrite_choice_screen']['failing_choice_count'] == 7
     assert checked['destructive_candidate_schedule']['overwrite_choice_screen']['failing_row_indices'] == [1, 16, 17, 18, 19]
+    assert checked['operand_overwrite_screen']['choice_count'] == 39
+    assert checked['operand_overwrite_screen']['passing_choice_count'] == 26
+    assert checked['operand_overwrite_screen']['failing_choice_count'] == 13
+    assert checked['operand_overwrite_screen']['failing_row_indices'] == [1, 14, 15, 16, 17, 18, 19]
     assert checked['slot_gap']['destructive_candidate_overwrite_rows_locally_invertible'] is False
     assert checked['slot_gap']['overwrite_choice_screen_pass'] is False
+    assert checked['slot_gap']['operand_overwrite_screen_pass'] is False
     assert checked['local_inverse_pass_only_schedule']['peak_field_slots'] == 9
     assert checked['slot_gap']['local_inverse_pass_only_peak_field_values'] == 9
+    assert checked['reordered_local_inverse_schedule']['solution_found'] is True
+    assert checked['reordered_local_inverse_schedule']['peak_field_slots'] == 8
+    assert checked['reordered_local_inverse_schedule']['overwritten_row_count'] == 10
+    assert checked['reordered_local_inverse_schedule']['invalid_overwrite_count'] == 0
+    assert checked['reordered_local_inverse_schedule']['terminal_live_values'] == ['X3', 'Y3', 'Z3']
+    assert checked['slot_gap']['reordered_local_inverse_solution_found'] is True
+    assert checked['slot_gap']['reordered_local_inverse_peak_field_values'] == 8
     assert checked['slot_gap']['destructive_candidate_peak_field_values'] == 8
     assert checked['completion_status'] == 'tail_cost_bound_to_expanded_field_operation_stream_but_in_place_schedule_unproven'
 

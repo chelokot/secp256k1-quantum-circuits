@@ -6132,8 +6132,9 @@
         }
       ],
       "pass": false,
+      "derived_from": "compiler-project-tail-overwrite-operand-screen-v1",
       "notes": [
-        "This screen checks every expiring source choice for each operation, not only the greedy destructive candidate choice.",
+        "This screen filters the all-operand overwrite screen down to the expiring source choices for the fixed formula order.",
         "It distinguishes a bad overwrite-source choice from a true local non-invertibility blocker in the current formula order."
       ]
     }
@@ -6149,7 +6150,10 @@
     "destructive_candidate_additional_logical_qubits": 1280,
     "destructive_candidate_overwrite_rows_locally_invertible": false,
     "local_inverse_pass_only_peak_field_values": 9,
-    "overwrite_choice_screen_pass": false
+    "overwrite_choice_screen_pass": false,
+    "operand_overwrite_screen_pass": false,
+    "reordered_local_inverse_peak_field_values": 8,
+    "reordered_local_inverse_solution_found": true
   },
   "local_inverse_pass_only_schedule": {
     "schedule_model": "local_inverse_pass_only_overwrite_candidate",
@@ -7037,6 +7041,1830 @@
     "notes": [
       "This schedule reuses slots only for destructive rows that passed the local inverse screen.",
       "It is a search diagnostic: it shows whether the currently screened reversible subset is enough to recover the eight-field-slot proxy."
+    ]
+  },
+  "operand_overwrite_screen": {
+    "schema": "compiler-project-tail-overwrite-operand-screen-v1",
+    "status": "toy_boundary_operand_choice_screen_not_full_reversible_proof",
+    "choice_count": 39,
+    "passing_choice_count": 26,
+    "failing_choice_count": 13,
+    "failing_row_indices": [
+      1,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "choices": [
+      {
+        "index": 0,
+        "opcode": "field_add",
+        "target": "G",
+        "sources": [
+          "X",
+          "Y"
+        ],
+        "constant": null,
+        "overwritten_source": "X",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 0,
+        "opcode": "field_add",
+        "target": "G",
+        "sources": [
+          "X",
+          "Y"
+        ],
+        "constant": null,
+        "overwritten_source": "Y",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 1,
+        "opcode": "field_mul_lookup_sum",
+        "target": "H",
+        "sources": [
+          "G",
+          "lookup_x_plus_y"
+        ],
+        "constant": null,
+        "overwritten_source": "G",
+        "rule": {
+          "kind": "lookup_constant_multiply",
+          "constant_source": "lookup_x_plus_y",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "curve": "toy61_b2",
+            "lookup": [
+              51,
+              10
+            ],
+            "accumulator": null,
+            "reason": "lookup_x_plus_y can be zero on the checked boundary domain"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "lookup_x_plus_y can be zero on the checked boundary domain"
+      },
+      {
+        "index": 2,
+        "opcode": "field_mul_lookup_x",
+        "target": "A",
+        "sources": [
+          "X",
+          "lookup_x"
+        ],
+        "constant": null,
+        "overwritten_source": "X",
+        "rule": {
+          "kind": "lookup_constant_multiply",
+          "constant_source": "lookup_x",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 3,
+        "opcode": "field_mul_lookup_x",
+        "target": "Zx",
+        "sources": [
+          "Z",
+          "lookup_x"
+        ],
+        "constant": null,
+        "overwritten_source": "Z",
+        "rule": {
+          "kind": "lookup_constant_multiply",
+          "constant_source": "lookup_x",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 4,
+        "opcode": "field_add",
+        "target": "C_input",
+        "sources": [
+          "X",
+          "Zx"
+        ],
+        "constant": null,
+        "overwritten_source": "X",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 4,
+        "opcode": "field_add",
+        "target": "C_input",
+        "sources": [
+          "X",
+          "Zx"
+        ],
+        "constant": null,
+        "overwritten_source": "Zx",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 5,
+        "opcode": "mul_const",
+        "target": "C",
+        "sources": [
+          "C_input"
+        ],
+        "constant": 21,
+        "overwritten_source": "C_input",
+        "rule": {
+          "kind": "constant_multiply",
+          "constant": 21,
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 6,
+        "opcode": "field_mul_lookup_y",
+        "target": "I",
+        "sources": [
+          "Y",
+          "lookup_y"
+        ],
+        "constant": null,
+        "overwritten_source": "Y",
+        "rule": {
+          "kind": "lookup_constant_multiply",
+          "constant_source": "lookup_y",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 7,
+        "opcode": "field_sub_sum",
+        "target": "K",
+        "sources": [
+          "H",
+          "A",
+          "I"
+        ],
+        "constant": null,
+        "overwritten_source": "A",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 7,
+        "opcode": "field_sub_sum",
+        "target": "K",
+        "sources": [
+          "H",
+          "A",
+          "I"
+        ],
+        "constant": null,
+        "overwritten_source": "H",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 7,
+        "opcode": "field_sub_sum",
+        "target": "K",
+        "sources": [
+          "H",
+          "A",
+          "I"
+        ],
+        "constant": null,
+        "overwritten_source": "I",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 8,
+        "opcode": "field_triple",
+        "target": "L",
+        "sources": [
+          "A"
+        ],
+        "constant": 3,
+        "overwritten_source": "A",
+        "rule": {
+          "kind": "constant_multiply",
+          "constant": 3,
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 9,
+        "opcode": "field_mul_lookup_y",
+        "target": "yZ",
+        "sources": [
+          "Z",
+          "lookup_y"
+        ],
+        "constant": null,
+        "overwritten_source": "Z",
+        "rule": {
+          "kind": "lookup_constant_multiply",
+          "constant_source": "lookup_y",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 10,
+        "opcode": "field_add",
+        "target": "E",
+        "sources": [
+          "Y",
+          "yZ"
+        ],
+        "constant": null,
+        "overwritten_source": "Y",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 10,
+        "opcode": "field_add",
+        "target": "E",
+        "sources": [
+          "Y",
+          "yZ"
+        ],
+        "constant": null,
+        "overwritten_source": "yZ",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 11,
+        "opcode": "mul_const",
+        "target": "F",
+        "sources": [
+          "Z"
+        ],
+        "constant": 21,
+        "overwritten_source": "Z",
+        "rule": {
+          "kind": "constant_multiply",
+          "constant": 21,
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 12,
+        "opcode": "field_add",
+        "target": "M",
+        "sources": [
+          "I",
+          "F"
+        ],
+        "constant": null,
+        "overwritten_source": "F",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 12,
+        "opcode": "field_add",
+        "target": "M",
+        "sources": [
+          "I",
+          "F"
+        ],
+        "constant": null,
+        "overwritten_source": "I",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 13,
+        "opcode": "field_sub",
+        "target": "N",
+        "sources": [
+          "I",
+          "F"
+        ],
+        "constant": null,
+        "overwritten_source": "F",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 13,
+        "opcode": "field_sub",
+        "target": "N",
+        "sources": [
+          "I",
+          "F"
+        ],
+        "constant": null,
+        "overwritten_source": "I",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 14,
+        "opcode": "field_mul",
+        "target": "KN",
+        "sources": [
+          "K",
+          "N"
+        ],
+        "constant": null,
+        "overwritten_source": "K",
+        "rule": {
+          "kind": "variable_multiply",
+          "multiplier_source": "N",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "curve": "toy61_b2",
+            "lookup": [
+              1,
+              8
+            ],
+            "accumulator": [
+              37,
+              56
+            ],
+            "reason": "N can be zero on the checked boundary domain"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "N can be zero on the checked boundary domain"
+      },
+      {
+        "index": 14,
+        "opcode": "field_mul",
+        "target": "KN",
+        "sources": [
+          "K",
+          "N"
+        ],
+        "constant": null,
+        "overwritten_source": "N",
+        "rule": {
+          "kind": "variable_multiply",
+          "multiplier_source": "K",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "curve": "toy61_b2",
+            "lookup": [
+              1,
+              8
+            ],
+            "accumulator": [
+              9,
+              50
+            ],
+            "reason": "K can be zero on the checked boundary domain"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "K can be zero on the checked boundary domain"
+      },
+      {
+        "index": 15,
+        "opcode": "field_mul",
+        "target": "EC",
+        "sources": [
+          "E",
+          "C"
+        ],
+        "constant": null,
+        "overwritten_source": "C",
+        "rule": {
+          "kind": "variable_multiply",
+          "multiplier_source": "E",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "curve": "toy61_b2",
+            "lookup": [
+              1,
+              8
+            ],
+            "accumulator": [
+              13,
+              53
+            ],
+            "reason": "E can be zero on the checked boundary domain"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "E can be zero on the checked boundary domain"
+      },
+      {
+        "index": 15,
+        "opcode": "field_mul",
+        "target": "EC",
+        "sources": [
+          "E",
+          "C"
+        ],
+        "constant": null,
+        "overwritten_source": "E",
+        "rule": {
+          "kind": "variable_multiply",
+          "multiplier_source": "C",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "curve": "toy61_b2",
+            "lookup": [
+              1,
+              8
+            ],
+            "accumulator": null,
+            "reason": "C can be zero on the checked boundary domain"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "C can be zero on the checked boundary domain"
+      },
+      {
+        "index": 16,
+        "opcode": "field_mul",
+        "target": "NM",
+        "sources": [
+          "N",
+          "M"
+        ],
+        "constant": null,
+        "overwritten_source": "M",
+        "rule": {
+          "kind": "variable_multiply",
+          "multiplier_source": "N",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "curve": "toy61_b2",
+            "lookup": [
+              1,
+              8
+            ],
+            "accumulator": [
+              37,
+              56
+            ],
+            "reason": "N can be zero on the checked boundary domain"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "N can be zero on the checked boundary domain"
+      },
+      {
+        "index": 16,
+        "opcode": "field_mul",
+        "target": "NM",
+        "sources": [
+          "N",
+          "M"
+        ],
+        "constant": null,
+        "overwritten_source": "N",
+        "rule": {
+          "kind": "variable_multiply",
+          "multiplier_source": "M",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "curve": "toy61_b2",
+            "lookup": [
+              1,
+              8
+            ],
+            "accumulator": [
+              54,
+              5
+            ],
+            "reason": "M can be zero on the checked boundary domain"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "M can be zero on the checked boundary domain"
+      },
+      {
+        "index": 17,
+        "opcode": "field_mul",
+        "target": "CL",
+        "sources": [
+          "C",
+          "L"
+        ],
+        "constant": null,
+        "overwritten_source": "C",
+        "rule": {
+          "kind": "variable_multiply",
+          "multiplier_source": "L",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "curve": "toy61_b2",
+            "lookup": [
+              1,
+              8
+            ],
+            "accumulator": null,
+            "reason": "L can be zero on the checked boundary domain"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "L can be zero on the checked boundary domain"
+      },
+      {
+        "index": 17,
+        "opcode": "field_mul",
+        "target": "CL",
+        "sources": [
+          "C",
+          "L"
+        ],
+        "constant": null,
+        "overwritten_source": "L",
+        "rule": {
+          "kind": "variable_multiply",
+          "multiplier_source": "C",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "curve": "toy61_b2",
+            "lookup": [
+              1,
+              8
+            ],
+            "accumulator": null,
+            "reason": "C can be zero on the checked boundary domain"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "C can be zero on the checked boundary domain"
+      },
+      {
+        "index": 18,
+        "opcode": "field_mul",
+        "target": "ME",
+        "sources": [
+          "M",
+          "E"
+        ],
+        "constant": null,
+        "overwritten_source": "E",
+        "rule": {
+          "kind": "variable_multiply",
+          "multiplier_source": "M",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "curve": "toy61_b2",
+            "lookup": [
+              1,
+              8
+            ],
+            "accumulator": [
+              54,
+              5
+            ],
+            "reason": "M can be zero on the checked boundary domain"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "M can be zero on the checked boundary domain"
+      },
+      {
+        "index": 18,
+        "opcode": "field_mul",
+        "target": "ME",
+        "sources": [
+          "M",
+          "E"
+        ],
+        "constant": null,
+        "overwritten_source": "M",
+        "rule": {
+          "kind": "variable_multiply",
+          "multiplier_source": "E",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "curve": "toy61_b2",
+            "lookup": [
+              1,
+              8
+            ],
+            "accumulator": [
+              13,
+              53
+            ],
+            "reason": "E can be zero on the checked boundary domain"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "E can be zero on the checked boundary domain"
+      },
+      {
+        "index": 19,
+        "opcode": "field_mul",
+        "target": "LK",
+        "sources": [
+          "L",
+          "K"
+        ],
+        "constant": null,
+        "overwritten_source": "K",
+        "rule": {
+          "kind": "variable_multiply",
+          "multiplier_source": "L",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "curve": "toy61_b2",
+            "lookup": [
+              1,
+              8
+            ],
+            "accumulator": null,
+            "reason": "L can be zero on the checked boundary domain"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "L can be zero on the checked boundary domain"
+      },
+      {
+        "index": 19,
+        "opcode": "field_mul",
+        "target": "LK",
+        "sources": [
+          "L",
+          "K"
+        ],
+        "constant": null,
+        "overwritten_source": "L",
+        "rule": {
+          "kind": "variable_multiply",
+          "multiplier_source": "K",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "curve": "toy61_b2",
+            "lookup": [
+              1,
+              8
+            ],
+            "accumulator": [
+              9,
+              50
+            ],
+            "reason": "K can be zero on the checked boundary domain"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "K can be zero on the checked boundary domain"
+      },
+      {
+        "index": 20,
+        "opcode": "field_sub",
+        "target": "X3",
+        "sources": [
+          "KN",
+          "EC"
+        ],
+        "constant": null,
+        "overwritten_source": "EC",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 20,
+        "opcode": "field_sub",
+        "target": "X3",
+        "sources": [
+          "KN",
+          "EC"
+        ],
+        "constant": null,
+        "overwritten_source": "KN",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 21,
+        "opcode": "field_add",
+        "target": "Y3",
+        "sources": [
+          "NM",
+          "CL"
+        ],
+        "constant": null,
+        "overwritten_source": "CL",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 21,
+        "opcode": "field_add",
+        "target": "Y3",
+        "sources": [
+          "NM",
+          "CL"
+        ],
+        "constant": null,
+        "overwritten_source": "NM",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 22,
+        "opcode": "field_add",
+        "target": "Z3",
+        "sources": [
+          "ME",
+          "LK"
+        ],
+        "constant": null,
+        "overwritten_source": "LK",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 22,
+        "opcode": "field_add",
+        "target": "Z3",
+        "sources": [
+          "ME",
+          "LK"
+        ],
+        "constant": null,
+        "overwritten_source": "ME",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      }
+    ],
+    "pass": false,
+    "notes": [
+      "This screen checks every quantum operand as a potential overwrite source, independent of the fixed formula order.",
+      "The reordered schedule search uses only operand choices that pass this screen."
+    ]
+  },
+  "reordered_local_inverse_schedule": {
+    "schedule_model": "reordered_dag_local_inverse_overwrite_search",
+    "status": "solution_found_not_full_reversible_circuit_proof",
+    "field_bits": 256,
+    "counted_arithmetic_slots": 3,
+    "max_peak_field_slots_searched": 8,
+    "solution_found": true,
+    "states_visited": 1149,
+    "peak_field_slots": 8,
+    "additional_field_slots_over_counted_leaf": 5,
+    "additional_logical_qubits_over_counted_leaf": 1280,
+    "overwritten_row_count": 10,
+    "invalid_overwrite_count": 0,
+    "terminal_live_values": [
+      "X3",
+      "Y3",
+      "Z3"
+    ],
+    "rows": [
+      {
+        "operation_index": 0,
+        "opcode": "field_add",
+        "target": "G",
+        "sources": [
+          "X",
+          "Y"
+        ],
+        "overwritten_source": null,
+        "overwrite_local_inverse_screen": null,
+        "live_field_values_before_step": [
+          "X",
+          "Y",
+          "Z"
+        ],
+        "live_field_values_during_step": [
+          "G",
+          "X",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count_during_step": 4,
+        "live_field_values_after_step": [
+          "G",
+          "X",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count_after_step": 4,
+        "peak_field_slots_so_far": 4,
+        "schedule_index": 0
+      },
+      {
+        "operation_index": 1,
+        "opcode": "field_mul_lookup_sum",
+        "target": "H",
+        "sources": [
+          "G",
+          "lookup_x_plus_y"
+        ],
+        "overwritten_source": null,
+        "overwrite_local_inverse_screen": null,
+        "live_field_values_before_step": [
+          "G",
+          "X",
+          "Y",
+          "Z"
+        ],
+        "live_field_values_during_step": [
+          "G",
+          "H",
+          "X",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count_during_step": 5,
+        "live_field_values_after_step": [
+          "H",
+          "X",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count_after_step": 4,
+        "peak_field_slots_so_far": 5,
+        "schedule_index": 1
+      },
+      {
+        "operation_index": 3,
+        "opcode": "field_mul_lookup_x",
+        "target": "Zx",
+        "sources": [
+          "Z",
+          "lookup_x"
+        ],
+        "overwritten_source": null,
+        "overwrite_local_inverse_screen": null,
+        "live_field_values_before_step": [
+          "H",
+          "X",
+          "Y",
+          "Z"
+        ],
+        "live_field_values_during_step": [
+          "H",
+          "X",
+          "Y",
+          "Z",
+          "Zx"
+        ],
+        "live_field_value_count_during_step": 5,
+        "live_field_values_after_step": [
+          "H",
+          "X",
+          "Y",
+          "Z",
+          "Zx"
+        ],
+        "live_field_value_count_after_step": 5,
+        "peak_field_slots_so_far": 5,
+        "schedule_index": 2
+      },
+      {
+        "operation_index": 4,
+        "opcode": "field_add",
+        "target": "C_input",
+        "sources": [
+          "X",
+          "Zx"
+        ],
+        "overwritten_source": "Zx",
+        "overwrite_local_inverse_screen": "passed_operand_screen",
+        "live_field_values_before_step": [
+          "H",
+          "X",
+          "Y",
+          "Z",
+          "Zx"
+        ],
+        "live_field_values_during_step": [
+          "C_input",
+          "H",
+          "X",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count_during_step": 5,
+        "live_field_values_after_step": [
+          "C_input",
+          "H",
+          "X",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count_after_step": 5,
+        "peak_field_slots_so_far": 5,
+        "schedule_index": 3
+      },
+      {
+        "operation_index": 2,
+        "opcode": "field_mul_lookup_x",
+        "target": "A",
+        "sources": [
+          "X",
+          "lookup_x"
+        ],
+        "overwritten_source": "X",
+        "overwrite_local_inverse_screen": "passed_operand_screen",
+        "live_field_values_before_step": [
+          "C_input",
+          "H",
+          "X",
+          "Y",
+          "Z"
+        ],
+        "live_field_values_during_step": [
+          "A",
+          "C_input",
+          "H",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count_during_step": 5,
+        "live_field_values_after_step": [
+          "A",
+          "C_input",
+          "H",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count_after_step": 5,
+        "peak_field_slots_so_far": 5,
+        "schedule_index": 4
+      },
+      {
+        "operation_index": 5,
+        "opcode": "mul_const",
+        "target": "C",
+        "sources": [
+          "C_input"
+        ],
+        "overwritten_source": "C_input",
+        "overwrite_local_inverse_screen": "passed_operand_screen",
+        "live_field_values_before_step": [
+          "A",
+          "C_input",
+          "H",
+          "Y",
+          "Z"
+        ],
+        "live_field_values_during_step": [
+          "A",
+          "C",
+          "H",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count_during_step": 5,
+        "live_field_values_after_step": [
+          "A",
+          "C",
+          "H",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count_after_step": 5,
+        "peak_field_slots_so_far": 5,
+        "schedule_index": 5
+      },
+      {
+        "operation_index": 9,
+        "opcode": "field_mul_lookup_y",
+        "target": "yZ",
+        "sources": [
+          "Z",
+          "lookup_y"
+        ],
+        "overwritten_source": null,
+        "overwrite_local_inverse_screen": null,
+        "live_field_values_before_step": [
+          "A",
+          "C",
+          "H",
+          "Y",
+          "Z"
+        ],
+        "live_field_values_during_step": [
+          "A",
+          "C",
+          "H",
+          "Y",
+          "Z",
+          "yZ"
+        ],
+        "live_field_value_count_during_step": 6,
+        "live_field_values_after_step": [
+          "A",
+          "C",
+          "H",
+          "Y",
+          "Z",
+          "yZ"
+        ],
+        "live_field_value_count_after_step": 6,
+        "peak_field_slots_so_far": 6,
+        "schedule_index": 6
+      },
+      {
+        "operation_index": 10,
+        "opcode": "field_add",
+        "target": "E",
+        "sources": [
+          "Y",
+          "yZ"
+        ],
+        "overwritten_source": "yZ",
+        "overwrite_local_inverse_screen": "passed_operand_screen",
+        "live_field_values_before_step": [
+          "A",
+          "C",
+          "H",
+          "Y",
+          "Z",
+          "yZ"
+        ],
+        "live_field_values_during_step": [
+          "A",
+          "C",
+          "E",
+          "H",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count_during_step": 6,
+        "live_field_values_after_step": [
+          "A",
+          "C",
+          "E",
+          "H",
+          "Y",
+          "Z"
+        ],
+        "live_field_value_count_after_step": 6,
+        "peak_field_slots_so_far": 6,
+        "schedule_index": 7
+      },
+      {
+        "operation_index": 6,
+        "opcode": "field_mul_lookup_y",
+        "target": "I",
+        "sources": [
+          "Y",
+          "lookup_y"
+        ],
+        "overwritten_source": "Y",
+        "overwrite_local_inverse_screen": "passed_operand_screen",
+        "live_field_values_before_step": [
+          "A",
+          "C",
+          "E",
+          "H",
+          "Y",
+          "Z"
+        ],
+        "live_field_values_during_step": [
+          "A",
+          "C",
+          "E",
+          "H",
+          "I",
+          "Z"
+        ],
+        "live_field_value_count_during_step": 6,
+        "live_field_values_after_step": [
+          "A",
+          "C",
+          "E",
+          "H",
+          "I",
+          "Z"
+        ],
+        "live_field_value_count_after_step": 6,
+        "peak_field_slots_so_far": 6,
+        "schedule_index": 8
+      },
+      {
+        "operation_index": 7,
+        "opcode": "field_sub_sum",
+        "target": "K",
+        "sources": [
+          "H",
+          "A",
+          "I"
+        ],
+        "overwritten_source": "H",
+        "overwrite_local_inverse_screen": "passed_operand_screen",
+        "live_field_values_before_step": [
+          "A",
+          "C",
+          "E",
+          "H",
+          "I",
+          "Z"
+        ],
+        "live_field_values_during_step": [
+          "A",
+          "C",
+          "E",
+          "I",
+          "K",
+          "Z"
+        ],
+        "live_field_value_count_during_step": 6,
+        "live_field_values_after_step": [
+          "A",
+          "C",
+          "E",
+          "I",
+          "K",
+          "Z"
+        ],
+        "live_field_value_count_after_step": 6,
+        "peak_field_slots_so_far": 6,
+        "schedule_index": 9
+      },
+      {
+        "operation_index": 8,
+        "opcode": "field_triple",
+        "target": "L",
+        "sources": [
+          "A"
+        ],
+        "overwritten_source": "A",
+        "overwrite_local_inverse_screen": "passed_operand_screen",
+        "live_field_values_before_step": [
+          "A",
+          "C",
+          "E",
+          "I",
+          "K",
+          "Z"
+        ],
+        "live_field_values_during_step": [
+          "C",
+          "E",
+          "I",
+          "K",
+          "L",
+          "Z"
+        ],
+        "live_field_value_count_during_step": 6,
+        "live_field_values_after_step": [
+          "C",
+          "E",
+          "I",
+          "K",
+          "L",
+          "Z"
+        ],
+        "live_field_value_count_after_step": 6,
+        "peak_field_slots_so_far": 6,
+        "schedule_index": 10
+      },
+      {
+        "operation_index": 11,
+        "opcode": "mul_const",
+        "target": "F",
+        "sources": [
+          "Z"
+        ],
+        "overwritten_source": "Z",
+        "overwrite_local_inverse_screen": "passed_operand_screen",
+        "live_field_values_before_step": [
+          "C",
+          "E",
+          "I",
+          "K",
+          "L",
+          "Z"
+        ],
+        "live_field_values_during_step": [
+          "C",
+          "E",
+          "F",
+          "I",
+          "K",
+          "L"
+        ],
+        "live_field_value_count_during_step": 6,
+        "live_field_values_after_step": [
+          "C",
+          "E",
+          "F",
+          "I",
+          "K",
+          "L"
+        ],
+        "live_field_value_count_after_step": 6,
+        "peak_field_slots_so_far": 6,
+        "schedule_index": 11
+      },
+      {
+        "operation_index": 12,
+        "opcode": "field_add",
+        "target": "M",
+        "sources": [
+          "I",
+          "F"
+        ],
+        "overwritten_source": null,
+        "overwrite_local_inverse_screen": null,
+        "live_field_values_before_step": [
+          "C",
+          "E",
+          "F",
+          "I",
+          "K",
+          "L"
+        ],
+        "live_field_values_during_step": [
+          "C",
+          "E",
+          "F",
+          "I",
+          "K",
+          "L",
+          "M"
+        ],
+        "live_field_value_count_during_step": 7,
+        "live_field_values_after_step": [
+          "C",
+          "E",
+          "F",
+          "I",
+          "K",
+          "L",
+          "M"
+        ],
+        "live_field_value_count_after_step": 7,
+        "peak_field_slots_so_far": 7,
+        "schedule_index": 12
+      },
+      {
+        "operation_index": 13,
+        "opcode": "field_sub",
+        "target": "N",
+        "sources": [
+          "I",
+          "F"
+        ],
+        "overwritten_source": "I",
+        "overwrite_local_inverse_screen": "passed_operand_screen",
+        "live_field_values_before_step": [
+          "C",
+          "E",
+          "F",
+          "I",
+          "K",
+          "L",
+          "M"
+        ],
+        "live_field_values_during_step": [
+          "C",
+          "E",
+          "F",
+          "K",
+          "L",
+          "M",
+          "N"
+        ],
+        "live_field_value_count_during_step": 7,
+        "live_field_values_after_step": [
+          "C",
+          "E",
+          "K",
+          "L",
+          "M",
+          "N"
+        ],
+        "live_field_value_count_after_step": 6,
+        "peak_field_slots_so_far": 7,
+        "schedule_index": 13
+      },
+      {
+        "operation_index": 14,
+        "opcode": "field_mul",
+        "target": "KN",
+        "sources": [
+          "K",
+          "N"
+        ],
+        "overwritten_source": null,
+        "overwrite_local_inverse_screen": null,
+        "live_field_values_before_step": [
+          "C",
+          "E",
+          "K",
+          "L",
+          "M",
+          "N"
+        ],
+        "live_field_values_during_step": [
+          "C",
+          "E",
+          "K",
+          "KN",
+          "L",
+          "M",
+          "N"
+        ],
+        "live_field_value_count_during_step": 7,
+        "live_field_values_after_step": [
+          "C",
+          "E",
+          "K",
+          "KN",
+          "L",
+          "M",
+          "N"
+        ],
+        "live_field_value_count_after_step": 7,
+        "peak_field_slots_so_far": 7,
+        "schedule_index": 14
+      },
+      {
+        "operation_index": 15,
+        "opcode": "field_mul",
+        "target": "EC",
+        "sources": [
+          "E",
+          "C"
+        ],
+        "overwritten_source": null,
+        "overwrite_local_inverse_screen": null,
+        "live_field_values_before_step": [
+          "C",
+          "E",
+          "K",
+          "KN",
+          "L",
+          "M",
+          "N"
+        ],
+        "live_field_values_during_step": [
+          "C",
+          "E",
+          "EC",
+          "K",
+          "KN",
+          "L",
+          "M",
+          "N"
+        ],
+        "live_field_value_count_during_step": 8,
+        "live_field_values_after_step": [
+          "C",
+          "E",
+          "EC",
+          "K",
+          "KN",
+          "L",
+          "M",
+          "N"
+        ],
+        "live_field_value_count_after_step": 8,
+        "peak_field_slots_so_far": 8,
+        "schedule_index": 15
+      },
+      {
+        "operation_index": 20,
+        "opcode": "field_sub",
+        "target": "X3",
+        "sources": [
+          "KN",
+          "EC"
+        ],
+        "overwritten_source": "KN",
+        "overwrite_local_inverse_screen": "passed_operand_screen",
+        "live_field_values_before_step": [
+          "C",
+          "E",
+          "EC",
+          "K",
+          "KN",
+          "L",
+          "M",
+          "N"
+        ],
+        "live_field_values_during_step": [
+          "C",
+          "E",
+          "EC",
+          "K",
+          "L",
+          "M",
+          "N",
+          "X3"
+        ],
+        "live_field_value_count_during_step": 8,
+        "live_field_values_after_step": [
+          "C",
+          "E",
+          "K",
+          "L",
+          "M",
+          "N",
+          "X3"
+        ],
+        "live_field_value_count_after_step": 7,
+        "peak_field_slots_so_far": 8,
+        "schedule_index": 16
+      },
+      {
+        "operation_index": 16,
+        "opcode": "field_mul",
+        "target": "NM",
+        "sources": [
+          "N",
+          "M"
+        ],
+        "overwritten_source": null,
+        "overwrite_local_inverse_screen": null,
+        "live_field_values_before_step": [
+          "C",
+          "E",
+          "K",
+          "L",
+          "M",
+          "N",
+          "X3"
+        ],
+        "live_field_values_during_step": [
+          "C",
+          "E",
+          "K",
+          "L",
+          "M",
+          "N",
+          "NM",
+          "X3"
+        ],
+        "live_field_value_count_during_step": 8,
+        "live_field_values_after_step": [
+          "C",
+          "E",
+          "K",
+          "L",
+          "M",
+          "NM",
+          "X3"
+        ],
+        "live_field_value_count_after_step": 7,
+        "peak_field_slots_so_far": 8,
+        "schedule_index": 17
+      },
+      {
+        "operation_index": 17,
+        "opcode": "field_mul",
+        "target": "CL",
+        "sources": [
+          "C",
+          "L"
+        ],
+        "overwritten_source": null,
+        "overwrite_local_inverse_screen": null,
+        "live_field_values_before_step": [
+          "C",
+          "E",
+          "K",
+          "L",
+          "M",
+          "NM",
+          "X3"
+        ],
+        "live_field_values_during_step": [
+          "C",
+          "CL",
+          "E",
+          "K",
+          "L",
+          "M",
+          "NM",
+          "X3"
+        ],
+        "live_field_value_count_during_step": 8,
+        "live_field_values_after_step": [
+          "CL",
+          "E",
+          "K",
+          "L",
+          "M",
+          "NM",
+          "X3"
+        ],
+        "live_field_value_count_after_step": 7,
+        "peak_field_slots_so_far": 8,
+        "schedule_index": 18
+      },
+      {
+        "operation_index": 18,
+        "opcode": "field_mul",
+        "target": "ME",
+        "sources": [
+          "M",
+          "E"
+        ],
+        "overwritten_source": null,
+        "overwrite_local_inverse_screen": null,
+        "live_field_values_before_step": [
+          "CL",
+          "E",
+          "K",
+          "L",
+          "M",
+          "NM",
+          "X3"
+        ],
+        "live_field_values_during_step": [
+          "CL",
+          "E",
+          "K",
+          "L",
+          "M",
+          "ME",
+          "NM",
+          "X3"
+        ],
+        "live_field_value_count_during_step": 8,
+        "live_field_values_after_step": [
+          "CL",
+          "K",
+          "L",
+          "ME",
+          "NM",
+          "X3"
+        ],
+        "live_field_value_count_after_step": 6,
+        "peak_field_slots_so_far": 8,
+        "schedule_index": 19
+      },
+      {
+        "operation_index": 19,
+        "opcode": "field_mul",
+        "target": "LK",
+        "sources": [
+          "L",
+          "K"
+        ],
+        "overwritten_source": null,
+        "overwrite_local_inverse_screen": null,
+        "live_field_values_before_step": [
+          "CL",
+          "K",
+          "L",
+          "ME",
+          "NM",
+          "X3"
+        ],
+        "live_field_values_during_step": [
+          "CL",
+          "K",
+          "L",
+          "LK",
+          "ME",
+          "NM",
+          "X3"
+        ],
+        "live_field_value_count_during_step": 7,
+        "live_field_values_after_step": [
+          "CL",
+          "LK",
+          "ME",
+          "NM",
+          "X3"
+        ],
+        "live_field_value_count_after_step": 5,
+        "peak_field_slots_so_far": 8,
+        "schedule_index": 20
+      },
+      {
+        "operation_index": 21,
+        "opcode": "field_add",
+        "target": "Y3",
+        "sources": [
+          "NM",
+          "CL"
+        ],
+        "overwritten_source": null,
+        "overwrite_local_inverse_screen": null,
+        "live_field_values_before_step": [
+          "CL",
+          "LK",
+          "ME",
+          "NM",
+          "X3"
+        ],
+        "live_field_values_during_step": [
+          "CL",
+          "LK",
+          "ME",
+          "NM",
+          "X3",
+          "Y3"
+        ],
+        "live_field_value_count_during_step": 6,
+        "live_field_values_after_step": [
+          "LK",
+          "ME",
+          "X3",
+          "Y3"
+        ],
+        "live_field_value_count_after_step": 4,
+        "peak_field_slots_so_far": 8,
+        "schedule_index": 21
+      },
+      {
+        "operation_index": 22,
+        "opcode": "field_add",
+        "target": "Z3",
+        "sources": [
+          "ME",
+          "LK"
+        ],
+        "overwritten_source": null,
+        "overwrite_local_inverse_screen": null,
+        "live_field_values_before_step": [
+          "LK",
+          "ME",
+          "X3",
+          "Y3"
+        ],
+        "live_field_values_during_step": [
+          "LK",
+          "ME",
+          "X3",
+          "Y3",
+          "Z3"
+        ],
+        "live_field_value_count_during_step": 5,
+        "live_field_values_after_step": [
+          "X3",
+          "Y3",
+          "Z3"
+        ],
+        "live_field_value_count_after_step": 3,
+        "peak_field_slots_so_far": 8,
+        "schedule_index": 22
+      }
+    ],
+    "notes": [
+      "This search reorders the expanded tail operation DAG and allows an overwrite only when the chosen operand passed the toy-boundary local inverse screen.",
+      "A solution is stronger than the fixed-order destructive candidate, but it is still a schedule-level certificate rather than a Clifford-complete reversible circuit implementation."
     ]
   },
   "checks": {

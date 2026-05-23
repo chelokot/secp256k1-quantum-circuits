@@ -564,6 +564,8 @@ def build_tail_macro_engine_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
     local_inverse_certificate = destructive_schedule['local_inverse_certificate']
     overwrite_choice_screen = destructive_schedule['overwrite_choice_screen']
     pass_only_schedule = engine['local_inverse_pass_only_schedule']
+    operand_screen = engine['operand_overwrite_screen']
+    reordered_schedule = engine['reordered_local_inverse_schedule']
     slot_gap = engine['slot_gap']
     kernel_lookup = {
         kernel['opcode']: int(kernel['exact_non_clifford_per_kernel'])
@@ -603,16 +605,35 @@ def build_tail_macro_engine_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
             and overwrite_choice_screen['passing_choice_count'] == 16
             and overwrite_choice_screen['failing_choice_count'] == 7
             and overwrite_choice_screen['failing_row_indices'] == [1, 16, 17, 18, 19]
+            and operand_screen['choice_count'] == 39
+            and operand_screen['passing_choice_count'] == 26
+            and operand_screen['failing_choice_count'] == 13
+            and operand_screen['failing_row_indices'] == [1, 14, 15, 16, 17, 18, 19]
             and slot_gap['destructive_candidate_overwrite_rows_locally_invertible'] is False
             and slot_gap['overwrite_choice_screen_pass'] is False
+            and slot_gap['operand_overwrite_screen_pass'] is False
             and pass_only_schedule['peak_field_slots'] == 9
             and slot_gap['local_inverse_pass_only_peak_field_values'] == 9,
-            '10 overwrite rows pass local inverse screen, 5 rows remain concrete blockers, all expiring-source alternatives are screened, and the pass-only schedule still peaks at 9 slots',
+            '10 overwrite rows pass local inverse screen, 5 fixed-order rows remain concrete blockers, all expiring-source and operand choices are screened, and the pass-only schedule still peaks at 9 slots',
             {
                 'certificate': local_inverse_certificate,
                 'choice_screen': overwrite_choice_screen,
+                'operand_screen': operand_screen,
                 'pass_only_schedule': pass_only_schedule,
             },
+        ),
+        _check(
+            'tail_macro_engine_finds_reordered_eight_slot_local_inverse_schedule',
+            reordered_schedule['status'] == 'solution_found_not_full_reversible_circuit_proof'
+            and reordered_schedule['solution_found'] is True
+            and reordered_schedule['peak_field_slots'] == 8
+            and reordered_schedule['overwritten_row_count'] == 10
+            and reordered_schedule['invalid_overwrite_count'] == 0
+            and reordered_schedule['terminal_live_values'] == ['X3', 'Y3', 'Z3']
+            and slot_gap['reordered_local_inverse_solution_found'] is True
+            and slot_gap['reordered_local_inverse_peak_field_values'] == 8,
+            'reordered tail DAG reaches eight slots using only overwrite choices that passed the local inverse screen',
+            reordered_schedule,
         ),
     ]
     return _summarize_checks(checks)

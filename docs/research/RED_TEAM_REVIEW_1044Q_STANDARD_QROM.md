@@ -229,7 +229,12 @@ Current additional diagnostic:
   eight-slot candidate currently depends on the unresolved rows. A second
   screen checks all 23 expiring-source overwrite choices and finds seven
   failing choices across rows 1, 16, 17, 18, and 19, so the current formula
-  order has no simple alternate-source repair.
+  order has no simple alternate-source repair. The next generated search
+  reorders the DAG and finds an eight-slot schedule with 10 local-inverse-passed
+  overwrites and zero invalid overwrites by computing `X3` before `NM`, `CL`,
+  `ME`, and `LK`. This removes the fixed-order zero-multiplier blocker for the
+  eight-slot schedule, but it is still not a Clifford-complete reversible
+  implementation or a promoted public resource contract.
 - `compiler_verification_project/artifacts/tail_macro_schedule_search.json`
   adds a stricter destructive-schedule search for the current formula DAG. It
   permits computing a formula value and dropping old values whenever the
