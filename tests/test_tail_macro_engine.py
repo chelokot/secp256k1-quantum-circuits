@@ -66,6 +66,16 @@ def test_tail_macro_engine_exposes_unclosed_three_slot_gap() -> None:
     assert checked['destructive_candidate_schedule']['status'] == 'optimizer_candidate_not_a_reversible_proof'
     assert checked['destructive_candidate_schedule']['peak_field_slots'] == 8
     assert checked['destructive_candidate_schedule']['proxy_metrics']['field_slot_improvement_vs_strict_single_assignment'] == 1
+    assert checked['destructive_candidate_schedule']['local_inverse_certificate']['passing_row_count'] == 10
+    assert checked['destructive_candidate_schedule']['local_inverse_certificate']['failing_row_count'] == 5
+    assert checked['destructive_candidate_schedule']['overwrite_choice_screen']['choice_count'] == 23
+    assert checked['destructive_candidate_schedule']['overwrite_choice_screen']['passing_choice_count'] == 16
+    assert checked['destructive_candidate_schedule']['overwrite_choice_screen']['failing_choice_count'] == 7
+    assert checked['destructive_candidate_schedule']['overwrite_choice_screen']['failing_row_indices'] == [1, 16, 17, 18, 19]
+    assert checked['slot_gap']['destructive_candidate_overwrite_rows_locally_invertible'] is False
+    assert checked['slot_gap']['overwrite_choice_screen_pass'] is False
+    assert checked['local_inverse_pass_only_schedule']['peak_field_slots'] == 9
+    assert checked['slot_gap']['local_inverse_pass_only_peak_field_values'] == 9
     assert checked['slot_gap']['destructive_candidate_peak_field_values'] == 8
     assert checked['completion_status'] == 'tail_cost_bound_to_expanded_field_operation_stream_but_in_place_schedule_unproven'
 

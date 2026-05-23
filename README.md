@@ -165,7 +165,14 @@ requires nine field-sized slots, so promoting that fallback without a better
 in-place schedule would add six field lanes to the public qubit budget. The same
 engine now also emits an eight-slot destructive-overwrite candidate as an
 optimizer signal; that candidate is deliberately not a public claim until each
-overwrite row has a reversible or valid-subspace implementation proof.
+overwrite row has a reversible or valid-subspace implementation proof. The
+current local-inverse screen proves 10 of the 15 overwrite rows on the checked
+toy boundary domain and leaves five concrete zero-multiplier blockers. Reusing
+only the 10 locally invertible rows still peaks at nine field slots, so the
+eight-slot optimizer signal currently depends on those unresolved blockers. The
+same artifact screens all 23 expiring-source overwrite choices; seven choices
+fail across rows 1, 16, 17, 18, and 19, so this is not just a bad greedy source
+selection.
 
 The public engine manifest then binds that
 materialized flat stream, executable instruction rows, wires, schedule events,

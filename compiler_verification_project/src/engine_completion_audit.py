@@ -161,6 +161,8 @@ def build_engine_completion_audit(
             and tail_macro_engine['expanded_slot_schedule']['status'] == 'executable_capacity_fallback_not_reversible_cleanup_proof'
             and tail_macro_engine['destructive_candidate_schedule']['status'] == 'optimizer_candidate_not_a_reversible_proof'
             and int(tail_macro_engine['destructive_candidate_schedule']['peak_field_slots']) < int(tail_macro_engine['expanded_slot_schedule']['peak_field_slots'])
+            and tail_macro_engine['destructive_candidate_schedule']['local_inverse_certificate']['status'] == 'toy_boundary_local_inverse_check_not_full_reversible_proof'
+            and int(tail_macro_engine['destructive_candidate_schedule']['local_inverse_certificate']['failing_row_count']) > 0
             and tail_macro_liveness['pass'] is True
             and tail_macro_reversibility['canonical_subgroup_domain']['all_checked_rows_injective'] is True
             and tail_macro_reversibility['fixed_lookup_reachable_orbit_domain']['all_checked_rows_injective'] is True

@@ -1267,6 +1267,7 @@
           "X",
           "Y"
         ],
+        "constant": null,
         "source_slots": {
           "X": 0,
           "Y": 1
@@ -1299,6 +1300,7 @@
           "G",
           "lookup_x_plus_y"
         ],
+        "constant": null,
         "source_slots": {
           "G": 3
         },
@@ -1334,6 +1336,7 @@
           "X",
           "lookup_x"
         ],
+        "constant": null,
         "source_slots": {
           "X": 0
         },
@@ -1368,6 +1371,7 @@
           "Z",
           "lookup_x"
         ],
+        "constant": null,
         "source_slots": {
           "Z": 2
         },
@@ -1405,6 +1409,7 @@
           "X",
           "Zx"
         ],
+        "constant": null,
         "source_slots": {
           "X": 0,
           "Zx": 5
@@ -1446,6 +1451,7 @@
         "sources": [
           "C_input"
         ],
+        "constant": 21,
         "source_slots": {
           "C_input": 6
         },
@@ -1484,6 +1490,7 @@
           "Y",
           "lookup_y"
         ],
+        "constant": null,
         "source_slots": {
           "Y": 1
         },
@@ -1522,6 +1529,7 @@
           "A",
           "I"
         ],
+        "constant": null,
         "source_slots": {
           "H": 4,
           "A": 3,
@@ -1564,6 +1572,7 @@
         "sources": [
           "A"
         ],
+        "constant": 3,
         "source_slots": {
           "A": 3
         },
@@ -1605,6 +1614,7 @@
           "Z",
           "lookup_y"
         ],
+        "constant": null,
         "source_slots": {
           "Z": 2
         },
@@ -1645,6 +1655,7 @@
           "Y",
           "yZ"
         ],
+        "constant": null,
         "source_slots": {
           "Y": 1,
           "yZ": 3
@@ -1689,6 +1700,7 @@
         "sources": [
           "Z"
         ],
+        "constant": 21,
         "source_slots": {
           "Z": 2
         },
@@ -1730,6 +1742,7 @@
           "I",
           "F"
         ],
+        "constant": null,
         "source_slots": {
           "I": 5,
           "F": 1
@@ -1771,6 +1784,7 @@
           "I",
           "F"
         ],
+        "constant": null,
         "source_slots": {
           "I": 5,
           "F": 1
@@ -1816,6 +1830,7 @@
           "K",
           "N"
         ],
+        "constant": null,
         "source_slots": {
           "K": 6,
           "N": 3
@@ -1857,6 +1872,7 @@
           "E",
           "C"
         ],
+        "constant": null,
         "source_slots": {
           "E": 7,
           "C": 0
@@ -1901,6 +1917,7 @@
           "N",
           "M"
         ],
+        "constant": null,
         "source_slots": {
           "N": 3,
           "M": 2
@@ -1949,6 +1966,7 @@
           "C",
           "L"
         ],
+        "constant": null,
         "source_slots": {
           "C": 0,
           "L": 4
@@ -1997,6 +2015,7 @@
           "M",
           "E"
         ],
+        "constant": null,
         "source_slots": {
           "M": 2,
           "E": 7
@@ -2045,6 +2064,7 @@
           "L",
           "K"
         ],
+        "constant": null,
         "source_slots": {
           "L": 4,
           "K": 6
@@ -2090,6 +2110,7 @@
           "KN",
           "EC"
         ],
+        "constant": null,
         "source_slots": {
           "KN": 1,
           "EC": 5
@@ -2132,6 +2153,7 @@
           "NM",
           "CL"
         ],
+        "constant": null,
         "source_slots": {
           "NM": 8,
           "CL": 3
@@ -2171,6 +2193,7 @@
           "ME",
           "LK"
         ],
+        "constant": null,
         "source_slots": {
           "ME": 0,
           "LK": 2
@@ -2230,6 +2253,7 @@
           "X",
           "Y"
         ],
+        "constant": null,
         "source_slots_before_operation": {
           "X": 0,
           "Y": 1
@@ -2265,6 +2289,7 @@
           "G",
           "lookup_x_plus_y"
         ],
+        "constant": null,
         "source_slots_before_operation": {
           "G": 3
         },
@@ -2300,6 +2325,7 @@
           "X",
           "lookup_x"
         ],
+        "constant": null,
         "source_slots_before_operation": {
           "X": 0
         },
@@ -2337,6 +2363,7 @@
           "Z",
           "lookup_x"
         ],
+        "constant": null,
         "source_slots_before_operation": {
           "Z": 2
         },
@@ -2377,6 +2404,7 @@
           "X",
           "Zx"
         ],
+        "constant": null,
         "source_slots_before_operation": {
           "X": 0,
           "Zx": 5
@@ -2419,6 +2447,7 @@
         "sources": [
           "C_input"
         ],
+        "constant": 21,
         "source_slots_before_operation": {
           "C_input": 5
         },
@@ -2457,6 +2486,7 @@
           "Y",
           "lookup_y"
         ],
+        "constant": null,
         "source_slots_before_operation": {
           "Y": 1
         },
@@ -2498,6 +2528,7 @@
           "A",
           "I"
         ],
+        "constant": null,
         "source_slots_before_operation": {
           "H": 3,
           "A": 4,
@@ -2540,6 +2571,7 @@
         "sources": [
           "A"
         ],
+        "constant": 3,
         "source_slots_before_operation": {
           "A": 4
         },
@@ -2581,6 +2613,7 @@
           "Z",
           "lookup_y"
         ],
+        "constant": null,
         "source_slots_before_operation": {
           "Z": 2
         },
@@ -2624,6 +2657,7 @@
           "Y",
           "yZ"
         ],
+        "constant": null,
         "source_slots_before_operation": {
           "Y": 1,
           "yZ": 6
@@ -2669,6 +2703,7 @@
         "sources": [
           "Z"
         ],
+        "constant": 21,
         "source_slots_before_operation": {
           "Z": 2
         },
@@ -2710,6 +2745,7 @@
           "I",
           "F"
         ],
+        "constant": null,
         "source_slots_before_operation": {
           "I": 0,
           "F": 2
@@ -2754,6 +2790,7 @@
           "I",
           "F"
         ],
+        "constant": null,
         "source_slots_before_operation": {
           "I": 0,
           "F": 2
@@ -2800,6 +2837,7 @@
           "K",
           "N"
         ],
+        "constant": null,
         "source_slots_before_operation": {
           "K": 3,
           "N": 2
@@ -2844,6 +2882,7 @@
           "E",
           "C"
         ],
+        "constant": null,
         "source_slots_before_operation": {
           "E": 6,
           "C": 5
@@ -2891,6 +2930,7 @@
           "N",
           "M"
         ],
+        "constant": null,
         "source_slots_before_operation": {
           "N": 2,
           "M": 1
@@ -2939,6 +2979,7 @@
           "C",
           "L"
         ],
+        "constant": null,
         "source_slots_before_operation": {
           "C": 5,
           "L": 4
@@ -2987,6 +3028,7 @@
           "M",
           "E"
         ],
+        "constant": null,
         "source_slots_before_operation": {
           "M": 1,
           "E": 6
@@ -3036,6 +3078,7 @@
           "L",
           "K"
         ],
+        "constant": null,
         "source_slots_before_operation": {
           "L": 4,
           "K": 3
@@ -3082,6 +3125,7 @@
           "KN",
           "EC"
         ],
+        "constant": null,
         "source_slots_before_operation": {
           "KN": 0,
           "EC": 7
@@ -3125,6 +3169,7 @@
           "NM",
           "CL"
         ],
+        "constant": null,
         "source_slots_before_operation": {
           "NM": 2,
           "CL": 5
@@ -3165,6 +3210,7 @@
           "ME",
           "LK"
         ],
+        "constant": null,
         "source_slots_before_operation": {
           "ME": 6,
           "LK": 4
@@ -3208,7 +3254,2889 @@
       "This optimizer candidate reuses the physical slot of a last-use source for the operation target.",
       "It is a search/proxy signal for in-place schedule development, not a public resource contract.",
       "Every overwritten row remains invalid until a reversible or valid-subspace permutation implementation is supplied for that opcode and boundary state."
-    ]
+    ],
+    "local_inverse_certificate": {
+      "schema": "compiler-project-tail-overwrite-local-inverse-certificate-v1",
+      "status": "toy_boundary_local_inverse_check_not_full_reversible_proof",
+      "overwrite_row_count": 15,
+      "passing_row_count": 10,
+      "failing_row_count": 5,
+      "total_domain_rows_checked": 1651230,
+      "rows": [
+        {
+          "index": 1,
+          "opcode": "field_mul_lookup_sum",
+          "target": "H",
+          "overwritten_source": "G",
+          "rule": {
+            "kind": "lookup_constant_multiply",
+            "constant_source": "lookup_x_plus_y",
+            "symbolic_inverse_exists_over_field": null
+          },
+          "checked_domain": "toy canonical accumulator subgroup x non-infinity lookup subgroup",
+          "domain_rows_checked": 110082,
+          "per_curve": [
+            {
+              "curve": "toy61_b2",
+              "domain_rows_checked": 3660,
+              "pass": false,
+              "failure_examples": [
+                {
+                  "lookup": [
+                    51,
+                    10
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "G": 1
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    51,
+                    10
+                  ],
+                  "accumulator": [
+                    1,
+                    8
+                  ],
+                  "before": {
+                    "G": 9
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    51,
+                    10
+                  ],
+                  "accumulator": [
+                    14,
+                    1
+                  ],
+                  "before": {
+                    "G": 15
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy127_b11",
+              "domain_rows_checked": 16002,
+              "pass": false,
+              "failure_examples": [
+                {
+                  "lookup": [
+                    15,
+                    94
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "G": 1
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    15,
+                    94
+                  ],
+                  "accumulator": [
+                    1,
+                    11
+                  ],
+                  "before": {
+                    "G": 12
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    15,
+                    94
+                  ],
+                  "accumulator": [
+                    5,
+                    38
+                  ],
+                  "before": {
+                    "G": 43
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy181_b3",
+              "domain_rows_checked": 32580,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy241_b29",
+              "domain_rows_checked": 57840,
+              "pass": false,
+              "failure_examples": [
+                {
+                  "lookup": [
+                    59,
+                    152
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "G": 1
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    59,
+                    152
+                  ],
+                  "accumulator": [
+                    1,
+                    36
+                  ],
+                  "before": {
+                    "G": 37
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    59,
+                    152
+                  ],
+                  "accumulator": [
+                    35,
+                    156
+                  ],
+                  "before": {
+                    "G": 191
+                  },
+                  "target_value": 0
+                }
+              ]
+            }
+          ],
+          "failure_examples": [
+            {
+              "curve": "toy61_b2",
+              "examples": [
+                {
+                  "lookup": [
+                    51,
+                    10
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "G": 1
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    51,
+                    10
+                  ],
+                  "accumulator": [
+                    1,
+                    8
+                  ],
+                  "before": {
+                    "G": 9
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    51,
+                    10
+                  ],
+                  "accumulator": [
+                    14,
+                    1
+                  ],
+                  "before": {
+                    "G": 15
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy127_b11",
+              "examples": [
+                {
+                  "lookup": [
+                    15,
+                    94
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "G": 1
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    15,
+                    94
+                  ],
+                  "accumulator": [
+                    1,
+                    11
+                  ],
+                  "before": {
+                    "G": 12
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    15,
+                    94
+                  ],
+                  "accumulator": [
+                    5,
+                    38
+                  ],
+                  "before": {
+                    "G": 43
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy241_b29",
+              "examples": [
+                {
+                  "lookup": [
+                    59,
+                    152
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "G": 1
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    59,
+                    152
+                  ],
+                  "accumulator": [
+                    1,
+                    36
+                  ],
+                  "before": {
+                    "G": 37
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    59,
+                    152
+                  ],
+                  "accumulator": [
+                    35,
+                    156
+                  ],
+                  "before": {
+                    "G": 191
+                  },
+                  "target_value": 0
+                }
+              ]
+            }
+          ],
+          "pass": false,
+          "failure_reason": "lookup_x_plus_y can be zero on the checked boundary domain"
+        },
+        {
+          "index": 4,
+          "opcode": "field_add",
+          "target": "C_input",
+          "overwritten_source": "Zx",
+          "rule": {
+            "kind": "affine_unit_coefficient",
+            "symbolic_inverse_exists_over_field": true
+          },
+          "checked_domain": "toy canonical accumulator subgroup x non-infinity lookup subgroup",
+          "domain_rows_checked": 110082,
+          "per_curve": [
+            {
+              "curve": "toy61_b2",
+              "domain_rows_checked": 3660,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy127_b11",
+              "domain_rows_checked": 16002,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy181_b3",
+              "domain_rows_checked": 32580,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy241_b29",
+              "domain_rows_checked": 57840,
+              "pass": true,
+              "failure_examples": []
+            }
+          ],
+          "failure_examples": [],
+          "pass": true
+        },
+        {
+          "index": 5,
+          "opcode": "mul_const",
+          "target": "C",
+          "overwritten_source": "C_input",
+          "rule": {
+            "kind": "constant_multiply",
+            "constant": 21,
+            "symbolic_inverse_exists_over_field": true
+          },
+          "checked_domain": "toy canonical accumulator subgroup x non-infinity lookup subgroup",
+          "domain_rows_checked": 110082,
+          "per_curve": [
+            {
+              "curve": "toy61_b2",
+              "domain_rows_checked": 3660,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy127_b11",
+              "domain_rows_checked": 16002,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy181_b3",
+              "domain_rows_checked": 32580,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy241_b29",
+              "domain_rows_checked": 57840,
+              "pass": true,
+              "failure_examples": []
+            }
+          ],
+          "failure_examples": [],
+          "pass": true
+        },
+        {
+          "index": 7,
+          "opcode": "field_sub_sum",
+          "target": "K",
+          "overwritten_source": "H",
+          "rule": {
+            "kind": "affine_unit_coefficient",
+            "symbolic_inverse_exists_over_field": true
+          },
+          "checked_domain": "toy canonical accumulator subgroup x non-infinity lookup subgroup",
+          "domain_rows_checked": 110082,
+          "per_curve": [
+            {
+              "curve": "toy61_b2",
+              "domain_rows_checked": 3660,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy127_b11",
+              "domain_rows_checked": 16002,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy181_b3",
+              "domain_rows_checked": 32580,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy241_b29",
+              "domain_rows_checked": 57840,
+              "pass": true,
+              "failure_examples": []
+            }
+          ],
+          "failure_examples": [],
+          "pass": true
+        },
+        {
+          "index": 8,
+          "opcode": "field_triple",
+          "target": "L",
+          "overwritten_source": "A",
+          "rule": {
+            "kind": "constant_multiply",
+            "constant": 3,
+            "symbolic_inverse_exists_over_field": true
+          },
+          "checked_domain": "toy canonical accumulator subgroup x non-infinity lookup subgroup",
+          "domain_rows_checked": 110082,
+          "per_curve": [
+            {
+              "curve": "toy61_b2",
+              "domain_rows_checked": 3660,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy127_b11",
+              "domain_rows_checked": 16002,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy181_b3",
+              "domain_rows_checked": 32580,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy241_b29",
+              "domain_rows_checked": 57840,
+              "pass": true,
+              "failure_examples": []
+            }
+          ],
+          "failure_examples": [],
+          "pass": true
+        },
+        {
+          "index": 10,
+          "opcode": "field_add",
+          "target": "E",
+          "overwritten_source": "yZ",
+          "rule": {
+            "kind": "affine_unit_coefficient",
+            "symbolic_inverse_exists_over_field": true
+          },
+          "checked_domain": "toy canonical accumulator subgroup x non-infinity lookup subgroup",
+          "domain_rows_checked": 110082,
+          "per_curve": [
+            {
+              "curve": "toy61_b2",
+              "domain_rows_checked": 3660,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy127_b11",
+              "domain_rows_checked": 16002,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy181_b3",
+              "domain_rows_checked": 32580,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy241_b29",
+              "domain_rows_checked": 57840,
+              "pass": true,
+              "failure_examples": []
+            }
+          ],
+          "failure_examples": [],
+          "pass": true
+        },
+        {
+          "index": 11,
+          "opcode": "mul_const",
+          "target": "F",
+          "overwritten_source": "Z",
+          "rule": {
+            "kind": "constant_multiply",
+            "constant": 21,
+            "symbolic_inverse_exists_over_field": true
+          },
+          "checked_domain": "toy canonical accumulator subgroup x non-infinity lookup subgroup",
+          "domain_rows_checked": 110082,
+          "per_curve": [
+            {
+              "curve": "toy61_b2",
+              "domain_rows_checked": 3660,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy127_b11",
+              "domain_rows_checked": 16002,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy181_b3",
+              "domain_rows_checked": 32580,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy241_b29",
+              "domain_rows_checked": 57840,
+              "pass": true,
+              "failure_examples": []
+            }
+          ],
+          "failure_examples": [],
+          "pass": true
+        },
+        {
+          "index": 13,
+          "opcode": "field_sub",
+          "target": "N",
+          "overwritten_source": "F",
+          "rule": {
+            "kind": "affine_unit_coefficient",
+            "symbolic_inverse_exists_over_field": true
+          },
+          "checked_domain": "toy canonical accumulator subgroup x non-infinity lookup subgroup",
+          "domain_rows_checked": 110082,
+          "per_curve": [
+            {
+              "curve": "toy61_b2",
+              "domain_rows_checked": 3660,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy127_b11",
+              "domain_rows_checked": 16002,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy181_b3",
+              "domain_rows_checked": 32580,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy241_b29",
+              "domain_rows_checked": 57840,
+              "pass": true,
+              "failure_examples": []
+            }
+          ],
+          "failure_examples": [],
+          "pass": true
+        },
+        {
+          "index": 16,
+          "opcode": "field_mul",
+          "target": "NM",
+          "overwritten_source": "N",
+          "rule": {
+            "kind": "variable_multiply",
+            "multiplier_source": "M",
+            "symbolic_inverse_exists_over_field": null
+          },
+          "checked_domain": "toy canonical accumulator subgroup x non-infinity lookup subgroup",
+          "domain_rows_checked": 110082,
+          "per_curve": [
+            {
+              "curve": "toy61_b2",
+              "domain_rows_checked": 3660,
+              "pass": false,
+              "failure_examples": [
+                {
+                  "lookup": [
+                    1,
+                    8
+                  ],
+                  "accumulator": [
+                    54,
+                    5
+                  ],
+                  "before": {
+                    "M": 0,
+                    "N": 19
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    1,
+                    8
+                  ],
+                  "accumulator": [
+                    31,
+                    5
+                  ],
+                  "before": {
+                    "M": 0,
+                    "N": 19
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    1,
+                    8
+                  ],
+                  "accumulator": [
+                    37,
+                    5
+                  ],
+                  "before": {
+                    "M": 0,
+                    "N": 19
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy127_b11",
+              "domain_rows_checked": 16002,
+              "pass": false,
+              "failure_examples": [
+                {
+                  "lookup": [
+                    87,
+                    63
+                  ],
+                  "accumulator": [
+                    70,
+                    36
+                  ],
+                  "before": {
+                    "M": 0,
+                    "N": 67
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    87,
+                    63
+                  ],
+                  "accumulator": [
+                    98,
+                    36
+                  ],
+                  "before": {
+                    "M": 0,
+                    "N": 67
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    87,
+                    63
+                  ],
+                  "accumulator": [
+                    50,
+                    36
+                  ],
+                  "before": {
+                    "M": 0,
+                    "N": 67
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy181_b3",
+              "domain_rows_checked": 32580,
+              "pass": false,
+              "failure_examples": [
+                {
+                  "lookup": [
+                    131,
+                    145
+                  ],
+                  "accumulator": [
+                    34,
+                    137
+                  ],
+                  "before": {
+                    "M": 0,
+                    "N": 121
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    131,
+                    145
+                  ],
+                  "accumulator": [
+                    16,
+                    137
+                  ],
+                  "before": {
+                    "M": 0,
+                    "N": 121
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    131,
+                    145
+                  ],
+                  "accumulator": [
+                    113,
+                    137
+                  ],
+                  "before": {
+                    "M": 0,
+                    "N": 121
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy241_b29",
+              "domain_rows_checked": 57840,
+              "pass": false,
+              "failure_examples": [
+                {
+                  "lookup": [
+                    51,
+                    159
+                  ],
+                  "accumulator": [
+                    109,
+                    183
+                  ],
+                  "before": {
+                    "M": 0,
+                    "N": 169
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    51,
+                    159
+                  ],
+                  "accumulator": [
+                    53,
+                    183
+                  ],
+                  "before": {
+                    "M": 0,
+                    "N": 169
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    51,
+                    159
+                  ],
+                  "accumulator": [
+                    49,
+                    183
+                  ],
+                  "before": {
+                    "M": 0,
+                    "N": 169
+                  },
+                  "target_value": 0
+                }
+              ]
+            }
+          ],
+          "failure_examples": [
+            {
+              "curve": "toy61_b2",
+              "examples": [
+                {
+                  "lookup": [
+                    1,
+                    8
+                  ],
+                  "accumulator": [
+                    54,
+                    5
+                  ],
+                  "before": {
+                    "M": 0,
+                    "N": 19
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    1,
+                    8
+                  ],
+                  "accumulator": [
+                    31,
+                    5
+                  ],
+                  "before": {
+                    "M": 0,
+                    "N": 19
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    1,
+                    8
+                  ],
+                  "accumulator": [
+                    37,
+                    5
+                  ],
+                  "before": {
+                    "M": 0,
+                    "N": 19
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy127_b11",
+              "examples": [
+                {
+                  "lookup": [
+                    87,
+                    63
+                  ],
+                  "accumulator": [
+                    70,
+                    36
+                  ],
+                  "before": {
+                    "M": 0,
+                    "N": 67
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    87,
+                    63
+                  ],
+                  "accumulator": [
+                    98,
+                    36
+                  ],
+                  "before": {
+                    "M": 0,
+                    "N": 67
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    87,
+                    63
+                  ],
+                  "accumulator": [
+                    50,
+                    36
+                  ],
+                  "before": {
+                    "M": 0,
+                    "N": 67
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy181_b3",
+              "examples": [
+                {
+                  "lookup": [
+                    131,
+                    145
+                  ],
+                  "accumulator": [
+                    34,
+                    137
+                  ],
+                  "before": {
+                    "M": 0,
+                    "N": 121
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    131,
+                    145
+                  ],
+                  "accumulator": [
+                    16,
+                    137
+                  ],
+                  "before": {
+                    "M": 0,
+                    "N": 121
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    131,
+                    145
+                  ],
+                  "accumulator": [
+                    113,
+                    137
+                  ],
+                  "before": {
+                    "M": 0,
+                    "N": 121
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy241_b29",
+              "examples": [
+                {
+                  "lookup": [
+                    51,
+                    159
+                  ],
+                  "accumulator": [
+                    109,
+                    183
+                  ],
+                  "before": {
+                    "M": 0,
+                    "N": 169
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    51,
+                    159
+                  ],
+                  "accumulator": [
+                    53,
+                    183
+                  ],
+                  "before": {
+                    "M": 0,
+                    "N": 169
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    51,
+                    159
+                  ],
+                  "accumulator": [
+                    49,
+                    183
+                  ],
+                  "before": {
+                    "M": 0,
+                    "N": 169
+                  },
+                  "target_value": 0
+                }
+              ]
+            }
+          ],
+          "pass": false,
+          "failure_reason": "M can be zero on the checked boundary domain"
+        },
+        {
+          "index": 17,
+          "opcode": "field_mul",
+          "target": "CL",
+          "overwritten_source": "C",
+          "rule": {
+            "kind": "variable_multiply",
+            "multiplier_source": "L",
+            "symbolic_inverse_exists_over_field": null
+          },
+          "checked_domain": "toy canonical accumulator subgroup x non-infinity lookup subgroup",
+          "domain_rows_checked": 110082,
+          "per_curve": [
+            {
+              "curve": "toy61_b2",
+              "domain_rows_checked": 3660,
+              "pass": false,
+              "failure_examples": [
+                {
+                  "lookup": [
+                    1,
+                    8
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "C": 0,
+                    "L": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    14,
+                    1
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "C": 0,
+                    "L": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    12,
+                    12
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "C": 0,
+                    "L": 0
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy127_b11",
+              "domain_rows_checked": 16002,
+              "pass": false,
+              "failure_examples": [
+                {
+                  "lookup": [
+                    1,
+                    11
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "C": 0,
+                    "L": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    5,
+                    38
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "C": 0,
+                    "L": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    60,
+                    54
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "C": 0,
+                    "L": 0
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy181_b3",
+              "domain_rows_checked": 32580,
+              "pass": false,
+              "failure_examples": [
+                {
+                  "lookup": [
+                    1,
+                    2
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "C": 0,
+                    "L": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    131,
+                    145
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "C": 0,
+                    "L": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    86,
+                    149
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "C": 0,
+                    "L": 0
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy241_b29",
+              "domain_rows_checked": 57840,
+              "pass": false,
+              "failure_examples": [
+                {
+                  "lookup": [
+                    1,
+                    36
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "C": 0,
+                    "L": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    35,
+                    156
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "C": 0,
+                    "L": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    140,
+                    94
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "C": 0,
+                    "L": 0
+                  },
+                  "target_value": 0
+                }
+              ]
+            }
+          ],
+          "failure_examples": [
+            {
+              "curve": "toy61_b2",
+              "examples": [
+                {
+                  "lookup": [
+                    1,
+                    8
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "C": 0,
+                    "L": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    14,
+                    1
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "C": 0,
+                    "L": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    12,
+                    12
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "C": 0,
+                    "L": 0
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy127_b11",
+              "examples": [
+                {
+                  "lookup": [
+                    1,
+                    11
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "C": 0,
+                    "L": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    5,
+                    38
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "C": 0,
+                    "L": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    60,
+                    54
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "C": 0,
+                    "L": 0
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy181_b3",
+              "examples": [
+                {
+                  "lookup": [
+                    1,
+                    2
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "C": 0,
+                    "L": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    131,
+                    145
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "C": 0,
+                    "L": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    86,
+                    149
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "C": 0,
+                    "L": 0
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy241_b29",
+              "examples": [
+                {
+                  "lookup": [
+                    1,
+                    36
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "C": 0,
+                    "L": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    35,
+                    156
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "C": 0,
+                    "L": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    140,
+                    94
+                  ],
+                  "accumulator": null,
+                  "before": {
+                    "C": 0,
+                    "L": 0
+                  },
+                  "target_value": 0
+                }
+              ]
+            }
+          ],
+          "pass": false,
+          "failure_reason": "L can be zero on the checked boundary domain"
+        },
+        {
+          "index": 18,
+          "opcode": "field_mul",
+          "target": "ME",
+          "overwritten_source": "E",
+          "rule": {
+            "kind": "variable_multiply",
+            "multiplier_source": "M",
+            "symbolic_inverse_exists_over_field": null
+          },
+          "checked_domain": "toy canonical accumulator subgroup x non-infinity lookup subgroup",
+          "domain_rows_checked": 110082,
+          "per_curve": [
+            {
+              "curve": "toy61_b2",
+              "domain_rows_checked": 3660,
+              "pass": false,
+              "failure_examples": [
+                {
+                  "lookup": [
+                    1,
+                    8
+                  ],
+                  "accumulator": [
+                    54,
+                    5
+                  ],
+                  "before": {
+                    "E": 13,
+                    "M": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    1,
+                    8
+                  ],
+                  "accumulator": [
+                    31,
+                    5
+                  ],
+                  "before": {
+                    "E": 13,
+                    "M": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    1,
+                    8
+                  ],
+                  "accumulator": [
+                    37,
+                    5
+                  ],
+                  "before": {
+                    "E": 13,
+                    "M": 0
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy127_b11",
+              "domain_rows_checked": 16002,
+              "pass": false,
+              "failure_examples": [
+                {
+                  "lookup": [
+                    87,
+                    63
+                  ],
+                  "accumulator": [
+                    70,
+                    36
+                  ],
+                  "before": {
+                    "E": 99,
+                    "M": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    87,
+                    63
+                  ],
+                  "accumulator": [
+                    98,
+                    36
+                  ],
+                  "before": {
+                    "E": 99,
+                    "M": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    87,
+                    63
+                  ],
+                  "accumulator": [
+                    50,
+                    36
+                  ],
+                  "before": {
+                    "E": 99,
+                    "M": 0
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy181_b3",
+              "domain_rows_checked": 32580,
+              "pass": false,
+              "failure_examples": [
+                {
+                  "lookup": [
+                    131,
+                    145
+                  ],
+                  "accumulator": [
+                    34,
+                    137
+                  ],
+                  "before": {
+                    "E": 119,
+                    "M": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    131,
+                    145
+                  ],
+                  "accumulator": [
+                    16,
+                    137
+                  ],
+                  "before": {
+                    "E": 119,
+                    "M": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    131,
+                    145
+                  ],
+                  "accumulator": [
+                    113,
+                    137
+                  ],
+                  "before": {
+                    "E": 119,
+                    "M": 0
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy241_b29",
+              "domain_rows_checked": 57840,
+              "pass": false,
+              "failure_examples": [
+                {
+                  "lookup": [
+                    51,
+                    159
+                  ],
+                  "accumulator": [
+                    109,
+                    183
+                  ],
+                  "before": {
+                    "E": 131,
+                    "M": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    51,
+                    159
+                  ],
+                  "accumulator": [
+                    53,
+                    183
+                  ],
+                  "before": {
+                    "E": 131,
+                    "M": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    51,
+                    159
+                  ],
+                  "accumulator": [
+                    49,
+                    183
+                  ],
+                  "before": {
+                    "E": 131,
+                    "M": 0
+                  },
+                  "target_value": 0
+                }
+              ]
+            }
+          ],
+          "failure_examples": [
+            {
+              "curve": "toy61_b2",
+              "examples": [
+                {
+                  "lookup": [
+                    1,
+                    8
+                  ],
+                  "accumulator": [
+                    54,
+                    5
+                  ],
+                  "before": {
+                    "E": 13,
+                    "M": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    1,
+                    8
+                  ],
+                  "accumulator": [
+                    31,
+                    5
+                  ],
+                  "before": {
+                    "E": 13,
+                    "M": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    1,
+                    8
+                  ],
+                  "accumulator": [
+                    37,
+                    5
+                  ],
+                  "before": {
+                    "E": 13,
+                    "M": 0
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy127_b11",
+              "examples": [
+                {
+                  "lookup": [
+                    87,
+                    63
+                  ],
+                  "accumulator": [
+                    70,
+                    36
+                  ],
+                  "before": {
+                    "E": 99,
+                    "M": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    87,
+                    63
+                  ],
+                  "accumulator": [
+                    98,
+                    36
+                  ],
+                  "before": {
+                    "E": 99,
+                    "M": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    87,
+                    63
+                  ],
+                  "accumulator": [
+                    50,
+                    36
+                  ],
+                  "before": {
+                    "E": 99,
+                    "M": 0
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy181_b3",
+              "examples": [
+                {
+                  "lookup": [
+                    131,
+                    145
+                  ],
+                  "accumulator": [
+                    34,
+                    137
+                  ],
+                  "before": {
+                    "E": 119,
+                    "M": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    131,
+                    145
+                  ],
+                  "accumulator": [
+                    16,
+                    137
+                  ],
+                  "before": {
+                    "E": 119,
+                    "M": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    131,
+                    145
+                  ],
+                  "accumulator": [
+                    113,
+                    137
+                  ],
+                  "before": {
+                    "E": 119,
+                    "M": 0
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy241_b29",
+              "examples": [
+                {
+                  "lookup": [
+                    51,
+                    159
+                  ],
+                  "accumulator": [
+                    109,
+                    183
+                  ],
+                  "before": {
+                    "E": 131,
+                    "M": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    51,
+                    159
+                  ],
+                  "accumulator": [
+                    53,
+                    183
+                  ],
+                  "before": {
+                    "E": 131,
+                    "M": 0
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    51,
+                    159
+                  ],
+                  "accumulator": [
+                    49,
+                    183
+                  ],
+                  "before": {
+                    "E": 131,
+                    "M": 0
+                  },
+                  "target_value": 0
+                }
+              ]
+            }
+          ],
+          "pass": false,
+          "failure_reason": "M can be zero on the checked boundary domain"
+        },
+        {
+          "index": 19,
+          "opcode": "field_mul",
+          "target": "LK",
+          "overwritten_source": "L",
+          "rule": {
+            "kind": "variable_multiply",
+            "multiplier_source": "K",
+            "symbolic_inverse_exists_over_field": null
+          },
+          "checked_domain": "toy canonical accumulator subgroup x non-infinity lookup subgroup",
+          "domain_rows_checked": 110082,
+          "per_curve": [
+            {
+              "curve": "toy61_b2",
+              "domain_rows_checked": 3660,
+              "pass": false,
+              "failure_examples": [
+                {
+                  "lookup": [
+                    1,
+                    8
+                  ],
+                  "accumulator": [
+                    9,
+                    50
+                  ],
+                  "before": {
+                    "K": 0,
+                    "L": 27
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    1,
+                    8
+                  ],
+                  "accumulator": [
+                    54,
+                    56
+                  ],
+                  "before": {
+                    "K": 0,
+                    "L": 40
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    1,
+                    8
+                  ],
+                  "accumulator": [
+                    1,
+                    53
+                  ],
+                  "before": {
+                    "K": 0,
+                    "L": 3
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy127_b11",
+              "domain_rows_checked": 16002,
+              "pass": false,
+              "failure_examples": [
+                {
+                  "lookup": [
+                    1,
+                    11
+                  ],
+                  "accumulator": [
+                    1,
+                    98
+                  ],
+                  "before": {
+                    "K": 0,
+                    "L": 3
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    5,
+                    38
+                  ],
+                  "accumulator": [
+                    5,
+                    71
+                  ],
+                  "before": {
+                    "K": 0,
+                    "L": 75
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    60,
+                    54
+                  ],
+                  "accumulator": [
+                    102,
+                    39
+                  ],
+                  "before": {
+                    "K": 0,
+                    "L": 48
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy181_b3",
+              "domain_rows_checked": 32580,
+              "pass": false,
+              "failure_examples": [
+                {
+                  "lookup": [
+                    1,
+                    2
+                  ],
+                  "accumulator": [
+                    115,
+                    96
+                  ],
+                  "before": {
+                    "K": 0,
+                    "L": 19
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    1,
+                    2
+                  ],
+                  "accumulator": [
+                    51,
+                    61
+                  ],
+                  "before": {
+                    "K": 0,
+                    "L": 153
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    1,
+                    2
+                  ],
+                  "accumulator": [
+                    1,
+                    161
+                  ],
+                  "before": {
+                    "K": 0,
+                    "L": 3
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy241_b29",
+              "domain_rows_checked": 57840,
+              "pass": false,
+              "failure_examples": [
+                {
+                  "lookup": [
+                    1,
+                    36
+                  ],
+                  "accumulator": [
+                    129,
+                    209
+                  ],
+                  "before": {
+                    "K": 0,
+                    "L": 176
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    1,
+                    36
+                  ],
+                  "accumulator": [
+                    111,
+                    13
+                  ],
+                  "before": {
+                    "K": 0,
+                    "L": 122
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    1,
+                    36
+                  ],
+                  "accumulator": [
+                    1,
+                    175
+                  ],
+                  "before": {
+                    "K": 0,
+                    "L": 3
+                  },
+                  "target_value": 0
+                }
+              ]
+            }
+          ],
+          "failure_examples": [
+            {
+              "curve": "toy61_b2",
+              "examples": [
+                {
+                  "lookup": [
+                    1,
+                    8
+                  ],
+                  "accumulator": [
+                    9,
+                    50
+                  ],
+                  "before": {
+                    "K": 0,
+                    "L": 27
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    1,
+                    8
+                  ],
+                  "accumulator": [
+                    54,
+                    56
+                  ],
+                  "before": {
+                    "K": 0,
+                    "L": 40
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    1,
+                    8
+                  ],
+                  "accumulator": [
+                    1,
+                    53
+                  ],
+                  "before": {
+                    "K": 0,
+                    "L": 3
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy127_b11",
+              "examples": [
+                {
+                  "lookup": [
+                    1,
+                    11
+                  ],
+                  "accumulator": [
+                    1,
+                    98
+                  ],
+                  "before": {
+                    "K": 0,
+                    "L": 3
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    5,
+                    38
+                  ],
+                  "accumulator": [
+                    5,
+                    71
+                  ],
+                  "before": {
+                    "K": 0,
+                    "L": 75
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    60,
+                    54
+                  ],
+                  "accumulator": [
+                    102,
+                    39
+                  ],
+                  "before": {
+                    "K": 0,
+                    "L": 48
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy181_b3",
+              "examples": [
+                {
+                  "lookup": [
+                    1,
+                    2
+                  ],
+                  "accumulator": [
+                    115,
+                    96
+                  ],
+                  "before": {
+                    "K": 0,
+                    "L": 19
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    1,
+                    2
+                  ],
+                  "accumulator": [
+                    51,
+                    61
+                  ],
+                  "before": {
+                    "K": 0,
+                    "L": 153
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    1,
+                    2
+                  ],
+                  "accumulator": [
+                    1,
+                    161
+                  ],
+                  "before": {
+                    "K": 0,
+                    "L": 3
+                  },
+                  "target_value": 0
+                }
+              ]
+            },
+            {
+              "curve": "toy241_b29",
+              "examples": [
+                {
+                  "lookup": [
+                    1,
+                    36
+                  ],
+                  "accumulator": [
+                    129,
+                    209
+                  ],
+                  "before": {
+                    "K": 0,
+                    "L": 176
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    1,
+                    36
+                  ],
+                  "accumulator": [
+                    111,
+                    13
+                  ],
+                  "before": {
+                    "K": 0,
+                    "L": 122
+                  },
+                  "target_value": 0
+                },
+                {
+                  "lookup": [
+                    1,
+                    36
+                  ],
+                  "accumulator": [
+                    1,
+                    175
+                  ],
+                  "before": {
+                    "K": 0,
+                    "L": 3
+                  },
+                  "target_value": 0
+                }
+              ]
+            }
+          ],
+          "pass": false,
+          "failure_reason": "K can be zero on the checked boundary domain"
+        },
+        {
+          "index": 20,
+          "opcode": "field_sub",
+          "target": "X3",
+          "overwritten_source": "EC",
+          "rule": {
+            "kind": "affine_unit_coefficient",
+            "symbolic_inverse_exists_over_field": true
+          },
+          "checked_domain": "toy canonical accumulator subgroup x non-infinity lookup subgroup",
+          "domain_rows_checked": 110082,
+          "per_curve": [
+            {
+              "curve": "toy61_b2",
+              "domain_rows_checked": 3660,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy127_b11",
+              "domain_rows_checked": 16002,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy181_b3",
+              "domain_rows_checked": 32580,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy241_b29",
+              "domain_rows_checked": 57840,
+              "pass": true,
+              "failure_examples": []
+            }
+          ],
+          "failure_examples": [],
+          "pass": true
+        },
+        {
+          "index": 21,
+          "opcode": "field_add",
+          "target": "Y3",
+          "overwritten_source": "CL",
+          "rule": {
+            "kind": "affine_unit_coefficient",
+            "symbolic_inverse_exists_over_field": true
+          },
+          "checked_domain": "toy canonical accumulator subgroup x non-infinity lookup subgroup",
+          "domain_rows_checked": 110082,
+          "per_curve": [
+            {
+              "curve": "toy61_b2",
+              "domain_rows_checked": 3660,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy127_b11",
+              "domain_rows_checked": 16002,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy181_b3",
+              "domain_rows_checked": 32580,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy241_b29",
+              "domain_rows_checked": 57840,
+              "pass": true,
+              "failure_examples": []
+            }
+          ],
+          "failure_examples": [],
+          "pass": true
+        },
+        {
+          "index": 22,
+          "opcode": "field_add",
+          "target": "Z3",
+          "overwritten_source": "ME",
+          "rule": {
+            "kind": "affine_unit_coefficient",
+            "symbolic_inverse_exists_over_field": true
+          },
+          "checked_domain": "toy canonical accumulator subgroup x non-infinity lookup subgroup",
+          "domain_rows_checked": 110082,
+          "per_curve": [
+            {
+              "curve": "toy61_b2",
+              "domain_rows_checked": 3660,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy127_b11",
+              "domain_rows_checked": 16002,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy181_b3",
+              "domain_rows_checked": 32580,
+              "pass": true,
+              "failure_examples": []
+            },
+            {
+              "curve": "toy241_b29",
+              "domain_rows_checked": 57840,
+              "pass": true,
+              "failure_examples": []
+            }
+          ],
+          "failure_examples": [],
+          "pass": true
+        }
+      ],
+      "pass": false,
+      "notes": [
+        "Each row checks whether the overwritten field value can be recovered from the target and the other fixed live inputs on the checked toy boundary domain.",
+        "Passing this certificate is still not a complete reversible circuit proof; it is a local invertibility screen for the destructive-overwrite optimizer candidate.",
+        "Failing rows identify concrete zero-multiplier or non-injective cases that must be avoided by a different schedule or a stronger valid-subspace argument."
+      ]
+    },
+    "overwrite_choice_screen": {
+      "schema": "compiler-project-tail-overwrite-choice-screen-v1",
+      "status": "toy_boundary_expiring_source_choice_screen_not_full_reversible_proof",
+      "choice_count": 23,
+      "passing_choice_count": 16,
+      "failing_choice_count": 7,
+      "failing_row_indices": [
+        1,
+        16,
+        17,
+        18,
+        19
+      ],
+      "choices": [
+        {
+          "index": 1,
+          "opcode": "field_mul_lookup_sum",
+          "target": "H",
+          "sources": [
+            "G",
+            "lookup_x_plus_y"
+          ],
+          "constant": null,
+          "overwritten_source": "G",
+          "rule": {
+            "kind": "lookup_constant_multiply",
+            "constant_source": "lookup_x_plus_y",
+            "symbolic_inverse_exists_over_field": null
+          },
+          "domain_rows_checked": 110082,
+          "failure_examples": [
+            {
+              "curve": "toy61_b2",
+              "lookup": [
+                51,
+                10
+              ],
+              "accumulator": null,
+              "reason": "lookup_x_plus_y can be zero on the checked boundary domain"
+            }
+          ],
+          "pass": false,
+          "failure_reason": "lookup_x_plus_y can be zero on the checked boundary domain"
+        },
+        {
+          "index": 4,
+          "opcode": "field_add",
+          "target": "C_input",
+          "sources": [
+            "X",
+            "Zx"
+          ],
+          "constant": null,
+          "overwritten_source": "X",
+          "rule": {
+            "kind": "affine_unit_coefficient",
+            "symbolic_inverse_exists_over_field": true
+          },
+          "domain_rows_checked": 110082,
+          "failure_examples": [],
+          "pass": true
+        },
+        {
+          "index": 4,
+          "opcode": "field_add",
+          "target": "C_input",
+          "sources": [
+            "X",
+            "Zx"
+          ],
+          "constant": null,
+          "overwritten_source": "Zx",
+          "rule": {
+            "kind": "affine_unit_coefficient",
+            "symbolic_inverse_exists_over_field": true
+          },
+          "domain_rows_checked": 110082,
+          "failure_examples": [],
+          "pass": true
+        },
+        {
+          "index": 5,
+          "opcode": "mul_const",
+          "target": "C",
+          "sources": [
+            "C_input"
+          ],
+          "constant": 21,
+          "overwritten_source": "C_input",
+          "rule": {
+            "kind": "constant_multiply",
+            "constant": 21,
+            "symbolic_inverse_exists_over_field": true
+          },
+          "domain_rows_checked": 110082,
+          "failure_examples": [],
+          "pass": true
+        },
+        {
+          "index": 7,
+          "opcode": "field_sub_sum",
+          "target": "K",
+          "sources": [
+            "H",
+            "A",
+            "I"
+          ],
+          "constant": null,
+          "overwritten_source": "H",
+          "rule": {
+            "kind": "affine_unit_coefficient",
+            "symbolic_inverse_exists_over_field": true
+          },
+          "domain_rows_checked": 110082,
+          "failure_examples": [],
+          "pass": true
+        },
+        {
+          "index": 8,
+          "opcode": "field_triple",
+          "target": "L",
+          "sources": [
+            "A"
+          ],
+          "constant": 3,
+          "overwritten_source": "A",
+          "rule": {
+            "kind": "constant_multiply",
+            "constant": 3,
+            "symbolic_inverse_exists_over_field": true
+          },
+          "domain_rows_checked": 110082,
+          "failure_examples": [],
+          "pass": true
+        },
+        {
+          "index": 10,
+          "opcode": "field_add",
+          "target": "E",
+          "sources": [
+            "Y",
+            "yZ"
+          ],
+          "constant": null,
+          "overwritten_source": "Y",
+          "rule": {
+            "kind": "affine_unit_coefficient",
+            "symbolic_inverse_exists_over_field": true
+          },
+          "domain_rows_checked": 110082,
+          "failure_examples": [],
+          "pass": true
+        },
+        {
+          "index": 10,
+          "opcode": "field_add",
+          "target": "E",
+          "sources": [
+            "Y",
+            "yZ"
+          ],
+          "constant": null,
+          "overwritten_source": "yZ",
+          "rule": {
+            "kind": "affine_unit_coefficient",
+            "symbolic_inverse_exists_over_field": true
+          },
+          "domain_rows_checked": 110082,
+          "failure_examples": [],
+          "pass": true
+        },
+        {
+          "index": 11,
+          "opcode": "mul_const",
+          "target": "F",
+          "sources": [
+            "Z"
+          ],
+          "constant": 21,
+          "overwritten_source": "Z",
+          "rule": {
+            "kind": "constant_multiply",
+            "constant": 21,
+            "symbolic_inverse_exists_over_field": true
+          },
+          "domain_rows_checked": 110082,
+          "failure_examples": [],
+          "pass": true
+        },
+        {
+          "index": 13,
+          "opcode": "field_sub",
+          "target": "N",
+          "sources": [
+            "I",
+            "F"
+          ],
+          "constant": null,
+          "overwritten_source": "F",
+          "rule": {
+            "kind": "affine_unit_coefficient",
+            "symbolic_inverse_exists_over_field": true
+          },
+          "domain_rows_checked": 110082,
+          "failure_examples": [],
+          "pass": true
+        },
+        {
+          "index": 13,
+          "opcode": "field_sub",
+          "target": "N",
+          "sources": [
+            "I",
+            "F"
+          ],
+          "constant": null,
+          "overwritten_source": "I",
+          "rule": {
+            "kind": "affine_unit_coefficient",
+            "symbolic_inverse_exists_over_field": true
+          },
+          "domain_rows_checked": 110082,
+          "failure_examples": [],
+          "pass": true
+        },
+        {
+          "index": 16,
+          "opcode": "field_mul",
+          "target": "NM",
+          "sources": [
+            "N",
+            "M"
+          ],
+          "constant": null,
+          "overwritten_source": "N",
+          "rule": {
+            "kind": "variable_multiply",
+            "multiplier_source": "M",
+            "symbolic_inverse_exists_over_field": null
+          },
+          "domain_rows_checked": 110082,
+          "failure_examples": [
+            {
+              "curve": "toy61_b2",
+              "lookup": [
+                1,
+                8
+              ],
+              "accumulator": [
+                54,
+                5
+              ],
+              "reason": "M can be zero on the checked boundary domain"
+            }
+          ],
+          "pass": false,
+          "failure_reason": "M can be zero on the checked boundary domain"
+        },
+        {
+          "index": 17,
+          "opcode": "field_mul",
+          "target": "CL",
+          "sources": [
+            "C",
+            "L"
+          ],
+          "constant": null,
+          "overwritten_source": "C",
+          "rule": {
+            "kind": "variable_multiply",
+            "multiplier_source": "L",
+            "symbolic_inverse_exists_over_field": null
+          },
+          "domain_rows_checked": 110082,
+          "failure_examples": [
+            {
+              "curve": "toy61_b2",
+              "lookup": [
+                1,
+                8
+              ],
+              "accumulator": null,
+              "reason": "L can be zero on the checked boundary domain"
+            }
+          ],
+          "pass": false,
+          "failure_reason": "L can be zero on the checked boundary domain"
+        },
+        {
+          "index": 18,
+          "opcode": "field_mul",
+          "target": "ME",
+          "sources": [
+            "M",
+            "E"
+          ],
+          "constant": null,
+          "overwritten_source": "E",
+          "rule": {
+            "kind": "variable_multiply",
+            "multiplier_source": "M",
+            "symbolic_inverse_exists_over_field": null
+          },
+          "domain_rows_checked": 110082,
+          "failure_examples": [
+            {
+              "curve": "toy61_b2",
+              "lookup": [
+                1,
+                8
+              ],
+              "accumulator": [
+                54,
+                5
+              ],
+              "reason": "M can be zero on the checked boundary domain"
+            }
+          ],
+          "pass": false,
+          "failure_reason": "M can be zero on the checked boundary domain"
+        },
+        {
+          "index": 18,
+          "opcode": "field_mul",
+          "target": "ME",
+          "sources": [
+            "M",
+            "E"
+          ],
+          "constant": null,
+          "overwritten_source": "M",
+          "rule": {
+            "kind": "variable_multiply",
+            "multiplier_source": "E",
+            "symbolic_inverse_exists_over_field": null
+          },
+          "domain_rows_checked": 110082,
+          "failure_examples": [
+            {
+              "curve": "toy61_b2",
+              "lookup": [
+                1,
+                8
+              ],
+              "accumulator": [
+                13,
+                53
+              ],
+              "reason": "E can be zero on the checked boundary domain"
+            }
+          ],
+          "pass": false,
+          "failure_reason": "E can be zero on the checked boundary domain"
+        },
+        {
+          "index": 19,
+          "opcode": "field_mul",
+          "target": "LK",
+          "sources": [
+            "L",
+            "K"
+          ],
+          "constant": null,
+          "overwritten_source": "K",
+          "rule": {
+            "kind": "variable_multiply",
+            "multiplier_source": "L",
+            "symbolic_inverse_exists_over_field": null
+          },
+          "domain_rows_checked": 110082,
+          "failure_examples": [
+            {
+              "curve": "toy61_b2",
+              "lookup": [
+                1,
+                8
+              ],
+              "accumulator": null,
+              "reason": "L can be zero on the checked boundary domain"
+            }
+          ],
+          "pass": false,
+          "failure_reason": "L can be zero on the checked boundary domain"
+        },
+        {
+          "index": 19,
+          "opcode": "field_mul",
+          "target": "LK",
+          "sources": [
+            "L",
+            "K"
+          ],
+          "constant": null,
+          "overwritten_source": "L",
+          "rule": {
+            "kind": "variable_multiply",
+            "multiplier_source": "K",
+            "symbolic_inverse_exists_over_field": null
+          },
+          "domain_rows_checked": 110082,
+          "failure_examples": [
+            {
+              "curve": "toy61_b2",
+              "lookup": [
+                1,
+                8
+              ],
+              "accumulator": [
+                9,
+                50
+              ],
+              "reason": "K can be zero on the checked boundary domain"
+            }
+          ],
+          "pass": false,
+          "failure_reason": "K can be zero on the checked boundary domain"
+        },
+        {
+          "index": 20,
+          "opcode": "field_sub",
+          "target": "X3",
+          "sources": [
+            "KN",
+            "EC"
+          ],
+          "constant": null,
+          "overwritten_source": "EC",
+          "rule": {
+            "kind": "affine_unit_coefficient",
+            "symbolic_inverse_exists_over_field": true
+          },
+          "domain_rows_checked": 110082,
+          "failure_examples": [],
+          "pass": true
+        },
+        {
+          "index": 20,
+          "opcode": "field_sub",
+          "target": "X3",
+          "sources": [
+            "KN",
+            "EC"
+          ],
+          "constant": null,
+          "overwritten_source": "KN",
+          "rule": {
+            "kind": "affine_unit_coefficient",
+            "symbolic_inverse_exists_over_field": true
+          },
+          "domain_rows_checked": 110082,
+          "failure_examples": [],
+          "pass": true
+        },
+        {
+          "index": 21,
+          "opcode": "field_add",
+          "target": "Y3",
+          "sources": [
+            "NM",
+            "CL"
+          ],
+          "constant": null,
+          "overwritten_source": "CL",
+          "rule": {
+            "kind": "affine_unit_coefficient",
+            "symbolic_inverse_exists_over_field": true
+          },
+          "domain_rows_checked": 110082,
+          "failure_examples": [],
+          "pass": true
+        },
+        {
+          "index": 21,
+          "opcode": "field_add",
+          "target": "Y3",
+          "sources": [
+            "NM",
+            "CL"
+          ],
+          "constant": null,
+          "overwritten_source": "NM",
+          "rule": {
+            "kind": "affine_unit_coefficient",
+            "symbolic_inverse_exists_over_field": true
+          },
+          "domain_rows_checked": 110082,
+          "failure_examples": [],
+          "pass": true
+        },
+        {
+          "index": 22,
+          "opcode": "field_add",
+          "target": "Z3",
+          "sources": [
+            "ME",
+            "LK"
+          ],
+          "constant": null,
+          "overwritten_source": "LK",
+          "rule": {
+            "kind": "affine_unit_coefficient",
+            "symbolic_inverse_exists_over_field": true
+          },
+          "domain_rows_checked": 110082,
+          "failure_examples": [],
+          "pass": true
+        },
+        {
+          "index": 22,
+          "opcode": "field_add",
+          "target": "Z3",
+          "sources": [
+            "ME",
+            "LK"
+          ],
+          "constant": null,
+          "overwritten_source": "ME",
+          "rule": {
+            "kind": "affine_unit_coefficient",
+            "symbolic_inverse_exists_over_field": true
+          },
+          "domain_rows_checked": 110082,
+          "failure_examples": [],
+          "pass": true
+        }
+      ],
+      "pass": false,
+      "notes": [
+        "This screen checks every expiring source choice for each operation, not only the greedy destructive candidate choice.",
+        "It distinguishes a bad overwrite-source choice from a true local non-invertibility blocker in the current formula order."
+      ]
+    }
   },
   "slot_gap": {
     "expanded_single_assignment_peak_field_values": 9,
@@ -3218,7 +6146,898 @@
     "additional_logical_qubits_needed_without_in_place_schedule": 1536,
     "fallback_schedule_additional_logical_qubits": 1536,
     "destructive_candidate_peak_field_values": 8,
-    "destructive_candidate_additional_logical_qubits": 1280
+    "destructive_candidate_additional_logical_qubits": 1280,
+    "destructive_candidate_overwrite_rows_locally_invertible": false,
+    "local_inverse_pass_only_peak_field_values": 9,
+    "overwrite_choice_screen_pass": false
+  },
+  "local_inverse_pass_only_schedule": {
+    "schedule_model": "local_inverse_pass_only_overwrite_candidate",
+    "status": "screened_optimizer_candidate_not_public_contract",
+    "field_bits": 256,
+    "counted_arithmetic_slots": 3,
+    "peak_field_slots": 9,
+    "peak_step": "16:NM",
+    "allowed_overwrite_indices": [
+      4,
+      5,
+      7,
+      8,
+      10,
+      11,
+      13,
+      20,
+      21,
+      22
+    ],
+    "overwritten_row_count": 10,
+    "additional_field_slots_over_counted_leaf": 6,
+    "additional_logical_qubits_over_counted_leaf": 1536,
+    "rows": [
+      {
+        "index": 0,
+        "opcode": "field_add",
+        "target": "G",
+        "target_slot": 3,
+        "sources": [
+          "X",
+          "Y"
+        ],
+        "overwritten_source": null,
+        "live_before": {
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during_capacity": {
+          "G": 3,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "G": 3,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        }
+      },
+      {
+        "index": 1,
+        "opcode": "field_mul_lookup_sum",
+        "target": "H",
+        "target_slot": 4,
+        "sources": [
+          "G",
+          "lookup_x_plus_y"
+        ],
+        "overwritten_source": null,
+        "live_before": {
+          "G": 3,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during_capacity": {
+          "G": 3,
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [
+          "G"
+        ],
+        "live_after": {
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        }
+      },
+      {
+        "index": 2,
+        "opcode": "field_mul_lookup_x",
+        "target": "A",
+        "target_slot": 3,
+        "sources": [
+          "X",
+          "lookup_x"
+        ],
+        "overwritten_source": null,
+        "live_before": {
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during_capacity": {
+          "A": 3,
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "A": 3,
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        }
+      },
+      {
+        "index": 3,
+        "opcode": "field_mul_lookup_x",
+        "target": "Zx",
+        "target_slot": 5,
+        "sources": [
+          "Z",
+          "lookup_x"
+        ],
+        "overwritten_source": null,
+        "live_before": {
+          "A": 3,
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during_capacity": {
+          "A": 3,
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2,
+          "Zx": 5
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "A": 3,
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2,
+          "Zx": 5
+        }
+      },
+      {
+        "index": 4,
+        "opcode": "field_add",
+        "target": "C_input",
+        "target_slot": 5,
+        "sources": [
+          "X",
+          "Zx"
+        ],
+        "overwritten_source": "Zx",
+        "live_before": {
+          "A": 3,
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2,
+          "Zx": 5
+        },
+        "live_during_capacity": {
+          "A": 3,
+          "C_input": 5,
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [
+          "X"
+        ],
+        "live_after": {
+          "A": 3,
+          "C_input": 5,
+          "H": 4,
+          "Y": 1,
+          "Z": 2
+        }
+      },
+      {
+        "index": 5,
+        "opcode": "mul_const",
+        "target": "C",
+        "target_slot": 5,
+        "sources": [
+          "C_input"
+        ],
+        "overwritten_source": "C_input",
+        "live_before": {
+          "A": 3,
+          "C_input": 5,
+          "H": 4,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during_capacity": {
+          "A": 3,
+          "C": 5,
+          "H": 4,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "A": 3,
+          "C": 5,
+          "H": 4,
+          "Y": 1,
+          "Z": 2
+        }
+      },
+      {
+        "index": 6,
+        "opcode": "field_mul_lookup_y",
+        "target": "I",
+        "target_slot": 0,
+        "sources": [
+          "Y",
+          "lookup_y"
+        ],
+        "overwritten_source": null,
+        "live_before": {
+          "A": 3,
+          "C": 5,
+          "H": 4,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during_capacity": {
+          "A": 3,
+          "C": 5,
+          "H": 4,
+          "I": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "A": 3,
+          "C": 5,
+          "H": 4,
+          "I": 0,
+          "Y": 1,
+          "Z": 2
+        }
+      },
+      {
+        "index": 7,
+        "opcode": "field_sub_sum",
+        "target": "K",
+        "target_slot": 4,
+        "sources": [
+          "H",
+          "A",
+          "I"
+        ],
+        "overwritten_source": "H",
+        "live_before": {
+          "A": 3,
+          "C": 5,
+          "H": 4,
+          "I": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during_capacity": {
+          "A": 3,
+          "C": 5,
+          "I": 0,
+          "K": 4,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "A": 3,
+          "C": 5,
+          "I": 0,
+          "K": 4,
+          "Y": 1,
+          "Z": 2
+        }
+      },
+      {
+        "index": 8,
+        "opcode": "field_triple",
+        "target": "L",
+        "target_slot": 3,
+        "sources": [
+          "A"
+        ],
+        "overwritten_source": "A",
+        "live_before": {
+          "A": 3,
+          "C": 5,
+          "I": 0,
+          "K": 4,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during_capacity": {
+          "C": 5,
+          "I": 0,
+          "K": 4,
+          "L": 3,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "C": 5,
+          "I": 0,
+          "K": 4,
+          "L": 3,
+          "Y": 1,
+          "Z": 2
+        }
+      },
+      {
+        "index": 9,
+        "opcode": "field_mul_lookup_y",
+        "target": "yZ",
+        "target_slot": 6,
+        "sources": [
+          "Z",
+          "lookup_y"
+        ],
+        "overwritten_source": null,
+        "live_before": {
+          "C": 5,
+          "I": 0,
+          "K": 4,
+          "L": 3,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during_capacity": {
+          "C": 5,
+          "I": 0,
+          "K": 4,
+          "L": 3,
+          "Y": 1,
+          "Z": 2,
+          "yZ": 6
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "C": 5,
+          "I": 0,
+          "K": 4,
+          "L": 3,
+          "Y": 1,
+          "Z": 2,
+          "yZ": 6
+        }
+      },
+      {
+        "index": 10,
+        "opcode": "field_add",
+        "target": "E",
+        "target_slot": 6,
+        "sources": [
+          "Y",
+          "yZ"
+        ],
+        "overwritten_source": "yZ",
+        "live_before": {
+          "C": 5,
+          "I": 0,
+          "K": 4,
+          "L": 3,
+          "Y": 1,
+          "Z": 2,
+          "yZ": 6
+        },
+        "live_during_capacity": {
+          "C": 5,
+          "E": 6,
+          "I": 0,
+          "K": 4,
+          "L": 3,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [
+          "Y"
+        ],
+        "live_after": {
+          "C": 5,
+          "E": 6,
+          "I": 0,
+          "K": 4,
+          "L": 3,
+          "Z": 2
+        }
+      },
+      {
+        "index": 11,
+        "opcode": "mul_const",
+        "target": "F",
+        "target_slot": 2,
+        "sources": [
+          "Z"
+        ],
+        "overwritten_source": "Z",
+        "live_before": {
+          "C": 5,
+          "E": 6,
+          "I": 0,
+          "K": 4,
+          "L": 3,
+          "Z": 2
+        },
+        "live_during_capacity": {
+          "C": 5,
+          "E": 6,
+          "F": 2,
+          "I": 0,
+          "K": 4,
+          "L": 3
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "C": 5,
+          "E": 6,
+          "F": 2,
+          "I": 0,
+          "K": 4,
+          "L": 3
+        }
+      },
+      {
+        "index": 12,
+        "opcode": "field_add",
+        "target": "M",
+        "target_slot": 1,
+        "sources": [
+          "I",
+          "F"
+        ],
+        "overwritten_source": null,
+        "live_before": {
+          "C": 5,
+          "E": 6,
+          "F": 2,
+          "I": 0,
+          "K": 4,
+          "L": 3
+        },
+        "live_during_capacity": {
+          "C": 5,
+          "E": 6,
+          "F": 2,
+          "I": 0,
+          "K": 4,
+          "L": 3,
+          "M": 1
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "C": 5,
+          "E": 6,
+          "F": 2,
+          "I": 0,
+          "K": 4,
+          "L": 3,
+          "M": 1
+        }
+      },
+      {
+        "index": 13,
+        "opcode": "field_sub",
+        "target": "N",
+        "target_slot": 2,
+        "sources": [
+          "I",
+          "F"
+        ],
+        "overwritten_source": "F",
+        "live_before": {
+          "C": 5,
+          "E": 6,
+          "F": 2,
+          "I": 0,
+          "K": 4,
+          "L": 3,
+          "M": 1
+        },
+        "live_during_capacity": {
+          "C": 5,
+          "E": 6,
+          "I": 0,
+          "K": 4,
+          "L": 3,
+          "M": 1,
+          "N": 2
+        },
+        "expired_after_step": [
+          "I"
+        ],
+        "live_after": {
+          "C": 5,
+          "E": 6,
+          "K": 4,
+          "L": 3,
+          "M": 1,
+          "N": 2
+        }
+      },
+      {
+        "index": 14,
+        "opcode": "field_mul",
+        "target": "KN",
+        "target_slot": 0,
+        "sources": [
+          "K",
+          "N"
+        ],
+        "overwritten_source": null,
+        "live_before": {
+          "C": 5,
+          "E": 6,
+          "K": 4,
+          "L": 3,
+          "M": 1,
+          "N": 2
+        },
+        "live_during_capacity": {
+          "C": 5,
+          "E": 6,
+          "K": 4,
+          "KN": 0,
+          "L": 3,
+          "M": 1,
+          "N": 2
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "C": 5,
+          "E": 6,
+          "K": 4,
+          "KN": 0,
+          "L": 3,
+          "M": 1,
+          "N": 2
+        }
+      },
+      {
+        "index": 15,
+        "opcode": "field_mul",
+        "target": "EC",
+        "target_slot": 7,
+        "sources": [
+          "E",
+          "C"
+        ],
+        "overwritten_source": null,
+        "live_before": {
+          "C": 5,
+          "E": 6,
+          "K": 4,
+          "KN": 0,
+          "L": 3,
+          "M": 1,
+          "N": 2
+        },
+        "live_during_capacity": {
+          "C": 5,
+          "E": 6,
+          "EC": 7,
+          "K": 4,
+          "KN": 0,
+          "L": 3,
+          "M": 1,
+          "N": 2
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "C": 5,
+          "E": 6,
+          "EC": 7,
+          "K": 4,
+          "KN": 0,
+          "L": 3,
+          "M": 1,
+          "N": 2
+        }
+      },
+      {
+        "index": 16,
+        "opcode": "field_mul",
+        "target": "NM",
+        "target_slot": 8,
+        "sources": [
+          "N",
+          "M"
+        ],
+        "overwritten_source": null,
+        "live_before": {
+          "C": 5,
+          "E": 6,
+          "EC": 7,
+          "K": 4,
+          "KN": 0,
+          "L": 3,
+          "M": 1,
+          "N": 2
+        },
+        "live_during_capacity": {
+          "C": 5,
+          "E": 6,
+          "EC": 7,
+          "K": 4,
+          "KN": 0,
+          "L": 3,
+          "M": 1,
+          "N": 2,
+          "NM": 8
+        },
+        "expired_after_step": [
+          "N"
+        ],
+        "live_after": {
+          "C": 5,
+          "E": 6,
+          "EC": 7,
+          "K": 4,
+          "KN": 0,
+          "L": 3,
+          "M": 1,
+          "NM": 8
+        }
+      },
+      {
+        "index": 17,
+        "opcode": "field_mul",
+        "target": "CL",
+        "target_slot": 2,
+        "sources": [
+          "C",
+          "L"
+        ],
+        "overwritten_source": null,
+        "live_before": {
+          "C": 5,
+          "E": 6,
+          "EC": 7,
+          "K": 4,
+          "KN": 0,
+          "L": 3,
+          "M": 1,
+          "NM": 8
+        },
+        "live_during_capacity": {
+          "C": 5,
+          "CL": 2,
+          "E": 6,
+          "EC": 7,
+          "K": 4,
+          "KN": 0,
+          "L": 3,
+          "M": 1,
+          "NM": 8
+        },
+        "expired_after_step": [
+          "C"
+        ],
+        "live_after": {
+          "CL": 2,
+          "E": 6,
+          "EC": 7,
+          "K": 4,
+          "KN": 0,
+          "L": 3,
+          "M": 1,
+          "NM": 8
+        }
+      },
+      {
+        "index": 18,
+        "opcode": "field_mul",
+        "target": "ME",
+        "target_slot": 5,
+        "sources": [
+          "M",
+          "E"
+        ],
+        "overwritten_source": null,
+        "live_before": {
+          "CL": 2,
+          "E": 6,
+          "EC": 7,
+          "K": 4,
+          "KN": 0,
+          "L": 3,
+          "M": 1,
+          "NM": 8
+        },
+        "live_during_capacity": {
+          "CL": 2,
+          "E": 6,
+          "EC": 7,
+          "K": 4,
+          "KN": 0,
+          "L": 3,
+          "M": 1,
+          "ME": 5,
+          "NM": 8
+        },
+        "expired_after_step": [
+          "E",
+          "M"
+        ],
+        "live_after": {
+          "CL": 2,
+          "EC": 7,
+          "K": 4,
+          "KN": 0,
+          "L": 3,
+          "ME": 5,
+          "NM": 8
+        }
+      },
+      {
+        "index": 19,
+        "opcode": "field_mul",
+        "target": "LK",
+        "target_slot": 1,
+        "sources": [
+          "L",
+          "K"
+        ],
+        "overwritten_source": null,
+        "live_before": {
+          "CL": 2,
+          "EC": 7,
+          "K": 4,
+          "KN": 0,
+          "L": 3,
+          "ME": 5,
+          "NM": 8
+        },
+        "live_during_capacity": {
+          "CL": 2,
+          "EC": 7,
+          "K": 4,
+          "KN": 0,
+          "L": 3,
+          "LK": 1,
+          "ME": 5,
+          "NM": 8
+        },
+        "expired_after_step": [
+          "K",
+          "L"
+        ],
+        "live_after": {
+          "CL": 2,
+          "EC": 7,
+          "KN": 0,
+          "LK": 1,
+          "ME": 5,
+          "NM": 8
+        }
+      },
+      {
+        "index": 20,
+        "opcode": "field_sub",
+        "target": "X3",
+        "target_slot": 7,
+        "sources": [
+          "KN",
+          "EC"
+        ],
+        "overwritten_source": "EC",
+        "live_before": {
+          "CL": 2,
+          "EC": 7,
+          "KN": 0,
+          "LK": 1,
+          "ME": 5,
+          "NM": 8
+        },
+        "live_during_capacity": {
+          "CL": 2,
+          "KN": 0,
+          "LK": 1,
+          "ME": 5,
+          "NM": 8,
+          "X3": 7
+        },
+        "expired_after_step": [
+          "KN"
+        ],
+        "live_after": {
+          "CL": 2,
+          "LK": 1,
+          "ME": 5,
+          "NM": 8,
+          "X3": 7
+        }
+      },
+      {
+        "index": 21,
+        "opcode": "field_add",
+        "target": "Y3",
+        "target_slot": 8,
+        "sources": [
+          "NM",
+          "CL"
+        ],
+        "overwritten_source": "NM",
+        "live_before": {
+          "CL": 2,
+          "LK": 1,
+          "ME": 5,
+          "NM": 8,
+          "X3": 7
+        },
+        "live_during_capacity": {
+          "CL": 2,
+          "LK": 1,
+          "ME": 5,
+          "X3": 7,
+          "Y3": 8
+        },
+        "expired_after_step": [
+          "CL"
+        ],
+        "live_after": {
+          "LK": 1,
+          "ME": 5,
+          "X3": 7,
+          "Y3": 8
+        }
+      },
+      {
+        "index": 22,
+        "opcode": "field_add",
+        "target": "Z3",
+        "target_slot": 5,
+        "sources": [
+          "ME",
+          "LK"
+        ],
+        "overwritten_source": "ME",
+        "live_before": {
+          "LK": 1,
+          "ME": 5,
+          "X3": 7,
+          "Y3": 8
+        },
+        "live_during_capacity": {
+          "LK": 1,
+          "X3": 7,
+          "Y3": 8,
+          "Z3": 5
+        },
+        "expired_after_step": [
+          "LK"
+        ],
+        "live_after": {
+          "X3": 7,
+          "Y3": 8,
+          "Z3": 5
+        }
+      }
+    ],
+    "final_live_values": {
+      "X3": 7,
+      "Y3": 8,
+      "Z3": 5
+    },
+    "notes": [
+      "This schedule reuses slots only for destructive rows that passed the local inverse screen.",
+      "It is a search diagnostic: it shows whether the currently screened reversible subset is enough to recover the eight-field-slot proxy."
+    ]
   },
   "checks": {
     "formula_targets_match_engine_targets": true,

@@ -560,6 +560,11 @@ def build_arithmetic_operation_ir_checks(artifacts: Mapping[str, Any]) -> Dict[s
 
 def build_tail_macro_engine_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     engine = artifacts['tail_macro_engine']
+    destructive_schedule = engine['destructive_candidate_schedule']
+    local_inverse_certificate = destructive_schedule['local_inverse_certificate']
+    overwrite_choice_screen = destructive_schedule['overwrite_choice_screen']
+    pass_only_schedule = engine['local_inverse_pass_only_schedule']
+    slot_gap = engine['slot_gap']
     kernel_lookup = {
         kernel['opcode']: int(kernel['exact_non_clifford_per_kernel'])
         for kernel in artifacts['arithmetic_lowerings']['kernels']
@@ -587,7 +592,28 @@ def build_tail_macro_engine_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
         _check('tail_macro_engine_expands_every_formula_target', engine['checks']['expanded_operation_stream_covers_formula_targets'] is True and engine['expanded_field_operation_stream'][-3:][0]['target'] == 'X3' and engine['expanded_field_operation_stream'][-1]['target'] == 'Z3', 'expanded stream covers all formula targets through X3/Y3/Z3', engine['expanded_field_operation_stream'][-4:]),
         _check('tail_macro_engine_exposes_unproven_three_slot_gap', engine['checks']['counted_slots_cover_expanded_single_assignment_peak'] is False and engine['slot_gap']['additional_field_slots_needed_without_in_place_schedule'] > 0, 'three counted slots do not cover expanded single-assignment peak', engine['slot_gap']),
         _check('tail_macro_engine_generates_strict_capacity_fallback_schedule', engine['expanded_slot_schedule']['peak_field_slots'] == engine['slot_gap']['expanded_single_assignment_peak_field_values'] and engine['expanded_slot_schedule']['additional_logical_qubits_over_counted_leaf'] == engine['slot_gap']['additional_logical_qubits_needed_without_in_place_schedule'] and sorted(engine['expanded_slot_schedule']['final_live_values']) == ['X3', 'Y3', 'Z3'], 'expanded fallback schedule peaks at the slot gap and finishes with only X3/Y3/Z3 live', engine['expanded_slot_schedule']),
-        _check('tail_macro_engine_generates_eight_slot_destructive_candidate', engine['destructive_candidate_schedule']['status'] == 'optimizer_candidate_not_a_reversible_proof' and engine['destructive_candidate_schedule']['peak_field_slots'] == 8 and engine['destructive_candidate_schedule']['proxy_metrics']['field_slot_improvement_vs_strict_single_assignment'] == 1 and sorted(engine['destructive_candidate_schedule']['final_live_values']) == ['X3', 'Y3', 'Z3'], 'unproven optimizer candidate reaches eight field slots without being promoted to public contract', engine['destructive_candidate_schedule']),
+        _check('tail_macro_engine_generates_eight_slot_destructive_candidate', destructive_schedule['status'] == 'optimizer_candidate_not_a_reversible_proof' and destructive_schedule['peak_field_slots'] == 8 and destructive_schedule['proxy_metrics']['field_slot_improvement_vs_strict_single_assignment'] == 1 and sorted(destructive_schedule['final_live_values']) == ['X3', 'Y3', 'Z3'], 'unproven optimizer candidate reaches eight field slots without being promoted to public contract', destructive_schedule),
+        _check(
+            'tail_macro_engine_screens_overwrite_local_inverses',
+            local_inverse_certificate['status'] == 'toy_boundary_local_inverse_check_not_full_reversible_proof'
+            and local_inverse_certificate['overwrite_row_count'] == 15
+            and local_inverse_certificate['passing_row_count'] == 10
+            and local_inverse_certificate['failing_row_count'] == 5
+            and overwrite_choice_screen['choice_count'] == 23
+            and overwrite_choice_screen['passing_choice_count'] == 16
+            and overwrite_choice_screen['failing_choice_count'] == 7
+            and overwrite_choice_screen['failing_row_indices'] == [1, 16, 17, 18, 19]
+            and slot_gap['destructive_candidate_overwrite_rows_locally_invertible'] is False
+            and slot_gap['overwrite_choice_screen_pass'] is False
+            and pass_only_schedule['peak_field_slots'] == 9
+            and slot_gap['local_inverse_pass_only_peak_field_values'] == 9,
+            '10 overwrite rows pass local inverse screen, 5 rows remain concrete blockers, all expiring-source alternatives are screened, and the pass-only schedule still peaks at 9 slots',
+            {
+                'certificate': local_inverse_certificate,
+                'choice_screen': overwrite_choice_screen,
+                'pass_only_schedule': pass_only_schedule,
+            },
+        ),
     ]
     return _summarize_checks(checks)
 

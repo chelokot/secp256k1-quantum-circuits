@@ -193,7 +193,14 @@ or promotion of the generated expanded slot schedule into the public qubit
 budget, not an undocumented cost formula. The same engine emits an eight-slot
 destructive-overwrite candidate as an optimization signal; it is not accepted as
 resource evidence until each overwrite has a reversible or valid-subspace
-implementation proof.
+implementation proof. The current local-inverse screen proves 10 of the 15
+overwrite rows on the checked toy boundary domain and identifies five
+zero-multiplier blockers. The diagnostic schedule that reuses only those 10
+screened rows still peaks at nine field slots, so the eight-slot candidate is
+not yet isolated from the failing overwrite rows. The engine also screens all
+23 expiring-source overwrite choices; seven choices fail across rows 1, 16, 17,
+18, and 19, which rules out a simple alternate-source repair for the current
+operation order.
 That artifact prevents the repository from silently promoting a materialized
 boundary result into a stronger full-engine claim.
 

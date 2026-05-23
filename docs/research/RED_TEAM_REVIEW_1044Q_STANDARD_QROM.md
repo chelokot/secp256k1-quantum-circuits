@@ -221,7 +221,15 @@ Current additional diagnostic:
   candidate by reusing a last-use source slot for the target. This is a useful
   optimizer signal, not accepted evidence: every overwritten row must still get
   a reversible or valid-subspace implementation proof before it can lower the
-  public qubit count.
+  public qubit count. The first local-inverse screen proves 10 of 15 overwrite
+  rows on the checked toy boundary domain and leaves five concrete
+  zero-multiplier blockers: `H` over `G`, `NM` over `N`, `CL` over `C`, `ME`
+  over `E`, and `LK` over `L`. The diagnostic schedule that enables only the
+  10 locally invertible overwrites still peaks at nine field slots, so the
+  eight-slot candidate currently depends on the unresolved rows. A second
+  screen checks all 23 expiring-source overwrite choices and finds seven
+  failing choices across rows 1, 16, 17, 18, and 19, so the current formula
+  order has no simple alternate-source repair.
 - `compiler_verification_project/artifacts/tail_macro_schedule_search.json`
   adds a stricter destructive-schedule search for the current formula DAG. It
   permits computing a formula value and dropping old values whenever the

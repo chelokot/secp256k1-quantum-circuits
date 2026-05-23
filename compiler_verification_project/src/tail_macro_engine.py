@@ -5,6 +5,8 @@ from __future__ import annotations
 from collections import Counter
 from typing import Any, Dict, Mapping, Sequence
 
+from tail_macro_reversibility import TOY_CURVES, Point, _canonical_projective, _subgroup_points
+
 
 TAIL_MACRO_OPCODE = 'complete_a0_all_streamed_tail'
 QUANTUM_INPUTS = ('X', 'Y', 'Z')
@@ -190,6 +192,7 @@ def _expanded_slot_schedule(rows: Sequence[Mapping[str, Any]], counted_arithmeti
             'target': target,
             'target_slot': target_slot,
             'sources': sources,
+            'constant': row.get('constant'),
             'source_slots': {
                 source: live_during[source]
                 for source in sources
@@ -281,6 +284,7 @@ def _destructive_candidate_schedule(rows: Sequence[Mapping[str, Any]], counted_a
             'target': target,
             'target_slot': target_slot,
             'sources': sources,
+            'constant': row.get('constant'),
             'source_slots_before_operation': {
                 source: live_before[source]
                 for source in sources
@@ -324,6 +328,398 @@ def _destructive_candidate_schedule(rows: Sequence[Mapping[str, Any]], counted_a
     }
 
 
+def _operation_value(
+    *,
+    opcode: str,
+    sources: Sequence[str],
+    values: Mapping[str, int],
+    modulus: int,
+    curve_b: int,
+    lookup_x: int,
+    lookup_y: int,
+    constant: Any,
+) -> int:
+    source_values = {
+        'lookup_x': lookup_x % modulus,
+        'lookup_y': lookup_y % modulus,
+        'lookup_x_plus_y': (lookup_x + lookup_y) % modulus,
+    }
+    resolved = [
+        source_values[source] if source in source_values else int(values[source])
+        for source in sources
+    ]
+    if opcode == 'field_add':
+        return sum(resolved) % modulus
+    if opcode == 'field_sub':
+        return (resolved[0] - resolved[1]) % modulus
+    if opcode == 'field_sub_sum':
+        return (resolved[0] - resolved[1] - resolved[2]) % modulus
+    if opcode == 'field_triple':
+        return (3 * resolved[0]) % modulus
+    if opcode == 'mul_const':
+        multiplier = int(constant) if constant is not None else 3 * int(curve_b)
+        return (multiplier * resolved[0]) % modulus
+    if opcode in {'field_mul', 'field_mul_lookup_x', 'field_mul_lookup_y'}:
+        return (resolved[0] * resolved[1]) % modulus
+    if opcode == 'field_mul_lookup_sum':
+        return (resolved[0] * resolved[1]) % modulus
+    raise ValueError(f'unsupported tail macro field opcode: {opcode}')
+
+
+def _operation_trace_values(curve: Mapping[str, Any], lookup: Point, accumulator: Point, rows: Sequence[Mapping[str, Any]]) -> list[Dict[str, Any]]:
+    modulus = int(curve['p'])
+    curve_b = int(curve['b'])
+    lookup_x, lookup_y = lookup if lookup is not None else (0, 0)
+    accum_x, accum_y, accum_z = _canonical_projective(accumulator)
+    values: Dict[str, int] = {
+        'X': accum_x,
+        'Y': accum_y,
+        'Z': accum_z,
+    }
+    trace = []
+    for row in rows:
+        sources = [str(source) for source in row['sources']]
+        before = dict(values)
+        target_value = _operation_value(
+            opcode=str(row['opcode']),
+            sources=sources,
+            values=values,
+            modulus=modulus,
+            curve_b=curve_b,
+            lookup_x=lookup_x,
+            lookup_y=lookup_y,
+            constant=row.get('constant'),
+        )
+        values[str(row['target'])] = target_value
+        trace.append({
+            'index': int(row['index']),
+            'target': str(row['target']),
+            'opcode': str(row['opcode']),
+            'sources': sources,
+            'before': before,
+            'target_value': target_value,
+            'lookup': None if lookup is None else {'x': lookup_x, 'y': lookup_y},
+        })
+    return trace
+
+
+def _overwrite_rule(row: Mapping[str, Any], modulus: int) -> Dict[str, Any]:
+    opcode = str(row['opcode'])
+    sources = [str(source) for source in row['sources']]
+    overwritten = str(row['overwritten_source'])
+    if opcode in {'field_add', 'field_sub', 'field_sub_sum'}:
+        return {
+            'kind': 'affine_unit_coefficient',
+            'symbolic_inverse_exists_over_field': True,
+        }
+    if opcode == 'field_triple':
+        return {
+            'kind': 'constant_multiply',
+            'constant': 3,
+            'symbolic_inverse_exists_over_field': 3 % int(modulus) != 0,
+        }
+    if opcode == 'mul_const':
+        constant = int(row.get('constant') or 0)
+        return {
+            'kind': 'constant_multiply',
+            'constant': constant,
+            'symbolic_inverse_exists_over_field': constant % int(modulus) != 0,
+        }
+    if opcode in {'field_mul_lookup_x', 'field_mul_lookup_y', 'field_mul_lookup_sum'}:
+        lookup_source = next(source for source in sources if source in TABLE_CONSTANTS)
+        return {
+            'kind': 'lookup_constant_multiply',
+            'constant_source': lookup_source,
+            'symbolic_inverse_exists_over_field': None,
+        }
+    if opcode == 'field_mul':
+        multiplier_source = next(source for source in sources if source != overwritten)
+        return {
+            'kind': 'variable_multiply',
+            'multiplier_source': multiplier_source,
+            'symbolic_inverse_exists_over_field': None,
+        }
+    raise ValueError(f'unsupported overwrite opcode: {opcode}')
+
+
+def _overwrite_local_inverse_certificate(rows: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
+    overwritten_rows = [row for row in rows if row.get('overwritten_source') is not None]
+    proof_by_index = {
+        int(row['index']): {
+            'index': int(row['index']),
+            'opcode': str(row['opcode']),
+            'target': str(row['target']),
+            'overwritten_source': str(row['overwritten_source']),
+            'rule': _overwrite_rule(row, int(TOY_CURVES[0]['p'])),
+            'checked_domain': 'toy canonical accumulator subgroup x non-infinity lookup subgroup',
+            'domain_rows_checked': 0,
+            'per_curve': [],
+            'failure_examples': [],
+        }
+        for row in overwritten_rows
+    }
+    row_by_index = {int(row['index']): row for row in overwritten_rows}
+    total_domain_rows = 0
+    for curve in TOY_CURVES:
+        modulus = int(curve['p'])
+        points = _subgroup_points(modulus, curve['generator'], int(curve['order']))
+        curve_failures = {int(row['index']): [] for row in overwritten_rows}
+        domain_rows_for_curve = (len(points) - 1) * len(points)
+        for lookup in points:
+            if lookup is None:
+                continue
+            for accumulator in points:
+                trace = {
+                    int(item['index']): item
+                    for item in _operation_trace_values(curve, lookup, accumulator, rows)
+                }
+                total_domain_rows += len(overwritten_rows)
+                for row in overwritten_rows:
+                    row_index = int(row['index'])
+                    rule = _overwrite_rule(row, modulus)
+                    trace_row = trace[row_index]
+                    proof_by_index[row_index]['domain_rows_checked'] += 1
+                    if rule['kind'] == 'lookup_constant_multiply':
+                        lookup_values = {
+                            'lookup_x': lookup[0] % modulus,
+                            'lookup_y': lookup[1] % modulus,
+                            'lookup_x_plus_y': (lookup[0] + lookup[1]) % modulus,
+                        }
+                        condition_pass = lookup_values[str(rule['constant_source'])] != 0
+                    elif rule['kind'] == 'variable_multiply':
+                        condition_pass = int(trace_row['before'][str(rule['multiplier_source'])]) % modulus != 0
+                    else:
+                        condition_pass = bool(rule['symbolic_inverse_exists_over_field'])
+                    if not condition_pass and len(curve_failures[row_index]) < 3:
+                        curve_failures[row_index].append({
+                            'lookup': list(lookup),
+                            'accumulator': None if accumulator is None else list(accumulator),
+                            'before': {
+                                key: value
+                                for key, value in trace_row['before'].items()
+                                if key in set(trace_row['sources']) | {str(rule.get('multiplier_source', ''))}
+                            },
+                            'target_value': trace_row['target_value'],
+                        })
+        for row_index in sorted(row_by_index):
+            failures = curve_failures[row_index]
+            proof_by_index[row_index]['per_curve'].append({
+                'curve': curve['name'],
+                'domain_rows_checked': domain_rows_for_curve,
+                'pass': not failures,
+                'failure_examples': failures,
+            })
+            if failures and len(proof_by_index[row_index]['failure_examples']) < 4:
+                proof_by_index[row_index]['failure_examples'].append({
+                    'curve': curve['name'],
+                    'examples': failures,
+                })
+    proof_rows = []
+    for row_index in sorted(proof_by_index):
+        proof_row = proof_by_index[row_index]
+        proof_row['pass'] = not proof_row['failure_examples']
+        if not proof_row['pass']:
+            rule = proof_row['rule']
+            if rule['kind'] == 'lookup_constant_multiply':
+                proof_row['failure_reason'] = f"{rule['constant_source']} can be zero on the checked boundary domain"
+            elif rule['kind'] == 'variable_multiply':
+                proof_row['failure_reason'] = f"{rule['multiplier_source']} can be zero on the checked boundary domain"
+            else:
+                proof_row['failure_reason'] = 'overwrite rule is not locally invertible on the checked boundary domain'
+        proof_rows.append(proof_row)
+    passing_rows = sum(1 for row in proof_rows if row['pass'])
+    return {
+        'schema': 'compiler-project-tail-overwrite-local-inverse-certificate-v1',
+        'status': 'toy_boundary_local_inverse_check_not_full_reversible_proof',
+        'overwrite_row_count': len(overwritten_rows),
+        'passing_row_count': passing_rows,
+        'failing_row_count': len(overwritten_rows) - passing_rows,
+        'total_domain_rows_checked': total_domain_rows,
+        'rows': proof_rows,
+        'pass': passing_rows == len(overwritten_rows),
+        'notes': [
+            'Each row checks whether the overwritten field value can be recovered from the target and the other fixed live inputs on the checked toy boundary domain.',
+            'Passing this certificate is still not a complete reversible circuit proof; it is a local invertibility screen for the destructive-overwrite optimizer candidate.',
+            'Failing rows identify concrete zero-multiplier or non-injective cases that must be avoided by a different schedule or a stronger valid-subspace argument.',
+        ],
+    }
+
+
+def _expiring_source_choices(row: Mapping[str, Any]) -> list[str]:
+    live_after = set(str(value) for value in row['live_after'])
+    choices = [
+        str(source)
+        for source in row['sources']
+        if source not in TABLE_CONSTANTS and str(source) not in live_after
+    ]
+    overwritten = row.get('overwritten_source')
+    if overwritten is not None and str(overwritten) not in choices:
+        choices.append(str(overwritten))
+    return sorted(choices)
+
+
+def _overwrite_choice_screen(rows: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
+    choices = []
+    for row in rows:
+        for overwritten_source in _expiring_source_choices(row):
+            rule_row = dict(row)
+            rule_row['overwritten_source'] = overwritten_source
+            choices.append({
+                'index': int(row['index']),
+                'opcode': str(row['opcode']),
+                'target': str(row['target']),
+                'sources': [str(source) for source in row['sources']],
+                'constant': row.get('constant'),
+                'overwritten_source': overwritten_source,
+                'rule': _overwrite_rule(rule_row, int(TOY_CURVES[0]['p'])),
+                'domain_rows_checked': 0,
+                'failure_examples': [],
+            })
+    for curve in TOY_CURVES:
+        modulus = int(curve['p'])
+        points = _subgroup_points(modulus, curve['generator'], int(curve['order']))
+        for lookup in points:
+            if lookup is None:
+                continue
+            for accumulator in points:
+                trace = {
+                    int(item['index']): item
+                    for item in _operation_trace_values(curve, lookup, accumulator, rows)
+                }
+                for choice in choices:
+                    choice['domain_rows_checked'] += 1
+                    if choice['failure_examples']:
+                        continue
+                    rule = _overwrite_rule(choice, modulus)
+                    trace_row = trace[int(choice['index'])]
+                    if rule['kind'] == 'lookup_constant_multiply':
+                        lookup_values = {
+                            'lookup_x': lookup[0] % modulus,
+                            'lookup_y': lookup[1] % modulus,
+                            'lookup_x_plus_y': (lookup[0] + lookup[1]) % modulus,
+                        }
+                        condition_pass = lookup_values[str(rule['constant_source'])] != 0
+                    elif rule['kind'] == 'variable_multiply':
+                        condition_pass = int(trace_row['before'][str(rule['multiplier_source'])]) % modulus != 0
+                    else:
+                        condition_pass = bool(rule['symbolic_inverse_exists_over_field'])
+                    if not condition_pass:
+                        choice['failure_examples'].append({
+                            'curve': curve['name'],
+                            'lookup': list(lookup),
+                            'accumulator': None if accumulator is None else list(accumulator),
+                            'reason': (
+                                f"{rule['constant_source']} can be zero on the checked boundary domain"
+                                if rule['kind'] == 'lookup_constant_multiply'
+                                else f"{rule['multiplier_source']} can be zero on the checked boundary domain"
+                                if rule['kind'] == 'variable_multiply'
+                                else 'overwrite rule is not locally invertible on the checked boundary domain'
+                            ),
+                        })
+    for choice in choices:
+        choice['pass'] = not choice['failure_examples']
+        if choice['failure_examples']:
+            choice['failure_reason'] = choice['failure_examples'][0]['reason']
+    passing_choices = sum(1 for choice in choices if choice['pass'])
+    failing_choices = len(choices) - passing_choices
+    failing_indices = sorted({int(choice['index']) for choice in choices if not choice['pass']})
+    return {
+        'schema': 'compiler-project-tail-overwrite-choice-screen-v1',
+        'status': 'toy_boundary_expiring_source_choice_screen_not_full_reversible_proof',
+        'choice_count': len(choices),
+        'passing_choice_count': passing_choices,
+        'failing_choice_count': failing_choices,
+        'failing_row_indices': failing_indices,
+        'choices': choices,
+        'pass': failing_choices == 0,
+        'notes': [
+            'This screen checks every expiring source choice for each operation, not only the greedy destructive candidate choice.',
+            'It distinguishes a bad overwrite-source choice from a true local non-invertibility blocker in the current formula order.',
+        ],
+    }
+
+
+def _allowed_overwrite_schedule(
+    rows: Sequence[Mapping[str, Any]],
+    *,
+    allowed_overwrite_indices: set[int],
+    counted_arithmetic_slots: int,
+    field_bits: int,
+) -> Dict[str, Any]:
+    last: Dict[str, int] = {value: -1 for value in QUANTUM_INPUTS}
+    for index, row in enumerate(rows):
+        for source in row['sources']:
+            if source not in TABLE_CONSTANTS:
+                last[str(source)] = index
+        last.setdefault(str(row['target']), index)
+    slot_by_value = {value: index for index, value in enumerate(QUANTUM_INPUTS)}
+    rows_out = []
+    peak_slot_count = len(slot_by_value)
+    peak_step = 'initial'
+    overwritten_rows = 0
+    for index, row in enumerate(rows):
+        sources = [str(source) for source in row['sources']]
+        target = str(row['target'])
+        live_before = dict(sorted(slot_by_value.items()))
+        expiring_sources = [
+            source
+            for source in sources
+            if source not in TABLE_CONSTANTS and last[source] == index and source not in QUANTUM_OUTPUTS
+        ]
+        overwritten_source = None
+        if index in allowed_overwrite_indices and expiring_sources:
+            overwritten_source = max(expiring_sources, key=lambda source: slot_by_value[source])
+            target_slot = slot_by_value[overwritten_source]
+            del slot_by_value[overwritten_source]
+            overwritten_rows += 1
+        else:
+            occupied = set(slot_by_value.values())
+            target_slot = 0
+            while target_slot in occupied:
+                target_slot += 1
+        slot_by_value[target] = target_slot
+        live_during_capacity = dict(sorted(slot_by_value.items()))
+        if len(live_during_capacity) > peak_slot_count:
+            peak_slot_count = len(live_during_capacity)
+            peak_step = f'{index}:{target}'
+        expired = []
+        for source in expiring_sources:
+            if source != overwritten_source:
+                expired.append(source)
+                del slot_by_value[source]
+        rows_out.append({
+            'index': index,
+            'opcode': str(row['opcode']),
+            'target': target,
+            'target_slot': target_slot,
+            'sources': sources,
+            'overwritten_source': overwritten_source,
+            'live_before': live_before,
+            'live_during_capacity': live_during_capacity,
+            'expired_after_step': sorted(expired),
+            'live_after': dict(sorted(slot_by_value.items())),
+        })
+    additional_slots = max(0, int(peak_slot_count) - int(counted_arithmetic_slots))
+    return {
+        'schedule_model': 'local_inverse_pass_only_overwrite_candidate',
+        'status': 'screened_optimizer_candidate_not_public_contract',
+        'field_bits': int(field_bits),
+        'counted_arithmetic_slots': int(counted_arithmetic_slots),
+        'peak_field_slots': int(peak_slot_count),
+        'peak_step': peak_step,
+        'allowed_overwrite_indices': sorted(int(index) for index in allowed_overwrite_indices),
+        'overwritten_row_count': overwritten_rows,
+        'additional_field_slots_over_counted_leaf': additional_slots,
+        'additional_logical_qubits_over_counted_leaf': additional_slots * int(field_bits),
+        'rows': rows_out,
+        'final_live_values': dict(sorted(slot_by_value.items())),
+        'notes': [
+            'This schedule reuses slots only for destructive rows that passed the local inverse screen.',
+            'It is a search diagnostic: it shows whether the currently screened reversible subset is enough to recover the eight-field-slot proxy.',
+        ],
+    }
+
+
 def _component_names(rows: Sequence[Mapping[str, Any]]) -> list[str]:
     names = set(QUANTUM_INPUTS)
     for row in rows:
@@ -354,6 +750,21 @@ def build_tail_macro_engine(
     destructive_candidate_schedule['proxy_metrics']['field_slot_improvement_vs_strict_single_assignment'] = (
         int(expanded_slot_schedule['peak_field_slots'])
         - int(destructive_candidate_schedule['peak_field_slots'])
+    )
+    overwrite_certificate = _overwrite_local_inverse_certificate(destructive_candidate_schedule['rows'])
+    destructive_candidate_schedule['local_inverse_certificate'] = overwrite_certificate
+    overwrite_choice_screen = _overwrite_choice_screen(destructive_candidate_schedule['rows'])
+    destructive_candidate_schedule['overwrite_choice_screen'] = overwrite_choice_screen
+    locally_invertible_indices = {
+        int(row['index'])
+        for row in overwrite_certificate['rows']
+        if row['pass'] is True
+    }
+    local_inverse_pass_only_schedule = _allowed_overwrite_schedule(
+        operation_rows,
+        allowed_overwrite_indices=locally_invertible_indices,
+        counted_arithmetic_slots=int(counted_arithmetic_slots),
+        field_bits=int(field_bits),
     )
     counted_slots = int(counted_arithmetic_slots)
     live_after_peak_fields = int(liveness['peak_live_field_values'])
@@ -404,7 +815,11 @@ def build_tail_macro_engine(
             'fallback_schedule_additional_logical_qubits': int(expanded_slot_schedule['additional_logical_qubits_over_counted_leaf']),
             'destructive_candidate_peak_field_values': int(destructive_candidate_schedule['peak_field_slots']),
             'destructive_candidate_additional_logical_qubits': int(destructive_candidate_schedule['additional_logical_qubits_over_counted_leaf']),
+            'destructive_candidate_overwrite_rows_locally_invertible': bool(overwrite_certificate['pass']),
+            'local_inverse_pass_only_peak_field_values': int(local_inverse_pass_only_schedule['peak_field_slots']),
+            'overwrite_choice_screen_pass': bool(overwrite_choice_screen['pass']),
         },
+        'local_inverse_pass_only_schedule': local_inverse_pass_only_schedule,
         'checks': checks,
         'pass': all(value is True for value in required_checks.values()),
         'completion_status': (

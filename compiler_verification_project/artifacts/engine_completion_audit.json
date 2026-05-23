@@ -21,7 +21,7 @@
     "release_corpus_preflight_sha256": "e8cc293c4fc4702e1fbc0bfcb9b8749515de99a348ecbf55ed123d68738c2f3a",
     "reusable_chunk_lowering_sha256": "c57403f9dbc8fe27f0cded6bbec2ddab50062dff4b012dc4462da78fb0d286cb",
     "streamed_lookup_tail_leaf_equivalence_sha256": "90f1880c839d7892eab0b748683d3186cbea9811409a4ab090c9d60d8cca0db3",
-    "tail_macro_engine_sha256": "607b76223e3e4e3e572d18c622829b592d3d92c106b5dfe6a063b682ae3c91c7",
+    "tail_macro_engine_sha256": "9975316b8aaab5f978e8738ef533f6dc2485b2aec6bfdbf79a03819aba9f150e",
     "tail_macro_liveness_sha256": "5f60042f2ae891387583cc6ee10cb6fdd11aeef460eadac18c6e512712736cb1",
     "tail_macro_reversibility_sha256": "a5474f2a4b950577da8013b0023ead318a7ea92610406fce869c3adac4d0830a",
     "tail_macro_schedule_search_sha256": "f3af1926dd886d4c8a25831821657bcef57c3b589daddec08957cab7b1dcf81b"
