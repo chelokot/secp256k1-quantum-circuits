@@ -10,18 +10,18 @@
     "source": "public_candidate_materialized_circuit_manifest.materialized_flat_netlist"
   },
   "source_digests": {
-    "arithmetic_operation_ir_sha256": "7b721b38b2c4bbc3c7174770783d0737adedf017c2db5e24d05bb284afc5aec9",
+    "arithmetic_operation_ir_sha256": "a08b4603f3ec9532cf947a926658849a9e9e773045a7b3733ccd1e374dffac91",
     "compiler_parameters_sha256": "f25239aab49a172397565757d9495c47ea7e88959451bc291d06f0ba37bbb374",
     "lookup_lowerings_sha256": "70e8ff627f0c537f73162c1d3ccf259a94c3dd756568947c7b4f3cf4665a5637",
     "modular_arithmetic_certificate_sha256": "058cc2c95b3b8f65d39f8c91f56b5256322e0fa00853466facb980d60c1e783e",
     "phase_shell_lowerings_sha256": "4411ea5f699e5950a32783f2232796a63987efb5d939f98ac400f4f02ddd415b",
-    "public_candidate_materialized_circuit_manifest_sha256": "879013f50201cd9c2f74c3a067f9cc56a83bac33da74fd3e2b3fd259f5e0500c",
-    "public_engine_manifest_sha256": "484e3a27b9c1d5051e6228b83751552115062fdf2fc93fa565d2f19dac04f9d9",
+    "public_candidate_materialized_circuit_manifest_sha256": "170e41dbd818edabed735d2ef95c775d923c74682a4fe367e8f8b907a0fa38f1",
+    "public_engine_manifest_sha256": "3b5a8d9c20b9a645bfbac99cfb1468d6747e9b2572fe359f15a6efbb0725c333",
     "qroam_primitive_certificate_sha256": "9a97e536aa4e15e25873adf187db977910a0ef8fb03914958d409940a54eb125",
     "release_corpus_preflight_sha256": "e8cc293c4fc4702e1fbc0bfcb9b8749515de99a348ecbf55ed123d68738c2f3a",
     "reusable_chunk_lowering_sha256": "c57403f9dbc8fe27f0cded6bbec2ddab50062dff4b012dc4462da78fb0d286cb",
     "streamed_lookup_tail_leaf_equivalence_sha256": "90f1880c839d7892eab0b748683d3186cbea9811409a4ab090c9d60d8cca0db3",
-    "tail_macro_engine_sha256": "a8eec7bb7593fdb9a987a38c76d3b580aa2a1b199d25ff3e811f28920362e024",
+    "tail_macro_engine_sha256": "607b76223e3e4e3e572d18c622829b592d3d92c106b5dfe6a063b682ae3c91c7",
     "tail_macro_liveness_sha256": "5f60042f2ae891387583cc6ee10cb6fdd11aeef460eadac18c6e512712736cb1",
     "tail_macro_reversibility_sha256": "a5474f2a4b950577da8013b0023ead318a7ea92610406fce869c3adac4d0830a",
     "tail_macro_schedule_search_sha256": "f3af1926dd886d4c8a25831821657bcef57c3b589daddec08957cab7b1dcf81b"
@@ -81,6 +81,16 @@
       "evidence": "tail_macro_engine + arithmetic_operation_ir.tail_macro_engine + arithmetic_lowerings.tail_macro_engine"
     },
     {
+      "name": "tail_macro_strict_capacity_fallback",
+      "status": "expanded_single_assignment_slot_schedule_generated",
+      "evidence": "tail_macro_engine.expanded_slot_schedule"
+    },
+    {
+      "name": "tail_macro_in_place_optimizer_signal",
+      "status": "destructive_overwrite_candidate_generated_not_proven",
+      "evidence": "tail_macro_engine.destructive_candidate_schedule"
+    },
+    {
       "name": "point_add_semantic_boundary",
       "status": "release_corpus_and_equivalence_checked",
       "evidence": "streamed_lookup_tail_leaf_equivalence + release_corpus_preflight"
@@ -90,7 +100,7 @@
     {
       "name": "tail_macro_schedule_and_reversibility",
       "status": "in_place_three_slot_schedule_boundary_not_eliminated",
-      "required_to_close": "Produce an executable in-place/permutation-extension tail schedule whose live field-value capacity is covered by the counted three arithmetic slots, or raise the counted resource budget to the expanded engine peak.",
+      "required_to_close": "Produce an executable in-place/permutation-extension tail schedule whose live field-value capacity is covered by the counted three arithmetic slots, or promote tail_macro_engine.expanded_slot_schedule into the public qubit budget.",
       "current_evidence": "tail_macro_engine + tail_macro_liveness + tail_macro_reversibility + tail_macro_schedule_search + arithmetic_operation_ir"
     },
     {

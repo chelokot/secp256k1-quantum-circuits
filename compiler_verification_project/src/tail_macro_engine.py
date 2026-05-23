@@ -155,6 +155,175 @@ def _one_compute_liveness(rows: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
     }
 
 
+def _expanded_slot_schedule(rows: Sequence[Mapping[str, Any]], counted_arithmetic_slots: int, field_bits: int) -> Dict[str, Any]:
+    last: Dict[str, int] = {value: -1 for value in QUANTUM_INPUTS}
+    for index, row in enumerate(rows):
+        for source in row['sources']:
+            if source not in TABLE_CONSTANTS:
+                last[str(source)] = index
+        last.setdefault(str(row['target']), index)
+    slot_by_value = {value: index for index, value in enumerate(QUANTUM_INPUTS)}
+    rows_out = []
+    peak_slot_count = len(slot_by_value)
+    peak_step = 'initial'
+    for index, row in enumerate(rows):
+        sources = [str(source) for source in row['sources']]
+        live_before = dict(sorted(slot_by_value.items()))
+        occupied = set(slot_by_value.values())
+        target_slot = 0
+        while target_slot in occupied:
+            target_slot += 1
+        target = str(row['target'])
+        slot_by_value[target] = target_slot
+        live_during = dict(sorted(slot_by_value.items()))
+        if len(live_during) > peak_slot_count:
+            peak_slot_count = len(live_during)
+            peak_step = f'{index}:{target}'
+        expired = []
+        for source in sources:
+            if source not in TABLE_CONSTANTS and last[source] == index and source not in QUANTUM_OUTPUTS:
+                expired.append(source)
+                del slot_by_value[source]
+        rows_out.append({
+            'index': index,
+            'opcode': str(row['opcode']),
+            'target': target,
+            'target_slot': target_slot,
+            'sources': sources,
+            'source_slots': {
+                source: live_during[source]
+                for source in sources
+                if source not in TABLE_CONSTANTS
+            },
+            'live_before': live_before,
+            'live_during': live_during,
+            'expired_after_step': sorted(expired),
+            'live_after': dict(sorted(slot_by_value.items())),
+        })
+    additional_slots = max(0, int(peak_slot_count) - int(counted_arithmetic_slots))
+    return {
+        'schedule_model': 'single_assignment_expanded_field_register_file',
+        'status': 'executable_capacity_fallback_not_reversible_cleanup_proof',
+        'field_bits': int(field_bits),
+        'counted_arithmetic_slots': int(counted_arithmetic_slots),
+        'peak_field_slots': int(peak_slot_count),
+        'peak_step': peak_step,
+        'additional_field_slots_over_counted_leaf': additional_slots,
+        'additional_logical_qubits_over_counted_leaf': additional_slots * int(field_bits),
+        'slot_owners': [
+            {
+                'slot': slot,
+                'owner': (
+                    f'leaf_arithmetic_slot_{slot}'
+                    if slot < int(counted_arithmetic_slots)
+                    else f'tail_macro_internal_slot_{slot - int(counted_arithmetic_slots)}'
+                ),
+                'logical_qubits': int(field_bits),
+                'counted_in_current_leaf_budget': slot < int(counted_arithmetic_slots),
+            }
+            for slot in range(int(peak_slot_count))
+        ],
+        'rows': rows_out,
+        'final_live_values': dict(sorted(slot_by_value.items())),
+        'notes': [
+            'This is the strict expanded-capacity schedule for the current field-operation stream.',
+            'It proves the number of field-sized lanes required if the tail is implemented as single-assignment field kernels.',
+            'It is not a reversible cleanup or in-place three-slot proof; using it as the public primitive-circuit contract requires counting the additional tail_macro_internal_slot owners.',
+        ],
+    }
+
+
+def _destructive_candidate_schedule(rows: Sequence[Mapping[str, Any]], counted_arithmetic_slots: int, field_bits: int) -> Dict[str, Any]:
+    last: Dict[str, int] = {value: -1 for value in QUANTUM_INPUTS}
+    for index, row in enumerate(rows):
+        for source in row['sources']:
+            if source not in TABLE_CONSTANTS:
+                last[str(source)] = index
+        last.setdefault(str(row['target']), index)
+    slot_by_value = {value: index for index, value in enumerate(QUANTUM_INPUTS)}
+    rows_out = []
+    peak_slot_count = len(slot_by_value)
+    peak_step = 'initial'
+    overwritten_rows = 0
+    for index, row in enumerate(rows):
+        sources = [str(source) for source in row['sources']]
+        target = str(row['target'])
+        live_before = dict(sorted(slot_by_value.items()))
+        expiring_sources = [
+            source
+            for source in sources
+            if source not in TABLE_CONSTANTS and last[source] == index and source not in QUANTUM_OUTPUTS
+        ]
+        overwritten_source = None
+        if expiring_sources:
+            overwritten_source = max(expiring_sources, key=lambda source: slot_by_value[source])
+            target_slot = slot_by_value[overwritten_source]
+            del slot_by_value[overwritten_source]
+            overwritten_rows += 1
+        else:
+            occupied = set(slot_by_value.values())
+            target_slot = 0
+            while target_slot in occupied:
+                target_slot += 1
+        slot_by_value[target] = target_slot
+        live_during_capacity = dict(sorted(slot_by_value.items()))
+        if len(live_during_capacity) > peak_slot_count:
+            peak_slot_count = len(live_during_capacity)
+            peak_step = f'{index}:{target}'
+        expired = []
+        for source in expiring_sources:
+            if source != overwritten_source:
+                expired.append(source)
+                del slot_by_value[source]
+        rows_out.append({
+            'index': index,
+            'opcode': str(row['opcode']),
+            'target': target,
+            'target_slot': target_slot,
+            'sources': sources,
+            'source_slots_before_operation': {
+                source: live_before[source]
+                for source in sources
+                if source not in TABLE_CONSTANTS
+            },
+            'overwritten_source': overwritten_source,
+            'overwritten_source_slot': None if overwritten_source is None else target_slot,
+            'live_before': live_before,
+            'live_during_capacity': live_during_capacity,
+            'expired_after_step': sorted(expired),
+            'live_after': dict(sorted(slot_by_value.items())),
+            'proof_obligation': (
+                'prove reversible/in-place implementation can consume overwritten source and write target in the same field lane without losing required information'
+                if overwritten_source is not None
+                else 'ordinary single-assignment target allocation'
+            ),
+        })
+    additional_slots = max(0, int(peak_slot_count) - int(counted_arithmetic_slots))
+    return {
+        'schedule_model': 'destructive_last_use_overwrite_candidate',
+        'status': 'optimizer_candidate_not_a_reversible_proof',
+        'field_bits': int(field_bits),
+        'counted_arithmetic_slots': int(counted_arithmetic_slots),
+        'peak_field_slots': int(peak_slot_count),
+        'peak_step': peak_step,
+        'overwritten_row_count': overwritten_rows,
+        'additional_field_slots_over_counted_leaf': additional_slots,
+        'additional_logical_qubits_over_counted_leaf': additional_slots * int(field_bits),
+        'rows': rows_out,
+        'final_live_values': dict(sorted(slot_by_value.items())),
+        'proxy_metrics': {
+            'peak_field_slots': int(peak_slot_count),
+            'overwritten_row_count': overwritten_rows,
+            'field_slot_improvement_vs_strict_single_assignment': None,
+        },
+        'notes': [
+            'This optimizer candidate reuses the physical slot of a last-use source for the operation target.',
+            'It is a search/proxy signal for in-place schedule development, not a public resource contract.',
+            'Every overwritten row remains invalid until a reversible or valid-subspace permutation implementation is supplied for that opcode and boundary state.',
+        ],
+    }
+
+
 def _component_names(rows: Sequence[Mapping[str, Any]]) -> list[str]:
     names = set(QUANTUM_INPUTS)
     for row in rows:
@@ -180,8 +349,15 @@ def build_tail_macro_engine(
     }
     non_clifford_total = sum(non_clifford_by_opcode.values())
     liveness = _one_compute_liveness(operation_rows)
+    expanded_slot_schedule = _expanded_slot_schedule(operation_rows, counted_arithmetic_slots, field_bits)
+    destructive_candidate_schedule = _destructive_candidate_schedule(operation_rows, counted_arithmetic_slots, field_bits)
+    destructive_candidate_schedule['proxy_metrics']['field_slot_improvement_vs_strict_single_assignment'] = (
+        int(expanded_slot_schedule['peak_field_slots'])
+        - int(destructive_candidate_schedule['peak_field_slots'])
+    )
     counted_slots = int(counted_arithmetic_slots)
-    peak_fields = int(liveness['peak_live_field_values'])
+    live_after_peak_fields = int(liveness['peak_live_field_values'])
+    strict_peak_fields = int(expanded_slot_schedule['peak_field_slots'])
     checks = {
         'formula_targets_match_engine_targets': (
             [target for target, _sources in TAIL_MACRO_FORMULA]
@@ -194,7 +370,7 @@ def build_tail_macro_engine(
         'non_clifford_total_matches_selected_tail_kernel': (
             int(non_clifford_total) == int(selected_tail_kernel_non_clifford)
         ),
-        'counted_slots_cover_expanded_single_assignment_peak': peak_fields <= counted_slots,
+        'counted_slots_cover_expanded_single_assignment_peak': strict_peak_fields <= counted_slots,
     }
     required_checks = {
         key: value
@@ -217,11 +393,17 @@ def build_tail_macro_engine(
         'non_clifford_total': int(non_clifford_total),
         'selected_tail_kernel_non_clifford': int(selected_tail_kernel_non_clifford),
         'single_assignment_liveness': liveness,
+        'expanded_slot_schedule': expanded_slot_schedule,
+        'destructive_candidate_schedule': destructive_candidate_schedule,
         'slot_gap': {
-            'expanded_single_assignment_peak_field_values': peak_fields,
+            'expanded_single_assignment_peak_field_values': strict_peak_fields,
+            'expanded_live_after_peak_field_values': live_after_peak_fields,
             'counted_arithmetic_slots': counted_slots,
-            'additional_field_slots_needed_without_in_place_schedule': max(0, peak_fields - counted_slots),
-            'additional_logical_qubits_needed_without_in_place_schedule': max(0, peak_fields - counted_slots) * int(field_bits),
+            'additional_field_slots_needed_without_in_place_schedule': max(0, strict_peak_fields - counted_slots),
+            'additional_logical_qubits_needed_without_in_place_schedule': max(0, strict_peak_fields - counted_slots) * int(field_bits),
+            'fallback_schedule_additional_logical_qubits': int(expanded_slot_schedule['additional_logical_qubits_over_counted_leaf']),
+            'destructive_candidate_peak_field_values': int(destructive_candidate_schedule['peak_field_slots']),
+            'destructive_candidate_additional_logical_qubits': int(destructive_candidate_schedule['additional_logical_qubits_over_counted_leaf']),
         },
         'checks': checks,
         'pass': all(value is True for value in required_checks.values()),

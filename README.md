@@ -160,7 +160,12 @@ The selected tail macro now has its own executable engine artifact:
 `tail_macro_engine.json` expands `complete_a0_all_streamed_tail` into 23 field
 operations, binds the exact opcode histogram to the counted tail kernel, and
 keeps the three-slot in-place schedule gap visible instead of treating it as a
-free macro assumption.
+free macro assumption. Its strict single-assignment fallback schedule currently
+requires nine field-sized slots, so promoting that fallback without a better
+in-place schedule would add six field lanes to the public qubit budget. The same
+engine now also emits an eight-slot destructive-overwrite candidate as an
+optimizer signal; that candidate is deliberately not a public claim until each
+overwrite row has a reversible or valid-subspace implementation proof.
 
 The public engine manifest then binds that
 materialized flat stream, executable instruction rows, wires, schedule events,

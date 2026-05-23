@@ -438,7 +438,7 @@ def main() -> None:
     if args.target in ('engine-completion-audit',):
         build_engine_completion_audit_artifact()
         payload['engine_completion_audit'] = 'compiler_verification_project/artifacts/engine_completion_audit.json'
-    if args.target in ('resource-stack', 'resource-zkp-and-public'):
+    if args.target in ('resource-stack', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
         payload.update(build_resource_stack())
     if args.target in ('arithmetic-operation-ir',):
         build_arithmetic_operation_ir_artifact()

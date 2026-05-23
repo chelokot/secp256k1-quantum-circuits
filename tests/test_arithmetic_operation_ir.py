@@ -42,6 +42,10 @@ def test_arithmetic_operation_ir_reconstructs_checked_artifact() -> None:
     assert observed['checks']['tail_macro_kernel_derives_from_tail_macro_engine'] is True
     assert observed['executable_modular_circuit_ir']['non_clifford_by_opcode']['field_mul'] == 71492
     assert observed['tail_macro_engine']['expanded_field_operation_count'] == 23
+    assert observed['tail_macro_engine']['fallback_schedule_peak_field_slots'] == 9
+    assert observed['tail_macro_engine']['fallback_schedule_additional_logical_qubits'] == 1536
+    assert observed['tail_macro_engine']['destructive_candidate_peak_field_slots'] == 8
+    assert observed['tail_macro_engine']['destructive_candidate_status'] == 'optimizer_candidate_not_a_reversible_proof'
     assert observed['tail_macro_engine']['non_clifford_total'] == 1126332
 
 

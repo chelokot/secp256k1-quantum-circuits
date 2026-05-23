@@ -1192,11 +1192,2033 @@
       }
     ]
   },
-  "slot_gap": {
-    "expanded_single_assignment_peak_field_values": 8,
+  "expanded_slot_schedule": {
+    "schedule_model": "single_assignment_expanded_field_register_file",
+    "status": "executable_capacity_fallback_not_reversible_cleanup_proof",
+    "field_bits": 256,
     "counted_arithmetic_slots": 3,
-    "additional_field_slots_needed_without_in_place_schedule": 5,
-    "additional_logical_qubits_needed_without_in_place_schedule": 1280
+    "peak_field_slots": 9,
+    "peak_step": "16:NM",
+    "additional_field_slots_over_counted_leaf": 6,
+    "additional_logical_qubits_over_counted_leaf": 1536,
+    "slot_owners": [
+      {
+        "slot": 0,
+        "owner": "leaf_arithmetic_slot_0",
+        "logical_qubits": 256,
+        "counted_in_current_leaf_budget": true
+      },
+      {
+        "slot": 1,
+        "owner": "leaf_arithmetic_slot_1",
+        "logical_qubits": 256,
+        "counted_in_current_leaf_budget": true
+      },
+      {
+        "slot": 2,
+        "owner": "leaf_arithmetic_slot_2",
+        "logical_qubits": 256,
+        "counted_in_current_leaf_budget": true
+      },
+      {
+        "slot": 3,
+        "owner": "tail_macro_internal_slot_0",
+        "logical_qubits": 256,
+        "counted_in_current_leaf_budget": false
+      },
+      {
+        "slot": 4,
+        "owner": "tail_macro_internal_slot_1",
+        "logical_qubits": 256,
+        "counted_in_current_leaf_budget": false
+      },
+      {
+        "slot": 5,
+        "owner": "tail_macro_internal_slot_2",
+        "logical_qubits": 256,
+        "counted_in_current_leaf_budget": false
+      },
+      {
+        "slot": 6,
+        "owner": "tail_macro_internal_slot_3",
+        "logical_qubits": 256,
+        "counted_in_current_leaf_budget": false
+      },
+      {
+        "slot": 7,
+        "owner": "tail_macro_internal_slot_4",
+        "logical_qubits": 256,
+        "counted_in_current_leaf_budget": false
+      },
+      {
+        "slot": 8,
+        "owner": "tail_macro_internal_slot_5",
+        "logical_qubits": 256,
+        "counted_in_current_leaf_budget": false
+      }
+    ],
+    "rows": [
+      {
+        "index": 0,
+        "opcode": "field_add",
+        "target": "G",
+        "target_slot": 3,
+        "sources": [
+          "X",
+          "Y"
+        ],
+        "source_slots": {
+          "X": 0,
+          "Y": 1
+        },
+        "live_before": {
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during": {
+          "G": 3,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "G": 3,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        }
+      },
+      {
+        "index": 1,
+        "opcode": "field_mul_lookup_sum",
+        "target": "H",
+        "target_slot": 4,
+        "sources": [
+          "G",
+          "lookup_x_plus_y"
+        ],
+        "source_slots": {
+          "G": 3
+        },
+        "live_before": {
+          "G": 3,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during": {
+          "G": 3,
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [
+          "G"
+        ],
+        "live_after": {
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        }
+      },
+      {
+        "index": 2,
+        "opcode": "field_mul_lookup_x",
+        "target": "A",
+        "target_slot": 3,
+        "sources": [
+          "X",
+          "lookup_x"
+        ],
+        "source_slots": {
+          "X": 0
+        },
+        "live_before": {
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during": {
+          "A": 3,
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "A": 3,
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        }
+      },
+      {
+        "index": 3,
+        "opcode": "field_mul_lookup_x",
+        "target": "Zx",
+        "target_slot": 5,
+        "sources": [
+          "Z",
+          "lookup_x"
+        ],
+        "source_slots": {
+          "Z": 2
+        },
+        "live_before": {
+          "A": 3,
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during": {
+          "A": 3,
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2,
+          "Zx": 5
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "A": 3,
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2,
+          "Zx": 5
+        }
+      },
+      {
+        "index": 4,
+        "opcode": "field_add",
+        "target": "C_input",
+        "target_slot": 6,
+        "sources": [
+          "X",
+          "Zx"
+        ],
+        "source_slots": {
+          "X": 0,
+          "Zx": 5
+        },
+        "live_before": {
+          "A": 3,
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2,
+          "Zx": 5
+        },
+        "live_during": {
+          "A": 3,
+          "C_input": 6,
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2,
+          "Zx": 5
+        },
+        "expired_after_step": [
+          "X",
+          "Zx"
+        ],
+        "live_after": {
+          "A": 3,
+          "C_input": 6,
+          "H": 4,
+          "Y": 1,
+          "Z": 2
+        }
+      },
+      {
+        "index": 5,
+        "opcode": "mul_const",
+        "target": "C",
+        "target_slot": 0,
+        "sources": [
+          "C_input"
+        ],
+        "source_slots": {
+          "C_input": 6
+        },
+        "live_before": {
+          "A": 3,
+          "C_input": 6,
+          "H": 4,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during": {
+          "A": 3,
+          "C": 0,
+          "C_input": 6,
+          "H": 4,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [
+          "C_input"
+        ],
+        "live_after": {
+          "A": 3,
+          "C": 0,
+          "H": 4,
+          "Y": 1,
+          "Z": 2
+        }
+      },
+      {
+        "index": 6,
+        "opcode": "field_mul_lookup_y",
+        "target": "I",
+        "target_slot": 5,
+        "sources": [
+          "Y",
+          "lookup_y"
+        ],
+        "source_slots": {
+          "Y": 1
+        },
+        "live_before": {
+          "A": 3,
+          "C": 0,
+          "H": 4,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during": {
+          "A": 3,
+          "C": 0,
+          "H": 4,
+          "I": 5,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "A": 3,
+          "C": 0,
+          "H": 4,
+          "I": 5,
+          "Y": 1,
+          "Z": 2
+        }
+      },
+      {
+        "index": 7,
+        "opcode": "field_sub_sum",
+        "target": "K",
+        "target_slot": 6,
+        "sources": [
+          "H",
+          "A",
+          "I"
+        ],
+        "source_slots": {
+          "H": 4,
+          "A": 3,
+          "I": 5
+        },
+        "live_before": {
+          "A": 3,
+          "C": 0,
+          "H": 4,
+          "I": 5,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during": {
+          "A": 3,
+          "C": 0,
+          "H": 4,
+          "I": 5,
+          "K": 6,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [
+          "H"
+        ],
+        "live_after": {
+          "A": 3,
+          "C": 0,
+          "I": 5,
+          "K": 6,
+          "Y": 1,
+          "Z": 2
+        }
+      },
+      {
+        "index": 8,
+        "opcode": "field_triple",
+        "target": "L",
+        "target_slot": 4,
+        "sources": [
+          "A"
+        ],
+        "source_slots": {
+          "A": 3
+        },
+        "live_before": {
+          "A": 3,
+          "C": 0,
+          "I": 5,
+          "K": 6,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during": {
+          "A": 3,
+          "C": 0,
+          "I": 5,
+          "K": 6,
+          "L": 4,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [
+          "A"
+        ],
+        "live_after": {
+          "C": 0,
+          "I": 5,
+          "K": 6,
+          "L": 4,
+          "Y": 1,
+          "Z": 2
+        }
+      },
+      {
+        "index": 9,
+        "opcode": "field_mul_lookup_y",
+        "target": "yZ",
+        "target_slot": 3,
+        "sources": [
+          "Z",
+          "lookup_y"
+        ],
+        "source_slots": {
+          "Z": 2
+        },
+        "live_before": {
+          "C": 0,
+          "I": 5,
+          "K": 6,
+          "L": 4,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during": {
+          "C": 0,
+          "I": 5,
+          "K": 6,
+          "L": 4,
+          "Y": 1,
+          "Z": 2,
+          "yZ": 3
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "C": 0,
+          "I": 5,
+          "K": 6,
+          "L": 4,
+          "Y": 1,
+          "Z": 2,
+          "yZ": 3
+        }
+      },
+      {
+        "index": 10,
+        "opcode": "field_add",
+        "target": "E",
+        "target_slot": 7,
+        "sources": [
+          "Y",
+          "yZ"
+        ],
+        "source_slots": {
+          "Y": 1,
+          "yZ": 3
+        },
+        "live_before": {
+          "C": 0,
+          "I": 5,
+          "K": 6,
+          "L": 4,
+          "Y": 1,
+          "Z": 2,
+          "yZ": 3
+        },
+        "live_during": {
+          "C": 0,
+          "E": 7,
+          "I": 5,
+          "K": 6,
+          "L": 4,
+          "Y": 1,
+          "Z": 2,
+          "yZ": 3
+        },
+        "expired_after_step": [
+          "Y",
+          "yZ"
+        ],
+        "live_after": {
+          "C": 0,
+          "E": 7,
+          "I": 5,
+          "K": 6,
+          "L": 4,
+          "Z": 2
+        }
+      },
+      {
+        "index": 11,
+        "opcode": "mul_const",
+        "target": "F",
+        "target_slot": 1,
+        "sources": [
+          "Z"
+        ],
+        "source_slots": {
+          "Z": 2
+        },
+        "live_before": {
+          "C": 0,
+          "E": 7,
+          "I": 5,
+          "K": 6,
+          "L": 4,
+          "Z": 2
+        },
+        "live_during": {
+          "C": 0,
+          "E": 7,
+          "F": 1,
+          "I": 5,
+          "K": 6,
+          "L": 4,
+          "Z": 2
+        },
+        "expired_after_step": [
+          "Z"
+        ],
+        "live_after": {
+          "C": 0,
+          "E": 7,
+          "F": 1,
+          "I": 5,
+          "K": 6,
+          "L": 4
+        }
+      },
+      {
+        "index": 12,
+        "opcode": "field_add",
+        "target": "M",
+        "target_slot": 2,
+        "sources": [
+          "I",
+          "F"
+        ],
+        "source_slots": {
+          "I": 5,
+          "F": 1
+        },
+        "live_before": {
+          "C": 0,
+          "E": 7,
+          "F": 1,
+          "I": 5,
+          "K": 6,
+          "L": 4
+        },
+        "live_during": {
+          "C": 0,
+          "E": 7,
+          "F": 1,
+          "I": 5,
+          "K": 6,
+          "L": 4,
+          "M": 2
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "C": 0,
+          "E": 7,
+          "F": 1,
+          "I": 5,
+          "K": 6,
+          "L": 4,
+          "M": 2
+        }
+      },
+      {
+        "index": 13,
+        "opcode": "field_sub",
+        "target": "N",
+        "target_slot": 3,
+        "sources": [
+          "I",
+          "F"
+        ],
+        "source_slots": {
+          "I": 5,
+          "F": 1
+        },
+        "live_before": {
+          "C": 0,
+          "E": 7,
+          "F": 1,
+          "I": 5,
+          "K": 6,
+          "L": 4,
+          "M": 2
+        },
+        "live_during": {
+          "C": 0,
+          "E": 7,
+          "F": 1,
+          "I": 5,
+          "K": 6,
+          "L": 4,
+          "M": 2,
+          "N": 3
+        },
+        "expired_after_step": [
+          "F",
+          "I"
+        ],
+        "live_after": {
+          "C": 0,
+          "E": 7,
+          "K": 6,
+          "L": 4,
+          "M": 2,
+          "N": 3
+        }
+      },
+      {
+        "index": 14,
+        "opcode": "field_mul",
+        "target": "KN",
+        "target_slot": 1,
+        "sources": [
+          "K",
+          "N"
+        ],
+        "source_slots": {
+          "K": 6,
+          "N": 3
+        },
+        "live_before": {
+          "C": 0,
+          "E": 7,
+          "K": 6,
+          "L": 4,
+          "M": 2,
+          "N": 3
+        },
+        "live_during": {
+          "C": 0,
+          "E": 7,
+          "K": 6,
+          "KN": 1,
+          "L": 4,
+          "M": 2,
+          "N": 3
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "C": 0,
+          "E": 7,
+          "K": 6,
+          "KN": 1,
+          "L": 4,
+          "M": 2,
+          "N": 3
+        }
+      },
+      {
+        "index": 15,
+        "opcode": "field_mul",
+        "target": "EC",
+        "target_slot": 5,
+        "sources": [
+          "E",
+          "C"
+        ],
+        "source_slots": {
+          "E": 7,
+          "C": 0
+        },
+        "live_before": {
+          "C": 0,
+          "E": 7,
+          "K": 6,
+          "KN": 1,
+          "L": 4,
+          "M": 2,
+          "N": 3
+        },
+        "live_during": {
+          "C": 0,
+          "E": 7,
+          "EC": 5,
+          "K": 6,
+          "KN": 1,
+          "L": 4,
+          "M": 2,
+          "N": 3
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "C": 0,
+          "E": 7,
+          "EC": 5,
+          "K": 6,
+          "KN": 1,
+          "L": 4,
+          "M": 2,
+          "N": 3
+        }
+      },
+      {
+        "index": 16,
+        "opcode": "field_mul",
+        "target": "NM",
+        "target_slot": 8,
+        "sources": [
+          "N",
+          "M"
+        ],
+        "source_slots": {
+          "N": 3,
+          "M": 2
+        },
+        "live_before": {
+          "C": 0,
+          "E": 7,
+          "EC": 5,
+          "K": 6,
+          "KN": 1,
+          "L": 4,
+          "M": 2,
+          "N": 3
+        },
+        "live_during": {
+          "C": 0,
+          "E": 7,
+          "EC": 5,
+          "K": 6,
+          "KN": 1,
+          "L": 4,
+          "M": 2,
+          "N": 3,
+          "NM": 8
+        },
+        "expired_after_step": [
+          "N"
+        ],
+        "live_after": {
+          "C": 0,
+          "E": 7,
+          "EC": 5,
+          "K": 6,
+          "KN": 1,
+          "L": 4,
+          "M": 2,
+          "NM": 8
+        }
+      },
+      {
+        "index": 17,
+        "opcode": "field_mul",
+        "target": "CL",
+        "target_slot": 3,
+        "sources": [
+          "C",
+          "L"
+        ],
+        "source_slots": {
+          "C": 0,
+          "L": 4
+        },
+        "live_before": {
+          "C": 0,
+          "E": 7,
+          "EC": 5,
+          "K": 6,
+          "KN": 1,
+          "L": 4,
+          "M": 2,
+          "NM": 8
+        },
+        "live_during": {
+          "C": 0,
+          "CL": 3,
+          "E": 7,
+          "EC": 5,
+          "K": 6,
+          "KN": 1,
+          "L": 4,
+          "M": 2,
+          "NM": 8
+        },
+        "expired_after_step": [
+          "C"
+        ],
+        "live_after": {
+          "CL": 3,
+          "E": 7,
+          "EC": 5,
+          "K": 6,
+          "KN": 1,
+          "L": 4,
+          "M": 2,
+          "NM": 8
+        }
+      },
+      {
+        "index": 18,
+        "opcode": "field_mul",
+        "target": "ME",
+        "target_slot": 0,
+        "sources": [
+          "M",
+          "E"
+        ],
+        "source_slots": {
+          "M": 2,
+          "E": 7
+        },
+        "live_before": {
+          "CL": 3,
+          "E": 7,
+          "EC": 5,
+          "K": 6,
+          "KN": 1,
+          "L": 4,
+          "M": 2,
+          "NM": 8
+        },
+        "live_during": {
+          "CL": 3,
+          "E": 7,
+          "EC": 5,
+          "K": 6,
+          "KN": 1,
+          "L": 4,
+          "M": 2,
+          "ME": 0,
+          "NM": 8
+        },
+        "expired_after_step": [
+          "E",
+          "M"
+        ],
+        "live_after": {
+          "CL": 3,
+          "EC": 5,
+          "K": 6,
+          "KN": 1,
+          "L": 4,
+          "ME": 0,
+          "NM": 8
+        }
+      },
+      {
+        "index": 19,
+        "opcode": "field_mul",
+        "target": "LK",
+        "target_slot": 2,
+        "sources": [
+          "L",
+          "K"
+        ],
+        "source_slots": {
+          "L": 4,
+          "K": 6
+        },
+        "live_before": {
+          "CL": 3,
+          "EC": 5,
+          "K": 6,
+          "KN": 1,
+          "L": 4,
+          "ME": 0,
+          "NM": 8
+        },
+        "live_during": {
+          "CL": 3,
+          "EC": 5,
+          "K": 6,
+          "KN": 1,
+          "L": 4,
+          "LK": 2,
+          "ME": 0,
+          "NM": 8
+        },
+        "expired_after_step": [
+          "K",
+          "L"
+        ],
+        "live_after": {
+          "CL": 3,
+          "EC": 5,
+          "KN": 1,
+          "LK": 2,
+          "ME": 0,
+          "NM": 8
+        }
+      },
+      {
+        "index": 20,
+        "opcode": "field_sub",
+        "target": "X3",
+        "target_slot": 4,
+        "sources": [
+          "KN",
+          "EC"
+        ],
+        "source_slots": {
+          "KN": 1,
+          "EC": 5
+        },
+        "live_before": {
+          "CL": 3,
+          "EC": 5,
+          "KN": 1,
+          "LK": 2,
+          "ME": 0,
+          "NM": 8
+        },
+        "live_during": {
+          "CL": 3,
+          "EC": 5,
+          "KN": 1,
+          "LK": 2,
+          "ME": 0,
+          "NM": 8,
+          "X3": 4
+        },
+        "expired_after_step": [
+          "EC",
+          "KN"
+        ],
+        "live_after": {
+          "CL": 3,
+          "LK": 2,
+          "ME": 0,
+          "NM": 8,
+          "X3": 4
+        }
+      },
+      {
+        "index": 21,
+        "opcode": "field_add",
+        "target": "Y3",
+        "target_slot": 1,
+        "sources": [
+          "NM",
+          "CL"
+        ],
+        "source_slots": {
+          "NM": 8,
+          "CL": 3
+        },
+        "live_before": {
+          "CL": 3,
+          "LK": 2,
+          "ME": 0,
+          "NM": 8,
+          "X3": 4
+        },
+        "live_during": {
+          "CL": 3,
+          "LK": 2,
+          "ME": 0,
+          "NM": 8,
+          "X3": 4,
+          "Y3": 1
+        },
+        "expired_after_step": [
+          "CL",
+          "NM"
+        ],
+        "live_after": {
+          "LK": 2,
+          "ME": 0,
+          "X3": 4,
+          "Y3": 1
+        }
+      },
+      {
+        "index": 22,
+        "opcode": "field_add",
+        "target": "Z3",
+        "target_slot": 3,
+        "sources": [
+          "ME",
+          "LK"
+        ],
+        "source_slots": {
+          "ME": 0,
+          "LK": 2
+        },
+        "live_before": {
+          "LK": 2,
+          "ME": 0,
+          "X3": 4,
+          "Y3": 1
+        },
+        "live_during": {
+          "LK": 2,
+          "ME": 0,
+          "X3": 4,
+          "Y3": 1,
+          "Z3": 3
+        },
+        "expired_after_step": [
+          "LK",
+          "ME"
+        ],
+        "live_after": {
+          "X3": 4,
+          "Y3": 1,
+          "Z3": 3
+        }
+      }
+    ],
+    "final_live_values": {
+      "X3": 4,
+      "Y3": 1,
+      "Z3": 3
+    },
+    "notes": [
+      "This is the strict expanded-capacity schedule for the current field-operation stream.",
+      "It proves the number of field-sized lanes required if the tail is implemented as single-assignment field kernels.",
+      "It is not a reversible cleanup or in-place three-slot proof; using it as the public primitive-circuit contract requires counting the additional tail_macro_internal_slot owners."
+    ]
+  },
+  "destructive_candidate_schedule": {
+    "schedule_model": "destructive_last_use_overwrite_candidate",
+    "status": "optimizer_candidate_not_a_reversible_proof",
+    "field_bits": 256,
+    "counted_arithmetic_slots": 3,
+    "peak_field_slots": 8,
+    "peak_step": "15:EC",
+    "overwritten_row_count": 15,
+    "additional_field_slots_over_counted_leaf": 5,
+    "additional_logical_qubits_over_counted_leaf": 1280,
+    "rows": [
+      {
+        "index": 0,
+        "opcode": "field_add",
+        "target": "G",
+        "target_slot": 3,
+        "sources": [
+          "X",
+          "Y"
+        ],
+        "source_slots_before_operation": {
+          "X": 0,
+          "Y": 1
+        },
+        "overwritten_source": null,
+        "overwritten_source_slot": null,
+        "live_before": {
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during_capacity": {
+          "G": 3,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "G": 3,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "proof_obligation": "ordinary single-assignment target allocation"
+      },
+      {
+        "index": 1,
+        "opcode": "field_mul_lookup_sum",
+        "target": "H",
+        "target_slot": 3,
+        "sources": [
+          "G",
+          "lookup_x_plus_y"
+        ],
+        "source_slots_before_operation": {
+          "G": 3
+        },
+        "overwritten_source": "G",
+        "overwritten_source_slot": 3,
+        "live_before": {
+          "G": 3,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during_capacity": {
+          "H": 3,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "H": 3,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "proof_obligation": "prove reversible/in-place implementation can consume overwritten source and write target in the same field lane without losing required information"
+      },
+      {
+        "index": 2,
+        "opcode": "field_mul_lookup_x",
+        "target": "A",
+        "target_slot": 4,
+        "sources": [
+          "X",
+          "lookup_x"
+        ],
+        "source_slots_before_operation": {
+          "X": 0
+        },
+        "overwritten_source": null,
+        "overwritten_source_slot": null,
+        "live_before": {
+          "H": 3,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during_capacity": {
+          "A": 4,
+          "H": 3,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "A": 4,
+          "H": 3,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "proof_obligation": "ordinary single-assignment target allocation"
+      },
+      {
+        "index": 3,
+        "opcode": "field_mul_lookup_x",
+        "target": "Zx",
+        "target_slot": 5,
+        "sources": [
+          "Z",
+          "lookup_x"
+        ],
+        "source_slots_before_operation": {
+          "Z": 2
+        },
+        "overwritten_source": null,
+        "overwritten_source_slot": null,
+        "live_before": {
+          "A": 4,
+          "H": 3,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during_capacity": {
+          "A": 4,
+          "H": 3,
+          "X": 0,
+          "Y": 1,
+          "Z": 2,
+          "Zx": 5
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "A": 4,
+          "H": 3,
+          "X": 0,
+          "Y": 1,
+          "Z": 2,
+          "Zx": 5
+        },
+        "proof_obligation": "ordinary single-assignment target allocation"
+      },
+      {
+        "index": 4,
+        "opcode": "field_add",
+        "target": "C_input",
+        "target_slot": 5,
+        "sources": [
+          "X",
+          "Zx"
+        ],
+        "source_slots_before_operation": {
+          "X": 0,
+          "Zx": 5
+        },
+        "overwritten_source": "Zx",
+        "overwritten_source_slot": 5,
+        "live_before": {
+          "A": 4,
+          "H": 3,
+          "X": 0,
+          "Y": 1,
+          "Z": 2,
+          "Zx": 5
+        },
+        "live_during_capacity": {
+          "A": 4,
+          "C_input": 5,
+          "H": 3,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [
+          "X"
+        ],
+        "live_after": {
+          "A": 4,
+          "C_input": 5,
+          "H": 3,
+          "Y": 1,
+          "Z": 2
+        },
+        "proof_obligation": "prove reversible/in-place implementation can consume overwritten source and write target in the same field lane without losing required information"
+      },
+      {
+        "index": 5,
+        "opcode": "mul_const",
+        "target": "C",
+        "target_slot": 5,
+        "sources": [
+          "C_input"
+        ],
+        "source_slots_before_operation": {
+          "C_input": 5
+        },
+        "overwritten_source": "C_input",
+        "overwritten_source_slot": 5,
+        "live_before": {
+          "A": 4,
+          "C_input": 5,
+          "H": 3,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during_capacity": {
+          "A": 4,
+          "C": 5,
+          "H": 3,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "A": 4,
+          "C": 5,
+          "H": 3,
+          "Y": 1,
+          "Z": 2
+        },
+        "proof_obligation": "prove reversible/in-place implementation can consume overwritten source and write target in the same field lane without losing required information"
+      },
+      {
+        "index": 6,
+        "opcode": "field_mul_lookup_y",
+        "target": "I",
+        "target_slot": 0,
+        "sources": [
+          "Y",
+          "lookup_y"
+        ],
+        "source_slots_before_operation": {
+          "Y": 1
+        },
+        "overwritten_source": null,
+        "overwritten_source_slot": null,
+        "live_before": {
+          "A": 4,
+          "C": 5,
+          "H": 3,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during_capacity": {
+          "A": 4,
+          "C": 5,
+          "H": 3,
+          "I": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "A": 4,
+          "C": 5,
+          "H": 3,
+          "I": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "proof_obligation": "ordinary single-assignment target allocation"
+      },
+      {
+        "index": 7,
+        "opcode": "field_sub_sum",
+        "target": "K",
+        "target_slot": 3,
+        "sources": [
+          "H",
+          "A",
+          "I"
+        ],
+        "source_slots_before_operation": {
+          "H": 3,
+          "A": 4,
+          "I": 0
+        },
+        "overwritten_source": "H",
+        "overwritten_source_slot": 3,
+        "live_before": {
+          "A": 4,
+          "C": 5,
+          "H": 3,
+          "I": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during_capacity": {
+          "A": 4,
+          "C": 5,
+          "I": 0,
+          "K": 3,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "A": 4,
+          "C": 5,
+          "I": 0,
+          "K": 3,
+          "Y": 1,
+          "Z": 2
+        },
+        "proof_obligation": "prove reversible/in-place implementation can consume overwritten source and write target in the same field lane without losing required information"
+      },
+      {
+        "index": 8,
+        "opcode": "field_triple",
+        "target": "L",
+        "target_slot": 4,
+        "sources": [
+          "A"
+        ],
+        "source_slots_before_operation": {
+          "A": 4
+        },
+        "overwritten_source": "A",
+        "overwritten_source_slot": 4,
+        "live_before": {
+          "A": 4,
+          "C": 5,
+          "I": 0,
+          "K": 3,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during_capacity": {
+          "C": 5,
+          "I": 0,
+          "K": 3,
+          "L": 4,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "C": 5,
+          "I": 0,
+          "K": 3,
+          "L": 4,
+          "Y": 1,
+          "Z": 2
+        },
+        "proof_obligation": "prove reversible/in-place implementation can consume overwritten source and write target in the same field lane without losing required information"
+      },
+      {
+        "index": 9,
+        "opcode": "field_mul_lookup_y",
+        "target": "yZ",
+        "target_slot": 6,
+        "sources": [
+          "Z",
+          "lookup_y"
+        ],
+        "source_slots_before_operation": {
+          "Z": 2
+        },
+        "overwritten_source": null,
+        "overwritten_source_slot": null,
+        "live_before": {
+          "C": 5,
+          "I": 0,
+          "K": 3,
+          "L": 4,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during_capacity": {
+          "C": 5,
+          "I": 0,
+          "K": 3,
+          "L": 4,
+          "Y": 1,
+          "Z": 2,
+          "yZ": 6
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "C": 5,
+          "I": 0,
+          "K": 3,
+          "L": 4,
+          "Y": 1,
+          "Z": 2,
+          "yZ": 6
+        },
+        "proof_obligation": "ordinary single-assignment target allocation"
+      },
+      {
+        "index": 10,
+        "opcode": "field_add",
+        "target": "E",
+        "target_slot": 6,
+        "sources": [
+          "Y",
+          "yZ"
+        ],
+        "source_slots_before_operation": {
+          "Y": 1,
+          "yZ": 6
+        },
+        "overwritten_source": "yZ",
+        "overwritten_source_slot": 6,
+        "live_before": {
+          "C": 5,
+          "I": 0,
+          "K": 3,
+          "L": 4,
+          "Y": 1,
+          "Z": 2,
+          "yZ": 6
+        },
+        "live_during_capacity": {
+          "C": 5,
+          "E": 6,
+          "I": 0,
+          "K": 3,
+          "L": 4,
+          "Y": 1,
+          "Z": 2
+        },
+        "expired_after_step": [
+          "Y"
+        ],
+        "live_after": {
+          "C": 5,
+          "E": 6,
+          "I": 0,
+          "K": 3,
+          "L": 4,
+          "Z": 2
+        },
+        "proof_obligation": "prove reversible/in-place implementation can consume overwritten source and write target in the same field lane without losing required information"
+      },
+      {
+        "index": 11,
+        "opcode": "mul_const",
+        "target": "F",
+        "target_slot": 2,
+        "sources": [
+          "Z"
+        ],
+        "source_slots_before_operation": {
+          "Z": 2
+        },
+        "overwritten_source": "Z",
+        "overwritten_source_slot": 2,
+        "live_before": {
+          "C": 5,
+          "E": 6,
+          "I": 0,
+          "K": 3,
+          "L": 4,
+          "Z": 2
+        },
+        "live_during_capacity": {
+          "C": 5,
+          "E": 6,
+          "F": 2,
+          "I": 0,
+          "K": 3,
+          "L": 4
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "C": 5,
+          "E": 6,
+          "F": 2,
+          "I": 0,
+          "K": 3,
+          "L": 4
+        },
+        "proof_obligation": "prove reversible/in-place implementation can consume overwritten source and write target in the same field lane without losing required information"
+      },
+      {
+        "index": 12,
+        "opcode": "field_add",
+        "target": "M",
+        "target_slot": 1,
+        "sources": [
+          "I",
+          "F"
+        ],
+        "source_slots_before_operation": {
+          "I": 0,
+          "F": 2
+        },
+        "overwritten_source": null,
+        "overwritten_source_slot": null,
+        "live_before": {
+          "C": 5,
+          "E": 6,
+          "F": 2,
+          "I": 0,
+          "K": 3,
+          "L": 4
+        },
+        "live_during_capacity": {
+          "C": 5,
+          "E": 6,
+          "F": 2,
+          "I": 0,
+          "K": 3,
+          "L": 4,
+          "M": 1
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "C": 5,
+          "E": 6,
+          "F": 2,
+          "I": 0,
+          "K": 3,
+          "L": 4,
+          "M": 1
+        },
+        "proof_obligation": "ordinary single-assignment target allocation"
+      },
+      {
+        "index": 13,
+        "opcode": "field_sub",
+        "target": "N",
+        "target_slot": 2,
+        "sources": [
+          "I",
+          "F"
+        ],
+        "source_slots_before_operation": {
+          "I": 0,
+          "F": 2
+        },
+        "overwritten_source": "F",
+        "overwritten_source_slot": 2,
+        "live_before": {
+          "C": 5,
+          "E": 6,
+          "F": 2,
+          "I": 0,
+          "K": 3,
+          "L": 4,
+          "M": 1
+        },
+        "live_during_capacity": {
+          "C": 5,
+          "E": 6,
+          "I": 0,
+          "K": 3,
+          "L": 4,
+          "M": 1,
+          "N": 2
+        },
+        "expired_after_step": [
+          "I"
+        ],
+        "live_after": {
+          "C": 5,
+          "E": 6,
+          "K": 3,
+          "L": 4,
+          "M": 1,
+          "N": 2
+        },
+        "proof_obligation": "prove reversible/in-place implementation can consume overwritten source and write target in the same field lane without losing required information"
+      },
+      {
+        "index": 14,
+        "opcode": "field_mul",
+        "target": "KN",
+        "target_slot": 0,
+        "sources": [
+          "K",
+          "N"
+        ],
+        "source_slots_before_operation": {
+          "K": 3,
+          "N": 2
+        },
+        "overwritten_source": null,
+        "overwritten_source_slot": null,
+        "live_before": {
+          "C": 5,
+          "E": 6,
+          "K": 3,
+          "L": 4,
+          "M": 1,
+          "N": 2
+        },
+        "live_during_capacity": {
+          "C": 5,
+          "E": 6,
+          "K": 3,
+          "KN": 0,
+          "L": 4,
+          "M": 1,
+          "N": 2
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "C": 5,
+          "E": 6,
+          "K": 3,
+          "KN": 0,
+          "L": 4,
+          "M": 1,
+          "N": 2
+        },
+        "proof_obligation": "ordinary single-assignment target allocation"
+      },
+      {
+        "index": 15,
+        "opcode": "field_mul",
+        "target": "EC",
+        "target_slot": 7,
+        "sources": [
+          "E",
+          "C"
+        ],
+        "source_slots_before_operation": {
+          "E": 6,
+          "C": 5
+        },
+        "overwritten_source": null,
+        "overwritten_source_slot": null,
+        "live_before": {
+          "C": 5,
+          "E": 6,
+          "K": 3,
+          "KN": 0,
+          "L": 4,
+          "M": 1,
+          "N": 2
+        },
+        "live_during_capacity": {
+          "C": 5,
+          "E": 6,
+          "EC": 7,
+          "K": 3,
+          "KN": 0,
+          "L": 4,
+          "M": 1,
+          "N": 2
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "C": 5,
+          "E": 6,
+          "EC": 7,
+          "K": 3,
+          "KN": 0,
+          "L": 4,
+          "M": 1,
+          "N": 2
+        },
+        "proof_obligation": "ordinary single-assignment target allocation"
+      },
+      {
+        "index": 16,
+        "opcode": "field_mul",
+        "target": "NM",
+        "target_slot": 2,
+        "sources": [
+          "N",
+          "M"
+        ],
+        "source_slots_before_operation": {
+          "N": 2,
+          "M": 1
+        },
+        "overwritten_source": "N",
+        "overwritten_source_slot": 2,
+        "live_before": {
+          "C": 5,
+          "E": 6,
+          "EC": 7,
+          "K": 3,
+          "KN": 0,
+          "L": 4,
+          "M": 1,
+          "N": 2
+        },
+        "live_during_capacity": {
+          "C": 5,
+          "E": 6,
+          "EC": 7,
+          "K": 3,
+          "KN": 0,
+          "L": 4,
+          "M": 1,
+          "NM": 2
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "C": 5,
+          "E": 6,
+          "EC": 7,
+          "K": 3,
+          "KN": 0,
+          "L": 4,
+          "M": 1,
+          "NM": 2
+        },
+        "proof_obligation": "prove reversible/in-place implementation can consume overwritten source and write target in the same field lane without losing required information"
+      },
+      {
+        "index": 17,
+        "opcode": "field_mul",
+        "target": "CL",
+        "target_slot": 5,
+        "sources": [
+          "C",
+          "L"
+        ],
+        "source_slots_before_operation": {
+          "C": 5,
+          "L": 4
+        },
+        "overwritten_source": "C",
+        "overwritten_source_slot": 5,
+        "live_before": {
+          "C": 5,
+          "E": 6,
+          "EC": 7,
+          "K": 3,
+          "KN": 0,
+          "L": 4,
+          "M": 1,
+          "NM": 2
+        },
+        "live_during_capacity": {
+          "CL": 5,
+          "E": 6,
+          "EC": 7,
+          "K": 3,
+          "KN": 0,
+          "L": 4,
+          "M": 1,
+          "NM": 2
+        },
+        "expired_after_step": [],
+        "live_after": {
+          "CL": 5,
+          "E": 6,
+          "EC": 7,
+          "K": 3,
+          "KN": 0,
+          "L": 4,
+          "M": 1,
+          "NM": 2
+        },
+        "proof_obligation": "prove reversible/in-place implementation can consume overwritten source and write target in the same field lane without losing required information"
+      },
+      {
+        "index": 18,
+        "opcode": "field_mul",
+        "target": "ME",
+        "target_slot": 6,
+        "sources": [
+          "M",
+          "E"
+        ],
+        "source_slots_before_operation": {
+          "M": 1,
+          "E": 6
+        },
+        "overwritten_source": "E",
+        "overwritten_source_slot": 6,
+        "live_before": {
+          "CL": 5,
+          "E": 6,
+          "EC": 7,
+          "K": 3,
+          "KN": 0,
+          "L": 4,
+          "M": 1,
+          "NM": 2
+        },
+        "live_during_capacity": {
+          "CL": 5,
+          "EC": 7,
+          "K": 3,
+          "KN": 0,
+          "L": 4,
+          "M": 1,
+          "ME": 6,
+          "NM": 2
+        },
+        "expired_after_step": [
+          "M"
+        ],
+        "live_after": {
+          "CL": 5,
+          "EC": 7,
+          "K": 3,
+          "KN": 0,
+          "L": 4,
+          "ME": 6,
+          "NM": 2
+        },
+        "proof_obligation": "prove reversible/in-place implementation can consume overwritten source and write target in the same field lane without losing required information"
+      },
+      {
+        "index": 19,
+        "opcode": "field_mul",
+        "target": "LK",
+        "target_slot": 4,
+        "sources": [
+          "L",
+          "K"
+        ],
+        "source_slots_before_operation": {
+          "L": 4,
+          "K": 3
+        },
+        "overwritten_source": "L",
+        "overwritten_source_slot": 4,
+        "live_before": {
+          "CL": 5,
+          "EC": 7,
+          "K": 3,
+          "KN": 0,
+          "L": 4,
+          "ME": 6,
+          "NM": 2
+        },
+        "live_during_capacity": {
+          "CL": 5,
+          "EC": 7,
+          "K": 3,
+          "KN": 0,
+          "LK": 4,
+          "ME": 6,
+          "NM": 2
+        },
+        "expired_after_step": [
+          "K"
+        ],
+        "live_after": {
+          "CL": 5,
+          "EC": 7,
+          "KN": 0,
+          "LK": 4,
+          "ME": 6,
+          "NM": 2
+        },
+        "proof_obligation": "prove reversible/in-place implementation can consume overwritten source and write target in the same field lane without losing required information"
+      },
+      {
+        "index": 20,
+        "opcode": "field_sub",
+        "target": "X3",
+        "target_slot": 7,
+        "sources": [
+          "KN",
+          "EC"
+        ],
+        "source_slots_before_operation": {
+          "KN": 0,
+          "EC": 7
+        },
+        "overwritten_source": "EC",
+        "overwritten_source_slot": 7,
+        "live_before": {
+          "CL": 5,
+          "EC": 7,
+          "KN": 0,
+          "LK": 4,
+          "ME": 6,
+          "NM": 2
+        },
+        "live_during_capacity": {
+          "CL": 5,
+          "KN": 0,
+          "LK": 4,
+          "ME": 6,
+          "NM": 2,
+          "X3": 7
+        },
+        "expired_after_step": [
+          "KN"
+        ],
+        "live_after": {
+          "CL": 5,
+          "LK": 4,
+          "ME": 6,
+          "NM": 2,
+          "X3": 7
+        },
+        "proof_obligation": "prove reversible/in-place implementation can consume overwritten source and write target in the same field lane without losing required information"
+      },
+      {
+        "index": 21,
+        "opcode": "field_add",
+        "target": "Y3",
+        "target_slot": 5,
+        "sources": [
+          "NM",
+          "CL"
+        ],
+        "source_slots_before_operation": {
+          "NM": 2,
+          "CL": 5
+        },
+        "overwritten_source": "CL",
+        "overwritten_source_slot": 5,
+        "live_before": {
+          "CL": 5,
+          "LK": 4,
+          "ME": 6,
+          "NM": 2,
+          "X3": 7
+        },
+        "live_during_capacity": {
+          "LK": 4,
+          "ME": 6,
+          "NM": 2,
+          "X3": 7,
+          "Y3": 5
+        },
+        "expired_after_step": [
+          "NM"
+        ],
+        "live_after": {
+          "LK": 4,
+          "ME": 6,
+          "X3": 7,
+          "Y3": 5
+        },
+        "proof_obligation": "prove reversible/in-place implementation can consume overwritten source and write target in the same field lane without losing required information"
+      },
+      {
+        "index": 22,
+        "opcode": "field_add",
+        "target": "Z3",
+        "target_slot": 6,
+        "sources": [
+          "ME",
+          "LK"
+        ],
+        "source_slots_before_operation": {
+          "ME": 6,
+          "LK": 4
+        },
+        "overwritten_source": "ME",
+        "overwritten_source_slot": 6,
+        "live_before": {
+          "LK": 4,
+          "ME": 6,
+          "X3": 7,
+          "Y3": 5
+        },
+        "live_during_capacity": {
+          "LK": 4,
+          "X3": 7,
+          "Y3": 5,
+          "Z3": 6
+        },
+        "expired_after_step": [
+          "LK"
+        ],
+        "live_after": {
+          "X3": 7,
+          "Y3": 5,
+          "Z3": 6
+        },
+        "proof_obligation": "prove reversible/in-place implementation can consume overwritten source and write target in the same field lane without losing required information"
+      }
+    ],
+    "final_live_values": {
+      "X3": 7,
+      "Y3": 5,
+      "Z3": 6
+    },
+    "proxy_metrics": {
+      "peak_field_slots": 8,
+      "overwritten_row_count": 15,
+      "field_slot_improvement_vs_strict_single_assignment": 1
+    },
+    "notes": [
+      "This optimizer candidate reuses the physical slot of a last-use source for the operation target.",
+      "It is a search/proxy signal for in-place schedule development, not a public resource contract.",
+      "Every overwritten row remains invalid until a reversible or valid-subspace permutation implementation is supplied for that opcode and boundary state."
+    ]
+  },
+  "slot_gap": {
+    "expanded_single_assignment_peak_field_values": 9,
+    "expanded_live_after_peak_field_values": 8,
+    "counted_arithmetic_slots": 3,
+    "additional_field_slots_needed_without_in_place_schedule": 6,
+    "additional_logical_qubits_needed_without_in_place_schedule": 1536,
+    "fallback_schedule_additional_logical_qubits": 1536,
+    "destructive_candidate_peak_field_values": 8,
+    "destructive_candidate_additional_logical_qubits": 1280
   },
   "checks": {
     "formula_targets_match_engine_targets": true,

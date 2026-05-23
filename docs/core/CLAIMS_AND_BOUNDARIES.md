@@ -185,10 +185,15 @@ the modular kernels from it, and the modular certificate consumes that same IR.
 The selected tail macro is also no longer only prose plus a stage inventory:
 `tail_macro_engine.json` expands the formula into a 23-operation field-kernel
 stream, binds that stream's opcode histogram to the counted tail kernel, and
-records that the expanded single-assignment stream peaks at eight field values
-against the currently counted three arithmetic slots. That leaves the honest
-remaining obligation as an in-place/permutation-extension tail schedule or a
-resource-budget increase, not an undocumented cost formula.
+records that live-after liveness peaks at eight field values while the strict
+operation-concurrent single-assignment slot schedule peaks at nine field-sized
+lanes against the currently counted three arithmetic slots. That leaves the
+honest remaining obligation as an in-place/permutation-extension tail schedule
+or promotion of the generated expanded slot schedule into the public qubit
+budget, not an undocumented cost formula. The same engine emits an eight-slot
+destructive-overwrite candidate as an optimization signal; it is not accepted as
+resource evidence until each overwrite has a reversible or valid-subspace
+implementation proof.
 That artifact prevents the repository from silently promoting a materialized
 boundary result into a stronger full-engine claim.
 

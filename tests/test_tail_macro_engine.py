@@ -57,8 +57,16 @@ def test_tail_macro_engine_reconstructs_checked_artifact() -> None:
 def test_tail_macro_engine_exposes_unclosed_three_slot_gap() -> None:
     checked = _load('tail_macro_engine.json')
     assert checked['checks']['counted_slots_cover_expanded_single_assignment_peak'] is False
-    assert checked['slot_gap']['expanded_single_assignment_peak_field_values'] == 8
+    assert checked['slot_gap']['expanded_live_after_peak_field_values'] == 8
+    assert checked['slot_gap']['expanded_single_assignment_peak_field_values'] == 9
     assert checked['slot_gap']['counted_arithmetic_slots'] == 3
+    assert checked['slot_gap']['additional_logical_qubits_needed_without_in_place_schedule'] == 1536
+    assert checked['expanded_slot_schedule']['peak_field_slots'] == 9
+    assert sorted(checked['expanded_slot_schedule']['final_live_values']) == ['X3', 'Y3', 'Z3']
+    assert checked['destructive_candidate_schedule']['status'] == 'optimizer_candidate_not_a_reversible_proof'
+    assert checked['destructive_candidate_schedule']['peak_field_slots'] == 8
+    assert checked['destructive_candidate_schedule']['proxy_metrics']['field_slot_improvement_vs_strict_single_assignment'] == 1
+    assert checked['slot_gap']['destructive_candidate_peak_field_values'] == 8
     assert checked['completion_status'] == 'tail_cost_bound_to_expanded_field_operation_stream_but_in_place_schedule_unproven'
 
 

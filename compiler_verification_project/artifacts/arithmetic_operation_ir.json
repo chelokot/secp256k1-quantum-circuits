@@ -55,8 +55,12 @@
     "schema": "compiler-project-tail-macro-engine-v1",
     "opcode": "complete_a0_all_streamed_tail",
     "expanded_field_operation_count": 23,
-    "expanded_single_assignment_peak_field_values": 8,
+    "expanded_single_assignment_peak_field_values": 9,
     "counted_arithmetic_slots": 3,
+    "fallback_schedule_peak_field_slots": 9,
+    "fallback_schedule_additional_logical_qubits": 1536,
+    "destructive_candidate_peak_field_slots": 8,
+    "destructive_candidate_status": "optimizer_candidate_not_a_reversible_proof",
     "opcode_histogram": {
       "field_add": 6,
       "field_mul": 6,
