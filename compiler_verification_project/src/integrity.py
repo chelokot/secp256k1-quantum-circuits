@@ -566,6 +566,8 @@ def build_tail_macro_engine_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
     pass_only_schedule = engine['local_inverse_pass_only_schedule']
     operand_screen = engine['operand_overwrite_screen']
     reordered_schedule = engine['reordered_local_inverse_schedule']
+    reordered_slot_assignment = engine['reordered_slot_assignment']
+    reordered_replay = engine['reordered_replay_certificate']
     slot_gap = engine['slot_gap']
     kernel_lookup = {
         kernel['opcode']: int(kernel['exact_non_clifford_per_kernel'])
@@ -630,10 +632,20 @@ def build_tail_macro_engine_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
             and reordered_schedule['overwritten_row_count'] == 10
             and reordered_schedule['invalid_overwrite_count'] == 0
             and reordered_schedule['terminal_live_values'] == ['X3', 'Y3', 'Z3']
+            and reordered_slot_assignment['pass'] is True
+            and reordered_slot_assignment['peak_field_slots'] == 8
+            and reordered_replay['pass'] is True
+            and reordered_replay['owner_capacity_pass'] is True
+            and reordered_replay['checked_non_infinity_pairs'] == 110082
+            and reordered_replay['checked_lookup_infinity_pairs'] == 610
             and slot_gap['reordered_local_inverse_solution_found'] is True
             and slot_gap['reordered_local_inverse_peak_field_values'] == 8,
-            'reordered tail DAG reaches eight slots using only overwrite choices that passed the local inverse screen',
-            reordered_schedule,
+            'reordered tail DAG reaches eight slots using only overwrite choices that passed the local inverse screen, and the generated replay/owner-capacity certificates pass',
+            {
+                'schedule': reordered_schedule,
+                'slot_assignment': reordered_slot_assignment,
+                'replay': reordered_replay,
+            },
         ),
     ]
     return _summarize_checks(checks)

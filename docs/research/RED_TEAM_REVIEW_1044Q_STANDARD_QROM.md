@@ -233,8 +233,11 @@ Current additional diagnostic:
   reorders the DAG and finds an eight-slot schedule with 10 local-inverse-passed
   overwrites and zero invalid overwrites by computing `X3` before `NM`, `CL`,
   `ME`, and `LK`. This removes the fixed-order zero-multiplier blocker for the
-  eight-slot schedule, but it is still not a Clifford-complete reversible
-  implementation or a promoted public resource contract.
+  eight-slot schedule. The replay certificate executes that schedule across
+  110,082 non-infinity toy boundary pairs, checks 610 lookup-infinity no-op
+  boundary pairs, and derives an eight-slot owner-capacity ledger from generated
+  slot assignment. It is still not a Clifford-complete reversible implementation
+  or a promoted public resource contract.
 - `compiler_verification_project/artifacts/tail_macro_schedule_search.json`
   adds a stricter destructive-schedule search for the current formula DAG. It
   permits computing a formula value and dropping old values whenever the

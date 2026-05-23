@@ -21,7 +21,7 @@
     "release_corpus_preflight_sha256": "e8cc293c4fc4702e1fbc0bfcb9b8749515de99a348ecbf55ed123d68738c2f3a",
     "reusable_chunk_lowering_sha256": "c57403f9dbc8fe27f0cded6bbec2ddab50062dff4b012dc4462da78fb0d286cb",
     "streamed_lookup_tail_leaf_equivalence_sha256": "90f1880c839d7892eab0b748683d3186cbea9811409a4ab090c9d60d8cca0db3",
-    "tail_macro_engine_sha256": "3de431e772276823ca3ff23d63e62b0f0d52e79560b5dc10a6196745541adbb1",
+    "tail_macro_engine_sha256": "42df651f6eab6fefd7fdb354ccd96568327ecde0af408e5d7b9e657d41814ee8",
     "tail_macro_liveness_sha256": "5f60042f2ae891387583cc6ee10cb6fdd11aeef460eadac18c6e512712736cb1",
     "tail_macro_reversibility_sha256": "a5474f2a4b950577da8013b0023ead318a7ea92610406fce869c3adac4d0830a",
     "tail_macro_schedule_search_sha256": "f3af1926dd886d4c8a25831821657bcef57c3b589daddec08957cab7b1dcf81b"
@@ -87,8 +87,8 @@
     },
     {
       "name": "tail_macro_in_place_optimizer_signal",
-      "status": "reordered_eight_slot_local_inverse_schedule_generated_not_full_circuit_proof",
-      "evidence": "tail_macro_engine.reordered_local_inverse_schedule + tail_macro_engine.operand_overwrite_screen"
+      "status": "reordered_eight_slot_schedule_replayed_not_full_circuit_proof",
+      "evidence": "tail_macro_engine.reordered_local_inverse_schedule + tail_macro_engine.operand_overwrite_screen + tail_macro_engine.reordered_replay_certificate"
     },
     {
       "name": "point_add_semantic_boundary",

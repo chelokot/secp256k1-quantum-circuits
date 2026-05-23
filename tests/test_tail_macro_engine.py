@@ -86,8 +86,16 @@ def test_tail_macro_engine_exposes_unclosed_three_slot_gap() -> None:
     assert checked['reordered_local_inverse_schedule']['overwritten_row_count'] == 10
     assert checked['reordered_local_inverse_schedule']['invalid_overwrite_count'] == 0
     assert checked['reordered_local_inverse_schedule']['terminal_live_values'] == ['X3', 'Y3', 'Z3']
+    assert checked['reordered_slot_assignment']['pass'] is True
+    assert checked['reordered_slot_assignment']['peak_field_slots'] == 8
+    assert checked['reordered_replay_certificate']['pass'] is True
+    assert checked['reordered_replay_certificate']['owner_capacity_pass'] is True
+    assert checked['reordered_replay_certificate']['checked_non_infinity_pairs'] == 110082
+    assert checked['reordered_replay_certificate']['checked_lookup_infinity_pairs'] == 610
     assert checked['slot_gap']['reordered_local_inverse_solution_found'] is True
     assert checked['slot_gap']['reordered_local_inverse_peak_field_values'] == 8
+    assert checked['slot_gap']['reordered_slot_assignment_peak_field_values'] == 8
+    assert checked['slot_gap']['reordered_replay_pass'] is True
     assert checked['slot_gap']['destructive_candidate_peak_field_values'] == 8
     assert checked['completion_status'] == 'tail_cost_bound_to_expanded_field_operation_stream_but_in_place_schedule_unproven'
 

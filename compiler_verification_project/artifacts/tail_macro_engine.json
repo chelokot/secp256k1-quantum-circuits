@@ -3861,46 +3861,46 @@
               "failure_examples": [
                 {
                   "lookup": [
-                    1,
-                    8
+                    14,
+                    1
                   ],
                   "accumulator": [
-                    54,
-                    5
+                    58,
+                    55
                   ],
                   "before": {
                     "M": 0,
-                    "N": 19
+                    "N": 49
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    1,
-                    8
+                    14,
+                    1
                   ],
                   "accumulator": [
-                    31,
-                    5
+                    42,
+                    55
                   ],
                   "before": {
                     "M": 0,
-                    "N": 19
+                    "N": 49
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    1,
-                    8
+                    14,
+                    1
                   ],
                   "accumulator": [
-                    37,
-                    5
+                    22,
+                    55
                   ],
                   "before": {
                     "M": 0,
-                    "N": 19
+                    "N": 49
                   },
                   "target_value": 0
                 }
@@ -3913,46 +3913,46 @@
               "failure_examples": [
                 {
                   "lookup": [
-                    87,
-                    63
+                    1,
+                    11
                   ],
                   "accumulator": [
-                    70,
-                    36
+                    52,
+                    106
                   ],
                   "before": {
                     "M": 0,
-                    "N": 67
+                    "N": 43
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    87,
-                    63
+                    1,
+                    11
                   ],
                   "accumulator": [
-                    98,
-                    36
+                    6,
+                    106
                   ],
                   "before": {
                     "M": 0,
-                    "N": 67
+                    "N": 43
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    87,
-                    63
+                    1,
+                    11
                   ],
                   "accumulator": [
-                    50,
-                    36
+                    51,
+                    106
                   ],
                   "before": {
                     "M": 0,
-                    "N": 67
+                    "N": 43
                   },
                   "target_value": 0
                 }
@@ -3965,46 +3965,46 @@
               "failure_examples": [
                 {
                   "lookup": [
-                    131,
-                    145
+                    1,
+                    2
                   ],
                   "accumulator": [
-                    34,
-                    137
+                    53,
+                    77
                   ],
                   "before": {
                     "M": 0,
-                    "N": 121
+                    "N": 145
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    131,
-                    145
+                    1,
+                    2
                   ],
                   "accumulator": [
-                    16,
-                    137
+                    133,
+                    77
                   ],
                   "before": {
                     "M": 0,
-                    "N": 121
+                    "N": 145
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    131,
-                    145
+                    1,
+                    2
                   ],
                   "accumulator": [
-                    113,
-                    137
+                    140,
+                    77
                   ],
                   "before": {
                     "M": 0,
-                    "N": 121
+                    "N": 145
                   },
                   "target_value": 0
                 }
@@ -4017,46 +4017,46 @@
               "failure_examples": [
                 {
                   "lookup": [
-                    51,
-                    159
+                    9,
+                    114
                   ],
                   "accumulator": [
-                    109,
-                    183
+                    33,
+                    27
                   ],
                   "before": {
                     "M": 0,
-                    "N": 169
+                    "N": 37
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    51,
-                    159
+                    9,
+                    114
                   ],
                   "accumulator": [
-                    53,
-                    183
+                    138,
+                    27
                   ],
                   "before": {
                     "M": 0,
-                    "N": 169
+                    "N": 37
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    51,
-                    159
+                    9,
+                    114
                   ],
                   "accumulator": [
-                    49,
-                    183
+                    40,
+                    27
                   ],
                   "before": {
                     "M": 0,
-                    "N": 169
+                    "N": 37
                   },
                   "target_value": 0
                 }
@@ -4069,46 +4069,46 @@
               "examples": [
                 {
                   "lookup": [
-                    1,
-                    8
+                    14,
+                    1
                   ],
                   "accumulator": [
-                    54,
-                    5
+                    58,
+                    55
                   ],
                   "before": {
                     "M": 0,
-                    "N": 19
+                    "N": 49
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    1,
-                    8
+                    14,
+                    1
                   ],
                   "accumulator": [
-                    31,
-                    5
+                    42,
+                    55
                   ],
                   "before": {
                     "M": 0,
-                    "N": 19
+                    "N": 49
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    1,
-                    8
+                    14,
+                    1
                   ],
                   "accumulator": [
-                    37,
-                    5
+                    22,
+                    55
                   ],
                   "before": {
                     "M": 0,
-                    "N": 19
+                    "N": 49
                   },
                   "target_value": 0
                 }
@@ -4119,46 +4119,46 @@
               "examples": [
                 {
                   "lookup": [
-                    87,
-                    63
+                    1,
+                    11
                   ],
                   "accumulator": [
-                    70,
-                    36
+                    52,
+                    106
                   ],
                   "before": {
                     "M": 0,
-                    "N": 67
+                    "N": 43
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    87,
-                    63
+                    1,
+                    11
                   ],
                   "accumulator": [
-                    98,
-                    36
+                    6,
+                    106
                   ],
                   "before": {
                     "M": 0,
-                    "N": 67
+                    "N": 43
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    87,
-                    63
+                    1,
+                    11
                   ],
                   "accumulator": [
-                    50,
-                    36
+                    51,
+                    106
                   ],
                   "before": {
                     "M": 0,
-                    "N": 67
+                    "N": 43
                   },
                   "target_value": 0
                 }
@@ -4169,46 +4169,46 @@
               "examples": [
                 {
                   "lookup": [
-                    131,
-                    145
+                    1,
+                    2
                   ],
                   "accumulator": [
-                    34,
-                    137
+                    53,
+                    77
                   ],
                   "before": {
                     "M": 0,
-                    "N": 121
+                    "N": 145
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    131,
-                    145
+                    1,
+                    2
                   ],
                   "accumulator": [
-                    16,
-                    137
+                    133,
+                    77
                   ],
                   "before": {
                     "M": 0,
-                    "N": 121
+                    "N": 145
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    131,
-                    145
+                    1,
+                    2
                   ],
                   "accumulator": [
-                    113,
-                    137
+                    140,
+                    77
                   ],
                   "before": {
                     "M": 0,
-                    "N": 121
+                    "N": 145
                   },
                   "target_value": 0
                 }
@@ -4219,46 +4219,46 @@
               "examples": [
                 {
                   "lookup": [
-                    51,
-                    159
+                    9,
+                    114
                   ],
                   "accumulator": [
-                    109,
-                    183
+                    33,
+                    27
                   ],
                   "before": {
                     "M": 0,
-                    "N": 169
+                    "N": 37
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    51,
-                    159
+                    9,
+                    114
                   ],
                   "accumulator": [
-                    53,
-                    183
+                    138,
+                    27
                   ],
                   "before": {
                     "M": 0,
-                    "N": 169
+                    "N": 37
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    51,
-                    159
+                    9,
+                    114
                   ],
                   "accumulator": [
-                    49,
-                    183
+                    40,
+                    27
                   ],
                   "before": {
                     "M": 0,
-                    "N": 169
+                    "N": 37
                   },
                   "target_value": 0
                 }
@@ -4643,45 +4643,45 @@
               "failure_examples": [
                 {
                   "lookup": [
-                    1,
-                    8
+                    14,
+                    1
                   ],
                   "accumulator": [
-                    54,
-                    5
+                    58,
+                    55
                   ],
                   "before": {
-                    "E": 13,
+                    "E": 56,
                     "M": 0
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    1,
-                    8
+                    14,
+                    1
                   ],
                   "accumulator": [
-                    31,
-                    5
+                    42,
+                    55
                   ],
                   "before": {
-                    "E": 13,
+                    "E": 56,
                     "M": 0
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    1,
-                    8
+                    14,
+                    1
                   ],
                   "accumulator": [
-                    37,
-                    5
+                    22,
+                    55
                   ],
                   "before": {
-                    "E": 13,
+                    "E": 56,
                     "M": 0
                   },
                   "target_value": 0
@@ -4695,45 +4695,45 @@
               "failure_examples": [
                 {
                   "lookup": [
-                    87,
-                    63
+                    1,
+                    11
                   ],
                   "accumulator": [
-                    70,
-                    36
+                    52,
+                    106
                   ],
                   "before": {
-                    "E": 99,
+                    "E": 8,
                     "M": 0
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    87,
-                    63
+                    1,
+                    11
                   ],
                   "accumulator": [
-                    98,
-                    36
+                    6,
+                    106
                   ],
                   "before": {
-                    "E": 99,
+                    "E": 8,
                     "M": 0
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    87,
-                    63
+                    1,
+                    11
                   ],
                   "accumulator": [
-                    50,
-                    36
+                    51,
+                    106
                   ],
                   "before": {
-                    "E": 99,
+                    "E": 8,
                     "M": 0
                   },
                   "target_value": 0
@@ -4747,45 +4747,45 @@
               "failure_examples": [
                 {
                   "lookup": [
-                    131,
-                    145
+                    1,
+                    2
                   ],
                   "accumulator": [
-                    34,
-                    137
+                    53,
+                    77
                   ],
                   "before": {
-                    "E": 119,
+                    "E": 79,
                     "M": 0
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    131,
-                    145
+                    1,
+                    2
                   ],
                   "accumulator": [
-                    16,
-                    137
+                    133,
+                    77
                   ],
                   "before": {
-                    "E": 119,
+                    "E": 79,
                     "M": 0
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    131,
-                    145
+                    1,
+                    2
                   ],
                   "accumulator": [
-                    113,
-                    137
+                    140,
+                    77
                   ],
                   "before": {
-                    "E": 119,
+                    "E": 79,
                     "M": 0
                   },
                   "target_value": 0
@@ -4799,45 +4799,45 @@
               "failure_examples": [
                 {
                   "lookup": [
-                    51,
-                    159
+                    9,
+                    114
                   ],
                   "accumulator": [
-                    109,
-                    183
+                    33,
+                    27
                   ],
                   "before": {
-                    "E": 131,
+                    "E": 141,
                     "M": 0
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    51,
-                    159
+                    9,
+                    114
                   ],
                   "accumulator": [
-                    53,
-                    183
+                    138,
+                    27
                   ],
                   "before": {
-                    "E": 131,
+                    "E": 141,
                     "M": 0
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    51,
-                    159
+                    9,
+                    114
                   ],
                   "accumulator": [
-                    49,
-                    183
+                    40,
+                    27
                   ],
                   "before": {
-                    "E": 131,
+                    "E": 141,
                     "M": 0
                   },
                   "target_value": 0
@@ -4851,45 +4851,45 @@
               "examples": [
                 {
                   "lookup": [
-                    1,
-                    8
+                    14,
+                    1
                   ],
                   "accumulator": [
-                    54,
-                    5
+                    58,
+                    55
                   ],
                   "before": {
-                    "E": 13,
+                    "E": 56,
                     "M": 0
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    1,
-                    8
+                    14,
+                    1
                   ],
                   "accumulator": [
-                    31,
-                    5
+                    42,
+                    55
                   ],
                   "before": {
-                    "E": 13,
+                    "E": 56,
                     "M": 0
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    1,
-                    8
+                    14,
+                    1
                   ],
                   "accumulator": [
-                    37,
-                    5
+                    22,
+                    55
                   ],
                   "before": {
-                    "E": 13,
+                    "E": 56,
                     "M": 0
                   },
                   "target_value": 0
@@ -4901,45 +4901,45 @@
               "examples": [
                 {
                   "lookup": [
-                    87,
-                    63
+                    1,
+                    11
                   ],
                   "accumulator": [
-                    70,
-                    36
+                    52,
+                    106
                   ],
                   "before": {
-                    "E": 99,
+                    "E": 8,
                     "M": 0
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    87,
-                    63
+                    1,
+                    11
                   ],
                   "accumulator": [
-                    98,
-                    36
+                    6,
+                    106
                   ],
                   "before": {
-                    "E": 99,
+                    "E": 8,
                     "M": 0
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    87,
-                    63
+                    1,
+                    11
                   ],
                   "accumulator": [
-                    50,
-                    36
+                    51,
+                    106
                   ],
                   "before": {
-                    "E": 99,
+                    "E": 8,
                     "M": 0
                   },
                   "target_value": 0
@@ -4951,45 +4951,45 @@
               "examples": [
                 {
                   "lookup": [
-                    131,
-                    145
+                    1,
+                    2
                   ],
                   "accumulator": [
-                    34,
-                    137
+                    53,
+                    77
                   ],
                   "before": {
-                    "E": 119,
+                    "E": 79,
                     "M": 0
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    131,
-                    145
+                    1,
+                    2
                   ],
                   "accumulator": [
-                    16,
-                    137
+                    133,
+                    77
                   ],
                   "before": {
-                    "E": 119,
+                    "E": 79,
                     "M": 0
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    131,
-                    145
+                    1,
+                    2
                   ],
                   "accumulator": [
-                    113,
-                    137
+                    140,
+                    77
                   ],
                   "before": {
-                    "E": 119,
+                    "E": 79,
                     "M": 0
                   },
                   "target_value": 0
@@ -5001,45 +5001,45 @@
               "examples": [
                 {
                   "lookup": [
-                    51,
-                    159
+                    9,
+                    114
                   ],
                   "accumulator": [
-                    109,
-                    183
+                    33,
+                    27
                   ],
                   "before": {
-                    "E": 131,
+                    "E": 141,
                     "M": 0
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    51,
-                    159
+                    9,
+                    114
                   ],
                   "accumulator": [
-                    53,
-                    183
+                    138,
+                    27
                   ],
                   "before": {
-                    "E": 131,
+                    "E": 141,
                     "M": 0
                   },
                   "target_value": 0
                 },
                 {
                   "lookup": [
-                    51,
-                    159
+                    9,
+                    114
                   ],
                   "accumulator": [
-                    49,
-                    183
+                    40,
+                    27
                   ],
                   "before": {
-                    "E": 131,
+                    "E": 141,
                     "M": 0
                   },
                   "target_value": 0
@@ -5850,12 +5850,12 @@
             {
               "curve": "toy61_b2",
               "lookup": [
-                1,
-                8
+                14,
+                1
               ],
               "accumulator": [
-                54,
-                5
+                58,
+                55
               ],
               "reason": "M can be zero on the checked boundary domain"
             }
@@ -5913,12 +5913,12 @@
             {
               "curve": "toy61_b2",
               "lookup": [
-                1,
-                8
+                14,
+                1
               ],
               "accumulator": [
-                54,
-                5
+                58,
+                55
               ],
               "reason": "M can be zero on the checked boundary domain"
             }
@@ -6153,7 +6153,9 @@
     "overwrite_choice_screen_pass": false,
     "operand_overwrite_screen_pass": false,
     "reordered_local_inverse_peak_field_values": 8,
-    "reordered_local_inverse_solution_found": true
+    "reordered_local_inverse_solution_found": true,
+    "reordered_slot_assignment_peak_field_values": 8,
+    "reordered_replay_pass": true
   },
   "local_inverse_pass_only_schedule": {
     "schedule_model": "local_inverse_pass_only_overwrite_candidate",
@@ -7476,12 +7478,12 @@
           {
             "curve": "toy61_b2",
             "lookup": [
-              1,
-              8
+              14,
+              1
             ],
             "accumulator": [
-              37,
-              56
+              22,
+              6
             ],
             "reason": "N can be zero on the checked boundary domain"
           }
@@ -7605,12 +7607,12 @@
           {
             "curve": "toy61_b2",
             "lookup": [
-              1,
-              8
+              14,
+              1
             ],
             "accumulator": [
-              37,
-              56
+              22,
+              6
             ],
             "reason": "N can be zero on the checked boundary domain"
           }
@@ -7638,12 +7640,12 @@
           {
             "curve": "toy61_b2",
             "lookup": [
-              1,
-              8
+              14,
+              1
             ],
             "accumulator": [
-              54,
-              5
+              58,
+              55
             ],
             "reason": "M can be zero on the checked boundary domain"
           }
@@ -7731,12 +7733,12 @@
           {
             "curve": "toy61_b2",
             "lookup": [
-              1,
-              8
+              14,
+              1
             ],
             "accumulator": [
-              54,
-              5
+              58,
+              55
             ],
             "reason": "M can be zero on the checked boundary domain"
           }
@@ -8865,6 +8867,918 @@
     "notes": [
       "This search reorders the expanded tail operation DAG and allows an overwrite only when the chosen operand passed the toy-boundary local inverse screen.",
       "A solution is stronger than the fixed-order destructive candidate, but it is still a schedule-level certificate rather than a Clifford-complete reversible circuit implementation."
+    ]
+  },
+  "reordered_slot_assignment": {
+    "schema": "compiler-project-tail-reordered-slot-assignment-v1",
+    "status": "slot_assignment_generated_for_reordered_schedule",
+    "field_bits": 256,
+    "counted_arithmetic_slots": 3,
+    "peak_field_slots": 8,
+    "additional_field_slots_over_counted_leaf": 5,
+    "additional_logical_qubits_over_counted_leaf": 1280,
+    "owner_capacity_rows": [
+      {
+        "slot": 0,
+        "owner_id": "tail_reordered_slot_0",
+        "logical_qubits": 256,
+        "capacity_field_values": 1,
+        "counted_in_current_leaf_budget": true
+      },
+      {
+        "slot": 1,
+        "owner_id": "tail_reordered_slot_1",
+        "logical_qubits": 256,
+        "capacity_field_values": 1,
+        "counted_in_current_leaf_budget": true
+      },
+      {
+        "slot": 2,
+        "owner_id": "tail_reordered_slot_2",
+        "logical_qubits": 256,
+        "capacity_field_values": 1,
+        "counted_in_current_leaf_budget": true
+      },
+      {
+        "slot": 3,
+        "owner_id": "tail_reordered_slot_3",
+        "logical_qubits": 256,
+        "capacity_field_values": 1,
+        "counted_in_current_leaf_budget": false
+      },
+      {
+        "slot": 4,
+        "owner_id": "tail_reordered_slot_4",
+        "logical_qubits": 256,
+        "capacity_field_values": 1,
+        "counted_in_current_leaf_budget": false
+      },
+      {
+        "slot": 5,
+        "owner_id": "tail_reordered_slot_5",
+        "logical_qubits": 256,
+        "capacity_field_values": 1,
+        "counted_in_current_leaf_budget": false
+      },
+      {
+        "slot": 6,
+        "owner_id": "tail_reordered_slot_6",
+        "logical_qubits": 256,
+        "capacity_field_values": 1,
+        "counted_in_current_leaf_budget": false
+      },
+      {
+        "slot": 7,
+        "owner_id": "tail_reordered_slot_7",
+        "logical_qubits": 256,
+        "capacity_field_values": 1,
+        "counted_in_current_leaf_budget": false
+      }
+    ],
+    "rows": [
+      {
+        "schedule_index": 0,
+        "operation_index": 0,
+        "target": "G",
+        "target_slot": 3,
+        "overwritten_source": null,
+        "source_slots_before_operation": {
+          "X": 0,
+          "Y": 1
+        },
+        "live_before": {
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during": {
+          "G": 3,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_after": {
+          "G": 3,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "owner_id": "tail_reordered_slot_3"
+      },
+      {
+        "schedule_index": 1,
+        "operation_index": 1,
+        "target": "H",
+        "target_slot": 4,
+        "overwritten_source": null,
+        "source_slots_before_operation": {
+          "G": 3
+        },
+        "live_before": {
+          "G": 3,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during": {
+          "G": 3,
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_after": {
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "owner_id": "tail_reordered_slot_4"
+      },
+      {
+        "schedule_index": 2,
+        "operation_index": 3,
+        "target": "Zx",
+        "target_slot": 3,
+        "overwritten_source": null,
+        "source_slots_before_operation": {
+          "Z": 2
+        },
+        "live_before": {
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during": {
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2,
+          "Zx": 3
+        },
+        "live_after": {
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2,
+          "Zx": 3
+        },
+        "owner_id": "tail_reordered_slot_3"
+      },
+      {
+        "schedule_index": 3,
+        "operation_index": 4,
+        "target": "C_input",
+        "target_slot": 3,
+        "overwritten_source": "Zx",
+        "source_slots_before_operation": {
+          "X": 0,
+          "Zx": 3
+        },
+        "live_before": {
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2,
+          "Zx": 3
+        },
+        "live_during": {
+          "C_input": 3,
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_after": {
+          "C_input": 3,
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "owner_id": "tail_reordered_slot_3"
+      },
+      {
+        "schedule_index": 4,
+        "operation_index": 2,
+        "target": "A",
+        "target_slot": 0,
+        "overwritten_source": "X",
+        "source_slots_before_operation": {
+          "X": 0
+        },
+        "live_before": {
+          "C_input": 3,
+          "H": 4,
+          "X": 0,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during": {
+          "A": 0,
+          "C_input": 3,
+          "H": 4,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_after": {
+          "A": 0,
+          "C_input": 3,
+          "H": 4,
+          "Y": 1,
+          "Z": 2
+        },
+        "owner_id": "tail_reordered_slot_0"
+      },
+      {
+        "schedule_index": 5,
+        "operation_index": 5,
+        "target": "C",
+        "target_slot": 3,
+        "overwritten_source": "C_input",
+        "source_slots_before_operation": {
+          "C_input": 3
+        },
+        "live_before": {
+          "A": 0,
+          "C_input": 3,
+          "H": 4,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during": {
+          "A": 0,
+          "C": 3,
+          "H": 4,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_after": {
+          "A": 0,
+          "C": 3,
+          "H": 4,
+          "Y": 1,
+          "Z": 2
+        },
+        "owner_id": "tail_reordered_slot_3"
+      },
+      {
+        "schedule_index": 6,
+        "operation_index": 9,
+        "target": "yZ",
+        "target_slot": 5,
+        "overwritten_source": null,
+        "source_slots_before_operation": {
+          "Z": 2
+        },
+        "live_before": {
+          "A": 0,
+          "C": 3,
+          "H": 4,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during": {
+          "A": 0,
+          "C": 3,
+          "H": 4,
+          "Y": 1,
+          "Z": 2,
+          "yZ": 5
+        },
+        "live_after": {
+          "A": 0,
+          "C": 3,
+          "H": 4,
+          "Y": 1,
+          "Z": 2,
+          "yZ": 5
+        },
+        "owner_id": "tail_reordered_slot_5"
+      },
+      {
+        "schedule_index": 7,
+        "operation_index": 10,
+        "target": "E",
+        "target_slot": 5,
+        "overwritten_source": "yZ",
+        "source_slots_before_operation": {
+          "Y": 1,
+          "yZ": 5
+        },
+        "live_before": {
+          "A": 0,
+          "C": 3,
+          "H": 4,
+          "Y": 1,
+          "Z": 2,
+          "yZ": 5
+        },
+        "live_during": {
+          "A": 0,
+          "C": 3,
+          "E": 5,
+          "H": 4,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_after": {
+          "A": 0,
+          "C": 3,
+          "E": 5,
+          "H": 4,
+          "Y": 1,
+          "Z": 2
+        },
+        "owner_id": "tail_reordered_slot_5"
+      },
+      {
+        "schedule_index": 8,
+        "operation_index": 6,
+        "target": "I",
+        "target_slot": 1,
+        "overwritten_source": "Y",
+        "source_slots_before_operation": {
+          "Y": 1
+        },
+        "live_before": {
+          "A": 0,
+          "C": 3,
+          "E": 5,
+          "H": 4,
+          "Y": 1,
+          "Z": 2
+        },
+        "live_during": {
+          "A": 0,
+          "C": 3,
+          "E": 5,
+          "H": 4,
+          "I": 1,
+          "Z": 2
+        },
+        "live_after": {
+          "A": 0,
+          "C": 3,
+          "E": 5,
+          "H": 4,
+          "I": 1,
+          "Z": 2
+        },
+        "owner_id": "tail_reordered_slot_1"
+      },
+      {
+        "schedule_index": 9,
+        "operation_index": 7,
+        "target": "K",
+        "target_slot": 4,
+        "overwritten_source": "H",
+        "source_slots_before_operation": {
+          "H": 4,
+          "A": 0,
+          "I": 1
+        },
+        "live_before": {
+          "A": 0,
+          "C": 3,
+          "E": 5,
+          "H": 4,
+          "I": 1,
+          "Z": 2
+        },
+        "live_during": {
+          "A": 0,
+          "C": 3,
+          "E": 5,
+          "I": 1,
+          "K": 4,
+          "Z": 2
+        },
+        "live_after": {
+          "A": 0,
+          "C": 3,
+          "E": 5,
+          "I": 1,
+          "K": 4,
+          "Z": 2
+        },
+        "owner_id": "tail_reordered_slot_4"
+      },
+      {
+        "schedule_index": 10,
+        "operation_index": 8,
+        "target": "L",
+        "target_slot": 0,
+        "overwritten_source": "A",
+        "source_slots_before_operation": {
+          "A": 0
+        },
+        "live_before": {
+          "A": 0,
+          "C": 3,
+          "E": 5,
+          "I": 1,
+          "K": 4,
+          "Z": 2
+        },
+        "live_during": {
+          "C": 3,
+          "E": 5,
+          "I": 1,
+          "K": 4,
+          "L": 0,
+          "Z": 2
+        },
+        "live_after": {
+          "C": 3,
+          "E": 5,
+          "I": 1,
+          "K": 4,
+          "L": 0,
+          "Z": 2
+        },
+        "owner_id": "tail_reordered_slot_0"
+      },
+      {
+        "schedule_index": 11,
+        "operation_index": 11,
+        "target": "F",
+        "target_slot": 2,
+        "overwritten_source": "Z",
+        "source_slots_before_operation": {
+          "Z": 2
+        },
+        "live_before": {
+          "C": 3,
+          "E": 5,
+          "I": 1,
+          "K": 4,
+          "L": 0,
+          "Z": 2
+        },
+        "live_during": {
+          "C": 3,
+          "E": 5,
+          "F": 2,
+          "I": 1,
+          "K": 4,
+          "L": 0
+        },
+        "live_after": {
+          "C": 3,
+          "E": 5,
+          "F": 2,
+          "I": 1,
+          "K": 4,
+          "L": 0
+        },
+        "owner_id": "tail_reordered_slot_2"
+      },
+      {
+        "schedule_index": 12,
+        "operation_index": 12,
+        "target": "M",
+        "target_slot": 6,
+        "overwritten_source": null,
+        "source_slots_before_operation": {
+          "I": 1,
+          "F": 2
+        },
+        "live_before": {
+          "C": 3,
+          "E": 5,
+          "F": 2,
+          "I": 1,
+          "K": 4,
+          "L": 0
+        },
+        "live_during": {
+          "C": 3,
+          "E": 5,
+          "F": 2,
+          "I": 1,
+          "K": 4,
+          "L": 0,
+          "M": 6
+        },
+        "live_after": {
+          "C": 3,
+          "E": 5,
+          "F": 2,
+          "I": 1,
+          "K": 4,
+          "L": 0,
+          "M": 6
+        },
+        "owner_id": "tail_reordered_slot_6"
+      },
+      {
+        "schedule_index": 13,
+        "operation_index": 13,
+        "target": "N",
+        "target_slot": 1,
+        "overwritten_source": "I",
+        "source_slots_before_operation": {
+          "I": 1,
+          "F": 2
+        },
+        "live_before": {
+          "C": 3,
+          "E": 5,
+          "F": 2,
+          "I": 1,
+          "K": 4,
+          "L": 0,
+          "M": 6
+        },
+        "live_during": {
+          "C": 3,
+          "E": 5,
+          "F": 2,
+          "K": 4,
+          "L": 0,
+          "M": 6,
+          "N": 1
+        },
+        "live_after": {
+          "C": 3,
+          "E": 5,
+          "K": 4,
+          "L": 0,
+          "M": 6,
+          "N": 1
+        },
+        "owner_id": "tail_reordered_slot_1"
+      },
+      {
+        "schedule_index": 14,
+        "operation_index": 14,
+        "target": "KN",
+        "target_slot": 2,
+        "overwritten_source": null,
+        "source_slots_before_operation": {
+          "K": 4,
+          "N": 1
+        },
+        "live_before": {
+          "C": 3,
+          "E": 5,
+          "K": 4,
+          "L": 0,
+          "M": 6,
+          "N": 1
+        },
+        "live_during": {
+          "C": 3,
+          "E": 5,
+          "K": 4,
+          "KN": 2,
+          "L": 0,
+          "M": 6,
+          "N": 1
+        },
+        "live_after": {
+          "C": 3,
+          "E": 5,
+          "K": 4,
+          "KN": 2,
+          "L": 0,
+          "M": 6,
+          "N": 1
+        },
+        "owner_id": "tail_reordered_slot_2"
+      },
+      {
+        "schedule_index": 15,
+        "operation_index": 15,
+        "target": "EC",
+        "target_slot": 7,
+        "overwritten_source": null,
+        "source_slots_before_operation": {
+          "E": 5,
+          "C": 3
+        },
+        "live_before": {
+          "C": 3,
+          "E": 5,
+          "K": 4,
+          "KN": 2,
+          "L": 0,
+          "M": 6,
+          "N": 1
+        },
+        "live_during": {
+          "C": 3,
+          "E": 5,
+          "EC": 7,
+          "K": 4,
+          "KN": 2,
+          "L": 0,
+          "M": 6,
+          "N": 1
+        },
+        "live_after": {
+          "C": 3,
+          "E": 5,
+          "EC": 7,
+          "K": 4,
+          "KN": 2,
+          "L": 0,
+          "M": 6,
+          "N": 1
+        },
+        "owner_id": "tail_reordered_slot_7"
+      },
+      {
+        "schedule_index": 16,
+        "operation_index": 20,
+        "target": "X3",
+        "target_slot": 2,
+        "overwritten_source": "KN",
+        "source_slots_before_operation": {
+          "KN": 2,
+          "EC": 7
+        },
+        "live_before": {
+          "C": 3,
+          "E": 5,
+          "EC": 7,
+          "K": 4,
+          "KN": 2,
+          "L": 0,
+          "M": 6,
+          "N": 1
+        },
+        "live_during": {
+          "C": 3,
+          "E": 5,
+          "EC": 7,
+          "K": 4,
+          "L": 0,
+          "M": 6,
+          "N": 1,
+          "X3": 2
+        },
+        "live_after": {
+          "C": 3,
+          "E": 5,
+          "K": 4,
+          "L": 0,
+          "M": 6,
+          "N": 1,
+          "X3": 2
+        },
+        "owner_id": "tail_reordered_slot_2"
+      },
+      {
+        "schedule_index": 17,
+        "operation_index": 16,
+        "target": "NM",
+        "target_slot": 7,
+        "overwritten_source": null,
+        "source_slots_before_operation": {
+          "N": 1,
+          "M": 6
+        },
+        "live_before": {
+          "C": 3,
+          "E": 5,
+          "K": 4,
+          "L": 0,
+          "M": 6,
+          "N": 1,
+          "X3": 2
+        },
+        "live_during": {
+          "C": 3,
+          "E": 5,
+          "K": 4,
+          "L": 0,
+          "M": 6,
+          "N": 1,
+          "NM": 7,
+          "X3": 2
+        },
+        "live_after": {
+          "C": 3,
+          "E": 5,
+          "K": 4,
+          "L": 0,
+          "M": 6,
+          "NM": 7,
+          "X3": 2
+        },
+        "owner_id": "tail_reordered_slot_7"
+      },
+      {
+        "schedule_index": 18,
+        "operation_index": 17,
+        "target": "CL",
+        "target_slot": 1,
+        "overwritten_source": null,
+        "source_slots_before_operation": {
+          "C": 3,
+          "L": 0
+        },
+        "live_before": {
+          "C": 3,
+          "E": 5,
+          "K": 4,
+          "L": 0,
+          "M": 6,
+          "NM": 7,
+          "X3": 2
+        },
+        "live_during": {
+          "C": 3,
+          "CL": 1,
+          "E": 5,
+          "K": 4,
+          "L": 0,
+          "M": 6,
+          "NM": 7,
+          "X3": 2
+        },
+        "live_after": {
+          "CL": 1,
+          "E": 5,
+          "K": 4,
+          "L": 0,
+          "M": 6,
+          "NM": 7,
+          "X3": 2
+        },
+        "owner_id": "tail_reordered_slot_1"
+      },
+      {
+        "schedule_index": 19,
+        "operation_index": 18,
+        "target": "ME",
+        "target_slot": 3,
+        "overwritten_source": null,
+        "source_slots_before_operation": {
+          "M": 6,
+          "E": 5
+        },
+        "live_before": {
+          "CL": 1,
+          "E": 5,
+          "K": 4,
+          "L": 0,
+          "M": 6,
+          "NM": 7,
+          "X3": 2
+        },
+        "live_during": {
+          "CL": 1,
+          "E": 5,
+          "K": 4,
+          "L": 0,
+          "M": 6,
+          "ME": 3,
+          "NM": 7,
+          "X3": 2
+        },
+        "live_after": {
+          "CL": 1,
+          "K": 4,
+          "L": 0,
+          "ME": 3,
+          "NM": 7,
+          "X3": 2
+        },
+        "owner_id": "tail_reordered_slot_3"
+      },
+      {
+        "schedule_index": 20,
+        "operation_index": 19,
+        "target": "LK",
+        "target_slot": 5,
+        "overwritten_source": null,
+        "source_slots_before_operation": {
+          "L": 0,
+          "K": 4
+        },
+        "live_before": {
+          "CL": 1,
+          "K": 4,
+          "L": 0,
+          "ME": 3,
+          "NM": 7,
+          "X3": 2
+        },
+        "live_during": {
+          "CL": 1,
+          "K": 4,
+          "L": 0,
+          "LK": 5,
+          "ME": 3,
+          "NM": 7,
+          "X3": 2
+        },
+        "live_after": {
+          "CL": 1,
+          "LK": 5,
+          "ME": 3,
+          "NM": 7,
+          "X3": 2
+        },
+        "owner_id": "tail_reordered_slot_5"
+      },
+      {
+        "schedule_index": 21,
+        "operation_index": 21,
+        "target": "Y3",
+        "target_slot": 0,
+        "overwritten_source": null,
+        "source_slots_before_operation": {
+          "NM": 7,
+          "CL": 1
+        },
+        "live_before": {
+          "CL": 1,
+          "LK": 5,
+          "ME": 3,
+          "NM": 7,
+          "X3": 2
+        },
+        "live_during": {
+          "CL": 1,
+          "LK": 5,
+          "ME": 3,
+          "NM": 7,
+          "X3": 2,
+          "Y3": 0
+        },
+        "live_after": {
+          "LK": 5,
+          "ME": 3,
+          "X3": 2,
+          "Y3": 0
+        },
+        "owner_id": "tail_reordered_slot_0"
+      },
+      {
+        "schedule_index": 22,
+        "operation_index": 22,
+        "target": "Z3",
+        "target_slot": 1,
+        "overwritten_source": null,
+        "source_slots_before_operation": {
+          "ME": 3,
+          "LK": 5
+        },
+        "live_before": {
+          "LK": 5,
+          "ME": 3,
+          "X3": 2,
+          "Y3": 0
+        },
+        "live_during": {
+          "LK": 5,
+          "ME": 3,
+          "X3": 2,
+          "Y3": 0,
+          "Z3": 1
+        },
+        "live_after": {
+          "X3": 2,
+          "Y3": 0,
+          "Z3": 1
+        },
+        "owner_id": "tail_reordered_slot_1"
+      }
+    ],
+    "final_live_values": {
+      "X3": 2,
+      "Y3": 0,
+      "Z3": 1
+    },
+    "pass": true
+  },
+  "reordered_replay_certificate": {
+    "schema": "compiler-project-tail-reordered-schedule-replay-certificate-v1",
+    "status": "toy_boundary_reordered_schedule_executable_replay",
+    "checked_non_infinity_pairs": 110082,
+    "checked_lookup_infinity_pairs": 610,
+    "category_totals": {
+      "ordinary": 108264,
+      "doubling": 606,
+      "inverse": 606,
+      "accumulator_infinity": 606,
+      "lookup_infinity": 610
+    },
+    "operation_count": 23,
+    "schedule_row_count": 23,
+    "semantic_failures": [],
+    "replay_failures": [],
+    "owner_capacity_pass": true,
+    "pass": true,
+    "notes": [
+      "Non-infinity lookup cases execute the reordered schedule exactly and compare X3/Y3/Z3 with the canonical tail formula and affine point-add boundary.",
+      "Lookup-infinity cases are checked as the external boundary no-op used by the streamed leaf contract; the reordered arithmetic schedule is not executed for that case.",
+      "Owner capacity is derived from the generated slot assignment for the executable schedule, not from a manually selected tracked-register list."
     ]
   },
   "checks": {

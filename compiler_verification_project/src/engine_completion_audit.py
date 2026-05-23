@@ -167,6 +167,10 @@ def build_engine_completion_audit(
             and tail_macro_engine['reordered_local_inverse_schedule']['solution_found'] is True
             and int(tail_macro_engine['reordered_local_inverse_schedule']['peak_field_slots']) == 8
             and int(tail_macro_engine['reordered_local_inverse_schedule']['invalid_overwrite_count']) == 0
+            and tail_macro_engine['reordered_slot_assignment']['pass'] is True
+            and int(tail_macro_engine['reordered_slot_assignment']['peak_field_slots']) == 8
+            and tail_macro_engine['reordered_replay_certificate']['pass'] is True
+            and tail_macro_engine['reordered_replay_certificate']['owner_capacity_pass'] is True
             and tail_macro_liveness['pass'] is True
             and tail_macro_reversibility['canonical_subgroup_domain']['all_checked_rows_injective'] is True
             and tail_macro_reversibility['fixed_lookup_reachable_orbit_domain']['all_checked_rows_injective'] is True
@@ -225,8 +229,8 @@ def build_engine_completion_audit(
         },
         {
             'name': 'tail_macro_in_place_optimizer_signal',
-            'status': 'reordered_eight_slot_local_inverse_schedule_generated_not_full_circuit_proof',
-            'evidence': 'tail_macro_engine.reordered_local_inverse_schedule + tail_macro_engine.operand_overwrite_screen',
+            'status': 'reordered_eight_slot_schedule_replayed_not_full_circuit_proof',
+            'evidence': 'tail_macro_engine.reordered_local_inverse_schedule + tail_macro_engine.operand_overwrite_screen + tail_macro_engine.reordered_replay_certificate',
         },
         {
             'name': 'point_add_semantic_boundary',

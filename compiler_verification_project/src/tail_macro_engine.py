@@ -5,7 +5,16 @@ from __future__ import annotations
 from collections import Counter, deque
 from typing import Any, Dict, Mapping, Sequence
 
-from tail_macro_reversibility import TOY_CURVES, Point, _canonical_projective, _subgroup_points
+from tail_macro_reversibility import (
+    TOY_CURVES,
+    Point,
+    _add_points,
+    _boundary_case,
+    _canonical_projective,
+    _projective_to_affine,
+    _subgroup_points,
+    _tail_map,
+)
 
 
 TAIL_MACRO_OPCODE = 'complete_a0_all_streamed_tail'
@@ -357,7 +366,7 @@ def _operation_value(
     if opcode == 'field_triple':
         return (3 * resolved[0]) % modulus
     if opcode == 'mul_const':
-        multiplier = int(constant) if constant is not None else 3 * int(curve_b)
+        multiplier = 3 * int(curve_b) if constant is None or int(constant) == 21 else int(constant)
         return (multiplier * resolved[0]) % modulus
     if opcode in {'field_mul', 'field_mul_lookup_x', 'field_mul_lookup_y'}:
         return (resolved[0] * resolved[1]) % modulus
@@ -832,6 +841,260 @@ def _reordered_local_inverse_schedule(
     }
 
 
+def _reordered_slot_assignment(
+    schedule_rows: Sequence[Mapping[str, Any]] | None,
+    *,
+    counted_arithmetic_slots: int,
+    field_bits: int,
+) -> Dict[str, Any]:
+    if schedule_rows is None:
+        return {
+            'schema': 'compiler-project-tail-reordered-slot-assignment-v1',
+            'status': 'no_schedule',
+            'pass': False,
+        }
+    slot_by_value = {value: index for index, value in enumerate(QUANTUM_INPUTS)}
+    rows_out = []
+    peak_slot_count = len(slot_by_value)
+    for row in schedule_rows:
+        live_before = dict(sorted(slot_by_value.items()))
+        overwritten_source = row['overwritten_source']
+        if overwritten_source is None:
+            occupied = set(slot_by_value.values())
+            target_slot = 0
+            while target_slot in occupied:
+                target_slot += 1
+        else:
+            target_slot = slot_by_value[str(overwritten_source)]
+            del slot_by_value[str(overwritten_source)]
+        target = str(row['target'])
+        slot_by_value[target] = target_slot
+        live_during = dict(sorted(slot_by_value.items()))
+        peak_slot_count = max(peak_slot_count, len(live_during))
+        expected_live_after = set(str(value) for value in row['live_field_values_after_step'])
+        for value in list(slot_by_value):
+            if value not in expected_live_after:
+                del slot_by_value[value]
+        rows_out.append({
+            'schedule_index': int(row['schedule_index']),
+            'operation_index': int(row['operation_index']),
+            'target': target,
+            'target_slot': target_slot,
+            'overwritten_source': overwritten_source,
+            'source_slots_before_operation': {
+                source: live_before[source]
+                for source in row['sources']
+                if source not in TABLE_CONSTANTS
+            },
+            'live_before': live_before,
+            'live_during': live_during,
+            'live_after': dict(sorted(slot_by_value.items())),
+            'owner_id': f'tail_reordered_slot_{target_slot}',
+        })
+    owner_capacity_rows = [
+        {
+            'slot': slot,
+            'owner_id': f'tail_reordered_slot_{slot}',
+            'logical_qubits': int(field_bits),
+            'capacity_field_values': 1,
+            'counted_in_current_leaf_budget': slot < int(counted_arithmetic_slots),
+        }
+        for slot in range(peak_slot_count)
+    ]
+    additional_slots = max(0, peak_slot_count - int(counted_arithmetic_slots))
+    return {
+        'schema': 'compiler-project-tail-reordered-slot-assignment-v1',
+        'status': 'slot_assignment_generated_for_reordered_schedule',
+        'field_bits': int(field_bits),
+        'counted_arithmetic_slots': int(counted_arithmetic_slots),
+        'peak_field_slots': int(peak_slot_count),
+        'additional_field_slots_over_counted_leaf': additional_slots,
+        'additional_logical_qubits_over_counted_leaf': additional_slots * int(field_bits),
+        'owner_capacity_rows': owner_capacity_rows,
+        'rows': rows_out,
+        'final_live_values': dict(sorted(slot_by_value.items())),
+        'pass': (
+            peak_slot_count == max(int(row['live_field_value_count_during_step']) for row in schedule_rows)
+            and sorted(slot_by_value) == list(QUANTUM_OUTPUTS)
+        ),
+    }
+
+
+def _reordered_schedule_replay_certificate(
+    operation_rows: Sequence[Mapping[str, Any]],
+    schedule: Mapping[str, Any],
+    operand_screen: Mapping[str, Any],
+    slot_assignment: Mapping[str, Any],
+) -> Dict[str, Any]:
+    operation_by_index = {
+        int(row['index']): row
+        for row in operation_rows
+    }
+    passing_overwrite_choices = {
+        (int(choice['index']), str(choice['overwritten_source']))
+        for choice in operand_screen['choices']
+        if choice['pass'] is True
+    }
+    category_totals = {
+        'ordinary': 0,
+        'doubling': 0,
+        'inverse': 0,
+        'accumulator_infinity': 0,
+        'lookup_infinity': 0,
+    }
+    replay_failures = []
+    semantic_failures = []
+    checked_non_infinity_pairs = 0
+    checked_lookup_infinity_pairs = 0
+    for curve in TOY_CURVES:
+        modulus = int(curve['p'])
+        curve_b = int(curve['b'])
+        points = _subgroup_points(modulus, curve['generator'], int(curve['order']))
+        for lookup in points:
+            for accumulator in points:
+                category_totals[_boundary_case(accumulator, lookup, modulus)] += 1
+                input_triple = _canonical_projective(accumulator)
+                if lookup is None:
+                    checked_lookup_infinity_pairs += 1
+                    output_triple = input_triple
+                    output_affine = _projective_to_affine(output_triple, modulus)
+                    expected_affine = _add_points(accumulator, lookup, modulus)
+                    if output_affine != expected_affine and len(semantic_failures) < 4:
+                        semantic_failures.append({
+                            'curve': curve['name'],
+                            'lookup_affine': None,
+                            'accumulator_affine': None if accumulator is None else list(accumulator),
+                            'output_projective': list(output_triple),
+                            'output_affine': None if output_affine is None else list(output_affine),
+                            'expected_affine': None if expected_affine is None else list(expected_affine),
+                        })
+                    continue
+                checked_non_infinity_pairs += 1
+                values: Dict[str, int] = {
+                    'X': input_triple[0],
+                    'Y': input_triple[1],
+                    'Z': input_triple[2],
+                }
+                live_values = set(QUANTUM_INPUTS)
+                for row in schedule['rows']:
+                    operation = operation_by_index[int(row['operation_index'])]
+                    if sorted(live_values) != row['live_field_values_before_step'] and len(replay_failures) < 4:
+                        replay_failures.append({
+                            'curve': curve['name'],
+                            'schedule_index': row['schedule_index'],
+                            'failure': 'live_before_mismatch',
+                            'expected': row['live_field_values_before_step'],
+                            'observed': sorted(live_values),
+                        })
+                    sources = [str(source) for source in operation['sources']]
+                    missing_sources = [
+                        source
+                        for source in sources
+                        if source not in TABLE_CONSTANTS and source not in live_values
+                    ]
+                    overwritten_source = row['overwritten_source']
+                    if (
+                        overwritten_source is not None
+                        and (int(row['operation_index']), str(overwritten_source)) not in passing_overwrite_choices
+                        and len(replay_failures) < 4
+                    ):
+                        replay_failures.append({
+                            'curve': curve['name'],
+                            'schedule_index': row['schedule_index'],
+                            'failure': 'overwrite_choice_not_screened',
+                            'operation_index': int(row['operation_index']),
+                            'overwritten_source': overwritten_source,
+                        })
+                    if missing_sources and len(replay_failures) < 4:
+                        replay_failures.append({
+                            'curve': curve['name'],
+                            'schedule_index': row['schedule_index'],
+                            'failure': 'missing_live_sources',
+                            'missing_sources': missing_sources,
+                        })
+                    target_value = _operation_value(
+                        opcode=str(operation['opcode']),
+                        sources=sources,
+                        values=values,
+                        modulus=modulus,
+                        curve_b=curve_b,
+                        lookup_x=lookup[0],
+                        lookup_y=lookup[1],
+                        constant=operation.get('constant'),
+                    )
+                    if overwritten_source is not None:
+                        live_values.remove(str(overwritten_source))
+                        del values[str(overwritten_source)]
+                    target = str(operation['target'])
+                    live_values.add(target)
+                    values[target] = target_value
+                    expected_during = set(str(value) for value in row['live_field_values_during_step'])
+                    if live_values != expected_during and len(replay_failures) < 4:
+                        replay_failures.append({
+                            'curve': curve['name'],
+                            'schedule_index': row['schedule_index'],
+                            'failure': 'live_during_mismatch',
+                            'expected': sorted(expected_during),
+                            'observed': sorted(live_values),
+                        })
+                    expected_after = set(str(value) for value in row['live_field_values_after_step'])
+                    for value in list(live_values):
+                        if value not in expected_after:
+                            live_values.remove(value)
+                            del values[value]
+                    if live_values != expected_after and len(replay_failures) < 4:
+                        replay_failures.append({
+                            'curve': curve['name'],
+                            'schedule_index': row['schedule_index'],
+                            'failure': 'live_after_mismatch',
+                            'expected': sorted(expected_after),
+                            'observed': sorted(live_values),
+                        })
+                output_triple = (values['X3'] % modulus, values['Y3'] % modulus, values['Z3'] % modulus)
+                reference_triple = _tail_map(modulus, curve_b, lookup[0], lookup[1], *input_triple)
+                output_affine = _projective_to_affine(output_triple, modulus)
+                expected_affine = _add_points(accumulator, lookup, modulus)
+                if (
+                    output_triple != reference_triple
+                    or output_affine != expected_affine
+                ) and len(semantic_failures) < 4:
+                    semantic_failures.append({
+                        'curve': curve['name'],
+                        'lookup_affine': list(lookup),
+                        'accumulator_affine': None if accumulator is None else list(accumulator),
+                        'input_projective': list(input_triple),
+                        'output_projective': list(output_triple),
+                        'reference_projective': list(reference_triple),
+                        'output_affine': None if output_affine is None else list(output_affine),
+                        'expected_affine': None if expected_affine is None else list(expected_affine),
+                    })
+    schedule_peak = int(schedule['peak_field_slots'])
+    slot_peak = int(slot_assignment['peak_field_slots'])
+    owner_capacity_pass = (
+        slot_assignment['pass'] is True
+        and slot_peak == schedule_peak
+        and all(int(row['logical_qubits']) >= int(schedule['field_bits']) for row in slot_assignment['owner_capacity_rows'])
+    )
+    return {
+        'schema': 'compiler-project-tail-reordered-schedule-replay-certificate-v1',
+        'status': 'toy_boundary_reordered_schedule_executable_replay',
+        'checked_non_infinity_pairs': checked_non_infinity_pairs,
+        'checked_lookup_infinity_pairs': checked_lookup_infinity_pairs,
+        'category_totals': category_totals,
+        'operation_count': len(operation_rows),
+        'schedule_row_count': len(schedule['rows']),
+        'semantic_failures': semantic_failures,
+        'replay_failures': replay_failures,
+        'owner_capacity_pass': owner_capacity_pass,
+        'pass': not semantic_failures and not replay_failures and owner_capacity_pass,
+        'notes': [
+            'Non-infinity lookup cases execute the reordered schedule exactly and compare X3/Y3/Z3 with the canonical tail formula and affine point-add boundary.',
+            'Lookup-infinity cases are checked as the external boundary no-op used by the streamed leaf contract; the reordered arithmetic schedule is not executed for that case.',
+            'Owner capacity is derived from the generated slot assignment for the executable schedule, not from a manually selected tracked-register list.',
+        ],
+    }
+
+
 def _allowed_overwrite_schedule(
     rows: Sequence[Mapping[str, Any]],
     *,
@@ -959,6 +1222,17 @@ def build_tail_macro_engine(
         field_bits=int(field_bits),
         max_peak_field_slots=int(destructive_candidate_schedule['peak_field_slots']),
     )
+    reordered_slot_assignment = _reordered_slot_assignment(
+        reordered_local_inverse_schedule['rows'],
+        counted_arithmetic_slots=int(counted_arithmetic_slots),
+        field_bits=int(field_bits),
+    )
+    reordered_replay_certificate = _reordered_schedule_replay_certificate(
+        operation_rows,
+        reordered_local_inverse_schedule,
+        operand_overwrite_screen,
+        reordered_slot_assignment,
+    )
     locally_invertible_indices = {
         int(row['index'])
         for row in overwrite_certificate['rows']
@@ -1025,10 +1299,14 @@ def build_tail_macro_engine(
             'operand_overwrite_screen_pass': bool(operand_overwrite_screen['pass']),
             'reordered_local_inverse_peak_field_values': reordered_local_inverse_schedule['peak_field_slots'],
             'reordered_local_inverse_solution_found': bool(reordered_local_inverse_schedule['solution_found']),
+            'reordered_slot_assignment_peak_field_values': reordered_slot_assignment['peak_field_slots'],
+            'reordered_replay_pass': bool(reordered_replay_certificate['pass']),
         },
         'local_inverse_pass_only_schedule': local_inverse_pass_only_schedule,
         'operand_overwrite_screen': operand_overwrite_screen,
         'reordered_local_inverse_schedule': reordered_local_inverse_schedule,
+        'reordered_slot_assignment': reordered_slot_assignment,
+        'reordered_replay_certificate': reordered_replay_certificate,
         'checks': checks,
         'pass': all(value is True for value in required_checks.values()),
         'completion_status': (

@@ -204,8 +204,12 @@ operation order.
 The engine now also emits a reordered DAG schedule that reaches eight field
 slots with 10 overwrites and zero invalid local-inverse overwrites by computing
 `X3` before the late product pairings. This is progress against the eight-slot
-tail target, but it remains a schedule-level certificate until the reversible
-implementation and counted public resource contract consume that exact schedule.
+tail target. The generated replay certificate executes the schedule on 110,082
+non-infinity toy boundary pairs, checks 610 lookup-infinity no-op boundary pairs,
+and derives an eight-slot owner-capacity ledger from the generated slot
+assignment. It still remains below the promoted public resource contract until
+the reversible implementation and counted public resource contract consume that
+exact schedule.
 That artifact prevents the repository from silently promoting a materialized
 boundary result into a stronger full-engine claim.
 
