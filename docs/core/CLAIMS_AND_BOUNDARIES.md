@@ -96,9 +96,11 @@ subproject. In particular, it fixes:
 - a fully quantum raw-32 schedule with no classical tail elisions,
 - generated folded lookup-family operation inventories,
 - generated arithmetic-kernel operation inventories,
-- a proof-bound modular arithmetic certificate that executes reduced-width pseudo-Mersenne
-  analogues and binds the 256-bit field-multiplication reduction stage counts
-  back to the arithmetic lowering artifact,
+- an embedded executable modular arithmetic IR that generates the modular
+  add/sub/mul kernels, plus a proof-bound modular arithmetic certificate that
+  executes reduced-width pseudo-Mersenne analogues and binds the 256-bit
+  field-multiplication reduction stage counts back to that same arithmetic
+  lowering artifact,
 - explicit standard-QROAM streamed table-controlled multiplier data-selection
   inventories,
 - a checked standard-QROM lookup assessment that binds the selected family to a
@@ -173,13 +175,15 @@ publication wrapper rather than an upstream claim source.
 `engine_completion_audit.json` is the current machine-readable answer to
 "is this already the full Clifford-complete engine?". It is generated from the
 materialized/public engine artifacts and passes only when the headline totals,
-source binding, operand ownership, QROAM primitive cost, semantic corpus, and
-tail auxiliary evidence are coherent. It deliberately keeps
-`clifford_complete_goal_achieved = false` while three macro boundaries remain:
-modular arithmetic physical lowering, tail macro schedule/reversibility as
-auxiliary artifacts, and the final ZKP input bundle not yet being a direct
-single-engine product. That artifact prevents the repository from silently
-promoting a materialized boundary result into a stronger full-engine claim.
+source binding, operand ownership, QROAM primitive cost, modular arithmetic IR
+generation, semantic corpus, and tail auxiliary evidence are coherent. It
+deliberately keeps `clifford_complete_goal_achieved = false` while the tail
+macro/global schedule and the final ZKP input bundle are not yet direct
+single-engine products. Modular arithmetic is no longer a separate formula
+source: the arithmetic lowering embeds `executable_modular_circuit_ir`, emits
+the modular kernels from it, and the modular certificate consumes that same IR.
+That artifact prevents the repository from silently promoting a materialized
+boundary result into a stronger full-engine claim.
 
 The checked JSON sidecars remain the audit-friendly source-of-truth inputs for
 that bundle. The candidate directory records core, compressed, and Groth16

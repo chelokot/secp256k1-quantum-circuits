@@ -16,7 +16,7 @@
     "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
     "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
     "resource_contract_engine_sha256": "6ec61b5379cd1eb36a568423ffa43a79015c7f3c5dea53ec65cf1f80346b3d6f",
-    "public_candidate_materialized_circuit_manifest_sha256": "ff09eeb21ccf51bf84d6c91ef828ea61dca8617f20055250f9c377a6882b8d14"
+    "public_candidate_materialized_circuit_manifest_sha256": "476c6e33ee3b5122ae8294a974c72d5954834c0daf78120945fb97855233733d"
   },
   "instruction_stream": {
     "encoding": [
@@ -610,30 +610,30 @@
   "primitive_operation_evidence": {
     "public_candidate_materialized_circuit_manifest": {
       "schema": "compiler-project-public-candidate-materialized-circuit-manifest-v1",
-      "sha256": "ff09eeb21ccf51bf84d6c91ef828ea61dca8617f20055250f9c377a6882b8d14",
+      "sha256": "476c6e33ee3b5122ae8294a974c72d5954834c0daf78120945fb97855233733d",
       "pass": true,
-      "operation_stream_sha256": "a18202d55998acc714c983610ac30f7e32c45d0826e0267280c3690376b2beed",
-      "liveness_binding_stream_sha256": "e5350650a5c9193e433e90b56fb401e0bb70d6fbef541f6776eb211c15d0bac1",
-      "run_length_row_count": 6425,
-      "liveness_binding_row_count": 6425,
+      "operation_stream_sha256": "f6c277d0689572f499fd8bbf985c6d70c036a329a7879b2b209523d9eb2ee478",
+      "liveness_binding_stream_sha256": "52e1fa6386a8e076fc66c2cb2c0eb79d921aadc340c09c0d7ffb76be0dbea8b0",
+      "run_length_row_count": 5805,
+      "liveness_binding_row_count": 5805,
       "qroam_segment_row_count": 2976,
       "flat_operation_count": 39370727,
       "flat_segment_count": 40,
-      "flat_segment_merkle_root_sha256": "4c7cf50d3b124d985423a798b46033a53513f8aaff1c2a3595557e048af2253c",
+      "flat_segment_merkle_root_sha256": "2ec8446314b368cc08a473769c1fcd77bda33d36127cea2e647acc12ba69139c",
       "materialized_flat_netlist": {
         "schema": "compiler-project-public-candidate-materialized-flat-netlist-v1",
         "exact_operation_stream_materialized": true,
         "operation_count": 39370727,
-        "operation_stream_sha256": "6e61988359eb402fba94b28ff092ebc2b3e313592cdb9d852cd691fa24eb68af",
+        "operation_stream_sha256": "1c5f9b9b517f5357dc09c5a848fec1f004955a6109b7b05aa0313fe37d3294a5",
         "segment_count": 40,
-        "segment_merkle_root_sha256": "959477863c6e668de12eb7f4a06687b8682e7200cc72d353a6ef89d26c9e559c",
+        "segment_merkle_root_sha256": "06cd704d41bfa87efc273e0862c484615a981d209fa78bbbcb7ce5f839bdd844",
         "non_clifford_count": 36957412,
         "peak_live_qubits": 1199
       },
       "flat_execution_probe": {
         "schema": "compiler-project-flat-netlist-execution-probe-v1",
         "probe_count": 18,
-        "probe_stream_sha256": "739b6d502e5c188f51276a0fc131c124a4d8e5ad1754268592621805ea667468",
+        "probe_stream_sha256": "7c8f626e75f7cadb7489f6ab0109d090612d9199caed96e86db44533a104905a",
         "checks": {
           "arithmetic_two_operand_domain_product_matches_row_total": true,
           "probe_operand_indices_within_domains": true,
@@ -646,23 +646,23 @@
       "strict_primitive_completeness": {
         "schema": "compiler-project-strict-primitive-completeness-report-v1",
         "clifford_complete": true,
-        "rows_checked": 6425,
+        "rows_checked": 5805,
         "incomplete_row_count": 0,
         "incomplete_by_scope_gate": {}
       },
       "operand_parent_binding": {
         "schema": "compiler-project-operand-parent-binding-report-v1",
         "pass": true,
-        "rows_checked": 6425,
-        "domains_checked": 16041,
+        "rows_checked": 5805,
+        "domains_checked": 14801,
         "failure_count": 0
       },
       "operand_source_binding": {
         "schema": "compiler-project-operand-source-binding-report-v1",
         "pass": true,
-        "rows_checked": 6425,
+        "rows_checked": 5805,
         "rows_by_source_kind": {
-          "arithmetic_operation_ir": 3286,
+          "arithmetic_operation_ir": 2666,
           "lookup_lowering_block": 160,
           "phase_shell_lowering": 3,
           "qroam_primitive_certificate": 2976
@@ -674,10 +674,10 @@
     },
     "arithmetic_operation_ir": {
       "schema": "compiler-project-arithmetic-operation-ir-v1",
-      "sha256": "185214c75f615b530dd63c2972c4a76bf2ba3c94624659736c7187a36ee8392e",
+      "sha256": "5f164fe0d16b070212142279a948b6ca9d8e90a8e16ec63c4ede54ae5de12f56",
       "pass": true,
       "tail_opcode": "complete_a0_all_streamed_tail",
-      "tail_kernel_stage_digest_sha256": "cf8315d24ba29b996c07d044a94bf53770f612cfbc3aa990c902cb97a02288d6",
+      "tail_kernel_stage_digest_sha256": "e0656b24049a3d65b4d5b241da622c5c2a084996456b3815c3107701dd38e4c3",
       "tail_kernel_operation_count": 1367928,
       "tail_kernel_non_clifford_per_instance": 1126332,
       "tail_primitive_counts_total": {
@@ -686,7 +686,7 @@
         "measurement": 241596,
         "x": 0
       },
-      "leaf_arithmetic_operation_stream_sha256": "2b27b16d06561f6d6835fbb0dfcd02d6b0f1a3b54b9b888220af1d53561d76c6"
+      "leaf_arithmetic_operation_stream_sha256": "09924ec4cdf040fb51715a3e4f27af7131d348186053a30475016c457cf19765"
     },
     "qroam_primitive_certificate": {
       "schema": "compiler-project-qroam-k1-primitive-certificate-v1",

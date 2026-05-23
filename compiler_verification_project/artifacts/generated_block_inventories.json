@@ -146,7 +146,7 @@
     },
     {
       "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_partial_products__partial_product_grid",
-      "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+      "summary": "one controlled interaction for each field-bit product",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -176,8 +176,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_controlled_add_path__controlled_add_accumulator",
-      "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_controlled_add_path__controlled_add_path",
+      "summary": "carry path for controlled add half of schoolbook multiplier",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -207,8 +207,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_controlled_sub_path__controlled_sub_accumulator",
-      "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_controlled_sub_path__controlled_sub_path",
+      "summary": "borrow path for controlled subtract half of schoolbook multiplier",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -238,8 +238,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_pseudo_mersenne_first_fold__first_fold_shift_add",
-      "summary": "Add the high product half shifted by 32 bits using 2^256 = 2^32 + 977 mod p.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_pseudo_mersenne_first_fold__pseudo_mersenne_first_fold",
+      "summary": "fold high product half via 2^n = 2^shift + low_term",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -248,16 +248,16 @@
         "x": 0,
         "measurement": 1
       },
-      "base_instance_count": 287,
+      "base_instance_count": 4305,
       "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 8897,
+      "whole_oracle_instance_count": 133455,
       "primitive_counts_total": {
-        "ccx": 8897,
+        "ccx": 133455,
         "cx": 0,
         "x": 0,
-        "measurement": 8897
+        "measurement": 133455
       },
-      "non_clifford_total": 8897,
+      "non_clifford_total": 133455,
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
@@ -269,8 +269,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_pseudo_mersenne_first_fold__first_fold_977_chain",
-      "summary": "Add 977 times the high product half with a binary addition-chain multiplier.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_pseudo_mersenne_second_fold__pseudo_mersenne_second_fold",
+      "summary": "fold residual high component after first fold",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -279,47 +279,16 @@
         "x": 0,
         "measurement": 1
       },
-      "base_instance_count": 4018,
+      "base_instance_count": 630,
       "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 124558,
+      "whole_oracle_instance_count": 19530,
       "primitive_counts_total": {
-        "ccx": 124558,
+        "ccx": 19530,
         "cx": 0,
         "x": 0,
-        "measurement": 124558
+        "measurement": 19530
       },
-      "non_clifford_total": 124558,
-      "metadata": {
-        "opcode": "complete_a0_all_streamed_tail",
-        "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1126332,
-        "per_leaf_instance_count": 1,
-        "stage": "tail_h_pseudo_mersenne_first_fold",
-        "stage_category": "pseudo_mersenne_reduction",
-        "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
-      }
-    },
-    {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_pseudo_mersenne_second_fold__second_fold_shift_add",
-      "summary": "Fold the residual high carry by adding it shifted by 32 bits.",
-      "category": "arithmetic_non_clifford",
-      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-      "primitive_counts_per_instance": {
-        "ccx": 1,
-        "cx": 0,
-        "x": 0,
-        "measurement": 1
-      },
-      "base_instance_count": 42,
-      "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 1302,
-      "primitive_counts_total": {
-        "ccx": 1302,
-        "cx": 0,
-        "x": 0,
-        "measurement": 1302
-      },
-      "non_clifford_total": 1302,
+      "non_clifford_total": 19530,
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
@@ -331,39 +300,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_pseudo_mersenne_second_fold__second_fold_977_chain",
-      "summary": "Add 977 times the residual high carry using the same binary chain.",
-      "category": "arithmetic_non_clifford",
-      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-      "primitive_counts_per_instance": {
-        "ccx": 1,
-        "cx": 0,
-        "x": 0,
-        "measurement": 1
-      },
-      "base_instance_count": 588,
-      "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 18228,
-      "primitive_counts_total": {
-        "ccx": 18228,
-        "cx": 0,
-        "x": 0,
-        "measurement": 18228
-      },
-      "non_clifford_total": 18228,
-      "metadata": {
-        "opcode": "complete_a0_all_streamed_tail",
-        "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1126332,
-        "per_leaf_instance_count": 1,
-        "stage": "tail_h_pseudo_mersenne_second_fold",
-        "stage_category": "pseudo_mersenne_reduction",
-        "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
-      }
-    },
-    {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_pseudo_mersenne_canonicalize__canonical_subtract_p_ladders",
-      "summary": "Two conditional subtract-p passes to return the product to the canonical field interval.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_pseudo_mersenne_canonicalize__pseudo_mersenne_canonicalize",
+      "summary": "canonicalize product with bounded subtract-p passes",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -456,7 +394,7 @@
     },
     {
       "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_partial_products__partial_product_grid",
-      "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+      "summary": "one controlled interaction for each field-bit product",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -486,8 +424,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_controlled_add_path__controlled_add_accumulator",
-      "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_controlled_add_path__controlled_add_path",
+      "summary": "carry path for controlled add half of schoolbook multiplier",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -517,8 +455,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_controlled_sub_path__controlled_sub_accumulator",
-      "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_controlled_sub_path__controlled_sub_path",
+      "summary": "borrow path for controlled subtract half of schoolbook multiplier",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -548,8 +486,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_pseudo_mersenne_first_fold__first_fold_shift_add",
-      "summary": "Add the high product half shifted by 32 bits using 2^256 = 2^32 + 977 mod p.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_pseudo_mersenne_first_fold__pseudo_mersenne_first_fold",
+      "summary": "fold high product half via 2^n = 2^shift + low_term",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -558,16 +496,16 @@
         "x": 0,
         "measurement": 1
       },
-      "base_instance_count": 287,
+      "base_instance_count": 4305,
       "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 8897,
+      "whole_oracle_instance_count": 133455,
       "primitive_counts_total": {
-        "ccx": 8897,
+        "ccx": 133455,
         "cx": 0,
         "x": 0,
-        "measurement": 8897
+        "measurement": 133455
       },
-      "non_clifford_total": 8897,
+      "non_clifford_total": 133455,
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
@@ -579,8 +517,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_pseudo_mersenne_first_fold__first_fold_977_chain",
-      "summary": "Add 977 times the high product half with a binary addition-chain multiplier.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_pseudo_mersenne_second_fold__pseudo_mersenne_second_fold",
+      "summary": "fold residual high component after first fold",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -589,47 +527,16 @@
         "x": 0,
         "measurement": 1
       },
-      "base_instance_count": 4018,
+      "base_instance_count": 630,
       "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 124558,
+      "whole_oracle_instance_count": 19530,
       "primitive_counts_total": {
-        "ccx": 124558,
+        "ccx": 19530,
         "cx": 0,
         "x": 0,
-        "measurement": 124558
+        "measurement": 19530
       },
-      "non_clifford_total": 124558,
-      "metadata": {
-        "opcode": "complete_a0_all_streamed_tail",
-        "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1126332,
-        "per_leaf_instance_count": 1,
-        "stage": "all_streamed_tail_a_pseudo_mersenne_first_fold",
-        "stage_category": "pseudo_mersenne_reduction",
-        "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
-      }
-    },
-    {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_pseudo_mersenne_second_fold__second_fold_shift_add",
-      "summary": "Fold the residual high carry by adding it shifted by 32 bits.",
-      "category": "arithmetic_non_clifford",
-      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-      "primitive_counts_per_instance": {
-        "ccx": 1,
-        "cx": 0,
-        "x": 0,
-        "measurement": 1
-      },
-      "base_instance_count": 42,
-      "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 1302,
-      "primitive_counts_total": {
-        "ccx": 1302,
-        "cx": 0,
-        "x": 0,
-        "measurement": 1302
-      },
-      "non_clifford_total": 1302,
+      "non_clifford_total": 19530,
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
@@ -641,39 +548,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_pseudo_mersenne_second_fold__second_fold_977_chain",
-      "summary": "Add 977 times the residual high carry using the same binary chain.",
-      "category": "arithmetic_non_clifford",
-      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-      "primitive_counts_per_instance": {
-        "ccx": 1,
-        "cx": 0,
-        "x": 0,
-        "measurement": 1
-      },
-      "base_instance_count": 588,
-      "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 18228,
-      "primitive_counts_total": {
-        "ccx": 18228,
-        "cx": 0,
-        "x": 0,
-        "measurement": 18228
-      },
-      "non_clifford_total": 18228,
-      "metadata": {
-        "opcode": "complete_a0_all_streamed_tail",
-        "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1126332,
-        "per_leaf_instance_count": 1,
-        "stage": "all_streamed_tail_a_pseudo_mersenne_second_fold",
-        "stage_category": "pseudo_mersenne_reduction",
-        "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
-      }
-    },
-    {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_pseudo_mersenne_canonicalize__canonical_subtract_p_ladders",
-      "summary": "Two conditional subtract-p passes to return the product to the canonical field interval.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_pseudo_mersenne_canonicalize__pseudo_mersenne_canonicalize",
+      "summary": "canonicalize product with bounded subtract-p passes",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -766,7 +642,7 @@
     },
     {
       "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_partial_products__partial_product_grid",
-      "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+      "summary": "one controlled interaction for each field-bit product",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -796,8 +672,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_controlled_add_path__controlled_add_accumulator",
-      "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_controlled_add_path__controlled_add_path",
+      "summary": "carry path for controlled add half of schoolbook multiplier",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -827,8 +703,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_controlled_sub_path__controlled_sub_accumulator",
-      "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_controlled_sub_path__controlled_sub_path",
+      "summary": "borrow path for controlled subtract half of schoolbook multiplier",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -858,8 +734,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_pseudo_mersenne_first_fold__first_fold_shift_add",
-      "summary": "Add the high product half shifted by 32 bits using 2^256 = 2^32 + 977 mod p.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_pseudo_mersenne_first_fold__pseudo_mersenne_first_fold",
+      "summary": "fold high product half via 2^n = 2^shift + low_term",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -868,16 +744,16 @@
         "x": 0,
         "measurement": 1
       },
-      "base_instance_count": 287,
+      "base_instance_count": 4305,
       "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 8897,
+      "whole_oracle_instance_count": 133455,
       "primitive_counts_total": {
-        "ccx": 8897,
+        "ccx": 133455,
         "cx": 0,
         "x": 0,
-        "measurement": 8897
+        "measurement": 133455
       },
-      "non_clifford_total": 8897,
+      "non_clifford_total": 133455,
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
@@ -889,8 +765,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_pseudo_mersenne_first_fold__first_fold_977_chain",
-      "summary": "Add 977 times the high product half with a binary addition-chain multiplier.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_pseudo_mersenne_second_fold__pseudo_mersenne_second_fold",
+      "summary": "fold residual high component after first fold",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -899,47 +775,16 @@
         "x": 0,
         "measurement": 1
       },
-      "base_instance_count": 4018,
+      "base_instance_count": 630,
       "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 124558,
+      "whole_oracle_instance_count": 19530,
       "primitive_counts_total": {
-        "ccx": 124558,
+        "ccx": 19530,
         "cx": 0,
         "x": 0,
-        "measurement": 124558
+        "measurement": 19530
       },
-      "non_clifford_total": 124558,
-      "metadata": {
-        "opcode": "complete_a0_all_streamed_tail",
-        "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1126332,
-        "per_leaf_instance_count": 1,
-        "stage": "all_streamed_tail_zx_pseudo_mersenne_first_fold",
-        "stage_category": "pseudo_mersenne_reduction",
-        "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
-      }
-    },
-    {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_pseudo_mersenne_second_fold__second_fold_shift_add",
-      "summary": "Fold the residual high carry by adding it shifted by 32 bits.",
-      "category": "arithmetic_non_clifford",
-      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-      "primitive_counts_per_instance": {
-        "ccx": 1,
-        "cx": 0,
-        "x": 0,
-        "measurement": 1
-      },
-      "base_instance_count": 42,
-      "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 1302,
-      "primitive_counts_total": {
-        "ccx": 1302,
-        "cx": 0,
-        "x": 0,
-        "measurement": 1302
-      },
-      "non_clifford_total": 1302,
+      "non_clifford_total": 19530,
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
@@ -951,39 +796,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_pseudo_mersenne_second_fold__second_fold_977_chain",
-      "summary": "Add 977 times the residual high carry using the same binary chain.",
-      "category": "arithmetic_non_clifford",
-      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-      "primitive_counts_per_instance": {
-        "ccx": 1,
-        "cx": 0,
-        "x": 0,
-        "measurement": 1
-      },
-      "base_instance_count": 588,
-      "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 18228,
-      "primitive_counts_total": {
-        "ccx": 18228,
-        "cx": 0,
-        "x": 0,
-        "measurement": 18228
-      },
-      "non_clifford_total": 18228,
-      "metadata": {
-        "opcode": "complete_a0_all_streamed_tail",
-        "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1126332,
-        "per_leaf_instance_count": 1,
-        "stage": "all_streamed_tail_zx_pseudo_mersenne_second_fold",
-        "stage_category": "pseudo_mersenne_reduction",
-        "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
-      }
-    },
-    {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_pseudo_mersenne_canonicalize__canonical_subtract_p_ladders",
-      "summary": "Two conditional subtract-p passes to return the product to the canonical field interval.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_pseudo_mersenne_canonicalize__pseudo_mersenne_canonicalize",
+      "summary": "canonicalize product with bounded subtract-p passes",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -1138,7 +952,7 @@
     },
     {
       "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_partial_products__partial_product_grid",
-      "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+      "summary": "one controlled interaction for each field-bit product",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -1168,8 +982,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_controlled_add_path__controlled_add_accumulator",
-      "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_controlled_add_path__controlled_add_path",
+      "summary": "carry path for controlled add half of schoolbook multiplier",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -1199,8 +1013,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_controlled_sub_path__controlled_sub_accumulator",
-      "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_controlled_sub_path__controlled_sub_path",
+      "summary": "borrow path for controlled subtract half of schoolbook multiplier",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -1230,8 +1044,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold__first_fold_shift_add",
-      "summary": "Add the high product half shifted by 32 bits using 2^256 = 2^32 + 977 mod p.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold__pseudo_mersenne_first_fold",
+      "summary": "fold high product half via 2^n = 2^shift + low_term",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -1240,16 +1054,16 @@
         "x": 0,
         "measurement": 1
       },
-      "base_instance_count": 287,
+      "base_instance_count": 4305,
       "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 8897,
+      "whole_oracle_instance_count": 133455,
       "primitive_counts_total": {
-        "ccx": 8897,
+        "ccx": 133455,
         "cx": 0,
         "x": 0,
-        "measurement": 8897
+        "measurement": 133455
       },
-      "non_clifford_total": 8897,
+      "non_clifford_total": 133455,
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
@@ -1261,8 +1075,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold__first_fold_977_chain",
-      "summary": "Add 977 times the high product half with a binary addition-chain multiplier.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold__pseudo_mersenne_second_fold",
+      "summary": "fold residual high component after first fold",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -1271,47 +1085,16 @@
         "x": 0,
         "measurement": 1
       },
-      "base_instance_count": 4018,
+      "base_instance_count": 630,
       "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 124558,
+      "whole_oracle_instance_count": 19530,
       "primitive_counts_total": {
-        "ccx": 124558,
+        "ccx": 19530,
         "cx": 0,
         "x": 0,
-        "measurement": 124558
+        "measurement": 19530
       },
-      "non_clifford_total": 124558,
-      "metadata": {
-        "opcode": "complete_a0_all_streamed_tail",
-        "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1126332,
-        "per_leaf_instance_count": 1,
-        "stage": "all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold",
-        "stage_category": "pseudo_mersenne_reduction",
-        "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
-      }
-    },
-    {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold__second_fold_shift_add",
-      "summary": "Fold the residual high carry by adding it shifted by 32 bits.",
-      "category": "arithmetic_non_clifford",
-      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-      "primitive_counts_per_instance": {
-        "ccx": 1,
-        "cx": 0,
-        "x": 0,
-        "measurement": 1
-      },
-      "base_instance_count": 42,
-      "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 1302,
-      "primitive_counts_total": {
-        "ccx": 1302,
-        "cx": 0,
-        "x": 0,
-        "measurement": 1302
-      },
-      "non_clifford_total": 1302,
+      "non_clifford_total": 19530,
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
@@ -1323,39 +1106,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold__second_fold_977_chain",
-      "summary": "Add 977 times the residual high carry using the same binary chain.",
-      "category": "arithmetic_non_clifford",
-      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-      "primitive_counts_per_instance": {
-        "ccx": 1,
-        "cx": 0,
-        "x": 0,
-        "measurement": 1
-      },
-      "base_instance_count": 588,
-      "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 18228,
-      "primitive_counts_total": {
-        "ccx": 18228,
-        "cx": 0,
-        "x": 0,
-        "measurement": 18228
-      },
-      "non_clifford_total": 18228,
-      "metadata": {
-        "opcode": "complete_a0_all_streamed_tail",
-        "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1126332,
-        "per_leaf_instance_count": 1,
-        "stage": "all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold",
-        "stage_category": "pseudo_mersenne_reduction",
-        "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
-      }
-    },
-    {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_pseudo_mersenne_canonicalize__canonical_subtract_p_ladders",
-      "summary": "Two conditional subtract-p passes to return the product to the canonical field interval.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_pseudo_mersenne_canonicalize__pseudo_mersenne_canonicalize",
+      "summary": "canonicalize product with bounded subtract-p passes",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -1510,7 +1262,7 @@
     },
     {
       "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_partial_products__partial_product_grid",
-      "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+      "summary": "one controlled interaction for each field-bit product",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -1540,8 +1292,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_controlled_add_path__controlled_add_accumulator",
-      "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_controlled_add_path__controlled_add_path",
+      "summary": "carry path for controlled add half of schoolbook multiplier",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -1571,8 +1323,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_controlled_sub_path__controlled_sub_accumulator",
-      "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_controlled_sub_path__controlled_sub_path",
+      "summary": "borrow path for controlled subtract half of schoolbook multiplier",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -1602,8 +1354,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold__first_fold_shift_add",
-      "summary": "Add the high product half shifted by 32 bits using 2^256 = 2^32 + 977 mod p.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold__pseudo_mersenne_first_fold",
+      "summary": "fold high product half via 2^n = 2^shift + low_term",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -1612,16 +1364,16 @@
         "x": 0,
         "measurement": 1
       },
-      "base_instance_count": 287,
+      "base_instance_count": 4305,
       "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 8897,
+      "whole_oracle_instance_count": 133455,
       "primitive_counts_total": {
-        "ccx": 8897,
+        "ccx": 133455,
         "cx": 0,
         "x": 0,
-        "measurement": 8897
+        "measurement": 133455
       },
-      "non_clifford_total": 8897,
+      "non_clifford_total": 133455,
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
@@ -1633,8 +1385,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold__first_fold_977_chain",
-      "summary": "Add 977 times the high product half with a binary addition-chain multiplier.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold__pseudo_mersenne_second_fold",
+      "summary": "fold residual high component after first fold",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -1643,47 +1395,16 @@
         "x": 0,
         "measurement": 1
       },
-      "base_instance_count": 4018,
+      "base_instance_count": 630,
       "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 124558,
+      "whole_oracle_instance_count": 19530,
       "primitive_counts_total": {
-        "ccx": 124558,
+        "ccx": 19530,
         "cx": 0,
         "x": 0,
-        "measurement": 124558
+        "measurement": 19530
       },
-      "non_clifford_total": 124558,
-      "metadata": {
-        "opcode": "complete_a0_all_streamed_tail",
-        "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1126332,
-        "per_leaf_instance_count": 1,
-        "stage": "all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold",
-        "stage_category": "pseudo_mersenne_reduction",
-        "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
-      }
-    },
-    {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold__second_fold_shift_add",
-      "summary": "Fold the residual high carry by adding it shifted by 32 bits.",
-      "category": "arithmetic_non_clifford",
-      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-      "primitive_counts_per_instance": {
-        "ccx": 1,
-        "cx": 0,
-        "x": 0,
-        "measurement": 1
-      },
-      "base_instance_count": 42,
-      "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 1302,
-      "primitive_counts_total": {
-        "ccx": 1302,
-        "cx": 0,
-        "x": 0,
-        "measurement": 1302
-      },
-      "non_clifford_total": 1302,
+      "non_clifford_total": 19530,
       "metadata": {
         "opcode": "complete_a0_all_streamed_tail",
         "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
@@ -1695,39 +1416,8 @@
       }
     },
     {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold__second_fold_977_chain",
-      "summary": "Add 977 times the residual high carry using the same binary chain.",
-      "category": "arithmetic_non_clifford",
-      "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-      "primitive_counts_per_instance": {
-        "ccx": 1,
-        "cx": 0,
-        "x": 0,
-        "measurement": 1
-      },
-      "base_instance_count": 588,
-      "schedule_multiplier": 31,
-      "whole_oracle_instance_count": 18228,
-      "primitive_counts_total": {
-        "ccx": 18228,
-        "cx": 0,
-        "x": 0,
-        "measurement": 18228
-      },
-      "non_clifford_total": 18228,
-      "metadata": {
-        "opcode": "complete_a0_all_streamed_tail",
-        "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-        "kernel_non_clifford_per_instance": 1126332,
-        "per_leaf_instance_count": 1,
-        "stage": "all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold",
-        "stage_category": "pseudo_mersenne_reduction",
-        "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
-      }
-    },
-    {
-      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_canonicalize__canonical_subtract_p_ladders",
-      "summary": "Two conditional subtract-p passes to return the product to the canonical field interval.",
+      "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_canonicalize__pseudo_mersenne_canonicalize",
+      "summary": "canonicalize product with bounded subtract-p passes",
       "category": "arithmetic_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
       "primitive_counts_per_instance": {
@@ -2201,7 +1891,7 @@
         },
         {
           "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_partial_products__partial_product_grid",
-          "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+          "summary": "one controlled interaction for each field-bit product",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -2231,8 +1921,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_controlled_add_path__controlled_add_accumulator",
-          "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_controlled_add_path__controlled_add_path",
+          "summary": "carry path for controlled add half of schoolbook multiplier",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -2262,8 +1952,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_controlled_sub_path__controlled_sub_accumulator",
-          "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_controlled_sub_path__controlled_sub_path",
+          "summary": "borrow path for controlled subtract half of schoolbook multiplier",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -2293,8 +1983,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_pseudo_mersenne_first_fold__first_fold_shift_add",
-          "summary": "Add the high product half shifted by 32 bits using 2^256 = 2^32 + 977 mod p.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_pseudo_mersenne_first_fold__pseudo_mersenne_first_fold",
+          "summary": "fold high product half via 2^n = 2^shift + low_term",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -2303,16 +1993,16 @@
             "x": 0,
             "measurement": 1
           },
-          "base_instance_count": 287,
+          "base_instance_count": 4305,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 8897,
+          "whole_oracle_instance_count": 133455,
           "primitive_counts_total": {
-            "ccx": 8897,
+            "ccx": 133455,
             "cx": 0,
             "x": 0,
-            "measurement": 8897
+            "measurement": 133455
           },
-          "non_clifford_total": 8897,
+          "non_clifford_total": 133455,
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
@@ -2324,8 +2014,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_pseudo_mersenne_first_fold__first_fold_977_chain",
-          "summary": "Add 977 times the high product half with a binary addition-chain multiplier.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_pseudo_mersenne_second_fold__pseudo_mersenne_second_fold",
+          "summary": "fold residual high component after first fold",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -2334,47 +2024,16 @@
             "x": 0,
             "measurement": 1
           },
-          "base_instance_count": 4018,
+          "base_instance_count": 630,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 124558,
+          "whole_oracle_instance_count": 19530,
           "primitive_counts_total": {
-            "ccx": 124558,
+            "ccx": 19530,
             "cx": 0,
             "x": 0,
-            "measurement": 124558
+            "measurement": 19530
           },
-          "non_clifford_total": 124558,
-          "metadata": {
-            "opcode": "complete_a0_all_streamed_tail",
-            "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1126332,
-            "per_leaf_instance_count": 1,
-            "stage": "tail_h_pseudo_mersenne_first_fold",
-            "stage_category": "pseudo_mersenne_reduction",
-            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
-          }
-        },
-        {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_pseudo_mersenne_second_fold__second_fold_shift_add",
-          "summary": "Fold the residual high carry by adding it shifted by 32 bits.",
-          "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-          "primitive_counts_per_instance": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "base_instance_count": 42,
-          "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 1302,
-          "primitive_counts_total": {
-            "ccx": 1302,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1302
-          },
-          "non_clifford_total": 1302,
+          "non_clifford_total": 19530,
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
@@ -2386,39 +2045,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_pseudo_mersenne_second_fold__second_fold_977_chain",
-          "summary": "Add 977 times the residual high carry using the same binary chain.",
-          "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-          "primitive_counts_per_instance": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "base_instance_count": 588,
-          "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 18228,
-          "primitive_counts_total": {
-            "ccx": 18228,
-            "cx": 0,
-            "x": 0,
-            "measurement": 18228
-          },
-          "non_clifford_total": 18228,
-          "metadata": {
-            "opcode": "complete_a0_all_streamed_tail",
-            "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1126332,
-            "per_leaf_instance_count": 1,
-            "stage": "tail_h_pseudo_mersenne_second_fold",
-            "stage_category": "pseudo_mersenne_reduction",
-            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
-          }
-        },
-        {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_pseudo_mersenne_canonicalize__canonical_subtract_p_ladders",
-          "summary": "Two conditional subtract-p passes to return the product to the canonical field interval.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__tail_h_pseudo_mersenne_canonicalize__pseudo_mersenne_canonicalize",
+          "summary": "canonicalize product with bounded subtract-p passes",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -2511,7 +2139,7 @@
         },
         {
           "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_partial_products__partial_product_grid",
-          "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+          "summary": "one controlled interaction for each field-bit product",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -2541,8 +2169,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_controlled_add_path__controlled_add_accumulator",
-          "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_controlled_add_path__controlled_add_path",
+          "summary": "carry path for controlled add half of schoolbook multiplier",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -2572,8 +2200,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_controlled_sub_path__controlled_sub_accumulator",
-          "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_controlled_sub_path__controlled_sub_path",
+          "summary": "borrow path for controlled subtract half of schoolbook multiplier",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -2603,8 +2231,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_pseudo_mersenne_first_fold__first_fold_shift_add",
-          "summary": "Add the high product half shifted by 32 bits using 2^256 = 2^32 + 977 mod p.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_pseudo_mersenne_first_fold__pseudo_mersenne_first_fold",
+          "summary": "fold high product half via 2^n = 2^shift + low_term",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -2613,16 +2241,16 @@
             "x": 0,
             "measurement": 1
           },
-          "base_instance_count": 287,
+          "base_instance_count": 4305,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 8897,
+          "whole_oracle_instance_count": 133455,
           "primitive_counts_total": {
-            "ccx": 8897,
+            "ccx": 133455,
             "cx": 0,
             "x": 0,
-            "measurement": 8897
+            "measurement": 133455
           },
-          "non_clifford_total": 8897,
+          "non_clifford_total": 133455,
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
@@ -2634,8 +2262,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_pseudo_mersenne_first_fold__first_fold_977_chain",
-          "summary": "Add 977 times the high product half with a binary addition-chain multiplier.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_pseudo_mersenne_second_fold__pseudo_mersenne_second_fold",
+          "summary": "fold residual high component after first fold",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -2644,47 +2272,16 @@
             "x": 0,
             "measurement": 1
           },
-          "base_instance_count": 4018,
+          "base_instance_count": 630,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 124558,
+          "whole_oracle_instance_count": 19530,
           "primitive_counts_total": {
-            "ccx": 124558,
+            "ccx": 19530,
             "cx": 0,
             "x": 0,
-            "measurement": 124558
+            "measurement": 19530
           },
-          "non_clifford_total": 124558,
-          "metadata": {
-            "opcode": "complete_a0_all_streamed_tail",
-            "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1126332,
-            "per_leaf_instance_count": 1,
-            "stage": "all_streamed_tail_a_pseudo_mersenne_first_fold",
-            "stage_category": "pseudo_mersenne_reduction",
-            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
-          }
-        },
-        {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_pseudo_mersenne_second_fold__second_fold_shift_add",
-          "summary": "Fold the residual high carry by adding it shifted by 32 bits.",
-          "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-          "primitive_counts_per_instance": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "base_instance_count": 42,
-          "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 1302,
-          "primitive_counts_total": {
-            "ccx": 1302,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1302
-          },
-          "non_clifford_total": 1302,
+          "non_clifford_total": 19530,
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
@@ -2696,39 +2293,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_pseudo_mersenne_second_fold__second_fold_977_chain",
-          "summary": "Add 977 times the residual high carry using the same binary chain.",
-          "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-          "primitive_counts_per_instance": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "base_instance_count": 588,
-          "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 18228,
-          "primitive_counts_total": {
-            "ccx": 18228,
-            "cx": 0,
-            "x": 0,
-            "measurement": 18228
-          },
-          "non_clifford_total": 18228,
-          "metadata": {
-            "opcode": "complete_a0_all_streamed_tail",
-            "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1126332,
-            "per_leaf_instance_count": 1,
-            "stage": "all_streamed_tail_a_pseudo_mersenne_second_fold",
-            "stage_category": "pseudo_mersenne_reduction",
-            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
-          }
-        },
-        {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_pseudo_mersenne_canonicalize__canonical_subtract_p_ladders",
-          "summary": "Two conditional subtract-p passes to return the product to the canonical field interval.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_a_pseudo_mersenne_canonicalize__pseudo_mersenne_canonicalize",
+          "summary": "canonicalize product with bounded subtract-p passes",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -2821,7 +2387,7 @@
         },
         {
           "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_partial_products__partial_product_grid",
-          "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+          "summary": "one controlled interaction for each field-bit product",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -2851,8 +2417,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_controlled_add_path__controlled_add_accumulator",
-          "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_controlled_add_path__controlled_add_path",
+          "summary": "carry path for controlled add half of schoolbook multiplier",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -2882,8 +2448,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_controlled_sub_path__controlled_sub_accumulator",
-          "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_controlled_sub_path__controlled_sub_path",
+          "summary": "borrow path for controlled subtract half of schoolbook multiplier",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -2913,8 +2479,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_pseudo_mersenne_first_fold__first_fold_shift_add",
-          "summary": "Add the high product half shifted by 32 bits using 2^256 = 2^32 + 977 mod p.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_pseudo_mersenne_first_fold__pseudo_mersenne_first_fold",
+          "summary": "fold high product half via 2^n = 2^shift + low_term",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -2923,16 +2489,16 @@
             "x": 0,
             "measurement": 1
           },
-          "base_instance_count": 287,
+          "base_instance_count": 4305,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 8897,
+          "whole_oracle_instance_count": 133455,
           "primitive_counts_total": {
-            "ccx": 8897,
+            "ccx": 133455,
             "cx": 0,
             "x": 0,
-            "measurement": 8897
+            "measurement": 133455
           },
-          "non_clifford_total": 8897,
+          "non_clifford_total": 133455,
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
@@ -2944,8 +2510,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_pseudo_mersenne_first_fold__first_fold_977_chain",
-          "summary": "Add 977 times the high product half with a binary addition-chain multiplier.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_pseudo_mersenne_second_fold__pseudo_mersenne_second_fold",
+          "summary": "fold residual high component after first fold",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -2954,47 +2520,16 @@
             "x": 0,
             "measurement": 1
           },
-          "base_instance_count": 4018,
+          "base_instance_count": 630,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 124558,
+          "whole_oracle_instance_count": 19530,
           "primitive_counts_total": {
-            "ccx": 124558,
+            "ccx": 19530,
             "cx": 0,
             "x": 0,
-            "measurement": 124558
+            "measurement": 19530
           },
-          "non_clifford_total": 124558,
-          "metadata": {
-            "opcode": "complete_a0_all_streamed_tail",
-            "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1126332,
-            "per_leaf_instance_count": 1,
-            "stage": "all_streamed_tail_zx_pseudo_mersenne_first_fold",
-            "stage_category": "pseudo_mersenne_reduction",
-            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
-          }
-        },
-        {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_pseudo_mersenne_second_fold__second_fold_shift_add",
-          "summary": "Fold the residual high carry by adding it shifted by 32 bits.",
-          "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-          "primitive_counts_per_instance": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "base_instance_count": 42,
-          "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 1302,
-          "primitive_counts_total": {
-            "ccx": 1302,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1302
-          },
-          "non_clifford_total": 1302,
+          "non_clifford_total": 19530,
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
@@ -3006,39 +2541,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_pseudo_mersenne_second_fold__second_fold_977_chain",
-          "summary": "Add 977 times the residual high carry using the same binary chain.",
-          "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-          "primitive_counts_per_instance": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "base_instance_count": 588,
-          "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 18228,
-          "primitive_counts_total": {
-            "ccx": 18228,
-            "cx": 0,
-            "x": 0,
-            "measurement": 18228
-          },
-          "non_clifford_total": 18228,
-          "metadata": {
-            "opcode": "complete_a0_all_streamed_tail",
-            "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1126332,
-            "per_leaf_instance_count": 1,
-            "stage": "all_streamed_tail_zx_pseudo_mersenne_second_fold",
-            "stage_category": "pseudo_mersenne_reduction",
-            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
-          }
-        },
-        {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_pseudo_mersenne_canonicalize__canonical_subtract_p_ladders",
-          "summary": "Two conditional subtract-p passes to return the product to the canonical field interval.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_tail_zx_pseudo_mersenne_canonicalize__pseudo_mersenne_canonicalize",
+          "summary": "canonicalize product with bounded subtract-p passes",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -3193,7 +2697,7 @@
         },
         {
           "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_partial_products__partial_product_grid",
-          "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+          "summary": "one controlled interaction for each field-bit product",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -3223,8 +2727,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_controlled_add_path__controlled_add_accumulator",
-          "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_controlled_add_path__controlled_add_path",
+          "summary": "carry path for controlled add half of schoolbook multiplier",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -3254,8 +2758,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_controlled_sub_path__controlled_sub_accumulator",
-          "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_controlled_sub_path__controlled_sub_path",
+          "summary": "borrow path for controlled subtract half of schoolbook multiplier",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -3285,8 +2789,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold__first_fold_shift_add",
-          "summary": "Add the high product half shifted by 32 bits using 2^256 = 2^32 + 977 mod p.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold__pseudo_mersenne_first_fold",
+          "summary": "fold high product half via 2^n = 2^shift + low_term",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -3295,16 +2799,16 @@
             "x": 0,
             "measurement": 1
           },
-          "base_instance_count": 287,
+          "base_instance_count": 4305,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 8897,
+          "whole_oracle_instance_count": 133455,
           "primitive_counts_total": {
-            "ccx": 8897,
+            "ccx": 133455,
             "cx": 0,
             "x": 0,
-            "measurement": 8897
+            "measurement": 133455
           },
-          "non_clifford_total": 8897,
+          "non_clifford_total": 133455,
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
@@ -3316,8 +2820,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold__first_fold_977_chain",
-          "summary": "Add 977 times the high product half with a binary addition-chain multiplier.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold__pseudo_mersenne_second_fold",
+          "summary": "fold residual high component after first fold",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -3326,47 +2830,16 @@
             "x": 0,
             "measurement": 1
           },
-          "base_instance_count": 4018,
+          "base_instance_count": 630,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 124558,
+          "whole_oracle_instance_count": 19530,
           "primitive_counts_total": {
-            "ccx": 124558,
+            "ccx": 19530,
             "cx": 0,
             "x": 0,
-            "measurement": 124558
+            "measurement": 19530
           },
-          "non_clifford_total": 124558,
-          "metadata": {
-            "opcode": "complete_a0_all_streamed_tail",
-            "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1126332,
-            "per_leaf_instance_count": 1,
-            "stage": "all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold",
-            "stage_category": "pseudo_mersenne_reduction",
-            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
-          }
-        },
-        {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold__second_fold_shift_add",
-          "summary": "Fold the residual high carry by adding it shifted by 32 bits.",
-          "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-          "primitive_counts_per_instance": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "base_instance_count": 42,
-          "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 1302,
-          "primitive_counts_total": {
-            "ccx": 1302,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1302
-          },
-          "non_clifford_total": 1302,
+          "non_clifford_total": 19530,
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
@@ -3378,39 +2851,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold__second_fold_977_chain",
-          "summary": "Add 977 times the residual high carry using the same binary chain.",
-          "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-          "primitive_counts_per_instance": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "base_instance_count": 588,
-          "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 18228,
-          "primitive_counts_total": {
-            "ccx": 18228,
-            "cx": 0,
-            "x": 0,
-            "measurement": 18228
-          },
-          "non_clifford_total": 18228,
-          "metadata": {
-            "opcode": "complete_a0_all_streamed_tail",
-            "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1126332,
-            "per_leaf_instance_count": 1,
-            "stage": "all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold",
-            "stage_category": "pseudo_mersenne_reduction",
-            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
-          }
-        },
-        {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_pseudo_mersenne_canonicalize__canonical_subtract_p_ladders",
-          "summary": "Two conditional subtract-p passes to return the product to the canonical field interval.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_i_pseudo_mersenne_canonicalize__pseudo_mersenne_canonicalize",
+          "summary": "canonicalize product with bounded subtract-p passes",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -3565,7 +3007,7 @@
         },
         {
           "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_partial_products__partial_product_grid",
-          "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+          "summary": "one controlled interaction for each field-bit product",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -3595,8 +3037,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_controlled_add_path__controlled_add_accumulator",
-          "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_controlled_add_path__controlled_add_path",
+          "summary": "carry path for controlled add half of schoolbook multiplier",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -3626,8 +3068,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_controlled_sub_path__controlled_sub_accumulator",
-          "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_controlled_sub_path__controlled_sub_path",
+          "summary": "borrow path for controlled subtract half of schoolbook multiplier",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -3657,8 +3099,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold__first_fold_shift_add",
-          "summary": "Add the high product half shifted by 32 bits using 2^256 = 2^32 + 977 mod p.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold__pseudo_mersenne_first_fold",
+          "summary": "fold high product half via 2^n = 2^shift + low_term",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -3667,16 +3109,16 @@
             "x": 0,
             "measurement": 1
           },
-          "base_instance_count": 287,
+          "base_instance_count": 4305,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 8897,
+          "whole_oracle_instance_count": 133455,
           "primitive_counts_total": {
-            "ccx": 8897,
+            "ccx": 133455,
             "cx": 0,
             "x": 0,
-            "measurement": 8897
+            "measurement": 133455
           },
-          "non_clifford_total": 8897,
+          "non_clifford_total": 133455,
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
@@ -3688,8 +3130,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold__first_fold_977_chain",
-          "summary": "Add 977 times the high product half with a binary addition-chain multiplier.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold__pseudo_mersenne_second_fold",
+          "summary": "fold residual high component after first fold",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {
@@ -3698,47 +3140,16 @@
             "x": 0,
             "measurement": 1
           },
-          "base_instance_count": 4018,
+          "base_instance_count": 630,
           "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 124558,
+          "whole_oracle_instance_count": 19530,
           "primitive_counts_total": {
-            "ccx": 124558,
+            "ccx": 19530,
             "cx": 0,
             "x": 0,
-            "measurement": 124558
+            "measurement": 19530
           },
-          "non_clifford_total": 124558,
-          "metadata": {
-            "opcode": "complete_a0_all_streamed_tail",
-            "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1126332,
-            "per_leaf_instance_count": 1,
-            "stage": "all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold",
-            "stage_category": "pseudo_mersenne_reduction",
-            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
-          }
-        },
-        {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold__second_fold_shift_add",
-          "summary": "Fold the residual high carry by adding it shifted by 32 bits.",
-          "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-          "primitive_counts_per_instance": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "base_instance_count": 42,
-          "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 1302,
-          "primitive_counts_total": {
-            "ccx": 1302,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1302
-          },
-          "non_clifford_total": 1302,
+          "non_clifford_total": 19530,
           "metadata": {
             "opcode": "complete_a0_all_streamed_tail",
             "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
@@ -3750,39 +3161,8 @@
           }
         },
         {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold__second_fold_977_chain",
-          "summary": "Add 977 times the residual high carry using the same binary chain.",
-          "category": "arithmetic_non_clifford",
-          "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-          "primitive_counts_per_instance": {
-            "ccx": 1,
-            "cx": 0,
-            "x": 0,
-            "measurement": 1
-          },
-          "base_instance_count": 588,
-          "schedule_multiplier": 31,
-          "whole_oracle_instance_count": 18228,
-          "primitive_counts_total": {
-            "ccx": 18228,
-            "cx": 0,
-            "x": 0,
-            "measurement": 18228
-          },
-          "non_clifford_total": 18228,
-          "metadata": {
-            "opcode": "complete_a0_all_streamed_tail",
-            "kernel_summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-            "kernel_non_clifford_per_instance": 1126332,
-            "per_leaf_instance_count": 1,
-            "stage": "all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold",
-            "stage_category": "pseudo_mersenne_reduction",
-            "arithmetic_kernel_family": "litinski_addsub_schoolbook_v1"
-          }
-        },
-        {
-          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_canonicalize__canonical_subtract_p_ladders",
-          "summary": "Two conditional subtract-p passes to return the product to the canonical field interval.",
+          "block_id": "repeated_leaf_arithmetic__complete_a0_all_streamed_tail__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_canonicalize__pseudo_mersenne_canonicalize",
+          "summary": "canonicalize product with bounded subtract-p passes",
           "category": "arithmetic_non_clifford",
           "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
           "primitive_counts_per_instance": {

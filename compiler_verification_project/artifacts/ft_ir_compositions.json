@@ -170,7 +170,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_partial_products",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Schoolbook partial-product grid.",
+            "summary": "one controlled interaction for each field-bit product",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "tail_h_partial_products",
@@ -181,7 +181,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_partial_products__leaf__partial_product_grid",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+            "summary": "one controlled interaction for each field-bit product",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -202,7 +202,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_controlled_add_path",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Carry-resolution path for the controlled-add contribution.",
+            "summary": "carry path for controlled add half of schoolbook multiplier",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "tail_h_controlled_add_path",
@@ -210,10 +210,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_controlled_add_path__leaf__controlled_add_accumulator",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_controlled_add_path__leaf__controlled_add_path",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+            "summary": "carry path for controlled add half of schoolbook multiplier",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -234,7 +234,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_controlled_sub_path",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+            "summary": "borrow path for controlled subtract half of schoolbook multiplier",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "tail_h_controlled_sub_path",
@@ -242,10 +242,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_controlled_sub_path__leaf__controlled_sub_accumulator",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_controlled_sub_path__leaf__controlled_sub_path",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+            "summary": "borrow path for controlled subtract half of schoolbook multiplier",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -266,7 +266,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_first_fold",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "First pseudo-Mersenne fold of the 512-bit schoolbook product.",
+            "summary": "fold high product half via 2^n = 2^shift + low_term",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "tail_h_pseudo_mersenne_first_fold",
@@ -274,10 +274,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_first_fold__leaf__first_fold_shift_add",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_first_fold__leaf__pseudo_mersenne_first_fold",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Add the high product half shifted by 32 bits using 2^256 = 2^32 + 977 mod p.",
+            "summary": "fold high product half via 2^n = 2^shift + low_term",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -290,28 +290,7 @@
                   "x": 0,
                   "measurement": 1
                 },
-                "base_instance_count": 287
-              }
-            }
-          },
-          {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_first_fold__leaf__first_fold_977_chain",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Add 977 times the high product half with a binary addition-chain multiplier.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-              "opcode": "complete_a0_all_streamed_tail",
-              "stage": "tail_h_pseudo_mersenne_first_fold",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 4018
+                "base_instance_count": 4305
               }
             }
           },
@@ -319,7 +298,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_second_fold",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Second narrow pseudo-Mersenne fold for the residual high component.",
+            "summary": "fold residual high component after first fold",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "tail_h_pseudo_mersenne_second_fold",
@@ -327,10 +306,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_second_fold__leaf__second_fold_shift_add",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_second_fold__leaf__pseudo_mersenne_second_fold",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Fold the residual high carry by adding it shifted by 32 bits.",
+            "summary": "fold residual high component after first fold",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -343,28 +322,7 @@
                   "x": 0,
                   "measurement": 1
                 },
-                "base_instance_count": 42
-              }
-            }
-          },
-          {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_second_fold__leaf__second_fold_977_chain",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Add 977 times the residual high carry using the same binary chain.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-              "opcode": "complete_a0_all_streamed_tail",
-              "stage": "tail_h_pseudo_mersenne_second_fold",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 588
+                "base_instance_count": 630
               }
             }
           },
@@ -372,7 +330,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_canonicalize",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Canonical post-reduction subtract-p correction.",
+            "summary": "canonicalize product with bounded subtract-p passes",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "tail_h_pseudo_mersenne_canonicalize",
@@ -380,10 +338,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_canonicalize__leaf__canonical_subtract_p_ladders",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_canonicalize__leaf__pseudo_mersenne_canonicalize",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Two conditional subtract-p passes to return the product to the canonical field interval.",
+            "summary": "canonicalize product with bounded subtract-p passes",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -457,7 +415,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_partial_products",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Schoolbook partial-product grid.",
+            "summary": "one controlled interaction for each field-bit product",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "all_streamed_tail_a_partial_products",
@@ -468,7 +426,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_partial_products__leaf__partial_product_grid",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+            "summary": "one controlled interaction for each field-bit product",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -489,7 +447,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_controlled_add_path",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Carry-resolution path for the controlled-add contribution.",
+            "summary": "carry path for controlled add half of schoolbook multiplier",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "all_streamed_tail_a_controlled_add_path",
@@ -497,10 +455,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_controlled_add_path__leaf__controlled_add_accumulator",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_controlled_add_path__leaf__controlled_add_path",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+            "summary": "carry path for controlled add half of schoolbook multiplier",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -521,7 +479,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_controlled_sub_path",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+            "summary": "borrow path for controlled subtract half of schoolbook multiplier",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "all_streamed_tail_a_controlled_sub_path",
@@ -529,10 +487,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_controlled_sub_path__leaf__controlled_sub_accumulator",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_controlled_sub_path__leaf__controlled_sub_path",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+            "summary": "borrow path for controlled subtract half of schoolbook multiplier",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -553,7 +511,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_first_fold",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "First pseudo-Mersenne fold of the 512-bit schoolbook product.",
+            "summary": "fold high product half via 2^n = 2^shift + low_term",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "all_streamed_tail_a_pseudo_mersenne_first_fold",
@@ -561,10 +519,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_first_fold__leaf__first_fold_shift_add",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_first_fold__leaf__pseudo_mersenne_first_fold",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Add the high product half shifted by 32 bits using 2^256 = 2^32 + 977 mod p.",
+            "summary": "fold high product half via 2^n = 2^shift + low_term",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -577,28 +535,7 @@
                   "x": 0,
                   "measurement": 1
                 },
-                "base_instance_count": 287
-              }
-            }
-          },
-          {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_first_fold__leaf__first_fold_977_chain",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Add 977 times the high product half with a binary addition-chain multiplier.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-              "opcode": "complete_a0_all_streamed_tail",
-              "stage": "all_streamed_tail_a_pseudo_mersenne_first_fold",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 4018
+                "base_instance_count": 4305
               }
             }
           },
@@ -606,7 +543,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_second_fold",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Second narrow pseudo-Mersenne fold for the residual high component.",
+            "summary": "fold residual high component after first fold",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "all_streamed_tail_a_pseudo_mersenne_second_fold",
@@ -614,10 +551,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_second_fold__leaf__second_fold_shift_add",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_second_fold__leaf__pseudo_mersenne_second_fold",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Fold the residual high carry by adding it shifted by 32 bits.",
+            "summary": "fold residual high component after first fold",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -630,28 +567,7 @@
                   "x": 0,
                   "measurement": 1
                 },
-                "base_instance_count": 42
-              }
-            }
-          },
-          {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_second_fold__leaf__second_fold_977_chain",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Add 977 times the residual high carry using the same binary chain.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-              "opcode": "complete_a0_all_streamed_tail",
-              "stage": "all_streamed_tail_a_pseudo_mersenne_second_fold",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 588
+                "base_instance_count": 630
               }
             }
           },
@@ -659,7 +575,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_canonicalize",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Canonical post-reduction subtract-p correction.",
+            "summary": "canonicalize product with bounded subtract-p passes",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "all_streamed_tail_a_pseudo_mersenne_canonicalize",
@@ -667,10 +583,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_canonicalize__leaf__canonical_subtract_p_ladders",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_canonicalize__leaf__pseudo_mersenne_canonicalize",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Two conditional subtract-p passes to return the product to the canonical field interval.",
+            "summary": "canonicalize product with bounded subtract-p passes",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -744,7 +660,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_partial_products",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Schoolbook partial-product grid.",
+            "summary": "one controlled interaction for each field-bit product",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "all_streamed_tail_zx_partial_products",
@@ -755,7 +671,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_partial_products__leaf__partial_product_grid",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+            "summary": "one controlled interaction for each field-bit product",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -776,7 +692,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_controlled_add_path",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Carry-resolution path for the controlled-add contribution.",
+            "summary": "carry path for controlled add half of schoolbook multiplier",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "all_streamed_tail_zx_controlled_add_path",
@@ -784,10 +700,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_controlled_add_path__leaf__controlled_add_accumulator",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_controlled_add_path__leaf__controlled_add_path",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+            "summary": "carry path for controlled add half of schoolbook multiplier",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -808,7 +724,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_controlled_sub_path",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+            "summary": "borrow path for controlled subtract half of schoolbook multiplier",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "all_streamed_tail_zx_controlled_sub_path",
@@ -816,10 +732,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_controlled_sub_path__leaf__controlled_sub_accumulator",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_controlled_sub_path__leaf__controlled_sub_path",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+            "summary": "borrow path for controlled subtract half of schoolbook multiplier",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -840,7 +756,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_first_fold",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "First pseudo-Mersenne fold of the 512-bit schoolbook product.",
+            "summary": "fold high product half via 2^n = 2^shift + low_term",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "all_streamed_tail_zx_pseudo_mersenne_first_fold",
@@ -848,10 +764,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_first_fold__leaf__first_fold_shift_add",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_first_fold__leaf__pseudo_mersenne_first_fold",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Add the high product half shifted by 32 bits using 2^256 = 2^32 + 977 mod p.",
+            "summary": "fold high product half via 2^n = 2^shift + low_term",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -864,28 +780,7 @@
                   "x": 0,
                   "measurement": 1
                 },
-                "base_instance_count": 287
-              }
-            }
-          },
-          {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_first_fold__leaf__first_fold_977_chain",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Add 977 times the high product half with a binary addition-chain multiplier.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-              "opcode": "complete_a0_all_streamed_tail",
-              "stage": "all_streamed_tail_zx_pseudo_mersenne_first_fold",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 4018
+                "base_instance_count": 4305
               }
             }
           },
@@ -893,7 +788,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_second_fold",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Second narrow pseudo-Mersenne fold for the residual high component.",
+            "summary": "fold residual high component after first fold",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "all_streamed_tail_zx_pseudo_mersenne_second_fold",
@@ -901,10 +796,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_second_fold__leaf__second_fold_shift_add",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_second_fold__leaf__pseudo_mersenne_second_fold",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Fold the residual high carry by adding it shifted by 32 bits.",
+            "summary": "fold residual high component after first fold",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -917,28 +812,7 @@
                   "x": 0,
                   "measurement": 1
                 },
-                "base_instance_count": 42
-              }
-            }
-          },
-          {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_second_fold__leaf__second_fold_977_chain",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Add 977 times the residual high carry using the same binary chain.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-              "opcode": "complete_a0_all_streamed_tail",
-              "stage": "all_streamed_tail_zx_pseudo_mersenne_second_fold",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 588
+                "base_instance_count": 630
               }
             }
           },
@@ -946,7 +820,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_canonicalize",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Canonical post-reduction subtract-p correction.",
+            "summary": "canonicalize product with bounded subtract-p passes",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "all_streamed_tail_zx_pseudo_mersenne_canonicalize",
@@ -954,10 +828,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_canonicalize__leaf__canonical_subtract_p_ladders",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_canonicalize__leaf__pseudo_mersenne_canonicalize",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Two conditional subtract-p passes to return the product to the canonical field interval.",
+            "summary": "canonicalize product with bounded subtract-p passes",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -1084,7 +958,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_partial_products",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Schoolbook partial-product grid.",
+            "summary": "one controlled interaction for each field-bit product",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "all_streamed_fully_streamed_tail_i_partial_products",
@@ -1095,7 +969,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_partial_products__leaf__partial_product_grid",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+            "summary": "one controlled interaction for each field-bit product",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -1116,7 +990,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_controlled_add_path",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Carry-resolution path for the controlled-add contribution.",
+            "summary": "carry path for controlled add half of schoolbook multiplier",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "all_streamed_fully_streamed_tail_i_controlled_add_path",
@@ -1124,10 +998,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_controlled_add_path__leaf__controlled_add_accumulator",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_controlled_add_path__leaf__controlled_add_path",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+            "summary": "carry path for controlled add half of schoolbook multiplier",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -1148,7 +1022,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_controlled_sub_path",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+            "summary": "borrow path for controlled subtract half of schoolbook multiplier",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "all_streamed_fully_streamed_tail_i_controlled_sub_path",
@@ -1156,10 +1030,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_controlled_sub_path__leaf__controlled_sub_accumulator",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_controlled_sub_path__leaf__controlled_sub_path",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+            "summary": "borrow path for controlled subtract half of schoolbook multiplier",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -1180,7 +1054,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "First pseudo-Mersenne fold of the 512-bit schoolbook product.",
+            "summary": "fold high product half via 2^n = 2^shift + low_term",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold",
@@ -1188,10 +1062,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold__leaf__first_fold_shift_add",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold__leaf__pseudo_mersenne_first_fold",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Add the high product half shifted by 32 bits using 2^256 = 2^32 + 977 mod p.",
+            "summary": "fold high product half via 2^n = 2^shift + low_term",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -1204,28 +1078,7 @@
                   "x": 0,
                   "measurement": 1
                 },
-                "base_instance_count": 287
-              }
-            }
-          },
-          {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold__leaf__first_fold_977_chain",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Add 977 times the high product half with a binary addition-chain multiplier.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-              "opcode": "complete_a0_all_streamed_tail",
-              "stage": "all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 4018
+                "base_instance_count": 4305
               }
             }
           },
@@ -1233,7 +1086,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Second narrow pseudo-Mersenne fold for the residual high component.",
+            "summary": "fold residual high component after first fold",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold",
@@ -1241,10 +1094,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold__leaf__second_fold_shift_add",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold__leaf__pseudo_mersenne_second_fold",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Fold the residual high carry by adding it shifted by 32 bits.",
+            "summary": "fold residual high component after first fold",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -1257,28 +1110,7 @@
                   "x": 0,
                   "measurement": 1
                 },
-                "base_instance_count": 42
-              }
-            }
-          },
-          {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold__leaf__second_fold_977_chain",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Add 977 times the residual high carry using the same binary chain.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-              "opcode": "complete_a0_all_streamed_tail",
-              "stage": "all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 588
+                "base_instance_count": 630
               }
             }
           },
@@ -1286,7 +1118,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_canonicalize",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Canonical post-reduction subtract-p correction.",
+            "summary": "canonicalize product with bounded subtract-p passes",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "all_streamed_fully_streamed_tail_i_pseudo_mersenne_canonicalize",
@@ -1294,10 +1126,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_canonicalize__leaf__canonical_subtract_p_ladders",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_canonicalize__leaf__pseudo_mersenne_canonicalize",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Two conditional subtract-p passes to return the product to the canonical field interval.",
+            "summary": "canonicalize product with bounded subtract-p passes",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -1424,7 +1256,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_partial_products",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Schoolbook partial-product grid.",
+            "summary": "one controlled interaction for each field-bit product",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "all_streamed_fully_streamed_tail_yz_partial_products",
@@ -1435,7 +1267,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_partial_products__leaf__partial_product_grid",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "One schoolbook partial-product interaction for each pair of field bits.",
+            "summary": "one controlled interaction for each field-bit product",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -1456,7 +1288,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_controlled_add_path",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Carry-resolution path for the controlled-add contribution.",
+            "summary": "carry path for controlled add half of schoolbook multiplier",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "all_streamed_fully_streamed_tail_yz_controlled_add_path",
@@ -1464,10 +1296,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_controlled_add_path__leaf__controlled_add_accumulator",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_controlled_add_path__leaf__controlled_add_path",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Carry-resolution path for the controlled-add half of the schoolbook multiplier.",
+            "summary": "carry path for controlled add half of schoolbook multiplier",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -1488,7 +1320,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_controlled_sub_path",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Borrow-resolution path for the controlled-subtract contribution.",
+            "summary": "borrow path for controlled subtract half of schoolbook multiplier",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "all_streamed_fully_streamed_tail_yz_controlled_sub_path",
@@ -1496,10 +1328,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_controlled_sub_path__leaf__controlled_sub_accumulator",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_controlled_sub_path__leaf__controlled_sub_path",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.",
+            "summary": "borrow path for controlled subtract half of schoolbook multiplier",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -1520,7 +1352,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "First pseudo-Mersenne fold of the 512-bit schoolbook product.",
+            "summary": "fold high product half via 2^n = 2^shift + low_term",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold",
@@ -1528,10 +1360,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold__leaf__first_fold_shift_add",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold__leaf__pseudo_mersenne_first_fold",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Add the high product half shifted by 32 bits using 2^256 = 2^32 + 977 mod p.",
+            "summary": "fold high product half via 2^n = 2^shift + low_term",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -1544,28 +1376,7 @@
                   "x": 0,
                   "measurement": 1
                 },
-                "base_instance_count": 287
-              }
-            }
-          },
-          {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold__leaf__first_fold_977_chain",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Add 977 times the high product half with a binary addition-chain multiplier.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-              "opcode": "complete_a0_all_streamed_tail",
-              "stage": "all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 4018
+                "base_instance_count": 4305
               }
             }
           },
@@ -1573,7 +1384,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Second narrow pseudo-Mersenne fold for the residual high component.",
+            "summary": "fold residual high component after first fold",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold",
@@ -1581,10 +1392,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold__leaf__second_fold_shift_add",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold__leaf__pseudo_mersenne_second_fold",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Fold the residual high carry by adding it shifted by 32 bits.",
+            "summary": "fold residual high component after first fold",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -1597,28 +1408,7 @@
                   "x": 0,
                   "measurement": 1
                 },
-                "base_instance_count": 42
-              }
-            }
-          },
-          {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold__leaf__second_fold_977_chain",
-            "kind": "leaf",
-            "category": "primitive_block",
-            "summary": "Add 977 times the residual high carry using the same binary chain.",
-            "metadata": {
-              "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
-              "opcode": "complete_a0_all_streamed_tail",
-              "stage": "all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold",
-              "resource_profile": {
-                "resource_semantics": "additive_primitive",
-                "primitive_counts_per_instance": {
-                  "ccx": 1,
-                  "cx": 0,
-                  "x": 0,
-                  "measurement": 1
-                },
-                "base_instance_count": 588
+                "base_instance_count": 630
               }
             }
           },
@@ -1626,7 +1416,7 @@
             "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_canonicalize",
             "kind": "composite",
             "category": "stage_bundle",
-            "summary": "Canonical post-reduction subtract-p correction.",
+            "summary": "canonicalize product with bounded subtract-p passes",
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "stage": "all_streamed_fully_streamed_tail_yz_pseudo_mersenne_canonicalize",
@@ -1634,10 +1424,10 @@
             }
           },
           {
-            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_canonicalize__leaf__canonical_subtract_p_ladders",
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_canonicalize__leaf__pseudo_mersenne_canonicalize",
             "kind": "leaf",
             "category": "primitive_block",
-            "summary": "Two conditional subtract-p passes to return the product to the canonical field interval.",
+            "summary": "canonicalize product with bounded subtract-p passes",
             "metadata": {
               "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
               "opcode": "complete_a0_all_streamed_tail",
@@ -2433,7 +2223,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_controlled_add_path",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_controlled_add_path__leaf__controlled_add_accumulator",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_controlled_add_path__leaf__controlled_add_path",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2447,7 +2237,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_controlled_sub_path",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_controlled_sub_path__leaf__controlled_sub_accumulator",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_controlled_sub_path__leaf__controlled_sub_path",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2461,14 +2251,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_first_fold",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_first_fold__leaf__first_fold_shift_add",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered stage."
-          },
-          {
-            "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_first_fold",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_first_fold__leaf__first_fold_977_chain",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_first_fold__leaf__pseudo_mersenne_first_fold",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2482,14 +2265,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_second_fold",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_second_fold__leaf__second_fold_shift_add",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered stage."
-          },
-          {
-            "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_second_fold",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_second_fold__leaf__second_fold_977_chain",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_second_fold__leaf__pseudo_mersenne_second_fold",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2503,7 +2279,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_canonicalize",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_canonicalize__leaf__canonical_subtract_p_ladders",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_canonicalize__leaf__pseudo_mersenne_canonicalize",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2552,7 +2328,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_controlled_add_path",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_controlled_add_path__leaf__controlled_add_accumulator",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_controlled_add_path__leaf__controlled_add_path",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2566,7 +2342,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_controlled_sub_path",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_controlled_sub_path__leaf__controlled_sub_accumulator",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_controlled_sub_path__leaf__controlled_sub_path",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2580,14 +2356,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_first_fold",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_first_fold__leaf__first_fold_shift_add",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered stage."
-          },
-          {
-            "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_first_fold",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_first_fold__leaf__first_fold_977_chain",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_first_fold__leaf__pseudo_mersenne_first_fold",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2601,14 +2370,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_second_fold",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_second_fold__leaf__second_fold_shift_add",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered stage."
-          },
-          {
-            "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_second_fold",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_second_fold__leaf__second_fold_977_chain",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_second_fold__leaf__pseudo_mersenne_second_fold",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2622,7 +2384,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_canonicalize",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_canonicalize__leaf__canonical_subtract_p_ladders",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_canonicalize__leaf__pseudo_mersenne_canonicalize",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2671,7 +2433,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_controlled_add_path",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_controlled_add_path__leaf__controlled_add_accumulator",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_controlled_add_path__leaf__controlled_add_path",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2685,7 +2447,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_controlled_sub_path",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_controlled_sub_path__leaf__controlled_sub_accumulator",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_controlled_sub_path__leaf__controlled_sub_path",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2699,14 +2461,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_first_fold",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_first_fold__leaf__first_fold_shift_add",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered stage."
-          },
-          {
-            "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_first_fold",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_first_fold__leaf__first_fold_977_chain",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_first_fold__leaf__pseudo_mersenne_first_fold",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2720,14 +2475,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_second_fold",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_second_fold__leaf__second_fold_shift_add",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered stage."
-          },
-          {
-            "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_second_fold",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_second_fold__leaf__second_fold_977_chain",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_second_fold__leaf__pseudo_mersenne_second_fold",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2741,7 +2489,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_canonicalize",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_canonicalize__leaf__canonical_subtract_p_ladders",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_canonicalize__leaf__pseudo_mersenne_canonicalize",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2811,7 +2559,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_controlled_add_path",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_controlled_add_path__leaf__controlled_add_accumulator",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_controlled_add_path__leaf__controlled_add_path",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2825,7 +2573,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_controlled_sub_path",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_controlled_sub_path__leaf__controlled_sub_accumulator",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_controlled_sub_path__leaf__controlled_sub_path",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2839,14 +2587,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold__leaf__first_fold_shift_add",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered stage."
-          },
-          {
-            "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold__leaf__first_fold_977_chain",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold__leaf__pseudo_mersenne_first_fold",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2860,14 +2601,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold__leaf__second_fold_shift_add",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered stage."
-          },
-          {
-            "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold__leaf__second_fold_977_chain",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold__leaf__pseudo_mersenne_second_fold",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2881,7 +2615,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_canonicalize",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_canonicalize__leaf__canonical_subtract_p_ladders",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_canonicalize__leaf__pseudo_mersenne_canonicalize",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2951,7 +2685,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_controlled_add_path",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_controlled_add_path__leaf__controlled_add_accumulator",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_controlled_add_path__leaf__controlled_add_path",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2965,7 +2699,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_controlled_sub_path",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_controlled_sub_path__leaf__controlled_sub_accumulator",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_controlled_sub_path__leaf__controlled_sub_path",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -2979,14 +2713,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold__leaf__first_fold_shift_add",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered stage."
-          },
-          {
-            "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold__leaf__first_fold_977_chain",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold__leaf__pseudo_mersenne_first_fold",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -3000,14 +2727,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold__leaf__second_fold_shift_add",
-            "count": 1,
-            "category": "leaf_block",
-            "summary": "Emit the primitive counted leaf block for this lowered stage."
-          },
-          {
-            "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold__leaf__second_fold_977_chain",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold__leaf__pseudo_mersenne_second_fold",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -3021,7 +2741,7 @@
           },
           {
             "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_canonicalize",
-            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_canonicalize__leaf__canonical_subtract_p_ladders",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_canonicalize__leaf__pseudo_mersenne_canonicalize",
             "count": 1,
             "category": "leaf_block",
             "summary": "Emit the primitive counted leaf block for this lowered stage."
@@ -3350,10 +3070,10 @@
           }
         ],
         "summary": {
-          "node_count": 143,
-          "edge_count": 142,
-          "leaf_node_count": 80,
-          "reachable_node_count": 143,
+          "node_count": 133,
+          "edge_count": 132,
+          "leaf_node_count": 70,
+          "reachable_node_count": 133,
           "max_depth": 5,
           "root_in_degree": 0,
           "primitive_totals": {
@@ -3491,7 +3211,7 @@
           "non_clifford_total": 2031616
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_controlled_add_path__leaf__controlled_add_accumulator",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_controlled_add_path__leaf__controlled_add_path",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -3499,7 +3219,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_controlled_add_path",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_controlled_add_path__leaf__controlled_add_accumulator"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_controlled_add_path__leaf__controlled_add_path"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -3521,7 +3241,7 @@
           "non_clifford_total": 7905
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_controlled_sub_path__leaf__controlled_sub_accumulator",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_controlled_sub_path__leaf__controlled_sub_path",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -3529,7 +3249,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_controlled_sub_path",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_controlled_sub_path__leaf__controlled_sub_accumulator"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_controlled_sub_path__leaf__controlled_sub_path"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -3551,7 +3271,7 @@
           "non_clifford_total": 7936
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_first_fold__leaf__first_fold_shift_add",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_first_fold__leaf__pseudo_mersenne_first_fold",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -3559,7 +3279,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_first_fold",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_first_fold__leaf__first_fold_shift_add"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_first_fold__leaf__pseudo_mersenne_first_fold"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -3570,48 +3290,18 @@
               "x": 0,
               "measurement": 1
             },
-            "base_instance_count": 287
+            "base_instance_count": 4305
           },
           "primitive_counts_total": {
-            "ccx": 8897,
+            "ccx": 133455,
             "cx": 0,
             "x": 0,
-            "measurement": 8897
+            "measurement": 133455
           },
-          "non_clifford_total": 8897
+          "non_clifford_total": 133455
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_first_fold__leaf__first_fold_977_chain",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "leaf_arithmetic_cluster",
-            "arithmetic_opcode__complete_a0_all_streamed_tail",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_first_fold",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_first_fold__leaf__first_fold_977_chain"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 4018
-          },
-          "primitive_counts_total": {
-            "ccx": 124558,
-            "cx": 0,
-            "x": 0,
-            "measurement": 124558
-          },
-          "non_clifford_total": 124558
-        },
-        {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_second_fold__leaf__second_fold_shift_add",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_second_fold__leaf__pseudo_mersenne_second_fold",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -3619,7 +3309,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_second_fold",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_second_fold__leaf__second_fold_shift_add"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_second_fold__leaf__pseudo_mersenne_second_fold"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -3630,48 +3320,18 @@
               "x": 0,
               "measurement": 1
             },
-            "base_instance_count": 42
+            "base_instance_count": 630
           },
           "primitive_counts_total": {
-            "ccx": 1302,
+            "ccx": 19530,
             "cx": 0,
             "x": 0,
-            "measurement": 1302
+            "measurement": 19530
           },
-          "non_clifford_total": 1302
+          "non_clifford_total": 19530
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_second_fold__leaf__second_fold_977_chain",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "leaf_arithmetic_cluster",
-            "arithmetic_opcode__complete_a0_all_streamed_tail",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_second_fold",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_second_fold__leaf__second_fold_977_chain"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 588
-          },
-          "primitive_counts_total": {
-            "ccx": 18228,
-            "cx": 0,
-            "x": 0,
-            "measurement": 18228
-          },
-          "non_clifford_total": 18228
-        },
-        {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_canonicalize__leaf__canonical_subtract_p_ladders",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_canonicalize__leaf__pseudo_mersenne_canonicalize",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -3679,7 +3339,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_canonicalize",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_canonicalize__leaf__canonical_subtract_p_ladders"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__tail_h_pseudo_mersenne_canonicalize__leaf__pseudo_mersenne_canonicalize"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -3791,7 +3451,7 @@
           "non_clifford_total": 2031616
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_controlled_add_path__leaf__controlled_add_accumulator",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_controlled_add_path__leaf__controlled_add_path",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -3799,7 +3459,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_controlled_add_path",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_controlled_add_path__leaf__controlled_add_accumulator"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_controlled_add_path__leaf__controlled_add_path"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -3821,7 +3481,7 @@
           "non_clifford_total": 7905
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_controlled_sub_path__leaf__controlled_sub_accumulator",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_controlled_sub_path__leaf__controlled_sub_path",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -3829,7 +3489,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_controlled_sub_path",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_controlled_sub_path__leaf__controlled_sub_accumulator"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_controlled_sub_path__leaf__controlled_sub_path"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -3851,7 +3511,7 @@
           "non_clifford_total": 7936
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_first_fold__leaf__first_fold_shift_add",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_first_fold__leaf__pseudo_mersenne_first_fold",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -3859,7 +3519,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_first_fold",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_first_fold__leaf__first_fold_shift_add"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_first_fold__leaf__pseudo_mersenne_first_fold"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -3870,48 +3530,18 @@
               "x": 0,
               "measurement": 1
             },
-            "base_instance_count": 287
+            "base_instance_count": 4305
           },
           "primitive_counts_total": {
-            "ccx": 8897,
+            "ccx": 133455,
             "cx": 0,
             "x": 0,
-            "measurement": 8897
+            "measurement": 133455
           },
-          "non_clifford_total": 8897
+          "non_clifford_total": 133455
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_first_fold__leaf__first_fold_977_chain",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "leaf_arithmetic_cluster",
-            "arithmetic_opcode__complete_a0_all_streamed_tail",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_first_fold",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_first_fold__leaf__first_fold_977_chain"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 4018
-          },
-          "primitive_counts_total": {
-            "ccx": 124558,
-            "cx": 0,
-            "x": 0,
-            "measurement": 124558
-          },
-          "non_clifford_total": 124558
-        },
-        {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_second_fold__leaf__second_fold_shift_add",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_second_fold__leaf__pseudo_mersenne_second_fold",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -3919,7 +3549,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_second_fold",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_second_fold__leaf__second_fold_shift_add"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_second_fold__leaf__pseudo_mersenne_second_fold"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -3930,48 +3560,18 @@
               "x": 0,
               "measurement": 1
             },
-            "base_instance_count": 42
+            "base_instance_count": 630
           },
           "primitive_counts_total": {
-            "ccx": 1302,
+            "ccx": 19530,
             "cx": 0,
             "x": 0,
-            "measurement": 1302
+            "measurement": 19530
           },
-          "non_clifford_total": 1302
+          "non_clifford_total": 19530
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_second_fold__leaf__second_fold_977_chain",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "leaf_arithmetic_cluster",
-            "arithmetic_opcode__complete_a0_all_streamed_tail",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_second_fold",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_second_fold__leaf__second_fold_977_chain"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 588
-          },
-          "primitive_counts_total": {
-            "ccx": 18228,
-            "cx": 0,
-            "x": 0,
-            "measurement": 18228
-          },
-          "non_clifford_total": 18228
-        },
-        {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_canonicalize__leaf__canonical_subtract_p_ladders",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_canonicalize__leaf__pseudo_mersenne_canonicalize",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -3979,7 +3579,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_canonicalize",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_canonicalize__leaf__canonical_subtract_p_ladders"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_a_pseudo_mersenne_canonicalize__leaf__pseudo_mersenne_canonicalize"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -4091,7 +3691,7 @@
           "non_clifford_total": 2031616
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_controlled_add_path__leaf__controlled_add_accumulator",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_controlled_add_path__leaf__controlled_add_path",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -4099,7 +3699,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_controlled_add_path",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_controlled_add_path__leaf__controlled_add_accumulator"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_controlled_add_path__leaf__controlled_add_path"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -4121,7 +3721,7 @@
           "non_clifford_total": 7905
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_controlled_sub_path__leaf__controlled_sub_accumulator",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_controlled_sub_path__leaf__controlled_sub_path",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -4129,7 +3729,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_controlled_sub_path",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_controlled_sub_path__leaf__controlled_sub_accumulator"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_controlled_sub_path__leaf__controlled_sub_path"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -4151,7 +3751,7 @@
           "non_clifford_total": 7936
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_first_fold__leaf__first_fold_shift_add",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_first_fold__leaf__pseudo_mersenne_first_fold",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -4159,7 +3759,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_first_fold",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_first_fold__leaf__first_fold_shift_add"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_first_fold__leaf__pseudo_mersenne_first_fold"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -4170,48 +3770,18 @@
               "x": 0,
               "measurement": 1
             },
-            "base_instance_count": 287
+            "base_instance_count": 4305
           },
           "primitive_counts_total": {
-            "ccx": 8897,
+            "ccx": 133455,
             "cx": 0,
             "x": 0,
-            "measurement": 8897
+            "measurement": 133455
           },
-          "non_clifford_total": 8897
+          "non_clifford_total": 133455
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_first_fold__leaf__first_fold_977_chain",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "leaf_arithmetic_cluster",
-            "arithmetic_opcode__complete_a0_all_streamed_tail",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_first_fold",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_first_fold__leaf__first_fold_977_chain"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 4018
-          },
-          "primitive_counts_total": {
-            "ccx": 124558,
-            "cx": 0,
-            "x": 0,
-            "measurement": 124558
-          },
-          "non_clifford_total": 124558
-        },
-        {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_second_fold__leaf__second_fold_shift_add",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_second_fold__leaf__pseudo_mersenne_second_fold",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -4219,7 +3789,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_second_fold",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_second_fold__leaf__second_fold_shift_add"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_second_fold__leaf__pseudo_mersenne_second_fold"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -4230,48 +3800,18 @@
               "x": 0,
               "measurement": 1
             },
-            "base_instance_count": 42
+            "base_instance_count": 630
           },
           "primitive_counts_total": {
-            "ccx": 1302,
+            "ccx": 19530,
             "cx": 0,
             "x": 0,
-            "measurement": 1302
+            "measurement": 19530
           },
-          "non_clifford_total": 1302
+          "non_clifford_total": 19530
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_second_fold__leaf__second_fold_977_chain",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "leaf_arithmetic_cluster",
-            "arithmetic_opcode__complete_a0_all_streamed_tail",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_second_fold",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_second_fold__leaf__second_fold_977_chain"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 588
-          },
-          "primitive_counts_total": {
-            "ccx": 18228,
-            "cx": 0,
-            "x": 0,
-            "measurement": 18228
-          },
-          "non_clifford_total": 18228
-        },
-        {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_canonicalize__leaf__canonical_subtract_p_ladders",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_canonicalize__leaf__pseudo_mersenne_canonicalize",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -4279,7 +3819,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_canonicalize",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_canonicalize__leaf__canonical_subtract_p_ladders"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_tail_zx_pseudo_mersenne_canonicalize__leaf__pseudo_mersenne_canonicalize"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -4451,7 +3991,7 @@
           "non_clifford_total": 2031616
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_controlled_add_path__leaf__controlled_add_accumulator",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_controlled_add_path__leaf__controlled_add_path",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -4459,7 +3999,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_controlled_add_path",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_controlled_add_path__leaf__controlled_add_accumulator"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_controlled_add_path__leaf__controlled_add_path"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -4481,7 +4021,7 @@
           "non_clifford_total": 7905
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_controlled_sub_path__leaf__controlled_sub_accumulator",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_controlled_sub_path__leaf__controlled_sub_path",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -4489,7 +4029,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_controlled_sub_path",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_controlled_sub_path__leaf__controlled_sub_accumulator"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_controlled_sub_path__leaf__controlled_sub_path"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -4511,7 +4051,7 @@
           "non_clifford_total": 7936
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold__leaf__first_fold_shift_add",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold__leaf__pseudo_mersenne_first_fold",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -4519,7 +4059,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold__leaf__first_fold_shift_add"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold__leaf__pseudo_mersenne_first_fold"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -4530,48 +4070,18 @@
               "x": 0,
               "measurement": 1
             },
-            "base_instance_count": 287
+            "base_instance_count": 4305
           },
           "primitive_counts_total": {
-            "ccx": 8897,
+            "ccx": 133455,
             "cx": 0,
             "x": 0,
-            "measurement": 8897
+            "measurement": 133455
           },
-          "non_clifford_total": 8897
+          "non_clifford_total": 133455
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold__leaf__first_fold_977_chain",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "leaf_arithmetic_cluster",
-            "arithmetic_opcode__complete_a0_all_streamed_tail",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_first_fold__leaf__first_fold_977_chain"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 4018
-          },
-          "primitive_counts_total": {
-            "ccx": 124558,
-            "cx": 0,
-            "x": 0,
-            "measurement": 124558
-          },
-          "non_clifford_total": 124558
-        },
-        {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold__leaf__second_fold_shift_add",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold__leaf__pseudo_mersenne_second_fold",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -4579,7 +4089,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold__leaf__second_fold_shift_add"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold__leaf__pseudo_mersenne_second_fold"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -4590,48 +4100,18 @@
               "x": 0,
               "measurement": 1
             },
-            "base_instance_count": 42
+            "base_instance_count": 630
           },
           "primitive_counts_total": {
-            "ccx": 1302,
+            "ccx": 19530,
             "cx": 0,
             "x": 0,
-            "measurement": 1302
+            "measurement": 19530
           },
-          "non_clifford_total": 1302
+          "non_clifford_total": 19530
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold__leaf__second_fold_977_chain",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "leaf_arithmetic_cluster",
-            "arithmetic_opcode__complete_a0_all_streamed_tail",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_second_fold__leaf__second_fold_977_chain"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 588
-          },
-          "primitive_counts_total": {
-            "ccx": 18228,
-            "cx": 0,
-            "x": 0,
-            "measurement": 18228
-          },
-          "non_clifford_total": 18228
-        },
-        {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_canonicalize__leaf__canonical_subtract_p_ladders",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_canonicalize__leaf__pseudo_mersenne_canonicalize",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -4639,7 +4119,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_canonicalize",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_canonicalize__leaf__canonical_subtract_p_ladders"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_i_pseudo_mersenne_canonicalize__leaf__pseudo_mersenne_canonicalize"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -4811,7 +4291,7 @@
           "non_clifford_total": 2031616
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_controlled_add_path__leaf__controlled_add_accumulator",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_controlled_add_path__leaf__controlled_add_path",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -4819,7 +4299,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_controlled_add_path",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_controlled_add_path__leaf__controlled_add_accumulator"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_controlled_add_path__leaf__controlled_add_path"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -4841,7 +4321,7 @@
           "non_clifford_total": 7905
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_controlled_sub_path__leaf__controlled_sub_accumulator",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_controlled_sub_path__leaf__controlled_sub_path",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -4849,7 +4329,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_controlled_sub_path",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_controlled_sub_path__leaf__controlled_sub_accumulator"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_controlled_sub_path__leaf__controlled_sub_path"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -4871,7 +4351,7 @@
           "non_clifford_total": 7936
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold__leaf__first_fold_shift_add",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold__leaf__pseudo_mersenne_first_fold",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -4879,7 +4359,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold__leaf__first_fold_shift_add"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold__leaf__pseudo_mersenne_first_fold"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -4890,48 +4370,18 @@
               "x": 0,
               "measurement": 1
             },
-            "base_instance_count": 287
+            "base_instance_count": 4305
           },
           "primitive_counts_total": {
-            "ccx": 8897,
+            "ccx": 133455,
             "cx": 0,
             "x": 0,
-            "measurement": 8897
+            "measurement": 133455
           },
-          "non_clifford_total": 8897
+          "non_clifford_total": 133455
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold__leaf__first_fold_977_chain",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "leaf_arithmetic_cluster",
-            "arithmetic_opcode__complete_a0_all_streamed_tail",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_first_fold__leaf__first_fold_977_chain"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 4018
-          },
-          "primitive_counts_total": {
-            "ccx": 124558,
-            "cx": 0,
-            "x": 0,
-            "measurement": 124558
-          },
-          "non_clifford_total": 124558
-        },
-        {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold__leaf__second_fold_shift_add",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold__leaf__pseudo_mersenne_second_fold",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -4939,7 +4389,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold__leaf__second_fold_shift_add"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold__leaf__pseudo_mersenne_second_fold"
           ],
           "path_multiplicity": 31,
           "resource_profile": {
@@ -4950,48 +4400,18 @@
               "x": 0,
               "measurement": 1
             },
-            "base_instance_count": 42
+            "base_instance_count": 630
           },
           "primitive_counts_total": {
-            "ccx": 1302,
+            "ccx": 19530,
             "cx": 0,
             "x": 0,
-            "measurement": 1302
+            "measurement": 19530
           },
-          "non_clifford_total": 1302
+          "non_clifford_total": 19530
         },
         {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold__leaf__second_fold_977_chain",
-          "category": "primitive_block",
-          "path": [
-            "full_oracle",
-            "repeated_leaf_calls",
-            "leaf_arithmetic_cluster",
-            "arithmetic_opcode__complete_a0_all_streamed_tail",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_second_fold__leaf__second_fold_977_chain"
-          ],
-          "path_multiplicity": 31,
-          "resource_profile": {
-            "resource_semantics": "additive_primitive",
-            "primitive_counts_per_instance": {
-              "ccx": 1,
-              "cx": 0,
-              "x": 0,
-              "measurement": 1
-            },
-            "base_instance_count": 588
-          },
-          "primitive_counts_total": {
-            "ccx": 18228,
-            "cx": 0,
-            "x": 0,
-            "measurement": 18228
-          },
-          "non_clifford_total": 18228
-        },
-        {
-          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_canonicalize__leaf__canonical_subtract_p_ladders",
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_canonicalize__leaf__pseudo_mersenne_canonicalize",
           "category": "primitive_block",
           "path": [
             "full_oracle",
@@ -4999,7 +4419,7 @@
             "leaf_arithmetic_cluster",
             "arithmetic_opcode__complete_a0_all_streamed_tail",
             "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_canonicalize",
-            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_canonicalize__leaf__canonical_subtract_p_ladders"
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_yz_pseudo_mersenne_canonicalize__leaf__pseudo_mersenne_canonicalize"
           ],
           "path_multiplicity": 31,
           "resource_profile": {

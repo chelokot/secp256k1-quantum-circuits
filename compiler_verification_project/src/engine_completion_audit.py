@@ -134,6 +134,7 @@ def build_engine_completion_audit(
         'arithmetic_rows_are_operation_ir_bound': (
             rows_by_source_kind['arithmetic_operation_ir'] > 0
             and arithmetic_operation_ir['pass'] is True
+            and arithmetic_operation_ir['checks']['modular_kernels_derive_from_executable_modular_circuit_ir'] is True
             and int(arithmetic_leaf_summary['non_clifford_total']) == sum(
                 int(row['kernel_non_clifford_per_instance']) * int(row['leaf_instance_count'])
                 for row in arithmetic_leaf_summary['rows']
@@ -192,6 +193,11 @@ def build_engine_completion_audit(
             'evidence': 'qroam_primitive_certificate.qroamclean_cost_model',
         },
         {
+            'name': 'modular_arithmetic_kernel_generation',
+            'status': 'generated_from_executable_modular_circuit_ir',
+            'evidence': 'arithmetic_lowerings.executable_modular_circuit_ir + arithmetic_operation_ir.executable_modular_circuit_ir + modular_arithmetic_certificate',
+        },
+        {
             'name': 'point_add_semantic_boundary',
             'status': 'release_corpus_and_equivalence_checked',
             'evidence': 'streamed_lookup_tail_leaf_equivalence + release_corpus_preflight',
@@ -199,16 +205,10 @@ def build_engine_completion_audit(
     ]
     remaining_macro_boundaries = [
         {
-            'name': 'modular_arithmetic_physical_lowering',
-            'status': 'macro_certificate_bound_not_single_flat_executable_source',
-            'required_to_close': 'Emit modular arithmetic operations directly into the canonical executable flat IR and derive arithmetic primitive rows only from that stream.',
-            'current_evidence': 'arithmetic_operation_ir + modular_arithmetic_certificate',
-        },
-        {
             'name': 'tail_macro_schedule_and_reversibility',
-            'status': 'auxiliary_artifact_bound_not_eliminated',
-            'required_to_close': 'Make tail macro liveness, reversibility, and schedule search outputs internal checks of the canonical executable IR.',
-            'current_evidence': 'tail_macro_liveness + tail_macro_reversibility + tail_macro_schedule_search',
+            'status': 'global_schedule_boundary_not_eliminated',
+            'required_to_close': 'Inline the tail macro formula DAG into the canonical executable flat IR so tail liveness, reversibility, and schedule search are produced by the same engine pass that emits arithmetic primitive rows.',
+            'current_evidence': 'tail_macro_liveness + tail_macro_reversibility + tail_macro_schedule_search + arithmetic_operation_ir',
         },
         {
             'name': 'single_engine_zkp_input_derivation',

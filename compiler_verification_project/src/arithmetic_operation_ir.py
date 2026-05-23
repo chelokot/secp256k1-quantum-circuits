@@ -344,6 +344,9 @@ def build_arithmetic_operation_ir(
         for kernel in kernels
         for stage in kernel['stages']
     ]
+    modular_circuit_ir = arithmetic_lowerings['executable_modular_circuit_ir']
+    modular_opcodes = set(modular_circuit_ir['non_clifford_by_opcode'])
+    kernel_by_opcode = {kernel['opcode']: kernel for kernel in kernels}
     checks = {
         'kernel_totals_match_materialized_block_streams': all(
             kernel['primitive_counts_total'] == kernel['declared_primitive_counts_total']
@@ -393,6 +396,12 @@ def build_arithmetic_operation_ir(
             sorted(row['opcode'] for row in leaf_summary['rows'])
             == sorted(row['opcode'] for row in arithmetic_lowerings['leaf_reconstruction']['per_opcode'])
         ),
+        'modular_kernels_derive_from_executable_modular_circuit_ir': all(
+            opcode in kernel_by_opcode
+            and int(kernel_by_opcode[opcode]['exact_non_clifford_per_kernel']) == int(modular_circuit_ir['non_clifford_by_opcode'][opcode])
+            and kernel_by_opcode[opcode]['primitive_counts_total']['ccx'] == int(modular_circuit_ir['non_clifford_by_opcode'][opcode])
+            for opcode in modular_opcodes
+        ),
     }
     return {
         'schema': ARITHMETIC_OPERATION_IR_SCHEMA,
@@ -402,6 +411,12 @@ def build_arithmetic_operation_ir(
         },
         'stream_encoding': ARITHMETIC_OPERATION_STREAM_ENCODING,
         'family': arithmetic_lowerings['family'],
+        'executable_modular_circuit_ir': {
+            'schema': modular_circuit_ir['schema'],
+            'field_bits': int(modular_circuit_ir['field_bits']),
+            'operation_count': len(modular_circuit_ir['operations']),
+            'non_clifford_by_opcode': dict(modular_circuit_ir['non_clifford_by_opcode']),
+        },
         'summary': {
             'kernel_count': len(kernels),
             'stage_count': len(stage_rows),

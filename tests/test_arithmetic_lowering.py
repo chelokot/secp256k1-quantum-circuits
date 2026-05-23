@@ -18,7 +18,7 @@ if str(ROOT_SRC) not in sys.path:
 if str(COMPILER_SRC) not in sys.path:
     sys.path.insert(0, str(COMPILER_SRC))
 
-from arithmetic_lowering import materialize_arithmetic_primitive_operations  # noqa: E402
+from arithmetic_lowering import build_executable_modular_circuit_ir, materialize_arithmetic_primitive_operations  # noqa: E402
 
 
 class ArithmeticLoweringTests(unittest.TestCase):
@@ -49,6 +49,22 @@ class ArithmeticLoweringTests(unittest.TestCase):
         field_mul = next(kernel for kernel in self.lowerings['kernels'] if kernel['opcode'] == 'field_mul')
         self.assertEqual(field_mul['exact_non_clifford_per_kernel'], self.kernel['field_mul_non_clifford'])
         self.assertEqual(self.lowerings['family']['name'], self.kernel['name'])
+
+    def test_modular_kernels_are_generated_from_executable_modular_ir(self):
+        ir = self.lowerings['executable_modular_circuit_ir']
+        self.assertEqual(
+            ir,
+            build_executable_modular_circuit_ir(
+                field_bits=ir['field_bits'],
+                shift=ir['pseudo_mersenne']['shift'],
+                low_term=ir['pseudo_mersenne']['low_term'],
+                subtract_passes=ir['pseudo_mersenne']['canonical_subtract_passes'],
+            ),
+        )
+        kernels = {kernel['opcode']: kernel for kernel in self.lowerings['kernels']}
+        for opcode, expected_non_clifford in ir['non_clifford_by_opcode'].items():
+            self.assertEqual(kernels[opcode]['exact_non_clifford_per_kernel'], expected_non_clifford)
+            self.assertEqual(kernels[opcode]['primitive_counts_total']['ccx'], expected_non_clifford)
 
     def test_leaf_reconstruction_matches_module_library(self):
         reconstruction = self.lowerings['leaf_reconstruction']

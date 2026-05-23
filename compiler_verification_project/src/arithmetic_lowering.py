@@ -15,6 +15,207 @@ SECP256K1_PSEUDO_MERSENNE_LOW_TERM = 977
 SECP256K1_CANONICAL_SUBTRACT_PASSES = 2
 
 
+def pseudo_mersenne_modulus(field_bits: int, shift: int, low_term: int) -> int:
+    return (1 << int(field_bits)) - (1 << int(shift)) - int(low_term)
+
+
+def pseudo_mersenne_reduce(value: int, *, field_bits: int, shift: int, low_term: int, subtract_passes: int) -> Dict[str, Any]:
+    mask = (1 << int(field_bits)) - 1
+    modulus = pseudo_mersenne_modulus(field_bits, shift, low_term)
+    high = int(value) >> int(field_bits)
+    first_fold = (int(value) & mask) + (high << int(shift)) + high * int(low_term)
+    residual = first_fold >> int(field_bits)
+    second_fold = (first_fold & mask) + (residual << int(shift)) + residual * int(low_term)
+    canonical = second_fold
+    subtract_trace = []
+    for _ in range(int(subtract_passes)):
+        did_subtract = canonical >= modulus
+        if did_subtract:
+            canonical -= modulus
+        subtract_trace.append({
+            'did_subtract': did_subtract,
+            'value_after_pass': canonical,
+        })
+    return {
+        'input': int(value),
+        'modulus': modulus,
+        'first_high': high,
+        'first_fold': first_fold,
+        'second_high': residual,
+        'second_fold': second_fold,
+        'subtract_trace': subtract_trace,
+        'canonical': canonical,
+    }
+
+
+def _binary_addition_chain_step_count(constant: int) -> int:
+    return int(constant).bit_length() + int(constant).bit_count() - 2
+
+
+def _modular_step(
+    *,
+    name: str,
+    kind: str,
+    bit_count: int,
+    repeat_count: int,
+    semantic: str,
+    measured: bool = True,
+) -> Dict[str, Any]:
+    primitive_count = int(bit_count) * int(repeat_count)
+    return {
+        'name': name,
+        'kind': kind,
+        'bit_count': int(bit_count),
+        'repeat_count': int(repeat_count),
+        'semantic': semantic,
+        'measured': bool(measured),
+        'primitive_counts_total': _primitive_counts(
+            ccx=primitive_count,
+            measurement=primitive_count if measured else 0,
+        ),
+    }
+
+
+def _modular_operation_ir(opcode: str, steps: List[Mapping[str, Any]], semantic: str) -> Dict[str, Any]:
+    primitive_counts = {
+        key: sum(int(step['primitive_counts_total'][key]) for step in steps)
+        for key in ('ccx', 'cx', 'x', 'measurement')
+    }
+    return {
+        'opcode': opcode,
+        'semantic': semantic,
+        'steps': list(steps),
+        'primitive_counts_total': primitive_counts,
+        'non_clifford_total': primitive_counts['ccx'],
+    }
+
+
+def build_executable_modular_circuit_ir(*, field_bits: int, shift: int, low_term: int, subtract_passes: int) -> Dict[str, Any]:
+    chain = minimal_addition_chain(21)
+    low_term_chain_steps = _binary_addition_chain_step_count(low_term)
+    second_fold_width = int(shift) + int(low_term).bit_length() + 1
+    add_steps = [
+        _modular_step(
+            name='carry_ladder',
+            kind='ripple_carry',
+            bit_count=int(field_bits) - 1,
+            repeat_count=1,
+            semantic='compute raw sum carry path',
+        ),
+        _modular_step(
+            name='conditional_subtract_modulus',
+            kind='conditional_modulus_correction',
+            bit_count=int(field_bits) - 1,
+            repeat_count=1,
+            semantic='canonicalize raw sum by subtracting p when needed',
+        ),
+    ]
+    sub_steps = [
+        _modular_step(
+            name='borrow_ladder',
+            kind='ripple_borrow',
+            bit_count=int(field_bits) - 1,
+            repeat_count=1,
+            semantic='compute raw difference borrow path',
+        ),
+        _modular_step(
+            name='conditional_add_modulus',
+            kind='conditional_modulus_correction',
+            bit_count=int(field_bits) - 1,
+            repeat_count=1,
+            semantic='canonicalize raw difference by adding p when needed',
+        ),
+    ]
+    field_mul_steps = [
+        _modular_step(
+            name='partial_product_grid',
+            kind='schoolbook_partial_products',
+            bit_count=int(field_bits) * int(field_bits),
+            repeat_count=1,
+            semantic='one controlled interaction for each field-bit product',
+            measured=False,
+        ),
+        _modular_step(
+            name='controlled_add_path',
+            kind='controlled_accumulator_add',
+            bit_count=int(field_bits) - 1,
+            repeat_count=1,
+            semantic='carry path for controlled add half of schoolbook multiplier',
+        ),
+        _modular_step(
+            name='controlled_sub_path',
+            kind='controlled_accumulator_subtract',
+            bit_count=int(field_bits),
+            repeat_count=1,
+            semantic='borrow path for controlled subtract half of schoolbook multiplier',
+        ),
+        _modular_step(
+            name='pseudo_mersenne_first_fold',
+            kind='pseudo_mersenne_fold',
+            bit_count=int(field_bits) + int(shift) - 1,
+            repeat_count=1 + low_term_chain_steps,
+            semantic='fold high product half via 2^n = 2^shift + low_term',
+        ),
+        _modular_step(
+            name='pseudo_mersenne_second_fold',
+            kind='pseudo_mersenne_fold',
+            bit_count=second_fold_width - 1,
+            repeat_count=1 + low_term_chain_steps,
+            semantic='fold residual high component after first fold',
+        ),
+        _modular_step(
+            name='pseudo_mersenne_canonicalize',
+            kind='conditional_modulus_correction',
+            bit_count=int(field_bits) - 1,
+            repeat_count=int(subtract_passes),
+            semantic='canonicalize product with bounded subtract-p passes',
+        ),
+    ]
+    operations = [
+        _modular_operation_ir('field_add', add_steps, 'canonical modular addition'),
+        _modular_operation_ir('field_sub', sub_steps, 'canonical modular subtraction'),
+        _modular_operation_ir(
+            'field_sub_sum',
+            [{**step, 'name': f'first_subtract_{step["name"]}'} for step in sub_steps]
+            + [{**step, 'name': f'second_subtract_{step["name"]}'} for step in sub_steps],
+            'two sequential canonical modular subtractions',
+        ),
+        _modular_operation_ir(
+            'field_triple',
+            [{**step, 'name': f'first_add_{step["name"]}'} for step in add_steps]
+            + [{**step, 'name': f'second_add_{step["name"]}'} for step in add_steps],
+            'two sequential canonical modular additions for 3a',
+        ),
+        _modular_operation_ir(
+            'mul_const',
+            [
+                {**step, 'name': f'chain_{left}_to_{right}_{step["name"]}'}
+                for left, right in zip(chain, chain[1:])
+                for step in add_steps
+            ],
+            'fixed multiplication by 21 through canonical modular additions',
+        ),
+        _modular_operation_ir('field_mul', field_mul_steps, 'schoolbook multiplication followed by pseudo-Mersenne reduction'),
+    ]
+    return {
+        'schema': 'compiler-project-executable-modular-circuit-ir-v1',
+        'field_bits': int(field_bits),
+        'pseudo_mersenne': {
+            'shift': int(shift),
+            'low_term': int(low_term),
+            'canonical_subtract_passes': int(subtract_passes),
+            'low_term_chain_steps': low_term_chain_steps,
+            'second_fold_width': second_fold_width,
+        },
+        'mul_const_21_addition_chain': chain,
+        'operations': operations,
+        'non_clifford_by_opcode': {
+            operation['opcode']: int(operation['non_clifford_total'])
+            for operation in operations
+        },
+    }
+
+
 def _primitive_counts(ccx: int = 0, cx: int = 0, x: int = 0, measurement: int = 0) -> Dict[str, int]:
     return {
         'ccx': int(ccx),
@@ -103,10 +304,6 @@ def _field_mul_partial_product_operations(field_bits: int) -> List[PrimitiveOper
         for right_bit in range(field_bits):
             primitive_operations.append(_primitive_operation('ccx', left_bit, right_bit))
     return primitive_operations
-
-
-def _binary_addition_chain_step_count(constant: int) -> int:
-    return int(constant).bit_length() + int(constant).bit_count() - 2
 
 
 def _block(
@@ -198,29 +395,89 @@ def _kernel(opcode: str, summary: str, stages: List[Dict[str, Any]], notes: List
     }
 
 
-def _field_add_kernel(field_bits: int) -> Dict[str, Any]:
-    ladder = _block(
-        name='modular_add_carry_and_correction_ladders',
-        summary='Carry ladder plus conditional subtract-p correction for canonical modular field addition.',
-        instance_count=2 * (field_bits - 1),
-        primitive_operations=_field_modular_add_operations(field_bits),
-        notes=[
-            'The first ladder computes the n-bit add carry path.',
-            'The second ladder accounts for the canonical conditional subtract-p correction, so this is a mod-p add rather than only a modulo-2^n add.',
-        ],
+def _modular_operation(opcode: str, field_bits: int) -> Mapping[str, Any]:
+    circuit_ir = build_executable_modular_circuit_ir(
+        field_bits=field_bits,
+        shift=SECP256K1_PSEUDO_MERSENNE_SHIFT,
+        low_term=SECP256K1_PSEUDO_MERSENNE_LOW_TERM,
+        subtract_passes=SECP256K1_CANONICAL_SUBTRACT_PASSES,
     )
+    return next(operation for operation in circuit_ir['operations'] if operation['opcode'] == opcode)
+
+
+def _modular_step_block(step: Mapping[str, Any], field_bits: int) -> Dict[str, Any]:
+    measured = bool(step['measured'])
+    bit_count = int(step['bit_count'])
+    repeat_count = int(step['repeat_count'])
+    if step['kind'] == 'schoolbook_partial_products':
+        return _block(
+            name=str(step['name']),
+            summary=str(step['semantic']),
+            instance_count=bit_count * repeat_count,
+            primitive_operations=_field_mul_partial_product_operations(field_bits),
+            notes=['Generated directly from the executable modular circuit IR step.'],
+        )
+    return _block(
+        name=str(step['name']),
+        summary=str(step['semantic']),
+        instance_count=bit_count * repeat_count,
+        primitive_operation_generator={
+            'kind': 'repeated_ladder_with_measurement' if measured else 'repeated_gate',
+            'gate': 'ccx',
+            'measurement_gate': 'measurement',
+            'bit_count': bit_count,
+            'repeat_count': repeat_count,
+            'count': bit_count * repeat_count,
+            'primitive_counts_total': {
+                key: int(step['primitive_counts_total'][key])
+                for key in ('ccx', 'cx', 'x', 'measurement')
+            },
+        },
+        notes=['Generated directly from the executable modular circuit IR step.'],
+    )
+
+
+def _modular_grouped_kernel(
+    *,
+    field_bits: int,
+    opcode: str,
+    summary: str,
+    stage_name: str,
+    stage_summary: str,
+    stage_category: str,
+    notes: List[str],
+) -> Dict[str, Any]:
+    operation = _modular_operation(opcode, field_bits)
     return _kernel(
-        opcode='field_add',
-        summary='Exact n-bit ripple-carry field-adder kernel over the checked leaf register width.',
+        opcode=opcode,
+        summary=summary,
         stages=[
             _stage(
-                name='carry_resolution',
-                summary='Temporary logical-AND carry ladder and canonical subtract-p correction for the field-adder kernel.',
-                category='adder',
-                blocks=[ladder],
-                notes=['The adder kernel is counted as a canonical mod-p operation, not only a ring add modulo 2^n.'],
+                name=stage_name,
+                summary=stage_summary,
+                category=stage_category,
+                blocks=[
+                    _modular_step_block(step, field_bits)
+                    for step in operation['steps']
+                ],
+                notes=['This stage is generated from executable_modular_circuit_ir, not hand-written resource totals.'],
             )
         ],
+        notes=[
+            *notes,
+            'Source: executable_modular_circuit_ir emitted by arithmetic_lowering.build_executable_modular_circuit_ir.',
+        ],
+    )
+
+
+def _field_add_kernel(field_bits: int) -> Dict[str, Any]:
+    return _modular_grouped_kernel(
+        field_bits=field_bits,
+        opcode='field_add',
+        summary='Exact n-bit ripple-carry field-adder kernel over the checked leaf register width.',
+        stage_name='carry_resolution',
+        stage_summary='Temporary logical-AND carry ladder and canonical subtract-p correction for the field-adder kernel.',
+        stage_category='adder',
         notes=[
             'The kernel contributes 2(n-1) non-Clifford operations for a 256-bit canonical field addition.',
         ],
@@ -228,28 +485,13 @@ def _field_add_kernel(field_bits: int) -> Dict[str, Any]:
 
 
 def _field_sub_kernel(field_bits: int) -> Dict[str, Any]:
-    ladder = _block(
-        name='modular_sub_borrow_and_correction_ladders',
-        summary='Borrow ladder plus conditional add-p correction for canonical modular field subtraction.',
-        instance_count=2 * (field_bits - 1),
-        primitive_operations=_field_modular_sub_operations(field_bits),
-        notes=[
-            'The first ladder computes the n-bit borrow path.',
-            'The second ladder accounts for the canonical conditional add-p correction, so this is a mod-p subtract rather than only a modulo-2^n subtract.',
-        ],
-    )
-    return _kernel(
+    return _modular_grouped_kernel(
+        field_bits=field_bits,
         opcode='field_sub',
         summary='Exact n-bit ripple-carry field-subtractor kernel over the checked leaf register width.',
-        stages=[
-            _stage(
-                name='borrow_resolution',
-                summary='Temporary logical-AND borrow ladder and canonical add-p correction for the field-subtractor kernel.',
-                category='subtractor',
-                blocks=[ladder],
-                notes=['The subtractor kernel is counted as a canonical mod-p operation, not only a ring subtract modulo 2^n.'],
-            )
-        ],
+        stage_name='borrow_resolution',
+        stage_summary='Temporary logical-AND borrow ladder and canonical add-p correction for the field-subtractor kernel.',
+        stage_category='subtractor',
         notes=[
             'The kernel contributes 2(n-1) non-Clifford operations for a 256-bit canonical field subtraction.',
         ],
@@ -285,20 +527,9 @@ def _field_select_kernel(field_bits: int) -> Dict[str, Any]:
 
 
 def _mul_const_kernel(field_bits: int, const_value: int) -> Dict[str, Any]:
-    chain = minimal_addition_chain(const_value)
-    blocks = []
-    for left, right in zip(chain, chain[1:]):
-        blocks.append(
-            _block(
-                name=f'chain_step_{left}_to_{right}',
-                summary=f'One field-add kernel step in the monotone addition chain {left} -> {right}.',
-                instance_count=1,
-                primitive_operations=_field_modular_add_operations(field_bits),
-                notes=[
-                    'Each chain step reuses the checked canonical field-add kernel cost over the same 256-bit register width.',
-                ],
-            )
-        )
+    if const_value != 21:
+        raise ValueError('the executable modular circuit IR currently exposes only the fixed 3b = 21 multiplier')
+    operation = _modular_operation('mul_const', field_bits)
     return _kernel(
         opcode='mul_const',
         summary=f'Exact fixed-constant multiplication kernel for multiplication by {const_value}.',
@@ -307,12 +538,16 @@ def _mul_const_kernel(field_bits: int, const_value: int) -> Dict[str, Any]:
                 name='addition_chain',
                 summary=f'Monotone addition-chain realization for multiplication by {const_value}.',
                 category='mul_const',
-                blocks=blocks,
-                notes=['The checked leaf uses a fixed 3b = 21 multiplier, so the addition chain is exact and machine-readable.'],
+                blocks=[
+                    _modular_step_block(step, field_bits)
+                    for step in operation['steps']
+                ],
+                notes=['The checked leaf uses a fixed 3b = 21 multiplier from executable_modular_circuit_ir.'],
             )
         ],
         notes=[
-            f'The kernel uses the exact monotone addition chain {chain} for multiplication by {const_value}.',
+            f'The kernel uses the exact monotone addition chain {minimal_addition_chain(const_value)} for multiplication by {const_value}.',
+            'Source: executable_modular_circuit_ir emitted by arithmetic_lowering.build_executable_modular_circuit_ir.',
         ],
     )
 
@@ -402,62 +637,39 @@ def _pseudo_mersenne_reduction_stages(field_bits: int, multiplication_count: int
 
 
 def _field_mul_kernel(field_bits: int) -> Dict[str, Any]:
-    partial_products = _block(
-        name='partial_product_grid',
-        summary='One schoolbook partial-product interaction for each pair of field bits.',
-        instance_count=field_bits * field_bits,
-        primitive_operations=_field_mul_partial_product_operations(field_bits),
-        notes=[
-            'This stage records the n^2 schoolbook bit-product interactions in the controlled add-subtract multiplier family.',
-        ],
-    )
-    controlled_add_path = _block(
-        name='controlled_add_accumulator',
-        summary='Carry-resolution path for the controlled-add half of the schoolbook multiplier.',
-        instance_count=field_bits - 1,
-        primitive_operations=_ladder_operations(field_bits - 1, include_measurement=True),
-        notes=[
-            'This stage accounts for the n-1 carry transitions in the add half of the controlled add-subtract multiplier.',
-        ],
-    )
-    controlled_sub_path = _block(
-        name='controlled_sub_accumulator',
-        summary='Borrow-resolution path for the controlled-subtract half of the schoolbook multiplier.',
-        instance_count=field_bits,
-        primitive_operations=_ladder_operations(field_bits, include_measurement=True),
-        notes=[
-            'This stage accounts for the residual n borrow transitions in the subtract half of the controlled add-subtract multiplier.',
-        ],
-    )
+    operation = _modular_operation('field_mul', field_bits)
+    stage_name_by_step = {
+        'partial_product_grid': 'partial_products',
+        'controlled_add_path': 'controlled_add_path',
+        'controlled_sub_path': 'controlled_sub_path',
+        'pseudo_mersenne_first_fold': 'pseudo_mersenne_first_fold',
+        'pseudo_mersenne_second_fold': 'pseudo_mersenne_second_fold',
+        'pseudo_mersenne_canonicalize': 'pseudo_mersenne_canonicalize',
+    }
+    category_by_step = {
+        'partial_product_grid': 'schoolbook_grid',
+        'controlled_add_path': 'controlled_add',
+        'controlled_sub_path': 'controlled_subtract',
+        'pseudo_mersenne_first_fold': 'pseudo_mersenne_reduction',
+        'pseudo_mersenne_second_fold': 'pseudo_mersenne_reduction',
+        'pseudo_mersenne_canonicalize': 'canonical_mod_p_reduction',
+    }
     return _kernel(
         opcode='field_mul',
         summary='Exact schoolbook controlled add-subtract field-multiplication kernel with secp256k1 pseudo-Mersenne mod-p reduction.',
         stages=[
             _stage(
-                name='partial_products',
-                summary='Schoolbook partial-product grid.',
-                category='schoolbook_grid',
-                blocks=[partial_products],
-                notes=['The partial-product stage is the dominant n^2 contribution in the multiplier family.'],
-            ),
-            _stage(
-                name='controlled_add_path',
-                summary='Carry-resolution path for the controlled-add contribution.',
-                category='controlled_add',
-                blocks=[controlled_add_path],
-                notes=['The add path follows the same temporary logical-AND interpretation used by the field-adder kernel.'],
-            ),
-            _stage(
-                name='controlled_sub_path',
-                summary='Borrow-resolution path for the controlled-subtract contribution.',
-                category='controlled_subtract',
-                blocks=[controlled_sub_path],
-                notes=['The subtract path carries the final linear correction term in the Litinski-style controlled add-subtract multiplier.'],
-            ),
-            *_pseudo_mersenne_reduction_stages(field_bits),
+                name=stage_name_by_step[str(step['name'])],
+                summary=str(step['semantic']),
+                category=category_by_step[str(step['name'])],
+                blocks=[_modular_step_block(step, field_bits)],
+                notes=['Generated directly from executable_modular_circuit_ir.'],
+            )
+            for step in operation['steps']
         ],
         notes=[
             'The kernel reconstructs the controlled add-subtract schoolbook core plus explicit pseudo-Mersenne reduction and canonical subtract-p correction for secp256k1.',
+            'Source: executable_modular_circuit_ir emitted by arithmetic_lowering.build_executable_modular_circuit_ir.',
         ],
     )
 
@@ -557,59 +769,31 @@ def _renamed_field_mul_kernel(
 
 
 def _field_sub_sum_kernel(field_bits: int) -> Dict[str, Any]:
-    two_subtractors = _block(
-        name='two_modular_subtractors',
-        summary='Two canonical modular subtractors for a - b - c inside one field register.',
-        instance_count=4 * (field_bits - 1),
-        primitive_operations=_repeat_operations(_field_modular_sub_operations(field_bits), 2),
-        notes=[
-            'The streamed lookup tail uses this fused opcode for K = H - A - I.',
-            'It is counted as exactly two canonical field-subtractor kernels over the same field width.',
-        ],
-    )
-    return _kernel(
+    return _modular_grouped_kernel(
+        field_bits=field_bits,
         opcode='field_sub_sum',
         summary='Exact fused two-subtraction field kernel for a - b - c.',
-        stages=[
-            _stage(
-                name='borrow_resolution_pair',
-                summary='Two sequential canonical modular subtractors.',
-                category='subtractor',
-                blocks=[two_subtractors],
-                notes=['The fused instruction is a scheduling contract; its non-Clifford count is the sum of two ordinary subtractor kernels.'],
-            )
-        ],
+        stage_name='borrow_resolution_pair',
+        stage_summary='Two sequential canonical modular subtractors.',
+        stage_category='subtractor',
         notes=[
             'The kernel contributes 4(n-1) non-Clifford operations for a 256-bit field value.',
+            'The streamed lookup tail uses this fused opcode for K = H - A - I.',
         ],
     )
 
 
 def _field_triple_kernel(field_bits: int) -> Dict[str, Any]:
-    two_adders = _block(
-        name='two_modular_adders',
-        summary='Two canonical modular adders for 3a = a + a + a inside one field register.',
-        instance_count=4 * (field_bits - 1),
-        primitive_operations=_repeat_operations(_field_modular_add_operations(field_bits), 2),
-        notes=[
-            'The streamed lookup tail uses this fused opcode for L = 3A.',
-            'It is counted as exactly two canonical field-adder kernels over the same field width.',
-        ],
-    )
-    return _kernel(
+    return _modular_grouped_kernel(
+        field_bits=field_bits,
         opcode='field_triple',
         summary='Exact fused two-addition field kernel for multiplication by 3.',
-        stages=[
-            _stage(
-                name='carry_resolution_pair',
-                summary='Two sequential canonical modular adders.',
-                category='adder',
-                blocks=[two_adders],
-                notes=['The fused instruction is a scheduling contract; its non-Clifford count is the sum of two ordinary adder kernels.'],
-            )
-        ],
+        stage_name='carry_resolution_pair',
+        stage_summary='Two sequential canonical modular adders.',
+        stage_category='adder',
         notes=[
             'The kernel contributes 4(n-1) non-Clifford operations for a 256-bit field value.',
+            'The streamed lookup tail uses this fused opcode for L = 3A.',
         ],
     )
 
@@ -1010,6 +1194,12 @@ def arithmetic_lowering_library(
                 'The lowering stays at the non-Clifford and measurement layer. It does not publish bit-for-bit Clifford micro-expansions for every 256-bit kernel.',
             ],
         },
+        'executable_modular_circuit_ir': build_executable_modular_circuit_ir(
+            field_bits=field_bits,
+            shift=SECP256K1_PSEUDO_MERSENNE_SHIFT,
+            low_term=SECP256K1_PSEUDO_MERSENNE_LOW_TERM,
+            subtract_passes=SECP256K1_CANONICAL_SUBTRACT_PASSES,
+        ),
         'kernels': kernels,
         'leaf_reconstruction': _leaf_reconstruction(leaf_opcode_histogram, kernels),
     }
@@ -1022,7 +1212,9 @@ def arithmetic_kernel_summary(arithmetic_lowerings: Mapping[str, Any]) -> Dict[s
     chain_stage = next(kernel for kernel in arithmetic_lowerings['kernels'] if kernel['opcode'] == 'mul_const')['stages'][0]
     addition_chain_21 = [1]
     for block in chain_stage['blocks']:
-        _, _, left, _, right = block['name'].split('_')
+        parts = block['name'].split('_')
+        left = parts[1]
+        right = parts[3]
         left_value = int(left)
         right_value = int(right)
         if addition_chain_21[-1] != left_value:

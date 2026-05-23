@@ -1580,7 +1580,7 @@ Current remediation:
   now gives the promoted reusable-chunk candidate its own deterministic
   run-length primitive stream boundary plus a materialized flat primitive
   stream with concrete operand wires and row liveness. It reconstructs
-  `36,957,412 / 1,199`, stores all `6,425` source-bound run-length rows and matching
+  `36,957,412 / 1,199`, stores all `5,805` source-bound run-length rows and matching
   liveness/owner rows, expands all `186` public QROAM streams through the
   generated QROAM segment certificate, and derives totals by scanning
   `39,370,727` primitive operations over deterministic full-stream segments.
@@ -1595,16 +1595,20 @@ Current remediation:
   one line per primitive operation.
 - `compiler_verification_project/artifacts/engine_completion_audit.json` now
   makes that caveat machine-readable. It regenerates the public totals from the
-  materialized flat netlist, checks that all `6,425` run-length rows are
-  source-bound by kind, rechecks the standard-QROAM cost link, and keeps
-  `clifford_complete_goal_achieved = false` while modular arithmetic physical
-  lowering, tail macro schedule/reversibility, and single-engine ZKP-input
-  derivation remain explicit macro boundaries. The fast engine loop now includes
-  this audit, so a future patch cannot silently promote the current boundary
-  result into a stronger full-engine claim by editing prose alone.
+  materialized flat netlist, checks that all `5,805` run-length rows are
+  source-bound by kind, rechecks the standard-QROAM cost link, checks that
+  modular arithmetic kernels derive from `executable_modular_circuit_ir`, and
+  keeps `clifford_complete_goal_achieved = false` while tail macro/global
+  schedule and single-engine ZKP-input derivation remain explicit macro
+  boundaries. The fast engine loop now includes this audit, so a future patch
+  cannot silently promote the current boundary result into a stronger
+  full-engine claim by editing prose alone.
 - `compiler_verification_project/artifacts/arithmetic_operation_ir.json` now
   reconstructs arithmetic block/stage/kernel/selected-leaf primitive counts from
-  materialized operation streams and digests. The resource-liveness certificate
+  materialized operation streams and digests. Modular add/sub/mul kernels are
+  generated from the embedded `executable_modular_circuit_ir`; the modular
+  arithmetic certificate consumes that same IR for reduced-width semantic
+  execution instead of being an independent formula source. The resource-liveness certificate
   embeds the full compact arithmetic IR, and fast integrity checks regenerate it.
   The generated-block operand contract also distinguishes bit-index ladder
   operands from operation ordinals, so the IR's operand-capacity profile is no

@@ -151,9 +151,11 @@ arithmetic block, lookup block, QROAM segment, or phase-shell block rather than
 only to a family aggregate. The completion audit is intentionally stricter than
 the headline: it passes only when those source bindings are current and the
 remaining macro boundaries are explicit, while keeping
-`clifford_complete_goal_achieved = false` until modular arithmetic, the tail
-macro, and the final ZKP input contract are all internal products of one
-canonical executable flat IR.
+`clifford_complete_goal_achieved = false` until the tail macro/global schedule
+and the final ZKP input contract are internal products of one canonical
+executable flat IR. Modular arithmetic kernels are now generated from the
+embedded `executable_modular_circuit_ir`; the modular certificate consumes that
+same IR instead of being an independent source of arithmetic resource formulas.
 
 The public engine manifest then binds that
 materialized flat stream, executable instruction rows, wires, schedule events,

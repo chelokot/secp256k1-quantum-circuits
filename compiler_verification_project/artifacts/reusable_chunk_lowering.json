@@ -5227,6 +5227,7 @@
     ],
     "checks": {
       "secp256k1_modulus_matches_common_constant": true,
+      "arithmetic_lowering_embeds_current_executable_modular_circuit_ir": true,
       "opcode_counts_match_modular_operation_contracts": true,
       "executable_circuit_ir_counts_match_arithmetic_lowering": true,
       "field_mul_stage_counts_match_arithmetic_lowering": true,
@@ -5234,8 +5235,8 @@
     },
     "pass": true,
     "boundary": [
-      "This certificate executes the same modular-circuit IR on reduced-width pseudo-Mersenne analogues and binds the 256-bit IR counts back to arithmetic_lowerings.json.",
-      "It is not yet a Clifford-complete reversible netlist for every arithmetic opcode."
+      "The arithmetic lowering now embeds the executable modular-circuit IR used to generate the modular arithmetic kernels; this certificate consumes that same IR for reduced-width semantic execution and 256-bit count binding.",
+      "Remaining work is to connect this arithmetic IR to the tail schedule as one global reversible schedule instead of a separate tail auxiliary boundary."
     ]
   },
   "chunked_multiplier_primitive_contract": {

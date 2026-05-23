@@ -73,6 +73,7 @@ def test_executable_modular_circuit_ir_derives_256_bit_opcode_counts() -> None:
         field_bits=FIELD_BITS,
     )
     ir = certificate['executable_modular_circuit_ir']
+    assert ir == arithmetic_lowerings['executable_modular_circuit_ir']
     assert ir == build_executable_modular_circuit_ir(
         field_bits=FIELD_BITS,
         shift=certificate['secp256k1_parameters']['shift'],
@@ -80,6 +81,7 @@ def test_executable_modular_circuit_ir_derives_256_bit_opcode_counts() -> None:
         subtract_passes=certificate['secp256k1_parameters']['canonical_subtract_passes'],
     )
     assert certificate['executable_circuit_ir_count_certificate']['counts_match_arithmetic_lowerings'] is True
+    assert certificate['checks']['arithmetic_lowering_embeds_current_executable_modular_circuit_ir'] is True
     assert ir['non_clifford_by_opcode']['field_add'] == 2 * (FIELD_BITS - 1)
     assert ir['non_clifford_by_opcode']['mul_const'] == 6 * ir['non_clifford_by_opcode']['field_add']
     assert ir['non_clifford_by_opcode']['field_mul'] == certificate['field_mul_stage_count_certificate']['observed_total_ccx']
@@ -131,6 +133,17 @@ def test_modular_arithmetic_certificate_detects_forged_executable_ir_count() -> 
     forged['executable_circuit_ir_count_certificate']['observed_non_clifford_per_opcode']['field_mul'] -= 1
     checks = build_modular_arithmetic_certificate_checks(_artifacts(forged, arithmetic_lowerings))
     assert checks['pass'] < checks['total']
+
+
+def test_modular_arithmetic_certificate_detects_forged_embedded_ir() -> None:
+    arithmetic_lowerings = _arithmetic_lowerings()
+    arithmetic_lowerings['executable_modular_circuit_ir']['non_clifford_by_opcode']['field_add'] -= 1
+    certificate = build_modular_arithmetic_certificate(
+        arithmetic_lowerings=arithmetic_lowerings,
+        field_bits=FIELD_BITS,
+    )
+    assert certificate['pass'] is False
+    assert certificate['checks']['arithmetic_lowering_embeds_current_executable_modular_circuit_ir'] is False
 
 
 def test_verify_groups_runs_modular_certificate_without_semantic_replay() -> None:

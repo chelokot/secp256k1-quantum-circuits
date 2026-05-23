@@ -10,25 +10,25 @@
     "source": "public_candidate_materialized_circuit_manifest.materialized_flat_netlist"
   },
   "source_digests": {
-    "arithmetic_operation_ir_sha256": "185214c75f615b530dd63c2972c4a76bf2ba3c94624659736c7187a36ee8392e",
+    "arithmetic_operation_ir_sha256": "5f164fe0d16b070212142279a948b6ca9d8e90a8e16ec63c4ede54ae5de12f56",
     "compiler_parameters_sha256": "f25239aab49a172397565757d9495c47ea7e88959451bc291d06f0ba37bbb374",
     "lookup_lowerings_sha256": "70e8ff627f0c537f73162c1d3ccf259a94c3dd756568947c7b4f3cf4665a5637",
-    "modular_arithmetic_certificate_sha256": "9f192725352a30686ae1c553ae292b27e5bbe7104cb760383420f713ab457d3d",
+    "modular_arithmetic_certificate_sha256": "058cc2c95b3b8f65d39f8c91f56b5256322e0fa00853466facb980d60c1e783e",
     "phase_shell_lowerings_sha256": "4411ea5f699e5950a32783f2232796a63987efb5d939f98ac400f4f02ddd415b",
-    "public_candidate_materialized_circuit_manifest_sha256": "ff09eeb21ccf51bf84d6c91ef828ea61dca8617f20055250f9c377a6882b8d14",
-    "public_engine_manifest_sha256": "54cb5b7354aa50f995ea93a769b2706ff9a04d9b6d2243b6966c8ab7f6400424",
+    "public_candidate_materialized_circuit_manifest_sha256": "476c6e33ee3b5122ae8294a974c72d5954834c0daf78120945fb97855233733d",
+    "public_engine_manifest_sha256": "2d9aaabe003b51c4b5375ed800bb9f9619d81d09e5489fea8aca824df0565e1c",
     "qroam_primitive_certificate_sha256": "9a97e536aa4e15e25873adf187db977910a0ef8fb03914958d409940a54eb125",
     "release_corpus_preflight_sha256": "e8cc293c4fc4702e1fbc0bfcb9b8749515de99a348ecbf55ed123d68738c2f3a",
-    "reusable_chunk_lowering_sha256": "9aabe0bab16494379a2b7e7064c57977051e0a52e440e5422af59df63ea5b0b2",
+    "reusable_chunk_lowering_sha256": "c57403f9dbc8fe27f0cded6bbec2ddab50062dff4b012dc4462da78fb0d286cb",
     "streamed_lookup_tail_leaf_equivalence_sha256": "90f1880c839d7892eab0b748683d3186cbea9811409a4ab090c9d60d8cca0db3",
     "tail_macro_liveness_sha256": "5f60042f2ae891387583cc6ee10cb6fdd11aeef460eadac18c6e512712736cb1",
     "tail_macro_reversibility_sha256": "a5474f2a4b950577da8013b0023ead318a7ea92610406fce869c3adac4d0830a",
     "tail_macro_schedule_search_sha256": "f3af1926dd886d4c8a25831821657bcef57c3b589daddec08957cab7b1dcf81b"
   },
   "source_binding_summary": {
-    "rows_checked": 6425,
+    "rows_checked": 5805,
     "rows_by_source_kind": {
-      "arithmetic_operation_ir": 3286,
+      "arithmetic_operation_ir": 2666,
       "lookup_lowering_block": 160,
       "phase_shell_lowering": 3,
       "qroam_primitive_certificate": 2976
@@ -39,8 +39,8 @@
     "operation_count": 39370727,
     "non_clifford_count": 36957412,
     "peak_live_qubits": 1199,
-    "operation_stream_sha256": "6e61988359eb402fba94b28ff092ebc2b3e313592cdb9d852cd691fa24eb68af",
-    "segment_merkle_root_sha256": "959477863c6e668de12eb7f4a06687b8682e7200cc72d353a6ef89d26c9e559c",
+    "operation_stream_sha256": "1c5f9b9b517f5357dc09c5a848fec1f004955a6109b7b05aa0313fe37d3294a5",
+    "segment_merkle_root_sha256": "06cd704d41bfa87efc273e0862c484615a981d209fa78bbbcb7ce5f839bdd844",
     "exact_operation_stream_materialized": true
   },
   "covered_boundaries": [
@@ -70,6 +70,11 @@
       "evidence": "qroam_primitive_certificate.qroamclean_cost_model"
     },
     {
+      "name": "modular_arithmetic_kernel_generation",
+      "status": "generated_from_executable_modular_circuit_ir",
+      "evidence": "arithmetic_lowerings.executable_modular_circuit_ir + arithmetic_operation_ir.executable_modular_circuit_ir + modular_arithmetic_certificate"
+    },
+    {
       "name": "point_add_semantic_boundary",
       "status": "release_corpus_and_equivalence_checked",
       "evidence": "streamed_lookup_tail_leaf_equivalence + release_corpus_preflight"
@@ -77,16 +82,10 @@
   ],
   "remaining_macro_boundaries": [
     {
-      "name": "modular_arithmetic_physical_lowering",
-      "status": "macro_certificate_bound_not_single_flat_executable_source",
-      "required_to_close": "Emit modular arithmetic operations directly into the canonical executable flat IR and derive arithmetic primitive rows only from that stream.",
-      "current_evidence": "arithmetic_operation_ir + modular_arithmetic_certificate"
-    },
-    {
       "name": "tail_macro_schedule_and_reversibility",
-      "status": "auxiliary_artifact_bound_not_eliminated",
-      "required_to_close": "Make tail macro liveness, reversibility, and schedule search outputs internal checks of the canonical executable IR.",
-      "current_evidence": "tail_macro_liveness + tail_macro_reversibility + tail_macro_schedule_search"
+      "status": "global_schedule_boundary_not_eliminated",
+      "required_to_close": "Inline the tail macro formula DAG into the canonical executable flat IR so tail liveness, reversibility, and schedule search are produced by the same engine pass that emits arithmetic primitive rows.",
+      "current_evidence": "tail_macro_liveness + tail_macro_reversibility + tail_macro_schedule_search + arithmetic_operation_ir"
     },
     {
       "name": "single_engine_zkp_input_derivation",
