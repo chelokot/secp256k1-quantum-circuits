@@ -577,6 +577,7 @@ def build_tail_macro_engine_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
     fused_output_slot_assignment = engine['fused_output_slot_assignment']
     fused_output_replay = engine['fused_output_replay_certificate']
     fused_output_lowering_contract = engine['fused_output_lowering_contract']
+    fused_output_permutation = engine['fused_output_in_place_permutation_certificate']
     slot_gap = engine['slot_gap']
     kernel_lookup = {
         kernel['opcode']: int(kernel['exact_non_clifford_per_kernel'])
@@ -709,11 +710,33 @@ def build_tail_macro_engine_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
             and fused_output_lowering_contract['all_output_overwrites_have_boundary_permutation_contract'] is True
             and fused_output_lowering_contract['overwritten_output_row_count'] == 1
             and fused_output_lowering_contract['rows'][1]['target'] == 'Y3'
-            and fused_output_lowering_contract['rows'][1]['schedule_overwritten_source'] == 'N'
-            and fused_output_lowering_contract['rows'][1]['overwrite_contract']['kind'] == 'boundary_checked_variable_affine_permutation'
+            and fused_output_lowering_contract['rows'][1]['schedule_overwritten_source'] == 'C'
+            and fused_output_lowering_contract['rows'][1]['overwrite_contract']['kind'] == 'secp256k1_zero_lifted_in_place_field_permutation'
             and fused_output_lowering_contract['rows'][1]['overwrite_contract']['domain_rows_checked'] == 110082,
-            'the seven-slot schedule explicitly records its one required fused-output affine overwrite instead of treating it as a free output lane',
+            'the seven-slot schedule explicitly records its one required zero-lifted in-place output permutation instead of treating it as a free output lane',
             fused_output_lowering_contract,
+        ),
+        _check(
+            'tail_macro_engine_rejects_unguarded_y3_over_n_with_secp256k1_counterexample',
+            fused_output_permutation['pass'] is True
+            and fused_output_permutation['rejected_unguarded_output_reuse_counterexample']['old_y3_over_n_coefficient'] == 'M'
+            and fused_output_permutation['rejected_unguarded_output_reuse_counterexample']['m_value'] == 0
+            and fused_output_permutation['selected_output_reuse']['overwritten_source'] == 'C'
+            and fused_output_permutation['guard']['logical_qubits'] == 1
+            and fused_output_permutation['guard']['non_clifford'] == 510,
+            'old Y3-over-N is rejected by an explicit secp256k1 M == 0 witness; selected Y3-over-C uses a counted zero-lift guard',
+            fused_output_permutation,
+        ),
+        _check(
+            'tail_macro_engine_proves_y3_over_c_l_zero_domain_and_lookup_infinity_bypass',
+            fused_output_permutation['checks']['three_is_invertible_mod_secp256k1_p'] is True
+            and fused_output_permutation['checks']['all_checked_lookup_x_coordinates_nonzero'] is True
+            and fused_output_permutation['checks']['secp256k1_prime_has_no_affine_x_zero_point'] is True
+            and fused_output_permutation['checks']['l_zero_implies_accumulator_infinity_on_valid_non_infinity_lookup_domain'] is True
+            and fused_output_permutation['l_zero_domain_proof']['pass'] is True
+            and fused_output_replay['checked_lookup_infinity_pairs'] > 0,
+            'Y3-over-C zero-lift branch is backed by a secp256k1 L == 0 domain proof and lookup-infinity rows are replayed as bypasses',
+            {'permutation': fused_output_permutation, 'replay': fused_output_replay},
         ),
     ]
     return _summarize_checks(checks)
@@ -2749,6 +2772,7 @@ def build_strict_replayed_tail_headline_checks(artifacts: Mapping[str, Any]) -> 
         _check('strict_replayed_tail_headline_schema_is_current', observed['schema'] == STRICT_REPLAYED_TAIL_HEADLINE_SCHEMA, STRICT_REPLAYED_TAIL_HEADLINE_SCHEMA, observed['schema']),
         _check('strict_replayed_tail_headline_pass_flag_matches_internal_checks', observed['pass'] == all(observed['checks'].values()), all(observed['checks'].values()), {'pass': observed['pass'], 'checks': observed['checks']}),
         _check('strict_replayed_tail_headline_uses_fused_output_seven_slot_tail', selected['tail_field_slots'] == artifacts['tail_macro_engine']['fused_output_slot_assignment']['peak_field_slots'] == 7 and replay['pass'] is True and replay['owner_capacity_pass'] is True, 'fused-output seven-slot tail with owner capacity pass', {'selected': selected, 'replay': replay}),
+        _check('strict_replayed_tail_headline_counts_fused_output_guard_qubit', selected['fused_output_guard_qubits'] == formula['fused_output_guard_qubits'] == artifacts['tail_macro_engine']['fused_output_lowering_contract']['guard_owner_capacity']['logical_qubits'] == 1 and formula['control_qubits'] == artifacts['reusable_chunk_lowering']['qubit_derivation']['control_qubits'] + 1, 'one extra fused-output guard qubit counted in control term', {'selected': selected, 'formula': formula}),
         _check('strict_replayed_tail_headline_total_is_formula_derived', selected['logical_qubits'] == formula['reconstructed_total'] == formula['tail_field_slots'] * formula['field_bits'] + formula['lookup_workspace_qubits'] + formula['control_qubits'] + formula['phase_qubits'], formula['reconstructed_total'], selected['logical_qubits']),
         _check('strict_replayed_tail_headline_demotes_macro_contract', selected['logical_qubits'] > artifacts['public_headline_result']['selected_result']['logical_qubits'] and observed['macro_contract_reference']['status'] == 'not_primary_strict_headline', 'strict headline exceeds and demotes macro contract', observed['macro_contract_reference']),
     ]

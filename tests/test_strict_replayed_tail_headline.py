@@ -25,6 +25,8 @@ def test_strict_replayed_tail_headline_is_derived_from_replay_artifacts() -> Non
 
     assert headline['pass'] is True
     assert selected['tail_field_slots'] == tail_engine['fused_output_slot_assignment']['peak_field_slots'] == 7
+    assert selected['fused_output_guard_qubits'] == formula['fused_output_guard_qubits'] == 1
+    assert formula['control_qubits'] == lowering['qubit_derivation']['control_qubits'] + 1
     assert replay['pass'] is True
     assert replay['owner_capacity_pass'] is True
     assert replay['checked_non_infinity_pairs'] == headline['semantic_replay_evidence']['checked_non_infinity_pairs']

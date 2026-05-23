@@ -56,7 +56,8 @@ def build_strict_replayed_tail_headline_result(
     strict_tail_field_slots = int(slot_assignment['peak_field_slots'])
     strict_tail_field_qubits = strict_tail_field_slots * field_bits
     lookup_workspace_qubits = int(qubit_derivation['lookup_workspace_qubits'])
-    control_qubits = int(qubit_derivation['control_qubits'])
+    fused_output_guard_qubits = int(tail_macro_engine['fused_output_lowering_contract']['guard_owner_capacity']['logical_qubits'])
+    control_qubits = int(qubit_derivation['control_qubits']) + fused_output_guard_qubits
     phase_qubits = int(qubit_derivation['phase_qubits'])
     strict_total_logical_qubits = strict_tail_field_qubits + lookup_workspace_qubits + control_qubits + phase_qubits
     non_clifford = int(non_clifford_derivation['candidate_total_non_clifford'])
@@ -70,6 +71,7 @@ def build_strict_replayed_tail_headline_result(
         'slot_assignment_capacity_rows_match_peak': len(owner_capacity_rows) == strict_tail_field_slots,
         'every_tail_slot_has_field_sized_capacity': all(int(row['logical_qubits']) == field_bits for row in owner_capacity_rows),
         'strict_tail_field_qubits_are_derived_from_slot_assignment': strict_tail_field_qubits == sum(int(row['logical_qubits']) for row in owner_capacity_rows),
+        'fused_output_guard_qubit_is_counted': fused_output_guard_qubits == 1,
         'lookup_workspace_is_counted_separately_from_tail_slots': lookup_workspace_qubits == int(qubit_derivation['folded_control_workspace_qubits']) + int(qubit_derivation['qroam_clean_chunk_target_qubits']) + int(qubit_derivation['qroam_clean_junk_register_qubits']),
         'non_clifford_total_comes_from_reusable_chunk_lowering': non_clifford == int(non_clifford_derivation['base_non_clifford_without_streamed_qroam']) + int(non_clifford_derivation['qroam_chunk_non_clifford']),
         'strict_total_logical_qubits_matches_formula': strict_total_logical_qubits == strict_tail_field_qubits + lookup_workspace_qubits + control_qubits + phase_qubits,
@@ -83,6 +85,7 @@ def build_strict_replayed_tail_headline_result(
         'field_bits': field_bits,
         'lookup_workspace_qubits': lookup_workspace_qubits,
         'control_qubits': control_qubits,
+        'fused_output_guard_qubits': fused_output_guard_qubits,
         'phase_qubits': phase_qubits,
     }
     payload = {
@@ -96,6 +99,7 @@ def build_strict_replayed_tail_headline_result(
             'tail_field_qubits': strict_tail_field_qubits,
             'lookup_workspace_qubits': lookup_workspace_qubits,
             'control_qubits': control_qubits,
+            'fused_output_guard_qubits': fused_output_guard_qubits,
             'phase_qubits': phase_qubits,
             'reconstructed_total': strict_total_logical_qubits,
         },

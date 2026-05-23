@@ -10,7 +10,8 @@ Headline under review:
 - `1,044` logical qubits
 - family: `folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1`
 
-Current post-remediation macro/ZKP wrapper on this branch:
+Current post-remediation macro/ZKP wrapper on this branch (stale until rebuilt
+after the guarded tail-resource change):
 
 - `36,957,412` non-Clifford
 - `1,199` logical qubits
@@ -20,9 +21,9 @@ Current post-remediation macro/ZKP wrapper on this branch:
 
 Current primary strict replayed-tail headline on this branch:
 
-- `36,957,412` non-Clifford
-- `1,967` logical qubits
-- formula: `7 * 256 + 173 + 1 + 1`
+- `36,973,222` non-Clifford
+- `1,968` logical qubits
+- formula: `7 * 256 + 173 + 2 + 1`
 - selected by `compiler_verification_project/artifacts/strict_replayed_tail_headline.json`
 - evidence: `tail_macro_engine.json` fused-output replay passes 110,082
   non-infinity toy boundary pairs, 610 lookup-infinity no-op pairs, and
@@ -54,7 +55,7 @@ The strongest defensible statement is:
 
 > The repository currently contains a checked standard-QROM compiler-family
 > boundary whose primary strict resource headline is the replayed-tail
-> `36,957,412 / 1,967` artifact. The older `36,957,412 / 1,199` artifact is now
+> `36,973,222 / 1,968` artifact. The older `36,957,412 / 1,199` artifact is now
 > only a macro/ZKP wrapper reference whose claim/leaf/family/case/resource
 > document hashes are recomputed inside the active ZKP guest. The ZKP guest and
 > public values must be rebuilt around the strict seven-slot contract before the
@@ -68,7 +69,7 @@ stronger ZKP resource binding, in-guest committed-document hash binding, and
 the reusable-chunk four-slot candidate proof bundle with explicit freshness
 checks. The current primary strict presentation then demotes that macro wrapper
 and counts the replayed fused-output seven-slot tail instead, giving
-`36,957,412 / 1,967`.
+`36,973,222 / 1,968`.
 
 The statement that is not yet defensible without more engineering is:
 
@@ -88,7 +89,7 @@ resource semantics and macro boundaries.
 | --- | --- | --- | --- | --- |
 | ZK-1 | P0 reviewed-state; remediated on current branch | Reviewed SP1 prepared path did not recompute sidecar hashes; current path now recomputes committed claim/leaf/family/case/resource hashes in guest | This used to let public values carry hash labels trusted from the input builder; current tests reject stale digest labels and mutated committed payloads | Keep full committed documents in the guest input and keep negative digest/payload tests |
 | ZK-2 | P0 | ZKP executes high-level field/macro semantics, not primitive QROAM/arithmetic lowerings | The proof checks point-add behavior for prepared cases, but not that the resource-counted primitive circuit implements that behavior | Feed the same resource IR into the guest or prove a separate lowering certificate |
-| RES-1 | P0 partially mitigated | The public reusable-chunk leaf now traces the counted `qchunk` scratch lane, and the primary headline counts the replayed fused-output seven-slot tail instead of the old four-slot macro tail | The `1,967` qubit result removes the old tail-slot fantasy from the public headline, but modular arithmetic and the ZKP input still are not one single Clifford-complete flat schedule | Flatten modular arithmetic into scheduled IR and make the ZKP guest/input consume `strict_replayed_tail_headline.json` |
+| RES-1 | P0 partially mitigated | The public reusable-chunk leaf now traces the counted `qchunk` scratch lane, and the primary headline counts the replayed fused-output seven-slot tail instead of the old four-slot macro tail | The `1,968` qubit result removes the old tail-slot fantasy from the public headline, but modular arithmetic and the ZKP input still are not one single Clifford-complete flat schedule | Flatten modular arithmetic into scheduled IR and make the ZKP guest/input consume `strict_replayed_tail_headline.json` |
 | RES-2 | P0 partially mitigated | Modular field arithmetic costs are now digest-bound operation streams, but still not a generated modular circuit | Rust semantics applies `% p`; arithmetic lowering counts abstract add/sub/mul kernels whose modular-reduction completeness must still be trusted below the compact operation IR | Generate modular add/sub/mul circuits including reduction and count them |
 | RES-3 | P0 materially improved; still below physical-layout FT schedule | The public reusable-chunk resource ledger now has a guest-checked contract engine and a materialized flat primitive stream over counted IR, executable liveness, owner capacity, QROAM target/chunk wires, arithmetic rows, lookup rows, and phase rows | It now catches counted/executable liveness drift, owner-capacity underprovisioning, and missing full-stream materialization, but the deepest arithmetic macro semantics are still certified by generated IR/certificates rather than a routed physical FT schedule | Keep reducing the remaining macro boundary by lowering modular arithmetic certificates into the same flat primitive stream |
 | ZK-3 | P1 remediated for out-of-line proof binding | Checked compressed fixture JSON keeps `proof: null` while binary proof is separate | Large compressed proof bytes remain out-of-line, but fixtures now bind proof/verifier-key path, size, digest, and curated proof-manifest records | Keep `proof_status.py` manifest cross-checks and fixture metadata tests in the release gate |
@@ -241,11 +242,12 @@ Current additional diagnostic:
   passes the operand injectivity screen for its chosen overwrites, replays across
   110,082 non-infinity toy boundary pairs, checks 610 lookup-infinity no-op
   boundary pairs, and derives a seven-slot owner-capacity ledger from generated
-  slot assignment. The new `fused_output_lowering_contract` also exposes the
-  one required affine output overwrite (`Y3` over `N`) and binds its cost to the
-  same multiply-accumulate/add-sub decomposition rather than hiding a free
-  output lane. It is now the primary strict resource headline, while the ZKP
-  guest/input still needs to be rebuilt to bind this exact strict contract.
+  slot assignment. The new `fused_output_lowering_contract` rejects the old
+  unguarded `Y3` over `N` reuse with a concrete secp256k1 `M == 0` witness and
+  exposes the selected zero-lifted in-place `Y3` over `C` field permutation,
+  including the counted `L == 0` guard and cost reconstruction. It is now the
+  primary strict resource headline, while the ZKP guest/input still needs to be
+  rebuilt to bind this exact strict contract.
 - `compiler_verification_project/artifacts/tail_macro_schedule_search.json`
   adds a stricter destructive-schedule search for the current formula DAG. It
   permits computing a formula value and dropping old values whenever the
@@ -1860,7 +1862,7 @@ Avoid:
 Use:
 
 > Under the repository's checked standard-QROM compiler-family boundary, the
-> current primary strict artifacts define a `36,957,412` non-Clifford / `1,967`
+> current primary strict artifacts define a `36,973,222` non-Clifford / `1,968`
 > logical-qubit result; the older `1,199` artifact is only a macro/ZKP wrapper.
 > `proof_status.py --require-all-current` is the release gate for checked SP1
 > compressed/Groth16 proof freshness. This improves the cited public Google
@@ -1878,7 +1880,7 @@ resource model fixes the previous lookup/QROAM accounting failures. But the
 credible external claim is still narrower than the most excited internal
 phrasing:
 
-- strong: checked standard-QROM compiler-family boundary at `36,957,412 / 1,967`
+- strong: checked standard-QROM compiler-family boundary at `36,973,222 / 1,968`
 - not yet strong enough: Google-equivalent proof confidence
 - not yet strong enough: fully flattened primitive-gate Shor circuit
 - most urgent engineering gap: make the ZKP guest/input bind the strict

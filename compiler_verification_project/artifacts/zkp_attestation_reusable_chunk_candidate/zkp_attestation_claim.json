@@ -13,17 +13,17 @@
     "source_sha256": "e9095834c663fbda3b55054b505767024748dd832389606d079e4ffab7ccf7bf",
     "non_clifford": 36957412,
     "logical_qubits": 1199,
-    "matches_family_snapshot": true,
-    "matches_resource_certificate_snapshot": true
+    "matches_family_snapshot": false,
+    "matches_resource_certificate_snapshot": false
   },
   "non_clifford_formula": {
-    "arithmetic_leaf_non_clifford": 798949,
+    "arithmetic_leaf_non_clifford": 799459,
     "per_leaf_lookup_non_clifford": 393216,
     "direct_seed_non_clifford": 297,
     "leaf_call_count_total": 31,
-    "arithmetic_component": 24767419,
+    "arithmetic_component": 24783229,
     "lookup_component": 12189696,
-    "reconstructed_total": 36957412
+    "reconstructed_total": 36973222
   },
   "logical_qubit_formula": {
     "field_bits": 256,

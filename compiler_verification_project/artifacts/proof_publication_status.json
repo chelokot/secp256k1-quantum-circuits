@@ -10,11 +10,11 @@
     "passed_case_count": 8,
     "document_digest_scheme": "compiler-project-semantic-json-sha256-v1"
   },
-  "proof_status_sha256": "331c2bca12b651ab438fee2a7bd9b570d8204597175fbb6e23a2bddcc00c4087",
+  "proof_status_sha256": "e3aa8b0c7fbd1831390cf5c3ef86a931fc84183ab259bd427e47edac431738ce",
   "proof_status": {
     "all_current": false,
     "candidate_input": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
-    "candidate_input_sha256": "869ee15ae2ae57c16eb3cb9216addd485ca7264253fb1aeafa8a0f190973f0f2",
+    "candidate_input_sha256": "6da6711a1e240ecf14ae56d6d5ae20906e6b3321bac5f17c876e775533937d3b",
     "compiler_parameters_document_sha256": "8015f87a4d334c61db0d2c8843fe12330db770a87e0c5c51e344347416a7555b",
     "compiler_parameters_sha256": "8015f87a4d334c61db0d2c8843fe12330db770a87e0c5c51e344347416a7555b",
     "heavy_rebuild_steps_remaining": [
@@ -24,7 +24,7 @@
     "input_and_public_values_match": false,
     "proof_manifest": "artifacts/package/proof_manifest.json",
     "public_values_resource_certificate_sha256": "9e6761fddca97566eeaa5105241af14b07f4dbf2f287cbe01bb5e83605e73085",
-    "resource_certificate_sha256": "27190fdd7b9b977796d6d341530d7305103f448558a5b156c2b542da2c33158a",
+    "resource_certificate_sha256": "69a131be4e04e93ef61af48111c25657b2a63fbfe6c913d8a1a258cacfdc1d49",
     "schema": "compiler-project-proof-status-v1",
     "stale_systems": [
       "core",
@@ -48,7 +48,7 @@
         "input_sha256": null,
         "input_size_bytes": null,
         "missing_input_metadata_keys": [],
-        "observed_input_sha256": "869ee15ae2ae57c16eb3cb9216addd485ca7264253fb1aeafa8a0f190973f0f2",
+        "observed_input_sha256": "6da6711a1e240ecf14ae56d6d5ae20906e6b3321bac5f17c876e775533937d3b",
         "observed_proof_sha256": "d66a8a10e4364f859d1207c1dc343d7c54a7c6a39a7058a7c05b1b5d7dd5c396",
         "proof_file_exists": true,
         "proof_manifest_record_exists": true,
@@ -86,7 +86,7 @@
         "input_sha256": null,
         "input_size_bytes": null,
         "missing_input_metadata_keys": [],
-        "observed_input_sha256": "869ee15ae2ae57c16eb3cb9216addd485ca7264253fb1aeafa8a0f190973f0f2",
+        "observed_input_sha256": "6da6711a1e240ecf14ae56d6d5ae20906e6b3321bac5f17c876e775533937d3b",
         "proof_file_exists": null,
         "proof_manifest_record_exists": null,
         "proof_manifest_sha256_matches_file": null,
@@ -124,7 +124,7 @@
         "input_sha256": null,
         "input_size_bytes": null,
         "missing_input_metadata_keys": [],
-        "observed_input_sha256": "869ee15ae2ae57c16eb3cb9216addd485ca7264253fb1aeafa8a0f190973f0f2",
+        "observed_input_sha256": "6da6711a1e240ecf14ae56d6d5ae20906e6b3321bac5f17c876e775533937d3b",
         "observed_proof_sha256": "95e5f291652d6f1864cc22fb259cd87b335e204d28b8955f3e7e255ff4f75fc2",
         "observed_verifier_key_sha256": "4125fe6fab5e7d3af4bb9386f49589450a6d37f536e98650adca79768c469975",
         "proof_file_exists": true,
@@ -254,11 +254,11 @@
   "source_artifacts": {
     "public_headline_result": {
       "path": "compiler_verification_project/artifacts/public_headline_result.json",
-      "sha256": "aab71359b1613b180a51b38c375fcaf25d3512fad193d0fd9f8ab2c26bc0d6d7"
+      "sha256": "d0eb4ecc411f7e1752cca8325852facb4d004ec3b8f94553046d8721a67e92bc"
     },
     "proof_environment_contract": {
       "path": "compiler_verification_project/artifacts/proof_environment_contract.json",
-      "sha256": "8c2e651252959f0e45c838f17a386f0ab0fe876b163dd05428f4852261f16a73"
+      "sha256": "94bf2b567f6beaaf2dfcd9dbd0d70ae204194abd070a3e8dd556580dfe4fedb1"
     },
     "proof_manifest": {
       "path": "artifacts/package/proof_manifest.json",
@@ -273,11 +273,11 @@
     "public_headline_checked_input_digest_matches_proof_status": true,
     "public_headline_resource_digest_matches_proof_status_input": true,
     "proof_manifest_path_matches_environment_contract": true,
-    "environment_contract_has_current_publication_gates": true,
+    "environment_contract_has_current_publication_gates": false,
     "stale_publication_has_explicit_blockers": true,
     "publication_ready_requires_compressed_and_groth16_verification": true
   },
-  "pass": true,
+  "pass": false,
   "notes": [
     "pass means the publication status was derived consistently; publication_ready is the separate freshness verdict.",
     "The publication artifact records proof-manifest path and file count; proof_status.py remains the authority for manifest freshness.",

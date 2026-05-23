@@ -378,6 +378,8 @@
         "Y"
       ],
       "constant": null,
+      "base_non_clifford": 510,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 510
     },
     {
@@ -390,6 +392,8 @@
         "lookup_x_plus_y"
       ],
       "constant": null,
+      "base_non_clifford": 137028,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 137028
     },
     {
@@ -402,6 +406,8 @@
         "lookup_x"
       ],
       "constant": null,
+      "base_non_clifford": 137028,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 137028
     },
     {
@@ -414,6 +420,8 @@
         "lookup_x"
       ],
       "constant": null,
+      "base_non_clifford": 137028,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 137028
     },
     {
@@ -426,6 +434,8 @@
         "Zx"
       ],
       "constant": null,
+      "base_non_clifford": 510,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 510
     },
     {
@@ -437,6 +447,8 @@
         "C_input"
       ],
       "constant": 21,
+      "base_non_clifford": 3060,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 3060
     },
     {
@@ -449,6 +461,8 @@
         "lookup_y"
       ],
       "constant": null,
+      "base_non_clifford": 137028,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 137028
     },
     {
@@ -462,6 +476,8 @@
         "I"
       ],
       "constant": null,
+      "base_non_clifford": 1020,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 1020
     },
     {
@@ -473,6 +489,8 @@
         "A"
       ],
       "constant": 3,
+      "base_non_clifford": 1020,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 1020
     },
     {
@@ -485,6 +503,8 @@
         "lookup_y"
       ],
       "constant": null,
+      "base_non_clifford": 137028,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 137028
     },
     {
@@ -497,6 +517,8 @@
         "yZ"
       ],
       "constant": null,
+      "base_non_clifford": 510,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 510
     },
     {
@@ -508,6 +530,8 @@
         "Z"
       ],
       "constant": 21,
+      "base_non_clifford": 3060,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 3060
     },
     {
@@ -520,6 +544,8 @@
         "F"
       ],
       "constant": null,
+      "base_non_clifford": 510,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 510
     },
     {
@@ -532,6 +558,8 @@
         "F"
       ],
       "constant": null,
+      "base_non_clifford": 510,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 510
     },
     {
@@ -544,6 +572,8 @@
         "N"
       ],
       "constant": null,
+      "base_non_clifford": 71492,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 71492
     },
     {
@@ -556,6 +586,8 @@
         "C"
       ],
       "constant": null,
+      "base_non_clifford": 71492,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 71492
     },
     {
@@ -568,6 +600,8 @@
         "M"
       ],
       "constant": null,
+      "base_non_clifford": 71492,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 71492
     },
     {
@@ -580,6 +614,8 @@
         "L"
       ],
       "constant": null,
+      "base_non_clifford": 71492,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 71492
     },
     {
@@ -592,6 +628,8 @@
         "E"
       ],
       "constant": null,
+      "base_non_clifford": 71492,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 71492
     },
     {
@@ -604,6 +642,8 @@
         "K"
       ],
       "constant": null,
+      "base_non_clifford": 71492,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 71492
     },
     {
@@ -616,6 +656,8 @@
         "EC"
       ],
       "constant": null,
+      "base_non_clifford": 510,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 510
     },
     {
@@ -628,7 +670,9 @@
         "CL"
       ],
       "constant": null,
-      "non_clifford": 510
+      "base_non_clifford": 510,
+      "in_place_guard_non_clifford": 510,
+      "non_clifford": 1020
     },
     {
       "index": 22,
@@ -640,6 +684,8 @@
         "LK"
       ],
       "constant": null,
+      "base_non_clifford": 510,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 510
     }
   ],
@@ -683,7 +729,7 @@
     "mul_const": 2
   },
   "non_clifford_by_opcode": {
-    "field_add": 3060,
+    "field_add": 3570,
     "field_mul": 428952,
     "field_mul_lookup_sum": 137028,
     "field_mul_lookup_x": 274056,
@@ -693,7 +739,8 @@
     "field_triple": 1020,
     "mul_const": 6120
   },
-  "non_clifford_total": 1126332,
+  "non_clifford_total": 1126842,
+  "in_place_guard_non_clifford": 510,
   "fused_output_field_operation_stream": [
     {
       "index": 0,
@@ -705,6 +752,8 @@
         "Y"
       ],
       "constant": null,
+      "base_non_clifford": 510,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 510
     },
     {
@@ -717,6 +766,8 @@
         "lookup_x_plus_y"
       ],
       "constant": null,
+      "base_non_clifford": 137028,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 137028
     },
     {
@@ -729,6 +780,8 @@
         "lookup_x"
       ],
       "constant": null,
+      "base_non_clifford": 137028,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 137028
     },
     {
@@ -741,6 +794,8 @@
         "lookup_x"
       ],
       "constant": null,
+      "base_non_clifford": 137028,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 137028
     },
     {
@@ -753,6 +808,8 @@
         "Zx"
       ],
       "constant": null,
+      "base_non_clifford": 510,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 510
     },
     {
@@ -764,6 +821,8 @@
         "C_input"
       ],
       "constant": 21,
+      "base_non_clifford": 3060,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 3060
     },
     {
@@ -776,6 +835,8 @@
         "lookup_y"
       ],
       "constant": null,
+      "base_non_clifford": 137028,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 137028
     },
     {
@@ -789,6 +850,8 @@
         "I"
       ],
       "constant": null,
+      "base_non_clifford": 1020,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 1020
     },
     {
@@ -800,6 +863,8 @@
         "A"
       ],
       "constant": 3,
+      "base_non_clifford": 1020,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 1020
     },
     {
@@ -812,6 +877,8 @@
         "lookup_y"
       ],
       "constant": null,
+      "base_non_clifford": 137028,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 137028
     },
     {
@@ -824,6 +891,8 @@
         "yZ"
       ],
       "constant": null,
+      "base_non_clifford": 510,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 510
     },
     {
@@ -835,6 +904,8 @@
         "Z"
       ],
       "constant": 21,
+      "base_non_clifford": 3060,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 3060
     },
     {
@@ -847,6 +918,8 @@
         "F"
       ],
       "constant": null,
+      "base_non_clifford": 510,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 510
     },
     {
@@ -859,6 +932,8 @@
         "F"
       ],
       "constant": null,
+      "base_non_clifford": 510,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 510
     },
     {
@@ -873,6 +948,8 @@
         "C"
       ],
       "constant": null,
+      "base_non_clifford": 143494,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 143494
     },
     {
@@ -887,7 +964,9 @@
         "L"
       ],
       "constant": null,
-      "non_clifford": 143494
+      "base_non_clifford": 143494,
+      "in_place_guard_non_clifford": 510,
+      "non_clifford": 144004
     },
     {
       "index": 16,
@@ -901,6 +980,8 @@
         "K"
       ],
       "constant": null,
+      "base_non_clifford": 143494,
+      "in_place_guard_non_clifford": 0,
       "non_clifford": 143494
     }
   ],
@@ -938,8 +1019,8 @@
     "field_triple": 1,
     "mul_const": 2
   },
-  "fused_output_non_clifford_total": 1126332,
-  "selected_tail_kernel_non_clifford": 1126332,
+  "fused_output_non_clifford_total": 1126842,
+  "selected_tail_kernel_non_clifford": 1126842,
   "single_assignment_liveness": {
     "schedule_model": "single_assignment_expanded_field_operation_stream",
     "peak_live_field_values": 8,
@@ -11185,6 +11266,732 @@
     "schema": "compiler-project-tail-overwrite-operand-screen-v1",
     "status": "toy_boundary_operand_choice_screen_not_full_reversible_proof",
     "choice_count": 33,
+    "passing_choice_count": 21,
+    "failing_choice_count": 12,
+    "failing_row_indices": [
+      1,
+      14,
+      15,
+      16
+    ],
+    "choices": [
+      {
+        "index": 0,
+        "opcode": "field_add",
+        "target": "G",
+        "sources": [
+          "X",
+          "Y"
+        ],
+        "constant": null,
+        "overwritten_source": "X",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 0,
+        "opcode": "field_add",
+        "target": "G",
+        "sources": [
+          "X",
+          "Y"
+        ],
+        "constant": null,
+        "overwritten_source": "Y",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 1,
+        "opcode": "field_mul_lookup_sum",
+        "target": "H",
+        "sources": [
+          "G",
+          "lookup_x_plus_y"
+        ],
+        "constant": null,
+        "overwritten_source": "G",
+        "rule": {
+          "kind": "lookup_constant_multiply",
+          "constant_source": "lookup_x_plus_y",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "curve": "toy61_b2",
+            "lookup": [
+              51,
+              10
+            ],
+            "accumulator": null,
+            "reason": "lookup_x_plus_y can be zero on the checked boundary domain"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "lookup_x_plus_y can be zero on the checked boundary domain"
+      },
+      {
+        "index": 2,
+        "opcode": "field_mul_lookup_x",
+        "target": "A",
+        "sources": [
+          "X",
+          "lookup_x"
+        ],
+        "constant": null,
+        "overwritten_source": "X",
+        "rule": {
+          "kind": "lookup_constant_multiply",
+          "constant_source": "lookup_x",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 3,
+        "opcode": "field_mul_lookup_x",
+        "target": "Zx",
+        "sources": [
+          "Z",
+          "lookup_x"
+        ],
+        "constant": null,
+        "overwritten_source": "Z",
+        "rule": {
+          "kind": "lookup_constant_multiply",
+          "constant_source": "lookup_x",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 4,
+        "opcode": "field_add",
+        "target": "C_input",
+        "sources": [
+          "X",
+          "Zx"
+        ],
+        "constant": null,
+        "overwritten_source": "X",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 4,
+        "opcode": "field_add",
+        "target": "C_input",
+        "sources": [
+          "X",
+          "Zx"
+        ],
+        "constant": null,
+        "overwritten_source": "Zx",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 5,
+        "opcode": "mul_const",
+        "target": "C",
+        "sources": [
+          "C_input"
+        ],
+        "constant": 21,
+        "overwritten_source": "C_input",
+        "rule": {
+          "kind": "constant_multiply",
+          "constant": 21,
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 6,
+        "opcode": "field_mul_lookup_y",
+        "target": "I",
+        "sources": [
+          "Y",
+          "lookup_y"
+        ],
+        "constant": null,
+        "overwritten_source": "Y",
+        "rule": {
+          "kind": "lookup_constant_multiply",
+          "constant_source": "lookup_y",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 7,
+        "opcode": "field_sub_sum",
+        "target": "K",
+        "sources": [
+          "H",
+          "A",
+          "I"
+        ],
+        "constant": null,
+        "overwritten_source": "A",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 7,
+        "opcode": "field_sub_sum",
+        "target": "K",
+        "sources": [
+          "H",
+          "A",
+          "I"
+        ],
+        "constant": null,
+        "overwritten_source": "H",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 7,
+        "opcode": "field_sub_sum",
+        "target": "K",
+        "sources": [
+          "H",
+          "A",
+          "I"
+        ],
+        "constant": null,
+        "overwritten_source": "I",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 8,
+        "opcode": "field_triple",
+        "target": "L",
+        "sources": [
+          "A"
+        ],
+        "constant": 3,
+        "overwritten_source": "A",
+        "rule": {
+          "kind": "constant_multiply",
+          "constant": 3,
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 9,
+        "opcode": "field_mul_lookup_y",
+        "target": "yZ",
+        "sources": [
+          "Z",
+          "lookup_y"
+        ],
+        "constant": null,
+        "overwritten_source": "Z",
+        "rule": {
+          "kind": "lookup_constant_multiply",
+          "constant_source": "lookup_y",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 10,
+        "opcode": "field_add",
+        "target": "E",
+        "sources": [
+          "Y",
+          "yZ"
+        ],
+        "constant": null,
+        "overwritten_source": "Y",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 10,
+        "opcode": "field_add",
+        "target": "E",
+        "sources": [
+          "Y",
+          "yZ"
+        ],
+        "constant": null,
+        "overwritten_source": "yZ",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 11,
+        "opcode": "mul_const",
+        "target": "F",
+        "sources": [
+          "Z"
+        ],
+        "constant": 21,
+        "overwritten_source": "Z",
+        "rule": {
+          "kind": "constant_multiply",
+          "constant": 21,
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 12,
+        "opcode": "field_add",
+        "target": "M",
+        "sources": [
+          "I",
+          "F"
+        ],
+        "constant": null,
+        "overwritten_source": "F",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 12,
+        "opcode": "field_add",
+        "target": "M",
+        "sources": [
+          "I",
+          "F"
+        ],
+        "constant": null,
+        "overwritten_source": "I",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 13,
+        "opcode": "field_sub",
+        "target": "N",
+        "sources": [
+          "I",
+          "F"
+        ],
+        "constant": null,
+        "overwritten_source": "F",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 13,
+        "opcode": "field_sub",
+        "target": "N",
+        "sources": [
+          "I",
+          "F"
+        ],
+        "constant": null,
+        "overwritten_source": "I",
+        "rule": {
+          "kind": "affine_unit_coefficient",
+          "symbolic_inverse_exists_over_field": true
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 14,
+        "opcode": "field_double_mul_sub",
+        "target": "X3",
+        "sources": [
+          "K",
+          "N",
+          "E",
+          "C"
+        ],
+        "constant": null,
+        "overwritten_source": "C",
+        "rule": {
+          "kind": "multi_product_affine_checked_by_domain_injectivity",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "reason": "not covered by the secp256k1 zero-lift in-place permutation certificate"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "not covered by the secp256k1 zero-lift in-place permutation certificate"
+      },
+      {
+        "index": 14,
+        "opcode": "field_double_mul_sub",
+        "target": "X3",
+        "sources": [
+          "K",
+          "N",
+          "E",
+          "C"
+        ],
+        "constant": null,
+        "overwritten_source": "E",
+        "rule": {
+          "kind": "multi_product_affine_checked_by_domain_injectivity",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "reason": "not covered by the secp256k1 zero-lift in-place permutation certificate"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "not covered by the secp256k1 zero-lift in-place permutation certificate"
+      },
+      {
+        "index": 14,
+        "opcode": "field_double_mul_sub",
+        "target": "X3",
+        "sources": [
+          "K",
+          "N",
+          "E",
+          "C"
+        ],
+        "constant": null,
+        "overwritten_source": "K",
+        "rule": {
+          "kind": "multi_product_affine_checked_by_domain_injectivity",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "reason": "not covered by the secp256k1 zero-lift in-place permutation certificate"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "not covered by the secp256k1 zero-lift in-place permutation certificate"
+      },
+      {
+        "index": 14,
+        "opcode": "field_double_mul_sub",
+        "target": "X3",
+        "sources": [
+          "K",
+          "N",
+          "E",
+          "C"
+        ],
+        "constant": null,
+        "overwritten_source": "N",
+        "rule": {
+          "kind": "multi_product_affine_checked_by_domain_injectivity",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "reason": "not covered by the secp256k1 zero-lift in-place permutation certificate"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "not covered by the secp256k1 zero-lift in-place permutation certificate"
+      },
+      {
+        "index": 15,
+        "opcode": "field_double_mul_add",
+        "target": "Y3",
+        "sources": [
+          "N",
+          "M",
+          "C",
+          "L"
+        ],
+        "constant": null,
+        "overwritten_source": "C",
+        "rule": {
+          "kind": "multi_product_affine_checked_by_domain_injectivity",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [],
+        "pass": true
+      },
+      {
+        "index": 15,
+        "opcode": "field_double_mul_add",
+        "target": "Y3",
+        "sources": [
+          "N",
+          "M",
+          "C",
+          "L"
+        ],
+        "constant": null,
+        "overwritten_source": "L",
+        "rule": {
+          "kind": "multi_product_affine_checked_by_domain_injectivity",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "reason": "not covered by the secp256k1 zero-lift in-place permutation certificate"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "not covered by the secp256k1 zero-lift in-place permutation certificate"
+      },
+      {
+        "index": 15,
+        "opcode": "field_double_mul_add",
+        "target": "Y3",
+        "sources": [
+          "N",
+          "M",
+          "C",
+          "L"
+        ],
+        "constant": null,
+        "overwritten_source": "M",
+        "rule": {
+          "kind": "multi_product_affine_checked_by_domain_injectivity",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "reason": "not covered by the secp256k1 zero-lift in-place permutation certificate"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "not covered by the secp256k1 zero-lift in-place permutation certificate"
+      },
+      {
+        "index": 15,
+        "opcode": "field_double_mul_add",
+        "target": "Y3",
+        "sources": [
+          "N",
+          "M",
+          "C",
+          "L"
+        ],
+        "constant": null,
+        "overwritten_source": "N",
+        "rule": {
+          "kind": "multi_product_affine_checked_by_domain_injectivity",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "base_id": "g_window_0",
+            "word_hex": "0x0007",
+            "lookup_affine": [
+              41948375291644419605210209193538855353224492619856392092318293986323063962044,
+              48361766907851246668144012348516735800090617714386977531302791340517493990618
+            ],
+            "accumulator_affine": [
+              44348185283247122140245124680421363407546663785356019992292594794646383054219,
+              84665557065034144849653706419970574408515644868439394994517133374813370704546
+            ],
+            "m_value": 0,
+            "old_y3_over_n_coefficient": "M",
+            "reason": "the unguarded Y3-over-N row is not a field permutation because its affine coefficient M can be zero on valid secp256k1 curve states"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "not covered by the secp256k1 zero-lift in-place permutation certificate"
+      },
+      {
+        "index": 16,
+        "opcode": "field_double_mul_add",
+        "target": "Z3",
+        "sources": [
+          "M",
+          "E",
+          "L",
+          "K"
+        ],
+        "constant": null,
+        "overwritten_source": "E",
+        "rule": {
+          "kind": "multi_product_affine_checked_by_domain_injectivity",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "reason": "not covered by the secp256k1 zero-lift in-place permutation certificate"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "not covered by the secp256k1 zero-lift in-place permutation certificate"
+      },
+      {
+        "index": 16,
+        "opcode": "field_double_mul_add",
+        "target": "Z3",
+        "sources": [
+          "M",
+          "E",
+          "L",
+          "K"
+        ],
+        "constant": null,
+        "overwritten_source": "K",
+        "rule": {
+          "kind": "multi_product_affine_checked_by_domain_injectivity",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "reason": "not covered by the secp256k1 zero-lift in-place permutation certificate"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "not covered by the secp256k1 zero-lift in-place permutation certificate"
+      },
+      {
+        "index": 16,
+        "opcode": "field_double_mul_add",
+        "target": "Z3",
+        "sources": [
+          "M",
+          "E",
+          "L",
+          "K"
+        ],
+        "constant": null,
+        "overwritten_source": "L",
+        "rule": {
+          "kind": "multi_product_affine_checked_by_domain_injectivity",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "reason": "not covered by the secp256k1 zero-lift in-place permutation certificate"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "not covered by the secp256k1 zero-lift in-place permutation certificate"
+      },
+      {
+        "index": 16,
+        "opcode": "field_double_mul_add",
+        "target": "Z3",
+        "sources": [
+          "M",
+          "E",
+          "L",
+          "K"
+        ],
+        "constant": null,
+        "overwritten_source": "M",
+        "rule": {
+          "kind": "multi_product_affine_checked_by_domain_injectivity",
+          "symbolic_inverse_exists_over_field": null
+        },
+        "domain_rows_checked": 110082,
+        "failure_examples": [
+          {
+            "reason": "not covered by the secp256k1 zero-lift in-place permutation certificate"
+          }
+        ],
+        "pass": false,
+        "failure_reason": "not covered by the secp256k1 zero-lift in-place permutation certificate"
+      }
+    ],
+    "pass": false,
+    "notes": [
+      "This screen checks every quantum operand as a potential overwrite source, independent of the fixed formula order.",
+      "The reordered schedule search uses only operand choices that pass this screen."
+    ],
+    "screen_model": "toy_boundary_operand_screen_plus_secp256k1_fused_output_permutation_contract",
+    "secp256k1_permutation_certificate_schema": "compiler-project-secp256k1-fused-output-in-place-permutation-v1"
+  },
+  "raw_fused_output_operand_screen": {
+    "schema": "compiler-project-tail-overwrite-operand-screen-v1",
+    "status": "toy_boundary_operand_choice_screen_not_full_reversible_proof",
+    "choice_count": 33,
     "passing_choice_count": 27,
     "failing_choice_count": 6,
     "failing_row_indices": [
@@ -11905,6 +12712,139 @@
       "The reordered schedule search uses only operand choices that pass this screen."
     ]
   },
+  "fused_output_in_place_permutation_certificate": {
+    "schema": "compiler-project-secp256k1-fused-output-in-place-permutation-v1",
+    "selected_output_reuse": {
+      "operation_index": 15,
+      "target": "Y3",
+      "overwritten_source": "C",
+      "ordinary_branch": "C -> N*M + C*L when L != 0",
+      "zero_lift_branch": "C -> C + N*M when L == 0",
+      "inverse_ordinary_branch": "C <- (Y3 - N*M) / L",
+      "inverse_zero_lift_branch": "C <- Y3 - N*M"
+    },
+    "guard": {
+      "owner_id": "tail_fused_output_zero_lift_guard",
+      "logical_qubits": 1,
+      "non_clifford": 510,
+      "construction": "compute and uncompute one L == 0 predicate bit around the Y3-over-C in-place output row"
+    },
+    "lookup_coordinate_checks": [
+      {
+        "base_id": "g_window_0",
+        "words_checked": 65536,
+        "non_infinity_words": 65535,
+        "lookup_x_nonzero": true,
+        "lookup_y_nonzero": true
+      },
+      {
+        "base_id": "g_window_5",
+        "words_checked": 65536,
+        "non_infinity_words": 65535,
+        "lookup_x_nonzero": true,
+        "lookup_y_nonzero": true
+      },
+      {
+        "base_id": "g_window_10",
+        "words_checked": 65536,
+        "non_infinity_words": 65535,
+        "lookup_x_nonzero": true,
+        "lookup_y_nonzero": true
+      },
+      {
+        "base_id": "g_window_15",
+        "words_checked": 65536,
+        "non_infinity_words": 65535,
+        "lookup_x_nonzero": true,
+        "lookup_y_nonzero": true
+      }
+    ],
+    "l_zero_domain_proof": {
+      "l_formula": "L = 3 * X * lookup_x mod p",
+      "c_formula": "C = 21 * (X + Z * lookup_x) mod p",
+      "premises": [
+        "3 is invertible modulo secp256k1 p",
+        "every non-infinity folded lookup table output has lookup_x != 0",
+        "secp256k1 has no affine curve point with x == 0 because 7 is a quadratic non-residue modulo p",
+        "the executable fused-output tail is bypassed for lookup-infinity rows; those are replayed as the external no-op boundary"
+      ],
+      "conclusion": "On every valid non-infinity lookup tail execution, L == 0 implies the accumulator is infinity, so X == 0, Z == 0, C == 0, and the zero-lift branch preserves Y3 while keeping the overwritten C register invertible.",
+      "pass": true
+    },
+    "boundary_replay_rows": [
+      {
+        "case": "accumulator_infinity",
+        "l_value": 0,
+        "c_value": 0,
+        "y3_value": 32748224938747404814623910738487752935528512903530129802856995983256684603122,
+        "zero_lift_forward_value": 32748224938747404814623910738487752935528512903530129802856995983256684603122,
+        "recovered_c_value": 0,
+        "forward_matches_y3": true,
+        "inverse_recovers_c": true
+      },
+      {
+        "case": "doubling",
+        "l_value": 101382358912612595298629065731602026907146105570276277376777212824265530569070,
+        "c_value": 56420605320855924158351137611286027842414615543634763752099168105399227943858,
+        "y3_value": 8592422645074342067382785439729359241066746872121109035076187648749693981387,
+        "zero_lift_forward_value": 8592422645074342067382785439729359241066746872121109035076187648749693981387,
+        "recovered_c_value": 56420605320855924158351137611286027842414615543634763752099168105399227943858,
+        "forward_matches_y3": true,
+        "inverse_recovers_c": true
+      },
+      {
+        "case": "inverse",
+        "l_value": 102383885814429970555945514593967090502869965373287099377552975976838474089764,
+        "c_value": 102206168975197637440604284957529956158029661719032597296182409002457200434562,
+        "y3_value": 7989849554557838590147416977267458326467213083111783850253074866218057565048,
+        "zero_lift_forward_value": 7989849554557838590147416977267458326467213083111783850253074866218057565048,
+        "recovered_c_value": 102206168975197637440604284957529956158029661719032597296182409002457200434562,
+        "forward_matches_y3": true,
+        "inverse_recovers_c": true
+      },
+      {
+        "case": "random",
+        "l_value": 108101490524602925168831950710444878635755877586583165021496144049540470213703,
+        "c_value": 39656341196302418805670944443239214020777793910667227224114901198288123583387,
+        "y3_value": 17283978519452098142020625206546256002560209794323584502367311878555939465064,
+        "zero_lift_forward_value": 17283978519452098142020625206546256002560209794323584502367311878555939465064,
+        "recovered_c_value": 39656341196302418805670944443239214020777793910667227224114901198288123583387,
+        "forward_matches_y3": true,
+        "inverse_recovers_c": true
+      }
+    ],
+    "rejected_unguarded_output_reuse_counterexample": {
+      "base_id": "g_window_0",
+      "word_hex": "0x0007",
+      "lookup_affine": [
+        41948375291644419605210209193538855353224492619856392092318293986323063962044,
+        48361766907851246668144012348516735800090617714386977531302791340517493990618
+      ],
+      "accumulator_affine": [
+        44348185283247122140245124680421363407546663785356019992292594794646383054219,
+        84665557065034144849653706419970574408515644868439394994517133374813370704546
+      ],
+      "m_value": 0,
+      "old_y3_over_n_coefficient": "M",
+      "reason": "the unguarded Y3-over-N row is not a field permutation because its affine coefficient M can be zero on valid secp256k1 curve states"
+    },
+    "checks": {
+      "three_is_invertible_mod_secp256k1_p": true,
+      "secp256k1_prime_has_no_affine_x_zero_point": true,
+      "all_checked_lookup_x_coordinates_nonzero": true,
+      "all_checked_lookup_y_coordinates_nonzero": true,
+      "l_zero_implies_accumulator_infinity_on_valid_non_infinity_lookup_domain": true,
+      "l_zero_branch_is_accumulator_infinity_shape": true,
+      "zero_lift_forward_matches_y3_on_boundary_cases": true,
+      "zero_lift_inverse_recovers_c_on_boundary_cases": true
+    },
+    "pass": true,
+    "notes": [
+      "A literal destructive overwrite is not claimed. The selected row is a reversible in-place field permutation with an explicit zero-lift branch.",
+      "The old Y3-over-N choice is rejected by a concrete secp256k1 M == 0 counterexample.",
+      "The L == 0 branch is required for accumulator-infinity boundary states; without it, Y3-over-C would not be a full field permutation."
+    ]
+  },
   "fused_output_reordered_schedule": {
     "schedule_model": "reordered_dag_local_inverse_overwrite_search",
     "status": "solution_found_with_boundary_replay_and_fused_output_lowering_contract",
@@ -11912,7 +12852,7 @@
     "counted_arithmetic_slots": 3,
     "max_peak_field_slots_searched": 7,
     "solution_found": true,
-    "states_visited": 503,
+    "states_visited": 501,
     "peak_field_slots": 7,
     "additional_field_slots_over_counted_leaf": 4,
     "additional_logical_qubits_over_counted_leaf": 1024,
@@ -12499,7 +13439,7 @@
           "C",
           "L"
         ],
-        "overwritten_source": "N",
+        "overwritten_source": "C",
         "overwrite_local_inverse_screen": "passed_operand_screen",
         "live_field_values_before_step": [
           "C",
@@ -12511,11 +13451,11 @@
           "X3"
         ],
         "live_field_values_during_step": [
-          "C",
           "E",
           "K",
           "L",
           "M",
+          "N",
           "X3",
           "Y3"
         ],
@@ -13157,8 +14097,8 @@
         "schedule_index": 15,
         "operation_index": 15,
         "target": "Y3",
-        "target_slot": 1,
-        "overwritten_source": "N",
+        "target_slot": 3,
+        "overwritten_source": "C",
         "source_slots_before_operation": {
           "N": 1,
           "M": 6,
@@ -13175,13 +14115,13 @@
           "X3": 2
         },
         "live_during": {
-          "C": 3,
           "E": 5,
           "K": 4,
           "L": 0,
           "M": 6,
+          "N": 1,
           "X3": 2,
-          "Y3": 1
+          "Y3": 3
         },
         "live_after": {
           "E": 5,
@@ -13189,15 +14129,15 @@
           "L": 0,
           "M": 6,
           "X3": 2,
-          "Y3": 1
+          "Y3": 3
         },
-        "owner_id": "tail_reordered_slot_1"
+        "owner_id": "tail_reordered_slot_3"
       },
       {
         "schedule_index": 16,
         "operation_index": 16,
         "target": "Z3",
-        "target_slot": 3,
+        "target_slot": 1,
         "overwritten_source": null,
         "source_slots_before_operation": {
           "M": 6,
@@ -13211,7 +14151,7 @@
           "L": 0,
           "M": 6,
           "X3": 2,
-          "Y3": 1
+          "Y3": 3
         },
         "live_during": {
           "E": 5,
@@ -13219,21 +14159,21 @@
           "L": 0,
           "M": 6,
           "X3": 2,
-          "Y3": 1,
-          "Z3": 3
+          "Y3": 3,
+          "Z3": 1
         },
         "live_after": {
           "X3": 2,
-          "Y3": 1,
-          "Z3": 3
+          "Y3": 3,
+          "Z3": 1
         },
-        "owner_id": "tail_reordered_slot_3"
+        "owner_id": "tail_reordered_slot_1"
       }
     ],
     "final_live_values": {
       "X3": 2,
-      "Y3": 1,
-      "Z3": 3
+      "Y3": 3,
+      "Z3": 1
     },
     "pass": true
   },
@@ -13318,7 +14258,7 @@
           "C",
           "L"
         ],
-        "schedule_overwritten_source": "N",
+        "schedule_overwritten_source": "C",
         "primitive_steps": [
           {
             "kind": "field_mul_accumulate",
@@ -13345,24 +14285,35 @@
               "second_product_accumulator"
             ],
             "non_clifford": 510
+          },
+          {
+            "kind": "zero_lift_guard_compute_uncompute",
+            "predicate": "L == 0",
+            "non_clifford": 510
           }
         ],
-        "reconstructed_non_clifford": 143494,
-        "row_non_clifford": 143494,
+        "reconstructed_non_clifford": 144004,
+        "row_non_clifford": 144004,
         "cost_matches_row": true,
         "overwrite_contract": {
-          "kind": "boundary_checked_variable_affine_permutation",
-          "overwritten_source": "N",
-          "coefficient_source": "M",
+          "kind": "secp256k1_zero_lifted_in_place_field_permutation",
+          "overwritten_source": "C",
+          "coefficient_source": "L",
           "coefficient_sign": 1,
           "offset_product_sources": [
-            "C",
-            "L"
+            "N",
+            "M"
           ],
           "offset_sign": 1,
           "domain_rows_checked": 110082,
           "screen_pass": true,
-          "cost_model": "one in-place variable field multiply plus one field multiply-accumulate, bounded by the same two field_mul kernels and one field_add/sub combine counted for the expanded stream"
+          "secp256k1_permutation_pass": true,
+          "guard_owner_id": "tail_fused_output_zero_lift_guard",
+          "guard_non_clifford": 510,
+          "guard_logical_qubits": 1,
+          "ordinary_branch": "C -> N*M + C*L when L != 0",
+          "zero_lift_branch": "C -> C + N*M when L == 0",
+          "cost_model": "two field_mul kernels, one field_add/sub combine, and the counted L == 0 zero-lift predicate compute/uncompute"
         }
       },
       {
@@ -13413,9 +14364,16 @@
     "overwritten_output_row_count": 1,
     "cost_matches_rows": true,
     "all_output_overwrites_have_boundary_permutation_contract": true,
+    "guard_owner_capacity": {
+      "owner_id": "tail_fused_output_zero_lift_guard",
+      "logical_qubits": 1,
+      "non_clifford": 510,
+      "construction": "compute and uncompute one L == 0 predicate bit around the Y3-over-C in-place output row"
+    },
     "notes": [
-      "The seven-slot schedule requires one fused-output row to overwrite a dead input lane; this artifact names that dependency instead of hiding it as a free output register.",
-      "The contract is checked on the same toy point-add boundary as the replay certificate and is still separate from a fully flattened Clifford-level ZKP guest."
+      "The seven-slot schedule requires one fused-output row to reuse a dead input lane; this artifact names that dependency instead of hiding it as a free output register.",
+      "The selected reuse is a zero-lifted field permutation over secp256k1, not a destructive overwrite.",
+      "The contract is checked on the same toy point-add boundary as the replay certificate, plus an explicit secp256k1 coefficient/counterexample certificate."
     ]
   },
   "checks": {

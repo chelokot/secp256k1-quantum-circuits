@@ -33,12 +33,13 @@ The repository's exact comparison layer is the public headline wrapper in:
 Its checked primary strict headline is one standard-QROAM reusable-chunk family
 with the fused-output seven-slot tail:
 
-- **primary strict replayed-tail headline:** `36,957,412 non-Clifford / 1,967 q`
+- **primary strict replayed-tail headline:** `36,973,222 non-Clifford / 1,968 q`
 
 The strict replayed-tail artifact records the seven-slot owner-capacity replay,
-the demoted macro-contract reference, and the exact ratios below. The old
-`36,957,412 / 1,199` four-slot macro contract remains checked as a
-ZKP/publication-wrapper reference, but it is not the primary strict headline.
+the counted zero-lift guard for the in-place `Y3` over `C` reuse, the demoted
+macro-contract reference, and the exact ratios below. The old four-slot macro
+contract remains checked as a ZKP/publication-wrapper reference, but it is not
+the primary strict headline.
 The older `34,925,796 / 1,044` three-slot family remains checked as a reference
 boundary, but it is not the single public headline.
 
@@ -46,8 +47,8 @@ boundary, but it is not the single public headline.
 
 For the **primary strict replayed-tail headline**:
 
-- **2.4352x** lower non-Clifford than the public low-qubit line
-- **1.8941x** lower non-Clifford than the public low-gate line
+- **2.4342x** lower non-Clifford than the public low-qubit line
+- **1.8933x** lower non-Clifford than the public low-gate line
 
 ## Exact qubit comparison
 

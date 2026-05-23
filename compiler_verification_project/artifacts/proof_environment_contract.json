@@ -237,32 +237,32 @@
   "checked_artifacts": {
     "input": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
-      "sha256": "869ee15ae2ae57c16eb3cb9216addd485ca7264253fb1aeafa8a0f190973f0f2",
-      "bytes": 303011,
+      "sha256": "6da6711a1e240ecf14ae56d6d5ae20906e6b3321bac5f17c876e775533937d3b",
+      "bytes": 303015,
       "manifest_record": {
-        "sha256": "869ee15ae2ae57c16eb3cb9216addd485ca7264253fb1aeafa8a0f190973f0f2",
-        "bytes": 303011
+        "sha256": "6da6711a1e240ecf14ae56d6d5ae20906e6b3321bac5f17c876e775533937d3b",
+        "bytes": 303015
       },
       "manifest_record_present": true,
       "manifest_sha256_matches_checked_record": true
     },
     "claim": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json",
-      "sha256": "328a5f74cd8a939e90e2f0e29d06c3ac6a88905a066b82c64cbc0f5bb5002141",
-      "bytes": 1707,
+      "sha256": "39f0af08b9e0e17327fb5fd0a7165db50c233d11dec64bf07a9e7c1cd42eb4f9",
+      "bytes": 1709,
       "manifest_record": {
-        "sha256": "328a5f74cd8a939e90e2f0e29d06c3ac6a88905a066b82c64cbc0f5bb5002141",
-        "bytes": 1707
+        "sha256": "39f0af08b9e0e17327fb5fd0a7165db50c233d11dec64bf07a9e7c1cd42eb4f9",
+        "bytes": 1709
       },
       "manifest_record_present": true,
       "manifest_sha256_matches_checked_record": true
     },
     "family": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_family.json",
-      "sha256": "f9e86c20b935cbfeb4b56fa36c7a9fbbecb0dcb328c4474c76d8a89960279abc",
+      "sha256": "43048df9069d65c8b560828532c20e6369217fed2c176c97fd148a2f180b9af3",
       "bytes": 1657,
       "manifest_record": {
-        "sha256": "f9e86c20b935cbfeb4b56fa36c7a9fbbecb0dcb328c4474c76d8a89960279abc",
+        "sha256": "43048df9069d65c8b560828532c20e6369217fed2c176c97fd148a2f180b9af3",
         "bytes": 1657
       },
       "manifest_record_present": true,
@@ -457,10 +457,10 @@
     },
     "reusable_chunk_lowering": {
       "path": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
-      "sha256": "7f8de09d3484c507a8ac01982abe5314cc7ea3b16e9e898d207e6574eef90317",
+      "sha256": "f248e1dd31be3d9ec018dd473241da1335425e00639f4381d3d8bee688face0a",
       "bytes": 221012,
       "manifest_record": {
-        "sha256": "7f8de09d3484c507a8ac01982abe5314cc7ea3b16e9e898d207e6574eef90317",
+        "sha256": "f248e1dd31be3d9ec018dd473241da1335425e00639f4381d3d8bee688face0a",
         "bytes": 221012
       },
       "manifest_record_present": true,
@@ -468,10 +468,10 @@
     },
     "reusable_chunk_tail_candidate": {
       "path": "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
-      "sha256": "dbe0ea96dcfcd2cf5b327ad30ae3e97826a828f59c2686da0fbe3e4e7548ec0f",
+      "sha256": "7766aa2987c89ccd208da22393d6ff629a98343ea765c8dffddd61dd71a0dc7c",
       "bytes": 7217,
       "manifest_record": {
-        "sha256": "dbe0ea96dcfcd2cf5b327ad30ae3e97826a828f59c2686da0fbe3e4e7548ec0f",
+        "sha256": "7766aa2987c89ccd208da22393d6ff629a98343ea765c8dffddd61dd71a0dc7c",
         "bytes": 7217
       },
       "manifest_record_present": true,
@@ -479,10 +479,10 @@
     },
     "headline_resource_manifest": {
       "path": "compiler_verification_project/artifacts/headline_resource_manifest.json",
-      "sha256": "b488afbdd86ff5a885948cf8066dae7cc0ab82423b926fc2a23e2e531ef51f54",
+      "sha256": "bad724d34db0b292909af037852a0cbf1d730c98c6d81d9c2867d341254990fb",
       "bytes": 51858,
       "manifest_record": {
-        "sha256": "b488afbdd86ff5a885948cf8066dae7cc0ab82423b926fc2a23e2e531ef51f54",
+        "sha256": "bad724d34db0b292909af037852a0cbf1d730c98c6d81d9c2867d341254990fb",
         "bytes": 51858
       },
       "manifest_record_present": true,
@@ -529,8 +529,8 @@
   },
   "public_headline_result": {
     "path": "compiler_verification_project/artifacts/public_headline_result.json",
-    "sha256": "aab71359b1613b180a51b38c375fcaf25d3512fad193d0fd9f8ab2c26bc0d6d7",
-    "bytes": 15229
+    "sha256": "d0eb4ecc411f7e1752cca8325852facb4d004ec3b8f94553046d8721a67e92bc",
+    "bytes": 15235
   },
   "notes": [
     "This artifact is deterministic and repository-bound; it is not a pinned container or Nix lock.",
@@ -539,7 +539,7 @@
     "No command in this contract invokes --prove; proof rebuilds remain an explicit separate operation."
   ],
   "checks": {
-    "public_headline_result_metadata_is_self_consistent": true,
+    "public_headline_result_metadata_is_self_consistent": false,
     "public_headline_result_keeps_proof_freshness_separate": true,
     "all_checked_artifacts_exist_and_match_digest": true,
     "proof_manifest_records_public_headline_checked_artifacts": true,
@@ -551,5 +551,5 @@
     "direct_verify_commands_bind_checked_input_and_proofs": true,
     "tool_contract_lists_required_sp1_stack": true
   },
-  "pass": true
+  "pass": false
 }

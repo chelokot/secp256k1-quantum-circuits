@@ -36,8 +36,8 @@ systems:
 
 | IBM target | IBM-stated scale | Read against this repo |
 |---|---:|---|
-| Starling, 2029 | 200 logical qubits, 100 million gates | Gate-scale relevant, but 1,767 logical qubits short of this repository's current 1,967-logical-qubit strict headline. |
-| Blue Jay, 2033+ | about 2,000 logical qubits, 1 billion gates | First named IBM roadmap class with natural logical-qubit headroom; 33 logical qubits above the current strict headline. |
+| Starling, 2029 | 200 logical qubits, 100 million gates | Gate-scale relevant, but 1,768 logical qubits short of this repository's current 1,968-logical-qubit strict headline. |
+| Blue Jay, 2033+ | about 2,000 logical qubits, 1 billion gates | First named IBM roadmap class with natural logical-qubit headroom; 32 logical qubits above the current strict headline. |
 
 The gate comparison is intentionally conservative. This repository reports
 non-Clifford operations at the compiler-family boundary, while IBM's roadmap
@@ -49,17 +49,17 @@ as scale alignment, not as a completed IBM runtime estimate.
 The current strict replayed-tail headline is selected by
 `compiler_verification_project/artifacts/strict_replayed_tail_headline.json`:
 
-- `36,957,412` non-Clifford operations
-- `1,967` logical qubits
+- `36,973,222` non-Clifford operations
+- `1,968` logical qubits
 
 Against the IBM roadmap facts encoded in
 `data/ibm_quantum_roadmap_context.json`:
 
-- Starling's 100-million-gate scale is about `2.71x` this repository's
+- Starling's 100-million-gate scale is about `2.70x` this repository's
   non-Clifford count, but Starling's 200 logical qubits are below the current
   logical-qubit requirement.
-- Blue Jay's 1-billion-gate scale is about `27.06x` this repository's
-  non-Clifford count, and its 2,000-logical-qubit scale leaves 33 logical
+- Blue Jay's 1-billion-gate scale is about `27.05x` this repository's
+  non-Clifford count, and its 2,000-logical-qubit scale leaves 32 logical
   qubits of headroom versus the current strict replayed-tail headline.
 
 The careful conclusion is therefore:

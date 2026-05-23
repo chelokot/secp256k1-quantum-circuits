@@ -107,7 +107,7 @@ What it does ship is:
 
 ## Current central boundary result
 
-- **primary strict replayed-tail headline:** `36,957,412 non-Clifford`, `1,967 logical qubits`
+- **primary strict replayed-tail headline:** `36,973,222 non-Clifford`, `1,968 logical qubits`
 
 The primary strict headline is selected in
 `compiler_verification_project/artifacts/strict_replayed_tail_headline.json`.
@@ -116,11 +116,13 @@ semiclassical-QFT phase shell, and the fused-output seven-slot executable tail
 schedule replayed by `tail_macro_engine.json`. The resulting live-qubit formula
 is:
 
-`7 * 256 + 173 lookup workspace + 1 control + 1 phase = 1,967 logical qubits`
+`7 * 256 + 173 lookup workspace + 2 control/guard + 1 phase = 1,968 logical qubits`
 
 The seven-slot schedule is not a free-output shortcut: `tail_macro_engine.json`
-also records the one required fused-output affine overwrite (`Y3` over `N`) and
-checks its boundary permutation contract and cost reconstruction.
+rejects the old unguarded `Y3` over `N` reuse with a concrete secp256k1
+`M == 0` witness, then records the selected zero-lifted in-place `Y3` over `C`
+field permutation with its counted `L == 0` guard, boundary replay, and cost
+reconstruction.
 
 The `173` lookup-workspace term is `18` folded-control qubits plus one live
 155-bit QROAMClean chunk target for `K = 1`; there are no junk registers at
@@ -133,11 +135,11 @@ The older `34,925,796 / 1,044` three-slot family remains checked as a reference
 boundary in `family_frontier.json`, `logical_resource_ledger.json`, and the
 root attestation bundle. The reusable-chunk candidate directory contains the
 core/compressed/Groth16 fixtures and proof bundles for the old macro
-`36,957,412 / 1,199` candidate result; use `proof_status.py --require-all-current`
+stale macro candidate result; use `proof_status.py --require-all-current`
 as the freshness gate after any resource-certificate or guest change.
 `headline_resource_manifest.json` is the macro-wrapper counted-resource stream
 manifest. It expands the reusable-chunk counted-resource IR into term rows and
-liveness rows, reconstructs `36,957,412 / 1,199`, and prevents the older
+liveness rows, reconstructs the current macro-wrapper resource result, and prevents the older
 three-slot `materialized_circuit_manifest.json` from being mistaken for that
 wrapper result. `public_candidate_materialized_circuit_manifest.json`
 adds the macro public candidate's own primitive-stream boundary: one
@@ -247,9 +249,9 @@ patch set, which is also part of the curated proof manifest.
 The root proof bundle binds the older three-slot reference family. The public
 macro-wrapper proof bundle lives in
 `compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/`
-and must be rebuilt before it can bind the reusable-chunk `36,957,412 / 1,199`
-result with `8 / 8` deterministic public cases. It does not yet bind the
-primary strict `36,957,412 / 1,967` replayed-tail headline.
+and must be rebuilt before it can bind the current reusable-chunk macro result
+with `8 / 8` deterministic public cases. It does not yet bind the
+primary strict `36,973,222 / 1,968` guarded replayed-tail headline.
 
 This is similar in shape to Google's disclosure model, but it is still a proof
 at the repository exact-family boundary, not a primitive-gate full-Shor proof.

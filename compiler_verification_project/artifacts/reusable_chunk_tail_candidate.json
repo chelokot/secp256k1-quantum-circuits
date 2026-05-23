@@ -227,7 +227,7 @@
     "arithmetic_slot_count": 4,
     "chunk_streams_per_leaf": 6,
     "leaf_call_count_total": 31,
-    "candidate_total_non_clifford": 36957412,
+    "candidate_total_non_clifford": 36973222,
     "candidate_total_logical_qubits": 1199,
     "beats_requested_non_clifford_limit": true,
     "beats_requested_logical_qubit_limit": true

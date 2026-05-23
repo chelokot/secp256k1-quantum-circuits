@@ -4,12 +4,13 @@
   "scope": "strict no-free-field-slot headline derived from the executable fused-output tail replay and the standard-QROAM reusable-chunk lookup resource",
   "selected_result": {
     "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__strict_fused_output_tail_7_slot_v1__semiclassical_qft_v1",
-    "non_clifford": 36957412,
-    "logical_qubits": 1967,
+    "non_clifford": 36973222,
+    "logical_qubits": 1968,
     "tail_field_slots": 7,
     "field_bits": 256,
     "lookup_workspace_qubits": 173,
-    "control_qubits": 1,
+    "control_qubits": 2,
+    "fused_output_guard_qubits": 1,
     "phase_qubits": 1
   },
   "logical_qubit_formula": {
@@ -17,16 +18,17 @@
     "field_bits": 256,
     "tail_field_qubits": 1792,
     "lookup_workspace_qubits": 173,
-    "control_qubits": 1,
+    "control_qubits": 2,
+    "fused_output_guard_qubits": 1,
     "phase_qubits": 1,
-    "reconstructed_total": 1967
+    "reconstructed_total": 1968
   },
   "non_clifford_formula": {
-    "base_non_clifford_without_streamed_qroam": 24767716,
+    "base_non_clifford_without_streamed_qroam": 24783526,
     "qroam_chunk_streams": 186,
     "per_chunk_stream_non_clifford": 65536,
     "qroam_chunk_non_clifford": 12189696,
-    "reconstructed_total": 36957412
+    "reconstructed_total": 36973222
   },
   "semantic_replay_evidence": {
     "checked_non_infinity_pairs": 110082,
@@ -47,24 +49,24 @@
     "low_qubit": {
       "baseline_non_clifford": 90000000,
       "baseline_logical_qubits": 1200,
-      "non_clifford_improvement_ratio": 2.435235454257457,
-      "logical_qubit_delta_vs_baseline": 767,
+      "non_clifford_improvement_ratio": 2.434194131093038,
+      "logical_qubit_delta_vs_baseline": 768,
       "beats_non_clifford": true,
       "beats_logical_qubits": false
     },
     "low_gate": {
       "baseline_non_clifford": 70000000,
       "baseline_logical_qubits": 1450,
-      "non_clifford_improvement_ratio": 1.8940720199780223,
-      "logical_qubit_delta_vs_baseline": 517,
+      "non_clifford_improvement_ratio": 1.8932621019612519,
+      "logical_qubit_delta_vs_baseline": 518,
       "beats_non_clifford": true,
       "beats_logical_qubits": false
     }
   },
   "source_digests": {
-    "tail_macro_engine_sha256": "3bfd265e5e69a3f5d3a654458302c94bb7af7a4bd6932ffcdebedc960ed085f7",
-    "reusable_chunk_lowering_sha256": "c57403f9dbc8fe27f0cded6bbec2ddab50062dff4b012dc4462da78fb0d286cb",
-    "public_headline_result_sha256": "bedc6e8c96515d9cec49abe2a15435958d3218fbe097c7234b27402eba158b95"
+    "tail_macro_engine_sha256": "8f20771d20c2bb205f7b9971692208e7ba4aed5d4782a95246776208debfaeba",
+    "reusable_chunk_lowering_sha256": "7ebcb0fe8db50c03f84ac9cc10ab906fd921dd8d98670ef61fa4237e8b49f334",
+    "public_headline_result_sha256": "cbd2f464d052acd8b046d08132e0a30de5bf618a4356103ce88a5c7895621e6e"
   },
   "checks": {
     "tail_engine_passes": true,
@@ -74,6 +76,7 @@
     "slot_assignment_capacity_rows_match_peak": true,
     "every_tail_slot_has_field_sized_capacity": true,
     "strict_tail_field_qubits_are_derived_from_slot_assignment": true,
+    "fused_output_guard_qubit_is_counted": true,
     "lookup_workspace_is_counted_separately_from_tail_slots": true,
     "non_clifford_total_comes_from_reusable_chunk_lowering": true,
     "strict_total_logical_qubits_matches_formula": true,

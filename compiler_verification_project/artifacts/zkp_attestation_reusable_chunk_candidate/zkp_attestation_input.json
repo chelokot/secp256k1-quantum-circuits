@@ -2,17 +2,17 @@
   "schema": "compiler-project-zkp-attestation-input-v5",
   "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
   "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
-  "claim_sha256": "d48804c6bc14362d5f6517c6986337c4d78a042d722f84d9d072156647c4b880",
+  "claim_sha256": "cf83753399fd3741edc5040662635e0529e8bb85d47dc94c7a076597dbc8f45e",
   "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
-  "family_sha256": "d3cecc3c5c3ec6b7611057d6fb3608dd5e95d7020f66ac55d55e2066d9398eae",
+  "family_sha256": "c6a7146ac5c0d7a63f733b0224ac9dc6fbaafb576d196128f882ecbc01e42b2b",
   "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
-  "resource_certificate_sha256": "27190fdd7b9b977796d6d341530d7305103f448558a5b156c2b542da2c33158a",
+  "resource_certificate_sha256": "69a131be4e04e93ef61af48111c25657b2a63fbfe6c913d8a1a258cacfdc1d49",
   "compiler_parameters_sha256": "8015f87a4d334c61db0d2c8843fe12330db770a87e0c5c51e344347416a7555b",
   "claim_document": {
     "document_type": "attestation_claim",
     "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_claim.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "d48804c6bc14362d5f6517c6986337c4d78a042d722f84d9d072156647c4b880",
+    "sha256": "cf83753399fd3741edc5040662635e0529e8bb85d47dc94c7a076597dbc8f45e",
     "payload": {
       "schema": "compiler-project-zkp-attestation-claim-v1",
       "selected_family_alias": "reusable-chunk",
@@ -28,17 +28,17 @@
         "source_sha256": "e9095834c663fbda3b55054b505767024748dd832389606d079e4ffab7ccf7bf",
         "non_clifford": 36957412,
         "logical_qubits": 1199,
-        "matches_family_snapshot": true,
-        "matches_resource_certificate_snapshot": true
+        "matches_family_snapshot": false,
+        "matches_resource_certificate_snapshot": false
       },
       "non_clifford_formula": {
-        "arithmetic_leaf_non_clifford": 798949,
+        "arithmetic_leaf_non_clifford": 799459,
         "per_leaf_lookup_non_clifford": 393216,
         "direct_seed_non_clifford": 297,
         "leaf_call_count_total": 31,
-        "arithmetic_component": 24767419,
+        "arithmetic_component": 24783229,
         "lookup_component": 12189696,
-        "reconstructed_total": 36957412
+        "reconstructed_total": 36973222
       },
       "logical_qubit_formula": {
         "field_bits": 256,
@@ -150,7 +150,7 @@
     "document_type": "compiler_family_summary",
     "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_family.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "d3cecc3c5c3ec6b7611057d6fb3608dd5e95d7020f66ac55d55e2066d9398eae",
+    "sha256": "c6a7146ac5c0d7a63f733b0224ac9dc6fbaafb576d196128f882ecbc01e42b2b",
     "payload": {
       "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
       "summary": "Candidate reusable-chunk standard-QROAM family: four arithmetic slots, one reusable 155-bit QROAM chunk target, chunked table-controlled coordinate multipliers, and semiclassical QFT.",
@@ -159,10 +159,10 @@
       "slot_allocation_family": "reusable_chunk_tail_leaf_v1",
       "arithmetic_kernel_family": "litinski_addsub_schoolbook_reusable_chunk_bound_v1",
       "lookup_family": "folded_standard_qroam_reusable_chunked_coordinate_v1",
-      "arithmetic_leaf_non_clifford": 798949,
+      "arithmetic_leaf_non_clifford": 799459,
       "direct_seed_non_clifford": 297,
       "per_leaf_lookup_non_clifford": 393216,
-      "full_oracle_non_clifford": 36957412,
+      "full_oracle_non_clifford": 36973222,
       "arithmetic_slot_count": 4,
       "control_slot_count": 1,
       "borrowed_interface_qubits": 0,
@@ -324,7 +324,7 @@
     "document_type": "reusable_chunk_lowering",
     "artifact_path": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "27190fdd7b9b977796d6d341530d7305103f448558a5b156c2b542da2c33158a",
+    "sha256": "69a131be4e04e93ef61af48111c25657b2a63fbfe6c913d8a1a258cacfdc1d49",
     "payload": {
       "schema": "compiler-project-reusable-chunk-lowering-v2",
       "status": "proven_public_headline",
@@ -5734,11 +5734,11 @@
         }
       },
       "non_clifford_derivation": {
-        "base_non_clifford_without_streamed_qroam": 24767716,
+        "base_non_clifford_without_streamed_qroam": 24783526,
         "qroam_chunk_streams": 186,
         "per_chunk_stream_non_clifford": 65536,
         "qroam_chunk_non_clifford": 12189696,
-        "candidate_total_non_clifford": 36957412
+        "candidate_total_non_clifford": 36973222
       },
       "qubit_derivation": {
         "field_bits": 256,
@@ -5762,13 +5762,13 @@
           "leaf_call_count_total": 31
         },
         "public_totals": {
-          "non_clifford": 36957412,
+          "non_clifford": 36973222,
           "logical_qubits": 1199
         },
-        "counted_resource_ir_sha256": "e814826e787174c05f62f34396fd02b1d77a8728f0c99051f74e1d60294d7188",
+        "counted_resource_ir_sha256": "e2d8c11d60249197de3b9608556b808c8fd8798419763682246e71c098528ea4",
         "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
         "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
-        "resource_contract_engine_sha256": "6ec61b5379cd1eb36a568423ffa43a79015c7f3c5dea53ec65cf1f80346b3d6f",
+        "resource_contract_engine_sha256": "0447031a514b04038ab0f51e63a0e1a5ffa187d1cab694de20d7dfc8196ea1e0",
         "checks": {
           "executable_liveness_pass": true,
           "counted_resource_ir_pass": true,
@@ -5788,8 +5788,8 @@
             "term_id": "base_without_streamed_qroam",
             "category": "arithmetic_control_and_phase_base",
             "instances": 1,
-            "per_instance_non_clifford": 24767716,
-            "total_non_clifford": 24767716,
+            "per_instance_non_clifford": 24783526,
+            "total_non_clifford": 24783526,
             "source": "logical_resource_ledger.qroam_clean_tradeoff_sweep.base_non_clifford_without_streamed_qroam"
           },
           {
@@ -6103,7 +6103,7 @@
             "total_live_qubits": 1199
           }
         ],
-        "recomputed_total_non_clifford": 36957412,
+        "recomputed_total_non_clifford": 36973222,
         "recomputed_peak_live_qubits": 1199,
         "peak_interval_id": "pc5_stream_00_lookup_x_chunk_0",
         "checks": {
@@ -6117,11 +6117,11 @@
       "counted_resource_engine": {
         "schema": "compiler-project-counted-resource-ir-engine-v1",
         "input_schema": "compiler-project-reusable-chunk-counted-resource-ir-v1",
-        "counted_resource_ir_sha256": "e814826e787174c05f62f34396fd02b1d77a8728f0c99051f74e1d60294d7188",
+        "counted_resource_ir_sha256": "e2d8c11d60249197de3b9608556b808c8fd8798419763682246e71c098528ea4",
         "term_count": 7,
         "wire_count": 13,
         "interval_count": 9,
-        "non_clifford_total_from_terms": 36957412,
+        "non_clifford_total_from_terms": 36973222,
         "peak_live_qubits_from_intervals": 1199,
         "peak_interval_id_from_intervals": "pc5_stream_00_lookup_x_chunk_0",
         "owner_peak_live_qubits_from_intervals": {
@@ -6879,7 +6879,7 @@
       },
       "resource_contract_engine": {
         "schema": "compiler-project-resource-contract-engine-v1",
-        "counted_resource_ir_sha256": "e814826e787174c05f62f34396fd02b1d77a8728f0c99051f74e1d60294d7188",
+        "counted_resource_ir_sha256": "e2d8c11d60249197de3b9608556b808c8fd8798419763682246e71c098528ea4",
         "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
         "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
         "wire_count": 13,
@@ -7026,17 +7026,17 @@
       "source_sha256": "e9095834c663fbda3b55054b505767024748dd832389606d079e4ffab7ccf7bf",
       "non_clifford": 36957412,
       "logical_qubits": 1199,
-      "matches_family_snapshot": true,
-      "matches_resource_certificate_snapshot": true
+      "matches_family_snapshot": false,
+      "matches_resource_certificate_snapshot": false
     },
     "non_clifford_formula": {
-      "arithmetic_leaf_non_clifford": 798949,
+      "arithmetic_leaf_non_clifford": 799459,
       "per_leaf_lookup_non_clifford": 393216,
       "direct_seed_non_clifford": 297,
       "leaf_call_count_total": 31,
-      "arithmetic_component": 24767419,
+      "arithmetic_component": 24783229,
       "lookup_component": 12189696,
-      "reconstructed_total": 36957412
+      "reconstructed_total": 36973222
     },
     "logical_qubit_formula": {
       "field_bits": 256,
@@ -7051,10 +7051,10 @@
   },
   "family_summary": {
     "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
-    "arithmetic_leaf_non_clifford": 798949,
+    "arithmetic_leaf_non_clifford": 799459,
     "direct_seed_non_clifford": 297,
     "per_leaf_lookup_non_clifford": 393216,
-    "full_oracle_non_clifford": 36957412,
+    "full_oracle_non_clifford": 36973222,
     "arithmetic_slot_count": 4,
     "control_slot_count": 1,
     "borrowed_interface_qubits": 0,

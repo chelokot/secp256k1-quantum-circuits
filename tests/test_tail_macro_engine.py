@@ -40,7 +40,7 @@ def test_tail_macro_engine_reconstructs_checked_artifact() -> None:
     )
     assert observed == checked
     assert checked['pass'] is True
-    assert checked['non_clifford_total'] == 1126332
+    assert checked['non_clifford_total'] == 1126842
     assert checked['opcode_histogram'] == {
         'field_add': 6,
         'field_mul': 6,
@@ -112,8 +112,16 @@ def test_tail_macro_engine_exposes_unclosed_three_slot_gap() -> None:
     assert checked['fused_output_lowering_contract']['cost_matches_rows'] is True
     assert checked['fused_output_lowering_contract']['all_output_overwrites_have_boundary_permutation_contract'] is True
     assert checked['fused_output_lowering_contract']['rows'][1]['target'] == 'Y3'
-    assert checked['fused_output_lowering_contract']['rows'][1]['schedule_overwritten_source'] == 'N'
+    assert checked['fused_output_lowering_contract']['rows'][1]['schedule_overwritten_source'] == 'C'
+    assert checked['fused_output_lowering_contract']['rows'][1]['overwrite_contract']['kind'] == 'secp256k1_zero_lifted_in_place_field_permutation'
     assert checked['fused_output_lowering_contract']['rows'][1]['overwrite_contract']['domain_rows_checked'] == 110082
+    assert checked['fused_output_in_place_permutation_certificate']['pass'] is True
+    assert checked['fused_output_in_place_permutation_certificate']['checks']['three_is_invertible_mod_secp256k1_p'] is True
+    assert checked['fused_output_in_place_permutation_certificate']['checks']['l_zero_implies_accumulator_infinity_on_valid_non_infinity_lookup_domain'] is True
+    assert checked['fused_output_in_place_permutation_certificate']['l_zero_domain_proof']['pass'] is True
+    assert checked['fused_output_in_place_permutation_certificate']['guard']['logical_qubits'] == 1
+    assert checked['fused_output_in_place_permutation_certificate']['guard']['non_clifford'] == 510
+    assert checked['fused_output_in_place_permutation_certificate']['rejected_unguarded_output_reuse_counterexample']['m_value'] == 0
     assert checked['slot_gap']['fused_output_reordered_solution_found'] is True
     assert checked['slot_gap']['fused_output_reordered_peak_field_values'] == 7
     assert checked['slot_gap']['fused_output_slot_assignment_peak_field_values'] == 7
@@ -134,3 +142,28 @@ def test_tail_macro_engine_integrity_group_rejects_forged_cost() -> None:
     failed = {row['name'] for row in report['checks'] if row['pass'] == 0}
     assert 'tail_macro_engine_matches_generator' in failed
     assert 'tail_macro_engine_cost_binds_selected_tail_kernel' in failed
+
+
+def test_tail_macro_engine_rejects_old_unguarded_y3_over_n() -> None:
+    checked = _load('tail_macro_engine.json')
+    counterexample = checked['fused_output_in_place_permutation_certificate']['rejected_unguarded_output_reuse_counterexample']
+    y3_over_n = next(
+        choice
+        for choice in checked['fused_output_operand_screen']['choices']
+        if choice['index'] == 15 and choice['overwritten_source'] == 'N'
+    )
+
+    assert counterexample['old_y3_over_n_coefficient'] == 'M'
+    assert counterexample['m_value'] == 0
+    assert y3_over_n['pass'] is False
+    assert y3_over_n['failure_examples'][0]['m_value'] == 0
+
+
+def test_tail_macro_engine_proves_lookup_infinity_is_bypassed() -> None:
+    checked = _load('tail_macro_engine.json')
+    replay = checked['fused_output_replay_certificate']
+    proof = checked['fused_output_in_place_permutation_certificate']['l_zero_domain_proof']
+
+    assert replay['checked_lookup_infinity_pairs'] > 0
+    assert any('Lookup-infinity cases are checked as the external boundary no-op' in note for note in replay['notes'])
+    assert any('bypassed for lookup-infinity rows' in premise for premise in proof['premises'])

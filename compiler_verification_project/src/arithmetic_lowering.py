@@ -906,6 +906,15 @@ def _complete_a0_streamed_tail_kernel(field_bits: int, qroam_block_size: int, qr
             'The output combines are counted as three ordinary field add/sub kernels.',
         ],
     )
+    y3_in_place_guard = _block(
+        name='y3_in_place_zero_lift_guard',
+        summary='Compute and uncompute the one-bit L == 0 guard used by the reversible Y3-over-C output permutation.',
+        instance_count=2 * (field_bits - 1),
+        primitive_operations=_repeat_operations(_ladder_operations(field_bits - 1, include_measurement=False), 2),
+        notes=[
+            'The guard lifts the Y3-over-C affine coefficient from L to 1 on the L == 0 accumulator-infinity branch, making the in-place output row a field permutation.',
+        ],
+    )
     return _kernel(
         opcode='complete_a0_streamed_tail',
         summary='Exact multi-output complete-add tail kernel from C, H, A, Y, and Z.',
@@ -969,12 +978,12 @@ def _complete_a0_streamed_tail_kernel(field_bits: int, qroam_block_size: int, qr
                 name='tail_output_combine',
                 summary='Three add/sub combines that write X3, Y3, and Z3.',
                 category='tail_combine',
-                blocks=[output_combine],
-                notes=['Counted exactly as three field add/sub kernels.'],
+                blocks=[output_combine, y3_in_place_guard],
+                notes=['Counted as three field add/sub kernels plus the reversible zero-lift guard required by the seven-slot fused-output schedule.'],
             ),
         ],
         notes=[
-            'The macro is a liveness contract, not a free arithmetic operation: its non-Clifford count includes I, K, L, yZ, 21Z, E/M/N, six output multipliers, and three output add/sub combines.',
+            'The macro is a liveness contract, not a free arithmetic operation: its non-Clifford count includes I, K, L, yZ, 21Z, E/M/N, six output multipliers, three output add/sub combines, and the Y3-over-C zero-lift guard.',
         ],
     )
 

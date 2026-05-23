@@ -64,10 +64,10 @@ exact layer below the ISA boundary. Its checked-in central whole-oracle result
 is:
 
 <!-- BEGIN GENERATED: strict-replayed-tail-headline -->
-- **primary strict replayed-tail headline:** `36,957,412 non-Clifford`, `1,967 logical qubits`
-- **logical-qubit formula:** `7 * 256 + 173 + 1 + 1 = 1,967`
-- **vs Google low-qubit line:** `2.4352x` lower non-Clifford, `+767` logical qubits
-- **vs Google low-gate line:** `1.8941x` lower non-Clifford, `+517` logical qubits
+- **primary strict replayed-tail headline:** `36,973,222 non-Clifford`, `1,968 logical qubits`
+- **logical-qubit formula:** `7 * 256 + 173 + 2 + 1 = 1,968`
+- **vs Google low-qubit line:** `2.4342x` lower non-Clifford, `+768` logical qubits
+- **vs Google low-gate line:** `1.8933x` lower non-Clifford, `+518` logical qubits
 <!-- END GENERATED: strict-replayed-tail-headline -->
 
 Those numbers are exact for the chosen compiler family, not a claim of global
@@ -78,20 +78,22 @@ It combines the standard QROAMClean `K = 1` reusable-chunk lookup resource with
 the fused-output seven-slot tail schedule replayed by
 `compiler_verification_project/artifacts/tail_macro_engine.json`. The counted
 lookup workspace includes folded-control qubits plus one live 155-bit QROAM
-chunk target and no free full-coordinate lookup lane. The old `36,957,412 /
-1,199` four-slot macro contract remains checked as a ZKP/publication wrapper
-reference in `compiler_verification_project/artifacts/public_headline_result.json`,
-but it is no longer the primary strict resource headline. The older
+chunk target and no free full-coordinate lookup lane. The strict count also
+includes the one extra guard qubit and 510 non-Clifford operations per tail
+needed for the zero-lifted in-place `Y3` register reuse. The old four-slot
+macro contract remains a ZKP/publication wrapper reference in
+`compiler_verification_project/artifacts/public_headline_result.json`, but it
+is no longer the primary strict resource headline. The older
 `34,925,796 / 1,044` three-slot family remains checked as a reference boundary,
 not as the promoted public claim.
 
 Against Google's published 2026 secp256k1 baseline, the public standard-QROAM
 result is:
 
-- **2.4352x** lower in non-Clifford cost than the public low-qubit line
-- **1.8941x** lower in non-Clifford cost than the public low-gate line
-- **1,023 qubits above** the public low-qubit line
-- **773 qubits above** the public low-gate line
+- **2.4342x** lower in non-Clifford cost than the public low-qubit line
+- **1.8933x** lower in non-Clifford cost than the public low-gate line
+- **768 qubits above** the public low-qubit line
+- **518 qubits above** the public low-gate line
 
 ### SP1 attestation layer
 
@@ -131,10 +133,10 @@ proof bundle, and the matching Groth16 verifying key. During source churn,
 whether those proof layers still bind the current input; after the latest
 resource-certificate binding changes, final compressed/Groth16 rebuild remains
 the release gate before claiming current proof freshness. Together these
-artifacts define the macro/ZKP `36,957,412 / 1,199` candidate claim and `8 / 8`
-public cases. That claim is kept as a checked publication-wrapper reference;
-the primary strict resource headline is now the replayed-tail
-`36,957,412 / 1,967` artifact.
+artifacts still bind the stale macro/ZKP candidate claim and `8 / 8` public
+cases. That claim is kept only as a checked publication-wrapper reference until
+rebuilt; the primary strict resource headline is now the guarded replayed-tail
+`36,973,222 / 1,968` artifact.
 The compiler artifacts also include `public_candidate_materialized_circuit_manifest.json`,
 `public_engine_manifest.json`, and `engine_completion_audit.json`, the no-ZKP
 engine gate for the current public candidate. The public-candidate materialized manifest expands the reusable
@@ -173,9 +175,10 @@ output stream that computes `X3 = K*N - E*C`, `Y3 = N*M + C*L`, and
 registers. The fused stream preserves the same tail non-Clifford cost, reaches
 seven field slots, replays across 110,082 non-infinity toy boundary pairs,
 checks 610 lookup-infinity no-op boundary pairs, and derives a seven-slot
-owner-capacity ledger. The artifact also names the one required fused-output
-affine overwrite (`Y3` over `N`) and checks that overwrite on the same boundary
-instead of treating it as a free output lane. That seven-slot replayed-tail
+owner-capacity ledger. The artifact also rejects the old unguarded `Y3` over
+`N` reuse with a concrete secp256k1 `M == 0` witness, then proves the selected
+zero-lifted in-place `Y3` over `C` field permutation with an explicit counted
+`L == 0` guard. That seven-slot replayed-tail
 result is now the primary strict headline in
 `strict_replayed_tail_headline.json`; the remaining work is to reduce it below
 seven field slots and eventually make the ZKP guest/input consume that exact
@@ -295,14 +298,14 @@ language rather than only in physical-qubit counts. That makes IBM's roadmap
 especially useful for reading this repository's logical result as an
 engineering-scale signal, not just as an abstract asymptotic risk.
 
-The current strict replayed-tail headline here is **36,957,412 non-Clifford
-operations** and **1,967 logical qubits**. IBM's public roadmap frames Starling as a 2029
+The current strict replayed-tail headline here is **36,973,222 non-Clifford
+operations** and **1,968 logical qubits**. IBM's public roadmap frames Starling as a 2029
 fault-tolerant system with **200 logical qubits** and **100 million gates**,
 and Blue Jay as a 2033+ class system with about **2,000 logical qubits** and
 **1 billion gates**. Starling is therefore already in the right gate-scale
 conversation, but below this repository's current logical-qubit requirement.
 Blue Jay is the first named IBM target with natural logical-qubit headroom for
-this strict replayed-tail count, with 33 logical qubits above the current
+this strict replayed-tail count, with 32 logical qubits above the current
 headline.
 
 The favorable, bounded interpretation is: if IBM delivers the post-Starling

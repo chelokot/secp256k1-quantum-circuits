@@ -11,8 +11,8 @@
   "field_mul_lookup_non_clifford": 137028,
   "field_sub_sum_non_clifford": 1020,
   "field_triple_non_clifford": 1020,
-  "complete_a0_streamed_tail_non_clifford": 711168,
-  "arithmetic_leaf_non_clifford": 1126332,
+  "complete_a0_streamed_tail_non_clifford": 711678,
+  "arithmetic_leaf_non_clifford": 1126842,
   "leaf_opcode_histogram": {
     "load_input": 3,
     "lookup_meta": 1,

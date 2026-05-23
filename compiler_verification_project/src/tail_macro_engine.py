@@ -3,8 +3,16 @@
 from __future__ import annotations
 
 from collections import Counter, deque
+from functools import lru_cache
 from typing import Any, Dict, Mapping, Sequence
 
+from common import SECP_B, SECP_G, SECP_P, mul_affine, neg_affine
+from lookup_research import (
+    WORD_SIZE,
+    build_lookup_base_set,
+    build_positive_table,
+    folded_lookup_point_from_cache,
+)
 from tail_macro_reversibility import (
     TOY_CURVES,
     Point,
@@ -76,6 +84,11 @@ TAIL_MACRO_FUSED_OUTPUT_STREAM: Sequence[Mapping[str, Any]] = (
     {'target': 'Y3', 'formula_target': 'Y3', 'opcode': 'field_double_mul_add', 'sources': ('N', 'M', 'C', 'L')},
     {'target': 'Z3', 'formula_target': 'Z3', 'opcode': 'field_double_mul_add', 'sources': ('M', 'E', 'L', 'K')},
 )
+FUSED_OUTPUT_ZERO_LIFT_GUARD_OWNER_ID = 'tail_fused_output_zero_lift_guard'
+
+
+def _zero_lift_guard_non_clifford(field_bits: int) -> int:
+    return 2 * (int(field_bits) - 1)
 
 
 def _last_uses(formula: Sequence[tuple[str, Sequence[str]]]) -> Dict[str, int]:
@@ -107,27 +120,33 @@ def _formula_rows() -> list[Dict[str, Any]]:
     return rows
 
 
-def _field_operation_rows(kernel_non_clifford_by_opcode: Mapping[str, Any]) -> list[Dict[str, Any]]:
+def _field_operation_rows(kernel_non_clifford_by_opcode: Mapping[str, Any], field_bits: int) -> list[Dict[str, Any]]:
     rows = []
+    guard_non_clifford = _zero_lift_guard_non_clifford(field_bits)
     for index, operation in enumerate(TAIL_MACRO_FIELD_OPERATION_STREAM):
         opcode = str(operation['opcode'])
+        target = str(operation['target'])
+        in_place_guard = guard_non_clifford if target == 'Y3' else 0
         rows.append({
             'index': index,
-            'target': str(operation['target']),
+            'target': target,
             'formula_target': str(operation['formula_target']),
             'opcode': opcode,
             'sources': list(operation['sources']),
             'constant': operation.get('constant'),
-            'non_clifford': int(kernel_non_clifford_by_opcode[opcode]),
+            'base_non_clifford': int(kernel_non_clifford_by_opcode[opcode]),
+            'in_place_guard_non_clifford': in_place_guard,
+            'non_clifford': int(kernel_non_clifford_by_opcode[opcode]) + in_place_guard,
         })
     return rows
 
 
-def _fused_output_operation_rows(kernel_non_clifford_by_opcode: Mapping[str, Any]) -> list[Dict[str, Any]]:
+def _fused_output_operation_rows(kernel_non_clifford_by_opcode: Mapping[str, Any], field_bits: int) -> list[Dict[str, Any]]:
     rows = []
+    guard_non_clifford = _zero_lift_guard_non_clifford(field_bits)
     fused_cost_by_target = {
         'X3': int(kernel_non_clifford_by_opcode['field_mul']) * 2 + int(kernel_non_clifford_by_opcode['field_sub']),
-        'Y3': int(kernel_non_clifford_by_opcode['field_mul']) * 2 + int(kernel_non_clifford_by_opcode['field_add']),
+        'Y3': int(kernel_non_clifford_by_opcode['field_mul']) * 2 + int(kernel_non_clifford_by_opcode['field_add']) + guard_non_clifford,
         'Z3': int(kernel_non_clifford_by_opcode['field_mul']) * 2 + int(kernel_non_clifford_by_opcode['field_add']),
     }
     for index, operation in enumerate(TAIL_MACRO_FUSED_OUTPUT_STREAM):
@@ -140,9 +159,256 @@ def _fused_output_operation_rows(kernel_non_clifford_by_opcode: Mapping[str, Any
             'opcode': opcode,
             'sources': list(operation['sources']),
             'constant': operation.get('constant'),
+            'base_non_clifford': fused_cost_by_target[target] - (guard_non_clifford if target == 'Y3' else 0) if opcode in {'field_double_mul_add', 'field_double_mul_sub'} else int(kernel_non_clifford_by_opcode[opcode]),
+            'in_place_guard_non_clifford': guard_non_clifford if target == 'Y3' else 0,
             'non_clifford': fused_cost_by_target[target] if opcode in {'field_double_mul_add', 'field_double_mul_sub'} else int(kernel_non_clifford_by_opcode[opcode]),
         })
     return rows
+
+
+def _secp_cubic_root(value: int) -> int:
+    modulus = SECP_P
+    residue = int(value) % modulus
+    if residue == 0:
+        return 0
+    cubic_residue_order = (modulus - 1) // 3
+    if pow(residue, cubic_residue_order, modulus) != 1:
+        raise ValueError('value is not a secp256k1 cubic residue')
+    exponent = pow(3, -1, cubic_residue_order)
+    root = pow(residue, exponent, modulus)
+    if pow(root, 3, modulus) != residue:
+        raise ValueError('failed to reconstruct secp256k1 cubic root')
+    return root
+
+
+def _tail_trace_for_affine(accumulator: Point, lookup: Point, modulus: int = SECP_P) -> Dict[str, int]:
+    if lookup is None:
+        raise ValueError('non-infinity lookup required')
+    accum_x, accum_y, accum_z = _canonical_projective(accumulator)
+    lookup_x, lookup_y = lookup
+    values = {
+        'X': accum_x % modulus,
+        'Y': accum_y % modulus,
+        'Z': accum_z % modulus,
+        'lookup_x': lookup_x % modulus,
+        'lookup_y': lookup_y % modulus,
+        'lookup_x_plus_y': (lookup_x + lookup_y) % modulus,
+    }
+    for row in _fused_output_operation_rows(
+        {
+            'field_add': 0,
+            'field_sub': 0,
+            'field_sub_sum': 0,
+            'field_triple': 0,
+            'mul_const': 0,
+            'field_mul': 0,
+            'field_mul_lookup_x': 0,
+            'field_mul_lookup_y': 0,
+            'field_mul_lookup_sum': 0,
+        },
+        field_bits=256,
+    ):
+        values[str(row['target'])] = _operation_value(
+            opcode=str(row['opcode']),
+            sources=row['sources'],
+            values=values,
+            modulus=modulus,
+            curve_b=SECP_B,
+            lookup_x=lookup[0],
+            lookup_y=lookup[1],
+            constant=row.get('constant'),
+        )
+    return values
+
+
+def _zero_lift_y3_over_c(values: Mapping[str, int], modulus: int = SECP_P) -> int:
+    l_value = int(values['L']) % modulus
+    c_value = int(values['C']) % modulus
+    product = (int(values['N']) * int(values['M'])) % modulus
+    if l_value == 0:
+        return (c_value + product) % modulus
+    return (product + c_value * l_value) % modulus
+
+
+def _inverse_zero_lift_y3_over_c(values: Mapping[str, int], output_value: int, modulus: int = SECP_P) -> int:
+    l_value = int(values['L']) % modulus
+    product = (int(values['N']) * int(values['M'])) % modulus
+    if l_value == 0:
+        return (int(output_value) - product) % modulus
+    return ((int(output_value) - product) * pow(l_value, -1, modulus)) % modulus
+
+
+@lru_cache(maxsize=1)
+def _lookup_base_cache_rows() -> tuple[tuple[str, tuple[Point, ...], Point], ...]:
+    rows = []
+    for base in build_lookup_base_set():
+        cache, special_pos = build_positive_table(base['point'], SECP_P, SECP_B)
+        rows.append((base['id'], tuple(cache), neg_affine(special_pos, SECP_P)))
+    return tuple(rows)
+
+
+@lru_cache(maxsize=1)
+def _first_m_zero_counterexample() -> Dict[str, Any]:
+    cubic_residue_order = (SECP_P - 1) // 3
+    for base_id, cache, special_neg in _lookup_base_cache_rows():
+        for word in range(WORD_SIZE):
+            lookup = folded_lookup_point_from_cache(word, cache, special_neg, SECP_P)
+            if lookup is None:
+                continue
+            lookup_y = int(lookup[1])
+            accumulator_y = (-21 * pow(lookup_y, -1, SECP_P)) % SECP_P
+            rhs = (accumulator_y * accumulator_y - SECP_B) % SECP_P
+            if rhs != 0 and pow(rhs, cubic_residue_order, SECP_P) != 1:
+                continue
+            accumulator_x = _secp_cubic_root(rhs)
+            accumulator = (accumulator_x, accumulator_y)
+            trace = _tail_trace_for_affine(accumulator, lookup)
+            if trace['M'] % SECP_P != 0:
+                raise ValueError('constructed M-zero counterexample did not satisfy M == 0')
+            return {
+                'base_id': base_id,
+                'word_hex': f'0x{word:04x}',
+                'lookup_affine': [int(lookup[0]), int(lookup[1])],
+                'accumulator_affine': [int(accumulator[0]), int(accumulator[1])],
+                'm_value': int(trace['M']),
+                'old_y3_over_n_coefficient': 'M',
+                'reason': 'the unguarded Y3-over-N row is not a field permutation because its affine coefficient M can be zero on valid secp256k1 curve states',
+            }
+    raise ValueError('failed to find expected secp256k1 M-zero counterexample')
+
+
+@lru_cache(maxsize=None)
+def _secp256k1_fused_output_in_place_permutation_certificate(field_bits: int) -> Dict[str, Any]:
+    lookup_rows = []
+    for base_id, cache, special_neg in _lookup_base_cache_rows():
+        base_lookup_x_nonzero = True
+        base_lookup_y_nonzero = True
+        non_infinity = 0
+        for word in range(WORD_SIZE):
+            lookup = folded_lookup_point_from_cache(word, cache, special_neg, SECP_P)
+            if lookup is None:
+                continue
+            non_infinity += 1
+            base_lookup_x_nonzero = base_lookup_x_nonzero and int(lookup[0]) % SECP_P != 0
+            base_lookup_y_nonzero = base_lookup_y_nonzero and int(lookup[1]) % SECP_P != 0
+        lookup_rows.append({
+            'base_id': base_id,
+            'words_checked': WORD_SIZE,
+            'non_infinity_words': non_infinity,
+            'lookup_x_nonzero': base_lookup_x_nonzero,
+            'lookup_y_nonzero': base_lookup_y_nonzero,
+        })
+    three_is_invertible = SECP_P % 3 != 0
+    no_affine_x_zero = pow(SECP_B, (SECP_P - 1) // 2, SECP_P) == SECP_P - 1
+    _, cache, special_neg = _lookup_base_cache_rows()[0]
+    boundary_cases = [
+        ('accumulator_infinity', None, folded_lookup_point_from_cache(1, cache, special_neg, SECP_P)),
+        ('doubling', folded_lookup_point_from_cache(2, cache, special_neg, SECP_P), folded_lookup_point_from_cache(2, cache, special_neg, SECP_P)),
+        ('inverse', neg_affine(folded_lookup_point_from_cache(3, cache, special_neg, SECP_P), SECP_P), folded_lookup_point_from_cache(3, cache, special_neg, SECP_P)),
+        ('random', mul_affine(123456789, SECP_G, SECP_P, SECP_B), folded_lookup_point_from_cache(7, cache, special_neg, SECP_P)),
+    ]
+    replay_rows = []
+    for name, accumulator, lookup in boundary_cases:
+        if lookup is None:
+            raise ValueError('selected replay lookup cannot be infinity')
+        trace = _tail_trace_for_affine(accumulator, lookup)
+        forward = _zero_lift_y3_over_c(trace)
+        recovered = _inverse_zero_lift_y3_over_c(trace, forward)
+        replay_rows.append({
+            'case': name,
+            'l_value': int(trace['L']),
+            'c_value': int(trace['C']),
+            'y3_value': int(trace['Y3']),
+            'zero_lift_forward_value': int(forward),
+            'recovered_c_value': int(recovered),
+            'forward_matches_y3': forward == trace['Y3'] % SECP_P,
+            'inverse_recovers_c': recovered == trace['C'] % SECP_P,
+        })
+    accumulator_infinity_row = next(row for row in replay_rows if row['case'] == 'accumulator_infinity')
+    all_lookup_x_nonzero = all(row['lookup_x_nonzero'] for row in lookup_rows)
+    all_lookup_y_nonzero = all(row['lookup_y_nonzero'] for row in lookup_rows)
+    l_zero_implication_passes = three_is_invertible and no_affine_x_zero and all_lookup_x_nonzero
+    checks = {
+        'three_is_invertible_mod_secp256k1_p': three_is_invertible,
+        'secp256k1_prime_has_no_affine_x_zero_point': no_affine_x_zero,
+        'all_checked_lookup_x_coordinates_nonzero': all_lookup_x_nonzero,
+        'all_checked_lookup_y_coordinates_nonzero': all_lookup_y_nonzero,
+        'l_zero_implies_accumulator_infinity_on_valid_non_infinity_lookup_domain': l_zero_implication_passes,
+        'l_zero_branch_is_accumulator_infinity_shape': accumulator_infinity_row['l_value'] == 0 and accumulator_infinity_row['c_value'] == 0,
+        'zero_lift_forward_matches_y3_on_boundary_cases': all(row['forward_matches_y3'] for row in replay_rows),
+        'zero_lift_inverse_recovers_c_on_boundary_cases': all(row['inverse_recovers_c'] for row in replay_rows),
+    }
+    return {
+        'schema': 'compiler-project-secp256k1-fused-output-in-place-permutation-v1',
+        'selected_output_reuse': {
+            'operation_index': 15,
+            'target': 'Y3',
+            'overwritten_source': 'C',
+            'ordinary_branch': 'C -> N*M + C*L when L != 0',
+            'zero_lift_branch': 'C -> C + N*M when L == 0',
+            'inverse_ordinary_branch': 'C <- (Y3 - N*M) / L',
+            'inverse_zero_lift_branch': 'C <- Y3 - N*M',
+        },
+        'guard': {
+            'owner_id': FUSED_OUTPUT_ZERO_LIFT_GUARD_OWNER_ID,
+            'logical_qubits': 1,
+            'non_clifford': _zero_lift_guard_non_clifford(field_bits),
+            'construction': 'compute and uncompute one L == 0 predicate bit around the Y3-over-C in-place output row',
+        },
+        'lookup_coordinate_checks': lookup_rows,
+        'l_zero_domain_proof': {
+            'l_formula': 'L = 3 * X * lookup_x mod p',
+            'c_formula': 'C = 21 * (X + Z * lookup_x) mod p',
+            'premises': [
+                '3 is invertible modulo secp256k1 p',
+                'every non-infinity folded lookup table output has lookup_x != 0',
+                'secp256k1 has no affine curve point with x == 0 because 7 is a quadratic non-residue modulo p',
+                'the executable fused-output tail is bypassed for lookup-infinity rows; those are replayed as the external no-op boundary',
+            ],
+            'conclusion': 'On every valid non-infinity lookup tail execution, L == 0 implies the accumulator is infinity, so X == 0, Z == 0, C == 0, and the zero-lift branch preserves Y3 while keeping the overwritten C register invertible.',
+            'pass': l_zero_implication_passes and accumulator_infinity_row['c_value'] == 0,
+        },
+        'boundary_replay_rows': replay_rows,
+        'rejected_unguarded_output_reuse_counterexample': _first_m_zero_counterexample(),
+        'checks': checks,
+        'pass': all(checks.values()),
+        'notes': [
+            'A literal destructive overwrite is not claimed. The selected row is a reversible in-place field permutation with an explicit zero-lift branch.',
+            'The old Y3-over-N choice is rejected by a concrete secp256k1 M == 0 counterexample.',
+            'The L == 0 branch is required for accumulator-infinity boundary states; without it, Y3-over-C would not be a full field permutation.',
+        ],
+    }
+
+
+def _apply_fused_output_in_place_screen(
+    operand_screen: Mapping[str, Any],
+    permutation_certificate: Mapping[str, Any],
+) -> Dict[str, Any]:
+    selected = permutation_certificate['selected_output_reuse']
+    selected_key = (int(selected['operation_index']), str(selected['overwritten_source']))
+    choices = []
+    for choice in operand_screen['choices']:
+        updated = dict(choice)
+        if int(updated['index']) >= 14 and (int(updated['index']), str(updated['overwritten_source'])) != selected_key:
+            updated['pass'] = False
+            updated['failure_reason'] = 'not covered by the secp256k1 zero-lift in-place permutation certificate'
+            updated['failure_examples'] = [
+                permutation_certificate['rejected_unguarded_output_reuse_counterexample']
+                if int(updated['index']) == 15 and str(updated['overwritten_source']) == 'N'
+                else {'reason': updated['failure_reason']}
+            ]
+        choices.append(updated)
+    passing = [choice for choice in choices if choice['pass']]
+    failing = [choice for choice in choices if not choice['pass']]
+    return {
+        **operand_screen,
+        'screen_model': 'toy_boundary_operand_screen_plus_secp256k1_fused_output_permutation_contract',
+        'choices': choices,
+        'passing_choice_count': len(passing),
+        'failing_choice_count': len(failing),
+        'failing_row_indices': sorted({int(choice['index']) for choice in failing}),
+        'secp256k1_permutation_certificate_schema': permutation_certificate['schema'],
+    }
 
 
 def _fused_output_lowering_contract(
@@ -150,6 +416,7 @@ def _fused_output_lowering_contract(
     kernel_non_clifford_by_opcode: Mapping[str, Any],
     operand_screen: Mapping[str, Any],
     reordered_schedule: Mapping[str, Any],
+    permutation_certificate: Mapping[str, Any],
 ) -> Dict[str, Any]:
     choices_by_row_and_source = {
         (int(choice['index']), str(choice['overwritten_source'])): choice
@@ -214,18 +481,44 @@ def _fused_output_lowering_contract(
             else:
                 raise ValueError(f'{source} is not a fused-output source')
             screen_choice = choices_by_row_and_source[(operation_index, source)]
-            overwrite_contract = {
-                'kind': 'boundary_checked_variable_affine_permutation',
-                'overwritten_source': source,
-                'coefficient_source': coefficient,
-                'coefficient_sign': coefficient_sign,
-                'offset_product_sources': offset_product,
-                'offset_sign': offset_sign,
-                'domain_rows_checked': int(screen_choice['domain_rows_checked']),
-                'screen_pass': bool(screen_choice['pass']),
-                'cost_model': 'one in-place variable field multiply plus one field multiply-accumulate, bounded by the same two field_mul kernels and one field_add/sub combine counted for the expanded stream',
-            }
+            if operation_index == int(permutation_certificate['selected_output_reuse']['operation_index']) and source == permutation_certificate['selected_output_reuse']['overwritten_source']:
+                overwrite_contract = {
+                    'kind': 'secp256k1_zero_lifted_in_place_field_permutation',
+                    'overwritten_source': source,
+                    'coefficient_source': coefficient,
+                    'coefficient_sign': coefficient_sign,
+                    'offset_product_sources': offset_product,
+                    'offset_sign': offset_sign,
+                    'domain_rows_checked': int(screen_choice['domain_rows_checked']),
+                    'screen_pass': bool(screen_choice['pass']),
+                    'secp256k1_permutation_pass': bool(permutation_certificate['pass']),
+                    'guard_owner_id': permutation_certificate['guard']['owner_id'],
+                    'guard_non_clifford': int(permutation_certificate['guard']['non_clifford']),
+                    'guard_logical_qubits': int(permutation_certificate['guard']['logical_qubits']),
+                    'ordinary_branch': permutation_certificate['selected_output_reuse']['ordinary_branch'],
+                    'zero_lift_branch': permutation_certificate['selected_output_reuse']['zero_lift_branch'],
+                    'cost_model': 'two field_mul kernels, one field_add/sub combine, and the counted L == 0 zero-lift predicate compute/uncompute',
+                }
+            else:
+                overwrite_contract = {
+                    'kind': 'rejected_without_secp256k1_permutation_certificate',
+                    'overwritten_source': source,
+                    'coefficient_source': coefficient,
+                    'coefficient_sign': coefficient_sign,
+                    'offset_product_sources': offset_product,
+                    'offset_sign': offset_sign,
+                    'domain_rows_checked': int(screen_choice['domain_rows_checked']),
+                    'screen_pass': bool(screen_choice['pass']),
+                    'secp256k1_permutation_pass': False,
+                }
         reconstructed_cost = sum(int(step['non_clifford']) for step in primitive_steps)
+        if overwrite_contract is not None and overwrite_contract['kind'] == 'secp256k1_zero_lifted_in_place_field_permutation':
+            primitive_steps.append({
+                'kind': 'zero_lift_guard_compute_uncompute',
+                'predicate': 'L == 0',
+                'non_clifford': int(overwrite_contract['guard_non_clifford']),
+            })
+            reconstructed_cost += int(overwrite_contract['guard_non_clifford'])
         rows.append({
             'operation_index': operation_index,
             'target': str(row['target']),
@@ -245,12 +538,19 @@ def _fused_output_lowering_contract(
         'overwritten_output_row_count': len(overwritten_output_rows),
         'cost_matches_rows': all(row['cost_matches_row'] for row in rows),
         'all_output_overwrites_have_boundary_permutation_contract': all(
-            row['overwrite_contract'] is None or row['overwrite_contract']['screen_pass'] is True
+            row['overwrite_contract'] is None
+            or (
+                row['overwrite_contract']['kind'] == 'secp256k1_zero_lifted_in_place_field_permutation'
+                and row['overwrite_contract']['screen_pass'] is True
+                and row['overwrite_contract']['secp256k1_permutation_pass'] is True
+            )
             for row in rows
         ),
+        'guard_owner_capacity': permutation_certificate['guard'],
         'notes': [
-            'The seven-slot schedule requires one fused-output row to overwrite a dead input lane; this artifact names that dependency instead of hiding it as a free output register.',
-            'The contract is checked on the same toy point-add boundary as the replay certificate and is still separate from a fully flattened Clifford-level ZKP guest.',
+            'The seven-slot schedule requires one fused-output row to reuse a dead input lane; this artifact names that dependency instead of hiding it as a free output register.',
+            'The selected reuse is a zero-lifted field permutation over secp256k1, not a destructive overwrite.',
+            'The contract is checked on the same toy point-add boundary as the replay certificate, plus an explicit secp256k1 coefficient/counterexample certificate.',
         ],
     }
 
@@ -1363,13 +1663,13 @@ def build_tail_macro_engine(
     kernel_non_clifford_by_opcode: Mapping[str, Any],
     selected_tail_kernel_non_clifford: int,
 ) -> Dict[str, Any]:
-    operation_rows = _field_operation_rows(kernel_non_clifford_by_opcode)
-    fused_output_rows = _fused_output_operation_rows(kernel_non_clifford_by_opcode)
+    operation_rows = _field_operation_rows(kernel_non_clifford_by_opcode, field_bits)
+    fused_output_rows = _fused_output_operation_rows(kernel_non_clifford_by_opcode, field_bits)
     opcode_histogram = dict(sorted(Counter(row['opcode'] for row in operation_rows).items()))
-    non_clifford_by_opcode = {
-        opcode: int(kernel_non_clifford_by_opcode[opcode]) * int(count)
-        for opcode, count in opcode_histogram.items()
-    }
+    non_clifford_by_opcode = dict(sorted({
+        opcode: sum(int(row['non_clifford']) for row in operation_rows if row['opcode'] == opcode)
+        for opcode in opcode_histogram
+    }.items()))
     non_clifford_total = sum(non_clifford_by_opcode.values())
     fused_output_opcode_histogram = dict(sorted(Counter(row['opcode'] for row in fused_output_rows).items()))
     fused_output_non_clifford_total = sum(int(row['non_clifford']) for row in fused_output_rows)
@@ -1408,7 +1708,12 @@ def build_tail_macro_engine(
         operand_overwrite_screen,
         reordered_slot_assignment,
     )
-    fused_output_operand_screen = _overwrite_operand_screen(fused_output_rows)
+    raw_fused_output_operand_screen = _overwrite_operand_screen(fused_output_rows)
+    fused_output_in_place_permutation_certificate = _secp256k1_fused_output_in_place_permutation_certificate(field_bits)
+    fused_output_operand_screen = _apply_fused_output_in_place_screen(
+        raw_fused_output_operand_screen,
+        fused_output_in_place_permutation_certificate,
+    )
     fused_output_reordered_schedule = _reordered_local_inverse_schedule(
         fused_output_rows,
         operand_screen=fused_output_operand_screen,
@@ -1432,6 +1737,7 @@ def build_tail_macro_engine(
         kernel_non_clifford_by_opcode,
         fused_output_operand_screen,
         fused_output_reordered_schedule,
+        fused_output_in_place_permutation_certificate,
     )
     if (
         fused_output_reordered_schedule['solution_found'] is True
@@ -1484,6 +1790,7 @@ def build_tail_macro_engine(
             fused_output_lowering_contract['cost_matches_rows'] is True
             and fused_output_lowering_contract['all_output_overwrites_have_boundary_permutation_contract'] is True
             and int(fused_output_lowering_contract['overwritten_output_row_count']) == 1
+            and fused_output_in_place_permutation_certificate['pass'] is True
         ),
         'counted_slots_cover_expanded_single_assignment_peak': strict_peak_fields <= counted_slots,
     }
@@ -1506,6 +1813,7 @@ def build_tail_macro_engine(
         'opcode_histogram': opcode_histogram,
         'non_clifford_by_opcode': non_clifford_by_opcode,
         'non_clifford_total': int(non_clifford_total),
+        'in_place_guard_non_clifford': _zero_lift_guard_non_clifford(field_bits),
         'fused_output_field_operation_stream': fused_output_rows,
         'fused_output_field_value_universe': _component_names(fused_output_rows),
         'fused_output_opcode_histogram': fused_output_opcode_histogram,
@@ -1544,6 +1852,8 @@ def build_tail_macro_engine(
         'reordered_slot_assignment': reordered_slot_assignment,
         'reordered_replay_certificate': reordered_replay_certificate,
         'fused_output_operand_screen': fused_output_operand_screen,
+        'raw_fused_output_operand_screen': raw_fused_output_operand_screen,
+        'fused_output_in_place_permutation_certificate': fused_output_in_place_permutation_certificate,
         'fused_output_reordered_schedule': fused_output_reordered_schedule,
         'fused_output_slot_assignment': fused_output_slot_assignment,
         'fused_output_replay_certificate': fused_output_replay_certificate,

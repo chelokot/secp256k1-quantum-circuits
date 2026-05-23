@@ -72,14 +72,14 @@
       "field_triple": 1,
       "mul_const": 2
     },
-    "non_clifford_total": 1126332,
+    "non_clifford_total": 1126842,
     "completion_status": "tail_cost_bound_to_expanded_field_operation_stream_but_in_place_schedule_unproven"
   },
   "summary": {
     "kernel_count": 13,
     "stage_count": 143,
-    "block_count": 187,
-    "kernel_operation_count_total": 4008795,
+    "block_count": 190,
+    "kernel_operation_count_total": 4010325,
     "max_block_operand_slots_required": 32768,
     "generated_ladder_max_operand_slots_required": 287
   },
@@ -96,23 +96,23 @@
       "load_input",
       "lookup_meta"
     ],
-    "operation_stream_sha256": "09924ec4cdf040fb51715a3e4f27af7131d348186053a30475016c457cf19765",
+    "operation_stream_sha256": "bd5746a7c2109a0cb96fec10308361cfd40f973601bd482491e76f18885d99ff",
     "primitive_counts_total": {
-      "ccx": 1126332,
+      "ccx": 1126842,
       "cx": 0,
       "x": 0,
       "measurement": 241596
     },
-    "non_clifford_total": 1126332,
+    "non_clifford_total": 1126842,
     "rows": [
       {
         "opcode": "complete_a0_all_streamed_tail",
         "leaf_instance_count": 1,
-        "kernel_stage_digest_sha256": "e0656b24049a3d65b4d5b241da622c5c2a084996456b3815c3107701dd38e4c3",
-        "kernel_operation_count": 1367928,
-        "kernel_non_clifford_per_instance": 1126332,
+        "kernel_stage_digest_sha256": "b679c4660bcb71e7ac043f8262b490bc98c533b61ec94d70d769e9a7a92088e8",
+        "kernel_operation_count": 1368438,
+        "kernel_non_clifford_per_instance": 1126842,
         "primitive_counts_total": {
-          "ccx": 1126332,
+          "ccx": 1126842,
           "cx": 0,
           "x": 0,
           "measurement": 241596
@@ -3169,23 +3169,23 @@
     {
       "opcode": "complete_a0_streamed_tail",
       "summary": "Exact multi-output complete-add tail kernel from C, H, A, Y, and Z.",
-      "operation_count": 832512,
+      "operation_count": 833022,
       "stage_count": 24,
-      "block_count": 29,
-      "stage_digest_sha256": "d8655488bb94993c8ab2af036e9f4d85245b401124adf341415aaf88ea00dc12",
+      "block_count": 30,
+      "stage_digest_sha256": "45a781516a644152913803b5cf69a6407b0bf51bd8d0dabbbc43212e52674940",
       "primitive_counts_total": {
-        "ccx": 711168,
+        "ccx": 711678,
         "cx": 0,
         "x": 0,
         "measurement": 121344
       },
       "declared_primitive_counts_total": {
-        "ccx": 711168,
+        "ccx": 711678,
         "cx": 0,
         "x": 0,
         "measurement": 121344
       },
-      "exact_non_clifford_per_kernel": 711168,
+      "exact_non_clifford_per_kernel": 711678,
       "stages": [
         {
           "kernel": "complete_a0_streamed_tail",
@@ -5091,18 +5091,18 @@
           "stage": "tail_output_combine",
           "category": "tail_combine",
           "operation_start": 829452,
-          "operation_end_exclusive": 832512,
-          "operation_count": 3060,
-          "block_count": 1,
-          "block_digest_sha256": "7370d791e02d0622ec905d895b841b08760c6f3399fe1a7c51a7a86b9f6b4e26",
+          "operation_end_exclusive": 833022,
+          "operation_count": 3570,
+          "block_count": 2,
+          "block_digest_sha256": "d00b92cc27763ae9193cca9404494ffbca139605726f03706fbb66800c249485",
           "primitive_counts_total": {
-            "ccx": 1530,
+            "ccx": 2040,
             "cx": 0,
             "x": 0,
             "measurement": 1530
           },
           "declared_primitive_counts_total": {
-            "ccx": 1530,
+            "ccx": 2040,
             "cx": 0,
             "x": 0,
             "measurement": 1530
@@ -5149,6 +5149,45 @@
                 "has_generator": false,
                 "generator_operand_contract": null
               }
+            },
+            {
+              "kernel": "complete_a0_streamed_tail",
+              "stage": "tail_output_combine",
+              "block": "y3_in_place_zero_lift_guard",
+              "operation_start": 832512,
+              "operation_end_exclusive": 833022,
+              "operation_count": 510,
+              "operation_stream_sha256": "150fb99468671aa1c3d99f98b8ff090724608e7408bb01040677578895849fc6",
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ]
+                },
+                "max_operand_index": 254,
+                "operand_slots_required": 255,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "Compute and uncompute the one-bit L == 0 guard used by the reversible Y3-over-C output permutation.",
+                "instance_count": 510,
+                "has_expanded_operations": true,
+                "has_generator": false,
+                "generator_operand_contract": null
+              }
             }
           ]
         }
@@ -5157,23 +5196,23 @@
     {
       "opcode": "complete_a0_fully_streamed_tail",
       "summary": "Exact multi-output complete-add tail kernel from X, H, Y, and Z with all lookup-x/y products internal.",
-      "operation_count": 1191156,
+      "operation_count": 1191666,
       "stage_count": 39,
-      "block_count": 47,
-      "stage_digest_sha256": "d49046df8ad0f43fbd939497ce408892b811eb7ba16ce3f329b5cd844b27f060",
+      "block_count": 48,
+      "stage_digest_sha256": "0eddd35226018d9b07e4a17fd1c4556b09917e07ff6539d7c9d37ef53f4297d0",
       "primitive_counts_total": {
-        "ccx": 988794,
+        "ccx": 989304,
         "cx": 0,
         "x": 0,
         "measurement": 202362
       },
       "declared_primitive_counts_total": {
-        "ccx": 988794,
+        "ccx": 989304,
         "cx": 0,
         "x": 0,
         "measurement": 202362
       },
-      "exact_non_clifford_per_kernel": 988794,
+      "exact_non_clifford_per_kernel": 989304,
       "stages": [
         {
           "kernel": "complete_a0_fully_streamed_tail",
@@ -8319,18 +8358,18 @@
           "stage": "fully_streamed_tail_output_combine",
           "category": "tail_combine",
           "operation_start": 1188096,
-          "operation_end_exclusive": 1191156,
-          "operation_count": 3060,
-          "block_count": 1,
-          "block_digest_sha256": "d10b13f8855d17abaf3ec3034672744111f96b4ad986f92966a8f4a92a2dc713",
+          "operation_end_exclusive": 1191666,
+          "operation_count": 3570,
+          "block_count": 2,
+          "block_digest_sha256": "c3705b77a360711c408adeb78edf47524b63ad411c450fd0e5e8a171f65b8b14",
           "primitive_counts_total": {
-            "ccx": 1530,
+            "ccx": 2040,
             "cx": 0,
             "x": 0,
             "measurement": 1530
           },
           "declared_primitive_counts_total": {
-            "ccx": 1530,
+            "ccx": 2040,
             "cx": 0,
             "x": 0,
             "measurement": 1530
@@ -8377,6 +8416,45 @@
                 "has_generator": false,
                 "generator_operand_contract": null
               }
+            },
+            {
+              "kernel": "complete_a0_fully_streamed_tail",
+              "stage": "fully_streamed_tail_output_combine",
+              "block": "y3_in_place_zero_lift_guard",
+              "operation_start": 1191156,
+              "operation_end_exclusive": 1191666,
+              "operation_count": 510,
+              "operation_stream_sha256": "861543c95b45b36d3e0f24d23d8451445103fba9c1cd3db6498dd93ece83cde6",
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ]
+                },
+                "max_operand_index": 254,
+                "operand_slots_required": 255,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "Compute and uncompute the one-bit L == 0 guard used by the reversible Y3-over-C output permutation.",
+                "instance_count": 510,
+                "has_expanded_operations": true,
+                "has_generator": false,
+                "generator_operand_contract": null
+              }
             }
           ]
         }
@@ -8385,23 +8463,23 @@
     {
       "opcode": "complete_a0_all_streamed_tail",
       "summary": "Exact multi-output complete-add tail kernel from X, Y, and Z with all lookup-coordinate products internal.",
-      "operation_count": 1367928,
+      "operation_count": 1368438,
       "stage_count": 47,
-      "block_count": 56,
-      "stage_digest_sha256": "e0656b24049a3d65b4d5b241da622c5c2a084996456b3815c3107701dd38e4c3",
+      "block_count": 57,
+      "stage_digest_sha256": "b679c4660bcb71e7ac043f8262b490bc98c533b61ec94d70d769e9a7a92088e8",
       "primitive_counts_total": {
-        "ccx": 1126332,
+        "ccx": 1126842,
         "cx": 0,
         "x": 0,
         "measurement": 241596
       },
       "declared_primitive_counts_total": {
-        "ccx": 1126332,
+        "ccx": 1126842,
         "cx": 0,
         "x": 0,
         "measurement": 241596
       },
-      "exact_non_clifford_per_kernel": 1126332,
+      "exact_non_clifford_per_kernel": 1126842,
       "stages": [
         {
           "kernel": "complete_a0_all_streamed_tail",
@@ -12179,18 +12257,18 @@
           "stage": "all_streamed_fully_streamed_tail_output_combine",
           "category": "tail_combine",
           "operation_start": 1364868,
-          "operation_end_exclusive": 1367928,
-          "operation_count": 3060,
-          "block_count": 1,
-          "block_digest_sha256": "07287b2f8562199174b798a0e6dfcf1f6729d25e620a6cab471faa01e66c974e",
+          "operation_end_exclusive": 1368438,
+          "operation_count": 3570,
+          "block_count": 2,
+          "block_digest_sha256": "f24888850f10a0743da46f40f175edd4e4f97fb5af7f995346fbcc6a928c5c85",
           "primitive_counts_total": {
-            "ccx": 1530,
+            "ccx": 2040,
             "cx": 0,
             "x": 0,
             "measurement": 1530
           },
           "declared_primitive_counts_total": {
-            "ccx": 1530,
+            "ccx": 2040,
             "cx": 0,
             "x": 0,
             "measurement": 1530
@@ -12233,6 +12311,45 @@
               "source_contract": {
                 "summary": "Three canonical field add/sub combine ladders for X3, Y3, and Z3 after the six products.",
                 "instance_count": 1530,
+                "has_expanded_operations": true,
+                "has_generator": false,
+                "generator_operand_contract": null
+              }
+            },
+            {
+              "kernel": "complete_a0_all_streamed_tail",
+              "stage": "all_streamed_fully_streamed_tail_output_combine",
+              "block": "y3_in_place_zero_lift_guard",
+              "operation_start": 1367928,
+              "operation_end_exclusive": 1368438,
+              "operation_count": 510,
+              "operation_stream_sha256": "7182ea4e70aad99e63c33ace34c522a2e54b3dd33b28ebe93bae1688c708e340",
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ]
+                },
+                "max_operand_index": 254,
+                "operand_slots_required": 255,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "Compute and uncompute the one-bit L == 0 guard used by the reversible Y3-over-C output permutation.",
+                "instance_count": 510,
                 "has_expanded_operations": true,
                 "has_generator": false,
                 "generator_operand_contract": null

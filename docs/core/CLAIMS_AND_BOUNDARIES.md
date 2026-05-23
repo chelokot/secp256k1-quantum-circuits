@@ -11,12 +11,11 @@ separate exact compiler-family oracle subproject that closes the
 classical-tail-elision gap for a fully quantum raw-32 schedule. It now also
 ships an SP1 attestation bundle for one selected standard-QROM family claim at
 that same boundary. The current primary strict headline is the reusable-chunk
-standard-QROAM family with the fused-output seven-slot tail at `36,957,412`
-non-Clifford operations and `1,967` logical qubits. That primary number is
+standard-QROAM family with the guarded fused-output seven-slot tail at
+`36,973,222` non-Clifford operations and `1,968` logical qubits. That primary number is
 selected in
 `compiler_verification_project/artifacts/strict_replayed_tail_headline.json`.
-The old `36,957,412 / 1,199` four-slot macro contract remains checked as a
-ZKP/publication wrapper reference in
+The old four-slot macro contract remains checked as a ZKP/publication wrapper reference in
 `compiler_verification_project/artifacts/public_headline_result.json`, but it
 is not the primary strict resource headline. The older `34,925,796 / 1,044`
 family remains checked as a reference boundary, not as the promoted public
@@ -196,8 +195,13 @@ output rows, preserves the same tail non-Clifford total, reaches seven field
 slots, replays on 110,082 non-infinity toy boundary pairs, checks 610
 lookup-infinity no-op boundary pairs, and derives a seven-slot owner-capacity
 ledger from the generated slot assignment. Its lowering contract explicitly
-names the one fused-output affine overwrite (`Y3` over `N`) required to stay at
-seven slots. `strict_replayed_tail_headline.json` promotes that replayed
+rejects the old unguarded `Y3` over `N` reuse with a concrete secp256k1
+`M == 0` witness, then names the selected zero-lifted in-place `Y3` over `C`
+field permutation required to stay at seven slots. The selected reuse counts
+one `L == 0` guard qubit and 510 non-Clifford guard operations per tail, proves
+that `L == 0` implies accumulator infinity on the valid non-infinity lookup
+domain, and keeps lookup-infinity rows on the checked external bypass path.
+`strict_replayed_tail_headline.json` promotes that replayed
 seven-slot tail into the primary strict resource headline. The remaining
 optimization target is reducing the tail below seven field slots and then
 making the ZKP guest/input bind that same strict resource contract.

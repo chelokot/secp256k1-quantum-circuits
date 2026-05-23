@@ -78,7 +78,7 @@
             "metadata": {
               "opcode": "complete_a0_all_streamed_tail",
               "per_leaf_instance_count": 1,
-              "exact_non_clifford_per_kernel": 1126332
+              "exact_non_clifford_per_kernel": 1126842
             }
           },
           {
@@ -1775,6 +1775,27 @@
             }
           },
           {
+            "id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_output_combine__leaf__y3_in_place_zero_lift_guard",
+            "kind": "leaf",
+            "category": "primitive_block",
+            "summary": "Compute and uncompute the one-bit L == 0 guard used by the reversible Y3-over-C output permutation.",
+            "metadata": {
+              "source_artifact": "compiler_verification_project/artifacts/arithmetic_lowerings.json",
+              "opcode": "complete_a0_all_streamed_tail",
+              "stage": "all_streamed_fully_streamed_tail_output_combine",
+              "resource_profile": {
+                "resource_semantics": "additive_primitive",
+                "primitive_counts_per_instance": {
+                  "ccx": 1,
+                  "cx": 0,
+                  "x": 0,
+                  "measurement": 0
+                },
+                "base_instance_count": 510
+              }
+            }
+          },
+          {
             "id": "direct_seed_lookup",
             "kind": "composite",
             "category": "lookup_scope",
@@ -2887,6 +2908,13 @@
             "summary": "Emit the primitive counted leaf block for this lowered stage."
           },
           {
+            "src": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_output_combine",
+            "dst": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_output_combine__leaf__y3_in_place_zero_lift_guard",
+            "count": 1,
+            "category": "leaf_block",
+            "summary": "Emit the primitive counted leaf block for this lowered stage."
+          },
+          {
             "src": "full_oracle",
             "dst": "direct_seed_lookup",
             "count": 1,
@@ -3070,14 +3098,14 @@
           }
         ],
         "summary": {
-          "node_count": 133,
-          "edge_count": 132,
-          "leaf_node_count": 70,
-          "reachable_node_count": 133,
+          "node_count": 134,
+          "edge_count": 133,
+          "leaf_node_count": 71,
+          "reachable_node_count": 134,
           "max_depth": 5,
           "root_in_degree": 0,
           "primitive_totals": {
-            "ccx": 34925796,
+            "ccx": 34941606,
             "cx": 0,
             "x": 0,
             "measurement": 7490820
@@ -4771,6 +4799,36 @@
           "non_clifford_total": 47430
         },
         {
+          "leaf_id": "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_output_combine__leaf__y3_in_place_zero_lift_guard",
+          "category": "primitive_block",
+          "path": [
+            "full_oracle",
+            "repeated_leaf_calls",
+            "leaf_arithmetic_cluster",
+            "arithmetic_opcode__complete_a0_all_streamed_tail",
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_output_combine",
+            "arithmetic_opcode__complete_a0_all_streamed_tail__stage__all_streamed_fully_streamed_tail_output_combine__leaf__y3_in_place_zero_lift_guard"
+          ],
+          "path_multiplicity": 31,
+          "resource_profile": {
+            "resource_semantics": "additive_primitive",
+            "primitive_counts_per_instance": {
+              "ccx": 1,
+              "cx": 0,
+              "x": 0,
+              "measurement": 0
+            },
+            "base_instance_count": 510
+          },
+          "primitive_counts_total": {
+            "ccx": 15810,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "non_clifford_total": 15810
+        },
+        {
           "leaf_id": "repeated_lookup_cluster__stage__folded_word_classification__leaf__magnitude_all_zero_tree",
           "category": "primitive_block",
           "path": [
@@ -5063,9 +5121,9 @@
         }
       ],
       "reconstruction": {
-        "full_oracle_non_clifford": 34925796,
+        "full_oracle_non_clifford": 34941606,
         "primitive_totals": {
-          "ccx": 34925796,
+          "ccx": 34941606,
           "cx": 0,
           "x": 0,
           "measurement": 7490820
@@ -5077,9 +5135,9 @@
         "phase_shell_rotation_depth": 511
       },
       "generated_block_inventory_reconstruction": {
-        "full_oracle_non_clifford": 34925796,
+        "full_oracle_non_clifford": 34941606,
         "primitive_totals": {
-          "ccx": 34925796,
+          "ccx": 34941606,
           "cx": 0,
           "x": 0,
           "measurement": 7490820
@@ -5091,7 +5149,7 @@
         "phase_shell_rotation_depth": 511
       },
       "frontier_reconstruction": {
-        "full_oracle_non_clifford": 34925796,
+        "full_oracle_non_clifford": 34941606,
         "total_logical_qubits": 1044
       }
     }
@@ -5099,9 +5157,9 @@
   "best_gate_family": {
     "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
     "reconstruction": {
-      "full_oracle_non_clifford": 34925796,
+      "full_oracle_non_clifford": 34941606,
       "primitive_totals": {
-        "ccx": 34925796,
+        "ccx": 34941606,
         "cx": 0,
         "x": 0,
         "measurement": 7490820
@@ -5116,9 +5174,9 @@
   "best_qubit_family": {
     "name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
     "reconstruction": {
-      "full_oracle_non_clifford": 34925796,
+      "full_oracle_non_clifford": 34941606,
       "primitive_totals": {
-        "ccx": 34925796,
+        "ccx": 34941606,
         "cx": 0,
         "x": 0,
         "measurement": 7490820

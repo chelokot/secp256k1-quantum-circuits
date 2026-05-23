@@ -46,7 +46,7 @@ def test_arithmetic_operation_ir_reconstructs_checked_artifact() -> None:
     assert observed['tail_macro_engine']['fallback_schedule_additional_logical_qubits'] == 1536
     assert observed['tail_macro_engine']['destructive_candidate_peak_field_slots'] == 8
     assert observed['tail_macro_engine']['destructive_candidate_status'] == 'optimizer_candidate_not_a_reversible_proof'
-    assert observed['tail_macro_engine']['non_clifford_total'] == 1126332
+    assert observed['tail_macro_engine']['non_clifford_total'] == 1126842
 
 
 def test_arithmetic_operation_ir_ladder_generators_use_bit_indices() -> None:
