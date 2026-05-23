@@ -11,8 +11,8 @@ separate exact compiler-family oracle subproject that closes the
 classical-tail-elision gap for a fully quantum raw-32 schedule. It now also
 ships an SP1 attestation bundle for one selected standard-QROM family claim at
 that same boundary. The current primary strict headline is the reusable-chunk
-standard-QROAM family with the replayed eight-slot tail at `36,957,412`
-non-Clifford operations and `2,223` logical qubits. That primary number is
+standard-QROAM family with the fused-output seven-slot tail at `36,957,412`
+non-Clifford operations and `1,967` logical qubits. That primary number is
 selected in
 `compiler_verification_project/artifacts/strict_replayed_tail_headline.json`.
 The old `36,957,412 / 1,199` four-slot macro contract remains checked as a
@@ -24,7 +24,7 @@ claim. The generated QROAMClean tradeoff ledger still records the higher-space
 rows needed for the older `<24M` non-Clifford target; the repository headline
 is the single checked central family bound by the executable leaf, resource
 ledger, and replayed-tail owner capacity. The ZKP guest/input still binds the
-old macro wrapper until it is rebuilt around the strict eight-slot contract.
+old macro wrapper until it is rebuilt around the strict seven-slot contract.
 
 ## Exact layers
 
@@ -189,15 +189,17 @@ The selected tail macro is also no longer only prose plus a stage inventory:
 stream, binds that stream's opcode histogram to the counted tail kernel, and
 records that live-after liveness peaks at eight field values while the strict
 operation-concurrent single-assignment slot schedule peaks at nine field-sized
-lanes against the older three-slot tail budget. The engine now emits a
-reordered DAG schedule that reaches eight field slots with 10 overwrites and
-zero invalid local-inverse overwrites by computing `X3` before the late product
-pairings. The generated replay certificate executes the schedule on 110,082
-non-infinity toy boundary pairs, checks 610 lookup-infinity no-op boundary
-pairs, and derives an eight-slot owner-capacity ledger from the generated slot
-assignment. `strict_replayed_tail_headline.json` promotes that replayed
-eight-slot tail into the primary strict resource headline. The remaining
-optimization target is reducing the tail below eight field slots and then
+lanes against the older three-slot tail budget. The engine now also emits a
+cost-equivalent fused-output stream for `X3`, `Y3`, and `Z3`. That stream
+replaces the six materialized pair-product lanes with three double-product
+output rows, preserves the same tail non-Clifford total, reaches seven field
+slots, replays on 110,082 non-infinity toy boundary pairs, checks 610
+lookup-infinity no-op boundary pairs, and derives a seven-slot owner-capacity
+ledger from the generated slot assignment. Its lowering contract explicitly
+names the one fused-output affine overwrite (`Y3` over `N`) required to stay at
+seven slots. `strict_replayed_tail_headline.json` promotes that replayed
+seven-slot tail into the primary strict resource headline. The remaining
+optimization target is reducing the tail below seven field slots and then
 making the ZKP guest/input bind that same strict resource contract.
 That artifact prevents the repository from silently promoting a materialized
 boundary result into a stronger full-engine claim.

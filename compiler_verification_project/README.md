@@ -57,7 +57,7 @@ What it does ship is:
 - `arithmetic_lowerings.json` — generated primitive-operation inventories for the named arithmetic-kernel family
 - `arithmetic_operation_ir.json` — compact arithmetic operation-stream IR: every arithmetic lowering block is materialized into a canonical primitive-operation stream with per-block digests and reconstructed stage/kernel/leaf totals; modular add/sub/mul kernels are generated from the embedded `executable_modular_circuit_ir`, the selected tail macro is bound to `tail_macro_engine`, and drift between those IRs and emitted arithmetic kernels is a fast-check failure
 - `modular_arithmetic_certificate.json` — proof-bound reduced-width executable pseudo-Mersenne arithmetic certificate plus 256-bit field-mul stage-count binding
-- `tail_macro_engine.json` — executable expanded field-operation contract for `complete_a0_all_streamed_tail`: formula rows, 23-op field-kernel stream, opcode histogram, tail non-Clifford total, strict nine-slot single-assignment fallback schedule, fixed-order and all-operand local-inverse overwrite screens, a reordered eight-slot local-inverse schedule, generated slot assignment, replay certificate, and the still-unclosed three-slot in-place schedule gap
+- `tail_macro_engine.json` — executable expanded field-operation contract for `complete_a0_all_streamed_tail`: formula rows, 23-op field-kernel stream, opcode histogram, tail non-Clifford total, strict nine-slot single-assignment fallback schedule, fixed-order and all-operand local-inverse overwrite screens, a reordered eight-slot local-inverse schedule, and a fused-output seven-slot schedule with generated slot assignment, replay certificate, and owner capacity
 - `tail_macro_liveness.json` — generated diagnostic liveness pressure test for the `complete_a0_all_streamed_tail` formula DAG and the remaining three-slot schedule obligation
 - `tail_macro_reversibility.json` — generated raw-domain and valid-projective-subspace injectivity check for the tail macro's reversible boundary
 - `streamed_lookup_table_multiplier_resource.json` — explicit table-controlled multiplier resource contract for streamed lookup coordinate bits
@@ -69,8 +69,8 @@ What it does ship is:
 - `resource_liveness_certificate.json` — ZKP-bound liveness certificate deriving owner-capacity requirements from executable leaf liveness, QROAMClean workspace, and phase-shell lowering artifacts
 - `public_candidate_materialized_circuit_manifest.json` — no-ZKP public-candidate primitive-stream manifest binding the reusable-chunk headline to deterministic base, QROAM-segment, phase-shell rows, concrete operand wires, liveness/owner bindings, and a full materialized flat-netlist digest derived by scanning every emitted primitive operation
 - `public_engine_manifest.json` — no-ZKP public engine manifest deriving public totals from the public-candidate `materialized_flat_netlist`, then binding executable instruction/wire/schedule/owner/resource-term streams, the flat execution probe, compiler parameters, semantic-boundary evidence, and primitive-operation evidence from arithmetic operation IR, QROAM primitive certificate, and phase-shell lowering; this artifact no longer consumes the ZKP input
-- `engine_completion_audit.json` — no-ZKP completion/status audit generated from the materialized public engine artifacts; it passes only when public totals, source bindings, QROAM costs, owner/liveness probes, modular arithmetic IR generation, tail macro cost/formula binding, and semantic boundary evidence are coherent, and it keeps `clifford_complete_goal_achieved` false while the tail macro in-place schedule and single-engine ZKP-input derivation remain explicit macro boundaries; the tail diagnostic currently proves 10 of 15 fixed-order destructive overwrites locally invertible, screens all 39 operand overwrite choices, emits a reordered eight-slot schedule with zero invalid local-inverse overwrites, and replays it across the checked toy boundary domain with generated owner capacity
-- `strict_replayed_tail_headline.json` — primary strict headline artifact deriving the public resource presentation from the reordered eight-slot tail replay, generated owner-capacity rows, and standard-QROAM reusable-chunk lookup resource; it demotes the four-slot macro/ZKP wrapper to a non-primary reference
+- `engine_completion_audit.json` — no-ZKP completion/status audit generated from the materialized public engine artifacts; it passes only when public totals, source bindings, QROAM costs, owner/liveness probes, modular arithmetic IR generation, tail macro cost/formula binding, and semantic boundary evidence are coherent, and it keeps `clifford_complete_goal_achieved` false while single-engine ZKP-input derivation remains an explicit macro boundary; the tail diagnostic currently proves the fused-output seven-slot schedule over the checked toy boundary domain with generated owner capacity
+- `strict_replayed_tail_headline.json` — primary strict headline artifact deriving the public resource presentation from the fused-output seven-slot tail replay, generated owner-capacity rows, and standard-QROAM reusable-chunk lookup resource; it demotes the four-slot macro/ZKP wrapper to a non-primary reference
 - `artifact_digest_tree.json` — chunked SHA-256/Merkle manifest for tracked large artifacts, generated from the checked tree so reviewers can verify large JSON/CSV/proof blobs by chunks rather than by one opaque file hash
 - `proof_environment_contract.json` — checked proof-environment contract binding required tools, no-prover edit-loop gates, publication freshness gates, direct compressed/Groth16 verifier commands, public-headline artifact digests, and curated proof-manifest records
 - `proof_publication_status.json` — checked publication-readiness artifact derived from the shared proof-status engine; it keeps `publication_ready` separate from resource-contract `pass`, records stale systems/blockers, and binds the public headline, proof manifest, and proof-environment contract
@@ -107,16 +107,20 @@ What it does ship is:
 
 ## Current central boundary result
 
-- **primary strict replayed-tail headline:** `36,957,412 non-Clifford`, `2,223 logical qubits`
+- **primary strict replayed-tail headline:** `36,957,412 non-Clifford`, `1,967 logical qubits`
 
 The primary strict headline is selected in
 `compiler_verification_project/artifacts/strict_replayed_tail_headline.json`.
 It uses a reusable-chunk standard QROAMClean `K = 1` lookup boundary, an exact
-semiclassical-QFT phase shell, and the reordered eight-slot executable tail
+semiclassical-QFT phase shell, and the fused-output seven-slot executable tail
 schedule replayed by `tail_macro_engine.json`. The resulting live-qubit formula
 is:
 
-`8 * 256 + 173 lookup workspace + 1 control + 1 phase = 2,223 logical qubits`
+`7 * 256 + 173 lookup workspace + 1 control + 1 phase = 1,967 logical qubits`
+
+The seven-slot schedule is not a free-output shortcut: `tail_macro_engine.json`
+also records the one required fused-output affine overwrite (`Y3` over `N`) and
+checks its boundary permutation contract and cost reconstruction.
 
 The `173` lookup-workspace term is `18` folded-control qubits plus one live
 155-bit QROAMClean chunk target for `K = 1`; there are no junk registers at
@@ -147,7 +151,8 @@ critical phase-shell counts, headline totals, and publication limits from their
 source artifacts into the ZKP candidate input and public headline document, and
 fails if those ZKP-family resource fields become integer literals again.
 The strict primary headline sits one layer above this wrapper and replaces the
-macro four-tail-slot assumption with the replayed eight-slot tail schedule.
+macro four-tail-slot assumption with the replayed fused-output seven-slot tail
+schedule.
 
 `standard_qrom_lookup_assessment.json` records the standard-QROM status and
 rejects the old bitwise-banked path-select boundary as a public standard-QROM
@@ -244,7 +249,7 @@ macro-wrapper proof bundle lives in
 `compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/`
 and must be rebuilt before it can bind the reusable-chunk `36,957,412 / 1,199`
 result with `8 / 8` deterministic public cases. It does not yet bind the
-primary strict `36,957,412 / 2,223` replayed-tail headline.
+primary strict `36,957,412 / 1,967` replayed-tail headline.
 
 This is similar in shape to Google's disclosure model, but it is still a proof
 at the repository exact-family boundary, not a primitive-gate full-Shor proof.

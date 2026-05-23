@@ -573,6 +573,10 @@ def build_tail_macro_engine_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
     reordered_schedule = engine['reordered_local_inverse_schedule']
     reordered_slot_assignment = engine['reordered_slot_assignment']
     reordered_replay = engine['reordered_replay_certificate']
+    fused_output_schedule = engine['fused_output_reordered_schedule']
+    fused_output_slot_assignment = engine['fused_output_slot_assignment']
+    fused_output_replay = engine['fused_output_replay_certificate']
+    fused_output_lowering_contract = engine['fused_output_lowering_contract']
     slot_gap = engine['slot_gap']
     kernel_lookup = {
         kernel['opcode']: int(kernel['exact_non_clifford_per_kernel'])
@@ -651,6 +655,65 @@ def build_tail_macro_engine_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
                 'slot_assignment': reordered_slot_assignment,
                 'replay': reordered_replay,
             },
+        ),
+        _check(
+            'tail_macro_engine_fused_output_stream_is_cost_equivalent_to_expanded_stream',
+            engine['checks']['fused_output_stream_cost_matches_expanded_stream'] is True
+            and engine['checks']['fused_output_lowering_contract_passes'] is True
+            and engine['fused_output_non_clifford_total'] == engine['non_clifford_total']
+            and [row['target'] for row in engine['fused_output_field_operation_stream'][-3:]] == ['X3', 'Y3', 'Z3'],
+            'fused output stream finishes with X3/Y3/Z3 and preserves expanded non-Clifford total',
+            {
+                'expanded_non_clifford_total': engine['non_clifford_total'],
+                'fused_output_non_clifford_total': engine['fused_output_non_clifford_total'],
+                'fused_tail_rows': engine['fused_output_field_operation_stream'][-3:],
+                'lowering_contract': fused_output_lowering_contract,
+            },
+        ),
+        _check(
+            'tail_macro_engine_finds_fused_output_seven_slot_schedule',
+            engine['checks']['fused_output_schedule_reaches_seven_slots'] is True
+            and fused_output_schedule['status'] == 'solution_found_with_boundary_replay_and_fused_output_lowering_contract'
+            and fused_output_schedule['solution_found'] is True
+            and fused_output_schedule['peak_field_slots'] == 7
+            and fused_output_schedule['overwritten_row_count'] == 10
+            and fused_output_schedule['invalid_overwrite_count'] == 0
+            and fused_output_schedule['terminal_live_values'] == ['X3', 'Y3', 'Z3']
+            and fused_output_slot_assignment['pass'] is True
+            and fused_output_slot_assignment['peak_field_slots'] == 7
+            and slot_gap['fused_output_reordered_solution_found'] is True
+            and slot_gap['fused_output_reordered_peak_field_values'] == 7
+            and slot_gap['fused_output_slot_assignment_peak_field_values'] == 7,
+            'fused-output tail DAG reaches seven field slots and the generated owner assignment has seven field-sized owners',
+            {
+                'schedule': fused_output_schedule,
+                'slot_assignment': fused_output_slot_assignment,
+                'slot_gap': slot_gap,
+            },
+        ),
+        _check(
+            'tail_macro_engine_fused_output_replay_and_owner_capacity_pass',
+            engine['checks']['fused_output_replay_passes'] is True
+            and fused_output_replay['pass'] is True
+            and fused_output_replay['owner_capacity_pass'] is True
+            and fused_output_replay['checked_non_infinity_pairs'] == 110082
+            and fused_output_replay['checked_lookup_infinity_pairs'] == 610
+            and slot_gap['fused_output_replay_pass'] is True,
+            'fused-output seven-slot schedule replays across the toy point-add boundary and every counted owner has numeric field capacity',
+            fused_output_replay,
+        ),
+        _check(
+            'tail_macro_engine_names_required_fused_output_overwrite_contract',
+            fused_output_lowering_contract['status'] == 'fused_output_rows_decomposed_to_counted_field_multiply_accumulate_steps'
+            and fused_output_lowering_contract['cost_matches_rows'] is True
+            and fused_output_lowering_contract['all_output_overwrites_have_boundary_permutation_contract'] is True
+            and fused_output_lowering_contract['overwritten_output_row_count'] == 1
+            and fused_output_lowering_contract['rows'][1]['target'] == 'Y3'
+            and fused_output_lowering_contract['rows'][1]['schedule_overwritten_source'] == 'N'
+            and fused_output_lowering_contract['rows'][1]['overwrite_contract']['kind'] == 'boundary_checked_variable_affine_permutation'
+            and fused_output_lowering_contract['rows'][1]['overwrite_contract']['domain_rows_checked'] == 110082,
+            'the seven-slot schedule explicitly records its one required fused-output affine overwrite instead of treating it as a free output lane',
+            fused_output_lowering_contract,
         ),
     ]
     return _summarize_checks(checks)
@@ -2680,12 +2743,12 @@ def build_strict_replayed_tail_headline_checks(artifacts: Mapping[str, Any]) -> 
     )
     selected = observed['selected_result']
     formula = observed['logical_qubit_formula']
-    replay = artifacts['tail_macro_engine']['reordered_replay_certificate']
+    replay = artifacts['tail_macro_engine']['fused_output_replay_certificate']
     checks = [
         _check('strict_replayed_tail_headline_matches_generator', observed == expected, expected, observed),
         _check('strict_replayed_tail_headline_schema_is_current', observed['schema'] == STRICT_REPLAYED_TAIL_HEADLINE_SCHEMA, STRICT_REPLAYED_TAIL_HEADLINE_SCHEMA, observed['schema']),
         _check('strict_replayed_tail_headline_pass_flag_matches_internal_checks', observed['pass'] == all(observed['checks'].values()), all(observed['checks'].values()), {'pass': observed['pass'], 'checks': observed['checks']}),
-        _check('strict_replayed_tail_headline_uses_replayed_eight_slot_tail', selected['tail_field_slots'] == artifacts['tail_macro_engine']['reordered_slot_assignment']['peak_field_slots'] == 8 and replay['pass'] is True and replay['owner_capacity_pass'] is True, 'replayed eight-slot tail with owner capacity pass', {'selected': selected, 'replay': replay}),
+        _check('strict_replayed_tail_headline_uses_fused_output_seven_slot_tail', selected['tail_field_slots'] == artifacts['tail_macro_engine']['fused_output_slot_assignment']['peak_field_slots'] == 7 and replay['pass'] is True and replay['owner_capacity_pass'] is True, 'fused-output seven-slot tail with owner capacity pass', {'selected': selected, 'replay': replay}),
         _check('strict_replayed_tail_headline_total_is_formula_derived', selected['logical_qubits'] == formula['reconstructed_total'] == formula['tail_field_slots'] * formula['field_bits'] + formula['lookup_workspace_qubits'] + formula['control_qubits'] + formula['phase_qubits'], formula['reconstructed_total'], selected['logical_qubits']),
         _check('strict_replayed_tail_headline_demotes_macro_contract', selected['logical_qubits'] > artifacts['public_headline_result']['selected_result']['logical_qubits'] and observed['macro_contract_reference']['status'] == 'not_primary_strict_headline', 'strict headline exceeds and demotes macro contract', observed['macro_contract_reference']),
     ]

@@ -55,8 +55,8 @@ Role here:
 - Starling/Blue Jay comparison point for the repository's logical
   compiler-family totals
 - favorable but bounded hardware-roadmap interpretation: current IBM devices
-  are platform momentum, while Blue Jay is the first named IBM target close to
-  the current strict replayed-tail headline's logical-qubit class
+  are platform momentum, while Blue Jay is the first named IBM target with
+  natural logical-qubit headroom for the current strict replayed-tail headline
 
 File:
 

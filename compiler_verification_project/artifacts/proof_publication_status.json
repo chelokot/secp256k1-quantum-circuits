@@ -254,11 +254,11 @@
   "source_artifacts": {
     "public_headline_result": {
       "path": "compiler_verification_project/artifacts/public_headline_result.json",
-      "sha256": "96749fb7dc06065e9b874a8ed4cd5cd8b40c9e05501335c8501d7d52dee9b423"
+      "sha256": "aab71359b1613b180a51b38c375fcaf25d3512fad193d0fd9f8ab2c26bc0d6d7"
     },
     "proof_environment_contract": {
       "path": "compiler_verification_project/artifacts/proof_environment_contract.json",
-      "sha256": "f93cbc01b12118299740f1a406fdb3c6a345cb5c8974d613ac3b490f7dd4c4f5"
+      "sha256": "8c2e651252959f0e45c838f17a386f0ab0fe876b163dd05428f4852261f16a73"
     },
     "proof_manifest": {
       "path": "artifacts/package/proof_manifest.json",

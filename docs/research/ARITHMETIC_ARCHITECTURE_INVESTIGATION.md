@@ -24,7 +24,7 @@ This is the family
 `folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1`
 in `compiler_verification_project/artifacts/family_frontier.json`.
 The current primary strict headline is the reusable-chunk replayed-tail
-eight-slot result selected by
+seven-slot result selected by
 `compiler_verification_project/artifacts/strict_replayed_tail_headline.json`.
 The older reusable-chunk four-slot result remains checked only as a macro/ZKP
 wrapper reference in

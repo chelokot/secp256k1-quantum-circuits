@@ -1,25 +1,25 @@
 {
   "schema": "compiler-project-strict-replayed-tail-headline-v1",
   "status": "primary_strict_replayed_tail_headline",
-  "scope": "strict no-free-field-slot headline derived from the executable reordered tail replay and the standard-QROAM reusable-chunk lookup resource",
+  "scope": "strict no-free-field-slot headline derived from the executable fused-output tail replay and the standard-QROAM reusable-chunk lookup resource",
   "selected_result": {
-    "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__strict_replayed_tail_8_slot_v1__semiclassical_qft_v1",
+    "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__strict_fused_output_tail_7_slot_v1__semiclassical_qft_v1",
     "non_clifford": 36957412,
-    "logical_qubits": 2223,
-    "tail_field_slots": 8,
+    "logical_qubits": 1967,
+    "tail_field_slots": 7,
     "field_bits": 256,
     "lookup_workspace_qubits": 173,
     "control_qubits": 1,
     "phase_qubits": 1
   },
   "logical_qubit_formula": {
-    "tail_field_slots": 8,
+    "tail_field_slots": 7,
     "field_bits": 256,
-    "tail_field_qubits": 2048,
+    "tail_field_qubits": 1792,
     "lookup_workspace_qubits": 173,
     "control_qubits": 1,
     "phase_qubits": 1,
-    "reconstructed_total": 2223
+    "reconstructed_total": 1967
   },
   "non_clifford_formula": {
     "base_non_clifford_without_streamed_qroam": 24767716,
@@ -31,8 +31,8 @@
   "semantic_replay_evidence": {
     "checked_non_infinity_pairs": 110082,
     "checked_lookup_infinity_pairs": 610,
-    "operation_count": 23,
-    "schedule_row_count": 23,
+    "operation_count": 17,
+    "schedule_row_count": 17,
     "owner_capacity_pass": true,
     "pass": true
   },
@@ -41,14 +41,14 @@
     "logical_qubits": 1199,
     "non_clifford": 36957412,
     "status": "not_primary_strict_headline",
-    "reason": "the macro/ZKP bundle still counts a four-slot reusable-tail contract; the strict replayed-tail headline counts the executable eight-slot tail schedule instead"
+    "reason": "the macro/ZKP bundle still counts a four-slot reusable-tail contract; the strict replayed-tail headline counts the executable fused-output tail schedule instead"
   },
   "comparison_against_public_google_baseline": {
     "low_qubit": {
       "baseline_non_clifford": 90000000,
       "baseline_logical_qubits": 1200,
       "non_clifford_improvement_ratio": 2.435235454257457,
-      "logical_qubit_delta_vs_baseline": 1023,
+      "logical_qubit_delta_vs_baseline": 767,
       "beats_non_clifford": true,
       "beats_logical_qubits": false
     },
@@ -56,21 +56,21 @@
       "baseline_non_clifford": 70000000,
       "baseline_logical_qubits": 1450,
       "non_clifford_improvement_ratio": 1.8940720199780223,
-      "logical_qubit_delta_vs_baseline": 773,
+      "logical_qubit_delta_vs_baseline": 517,
       "beats_non_clifford": true,
       "beats_logical_qubits": false
     }
   },
   "source_digests": {
-    "tail_macro_engine_sha256": "42df651f6eab6fefd7fdb354ccd96568327ecde0af408e5d7b9e657d41814ee8",
+    "tail_macro_engine_sha256": "3bfd265e5e69a3f5d3a654458302c94bb7af7a4bd6932ffcdebedc960ed085f7",
     "reusable_chunk_lowering_sha256": "c57403f9dbc8fe27f0cded6bbec2ddab50062dff4b012dc4462da78fb0d286cb",
-    "public_headline_result_sha256": "263da5714034ce26d9e1f593cb2230f088a93f69b831c72f9938367f2c5f4e1b"
+    "public_headline_result_sha256": "bedc6e8c96515d9cec49abe2a15435958d3218fbe097c7234b27402eba158b95"
   },
   "checks": {
     "tail_engine_passes": true,
-    "reordered_schedule_replay_passes": true,
-    "reordered_schedule_edge_cases_are_present": true,
-    "reordered_owner_capacity_passes": true,
+    "fused_output_schedule_replay_passes": true,
+    "fused_output_schedule_edge_cases_are_present": true,
+    "fused_output_owner_capacity_passes": true,
     "slot_assignment_capacity_rows_match_peak": true,
     "every_tail_slot_has_field_sized_capacity": true,
     "strict_tail_field_qubits_are_derived_from_slot_assignment": true,

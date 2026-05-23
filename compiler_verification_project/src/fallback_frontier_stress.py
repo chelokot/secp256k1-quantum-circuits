@@ -142,7 +142,7 @@ def build_fallback_frontier_stress(
             'This stress test is intentionally strict about the user-facing bound: logical qubits must be strictly below 1200, not equal to 1200.',
             'With four field slots, the current full-coordinate QROAM workspace misses the qubit bound before considering gates.',
             'Chunking the QROAM target enough to fit the four-slot qubit bound doubles the coordinate-stream QROAM count under the K=1 model and misses the 40M non-Clifford bound unless another layer saves the reported excess.',
-            'The reusable chunked-coordinate result is a macro/ZKP wrapper once the checked lowering, executable four-slot contract, and compressed/Groth16 reusable-chunk artifacts are present; the primary strict headline must count the replayed eight-slot tail schedule.',
+            'The reusable chunked-coordinate result is a macro/ZKP wrapper once the checked lowering, executable four-slot contract, and compressed/Groth16 reusable-chunk artifacts are present; the primary strict headline must count the replayed fused-output seven-slot tail schedule.',
         ],
     }
 

@@ -48,8 +48,8 @@ def build_strict_replayed_tail_headline_result(
     public_headline_result: Mapping[str, Any],
     baseline: Mapping[str, Any],
 ) -> Dict[str, Any]:
-    replay = tail_macro_engine['reordered_replay_certificate']
-    slot_assignment = tail_macro_engine['reordered_slot_assignment']
+    replay = tail_macro_engine['fused_output_replay_certificate']
+    slot_assignment = tail_macro_engine['fused_output_slot_assignment']
     qubit_derivation = reusable_chunk_lowering['qubit_derivation']
     non_clifford_derivation = reusable_chunk_lowering['non_clifford_derivation']
     field_bits = int(slot_assignment['field_bits'])
@@ -64,9 +64,9 @@ def build_strict_replayed_tail_headline_result(
     owner_capacity_rows = slot_assignment['owner_capacity_rows']
     checks = {
         'tail_engine_passes': tail_macro_engine['pass'] is True,
-        'reordered_schedule_replay_passes': replay['pass'] is True,
-        'reordered_schedule_edge_cases_are_present': int(replay['checked_non_infinity_pairs']) > 0 and int(replay['checked_lookup_infinity_pairs']) > 0,
-        'reordered_owner_capacity_passes': replay['owner_capacity_pass'] is True,
+        'fused_output_schedule_replay_passes': replay['pass'] is True,
+        'fused_output_schedule_edge_cases_are_present': int(replay['checked_non_infinity_pairs']) > 0 and int(replay['checked_lookup_infinity_pairs']) > 0,
+        'fused_output_owner_capacity_passes': replay['owner_capacity_pass'] is True,
         'slot_assignment_capacity_rows_match_peak': len(owner_capacity_rows) == strict_tail_field_slots,
         'every_tail_slot_has_field_sized_capacity': all(int(row['logical_qubits']) == field_bits for row in owner_capacity_rows),
         'strict_tail_field_qubits_are_derived_from_slot_assignment': strict_tail_field_qubits == sum(int(row['logical_qubits']) for row in owner_capacity_rows),
@@ -76,7 +76,7 @@ def build_strict_replayed_tail_headline_result(
         'macro_contract_is_not_selected_as_strict_headline': strict_total_logical_qubits > int(macro_result['logical_qubits']),
     }
     selected_result = {
-        'name': 'folded_standard_qroam_reusable_chunked_coordinate_v1__strict_replayed_tail_8_slot_v1__semiclassical_qft_v1',
+        'name': 'folded_standard_qroam_reusable_chunked_coordinate_v1__strict_fused_output_tail_7_slot_v1__semiclassical_qft_v1',
         'non_clifford': non_clifford,
         'logical_qubits': strict_total_logical_qubits,
         'tail_field_slots': strict_tail_field_slots,
@@ -88,7 +88,7 @@ def build_strict_replayed_tail_headline_result(
     payload = {
         'schema': STRICT_REPLAYED_TAIL_HEADLINE_SCHEMA,
         'status': 'primary_strict_replayed_tail_headline',
-        'scope': 'strict no-free-field-slot headline derived from the executable reordered tail replay and the standard-QROAM reusable-chunk lookup resource',
+        'scope': 'strict no-free-field-slot headline derived from the executable fused-output tail replay and the standard-QROAM reusable-chunk lookup resource',
         'selected_result': selected_result,
         'logical_qubit_formula': {
             'tail_field_slots': strict_tail_field_slots,
@@ -119,7 +119,7 @@ def build_strict_replayed_tail_headline_result(
             'logical_qubits': int(macro_result['logical_qubits']),
             'non_clifford': int(macro_result['non_clifford']),
             'status': 'not_primary_strict_headline',
-            'reason': 'the macro/ZKP bundle still counts a four-slot reusable-tail contract; the strict replayed-tail headline counts the executable eight-slot tail schedule instead',
+            'reason': 'the macro/ZKP bundle still counts a four-slot reusable-tail contract; the strict replayed-tail headline counts the executable fused-output tail schedule instead',
         },
         'comparison_against_public_google_baseline': _comparison_rows(non_clifford, strict_total_logical_qubits, baseline),
         'source_digests': {

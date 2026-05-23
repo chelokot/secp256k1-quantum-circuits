@@ -96,6 +96,28 @@ def test_tail_macro_engine_exposes_unclosed_three_slot_gap() -> None:
     assert checked['slot_gap']['reordered_local_inverse_peak_field_values'] == 8
     assert checked['slot_gap']['reordered_slot_assignment_peak_field_values'] == 8
     assert checked['slot_gap']['reordered_replay_pass'] is True
+    assert checked['checks']['fused_output_stream_cost_matches_expanded_stream'] is True
+    assert checked['checks']['fused_output_replay_passes'] is True
+    assert checked['checks']['fused_output_schedule_reaches_seven_slots'] is True
+    assert checked['checks']['fused_output_lowering_contract_passes'] is True
+    assert checked['fused_output_reordered_schedule']['solution_found'] is True
+    assert checked['fused_output_reordered_schedule']['peak_field_slots'] == 7
+    assert checked['fused_output_slot_assignment']['pass'] is True
+    assert checked['fused_output_slot_assignment']['peak_field_slots'] == 7
+    assert checked['fused_output_replay_certificate']['pass'] is True
+    assert checked['fused_output_replay_certificate']['owner_capacity_pass'] is True
+    assert checked['fused_output_replay_certificate']['checked_non_infinity_pairs'] == 110082
+    assert checked['fused_output_replay_certificate']['checked_lookup_infinity_pairs'] == 610
+    assert checked['fused_output_lowering_contract']['overwritten_output_row_count'] == 1
+    assert checked['fused_output_lowering_contract']['cost_matches_rows'] is True
+    assert checked['fused_output_lowering_contract']['all_output_overwrites_have_boundary_permutation_contract'] is True
+    assert checked['fused_output_lowering_contract']['rows'][1]['target'] == 'Y3'
+    assert checked['fused_output_lowering_contract']['rows'][1]['schedule_overwritten_source'] == 'N'
+    assert checked['fused_output_lowering_contract']['rows'][1]['overwrite_contract']['domain_rows_checked'] == 110082
+    assert checked['slot_gap']['fused_output_reordered_solution_found'] is True
+    assert checked['slot_gap']['fused_output_reordered_peak_field_values'] == 7
+    assert checked['slot_gap']['fused_output_slot_assignment_peak_field_values'] == 7
+    assert checked['slot_gap']['fused_output_replay_pass'] is True
     assert checked['slot_gap']['destructive_candidate_peak_field_values'] == 8
     assert checked['completion_status'] == 'tail_cost_bound_to_expanded_field_operation_stream_but_in_place_schedule_unproven'
 

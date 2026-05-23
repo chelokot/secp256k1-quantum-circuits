@@ -70,6 +70,12 @@ TAIL_MACRO_FIELD_OPERATION_STREAM: Sequence[Mapping[str, Any]] = (
     {'target': 'Y3', 'formula_target': 'Y3', 'opcode': 'field_add', 'sources': ('NM', 'CL')},
     {'target': 'Z3', 'formula_target': 'Z3', 'opcode': 'field_add', 'sources': ('ME', 'LK')},
 )
+TAIL_MACRO_FUSED_OUTPUT_STREAM: Sequence[Mapping[str, Any]] = (
+    *TAIL_MACRO_FIELD_OPERATION_STREAM[:14],
+    {'target': 'X3', 'formula_target': 'X3', 'opcode': 'field_double_mul_sub', 'sources': ('K', 'N', 'E', 'C')},
+    {'target': 'Y3', 'formula_target': 'Y3', 'opcode': 'field_double_mul_add', 'sources': ('N', 'M', 'C', 'L')},
+    {'target': 'Z3', 'formula_target': 'Z3', 'opcode': 'field_double_mul_add', 'sources': ('M', 'E', 'L', 'K')},
+)
 
 
 def _last_uses(formula: Sequence[tuple[str, Sequence[str]]]) -> Dict[str, int]:
@@ -115,6 +121,138 @@ def _field_operation_rows(kernel_non_clifford_by_opcode: Mapping[str, Any]) -> l
             'non_clifford': int(kernel_non_clifford_by_opcode[opcode]),
         })
     return rows
+
+
+def _fused_output_operation_rows(kernel_non_clifford_by_opcode: Mapping[str, Any]) -> list[Dict[str, Any]]:
+    rows = []
+    fused_cost_by_target = {
+        'X3': int(kernel_non_clifford_by_opcode['field_mul']) * 2 + int(kernel_non_clifford_by_opcode['field_sub']),
+        'Y3': int(kernel_non_clifford_by_opcode['field_mul']) * 2 + int(kernel_non_clifford_by_opcode['field_add']),
+        'Z3': int(kernel_non_clifford_by_opcode['field_mul']) * 2 + int(kernel_non_clifford_by_opcode['field_add']),
+    }
+    for index, operation in enumerate(TAIL_MACRO_FUSED_OUTPUT_STREAM):
+        opcode = str(operation['opcode'])
+        target = str(operation['target'])
+        rows.append({
+            'index': index,
+            'target': target,
+            'formula_target': str(operation['formula_target']),
+            'opcode': opcode,
+            'sources': list(operation['sources']),
+            'constant': operation.get('constant'),
+            'non_clifford': fused_cost_by_target[target] if opcode in {'field_double_mul_add', 'field_double_mul_sub'} else int(kernel_non_clifford_by_opcode[opcode]),
+        })
+    return rows
+
+
+def _fused_output_lowering_contract(
+    fused_output_rows: Sequence[Mapping[str, Any]],
+    kernel_non_clifford_by_opcode: Mapping[str, Any],
+    operand_screen: Mapping[str, Any],
+    reordered_schedule: Mapping[str, Any],
+) -> Dict[str, Any]:
+    choices_by_row_and_source = {
+        (int(choice['index']), str(choice['overwritten_source'])): choice
+        for choice in operand_screen['choices']
+    }
+    schedule_by_operation = {
+        int(row['operation_index']): row
+        for row in reordered_schedule['rows']
+    }
+    rows = []
+    for row in fused_output_rows:
+        operation_index = int(row['index'])
+        opcode = str(row['opcode'])
+        if opcode not in {'field_double_mul_add', 'field_double_mul_sub'}:
+            continue
+        first_left, first_right, second_left, second_right = [str(source) for source in row['sources']]
+        sign = -1 if opcode == 'field_double_mul_sub' else 1
+        primitive_steps = [
+            {
+                'kind': 'field_mul_accumulate',
+                'sources': [first_left, first_right],
+                'sign': 1,
+                'non_clifford': int(kernel_non_clifford_by_opcode['field_mul']),
+            },
+            {
+                'kind': 'field_mul_accumulate',
+                'sources': [second_left, second_right],
+                'sign': sign,
+                'non_clifford': int(kernel_non_clifford_by_opcode['field_mul']),
+            },
+            {
+                'kind': 'field_sub' if sign < 0 else 'field_add',
+                'sources': ['first_product_accumulator', 'second_product_accumulator'],
+                'non_clifford': int(kernel_non_clifford_by_opcode['field_sub' if sign < 0 else 'field_add']),
+            },
+        ]
+        schedule_row = schedule_by_operation[operation_index]
+        overwritten_source = schedule_row['overwritten_source']
+        overwrite_contract = None
+        if overwritten_source is not None:
+            source = str(overwritten_source)
+            if source == first_left:
+                coefficient = first_right
+                coefficient_sign = 1
+                offset_product = [second_left, second_right]
+                offset_sign = sign
+            elif source == first_right:
+                coefficient = first_left
+                coefficient_sign = 1
+                offset_product = [second_left, second_right]
+                offset_sign = sign
+            elif source == second_left:
+                coefficient = second_right
+                coefficient_sign = sign
+                offset_product = [first_left, first_right]
+                offset_sign = 1
+            elif source == second_right:
+                coefficient = second_left
+                coefficient_sign = sign
+                offset_product = [first_left, first_right]
+                offset_sign = 1
+            else:
+                raise ValueError(f'{source} is not a fused-output source')
+            screen_choice = choices_by_row_and_source[(operation_index, source)]
+            overwrite_contract = {
+                'kind': 'boundary_checked_variable_affine_permutation',
+                'overwritten_source': source,
+                'coefficient_source': coefficient,
+                'coefficient_sign': coefficient_sign,
+                'offset_product_sources': offset_product,
+                'offset_sign': offset_sign,
+                'domain_rows_checked': int(screen_choice['domain_rows_checked']),
+                'screen_pass': bool(screen_choice['pass']),
+                'cost_model': 'one in-place variable field multiply plus one field multiply-accumulate, bounded by the same two field_mul kernels and one field_add/sub combine counted for the expanded stream',
+            }
+        reconstructed_cost = sum(int(step['non_clifford']) for step in primitive_steps)
+        rows.append({
+            'operation_index': operation_index,
+            'target': str(row['target']),
+            'opcode': opcode,
+            'sources': list(row['sources']),
+            'schedule_overwritten_source': overwritten_source,
+            'primitive_steps': primitive_steps,
+            'reconstructed_non_clifford': reconstructed_cost,
+            'row_non_clifford': int(row['non_clifford']),
+            'cost_matches_row': reconstructed_cost == int(row['non_clifford']),
+            'overwrite_contract': overwrite_contract,
+        })
+    overwritten_output_rows = [row for row in rows if row['overwrite_contract'] is not None]
+    return {
+        'status': 'fused_output_rows_decomposed_to_counted_field_multiply_accumulate_steps',
+        'rows': rows,
+        'overwritten_output_row_count': len(overwritten_output_rows),
+        'cost_matches_rows': all(row['cost_matches_row'] for row in rows),
+        'all_output_overwrites_have_boundary_permutation_contract': all(
+            row['overwrite_contract'] is None or row['overwrite_contract']['screen_pass'] is True
+            for row in rows
+        ),
+        'notes': [
+            'The seven-slot schedule requires one fused-output row to overwrite a dead input lane; this artifact names that dependency instead of hiding it as a free output register.',
+            'The contract is checked on the same toy point-add boundary as the replay certificate and is still separate from a fully flattened Clifford-level ZKP guest.',
+        ],
+    }
 
 
 def _one_compute_liveness(rows: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
@@ -372,6 +510,10 @@ def _operation_value(
         return (resolved[0] * resolved[1]) % modulus
     if opcode == 'field_mul_lookup_sum':
         return (resolved[0] * resolved[1]) % modulus
+    if opcode == 'field_double_mul_add':
+        return (resolved[0] * resolved[1] + resolved[2] * resolved[3]) % modulus
+    if opcode == 'field_double_mul_sub':
+        return (resolved[0] * resolved[1] - resolved[2] * resolved[3]) % modulus
     raise ValueError(f'unsupported tail macro field opcode: {opcode}')
 
 
@@ -446,6 +588,11 @@ def _overwrite_rule(row: Mapping[str, Any], modulus: int) -> Dict[str, Any]:
         return {
             'kind': 'variable_multiply',
             'multiplier_source': multiplier_source,
+            'symbolic_inverse_exists_over_field': None,
+        }
+    if opcode in {'field_double_mul_add', 'field_double_mul_sub'}:
+        return {
+            'kind': 'multi_product_affine_checked_by_domain_injectivity',
             'symbolic_inverse_exists_over_field': None,
         }
     raise ValueError(f'unsupported overwrite opcode: {opcode}')
@@ -617,6 +764,7 @@ def _overwrite_operand_screen(rows: Sequence[Mapping[str, Any]]) -> Dict[str, An
                 'rule': _overwrite_rule(rule_row, int(TOY_CURVES[0]['p'])),
                 'domain_rows_checked': 0,
                 'failure_examples': [],
+                '_seen_domain_keys': {},
             })
     for curve in TOY_CURVES:
         modulus = int(curve['p'])
@@ -644,6 +792,25 @@ def _overwrite_operand_screen(rows: Sequence[Mapping[str, Any]]) -> Dict[str, An
                         condition_pass = lookup_values[str(rule['constant_source'])] != 0
                     elif rule['kind'] == 'variable_multiply':
                         condition_pass = int(trace_row['before'][str(rule['multiplier_source'])]) % modulus != 0
+                    elif rule['kind'] == 'multi_product_affine_checked_by_domain_injectivity':
+                        other_sources = tuple(
+                            int(trace_row['before'][source]) % modulus
+                            for source in choice['sources']
+                            if source not in TABLE_CONSTANTS and source != choice['overwritten_source']
+                        )
+                        domain_key = (
+                            curve['name'],
+                            int(trace_row['target_value']) % modulus,
+                            other_sources,
+                        )
+                        overwritten_value = int(trace_row['before'][choice['overwritten_source']]) % modulus
+                        seen_domain_keys = choice['_seen_domain_keys']
+                        condition_pass = (
+                            domain_key not in seen_domain_keys
+                            or int(seen_domain_keys[domain_key]) == overwritten_value
+                        )
+                        if condition_pass:
+                            seen_domain_keys[domain_key] = overwritten_value
                     else:
                         condition_pass = bool(rule['symbolic_inverse_exists_over_field'])
                     if not condition_pass:
@@ -656,10 +823,13 @@ def _overwrite_operand_screen(rows: Sequence[Mapping[str, Any]]) -> Dict[str, An
                                 if rule['kind'] == 'lookup_constant_multiply'
                                 else f"{rule['multiplier_source']} can be zero on the checked boundary domain"
                                 if rule['kind'] == 'variable_multiply'
+                                else f"{choice['overwritten_source']} is not injective for the checked multi-product output row"
+                                if rule['kind'] == 'multi_product_affine_checked_by_domain_injectivity'
                                 else 'overwrite rule is not locally invertible on the checked boundary domain'
                             ),
                         })
     for choice in choices:
+        del choice['_seen_domain_keys']
         choice['pass'] = not choice['failure_examples']
         if choice['failure_examples']:
             choice['failure_reason'] = choice['failure_examples'][0]['reason']
@@ -1194,14 +1364,19 @@ def build_tail_macro_engine(
     selected_tail_kernel_non_clifford: int,
 ) -> Dict[str, Any]:
     operation_rows = _field_operation_rows(kernel_non_clifford_by_opcode)
+    fused_output_rows = _fused_output_operation_rows(kernel_non_clifford_by_opcode)
     opcode_histogram = dict(sorted(Counter(row['opcode'] for row in operation_rows).items()))
     non_clifford_by_opcode = {
         opcode: int(kernel_non_clifford_by_opcode[opcode]) * int(count)
         for opcode, count in opcode_histogram.items()
     }
     non_clifford_total = sum(non_clifford_by_opcode.values())
+    fused_output_opcode_histogram = dict(sorted(Counter(row['opcode'] for row in fused_output_rows).items()))
+    fused_output_non_clifford_total = sum(int(row['non_clifford']) for row in fused_output_rows)
     liveness = _one_compute_liveness(operation_rows)
+    fused_output_liveness = _one_compute_liveness(fused_output_rows)
     expanded_slot_schedule = _expanded_slot_schedule(operation_rows, counted_arithmetic_slots, field_bits)
+    fused_output_expanded_slot_schedule = _expanded_slot_schedule(fused_output_rows, counted_arithmetic_slots, field_bits)
     destructive_candidate_schedule = _destructive_candidate_schedule(operation_rows, counted_arithmetic_slots, field_bits)
     destructive_candidate_schedule['proxy_metrics']['field_slot_improvement_vs_strict_single_assignment'] = (
         int(expanded_slot_schedule['peak_field_slots'])
@@ -1233,6 +1408,43 @@ def build_tail_macro_engine(
         operand_overwrite_screen,
         reordered_slot_assignment,
     )
+    fused_output_operand_screen = _overwrite_operand_screen(fused_output_rows)
+    fused_output_reordered_schedule = _reordered_local_inverse_schedule(
+        fused_output_rows,
+        operand_screen=fused_output_operand_screen,
+        counted_arithmetic_slots=int(counted_arithmetic_slots),
+        field_bits=int(field_bits),
+        max_peak_field_slots=7,
+    )
+    fused_output_slot_assignment = _reordered_slot_assignment(
+        fused_output_reordered_schedule['rows'],
+        counted_arithmetic_slots=int(counted_arithmetic_slots),
+        field_bits=int(field_bits),
+    )
+    fused_output_replay_certificate = _reordered_schedule_replay_certificate(
+        fused_output_rows,
+        fused_output_reordered_schedule,
+        fused_output_operand_screen,
+        fused_output_slot_assignment,
+    )
+    fused_output_lowering_contract = _fused_output_lowering_contract(
+        fused_output_rows,
+        kernel_non_clifford_by_opcode,
+        fused_output_operand_screen,
+        fused_output_reordered_schedule,
+    )
+    if (
+        fused_output_reordered_schedule['solution_found'] is True
+        and fused_output_replay_certificate['pass'] is True
+        and fused_output_lowering_contract['cost_matches_rows'] is True
+        and fused_output_lowering_contract['all_output_overwrites_have_boundary_permutation_contract'] is True
+    ):
+        fused_output_reordered_schedule['status'] = 'solution_found_with_boundary_replay_and_fused_output_lowering_contract'
+        fused_output_reordered_schedule['notes'] = [
+            'This schedule reorders the fused-output tail DAG and allows an overwrite only when the chosen operand passed the toy-boundary operand screen.',
+            'The paired fused_output_lowering_contract reconstructs the double-product output costs and names the required affine output overwrite.',
+            'This remains a strict point-add boundary resource contract rather than a fully flattened Clifford-level ZKP guest.',
+        ]
     locally_invertible_indices = {
         int(row['index'])
         for row in overwrite_certificate['rows']
@@ -1259,6 +1471,20 @@ def build_tail_macro_engine(
         'non_clifford_total_matches_selected_tail_kernel': (
             int(non_clifford_total) == int(selected_tail_kernel_non_clifford)
         ),
+        'fused_output_stream_cost_matches_expanded_stream': (
+            int(fused_output_non_clifford_total) == int(non_clifford_total)
+        ),
+        'fused_output_replay_passes': bool(fused_output_replay_certificate['pass']),
+        'fused_output_schedule_reaches_seven_slots': (
+            bool(fused_output_reordered_schedule['solution_found'])
+            and int(fused_output_reordered_schedule['peak_field_slots']) == 7
+            and int(fused_output_slot_assignment['peak_field_slots']) == 7
+        ),
+        'fused_output_lowering_contract_passes': (
+            fused_output_lowering_contract['cost_matches_rows'] is True
+            and fused_output_lowering_contract['all_output_overwrites_have_boundary_permutation_contract'] is True
+            and int(fused_output_lowering_contract['overwritten_output_row_count']) == 1
+        ),
         'counted_slots_cover_expanded_single_assignment_peak': strict_peak_fields <= counted_slots,
     }
     required_checks = {
@@ -1280,9 +1506,15 @@ def build_tail_macro_engine(
         'opcode_histogram': opcode_histogram,
         'non_clifford_by_opcode': non_clifford_by_opcode,
         'non_clifford_total': int(non_clifford_total),
+        'fused_output_field_operation_stream': fused_output_rows,
+        'fused_output_field_value_universe': _component_names(fused_output_rows),
+        'fused_output_opcode_histogram': fused_output_opcode_histogram,
+        'fused_output_non_clifford_total': int(fused_output_non_clifford_total),
         'selected_tail_kernel_non_clifford': int(selected_tail_kernel_non_clifford),
         'single_assignment_liveness': liveness,
+        'fused_output_single_assignment_liveness': fused_output_liveness,
         'expanded_slot_schedule': expanded_slot_schedule,
+        'fused_output_expanded_slot_schedule': fused_output_expanded_slot_schedule,
         'destructive_candidate_schedule': destructive_candidate_schedule,
         'slot_gap': {
             'expanded_single_assignment_peak_field_values': strict_peak_fields,
@@ -1301,12 +1533,21 @@ def build_tail_macro_engine(
             'reordered_local_inverse_solution_found': bool(reordered_local_inverse_schedule['solution_found']),
             'reordered_slot_assignment_peak_field_values': reordered_slot_assignment['peak_field_slots'],
             'reordered_replay_pass': bool(reordered_replay_certificate['pass']),
+            'fused_output_reordered_peak_field_values': fused_output_reordered_schedule['peak_field_slots'],
+            'fused_output_reordered_solution_found': bool(fused_output_reordered_schedule['solution_found']),
+            'fused_output_slot_assignment_peak_field_values': fused_output_slot_assignment['peak_field_slots'],
+            'fused_output_replay_pass': bool(fused_output_replay_certificate['pass']),
         },
         'local_inverse_pass_only_schedule': local_inverse_pass_only_schedule,
         'operand_overwrite_screen': operand_overwrite_screen,
         'reordered_local_inverse_schedule': reordered_local_inverse_schedule,
         'reordered_slot_assignment': reordered_slot_assignment,
         'reordered_replay_certificate': reordered_replay_certificate,
+        'fused_output_operand_screen': fused_output_operand_screen,
+        'fused_output_reordered_schedule': fused_output_reordered_schedule,
+        'fused_output_slot_assignment': fused_output_slot_assignment,
+        'fused_output_replay_certificate': fused_output_replay_certificate,
+        'fused_output_lowering_contract': fused_output_lowering_contract,
         'checks': checks,
         'pass': all(value is True for value in required_checks.values()),
         'completion_status': (
