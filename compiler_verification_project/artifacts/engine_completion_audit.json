@@ -16,7 +16,7 @@
     "modular_arithmetic_certificate_sha256": "058cc2c95b3b8f65d39f8c91f56b5256322e0fa00853466facb980d60c1e783e",
     "phase_shell_lowerings_sha256": "4411ea5f699e5950a32783f2232796a63987efb5d939f98ac400f4f02ddd415b",
     "public_candidate_materialized_circuit_manifest_sha256": "170e41dbd818edabed735d2ef95c775d923c74682a4fe367e8f8b907a0fa38f1",
-    "public_engine_manifest_sha256": "3b5a8d9c20b9a645bfbac99cfb1468d6747e9b2572fe359f15a6efbb0725c333",
+    "public_engine_manifest_sha256": "46cda2e23b6c19dc8e648703c80e241fdc786597b84b242d7871afe8ceb9624b",
     "qroam_primitive_certificate_sha256": "9a97e536aa4e15e25873adf187db977910a0ef8fb03914958d409940a54eb125",
     "release_corpus_preflight_sha256": "e8cc293c4fc4702e1fbc0bfcb9b8749515de99a348ecbf55ed123d68738c2f3a",
     "reusable_chunk_lowering_sha256": "c57403f9dbc8fe27f0cded6bbec2ddab50062dff4b012dc4462da78fb0d286cb",

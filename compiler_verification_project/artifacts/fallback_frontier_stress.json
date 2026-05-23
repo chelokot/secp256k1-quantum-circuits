@@ -60,7 +60,7 @@
       "the executable four-slot tail contract has one reusable coordinate chunk target and no full x/y field lane",
       "the chunked table-controlled multiplier lowering proves partial-product accumulation across chunks under the inherited full-width arithmetic bound",
       "liveness is derived from the executable contract, including chunk target lifetime, arithmetic slots, folded lookup controls, and output registers",
-      "the checked core, compressed, and Groth16 reusable-chunk artifacts bind the promoted contract and resource certificate"
+      "the checked core, compressed, and Groth16 reusable-chunk artifacts bind the macro wrapper contract and resource certificate"
     ]
   },
   "conclusion": {
@@ -72,6 +72,6 @@
     "This stress test is intentionally strict about the user-facing bound: logical qubits must be strictly below 1200, not equal to 1200.",
     "With four field slots, the current full-coordinate QROAM workspace misses the qubit bound before considering gates.",
     "Chunking the QROAM target enough to fit the four-slot qubit bound doubles the coordinate-stream QROAM count under the K=1 model and misses the 40M non-Clifford bound unless another layer saves the reported excess.",
-    "The reusable chunked-coordinate result is the public headline once the checked lowering, executable four-slot contract, and compressed/Groth16 reusable-chunk artifacts are present."
+    "The reusable chunked-coordinate result is a macro/ZKP wrapper once the checked lowering, executable four-slot contract, and compressed/Groth16 reusable-chunk artifacts are present; the primary strict headline must count the replayed eight-slot tail schedule."
   ]
 }

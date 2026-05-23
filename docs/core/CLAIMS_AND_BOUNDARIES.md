@@ -10,19 +10,21 @@ metadata, together with deterministic audits, finite-model checks, and a
 separate exact compiler-family oracle subproject that closes the
 classical-tail-elision gap for a fully quantum raw-32 schedule. It now also
 ships an SP1 attestation bundle for one selected standard-QROM family claim at
-that same boundary. The current public headline is the reusable-chunk
-standard-QROAM family at `36,957,412` non-Clifford operations and `1,199`
-logical qubits. The older `34,925,796 / 1,044` family remains checked as a
-reference boundary, but not as the promoted public claim. The generated
-QROAMClean tradeoff ledger still records the higher-space rows needed for the
-older `<24M` non-Clifford target; the repository headline is the single checked
-central family bound by the executable leaf, resource ledger, and ZKP public
-values after the final compressed/Groth16 proof rebuild. The current headline
-also has its own counted-resource stream manifest,
-`compiler_verification_project/artifacts/headline_resource_manifest.json`,
-because `materialized_circuit_manifest.json` still describes the older checked
-three-slot frontier family. Until then the proof freshness tooling intentionally
-marks the checked proof layers stale.
+that same boundary. The current primary strict headline is the reusable-chunk
+standard-QROAM family with the replayed eight-slot tail at `36,957,412`
+non-Clifford operations and `2,223` logical qubits. That primary number is
+selected in
+`compiler_verification_project/artifacts/strict_replayed_tail_headline.json`.
+The old `36,957,412 / 1,199` four-slot macro contract remains checked as a
+ZKP/publication wrapper reference in
+`compiler_verification_project/artifacts/public_headline_result.json`, but it
+is not the primary strict resource headline. The older `34,925,796 / 1,044`
+family remains checked as a reference boundary, not as the promoted public
+claim. The generated QROAMClean tradeoff ledger still records the higher-space
+rows needed for the older `<24M` non-Clifford target; the repository headline
+is the single checked central family bound by the executable leaf, resource
+ledger, and replayed-tail owner capacity. The ZKP guest/input still binds the
+old macro wrapper until it is rebuilt around the strict eight-slot contract.
 
 ## Exact layers
 
@@ -146,7 +148,7 @@ summary and streamed lookup tail point-add leaf. The guest:
 The no-ZKP public engine layer is the audit-first source of the current resource
 claim. `public_candidate_materialized_circuit_manifest.json` stores the
 run-length primitive rows and liveness/owner rows, then scans the full
-materialized primitive stream for the promoted reusable-chunk candidate. Every
+materialized primitive stream for the macro reusable-chunk candidate. Every
 emitted primitive operation has concrete operand wires, counted parent-wire
 bindings, liveness interval, and total live-qubit value. The checked stream
 covers `39,370,727` primitive operations over deterministic segments and binds
@@ -187,29 +189,16 @@ The selected tail macro is also no longer only prose plus a stage inventory:
 stream, binds that stream's opcode histogram to the counted tail kernel, and
 records that live-after liveness peaks at eight field values while the strict
 operation-concurrent single-assignment slot schedule peaks at nine field-sized
-lanes against the currently counted three arithmetic slots. That leaves the
-honest remaining obligation as an in-place/permutation-extension tail schedule
-or promotion of the generated expanded slot schedule into the public qubit
-budget, not an undocumented cost formula. The same engine emits an eight-slot
-destructive-overwrite candidate as an optimization signal; it is not accepted as
-resource evidence until each overwrite has a reversible or valid-subspace
-implementation proof. The current local-inverse screen proves 10 of the 15
-overwrite rows on the checked toy boundary domain and identifies five
-zero-multiplier blockers. The diagnostic schedule that reuses only those 10
-screened rows still peaks at nine field slots, so the eight-slot candidate is
-not yet isolated from the failing overwrite rows. The engine also screens all
-23 expiring-source overwrite choices; seven choices fail across rows 1, 16, 17,
-18, and 19, which rules out a simple alternate-source repair for the current
-operation order.
-The engine now also emits a reordered DAG schedule that reaches eight field
-slots with 10 overwrites and zero invalid local-inverse overwrites by computing
-`X3` before the late product pairings. This is progress against the eight-slot
-tail target. The generated replay certificate executes the schedule on 110,082
-non-infinity toy boundary pairs, checks 610 lookup-infinity no-op boundary pairs,
-and derives an eight-slot owner-capacity ledger from the generated slot
-assignment. It still remains below the promoted public resource contract until
-the reversible implementation and counted public resource contract consume that
-exact schedule.
+lanes against the older three-slot tail budget. The engine now emits a
+reordered DAG schedule that reaches eight field slots with 10 overwrites and
+zero invalid local-inverse overwrites by computing `X3` before the late product
+pairings. The generated replay certificate executes the schedule on 110,082
+non-infinity toy boundary pairs, checks 610 lookup-infinity no-op boundary
+pairs, and derives an eight-slot owner-capacity ledger from the generated slot
+assignment. `strict_replayed_tail_headline.json` promotes that replayed
+eight-slot tail into the primary strict resource headline. The remaining
+optimization target is reducing the tail below eight field slots and then
+making the ZKP guest/input bind that same strict resource contract.
 That artifact prevents the repository from silently promoting a materialized
 boundary result into a stronger full-engine claim.
 
@@ -223,13 +212,13 @@ compressed/Groth16 rebuild is required before publishing proof freshness.
 freshness preflight: it does not invoke a prover, and it reports whether the
 checked proof layers still bind the current candidate input, public values,
 proof binaries, and Groth16 verifier key.
-For the promoted reusable-chunk public headline, run
+For the macro reusable-chunk ZKP/publication wrapper, run
 `python compiler_verification_project/scripts/verify_public_headline.py` to
 validate the checked headline artifact, candidate input, public values,
 source-document semantic hashes, fixture records, proof-binary digests, wrap
 proof, and Groth16 verifier key from the checked branch state. The default
 output is a compact blocker report; pass `--verbose` when a reviewer needs the
-full per-check JSON payload. The promoted candidate resource certificate also
+full per-check JSON payload. The macro candidate resource certificate also
 carries executable interval liveness for
 the reusable-chunk leaf, and the guest recomputes the peak live-qubit total from
 those intervals before accepting the public values. It also validates the

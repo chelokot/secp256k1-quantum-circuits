@@ -31,6 +31,7 @@ from qroam_reference_crosscheck import build_qroam_reference_crosscheck  # noqa:
 from release_corpus_preflight import build_release_corpus_preflight  # noqa: E402
 from resource_certificate import build_resource_liveness_certificate  # noqa: E402
 from reusable_chunk_lowering import build_reusable_chunk_lowering  # noqa: E402
+from strict_replayed_tail_result import write_strict_replayed_tail_headline_result  # noqa: E402
 from subcircuit_equivalence import build_subcircuit_equivalence_artifact  # noqa: E402
 from zkp_attestation import write_zkp_attestation_inputs  # noqa: E402
 from proof_corpus_profiles import resolve_proof_corpus_profile  # noqa: E402
@@ -62,6 +63,7 @@ BUILD_TARGETS = (
     'candidate-zkp',
     'release-candidate-zkp',
     'public-headline',
+    'strict-replayed-tail-headline',
     'zkp-and-public',
     'resource-zkp-and-public',
 )
@@ -96,6 +98,12 @@ def build_release_candidate_zkp() -> None:
 
 def build_public_headline() -> None:
     write_public_headline_result(
+        baseline=load_public_google_baseline_lines(),
+    )
+
+
+def build_strict_replayed_tail_headline() -> None:
+    write_strict_replayed_tail_headline_result(
         baseline=load_public_google_baseline_lines(),
     )
 
@@ -384,6 +392,7 @@ def build_summary_artifact() -> None:
             'best_google_low_gate_qubit_family': frontier['best_google_low_gate_qubit_family'],
             'best_sub30m_qubit_family': frontier['best_sub30m_qubit_family'],
             'public_headline_result_artifact': 'compiler_verification_project/artifacts/public_headline_result.json',
+            'strict_replayed_tail_headline_artifact': 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json',
         },
         'notes': [
             'Targeted build-summary refresh: artifact paths and headline references are read from checked registry and frontier artifacts.',
@@ -476,6 +485,9 @@ def main() -> None:
     if args.target in ('all', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
         build_public_headline()
         payload['public_headline_result'] = 'compiler_verification_project/artifacts/public_headline_result.json'
+    if args.target in ('all', 'public-headline', 'strict-replayed-tail-headline', 'zkp-and-public', 'resource-zkp-and-public'):
+        build_strict_replayed_tail_headline()
+        payload['strict_replayed_tail_headline'] = 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json'
     if args.target in ('all', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
         build_proof_environment_contract_artifact()
         payload['proof_environment_contract'] = 'compiler_verification_project/artifacts/proof_environment_contract.json'
@@ -505,6 +517,7 @@ def main() -> None:
         'headline_opcode_coverage': payload.get('headline_opcode_coverage'),
         'reusable_chunk_lowering': payload.get('reusable_chunk_lowering'),
         'public_headline_result': payload.get('public_headline_result'),
+        'strict_replayed_tail_headline': payload.get('strict_replayed_tail_headline'),
         'zkp_attestation_input': 'compiler_verification_project/artifacts/zkp_attestation_input.json' if 'zkp_attestation' in payload else None,
         'zkp_attestation_reusable_chunk_candidate_input': payload.get('zkp_attestation_reusable_chunk_candidate'),
         'zkp_attestation_release_candidate_input': payload.get('zkp_attestation_release_candidate'),

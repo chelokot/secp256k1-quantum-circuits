@@ -236,7 +236,7 @@
     "the executable four-slot tail contract has one reusable coordinate chunk target and no full x/y field lane",
     "the chunked table-controlled multiplier lowering proves partial-product accumulation across chunks under the inherited full-width arithmetic bound",
     "liveness is derived from the executable contract, including chunk target lifetime, arithmetic slots, folded lookup controls, and output registers",
-    "the checked core, compressed, and Groth16 reusable-chunk artifacts bind the promoted contract and resource certificate"
+    "the checked core, compressed, and Groth16 reusable-chunk artifacts bind the macro wrapper contract and resource certificate"
   ],
   "notes": [
     "This artifact proves the chunked table-constant semantics for the public headline model.",

@@ -36,8 +36,8 @@ systems:
 
 | IBM target | IBM-stated scale | Read against this repo |
 |---|---:|---|
-| Starling, 2029 | 200 logical qubits, 100 million gates | Gate-scale relevant, but 999 logical qubits short of this repository's current 1,199-logical-qubit headline. |
-| Blue Jay, 2033+ | about 2,000 logical qubits, 1 billion gates | First named IBM roadmap class with natural logical-qubit headroom; 801 logical qubits above the current headline. |
+| Starling, 2029 | 200 logical qubits, 100 million gates | Gate-scale relevant, but 2,023 logical qubits short of this repository's current 2,223-logical-qubit strict headline. |
+| Blue Jay, 2033+ | about 2,000 logical qubits, 1 billion gates | First named IBM roadmap class close to this circuit's logical-qubit class, but still 223 logical qubits below the current strict headline. |
 
 The gate comparison is intentionally conservative. This repository reports
 non-Clifford operations at the compiler-family boundary, while IBM's roadmap
@@ -46,11 +46,11 @@ as scale alignment, not as a completed IBM runtime estimate.
 
 ## Comparison to this repository's result
 
-The current public headline is selected by
-`compiler_verification_project/artifacts/public_headline_result.json`:
+The current strict replayed-tail headline is selected by
+`compiler_verification_project/artifacts/strict_replayed_tail_headline.json`:
 
 - `36,957,412` non-Clifford operations
-- `1,199` logical qubits
+- `2,223` logical qubits
 
 Against the IBM roadmap facts encoded in
 `data/ibm_quantum_roadmap_context.json`:
@@ -58,17 +58,17 @@ Against the IBM roadmap facts encoded in
 - Starling's 100-million-gate scale is about `2.71x` this repository's
   non-Clifford count, but Starling's 200 logical qubits are below the current
   logical-qubit requirement.
-- Blue Jay's 1-billion-gate scale is about `27.20x` this repository's
-  non-Clifford count, and its 2,000-logical-qubit scale leaves 801 logical
-  qubits of space headroom versus the current headline.
+- Blue Jay's 1-billion-gate scale is about `27.06x` this repository's
+  non-Clifford count, and its 2,000-logical-qubit scale is 223 logical qubits
+  below the current strict replayed-tail headline.
 
 The careful conclusion is therefore:
 
 - current IBM processors are not claimed to run this circuit;
 - Starling is a meaningful gate-scale reference point but not a qubit-space
   match for this circuit as currently counted;
-- Blue Jay is the first named IBM roadmap target that is naturally in the
-  same logical-qubit class as this repository's secp256k1 resource estimate;
+- Blue Jay is the first named IBM roadmap target close to the same
+  logical-qubit class as this repository's secp256k1 resource estimate;
 - IBM's roadmap is unusually useful for cryptographic-risk interpretation
   because it publishes logical-qubit and gate-scale milestones that can be
   compared to exact logical resource estimates.
@@ -86,8 +86,8 @@ workloads without a full error-correction stack. IBM's named long-range systems
 are stated in the language this repository can compare against: logical qubits
 and gate-scale execution. If IBM delivers the post-Starling targets it has
 publicly described, secp256k1 ECDLP resource estimates like this one move from
-abstract future-risk language into the scale of a named industrial
-fault-tolerant machine class.
+abstract future-risk language into the scale of named industrial
+fault-tolerant machine classes.
 
 ## Non-claims
 

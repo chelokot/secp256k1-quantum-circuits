@@ -237,10 +237,10 @@
   "checked_artifacts": {
     "input": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
-      "sha256": "2bbda597fdf89ea1574d9e902f77bb7f6ffe6f91c56ac645025406909b05a671",
+      "sha256": "869ee15ae2ae57c16eb3cb9216addd485ca7264253fb1aeafa8a0f190973f0f2",
       "bytes": 303011,
       "manifest_record": {
-        "sha256": "2bbda597fdf89ea1574d9e902f77bb7f6ffe6f91c56ac645025406909b05a671",
+        "sha256": "869ee15ae2ae57c16eb3cb9216addd485ca7264253fb1aeafa8a0f190973f0f2",
         "bytes": 303011
       },
       "manifest_record_present": true,
@@ -248,10 +248,10 @@
     },
     "claim": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json",
-      "sha256": "6c157eb210ae389a2705245963d7424c7ba72ab93ebcfed00567e67cda947a55",
+      "sha256": "328a5f74cd8a939e90e2f0e29d06c3ac6a88905a066b82c64cbc0f5bb5002141",
       "bytes": 1707,
       "manifest_record": {
-        "sha256": "6c157eb210ae389a2705245963d7424c7ba72ab93ebcfed00567e67cda947a55",
+        "sha256": "328a5f74cd8a939e90e2f0e29d06c3ac6a88905a066b82c64cbc0f5bb5002141",
         "bytes": 1707
       },
       "manifest_record_present": true,
@@ -468,22 +468,22 @@
     },
     "reusable_chunk_tail_candidate": {
       "path": "compiler_verification_project/artifacts/reusable_chunk_tail_candidate.json",
-      "sha256": "e719c4e3eec265b04925b65770573b86801f9f412f36f8dbfa35cb7401133530",
-      "bytes": 7212,
+      "sha256": "dbe0ea96dcfcd2cf5b327ad30ae3e97826a828f59c2686da0fbe3e4e7548ec0f",
+      "bytes": 7217,
       "manifest_record": {
-        "sha256": "e719c4e3eec265b04925b65770573b86801f9f412f36f8dbfa35cb7401133530",
-        "bytes": 7212
+        "sha256": "dbe0ea96dcfcd2cf5b327ad30ae3e97826a828f59c2686da0fbe3e4e7548ec0f",
+        "bytes": 7217
       },
       "manifest_record_present": true,
       "manifest_sha256_matches_checked_record": true
     },
     "headline_resource_manifest": {
       "path": "compiler_verification_project/artifacts/headline_resource_manifest.json",
-      "sha256": "660a0bddcd34e807a2530aa522dd841a107f9f688eb1f1d41b751d04730480d6",
-      "bytes": 51805,
+      "sha256": "b488afbdd86ff5a885948cf8066dae7cc0ab82423b926fc2a23e2e531ef51f54",
+      "bytes": 51858,
       "manifest_record": {
-        "sha256": "660a0bddcd34e807a2530aa522dd841a107f9f688eb1f1d41b751d04730480d6",
-        "bytes": 51805
+        "sha256": "b488afbdd86ff5a885948cf8066dae7cc0ab82423b926fc2a23e2e531ef51f54",
+        "bytes": 51858
       },
       "manifest_record_present": true,
       "manifest_sha256_matches_checked_record": true
@@ -501,10 +501,10 @@
     },
     "public_engine_manifest": {
       "path": "compiler_verification_project/artifacts/public_engine_manifest.json",
-      "sha256": "1bb31a5a27a048cce20ceade5595c4ce42b18608007a2a3649fe84558c389753",
+      "sha256": "e03f874fe05b3acfe2215170ac6c0de2f0fdede62411d4ae1efb17d5e87717fb",
       "bytes": 23138,
       "manifest_record": {
-        "sha256": "1bb31a5a27a048cce20ceade5595c4ce42b18608007a2a3649fe84558c389753",
+        "sha256": "e03f874fe05b3acfe2215170ac6c0de2f0fdede62411d4ae1efb17d5e87717fb",
         "bytes": 23138
       },
       "manifest_record_present": true,
@@ -512,10 +512,10 @@
     },
     "engine_completion_audit": {
       "path": "compiler_verification_project/artifacts/engine_completion_audit.json",
-      "sha256": "40b941e83e318b6a3b34ecfe676f2f17194b3cada9eca70360396398b6099d81",
+      "sha256": "5f05be6173ae2f5fe6c9bd5913cdd72bbfc219fdd6b46d4f64cfef892363ed64",
       "bytes": 7132,
       "manifest_record": {
-        "sha256": "40b941e83e318b6a3b34ecfe676f2f17194b3cada9eca70360396398b6099d81",
+        "sha256": "5f05be6173ae2f5fe6c9bd5913cdd72bbfc219fdd6b46d4f64cfef892363ed64",
         "bytes": 7132
       },
       "manifest_record_present": true,
@@ -525,11 +525,11 @@
   "proof_manifest": {
     "path": "artifacts/package/proof_manifest.json",
     "schema": null,
-    "file_count": 211
+    "file_count": 214
   },
   "public_headline_result": {
     "path": "compiler_verification_project/artifacts/public_headline_result.json",
-    "sha256": "7c5c21f14d24c40d98384a4dc53d1b62e11c484647df68c201a8f06bceb6d260",
+    "sha256": "96749fb7dc06065e9b874a8ed4cd5cd8b40c9e05501335c8501d7d52dee9b423",
     "bytes": 15229
   },
   "notes": [

@@ -24,33 +24,38 @@ The tracked public lines are:
 
 The repository's exact comparison layer is the public headline wrapper in:
 
+- `compiler_verification_project/artifacts/strict_replayed_tail_headline.json`
 - `compiler_verification_project/artifacts/public_headline_result.json`
 - `compiler_verification_project/artifacts/family_frontier.json`
 - `compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json`
 - `compiler_verification_project/artifacts/logical_resource_ledger.json`
 
-Its checked public headline is one standard-QROAM reusable-chunk family:
+Its checked primary strict headline is one standard-QROAM reusable-chunk family
+with the replayed eight-slot tail:
 
-- **public standard-QROAM headline:** `36,957,412 non-Clifford / 1,199 q`
+- **primary strict replayed-tail headline:** `36,957,412 non-Clifford / 2,223 q`
 
-The public result artifact records the checked proof artifacts, the bound
-document hashes, and the exact ratios below. The older `34,925,796 / 1,044`
-three-slot family remains checked as a reference boundary, but it is not the
-single public headline.
+The strict replayed-tail artifact records the eight-slot owner-capacity replay,
+the demoted macro-contract reference, and the exact ratios below. The old
+`36,957,412 / 1,199` four-slot macro contract remains checked as a
+ZKP/publication-wrapper reference, but it is not the primary strict headline.
+The older `34,925,796 / 1,044` three-slot family remains checked as a reference
+boundary, but it is not the single public headline.
 
 ## Exact non-Clifford comparison
 
-For the **public standard-QROAM headline**:
+For the **primary strict replayed-tail headline**:
 
 - **2.4352x** lower non-Clifford than the public low-qubit line
 - **1.8941x** lower non-Clifford than the public low-gate line
 
 ## Exact qubit comparison
 
-The public headline beats both of Google's published qubit lines:
+The public headline does not beat Google's published qubit lines under the
+strict replayed-tail count:
 
-- the public standard-QROAM headline is **1 qubit below** the public low-qubit line
-- the public standard-QROAM headline is **251 qubits below** the public low-gate line
+- the primary strict replayed-tail headline is **1,023 qubits above** the public low-qubit line
+- the primary strict replayed-tail headline is **773 qubits above** the public low-gate line
 
 The generated QROAMClean tradeoff ledger also records that, in the current
 standard-QROAM family, the lowest-qubit point below `24M` non-Clifford is

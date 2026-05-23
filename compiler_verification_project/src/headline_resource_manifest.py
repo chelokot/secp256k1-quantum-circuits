@@ -130,7 +130,7 @@ def build_headline_resource_manifest(
         'checks': checks,
         'pass': all(checks.values()),
         'boundary': [
-            'This is the materialized counted-resource stream for the current public headline, not a Clifford-complete per-gate netlist.',
+            'This is the materialized counted-resource stream for the macro/ZKP wrapper headline, not the primary strict replayed-tail headline and not a Clifford-complete per-gate netlist.',
             'It prevents stale materialized-manifest evidence from silently referring to the superseded three-slot frontier family.',
         ],
     }

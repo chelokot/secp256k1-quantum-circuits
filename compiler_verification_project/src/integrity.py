@@ -56,6 +56,7 @@ from resource_ir_engine import (
     evaluate_counted_resource_ir,
     evaluate_resource_contract,
 )
+from strict_replayed_tail_result import STRICT_REPLAYED_TAIL_HEADLINE_SCHEMA, build_strict_replayed_tail_headline_result
 from tail_macro_engine import build_tail_macro_engine
 from tail_macro_liveness import build_tail_macro_liveness
 from tail_macro_reversibility import build_tail_macro_reversibility
@@ -204,6 +205,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'subcircuit_equivalence': artifact_root / 'subcircuit_equivalence.json',
         'headline_opcode_coverage': artifact_root / 'headline_opcode_coverage.json',
         'public_headline_result': artifact_root / 'public_headline_result.json',
+        'strict_replayed_tail_headline': artifact_root / 'strict_replayed_tail_headline.json',
         'zkp_attestation_reusable_chunk_candidate_input': artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json',
         'zkp_attestation_reusable_chunk_candidate_public_values': artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_public_values.json',
         'build_summary': artifact_root / 'build_summary.json',
@@ -222,6 +224,9 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         build_all_artifacts()
         write_cain_transfer()
         write_public_headline_result(baseline=PUBLIC_GOOGLE_BASELINE)
+        from strict_replayed_tail_result import write_strict_replayed_tail_headline_result
+
+        write_strict_replayed_tail_headline_result(baseline=PUBLIC_GOOGLE_BASELINE)
         dump_json(
             artifact_root / 'proof_environment_contract.json',
             build_proof_environment_contract(repo_root=repo_root),
@@ -2538,6 +2543,12 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
             BUILD_SUMMARY_ARTIFACT_PATHS['public_headline_result'],
             build_summary['headline'].get('public_headline_result_artifact'),
         ),
+        _check(
+            'build_summary_names_strict_replayed_tail_headline_artifact',
+            build_summary['headline']['strict_replayed_tail_headline_artifact'] == BUILD_SUMMARY_ARTIFACT_PATHS['strict_replayed_tail_headline'],
+            BUILD_SUMMARY_ARTIFACT_PATHS['strict_replayed_tail_headline'],
+            build_summary['headline'].get('strict_replayed_tail_headline_artifact'),
+        ),
     ]
     return _summarize_checks(checks)
 
@@ -2655,6 +2666,28 @@ def build_public_headline_result_checks(artifacts: Mapping[str, Any], repo_root:
         _check('public_headline_result_groth16_proof_hash_matches_file', checked['groth16_proof']['sha256'] == sha256_path(repo_root / checked['groth16_proof']['path']) and checked['groth16_proof']['bytes'] == (repo_root / checked['groth16_proof']['path']).stat().st_size, checked['groth16_proof'], checked['groth16_proof']),
         _check('public_headline_result_groth16_vk_hash_matches_file', checked['groth16_verifier_key']['sha256'] == sha256_path(repo_root / checked['groth16_verifier_key']['path']) and checked['groth16_verifier_key']['bytes'] == (repo_root / checked['groth16_verifier_key']['path']).stat().st_size, checked['groth16_verifier_key'], checked['groth16_verifier_key']),
         _check('public_headline_result_uses_verified_reusable_chunk_lowering', public_result['checks']['reusable_chunk_lowering_is_proven_for_public_headline'] is True and artifacts['reusable_chunk_lowering']['status'] == 'proven_public_headline', 'proven_public_headline', artifacts['reusable_chunk_lowering']['status']),
+    ]
+    return _summarize_checks(checks)
+
+
+def build_strict_replayed_tail_headline_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    observed = artifacts['strict_replayed_tail_headline']
+    expected = build_strict_replayed_tail_headline_result(
+        tail_macro_engine=artifacts['tail_macro_engine'],
+        reusable_chunk_lowering=artifacts['reusable_chunk_lowering'],
+        public_headline_result=artifacts['public_headline_result'],
+        baseline=PUBLIC_GOOGLE_BASELINE,
+    )
+    selected = observed['selected_result']
+    formula = observed['logical_qubit_formula']
+    replay = artifacts['tail_macro_engine']['reordered_replay_certificate']
+    checks = [
+        _check('strict_replayed_tail_headline_matches_generator', observed == expected, expected, observed),
+        _check('strict_replayed_tail_headline_schema_is_current', observed['schema'] == STRICT_REPLAYED_TAIL_HEADLINE_SCHEMA, STRICT_REPLAYED_TAIL_HEADLINE_SCHEMA, observed['schema']),
+        _check('strict_replayed_tail_headline_pass_flag_matches_internal_checks', observed['pass'] == all(observed['checks'].values()), all(observed['checks'].values()), {'pass': observed['pass'], 'checks': observed['checks']}),
+        _check('strict_replayed_tail_headline_uses_replayed_eight_slot_tail', selected['tail_field_slots'] == artifacts['tail_macro_engine']['reordered_slot_assignment']['peak_field_slots'] == 8 and replay['pass'] is True and replay['owner_capacity_pass'] is True, 'replayed eight-slot tail with owner capacity pass', {'selected': selected, 'replay': replay}),
+        _check('strict_replayed_tail_headline_total_is_formula_derived', selected['logical_qubits'] == formula['reconstructed_total'] == formula['tail_field_slots'] * formula['field_bits'] + formula['lookup_workspace_qubits'] + formula['control_qubits'] + formula['phase_qubits'], formula['reconstructed_total'], selected['logical_qubits']),
+        _check('strict_replayed_tail_headline_demotes_macro_contract', selected['logical_qubits'] > artifacts['public_headline_result']['selected_result']['logical_qubits'] and observed['macro_contract_reference']['status'] == 'not_primary_strict_headline', 'strict headline exceeds and demotes macro contract', observed['macro_contract_reference']),
     ]
     return _summarize_checks(checks)
 
@@ -2971,6 +3004,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'proof_corpus_profile_checks': lambda: build_proof_corpus_profile_checks(artifacts),
         'release_corpus_preflight_checks': lambda: build_release_corpus_preflight_checks(artifacts),
         'public_headline_result_checks': lambda: build_public_headline_result_checks(artifacts, repo_root),
+        'strict_replayed_tail_headline_checks': lambda: build_strict_replayed_tail_headline_checks(artifacts),
         'cain_transfer_checks': lambda: build_cain_transfer_checks(artifacts),
         'azure_seed_checks': lambda: build_azure_seed_checks(artifacts),
         'physical_estimator_target_checks': lambda: build_physical_estimator_target_checks(artifacts),

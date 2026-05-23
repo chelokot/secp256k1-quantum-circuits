@@ -70,6 +70,7 @@ What it does ship is:
 - `public_candidate_materialized_circuit_manifest.json` — no-ZKP public-candidate primitive-stream manifest binding the reusable-chunk headline to deterministic base, QROAM-segment, phase-shell rows, concrete operand wires, liveness/owner bindings, and a full materialized flat-netlist digest derived by scanning every emitted primitive operation
 - `public_engine_manifest.json` — no-ZKP public engine manifest deriving public totals from the public-candidate `materialized_flat_netlist`, then binding executable instruction/wire/schedule/owner/resource-term streams, the flat execution probe, compiler parameters, semantic-boundary evidence, and primitive-operation evidence from arithmetic operation IR, QROAM primitive certificate, and phase-shell lowering; this artifact no longer consumes the ZKP input
 - `engine_completion_audit.json` — no-ZKP completion/status audit generated from the materialized public engine artifacts; it passes only when public totals, source bindings, QROAM costs, owner/liveness probes, modular arithmetic IR generation, tail macro cost/formula binding, and semantic boundary evidence are coherent, and it keeps `clifford_complete_goal_achieved` false while the tail macro in-place schedule and single-engine ZKP-input derivation remain explicit macro boundaries; the tail diagnostic currently proves 10 of 15 fixed-order destructive overwrites locally invertible, screens all 39 operand overwrite choices, emits a reordered eight-slot schedule with zero invalid local-inverse overwrites, and replays it across the checked toy boundary domain with generated owner capacity
+- `strict_replayed_tail_headline.json` — primary strict headline artifact deriving the public resource presentation from the reordered eight-slot tail replay, generated owner-capacity rows, and standard-QROAM reusable-chunk lookup resource; it demotes the four-slot macro/ZKP wrapper to a non-primary reference
 - `artifact_digest_tree.json` — chunked SHA-256/Merkle manifest for tracked large artifacts, generated from the checked tree so reviewers can verify large JSON/CSV/proof blobs by chunks rather than by one opaque file hash
 - `proof_environment_contract.json` — checked proof-environment contract binding required tools, no-prover edit-loop gates, publication freshness gates, direct compressed/Groth16 verifier commands, public-headline artifact digests, and curated proof-manifest records
 - `proof_publication_status.json` — checked publication-readiness artifact derived from the shared proof-status engine; it keeps `publication_ready` separate from resource-contract `pass`, records stale systems/blockers, and binds the public headline, proof manifest, and proof-environment contract
@@ -106,15 +107,16 @@ What it does ship is:
 
 ## Current central boundary result
 
-- **public standard-QROAM headline:** `36,957,412 non-Clifford`, `1,199 logical qubits`
+- **primary strict replayed-tail headline:** `36,957,412 non-Clifford`, `2,223 logical qubits`
 
-The public headline is selected in
-`compiler_verification_project/artifacts/public_headline_result.json`. It uses
-a reusable-chunk standard QROAMClean `K = 1` lookup boundary, an exact
-semiclassical-QFT phase shell, and the executable reusable-chunk point-add leaf.
-The resulting live-qubit formula is:
+The primary strict headline is selected in
+`compiler_verification_project/artifacts/strict_replayed_tail_headline.json`.
+It uses a reusable-chunk standard QROAMClean `K = 1` lookup boundary, an exact
+semiclassical-QFT phase shell, and the reordered eight-slot executable tail
+schedule replayed by `tail_macro_engine.json`. The resulting live-qubit formula
+is:
 
-`4 * 256 + 1 control + 173 lookup workspace + 1 phase = 1,199 logical qubits`
+`8 * 256 + 173 lookup workspace + 1 control + 1 phase = 2,223 logical qubits`
 
 The `173` lookup-workspace term is `18` folded-control qubits plus one live
 155-bit QROAMClean chunk target for `K = 1`; there are no junk registers at
@@ -126,15 +128,15 @@ the interface.
 The older `34,925,796 / 1,044` three-slot family remains checked as a reference
 boundary in `family_frontier.json`, `logical_resource_ledger.json`, and the
 root attestation bundle. The reusable-chunk candidate directory contains the
-core/compressed/Groth16 fixtures and proof bundles for the public
-`36,957,412 / 1,199` candidate result; use `proof_status.py --require-all-current` as the
-freshness gate after any resource-certificate or guest change.
-`headline_resource_manifest.json` is the current-headline counted-resource
-stream manifest. It expands the reusable-chunk counted-resource IR into term
-rows and liveness rows, reconstructs `36,957,412 / 1,199`, and prevents the
-older three-slot `materialized_circuit_manifest.json` from being mistaken for
-the promoted result. `public_candidate_materialized_circuit_manifest.json`
-adds the current public candidate's own primitive-stream boundary: one
+core/compressed/Groth16 fixtures and proof bundles for the old macro
+`36,957,412 / 1,199` candidate result; use `proof_status.py --require-all-current`
+as the freshness gate after any resource-certificate or guest change.
+`headline_resource_manifest.json` is the macro-wrapper counted-resource stream
+manifest. It expands the reusable-chunk counted-resource IR into term rows and
+liveness rows, reconstructs `36,957,412 / 1,199`, and prevents the older
+three-slot `materialized_circuit_manifest.json` from being mistaken for that
+wrapper result. `public_candidate_materialized_circuit_manifest.json`
+adds the macro public candidate's own primitive-stream boundary: one
 non-QROAM base run, all expanded QROAM segment runs, the selected phase-shell
 rows, and a materialized flat stream whose public totals are computed from the
 emitted primitive operations rather than from side formulas. Lookup-base rows
@@ -144,6 +146,8 @@ operand-source binding report rejects block-stream or aggregate-count drift.
 critical phase-shell counts, headline totals, and publication limits from their
 source artifacts into the ZKP candidate input and public headline document, and
 fails if those ZKP-family resource fields become integer literals again.
+The strict primary headline sits one layer above this wrapper and replaces the
+macro four-tail-slot assumption with the replayed eight-slot tail schedule.
 
 `standard_qrom_lookup_assessment.json` records the standard-QROM status and
 rejects the old bitwise-banked path-select boundary as a public standard-QROM
@@ -236,10 +240,11 @@ The checked Groth16 proving path is pinned to the vendored
 `compiler_verification_project/zkp_attestation/vendor/sp1-recursion-gnark-ffi`
 patch set, which is also part of the curated proof manifest.
 The root proof bundle binds the older three-slot reference family. The public
-headline proof bundle lives in
+macro-wrapper proof bundle lives in
 `compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/`
 and must be rebuilt before it can bind the reusable-chunk `36,957,412 / 1,199`
-result with `8 / 8` deterministic public cases.
+result with `8 / 8` deterministic public cases. It does not yet bind the
+primary strict `36,957,412 / 2,223` replayed-tail headline.
 
 This is similar in shape to Google's disclosure model, but it is still a proof
 at the repository exact-family boundary, not a primitive-gate full-Shor proof.

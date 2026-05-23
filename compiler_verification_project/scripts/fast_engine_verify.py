@@ -17,6 +17,7 @@ VERIFY_GROUPS = [
     'engine_completion_audit_checks',
     'headline_resource_manifest_checks',
     'public_headline_result_checks',
+    'strict_replayed_tail_headline_checks',
     'reusable_chunk_tail_candidate_checks',
     'release_corpus_preflight_checks',
     'proof_environment_contract_checks',
@@ -34,6 +35,7 @@ PYTEST_TARGETS = [
     'tests/test_compiler_verification_project.py::test_mutated_reusable_chunk_executable_resource_engine_drift_is_detected',
     'tests/test_compiler_verification_project.py::test_mutated_reusable_chunk_schedule_source_instruction_drift_is_detected',
     'tests/test_public_headline_verifier.py',
+    'tests/test_strict_replayed_tail_headline.py',
 ]
 
 

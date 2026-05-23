@@ -10,13 +10,23 @@ Headline under review:
 - `1,044` logical qubits
 - family: `folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1`
 
-Current post-remediation public headline on this branch:
+Current post-remediation macro/ZKP wrapper on this branch:
 
 - `36,957,412` non-Clifford
 - `1,199` logical qubits
 - family:
   `folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1`
 - selected by `compiler_verification_project/artifacts/public_headline_result.json`
+
+Current primary strict replayed-tail headline on this branch:
+
+- `36,957,412` non-Clifford
+- `2,223` logical qubits
+- formula: `8 * 256 + 173 + 1 + 1`
+- selected by `compiler_verification_project/artifacts/strict_replayed_tail_headline.json`
+- evidence: `tail_macro_engine.json` reordered replay passes 110,082
+  non-infinity toy boundary pairs, 610 lookup-infinity no-op pairs, and
+  generated eight-slot owner capacity
 
 This document is intentionally adversarial. It is not a release note and not a
 claim that the result is false. It records every major place where an external
@@ -43,20 +53,21 @@ leaf-sigma rows.
 The strongest defensible statement is:
 
 > The repository currently contains a checked standard-QROM compiler-family
-> boundary whose artifacts, resource ledger, committed-document SP1 public
-> values, and proof-freshness tooling define a `36,957,412 / 1,199` candidate result,
-> with claim/leaf/family/case/resource document hashes recomputed inside the
-> active ZKP guest. The current working tree intentionally marks the checked
-> compressed/Groth16 proof layers stale after resource-certificate changes until
-> the final proof rebuild is run.
+> boundary whose primary strict resource headline is the replayed-tail
+> `36,957,412 / 2,223` artifact. The older `36,957,412 / 1,199` artifact is now
+> only a macro/ZKP wrapper reference whose claim/leaf/family/case/resource
+> document hashes are recomputed inside the active ZKP guest. The ZKP guest and
+> public values must be rebuilt around the strict eight-slot contract before the
+> proof layer can be described as binding the primary strict headline.
 
 The weaker `32,879,331 / 1,044` statement is the historical verdict for commit
 `4d9fefed41ca0f6b5cf6528ce8366065fc6d557a`. The current branch has since moved
-the public claim to `36,957,412 / 1,199` after adding explicit modular-reduction
+the macro wrapper to `36,957,412 / 1,199` after adding explicit modular-reduction
 cost for field multiplication and canonical modular add/sub correction costs,
 stronger ZKP resource binding, in-guest committed-document hash binding, and
 the reusable-chunk four-slot candidate proof bundle with explicit freshness
-checks.
+checks. The current primary strict presentation then demotes that macro wrapper
+and counts the replayed eight-slot tail instead, giving `36,957,412 / 2,223`.
 
 The statement that is not yet defensible without more engineering is:
 
@@ -76,7 +87,7 @@ resource semantics and macro boundaries.
 | --- | --- | --- | --- | --- |
 | ZK-1 | P0 reviewed-state; remediated on current branch | Reviewed SP1 prepared path did not recompute sidecar hashes; current path now recomputes committed claim/leaf/family/case/resource hashes in guest | This used to let public values carry hash labels trusted from the input builder; current tests reject stale digest labels and mutated committed payloads | Keep full committed documents in the guest input and keep negative digest/payload tests |
 | ZK-2 | P0 | ZKP executes high-level field/macro semantics, not primitive QROAM/arithmetic lowerings | The proof checks point-add behavior for prepared cases, but not that the resource-counted primitive circuit implements that behavior | Feed the same resource IR into the guest or prove a separate lowering certificate |
-| RES-1 | P0 partially mitigated | The public reusable-chunk leaf now traces the counted `qchunk` scratch lane, but still hides deeper field-arithmetic temporaries behind macro boundaries | The `1,199` qubit result no longer has a free/named-only `qchunk` owner, but it still depends on the compact modular-arithmetic and tail-macro contracts rather than a single Clifford-complete flat schedule | Flatten the reusable tail and modular arithmetic into scheduled IR and derive peak from that IR |
+| RES-1 | P0 partially mitigated | The public reusable-chunk leaf now traces the counted `qchunk` scratch lane, and the primary headline counts the replayed eight-slot tail instead of the old four-slot macro tail | The `2,223` qubit result removes the old tail-slot fantasy from the public headline, but modular arithmetic and the ZKP input still are not one single Clifford-complete flat schedule | Flatten modular arithmetic into scheduled IR and make the ZKP guest/input consume `strict_replayed_tail_headline.json` |
 | RES-2 | P0 partially mitigated | Modular field arithmetic costs are now digest-bound operation streams, but still not a generated modular circuit | Rust semantics applies `% p`; arithmetic lowering counts abstract add/sub/mul kernels whose modular-reduction completeness must still be trusted below the compact operation IR | Generate modular add/sub/mul circuits including reduction and count them |
 | RES-3 | P0 materially improved; still below physical-layout FT schedule | The public reusable-chunk resource ledger now has a guest-checked contract engine and a materialized flat primitive stream over counted IR, executable liveness, owner capacity, QROAM target/chunk wires, arithmetic rows, lookup rows, and phase rows | It now catches counted/executable liveness drift, owner-capacity underprovisioning, and missing full-stream materialization, but the deepest arithmetic macro semantics are still certified by generated IR/certificates rather than a routed physical FT schedule | Keep reducing the remaining macro boundary by lowering modular arithmetic certificates into the same flat primitive stream |
 | ZK-3 | P1 remediated for out-of-line proof binding | Checked compressed fixture JSON keeps `proof: null` while binary proof is separate | Large compressed proof bytes remain out-of-line, but fixtures now bind proof/verifier-key path, size, digest, and curated proof-manifest records | Keep `proof_status.py` manifest cross-checks and fixture metadata tests in the release gate |
@@ -84,7 +95,11 @@ resource semantics and macro boundaries.
 
 ## What Is Actually Strong
 
-- The checked headline is internally consistent across:
+- The checked strict headline is internally consistent across:
+  - `compiler_verification_project/artifacts/strict_replayed_tail_headline.json`
+  - `compiler_verification_project/artifacts/tail_macro_engine.json`
+  - `compiler_verification_project/artifacts/reusable_chunk_lowering.json`
+- The older macro/ZKP wrapper remains internally consistent across:
   - `compiler_verification_project/artifacts/family_frontier.json`
   - `compiler_verification_project/artifacts/logical_resource_ledger.json`
   - `compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json`
@@ -1851,10 +1866,12 @@ Avoid:
 Use:
 
 > Under the repository's checked standard-QROM compiler-family boundary, the
-> current artifacts define a `36,957,412` non-Clifford / `1,199` logical-qubit
-> result, and `proof_status.py --require-all-current` is the release gate for
-> checked SP1 compressed/Groth16 proof freshness. This improves the cited public
-> Google 2026 resource lines numerically, but the proof boundary is not
+> current primary strict artifacts define a `36,957,412` non-Clifford / `2,223`
+> logical-qubit result; the older `1,199` artifact is only a macro/ZKP wrapper.
+> `proof_status.py --require-all-current` is the release gate for checked SP1
+> compressed/Groth16 proof freshness. This improves the cited public Google
+> 2026 non-Clifford lines numerically, but no longer beats Google's published
+> logical-qubit lines under the strict tail count, and the proof boundary is not
 > identical to Google's hidden-circuit 9024-case SP1/Groth16 attestation. The
 > repository now ships a flat-index primitive-operation commitment for the
 > public candidate, but it still does not prove a physical full-Shor execution
@@ -1867,11 +1884,11 @@ resource model fixes the previous lookup/QROAM accounting failures. But the
 credible external claim is still narrower than the most excited internal
 phrasing:
 
-- strong: checked standard-QROM compiler-family boundary at `36,957,412 / 1,199`
+- strong: checked standard-QROM compiler-family boundary at `36,957,412 / 2,223`
 - not yet strong enough: Google-equivalent proof confidence
 - not yet strong enough: fully flattened primitive-gate Shor circuit
-- most urgent engineering gap: replace model consistency with one flat
-  circuit/liveness/resource engine
+- most urgent engineering gap: make the ZKP guest/input bind the strict
+  replayed-tail headline and keep reducing the tail below eight field slots
 
 ## Post-Review Remediation Status
 
@@ -1935,7 +1952,7 @@ Fixed after review:
 - `ZK-2` / resource-IR binding: `reusable_chunk_lowering.json` now includes
   `counted_resource_ir`, a committed counted-resource representation containing
   the non-Clifford terms and liveness intervals used for the public
-  reusable-chunk headline. Integrity checks, `verify_public_headline.py`, and the
+  reusable-chunk macro wrapper. Integrity checks, `verify_public_headline.py`, and the
   SP1 guest recompute `36,957,412` non-Clifford operations and the `1,199`
   live-qubit peak from that IR; guest tests reject forged counted-resource
   terms. The new `resource_contract_engine` additionally proves that the counted
@@ -1943,14 +1960,14 @@ Fixed after review:
   executable liveness, and that owner-capacity rows equal the engine-derived
   owner peaks. This does not make the repository a Clifford-complete full-Shor
   primitive netlist, but it removes another parallel formula-only path from the
-  public headline.
+  macro wrapper.
 - `ZK-2` / current-headline stream manifest: the repo now emits
   `compiler_verification_project/artifacts/headline_resource_manifest.json`
-  for the promoted reusable-chunk result. It expands the ZKP-bound
+  for the macro reusable-chunk result. It expands the ZKP-bound
   `counted_resource_ir` into counted term rows and liveness rows, recomputes
   `36,957,412` non-Clifford operations and the `1,199`-qubit peak, and is bound
   by `public_headline_result.json` plus integrity checks. The repo also emits
-  `public_candidate_materialized_circuit_manifest.json` for the promoted
+  `public_candidate_materialized_circuit_manifest.json` for the macro
   result, so the public candidate has its own checked run-length primitive
   stream and flat-index segment commitment instead of relying on the older
   `34,925,796 / 1,044` materialized frontier family. The current artifact
@@ -2030,7 +2047,7 @@ Partially mitigated after review:
   scratch-trace pass bit, so `qchunk` is no longer only a named liveness owner.
 - `compiler_verification_project/artifacts/reusable_chunk_lowering.json` now
   records the candidate's generated lowering/resource contract. It derives the
-  6 chunk streams per leaf from the executable leaf's three coordinate tables
+  The demoted macro wrapper uses 6 chunk streams per leaf from the executable leaf's three coordinate tables
   and two chunks, prices each stream with standard QROAMClean `K=1` (`65,536`
   non-Clifford, `155` target qubits, zero junk), reconstructs `36,957,412`
   non-Clifford operations and `1,199` logical qubits, assigns numeric capacity
@@ -2046,13 +2063,16 @@ Partially mitigated after review:
   full-width `65,536` non-Clifford grid, while the high chunk's 54 zero-padded
   QROAM target lanes are still charged in lookup workspace/cost. This fixes the
   previous class of width/workspace mix-ups for the reusable-chunk candidate.
+  The primary strict headline does not reuse the `1199` macro total; it replaces
+  the four-slot arithmetic term with the replayed eight-slot tail term and
+  publishes `8 * 256 + 173 + 1 + 1 = 2223`.
 - `compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/`
   now contains a checked candidate ZKP input bundle, and the Rust guest library
   accepts it in `run_prepared_attestation`. This means the native guest path
   binds and executes `complete_a0_reusable_chunk_tail`, commits
   `reusable_chunk_lowering.json`, recomputes the executable-liveness peak from
   the certificate's interval rows, rejects failing liveness checks, and returns
-  current input claim `36,957,412 / 1,199`. The candidate directory also contains
+  macro input claim `36,957,412 / 1,199`. The candidate directory also contains
   checked core, compressed, and Groth16 fixtures, the compressed proof bundle,
   the Groth16 proof bundle, the wrap proof bundle, and the matching Groth16
   verifier key. After the modular-arithmetic certificate was bound into the

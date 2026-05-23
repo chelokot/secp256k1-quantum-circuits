@@ -134,19 +134,19 @@
   },
   "repo_headline_used_for_comparison": {
     "non_clifford": 36957412,
-    "logical_qubits": 1199,
-    "source": "compiler_verification_project/artifacts/public_headline_result.json"
+    "logical_qubits": 2223,
+    "source": "compiler_verification_project/artifacts/strict_replayed_tail_headline.json"
   },
   "derived_comparison": {
     "starling_gate_scale_ratio_vs_repo_non_clifford": 2.705817171397175,
-    "starling_logical_qubit_shortfall_vs_repo": 999,
+    "starling_logical_qubit_shortfall_vs_repo": 2023,
     "blue_jay_gate_scale_ratio_vs_repo_non_clifford": 27.058171713971745,
-    "blue_jay_logical_qubit_headroom_vs_repo": 801
+    "blue_jay_logical_qubit_headroom_vs_repo": -223
   },
   "claims": [
     "Current IBM processors are relevant as roadmap and software-stack context, not as machines that can run this secp256k1 circuit.",
     "Starling is a strong gate-scale reference point because its 100-million-gate target is above this repository's non-Clifford count, but its 200 logical qubits are below the current logical-qubit requirement.",
-    "Blue Jay is the first named IBM roadmap target in the natural logical-qubit class of this repository's current secp256k1 resource estimate.",
+    "Blue Jay is the first named IBM roadmap target close to the logical-qubit class of this repository's current strict secp256k1 resource estimate, while still 223 logical qubits below the current strict replayed-tail headline.",
     "IBM's roadmap is unusually useful for cryptographic-risk interpretation because it publishes logical-qubit and gate-scale milestones rather than only physical-qubit counts."
   ],
   "non_claims": [

@@ -63,27 +63,35 @@ The root-level `compiler_verification_project/` is the repository's strongest
 exact layer below the ISA boundary. Its checked-in central whole-oracle result
 is:
 
-- **public standard-QROAM headline:** `36,957,412 non-Clifford`, `1,199 logical qubits`
+<!-- BEGIN GENERATED: strict-replayed-tail-headline -->
+- **primary strict replayed-tail headline:** `36,957,412 non-Clifford`, `2,223 logical qubits`
+- **logical-qubit formula:** `8 * 256 + 173 + 1 + 1 = 2,223`
+- **vs Google low-qubit line:** `2.4352x` lower non-Clifford, `+1,023` logical qubits
+- **vs Google low-gate line:** `1.8941x` lower non-Clifford, `+773` logical qubits
+<!-- END GENERATED: strict-replayed-tail-headline -->
 
 Those numbers are exact for the chosen compiler family, not a claim of global
-optimality or a Clifford-complete full-Shor netlist. The public headline is the
-reusable-chunk four-slot family selected in
-`compiler_verification_project/artifacts/public_headline_result.json`. It uses
-standard QROAMClean `K = 1` chunk streams over the full 32768-entry folded
-coordinate domain, an exact semiclassical-QFT phase shell, and the executable
-`complete_a0_reusable_chunk_tail` point-add leaf. The counted lookup workspace
-includes folded-control qubits plus one live 155-bit QROAM chunk target and no
-free full-coordinate lookup lane. The older `34,925,796 / 1,044` three-slot
-family remains checked as a reference boundary, but it is no longer the single
-public headline.
+optimality or a Clifford-complete full-Shor netlist. The primary headline is
+selected in
+`compiler_verification_project/artifacts/strict_replayed_tail_headline.json`.
+It combines the standard QROAMClean `K = 1` reusable-chunk lookup resource with
+the reordered eight-slot tail schedule replayed by
+`compiler_verification_project/artifacts/tail_macro_engine.json`. The counted
+lookup workspace includes folded-control qubits plus one live 155-bit QROAM
+chunk target and no free full-coordinate lookup lane. The old `36,957,412 /
+1,199` four-slot macro contract remains checked as a ZKP/publication wrapper
+reference in `compiler_verification_project/artifacts/public_headline_result.json`,
+but it is no longer the primary strict resource headline. The older
+`34,925,796 / 1,044` three-slot family remains checked as a reference boundary,
+not as the promoted public claim.
 
 Against Google's published 2026 secp256k1 baseline, the public standard-QROAM
 result is:
 
 - **2.4352x** lower in non-Clifford cost than the public low-qubit line
 - **1.8941x** lower in non-Clifford cost than the public low-gate line
-- **1 qubit below** the public low-qubit line
-- **251 qubits below** the public low-gate line
+- **1,023 qubits above** the public low-qubit line
+- **773 qubits above** the public low-gate line
 
 ### SP1 attestation layer
 
@@ -111,8 +119,8 @@ full-coordinate lookup lane, numeric owner capacity, and the current
 flat-index primitive netlist commitment. The current-headline counted-resource
 stream is separately materialized in
 `compiler_verification_project/artifacts/headline_resource_manifest.json`, so
-the promoted `36,957,412 / 1,199` result is not backed by the older three-slot
-materialized manifest by accident. It also validates the committed compiler-parameter document
+the old macro `36,957,412 / 1,199` proof-wrapper result is not backed by the
+older three-slot materialized manifest by accident. It also validates the committed compiler-parameter document
 before committing public values. `compiler_verification_project/artifacts/constant_provenance.json`
 binds the selected phase-shell counts, headline totals, and publication limits
 from their source artifacts into the ZKP family document and public headline
@@ -123,9 +131,10 @@ proof bundle, and the matching Groth16 verifying key. During source churn,
 whether those proof layers still bind the current input; after the latest
 resource-certificate binding changes, final compressed/Groth16 rebuild remains
 the release gate before claiming current proof freshness. Together these
-artifacts define the public `36,957,412 / 1,199` candidate claim and `8 / 8`
-public cases, while the checked compressed/Groth16 proofs remain explicitly
-stale until rebuilt against the current resource digest.
+artifacts define the macro/ZKP `36,957,412 / 1,199` candidate claim and `8 / 8`
+public cases. That claim is kept as a checked publication-wrapper reference;
+the primary strict resource headline is now the replayed-tail
+`36,957,412 / 2,223` artifact.
 The compiler artifacts also include `public_candidate_materialized_circuit_manifest.json`,
 `public_engine_manifest.json`, and `engine_completion_audit.json`, the no-ZKP
 engine gate for the current public candidate. The public-candidate materialized manifest expands the reusable
@@ -161,24 +170,15 @@ The selected tail macro now has its own executable engine artifact:
 operations, binds the exact opcode histogram to the counted tail kernel, and
 keeps the three-slot in-place schedule gap visible instead of treating it as a
 free macro assumption. Its strict single-assignment fallback schedule currently
-requires nine field-sized slots, so promoting that fallback without a better
-in-place schedule would add six field lanes to the public qubit budget. The same
-engine now also emits an eight-slot destructive-overwrite candidate as an
-optimizer signal; that candidate is deliberately not a public claim until each
-overwrite row has a reversible or valid-subspace implementation proof. The
-current local-inverse screen proves 10 of the 15 overwrite rows on the checked
-toy boundary domain and leaves five concrete zero-multiplier blockers. Reusing
-only the 10 locally invertible rows still peaks at nine field slots, so the
-eight-slot optimizer signal currently depends on those unresolved blockers. The
-same artifact screens all 23 expiring-source overwrite choices; seven choices
-fail across rows 1, 16, 17, 18, and 19, so this is not just a bad greedy source
-selection. A reordered DAG search then finds an eight-slot schedule with 10
-overwrites and zero invalid local-inverse overwrites by computing `X3` before
-the late `NM/CL/ME/LK` products. The generated replay certificate executes that
-schedule across 110,082 non-infinity toy boundary pairs, checks 610 lookup-
-infinity no-op boundary pairs, and derives an eight-slot owner-capacity ledger.
-That is still not yet a promoted public qubit contract or a Clifford-complete
-reversible circuit implementation.
+requires nine field-sized slots, but a reordered DAG search finds an eight-slot
+schedule with 10 locally valid overwrites by computing `X3` before the late
+`NM/CL/ME/LK` products. The generated replay certificate executes that schedule
+across 110,082 non-infinity toy boundary pairs, checks 610 lookup-infinity
+no-op boundary pairs, and derives an eight-slot owner-capacity ledger. That
+eight-slot replayed-tail result is now the primary strict headline in
+`strict_replayed_tail_headline.json`; the remaining work is to reduce it below
+eight field slots and eventually make the ZKP guest/input consume that exact
+strict contract.
 
 The public engine manifest then binds that
 materialized flat stream, executable instruction rows, wires, schedule events,
@@ -294,20 +294,21 @@ language rather than only in physical-qubit counts. That makes IBM's roadmap
 especially useful for reading this repository's logical result as an
 engineering-scale signal, not just as an abstract asymptotic risk.
 
-The current public headline here is **36,957,412 non-Clifford operations** and
-**1,199 logical qubits**. IBM's public roadmap frames Starling as a 2029
+The current strict replayed-tail headline here is **36,957,412 non-Clifford
+operations** and **2,223 logical qubits**. IBM's public roadmap frames Starling as a 2029
 fault-tolerant system with **200 logical qubits** and **100 million gates**,
 and Blue Jay as a 2033+ class system with about **2,000 logical qubits** and
 **1 billion gates**. Starling is therefore already in the right gate-scale
 conversation, but below this repository's current logical-qubit requirement.
-Blue Jay is the first named IBM target with natural logical-qubit headroom for
-this scale of secp256k1 circuit.
+Blue Jay is the first named IBM target close to this circuit's logical-qubit
+class, although the strict replayed-tail count is still 223 logical qubits
+above Blue Jay's stated 2,000-logical-qubit target.
 
 The favorable, bounded interpretation is: if IBM delivers the post-Starling
 logical-qubit and gate-scale targets it has publicly described, secp256k1 ECDLP
 resource estimates like this one stop being only long-range cryptographic
-warnings and become workloads that fit inside a named industrial
-fault-tolerant machine class. This is roadmap context, not a claim that Heron,
+warnings and move into the scale of named industrial fault-tolerant machine
+classes. This is roadmap context, not a claim that Heron,
 Nighthawk, Starling, or any current IBM processor can run the full circuit
 today. The machine-readable source note is
 `data/ibm_quantum_roadmap_context.json`; the prose source map is
@@ -363,7 +364,11 @@ family.
 Use `build.py --target resource-zkp-and-public` for the normal reusable-chunk
 resource edit loop: it refreshes `reusable_chunk_lowering.json`,
 `public_engine_manifest.json`, the candidate ZKP input bundle, and the public
-headline JSON without rebuilding every compiler artifact. Use
+headline JSON without rebuilding every compiler artifact. It also refreshes
+`strict_replayed_tail_headline.json`, the primary strict resource presentation
+artifact. Use `compiler_verification_project/scripts/update_readme_headline.py`
+after that build to rewrite the generated README headline block from the strict
+artifact, or pass `--check` in CI/review. Use
 `build.py --target public-engine-manifest` after changing only the no-ZKP public
 engine manifest layer. Use `build.py --target engine-completion-audit` after
 changing only the no-ZKP completion/status layer that classifies covered engine
@@ -400,7 +405,8 @@ substitute for compressed/Groth16 proof freshness.
 Use `compiler_verification_project/scripts/fast_engine_verify.py` for the
 engine-only no-ZKP loop. It rebuilds the current public resource artifacts,
 verifies the reusable engine, public engine manifest, headline resource
-manifest, public headline, and proof runbook/status metadata, and then runs the
+manifest, macro public headline, strict replayed-tail headline, and proof
+runbook/status metadata, and then runs the
 focused Python mutation tests. The public engine manifest also binds semantic
 boundary evidence: the streamed-tail edge-case equivalence, reusable-tail toy
 semantic/scratch trace, 9024-case release corpus preflight, and checked smoke
@@ -434,7 +440,7 @@ Compressed and Groth16 proving are not part of the edit loop; the guarded
 runner requires `--allow-heavy-proof` for those release-gate operations so an
 ordinary verification pass cannot accidentally start a multi-hour proof.
 `compiler_verification_project/scripts/verify_public_headline.py` is the fast
-reviewer entrypoint for the checked public headline: by default it validates
+reviewer entrypoint for the checked macro/ZKP public headline: by default it validates
 the public result, input, public values, source-document hashes, fixture
 records, proof-binary digests, wrap proof, and Groth16 verifier key from the
 checked branch state and prints a compact blocker report. Add `--verbose` for

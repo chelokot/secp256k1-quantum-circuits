@@ -570,7 +570,7 @@
     },
     "reusable_chunk_tail_toy_semantics": {
       "schema": "compiler-project-reusable-chunk-tail-candidate-v1",
-      "sha256": "f0dfb7f935adbf20cf115f4a2ed522ec4729aa9c9b0e50b88df6f8bf40154f78",
+      "sha256": "031dfec001985130d1f05f2d9582af033eac82b88f060025423f55e0168cc25f",
       "total_boundary_pairs": 110692,
       "scratch_trace_checked": 110082,
       "category_totals": {
