@@ -13625,6 +13625,184 @@
     "pass": true,
     "promotion_blocker": "The semantic six-slot schedule still needs a finalized primitive resource lowering for the variable 2x2 in-place output matrix before it can replace the guarded seven-slot public headline."
   },
+  "six_slot_pair_output_lowering_search": {
+    "schema": "compiler-project-tail-six-slot-pair-output-lowering-search-v1",
+    "status": "blocked_on_variable_in_place_scale_lowering",
+    "target_matrix": {
+      "input_registers": [
+        "E",
+        "K"
+      ],
+      "output_registers": [
+        "X3",
+        "Z3"
+      ],
+      "rows": [
+        {
+          "target": "X3",
+          "coefficients": {
+            "E": "-C",
+            "K": "N"
+          }
+        },
+        {
+          "target": "Z3",
+          "coefficients": {
+            "E": "M",
+            "K": "L"
+          }
+        }
+      ],
+      "determinant": "-C*L - N*M",
+      "determinant_equals": "-Y3"
+    },
+    "candidate_peak_field_slots": 6,
+    "allowed_no_field_slot_basis_checked": [
+      {
+        "operation": "left_shear",
+        "form": "A <- A + q*B",
+        "determinant": "1",
+        "field_sized_output_lane_required": false,
+        "cost_bound": "one in-place field multiply-accumulate kernel if that primitive is admitted"
+      },
+      {
+        "operation": "right_shear",
+        "form": "B <- B + q*A",
+        "determinant": "1",
+        "field_sized_output_lane_required": false,
+        "cost_bound": "one in-place field multiply-accumulate kernel if that primitive is admitted"
+      },
+      {
+        "operation": "swap",
+        "form": "(A,B) <- (B,A)",
+        "determinant": "-1",
+        "field_sized_output_lane_required": false,
+        "cost_bound": "Clifford/register relabel at this abstraction layer"
+      }
+    ],
+    "shear_only_determinant_analysis": {
+      "target_determinant": "-Y3",
+      "reachable_determinants": [
+        "-1",
+        "1"
+      ],
+      "target_is_reachable": false
+    },
+    "symbolic_decomposition_attempts": [
+      {
+        "name": "lu_pivot_minus_c",
+        "pivot": "-C",
+        "requires_nonzero": "C",
+        "decomposition": "L(M/(-C)) * D(-C, Y3/C) * U(N/(-C))",
+        "requires_quantum_inverse_or_division": [
+          "1/C"
+        ],
+        "requires_variable_scale": [
+          "scale E by -C",
+          "scale K by Y3/C"
+        ],
+        "boundary_counterexample": "accumulator_infinity has C == 0",
+        "accepted_without_branch": false
+      },
+      {
+        "name": "lu_pivot_n_after_column_swap",
+        "pivot": "N",
+        "requires_nonzero": "N",
+        "decomposition": "column-swap plus LU pivot on N",
+        "requires_quantum_inverse_or_division": [
+          "1/N"
+        ],
+        "requires_variable_scale": [
+          "scale one register by N",
+          "scale one register by Y3/N"
+        ],
+        "boundary_counterexample": "accumulator_infinity has N == 0",
+        "accepted_without_branch": false
+      },
+      {
+        "name": "lu_pivot_m_after_row_swap",
+        "pivot": "M",
+        "requires_nonzero": "M",
+        "decomposition": "row-swap plus LU pivot on M",
+        "requires_quantum_inverse_or_division": [
+          "1/M"
+        ],
+        "requires_variable_scale": [
+          "scale one register by M",
+          "scale one register by Y3/M"
+        ],
+        "boundary_counterexample": {
+          "base_id": "g_window_0",
+          "word_hex": "0x0007",
+          "lookup_affine": [
+            41948375291644419605210209193538855353224492619856392092318293986323063962044,
+            48361766907851246668144012348516735800090617714386977531302791340517493990618
+          ],
+          "accumulator_affine": [
+            44348185283247122140245124680421363407546663785356019992292594794646383054219,
+            84665557065034144849653706419970574408515644868439394994517133374813370704546
+          ],
+          "m_value": 0,
+          "old_y3_over_n_coefficient": "M",
+          "reason": "the unguarded Y3-over-N row is not a field permutation because its affine coefficient M can be zero on valid secp256k1 curve states"
+        },
+        "accepted_without_branch": false
+      },
+      {
+        "name": "lu_pivot_l_after_row_column_swap",
+        "pivot": "L",
+        "requires_nonzero": "L",
+        "decomposition": "row-and-column-swap plus LU pivot on L",
+        "requires_quantum_inverse_or_division": [
+          "1/L"
+        ],
+        "requires_variable_scale": [
+          "scale one register by L",
+          "scale one register by Y3/L"
+        ],
+        "boundary_counterexample": "accumulator_infinity has L == 0",
+        "accepted_without_branch": false
+      }
+    ],
+    "current_kernel_inventory": {
+      "has_in_place_field_multiply_accumulate_without_product_lane": false,
+      "has_variable_in_place_field_scale_without_extra_field_lane": false,
+      "has_quantum_field_inverse_without_extra_field_lane": false,
+      "available_related_costs": {
+        "field_mul": 71492,
+        "field_add": 510,
+        "field_sub": 510
+      }
+    },
+    "blockers": [
+      {
+        "id": "determinant_not_reachable_by_shears_only",
+        "detail": "Multiply-accumulate shears and swaps can only change determinant by a classical sign, but the target determinant is the live quantum value -Y3."
+      },
+      {
+        "id": "variable_scale_not_in_kernel_inventory",
+        "detail": "A determinant-changing two-register lowering needs variable in-place scaling or an equivalent primitive; the current arithmetic lowering only certifies output-producing field_mul and add/sub kernels."
+      },
+      {
+        "id": "pivot_branches_need_quantum_inverses",
+        "detail": "Standard LU/Bruhat decompositions require inverses of C, N, M, or L; each pivot has a checked boundary zero case or needs a branch plus an unimplemented inverse/scale lowering."
+      }
+    ],
+    "checks": {
+      "semantic_candidate_passes": true,
+      "determinant_precondition_passes": true,
+      "shear_only_lowering_rejected_because_target_determinant_is_variable": true,
+      "all_symbolic_lu_pivots_require_quantum_inverse_or_variable_scale": true,
+      "current_kernel_inventory_lacks_required_variable_scale_primitive": true,
+      "no_extra_field_slot_resource_contract_available": true
+    },
+    "promotion_ready": false,
+    "pass": true,
+    "notes": [
+      "This artifact answers whether the semantic six-slot candidate can be promoted with the currently certified primitive resource inventory.",
+      "It does not reject the six-slot algebra; it rejects promotion until a determinant-changing variable in-place field-scale primitive is lowered and counted without a hidden field lane."
+    ]
+  },
   "fused_output_reordered_schedule": {
     "schedule_model": "reordered_dag_local_inverse_overwrite_search",
     "status": "solution_found_with_boundary_replay_and_fused_output_lowering_contract",

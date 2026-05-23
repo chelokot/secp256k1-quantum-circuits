@@ -190,3 +190,17 @@ def test_tail_macro_engine_six_slot_candidate_uses_pair_permutations() -> None:
     assert max(row['live_field_value_count_during_step'] for row in candidate['rows']) == 6
     assert candidate['determinant_certificate']['matrix']['input_registers'] == ['E', 'K']
     assert candidate['determinant_certificate']['matrix']['output_registers'] == ['X3', 'Z3']
+
+
+def test_tail_macro_engine_blocks_six_slot_promotion_without_variable_scale() -> None:
+    checked = _load('tail_macro_engine.json')
+    lowering = checked['six_slot_pair_output_lowering_search']
+
+    assert lowering['pass'] is True
+    assert lowering['promotion_ready'] is False
+    assert lowering['status'] == 'blocked_on_variable_in_place_scale_lowering'
+    assert lowering['checks']['shear_only_lowering_rejected_because_target_determinant_is_variable'] is True
+    assert lowering['checks']['all_symbolic_lu_pivots_require_quantum_inverse_or_variable_scale'] is True
+    assert lowering['checks']['current_kernel_inventory_lacks_required_variable_scale_primitive'] is True
+    assert lowering['current_kernel_inventory']['has_variable_in_place_field_scale_without_extra_field_lane'] is False
+    assert any(blocker['id'] == 'variable_scale_not_in_kernel_inventory' for blocker in lowering['blockers'])

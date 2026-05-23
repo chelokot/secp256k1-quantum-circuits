@@ -622,6 +622,149 @@ def _six_slot_pair_output_candidate(
     }
 
 
+def _six_slot_pair_output_lowering_search(
+    *,
+    candidate: Mapping[str, Any],
+    determinant_certificate: Mapping[str, Any],
+    kernel_non_clifford_by_opcode: Mapping[str, Any],
+) -> Dict[str, Any]:
+    shear_only_basis = [
+        {
+            'operation': 'left_shear',
+            'form': 'A <- A + q*B',
+            'determinant': '1',
+            'field_sized_output_lane_required': False,
+            'cost_bound': 'one in-place field multiply-accumulate kernel if that primitive is admitted',
+        },
+        {
+            'operation': 'right_shear',
+            'form': 'B <- B + q*A',
+            'determinant': '1',
+            'field_sized_output_lane_required': False,
+            'cost_bound': 'one in-place field multiply-accumulate kernel if that primitive is admitted',
+        },
+        {
+            'operation': 'swap',
+            'form': '(A,B) <- (B,A)',
+            'determinant': '-1',
+            'field_sized_output_lane_required': False,
+            'cost_bound': 'Clifford/register relabel at this abstraction layer',
+        },
+    ]
+    pivot_decompositions = [
+        {
+            'name': 'lu_pivot_minus_c',
+            'pivot': '-C',
+            'requires_nonzero': 'C',
+            'decomposition': 'L(M/(-C)) * D(-C, Y3/C) * U(N/(-C))',
+            'requires_quantum_inverse_or_division': ['1/C'],
+            'requires_variable_scale': ['scale E by -C', 'scale K by Y3/C'],
+            'boundary_counterexample': 'accumulator_infinity has C == 0',
+            'accepted_without_branch': False,
+        },
+        {
+            'name': 'lu_pivot_n_after_column_swap',
+            'pivot': 'N',
+            'requires_nonzero': 'N',
+            'decomposition': 'column-swap plus LU pivot on N',
+            'requires_quantum_inverse_or_division': ['1/N'],
+            'requires_variable_scale': ['scale one register by N', 'scale one register by Y3/N'],
+            'boundary_counterexample': 'accumulator_infinity has N == 0',
+            'accepted_without_branch': False,
+        },
+        {
+            'name': 'lu_pivot_m_after_row_swap',
+            'pivot': 'M',
+            'requires_nonzero': 'M',
+            'decomposition': 'row-swap plus LU pivot on M',
+            'requires_quantum_inverse_or_division': ['1/M'],
+            'requires_variable_scale': ['scale one register by M', 'scale one register by Y3/M'],
+            'boundary_counterexample': _first_m_zero_counterexample(),
+            'accepted_without_branch': False,
+        },
+        {
+            'name': 'lu_pivot_l_after_row_column_swap',
+            'pivot': 'L',
+            'requires_nonzero': 'L',
+            'decomposition': 'row-and-column-swap plus LU pivot on L',
+            'requires_quantum_inverse_or_division': ['1/L'],
+            'requires_variable_scale': ['scale one register by L', 'scale one register by Y3/L'],
+            'boundary_counterexample': 'accumulator_infinity has L == 0',
+            'accepted_without_branch': False,
+        },
+    ]
+    current_kernel_inventory = {
+        'has_in_place_field_multiply_accumulate_without_product_lane': False,
+        'has_variable_in_place_field_scale_without_extra_field_lane': False,
+        'has_quantum_field_inverse_without_extra_field_lane': False,
+        'available_related_costs': {
+            'field_mul': int(kernel_non_clifford_by_opcode['field_mul']),
+            'field_add': int(kernel_non_clifford_by_opcode['field_add']),
+            'field_sub': int(kernel_non_clifford_by_opcode['field_sub']),
+        },
+    }
+    target_determinant = str(determinant_certificate['matrix']['determinant_equals'])
+    shear_only_reachable_determinants = sorted({str(row['determinant']) for row in shear_only_basis})
+    shear_only_rejection = target_determinant not in shear_only_reachable_determinants
+    pivot_requires_unavailable_lowering = all(
+        row['accepted_without_branch'] is False
+        and bool(row['requires_quantum_inverse_or_division'])
+        and bool(row['requires_variable_scale'])
+        and bool(row['boundary_counterexample'])
+        for row in pivot_decompositions
+    )
+    no_extra_field_slot_contract_available = (
+        current_kernel_inventory['has_variable_in_place_field_scale_without_extra_field_lane'] is True
+        or current_kernel_inventory['has_quantum_field_inverse_without_extra_field_lane'] is True
+    )
+    blockers = [
+        {
+            'id': 'determinant_not_reachable_by_shears_only',
+            'detail': 'Multiply-accumulate shears and swaps can only change determinant by a classical sign, but the target determinant is the live quantum value -Y3.',
+        },
+        {
+            'id': 'variable_scale_not_in_kernel_inventory',
+            'detail': 'A determinant-changing two-register lowering needs variable in-place scaling or an equivalent primitive; the current arithmetic lowering only certifies output-producing field_mul and add/sub kernels.',
+        },
+        {
+            'id': 'pivot_branches_need_quantum_inverses',
+            'detail': 'Standard LU/Bruhat decompositions require inverses of C, N, M, or L; each pivot has a checked boundary zero case or needs a branch plus an unimplemented inverse/scale lowering.',
+        },
+    ]
+    checks = {
+        'semantic_candidate_passes': candidate['pass'] is True,
+        'determinant_precondition_passes': determinant_certificate['pass'] is True,
+        'shear_only_lowering_rejected_because_target_determinant_is_variable': shear_only_rejection,
+        'all_symbolic_lu_pivots_require_quantum_inverse_or_variable_scale': pivot_requires_unavailable_lowering,
+        'current_kernel_inventory_lacks_required_variable_scale_primitive': (
+            current_kernel_inventory['has_variable_in_place_field_scale_without_extra_field_lane'] is False
+        ),
+        'no_extra_field_slot_resource_contract_available': no_extra_field_slot_contract_available is False,
+    }
+    return {
+        'schema': 'compiler-project-tail-six-slot-pair-output-lowering-search-v1',
+        'status': 'blocked_on_variable_in_place_scale_lowering',
+        'target_matrix': determinant_certificate['matrix'],
+        'candidate_peak_field_slots': int(candidate['peak_field_slots']),
+        'allowed_no_field_slot_basis_checked': shear_only_basis,
+        'shear_only_determinant_analysis': {
+            'target_determinant': target_determinant,
+            'reachable_determinants': shear_only_reachable_determinants,
+            'target_is_reachable': not shear_only_rejection,
+        },
+        'symbolic_decomposition_attempts': pivot_decompositions,
+        'current_kernel_inventory': current_kernel_inventory,
+        'blockers': blockers,
+        'checks': checks,
+        'promotion_ready': False,
+        'pass': all(checks.values()),
+        'notes': [
+            'This artifact answers whether the semantic six-slot candidate can be promoted with the currently certified primitive resource inventory.',
+            'It does not reject the six-slot algebra; it rejects promotion until a determinant-changing variable in-place field-scale primitive is lowered and counted without a hidden field lane.',
+        ],
+    }
+
+
 def _six_slot_pair_output_replay(schedule_rows: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
     del schedule_rows
     category_totals = {
@@ -2021,6 +2164,11 @@ def build_tail_macro_engine(
         kernel_non_clifford_by_opcode=kernel_non_clifford_by_opcode,
         determinant_certificate=pair_output_determinant_certificate,
     )
+    six_slot_pair_output_lowering_search = _six_slot_pair_output_lowering_search(
+        candidate=six_slot_pair_output_candidate,
+        determinant_certificate=pair_output_determinant_certificate,
+        kernel_non_clifford_by_opcode=kernel_non_clifford_by_opcode,
+    )
     fused_output_operand_screen = _apply_fused_output_in_place_screen(
         raw_fused_output_operand_screen,
         fused_output_in_place_permutation_certificate,
@@ -2167,6 +2315,7 @@ def build_tail_macro_engine(
         'fused_output_in_place_permutation_certificate': fused_output_in_place_permutation_certificate,
         'pair_output_determinant_certificate': pair_output_determinant_certificate,
         'six_slot_pair_output_candidate': six_slot_pair_output_candidate,
+        'six_slot_pair_output_lowering_search': six_slot_pair_output_lowering_search,
         'fused_output_reordered_schedule': fused_output_reordered_schedule,
         'fused_output_slot_assignment': fused_output_slot_assignment,
         'fused_output_replay_certificate': fused_output_replay_certificate,

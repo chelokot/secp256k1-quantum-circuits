@@ -580,6 +580,7 @@ def build_tail_macro_engine_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
     fused_output_permutation = engine['fused_output_in_place_permutation_certificate']
     six_slot_candidate = engine['six_slot_pair_output_candidate']
     pair_output_determinant = engine['pair_output_determinant_certificate']
+    six_slot_lowering_search = engine['six_slot_pair_output_lowering_search']
     slot_gap = engine['slot_gap']
     kernel_lookup = {
         kernel['opcode']: int(kernel['exact_non_clifford_per_kernel'])
@@ -753,6 +754,17 @@ def build_tail_macro_engine_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
             and pair_output_determinant['checks']['secp256k1_has_no_affine_y_zero_point'] is True,
             'six-slot candidate uses (I,F)->(M,N) and (E,K)->(X3,Z3) pair permutations but is not promoted until the 2x2 primitive lowering is finalized',
             six_slot_candidate,
+        ),
+        _check(
+            'tail_macro_engine_blocks_six_slot_promotion_without_variable_scale_lowering',
+            six_slot_lowering_search['pass'] is True
+            and six_slot_lowering_search['promotion_ready'] is False
+            and six_slot_lowering_search['status'] == 'blocked_on_variable_in_place_scale_lowering'
+            and six_slot_lowering_search['checks']['shear_only_lowering_rejected_because_target_determinant_is_variable'] is True
+            and six_slot_lowering_search['checks']['current_kernel_inventory_lacks_required_variable_scale_primitive'] is True
+            and six_slot_lowering_search['current_kernel_inventory']['has_variable_in_place_field_scale_without_extra_field_lane'] is False,
+            'six-slot semantic candidate is not promoted because current kernels lack a counted no-extra-field-lane variable in-place scale primitive',
+            six_slot_lowering_search,
         ),
     ]
     return _summarize_checks(checks)
