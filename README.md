@@ -134,11 +134,12 @@ proof bundle, and the matching Groth16 verifying key. During source churn,
 `compiler_verification_project/scripts/proof_status.py` is the authority for
 whether those proof layers still bind the current input; after the latest
 resource-certificate binding changes, final compressed/Groth16 rebuild remains
-the release gate before claiming current proof freshness. Together these
-artifacts still bind the legacy macro/ZKP candidate claim and `8 / 8` public
-cases. That claim is kept only as a checked publication-wrapper reference until
-rebuilt; the primary strict resource headline is the guarded replayed-tail
-`36,973,222 / 1,968` artifact selected by `primary_strict_result.json`.
+the release gate before claiming current proof freshness. The checked proof
+fixtures still bind a stale macro/ZKP candidate claim and `8 / 8` public cases.
+The current candidate input and Rust guest now also carry a cycle-free
+`primary_strict_claim` for the guarded replayed-tail `36,973,222 / 1,968`
+result selected by `primary_strict_result.json`; the compressed/Groth16
+fixtures remain stale until rebuilt against that input.
 The compiler artifacts also include `public_candidate_materialized_circuit_manifest.json`,
 `public_engine_manifest.json`, and `engine_completion_audit.json`, the no-ZKP
 engine gate for the current public candidate. The public-candidate materialized manifest expands the reusable

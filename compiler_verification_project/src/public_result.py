@@ -84,6 +84,7 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
     public_candidate_materialized_manifest = _load(ARTIFACT_ROOT / 'public_candidate_materialized_circuit_manifest.json')
     public_engine_manifest = _load(ARTIFACT_ROOT / 'public_engine_manifest.json')
     engine_completion_audit = _load(ARTIFACT_ROOT / 'engine_completion_audit.json')
+    primary_strict_result = _load(ARTIFACT_ROOT / 'primary_strict_result.json')
     compiler_parameters = _load(ARTIFACT_ROOT / 'compiler_parameters.json')
     family_frontier = _load(ARTIFACT_ROOT / 'family_frontier.json')
     public_policy = compiler_parameters['public_headline_policy']
@@ -146,6 +147,20 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             and input_payload['claim_summary']['resource_engine_summary']['matches_resource_certificate_snapshot'] is True
             and int(input_payload['claim_summary']['non_clifford_formula']['reconstructed_total']) == non_clifford
             and int(input_payload['claim_summary']['logical_qubit_formula']['reconstructed_total']) == qubits
+        ),
+        'input_binds_primary_strict_claim_without_digest_cycle': (
+            input_payload['primary_strict_claim_sha256'] == input_payload['primary_strict_claim_document']['sha256']
+            and input_payload['primary_strict_claim_document']['document_type'] == 'primary_strict_claim'
+            and input_payload['primary_strict_claim_document']['payload']['schema'] == 'compiler-project-primary-strict-claim-v1'
+            and input_payload['primary_strict_claim_document']['payload']['source_artifact_path'] == 'compiler_verification_project/artifacts/primary_strict_result.json'
+            and input_payload['primary_strict_claim_document']['payload']['selected_result'] == primary_strict_result['selected_result']
+            and input_payload['primary_strict_claim_document']['payload']['selected_result']['non_clifford'] == int(input_payload['claim_summary']['expected_full_oracle_non_clifford'])
+            and input_payload['primary_strict_claim_document']['payload']['selected_result']['logical_qubits'] == int(input_payload['claim_summary']['expected_total_logical_qubits'])
+            and input_payload['primary_strict_claim_document']['payload']['resource_claim_level']['strict_resource_headline'] == 'current_primary'
+            and input_payload['primary_strict_claim_document']['payload']['resource_claim_level']['zkp_binds_this_strict_result'] == 'not_yet_achieved'
+            and 'source_digests' not in input_payload['primary_strict_claim_document']['payload']
+            and 'primary_strict_result_sha256' not in input_payload
+            and 'primary_strict_result_document' not in input_payload
         ),
         'all_fixtures_bind_same_public_values': (
             core_fixture['public_values'] == public_values

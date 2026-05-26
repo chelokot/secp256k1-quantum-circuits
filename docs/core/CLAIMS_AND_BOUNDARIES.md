@@ -32,8 +32,10 @@ the `1,968`-qubit peak while leaving non-tail rows unchanged. The manifest also
 emits a separate strict materialized flat-netlist commitment whose segment
 hashes include that projected liveness. The remaining promotion step is to make
 that strict flat stream the canonical public-engine/ZKP source instead of
-keeping the old wrapper stream beside it. The ZKP guest/input still binds the
-old macro wrapper until it is rebuilt around the strict seven-slot contract.
+keeping the old wrapper stream beside it. The current reusable-chunk ZKP
+candidate input and guest carry a cycle-free `primary_strict_claim` for the
+strict seven-slot contract, while the checked compressed and Groth16 proof
+fixtures remain stale until rebuilt against that input.
 
 ## Exact layers
 

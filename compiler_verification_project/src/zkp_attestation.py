@@ -871,6 +871,7 @@ def _build_zkp_attestation_materials(
         payload=compiler_parameters,
     )
     public_engine_manifest_blob: Dict[str, Any] | None = None
+    primary_strict_claim_blob: Dict[str, Any] | None = None
     if str(family_payload['slot_allocation_family']) == 'reusable_chunk_tail_leaf_v1':
         public_engine_manifest_path = 'compiler_verification_project/artifacts/public_engine_manifest.json'
         public_engine_manifest = json.loads((PROJECT_ROOT / public_engine_manifest_path).read_text())
@@ -878,6 +879,20 @@ def _build_zkp_attestation_materials(
             document_type='public_engine_manifest',
             artifact_path=public_engine_manifest_path,
             payload=public_engine_manifest,
+        )
+        primary_strict_result_path = 'compiler_verification_project/artifacts/primary_strict_result.json'
+        primary_strict_result = json.loads((PROJECT_ROOT / primary_strict_result_path).read_text())
+        primary_strict_claim = {
+            'schema': 'compiler-project-primary-strict-claim-v1',
+            'source_artifact_path': primary_strict_result_path,
+            'selected_result': dict(primary_strict_result['selected_result']),
+            'resource_claim_level': dict(primary_strict_result['resource_claim_level']),
+            'pass': bool(primary_strict_result['pass']),
+        }
+        primary_strict_claim_blob = _committed_payload(
+            document_type='primary_strict_claim',
+            artifact_path=primary_strict_result_path,
+            payload=primary_strict_claim,
         )
     else:
         public_engine_manifest = None
@@ -1030,6 +1045,9 @@ def _build_zkp_attestation_materials(
     if public_engine_manifest_blob is not None:
         input_payload['public_engine_manifest_sha256'] = public_engine_manifest_blob['sha256']
         input_payload['public_engine_manifest_document'] = public_engine_manifest_blob
+    if primary_strict_claim_blob is not None:
+        input_payload['primary_strict_claim_sha256'] = primary_strict_claim_blob['sha256']
+        input_payload['primary_strict_claim_document'] = primary_strict_claim_blob
     return {
         'input': input_payload,
         'claim': public_claim,

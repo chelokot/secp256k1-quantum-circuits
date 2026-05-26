@@ -85,6 +85,8 @@ def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None
     compiler_parameters_document = payload['compiler_parameters_document']
     public_engine_document = payload['public_engine_manifest_document']
     public_engine_manifest = public_engine_document['payload']
+    primary_strict_claim_document = payload['primary_strict_claim_document']
+    primary_strict_claim = primary_strict_claim_document['payload']
     liveness = resource_document['payload']['executable_liveness']
     primitive_contract = resource_document['payload']['chunked_multiplier_primitive_contract']
     qroam_primitive = resource_document['payload']['qroam_primitive_certificate']
@@ -113,6 +115,17 @@ def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None
     assert claim['expected_full_oracle_non_clifford'] == non_clifford_derivation['candidate_total_non_clifford']
     assert payload['public_engine_manifest_sha256'] == public_engine_document['sha256']
     assert public_engine_document['document_type'] == 'public_engine_manifest'
+    assert payload['primary_strict_claim_sha256'] == primary_strict_claim_document['sha256']
+    assert primary_strict_claim_document['document_type'] == 'primary_strict_claim'
+    assert primary_strict_claim['pass'] is True
+    assert primary_strict_claim['selected_result']['non_clifford'] == claim['expected_full_oracle_non_clifford']
+    assert primary_strict_claim['selected_result']['logical_qubits'] == claim['expected_total_logical_qubits']
+    assert primary_strict_claim['selected_result']['tail_field_slots'] == claim['logical_qubit_formula']['arithmetic_slot_count']
+    assert primary_strict_claim['resource_claim_level']['strict_resource_headline'] == 'current_primary'
+    assert primary_strict_claim['resource_claim_level']['zkp_binds_this_strict_result'] == 'not_yet_achieved'
+    assert 'source_digests' not in primary_strict_claim
+    assert 'primary_strict_result_sha256' not in payload
+    assert 'primary_strict_result_document' not in payload
     assert public_engine_manifest['pass'] is True
     assert public_engine_manifest['selected_family_name'] == payload['selected_family_name']
     assert public_engine_manifest['public_totals']['source'] == PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE

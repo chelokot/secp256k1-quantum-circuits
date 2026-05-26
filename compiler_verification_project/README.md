@@ -257,8 +257,10 @@ The root proof bundle binds the older three-slot reference family. The public
 macro-wrapper proof bundle lives in
 `compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/`
 and must be rebuilt before it can bind the current reusable-chunk macro result
-with `8 / 8` deterministic public cases. It does not yet bind the
-primary strict `36,973,222 / 1,968` guarded replayed-tail headline.
+with `8 / 8` deterministic public cases. The current reusable-chunk candidate
+input and Rust guest carry a cycle-free `primary_strict_claim` for the guarded
+replayed-tail `36,973,222 / 1,968` headline, but the checked compressed and
+Groth16 proof fixtures remain stale until rebuilt against that input.
 
 This is similar in shape to Google's disclosure model, but it is still a proof
 at the repository exact-family boundary, not a primitive-gate full-Shor proof.

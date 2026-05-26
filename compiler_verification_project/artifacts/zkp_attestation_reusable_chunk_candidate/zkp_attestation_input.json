@@ -9210,5 +9210,33 @@
       },
       "pass": true
     }
+  },
+  "primary_strict_claim_sha256": "7aab8a4522c5e4f20402385d72050564db3a3399180d3844cbcae102b29786e5",
+  "primary_strict_claim_document": {
+    "document_type": "primary_strict_claim",
+    "artifact_path": "compiler_verification_project/artifacts/primary_strict_result.json",
+    "digest_scheme": "compiler-project-semantic-json-sha256-v1",
+    "sha256": "7aab8a4522c5e4f20402385d72050564db3a3399180d3844cbcae102b29786e5",
+    "payload": {
+      "schema": "compiler-project-primary-strict-claim-v1",
+      "source_artifact_path": "compiler_verification_project/artifacts/primary_strict_result.json",
+      "selected_result": {
+        "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__strict_fused_output_tail_7_slot_v1__semiclassical_qft_v1",
+        "non_clifford": 36973222,
+        "logical_qubits": 1968,
+        "tail_field_slots": 7,
+        "field_bits": 256,
+        "lookup_workspace_qubits": 173,
+        "control_qubits": 2,
+        "fused_output_guard_qubits": 1,
+        "phase_qubits": 1
+      },
+      "resource_claim_level": {
+        "strict_resource_headline": "current_primary",
+        "clifford_complete_flat_netlist": "not_yet_achieved",
+        "zkp_binds_this_strict_result": "not_yet_achieved"
+      },
+      "pass": true
+    }
   }
 }

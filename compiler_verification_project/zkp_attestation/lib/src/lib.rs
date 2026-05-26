@@ -1817,6 +1817,8 @@ pub struct PreparedAttestationInput {
     pub compiler_parameters_sha256: String,
     #[serde(default)]
     pub public_engine_manifest_sha256: Option<String>,
+    #[serde(default)]
+    pub primary_strict_claim_sha256: Option<String>,
     pub claim_document: CommittedDocument<SemanticJsonPayload>,
     pub leaf_document: CommittedDocument<SemanticJsonPayload>,
     pub family_document: CommittedDocument<SemanticJsonPayload>,
@@ -1825,6 +1827,8 @@ pub struct PreparedAttestationInput {
     pub compiler_parameters_document: CommittedDocument<SemanticJsonPayload>,
     #[serde(default)]
     pub public_engine_manifest_document: Option<CommittedDocument<SemanticJsonPayload>>,
+    #[serde(default)]
+    pub primary_strict_claim_document: Option<CommittedDocument<SemanticJsonPayload>>,
     pub claim_summary: PreparedClaimSummary,
     pub family_summary: PreparedFamilySummary,
     pub prepared_leaf: CompiledLeaf,
@@ -5246,10 +5250,7 @@ fn validate_reusable_chunk_lowering(
             counted_peak_interval_id = json_string_field(interval, "interval_id");
         }
     }
-    assert_eq!(
-        counted_peak_live_qubits,
-        family.total_logical_qubits
-    );
+    assert_eq!(counted_peak_live_qubits, family.total_logical_qubits);
     assert_eq!(
         json_u64_field(counted_ir, "recomputed_peak_live_qubits"),
         counted_peak_live_qubits
@@ -5587,7 +5588,9 @@ fn validate_reusable_chunk_lowering(
             "schedule event source PC/op arrays must have equal length"
         );
         for (pc, op) in source_pcs.iter().zip(source_ops) {
-            let pc = pc.as_u64().expect("source_instruction_pcs entries must be u64");
+            let pc = pc
+                .as_u64()
+                .expect("source_instruction_pcs entries must be u64");
             assert_eq!(
                 source_instruction_ops.get(&pc).map(String::as_str),
                 op.as_str(),
@@ -5770,7 +5773,11 @@ fn validate_reusable_chunk_lowering(
         json_string_field(resource_contract_engine, "owner_capacity_sha256")
     );
     assert_eq!(
-        json_string_field(executable_resource_engine, "resource_contract_engine_sha256").len(),
+        json_string_field(
+            executable_resource_engine,
+            "resource_contract_engine_sha256"
+        )
+        .len(),
         64
     );
     let executable_resource_checks = json_object_field(executable_resource_engine, "checks")
@@ -5805,7 +5812,10 @@ fn validate_public_engine_manifest(
         "compiler-project-public-engine-manifest-v1"
     );
     assert!(json_bool_field(manifest, "pass"));
-    assert_eq!(json_string_field(manifest, "selected_family_name"), family.name.as_str());
+    assert_eq!(
+        json_string_field(manifest, "selected_family_name"),
+        family.name.as_str()
+    );
 
     let public_totals = json_object_field(manifest, "public_totals");
     assert_eq!(
@@ -5825,7 +5835,10 @@ fn validate_public_engine_manifest(
     assert_eq!(summary.source, "public_engine_manifest.public_totals");
     assert_eq!(summary.source_document_type, "public_engine_manifest");
     assert_eq!(summary.source_sha256, manifest_sha256);
-    assert_eq!(summary.non_clifford, claim.expected_full_oracle_non_clifford);
+    assert_eq!(
+        summary.non_clifford,
+        claim.expected_full_oracle_non_clifford
+    );
     assert_eq!(summary.logical_qubits, claim.expected_total_logical_qubits);
     assert!(!summary.matches_family_snapshot);
     assert!(!summary.matches_resource_certificate_snapshot);
@@ -5843,13 +5856,17 @@ fn validate_public_engine_manifest(
         claim.expected_total_logical_qubits
     );
 
-    let strict_public_owner_stream = json_object_field(manifest, "strict_public_owner_capacity_stream");
+    let strict_public_owner_stream =
+        json_object_field(manifest, "strict_public_owner_capacity_stream");
     let strict_public_owner_rows = json_array_field(strict_public_owner_stream, "rows");
     let strict_public_owner_total: u64 = strict_public_owner_rows
         .iter()
         .map(|row| json_u64_field(row, "logical_qubits"))
         .sum();
-    assert_eq!(strict_public_owner_total, claim.expected_total_logical_qubits);
+    assert_eq!(
+        strict_public_owner_total,
+        claim.expected_total_logical_qubits
+    );
     assert_eq!(
         json_string_field(strict_public_owner_stream, "source"),
         "public_candidate_materialized_circuit_manifest.strict_replayed_tail_liveness_projection.peak_interval"
@@ -5881,7 +5898,8 @@ fn validate_public_engine_manifest(
         "public_candidate_materialized_circuit_manifest",
     );
     assert!(json_bool_field(public_materialized, "pass"));
-    let materialized_flat_netlist = json_object_field(public_materialized, "canonical_materialized_flat_netlist");
+    let materialized_flat_netlist =
+        json_object_field(public_materialized, "canonical_materialized_flat_netlist");
     assert!(json_bool_field(
         materialized_flat_netlist,
         "exact_operation_stream_materialized"
@@ -5933,7 +5951,10 @@ fn validate_public_engine_manifest(
         "pass"
     ));
     let flat_probe = json_object_field(
-        json_object_field(primitive_evidence, "public_candidate_materialized_circuit_manifest"),
+        json_object_field(
+            primitive_evidence,
+            "public_candidate_materialized_circuit_manifest",
+        ),
         "flat_execution_probe",
     );
     let flat_probe_checks = json_object_field(flat_probe, "checks")
@@ -5954,6 +5975,61 @@ fn validate_public_engine_manifest(
         json_string_field(compiler_evidence, "selected_public_family_name"),
         family.name.as_str()
     );
+}
+
+fn validate_primary_strict_claim(
+    result: &Value,
+    result_sha256: &str,
+    claim: &PreparedClaimSummary,
+) {
+    assert_eq!(
+        json_string_field(result, "schema"),
+        "compiler-project-primary-strict-claim-v1"
+    );
+    assert!(json_bool_field(result, "pass"));
+    assert_eq!(
+        json_string_field(result, "source_artifact_path"),
+        "compiler_verification_project/artifacts/primary_strict_result.json"
+    );
+    let selected = json_object_field(result, "selected_result");
+    assert_eq!(
+        json_u64_field(selected, "non_clifford"),
+        claim.expected_full_oracle_non_clifford
+    );
+    assert_eq!(
+        json_u64_field(selected, "logical_qubits"),
+        claim.expected_total_logical_qubits
+    );
+    assert_eq!(
+        json_u64_field(selected, "tail_field_slots"),
+        claim.logical_qubit_formula.arithmetic_slot_count as u64
+    );
+    assert_eq!(
+        json_u64_field(selected, "field_bits"),
+        claim.logical_qubit_formula.field_bits as u64
+    );
+    assert_eq!(
+        json_u64_field(selected, "lookup_workspace_qubits"),
+        claim.logical_qubit_formula.lookup_workspace_qubits as u64
+    );
+    assert_eq!(
+        json_u64_field(selected, "control_qubits"),
+        claim.logical_qubit_formula.control_slot_count as u64
+    );
+    assert_eq!(
+        json_u64_field(selected, "phase_qubits"),
+        claim.logical_qubit_formula.live_phase_bits as u64
+    );
+    let resource_claim_level = json_object_field(result, "resource_claim_level");
+    assert_eq!(
+        json_string_field(resource_claim_level, "strict_resource_headline"),
+        "current_primary"
+    );
+    assert_eq!(
+        json_string_field(resource_claim_level, "zkp_binds_this_strict_result"),
+        "not_yet_achieved"
+    );
+    assert_eq!(result_sha256.len(), 64);
 }
 
 pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValues {
@@ -6011,6 +6087,19 @@ pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValue
             public_engine_manifest,
             "public_engine_manifest",
             public_engine_manifest_sha256,
+        );
+        let primary_strict_claim = input
+            .primary_strict_claim_document
+            .as_ref()
+            .expect("reusable-chunk input must carry the primary strict claim");
+        let primary_strict_claim_sha256 = input
+            .primary_strict_claim_sha256
+            .as_ref()
+            .expect("reusable-chunk input must carry the primary strict claim digest");
+        validate_committed_value_document(
+            primary_strict_claim,
+            "primary_strict_claim",
+            primary_strict_claim_sha256,
         );
     }
     let compiler_parameters = &input.compiler_parameters_document.payload.0;
@@ -6083,6 +6172,19 @@ pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValue
             &input.resource_certificate_document.payload.0,
             compiler_parameters,
         );
+        validate_primary_strict_claim(
+            &input
+                .primary_strict_claim_document
+                .as_ref()
+                .expect("reusable-chunk input must carry the primary strict claim")
+                .payload
+                .0,
+            input
+                .primary_strict_claim_sha256
+                .as_ref()
+                .expect("reusable-chunk input must carry the primary strict claim digest"),
+            claim,
+        );
     } else {
         validate_resource_certificate(
             &input.resource_certificate_document.payload.0,
@@ -6153,10 +6255,19 @@ pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValue
         claim.logical_qubit_formula.reconstructed_total
     );
     if input.resource_certificate_document.document_type == "reusable_chunk_lowering" {
-        assert_ne!(claim.expected_total_logical_qubits, family.total_logical_qubits);
+        assert_ne!(
+            claim.expected_total_logical_qubits,
+            family.total_logical_qubits
+        );
     } else {
-        assert_eq!(claim.logical_qubit_formula.arithmetic_slot_count, family.arithmetic_slot_count);
-        assert_eq!(claim.logical_qubit_formula.control_slot_count, family.control_slot_count);
+        assert_eq!(
+            claim.logical_qubit_formula.arithmetic_slot_count,
+            family.arithmetic_slot_count
+        );
+        assert_eq!(
+            claim.logical_qubit_formula.control_slot_count,
+            family.control_slot_count
+        );
         assert_eq!(
             claim.logical_qubit_formula.borrowed_interface_qubits,
             family.borrowed_interface_qubits
@@ -6165,8 +6276,14 @@ pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValue
             claim.logical_qubit_formula.lookup_workspace_qubits,
             family.lookup_workspace_qubits
         );
-        assert_eq!(claim.logical_qubit_formula.live_phase_bits, family.live_phase_bits);
-        assert_eq!(claim.expected_total_logical_qubits, family.total_logical_qubits);
+        assert_eq!(
+            claim.logical_qubit_formula.live_phase_bits,
+            family.live_phase_bits
+        );
+        assert_eq!(
+            claim.expected_total_logical_qubits,
+            family.total_logical_qubits
+        );
     }
 
     let modulus = parse_hex_uint(&case_corpus.field_modulus_hex);
@@ -6291,6 +6408,16 @@ mod tests {
         let digest = semantic_payload_sha256(&document.document_type, &document.payload);
         document.sha256 = digest.clone();
         input.public_engine_manifest_sha256 = Some(digest);
+    }
+
+    fn refresh_primary_strict_claim_digest(input: &mut PreparedAttestationInput) {
+        let document = input
+            .primary_strict_claim_document
+            .as_mut()
+            .expect("reusable-chunk fixture must carry primary strict claim");
+        let digest = semantic_payload_sha256(&document.document_type, &document.payload);
+        document.sha256 = digest.clone();
+        input.primary_strict_claim_sha256 = Some(digest);
     }
 
     #[test]
@@ -6629,6 +6756,34 @@ mod tests {
             .0["primitive_operation_evidence"]["public_candidate_materialized_circuit_manifest"]
             ["operand_source_binding"]["pass"] = serde_json::json!(false);
         refresh_public_engine_manifest_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_primary_strict_claim_total_forgery() {
+        let mut input = checked_reusable_chunk_input();
+        input
+            .primary_strict_claim_document
+            .as_mut()
+            .expect("reusable-chunk fixture must carry primary strict claim")
+            .payload
+            .0["selected_result"]["logical_qubits"] = serde_json::json!(1200);
+        refresh_primary_strict_claim_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_primary_strict_claim_level_forgery() {
+        let mut input = checked_reusable_chunk_input();
+        input
+            .primary_strict_claim_document
+            .as_mut()
+            .expect("reusable-chunk fixture must carry primary strict claim")
+            .payload
+            .0["resource_claim_level"]["strict_resource_headline"] = serde_json::json!("old");
+        refresh_primary_strict_claim_digest(&mut input);
         run_prepared_attestation(&input);
     }
 

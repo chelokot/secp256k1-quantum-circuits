@@ -56,8 +56,8 @@
   "checked_artifacts": {
     "input": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
-      "sha256": "559b03ea01bf767e841ba48cea04955e664f4bbaa3b175ac6114a1c980b06107",
-      "bytes": 344068
+      "sha256": "4a20bb7020e6db38366e2bbecc8857c15607506001e2fffd271a2ce32d9b1e55",
+      "bytes": 345338
     },
     "claim": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json",
@@ -229,6 +229,7 @@
     "public_values_match_input_claim": false,
     "public_headline_totals_come_from_engine_output": true,
     "input_claim_summary_is_engine_snapshot_not_primary_formula": false,
+    "input_binds_primary_strict_claim_without_digest_cycle": true,
     "all_fixtures_bind_same_public_values": false,
     "fixtures_bind_checked_input_digest": false,
     "compressed_fixture_binds_checked_proof_binary": true,
