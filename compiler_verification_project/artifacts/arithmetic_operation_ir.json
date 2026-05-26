@@ -120,6 +120,222 @@
       }
     ]
   },
+  "selected_leaf_exact_operation_stream": {
+    "schema": "compiler-project-selected-leaf-exact-arithmetic-operation-stream-v1",
+    "definition": "Exact primitive operation stream for arithmetic opcodes selected by the leaf opcode histogram. Rows are generated from arithmetic_lowerings primitive operations and segmented without checking every row into JSON.",
+    "operation_columns": [
+      "operation_index",
+      "leaf_instance_index",
+      "kernel",
+      "stage",
+      "block",
+      "block_operation_index",
+      "gate",
+      "operand_0",
+      "operand_1",
+      "operand_2"
+    ],
+    "operation_rows_materialized_in_json": false,
+    "segment_size": 1000000,
+    "operation_count": 1368438,
+    "segment_count": 2,
+    "segment_merkle_root_sha256": "03dfcc0ad94c897c385c72e308a1b890ec5a198cb76661cea80e3b08dca82cb8",
+    "gate_totals": {
+      "ccx": 1126842,
+      "cx": 0,
+      "x": 0,
+      "measurement": 241596
+    },
+    "non_clifford_count": 1126842,
+    "segments": [
+      {
+        "segment_index": 0,
+        "operation_start": 0,
+        "operation_end_exclusive": 1000000,
+        "operation_count": 1000000,
+        "gate_totals": {
+          "ccx": 795670,
+          "cx": 0,
+          "x": 0,
+          "measurement": 204330
+        },
+        "non_clifford_count": 795670,
+        "sha256": "df60382f7bea69e8236a6a3d7772dc10f147f6e98dcef62358e9916dea2df472"
+      },
+      {
+        "segment_index": 1,
+        "operation_start": 1000000,
+        "operation_end_exclusive": 1368438,
+        "operation_count": 368438,
+        "gate_totals": {
+          "ccx": 331172,
+          "cx": 0,
+          "x": 0,
+          "measurement": 37266
+        },
+        "non_clifford_count": 331172,
+        "sha256": "2396d1616af5ecb7a453b0c3affd4e009d86060a0ebd0036b0a3cb21a3c87c9e"
+      }
+    ],
+    "preview_head": [
+      {
+        "operation_index": 0,
+        "leaf_instance_index": 0,
+        "kernel": "complete_a0_all_streamed_tail",
+        "stage": "tail_derive_g",
+        "block": "derive_g_modular_adder",
+        "block_operation_index": 0,
+        "gate": "ccx",
+        "operands": [
+          0
+        ]
+      },
+      {
+        "operation_index": 1,
+        "leaf_instance_index": 0,
+        "kernel": "complete_a0_all_streamed_tail",
+        "stage": "tail_derive_g",
+        "block": "derive_g_modular_adder",
+        "block_operation_index": 1,
+        "gate": "measurement",
+        "operands": [
+          0
+        ]
+      },
+      {
+        "operation_index": 2,
+        "leaf_instance_index": 0,
+        "kernel": "complete_a0_all_streamed_tail",
+        "stage": "tail_derive_g",
+        "block": "derive_g_modular_adder",
+        "block_operation_index": 2,
+        "gate": "ccx",
+        "operands": [
+          1
+        ]
+      },
+      {
+        "operation_index": 3,
+        "leaf_instance_index": 0,
+        "kernel": "complete_a0_all_streamed_tail",
+        "stage": "tail_derive_g",
+        "block": "derive_g_modular_adder",
+        "block_operation_index": 3,
+        "gate": "measurement",
+        "operands": [
+          1
+        ]
+      },
+      {
+        "operation_index": 4,
+        "leaf_instance_index": 0,
+        "kernel": "complete_a0_all_streamed_tail",
+        "stage": "tail_derive_g",
+        "block": "derive_g_modular_adder",
+        "block_operation_index": 4,
+        "gate": "ccx",
+        "operands": [
+          2
+        ]
+      },
+      {
+        "operation_index": 5,
+        "leaf_instance_index": 0,
+        "kernel": "complete_a0_all_streamed_tail",
+        "stage": "tail_derive_g",
+        "block": "derive_g_modular_adder",
+        "block_operation_index": 5,
+        "gate": "measurement",
+        "operands": [
+          2
+        ]
+      }
+    ],
+    "preview_tail": [
+      {
+        "operation_index": 1368432,
+        "leaf_instance_index": 0,
+        "kernel": "complete_a0_all_streamed_tail",
+        "stage": "all_streamed_fully_streamed_tail_output_combine",
+        "block": "y3_in_place_zero_lift_guard",
+        "block_operation_index": 504,
+        "gate": "ccx",
+        "operands": [
+          249
+        ]
+      },
+      {
+        "operation_index": 1368433,
+        "leaf_instance_index": 0,
+        "kernel": "complete_a0_all_streamed_tail",
+        "stage": "all_streamed_fully_streamed_tail_output_combine",
+        "block": "y3_in_place_zero_lift_guard",
+        "block_operation_index": 505,
+        "gate": "ccx",
+        "operands": [
+          250
+        ]
+      },
+      {
+        "operation_index": 1368434,
+        "leaf_instance_index": 0,
+        "kernel": "complete_a0_all_streamed_tail",
+        "stage": "all_streamed_fully_streamed_tail_output_combine",
+        "block": "y3_in_place_zero_lift_guard",
+        "block_operation_index": 506,
+        "gate": "ccx",
+        "operands": [
+          251
+        ]
+      },
+      {
+        "operation_index": 1368435,
+        "leaf_instance_index": 0,
+        "kernel": "complete_a0_all_streamed_tail",
+        "stage": "all_streamed_fully_streamed_tail_output_combine",
+        "block": "y3_in_place_zero_lift_guard",
+        "block_operation_index": 507,
+        "gate": "ccx",
+        "operands": [
+          252
+        ]
+      },
+      {
+        "operation_index": 1368436,
+        "leaf_instance_index": 0,
+        "kernel": "complete_a0_all_streamed_tail",
+        "stage": "all_streamed_fully_streamed_tail_output_combine",
+        "block": "y3_in_place_zero_lift_guard",
+        "block_operation_index": 508,
+        "gate": "ccx",
+        "operands": [
+          253
+        ]
+      },
+      {
+        "operation_index": 1368437,
+        "leaf_instance_index": 0,
+        "kernel": "complete_a0_all_streamed_tail",
+        "stage": "all_streamed_fully_streamed_tail_output_combine",
+        "block": "y3_in_place_zero_lift_guard",
+        "block_operation_index": 509,
+        "gate": "ccx",
+        "operands": [
+          254
+        ]
+      }
+    ],
+    "checks": {
+      "segment_rows_cover_operation_count": true,
+      "segment_gate_totals_cover_stream": {
+        "ccx": true,
+        "cx": true,
+        "x": true,
+        "measurement": true
+      }
+    },
+    "pass": true
+  },
   "kernels": [
     {
       "opcode": "field_mul",
@@ -13127,6 +13343,7 @@
     "repeated_ladder_generators_use_bit_index_operands": true,
     "non_qroam_generated_ladders_use_typed_ladder_generator": true,
     "leaf_arithmetic_total_matches_lowering_reconstruction": true,
+    "selected_leaf_exact_stream_matches_leaf_summary": true,
     "leaf_arithmetic_opcodes_are_covered": true,
     "modular_kernels_derive_from_executable_modular_circuit_ir": true,
     "tail_macro_kernel_derives_from_tail_macro_engine": true

@@ -571,6 +571,7 @@ def build_arithmetic_operation_ir_checks(artifacts: Mapping[str, Any]) -> Dict[s
         leaf_opcode_histogram=leaf_opcode_histogram(),
     )
     leaf_summary = arithmetic_ir['leaf_arithmetic_summary']
+    exact_stream = arithmetic_ir['selected_leaf_exact_operation_stream']
     kernel_rows = arithmetic_ir['kernels']
     block_rows = [
         block
@@ -583,6 +584,7 @@ def build_arithmetic_operation_ir_checks(artifacts: Mapping[str, Any]) -> Dict[s
         _check('arithmetic_operation_ir_schema_is_current', arithmetic_ir['schema'] == ARITHMETIC_OPERATION_IR_SCHEMA, ARITHMETIC_OPERATION_IR_SCHEMA, arithmetic_ir['schema']),
         _check('arithmetic_operation_ir_passes_internal_checks', arithmetic_ir['pass'] is True and all(arithmetic_ir['checks'].values()), True, arithmetic_ir['checks']),
         _check('arithmetic_operation_ir_leaf_total_matches_arithmetic_lowering', leaf_summary['primitive_counts_total'] == artifacts['arithmetic_lowerings']['leaf_reconstruction']['primitive_totals'] and leaf_summary['non_clifford_total'] == artifacts['arithmetic_lowerings']['leaf_reconstruction']['arithmetic_leaf_non_clifford'], artifacts['arithmetic_lowerings']['leaf_reconstruction'], leaf_summary),
+        _check('arithmetic_operation_ir_selected_leaf_exact_stream_matches_leaf_summary', exact_stream['pass'] is True and exact_stream['gate_totals'] == leaf_summary['primitive_counts_total'] and exact_stream['non_clifford_count'] == leaf_summary['non_clifford_total'] and len(exact_stream['segment_merkle_root_sha256']) == 64, leaf_summary['primitive_counts_total'], exact_stream),
         _check('arithmetic_operation_ir_block_stream_digests_are_present', all(len(block['operation_stream_sha256']) == 64 for block in block_rows), '64 hex chars per block digest', [block['operation_stream_sha256'] for block in block_rows[:8]]),
         _check('arithmetic_operation_ir_tracks_operand_capacity', arithmetic_ir['summary']['max_block_operand_slots_required'] >= FIELD_BITS and all(block['operand_profile']['negative_operand_count'] == 0 for block in block_rows), {'min_operand_slots_required': FIELD_BITS, 'negative_operands': 0}, arithmetic_ir['summary']),
         _check('arithmetic_operation_ir_generator_operand_contracts_pass', arithmetic_ir['checks']['generator_operand_contracts_pass'] is True and arithmetic_ir['checks']['repeated_ladder_generators_use_bit_index_operands'] is True and arithmetic_ir['checks']['non_qroam_generated_ladders_use_typed_ladder_generator'] is True, True, arithmetic_ir['checks']),

@@ -291,6 +291,8 @@ def build_public_engine_manifest(
         'arithmetic_operation_ir_binds_tail_opcode': (
             arithmetic_operation_ir['pass'] is True
             and arithmetic_tail_row['opcode'] == tail_opcode
+            and arithmetic_operation_ir['selected_leaf_exact_operation_stream']['pass'] is True
+            and int(arithmetic_operation_ir['selected_leaf_exact_operation_stream']['non_clifford_count']) == int(arithmetic_operation_ir['leaf_arithmetic_summary']['non_clifford_total'])
             and int(reusable_chunk_lowering['chunked_multiplier_primitive_contract']['chunk_bits']) == int(reusable_chunk_lowering['executable_contract']['chunk_contract']['chunk_bits'])
             and int(arithmetic_operation_ir['leaf_arithmetic_summary']['leaf_opcode_histogram'][tail_opcode]) == int(arithmetic_tail_row['leaf_instance_count'])
             and int(arithmetic_tail_row['kernel_operation_count']) == sum(int(value) for value in arithmetic_tail_row['primitive_counts_total'].values())
@@ -600,6 +602,19 @@ def build_public_engine_manifest(
                     for key, value in sorted(arithmetic_tail_row['primitive_counts_total'].items())
                 },
                 'leaf_arithmetic_operation_stream_sha256': arithmetic_operation_ir['leaf_arithmetic_summary']['operation_stream_sha256'],
+                'selected_leaf_exact_operation_stream': {
+                    'schema': arithmetic_operation_ir['selected_leaf_exact_operation_stream']['schema'],
+                    'operation_rows_materialized_in_json': bool(arithmetic_operation_ir['selected_leaf_exact_operation_stream']['operation_rows_materialized_in_json']),
+                    'operation_count': int(arithmetic_operation_ir['selected_leaf_exact_operation_stream']['operation_count']),
+                    'segment_count': int(arithmetic_operation_ir['selected_leaf_exact_operation_stream']['segment_count']),
+                    'segment_merkle_root_sha256': arithmetic_operation_ir['selected_leaf_exact_operation_stream']['segment_merkle_root_sha256'],
+                    'gate_totals': {
+                        key: int(value)
+                        for key, value in sorted(arithmetic_operation_ir['selected_leaf_exact_operation_stream']['gate_totals'].items())
+                    },
+                    'non_clifford_count': int(arithmetic_operation_ir['selected_leaf_exact_operation_stream']['non_clifford_count']),
+                    'pass': bool(arithmetic_operation_ir['selected_leaf_exact_operation_stream']['pass']),
+                },
             },
             'qroam_primitive_certificate': {
                 'schema': qroam_primitive_certificate['schema'],

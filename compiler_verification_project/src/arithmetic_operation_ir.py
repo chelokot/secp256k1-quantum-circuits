@@ -21,10 +21,25 @@ ARITHMETIC_OPERATION_STREAM_ENCODING = [
     'operand_2',
 ]
 PRIMITIVE_KEYS = ('ccx', 'cx', 'x', 'measurement')
+LEAF_EXACT_OPERATION_STREAM_SEGMENT_SIZE = 1_000_000
 
 
 def _canonical_json(payload: Any) -> str:
     return json.dumps(payload, sort_keys=True, separators=(',', ':'))
+
+
+def _merkle_root(hashes: List[str]) -> str:
+    if not hashes:
+        return hashlib.sha256(b'').hexdigest()
+    level = list(hashes)
+    while len(level) > 1:
+        if len(level) % 2:
+            level.append(level[-1])
+        level = [
+            hashlib.sha256((level[index] + level[index + 1]).encode('ascii')).hexdigest()
+            for index in range(0, len(level), 2)
+        ]
+    return level[0]
 
 
 def _empty_counts() -> Dict[str, int]:
@@ -50,6 +65,32 @@ def _encoded_operation(
         stage,
         block,
         int(operation_index),
+        str(operation[0]),
+        operands[0] if len(operands) > 0 else '',
+        operands[1] if len(operands) > 1 else '',
+        operands[2] if len(operands) > 2 else '',
+    ]
+    return '\t'.join(str(value) for value in row) + '\n'
+
+
+def _encoded_leaf_exact_operation(
+    *,
+    operation_index: int,
+    leaf_instance_index: int,
+    kernel: str,
+    stage: str,
+    block: str,
+    block_operation_index: int,
+    operation: List[Any],
+) -> str:
+    operands = [int(value) for value in operation[1:]]
+    row = [
+        int(operation_index),
+        int(leaf_instance_index),
+        kernel,
+        stage,
+        block,
+        int(block_operation_index),
         str(operation[0]),
         operands[0] if len(operands) > 0 else '',
         operands[1] if len(operands) > 1 else '',
@@ -323,6 +364,128 @@ def _leaf_arithmetic_summary(
     }
 
 
+def _leaf_exact_operation_stream(
+    *,
+    arithmetic_lowerings: Mapping[str, Any],
+    leaf_opcode_histogram: Mapping[str, int],
+) -> Dict[str, Any]:
+    columns = [
+        'operation_index',
+        'leaf_instance_index',
+        'kernel',
+        'stage',
+        'block',
+        'block_operation_index',
+        'gate',
+        'operand_0',
+        'operand_1',
+        'operand_2',
+    ]
+    kernel_lookup = {
+        str(kernel['opcode']): kernel
+        for kernel in arithmetic_lowerings['kernels']
+    }
+    operation_count = 0
+    gate_totals = _empty_counts()
+    segment_start = 0
+    segment_count = 0
+    segment_gate_totals = _empty_counts()
+    segment_digest = hashlib.sha256()
+    segment_digest.update(('\t'.join(columns) + '\n').encode('ascii'))
+    segments: List[Dict[str, Any]] = []
+    preview_head: List[Dict[str, Any]] = []
+    preview_tail: List[Dict[str, Any]] = []
+
+    def flush_segment() -> None:
+        nonlocal segment_start, segment_count, segment_gate_totals, segment_digest
+        if segment_count == 0:
+            return
+        segments.append({
+            'segment_index': len(segments),
+            'operation_start': segment_start,
+            'operation_end_exclusive': segment_start + segment_count,
+            'operation_count': segment_count,
+            'gate_totals': segment_gate_totals,
+            'non_clifford_count': int(segment_gate_totals['ccx']),
+            'sha256': segment_digest.hexdigest(),
+        })
+        segment_start += segment_count
+        segment_count = 0
+        segment_gate_totals = _empty_counts()
+        segment_digest = hashlib.sha256()
+        segment_digest.update(('\t'.join(columns) + '\n').encode('ascii'))
+
+    for opcode, leaf_instance_count in sorted(leaf_opcode_histogram.items()):
+        if int(leaf_instance_count) == 0 or opcode not in kernel_lookup:
+            continue
+        kernel = kernel_lookup[opcode]
+        for leaf_instance_index in range(int(leaf_instance_count)):
+            for stage in kernel['stages']:
+                for block in stage['blocks']:
+                    operations = materialize_arithmetic_primitive_operations(block)
+                    for block_operation_index, operation in enumerate(operations):
+                        gate = str(operation[0])
+                        encoded = _encoded_leaf_exact_operation(
+                            operation_index=operation_count,
+                            leaf_instance_index=leaf_instance_index,
+                            kernel=opcode,
+                            stage=str(stage['name']),
+                            block=str(block['name']),
+                            block_operation_index=block_operation_index,
+                            operation=operation,
+                        )
+                        segment_digest.update(encoded.encode('ascii'))
+                        gate_totals[gate] += 1
+                        segment_gate_totals[gate] += 1
+                        compact = {
+                            'operation_index': operation_count,
+                            'leaf_instance_index': leaf_instance_index,
+                            'kernel': opcode,
+                            'stage': str(stage['name']),
+                            'block': str(block['name']),
+                            'block_operation_index': block_operation_index,
+                            'gate': gate,
+                            'operands': [int(value) for value in operation[1:]],
+                        }
+                        if len(preview_head) < 6:
+                            preview_head.append(compact)
+                        preview_tail.append(compact)
+                        if len(preview_tail) > 6:
+                            preview_tail.pop(0)
+                        operation_count += 1
+                        segment_count += 1
+                        if segment_count == LEAF_EXACT_OPERATION_STREAM_SEGMENT_SIZE:
+                            flush_segment()
+    flush_segment()
+    checks = {
+        'segment_rows_cover_operation_count': sum(int(segment['operation_count']) for segment in segments) == operation_count,
+        'segment_gate_totals_cover_stream': {
+            gate: sum(int(segment['gate_totals'][gate]) for segment in segments) == int(gate_totals[gate])
+            for gate in PRIMITIVE_KEYS
+        },
+    }
+    return {
+        'schema': 'compiler-project-selected-leaf-exact-arithmetic-operation-stream-v1',
+        'definition': 'Exact primitive operation stream for arithmetic opcodes selected by the leaf opcode histogram. Rows are generated from arithmetic_lowerings primitive operations and segmented without checking every row into JSON.',
+        'operation_columns': columns,
+        'operation_rows_materialized_in_json': False,
+        'segment_size': LEAF_EXACT_OPERATION_STREAM_SEGMENT_SIZE,
+        'operation_count': operation_count,
+        'segment_count': len(segments),
+        'segment_merkle_root_sha256': _merkle_root([segment['sha256'] for segment in segments]),
+        'gate_totals': gate_totals,
+        'non_clifford_count': int(gate_totals['ccx']),
+        'segments': segments,
+        'preview_head': preview_head,
+        'preview_tail': preview_tail,
+        'checks': checks,
+        'pass': (
+            checks['segment_rows_cover_operation_count'] is True
+            and all(checks['segment_gate_totals_cover_stream'].values())
+        ),
+    }
+
+
 def build_arithmetic_operation_ir(
     *,
     arithmetic_lowerings: Mapping[str, Any],
@@ -332,6 +495,10 @@ def build_arithmetic_operation_ir(
     leaf_summary = _leaf_arithmetic_summary(
         leaf_opcode_histogram=leaf_opcode_histogram,
         kernel_rows=kernels,
+    )
+    leaf_exact_stream = _leaf_exact_operation_stream(
+        arithmetic_lowerings=arithmetic_lowerings,
+        leaf_opcode_histogram=leaf_opcode_histogram,
     )
     block_rows = [
         block
@@ -392,6 +559,11 @@ def build_arithmetic_operation_ir(
             == arithmetic_lowerings['leaf_reconstruction']['primitive_totals']
             and leaf_summary['non_clifford_total']
             == int(arithmetic_lowerings['leaf_reconstruction']['arithmetic_leaf_non_clifford'])
+        ),
+        'selected_leaf_exact_stream_matches_leaf_summary': (
+            leaf_exact_stream['pass'] is True
+            and leaf_exact_stream['gate_totals'] == leaf_summary['primitive_counts_total']
+            and int(leaf_exact_stream['non_clifford_count']) == int(leaf_summary['non_clifford_total'])
         ),
         'leaf_arithmetic_opcodes_are_covered': (
             sorted(row['opcode'] for row in leaf_summary['rows'])
@@ -462,6 +634,7 @@ def build_arithmetic_operation_ir(
             ),
         },
         'leaf_arithmetic_summary': leaf_summary,
+        'selected_leaf_exact_operation_stream': leaf_exact_stream,
         'kernels': kernels,
         'checks': checks,
         'pass': all(checks.values()),

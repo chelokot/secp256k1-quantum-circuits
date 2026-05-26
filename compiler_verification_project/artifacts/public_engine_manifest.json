@@ -21,7 +21,7 @@
     "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
     "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
     "resource_contract_engine_sha256": "0447031a514b04038ab0f51e63a0e1a5ffa187d1cab694de20d7dfc8196ea1e0",
-    "public_candidate_materialized_circuit_manifest_sha256": "19a14f04ff92bfa27030148542edbc09bf8ebe013dec734414f73f69bea86441",
+    "public_candidate_materialized_circuit_manifest_sha256": "24cec5e722c6609f59241c862860a542daa883752518c94498bd1aa2d87a8196",
     "qroam_table_cnot_materialization_sha256": "b783455ac10c7da613d154ada14315069926fddec5ce0a1ebd23e1cb4d8f3916"
   },
   "instruction_stream": {
@@ -711,7 +711,7 @@
   "primitive_operation_evidence": {
     "public_candidate_materialized_circuit_manifest": {
       "schema": "compiler-project-public-candidate-materialized-circuit-manifest-v1",
-      "sha256": "19a14f04ff92bfa27030148542edbc09bf8ebe013dec734414f73f69bea86441",
+      "sha256": "24cec5e722c6609f59241c862860a542daa883752518c94498bd1aa2d87a8196",
       "pass": true,
       "operation_stream_sha256": "1b91eac3d5109522a43f3fcc09a40d91f2a83ae730581878979f127e0788588e",
       "liveness_binding_stream_sha256": "064b5825a77559fdaab046854b89afdf58e1d3da0be53ab53652bb913c87b8eb",
@@ -829,7 +829,7 @@
     },
     "arithmetic_operation_ir": {
       "schema": "compiler-project-arithmetic-operation-ir-v1",
-      "sha256": "99c199a6b3b9bbf4d7c3899e93c97513b5e62f14ef0a109b359b1eb9f4f18ae4",
+      "sha256": "db536497b5af9943c5e22886c68d8447b253f604ae61166d21300f3a396928e4",
       "pass": true,
       "tail_opcode": "complete_a0_all_streamed_tail",
       "tail_kernel_stage_digest_sha256": "b679c4660bcb71e7ac043f8262b490bc98c533b61ec94d70d769e9a7a92088e8",
@@ -841,7 +841,22 @@
         "measurement": 241596,
         "x": 0
       },
-      "leaf_arithmetic_operation_stream_sha256": "bd5746a7c2109a0cb96fec10308361cfd40f973601bd482491e76f18885d99ff"
+      "leaf_arithmetic_operation_stream_sha256": "bd5746a7c2109a0cb96fec10308361cfd40f973601bd482491e76f18885d99ff",
+      "selected_leaf_exact_operation_stream": {
+        "schema": "compiler-project-selected-leaf-exact-arithmetic-operation-stream-v1",
+        "operation_rows_materialized_in_json": false,
+        "operation_count": 1368438,
+        "segment_count": 2,
+        "segment_merkle_root_sha256": "03dfcc0ad94c897c385c72e308a1b890ec5a198cb76661cea80e3b08dca82cb8",
+        "gate_totals": {
+          "ccx": 1126842,
+          "cx": 0,
+          "measurement": 241596,
+          "x": 0
+        },
+        "non_clifford_count": 1126842,
+        "pass": true
+      }
     },
     "qroam_primitive_certificate": {
       "schema": "compiler-project-qroam-k1-primitive-certificate-v1",

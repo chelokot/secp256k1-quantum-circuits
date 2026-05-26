@@ -288,6 +288,9 @@ def build_engine_completion_audit(
             'evidence_metrics': {
                 'source_bound_run_length_rows': rows_by_source_kind['arithmetic_operation_ir'],
                 'leaf_arithmetic_non_clifford': int(arithmetic_leaf_summary['non_clifford_total']),
+                'selected_leaf_exact_arithmetic_operation_count': int(arithmetic_operation_ir['selected_leaf_exact_operation_stream']['operation_count']),
+                'selected_leaf_exact_arithmetic_segment_count': int(arithmetic_operation_ir['selected_leaf_exact_operation_stream']['segment_count']),
+                'selected_leaf_exact_arithmetic_stream_pass': bool(arithmetic_operation_ir['selected_leaf_exact_operation_stream']['pass']),
                 'field_mul_non_clifford': int(modular_arithmetic_certificate['field_mul_stage_count_certificate']['observed_total_ccx']),
                 'field_mul_stage_counts_match': bool(modular_arithmetic_certificate['field_mul_stage_count_certificate']['stage_counts_match']),
                 'modular_ir_counts_match_lowerings': bool(modular_arithmetic_certificate['executable_circuit_ir_count_certificate']['counts_match_arithmetic_lowerings']),

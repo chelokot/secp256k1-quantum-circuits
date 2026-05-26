@@ -76,6 +76,7 @@ def test_public_engine_manifest_reconstructs_checked_artifact() -> None:
     )
     assert expected['primitive_operation_evidence']['qroam_primitive_certificate']['whole_oracle_non_clifford'] == reusable['non_clifford_derivation']['qroam_chunk_non_clifford']
     qroam_table_cnot = _load('qroam_table_cnot_materialization.json')
+    arithmetic_ir = _load('arithmetic_operation_ir.json')
     assert expected['source_digests']['qroam_table_cnot_materialization_sha256'] == expected['primitive_operation_evidence']['qroam_table_cnot_materialization']['sha256']
     assert expected['primitive_operation_evidence']['qroam_table_cnot_materialization']['full_oracle_emitted_clifford_cx'] == qroam_table_cnot['totals']['full_oracle_emitted_clifford_cx']
     assert expected['primitive_operation_evidence']['qroam_table_cnot_materialization']['segment_count'] == reusable['stream_plan']['whole_oracle_chunk_streams'] * expected['primitive_operation_evidence']['qroam_primitive_certificate']['segment_count']
@@ -85,6 +86,10 @@ def test_public_engine_manifest_reconstructs_checked_artifact() -> None:
     assert expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['flat_operation_count'] > expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['run_length_row_count']
     assert expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['flat_segment_count'] > 1
     assert len(expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['flat_segment_merkle_root_sha256']) == 64
+    exact_arithmetic = expected['primitive_operation_evidence']['arithmetic_operation_ir']['selected_leaf_exact_operation_stream']
+    assert exact_arithmetic['pass'] is True
+    assert exact_arithmetic['non_clifford_count'] == arithmetic_ir['leaf_arithmetic_summary']['non_clifford_total']
+    assert len(exact_arithmetic['segment_merkle_root_sha256']) == 64
     qroam_table_extension = expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['qroam_table_cnot_flat_extension']
     assert qroam_table_extension['pass'] is True
     assert qroam_table_extension['operation_count'] == qroam_table_cnot['totals']['full_oracle_emitted_clifford_cx']
