@@ -79,10 +79,10 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     covered = {row['name']: row for row in expected['covered_boundaries']}
     assert covered['arithmetic_operand_replay']['status'] == 'exact_source_operands_replayed_to_counted_flat_netlist_wires'
     assert covered['qroam_bit_level_netlist_expansion']['status'] == 'indexed_table_cnot_rows_in_canonical_physical_flat_stream_with_iterator_export'
-    assert covered['canonical_engine_zkp_input_authority']['status'] == 'public_engine_manifest_bound_by_candidate_input_and_guest_without_compact_strict_claim'
+    assert covered['canonical_engine_zkp_input_authority']['status'] == 'public_engine_manifest_and_scheduled_physical_boundary_bound_by_candidate_input_and_guest'
     assert covered['tail_reversible_field_schedule_contract']['status'] == 'seven_slot_field_operation_schedule_bound_to_reversible_contract'
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['source_bound_run_length_rows'] == expected['source_binding_summary']['rows_by_source_kind']['arithmetic_operation_ir']
-    assert remaining['modular_arithmetic_clifford_expansion']['status'] == 'scheduled_modular_primitive_stream_spliced_into_public_engine_not_zkp_physical_guest'
+    assert remaining['modular_arithmetic_clifford_expansion']['status'] == 'scheduled_modular_primitive_stream_bound_to_zkp_physical_boundary_not_full_clifford_decomposition'
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['local_modular_primitive_stream_pass'] is True
     assert len(remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['local_modular_primitive_stream_sha256']) == 64
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_engine_integration_pass'] is True

@@ -16,6 +16,19 @@
     "matches_family_snapshot": true,
     "matches_resource_certificate_snapshot": false
   },
+  "physical_boundary_summary": {
+    "source": "compiler_family_summary.legacy_compact_family_snapshot",
+    "source_document_type": "compiler_family_summary",
+    "source_sha256": "4a1222d452363f5c61ce12f9702cbfd03fa3a11596adf722ac41875707ba4713",
+    "canonical_materialized_operation_stream_sha256": "",
+    "canonical_physical_operation_stream_sha256": "",
+    "scheduled_modular_leaf_operation_stream_sha256": "",
+    "scheduled_modular_global_splice_sha256": "",
+    "scheduled_modular_leaf_operation_count": 0,
+    "scheduled_modular_leaf_non_clifford": 0,
+    "scheduled_global_operation_count": 0,
+    "scheduled_global_non_clifford": 0
+  },
   "non_clifford_formula": {
     "arithmetic_leaf_non_clifford": 1126842,
     "per_leaf_lookup_non_clifford": 297,

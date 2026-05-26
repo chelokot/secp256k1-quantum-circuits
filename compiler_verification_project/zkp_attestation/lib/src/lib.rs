@@ -44,6 +44,7 @@ pub struct ClaimDocument {
     pub expected_total_logical_qubits: u64,
     pub expected_case_count: u32,
     pub resource_engine_summary: ResourceEngineSummary,
+    pub physical_boundary_summary: PhysicalBoundarySummary,
     pub non_clifford_formula: NonCliffordFormula,
     pub logical_qubit_formula: LogicalQubitFormula,
     pub notes: Vec<String>,
@@ -58,6 +59,21 @@ pub struct ResourceEngineSummary {
     pub logical_qubits: u64,
     pub matches_family_snapshot: bool,
     pub matches_resource_certificate_snapshot: bool,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct PhysicalBoundarySummary {
+    pub source: String,
+    pub source_document_type: String,
+    pub source_sha256: String,
+    pub canonical_materialized_operation_stream_sha256: String,
+    pub canonical_physical_operation_stream_sha256: String,
+    pub scheduled_modular_leaf_operation_stream_sha256: String,
+    pub scheduled_modular_global_splice_sha256: String,
+    pub scheduled_modular_leaf_operation_count: u64,
+    pub scheduled_modular_leaf_non_clifford: u64,
+    pub scheduled_global_operation_count: u64,
+    pub scheduled_global_non_clifford: u64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -849,6 +865,7 @@ pub struct PreparedClaimSummary {
     pub expected_total_logical_qubits: u64,
     pub expected_case_count: u32,
     pub resource_engine_summary: ResourceEngineSummary,
+    pub physical_boundary_summary: PhysicalBoundarySummary,
     pub non_clifford_formula: NonCliffordFormula,
     pub logical_qubit_formula: LogicalQubitFormula,
 }
@@ -886,6 +903,10 @@ pub struct PublicValues {
     pub family_sha256: String,
     pub case_corpus_sha256: String,
     pub resource_certificate_sha256: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub public_engine_manifest_sha256: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub physical_boundary_sha256: Option<String>,
     pub expected_full_oracle_non_clifford: u64,
     pub expected_total_logical_qubits: u64,
     pub case_count: u32,
@@ -1894,6 +1915,12 @@ impl SemanticHash for u64 {
     }
 }
 
+impl SemanticHash for bool {
+    fn semantic_hash(&self, hasher: &mut Sha256) {
+        hasher.update([if *self { b't' } else { b'f' }]);
+    }
+}
+
 trait SemanticHashInteger {
     fn semantic_hash_integer(&self, hasher: &mut Sha256);
 }
@@ -2067,9 +2094,79 @@ impl SemanticHash for LogicalQubitFormula {
     }
 }
 
-impl SemanticHash for ClaimDocument {
+impl SemanticHash for ResourceEngineSummary {
+    fn semantic_hash(&self, hasher: &mut Sha256) {
+        semantic_hash_object_start(hasher, 7);
+        semantic_hash_field(hasher, "logical_qubits", &self.logical_qubits);
+        semantic_hash_field(
+            hasher,
+            "matches_family_snapshot",
+            &self.matches_family_snapshot,
+        );
+        semantic_hash_field(
+            hasher,
+            "matches_resource_certificate_snapshot",
+            &self.matches_resource_certificate_snapshot,
+        );
+        semantic_hash_field(hasher, "non_clifford", &self.non_clifford);
+        semantic_hash_field(hasher, "source", &self.source);
+        semantic_hash_field(hasher, "source_document_type", &self.source_document_type);
+        semantic_hash_field(hasher, "source_sha256", &self.source_sha256);
+    }
+}
+
+impl SemanticHash for PhysicalBoundarySummary {
     fn semantic_hash(&self, hasher: &mut Sha256) {
         semantic_hash_object_start(hasher, 11);
+        semantic_hash_field(
+            hasher,
+            "canonical_materialized_operation_stream_sha256",
+            &self.canonical_materialized_operation_stream_sha256,
+        );
+        semantic_hash_field(
+            hasher,
+            "canonical_physical_operation_stream_sha256",
+            &self.canonical_physical_operation_stream_sha256,
+        );
+        semantic_hash_field(
+            hasher,
+            "scheduled_global_non_clifford",
+            &self.scheduled_global_non_clifford,
+        );
+        semantic_hash_field(
+            hasher,
+            "scheduled_global_operation_count",
+            &self.scheduled_global_operation_count,
+        );
+        semantic_hash_field(
+            hasher,
+            "scheduled_modular_global_splice_sha256",
+            &self.scheduled_modular_global_splice_sha256,
+        );
+        semantic_hash_field(
+            hasher,
+            "scheduled_modular_leaf_non_clifford",
+            &self.scheduled_modular_leaf_non_clifford,
+        );
+        semantic_hash_field(
+            hasher,
+            "scheduled_modular_leaf_operation_count",
+            &self.scheduled_modular_leaf_operation_count,
+        );
+        semantic_hash_field(
+            hasher,
+            "scheduled_modular_leaf_operation_stream_sha256",
+            &self.scheduled_modular_leaf_operation_stream_sha256,
+        );
+        semantic_hash_field(hasher, "source", &self.source);
+        semantic_hash_field(hasher, "source_document_type", &self.source_document_type);
+        semantic_hash_field(hasher, "source_sha256", &self.source_sha256);
+    }
+}
+
+impl SemanticHash for ClaimDocument {
+    fn semantic_hash(&self, hasher: &mut Sha256) {
+        semantic_hash_object_start(hasher, 13);
         semantic_hash_field(hasher, "expected_case_count", &self.expected_case_count);
         semantic_hash_field(
             hasher,
@@ -2086,6 +2183,16 @@ impl SemanticHash for ClaimDocument {
         semantic_hash_field(hasher, "logical_qubit_formula", &self.logical_qubit_formula);
         semantic_hash_field(hasher, "non_clifford_formula", &self.non_clifford_formula);
         semantic_hash_field(hasher, "notes", &self.notes);
+        semantic_hash_field(
+            hasher,
+            "physical_boundary_summary",
+            &self.physical_boundary_summary,
+        );
+        semantic_hash_field(
+            hasher,
+            "resource_engine_summary",
+            &self.resource_engine_summary,
+        );
         semantic_hash_field(hasher, "schema", &self.schema);
         semantic_hash_field(hasher, "selected_family_alias", &self.selected_family_alias);
         semantic_hash_field(hasher, "selected_family_name", &self.selected_family_name);
@@ -3518,6 +3625,8 @@ pub fn run_attestation(input: &AttestationInput) -> PublicValues {
         case_corpus_sha256: input.case_corpus_document.sha256.clone(),
         resource_certificate_sha256: "legacy-full-document-path-without-resource-certificate"
             .to_owned(),
+        public_engine_manifest_sha256: None,
+        physical_boundary_sha256: None,
         expected_full_oracle_non_clifford: claim.expected_full_oracle_non_clifford,
         expected_total_logical_qubits: claim.expected_total_logical_qubits,
         case_count: case_corpus.case_count,
@@ -3553,6 +3662,7 @@ fn claim_summary_from_claim(claim: &ClaimDocument) -> PreparedClaimSummary {
         expected_total_logical_qubits: claim.expected_total_logical_qubits,
         expected_case_count: claim.expected_case_count,
         resource_engine_summary: claim.resource_engine_summary.clone(),
+        physical_boundary_summary: claim.physical_boundary_summary.clone(),
         non_clifford_formula: claim.non_clifford_formula.clone(),
         logical_qubit_formula: claim.logical_qubit_formula.clone(),
     }
@@ -5856,6 +5966,17 @@ fn validate_public_engine_manifest(
         claim.expected_total_logical_qubits
     );
 
+    let physical_summary = &claim.physical_boundary_summary;
+    assert_eq!(
+        physical_summary.source,
+        "public_engine_manifest.scheduled_modular_global_splice"
+    );
+    assert_eq!(
+        physical_summary.source_document_type,
+        "public_engine_manifest"
+    );
+    assert_eq!(physical_summary.source_sha256, manifest_sha256);
+
     let strict_public_owner_stream =
         json_object_field(manifest, "strict_public_owner_capacity_stream");
     let strict_public_owner_rows = json_array_field(strict_public_owner_stream, "rows");
@@ -5920,9 +6041,21 @@ fn validate_public_engine_manifest(
         json_string_field(materialized_flat_netlist, "operation_stream_sha256").len() == 64,
         "materialized flat netlist operation stream digest must be bound"
     );
+    assert_eq!(
+        json_string_field(materialized_flat_netlist, "operation_stream_sha256"),
+        physical_summary
+            .canonical_materialized_operation_stream_sha256
+            .as_str()
+    );
     let canonical_physical_flat_netlist =
         json_object_field(public_materialized, "canonical_physical_flat_netlist");
     assert!(json_bool_field(canonical_physical_flat_netlist, "pass"));
+    assert_eq!(
+        json_string_field(canonical_physical_flat_netlist, "operation_stream_sha256"),
+        physical_summary
+            .canonical_physical_operation_stream_sha256
+            .as_str()
+    );
     assert_eq!(
         json_u64_field(canonical_physical_flat_netlist, "non_clifford_count"),
         claim.expected_full_oracle_non_clifford
@@ -5930,6 +6063,57 @@ fn validate_public_engine_manifest(
     assert_eq!(
         json_u64_field(canonical_physical_flat_netlist, "peak_live_qubits"),
         claim.expected_total_logical_qubits
+    );
+    let scheduled_modular_leaf =
+        json_object_field(public_materialized, "scheduled_modular_primitive_netlist");
+    let scheduled_modular_splice =
+        json_object_field(public_materialized, "scheduled_modular_global_splice");
+    assert!(json_bool_field(scheduled_modular_leaf, "pass"));
+    assert!(json_bool_field(scheduled_modular_splice, "pass"));
+    assert_eq!(
+        json_string_field(scheduled_modular_leaf, "operation_stream_sha256"),
+        physical_summary
+            .scheduled_modular_leaf_operation_stream_sha256
+            .as_str()
+    );
+    assert_eq!(
+        json_u64_field(scheduled_modular_leaf, "operation_count"),
+        physical_summary.scheduled_modular_leaf_operation_count
+    );
+    assert_eq!(
+        json_u64_field(scheduled_modular_leaf, "non_clifford_count"),
+        physical_summary.scheduled_modular_leaf_non_clifford
+    );
+    assert_eq!(
+        json_string_field(scheduled_modular_splice, "global_splice_sha256"),
+        physical_summary
+            .scheduled_modular_global_splice_sha256
+            .as_str()
+    );
+    assert_eq!(
+        json_string_field(
+            scheduled_modular_splice,
+            "scheduled_leaf_operation_stream_sha256"
+        ),
+        physical_summary
+            .scheduled_modular_leaf_operation_stream_sha256
+            .as_str()
+    );
+    assert_eq!(
+        json_u64_field(scheduled_modular_splice, "scheduled_operation_count"),
+        physical_summary.scheduled_global_operation_count
+    );
+    assert_eq!(
+        json_u64_field(scheduled_modular_splice, "grouped_operation_count"),
+        physical_summary.scheduled_global_operation_count
+    );
+    assert_eq!(
+        json_u64_field(scheduled_modular_splice, "scheduled_non_clifford_count"),
+        physical_summary.scheduled_global_non_clifford
+    );
+    assert_eq!(
+        json_u64_field(scheduled_modular_splice, "grouped_non_clifford_count"),
+        physical_summary.scheduled_global_non_clifford
     );
     let operand_source_binding = json_object_field(public_materialized, "operand_source_binding");
     assert_eq!(
@@ -5978,7 +6162,7 @@ fn validate_public_engine_manifest(
 }
 
 pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValues {
-    assert_eq!(input.schema, "compiler-project-zkp-attestation-input-v5");
+    assert_eq!(input.schema, "compiler-project-zkp-attestation-input-v6");
     assert_eq!(input.document_digest_scheme, DIGEST_SCHEME);
 
     validate_committed_value_document(
@@ -6244,6 +6428,21 @@ pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValue
         family_sha256: input.family_sha256.clone(),
         case_corpus_sha256: input.case_corpus_sha256.clone(),
         resource_certificate_sha256: input.resource_certificate_sha256.clone(),
+        public_engine_manifest_sha256: input.public_engine_manifest_sha256.clone(),
+        physical_boundary_sha256: if claim
+            .physical_boundary_summary
+            .scheduled_modular_global_splice_sha256
+            .is_empty()
+        {
+            None
+        } else {
+            Some(
+                claim
+                    .physical_boundary_summary
+                    .scheduled_modular_global_splice_sha256
+                    .clone(),
+            )
+        },
         expected_full_oracle_non_clifford: claim.expected_full_oracle_non_clifford,
         expected_total_logical_qubits: claim.expected_total_logical_qubits,
         case_count: case_corpus.case_count,
@@ -6332,6 +6531,29 @@ mod tests {
         let digest = semantic_payload_sha256(&document.document_type, &document.payload);
         document.sha256 = digest.clone();
         input.public_engine_manifest_sha256 = Some(digest);
+    }
+
+    fn refresh_claim_digest(input: &mut PreparedAttestationInput) {
+        let digest = semantic_payload_sha256(
+            &input.claim_document.document_type,
+            &input.claim_document.payload,
+        );
+        input.claim_document.sha256 = digest.clone();
+        input.claim_sha256 = digest;
+    }
+
+    fn rebind_claim_to_public_engine_manifest_digest(input: &mut PreparedAttestationInput) {
+        let digest = input
+            .public_engine_manifest_sha256
+            .clone()
+            .expect("reusable-chunk fixture must carry public engine manifest digest");
+        input.claim_summary.resource_engine_summary.source_sha256 = digest.clone();
+        input.claim_summary.physical_boundary_summary.source_sha256 = digest.clone();
+        input.claim_document.payload.0["resource_engine_summary"]["source_sha256"] =
+            serde_json::json!(digest.clone());
+        input.claim_document.payload.0["physical_boundary_summary"]["source_sha256"] =
+            serde_json::json!(digest);
+        refresh_claim_digest(input);
     }
 
     #[test]
@@ -6678,6 +6900,40 @@ mod tests {
             .0["primitive_operation_evidence"]["public_candidate_materialized_circuit_manifest"]
             ["operand_source_binding"]["pass"] = serde_json::json!(false);
         refresh_public_engine_manifest_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_public_engine_manifest_scheduled_splice_count_forgery() {
+        let mut input = checked_reusable_chunk_input();
+        input
+            .public_engine_manifest_document
+            .as_mut()
+            .expect("reusable-chunk fixture must carry public engine manifest")
+            .payload
+            .0["primitive_operation_evidence"]["public_candidate_materialized_circuit_manifest"]
+            ["scheduled_modular_global_splice"]["scheduled_non_clifford_count"] =
+            serde_json::json!(36_963_719);
+        refresh_public_engine_manifest_digest(&mut input);
+        rebind_claim_to_public_engine_manifest_digest(&mut input);
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_public_engine_manifest_scheduled_leaf_digest_forgery() {
+        let mut input = checked_reusable_chunk_input();
+        input
+            .public_engine_manifest_document
+            .as_mut()
+            .expect("reusable-chunk fixture must carry public engine manifest")
+            .payload
+            .0["primitive_operation_evidence"]["public_candidate_materialized_circuit_manifest"]
+            ["scheduled_modular_primitive_netlist"]["operation_stream_sha256"] =
+            serde_json::json!("00".repeat(32));
+        refresh_public_engine_manifest_digest(&mut input);
+        rebind_claim_to_public_engine_manifest_digest(&mut input);
         run_prepared_attestation(&input);
     }
 

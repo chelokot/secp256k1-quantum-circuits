@@ -58,7 +58,7 @@
     }
   },
   "bound_documents": {
-    "claim_sha256": "193bb82121f738686c6e98fe03e0d9576c8a6751d14d92089006e7e0fb3d1b36",
+    "claim_sha256": "d476c90563e017b28b073851a652aac5c0c4db592715e7014cd5739e09587bc6",
     "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
     "family_sha256": "c6a7146ac5c0d7a63f733b0224ac9dc6fbaafb576d196128f882ecbc01e42b2b",
     "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
@@ -68,13 +68,13 @@
   "checked_artifacts": {
     "input": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
-      "sha256": "951ac1347eafc3e8738b0453a0024f68aebce294a423a8e09e01d4f74541e73b",
-      "bytes": 428408
+      "sha256": "146dfa484792bdad49f35a2d582586be0eaf2ca47aca1414ca63006e9893a070",
+      "bytes": 430350
     },
     "claim": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json",
-      "sha256": "60593bdf788845c142c674eebb36331904026bdf4f3f47232ee68f83f6e08d2e",
-      "bytes": 1709
+      "sha256": "ab2be8d11e4a73acadce5fb83406f50775ea0c1551bd14170e73f19298a1cf22",
+      "bytes": 2641
     },
     "family": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_family.json",
@@ -211,8 +211,8 @@
     },
     "engine_completion_audit": {
       "path": "compiler_verification_project/artifacts/engine_completion_audit.json",
-      "sha256": "76feacdf7da41cf5036ba48c15bbb812785b8f8287d495b1c515cbf10ae3c06d",
-      "bytes": 11240
+      "sha256": "c8f42df218f763487904275e4f62f1f60db306cfe0d628b330efa0d4a96ceb8e",
+      "bytes": 11197
     }
   },
   "verification_commands": {
@@ -241,6 +241,7 @@
     "public_values_match_input_claim": false,
     "public_headline_totals_come_from_engine_output": true,
     "input_claim_summary_is_engine_public_totals_snapshot": true,
+    "input_claim_summary_binds_scheduled_physical_boundary": true,
     "input_binds_canonical_engine_without_primary_strict_claim": true,
     "all_fixtures_bind_same_public_values": false,
     "fixtures_bind_checked_input_digest": false,

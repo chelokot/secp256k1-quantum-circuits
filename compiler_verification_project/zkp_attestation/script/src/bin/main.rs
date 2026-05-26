@@ -867,6 +867,8 @@ mod tests {
             family_sha256: "22".repeat(32),
             case_corpus_sha256: "33".repeat(32),
             resource_certificate_sha256: "44".repeat(32),
+            public_engine_manifest_sha256: None,
+            physical_boundary_sha256: None,
             expected_full_oracle_non_clifford: 36_957_412,
             expected_total_logical_qubits: 1199,
             case_count: 9024,

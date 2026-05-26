@@ -221,6 +221,7 @@ def build_metadata_report() -> dict[str, Any]:
     qroam_primitive = load_json(ARTIFACT_ROOT / 'qroam_primitive_certificate.json')
     qroam_reference = load_json(ARTIFACT_ROOT / 'qroam_reference_crosscheck.json')
     modular_arithmetic = load_json(ARTIFACT_ROOT / 'modular_arithmetic_certificate.json')
+    public_engine_manifest = load_json(ARTIFACT_ROOT / 'public_engine_manifest.json')
     compiler_parameters = load_json(ARTIFACT_ROOT / 'compiler_parameters.json')
     tail_candidate = load_json(ARTIFACT_ROOT / 'reusable_chunk_tail_candidate.json')
     proof_corpus_profiles = load_json(ARTIFACT_ROOT / 'proof_corpus_profiles.json')
@@ -229,13 +230,15 @@ def build_metadata_report() -> dict[str, Any]:
     legacy_reference = public_result['legacy_wrapper_reference']['selected_result']
     checked_artifacts = public_result['checked_artifacts']
     bound_documents = public_result['bound_documents']
+    physical_boundary = input_payload['claim_summary']['physical_boundary_summary']
+    physical_manifest = public_engine_manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']
 
     check(checks, 'public_headline_schema_is_current', public_result['schema'] == 'compiler-project-public-headline-result-v1', 'compiler-project-public-headline-result-v1', public_result['schema'])
     check(checks, 'public_headline_passes_internal_checks', public_result['pass'] is True and all(public_result['checks'].values()), True, public_result['checks'])
     public_policy = compiler_parameters['primary_strict_headline_policy']
     check(checks, 'public_headline_limits_match_compiler_parameters', public_result['selection_policy']['limits'] == public_policy, public_policy, public_result['selection_policy']['limits'])
     check(checks, 'public_headline_stays_under_strict_goal', selected['non_clifford'] < public_policy['non_clifford_limit_exclusive'] and selected['logical_qubits'] < public_policy['logical_qubit_limit_exclusive'], public_policy, selected)
-    check(checks, 'public_headline_matches_current_input_claim', selected['name'] == input_payload['primary_strict_claim_document']['payload']['selected_result']['name'] and selected['non_clifford'] == input_payload['claim_summary']['expected_full_oracle_non_clifford'] and selected['logical_qubits'] == input_payload['claim_summary']['expected_total_logical_qubits'], input_payload['claim_summary'], selected)
+    check(checks, 'public_headline_matches_current_input_claim', selected['name'] == input_payload['selected_family_name'] and selected['non_clifford'] == input_payload['claim_summary']['expected_full_oracle_non_clifford'] and selected['logical_qubits'] == input_payload['claim_summary']['expected_total_logical_qubits'], input_payload['claim_summary'], selected)
     public_value_bound_documents = {
         key: value
         for key, value in bound_documents.items()
@@ -244,6 +247,19 @@ def build_metadata_report() -> dict[str, Any]:
     check(checks, 'public_values_match_input_digest_headers', all(public_values[key] == input_payload[key] == public_value_bound_documents[key] for key in public_value_bound_documents), public_value_bound_documents, {key: {'public_values': public_values[key], 'input': input_payload[key]} for key in public_value_bound_documents})
     check(checks, 'public_headline_bound_documents_match_current_input', all(input_payload[key] == bound_documents[key] for key in bound_documents), bound_documents, {key: input_payload[key] for key in bound_documents})
     check(checks, 'public_engine_manifest_bound_through_input_claim', input_payload['claim_summary']['resource_engine_summary']['source_sha256'] == input_payload['public_engine_manifest_sha256'] == bound_documents['public_engine_manifest_sha256'] and input_payload['public_engine_manifest_document']['sha256'] == bound_documents['public_engine_manifest_sha256'], bound_documents['public_engine_manifest_sha256'], input_payload['claim_summary']['resource_engine_summary'])
+    check(
+        checks,
+        'scheduled_physical_boundary_bound_through_input_claim',
+        physical_boundary['source'] == 'public_engine_manifest.scheduled_modular_global_splice'
+        and physical_boundary['source_sha256'] == input_payload['public_engine_manifest_sha256']
+        and physical_boundary['canonical_materialized_operation_stream_sha256'] == physical_manifest['canonical_materialized_flat_netlist']['operation_stream_sha256']
+        and physical_boundary['canonical_physical_operation_stream_sha256'] == physical_manifest['canonical_physical_flat_netlist']['operation_stream_sha256']
+        and physical_boundary['scheduled_modular_leaf_operation_stream_sha256'] == physical_manifest['scheduled_modular_primitive_netlist']['operation_stream_sha256']
+        and physical_boundary['scheduled_modular_global_splice_sha256'] == physical_manifest['scheduled_modular_global_splice']['global_splice_sha256']
+        and int(physical_boundary['scheduled_global_non_clifford']) == int(physical_manifest['scheduled_modular_global_splice']['scheduled_non_clifford_count']),
+        physical_manifest['scheduled_modular_global_splice'],
+        physical_boundary,
+    )
     selected_profile = proof_corpus_profiles['profiles'][proof_corpus_profiles['selected_public_profile']]
     check(checks, 'case_counts_match_selected_proof_profile_and_pass', selected['case_count'] == selected['passed_case_count'] == input_payload['prepared_case_corpus']['case_count'] == selected_profile['case_count'], selected_profile, {'selected': selected, 'input_case_count': input_payload['prepared_case_corpus']['case_count']})
 

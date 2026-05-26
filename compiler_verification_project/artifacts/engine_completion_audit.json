@@ -29,7 +29,7 @@
     "tail_macro_liveness_sha256": "5f60042f2ae891387583cc6ee10cb6fdd11aeef460eadac18c6e512712736cb1",
     "tail_macro_reversibility_sha256": "a5474f2a4b950577da8013b0023ead318a7ea92610406fce869c3adac4d0830a",
     "tail_macro_schedule_search_sha256": "f3af1926dd886d4c8a25831821657bcef57c3b589daddec08957cab7b1dcf81b",
-    "zkp_attestation_reusable_chunk_candidate_input_sha256": "71636ce2c44a58ed8e35a26e901d7c79d152c8875423baba889e807d319f47dd"
+    "zkp_attestation_reusable_chunk_candidate_input_sha256": "94a6d5d9b27e144bfb0c8f1df879a2fcbf09449c3609c3e70cf855532afdede8"
   },
   "source_binding_summary": {
     "rows_checked": 5836,
@@ -125,16 +125,16 @@
     },
     {
       "name": "canonical_engine_zkp_input_authority",
-      "status": "public_engine_manifest_bound_by_candidate_input_and_guest_without_compact_strict_claim",
-      "evidence": "zkp_attestation_reusable_chunk_candidate_input.public_engine_manifest_document + Rust prepared guest validation"
+      "status": "public_engine_manifest_and_scheduled_physical_boundary_bound_by_candidate_input_and_guest",
+      "evidence": "zkp_attestation_reusable_chunk_candidate_input.public_engine_manifest_document + physical_boundary_summary + Rust prepared guest validation"
     }
   ],
   "remaining_macro_boundaries": [
     {
       "name": "modular_arithmetic_clifford_expansion",
-      "status": "scheduled_modular_primitive_stream_spliced_into_public_engine_not_zkp_physical_guest",
-      "required_to_close": "Emit and count exact concrete Clifford/CCX wire operations for every modular add, subtract, multiply, fold, and reduction step inside the same global flat schedule as the point-add leaf.",
-      "current_evidence": "scheduled_modular_primitive_netlist + modular_execution_trace + modular_arithmetic_certificate.modular_primitive_stream_certificate + public_candidate_materialized_circuit_manifest.modular_arithmetic_engine_integration",
+      "status": "scheduled_modular_primitive_stream_bound_to_zkp_physical_boundary_not_full_clifford_decomposition",
+      "required_to_close": "Decompose every modular add, subtract, multiply, fold, and reduction primitive into exact concrete Clifford/CCX wire operations inside the same global flat schedule as the point-add leaf.",
+      "current_evidence": "scheduled_modular_primitive_netlist + scheduled_modular_global_splice + physical_boundary_summary + Rust prepared guest validation",
       "evidence_metrics": {
         "source_bound_run_length_rows": 2697,
         "leaf_arithmetic_non_clifford": 1126842,

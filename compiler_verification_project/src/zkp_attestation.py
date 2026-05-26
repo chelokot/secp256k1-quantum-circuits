@@ -288,6 +288,49 @@ def _public_engine_logical_qubit_formula(public_engine_manifest: Mapping[str, An
     }
 
 
+def _physical_boundary_summary(
+    *,
+    public_engine_manifest: Mapping[str, Any] | None,
+    public_engine_manifest_sha256: str | None,
+    family_sha256: str,
+) -> Dict[str, Any]:
+    if public_engine_manifest is None:
+        return {
+            'source': 'compiler_family_summary.legacy_compact_family_snapshot',
+            'source_document_type': 'compiler_family_summary',
+            'source_sha256': family_sha256,
+            'canonical_materialized_operation_stream_sha256': '',
+            'canonical_physical_operation_stream_sha256': '',
+            'scheduled_modular_leaf_operation_stream_sha256': '',
+            'scheduled_modular_global_splice_sha256': '',
+            'scheduled_modular_leaf_operation_count': 0,
+            'scheduled_modular_leaf_non_clifford': 0,
+            'scheduled_global_operation_count': 0,
+            'scheduled_global_non_clifford': 0,
+        }
+
+    if public_engine_manifest_sha256 is None:
+        raise ValueError('public engine manifest digest is required for physical boundary summary')
+    materialized = public_engine_manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']
+    canonical_materialized = materialized['canonical_materialized_flat_netlist']
+    canonical_physical = materialized['canonical_physical_flat_netlist']
+    scheduled_leaf = materialized['scheduled_modular_primitive_netlist']
+    scheduled_splice = materialized['scheduled_modular_global_splice']
+    return {
+        'source': 'public_engine_manifest.scheduled_modular_global_splice',
+        'source_document_type': 'public_engine_manifest',
+        'source_sha256': public_engine_manifest_sha256,
+        'canonical_materialized_operation_stream_sha256': str(canonical_materialized['operation_stream_sha256']),
+        'canonical_physical_operation_stream_sha256': str(canonical_physical['operation_stream_sha256']),
+        'scheduled_modular_leaf_operation_stream_sha256': str(scheduled_leaf['operation_stream_sha256']),
+        'scheduled_modular_global_splice_sha256': str(scheduled_splice['global_splice_sha256']),
+        'scheduled_modular_leaf_operation_count': int(scheduled_leaf['operation_count']),
+        'scheduled_modular_leaf_non_clifford': int(scheduled_leaf['non_clifford_count']),
+        'scheduled_global_operation_count': int(scheduled_splice['scheduled_operation_count']),
+        'scheduled_global_non_clifford': int(scheduled_splice['scheduled_non_clifford_count']),
+    }
+
+
 def _leaf_for_family(family: Mapping[str, Any]) -> Dict[str, Any]:
     slot_family = str(family['slot_allocation_family'])
     if slot_family == 'streamed_lookup_tail_leaf_v1':
@@ -973,6 +1016,11 @@ def _build_zkp_attestation_materials(
             'arithmetic_component': arithmetic_qubits,
             'reconstructed_total': total_logical_qubits,
         }
+    physical_boundary_summary = _physical_boundary_summary(
+        public_engine_manifest=public_engine_manifest,
+        public_engine_manifest_sha256=public_engine_manifest_blob['sha256'] if public_engine_manifest_blob is not None else None,
+        family_sha256=family_blob['sha256'],
+    )
     resource_certificate_totals = resource_certificate.get('executable_resource_engine', {}).get('public_totals')
     matches_resource_certificate_snapshot = (
         resource_certificate_totals is not None
@@ -1000,6 +1048,7 @@ def _build_zkp_attestation_materials(
             ),
             'matches_resource_certificate_snapshot': matches_resource_certificate_snapshot,
         },
+        'physical_boundary_summary': physical_boundary_summary,
         'non_clifford_formula': {
             'arithmetic_leaf_non_clifford': int(family_payload['arithmetic_leaf_non_clifford']),
             'per_leaf_lookup_non_clifford': int(family_payload['per_leaf_lookup_non_clifford']),
@@ -1030,7 +1079,7 @@ def _build_zkp_attestation_materials(
     )
     prepared_case_corpus = _prepared_case_corpus(case_corpus)
     input_payload: Dict[str, Any] = {
-        'schema': 'compiler-project-zkp-attestation-input-v5',
+        'schema': 'compiler-project-zkp-attestation-input-v6',
         'document_digest_scheme': DIGEST_SCHEME,
         'selected_family_name': family_payload['name'],
         'claim_sha256': claim_blob['sha256'],
@@ -1052,6 +1101,7 @@ def _build_zkp_attestation_materials(
             'expected_total_logical_qubits': int(public_claim['expected_total_logical_qubits']),
             'expected_case_count': int(public_claim['expected_case_count']),
             'resource_engine_summary': dict(public_claim['resource_engine_summary']),
+            'physical_boundary_summary': dict(public_claim['physical_boundary_summary']),
             'non_clifford_formula': dict(public_claim['non_clifford_formula']),
             'logical_qubit_formula': dict(public_claim['logical_qubit_formula']),
         },

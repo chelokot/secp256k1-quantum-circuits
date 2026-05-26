@@ -138,6 +138,21 @@ def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None
     assert claim['resource_engine_summary']['logical_qubits'] != resource_document['payload']['executable_resource_engine']['public_totals']['logical_qubits']
     assert claim['resource_engine_summary']['matches_family_snapshot'] is False
     assert claim['resource_engine_summary']['matches_resource_certificate_snapshot'] is False
+    physical_boundary = claim['physical_boundary_summary']
+    physical_manifest = public_engine_manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']
+    scheduled_leaf = physical_manifest['scheduled_modular_primitive_netlist']
+    scheduled_splice = physical_manifest['scheduled_modular_global_splice']
+    assert physical_boundary['source'] == 'public_engine_manifest.scheduled_modular_global_splice'
+    assert physical_boundary['source_document_type'] == 'public_engine_manifest'
+    assert physical_boundary['source_sha256'] == payload['public_engine_manifest_sha256']
+    assert physical_boundary['canonical_materialized_operation_stream_sha256'] == physical_manifest['canonical_materialized_flat_netlist']['operation_stream_sha256']
+    assert physical_boundary['canonical_physical_operation_stream_sha256'] == physical_manifest['canonical_physical_flat_netlist']['operation_stream_sha256']
+    assert physical_boundary['scheduled_modular_leaf_operation_stream_sha256'] == scheduled_leaf['operation_stream_sha256']
+    assert physical_boundary['scheduled_modular_global_splice_sha256'] == scheduled_splice['global_splice_sha256']
+    assert physical_boundary['scheduled_modular_leaf_operation_count'] == scheduled_leaf['operation_count']
+    assert physical_boundary['scheduled_modular_leaf_non_clifford'] == scheduled_leaf['non_clifford_count']
+    assert physical_boundary['scheduled_global_operation_count'] == scheduled_splice['scheduled_operation_count'] == scheduled_splice['grouped_operation_count']
+    assert physical_boundary['scheduled_global_non_clifford'] == scheduled_splice['scheduled_non_clifford_count'] == scheduled_splice['grouped_non_clifford_count']
     assert len(direct_seed_values) == 1
     assert family['direct_seed_non_clifford'] == next(iter(direct_seed_values))
     assert family['arithmetic_slot_count'] == qubit_derivation['arithmetic_slot_count']

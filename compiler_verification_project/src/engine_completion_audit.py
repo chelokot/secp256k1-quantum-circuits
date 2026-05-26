@@ -83,6 +83,10 @@ def build_engine_completion_audit(
     }
     zkp_claim_summary = zkp_attestation_input['claim_summary']
     zkp_public_engine_document = zkp_attestation_input['public_engine_manifest_document']
+    zkp_physical_boundary = zkp_claim_summary['physical_boundary_summary']
+    public_engine_physical_manifest = public_engine_manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']
+    scheduled_modular_splice = public_engine_physical_manifest['scheduled_modular_global_splice']
+    scheduled_modular_leaf = public_engine_physical_manifest['scheduled_modular_primitive_netlist']
     arithmetic_leaf_summary = arithmetic_operation_ir['leaf_arithmetic_summary']
     qroam_counts = qroam_primitive_certificate['traversed_counts']
     qroam_cost = qroam_primitive_certificate['qroamclean_cost_model']
@@ -265,6 +269,16 @@ def build_engine_completion_audit(
             and zkp_public_engine_document['payload'] == public_engine_manifest
             and zkp_claim_summary['resource_engine_summary']['source'] == 'public_engine_manifest.public_totals'
             and zkp_claim_summary['resource_engine_summary']['source_sha256'] == zkp_attestation_input['public_engine_manifest_sha256']
+            and zkp_physical_boundary['source'] == 'public_engine_manifest.scheduled_modular_global_splice'
+            and zkp_physical_boundary['source_sha256'] == zkp_attestation_input['public_engine_manifest_sha256']
+            and zkp_physical_boundary['canonical_materialized_operation_stream_sha256'] == public_engine_physical_manifest['canonical_materialized_flat_netlist']['operation_stream_sha256']
+            and zkp_physical_boundary['canonical_physical_operation_stream_sha256'] == public_engine_physical_manifest['canonical_physical_flat_netlist']['operation_stream_sha256']
+            and zkp_physical_boundary['scheduled_modular_leaf_operation_stream_sha256'] == scheduled_modular_leaf['operation_stream_sha256']
+            and zkp_physical_boundary['scheduled_modular_global_splice_sha256'] == scheduled_modular_splice['global_splice_sha256']
+            and int(zkp_physical_boundary['scheduled_modular_leaf_operation_count']) == int(scheduled_modular_leaf['operation_count'])
+            and int(zkp_physical_boundary['scheduled_modular_leaf_non_clifford']) == int(scheduled_modular_leaf['non_clifford_count'])
+            and int(zkp_physical_boundary['scheduled_global_operation_count']) == int(scheduled_modular_splice['scheduled_operation_count']) == int(scheduled_modular_splice['grouped_operation_count'])
+            and int(zkp_physical_boundary['scheduled_global_non_clifford']) == int(scheduled_modular_splice['scheduled_non_clifford_count']) == int(scheduled_modular_splice['grouped_non_clifford_count'])
             and int(zkp_claim_summary['expected_full_oracle_non_clifford']) == public_totals['non_clifford']
             and int(zkp_claim_summary['expected_total_logical_qubits']) == public_totals['logical_qubits']
             and int(zkp_claim_summary['logical_qubit_formula']['reconstructed_total']) == public_totals['logical_qubits']
@@ -348,16 +362,16 @@ def build_engine_completion_audit(
         },
         {
             'name': 'canonical_engine_zkp_input_authority',
-            'status': 'public_engine_manifest_bound_by_candidate_input_and_guest_without_compact_strict_claim',
-            'evidence': 'zkp_attestation_reusable_chunk_candidate_input.public_engine_manifest_document + Rust prepared guest validation',
+            'status': 'public_engine_manifest_and_scheduled_physical_boundary_bound_by_candidate_input_and_guest',
+            'evidence': 'zkp_attestation_reusable_chunk_candidate_input.public_engine_manifest_document + physical_boundary_summary + Rust prepared guest validation',
         },
     ]
     remaining_macro_boundaries = [
         {
             'name': 'modular_arithmetic_clifford_expansion',
-            'status': 'scheduled_modular_primitive_stream_spliced_into_public_engine_not_zkp_physical_guest',
-            'required_to_close': 'Emit and count exact concrete Clifford/CCX wire operations for every modular add, subtract, multiply, fold, and reduction step inside the same global flat schedule as the point-add leaf.',
-            'current_evidence': 'scheduled_modular_primitive_netlist + modular_execution_trace + modular_arithmetic_certificate.modular_primitive_stream_certificate + public_candidate_materialized_circuit_manifest.modular_arithmetic_engine_integration',
+            'status': 'scheduled_modular_primitive_stream_bound_to_zkp_physical_boundary_not_full_clifford_decomposition',
+            'required_to_close': 'Decompose every modular add, subtract, multiply, fold, and reduction primitive into exact concrete Clifford/CCX wire operations inside the same global flat schedule as the point-add leaf.',
+            'current_evidence': 'scheduled_modular_primitive_netlist + scheduled_modular_global_splice + physical_boundary_summary + Rust prepared guest validation',
             'evidence_metrics': {
                 'source_bound_run_length_rows': rows_by_source_kind['arithmetic_operation_ir'],
                 'leaf_arithmetic_non_clifford': int(arithmetic_leaf_summary['non_clifford_total']),

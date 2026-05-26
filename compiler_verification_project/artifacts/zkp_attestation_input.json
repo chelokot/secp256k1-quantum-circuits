@@ -1,8 +1,8 @@
 {
-  "schema": "compiler-project-zkp-attestation-input-v5",
+  "schema": "compiler-project-zkp-attestation-input-v6",
   "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
   "selected_family_name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
-  "claim_sha256": "e68652f2f219ee9b3a336673f5cf1878f4ec521947e2c4b0b331ef90f88d68c1",
+  "claim_sha256": "40a6e73d349b8c284bd7b05b5f92ce922e874856e31ca178f6344a498f6e6e32",
   "leaf_sha256": "a8b6d7dc3f45c85b450a373f90a174cf4cc3bdfe85520c56ee7ec8db2c5f6ab1",
   "family_sha256": "4a1222d452363f5c61ce12f9702cbfd03fa3a11596adf722ac41875707ba4713",
   "case_corpus_sha256": "bf3cb3d15e8cb9ba158e800047936d62d83aba34191ca50d5e6138dff57dd28b",
@@ -12,7 +12,7 @@
     "document_type": "attestation_claim",
     "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_claim.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "e68652f2f219ee9b3a336673f5cf1878f4ec521947e2c4b0b331ef90f88d68c1",
+    "sha256": "40a6e73d349b8c284bd7b05b5f92ce922e874856e31ca178f6344a498f6e6e32",
     "payload": {
       "schema": "compiler-project-zkp-attestation-claim-v1",
       "selected_family_alias": "best-gate",
@@ -30,6 +30,19 @@
         "logical_qubits": 1044,
         "matches_family_snapshot": true,
         "matches_resource_certificate_snapshot": false
+      },
+      "physical_boundary_summary": {
+        "source": "compiler_family_summary.legacy_compact_family_snapshot",
+        "source_document_type": "compiler_family_summary",
+        "source_sha256": "4a1222d452363f5c61ce12f9702cbfd03fa3a11596adf722ac41875707ba4713",
+        "canonical_materialized_operation_stream_sha256": "",
+        "canonical_physical_operation_stream_sha256": "",
+        "scheduled_modular_leaf_operation_stream_sha256": "",
+        "scheduled_modular_global_splice_sha256": "",
+        "scheduled_modular_leaf_operation_count": 0,
+        "scheduled_modular_leaf_non_clifford": 0,
+        "scheduled_global_operation_count": 0,
+        "scheduled_global_non_clifford": 0
       },
       "non_clifford_formula": {
         "arithmetic_leaf_non_clifford": 1126842,
@@ -15511,6 +15524,19 @@
       "logical_qubits": 1044,
       "matches_family_snapshot": true,
       "matches_resource_certificate_snapshot": false
+    },
+    "physical_boundary_summary": {
+      "source": "compiler_family_summary.legacy_compact_family_snapshot",
+      "source_document_type": "compiler_family_summary",
+      "source_sha256": "4a1222d452363f5c61ce12f9702cbfd03fa3a11596adf722ac41875707ba4713",
+      "canonical_materialized_operation_stream_sha256": "",
+      "canonical_physical_operation_stream_sha256": "",
+      "scheduled_modular_leaf_operation_stream_sha256": "",
+      "scheduled_modular_global_splice_sha256": "",
+      "scheduled_modular_leaf_operation_count": 0,
+      "scheduled_modular_leaf_non_clifford": 0,
+      "scheduled_global_operation_count": 0,
+      "scheduled_global_non_clifford": 0
     },
     "non_clifford_formula": {
       "arithmetic_leaf_non_clifford": 1126842,

@@ -140,13 +140,17 @@ builder to connect those labels to the checked JSON sidecars.
 Current remediation:
 
 The active SP1 program still calls `run_prepared_attestation`, but the prepared
-input schema is now `compiler-project-zkp-attestation-input-v5` and carries:
+input schema is now `compiler-project-zkp-attestation-input-v6` and carries:
 
 - committed claim document;
 - committed streamed leaf document;
 - committed selected-family document;
 - committed point-add case-corpus document;
 - committed resource-liveness certificate document;
+- committed public-engine manifest document for the reusable-chunk candidate;
+- physical-boundary summary binding the scheduled modular leaf stream, global
+  splice digest, and canonical materialized/physical flat-netlist stream
+  digests;
 - proof-ready prepared leaf and case reductions.
 
 Inside the guest, `run_prepared_attestation` now:
@@ -1907,15 +1911,21 @@ does not erase the central architectural criticism.
 Fixed after review:
 
 - `ZK-1`: the active SP1 input moved to schema
-  `compiler-project-zkp-attestation-input-v5`. The guest now receives the full
+  `compiler-project-zkp-attestation-input-v6`. The guest now receives the full
   committed claim, leaf, family, case-corpus, resource-certificate, and
-  compiler-parameter documents; recomputes their canonical SHA-256 digests;
-  derives the prepared claim summary, family summary, leaf program, and case
-  corpus from those documents; and publishes the recomputed public claim hashes.
-- The public values now include `resource_certificate_sha256`, binding the
-  selected frontier, executable leaf liveness summary, QROAM workspace/cost
-  checks, arithmetic lowering inventory, selected-family FT-IR leaf sigma, and
-  global resource owner ledger to the proof input.
+  compiler-parameter documents; the reusable-chunk path also receives the
+  committed public-engine manifest. The guest recomputes their canonical
+  SHA-256 digests; derives the prepared claim summary, family summary, leaf
+  program, and case corpus from those documents; and validates the
+  `physical_boundary_summary` against the scheduled modular leaf stream,
+  global splice digest, and canonical materialized/physical flat-netlist
+  stream digests.
+- The public values now include `resource_certificate_sha256`, and the current
+  reusable-chunk execution additionally publishes `public_engine_manifest_sha256`
+  and `physical_boundary_sha256`, binding the selected frontier, executable leaf
+  liveness summary, QROAM workspace/cost checks, arithmetic lowering inventory,
+  selected-family FT-IR leaf sigma, global resource owner ledger, and scheduled
+  physical boundary to the proof input.
 - Negative guest tests were added for stale claim labels, mutated committed
   claim payloads, mutated prepared leaves, mutated prepared case corpora, and
   mutated resource leaf-sigma primitive counts.

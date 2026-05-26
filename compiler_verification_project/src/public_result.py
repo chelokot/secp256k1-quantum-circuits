@@ -108,6 +108,8 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
         'non_clifford': int(public_candidate_materialized_manifest[CANONICAL_MATERIALIZED_FLAT_NETLIST]['non_clifford_count']),
         'logical_qubits': int(public_candidate_materialized_manifest[CANONICAL_MATERIALIZED_FLAT_NETLIST]['peak_live_qubits']),
     }
+    physical_manifest = public_engine_manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']
+    physical_boundary = input_payload['claim_summary']['physical_boundary_summary']
     legacy_wrapper_reference = {
         'name': input_payload['selected_family_name'],
         'non_clifford': int(legacy_wrapper_totals['non_clifford']),
@@ -127,6 +129,7 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
         'case_corpus_sha256': input_payload['case_corpus_sha256'],
         'resource_certificate_sha256': input_payload['resource_certificate_sha256'],
         'public_engine_manifest_sha256': input_payload['public_engine_manifest_sha256'],
+        'physical_boundary_sha256': physical_boundary['scheduled_modular_global_splice_sha256'],
         'engine_completion_audit_sha256': _sha256_payload(engine_completion_audit),
         'expected_full_oracle_non_clifford': int(engine_public_totals['non_clifford']),
         'expected_total_logical_qubits': int(engine_public_totals['logical_qubits']),
@@ -142,6 +145,8 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             and public_values['family_sha256'] == input_payload['family_sha256']
             and public_values['case_corpus_sha256'] == input_payload['case_corpus_sha256']
             and public_values['resource_certificate_sha256'] == input_payload['resource_certificate_sha256']
+            and public_values.get('public_engine_manifest_sha256') == input_payload['public_engine_manifest_sha256']
+            and public_values.get('physical_boundary_sha256') == physical_boundary['scheduled_modular_global_splice_sha256']
             and non_clifford == int(input_payload['claim_summary']['expected_full_oracle_non_clifford'])
             and qubits == int(input_payload['claim_summary']['expected_total_logical_qubits'])
         ),
@@ -163,6 +168,19 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             and input_payload['claim_summary']['resource_engine_summary']['matches_resource_certificate_snapshot'] is False
             and int(input_payload['claim_summary']['non_clifford_formula']['reconstructed_total']) == non_clifford
             and int(input_payload['claim_summary']['logical_qubit_formula']['reconstructed_total']) == qubits
+        ),
+        'input_claim_summary_binds_scheduled_physical_boundary': (
+            physical_boundary['source'] == 'public_engine_manifest.scheduled_modular_global_splice'
+            and physical_boundary['source_document_type'] == 'public_engine_manifest'
+            and physical_boundary['source_sha256'] == input_payload['public_engine_manifest_sha256']
+            and physical_boundary['canonical_materialized_operation_stream_sha256'] == physical_manifest['canonical_materialized_flat_netlist']['operation_stream_sha256']
+            and physical_boundary['canonical_physical_operation_stream_sha256'] == physical_manifest['canonical_physical_flat_netlist']['operation_stream_sha256']
+            and physical_boundary['scheduled_modular_leaf_operation_stream_sha256'] == physical_manifest['scheduled_modular_primitive_netlist']['operation_stream_sha256']
+            and physical_boundary['scheduled_modular_global_splice_sha256'] == physical_manifest['scheduled_modular_global_splice']['global_splice_sha256']
+            and int(physical_boundary['scheduled_modular_leaf_operation_count']) == int(physical_manifest['scheduled_modular_primitive_netlist']['operation_count'])
+            and int(physical_boundary['scheduled_modular_leaf_non_clifford']) == int(physical_manifest['scheduled_modular_primitive_netlist']['non_clifford_count'])
+            and int(physical_boundary['scheduled_global_operation_count']) == int(physical_manifest['scheduled_modular_global_splice']['scheduled_operation_count']) == int(physical_manifest['scheduled_modular_global_splice']['grouped_operation_count'])
+            and int(physical_boundary['scheduled_global_non_clifford']) == int(physical_manifest['scheduled_modular_global_splice']['scheduled_non_clifford_count']) == int(physical_manifest['scheduled_modular_global_splice']['grouped_non_clifford_count'])
         ),
         'input_binds_canonical_engine_without_primary_strict_claim': (
             input_payload['public_engine_manifest_sha256'] == input_payload['public_engine_manifest_document']['sha256']
