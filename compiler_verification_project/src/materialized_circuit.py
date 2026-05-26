@@ -194,11 +194,23 @@ def _parent_wire_domain(
     }
 
 
-def _arithmetic_parent_domain(parent_wire_ids: List[str]) -> Dict[str, Any]:
+def _arithmetic_parent_domain(parent_wire_ids: List[str], parent_bit_offsets: Optional[Mapping[str, int]] = None) -> Dict[str, Any]:
     return _parent_wire_domain(
         parent_wire_ids=parent_wire_ids,
         parent_bit_width=256,
         parent_selection_rule='parent_wire_index = operand_index // parent_bit_width; parent_bit_index = operand_index % parent_bit_width',
+    ) | {
+        'parent_bit_offsets': {
+            str(wire_id): int(offset)
+            for wire_id, offset in dict(parent_bit_offsets or {}).items()
+        },
+    }
+
+
+def _arithmetic_spill_parent_domain(primary_wire_id: str, qchunk_bit_offset: int) -> Dict[str, Any]:
+    return _arithmetic_parent_domain(
+        [primary_wire_id, 'qchunk'],
+        parent_bit_offsets={'qchunk': int(qchunk_bit_offset)},
     )
 
 
@@ -215,7 +227,7 @@ def _arithmetic_block_operand_domains(stage: Mapping[str, Any], block: Mapping[s
                 'operand_index_max_exclusive': operand_slots,
                 'row_instance_to_operand_index': 'operand_index = row_instance_ordinal % operand_domain_width',
                 'role': str(stage['category']),
-                **_arithmetic_parent_domain(['qz']),
+                **_arithmetic_spill_parent_domain('qz', 128),
             }
         ]
     if gate == 'ccx' and gate_arities.get('ccx') == [2]:
@@ -261,7 +273,7 @@ def _arithmetic_block_operand_domains(stage: Mapping[str, Any], block: Mapping[s
                 'operand_index_max_exclusive': operand_slots,
                 'row_instance_to_operand_index': 'operand_index = row_instance_ordinal % operand_domain_width',
                 'role': str(stage['category']),
-                **_arithmetic_parent_domain(['qx']),
+                **_arithmetic_spill_parent_domain('qx', 0),
             },
             {
                 'domain_id': f"{stage['stage']}:{block['block']}:control_b",
@@ -271,7 +283,7 @@ def _arithmetic_block_operand_domains(stage: Mapping[str, Any], block: Mapping[s
                 'operand_index_max_exclusive': operand_slots,
                 'row_instance_to_operand_index': 'operand_index = row_instance_ordinal % operand_domain_width',
                 'role': str(stage['category']),
-                **_arithmetic_parent_domain(['qy']),
+                **_arithmetic_spill_parent_domain('qy', 64),
             },
             {
                 'domain_id': f"{stage['stage']}:{block['block']}:target",
@@ -281,7 +293,7 @@ def _arithmetic_block_operand_domains(stage: Mapping[str, Any], block: Mapping[s
                 'operand_index_max_exclusive': operand_slots,
                 'row_instance_to_operand_index': 'operand_index = row_instance_ordinal % operand_domain_width',
                 'role': str(stage['category']),
-                **_arithmetic_parent_domain(['qz']),
+                **_arithmetic_spill_parent_domain('qz', 128),
             },
         ]
     return [
@@ -593,10 +605,14 @@ def _omitted_materialized_flat_netlist_summary(
 def _wire_from_domain(domain: Mapping[str, Any], operand_index: int, row_instance_ordinal: int) -> Dict[str, Any]:
     parent_wire_ids = [str(wire_id) for wire_id in domain.get('parent_wire_ids', [])]
     parent_bit_width = int(domain.get('parent_bit_width', 0))
+    parent_bit_offsets = {
+        str(wire_id): int(offset)
+        for wire_id, offset in dict(domain.get('parent_bit_offsets', {})).items()
+    }
     if parent_wire_ids and parent_bit_width > 0:
         parent_offset = max(0, int(operand_index) - int(domain['operand_index_min']))
         parent_wire_id = parent_wire_ids[(parent_offset // parent_bit_width) % len(parent_wire_ids)]
-        parent_bit_index = parent_offset % parent_bit_width
+        parent_bit_index = (parent_offset % parent_bit_width) + parent_bit_offsets.get(parent_wire_id, 0)
     else:
         parent_wire_id = ''
         parent_bit_index = int(operand_index)
@@ -614,6 +630,7 @@ def _wire_from_domain(domain: Mapping[str, Any], operand_index: int, row_instanc
         'owner_id': str(domain['owner_id']),
         'role': str(domain['role']),
         'operand_index': int(operand_index),
+        'logical_operand_index': int(operand_index),
         'parent_wire_id': parent_wire_id,
         'parent_bit_index': parent_bit_index,
         'wire_id': wire_id,
@@ -631,7 +648,7 @@ def _operation_domain_wires(row: Mapping[str, Any], row_instance_ordinal: int) -
         if domain_width <= 0:
             operand_index = domain_min
         elif 'left_bit = row_instance_ordinal // operand_slots_required' in rule:
-            operand_index = domain_min + (int(row_instance_ordinal) // domain_width)
+            operand_index = domain_min + ((int(row_instance_ordinal) % (domain_width * domain_width)) // domain_width)
         elif 'right_bit = row_instance_ordinal % operand_slots_required' in rule:
             operand_index = domain_min + (int(row_instance_ordinal) % domain_width)
         else:
@@ -1573,11 +1590,26 @@ def build_arithmetic_operand_replay_audit(
         for occurrence_index, operation in enumerate(source_operations):
             source_operands = [int(value) for value in operation[1:]]
             materialized_wires = _operation_domain_wires(row, occurrence_index)
-            materialized_parent_bits = [
-                int(wire['parent_bit_index'])
+            materialized_logical_operands = [
+                int(wire['logical_operand_index'])
                 for wire in materialized_wires[:len(source_operands)]
             ]
-            if source_operands != materialized_parent_bits:
+            materialized_physical_wires = [
+                (str(wire['parent_wire_id']), int(wire['parent_bit_index']))
+                for wire in materialized_wires
+            ]
+            duplicate_physical_wire = len(materialized_physical_wires) != len(set(materialized_physical_wires))
+            spilled_source_operands = [
+                value
+                for value in source_operands
+                if value >= 256
+            ]
+            spilled_operands_not_on_qchunk = any(
+                int(wire['logical_operand_index']) >= 256
+                and str(wire['parent_wire_id']) != 'qchunk'
+                for wire in materialized_wires[:len(source_operands)]
+            )
+            if source_operands != materialized_logical_operands or duplicate_physical_wire or spilled_operands_not_on_qchunk:
                 failure_count += 1
                 if first_failure is None:
                     first_failure = {
@@ -1587,7 +1619,10 @@ def build_arithmetic_operand_replay_audit(
                         'gate': key[2],
                         'occurrence_index': occurrence_index,
                         'source_operands': source_operands,
-                        'materialized_parent_bits': materialized_parent_bits,
+                        'materialized_logical_operands': materialized_logical_operands,
+                        'duplicate_physical_wire': duplicate_physical_wire,
+                        'spilled_source_operands': spilled_source_operands,
+                        'spilled_operands_not_on_qchunk': spilled_operands_not_on_qchunk,
                         'materialized_wires': materialized_wires,
                     }
         result = {

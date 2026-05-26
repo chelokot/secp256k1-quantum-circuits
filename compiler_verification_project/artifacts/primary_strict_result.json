@@ -22,7 +22,7 @@
   "closed_evidence": {
     "strict_replayed_tail_headline": {
       "path": "compiler_verification_project/artifacts/strict_replayed_tail_headline.json",
-      "sha256": "8bc5a178796a1e2a73784ebebfe3b0911c079d6fae97d1b351e1d0d743dd8c80",
+      "sha256": "4550ea84b7a216cae23d2950ef08114092c305849799e2aabeb5911b80a1f260",
       "status": "primary_strict_replayed_tail_headline",
       "pass": true
     },
@@ -43,7 +43,7 @@
   },
   "legacy_wrapper_reference": {
     "path": "compiler_verification_project/artifacts/public_headline_result.json",
-    "sha256": "63fc1d9fa64ddb94249c6770610e323033c2f87b8e6e3bffd7536b88959bc0d5",
+    "sha256": "91721d0d11fc1d2accc199e76f731b5bb11593aadeb4bb2e6ebf073a82b8c4c0",
     "selected_result": {
       "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
       "non_clifford": 36973222,
@@ -68,16 +68,16 @@
     "non_clifford_count": 36973222,
     "peak_live_qubits": 1968,
     "legacy_materialized_flat_netlist_peak_live_qubits": 1199,
-    "legacy_materialized_flat_netlist_operation_stream_sha256": "6a6f301f89ce69ff71f6d63ecb01c2824e165e20cf71f00a84774091054d1a51",
-    "legacy_materialized_flat_netlist_segment_merkle_root_sha256": "b2f66b4ed1b93b46525caefccf7112b7b5271f146e83fb6b842a66f5fab5f09b",
+    "legacy_materialized_flat_netlist_operation_stream_sha256": "fba6b88a39f20544009f6ce961ac934b9e67ea88ddb1c3b7dbab7e5b41dc0fe9",
+    "legacy_materialized_flat_netlist_segment_merkle_root_sha256": "9115ce215ac70b9fd12c824a0cb0e25e0ec6b68b6d46e71357b8b450e4d95837",
     "strict_capacity_peak_qubits": 1968,
     "strict_liveness_projection_peak_qubits": 1968,
     "strict_liveness_projection_sha256": "2abebb2b105630a46862d95f13c558731431f0267e6943f28cae06544df8b2cc",
     "strict_materialized_flat_netlist_peak_live_qubits": 1968,
-    "strict_materialized_flat_netlist_operation_stream_sha256": "21ef9e5af68f3c3136b134df81ccfccf8c15bb4b62bbf7f73b6f4d1319f2c00b",
-    "strict_materialized_flat_netlist_segment_merkle_root_sha256": "53b4445459f4e8f70433405577aa56aa5366715deb3257dcde6c639e2b24e13c",
-    "operation_stream_sha256": "21ef9e5af68f3c3136b134df81ccfccf8c15bb4b62bbf7f73b6f4d1319f2c00b",
-    "segment_merkle_root_sha256": "53b4445459f4e8f70433405577aa56aa5366715deb3257dcde6c639e2b24e13c"
+    "strict_materialized_flat_netlist_operation_stream_sha256": "d15d0449ff7fefbe71e3f04cca538af7422badd03a0aba676050e378ab78d0a0",
+    "strict_materialized_flat_netlist_segment_merkle_root_sha256": "e6c5b29572ce681e978e12c14fab6abeb0e24128f7c57f2a908c9c2519a8f548",
+    "operation_stream_sha256": "d15d0449ff7fefbe71e3f04cca538af7422badd03a0aba676050e378ab78d0a0",
+    "segment_merkle_root_sha256": "e6c5b29572ce681e978e12c14fab6abeb0e24128f7c57f2a908c9c2519a8f548"
   },
   "remaining_completion_requirements": [
     "replace the strict liveness projection overlay and legacy companion stream with one canonical executable flat IR that directly emits the strict liveness rows",
@@ -85,10 +85,10 @@
     "keep public presentation generated from this artifact or from strict_replayed_tail_headline.json, never from hand-copied headline numbers"
   ],
   "source_digests": {
-    "strict_replayed_tail_headline_sha256": "8bc5a178796a1e2a73784ebebfe3b0911c079d6fae97d1b351e1d0d743dd8c80",
-    "public_headline_result_sha256": "63fc1d9fa64ddb94249c6770610e323033c2f87b8e6e3bffd7536b88959bc0d5",
-    "engine_completion_audit_sha256": "e367d61ee5ddf98077e23aaf11d8261001c8f911f779af935d27029e71f0e3bb",
-    "public_candidate_materialized_circuit_manifest_sha256": "24cec5e722c6609f59241c862860a542daa883752518c94498bd1aa2d87a8196",
+    "strict_replayed_tail_headline_sha256": "4550ea84b7a216cae23d2950ef08114092c305849799e2aabeb5911b80a1f260",
+    "public_headline_result_sha256": "91721d0d11fc1d2accc199e76f731b5bb11593aadeb4bb2e6ebf073a82b8c4c0",
+    "engine_completion_audit_sha256": "e773023bff8c45fc58da71ca3a0c0edd0d0d948ad866244f39d4337e40874c18",
+    "public_candidate_materialized_circuit_manifest_sha256": "e46a59a49af8da4f8d138d15542a022404b3ee1c940e2b2ca4dda91845ae761f",
     "hybrid_bridge_search_sha256": "f4938cd63465eedff6b0ed58a462084ac41099c0da7b3e2ff8297b794edd3ef3"
   },
   "checks": {

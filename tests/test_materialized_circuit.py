@@ -285,17 +285,16 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     )
 
 
-def test_arithmetic_operand_replay_audit_exposes_current_flattening_gap() -> None:
+def test_arithmetic_operand_replay_audit_passes_checked_flattening() -> None:
     report = build_arithmetic_operand_replay_audit(
         public_candidate_materialized_circuit_manifest=_artifact('public_candidate_materialized_circuit_manifest.json'),
         arithmetic_lowerings=_artifact('arithmetic_lowerings.json'),
         arithmetic_operation_ir=_artifact('arithmetic_operation_ir.json'),
     )
-    assert report['pass'] is False
-    assert report['rows_with_failures'] > 0
-    first_failure = report['sample_failures'][0]['first_failure']
-    assert first_failure['reason'] == 'source_operand_tuple_not_replayed_by_materialized_domain'
-    assert first_failure['source_operands'] != first_failure['materialized_parent_bits']
+    assert report['pass'] is True
+    assert report['rows_with_failures'] == 0
+    assert report['unique_block_gate_failures'] == 0
+    assert report['source_operations_checked'] > _artifact('arithmetic_operation_ir.json')['selected_leaf_exact_operation_stream']['operation_count']
 
 
 def test_public_candidate_flat_netlist_iterator_emits_concrete_operand_wires() -> None:

@@ -15,8 +15,8 @@
     "lookup_lowerings_sha256": "70e8ff627f0c537f73162c1d3ccf259a94c3dd756568947c7b4f3cf4665a5637",
     "modular_arithmetic_certificate_sha256": "058cc2c95b3b8f65d39f8c91f56b5256322e0fa00853466facb980d60c1e783e",
     "phase_shell_lowerings_sha256": "4411ea5f699e5950a32783f2232796a63987efb5d939f98ac400f4f02ddd415b",
-    "public_candidate_materialized_circuit_manifest_sha256": "24cec5e722c6609f59241c862860a542daa883752518c94498bd1aa2d87a8196",
-    "public_engine_manifest_sha256": "a29f0d02c67bc84777e33bc7590f0c21dd3893684080fc57262c96f577ced4a3",
+    "public_candidate_materialized_circuit_manifest_sha256": "e46a59a49af8da4f8d138d15542a022404b3ee1c940e2b2ca4dda91845ae761f",
+    "public_engine_manifest_sha256": "a31a8cb2cbd06303e57045b57292ba7dc5104ebad095df9586a82184a343e966",
     "qroam_primitive_certificate_sha256": "9b6d9fd817284d64b5e56f5e804f025cca897dfd19455f637643813bc57700dc",
     "qroam_table_cnot_materialization_sha256": "b783455ac10c7da613d154ada14315069926fddec5ce0a1ebd23e1cb4d8f3916",
     "release_corpus_preflight_sha256": "e8cc293c4fc4702e1fbc0bfcb9b8749515de99a348ecbf55ed123d68738c2f3a",
@@ -41,16 +41,16 @@
     "operation_count": 39386537,
     "non_clifford_count": 36973222,
     "peak_live_qubits": 1199,
-    "operation_stream_sha256": "6a6f301f89ce69ff71f6d63ecb01c2824e165e20cf71f00a84774091054d1a51",
-    "segment_merkle_root_sha256": "b2f66b4ed1b93b46525caefccf7112b7b5271f146e83fb6b842a66f5fab5f09b",
+    "operation_stream_sha256": "fba6b88a39f20544009f6ce961ac934b9e67ea88ddb1c3b7dbab7e5b41dc0fe9",
+    "segment_merkle_root_sha256": "9115ce215ac70b9fd12c824a0cb0e25e0ec6b68b6d46e71357b8b450e4d95837",
     "exact_operation_stream_materialized": true
   },
   "materialized_flat_netlist": {
     "operation_count": 39386537,
     "non_clifford_count": 36973222,
     "peak_live_qubits": 1968,
-    "operation_stream_sha256": "21ef9e5af68f3c3136b134df81ccfccf8c15bb4b62bbf7f73b6f4d1319f2c00b",
-    "segment_merkle_root_sha256": "53b4445459f4e8f70433405577aa56aa5366715deb3257dcde6c639e2b24e13c",
+    "operation_stream_sha256": "d15d0449ff7fefbe71e3f04cca538af7422badd03a0aba676050e378ab78d0a0",
+    "segment_merkle_root_sha256": "e6c5b29572ce681e978e12c14fab6abeb0e24128f7c57f2a908c9c2519a8f548",
     "exact_operation_stream_materialized": true
   },
   "covered_boundaries": [
