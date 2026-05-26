@@ -1911,8 +1911,219 @@ def _qroam_table_cnot_flat_extension(
         'source_segment_merkle_root_sha256': qroam_table_cnot_materialization['segment_merkle_root_sha256'],
         'missing_segment_keys': missing_keys[:32],
         'duplicate_qroam_row_keys': duplicate_keys,
+        'rows': extension_rows,
         'preview_head': extension_rows[:4],
         'preview_tail': extension_rows[-4:],
+        'checks': checks,
+        'pass': all(checks.values()),
+    }
+
+
+def _spliced_physical_segment_hash(contributions: List[Mapping[str, Any]]) -> str:
+    digest = hashlib.sha256()
+    digest.update(b'compiler-project-canonical-physical-flat-segment-v1\n')
+    for contribution in contributions:
+        digest.update((_canonical_json(contribution) + '\n').encode('ascii'))
+    return digest.hexdigest()
+
+
+def _spliced_physical_flat_netlist(
+    *,
+    operation_rows: List[Mapping[str, Any]],
+    liveness_rows: List[Mapping[str, Any]],
+    canonical_materialized_flat_netlist: Mapping[str, Any],
+    qroam_table_cnot_flat_extension: Mapping[str, Any],
+    segment_size: int = PUBLIC_CANDIDATE_FLAT_SEGMENT_SIZE,
+) -> Dict[str, Any]:
+    extension_by_row_index = {
+        int(row['run_length_row_index']): row
+        for row in qroam_table_cnot_flat_extension['rows']
+    }
+    liveness_by_row_index = {
+        int(row['row_index']): row
+        for row in liveness_rows
+    }
+    liveness_hash_by_row_index = {
+        int(row['row_index']): _sha256_payload(row)
+        for row in liveness_rows
+    }
+    operation_cursor = 0
+    gate_totals = _empty_gate_totals()
+    non_clifford_count = 0
+    peak_live_qubits = int(canonical_materialized_flat_netlist['peak_live_qubits'])
+    qroam_table_cnot_splice_count = 0
+    qroam_table_cnot_operation_count = 0
+    segment_start = 0
+    segment_count = 0
+    segment_gate_totals = _empty_gate_totals()
+    segment_non_clifford = 0
+    segment_digest_contributions: List[Dict[str, Any]] = []
+    segments: List[Dict[str, Any]] = []
+    preview_head: List[Dict[str, Any]] = []
+    preview_tail: List[Dict[str, Any]] = []
+
+    def append_contribution(contribution: Mapping[str, Any]) -> None:
+        nonlocal operation_cursor, segment_start, segment_count, segment_gate_totals
+        nonlocal segment_non_clifford, segment_digest_contributions, non_clifford_count
+        contribution_start = int(contribution['operation_start'])
+        contribution_end = int(contribution['operation_end_exclusive'])
+        if contribution_start != operation_cursor:
+            raise AssertionError('spliced physical stream contribution order drifted')
+        gate = str(contribution['gate'])
+        remaining = contribution_end - contribution_start
+        offset = 0
+        compact = {
+            key: contribution[key]
+            for key in (
+                'contribution_kind',
+                'operation_start',
+                'operation_end_exclusive',
+                'gate',
+                'scope',
+                'source',
+                'run_length_row_index',
+            )
+        }
+        if len(preview_head) < 6:
+            preview_head.append(dict(compact))
+        preview_tail.append(dict(compact))
+        if len(preview_tail) > 6:
+            preview_tail.pop(0)
+        while remaining:
+            take = min(remaining, segment_size - segment_count)
+            chunk = {
+                **dict(contribution),
+                'operation_start': operation_cursor,
+                'operation_end_exclusive': operation_cursor + take,
+                'contribution_instance_start': offset,
+                'contribution_instance_end_exclusive': offset + take,
+            }
+            segment_digest_contributions.append(chunk)
+            segment_gate_totals[gate] += take
+            gate_totals[gate] += take
+            if gate == 'ccx':
+                segment_non_clifford += take
+                non_clifford_count += take
+            operation_cursor += take
+            offset += take
+            remaining -= take
+            segment_count += take
+            if segment_count == segment_size:
+                segments.append({
+                    'segment_index': len(segments),
+                    'operation_start': segment_start,
+                    'operation_end_exclusive': operation_cursor,
+                    'operation_count': segment_count,
+                    'gate_totals': segment_gate_totals,
+                    'non_clifford_count': segment_non_clifford,
+                    'sha256': _spliced_physical_segment_hash(segment_digest_contributions),
+                })
+                segment_start = operation_cursor
+                segment_count = 0
+                segment_gate_totals = _empty_gate_totals()
+                segment_non_clifford = 0
+                segment_digest_contributions = []
+
+    for row in operation_rows:
+        row_index = int(row['row_index'])
+        row_total = int(row['total_count'])
+        liveness = liveness_by_row_index[row_index]
+        append_contribution({
+            'contribution_kind': 'run_length_primitive_row',
+            'operation_start': operation_cursor,
+            'operation_end_exclusive': operation_cursor + row_total,
+            'run_length_row_index': row_index,
+            'scope': str(row['scope']),
+            'source': str(row['source']),
+            'gate': str(row['gate']),
+            'primitive_operand_contract_sha256': str(row['primitive_operand_contract_sha256']),
+            'liveness_binding_sha256': liveness_hash_by_row_index[row_index],
+            'total_live_qubits': int(liveness['total_live_qubits']),
+        })
+        peak_live_qubits = max(peak_live_qubits, int(liveness['total_live_qubits']))
+        extension = extension_by_row_index.get(row_index)
+        if extension is not None:
+            emitted_cx_count = int(extension['emitted_cx_count'])
+            append_contribution({
+                'contribution_kind': 'qroam_table_cnot_indexed_rows',
+                'operation_start': operation_cursor,
+                'operation_end_exclusive': operation_cursor + emitted_cx_count,
+                'run_length_row_index': row_index,
+                'extension_segment_index': int(extension['extension_segment_index']),
+                'scope': 'qroam_table_cnot_indexed_stream',
+                'source': 'qroam_table_cnot_materialization.row_index_contract',
+                'gate': 'cx',
+                'source_segment_sha256': str(extension['source_segment_sha256']),
+                'qroam_run_length_segment_sha256': str(extension['qroam_run_length_segment_sha256']),
+                'row_index_contract': extension['row_index_contract'],
+                'liveness_binding_sha256': str(extension['liveness_binding_sha256']),
+                'total_live_qubits': int(extension['total_live_qubits']),
+                'qroam_target_wire': str(extension['qroam_target_wire']),
+            })
+            qroam_table_cnot_splice_count += 1
+            qroam_table_cnot_operation_count += emitted_cx_count
+            peak_live_qubits = max(peak_live_qubits, int(extension['total_live_qubits']))
+    if segment_count:
+        segments.append({
+            'segment_index': len(segments),
+            'operation_start': segment_start,
+            'operation_end_exclusive': operation_cursor,
+            'operation_count': segment_count,
+            'gate_totals': segment_gate_totals,
+            'non_clifford_count': segment_non_clifford,
+            'sha256': _spliced_physical_segment_hash(segment_digest_contributions),
+        })
+    checks = {
+        'canonical_rows_are_prefix_contributions': sum(
+            int(row['total_count'])
+            for row in operation_rows
+        ) == int(canonical_materialized_flat_netlist['operation_count']),
+        'qroam_table_cnot_rows_are_spliced': (
+            qroam_table_cnot_splice_count == int(qroam_table_cnot_flat_extension['segment_count'])
+            and qroam_table_cnot_operation_count == int(qroam_table_cnot_flat_extension['operation_count'])
+        ),
+        'gate_totals_include_indexed_qroam_table_cx': (
+            gate_totals['cx'] == int(qroam_table_cnot_flat_extension['operation_count'])
+            and gate_totals['ccx'] == int(canonical_materialized_flat_netlist['gate_totals']['ccx'])
+        ),
+        'non_clifford_count_is_unchanged_by_clifford_splice': non_clifford_count == int(canonical_materialized_flat_netlist['non_clifford_count']),
+        'peak_live_qubits_covers_canonical_and_table_cnot_liveness': (
+            peak_live_qubits >= int(canonical_materialized_flat_netlist['peak_live_qubits'])
+            and peak_live_qubits >= int(qroam_table_cnot_flat_extension['peak_live_qubits'])
+        ),
+    }
+    return {
+        'schema': 'compiler-project-canonical-physical-flat-netlist-v1',
+        'definition': 'Canonical physical flat stream summary that splices indexed QROAM table-CNOT rows into the canonical materialized primitive stream without expanding every Clifford CNOT row into JSON.',
+        'operation_schema': [
+            'operation_index',
+            'contribution_kind',
+            'run_length_row_index',
+            'gate',
+            'scope',
+            'source',
+            'liveness_binding_sha256',
+            'row_index_contract_for_qroam_table_cnot',
+        ],
+        'exact_virtual_operation_stream_materialized': True,
+        'per_operation_rows_materialized_in_json': False,
+        'segment_size': segment_size,
+        'operation_count': operation_cursor,
+        'segment_count': len(segments),
+        'operation_stream_sha256': _sha256_payload({
+            'canonical_operation_stream_sha256': canonical_materialized_flat_netlist['operation_stream_sha256'],
+            'qroam_table_cnot_operation_stream_sha256': qroam_table_cnot_flat_extension['operation_stream_sha256'],
+            'segment_merkle_root_sha256': _merkle_root([segment['sha256'] for segment in segments]),
+        }),
+        'segment_merkle_root_sha256': _merkle_root([segment['sha256'] for segment in segments]),
+        'gate_totals': gate_totals,
+        'non_clifford_count': non_clifford_count,
+        'peak_live_qubits': peak_live_qubits,
+        'qroam_table_cnot_splice_count': qroam_table_cnot_splice_count,
+        'qroam_table_cnot_operation_count': qroam_table_cnot_operation_count,
+        'segments': segments,
+        'preview_head': preview_head,
+        'preview_tail': preview_tail,
         'checks': checks,
         'pass': all(checks.values()),
     }
@@ -2481,6 +2692,12 @@ def build_public_candidate_materialized_circuit_manifest(
         liveness_rows=liveness_rows,
         qroam_table_cnot_materialization=qroam_table_cnot_materialization,
     )
+    canonical_physical_flat_netlist = _spliced_physical_flat_netlist(
+        operation_rows=rows,
+        liveness_rows=list(strict_liveness_projection['rows']) if strict_liveness_projection is not None else liveness_rows,
+        canonical_materialized_flat_netlist=canonical_materialized_flat_netlist,
+        qroam_table_cnot_flat_extension=qroam_table_cnot_flat_extension,
+    )
     non_clifford_total = sum(int(row['non_clifford_count']) for row in rows)
     gate_totals = _empty_gate_totals()
     for row in rows:
@@ -2560,6 +2777,14 @@ def build_public_candidate_materialized_circuit_manifest(
             and int(qroam_table_cnot_flat_extension['operation_count']) == int(qroam_table_cnot_materialization['totals']['full_oracle_emitted_clifford_cx'])
             and int(qroam_table_cnot_flat_extension['non_clifford_count']) == 0
             and int(qroam_table_cnot_flat_extension['peak_live_qubits']) <= int(materialized_public_totals['logical_qubits'])
+        ),
+        'canonical_physical_flat_netlist_splices_qroam_table_cnot_rows': (
+            canonical_physical_flat_netlist['pass'] is True
+            and int(canonical_physical_flat_netlist['operation_count']) == int(canonical_materialized_flat_netlist['operation_count']) + int(qroam_table_cnot_flat_extension['operation_count'])
+            and int(canonical_physical_flat_netlist['gate_totals']['cx']) == int(qroam_table_cnot_flat_extension['operation_count'])
+            and int(canonical_physical_flat_netlist['gate_totals']['ccx']) == int(canonical_materialized_flat_netlist['gate_totals']['ccx'])
+            and int(canonical_physical_flat_netlist['non_clifford_count']) == int(canonical_materialized_flat_netlist['non_clifford_count'])
+            and int(canonical_physical_flat_netlist['peak_live_qubits']) == int(public_totals['logical_qubits'])
         ),
         'base_rows_match_public_non_qroam_derivation': sum(int(row['non_clifford_count']) for row in base_rows) == base_non_clifford == int(public_totals['non_clifford']) - qroam_non_clifford_total,
         'generated_base_rows_match_public_non_qroam_derivation': (
@@ -2815,6 +3040,7 @@ def build_public_candidate_materialized_circuit_manifest(
         'strict_replayed_tail_liveness_projection': strict_liveness_projection,
         STRICT_REPLAYED_TAIL_MATERIALIZED_FLAT_NETLIST: strict_materialized_flat_netlist,
         CANONICAL_MATERIALIZED_FLAT_NETLIST: canonical_materialized_flat_netlist,
+        'canonical_physical_flat_netlist': canonical_physical_flat_netlist,
         LEGACY_WRAPPER_MATERIALIZED_FLAT_NETLIST: materialized_flat_netlist,
         'flat_netlist': flat_netlist,
         'materialized_flat_netlist': materialized_flat_netlist,

@@ -149,6 +149,19 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert qroam_table_extension['segment_count'] == manifest['qroam_segment_row_count']
     assert qroam_table_extension['non_clifford_count'] == 0
     assert manifest['checks']['qroam_table_cnot_flat_extension_is_bound'] is True
+    physical_flat = manifest['canonical_physical_flat_netlist']
+    assert physical_flat['schema'] == 'compiler-project-canonical-physical-flat-netlist-v1'
+    assert physical_flat['pass'] is True
+    assert physical_flat['exact_virtual_operation_stream_materialized'] is True
+    assert physical_flat['per_operation_rows_materialized_in_json'] is False
+    assert physical_flat['operation_count'] == manifest[CANONICAL_MATERIALIZED_FLAT_NETLIST]['operation_count'] + qroam_table_extension['operation_count']
+    assert physical_flat['gate_totals']['cx'] == qroam_table_extension['operation_count']
+    assert physical_flat['gate_totals']['ccx'] == manifest[CANONICAL_MATERIALIZED_FLAT_NETLIST]['gate_totals']['ccx']
+    assert physical_flat['non_clifford_count'] == manifest['public_totals']['non_clifford']
+    assert physical_flat['peak_live_qubits'] == manifest['public_totals']['logical_qubits']
+    assert physical_flat['qroam_table_cnot_splice_count'] == qroam_table_extension['segment_count']
+    assert physical_flat['qroam_table_cnot_operation_count'] == qroam_table_extension['operation_count']
+    assert manifest['checks']['canonical_physical_flat_netlist_splices_qroam_table_cnot_rows'] is True
     assert len(manifest['run_length_rows']) == manifest['run_length_row_count']
     assert len(manifest['materialized_liveness']['rows']) == manifest['liveness_binding_row_count']
     assert manifest['flat_netlist']['operation_count'] == sum(manifest['gate_totals'].values())
@@ -390,6 +403,7 @@ def test_public_candidate_materialized_manifest_rejects_qroam_table_cnot_drift()
     )
     assert observed['checks']['qroam_table_cnot_flat_extension_is_bound'] is False
     assert observed['qroam_table_cnot_flat_extension']['checks']['table_cnot_operation_count_matches_artifact'] is False
+    assert observed['checks']['canonical_physical_flat_netlist_splices_qroam_table_cnot_rows'] is False
     assert observed['pass'] is False
 
 

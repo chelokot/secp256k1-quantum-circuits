@@ -183,6 +183,7 @@ def build_public_engine_manifest(
 
     materialized_flat_netlist = public_candidate_materialized_circuit_manifest[LEGACY_WRAPPER_MATERIALIZED_FLAT_NETLIST]
     canonical_materialized_flat_netlist = public_candidate_materialized_circuit_manifest[CANONICAL_MATERIALIZED_FLAT_NETLIST]
+    canonical_physical_flat_netlist = public_candidate_materialized_circuit_manifest['canonical_physical_flat_netlist']
     strict_materialized_flat_netlist = public_candidate_materialized_circuit_manifest[STRICT_REPLAYED_TAIL_MATERIALIZED_FLAT_NETLIST]
     legacy_wrapper_totals = {
         'non_clifford': int(materialized_flat_netlist['non_clifford_count']),
@@ -328,7 +329,10 @@ def build_public_engine_manifest(
             and public_candidate_materialized_circuit_manifest['checks'][PUBLIC_TOTALS_DERIVE_FROM_CANONICAL_CHECK] is True
             and public_candidate_materialized_circuit_manifest['checks'][CANONICAL_FLAT_NETLIST_IS_STRICT_REPLAY_CHECK] is True
             and public_candidate_materialized_circuit_manifest['checks']['qroam_table_cnot_flat_extension_is_bound'] is True
+            and public_candidate_materialized_circuit_manifest['checks']['canonical_physical_flat_netlist_splices_qroam_table_cnot_rows'] is True
             and public_candidate_materialized_circuit_manifest['qroam_table_cnot_flat_extension']['pass'] is True
+            and public_candidate_materialized_circuit_manifest['canonical_physical_flat_netlist']['pass'] is True
+            and int(public_candidate_materialized_circuit_manifest['canonical_physical_flat_netlist']['gate_totals']['cx']) == int(qroam_table_totals['full_oracle_emitted_clifford_cx'])
             and all(bool(value) for value in public_candidate_materialized_circuit_manifest['flat_execution_probe']['checks'].values())
         ),
         'strict_primitive_completeness_report_is_bound': (
@@ -473,6 +477,23 @@ def build_public_engine_manifest(
                     'segment_merkle_root_sha256': public_candidate_materialized_circuit_manifest[CANONICAL_MATERIALIZED_FLAT_NETLIST]['segment_merkle_root_sha256'],
                     'non_clifford_count': int(public_candidate_materialized_circuit_manifest[CANONICAL_MATERIALIZED_FLAT_NETLIST]['non_clifford_count']),
                     'peak_live_qubits': int(public_candidate_materialized_circuit_manifest[CANONICAL_MATERIALIZED_FLAT_NETLIST]['peak_live_qubits']),
+                },
+                'canonical_physical_flat_netlist': {
+                    'schema': canonical_physical_flat_netlist['schema'],
+                    'exact_virtual_operation_stream_materialized': bool(canonical_physical_flat_netlist['exact_virtual_operation_stream_materialized']),
+                    'per_operation_rows_materialized_in_json': bool(canonical_physical_flat_netlist['per_operation_rows_materialized_in_json']),
+                    'operation_count': int(canonical_physical_flat_netlist['operation_count']),
+                    'operation_stream_sha256': canonical_physical_flat_netlist['operation_stream_sha256'],
+                    'segment_count': int(canonical_physical_flat_netlist['segment_count']),
+                    'segment_merkle_root_sha256': canonical_physical_flat_netlist['segment_merkle_root_sha256'],
+                    'gate_totals': {
+                        key: int(value)
+                        for key, value in sorted(canonical_physical_flat_netlist['gate_totals'].items())
+                    },
+                    'non_clifford_count': int(canonical_physical_flat_netlist['non_clifford_count']),
+                    'peak_live_qubits': int(canonical_physical_flat_netlist['peak_live_qubits']),
+                    'qroam_table_cnot_splice_count': int(canonical_physical_flat_netlist['qroam_table_cnot_splice_count']),
+                    'qroam_table_cnot_operation_count': int(canonical_physical_flat_netlist['qroam_table_cnot_operation_count']),
                 },
                 STRICT_REPLAYED_TAIL_MATERIALIZED_FLAT_NETLIST: {
                     'schema': public_candidate_materialized_circuit_manifest[STRICT_REPLAYED_TAIL_MATERIALIZED_FLAT_NETLIST]['schema'],

@@ -74,12 +74,14 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     assert remaining['qroam_bit_level_netlist_expansion']['evidence_metrics']['source_bound_run_length_rows'] == expected['source_binding_summary']['rows_by_source_kind']['qroam_primitive_certificate']
     qroam_table_cnot = _load('qroam_table_cnot_materialization.json')
     qroam_metrics = remaining['qroam_bit_level_netlist_expansion']['evidence_metrics']
-    assert remaining['qroam_bit_level_netlist_expansion']['status'] == 'indexed_virtual_per_cnot_rows_not_global_stream_materialized'
+    assert remaining['qroam_bit_level_netlist_expansion']['status'] == 'indexed_table_cnot_rows_spliced_into_canonical_physical_stream'
     assert qroam_metrics['full_oracle_emitted_table_clifford_cx'] == qroam_table_cnot['totals']['full_oracle_emitted_clifford_cx']
     assert qroam_metrics['rank_checkpoint_count'] == qroam_table_cnot['totals']['rank_checkpoint_count']
     assert qroam_metrics['row_decoder_sample_count'] == qroam_table_cnot['totals']['row_decoder_sample_count']
     assert qroam_metrics['row_index_contract_merkle_root_sha256'] == qroam_table_cnot['row_index_contract_merkle_root_sha256']
     assert qroam_metrics['row_decoder_sample_merkle_root_sha256'] == qroam_table_cnot['row_decoder_sample_merkle_root_sha256']
+    assert qroam_metrics['canonical_physical_cx_count'] == qroam_table_cnot['totals']['full_oracle_emitted_clifford_cx']
+    assert len(qroam_metrics['canonical_physical_stream_sha256']) == 64
     assert len(remaining['qroam_bit_level_netlist_expansion']['evidence_metrics']['table_cnot_extension_stream_sha256']) == 64
     assert all(expected['checks'].values())
 

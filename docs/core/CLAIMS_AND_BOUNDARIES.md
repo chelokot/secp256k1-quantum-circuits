@@ -204,8 +204,10 @@ contracts. The table-CNOT materialization artifact now hashes the concrete
 folded secp256k1 table chunks for every retained raw32 lookup call, counts the
 emitted Clifford CNOTs, records global emitted-CNOT operation ranges, stores
 rank checkpoints, and binds executable per-CNOT row-decoder samples for each
-segment. The remaining QROAM row is splicing those indexed virtual CNOT rows
-into the single global schedule.
+segment. The manifest then splices those indexed table-CNOT rows into
+`canonical_physical_flat_netlist`, whose gate totals include the QROAM
+`cx` rows. The remaining QROAM row is giving that indexed contribution stream
+the same per-operation iterator/export path as the non-QROAM primitive rows.
 The selected tail macro is also no longer only prose plus a stage inventory:
 `tail_macro_engine.json` expands the formula into a 23-operation field-kernel
 stream, binds that stream's opcode histogram to the counted tail kernel, and

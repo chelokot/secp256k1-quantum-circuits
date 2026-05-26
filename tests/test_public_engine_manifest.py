@@ -100,6 +100,14 @@ def test_public_engine_manifest_reconstructs_checked_artifact() -> None:
     assert len(strict_flat['segment_merkle_root_sha256']) == 64
     assert canonical_flat['operation_stream_sha256'] == strict_flat['operation_stream_sha256']
     assert canonical_flat['peak_live_qubits'] == expected['public_totals']['logical_qubits']
+    physical_flat = expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['canonical_physical_flat_netlist']
+    assert physical_flat['schema'] == 'compiler-project-canonical-physical-flat-netlist-v1'
+    assert physical_flat['exact_virtual_operation_stream_materialized'] is True
+    assert physical_flat['operation_count'] == canonical_flat['operation_count'] + qroam_table_extension['operation_count']
+    assert physical_flat['gate_totals']['cx'] == qroam_table_extension['operation_count']
+    assert physical_flat['non_clifford_count'] == expected['public_totals']['non_clifford']
+    assert physical_flat['peak_live_qubits'] == expected['public_totals']['logical_qubits']
+    assert physical_flat['qroam_table_cnot_splice_count'] == qroam_table_extension['segment_count']
     flat_probe = expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['flat_execution_probe']
     assert flat_probe['probe_count'] >= 15
     assert len(flat_probe['probe_stream_sha256']) == 64
@@ -169,6 +177,14 @@ def test_public_engine_manifest_rejects_phase_shell_drift() -> None:
 def test_public_engine_manifest_rejects_public_candidate_materialized_drift() -> None:
     public_candidate_materialized = _load('public_candidate_materialized_circuit_manifest.json')
     public_candidate_materialized['public_totals']['non_clifford'] -= 1
+    observed = _build_manifest(public_candidate_materialized=public_candidate_materialized)
+    assert observed['checks']['public_candidate_materialized_stream_binds_engine_totals'] is False
+    assert observed['pass'] is False
+
+
+def test_public_engine_manifest_rejects_canonical_physical_flat_drift() -> None:
+    public_candidate_materialized = _load('public_candidate_materialized_circuit_manifest.json')
+    public_candidate_materialized['canonical_physical_flat_netlist']['gate_totals']['cx'] -= 1
     observed = _build_manifest(public_candidate_materialized=public_candidate_materialized)
     assert observed['checks']['public_candidate_materialized_stream_binds_engine_totals'] is False
     assert observed['pass'] is False

@@ -55,6 +55,7 @@ def build_engine_completion_audit(
     selected_family_name = str(compiler_parameters['public_headline_policy']['selected_public_family_name'])
     materialized_flat = public_candidate_materialized_circuit_manifest[LEGACY_WRAPPER_MATERIALIZED_FLAT_NETLIST]
     canonical_materialized_flat = public_candidate_materialized_circuit_manifest[CANONICAL_MATERIALIZED_FLAT_NETLIST]
+    canonical_physical_flat = public_candidate_materialized_circuit_manifest['canonical_physical_flat_netlist']
     strict_materialized_flat = public_candidate_materialized_circuit_manifest[STRICT_REPLAYED_TAIL_MATERIALIZED_FLAT_NETLIST]
     strict_completeness = public_candidate_materialized_circuit_manifest['strict_primitive_completeness']
     source_binding = public_candidate_materialized_circuit_manifest['operand_source_binding']
@@ -148,6 +149,10 @@ def build_engine_completion_audit(
             and qroam_table_cnot_materialization['checks']['row_index_contract_domains_match_ranges'] is True
             and qroam_table_cnot_materialization['checks']['row_decoder_samples_are_exact_table_cnot_rows'] is True
             and public_candidate_materialized_circuit_manifest['qroam_table_cnot_flat_extension']['checks']['table_cnot_row_index_contract_matches_artifact'] is True
+            and public_candidate_materialized_circuit_manifest['checks']['canonical_physical_flat_netlist_splices_qroam_table_cnot_rows'] is True
+            and canonical_physical_flat['pass'] is True
+            and int(canonical_physical_flat['qroam_table_cnot_operation_count']) == int(qroam_table_cnot_materialization['totals']['full_oracle_emitted_clifford_cx'])
+            and int(canonical_physical_flat['gate_totals']['cx']) == int(qroam_table_cnot_materialization['totals']['full_oracle_emitted_clifford_cx'])
         ),
         'lookup_rows_are_per_block_source_bound': (
             rows_by_source_kind['lookup_lowering_block'] > 0
@@ -244,6 +249,11 @@ def build_engine_completion_audit(
             'evidence': 'qroam_primitive_certificate.qroamclean_cost_model',
         },
         {
+            'name': 'qroam_table_cnot_physical_splice',
+            'status': 'indexed_table_cnot_rows_in_canonical_physical_flat_stream',
+            'evidence': 'canonical_physical_flat_netlist + qroam_table_cnot_flat_extension + qroam_table_cnot_materialization.row_index_contract',
+        },
+        {
             'name': 'modular_arithmetic_kernel_generation',
             'status': 'generated_from_executable_modular_circuit_ir',
             'evidence': 'arithmetic_lowerings.executable_modular_circuit_ir + arithmetic_operation_ir.executable_modular_circuit_ir + modular_arithmetic_certificate',
@@ -285,8 +295,8 @@ def build_engine_completion_audit(
         },
         {
             'name': 'qroam_bit_level_netlist_expansion',
-            'status': 'indexed_virtual_per_cnot_rows_not_global_stream_materialized',
-            'required_to_close': 'Splice the indexed virtual QROAM table-CNOT rows into the canonical global flat stream alongside address-control, measurement, and uncompute operations.',
+            'status': 'indexed_table_cnot_rows_spliced_into_canonical_physical_stream',
+            'required_to_close': 'Replace the indexed virtual QROAM table-CNOT contribution stream with the same per-operation executable iterator/export path as the non-QROAM primitive rows.',
             'current_evidence': 'qroam_primitive_certificate + qroam_table_cnot_materialization + public_candidate_materialized_circuit_manifest.qroam_table_cnot_flat_extension + operand_source_binding',
             'evidence_metrics': {
                 'source_bound_run_length_rows': rows_by_source_kind['qroam_primitive_certificate'],
@@ -300,6 +310,10 @@ def build_engine_completion_audit(
                 'row_index_contract_merkle_root_sha256': qroam_table_cnot_materialization['row_index_contract_merkle_root_sha256'],
                 'row_decoder_sample_merkle_root_sha256': qroam_table_cnot_materialization['row_decoder_sample_merkle_root_sha256'],
                 'table_cnot_extension_stream_sha256': public_candidate_materialized_circuit_manifest['qroam_table_cnot_flat_extension']['operation_stream_sha256'],
+                'canonical_physical_operation_count': int(canonical_physical_flat['operation_count']),
+                'canonical_physical_cx_count': int(canonical_physical_flat['gate_totals']['cx']),
+                'canonical_physical_stream_sha256': canonical_physical_flat['operation_stream_sha256'],
+                'canonical_physical_segment_merkle_root_sha256': canonical_physical_flat['segment_merkle_root_sha256'],
                 'table_cnot_extension_peak_live_qubits': int(public_candidate_materialized_circuit_manifest['qroam_table_cnot_flat_extension']['peak_live_qubits']),
                 'domain_size': int(qroam_cost['domain_size']),
                 'block_size': int(qroam_cost['block_size']),
