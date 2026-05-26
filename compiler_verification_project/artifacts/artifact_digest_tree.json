@@ -4,21 +4,21 @@
   "size_threshold_bytes": 1048576,
   "chunk_size_bytes": 1048576,
   "file_count": 11,
-  "repository_digest_sha256": "ad632417e55e9eadc4a8a183efde1d128ff6b81e0ed0390c3c4fc8c47f7d16f7",
+  "repository_digest_sha256": "e3a3ffb1e6ecde88ff9e6047d084b5c18395af627a92c06e9e1f7872d8ae3517",
   "files": [
     {
       "path": "compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json",
       "bytes": 35687072,
-      "sha256": "babca170640e999cb0ccf6adaf7675a9bdc44305394160d2c7c1c34dd63713f8",
+      "sha256": "c8cf08bd871035a228205ed62bbce889dabda92cb39566fd4fdb8a601bf0a2af",
       "chunk_size_bytes": 1048576,
       "chunk_count": 35,
-      "chunk_merkle_root_sha256": "061756e3549f030c7c871ebe2c6e3774de4e91e8428fd7701e97760b1bad29be",
+      "chunk_merkle_root_sha256": "97912ef4bdf94100d58499f218cb50baac8b884bbfcaacbeb4d3fe8a6741ddd8",
       "chunks": [
         {
           "index": 0,
           "offset": 0,
           "bytes": 1048576,
-          "sha256": "7e75c19ceb2b48c2fcebe480c254f791e78d7c19c7a7e29c420a252546ab8035"
+          "sha256": "2b0c5e731c25cccc86a61d587f21cee68649afccb11222a0d3e4388e4a3317ec"
         },
         {
           "index": 1,

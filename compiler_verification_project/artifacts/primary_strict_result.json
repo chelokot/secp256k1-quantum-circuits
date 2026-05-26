@@ -22,7 +22,7 @@
   "closed_evidence": {
     "strict_replayed_tail_headline": {
       "path": "compiler_verification_project/artifacts/strict_replayed_tail_headline.json",
-      "sha256": "8a5f83a423d4f3864fdcf7ab6ca848ce42c14f08cb9cff2f2753678d3ccdbefb",
+      "sha256": "977ff6d20c4091c85a4d7d8f2807b242b4219154a988e99272b4e5521b931f2e",
       "status": "primary_strict_replayed_tail_headline",
       "pass": true
     },
@@ -43,7 +43,7 @@
   },
   "legacy_wrapper_reference": {
     "path": "compiler_verification_project/artifacts/public_headline_result.json",
-    "sha256": "56d36f9aa29a70f007208c5cce025e27dc1a7f388e33cc15c090712bec705e38",
+    "sha256": "f69662784cf48613daead02e298ebebba6d0d734355e76f8b204b8d4a7ff6cb6",
     "selected_result": {
       "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
       "non_clifford": 36973222,
@@ -85,10 +85,10 @@
     "keep public presentation generated from this artifact or from strict_replayed_tail_headline.json, never from hand-copied headline numbers"
   ],
   "source_digests": {
-    "strict_replayed_tail_headline_sha256": "8a5f83a423d4f3864fdcf7ab6ca848ce42c14f08cb9cff2f2753678d3ccdbefb",
-    "public_headline_result_sha256": "56d36f9aa29a70f007208c5cce025e27dc1a7f388e33cc15c090712bec705e38",
-    "engine_completion_audit_sha256": "fb3c965c7655840a57936ff39306587ed5de539b3caf4b9656fde3cb135f3354",
-    "public_candidate_materialized_circuit_manifest_sha256": "65b0b6499294956d915156b660d04955debba21e2bf4a030a39f2c41c56ee712",
+    "strict_replayed_tail_headline_sha256": "977ff6d20c4091c85a4d7d8f2807b242b4219154a988e99272b4e5521b931f2e",
+    "public_headline_result_sha256": "f69662784cf48613daead02e298ebebba6d0d734355e76f8b204b8d4a7ff6cb6",
+    "engine_completion_audit_sha256": "aff110282a5eb1ca8d661948ea28a54e02f3ac370ff3846756ada3c3f870b97a",
+    "public_candidate_materialized_circuit_manifest_sha256": "d4cbdb71e9c9df3b7da5e97d8701e1d0e0a880240df010a78d3a900c65647a98",
     "hybrid_bridge_search_sha256": "f4938cd63465eedff6b0ed58a462084ac41099c0da7b3e2ff8297b794edd3ef3"
   },
   "checks": {

@@ -2,7 +2,7 @@
   "schema": "compiler-project-zkp-attestation-input-v5",
   "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
   "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
-  "claim_sha256": "4cd364df5ff49ab8381cd662eca959a92f43400d5e45229f4b75e0593918759a",
+  "claim_sha256": "9c40231e675e091adce731fad6736060702221281ca72e72ba96df9f5c89ace0",
   "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
   "family_sha256": "c6a7146ac5c0d7a63f733b0224ac9dc6fbaafb576d196128f882ecbc01e42b2b",
   "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
@@ -12,7 +12,7 @@
     "document_type": "attestation_claim",
     "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_claim.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "4cd364df5ff49ab8381cd662eca959a92f43400d5e45229f4b75e0593918759a",
+    "sha256": "9c40231e675e091adce731fad6736060702221281ca72e72ba96df9f5c89ace0",
     "payload": {
       "schema": "compiler-project-zkp-attestation-claim-v1",
       "selected_family_alias": "reusable-chunk",
@@ -25,7 +25,7 @@
       "resource_engine_summary": {
         "source": "public_engine_manifest.public_totals",
         "source_document_type": "public_engine_manifest",
-        "source_sha256": "6b7feee0b30a9ca8ba8bf9d3858e81da33489bd473274645887db817a46be7f4",
+        "source_sha256": "b5ea489f31b4df3f0f2344e2b38d256f9cf76209cff6fc635ed3e035acde2874",
         "non_clifford": 36973222,
         "logical_qubits": 1968,
         "matches_family_snapshot": false,
@@ -7903,7 +7903,7 @@
     "resource_engine_summary": {
       "source": "public_engine_manifest.public_totals",
       "source_document_type": "public_engine_manifest",
-      "source_sha256": "6b7feee0b30a9ca8ba8bf9d3858e81da33489bd473274645887db817a46be7f4",
+      "source_sha256": "b5ea489f31b4df3f0f2344e2b38d256f9cf76209cff6fc635ed3e035acde2874",
       "non_clifford": 36973222,
       "logical_qubits": 1968,
       "matches_family_snapshot": false,
@@ -8267,12 +8267,12 @@
     "The proof input carries both the committed source documents and proof-ready reductions.",
     "The guest recomputes every source-document digest and derives the prepared leaf/case reductions from those documents before publishing public values."
   ],
-  "public_engine_manifest_sha256": "6b7feee0b30a9ca8ba8bf9d3858e81da33489bd473274645887db817a46be7f4",
+  "public_engine_manifest_sha256": "b5ea489f31b4df3f0f2344e2b38d256f9cf76209cff6fc635ed3e035acde2874",
   "public_engine_manifest_document": {
     "document_type": "public_engine_manifest",
     "artifact_path": "compiler_verification_project/artifacts/public_engine_manifest.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "6b7feee0b30a9ca8ba8bf9d3858e81da33489bd473274645887db817a46be7f4",
+    "sha256": "b5ea489f31b4df3f0f2344e2b38d256f9cf76209cff6fc635ed3e035acde2874",
     "payload": {
       "schema": "compiler-project-public-engine-manifest-v1",
       "scope": "current public reusable-chunk executable resource engine manifest",
@@ -8296,7 +8296,7 @@
         "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
         "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
         "resource_contract_engine_sha256": "0447031a514b04038ab0f51e63a0e1a5ffa187d1cab694de20d7dfc8196ea1e0",
-        "public_candidate_materialized_circuit_manifest_sha256": "65b0b6499294956d915156b660d04955debba21e2bf4a030a39f2c41c56ee712"
+        "public_candidate_materialized_circuit_manifest_sha256": "d4cbdb71e9c9df3b7da5e97d8701e1d0e0a880240df010a78d3a900c65647a98"
       },
       "instruction_stream": {
         "encoding": [
@@ -8890,7 +8890,7 @@
       "primitive_operation_evidence": {
         "public_candidate_materialized_circuit_manifest": {
           "schema": "compiler-project-public-candidate-materialized-circuit-manifest-v1",
-          "sha256": "65b0b6499294956d915156b660d04955debba21e2bf4a030a39f2c41c56ee712",
+          "sha256": "d4cbdb71e9c9df3b7da5e97d8701e1d0e0a880240df010a78d3a900c65647a98",
           "pass": true,
           "operation_stream_sha256": "1b91eac3d5109522a43f3fcc09a40d91f2a83ae730581878979f127e0788588e",
           "liveness_binding_stream_sha256": "064b5825a77559fdaab046854b89afdf58e1d3da0be53ab53652bb913c87b8eb",

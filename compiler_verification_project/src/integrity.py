@@ -51,6 +51,7 @@ from public_engine_manifest import PUBLIC_ENGINE_MANIFEST_SCHEMA, build_public_e
 from public_result import build_public_headline_result, write_public_headline_result
 from qroam_primitive import build_qroam_k1_primitive_certificate
 from qroam_reference_crosscheck import QROAM_REFERENCE_CROSSCHECK_SCHEMA, build_qroam_reference_crosscheck
+from qroam_table_cnot_materialization import QROAM_TABLE_CNOT_MATERIALIZATION_SCHEMA, build_qroam_table_cnot_materialization
 from release_corpus_preflight import build_release_corpus_preflight
 from reusable_chunk_lowering import build_reusable_chunk_lowering
 from reusable_chunk_tail_candidate import build_reusable_chunk_tail_candidate
@@ -197,6 +198,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'reusable_chunk_tail_candidate': artifact_root / 'reusable_chunk_tail_candidate.json',
         'qroam_primitive_certificate': artifact_root / 'qroam_primitive_certificate.json',
         'qroam_reference_crosscheck': artifact_root / 'qroam_reference_crosscheck.json',
+        'qroam_table_cnot_materialization': artifact_root / 'qroam_table_cnot_materialization.json',
         'reusable_chunk_lowering': artifact_root / 'reusable_chunk_lowering.json',
         'resource_liveness_certificate': artifact_root / 'resource_liveness_certificate.json',
         'materialized_circuit_manifest': artifact_root / 'materialized_circuit_manifest.json',
@@ -271,6 +273,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 arithmetic_operation_ir=load_json(artifact_root / 'arithmetic_operation_ir.json'),
                 lookup_lowerings=load_json(artifact_root / 'lookup_lowerings.json'),
                 qroam_primitive_certificate=load_json(artifact_root / 'qroam_primitive_certificate.json'),
+                qroam_table_cnot_materialization=load_json(artifact_root / 'qroam_table_cnot_materialization.json'),
                 phase_shell_lowerings=load_json(artifact_root / 'phase_shell_lowerings.json'),
                 compiler_parameters=load_json(artifact_root / 'compiler_parameters.json'),
                 selected_family_name=load_json(artifact_root / 'compiler_parameters.json')['public_headline_policy']['selected_public_family_name'],
@@ -302,6 +305,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 arithmetic_operation_ir=load_json(artifact_root / 'arithmetic_operation_ir.json'),
                 lookup_lowerings=load_json(artifact_root / 'lookup_lowerings.json'),
                 qroam_primitive_certificate=load_json(artifact_root / 'qroam_primitive_certificate.json'),
+                qroam_table_cnot_materialization=load_json(artifact_root / 'qroam_table_cnot_materialization.json'),
                 phase_shell_lowerings=load_json(artifact_root / 'phase_shell_lowerings.json'),
                 release_corpus_preflight=load_json(artifact_root / 'release_corpus_preflight.json'),
                 streamed_lookup_tail_leaf_equivalence=load_json(artifact_root / 'streamed_lookup_tail_leaf_equivalence.json'),
@@ -1786,6 +1790,31 @@ def build_qroam_reference_crosscheck_checks(artifacts: Mapping[str, Any]) -> Dic
     return _summarize_checks(checks)
 
 
+def build_qroam_table_cnot_materialization_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    materialization = artifacts['qroam_table_cnot_materialization']
+    expected = build_qroam_table_cnot_materialization(
+        table_manifests=artifacts['table_manifests'],
+        raw32_schedule=raw32_schedule(),
+        reusable_chunk_lowering=artifacts['reusable_chunk_lowering'],
+        qroam_primitive_certificate=artifacts['qroam_primitive_certificate'],
+        field_bits=FIELD_BITS,
+    )
+    stream_plan = artifacts['reusable_chunk_lowering']['stream_plan']
+    qroam_site_stream = artifacts['qroam_primitive_certificate']['target_bit_load_site_stream']
+    totals = materialization['totals']
+    parameters = materialization['parameters']
+    checks = [
+        _check('qroam_table_cnot_materialization_matches_generator', materialization == expected, expected, materialization),
+        _check('qroam_table_cnot_materialization_schema_is_current', materialization['schema'] == QROAM_TABLE_CNOT_MATERIALIZATION_SCHEMA, QROAM_TABLE_CNOT_MATERIALIZATION_SCHEMA, materialization['schema']),
+        _check('qroam_table_cnot_materialization_passes_internal_checks', materialization['pass'] is True and all(materialization['checks'].values()), True, materialization['checks']),
+        _check('qroam_table_cnot_materialization_uses_checked_raw32_shape', int(parameters['leaf_call_count']) == int(stream_plan['leaf_call_count_total']) and int(totals['chunk_stream_count']) == int(stream_plan['whole_oracle_chunk_streams']), {'leaf_call_count': stream_plan['leaf_call_count_total'], 'chunk_stream_count': stream_plan['whole_oracle_chunk_streams']}, {'parameters': parameters, 'totals': totals}),
+        _check('qroam_table_cnot_materialization_covers_target_bit_site_stream', int(totals['full_oracle_potential_target_bit_sites']) == int(stream_plan['whole_oracle_chunk_streams']) * int(qroam_site_stream['potential_cnot_site_count']), 'every potential target-bit site across every stream is classified', totals),
+        _check('qroam_table_cnot_materialization_emits_only_effective_nonzero_table_bits', 0 <= int(totals['full_oracle_emitted_clifford_cx']) <= int(totals['full_oracle_effective_target_bit_sites']) <= int(totals['full_oracle_potential_target_bit_sites']), 'emitted CNOTs are a subset of effective non-padding target-bit sites', totals),
+        _check('qroam_table_cnot_materialization_segments_have_merkle_root', len(materialization['segment_merkle_root_sha256']) == 64 and int(totals['segment_count']) == len(materialization['segments']), 'segment merkle root binds all concrete table chunks', {'segment_count': len(materialization['segments']), 'root': materialization['segment_merkle_root_sha256']}),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_reusable_chunk_lowering_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     lowering = artifacts['reusable_chunk_lowering']
     expected = build_reusable_chunk_lowering(
@@ -2465,6 +2494,7 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
         arithmetic_operation_ir=artifacts['arithmetic_operation_ir'],
         lookup_lowerings=artifacts['lookup_lowerings'],
         qroam_primitive_certificate=artifacts['qroam_primitive_certificate'],
+        qroam_table_cnot_materialization=artifacts['qroam_table_cnot_materialization'],
         phase_shell_lowerings=artifacts['phase_shell_lowerings'],
         release_corpus_preflight=artifacts['release_corpus_preflight'],
         streamed_lookup_tail_leaf_equivalence=artifacts['streamed_lookup_tail_leaf_equivalence'],
@@ -3241,6 +3271,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'reusable_chunk_tail_candidate_checks': lambda: build_reusable_chunk_tail_candidate_checks(artifacts),
         'qroam_primitive_certificate_checks': lambda: build_qroam_primitive_certificate_checks(artifacts),
         'qroam_reference_crosscheck_checks': lambda: build_qroam_reference_crosscheck_checks(artifacts),
+        'qroam_table_cnot_materialization_checks': lambda: build_qroam_table_cnot_materialization_checks(artifacts),
         'reusable_chunk_lowering_checks': lambda: build_reusable_chunk_lowering_checks(artifacts),
         'resource_liveness_certificate_checks': lambda: build_resource_liveness_certificate_checks(artifacts),
         'qubit_breakthrough_checks': lambda: build_qubit_breakthrough_checks(artifacts),

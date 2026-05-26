@@ -87,6 +87,7 @@ from physical_estimator import (  # noqa: E402
 from proof_corpus_profiles import build_proof_corpus_profiles  # noqa: E402
 from qroam_primitive import build_qroam_k1_primitive_certificate  # noqa: E402
 from qroam_reference_crosscheck import build_qroam_reference_crosscheck  # noqa: E402
+from qroam_table_cnot_materialization import build_qroam_table_cnot_materialization  # noqa: E402
 from release_corpus_preflight import build_release_corpus_preflight  # noqa: E402
 from reusable_chunk_lowering import build_reusable_chunk_lowering  # noqa: E402
 from reusable_chunk_tail_candidate import build_reusable_chunk_tail_candidate  # noqa: E402
@@ -2017,6 +2018,13 @@ def build_all_artifacts() -> Dict[str, Any]:
         modular_arithmetic_certificate=out['modular_arithmetic_certificate'],
         field_bits=FIELD_BITS,
     )
+    out['qroam_table_cnot_materialization'] = build_qroam_table_cnot_materialization(
+        table_manifests=out['table_manifests'],
+        raw32_schedule=raw32_schedule(),
+        reusable_chunk_lowering=out['reusable_chunk_lowering'],
+        qroam_primitive_certificate=out['qroam_primitive_certificate'],
+        field_bits=FIELD_BITS,
+    )
     out['materialized_circuit_manifest'] = build_materialized_family_manifest(
         family_name=out['frontier']['best_qubit_family']['name'],
         frontier=out['frontier'],
@@ -2094,6 +2102,7 @@ def build_all_artifacts() -> Dict[str, Any]:
     dump_json(project_artifact_path('reusable_chunk_tail_candidate.json'), out['reusable_chunk_tail_candidate'])
     dump_json(project_artifact_path('qroam_primitive_certificate.json'), out['qroam_primitive_certificate'])
     dump_json(project_artifact_path('qroam_reference_crosscheck.json'), out['qroam_reference_crosscheck'])
+    dump_json(project_artifact_path('qroam_table_cnot_materialization.json'), out['qroam_table_cnot_materialization'])
     dump_json(project_artifact_path('reusable_chunk_lowering.json'), out['reusable_chunk_lowering'])
     dump_json(project_artifact_path('resource_liveness_certificate.json'), out['resource_liveness_certificate'])
     dump_json(project_artifact_path('materialized_circuit_manifest.json'), out['materialized_circuit_manifest'])
@@ -2207,6 +2216,13 @@ def build_resource_stack_artifacts() -> Dict[str, Any]:
         modular_arithmetic_certificate=modular_arithmetic_certificate,
         field_bits=FIELD_BITS,
     )
+    qroam_table_cnot_materialization = build_qroam_table_cnot_materialization(
+        table_manifests=table_manifests(),
+        raw32_schedule=raw32_schedule(),
+        reusable_chunk_lowering=reusable_chunk_lowering,
+        qroam_primitive_certificate=qroam_primitive_certificate,
+        field_bits=FIELD_BITS,
+    )
     return {
         'arithmetic_lowerings': arithmetic_lowerings,
         'tail_macro_engine': arithmetic_lowerings['tail_macro_engine'],
@@ -2226,6 +2242,7 @@ def build_resource_stack_artifacts() -> Dict[str, Any]:
         'reusable_chunk_tail_candidate': reusable_chunk_tail_candidate,
         'qroam_primitive_certificate': qroam_primitive_certificate,
         'qroam_reference_crosscheck': qroam_reference_crosscheck,
+        'qroam_table_cnot_materialization': qroam_table_cnot_materialization,
         'reusable_chunk_lowering': reusable_chunk_lowering,
         'phase_shell_lowerings': phase_shell_lowerings,
         'phase_shell_families': phase_shell_rows,

@@ -173,10 +173,10 @@ only to a family aggregate. The completion audit is intentionally stricter than
 the headline: it passes only when those source bindings are current and the
 remaining macro boundaries are explicit, while keeping
 `clifford_complete_goal_achieved = false` until modular arithmetic expansion,
-QROAM concrete table-bit CNOT expansion below the current word-level and
-target-bit-site QROAMClean streams, the tail macro in-place schedule, and the
-final ZKP input contract are internal products of one canonical executable flat
-IR.
+QROAM concrete table-bit CNOT materialization is spliced below the current
+word-level, target-bit-site, and table-CNOT QROAMClean artifacts, the tail macro
+in-place schedule, and the final ZKP input contract are internal products of one
+canonical executable flat IR.
 Modular arithmetic kernels are now generated from the
 embedded `executable_modular_circuit_ir`; the modular certificate consumes that
 same IR instead of being an independent source of arithmetic resource formulas.

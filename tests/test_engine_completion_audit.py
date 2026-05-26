@@ -27,6 +27,7 @@ def _build_audit(
     public_candidate: dict | None = None,
     arithmetic_ir: dict | None = None,
     qroam_primitive: dict | None = None,
+    qroam_table_cnot: dict | None = None,
     lookup_lowerings: dict | None = None,
 ) -> dict:
     return build_engine_completion_audit(
@@ -36,6 +37,7 @@ def _build_audit(
         arithmetic_operation_ir=arithmetic_ir or _load('arithmetic_operation_ir.json'),
         lookup_lowerings=lookup_lowerings or _load('lookup_lowerings.json'),
         qroam_primitive_certificate=qroam_primitive or _load('qroam_primitive_certificate.json'),
+        qroam_table_cnot_materialization=qroam_table_cnot or _load('qroam_table_cnot_materialization.json'),
         phase_shell_lowerings=_load('phase_shell_lowerings.json'),
         release_corpus_preflight=_load('release_corpus_preflight.json'),
         streamed_lookup_tail_leaf_equivalence=_load('streamed_lookup_tail_leaf_equivalence.json'),
@@ -70,6 +72,7 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     }.issubset(remaining)
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['source_bound_run_length_rows'] == expected['source_binding_summary']['rows_by_source_kind']['arithmetic_operation_ir']
     assert remaining['qroam_bit_level_netlist_expansion']['evidence_metrics']['source_bound_run_length_rows'] == expected['source_binding_summary']['rows_by_source_kind']['qroam_primitive_certificate']
+    assert remaining['qroam_bit_level_netlist_expansion']['evidence_metrics']['full_oracle_emitted_table_clifford_cx'] == _load('qroam_table_cnot_materialization.json')['totals']['full_oracle_emitted_clifford_cx']
     assert all(expected['checks'].values())
 
 
