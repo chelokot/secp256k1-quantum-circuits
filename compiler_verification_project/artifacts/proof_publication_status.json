@@ -4,7 +4,7 @@
   "publication_ready": false,
   "selected_result": {
     "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
-    "non_clifford": 36957412,
+    "non_clifford": 36973222,
     "logical_qubits": 1199,
     "case_count": 8,
     "passed_case_count": 8,
@@ -254,15 +254,15 @@
   "source_artifacts": {
     "public_headline_result": {
       "path": "compiler_verification_project/artifacts/public_headline_result.json",
-      "sha256": "d0eb4ecc411f7e1752cca8325852facb4d004ec3b8f94553046d8721a67e92bc"
+      "sha256": "58c9cea31ff80d93676b5833f3d3222276d4bb940d13483a82f327bc55c6e816"
     },
     "proof_environment_contract": {
       "path": "compiler_verification_project/artifacts/proof_environment_contract.json",
-      "sha256": "94bf2b567f6beaaf2dfcd9dbd0d70ae204194abd070a3e8dd556580dfe4fedb1"
+      "sha256": "eff4410373712f6acc1b7082b86ab093586c8a3e742b46d78c006e937168625a"
     },
     "proof_manifest": {
       "path": "artifacts/package/proof_manifest.json",
-      "file_count": 214
+      "file_count": 217
     }
   },
   "checks": {

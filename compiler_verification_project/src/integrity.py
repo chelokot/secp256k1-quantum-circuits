@@ -41,6 +41,7 @@ from physical_estimator import (
 from proof_corpus_profiles import GOOGLE_COMPARABLE_CASE_COUNT, GOOGLE_COMPARABLE_PROFILE, SMOKE_PUBLIC_PROFILE, build_proof_corpus_profiles
 from proof_environment_contract import PROOF_ENVIRONMENT_CONTRACT_SCHEMA, build_proof_environment_contract
 from proof_publication_status import PROOF_PUBLICATION_STATUS_SCHEMA, build_proof_publication_status
+from primary_strict_result import PRIMARY_STRICT_RESULT_SCHEMA, build_primary_strict_result, write_primary_strict_result
 from public_engine_manifest import PUBLIC_ENGINE_MANIFEST_SCHEMA, build_public_engine_manifest
 from public_result import build_public_headline_result, write_public_headline_result
 from qroam_primitive import build_qroam_k1_primitive_certificate
@@ -207,6 +208,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'headline_opcode_coverage': artifact_root / 'headline_opcode_coverage.json',
         'public_headline_result': artifact_root / 'public_headline_result.json',
         'strict_replayed_tail_headline': artifact_root / 'strict_replayed_tail_headline.json',
+        'primary_strict_result': artifact_root / 'primary_strict_result.json',
         'hybrid_bridge_search': artifact_root / 'hybrid_bridge_search.json',
         'zkp_attestation_reusable_chunk_candidate_input': artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json',
         'zkp_attestation_reusable_chunk_candidate_public_values': artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_public_values.json',
@@ -236,6 +238,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
             ),
         )
+        write_primary_strict_result()
         dump_json(
             artifact_root / 'proof_environment_contract.json',
             build_proof_environment_contract(repo_root=repo_root),
@@ -2672,6 +2675,12 @@ def build_build_summary_checks(artifacts: Mapping[str, Any], repo_root: Path) ->
             BUILD_SUMMARY_ARTIFACT_PATHS['strict_replayed_tail_headline'],
             build_summary['headline'].get('strict_replayed_tail_headline_artifact'),
         ),
+        _check(
+            'build_summary_names_primary_strict_result_artifact',
+            build_summary['headline']['primary_strict_result_artifact'] == BUILD_SUMMARY_ARTIFACT_PATHS['primary_strict_result'],
+            BUILD_SUMMARY_ARTIFACT_PATHS['primary_strict_result'],
+            build_summary['headline'].get('primary_strict_result_artifact'),
+        ),
     ]
     return _summarize_checks(checks)
 
@@ -2783,12 +2792,13 @@ def build_public_headline_result_checks(artifacts: Mapping[str, Any], repo_root:
         _check('public_headline_result_schema_is_current', public_result['schema'] == 'compiler-project-public-headline-result-v1', 'compiler-project-public-headline-result-v1', public_result['schema']),
         _check('public_headline_result_pass_flag_matches_internal_checks', public_result['pass'] == all(public_result['checks'].values()), all(public_result['checks'].values()), {'pass': public_result['pass'], 'checks': public_result['checks']}),
         _check('public_headline_result_limits_match_compiler_parameters', public_result['selection_policy']['limits'] == public_policy, public_policy, public_result['selection_policy']['limits']),
-        _check('public_headline_result_is_strict_40m_1200_candidate', selected['non_clifford'] == candidate_values['expected_full_oracle_non_clifford'] and selected['logical_qubits'] == candidate_values['expected_total_logical_qubits'] and selected['non_clifford'] < public_policy['non_clifford_limit_exclusive'] and selected['logical_qubits'] < public_policy['logical_qubit_limit_exclusive'], {'non_clifford': candidate_values['expected_full_oracle_non_clifford'], 'logical_qubits': candidate_values['expected_total_logical_qubits'], 'strict_limits': public_policy}, selected),
-        _check('public_headline_result_bindings_match_candidate_input_claim', selected['name'] == candidate_values['selected_family_name'] and selected['non_clifford'] == candidate_values['expected_full_oracle_non_clifford'] and selected['logical_qubits'] == candidate_values['expected_total_logical_qubits'], candidate_values, selected),
+        _check('public_headline_result_legacy_wrapper_fits_recorded_policy_limits', selected['non_clifford'] < public_policy['non_clifford_limit_exclusive'] and selected['logical_qubits'] < public_policy['logical_qubit_limit_exclusive'], {'strict_limits': public_policy}, selected),
+        _check('public_headline_result_records_stale_zkp_claim_mismatch', public_result['pass'] is False and public_result['checks']['public_values_match_input_claim'] is False and selected['name'] == candidate_values['selected_family_name'], 'demoted wrapper records stale ZKP claim mismatch', {'candidate_values': candidate_values, 'selected': selected, 'public_values_match_input_claim': public_result['checks']['public_values_match_input_claim']}),
         _check('public_headline_result_compressed_proof_hash_matches_file', checked['compressed_proof']['sha256'] == sha256_path(repo_root / checked['compressed_proof']['path']) and checked['compressed_proof']['bytes'] == (repo_root / checked['compressed_proof']['path']).stat().st_size, checked['compressed_proof'], checked['compressed_proof']),
         _check('public_headline_result_groth16_proof_hash_matches_file', checked['groth16_proof']['sha256'] == sha256_path(repo_root / checked['groth16_proof']['path']) and checked['groth16_proof']['bytes'] == (repo_root / checked['groth16_proof']['path']).stat().st_size, checked['groth16_proof'], checked['groth16_proof']),
         _check('public_headline_result_groth16_vk_hash_matches_file', checked['groth16_verifier_key']['sha256'] == sha256_path(repo_root / checked['groth16_verifier_key']['path']) and checked['groth16_verifier_key']['bytes'] == (repo_root / checked['groth16_verifier_key']['path']).stat().st_size, checked['groth16_verifier_key'], checked['groth16_verifier_key']),
-        _check('public_headline_result_uses_verified_reusable_chunk_lowering', public_result['checks']['reusable_chunk_lowering_is_proven_for_public_headline'] is True and artifacts['reusable_chunk_lowering']['status'] == 'proven_public_headline', 'proven_public_headline', artifacts['reusable_chunk_lowering']['status']),
+        _check('public_headline_result_is_demoted_macro_wrapper_reference', public_result['selection_policy']['role'] == 'legacy macro/ZKP publication wrapper reference', 'legacy macro/ZKP publication wrapper reference', public_result['selection_policy']['role']),
+        _check('public_headline_result_binds_verified_reusable_chunk_lowering_status', artifacts['reusable_chunk_lowering']['status'] == 'proven_public_headline', 'proven_public_headline', artifacts['reusable_chunk_lowering']['status']),
     ]
     return _summarize_checks(checks)
 
@@ -2812,6 +2822,28 @@ def build_strict_replayed_tail_headline_checks(artifacts: Mapping[str, Any]) -> 
         _check('strict_replayed_tail_headline_counts_fused_output_guard_qubit', selected['fused_output_guard_qubits'] == formula['fused_output_guard_qubits'] == artifacts['tail_macro_engine']['fused_output_lowering_contract']['guard_owner_capacity']['logical_qubits'] == 1 and formula['control_qubits'] == artifacts['reusable_chunk_lowering']['qubit_derivation']['control_qubits'] + 1, 'one extra fused-output guard qubit counted in control term', {'selected': selected, 'formula': formula}),
         _check('strict_replayed_tail_headline_total_is_formula_derived', selected['logical_qubits'] == formula['reconstructed_total'] == formula['tail_field_slots'] * formula['field_bits'] + formula['lookup_workspace_qubits'] + formula['control_qubits'] + formula['phase_qubits'], formula['reconstructed_total'], selected['logical_qubits']),
         _check('strict_replayed_tail_headline_demotes_macro_contract', selected['logical_qubits'] > artifacts['public_headline_result']['selected_result']['logical_qubits'] and observed['macro_contract_reference']['status'] == 'not_primary_strict_headline', 'strict headline exceeds and demotes macro contract', observed['macro_contract_reference']),
+    ]
+    return _summarize_checks(checks)
+
+
+def build_primary_strict_result_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    observed = artifacts['primary_strict_result']
+    expected = build_primary_strict_result(
+        strict_replayed_tail_headline=artifacts['strict_replayed_tail_headline'],
+        public_headline_result=artifacts['public_headline_result'],
+        engine_completion_audit=artifacts['engine_completion_audit'],
+        hybrid_bridge_search=artifacts['hybrid_bridge_search'],
+    )
+    selected = observed['selected_result']
+    flat_status = observed['flat_netlist_status']
+    checks = [
+        _check('primary_strict_result_matches_generator', observed == expected, expected, observed),
+        _check('primary_strict_result_schema_is_current', observed['schema'] == PRIMARY_STRICT_RESULT_SCHEMA, PRIMARY_STRICT_RESULT_SCHEMA, observed['schema']),
+        _check('primary_strict_result_pass_flag_matches_internal_checks', observed['pass'] == all(observed['checks'].values()), all(observed['checks'].values()), {'pass': observed['pass'], 'checks': observed['checks']}),
+        _check('primary_strict_result_selects_strict_replayed_tail_headline', selected == artifacts['strict_replayed_tail_headline']['selected_result'], artifacts['strict_replayed_tail_headline']['selected_result'], selected),
+        _check('primary_strict_result_demotes_legacy_macro_wrapper', observed['legacy_wrapper_reference']['status'] == 'legacy_macro_zkp_wrapper_not_primary_resource_headline' and observed['legacy_wrapper_reference']['selected_result'] == artifacts['public_headline_result']['selected_result'], 'legacy macro wrapper demoted', observed['legacy_wrapper_reference']),
+        _check('primary_strict_result_keeps_unclosed_boundaries_explicit', observed['resource_claim_level']['clifford_complete_flat_netlist'] == 'not_yet_achieved' and observed['resource_claim_level']['zkp_binds_this_strict_result'] == 'not_yet_achieved', 'strict result is not marked fully flattened or ZKP-bound', observed['resource_claim_level']),
+        _check('primary_strict_result_flat_netlist_status_binds_legacy_not_strict_totals', flat_status['current_materialized_flat_netlist_binds_selected_strict_result'] is False and flat_status['current_materialized_flat_netlist_binds_legacy_wrapper'] is True and flat_status['peak_live_qubits'] == artifacts['public_headline_result']['selected_result']['logical_qubits'], 'flat netlist still binds legacy wrapper totals', flat_status),
     ]
     return _summarize_checks(checks)
 
@@ -3153,6 +3185,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'release_corpus_preflight_checks': lambda: build_release_corpus_preflight_checks(artifacts),
         'public_headline_result_checks': lambda: build_public_headline_result_checks(artifacts, repo_root),
         'strict_replayed_tail_headline_checks': lambda: build_strict_replayed_tail_headline_checks(artifacts),
+        'primary_strict_result_checks': lambda: build_primary_strict_result_checks(artifacts),
         'hybrid_bridge_search_checks': lambda: build_hybrid_bridge_search_checks(artifacts),
         'cain_transfer_checks': lambda: build_cain_transfer_checks(artifacts),
         'azure_seed_checks': lambda: build_azure_seed_checks(artifacts),

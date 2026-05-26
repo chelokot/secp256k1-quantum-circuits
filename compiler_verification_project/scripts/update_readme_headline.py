@@ -8,7 +8,7 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 README_PATH = PROJECT_ROOT / 'README.md'
-ARTIFACT_PATH = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts' / 'strict_replayed_tail_headline.json'
+ARTIFACT_PATH = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts' / 'primary_strict_result.json'
 BEGIN = '<!-- BEGIN GENERATED: strict-replayed-tail-headline -->'
 END = '<!-- END GENERATED: strict-replayed-tail-headline -->'
 
@@ -19,8 +19,9 @@ def _format_int(value: int) -> str:
 
 def render_headline_block(payload: dict) -> str:
     selected = payload['selected_result']
-    formula = payload['logical_qubit_formula']
-    comparison = payload['comparison_against_public_google_baseline']
+    source = json.loads((PROJECT_ROOT / payload['source_artifact']).read_text())
+    formula = source['logical_qubit_formula']
+    comparison = source['comparison_against_public_google_baseline']
     low_qubit = comparison['low_qubit']
     low_gate = comparison['low_gate']
     return '\n'.join([

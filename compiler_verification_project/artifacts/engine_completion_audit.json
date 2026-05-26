@@ -4,32 +4,32 @@
   "overall_status": "materialized_flat_public_claim_with_explicit_remaining_macro_boundaries",
   "clifford_complete_goal_achieved": false,
   "public_totals": {
-    "non_clifford": 36957412,
+    "non_clifford": 36973222,
     "logical_qubits": 1199,
-    "operation_count": 39370727,
+    "operation_count": 39386537,
     "source": "public_candidate_materialized_circuit_manifest.materialized_flat_netlist"
   },
   "source_digests": {
-    "arithmetic_operation_ir_sha256": "a08b4603f3ec9532cf947a926658849a9e9e773045a7b3733ccd1e374dffac91",
+    "arithmetic_operation_ir_sha256": "99c199a6b3b9bbf4d7c3899e93c97513b5e62f14ef0a109b359b1eb9f4f18ae4",
     "compiler_parameters_sha256": "f25239aab49a172397565757d9495c47ea7e88959451bc291d06f0ba37bbb374",
     "lookup_lowerings_sha256": "70e8ff627f0c537f73162c1d3ccf259a94c3dd756568947c7b4f3cf4665a5637",
     "modular_arithmetic_certificate_sha256": "058cc2c95b3b8f65d39f8c91f56b5256322e0fa00853466facb980d60c1e783e",
     "phase_shell_lowerings_sha256": "4411ea5f699e5950a32783f2232796a63987efb5d939f98ac400f4f02ddd415b",
-    "public_candidate_materialized_circuit_manifest_sha256": "170e41dbd818edabed735d2ef95c775d923c74682a4fe367e8f8b907a0fa38f1",
-    "public_engine_manifest_sha256": "46cda2e23b6c19dc8e648703c80e241fdc786597b84b242d7871afe8ceb9624b",
+    "public_candidate_materialized_circuit_manifest_sha256": "13c87e32e817e380d3d4319eaaf4a1fe3763c68a071607f6fe359cb84acf61e6",
+    "public_engine_manifest_sha256": "e4aa96e23123d854668ce0c85eb73dbe43f4d584ef1214e146839c3d25e182d7",
     "qroam_primitive_certificate_sha256": "9a97e536aa4e15e25873adf187db977910a0ef8fb03914958d409940a54eb125",
     "release_corpus_preflight_sha256": "e8cc293c4fc4702e1fbc0bfcb9b8749515de99a348ecbf55ed123d68738c2f3a",
-    "reusable_chunk_lowering_sha256": "c57403f9dbc8fe27f0cded6bbec2ddab50062dff4b012dc4462da78fb0d286cb",
+    "reusable_chunk_lowering_sha256": "7ebcb0fe8db50c03f84ac9cc10ab906fd921dd8d98670ef61fa4237e8b49f334",
     "streamed_lookup_tail_leaf_equivalence_sha256": "90f1880c839d7892eab0b748683d3186cbea9811409a4ab090c9d60d8cca0db3",
-    "tail_macro_engine_sha256": "3bfd265e5e69a3f5d3a654458302c94bb7af7a4bd6932ffcdebedc960ed085f7",
+    "tail_macro_engine_sha256": "9fdd9f1c0b5bb583f462077053d4cf479b7eea4e1379653a701847fcdfaccf2d",
     "tail_macro_liveness_sha256": "5f60042f2ae891387583cc6ee10cb6fdd11aeef460eadac18c6e512712736cb1",
     "tail_macro_reversibility_sha256": "a5474f2a4b950577da8013b0023ead318a7ea92610406fce869c3adac4d0830a",
     "tail_macro_schedule_search_sha256": "f3af1926dd886d4c8a25831821657bcef57c3b589daddec08957cab7b1dcf81b"
   },
   "source_binding_summary": {
-    "rows_checked": 5805,
+    "rows_checked": 5836,
     "rows_by_source_kind": {
-      "arithmetic_operation_ir": 2666,
+      "arithmetic_operation_ir": 2697,
       "lookup_lowering_block": 160,
       "phase_shell_lowering": 3,
       "qroam_primitive_certificate": 2976
@@ -37,11 +37,11 @@
     "failure_count": 0
   },
   "materialized_flat_netlist": {
-    "operation_count": 39370727,
-    "non_clifford_count": 36957412,
+    "operation_count": 39386537,
+    "non_clifford_count": 36973222,
     "peak_live_qubits": 1199,
-    "operation_stream_sha256": "1c5f9b9b517f5357dc09c5a848fec1f004955a6109b7b05aa0313fe37d3294a5",
-    "segment_merkle_root_sha256": "06cd704d41bfa87efc273e0862c484615a981d209fa78bbbcb7ce5f839bdd844",
+    "operation_stream_sha256": "7d051f068558d52c88bdbd5e7188c41d06b3f06ee2f18f864f170bbbb0c07255",
+    "segment_merkle_root_sha256": "8633466fd0fbc0b4265857152d338dd1a48d287858b3e705257e78f22506b635",
     "exact_operation_stream_materialized": true
   },
   "covered_boundaries": [

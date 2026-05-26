@@ -2074,12 +2074,13 @@ Partially mitigated after review:
   verifier key. After the modular-arithmetic certificate was bound into the
   reusable-chunk resource document, `proof_status.py` correctly marks those
   proof layers stale until the final compressed/Groth16 rebuild is run.
-- `compiler_verification_project/artifacts/public_headline_result.json` now
-  selects the reusable-chunk bundle as the single public repository headline.
-  It records the checked proof files, verifier key, input/public-value hashes,
-  strict `<40M / <1200` checks, exact comparison ratios against the public
-  Google baseline, and a failing `pass` flag while checked proofs are stale
-  against the current resource digest. The old `34,925,796 / 1,044` three-slot
+- `compiler_verification_project/artifacts/primary_strict_result.json` selects
+  `36,973,222 / 1,968` as the single current public resource headline.
+  `compiler_verification_project/artifacts/public_headline_result.json` remains
+  the legacy macro/ZKP publication-wrapper reference. It records the checked
+  proof files, verifier key, input/public-value hashes, exact comparison ratios
+  against the public Google baseline, and a failing `pass` flag while checked
+  proofs are stale against the current resource digest. The old `34,925,796 / 1,044` three-slot
   family remains checked as a reference boundary, not the public headline.
 - `ZK-3`: proof binaries are now included in the curated proof manifest, and
   `proof_status.py` cross-checks fixture JSON, proof binaries, Groth16 verifier

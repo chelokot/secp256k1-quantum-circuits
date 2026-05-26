@@ -71,8 +71,10 @@ is:
 <!-- END GENERATED: strict-replayed-tail-headline -->
 
 Those numbers are exact for the chosen compiler family, not a claim of global
-optimality or a Clifford-complete full-Shor netlist. The primary headline is
-selected in
+optimality or a Clifford-complete full-Shor netlist. The primary public resource
+headline is selected in
+`compiler_verification_project/artifacts/primary_strict_result.json`, which
+points to the replayed-tail source artifact
 `compiler_verification_project/artifacts/strict_replayed_tail_headline.json`.
 It combines the standard QROAMClean `K = 1` reusable-chunk lookup resource with
 the fused-output seven-slot tail schedule replayed by
@@ -133,10 +135,10 @@ proof bundle, and the matching Groth16 verifying key. During source churn,
 whether those proof layers still bind the current input; after the latest
 resource-certificate binding changes, final compressed/Groth16 rebuild remains
 the release gate before claiming current proof freshness. Together these
-artifacts still bind the stale macro/ZKP candidate claim and `8 / 8` public
+artifacts still bind the legacy macro/ZKP candidate claim and `8 / 8` public
 cases. That claim is kept only as a checked publication-wrapper reference until
-rebuilt; the primary strict resource headline is now the guarded replayed-tail
-`36,973,222 / 1,968` artifact.
+rebuilt; the primary strict resource headline is the guarded replayed-tail
+`36,973,222 / 1,968` artifact selected by `primary_strict_result.json`.
 The compiler artifacts also include `public_candidate_materialized_circuit_manifest.json`,
 `public_engine_manifest.json`, and `engine_completion_audit.json`, the no-ZKP
 engine gate for the current public candidate. The public-candidate materialized manifest expands the reusable

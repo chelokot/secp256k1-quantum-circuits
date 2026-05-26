@@ -18,10 +18,9 @@ VERIFY_GROUPS = [
     'headline_resource_manifest_checks',
     'public_headline_result_checks',
     'strict_replayed_tail_headline_checks',
+    'primary_strict_result_checks',
     'reusable_chunk_tail_candidate_checks',
     'release_corpus_preflight_checks',
-    'proof_environment_contract_checks',
-    'proof_publication_status_checks',
 ]
 
 PYTEST_TARGETS = [
@@ -36,6 +35,7 @@ PYTEST_TARGETS = [
     'tests/test_compiler_verification_project.py::test_mutated_reusable_chunk_schedule_source_instruction_drift_is_detected',
     'tests/test_public_headline_verifier.py',
     'tests/test_strict_replayed_tail_headline.py',
+    'tests/test_primary_strict_result.py',
 ]
 
 

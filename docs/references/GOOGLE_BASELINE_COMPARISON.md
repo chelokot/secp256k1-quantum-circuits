@@ -22,8 +22,9 @@ The tracked public lines are:
 
 ## Standard-QROM compiler-family comparison against that baseline
 
-The repository's exact comparison layer is the public headline wrapper in:
+The repository's exact comparison layer is generated from:
 
+- `compiler_verification_project/artifacts/primary_strict_result.json`
 - `compiler_verification_project/artifacts/strict_replayed_tail_headline.json`
 - `compiler_verification_project/artifacts/public_headline_result.json`
 - `compiler_verification_project/artifacts/family_frontier.json`
@@ -35,7 +36,9 @@ with the fused-output seven-slot tail:
 
 - **primary strict replayed-tail headline:** `36,973,222 non-Clifford / 1,968 q`
 
-The strict replayed-tail artifact records the seven-slot owner-capacity replay,
+The primary strict result selects the strict replayed-tail artifact and records
+that the legacy macro/ZKP wrapper is not the current resource headline. The
+strict replayed-tail artifact records the seven-slot owner-capacity replay,
 the counted zero-lift guard for the in-place `Y3` over `C` reuse, the demoted
 macro-contract reference, and the exact ratios below. The old four-slot macro
 contract remains checked as a ZKP/publication-wrapper reference, but it is not
@@ -55,8 +58,8 @@ For the **primary strict replayed-tail headline**:
 The public headline does not beat Google's published qubit lines under the
 strict replayed-tail count:
 
-- the primary strict replayed-tail headline is **767 qubits above** the public low-qubit line
-- the primary strict replayed-tail headline is **517 qubits above** the public low-gate line
+- the primary strict replayed-tail headline is **768 qubits above** the public low-qubit line
+- the primary strict replayed-tail headline is **518 qubits above** the public low-gate line
 
 The generated QROAMClean tradeoff ledger also records that, in the current
 standard-QROAM family, the lowest-qubit point below `24M` non-Clifford is

@@ -13,6 +13,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 VERIFY_GROUPS = (
     'public_headline_result_checks',
     'strict_replayed_tail_headline_checks',
+    'primary_strict_result_checks',
     'proof_environment_contract_checks',
     'proof_publication_status_checks',
     'compiler_parameter_checks',
@@ -44,6 +45,7 @@ PYTEST_TARGETS = (
     'tests/test_zkp_attestation_input.py::test_reusable_chunk_zkp_attestation_input_binds_candidate_contract',
     'tests/test_public_headline_verifier.py',
     'tests/test_strict_replayed_tail_headline.py',
+    'tests/test_primary_strict_result.py',
     'tests/test_release_candidate_preproof.py',
 )
 

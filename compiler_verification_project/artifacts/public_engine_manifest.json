@@ -5,18 +5,18 @@
   "source_artifact": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
   "engine_source_module": "compiler_verification_project/src/executable_resource_engine.py",
   "public_totals": {
-    "non_clifford": 36957412,
+    "non_clifford": 36973222,
     "logical_qubits": 1199,
     "source": "public_candidate_materialized_circuit_manifest.materialized_flat_netlist"
   },
   "source_digests": {
     "compiler_parameters_sha256": "f25239aab49a172397565757d9495c47ea7e88959451bc291d06f0ba37bbb374",
-    "executable_resource_engine_sha256": "e8f2464d45c24334de1f1a3f9848dbdefffe9c36d76592be077912a17b627d31",
-    "counted_resource_ir_sha256": "e814826e787174c05f62f34396fd02b1d77a8728f0c99051f74e1d60294d7188",
+    "executable_resource_engine_sha256": "8f296d454b7228991a10bccd9ffb728cf991f0c58ba84f1d5730ec0fc509be06",
+    "counted_resource_ir_sha256": "e2d8c11d60249197de3b9608556b808c8fd8798419763682246e71c098528ea4",
     "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
     "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
-    "resource_contract_engine_sha256": "6ec61b5379cd1eb36a568423ffa43a79015c7f3c5dea53ec65cf1f80346b3d6f",
-    "public_candidate_materialized_circuit_manifest_sha256": "170e41dbd818edabed735d2ef95c775d923c74682a4fe367e8f8b907a0fa38f1"
+    "resource_contract_engine_sha256": "0447031a514b04038ab0f51e63a0e1a5ffa187d1cab694de20d7dfc8196ea1e0",
+    "public_candidate_materialized_circuit_manifest_sha256": "13c87e32e817e380d3d4319eaaf4a1fe3763c68a071607f6fe359cb84acf61e6"
   },
   "instruction_stream": {
     "encoding": [
@@ -465,15 +465,15 @@
     ],
     "row_count": 7,
     "expanded_non_clifford_instances": 187,
-    "sha256": "912e9414bfdc72259b8553a3df17cf1bd62023e5d15b57e4297735deee061916",
+    "sha256": "acba13025e783a19d33c5cbd64048437859c2f31d9c5c4d53207f334dc226ae2",
     "rows": [
       {
         "row_index": 0,
         "term_id": "base_without_streamed_qroam",
         "category": "arithmetic_control_and_phase_base",
         "instances": 1,
-        "per_instance_non_clifford": 24767716,
-        "total_non_clifford": 24767716,
+        "per_instance_non_clifford": 24783526,
+        "total_non_clifford": 24783526,
         "source": "logical_resource_ledger.qroam_clean_tradeoff_sweep.base_non_clifford_without_streamed_qroam"
       },
       {
@@ -570,7 +570,7 @@
     },
     "reusable_chunk_tail_toy_semantics": {
       "schema": "compiler-project-reusable-chunk-tail-candidate-v1",
-      "sha256": "031dfec001985130d1f05f2d9582af033eac82b88f060025423f55e0168cc25f",
+      "sha256": "c940a73f7c372069ae9f45852760904c0c8737d59c50123c87fac7f313fd406f",
       "total_boundary_pairs": 110692,
       "scratch_trace_checked": 110082,
       "category_totals": {
@@ -610,30 +610,30 @@
   "primitive_operation_evidence": {
     "public_candidate_materialized_circuit_manifest": {
       "schema": "compiler-project-public-candidate-materialized-circuit-manifest-v1",
-      "sha256": "170e41dbd818edabed735d2ef95c775d923c74682a4fe367e8f8b907a0fa38f1",
+      "sha256": "13c87e32e817e380d3d4319eaaf4a1fe3763c68a071607f6fe359cb84acf61e6",
       "pass": true,
-      "operation_stream_sha256": "f6c277d0689572f499fd8bbf985c6d70c036a329a7879b2b209523d9eb2ee478",
-      "liveness_binding_stream_sha256": "52e1fa6386a8e076fc66c2cb2c0eb79d921aadc340c09c0d7ffb76be0dbea8b0",
-      "run_length_row_count": 5805,
-      "liveness_binding_row_count": 5805,
+      "operation_stream_sha256": "8e7bb094bed9d407a2b7c5c52583d0fe6215cb50ca84ff1140a2200ddb1c69d6",
+      "liveness_binding_stream_sha256": "064b5825a77559fdaab046854b89afdf58e1d3da0be53ab53652bb913c87b8eb",
+      "run_length_row_count": 5836,
+      "liveness_binding_row_count": 5836,
       "qroam_segment_row_count": 2976,
-      "flat_operation_count": 39370727,
+      "flat_operation_count": 39386537,
       "flat_segment_count": 40,
-      "flat_segment_merkle_root_sha256": "2ec8446314b368cc08a473769c1fcd77bda33d36127cea2e647acc12ba69139c",
+      "flat_segment_merkle_root_sha256": "2436e5f0f30f12c93def21291507397703276946858ec90e17dea3b62ef2911a",
       "materialized_flat_netlist": {
         "schema": "compiler-project-public-candidate-materialized-flat-netlist-v1",
         "exact_operation_stream_materialized": true,
-        "operation_count": 39370727,
-        "operation_stream_sha256": "1c5f9b9b517f5357dc09c5a848fec1f004955a6109b7b05aa0313fe37d3294a5",
+        "operation_count": 39386537,
+        "operation_stream_sha256": "7d051f068558d52c88bdbd5e7188c41d06b3f06ee2f18f864f170bbbb0c07255",
         "segment_count": 40,
-        "segment_merkle_root_sha256": "06cd704d41bfa87efc273e0862c484615a981d209fa78bbbcb7ce5f839bdd844",
-        "non_clifford_count": 36957412,
+        "segment_merkle_root_sha256": "8633466fd0fbc0b4265857152d338dd1a48d287858b3e705257e78f22506b635",
+        "non_clifford_count": 36973222,
         "peak_live_qubits": 1199
       },
       "flat_execution_probe": {
         "schema": "compiler-project-flat-netlist-execution-probe-v1",
         "probe_count": 18,
-        "probe_stream_sha256": "7c8f626e75f7cadb7489f6ab0109d090612d9199caed96e86db44533a104905a",
+        "probe_stream_sha256": "ba83f1674f9670ef78dc2c312a00dfa4e123a9ba3a316bc5c3b6dbe197079d96",
         "checks": {
           "arithmetic_two_operand_domain_product_matches_row_total": true,
           "probe_operand_indices_within_domains": true,
@@ -646,47 +646,47 @@
       "strict_primitive_completeness": {
         "schema": "compiler-project-strict-primitive-completeness-report-v1",
         "clifford_complete": true,
-        "rows_checked": 5805,
+        "rows_checked": 5836,
         "incomplete_row_count": 0,
         "incomplete_by_scope_gate": {}
       },
       "operand_parent_binding": {
         "schema": "compiler-project-operand-parent-binding-report-v1",
         "pass": true,
-        "rows_checked": 5805,
-        "domains_checked": 14801,
+        "rows_checked": 5836,
+        "domains_checked": 14894,
         "failure_count": 0
       },
       "operand_source_binding": {
         "schema": "compiler-project-operand-source-binding-report-v1",
         "pass": true,
-        "rows_checked": 5805,
+        "rows_checked": 5836,
         "rows_by_source_kind": {
-          "arithmetic_operation_ir": 2666,
+          "arithmetic_operation_ir": 2697,
           "lookup_lowering_block": 160,
           "phase_shell_lowering": 3,
           "qroam_primitive_certificate": 2976
         },
         "failure_count": 0
       },
-      "non_clifford": 36957412,
+      "non_clifford": 36973222,
       "peak_live_qubits": 1199
     },
     "arithmetic_operation_ir": {
       "schema": "compiler-project-arithmetic-operation-ir-v1",
-      "sha256": "a08b4603f3ec9532cf947a926658849a9e9e773045a7b3733ccd1e374dffac91",
+      "sha256": "99c199a6b3b9bbf4d7c3899e93c97513b5e62f14ef0a109b359b1eb9f4f18ae4",
       "pass": true,
       "tail_opcode": "complete_a0_all_streamed_tail",
-      "tail_kernel_stage_digest_sha256": "e0656b24049a3d65b4d5b241da622c5c2a084996456b3815c3107701dd38e4c3",
-      "tail_kernel_operation_count": 1367928,
-      "tail_kernel_non_clifford_per_instance": 1126332,
+      "tail_kernel_stage_digest_sha256": "b679c4660bcb71e7ac043f8262b490bc98c533b61ec94d70d769e9a7a92088e8",
+      "tail_kernel_operation_count": 1368438,
+      "tail_kernel_non_clifford_per_instance": 1126842,
       "tail_primitive_counts_total": {
-        "ccx": 1126332,
+        "ccx": 1126842,
         "cx": 0,
         "measurement": 241596,
         "x": 0
       },
-      "leaf_arithmetic_operation_stream_sha256": "09924ec4cdf040fb51715a3e4f27af7131d348186053a30475016c457cf19765"
+      "leaf_arithmetic_operation_stream_sha256": "bd5746a7c2109a0cb96fec10308361cfd40f973601bd482491e76f18885d99ff"
     },
     "qroam_primitive_certificate": {
       "schema": "compiler-project-qroam-k1-primitive-certificate-v1",

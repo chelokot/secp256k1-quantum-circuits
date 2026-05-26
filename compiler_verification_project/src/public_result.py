@@ -305,8 +305,8 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             'document_digest_scheme': current_values['document_digest_scheme'],
         },
         'selection_policy': {
-            'role': 'single public repository headline',
-            'reason': 'Verified reusable-chunk four-slot contract is the strongest checked result that keeps non-Clifford below the compiler-parameter headline limit and logical qubits strictly below the compiler-parameter headline limit under the strict standard-QROAM model.',
+            'role': 'legacy macro/ZKP publication wrapper reference',
+            'reason': 'This reusable-chunk four-slot contract remains the checked macro/ZKP wrapper reference. It is not the current primary strict resource headline; that role belongs to primary_strict_result.json.',
             'limits': dict(public_policy),
             'supersedes_for_public_headline': [
                 'folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1',

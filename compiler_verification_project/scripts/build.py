@@ -38,6 +38,7 @@ from zkp_attestation import write_zkp_attestation_inputs  # noqa: E402
 from proof_corpus_profiles import resolve_proof_corpus_profile  # noqa: E402
 from proof_environment_contract import build_proof_environment_contract  # noqa: E402
 from proof_publication_status import build_proof_publication_status  # noqa: E402
+from primary_strict_result import write_primary_strict_result  # noqa: E402
 from public_engine_manifest import build_public_engine_manifest  # noqa: E402
 
 BUILD_TARGETS = (
@@ -65,6 +66,7 @@ BUILD_TARGETS = (
     'release-candidate-zkp',
     'public-headline',
     'strict-replayed-tail-headline',
+    'primary-strict-result',
     'hybrid-bridge-search',
     'zkp-and-public',
     'resource-zkp-and-public',
@@ -108,6 +110,10 @@ def build_strict_replayed_tail_headline() -> None:
     write_strict_replayed_tail_headline_result(
         baseline=load_public_google_baseline_lines(),
     )
+
+
+def build_primary_strict_result_artifact() -> None:
+    write_primary_strict_result()
 
 
 def build_hybrid_bridge_search_artifact() -> None:
@@ -406,6 +412,7 @@ def build_summary_artifact() -> None:
             'best_sub30m_qubit_family': frontier['best_sub30m_qubit_family'],
             'public_headline_result_artifact': 'compiler_verification_project/artifacts/public_headline_result.json',
             'strict_replayed_tail_headline_artifact': 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json',
+            'primary_strict_result_artifact': 'compiler_verification_project/artifacts/primary_strict_result.json',
         },
         'notes': [
             'Targeted build-summary refresh: artifact paths and headline references are read from checked registry and frontier artifacts.',
@@ -504,6 +511,9 @@ def main() -> None:
     if args.target in ('all', 'hybrid-bridge-search', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
         build_hybrid_bridge_search_artifact()
         payload['hybrid_bridge_search'] = 'compiler_verification_project/artifacts/hybrid_bridge_search.json'
+    if args.target in ('all', 'primary-strict-result', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
+        build_primary_strict_result_artifact()
+        payload['primary_strict_result'] = 'compiler_verification_project/artifacts/primary_strict_result.json'
     if args.target in ('all', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
         build_proof_environment_contract_artifact()
         payload['proof_environment_contract'] = 'compiler_verification_project/artifacts/proof_environment_contract.json'
@@ -534,6 +544,7 @@ def main() -> None:
         'reusable_chunk_lowering': payload.get('reusable_chunk_lowering'),
         'public_headline_result': payload.get('public_headline_result'),
         'strict_replayed_tail_headline': payload.get('strict_replayed_tail_headline'),
+        'primary_strict_result': payload.get('primary_strict_result'),
         'hybrid_bridge_search': payload.get('hybrid_bridge_search'),
         'zkp_attestation_input': 'compiler_verification_project/artifacts/zkp_attestation_input.json' if 'zkp_attestation' in payload else None,
         'zkp_attestation_reusable_chunk_candidate_input': payload.get('zkp_attestation_reusable_chunk_candidate'),

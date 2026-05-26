@@ -12,8 +12,10 @@ classical-tail-elision gap for a fully quantum raw-32 schedule. It now also
 ships an SP1 attestation bundle for one selected standard-QROM family claim at
 that same boundary. The current primary strict headline is the reusable-chunk
 standard-QROAM family with the guarded fused-output seven-slot tail at
-`36,973,222` non-Clifford operations and `1,968` logical qubits. That primary number is
-selected in
+`36,973,222` non-Clifford operations and `1,968` logical qubits. That primary
+public resource result is selected in
+`compiler_verification_project/artifacts/primary_strict_result.json`, with the
+replayed-tail source in
 `compiler_verification_project/artifacts/strict_replayed_tail_headline.json`.
 The old four-slot macro contract remains checked as a ZKP/publication wrapper reference in
 `compiler_verification_project/artifacts/public_headline_result.json`, but it

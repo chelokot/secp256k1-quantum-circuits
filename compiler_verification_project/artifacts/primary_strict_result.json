@@ -1,0 +1,91 @@
+{
+  "schema": "compiler-project-primary-strict-result-v1",
+  "role": "single current public resource headline",
+  "status": "primary_strict_result_with_explicit_unclosed_flattening_and_zkp_boundaries",
+  "selected_result": {
+    "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__strict_fused_output_tail_7_slot_v1__semiclassical_qft_v1",
+    "non_clifford": 36973222,
+    "logical_qubits": 1968,
+    "tail_field_slots": 7,
+    "field_bits": 256,
+    "lookup_workspace_qubits": 173,
+    "control_qubits": 2,
+    "fused_output_guard_qubits": 1,
+    "phase_qubits": 1
+  },
+  "source_artifact": "compiler_verification_project/artifacts/strict_replayed_tail_headline.json",
+  "resource_claim_level": {
+    "strict_resource_headline": "current_primary",
+    "clifford_complete_flat_netlist": "not_yet_achieved",
+    "zkp_binds_this_strict_result": "not_yet_achieved"
+  },
+  "closed_evidence": {
+    "strict_replayed_tail_headline": {
+      "path": "compiler_verification_project/artifacts/strict_replayed_tail_headline.json",
+      "sha256": "eb3743f4ba75b645397bd9f122f0688d05986d364dcb1053d9df86c9020566da",
+      "status": "primary_strict_replayed_tail_headline",
+      "pass": true
+    },
+    "hybrid_bridge_search_current_row": {
+      "path": "compiler_verification_project/artifacts/hybrid_bridge_search.json",
+      "sha256": "f4938cd63465eedff6b0ed58a462084ac41099c0da7b3e2ff8297b794edd3ef3",
+      "row": {
+        "name": "current_strict_projective_seven_slot",
+        "logical_qubits": 1968,
+        "non_clifford": 36973222,
+        "field_slots": 7,
+        "status": "proven_current_strict_baseline",
+        "fits_logical_qubit_limit": false,
+        "fits_non_clifford_limit": true,
+        "blocker": "qubit_count_above_target"
+      }
+    }
+  },
+  "legacy_wrapper_reference": {
+    "path": "compiler_verification_project/artifacts/public_headline_result.json",
+    "sha256": "73343bc4c9567194e4b2cf8f9ae810e83a3cf2dc97a2eca831fa0fb711398d19",
+    "selected_result": {
+      "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+      "non_clifford": 36973222,
+      "logical_qubits": 1199,
+      "case_count": 8,
+      "passed_case_count": 8,
+      "document_digest_scheme": "compiler-project-semantic-json-sha256-v1"
+    },
+    "status": "legacy_macro_zkp_wrapper_not_primary_resource_headline",
+    "reason": "the wrapper and materialized flat-netlist audit still bind the old macro contract totals, not the strict seven-slot replayed-tail totals"
+  },
+  "flat_netlist_status": {
+    "current_materialized_flat_netlist_path": "compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json",
+    "current_materialized_flat_netlist_binds_selected_strict_result": false,
+    "current_materialized_flat_netlist_binds_legacy_wrapper": true,
+    "operation_count": 39386537,
+    "non_clifford_count": 36973222,
+    "peak_live_qubits": 1199,
+    "operation_stream_sha256": "7d051f068558d52c88bdbd5e7188c41d06b3f06ee2f18f864f170bbbb0c07255",
+    "segment_merkle_root_sha256": "8633466fd0fbc0b4265857152d338dd1a48d287858b3e705257e78f22506b635"
+  },
+  "remaining_completion_requirements": [
+    "materialize the strict seven-slot replayed-tail family as the flat primitive stream counted by the same engine",
+    "make the ZKP guest/input bind the primary strict result artifact instead of the legacy macro wrapper",
+    "keep public presentation generated from this artifact or from strict_replayed_tail_headline.json, never from hand-copied headline numbers"
+  ],
+  "source_digests": {
+    "strict_replayed_tail_headline_sha256": "eb3743f4ba75b645397bd9f122f0688d05986d364dcb1053d9df86c9020566da",
+    "public_headline_result_sha256": "73343bc4c9567194e4b2cf8f9ae810e83a3cf2dc97a2eca831fa0fb711398d19",
+    "engine_completion_audit_sha256": "a3b8ac08aa227be936ebdbfe20e8f80e99f3c70e796ae59f4b27a3449cf77bb6",
+    "hybrid_bridge_search_sha256": "f4938cd63465eedff6b0ed58a462084ac41099c0da7b3e2ff8297b794edd3ef3"
+  },
+  "checks": {
+    "strict_headline_passes": true,
+    "strict_headline_is_current_primary_resource_result": true,
+    "strict_headline_totals_match_hybrid_search_current_row": true,
+    "strict_headline_fits_current_gate_goal": true,
+    "strict_headline_does_not_fit_current_qubit_goal": true,
+    "legacy_macro_wrapper_is_demoted": true,
+    "legacy_macro_wrapper_has_lower_qubit_count_than_strict_result": true,
+    "legacy_macro_wrapper_is_not_current_strict_flat_netlist": true,
+    "strict_result_is_not_marked_clifford_complete": true
+  },
+  "pass": true
+}

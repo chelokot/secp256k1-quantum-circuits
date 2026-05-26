@@ -125,30 +125,30 @@
       "name": "candidate_total_non_clifford",
       "source_artifact": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
       "source_pointer": "/non_clifford_derivation/candidate_total_non_clifford",
-      "value": 36957412,
+      "value": 36973222,
       "consumers": [
         {
           "name": "zkp_family_document",
           "artifact": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
           "pointer": "/family_document/payload/full_oracle_non_clifford",
-          "expected": 36957412,
-          "observed": 36957412,
+          "expected": 36973222,
+          "observed": 36973222,
           "pass": true
         },
         {
           "name": "public_headline_result",
           "artifact": "compiler_verification_project/artifacts/public_headline_result.json",
           "pointer": "/selected_result/non_clifford",
-          "expected": 36957412,
-          "observed": 36957412,
+          "expected": 36973222,
+          "observed": 36973222,
           "pass": true
         },
         {
           "name": "headline_resource_manifest",
           "artifact": "compiler_verification_project/artifacts/headline_resource_manifest.json",
           "pointer": "/public_totals/non_clifford",
-          "expected": 36957412,
-          "observed": 36957412,
+          "expected": 36973222,
+          "observed": 36973222,
           "pass": true
         }
       ],
