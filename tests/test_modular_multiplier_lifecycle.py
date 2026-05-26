@@ -59,3 +59,11 @@ def test_modular_multiplier_lifecycle_keeps_candidate_unpromoted() -> None:
     assert candidate_stream['cleanup_events'] == current['scratch_observation_count']
     assert candidate_stream['event_count'] == current['scratch_observation_count'] * 3
     assert len(candidate_stream['operation_stream_sha256']) == 64
+    field_bits = lifecycle['field_bits']
+    assert candidate_stream['route_summary']['partial_product_routes'] == 11 * field_bits * field_bits
+    assert candidate_stream['route_summary']['zero_lift_guard_routes'] == 2 * (field_bits - 1)
+    assert candidate_stream['route_summary']['unrouted_scratch_targets'] == 0
+    assert candidate_stream['route_summary']['product_column_min'] == 0
+    assert candidate_stream['route_summary']['product_column_max'] == 2 * field_bits - 2
+    assert candidate_stream['route_summary']['materialized_product_accumulator_bits_required'] == 2 * field_bits
+    assert candidate_stream['route_summary']['materialized_product_accumulator_exceeds_counted_field_slot'] is True

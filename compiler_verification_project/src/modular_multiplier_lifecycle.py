@@ -9,7 +9,7 @@ from typing import Any, Dict, Mapping
 from scheduled_modular_primitive_netlist import iter_scheduled_modular_primitive_rows
 
 
-MODULAR_MULTIPLIER_LIFECYCLE_SCHEMA = 'compiler-project-modular-multiplier-lifecycle-v1'
+MODULAR_MULTIPLIER_LIFECYCLE_SCHEMA = 'compiler-project-modular-multiplier-lifecycle-v2'
 LIFECYCLE_STREAM_COLUMNS = [
     'event_index',
     'source_operation_index',
@@ -22,7 +22,11 @@ LIFECYCLE_STREAM_COLUMNS = [
     'block',
     'consume_destination_owner_id',
     'consume_destination_target',
+    'consume_destination_bit',
+    'route_kind',
     'route_status',
+    'materialized_capacity_bits_required',
+    'counted_destination_capacity_bits',
 ]
 
 
@@ -44,12 +48,41 @@ def _encoded_stream_row(row: Mapping[str, Any]) -> str:
     return '\t'.join(_canonical_json(row[column]) for column in LIFECYCLE_STREAM_COLUMNS) + '\n'
 
 
+def _route_for_primitive_row(primitive_row: Mapping[str, Any], field_bits: int) -> Dict[str, Any]:
+    local_operands = [int(operand) for operand in primitive_row['local_operands']]
+    if len(local_operands) >= 2:
+        product_column = local_operands[0] + local_operands[1]
+        return {
+            'route_kind': 'partial_product_column_to_streamed_modular_accumulator',
+            'consume_destination_bit': product_column,
+            'materialized_capacity_bits_required': 2 * int(field_bits),
+            'counted_destination_capacity_bits': int(field_bits),
+            'route_status': 'candidate_route_requires_streamed_pseudo_mersenne_accumulator_lowering',
+        }
+    if str(primitive_row['kind']) == 'zero_lift_guard_compute_uncompute':
+        return {
+            'route_kind': 'zero_lift_guard_predicate_ladder',
+            'consume_destination_bit': 0,
+            'materialized_capacity_bits_required': 1,
+            'counted_destination_capacity_bits': 1,
+            'route_status': 'candidate_route_requires_guard_ladder_cleanup_lowering',
+        }
+    return {
+        'route_kind': 'unknown_scratch_route',
+        'consume_destination_bit': None,
+        'materialized_capacity_bits_required': None,
+        'counted_destination_capacity_bits': None,
+        'route_status': 'unrouted_scratch_target',
+    }
+
+
 def _build_candidate_stream_summary(
     *,
     modular_execution_trace: Mapping[str, Any],
     modular_arithmetic_certificate: Mapping[str, Any],
     arithmetic_lowerings: Mapping[str, Any],
     reusable_chunk_lowering: Mapping[str, Any],
+    field_bits: int,
     segment_size: int,
 ) -> Dict[str, Any]:
     if segment_size <= 0:
@@ -67,6 +100,14 @@ def _build_candidate_stream_summary(
     preview_head = []
     preview_tail = []
     prefix_counts: Dict[str, int] = {}
+    route_kind_counts: Dict[str, int] = {}
+    route_status_counts: Dict[str, int] = {}
+    partial_product_routes = 0
+    guard_routes = 0
+    unrouted_scratch_targets = 0
+    product_column_min = None
+    product_column_max = None
+    materialized_product_accumulator_exceeds_field_slot = False
 
     for primitive_row in iter_scheduled_modular_primitive_rows(
         modular_execution_trace=modular_execution_trace,
@@ -81,24 +122,42 @@ def _build_candidate_stream_summary(
             if prefix is None:
                 raise ValueError(f'unexpected non-scratch wire in scratch stream: {scratch_wire}')
             prefix_counts[prefix] = prefix_counts.get(prefix, 0) + 1
+            route = _route_for_primitive_row(primitive_row, field_bits)
+            route_kind = str(route['route_kind'])
+            route_status = str(route['route_status'])
+            route_kind_counts[route_kind] = route_kind_counts.get(route_kind, 0) + 1
+            route_status_counts[route_status] = route_status_counts.get(route_status, 0) + 1
+            if route_kind == 'partial_product_column_to_streamed_modular_accumulator':
+                partial_product_routes += 1
+                product_column = int(route['consume_destination_bit'])
+                product_column_min = product_column if product_column_min is None else min(product_column_min, product_column)
+                product_column_max = product_column if product_column_max is None else max(product_column_max, product_column)
+                materialized_product_accumulator_exceeds_field_slot = materialized_product_accumulator_exceeds_field_slot or int(route['materialized_capacity_bits_required']) > int(route['counted_destination_capacity_bits'])
+            elif route_kind == 'zero_lift_guard_predicate_ladder':
+                guard_routes += 1
+            else:
+                unrouted_scratch_targets += 1
             event_templates = [
                 {
                     'role': 'temporary_and_compute',
                     'consume_destination_owner_id': None,
                     'consume_destination_target': None,
+                    'consume_destination_bit': None,
                     'route_status': 'observed_current_stream',
                 },
                 {
                     'role': 'consume_into_counted_accumulator',
                     'consume_destination_owner_id': str(primitive_row['owner_id']),
                     'consume_destination_target': str(primitive_row['target']),
-                    'route_status': 'candidate_route_requires_physical_accumulator_bit_mapping',
+                    'consume_destination_bit': route['consume_destination_bit'],
+                    'route_status': route_status,
                 },
                 {
                     'role': 'cleanup_or_measure_uncompute',
                     'consume_destination_owner_id': None,
                     'consume_destination_target': None,
-                    'route_status': 'candidate_cleanup_requires_lowering',
+                    'consume_destination_bit': None,
+                    'route_status': route_status.replace('route_requires', 'cleanup_requires'),
                 },
             ]
             for template in event_templates:
@@ -114,7 +173,11 @@ def _build_candidate_stream_summary(
                     'block': str(primitive_row['block']),
                     'consume_destination_owner_id': template['consume_destination_owner_id'],
                     'consume_destination_target': template['consume_destination_target'],
+                    'consume_destination_bit': template['consume_destination_bit'],
+                    'route_kind': route_kind,
                     'route_status': template['route_status'],
+                    'materialized_capacity_bits_required': route['materialized_capacity_bits_required'],
+                    'counted_destination_capacity_bits': route['counted_destination_capacity_bits'],
                 }
                 if template['role'] == 'temporary_and_compute':
                     compute_events += 1
@@ -165,6 +228,24 @@ def _build_candidate_stream_summary(
         'segment_count': len(segments),
         'segments': segments,
         'scratch_prefix_counts_sha256': _sha256_payload(prefix_counts),
+        'route_kind_counts': {
+            key: int(value)
+            for key, value in sorted(route_kind_counts.items())
+        },
+        'route_status_counts': {
+            key: int(value)
+            for key, value in sorted(route_status_counts.items())
+        },
+        'route_summary': {
+            'partial_product_routes': partial_product_routes,
+            'zero_lift_guard_routes': guard_routes,
+            'unrouted_scratch_targets': unrouted_scratch_targets,
+            'product_column_min': product_column_min,
+            'product_column_max': product_column_max,
+            'field_bits': int(field_bits),
+            'materialized_product_accumulator_bits_required': 2 * int(field_bits) if partial_product_routes else 0,
+            'materialized_product_accumulator_exceeds_counted_field_slot': materialized_product_accumulator_exceeds_field_slot,
+        },
         'top_scratch_prefixes': [
             {'scratch_prefix': prefix, 'observation_count': int(count)}
             for prefix, count in sorted(prefix_counts.items(), key=lambda item: (-item[1], item[0]))[:16]
@@ -202,6 +283,7 @@ def build_modular_multiplier_lifecycle(
         modular_arithmetic_certificate=modular_arithmetic_certificate,
         arithmetic_lowerings=arithmetic_lowerings,
         reusable_chunk_lowering=reusable_chunk_lowering,
+        field_bits=field_bits,
         segment_size=segment_size,
     )
     streamed_candidate = {
@@ -249,6 +331,16 @@ def build_modular_multiplier_lifecycle(
             and candidate_stream['consume_events'] == scratch_observations
             and candidate_stream['cleanup_events'] == scratch_observations
             and candidate_stream['event_count'] == scratch_observations * 3
+        ),
+        'candidate_stream_routes_every_current_scratch_target': (
+            candidate_stream['route_summary']['unrouted_scratch_targets'] == 0
+            and candidate_stream['route_summary']['partial_product_routes'] + candidate_stream['route_summary']['zero_lift_guard_routes'] == scratch_observations
+            and candidate_stream['route_summary']['product_column_min'] == 0
+            and candidate_stream['route_summary']['product_column_max'] == 2 * int(field_bits) - 2
+        ),
+        'candidate_route_rejects_materialized_field_slot_shortcut': (
+            candidate_stream['route_summary']['materialized_product_accumulator_exceeds_counted_field_slot'] is True
+            and candidate_stream['route_summary']['materialized_product_accumulator_bits_required'] == 2 * int(field_bits)
         ),
         'streamed_candidate_peak_is_serial_constant': streamed_candidate['peak_temporary_and_wires_if_serialized'] <= 1,
         'not_promoted_until_consume_cleanup_lowering_exists': streamed_candidate['status'] != 'promoted_public_resource_contract',
