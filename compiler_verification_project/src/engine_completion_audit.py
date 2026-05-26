@@ -219,7 +219,9 @@ def build_engine_completion_audit(
             and modular_primitive_wire_audit['checks']['scheduled_modular_primitive_netlist_passes'] is True
             and modular_primitive_wire_audit['checks']['scanned_operation_count_matches_scheduled_netlist'] is True
             and modular_primitive_wire_audit['checks']['scanned_gate_counts_match_scheduled_netlist'] is True
-            and modular_primitive_wire_audit['checks']['field_operand_wires_are_live_in_trace'] is False
+            and modular_primitive_wire_audit['checks']['raw_field_operand_liveness_is_not_claimed_complete'] is True
+            and modular_primitive_wire_audit['checks']['field_operand_wires_are_live_or_classified'] is True
+            and modular_primitive_wire_audit['checks']['no_blocking_field_liveness_gaps'] is True
             and modular_primitive_wire_audit['checks']['lookup_virtual_field_operands_are_classified'] is True
             and modular_primitive_wire_audit['checks']['no_unresolved_virtual_field_operands'] is True
             and modular_primitive_wire_audit['checks']['synthetic_scratch_wires_are_single_use_ccx_targets'] is True
@@ -426,6 +428,8 @@ def build_engine_completion_audit(
                 'modular_primitive_wire_audit_pass': bool(modular_primitive_wire_audit['pass']),
                 'modular_primitive_wire_audit_sha256': _sha256_payload(modular_primitive_wire_audit),
                 'field_operand_wires_missing_liveness': int(modular_primitive_wire_audit['field_wire_missing_liveness_count']),
+                'field_operand_wires_classified_missing_liveness': int(modular_primitive_wire_audit['field_wire_classified_missing_liveness_count']),
+                'field_operand_wires_blocking_missing_liveness': int(modular_primitive_wire_audit['field_wire_blocking_missing_liveness_count']),
                 'overwritten_source_field_operands_counted_by_target_owner': int(modular_primitive_wire_audit['overwritten_source_field_observation_count']),
                 'lookup_virtual_field_operands_classified': int(modular_primitive_wire_audit['lookup_virtual_field_observation_count']),
                 'unresolved_virtual_field_operands': int(modular_primitive_wire_audit['unresolved_virtual_field_observation_count']),

@@ -49,7 +49,9 @@ def test_modular_primitive_wire_audit_names_current_scratch_gap() -> None:
         for row in trace['trace_rows']
         for suboperation in row['suboperations']
     )
-    assert audit['checks']['field_operand_wires_are_live_in_trace'] is False
+    assert audit['checks']['raw_field_operand_liveness_is_not_claimed_complete'] is True
+    assert audit['checks']['field_operand_wires_are_live_or_classified'] is True
+    assert audit['checks']['no_blocking_field_liveness_gaps'] is True
     assert audit['checks']['lookup_virtual_field_operands_are_classified'] is True
     assert audit['checks']['no_unresolved_virtual_field_operands'] is True
     assert audit['checks']['no_unclassified_non_lookup_operand_wires'] is True
@@ -58,6 +60,8 @@ def test_modular_primitive_wire_audit_names_current_scratch_gap() -> None:
     assert audit['checks']['no_synthetic_arithmetic_scratch_wires_without_owner_capacity'] is False
     assert audit['pass'] is False
     assert audit['field_wire_missing_liveness_count'] > 0
+    assert audit['field_wire_classified_missing_liveness_count'] == audit['field_wire_missing_liveness_count']
+    assert audit['field_wire_blocking_missing_liveness_count'] == 0
     assert audit['overwritten_source_field_observation_count'] > 0
     assert audit['lookup_virtual_field_observation_count'] > 0
     assert audit['unresolved_virtual_field_observation_count'] == 0

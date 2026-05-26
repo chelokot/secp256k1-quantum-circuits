@@ -95,6 +95,8 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['scheduled_modular_global_splice_pass'] is True
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_primitive_wire_audit_pass'] is False
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['field_operand_wires_missing_liveness'] > 0
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['field_operand_wires_classified_missing_liveness'] == remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['field_operand_wires_missing_liveness']
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['field_operand_wires_blocking_missing_liveness'] == 0
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['overwritten_source_field_operands_counted_by_target_owner'] > 0
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['lookup_virtual_field_operands_classified'] > 0
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['unresolved_virtual_field_operands'] == 0

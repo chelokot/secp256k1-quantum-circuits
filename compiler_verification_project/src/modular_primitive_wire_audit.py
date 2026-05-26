@@ -9,7 +9,7 @@ from typing import Any, Dict, Mapping
 from scheduled_modular_primitive_netlist import iter_scheduled_modular_primitive_rows
 
 
-MODULAR_PRIMITIVE_WIRE_AUDIT_SCHEMA = 'compiler-project-modular-primitive-wire-audit-v1'
+MODULAR_PRIMITIVE_WIRE_AUDIT_SCHEMA = 'compiler-project-modular-primitive-wire-audit-v2'
 
 
 def _canonical_json(payload: Any) -> str:
@@ -215,6 +215,11 @@ def build_modular_primitive_wire_audit(
         if count > 1
     }
     arithmetic_scratch_abandoned_garbage_count = len(arithmetic_scratch_unique_ids) - arithmetic_scratch_cleanup_observation_count
+    field_wire_classified_missing_liveness_count = (
+        lookup_virtual_field_observation_count
+        + overwritten_source_field_observation_count
+        + unresolved_virtual_field_observation_count
+    )
     checks = {
         'scheduled_modular_primitive_netlist_passes': scheduled_modular_primitive_netlist['pass'] is True,
         'scanned_operation_count_matches_scheduled_netlist': operation_count == int(scheduled_modular_primitive_netlist['operation_count']),
@@ -222,7 +227,9 @@ def build_modular_primitive_wire_audit(
             key: int(scheduled_modular_primitive_netlist['primitive_counts_total'][key])
             for key in gate_counts
         },
-        'field_operand_wires_are_live_in_trace': field_wire_missing_liveness_count == 0,
+        'raw_field_operand_liveness_is_not_claimed_complete': field_wire_missing_liveness_count > 0,
+        'field_operand_wires_are_live_or_classified': field_wire_missing_liveness_count == field_wire_classified_missing_liveness_count,
+        'no_blocking_field_liveness_gaps': unresolved_virtual_field_observation_count == 0,
         'lookup_virtual_field_operands_are_classified': (
             lookup_virtual_field_observation_count > 0
             and set(lookup_virtual_field_names).issubset({'lookup_x', 'lookup_y', 'lookup_x_plus_y'})
@@ -257,6 +264,8 @@ def build_modular_primitive_wire_audit(
         'field_wire_observation_count': field_wire_observation_count,
         'trace_live_field_wire_observation_count': trace_live_field_wire_observation_count,
         'field_wire_missing_liveness_count': field_wire_missing_liveness_count,
+        'field_wire_classified_missing_liveness_count': field_wire_classified_missing_liveness_count,
+        'field_wire_blocking_missing_liveness_count': unresolved_virtual_field_observation_count,
         'overwritten_source_field_observation_count': overwritten_source_field_observation_count,
         'lookup_virtual_field_observation_count': lookup_virtual_field_observation_count,
         'unresolved_virtual_field_observation_count': unresolved_virtual_field_observation_count,

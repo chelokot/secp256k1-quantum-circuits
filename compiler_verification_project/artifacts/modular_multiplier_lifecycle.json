@@ -7,7 +7,7 @@
     "arithmetic_lowerings_sha256": "3686d34edff9e9edfa4712f895b2b5687484b8271269b9264fc133d5a29a66a7",
     "reusable_chunk_lowering_sha256": "c33b966de5d3e98e3a403052f4b854d7db34e766419de623a321a69d06517698",
     "scheduled_modular_primitive_netlist_sha256": "ff3662c1b383c32858465f567fbc09bb8654b1fb08eb13f3ab277b3c1323ec5c",
-    "modular_primitive_wire_audit_sha256": "ade7278c3ae75bcb0c90ca1b8e300bee99f97578dfc9bb57352f5da86317cd43"
+    "modular_primitive_wire_audit_sha256": "2b26e94fcf9f531d2f8bd0ae3962082bac179102402ffe8350213615bc0777d2"
   },
   "field_bits": 256,
   "current_stream": {

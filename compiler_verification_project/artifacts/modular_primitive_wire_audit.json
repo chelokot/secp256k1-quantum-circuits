@@ -1,5 +1,5 @@
 {
-  "schema": "compiler-project-modular-primitive-wire-audit-v1",
+  "schema": "compiler-project-modular-primitive-wire-audit-v2",
   "definition": "Wire-level audit of the scheduled modular primitive iterator. It separates field wires backed by trace liveness from lookup-workspace wires and synthetic arithmetic scratch wires that still need a counted owner/reuse proof before the modular primitive stream can be called fully physical.",
   "source_digests": {
     "modular_execution_trace_sha256": "eff6aa89184b032c520ad83095e76dc0c68199616aad5f1ca8610d701801e351",
@@ -18,6 +18,8 @@
   "field_wire_observation_count": 1752816,
   "trace_live_field_wire_observation_count": 1170006,
   "field_wire_missing_liveness_count": 582810,
+  "field_wire_classified_missing_liveness_count": 582810,
+  "field_wire_blocking_missing_liveness_count": 0,
   "overwritten_source_field_observation_count": 225350,
   "lookup_virtual_field_observation_count": 357460,
   "unresolved_virtual_field_observation_count": 0,
@@ -813,7 +815,9 @@
     "scheduled_modular_primitive_netlist_passes": true,
     "scanned_operation_count_matches_scheduled_netlist": true,
     "scanned_gate_counts_match_scheduled_netlist": true,
-    "field_operand_wires_are_live_in_trace": false,
+    "raw_field_operand_liveness_is_not_claimed_complete": true,
+    "field_operand_wires_are_live_or_classified": true,
+    "no_blocking_field_liveness_gaps": true,
     "lookup_virtual_field_operands_are_classified": true,
     "no_unresolved_virtual_field_operands": true,
     "qroam_operand_wires_are_explicit_lookup_workspace_wires": true,
