@@ -2031,6 +2031,78 @@ def _liveness_binding_rows(
     return rows
 
 
+def _strict_replayed_tail_capacity_overlay(
+    *,
+    strict_replayed_tail_headline: Mapping[str, Any],
+    tail_macro_engine: Mapping[str, Any],
+    reusable_chunk_lowering: Mapping[str, Any],
+    materialized_flat_netlist: Mapping[str, Any],
+) -> Dict[str, Any]:
+    selected = strict_replayed_tail_headline['selected_result']
+    formula = strict_replayed_tail_headline['logical_qubit_formula']
+    non_clifford_formula = strict_replayed_tail_headline['non_clifford_formula']
+    tail_rows = [
+        {
+            'owner_id': str(row['owner_id']),
+            'logical_qubits': int(row['logical_qubits']),
+            'required_peak_qubits': int(row.get('required_peak_qubits', row['logical_qubits'])),
+            'capacity_field_values': int(row.get('capacity_field_values', 1)),
+            'counted_in_legacy_leaf_budget': bool(row.get('counted_in_current_leaf_budget', True)),
+            'capacity_pass': int(row['logical_qubits']) >= int(row.get('required_peak_qubits', row['logical_qubits'])) and int(row.get('capacity_field_values', 1)) >= 1,
+        }
+        for row in tail_macro_engine['fused_output_slot_assignment']['owner_capacity_rows']
+    ]
+    tail_capacity_qubits = sum(int(row['logical_qubits']) for row in tail_rows)
+    lookup_workspace_qubits = int(reusable_chunk_lowering['qubit_derivation']['lookup_workspace_qubits'])
+    control_qubits = int(reusable_chunk_lowering['qubit_derivation']['control_qubits']) + int(selected['fused_output_guard_qubits'])
+    phase_qubits = int(reusable_chunk_lowering['qubit_derivation']['phase_qubits'])
+    reconstructed_logical_qubits = tail_capacity_qubits + lookup_workspace_qubits + control_qubits + phase_qubits
+    checks = {
+        'strict_headline_passes': strict_replayed_tail_headline['pass'] is True,
+        'materialized_stream_non_clifford_matches_strict_headline': int(materialized_flat_netlist['non_clifford_count']) == int(selected['non_clifford']),
+        'strict_non_clifford_formula_matches_materialized_stream': int(non_clifford_formula['reconstructed_total']) == int(materialized_flat_netlist['non_clifford_count']),
+        'tail_capacity_rows_match_replayed_seven_slot_assignment': len(tail_rows) == int(selected['tail_field_slots']) == int(formula['tail_field_slots']),
+        'tail_capacity_rows_are_field_sized_and_pass': all(int(row['logical_qubits']) == int(selected['field_bits']) and row['capacity_pass'] is True for row in tail_rows),
+        'strict_logical_qubits_reconstruct_from_capacity_terms': reconstructed_logical_qubits == int(selected['logical_qubits']) == int(formula['reconstructed_total']),
+        'strict_capacity_peak_exceeds_legacy_materialized_liveness_peak': int(selected['logical_qubits']) > int(materialized_flat_netlist['peak_live_qubits']),
+    }
+    return {
+        'schema': 'compiler-project-strict-replayed-tail-capacity-overlay-v1',
+        'status': 'strict_capacity_overlay_bound_to_flat_operation_stream_not_full_liveness_rewrite',
+        'selected_result_name': str(selected['name']),
+        'source_artifact': 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json',
+        'flat_operation_stream': {
+            'operation_count': int(materialized_flat_netlist['operation_count']),
+            'non_clifford_count': int(materialized_flat_netlist['non_clifford_count']),
+            'operation_stream_sha256': str(materialized_flat_netlist['operation_stream_sha256']),
+            'segment_merkle_root_sha256': str(materialized_flat_netlist['segment_merkle_root_sha256']),
+        },
+        'strict_capacity_terms': {
+            'tail_field_slot_count': int(selected['tail_field_slots']),
+            'field_bits': int(selected['field_bits']),
+            'tail_field_qubits': tail_capacity_qubits,
+            'lookup_workspace_qubits': lookup_workspace_qubits,
+            'control_qubits': control_qubits,
+            'fused_output_guard_qubits': int(selected['fused_output_guard_qubits']),
+            'phase_qubits': phase_qubits,
+            'reconstructed_logical_qubits': reconstructed_logical_qubits,
+        },
+        'tail_owner_capacity_rows': tail_rows,
+        'comparison_to_materialized_liveness': {
+            'materialized_flat_liveness_peak_qubits': int(materialized_flat_netlist['peak_live_qubits']),
+            'strict_capacity_peak_qubits': int(selected['logical_qubits']),
+            'delta_qubits': int(selected['logical_qubits']) - int(materialized_flat_netlist['peak_live_qubits']),
+        },
+        'claim_boundary': {
+            'flat_operation_stream_binds_non_clifford': True,
+            'strict_replayed_tail_capacity_binds_logical_qubits': True,
+            'full_operation_index_liveness_rewrite_binds_strict_qubits': False,
+        },
+        'checks': checks,
+        'pass': all(checks.values()),
+    }
+
+
 def build_public_candidate_materialized_circuit_manifest(
     *,
     reusable_chunk_lowering: Mapping[str, Any],
@@ -2042,6 +2114,8 @@ def build_public_candidate_materialized_circuit_manifest(
     selected_family_name: str,
     include_materialized_flat_netlist: bool = True,
     materialized_flat_netlist_override: Optional[Mapping[str, Any]] = None,
+    strict_replayed_tail_headline: Optional[Mapping[str, Any]] = None,
+    tail_macro_engine: Optional[Mapping[str, Any]] = None,
 ) -> Dict[str, Any]:
     counted_resource_ir = reusable_chunk_lowering['counted_resource_ir']
     public_totals = reusable_chunk_lowering['executable_resource_engine']['public_totals']
@@ -2084,6 +2158,14 @@ def build_public_candidate_materialized_circuit_manifest(
         'non_clifford': int(materialized_flat_netlist['non_clifford_count']),
         'logical_qubits': int(materialized_flat_netlist['peak_live_qubits']),
     }
+    strict_capacity_overlay = None
+    if strict_replayed_tail_headline is not None and tail_macro_engine is not None:
+        strict_capacity_overlay = _strict_replayed_tail_capacity_overlay(
+            strict_replayed_tail_headline=strict_replayed_tail_headline,
+            tail_macro_engine=tail_macro_engine,
+            reusable_chunk_lowering=reusable_chunk_lowering,
+            materialized_flat_netlist=materialized_flat_netlist,
+        )
     base_rows = [row for row in rows if row['scope'] in ('direct_seed_base', 'lookup_leaf_base', 'arithmetic_leaf_block')]
     direct_seed_rows = [row for row in rows if row['scope'] == 'direct_seed_base']
     lookup_leaf_rows = [row for row in rows if row['scope'] == 'lookup_leaf_base']
@@ -2314,6 +2396,11 @@ def build_public_candidate_materialized_circuit_manifest(
             and not any(str(wire_id).startswith('qroam_chunk_target__') for wire_id in liveness_rows[int(row['row_index'])]['live_wire_ids'])
             for row in phase_rows
         ),
+        'strict_replayed_tail_capacity_overlay_is_bound': (
+            strict_capacity_overlay is not None
+            and strict_capacity_overlay['pass'] is True
+            and strict_capacity_overlay['claim_boundary']['full_operation_index_liveness_rewrite_binds_strict_qubits'] is False
+        ),
     }
     return {
         'schema': PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA,
@@ -2329,6 +2416,8 @@ def build_public_candidate_materialized_circuit_manifest(
             'qroam_primitive_certificate_sha256': _sha256_payload(qroam_primitive_certificate),
             'phase_shell_lowerings_sha256': _sha256_payload(phase_shell_lowerings),
             'compiler_parameters_sha256': _sha256_payload(compiler_parameters),
+            'strict_replayed_tail_headline_sha256': _sha256_payload(strict_replayed_tail_headline) if strict_replayed_tail_headline is not None else None,
+            'tail_macro_engine_sha256': _sha256_payload(tail_macro_engine) if tail_macro_engine is not None else None,
         },
         'operation_stream_sha256': _public_candidate_stream_hash(rows),
         'liveness_binding_stream_sha256': _public_candidate_liveness_hash(liveness_rows),
@@ -2358,6 +2447,7 @@ def build_public_candidate_materialized_circuit_manifest(
             'preview_head': liveness_rows[:8],
             'preview_tail': liveness_rows[-8:],
         },
+        'strict_replayed_tail_capacity_overlay': strict_capacity_overlay,
         'flat_netlist': flat_netlist,
         'materialized_flat_netlist': materialized_flat_netlist,
         'flat_execution_probe': flat_execution_probe,

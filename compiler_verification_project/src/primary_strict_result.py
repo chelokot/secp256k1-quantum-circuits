@@ -30,12 +30,14 @@ def build_primary_strict_result(
     strict_replayed_tail_headline: Mapping[str, Any],
     public_headline_result: Mapping[str, Any],
     engine_completion_audit: Mapping[str, Any],
+    public_candidate_materialized_circuit_manifest: Mapping[str, Any],
     hybrid_bridge_search: Mapping[str, Any],
 ) -> Dict[str, Any]:
     selected = strict_replayed_tail_headline['selected_result']
     legacy_selected = public_headline_result['selected_result']
     engine_totals = engine_completion_audit['public_totals']
     flat_netlist = engine_completion_audit['materialized_flat_netlist']
+    strict_overlay = public_candidate_materialized_circuit_manifest['strict_replayed_tail_capacity_overlay']
     hybrid_current = next(row for row in hybrid_bridge_search['candidate_rows'] if row['name'] == 'current_strict_projective_seven_slot')
     strict_non_clifford = int(selected['non_clifford'])
     strict_logical_qubits = int(selected['logical_qubits'])
@@ -48,6 +50,12 @@ def build_primary_strict_result(
         'legacy_macro_wrapper_is_demoted': strict_replayed_tail_headline['macro_contract_reference']['status'] == 'not_primary_strict_headline',
         'legacy_macro_wrapper_has_lower_qubit_count_than_strict_result': int(legacy_selected['logical_qubits']) < strict_logical_qubits,
         'legacy_macro_wrapper_is_not_current_strict_flat_netlist': int(engine_totals['logical_qubits']) == int(flat_netlist['peak_live_qubits']) == int(legacy_selected['logical_qubits']),
+        'strict_capacity_overlay_binds_selected_result': (
+            strict_overlay['pass'] is True
+            and int(strict_overlay['flat_operation_stream']['non_clifford_count']) == strict_non_clifford
+            and int(strict_overlay['strict_capacity_terms']['reconstructed_logical_qubits']) == strict_logical_qubits
+            and strict_overlay['claim_boundary']['full_operation_index_liveness_rewrite_binds_strict_qubits'] is False
+        ),
         'strict_result_is_not_marked_clifford_complete': engine_completion_audit['clifford_complete_goal_achieved'] is False,
     }
     payload = {
@@ -85,9 +93,12 @@ def build_primary_strict_result(
             'current_materialized_flat_netlist_path': 'compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json',
             'current_materialized_flat_netlist_binds_selected_strict_result': False,
             'current_materialized_flat_netlist_binds_legacy_wrapper': True,
+            'strict_capacity_overlay_binds_selected_result': True,
+            'strict_capacity_overlay_is_full_liveness_rewrite': False,
             'operation_count': int(flat_netlist['operation_count']),
             'non_clifford_count': int(flat_netlist['non_clifford_count']),
             'peak_live_qubits': int(flat_netlist['peak_live_qubits']),
+            'strict_capacity_peak_qubits': int(strict_overlay['strict_capacity_terms']['reconstructed_logical_qubits']),
             'operation_stream_sha256': flat_netlist['operation_stream_sha256'],
             'segment_merkle_root_sha256': flat_netlist['segment_merkle_root_sha256'],
         },
@@ -100,6 +111,7 @@ def build_primary_strict_result(
             'strict_replayed_tail_headline_sha256': _sha256_payload(strict_replayed_tail_headline),
             'public_headline_result_sha256': _sha256_payload(public_headline_result),
             'engine_completion_audit_sha256': _sha256_payload(engine_completion_audit),
+            'public_candidate_materialized_circuit_manifest_sha256': _sha256_payload(public_candidate_materialized_circuit_manifest),
             'hybrid_bridge_search_sha256': _sha256_payload(hybrid_bridge_search),
         },
         'checks': checks,
@@ -115,6 +127,7 @@ def write_primary_strict_result() -> None:
         strict_replayed_tail_headline=_load(ARTIFACT_ROOT / 'strict_replayed_tail_headline.json'),
         public_headline_result=_load(ARTIFACT_ROOT / 'public_headline_result.json'),
         engine_completion_audit=_load(ARTIFACT_ROOT / 'engine_completion_audit.json'),
+        public_candidate_materialized_circuit_manifest=_load(ARTIFACT_ROOT / 'public_candidate_materialized_circuit_manifest.json'),
         hybrid_bridge_search=_load(ARTIFACT_ROOT / 'hybrid_bridge_search.json'),
     )
     dump_json(ARTIFACT_ROOT / 'primary_strict_result.json', payload)

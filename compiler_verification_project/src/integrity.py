@@ -269,6 +269,8 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 phase_shell_lowerings=load_json(artifact_root / 'phase_shell_lowerings.json'),
                 compiler_parameters=load_json(artifact_root / 'compiler_parameters.json'),
                 selected_family_name=load_json(artifact_root / 'compiler_parameters.json')['public_headline_policy']['selected_public_family_name'],
+                strict_replayed_tail_headline=load_json(artifact_root / 'strict_replayed_tail_headline.json'),
+                tail_macro_engine=load_json(artifact_root / 'tail_macro_engine.json'),
             ),
         )
         dump_json(
@@ -2832,6 +2834,7 @@ def build_primary_strict_result_checks(artifacts: Mapping[str, Any]) -> Dict[str
         strict_replayed_tail_headline=artifacts['strict_replayed_tail_headline'],
         public_headline_result=artifacts['public_headline_result'],
         engine_completion_audit=artifacts['engine_completion_audit'],
+        public_candidate_materialized_circuit_manifest=artifacts['public_candidate_materialized_circuit_manifest'],
         hybrid_bridge_search=artifacts['hybrid_bridge_search'],
     )
     selected = observed['selected_result']
@@ -2844,6 +2847,7 @@ def build_primary_strict_result_checks(artifacts: Mapping[str, Any]) -> Dict[str
         _check('primary_strict_result_demotes_legacy_macro_wrapper', observed['legacy_wrapper_reference']['status'] == 'legacy_macro_zkp_wrapper_not_primary_resource_headline' and observed['legacy_wrapper_reference']['selected_result'] == artifacts['public_headline_result']['selected_result'], 'legacy macro wrapper demoted', observed['legacy_wrapper_reference']),
         _check('primary_strict_result_keeps_unclosed_boundaries_explicit', observed['resource_claim_level']['clifford_complete_flat_netlist'] == 'not_yet_achieved' and observed['resource_claim_level']['zkp_binds_this_strict_result'] == 'not_yet_achieved', 'strict result is not marked fully flattened or ZKP-bound', observed['resource_claim_level']),
         _check('primary_strict_result_flat_netlist_status_binds_legacy_not_strict_totals', flat_status['current_materialized_flat_netlist_binds_selected_strict_result'] is False and flat_status['current_materialized_flat_netlist_binds_legacy_wrapper'] is True and flat_status['peak_live_qubits'] == artifacts['public_headline_result']['selected_result']['logical_qubits'], 'flat netlist still binds legacy wrapper totals', flat_status),
+        _check('primary_strict_result_binds_strict_capacity_overlay', flat_status['strict_capacity_overlay_binds_selected_result'] is True and flat_status['strict_capacity_peak_qubits'] == selected['logical_qubits'] and flat_status['strict_capacity_overlay_is_full_liveness_rewrite'] is False, 'strict capacity overlay bound but not full liveness rewrite', flat_status),
     ]
     return _summarize_checks(checks)
 

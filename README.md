@@ -145,8 +145,10 @@ engine gate for the current public candidate. The public-candidate materialized 
 claim into deterministic run-length primitive rows and then scans the full
 materialized primitive stream: every emitted operation has concrete operand
 wires, parent-wire bindings, liveness interval, and owner-qubit total. The
-checked stream covers `39,370,727` primitive operations over deterministic
-segments and carries a full-stream SHA-256 plus segment Merkle root. Segment
+checked stream carries a full-stream SHA-256 plus segment Merkle root. It also
+records a strict replayed-tail capacity overlay that binds the flat operation
+stream's non-Clifford count to the `1,968`-qubit seven-slot capacity result,
+while still marking the full operation-index liveness rewrite as open. Segment
 and preview rows bind the contributing run-length rows, operation-index ranges,
 liveness rows, derived owner-qubit sums, all 186 QROAM streams over the
 generated QROAMClean segment certificate, arithmetic-operation IR rows,

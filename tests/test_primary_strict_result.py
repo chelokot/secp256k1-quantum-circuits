@@ -25,6 +25,7 @@ def test_primary_strict_result_matches_generator_and_demotes_legacy_wrapper() ->
         strict_replayed_tail_headline=_load('strict_replayed_tail_headline.json'),
         public_headline_result=_load('public_headline_result.json'),
         engine_completion_audit=_load('engine_completion_audit.json'),
+        public_candidate_materialized_circuit_manifest=_load('public_candidate_materialized_circuit_manifest.json'),
         hybrid_bridge_search=_load('hybrid_bridge_search.json'),
     )
 
@@ -44,5 +45,8 @@ def test_primary_strict_result_does_not_confuse_legacy_flat_netlist_with_strict_
 
     assert flat_status['current_materialized_flat_netlist_binds_selected_strict_result'] is False
     assert flat_status['current_materialized_flat_netlist_binds_legacy_wrapper'] is True
+    assert flat_status['strict_capacity_overlay_binds_selected_result'] is True
+    assert flat_status['strict_capacity_overlay_is_full_liveness_rewrite'] is False
+    assert flat_status['strict_capacity_peak_qubits'] == observed['selected_result']['logical_qubits']
     assert flat_status['peak_live_qubits'] == observed['legacy_wrapper_reference']['selected_result']['logical_qubits']
     assert flat_status['peak_live_qubits'] != observed['selected_result']['logical_qubits']

@@ -22,7 +22,7 @@
   "closed_evidence": {
     "strict_replayed_tail_headline": {
       "path": "compiler_verification_project/artifacts/strict_replayed_tail_headline.json",
-      "sha256": "eb3743f4ba75b645397bd9f122f0688d05986d364dcb1053d9df86c9020566da",
+      "sha256": "5141c3dfbcd433d323d242f6f27618345b73b221caf91d4ad2ca0825bd0a18a1",
       "status": "primary_strict_replayed_tail_headline",
       "pass": true
     },
@@ -43,7 +43,7 @@
   },
   "legacy_wrapper_reference": {
     "path": "compiler_verification_project/artifacts/public_headline_result.json",
-    "sha256": "73343bc4c9567194e4b2cf8f9ae810e83a3cf2dc97a2eca831fa0fb711398d19",
+    "sha256": "e073c6a3c17da06ba134140c14397c17eb89e4a1997a9fa30bf2dc63b52eaf06",
     "selected_result": {
       "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
       "non_clifford": 36973222,
@@ -59,9 +59,12 @@
     "current_materialized_flat_netlist_path": "compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json",
     "current_materialized_flat_netlist_binds_selected_strict_result": false,
     "current_materialized_flat_netlist_binds_legacy_wrapper": true,
+    "strict_capacity_overlay_binds_selected_result": true,
+    "strict_capacity_overlay_is_full_liveness_rewrite": false,
     "operation_count": 39386537,
     "non_clifford_count": 36973222,
     "peak_live_qubits": 1199,
+    "strict_capacity_peak_qubits": 1968,
     "operation_stream_sha256": "7d051f068558d52c88bdbd5e7188c41d06b3f06ee2f18f864f170bbbb0c07255",
     "segment_merkle_root_sha256": "8633466fd0fbc0b4265857152d338dd1a48d287858b3e705257e78f22506b635"
   },
@@ -71,9 +74,10 @@
     "keep public presentation generated from this artifact or from strict_replayed_tail_headline.json, never from hand-copied headline numbers"
   ],
   "source_digests": {
-    "strict_replayed_tail_headline_sha256": "eb3743f4ba75b645397bd9f122f0688d05986d364dcb1053d9df86c9020566da",
-    "public_headline_result_sha256": "73343bc4c9567194e4b2cf8f9ae810e83a3cf2dc97a2eca831fa0fb711398d19",
-    "engine_completion_audit_sha256": "a3b8ac08aa227be936ebdbfe20e8f80e99f3c70e796ae59f4b27a3449cf77bb6",
+    "strict_replayed_tail_headline_sha256": "5141c3dfbcd433d323d242f6f27618345b73b221caf91d4ad2ca0825bd0a18a1",
+    "public_headline_result_sha256": "e073c6a3c17da06ba134140c14397c17eb89e4a1997a9fa30bf2dc63b52eaf06",
+    "engine_completion_audit_sha256": "8cf1ceaffada47fbc804e06bd227e7ec0952b5437a655ef54e1a13ce5f7278b8",
+    "public_candidate_materialized_circuit_manifest_sha256": "535bb07e389a73cb56ea18d67d5e81838c706170fc1281827ad23bd2983267aa",
     "hybrid_bridge_search_sha256": "f4938cd63465eedff6b0ed58a462084ac41099c0da7b3e2ff8297b794edd3ef3"
   },
   "checks": {
@@ -85,6 +89,7 @@
     "legacy_macro_wrapper_is_demoted": true,
     "legacy_macro_wrapper_has_lower_qubit_count_than_strict_result": true,
     "legacy_macro_wrapper_is_not_current_strict_flat_netlist": true,
+    "strict_capacity_overlay_binds_selected_result": true,
     "strict_result_is_not_marked_clifford_complete": true
   },
   "pass": true

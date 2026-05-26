@@ -24,8 +24,12 @@ family remains checked as a reference boundary, not as the promoted public
 claim. The generated QROAMClean tradeoff ledger still records the higher-space
 rows needed for the older `<24M` non-Clifford target; the repository headline
 is the single checked central family bound by the executable leaf, resource
-ledger, and replayed-tail owner capacity. The ZKP guest/input still binds the
-old macro wrapper until it is rebuilt around the strict seven-slot contract.
+ledger, and replayed-tail owner capacity. The materialized public-candidate
+manifest now includes a strict replayed-tail capacity overlay that binds the
+flat operation stream's non-Clifford count to that seven-slot capacity result,
+but it still does not replace the full operation-index liveness stream with a
+strict `1,968`-qubit liveness scan. The ZKP guest/input still binds the old
+macro wrapper until it is rebuilt around the strict seven-slot contract.
 
 ## Exact layers
 

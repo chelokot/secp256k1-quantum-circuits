@@ -66,6 +66,8 @@ def _build_public_candidate_materialized(
         compiler_parameters=resolved_compiler_parameters,
         selected_family_name=resolved_compiler_parameters['public_headline_policy']['selected_public_family_name'],
         include_materialized_flat_netlist=False,
+        strict_replayed_tail_headline=_artifact('strict_replayed_tail_headline.json'),
+        tail_macro_engine=_artifact('tail_macro_engine.json'),
     )
 
 
@@ -182,6 +184,15 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert manifest['checks']['liveness_bindings_recompute_owner_sums_from_wire_catalog'] is True
     assert manifest['checks']['liveness_bindings_recompute_owner_capacity_from_wire_catalog'] is True
     assert manifest['checks']['phase_liveness_uses_phase_load_interval_without_lookup_target'] is True
+    assert manifest['checks']['strict_replayed_tail_capacity_overlay_is_bound'] is True
+    overlay = manifest['strict_replayed_tail_capacity_overlay']
+    strict_headline = _artifact('strict_replayed_tail_headline.json')
+    assert overlay['pass'] is True
+    assert overlay['flat_operation_stream']['non_clifford_count'] == strict_headline['selected_result']['non_clifford']
+    assert overlay['strict_capacity_terms']['reconstructed_logical_qubits'] == strict_headline['selected_result']['logical_qubits']
+    assert overlay['claim_boundary']['flat_operation_stream_binds_non_clifford'] is True
+    assert overlay['claim_boundary']['strict_replayed_tail_capacity_binds_logical_qubits'] is True
+    assert overlay['claim_boundary']['full_operation_index_liveness_rewrite_binds_strict_qubits'] is False
     assert manifest['materialized_liveness']['preview_head'][0]['total_live_qubits'] < manifest['public_totals']['logical_qubits']
     assert 'arithmetic_leaf_base' not in {row['scope'] for row in manifest['preview_head'] + manifest['preview_tail']}
     first_arithmetic_row = next(row for row in manifest['run_length_rows'] if row['scope'] == 'arithmetic_leaf_block')
