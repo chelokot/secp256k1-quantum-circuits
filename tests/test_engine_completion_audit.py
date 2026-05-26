@@ -61,6 +61,15 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     assert expected['public_totals']['logical_qubits'] == materialized['peak_live_qubits']
     assert expected['public_totals']['operation_count'] == materialized['operation_count']
     assert len(expected['remaining_macro_boundaries']) > 0
+    remaining = {row['name']: row for row in expected['remaining_macro_boundaries']}
+    assert {
+        'modular_arithmetic_clifford_expansion',
+        'qroam_bit_level_netlist_expansion',
+        'tail_macro_schedule_and_reversibility',
+        'single_engine_zkp_input_derivation',
+    }.issubset(remaining)
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['source_bound_run_length_rows'] == expected['source_binding_summary']['rows_by_source_kind']['arithmetic_operation_ir']
+    assert remaining['qroam_bit_level_netlist_expansion']['evidence_metrics']['source_bound_run_length_rows'] == expected['source_binding_summary']['rows_by_source_kind']['qroam_primitive_certificate']
     assert all(expected['checks'].values())
 
 

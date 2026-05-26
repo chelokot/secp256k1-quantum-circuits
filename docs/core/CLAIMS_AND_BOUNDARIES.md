@@ -190,10 +190,16 @@ materialized/public engine artifacts and passes only when the headline totals,
 source binding, operand ownership, QROAM primitive cost, modular arithmetic IR
 generation, semantic corpus, and tail auxiliary evidence are coherent. It
 deliberately keeps `clifford_complete_goal_achieved = false` while the tail
-macro in-place schedule and the final ZKP input bundle are not yet direct
+macro in-place schedule, modular arithmetic Clifford expansion, QROAM bit-level
+netlist expansion, and the final ZKP input bundle are not yet direct
 single-engine products. Modular arithmetic is no longer a separate formula
 source: the arithmetic lowering embeds `executable_modular_circuit_ir`, emits
-the modular kernels from it, and the modular certificate consumes that same IR.
+the modular kernels from it, and the modular certificate consumes that same IR;
+the remaining arithmetic row in `engine_completion_audit.json` is the exact
+Clifford expansion of those modular kernels into the same global flat schedule.
+The QROAM row similarly records that the current standard-QROAMClean certificate
+is cost-bound but not yet emitted as a bit-level QROAM netlist in the global
+schedule.
 The selected tail macro is also no longer only prose plus a stage inventory:
 `tail_macro_engine.json` expands the formula into a 23-operation field-kernel
 stream, binds that stream's opcode histogram to the counted tail kernel, and
@@ -215,7 +221,8 @@ domain, and keeps lookup-infinity rows on the checked external bypass path.
 `strict_replayed_tail_headline.json` promotes that replayed
 seven-slot tail into the primary strict resource headline. The remaining
 optimization target is reducing the tail below seven field slots and then
-making the ZKP guest/input bind that same strict resource contract.
+making the arithmetic/QROAM/tail/ZKP layers all bind that same strict resource
+contract as one engine product.
 The same `tail_macro_engine.json` artifact now records an unpromoted semantic
 six-slot candidate using the pair transforms `(I,F) -> (M,N)` and
 `(E,K) -> (X3,Z3)`. Its determinant certificate proves the pair-output matrix

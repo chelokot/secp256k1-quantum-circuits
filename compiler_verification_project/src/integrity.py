@@ -2426,7 +2426,20 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
         _check('engine_completion_audit_matches_generator', audit == expected, expected, audit),
         _check('engine_completion_audit_schema_is_current', audit['schema'] == ENGINE_COMPLETION_AUDIT_SCHEMA, ENGINE_COMPLETION_AUDIT_SCHEMA, audit['schema']),
         _check('engine_completion_audit_derives_headline_from_canonical_materialized_flat_netlist', audit['public_totals']['source'] == PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE and audit['public_totals']['non_clifford'] == materialized_flat['non_clifford_count'] and audit['public_totals']['logical_qubits'] == materialized_flat['peak_live_qubits'] and audit['public_totals']['operation_count'] == materialized_flat['operation_count'], materialized_flat, audit['public_totals']),
-        _check('engine_completion_audit_requires_explicit_remaining_macro_boundaries', audit['clifford_complete_goal_achieved'] is False and len(audit['remaining_macro_boundaries']) > 0 and audit['checks']['remaining_macro_boundaries_are_explicit'] is True and audit['checks']['public_claim_not_marked_full_clifford_complete_until_macro_boundaries_flattened'] is True, 'explicit remaining macro boundaries and no full-completion claim', {'clifford_complete_goal_achieved': audit['clifford_complete_goal_achieved'], 'remaining_macro_boundaries': audit['remaining_macro_boundaries'], 'checks': audit['checks']}),
+        _check(
+            'engine_completion_audit_requires_explicit_remaining_macro_boundaries',
+            audit['clifford_complete_goal_achieved'] is False
+            and {
+                'modular_arithmetic_clifford_expansion',
+                'qroam_bit_level_netlist_expansion',
+                'tail_macro_schedule_and_reversibility',
+                'single_engine_zkp_input_derivation',
+            }.issubset({row['name'] for row in audit['remaining_macro_boundaries']})
+            and audit['checks']['remaining_macro_boundaries_are_explicit'] is True
+            and audit['checks']['public_claim_not_marked_full_clifford_complete_until_macro_boundaries_flattened'] is True,
+            'explicit arithmetic, qroam, tail, and zkp boundaries with no full-completion claim',
+            {'clifford_complete_goal_achieved': audit['clifford_complete_goal_achieved'], 'remaining_macro_boundaries': audit['remaining_macro_boundaries'], 'checks': audit['checks']},
+        ),
         _check('engine_completion_audit_source_binding_covers_all_run_length_rows', audit['checks']['source_binding_covers_every_run_length_row'] is True and audit['source_binding_summary']['rows_checked'] == artifacts['public_candidate_materialized_circuit_manifest']['run_length_row_count'] and sum(audit['source_binding_summary']['rows_by_source_kind'].values()) == audit['source_binding_summary']['rows_checked'], 'all run-length rows source-bound', audit['source_binding_summary']),
         _check('engine_completion_audit_passes_internal_checks', audit['pass'] is True and all(audit['checks'].values()), True, audit['checks']),
     ]

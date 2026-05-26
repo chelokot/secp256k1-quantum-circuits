@@ -259,6 +259,32 @@ def build_engine_completion_audit(
     ]
     remaining_macro_boundaries = [
         {
+            'name': 'modular_arithmetic_clifford_expansion',
+            'status': 'generated_modular_ir_count_bound_not_one_global_clifford_schedule',
+            'required_to_close': 'Emit and count exact concrete Clifford/CCX wire operations for every modular add, subtract, multiply, fold, and reduction step inside the same global flat schedule as the point-add leaf.',
+            'current_evidence': 'arithmetic_operation_ir + modular_arithmetic_certificate + public_candidate_materialized_circuit_manifest.operand_source_binding',
+            'evidence_metrics': {
+                'source_bound_run_length_rows': rows_by_source_kind['arithmetic_operation_ir'],
+                'leaf_arithmetic_non_clifford': int(arithmetic_leaf_summary['non_clifford_total']),
+                'field_mul_non_clifford': int(modular_arithmetic_certificate['field_mul_stage_count_certificate']['observed_total_ccx']),
+                'field_mul_stage_counts_match': bool(modular_arithmetic_certificate['field_mul_stage_count_certificate']['stage_counts_match']),
+                'modular_ir_counts_match_lowerings': bool(modular_arithmetic_certificate['executable_circuit_ir_count_certificate']['counts_match_arithmetic_lowerings']),
+            },
+        },
+        {
+            'name': 'qroam_bit_level_netlist_expansion',
+            'status': 'standard_qroamclean_cost_bound_not_bit_level_qroam_netlist',
+            'required_to_close': 'Emit and count the exact QROAM address, control, target, measurement, and uncompute operations in the same flat primitive schedule instead of relying on the compact QROAMClean K=1 resource certificate.',
+            'current_evidence': 'qroam_primitive_certificate + public_candidate_materialized_circuit_manifest.operand_source_binding',
+            'evidence_metrics': {
+                'source_bound_run_length_rows': rows_by_source_kind['qroam_primitive_certificate'],
+                'domain_size': int(qroam_cost['domain_size']),
+                'block_size': int(qroam_cost['block_size']),
+                'target_plus_junk_qubits': int(qroam_cost['target_plus_junk_qubits']),
+                'per_stream_non_clifford': int(qroam_cost['per_stream_non_clifford']),
+            },
+        },
+        {
             'name': 'tail_macro_schedule_and_reversibility',
             'status': 'in_place_three_slot_schedule_boundary_not_eliminated',
             'required_to_close': 'Promote an executable reversible/permutation-extension tail schedule into the counted resource contract, or promote a generated expanded/reordered slot schedule into the public qubit budget.',
@@ -271,6 +297,21 @@ def build_engine_completion_audit(
             'current_evidence': 'public_engine_manifest + checked attestation input bundle',
         },
     ]
+    remaining_boundary_names = {row['name'] for row in remaining_macro_boundaries}
+    checks['remaining_macro_boundaries_are_explicit'] = (
+        {
+            'modular_arithmetic_clifford_expansion',
+            'qroam_bit_level_netlist_expansion',
+            'tail_macro_schedule_and_reversibility',
+            'single_engine_zkp_input_derivation',
+        }.issubset(remaining_boundary_names)
+        and all(
+            row['status']
+            and row['required_to_close']
+            and row['current_evidence']
+            for row in remaining_macro_boundaries
+        )
+    )
     return {
         'schema': ENGINE_COMPLETION_AUDIT_SCHEMA,
         'selected_family_name': selected_family_name,
