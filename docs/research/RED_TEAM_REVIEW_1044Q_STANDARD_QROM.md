@@ -26,8 +26,9 @@ Current primary strict replayed-tail headline on this branch:
 - formula: `7 * 256 + 173 + 2 + 1`
 - selected by `compiler_verification_project/artifacts/strict_replayed_tail_headline.json`
 - evidence: `tail_macro_engine.json` fused-output replay passes 110,082
-  non-infinity toy boundary pairs, 610 lookup-infinity no-op pairs, and
-  generated seven-slot owner capacity
+  non-infinity toy boundary pairs, 610 lookup-infinity no-op pairs, generated
+  seven-slot owner capacity, and a strict materialized flat-netlist stream
+  whose segment hashes include the projected `1,968`-qubit liveness
 
 This document is intentionally adversarial. It is not a release note and not a
 claim that the result is false. It records every major place where an external
@@ -55,11 +56,13 @@ The strongest defensible statement is:
 
 > The repository currently contains a checked standard-QROM compiler-family
 > boundary whose primary strict resource headline is the replayed-tail
-> `36,973,222 / 1,968` artifact. The older `36,957,412 / 1,199` artifact is now
-> only a macro/ZKP wrapper reference whose claim/leaf/family/case/resource
-> document hashes are recomputed inside the active ZKP guest. The ZKP guest and
-> public values must be rebuilt around the strict seven-slot contract before the
-> proof layer can be described as binding the primary strict headline.
+> `36,973,222 / 1,968` artifact, including a strict materialized flat-netlist
+> commitment with the projected `1,968`-qubit liveness in its segment hashes.
+> The older `36,957,412 / 1,199` artifact is now only a macro/ZKP wrapper
+> reference whose claim/leaf/family/case/resource document hashes are recomputed
+> inside the active ZKP guest. The ZKP guest and public values must be rebuilt
+> around the strict seven-slot contract before the proof layer can be described
+> as binding the primary strict headline.
 
 The weaker `32,879,331 / 1,044` statement is the historical verdict for commit
 `4d9fefed41ca0f6b5cf6528ce8366065fc6d557a`. The current branch has since moved
@@ -1625,23 +1628,22 @@ Current remediation:
 - `compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json`
   now gives the promoted reusable-chunk candidate its own deterministic
   run-length primitive stream boundary plus a materialized flat primitive
-  stream with concrete operand wires and row liveness. It reconstructs
-  `36,957,412 / 1,199`, stores all `5,805` source-bound run-length rows and matching
-  liveness/owner rows, expands all `186` public QROAM streams through the
-  generated QROAM segment certificate, and derives totals by scanning
-  `39,370,727` primitive operations over deterministic full-stream segments.
-  `public_engine_manifest.json` binds the materialized flat-stream digest and
-  Merkle root and `public_headline_result.json` now takes headline totals from
-  the engine/materialized outputs while treating formula rows as consistency
-  snapshots. This removes the previous situation where the only materialized
-  circuit manifest described the superseded three-slot frontier family. The
-  remaining caveat is narrower: the checked flat-index stream is an expandable
+  stream with concrete operand wires and row liveness. It keeps the legacy
+  wrapper stream at `36,957,412 / 1,199`, and separately emits the primary strict
+  materialized stream at `36,973,222 / 1,968`. The strict stream stores all
+  source-bound run-length rows and matching liveness/owner rows, expands all
+  public QROAM streams through the generated QROAM segment certificate, and
+  derives totals by scanning `39,386,537` primitive operations over
+  deterministic full-stream segments. `public_engine_manifest.json` binds the
+  strict materialized flat-stream digest and Merkle root while treating formula
+  rows and the legacy wrapper stream as consistency snapshots. The remaining
+  caveat is narrower: the checked flat-index stream is an expandable
   primitive-instruction commitment with macro/source-row liveness binding, not a
   physical placement/routing schedule or a multi-gigabyte checked-in TSV with
   one line per primitive operation.
 - `compiler_verification_project/artifacts/engine_completion_audit.json` now
   makes that caveat machine-readable. It regenerates the public totals from the
-  materialized flat netlist, checks that all `5,805` run-length rows are
+  strict materialized flat netlist, checks that all run-length rows are
   source-bound by kind, rechecks the standard-QROAM cost link, checks that
   modular arithmetic kernels derive from `executable_modular_circuit_ir`, binds
   the selected tail macro to `tail_macro_engine`, and keeps

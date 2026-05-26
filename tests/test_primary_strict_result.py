@@ -43,13 +43,18 @@ def test_primary_strict_result_does_not_confuse_legacy_flat_netlist_with_strict_
     observed = _load('primary_strict_result.json')
     flat_status = observed['flat_netlist_status']
 
-    assert flat_status['current_materialized_flat_netlist_binds_selected_strict_result'] is False
-    assert flat_status['current_materialized_flat_netlist_binds_legacy_wrapper'] is True
+    assert flat_status['current_materialized_flat_netlist_binds_selected_strict_result'] is True
+    assert flat_status['current_materialized_flat_netlist_binds_legacy_wrapper'] is False
     assert flat_status['strict_capacity_overlay_binds_selected_result'] is True
     assert flat_status['strict_capacity_overlay_is_full_liveness_rewrite'] is False
     assert flat_status['strict_capacity_peak_qubits'] == observed['selected_result']['logical_qubits']
     assert flat_status['strict_liveness_projection_binds_selected_result'] is True
-    assert flat_status['strict_liveness_projection_is_segment_hashed_flat_netlist'] is False
+    assert flat_status['strict_liveness_projection_is_segment_hashed_flat_netlist'] is True
+    assert flat_status['strict_materialized_flat_netlist_binds_selected_strict_result'] is True
     assert flat_status['strict_liveness_projection_peak_qubits'] == observed['selected_result']['logical_qubits']
-    assert flat_status['peak_live_qubits'] == observed['legacy_wrapper_reference']['selected_result']['logical_qubits']
-    assert flat_status['peak_live_qubits'] != observed['selected_result']['logical_qubits']
+    assert flat_status['strict_materialized_flat_netlist_peak_live_qubits'] == observed['selected_result']['logical_qubits']
+    assert len(flat_status['strict_materialized_flat_netlist_operation_stream_sha256']) == 64
+    assert len(flat_status['strict_materialized_flat_netlist_segment_merkle_root_sha256']) == 64
+    assert flat_status['peak_live_qubits'] == observed['selected_result']['logical_qubits']
+    assert flat_status['legacy_materialized_flat_netlist_peak_live_qubits'] == observed['legacy_wrapper_reference']['selected_result']['logical_qubits']
+    assert flat_status['legacy_materialized_flat_netlist_peak_live_qubits'] != observed['selected_result']['logical_qubits']

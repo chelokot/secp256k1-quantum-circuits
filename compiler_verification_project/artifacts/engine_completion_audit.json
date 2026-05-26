@@ -5,9 +5,9 @@
   "clifford_complete_goal_achieved": false,
   "public_totals": {
     "non_clifford": 36973222,
-    "logical_qubits": 1199,
+    "logical_qubits": 1968,
     "operation_count": 39386537,
-    "source": "public_candidate_materialized_circuit_manifest.materialized_flat_netlist"
+    "source": "public_candidate_materialized_circuit_manifest.strict_replayed_tail_materialized_flat_netlist"
   },
   "source_digests": {
     "arithmetic_operation_ir_sha256": "99c199a6b3b9bbf4d7c3899e93c97513b5e62f14ef0a109b359b1eb9f4f18ae4",
@@ -15,8 +15,8 @@
     "lookup_lowerings_sha256": "70e8ff627f0c537f73162c1d3ccf259a94c3dd756568947c7b4f3cf4665a5637",
     "modular_arithmetic_certificate_sha256": "058cc2c95b3b8f65d39f8c91f56b5256322e0fa00853466facb980d60c1e783e",
     "phase_shell_lowerings_sha256": "4411ea5f699e5950a32783f2232796a63987efb5d939f98ac400f4f02ddd415b",
-    "public_candidate_materialized_circuit_manifest_sha256": "00321a2776ada2a7fd15261575f2053d66a9510bdc2d37f25f1b0a654dfd1c80",
-    "public_engine_manifest_sha256": "4f5312905b7cb8ceb77b04e2fa011485072ad800f8d8c9da74122ad0697ae153",
+    "public_candidate_materialized_circuit_manifest_sha256": "329ab4b61eca64db2301a47791b6a0b6a240bcb9a2829b2b7a992e40aef0b66f",
+    "public_engine_manifest_sha256": "7ee977c4c22b34667e08fc93a4fd0d5762cc13f3d7b4cef50e7582dc6cc3c1ba",
     "qroam_primitive_certificate_sha256": "9a97e536aa4e15e25873adf187db977910a0ef8fb03914958d409940a54eb125",
     "release_corpus_preflight_sha256": "e8cc293c4fc4702e1fbc0bfcb9b8749515de99a348ecbf55ed123d68738c2f3a",
     "reusable_chunk_lowering_sha256": "7ebcb0fe8db50c03f84ac9cc10ab906fd921dd8d98670ef61fa4237e8b49f334",
@@ -36,7 +36,7 @@
     },
     "failure_count": 0
   },
-  "materialized_flat_netlist": {
+  "legacy_materialized_flat_netlist": {
     "operation_count": 39386537,
     "non_clifford_count": 36973222,
     "peak_live_qubits": 1199,
@@ -44,16 +44,24 @@
     "segment_merkle_root_sha256": "8633466fd0fbc0b4265857152d338dd1a48d287858b3e705257e78f22506b635",
     "exact_operation_stream_materialized": true
   },
+  "materialized_flat_netlist": {
+    "operation_count": 39386537,
+    "non_clifford_count": 36973222,
+    "peak_live_qubits": 1968,
+    "operation_stream_sha256": "2d7808c0797e256fad58c99592d71ca726764bfd9a632e93fe5c37a89590d087",
+    "segment_merkle_root_sha256": "d0b63dbdee34be8d7ed581392aeeb0abeb6dbcba7f2e650e82c483c911651361",
+    "exact_operation_stream_materialized": true
+  },
   "covered_boundaries": [
     {
       "name": "public_totals",
-      "status": "derived_from_materialized_flat_netlist",
-      "evidence": "public_engine_manifest.public_totals + public_candidate_materialized_circuit_manifest.materialized_flat_netlist"
+      "status": "derived_from_strict_materialized_flat_netlist",
+      "evidence": "public_engine_manifest.public_totals + public_candidate_materialized_circuit_manifest.strict_replayed_tail_materialized_flat_netlist"
     },
     {
       "name": "flat_primitive_stream_counts",
       "status": "materialized_and_counted",
-      "evidence": "materialized_flat_netlist.operation_stream_sha256"
+      "evidence": "strict_replayed_tail_materialized_flat_netlist.operation_stream_sha256"
     },
     {
       "name": "primitive_operand_wires_and_owner_liveness",
@@ -105,14 +113,15 @@
     },
     {
       "name": "single_engine_zkp_input_derivation",
-      "status": "public_totals_engine_bound_but_zkp_bundle_still_document_bundle_oriented",
+      "status": "strict_public_totals_engine_bound_but_zkp_bundle_still_document_bundle_oriented",
       "required_to_close": "Have ZKP input bind the canonical engine artifact as the only authoritative resource document.",
       "current_evidence": "public_engine_manifest + checked attestation input bundle"
     }
   ],
   "checks": {
-    "public_totals_derive_from_materialized_flat_netlist": true,
-    "materialized_flat_stream_is_exact_and_counted": true,
+    "public_totals_derive_from_strict_materialized_flat_netlist": true,
+    "legacy_materialized_flat_stream_is_exact_and_counted": true,
+    "strict_materialized_flat_stream_is_exact_and_counted": true,
     "run_length_rows_are_primitive_complete": true,
     "operand_domains_bind_counted_live_wires": true,
     "source_binding_covers_every_run_length_row": true,

@@ -28,10 +28,12 @@ ledger, and replayed-tail owner capacity. The materialized public-candidate
 manifest now includes a strict replayed-tail capacity overlay that binds the
 flat operation stream's non-Clifford count to that seven-slot capacity result,
 and a strict run-length liveness projection that scans arithmetic-tail rows to
-the `1,968`-qubit peak while leaving non-tail rows unchanged. It still does not
-make the fully materialized flat-netlist segment hashes include that projected
-liveness. The ZKP guest/input still binds the old macro wrapper until it is
-rebuilt around the strict seven-slot contract.
+the `1,968`-qubit peak while leaving non-tail rows unchanged. The manifest also
+emits a separate strict materialized flat-netlist commitment whose segment
+hashes include that projected liveness. The remaining promotion step is to make
+that strict flat stream the canonical public-engine/ZKP source instead of
+keeping the old wrapper stream beside it. The ZKP guest/input still binds the
+old macro wrapper until it is rebuilt around the strict seven-slot contract.
 
 ## Exact layers
 
@@ -158,7 +160,7 @@ run-length primitive rows and liveness/owner rows, then scans the full
 materialized primitive stream for the macro reusable-chunk candidate. Every
 emitted primitive operation has concrete operand wires, counted parent-wire
 bindings, liveness interval, and total live-qubit value. The checked stream
-covers `39,370,727` primitive operations over deterministic segments and binds
+covers `39,386,537` primitive operations over deterministic segments and binds
 that stream with a full SHA-256 digest plus segment Merkle root.
 `public_engine_manifest.json` binds the materialized stream alongside the
 instruction, wire, schedule, owner-capacity, resource-term, semantic-boundary,
@@ -175,8 +177,9 @@ owners and enough parent-wire capacity. Its operand-source binding report
 checks that every row binds to a concrete arithmetic block, lookup block, QROAM
 segment, or phase-shell block, and that lookup-family aggregate counts still
 match their block streams. The public engine manifest derives the public
-non-Clifford count and public qubit count from `materialized_flat_netlist`;
-reusable-resource totals are checked against those values as snapshots. The
+non-Clifford count and public qubit count from
+`strict_replayed_tail_materialized_flat_netlist`; the legacy wrapper/resource
+totals are checked against those values as snapshots. The
 materialized/public engine layer is generated from compiler parameters and
 resource artifacts, not from the ZKP input, leaving ZKP as a downstream
 publication wrapper rather than an upstream claim source.
@@ -258,7 +261,7 @@ The repository does not lower lookup memory into a physical-layout qRAM or full
 period-finding stack. It does now bind the counted lookup-data path to a
 standard QROAM coordinate-stream primitive over the 32768-entry folded
 coordinate domain and materializes the selected compiler-family primitive
-stream used for the public non-Clifford and peak-live-qubit counts.
+stream used for the public non-Clifford and strict peak-live-qubit counts.
 
 For the streamed lookup tail result, the table-controlled arithmetic boundary
 is no longer free: `streamed_lookup_table_multiplier_resource.json` counts the

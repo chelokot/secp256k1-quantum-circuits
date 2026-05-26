@@ -316,9 +316,11 @@ def build_public_candidate_materialized_circuit_manifest_artifact() -> None:
     }
     existing_path = artifact_dir / 'public_candidate_materialized_circuit_manifest.json'
     materialized_flat_netlist_override = None
+    strict_materialized_flat_netlist_override = None
     if existing_path.exists():
         existing = load_json(existing_path)
         existing_flat = existing.get('materialized_flat_netlist')
+        existing_strict_flat = existing.get('strict_replayed_tail_materialized_flat_netlist')
         lightweight_payload = build_public_candidate_materialized_circuit_manifest(
             reusable_chunk_lowering=reusable_chunk_lowering,
             arithmetic_operation_ir=arithmetic_operation_ir,
@@ -338,6 +340,13 @@ def build_public_candidate_materialized_circuit_manifest_artifact() -> None:
             and existing_flat.get('exact_operation_stream_materialized') is True
         ):
             materialized_flat_netlist_override = existing_flat
+        if (
+            existing.get('operation_stream_sha256') == lightweight_payload['operation_stream_sha256']
+            and existing.get('strict_replayed_tail_liveness_projection', {}).get('liveness_binding_stream_sha256') == lightweight_payload.get('strict_replayed_tail_liveness_projection', {}).get('liveness_binding_stream_sha256')
+            and isinstance(existing_strict_flat, dict)
+            and existing_strict_flat.get('exact_operation_stream_materialized') is True
+        ):
+            strict_materialized_flat_netlist_override = existing_strict_flat
     payload = build_public_candidate_materialized_circuit_manifest(
         reusable_chunk_lowering=reusable_chunk_lowering,
         arithmetic_operation_ir=arithmetic_operation_ir,
@@ -347,6 +356,7 @@ def build_public_candidate_materialized_circuit_manifest_artifact() -> None:
         compiler_parameters=compiler_parameters,
         selected_family_name=compiler_parameters['public_headline_policy']['selected_public_family_name'],
         materialized_flat_netlist_override=materialized_flat_netlist_override,
+        strict_materialized_flat_netlist_override=strict_materialized_flat_netlist_override,
         strict_replayed_tail_headline=load_json(artifact_dir / 'strict_replayed_tail_headline.json'),
         tail_macro_engine=load_json(artifact_dir / 'tail_macro_engine.json'),
     )

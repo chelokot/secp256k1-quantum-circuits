@@ -95,8 +95,11 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
     counted_resource_ir = lowering['counted_resource_ir']
     resource_contract_engine = lowering['resource_contract_engine']
     superseded_reference = family_frontier['best_qubit_family']
-    engine_public_totals = public_engine_manifest['public_totals']
-    materialized_public_totals = public_candidate_materialized_manifest['public_totals']
+    engine_public_totals = public_engine_manifest['legacy_wrapper_totals']
+    materialized_public_totals = {
+        'non_clifford': int(public_candidate_materialized_manifest['materialized_flat_netlist']['non_clifford_count']),
+        'logical_qubits': int(public_candidate_materialized_manifest['materialized_flat_netlist']['peak_live_qubits']),
+    }
     current_values = {
         'schema': public_values['schema'],
         'selected_family_name': input_payload['selected_family_name'],
@@ -211,8 +214,8 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             and input_payload['public_engine_manifest_document']['payload'] == public_engine_manifest
             and input_payload['public_engine_manifest_document']['sha256'] == current_values['public_engine_manifest_sha256']
             and input_payload['public_engine_manifest_document']['document_type'] == 'public_engine_manifest'
-            and public_engine_manifest['public_totals']['non_clifford'] == non_clifford
-            and public_engine_manifest['public_totals']['logical_qubits'] == qubits
+            and public_engine_manifest['legacy_wrapper_totals']['non_clifford'] == non_clifford
+            and public_engine_manifest['legacy_wrapper_totals']['logical_qubits'] == qubits
             and public_engine_manifest['source_digests']['counted_resource_ir_sha256'] == resource_contract_engine['counted_resource_ir_sha256']
             and public_engine_manifest['source_digests']['public_candidate_materialized_circuit_manifest_sha256'] == _sha256_payload(public_candidate_materialized_manifest)
             and public_engine_manifest['source_digests']['executable_liveness_sha256'] == resource_contract_engine['executable_liveness_sha256']
@@ -222,17 +225,16 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
         'public_candidate_materialized_manifest_binds_current_public_result': (
             public_candidate_materialized_manifest['pass'] is True
             and public_candidate_materialized_manifest['selected_family_name'] == current_values['selected_family_name']
-            and public_candidate_materialized_manifest['public_totals']['non_clifford'] == non_clifford
-            and public_candidate_materialized_manifest['public_totals']['logical_qubits'] == qubits
+            and public_candidate_materialized_manifest['materialized_flat_netlist']['non_clifford_count'] == non_clifford
+            and public_candidate_materialized_manifest['materialized_flat_netlist']['peak_live_qubits'] == qubits
             and public_candidate_materialized_manifest['source_digests']['counted_resource_ir_sha256'] == resource_contract_engine['counted_resource_ir_sha256']
             and public_candidate_materialized_manifest['qroam_expansion']['non_clifford'] == lowering['non_clifford_derivation']['qroam_chunk_non_clifford']
         ),
         'engine_completion_audit_binds_current_public_result_and_remaining_boundaries': (
             engine_completion_audit['pass'] is True
             and engine_completion_audit['selected_family_name'] == current_values['selected_family_name']
-            and engine_completion_audit['public_totals']['non_clifford'] == non_clifford
-            and engine_completion_audit['public_totals']['logical_qubits'] == qubits
-            and engine_completion_audit['public_totals']['source'] == 'public_candidate_materialized_circuit_manifest.materialized_flat_netlist'
+            and engine_completion_audit['legacy_materialized_flat_netlist']['non_clifford_count'] == non_clifford
+            and engine_completion_audit['legacy_materialized_flat_netlist']['peak_live_qubits'] == qubits
             and engine_completion_audit['clifford_complete_goal_achieved'] is False
             and len(engine_completion_audit['remaining_macro_boundaries']) > 0
             and engine_completion_audit['checks']['remaining_macro_boundaries_are_explicit'] is True

@@ -22,7 +22,7 @@
   "closed_evidence": {
     "strict_replayed_tail_headline": {
       "path": "compiler_verification_project/artifacts/strict_replayed_tail_headline.json",
-      "sha256": "4c215b63a779e5362be87ba15c65ea5ca75c8c87a9aa059b9b59f9a39c805f8e",
+      "sha256": "5cae7e19ba26fde8d56c5c7ef19bd833c38bcf5829e458033ed550c901d5935f",
       "status": "primary_strict_replayed_tail_headline",
       "pass": true
     },
@@ -43,7 +43,7 @@
   },
   "legacy_wrapper_reference": {
     "path": "compiler_verification_project/artifacts/public_headline_result.json",
-    "sha256": "4c262730b8b96aa82c81fef49b9772050af2f19152ffba501c9e9ae8b6eb7e9d",
+    "sha256": "332761ae58c375103c2893635aeea1103aad34242f129703fcaedca6602fa5ff",
     "selected_result": {
       "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
       "non_clifford": 36973222,
@@ -57,31 +57,38 @@
   },
   "flat_netlist_status": {
     "current_materialized_flat_netlist_path": "compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json",
-    "current_materialized_flat_netlist_binds_selected_strict_result": false,
-    "current_materialized_flat_netlist_binds_legacy_wrapper": true,
+    "current_materialized_flat_netlist_binds_selected_strict_result": true,
+    "current_materialized_flat_netlist_binds_legacy_wrapper": false,
     "strict_capacity_overlay_binds_selected_result": true,
     "strict_capacity_overlay_is_full_liveness_rewrite": false,
     "strict_liveness_projection_binds_selected_result": true,
-    "strict_liveness_projection_is_segment_hashed_flat_netlist": false,
+    "strict_liveness_projection_is_segment_hashed_flat_netlist": true,
+    "strict_materialized_flat_netlist_binds_selected_strict_result": true,
     "operation_count": 39386537,
     "non_clifford_count": 36973222,
-    "peak_live_qubits": 1199,
+    "peak_live_qubits": 1968,
+    "legacy_materialized_flat_netlist_peak_live_qubits": 1199,
+    "legacy_materialized_flat_netlist_operation_stream_sha256": "7d051f068558d52c88bdbd5e7188c41d06b3f06ee2f18f864f170bbbb0c07255",
+    "legacy_materialized_flat_netlist_segment_merkle_root_sha256": "8633466fd0fbc0b4265857152d338dd1a48d287858b3e705257e78f22506b635",
     "strict_capacity_peak_qubits": 1968,
     "strict_liveness_projection_peak_qubits": 1968,
     "strict_liveness_projection_sha256": "2abebb2b105630a46862d95f13c558731431f0267e6943f28cae06544df8b2cc",
-    "operation_stream_sha256": "7d051f068558d52c88bdbd5e7188c41d06b3f06ee2f18f864f170bbbb0c07255",
-    "segment_merkle_root_sha256": "8633466fd0fbc0b4265857152d338dd1a48d287858b3e705257e78f22506b635"
+    "strict_materialized_flat_netlist_peak_live_qubits": 1968,
+    "strict_materialized_flat_netlist_operation_stream_sha256": "2d7808c0797e256fad58c99592d71ca726764bfd9a632e93fe5c37a89590d087",
+    "strict_materialized_flat_netlist_segment_merkle_root_sha256": "d0b63dbdee34be8d7ed581392aeeb0abeb6dbcba7f2e650e82c483c911651361",
+    "operation_stream_sha256": "2d7808c0797e256fad58c99592d71ca726764bfd9a632e93fe5c37a89590d087",
+    "segment_merkle_root_sha256": "d0b63dbdee34be8d7ed581392aeeb0abeb6dbcba7f2e650e82c483c911651361"
   },
   "remaining_completion_requirements": [
-    "materialize the strict seven-slot replayed-tail family as the flat primitive stream counted by the same engine",
+    "replace the strict liveness projection overlay and legacy companion stream with one canonical executable flat IR that directly emits the strict liveness rows",
     "make the ZKP guest/input bind the primary strict result artifact instead of the legacy macro wrapper",
     "keep public presentation generated from this artifact or from strict_replayed_tail_headline.json, never from hand-copied headline numbers"
   ],
   "source_digests": {
-    "strict_replayed_tail_headline_sha256": "4c215b63a779e5362be87ba15c65ea5ca75c8c87a9aa059b9b59f9a39c805f8e",
-    "public_headline_result_sha256": "4c262730b8b96aa82c81fef49b9772050af2f19152ffba501c9e9ae8b6eb7e9d",
-    "engine_completion_audit_sha256": "a4b18bd86a310fd7dacb475e3ee055e8a708d55bbd4a2cbe6d2ab660a94d5d07",
-    "public_candidate_materialized_circuit_manifest_sha256": "00321a2776ada2a7fd15261575f2053d66a9510bdc2d37f25f1b0a654dfd1c80",
+    "strict_replayed_tail_headline_sha256": "5cae7e19ba26fde8d56c5c7ef19bd833c38bcf5829e458033ed550c901d5935f",
+    "public_headline_result_sha256": "332761ae58c375103c2893635aeea1103aad34242f129703fcaedca6602fa5ff",
+    "engine_completion_audit_sha256": "ea8cb2e6a5ed3dd967d5245a77c2fdeddad12038a038847c2da22c7428917b28",
+    "public_candidate_materialized_circuit_manifest_sha256": "329ab4b61eca64db2301a47791b6a0b6a240bcb9a2829b2b7a992e40aef0b66f",
     "hybrid_bridge_search_sha256": "f4938cd63465eedff6b0ed58a462084ac41099c0da7b3e2ff8297b794edd3ef3"
   },
   "checks": {
@@ -95,6 +102,7 @@
     "legacy_macro_wrapper_is_not_current_strict_flat_netlist": true,
     "strict_capacity_overlay_binds_selected_result": true,
     "strict_liveness_projection_scans_selected_qubits": true,
+    "strict_materialized_flat_netlist_binds_selected_result": true,
     "strict_result_is_not_marked_clifford_complete": true
   },
   "pass": true

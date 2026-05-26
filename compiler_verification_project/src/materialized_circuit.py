@@ -2195,6 +2195,7 @@ def build_public_candidate_materialized_circuit_manifest(
     selected_family_name: str,
     include_materialized_flat_netlist: bool = True,
     materialized_flat_netlist_override: Optional[Mapping[str, Any]] = None,
+    strict_materialized_flat_netlist_override: Optional[Mapping[str, Any]] = None,
     strict_replayed_tail_headline: Optional[Mapping[str, Any]] = None,
     tail_macro_engine: Optional[Mapping[str, Any]] = None,
 ) -> Dict[str, Any]:
@@ -2253,6 +2254,35 @@ def build_public_candidate_materialized_circuit_manifest(
             liveness_rows=liveness_rows,
             strict_capacity_overlay=strict_capacity_overlay,
         )
+    strict_materialized_flat_netlist = None
+    if strict_liveness_projection is not None:
+        if strict_materialized_flat_netlist_override is not None:
+            strict_materialized_flat_netlist = dict(strict_materialized_flat_netlist_override)
+        elif include_materialized_flat_netlist:
+            strict_materialized_flat_netlist = _materialized_flat_netlist_commitment(
+                operation_rows=rows,
+                liveness_rows=list(strict_liveness_projection['rows']),
+            )
+        else:
+            strict_materialized_flat_netlist = _omitted_materialized_flat_netlist_summary(
+                flat_netlist=flat_netlist,
+                liveness_rows=list(strict_liveness_projection['rows']),
+            )
+        strict_liveness_projection['claim_boundary']['materialized_flat_netlist_segment_hashes_include_projected_liveness'] = (
+            strict_materialized_flat_netlist['exact_operation_stream_materialized'] is True
+        )
+        strict_liveness_projection['pass'] = all(strict_liveness_projection['checks'].values())
+    if strict_materialized_flat_netlist is not None and strict_materialized_flat_netlist['exact_operation_stream_materialized'] is True:
+        public_totals = {
+            'non_clifford': int(strict_materialized_flat_netlist['non_clifford_count']),
+            'logical_qubits': int(strict_materialized_flat_netlist['peak_live_qubits']),
+            'source': 'public_candidate_materialized.strict_replayed_tail_materialized_flat_netlist.non_clifford_count + strict_replayed_tail_materialized_flat_netlist.peak_live_qubits',
+        }
+    else:
+        public_totals = {
+            **materialized_public_totals,
+            'source': 'public_candidate_materialized.materialized_flat_netlist.non_clifford_count + materialized_flat_netlist.peak_live_qubits',
+        }
     base_rows = [row for row in rows if row['scope'] in ('direct_seed_base', 'lookup_leaf_base', 'arithmetic_leaf_block')]
     direct_seed_rows = [row for row in rows if row['scope'] == 'direct_seed_base']
     lookup_leaf_rows = [row for row in rows if row['scope'] == 'lookup_leaf_base']
@@ -2377,7 +2407,7 @@ def build_public_candidate_materialized_circuit_manifest(
             and all(int(qubits) <= owner_capacity_by_id[owner_id] for owner_id, qubits in liveness['derived_owner_live_qubits'].items())
             for liveness in liveness_rows
         ),
-        'liveness_bindings_reconstruct_public_peak': materialized_public_totals['logical_qubits'] == int(public_totals['logical_qubits']),
+        'legacy_liveness_bindings_reconstruct_legacy_materialized_peak': materialized_public_totals['logical_qubits'] == int(reusable_chunk_lowering['qubit_derivation']['candidate_total_logical_qubits']),
         'flat_netlist_expands_all_run_length_rows': (
             flat_netlist['operation_count'] == sum(int(row['total_count']) for row in rows)
             and sum(int(segment['operation_count']) for segment in flat_netlist['segments']) == flat_netlist['operation_count']
@@ -2386,6 +2416,13 @@ def build_public_candidate_materialized_circuit_manifest(
         ),
         'flat_netlist_gate_totals_match_run_length_rows': flat_netlist['gate_totals'] == gate_totals,
         'flat_netlist_non_clifford_matches_public_candidate': materialized_public_totals['non_clifford'] == int(public_totals['non_clifford']),
+        'public_totals_derive_from_strict_replayed_tail_materialized_flat_netlist': (
+            strict_materialized_flat_netlist is not None
+            and strict_materialized_flat_netlist['exact_operation_stream_materialized'] is True
+            and public_totals['source'] == 'public_candidate_materialized.strict_replayed_tail_materialized_flat_netlist.non_clifford_count + strict_replayed_tail_materialized_flat_netlist.peak_live_qubits'
+            and int(public_totals['non_clifford']) == int(strict_materialized_flat_netlist['non_clifford_count'])
+            and int(public_totals['logical_qubits']) == int(strict_materialized_flat_netlist['peak_live_qubits'])
+        ),
         'materialized_flat_netlist_stream_is_exact': (
             materialized_flat_netlist['exact_operation_stream_materialized'] is True
             and materialized_flat_netlist['operation_count'] == flat_netlist['operation_count']
@@ -2492,7 +2529,39 @@ def build_public_candidate_materialized_circuit_manifest(
             strict_liveness_projection is not None
             and strict_liveness_projection['pass'] is True
             and strict_liveness_projection['peak_live_qubits'] == strict_capacity_overlay['strict_capacity_terms']['reconstructed_logical_qubits']
-            and strict_liveness_projection['claim_boundary']['materialized_flat_netlist_segment_hashes_include_projected_liveness'] is False
+            and strict_liveness_projection['claim_boundary']['materialized_flat_netlist_segment_hashes_include_projected_liveness'] is True
+        ),
+        'strict_replayed_tail_materialized_flat_netlist_is_bound': (
+            strict_materialized_flat_netlist is not None
+            and strict_materialized_flat_netlist['exact_operation_stream_materialized'] is True
+            and strict_materialized_flat_netlist['operation_count'] == flat_netlist['operation_count']
+            and strict_materialized_flat_netlist['gate_totals'] == gate_totals
+            and strict_materialized_flat_netlist['non_clifford_count'] == non_clifford_total
+            and strict_materialized_flat_netlist['peak_live_qubits'] == strict_capacity_overlay['strict_capacity_terms']['reconstructed_logical_qubits']
+            and strict_materialized_flat_netlist['segment_count'] == len(strict_materialized_flat_netlist['segments'])
+            and len(strict_materialized_flat_netlist['operation_stream_sha256']) == 64
+            and len(strict_materialized_flat_netlist['segment_merkle_root_sha256']) == 64
+        ),
+        'strict_replayed_tail_materialized_flat_netlist_segments_cover_stream': (
+            strict_materialized_flat_netlist is not None
+            and strict_materialized_flat_netlist['segment_count'] == len(strict_materialized_flat_netlist['segments'])
+            and (
+                strict_materialized_flat_netlist['operation_count'] == 0
+                or (
+                    strict_materialized_flat_netlist['segments'][0]['operation_start'] == 0
+                    and strict_materialized_flat_netlist['segments'][-1]['operation_end_exclusive'] == strict_materialized_flat_netlist['operation_count']
+                    and sum(int(segment['operation_count']) for segment in strict_materialized_flat_netlist['segments']) == strict_materialized_flat_netlist['operation_count']
+                )
+            )
+        ),
+        'strict_replayed_tail_materialized_flat_netlist_preview_rows_are_concrete': (
+            strict_materialized_flat_netlist is not None
+            and strict_materialized_flat_netlist['exact_operation_stream_materialized'] is True
+            and all(
+                len(operation['operand_wires']) == PRIMITIVE_GATE_ARITY[operation['gate']]
+                and all(str(wire['wire_id']) and str(wire['parent_wire_id']) for wire in operation['operand_wires'])
+                for operation in strict_materialized_flat_netlist['preview_head'] + strict_materialized_flat_netlist['preview_tail']
+            )
         ),
     }
     return {
@@ -2524,10 +2593,7 @@ def build_public_candidate_materialized_circuit_manifest(
         'phase_row_count': len(phase_rows),
         'gate_totals': gate_totals,
         'run_length_rows': rows,
-        'public_totals': {
-            **materialized_public_totals,
-            'source': 'public_candidate_materialized.materialized_flat_netlist.non_clifford_count + materialized_flat_netlist.peak_live_qubits',
-        },
+        'public_totals': public_totals,
         'materialized_liveness': {
             'peak_live_qubits': materialized_public_totals['logical_qubits'],
             'peak_interval_ids': sorted({
@@ -2542,6 +2608,7 @@ def build_public_candidate_materialized_circuit_manifest(
         },
         'strict_replayed_tail_capacity_overlay': strict_capacity_overlay,
         'strict_replayed_tail_liveness_projection': strict_liveness_projection,
+        'strict_replayed_tail_materialized_flat_netlist': strict_materialized_flat_netlist,
         'flat_netlist': flat_netlist,
         'materialized_flat_netlist': materialized_flat_netlist,
         'flat_execution_probe': flat_execution_probe,

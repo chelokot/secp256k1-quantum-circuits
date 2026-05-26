@@ -237,25 +237,25 @@
   "checked_artifacts": {
     "input": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
-      "sha256": "6da6711a1e240ecf14ae56d6d5ae20906e6b3321bac5f17c876e775533937d3b",
-      "bytes": 303015,
+      "sha256": "e718bc66037866b46bb7b9db737c72db636fbd7907be7d31cd21500f64be1b45",
+      "bytes": 303922,
       "manifest_record": {
-        "sha256": "6da6711a1e240ecf14ae56d6d5ae20906e6b3321bac5f17c876e775533937d3b",
-        "bytes": 303015
+        "sha256": "9c20952df147d5ddeda04f90c4a93a93931bfbde1f37af52cc38c7c83b8a4872",
+        "bytes": 303925
       },
       "manifest_record_present": true,
-      "manifest_sha256_matches_checked_record": true
+      "manifest_sha256_matches_checked_record": false
     },
     "claim": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json",
-      "sha256": "39f0af08b9e0e17327fb5fd0a7165db50c233d11dec64bf07a9e7c1cd42eb4f9",
+      "sha256": "a66ba0b2f4c34d1360fdf673e8478cabfec6753beb94bc6cd800a72f89d6812e",
       "bytes": 1709,
       "manifest_record": {
-        "sha256": "39f0af08b9e0e17327fb5fd0a7165db50c233d11dec64bf07a9e7c1cd42eb4f9",
+        "sha256": "8180cf29da6c27db35244212b31d1a7ecd6849afe135c0356a5a41ff5641bba6",
         "bytes": 1709
       },
       "manifest_record_present": true,
-      "manifest_sha256_matches_checked_record": true
+      "manifest_sha256_matches_checked_record": false
     },
     "family": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_family.json",
@@ -490,33 +490,33 @@
     },
     "public_candidate_materialized_circuit_manifest": {
       "path": "compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json",
-      "sha256": "49f0482fe7d6d6fa04d4240eb45019fa693255cf658a8143649b7f30a3f416ea",
-      "bytes": 35591180,
+      "sha256": "34c0a46739cafb98d01e2b20db70234210c5e561864244623d4622b295eb193b",
+      "bytes": 35623390,
       "manifest_record": {
-        "sha256": "cf554be898b8e5d68464ad6f48f856e4f86c59d5289c403bc96e753bd35b8b97",
-        "bytes": 27409940
+        "sha256": "405aabd4bdfeb69c99fba125033b85019b53a931bbb5b8f5da09d03b42b584de",
+        "bytes": 35623394
       },
       "manifest_record_present": true,
       "manifest_sha256_matches_checked_record": false
     },
     "public_engine_manifest": {
       "path": "compiler_verification_project/artifacts/public_engine_manifest.json",
-      "sha256": "7021f85c56765ea3d1b77e028e3e20c2da307ce1f18412a48a40244abc797c5e",
-      "bytes": 23138,
+      "sha256": "4233a4b965b18b908beaccd1918a8f13988beee5bda4d4affc284c1cb2dad7ae",
+      "bytes": 23981,
       "manifest_record": {
-        "sha256": "9c7e684ca6acabbc62400693010cd3da25d00c28bc3df9e94c65eb0f516242a2",
-        "bytes": 23138
+        "sha256": "deafae8f737553a4480e3f31c980d65e68fb24a93f402088cda73300cfb93378",
+        "bytes": 23984
       },
       "manifest_record_present": true,
       "manifest_sha256_matches_checked_record": false
     },
     "engine_completion_audit": {
       "path": "compiler_verification_project/artifacts/engine_completion_audit.json",
-      "sha256": "03a05c88d53df7c0997277ab6b4663e3fa2c97e30090a11d92dfe7d99c230f03",
-      "bytes": 7132,
+      "sha256": "93c68bb67a952572f16dc4db741584c72a1bd4e07feb27693834cf08c439755a",
+      "bytes": 7682,
       "manifest_record": {
-        "sha256": "a956ebddc6e47638acdaf34dad2264dedd686ef686b3de2d7030c4064424ffa2",
-        "bytes": 7132
+        "sha256": "ecc1d8bb0e6f9911f54f2b8e1ff4da3c79c51ebf82122db1f6091d79276c6fd8",
+        "bytes": 7682
       },
       "manifest_record_present": true,
       "manifest_sha256_matches_checked_record": false
@@ -529,8 +529,8 @@
   },
   "public_headline_result": {
     "path": "compiler_verification_project/artifacts/public_headline_result.json",
-    "sha256": "c961f4b7e824cd5dca7c33f57ff4075bd3160e1c4ce9392784b4778bf19a6621",
-    "bytes": 15183
+    "sha256": "11da93042bc4a6489e89cba4a4672af99eb066f87069596223d85646eaafc92d",
+    "bytes": 15182
   },
   "notes": [
     "This artifact is deterministic and repository-bound; it is not a pinned container or Nix lock.",

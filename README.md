@@ -150,9 +150,11 @@ records a strict replayed-tail capacity overlay that binds the flat operation
 stream's non-Clifford count to the `1,968`-qubit seven-slot capacity result.
 The same manifest now emits a strict liveness projection over every run-length
 row: arithmetic-tail rows scan to the `1,968` peak, while non-tail rows keep the
-materialized engine liveness. The remaining open step is to make the segment
-hashes of the fully materialized flat netlist include that projected liveness.
-Segment
+materialized engine liveness. It also emits a separate strict materialized
+flat-netlist commitment whose segment hashes include the projected liveness and
+scan to the same `36,973,222 / 1,968` result. The remaining open step is to make
+that strict flat stream the canonical public-engine/ZKP source instead of
+keeping the old wrapper stream beside it. Segment
 and preview rows bind the contributing run-length rows, operation-index ranges,
 liveness rows, derived owner-qubit sums, all 186 QROAM streams over the
 generated QROAMClean segment certificate, arithmetic-operation IR rows,
@@ -200,16 +202,16 @@ passes. The candidate is kept out of the public headline until the variable 2x2
 in-place matrix has a finalized primitive resource lowering and cost contract.
 
 The public engine manifest then binds that
-materialized flat stream, executable instruction rows, wires, schedule events,
+strict materialized flat stream, executable instruction rows, wires, schedule events,
 owner-capacity rows, resource terms, semantic-boundary evidence, arithmetic
 operation IR, the generated QROAMClean `K = 1` primitive certificate, and the
 selected semiclassical phase shell into the same public claim layer. Its public
-totals are derived from `materialized_flat_netlist`, while the older
-reusable-resource totals are retained as cross-check snapshots, not as the
-authoritative source. The materialized flat engine and public engine are built
-from compiler/resource artifacts rather than from the ZKP input, so the proof
-input can be treated as a downstream publication wrapper instead of an upstream
-resource source.
+totals are derived from `strict_replayed_tail_materialized_flat_netlist`, while
+the legacy wrapper/resource totals are retained as cross-check snapshots, not as
+the authoritative source. The materialized flat engine and public engine are
+built from compiler/resource artifacts rather than from the ZKP input, so the
+proof input can be treated as a downstream publication wrapper instead of an
+upstream resource source.
 The QROAM reference keeps the selected 155-bit reusable chunk stream separate
 from the 256-bit full-field ledger sweep, so reviewers can audit the selected
 lookup stream and the field-multiplication pseudo-Mersenne reduction without

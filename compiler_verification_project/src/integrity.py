@@ -2374,15 +2374,15 @@ def build_public_engine_manifest_checks(artifacts: Mapping[str, Any]) -> Dict[st
         _check('public_engine_manifest_binds_selected_family', manifest['selected_family_name'] == selected_family_name, selected_family_name, manifest['selected_family_name']),
         _check(
             'public_engine_manifest_derives_public_totals_from_materialized_flat_engine',
-            manifest['public_totals']['source'] == 'public_candidate_materialized_circuit_manifest.materialized_flat_netlist'
-            and manifest['public_totals']['non_clifford'] == artifacts['public_candidate_materialized_circuit_manifest']['materialized_flat_netlist']['non_clifford_count']
-            and manifest['public_totals']['logical_qubits'] == artifacts['public_candidate_materialized_circuit_manifest']['materialized_flat_netlist']['peak_live_qubits']
-            and artifacts['public_candidate_materialized_circuit_manifest']['materialized_flat_netlist']['exact_operation_stream_materialized'] is True
-            and manifest['checks']['public_totals_match_executable_resource_engine_snapshot'] is True,
+            manifest['public_totals']['source'] == 'public_candidate_materialized_circuit_manifest.strict_replayed_tail_materialized_flat_netlist'
+            and manifest['public_totals']['non_clifford'] == artifacts['public_candidate_materialized_circuit_manifest']['strict_replayed_tail_materialized_flat_netlist']['non_clifford_count']
+            and manifest['public_totals']['logical_qubits'] == artifacts['public_candidate_materialized_circuit_manifest']['strict_replayed_tail_materialized_flat_netlist']['peak_live_qubits']
+            and artifacts['public_candidate_materialized_circuit_manifest']['strict_replayed_tail_materialized_flat_netlist']['exact_operation_stream_materialized'] is True
+            and manifest['checks']['public_totals_match_strict_materialized_flat_engine'] is True,
             {
-                'source': 'public_candidate_materialized_circuit_manifest.materialized_flat_netlist',
-                'non_clifford': artifacts['public_candidate_materialized_circuit_manifest']['materialized_flat_netlist']['non_clifford_count'],
-                'logical_qubits': artifacts['public_candidate_materialized_circuit_manifest']['materialized_flat_netlist']['peak_live_qubits'],
+                'source': 'public_candidate_materialized_circuit_manifest.strict_replayed_tail_materialized_flat_netlist',
+                'non_clifford': artifacts['public_candidate_materialized_circuit_manifest']['strict_replayed_tail_materialized_flat_netlist']['non_clifford_count'],
+                'logical_qubits': artifacts['public_candidate_materialized_circuit_manifest']['strict_replayed_tail_materialized_flat_netlist']['peak_live_qubits'],
             },
             manifest['public_totals'],
         ),
@@ -2416,11 +2416,11 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
         tail_macro_schedule_search=artifacts['tail_macro_schedule_search'],
         compiler_parameters=artifacts['compiler_parameters'],
     )
-    materialized_flat = artifacts['public_candidate_materialized_circuit_manifest']['materialized_flat_netlist']
+    materialized_flat = artifacts['public_candidate_materialized_circuit_manifest']['strict_replayed_tail_materialized_flat_netlist']
     checks = [
         _check('engine_completion_audit_matches_generator', audit == expected, expected, audit),
         _check('engine_completion_audit_schema_is_current', audit['schema'] == ENGINE_COMPLETION_AUDIT_SCHEMA, ENGINE_COMPLETION_AUDIT_SCHEMA, audit['schema']),
-        _check('engine_completion_audit_derives_headline_from_materialized_flat_netlist', audit['public_totals']['source'] == 'public_candidate_materialized_circuit_manifest.materialized_flat_netlist' and audit['public_totals']['non_clifford'] == materialized_flat['non_clifford_count'] and audit['public_totals']['logical_qubits'] == materialized_flat['peak_live_qubits'] and audit['public_totals']['operation_count'] == materialized_flat['operation_count'], materialized_flat, audit['public_totals']),
+        _check('engine_completion_audit_derives_headline_from_strict_materialized_flat_netlist', audit['public_totals']['source'] == 'public_candidate_materialized_circuit_manifest.strict_replayed_tail_materialized_flat_netlist' and audit['public_totals']['non_clifford'] == materialized_flat['non_clifford_count'] and audit['public_totals']['logical_qubits'] == materialized_flat['peak_live_qubits'] and audit['public_totals']['operation_count'] == materialized_flat['operation_count'], materialized_flat, audit['public_totals']),
         _check('engine_completion_audit_requires_explicit_remaining_macro_boundaries', audit['clifford_complete_goal_achieved'] is False and len(audit['remaining_macro_boundaries']) > 0 and audit['checks']['remaining_macro_boundaries_are_explicit'] is True and audit['checks']['public_claim_not_marked_full_clifford_complete_until_macro_boundaries_flattened'] is True, 'explicit remaining macro boundaries and no full-completion claim', {'clifford_complete_goal_achieved': audit['clifford_complete_goal_achieved'], 'remaining_macro_boundaries': audit['remaining_macro_boundaries'], 'checks': audit['checks']}),
         _check('engine_completion_audit_source_binding_covers_all_run_length_rows', audit['checks']['source_binding_covers_every_run_length_row'] is True and audit['source_binding_summary']['rows_checked'] == artifacts['public_candidate_materialized_circuit_manifest']['run_length_row_count'] and sum(audit['source_binding_summary']['rows_by_source_kind'].values()) == audit['source_binding_summary']['rows_checked'], 'all run-length rows source-bound', audit['source_binding_summary']),
         _check('engine_completion_audit_passes_internal_checks', audit['pass'] is True and all(audit['checks'].values()), True, audit['checks']),
@@ -2846,9 +2846,10 @@ def build_primary_strict_result_checks(artifacts: Mapping[str, Any]) -> Dict[str
         _check('primary_strict_result_selects_strict_replayed_tail_headline', selected == artifacts['strict_replayed_tail_headline']['selected_result'], artifacts['strict_replayed_tail_headline']['selected_result'], selected),
         _check('primary_strict_result_demotes_legacy_macro_wrapper', observed['legacy_wrapper_reference']['status'] == 'legacy_macro_zkp_wrapper_not_primary_resource_headline' and observed['legacy_wrapper_reference']['selected_result'] == artifacts['public_headline_result']['selected_result'], 'legacy macro wrapper demoted', observed['legacy_wrapper_reference']),
         _check('primary_strict_result_keeps_unclosed_boundaries_explicit', observed['resource_claim_level']['clifford_complete_flat_netlist'] == 'not_yet_achieved' and observed['resource_claim_level']['zkp_binds_this_strict_result'] == 'not_yet_achieved', 'strict result is not marked fully flattened or ZKP-bound', observed['resource_claim_level']),
-        _check('primary_strict_result_flat_netlist_status_binds_legacy_not_strict_totals', flat_status['current_materialized_flat_netlist_binds_selected_strict_result'] is False and flat_status['current_materialized_flat_netlist_binds_legacy_wrapper'] is True and flat_status['peak_live_qubits'] == artifacts['public_headline_result']['selected_result']['logical_qubits'], 'flat netlist still binds legacy wrapper totals', flat_status),
+        _check('primary_strict_result_flat_netlist_status_binds_strict_not_legacy_totals', flat_status['current_materialized_flat_netlist_binds_selected_strict_result'] is True and flat_status['current_materialized_flat_netlist_binds_legacy_wrapper'] is False and flat_status['peak_live_qubits'] == selected['logical_qubits'] and flat_status['legacy_materialized_flat_netlist_peak_live_qubits'] == artifacts['public_headline_result']['selected_result']['logical_qubits'], 'flat netlist binds strict totals while legacy wrapper remains separate', flat_status),
         _check('primary_strict_result_binds_strict_capacity_overlay', flat_status['strict_capacity_overlay_binds_selected_result'] is True and flat_status['strict_capacity_peak_qubits'] == selected['logical_qubits'] and flat_status['strict_capacity_overlay_is_full_liveness_rewrite'] is False, 'strict capacity overlay bound but not full liveness rewrite', flat_status),
-        _check('primary_strict_result_binds_strict_liveness_projection', flat_status['strict_liveness_projection_binds_selected_result'] is True and flat_status['strict_liveness_projection_peak_qubits'] == selected['logical_qubits'] and flat_status['strict_liveness_projection_is_segment_hashed_flat_netlist'] is False, 'strict liveness projection bound but not segment-hashed flat netlist', flat_status),
+        _check('primary_strict_result_binds_strict_liveness_projection', flat_status['strict_liveness_projection_binds_selected_result'] is True and flat_status['strict_liveness_projection_peak_qubits'] == selected['logical_qubits'] and flat_status['strict_liveness_projection_is_segment_hashed_flat_netlist'] is True, 'strict liveness projection is bound and segment-hashed', flat_status),
+        _check('primary_strict_result_binds_strict_materialized_flat_netlist', flat_status['strict_materialized_flat_netlist_binds_selected_strict_result'] is True and flat_status['strict_materialized_flat_netlist_peak_live_qubits'] == selected['logical_qubits'] and len(flat_status['strict_materialized_flat_netlist_operation_stream_sha256']) == 64 and len(flat_status['strict_materialized_flat_netlist_segment_merkle_root_sha256']) == 64, 'strict materialized flat netlist binds selected strict result', flat_status),
     ]
     return _summarize_checks(checks)
 

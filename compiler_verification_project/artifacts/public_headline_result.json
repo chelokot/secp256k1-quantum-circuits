@@ -46,22 +46,22 @@
     }
   },
   "bound_documents": {
-    "claim_sha256": "cf83753399fd3741edc5040662635e0529e8bb85d47dc94c7a076597dbc8f45e",
+    "claim_sha256": "23da81167ac369cfc6f054995c07a3bcd6235c276172e78636e9a441b14a77a4",
     "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
     "family_sha256": "c6a7146ac5c0d7a63f733b0224ac9dc6fbaafb576d196128f882ecbc01e42b2b",
     "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
     "resource_certificate_sha256": "69a131be4e04e93ef61af48111c25657b2a63fbfe6c913d8a1a258cacfdc1d49",
-    "public_engine_manifest_sha256": "e9095834c663fbda3b55054b505767024748dd832389606d079e4ffab7ccf7bf"
+    "public_engine_manifest_sha256": "b007dde78c0aa285ece6465a3b530e6a56d9857f010898fd94d7dc52cadaef26"
   },
   "checked_artifacts": {
     "input": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
-      "sha256": "6da6711a1e240ecf14ae56d6d5ae20906e6b3321bac5f17c876e775533937d3b",
-      "bytes": 303015
+      "sha256": "e718bc66037866b46bb7b9db737c72db636fbd7907be7d31cd21500f64be1b45",
+      "bytes": 303922
     },
     "claim": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json",
-      "sha256": "39f0af08b9e0e17327fb5fd0a7165db50c233d11dec64bf07a9e7c1cd42eb4f9",
+      "sha256": "a66ba0b2f4c34d1360fdf673e8478cabfec6753beb94bc6cd800a72f89d6812e",
       "bytes": 1709
     },
     "family": {
@@ -189,18 +189,18 @@
     },
     "public_candidate_materialized_circuit_manifest": {
       "path": "compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json",
-      "sha256": "49f0482fe7d6d6fa04d4240eb45019fa693255cf658a8143649b7f30a3f416ea",
-      "bytes": 35591180
+      "sha256": "34c0a46739cafb98d01e2b20db70234210c5e561864244623d4622b295eb193b",
+      "bytes": 35623390
     },
     "public_engine_manifest": {
       "path": "compiler_verification_project/artifacts/public_engine_manifest.json",
-      "sha256": "7021f85c56765ea3d1b77e028e3e20c2da307ce1f18412a48a40244abc797c5e",
-      "bytes": 23138
+      "sha256": "4233a4b965b18b908beaccd1918a8f13988beee5bda4d4affc284c1cb2dad7ae",
+      "bytes": 23981
     },
     "engine_completion_audit": {
       "path": "compiler_verification_project/artifacts/engine_completion_audit.json",
-      "sha256": "03a05c88d53df7c0997277ab6b4663e3fa2c97e30090a11d92dfe7d99c230f03",
-      "bytes": 7132
+      "sha256": "93c68bb67a952572f16dc4db741584c72a1bd4e07feb27693834cf08c439755a",
+      "bytes": 7682
     }
   },
   "verification_commands": {
@@ -238,7 +238,7 @@
     "reusable_chunk_counted_resource_ir_binds_public_totals": true,
     "reusable_chunk_resource_contract_engine_unifies_liveness_and_capacity": true,
     "headline_resource_manifest_binds_current_public_result": true,
-    "public_engine_manifest_binds_current_public_result": false,
+    "public_engine_manifest_binds_current_public_result": true,
     "public_candidate_materialized_manifest_binds_current_public_result": true,
     "engine_completion_audit_binds_current_public_result_and_remaining_boundaries": true,
     "proof_register_contract_binds_prepared_leaf_to_resource_owners": true,

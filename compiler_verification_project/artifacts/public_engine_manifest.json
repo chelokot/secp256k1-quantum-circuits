@@ -6,6 +6,11 @@
   "engine_source_module": "compiler_verification_project/src/executable_resource_engine.py",
   "public_totals": {
     "non_clifford": 36973222,
+    "logical_qubits": 1968,
+    "source": "public_candidate_materialized_circuit_manifest.strict_replayed_tail_materialized_flat_netlist"
+  },
+  "legacy_wrapper_totals": {
+    "non_clifford": 36973222,
     "logical_qubits": 1199,
     "source": "public_candidate_materialized_circuit_manifest.materialized_flat_netlist"
   },
@@ -16,7 +21,7 @@
     "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
     "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
     "resource_contract_engine_sha256": "0447031a514b04038ab0f51e63a0e1a5ffa187d1cab694de20d7dfc8196ea1e0",
-    "public_candidate_materialized_circuit_manifest_sha256": "00321a2776ada2a7fd15261575f2053d66a9510bdc2d37f25f1b0a654dfd1c80"
+    "public_candidate_materialized_circuit_manifest_sha256": "329ab4b61eca64db2301a47791b6a0b6a240bcb9a2829b2b7a992e40aef0b66f"
   },
   "instruction_stream": {
     "encoding": [
@@ -610,7 +615,7 @@
   "primitive_operation_evidence": {
     "public_candidate_materialized_circuit_manifest": {
       "schema": "compiler-project-public-candidate-materialized-circuit-manifest-v1",
-      "sha256": "00321a2776ada2a7fd15261575f2053d66a9510bdc2d37f25f1b0a654dfd1c80",
+      "sha256": "329ab4b61eca64db2301a47791b6a0b6a240bcb9a2829b2b7a992e40aef0b66f",
       "pass": true,
       "operation_stream_sha256": "8e7bb094bed9d407a2b7c5c52583d0fe6215cb50ca84ff1140a2200ddb1c69d6",
       "liveness_binding_stream_sha256": "064b5825a77559fdaab046854b89afdf58e1d3da0be53ab53652bb913c87b8eb",
@@ -629,6 +634,16 @@
         "segment_merkle_root_sha256": "8633466fd0fbc0b4265857152d338dd1a48d287858b3e705257e78f22506b635",
         "non_clifford_count": 36973222,
         "peak_live_qubits": 1199
+      },
+      "strict_replayed_tail_materialized_flat_netlist": {
+        "schema": "compiler-project-public-candidate-materialized-flat-netlist-v1",
+        "exact_operation_stream_materialized": true,
+        "operation_count": 39386537,
+        "operation_stream_sha256": "2d7808c0797e256fad58c99592d71ca726764bfd9a632e93fe5c37a89590d087",
+        "segment_count": 40,
+        "segment_merkle_root_sha256": "d0b63dbdee34be8d7ed581392aeeb0abeb6dbcba7f2e650e82c483c911651361",
+        "non_clifford_count": 36973222,
+        "peak_live_qubits": 1968
       },
       "flat_execution_probe": {
         "schema": "compiler-project-flat-netlist-execution-probe-v1",
@@ -670,7 +685,7 @@
         "failure_count": 0
       },
       "non_clifford": 36973222,
-      "peak_live_qubits": 1199
+      "peak_live_qubits": 1968
     },
     "arithmetic_operation_ir": {
       "schema": "compiler-project-arithmetic-operation-ir-v1",
@@ -724,9 +739,10 @@
     "executable_resource_engine_passes": true,
     "counted_resource_engine_passes": true,
     "resource_contract_engine_passes": true,
-    "public_totals_match_executable_resource_engine_snapshot": true,
-    "public_totals_match_counted_resource_engine": true,
-    "public_totals_match_resource_contract_engine": true,
+    "public_totals_match_strict_materialized_flat_engine": true,
+    "legacy_wrapper_totals_match_executable_resource_engine_snapshot": true,
+    "legacy_wrapper_totals_match_counted_resource_engine": true,
+    "legacy_wrapper_totals_match_resource_contract_engine": true,
     "engine_digests_match_bound_documents": true,
     "schedule_rows_bind_instruction_stream": true,
     "wire_rows_cover_liveness_catalog": true,
