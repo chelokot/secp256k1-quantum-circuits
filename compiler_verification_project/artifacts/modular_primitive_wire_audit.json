@@ -28,6 +28,8 @@
   "arithmetic_scratch_reused_wire_count": 0,
   "arithmetic_scratch_ccx_target_observation_count": 721406,
   "arithmetic_scratch_non_ccx_target_observation_count": 0,
+  "arithmetic_scratch_cleanup_observation_count": 0,
+  "arithmetic_scratch_abandoned_garbage_count": 721406,
   "arithmetic_scratch_gate_counts": {
     "ccx": 721406
   },
@@ -817,6 +819,7 @@
     "qroam_operand_wires_are_explicit_lookup_workspace_wires": true,
     "no_unclassified_non_lookup_operand_wires": true,
     "synthetic_scratch_wires_are_single_use_ccx_targets": true,
+    "synthetic_scratch_wires_have_cleanup_or_counted_capacity": false,
     "no_synthetic_arithmetic_scratch_wires_without_owner_capacity": false
   },
   "pass": false,
@@ -834,12 +837,12 @@
     {
       "name": "synthetic_arithmetic_scratch_owner_capacity",
       "active": true,
-      "required_to_close": "Replace arithmetic_scratch:* single-use CCX placeholder targets with a primitive lowering that writes the multiply/reduction effect into counted field slots or an explicit counted scratch owner with a liveness/reuse proof."
+      "required_to_close": "Replace arithmetic_scratch:* single-use CCX placeholder targets with a primitive lowering that writes the multiply/reduction effect into counted field slots, or add an explicit counted scratch owner plus cleanup/consume events for every temporary AND."
     },
     {
       "name": "modular_multiplier_physical_wire_semantics",
       "active": true,
-      "required_to_close": "Give the modular multiplication primitive a reversible wire-level circuit instead of treating schoolbook partial-product interactions as producer-only synthetic scratch targets."
+      "required_to_close": "Give the modular multiplication primitive a reversible wire-level circuit instead of treating schoolbook partial-product interactions as abandoned producer-only synthetic scratch targets."
     }
   ]
 }

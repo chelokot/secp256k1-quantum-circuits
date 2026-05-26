@@ -54,6 +54,7 @@ def test_modular_primitive_wire_audit_names_current_scratch_gap() -> None:
     assert audit['checks']['no_unresolved_virtual_field_operands'] is True
     assert audit['checks']['no_unclassified_non_lookup_operand_wires'] is True
     assert audit['checks']['synthetic_scratch_wires_are_single_use_ccx_targets'] is True
+    assert audit['checks']['synthetic_scratch_wires_have_cleanup_or_counted_capacity'] is False
     assert audit['checks']['no_synthetic_arithmetic_scratch_wires_without_owner_capacity'] is False
     assert audit['pass'] is False
     assert audit['field_wire_missing_liveness_count'] > 0
@@ -66,6 +67,8 @@ def test_modular_primitive_wire_audit_names_current_scratch_gap() -> None:
     assert audit['arithmetic_scratch_reused_wire_count'] == 0
     assert audit['arithmetic_scratch_ccx_target_observation_count'] == audit['arithmetic_scratch_wire_observation_count']
     assert audit['arithmetic_scratch_non_ccx_target_observation_count'] == 0
+    assert audit['arithmetic_scratch_cleanup_observation_count'] == 0
+    assert audit['arithmetic_scratch_abandoned_garbage_count'] == audit['arithmetic_scratch_wire_observation_count']
     assert audit['arithmetic_scratch_gate_counts'] == {'ccx': audit['arithmetic_scratch_wire_observation_count']}
     assert set(audit['lookup_virtual_field_names']) == {'lookup_x', 'lookup_y', 'lookup_x_plus_y'}
     assert {'C', 'X', 'Y'}.issubset(set(audit['overwritten_source_field_names']))

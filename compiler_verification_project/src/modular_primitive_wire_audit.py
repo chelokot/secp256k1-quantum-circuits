@@ -88,6 +88,8 @@ def build_modular_primitive_wire_audit(
     arithmetic_scratch_gate_counts: Dict[str, int] = {}
     arithmetic_scratch_ccx_target_observation_count = 0
     arithmetic_scratch_non_ccx_target_observation_count = 0
+    arithmetic_scratch_cleanup_observation_count = 0
+    arithmetic_scratch_abandoned_garbage_count = 0
     observed_suboperation_owners: Dict[str, int] = {}
     missing_field_names: Dict[str, int] = {}
     overwritten_source_field_names: Dict[str, int] = {}
@@ -212,6 +214,7 @@ def build_modular_primitive_wire_audit(
         for wire_id, count in arithmetic_scratch_use_counts.items()
         if count > 1
     }
+    arithmetic_scratch_abandoned_garbage_count = len(arithmetic_scratch_unique_ids) - arithmetic_scratch_cleanup_observation_count
     checks = {
         'scheduled_modular_primitive_netlist_passes': scheduled_modular_primitive_netlist['pass'] is True,
         'scanned_operation_count_matches_scheduled_netlist': operation_count == int(scheduled_modular_primitive_netlist['operation_count']),
@@ -232,6 +235,10 @@ def build_modular_primitive_wire_audit(
             arithmetic_scratch_wire_observation_count == len(arithmetic_scratch_unique_ids)
             and arithmetic_scratch_non_ccx_target_observation_count == 0
             and arithmetic_scratch_ccx_target_observation_count == arithmetic_scratch_wire_observation_count
+        ),
+        'synthetic_scratch_wires_have_cleanup_or_counted_capacity': (
+            arithmetic_scratch_wire_observation_count == 0
+            or arithmetic_scratch_abandoned_garbage_count == 0
         ),
         'no_synthetic_arithmetic_scratch_wires_without_owner_capacity': arithmetic_scratch_wire_observation_count == 0,
     }
@@ -260,6 +267,8 @@ def build_modular_primitive_wire_audit(
         'arithmetic_scratch_reused_wire_count': len(reused_scratch_wires),
         'arithmetic_scratch_ccx_target_observation_count': arithmetic_scratch_ccx_target_observation_count,
         'arithmetic_scratch_non_ccx_target_observation_count': arithmetic_scratch_non_ccx_target_observation_count,
+        'arithmetic_scratch_cleanup_observation_count': arithmetic_scratch_cleanup_observation_count,
+        'arithmetic_scratch_abandoned_garbage_count': arithmetic_scratch_abandoned_garbage_count,
         'arithmetic_scratch_gate_counts': {
             key: int(value)
             for key, value in sorted(arithmetic_scratch_gate_counts.items())
@@ -318,12 +327,12 @@ def build_modular_primitive_wire_audit(
             {
                 'name': 'synthetic_arithmetic_scratch_owner_capacity',
                 'active': arithmetic_scratch_wire_observation_count > 0,
-                'required_to_close': 'Replace arithmetic_scratch:* single-use CCX placeholder targets with a primitive lowering that writes the multiply/reduction effect into counted field slots or an explicit counted scratch owner with a liveness/reuse proof.',
+                'required_to_close': 'Replace arithmetic_scratch:* single-use CCX placeholder targets with a primitive lowering that writes the multiply/reduction effect into counted field slots, or add an explicit counted scratch owner plus cleanup/consume events for every temporary AND.',
             },
             {
                 'name': 'modular_multiplier_physical_wire_semantics',
                 'active': arithmetic_scratch_wire_observation_count > 0,
-                'required_to_close': 'Give the modular multiplication primitive a reversible wire-level circuit instead of treating schoolbook partial-product interactions as producer-only synthetic scratch targets.',
+                'required_to_close': 'Give the modular multiplication primitive a reversible wire-level circuit instead of treating schoolbook partial-product interactions as abandoned producer-only synthetic scratch targets.',
             },
         ],
     }

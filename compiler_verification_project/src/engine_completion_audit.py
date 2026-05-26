@@ -220,6 +220,7 @@ def build_engine_completion_audit(
             and modular_primitive_wire_audit['checks']['lookup_virtual_field_operands_are_classified'] is True
             and modular_primitive_wire_audit['checks']['no_unresolved_virtual_field_operands'] is True
             and modular_primitive_wire_audit['checks']['synthetic_scratch_wires_are_single_use_ccx_targets'] is True
+            and modular_primitive_wire_audit['checks']['synthetic_scratch_wires_have_cleanup_or_counted_capacity'] is False
             and modular_primitive_wire_audit['checks']['no_synthetic_arithmetic_scratch_wires_without_owner_capacity'] is False
             and int(modular_primitive_wire_audit['field_wire_missing_liveness_count']) > 0
             and int(modular_primitive_wire_audit['unresolved_virtual_field_observation_count']) == 0
@@ -420,6 +421,8 @@ def build_engine_completion_audit(
                 'synthetic_arithmetic_scratch_unique_wires': int(modular_primitive_wire_audit['arithmetic_scratch_unique_wire_count']),
                 'synthetic_arithmetic_scratch_single_use_wires': int(modular_primitive_wire_audit['arithmetic_scratch_single_use_wire_count']),
                 'synthetic_arithmetic_scratch_ccx_target_observations': int(modular_primitive_wire_audit['arithmetic_scratch_ccx_target_observation_count']),
+                'synthetic_arithmetic_scratch_cleanup_observations': int(modular_primitive_wire_audit['arithmetic_scratch_cleanup_observation_count']),
+                'synthetic_arithmetic_scratch_abandoned_garbage': int(modular_primitive_wire_audit['arithmetic_scratch_abandoned_garbage_count']),
                 'field_mul_non_clifford': int(modular_arithmetic_certificate['field_mul_stage_count_certificate']['observed_total_ccx']),
                 'field_mul_stage_counts_match': bool(modular_arithmetic_certificate['field_mul_stage_count_certificate']['stage_counts_match']),
                 'modular_ir_counts_match_lowerings': bool(modular_arithmetic_certificate['executable_circuit_ir_count_certificate']['counts_match_arithmetic_lowerings']),
