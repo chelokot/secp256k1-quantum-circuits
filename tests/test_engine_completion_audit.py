@@ -82,12 +82,13 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     assert covered['canonical_engine_zkp_input_authority']['status'] == 'public_engine_manifest_bound_by_candidate_input_and_guest_without_compact_strict_claim'
     assert covered['tail_reversible_field_schedule_contract']['status'] == 'seven_slot_field_operation_schedule_bound_to_reversible_contract'
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['source_bound_run_length_rows'] == expected['source_binding_summary']['rows_by_source_kind']['arithmetic_operation_ir']
-    assert remaining['modular_arithmetic_clifford_expansion']['status'] == 'scheduled_modular_primitive_stream_bound_not_global_physical_netlist_export'
+    assert remaining['modular_arithmetic_clifford_expansion']['status'] == 'scheduled_modular_primitive_stream_spliced_into_public_engine_not_zkp_physical_guest'
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['local_modular_primitive_stream_pass'] is True
     assert len(remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['local_modular_primitive_stream_sha256']) == 64
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_engine_integration_pass'] is True
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_execution_trace_pass'] is True
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['scheduled_modular_primitive_netlist_pass'] is True
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['scheduled_modular_global_splice_pass'] is True
     assert expected['checks']['arithmetic_rows_are_operation_ir_bound'] is True
     assert expected['checks']['zkp_input_binds_canonical_engine_without_compact_strict_claim'] is True
     qroam_table_cnot = _load('qroam_table_cnot_materialization.json')

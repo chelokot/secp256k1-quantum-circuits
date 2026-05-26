@@ -205,13 +205,15 @@ rows, exact operand domains, and the strict liveness projection.
 `modular_execution_trace.json` then binds the selected seven-slot tail schedule
 to modular sub-operations, lookup interface rows, strict slot/liveness owners,
 and the counted zero-lift guard. `scheduled_modular_primitive_netlist.json`
-expands that scheduled trace through a deterministic primitive-row iterator and
-derives the tail primitive stream hash, segment hashes, CCX count, and
-measurement count by scanning `1,204,598` generated rows. The remaining
-arithmetic row in `engine_completion_audit.json` is now the final integration
-step: splice this scheduled modular primitive stream into the same global
-public-candidate physical netlist/export and ZKP boundary, rather than keeping it
-as a separately bound tail stream.
+expands the scheduled arithmetic part plus the public QROAM chunk stream plan
+through a deterministic primitive-row iterator and derives the strict public
+leaf primitive stream hash, segment hashes, CCX count, and measurement count by
+scanning `1,270,134` generated rows. `public_engine_manifest.json` now binds the
+global splice certificate showing that 31 copies of this leaf stream preserve
+the grouped public `arithmetic_leaf_block + qroam_chunk_stream` operation and
+gate totals. The remaining arithmetic row in `engine_completion_audit.json` is
+now the final ZKP/export integration step: make the ZKP guest and exported full
+physical stream consume that spliced global physical boundary directly.
 The QROAM row similarly records that the current standard-QROAMClean certificate
 now hashes generated word-level unary-iteration rows and target-bit Clifford
 load-site rows with selection-control, target-register, and loaded-bit source

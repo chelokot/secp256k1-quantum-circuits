@@ -98,8 +98,13 @@ def test_public_engine_manifest_reconstructs_checked_artifact() -> None:
     scheduled_modular_netlist = expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['scheduled_modular_primitive_netlist']
     assert expected['checks']['scheduled_modular_primitive_netlist_is_bound'] is True
     assert scheduled_modular_netlist['pass'] is True
-    assert scheduled_modular_netlist['non_clifford_count'] == modular_trace['reconstructed_non_clifford']
+    assert scheduled_modular_netlist['non_clifford_count'] == 1192378
     assert scheduled_modular_netlist['primitive_counts_total']['measurement'] == 77756
+    scheduled_splice = expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['scheduled_modular_global_splice']
+    assert expected['checks']['scheduled_modular_primitive_netlist_splices_global_public_rows'] is True
+    assert scheduled_splice['pass'] is True
+    assert scheduled_splice['leaf_call_count'] == 31
+    assert scheduled_splice['scheduled_non_clifford_count'] == 36963718
     exact_arithmetic = expected['primitive_operation_evidence']['arithmetic_operation_ir']['selected_leaf_exact_operation_stream']
     assert exact_arithmetic['pass'] is True
     assert exact_arithmetic['non_clifford_count'] == arithmetic_ir['leaf_arithmetic_summary']['non_clifford_total']

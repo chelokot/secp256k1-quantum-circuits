@@ -58,22 +58,22 @@
     }
   },
   "bound_documents": {
-    "claim_sha256": "11ecde3b8b94883cd529809f210af5e600290e3212a5fc6832e4d53ce21e2402",
+    "claim_sha256": "193bb82121f738686c6e98fe03e0d9576c8a6751d14d92089006e7e0fb3d1b36",
     "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
     "family_sha256": "c6a7146ac5c0d7a63f733b0224ac9dc6fbaafb576d196128f882ecbc01e42b2b",
     "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
     "resource_certificate_sha256": "c36b02da281b1e17b8b2d531b6eeb3144089c87d3f03be34ac7d3ce6ae9ca69c",
-    "public_engine_manifest_sha256": "36dc0c272ca0f14d25684519de33fa6d81de5c91d773a2db31172e2f32f284ca"
+    "public_engine_manifest_sha256": "91092f14ae17fad592cdb4a374de1c9129883c4a16ec020f58354e0848c7095d"
   },
   "checked_artifacts": {
     "input": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
-      "sha256": "7acc06db92e3e5cd9af2ed5790001ab80716622f42c098860b0ff1de04aa416c",
-      "bytes": 426525
+      "sha256": "951ac1347eafc3e8738b0453a0024f68aebce294a423a8e09e01d4f74541e73b",
+      "bytes": 428408
     },
     "claim": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json",
-      "sha256": "42d1a6ba2950f03439b221b3261fd3728670873161b71d2edeecbf679247afd9",
+      "sha256": "60593bdf788845c142c674eebb36331904026bdf4f3f47232ee68f83f6e08d2e",
       "bytes": 1709
     },
     "family": {
@@ -206,13 +206,13 @@
     },
     "public_engine_manifest": {
       "path": "compiler_verification_project/artifacts/public_engine_manifest.json",
-      "sha256": "8079230902586386fcf778ec1161a87e15e898568e594e3756d7a022d4361bf8",
-      "bytes": 32426
+      "sha256": "7cb63ff7cc6d391978de22726e1ba5c487874695a21a2c841017a8bcdd037702",
+      "bytes": 34161
     },
     "engine_completion_audit": {
       "path": "compiler_verification_project/artifacts/engine_completion_audit.json",
-      "sha256": "ddb65cd386a2866f28e2c40b8d2885e32fb74171b26c3a95038b10b164398b6c",
-      "bytes": 11177
+      "sha256": "76feacdf7da41cf5036ba48c15bbb812785b8f8287d495b1c515cbf10ae3c06d",
+      "bytes": 11240
     }
   },
   "verification_commands": {

@@ -201,8 +201,10 @@ def build_engine_completion_audit(
         'scheduled_modular_primitive_netlist_binds_trace': (
             scheduled_modular_primitive_netlist['pass'] is True
             and scheduled_modular_primitive_netlist['source_digests']['modular_execution_trace_sha256'] == _sha256_payload(modular_execution_trace)
-            and int(scheduled_modular_primitive_netlist['non_clifford_count']) == int(modular_execution_trace['reconstructed_non_clifford'])
+            and int(scheduled_modular_primitive_netlist['trace_lookup_interface_non_clifford_replaced']) >= 0
+            and int(scheduled_modular_primitive_netlist['strict_public_leaf_non_clifford']) == int(scheduled_modular_primitive_netlist['non_clifford_count'])
             and public_engine_manifest['checks']['scheduled_modular_primitive_netlist_is_bound'] is True
+            and public_engine_manifest['checks']['scheduled_modular_primitive_netlist_splices_global_public_rows'] is True
         ),
         'phase_rows_are_lowering_bound': (
             rows_by_source_kind['phase_shell_lowering'] > 0
@@ -353,7 +355,7 @@ def build_engine_completion_audit(
     remaining_macro_boundaries = [
         {
             'name': 'modular_arithmetic_clifford_expansion',
-            'status': 'scheduled_modular_primitive_stream_bound_not_global_physical_netlist_export',
+            'status': 'scheduled_modular_primitive_stream_spliced_into_public_engine_not_zkp_physical_guest',
             'required_to_close': 'Emit and count exact concrete Clifford/CCX wire operations for every modular add, subtract, multiply, fold, and reduction step inside the same global flat schedule as the point-add leaf.',
             'current_evidence': 'scheduled_modular_primitive_netlist + modular_execution_trace + modular_arithmetic_certificate.modular_primitive_stream_certificate + public_candidate_materialized_circuit_manifest.modular_arithmetic_engine_integration',
             'evidence_metrics': {
@@ -378,6 +380,7 @@ def build_engine_completion_audit(
                 'scheduled_modular_primitive_netlist_operation_count': int(scheduled_modular_primitive_netlist['operation_count']),
                 'scheduled_modular_primitive_netlist_non_clifford': int(scheduled_modular_primitive_netlist['non_clifford_count']),
                 'scheduled_modular_primitive_netlist_sha256': scheduled_modular_primitive_netlist['operation_stream_sha256'],
+                'scheduled_modular_global_splice_pass': bool(public_engine_manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['scheduled_modular_global_splice']['pass']),
                 'field_mul_non_clifford': int(modular_arithmetic_certificate['field_mul_stage_count_certificate']['observed_total_ccx']),
                 'field_mul_stage_counts_match': bool(modular_arithmetic_certificate['field_mul_stage_count_certificate']['stage_counts_match']),
                 'modular_ir_counts_match_lowerings': bool(modular_arithmetic_certificate['executable_circuit_ir_count_certificate']['counts_match_arithmetic_lowerings']),

@@ -26,11 +26,13 @@ def _build(
     modular_execution_trace: dict | None = None,
     modular_arithmetic_certificate: dict | None = None,
     arithmetic_lowerings: dict | None = None,
+    reusable_chunk_lowering: dict | None = None,
 ) -> dict:
     return build_scheduled_modular_primitive_netlist(
         modular_execution_trace=modular_execution_trace or _artifact('modular_execution_trace.json'),
         modular_arithmetic_certificate=modular_arithmetic_certificate or _artifact('modular_arithmetic_certificate.json'),
         arithmetic_lowerings=arithmetic_lowerings or _artifact('arithmetic_lowerings.json'),
+        reusable_chunk_lowering=reusable_chunk_lowering or _artifact('reusable_chunk_lowering.json'),
     )
 
 
@@ -40,10 +42,12 @@ def test_scheduled_modular_primitive_netlist_reconstructs_checked_artifact() -> 
     assert observed == expected
     assert expected['schema'] == SCHEDULED_MODULAR_PRIMITIVE_NETLIST_SCHEMA
     assert expected['pass'] is True
-    assert expected['operation_count'] == 1204598
-    assert expected['non_clifford_count'] == 1126842
-    assert expected['primitive_counts_total'] == {'ccx': 1126842, 'cx': 0, 'x': 0, 'measurement': 77756}
-    assert expected['segment_count'] == 74
+    assert expected['operation_count'] == 1270134
+    assert expected['non_clifford_count'] == 1192378
+    assert expected['trace_lookup_interface_non_clifford_replaced'] == 327680
+    assert expected['public_qroam_chunk_non_clifford'] == 393216
+    assert expected['primitive_counts_total'] == {'ccx': 1192378, 'cx': 0, 'x': 0, 'measurement': 77756}
+    assert expected['segment_count'] == 78
     assert len(expected['operation_stream_sha256']) == 64
 
 
@@ -53,7 +57,7 @@ def test_scheduled_modular_primitive_netlist_rejects_forged_trace_count() -> Non
     observed = _build(modular_execution_trace=trace)
     assert observed['pass'] is False
     assert observed['checks']['all_suboperation_counts_match_trace'] is False
-    assert observed['checks']['total_counts_match_trace_suboperations'] is False
+    assert observed['checks']['total_counts_match_trace_suboperations_plus_public_qroam'] is False
 
 
 def test_scheduled_modular_primitive_netlist_rejects_stale_certificate() -> None:

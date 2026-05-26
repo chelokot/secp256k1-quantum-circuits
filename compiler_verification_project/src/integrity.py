@@ -306,6 +306,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 modular_execution_trace=load_json(artifact_root / 'modular_execution_trace.json'),
                 modular_arithmetic_certificate=load_json(artifact_root / 'modular_arithmetic_certificate.json'),
                 arithmetic_lowerings=load_json(artifact_root / 'arithmetic_lowerings.json'),
+                reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
             ),
         )
         dump_json(
@@ -2571,6 +2572,7 @@ def build_public_engine_manifest_checks(artifacts: Mapping[str, Any]) -> Dict[st
         _check('public_engine_manifest_binds_primitive_operation_evidence', manifest['primitive_operation_evidence']['arithmetic_operation_ir']['pass'] is True and manifest['primitive_operation_evidence']['qroam_primitive_certificate']['pass'] is True and manifest['primitive_operation_evidence']['qroam_table_cnot_materialization']['pass'] is True and manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['pass'] is True and manifest['primitive_operation_evidence']['qroam_primitive_certificate']['whole_oracle_non_clifford'] == lowering['non_clifford_derivation']['qroam_chunk_non_clifford'] and manifest['primitive_operation_evidence']['qroam_table_cnot_materialization']['full_oracle_emitted_clifford_cx'] == qroam_table_cnot['totals']['full_oracle_emitted_clifford_cx'] and manifest['primitive_operation_evidence']['phase_shell']['name'] in selected_family_name, 'primitive operation evidence binds materialized public candidate, arithmetic, qroam, table-CNOT, and phase shell sources', manifest['primitive_operation_evidence']),
         _check('public_engine_manifest_binds_modular_execution_trace', manifest['checks']['modular_execution_trace_is_bound'] is True and manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['modular_execution_trace']['pass'] is True and manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['modular_execution_trace']['reconstructed_non_clifford'] == artifacts['modular_execution_trace']['reconstructed_non_clifford'], 'modular execution trace is bound into public engine evidence', manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['modular_execution_trace']),
         _check('public_engine_manifest_binds_scheduled_modular_primitive_netlist', manifest['checks']['scheduled_modular_primitive_netlist_is_bound'] is True and manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['scheduled_modular_primitive_netlist']['pass'] is True and manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['scheduled_modular_primitive_netlist']['operation_stream_sha256'] == artifacts['scheduled_modular_primitive_netlist']['operation_stream_sha256'], 'scheduled modular primitive netlist is bound into public engine evidence', manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['scheduled_modular_primitive_netlist']),
+        _check('public_engine_manifest_splices_scheduled_modular_netlist_into_global_rows', manifest['checks']['scheduled_modular_primitive_netlist_splices_global_public_rows'] is True and manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['scheduled_modular_global_splice']['pass'] is True, 'scheduled modular primitive netlist splices the global public arithmetic+qroam rows', manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['scheduled_modular_global_splice']),
         _check('public_engine_manifest_passes_internal_checks', manifest['pass'] is True and all(manifest['checks'].values()), True, manifest['checks']),
     ]
     return _summarize_checks(checks)
@@ -2582,12 +2584,13 @@ def build_scheduled_modular_primitive_netlist_checks(artifacts: Mapping[str, Any
         modular_execution_trace=artifacts['modular_execution_trace'],
         modular_arithmetic_certificate=artifacts['modular_arithmetic_certificate'],
         arithmetic_lowerings=artifacts['arithmetic_lowerings'],
+        reusable_chunk_lowering=artifacts['reusable_chunk_lowering'],
     )
     checks = [
         _check('scheduled_modular_primitive_netlist_matches_generator', netlist == expected, expected, netlist),
         _check('scheduled_modular_primitive_netlist_schema_is_current', netlist['schema'] == 'compiler-project-scheduled-modular-primitive-netlist-v1', 'compiler-project-scheduled-modular-primitive-netlist-v1', netlist['schema']),
         _check('scheduled_modular_primitive_netlist_passes_internal_checks', netlist['pass'] is True and all(netlist['checks'].values()), True, netlist['checks']),
-        _check('scheduled_modular_primitive_netlist_reconstructs_tail_non_clifford', netlist['non_clifford_count'] == artifacts['modular_execution_trace']['reconstructed_non_clifford'], artifacts['modular_execution_trace']['reconstructed_non_clifford'], netlist['non_clifford_count']),
+        _check('scheduled_modular_primitive_netlist_reconstructs_public_strict_leaf_non_clifford', netlist['non_clifford_count'] == netlist['strict_public_leaf_non_clifford'], netlist['strict_public_leaf_non_clifford'], netlist['non_clifford_count']),
         _check('scheduled_modular_primitive_netlist_has_segmented_stream_commitment', netlist['operation_count'] > 0 and netlist['segment_count'] > 0 and len(netlist['operation_stream_sha256']) == 64 and all(len(segment['sha256']) == 64 for segment in netlist['segments']), 'nonempty segmented stream with 64-char hashes', {'operation_count': netlist['operation_count'], 'segment_count': netlist['segment_count'], 'operation_stream_sha256': netlist['operation_stream_sha256']}),
     ]
     return _summarize_checks(checks)

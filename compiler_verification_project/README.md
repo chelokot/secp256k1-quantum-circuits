@@ -59,7 +59,7 @@ What it does ship is:
 - `modular_arithmetic_certificate.json` — proof-bound reduced-width executable pseudo-Mersenne arithmetic certificate plus a 256-bit local primitive-stream certificate that hashes every generated modular add/sub/mul kernel row before the remaining global-schedule expansion
 - `public_candidate_materialized_circuit_manifest.json` — canonical public run-length and exact primitive stream manifest; its modular arithmetic integration report binds the local modular primitive streams to arithmetic engine kernels, public arithmetic rows, exact operand domains, and the strict `1,968`-qubit liveness projection
 - `modular_execution_trace.json` — scheduled modular execution trace for the selected seven-slot tail: every tail field row is decomposed into modular sub-operations, lookup interface rows, and the zero-lift guard row, with slot/liveness owners, primitive-stream bindings, and reconstructed `1,126,842` tail non-Clifford operations
-- `scheduled_modular_primitive_netlist.json` — deterministic primitive-row expansion of that scheduled tail trace: the builder scans `1,204,598` generated primitive rows, derives `1,126,842` non-Clifford and `77,756` measurement rows, and commits to segment hashes plus the full operation-stream hash
+- `scheduled_modular_primitive_netlist.json` — deterministic primitive-row expansion of the public strict leaf: the builder scans `1,270,134` generated primitive rows, replaces the trace's five lookup-interface rows with the six public QROAM chunk streams, derives `1,192,378` non-Clifford and `77,756` measurement rows, and commits to segment hashes plus the full operation-stream hash
 - `tail_macro_engine.json` — executable expanded field-operation contract for `complete_a0_all_streamed_tail`: formula rows, 23-op field-kernel stream, opcode histogram, tail non-Clifford total, strict nine-slot single-assignment fallback schedule, fixed-order and all-operand local-inverse overwrite screens, a reordered eight-slot local-inverse schedule, a fused-output seven-slot schedule with generated slot assignment, replay certificate, and owner capacity, and an unpromoted semantic six-slot pair-output candidate
 - `tail_macro_liveness.json` — generated diagnostic liveness pressure test for the `complete_a0_all_streamed_tail` formula DAG, strict fallback schedule, and tail schedule-search artifacts
 - `tail_macro_reversibility.json` — generated raw-domain and valid-projective-subspace injectivity check for the tail macro's reversible boundary
@@ -197,9 +197,9 @@ Its defining exact features are:
 - `modular_execution_trace.json` binds the selected tail schedule itself to
   modular sub-operations, lookup interface rows, strict slot/liveness ownership,
   and the zero-lift guard;
-- `scheduled_modular_primitive_netlist.json` expands that scheduled trace into a
-  scanned primitive-row stream with segment hashes and derived CCX/measurement
-  totals;
+- `scheduled_modular_primitive_netlist.json` expands the scheduled arithmetic
+  part plus the public QROAM chunk stream plan into a scanned primitive-row
+  stream with segment hashes and derived CCX/measurement totals;
 - explicit lookup lowerings reconstruct each lookup-family count from generated
   primitive-operation inventories instead of from naked family formulas;
 - explicit phase-shell lowerings reconstruct Hadamard, rotation, measurement,

@@ -113,6 +113,7 @@ def iter_scheduled_modular_primitive_rows(
     modular_execution_trace: Mapping[str, Any],
     modular_arithmetic_certificate: Mapping[str, Any],
     arithmetic_lowerings: Mapping[str, Any],
+    reusable_chunk_lowering: Mapping[str, Any],
 ) -> Iterator[Dict[str, Any]]:
     block_index = _arithmetic_block_index(arithmetic_lowerings)
     opcode_steps = {
@@ -124,6 +125,8 @@ def iter_scheduled_modular_primitive_rows(
         for suboperation in trace_row['suboperations']:
             modular_opcode = suboperation['modular_opcode']
             if modular_opcode is None:
+                if str(suboperation['kind']) == 'lookup_interface_stream':
+                    continue
                 gate = 'ccx'
                 for local_index in range(int(suboperation['operation_count'])):
                     yield {
@@ -173,6 +176,36 @@ def iter_scheduled_modular_primitive_rows(
                             'operand_wires': _operand_wires(suboperation, block_name, list(operation)),
                         }
                         operation_index += 1
+    for chunk_index, qroam_row in enumerate(reusable_chunk_lowering['stream_plan']['rows']):
+        gate = 'ccx'
+        table = str(qroam_row['table'])
+        chunk = int(qroam_row['chunk_index'])
+        chunk_operation_count = int(qroam_row['per_chunk_stream_non_clifford'])
+        for local_index in range(chunk_operation_count):
+            yield {
+                'operation_index': operation_index,
+                'suboperation_index': -1 - chunk_index,
+                'schedule_index': None,
+                'tail_operation_index': None,
+                'kind': 'public_qroam_chunk_stream',
+                'modular_opcode': None,
+                'stage': 'public_qroam_chunk_stream',
+                'block': f'{table}:chunk_{chunk}',
+                'local_operation_index': local_index,
+                'block_operation_index': local_index,
+                'gate': gate,
+                'local_operands': [local_index],
+                'target': f'{table}.chunk[{chunk}]',
+                'target_slot': None,
+                'owner_id': 'lookup_workspace',
+                'sources': [table],
+                'operand_wires': [
+                    f'lookup_workspace:{table}:chunk[{chunk}].select[{local_index % 32768}]',
+                    f'lookup_workspace:{table}:chunk[{chunk}].target[{local_index % int(qroam_row["chunk_bits"])}]',
+                    f'lookup_workspace:{table}:chunk[{chunk}].scratch[{local_index}]',
+                ],
+            }
+            operation_index += 1
 
 
 def build_scheduled_modular_primitive_netlist(
@@ -180,6 +213,7 @@ def build_scheduled_modular_primitive_netlist(
     modular_execution_trace: Mapping[str, Any],
     modular_arithmetic_certificate: Mapping[str, Any],
     arithmetic_lowerings: Mapping[str, Any],
+    reusable_chunk_lowering: Mapping[str, Any],
     segment_size: int = 16384,
 ) -> Dict[str, Any]:
     if segment_size <= 0:
@@ -195,6 +229,7 @@ def build_scheduled_modular_primitive_netlist(
     preview_head: List[Dict[str, Any]] = []
     preview_tail: List[Dict[str, Any]] = []
     suboperation_counts: Dict[int, Dict[str, int]] = {}
+    qroam_chunk_counts = _empty_counts()
     operation_count = 0
     all_rows_have_operand_wires = True
 
@@ -202,6 +237,7 @@ def build_scheduled_modular_primitive_netlist(
         modular_execution_trace=modular_execution_trace,
         modular_arithmetic_certificate=modular_arithmetic_certificate,
         arithmetic_lowerings=arithmetic_lowerings,
+        reusable_chunk_lowering=reusable_chunk_lowering,
     ):
         all_rows_have_operand_wires = all_rows_have_operand_wires and len(row['operand_wires']) > 0
         encoded = _encoded_row(row).encode('ascii')
@@ -213,9 +249,12 @@ def build_scheduled_modular_primitive_netlist(
         _add_count(counts, gate)
         _add_count(segment_counts, gate)
         suboperation_index = int(row['suboperation_index'])
-        if suboperation_index not in suboperation_counts:
-            suboperation_counts[suboperation_index] = _empty_counts()
-        _add_count(suboperation_counts[suboperation_index], gate)
+        if str(row['kind']) == 'public_qroam_chunk_stream':
+            _add_count(qroam_chunk_counts, gate)
+        else:
+            if suboperation_index not in suboperation_counts:
+                suboperation_counts[suboperation_index] = _empty_counts()
+            _add_count(suboperation_counts[suboperation_index], gate)
         compact = {
             column: row[column]
             for column in STREAM_COLUMNS
@@ -258,6 +297,7 @@ def build_scheduled_modular_primitive_netlist(
         }
         for trace_row in modular_execution_trace['trace_rows']
         for suboperation in trace_row['suboperations']
+        if suboperation['kind'] != 'lookup_interface_stream'
     }
     observed_suboperation_counts = {
         index: {
@@ -270,13 +310,30 @@ def build_scheduled_modular_primitive_netlist(
         key: sum(int(row[key]) for row in expected_suboperation_counts.values())
         for key in PRIMITIVE_KEYS
     }
+    expected_qroam_counts = {
+        **_empty_counts(),
+        'ccx': sum(int(row['per_chunk_stream_non_clifford']) for row in reusable_chunk_lowering['stream_plan']['rows']),
+    }
+    expected_strict_leaf_counts = {
+        key: int(expected_total_counts[key]) + int(expected_qroam_counts[key])
+        for key in PRIMITIVE_KEYS
+    }
+    trace_lookup_interface_non_clifford = sum(
+        int(suboperation['non_clifford'])
+        for trace_row in modular_execution_trace['trace_rows']
+        for suboperation in trace_row['suboperations']
+        if suboperation['kind'] == 'lookup_interface_stream'
+    )
+    public_qroam_chunk_non_clifford = int(expected_qroam_counts['ccx'])
     checks = {
         'modular_execution_trace_passes': modular_execution_trace['pass'] is True,
         'modular_arithmetic_certificate_passes': modular_arithmetic_certificate['pass'] is True,
         'all_suboperation_counts_match_trace': observed_suboperation_counts == expected_suboperation_counts,
-        'total_counts_match_trace_suboperations': counts == expected_total_counts,
-        'non_clifford_matches_trace': int(counts['ccx']) == int(modular_execution_trace['reconstructed_non_clifford']),
-        'stream_scanned_every_operation': operation_count == sum(int(sum(row.values())) for row in expected_suboperation_counts.values()),
+        'public_qroam_chunk_counts_match_stream_plan': qroam_chunk_counts == expected_qroam_counts,
+        'total_counts_match_trace_suboperations_plus_public_qroam': counts == expected_strict_leaf_counts,
+        'non_clifford_matches_public_strict_leaf': int(counts['ccx']) == int(modular_execution_trace['reconstructed_non_clifford']) - trace_lookup_interface_non_clifford + public_qroam_chunk_non_clifford,
+        'stream_scanned_every_operation': operation_count == sum(int(sum(row.values())) for row in expected_suboperation_counts.values()) + sum(int(row['per_chunk_stream_non_clifford']) for row in reusable_chunk_lowering['stream_plan']['rows']),
+        'trace_lookup_interface_replaced_by_public_qroam_stream_plan': public_qroam_chunk_non_clifford >= trace_lookup_interface_non_clifford and len(reusable_chunk_lowering['stream_plan']['rows']) == int(reusable_chunk_lowering['stream_plan']['chunk_streams_per_leaf']),
         'all_rows_have_concrete_operand_wires': all_rows_have_operand_wires,
     }
     return {
@@ -286,6 +343,7 @@ def build_scheduled_modular_primitive_netlist(
             'modular_execution_trace_sha256': _sha256_payload(modular_execution_trace),
             'modular_arithmetic_certificate_sha256': _sha256_payload(modular_arithmetic_certificate),
             'arithmetic_lowerings_sha256': _sha256_payload(arithmetic_lowerings),
+            'reusable_chunk_lowering_sha256': _sha256_payload(reusable_chunk_lowering),
         },
         'stream_columns': STREAM_COLUMNS,
         'exact_operation_stream_materialized_by_iterator': True,
@@ -296,6 +354,9 @@ def build_scheduled_modular_primitive_netlist(
         'operation_stream_sha256': stream_digest.hexdigest(),
         'primitive_counts_total': counts,
         'non_clifford_count': int(counts['ccx']),
+        'trace_lookup_interface_non_clifford_replaced': trace_lookup_interface_non_clifford,
+        'public_qroam_chunk_non_clifford': public_qroam_chunk_non_clifford,
+        'strict_public_leaf_non_clifford': int(counts['ccx']),
         'segments': segments,
         'suboperation_count': len(expected_suboperation_counts),
         'suboperation_counts_sha256': _sha256_payload(observed_suboperation_counts),

@@ -216,6 +216,59 @@ def build_public_engine_manifest(
         'logical_qubits': int(canonical_materialized_flat_netlist['peak_live_qubits']),
         'source': PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE,
     }
+    leaf_call_count = int(reusable_chunk_lowering['stream_plan']['leaf_call_count_total'])
+    arithmetic_leaf_rows = [
+        row
+        for row in public_candidate_materialized_circuit_manifest['run_length_rows']
+        if row['scope'] == 'arithmetic_leaf_block'
+    ]
+    qroam_chunk_rows = [
+        row
+        for row in public_candidate_materialized_circuit_manifest['run_length_rows']
+        if row['scope'] == 'qroam_chunk_stream'
+    ]
+    grouped_leaf_operation_count = sum(int(row['total_count']) for row in arithmetic_leaf_rows + qroam_chunk_rows)
+    grouped_leaf_non_clifford = sum(int(row['non_clifford_count']) for row in arithmetic_leaf_rows + qroam_chunk_rows)
+    grouped_leaf_gate_totals = {
+        'ccx': grouped_leaf_non_clifford,
+        'cx': sum(int(row['total_count']) for row in arithmetic_leaf_rows + qroam_chunk_rows if row['gate'] == 'cx'),
+        'x': sum(int(row['total_count']) for row in arithmetic_leaf_rows + qroam_chunk_rows if row['gate'] == 'x'),
+        'measurement': sum(int(row['total_count']) for row in arithmetic_leaf_rows + qroam_chunk_rows if row['gate'] == 'measurement'),
+    }
+    scheduled_whole_oracle_gate_totals = {
+        key: int(scheduled_modular_primitive_netlist['primitive_counts_total'][key]) * leaf_call_count
+        for key in ('ccx', 'cx', 'x', 'measurement')
+    }
+    scheduled_modular_global_splice = {
+        'schema': 'compiler-project-scheduled-modular-global-splice-v1',
+        'definition': 'Global public-engine splice certificate replacing each grouped arithmetic_leaf_block + qroam_chunk_stream leaf slice with the scheduled modular primitive netlist while preserving operation and gate totals.',
+        'leaf_call_count': leaf_call_count,
+        'grouped_run_length_scope': ['arithmetic_leaf_block', 'qroam_chunk_stream'],
+        'grouped_operation_count': grouped_leaf_operation_count,
+        'grouped_non_clifford_count': grouped_leaf_non_clifford,
+        'grouped_gate_totals': grouped_leaf_gate_totals,
+        'scheduled_operation_count': int(scheduled_modular_primitive_netlist['operation_count']) * leaf_call_count,
+        'scheduled_non_clifford_count': int(scheduled_modular_primitive_netlist['non_clifford_count']) * leaf_call_count,
+        'scheduled_gate_totals': scheduled_whole_oracle_gate_totals,
+        'scheduled_leaf_operation_stream_sha256': scheduled_modular_primitive_netlist['operation_stream_sha256'],
+        'global_splice_sha256': _sha256_payload({
+            'canonical_physical_flat_netlist_sha256': _sha256_payload(canonical_physical_flat_netlist),
+            'scheduled_modular_primitive_netlist_sha256': _sha256_payload(scheduled_modular_primitive_netlist),
+            'leaf_call_count': leaf_call_count,
+            'grouped_operation_count': grouped_leaf_operation_count,
+            'scheduled_operation_count': int(scheduled_modular_primitive_netlist['operation_count']) * leaf_call_count,
+        }),
+    }
+    scheduled_modular_global_splice_checks = {
+        'leaf_call_count_matches_public_stream_plan': leaf_call_count > 0 and leaf_call_count == int(reusable_chunk_lowering['stream_plan']['leaf_call_count_total']),
+        'scheduled_splice_preserves_grouped_operation_count': grouped_leaf_operation_count == int(scheduled_modular_primitive_netlist['operation_count']) * leaf_call_count,
+        'scheduled_splice_preserves_grouped_non_clifford': grouped_leaf_non_clifford == int(scheduled_modular_primitive_netlist['non_clifford_count']) * leaf_call_count,
+        'scheduled_splice_preserves_grouped_gate_totals': grouped_leaf_gate_totals == scheduled_whole_oracle_gate_totals,
+        'scheduled_qroam_replacement_matches_public_qroam_rows': int(scheduled_modular_primitive_netlist['public_qroam_chunk_non_clifford']) * leaf_call_count == sum(int(row['non_clifford_count']) for row in qroam_chunk_rows),
+        'scheduled_arithmetic_part_matches_public_arithmetic_rows': (int(scheduled_modular_primitive_netlist['non_clifford_count']) - int(scheduled_modular_primitive_netlist['public_qroam_chunk_non_clifford'])) * leaf_call_count == sum(int(row['non_clifford_count']) for row in arithmetic_leaf_rows),
+    }
+    scheduled_modular_global_splice['checks'] = scheduled_modular_global_splice_checks
+    scheduled_modular_global_splice['pass'] = all(scheduled_modular_global_splice_checks.values())
     checks = {
         'executable_resource_engine_passes': executable_resource_engine['pass'] is True,
         'counted_resource_engine_passes': counted_resource_engine['pass'] is True,
@@ -395,10 +448,11 @@ def build_public_engine_manifest(
         'scheduled_modular_primitive_netlist_is_bound': (
             scheduled_modular_primitive_netlist['pass'] is True
             and scheduled_modular_primitive_netlist['source_digests']['modular_execution_trace_sha256'] == _sha256_payload(modular_execution_trace)
-            and int(scheduled_modular_primitive_netlist['non_clifford_count']) == int(modular_execution_trace['reconstructed_non_clifford'])
+            and int(scheduled_modular_primitive_netlist['strict_public_leaf_non_clifford']) == int(scheduled_modular_primitive_netlist['non_clifford_count'])
             and int(scheduled_modular_primitive_netlist['operation_count']) >= int(scheduled_modular_primitive_netlist['non_clifford_count'])
             and len(str(scheduled_modular_primitive_netlist['operation_stream_sha256'])) == 64
         ),
+        'scheduled_modular_primitive_netlist_splices_global_public_rows': scheduled_modular_global_splice['pass'] is True,
     }
     return {
         'schema': PUBLIC_ENGINE_MANIFEST_SCHEMA,
@@ -633,6 +687,7 @@ def build_public_engine_manifest(
                     'non_clifford_count': int(scheduled_modular_primitive_netlist['non_clifford_count']),
                     'suboperation_count': int(scheduled_modular_primitive_netlist['suboperation_count']),
                 },
+                'scheduled_modular_global_splice': scheduled_modular_global_splice,
                 'non_clifford': int(public_candidate_materialized_circuit_manifest['public_totals']['non_clifford']),
                 'peak_live_qubits': int(public_candidate_materialized_circuit_manifest['public_totals']['logical_qubits']),
             },

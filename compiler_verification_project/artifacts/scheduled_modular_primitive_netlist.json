@@ -4,7 +4,8 @@
   "source_digests": {
     "modular_execution_trace_sha256": "4d8dbe6e13e09da859e1dc1c640917d33973a9c9907ca336fc80bd3d070a127c",
     "modular_arithmetic_certificate_sha256": "5dc1bc120d7c52d9b0118c1ff01d28e8bb13fa6060da2aafaed6e15200e38ff8",
-    "arithmetic_lowerings_sha256": "d7f6819b985e388f16948aace8a636aa853b5b4dadadd6042095bf6fb047621a"
+    "arithmetic_lowerings_sha256": "d7f6819b985e388f16948aace8a636aa853b5b4dadadd6042095bf6fb047621a",
+    "reusable_chunk_lowering_sha256": "fd8751901698b247356faee49e65f9c1f65375e31bd431825add95eca281b326"
   },
   "stream_columns": [
     "operation_index",
@@ -28,16 +29,19 @@
   "exact_operation_stream_materialized_by_iterator": true,
   "operation_rows_materialized_in_json": false,
   "segment_size": 16384,
-  "operation_count": 1204598,
-  "segment_count": 74,
-  "operation_stream_sha256": "ee8d63635ea649092474479cf000ee20eb876ea6b6e83a032b68248a65f92690",
+  "operation_count": 1270134,
+  "segment_count": 78,
+  "operation_stream_sha256": "b2c282a3e1162d7333130de97f40786e454493510101de98499735121599aef1",
   "primitive_counts_total": {
-    "ccx": 1126842,
+    "ccx": 1192378,
     "cx": 0,
     "x": 0,
     "measurement": 77756
   },
-  "non_clifford_count": 1126842,
+  "non_clifford_count": 1192378,
+  "trace_lookup_interface_non_clifford_replaced": 327680,
+  "public_qroam_chunk_non_clifford": 393216,
+  "strict_public_leaf_non_clifford": 1192378,
   "segments": [
     {
       "segment_index": 0,
@@ -51,7 +55,7 @@
         "measurement": 510
       },
       "non_clifford_count": 15874,
-      "sha256": "1da29a7b567065ddc31fd236a8e51f2f05a0d46f9015755a2a2723a984438de3"
+      "sha256": "a86f8d7669d81b9e1f0f648e56a8f580bf6090be8a002c650b4fcfe50dba0b18"
     },
     {
       "segment_index": 1,
@@ -65,7 +69,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "a5d18d38fbe6fc181762976786e23e032167e31013989502d86ecb38d10854e0"
+      "sha256": "54635706de056dd3bb0fee2baff0bc9150a519d0038465a77577aa960526bdd2"
     },
     {
       "segment_index": 2,
@@ -79,7 +83,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "eaa3d4df92f403b062902ad0ee2e9fa4ae2d9fc9c171ebc817daec8631b1bb04"
+      "sha256": "ed2e3fa1a58fee7ea0dfc1151e25f6289f4aa6232acecbee5ee09ab378a38cad"
     },
     {
       "segment_index": 3,
@@ -93,7 +97,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "3fa28a72667b6c78ef0d15e4a7d8c7fb0c0395018611797adcd0abc4fa69d173"
+      "sha256": "59a50cc39b35c1c848496501c64cf4239118623807fc12694207df18de8a37e6"
     },
     {
       "segment_index": 4,
@@ -101,13 +105,13 @@
       "operation_end_exclusive": 81920,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 16384,
+        "ccx": 10428,
         "cx": 0,
         "x": 0,
-        "measurement": 0
+        "measurement": 5956
       },
-      "non_clifford_count": 16384,
-      "sha256": "fe5ed47def1fcda76ee5f791c2af5d2e8e2d68577b8904a5cf86aa7d20a5816d"
+      "non_clifford_count": 10428,
+      "sha256": "7063f47fb9593e451fb907fbaa9ae36bf4fb74af78efe88d92be68878b5b8ba3"
     },
     {
       "segment_index": 5,
@@ -121,7 +125,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "f363227465f3256856f74efeba5c42f6f58d33379c17a253d9ec58591260328a"
+      "sha256": "344dc2cf7c4f51edc132302f56894091715c68e7fb93549aa1bfcb47bc8a141a"
     },
     {
       "segment_index": 6,
@@ -135,7 +139,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "7505ddfd9df0207988af75ab757087ae771c238e9428681dbd3c76c4494ea38c"
+      "sha256": "64bc2fbf39ef21da25172660a43ad7dccd100b7823b9a80d87d37677c689e9a4"
     },
     {
       "segment_index": 7,
@@ -149,7 +153,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "9a24d99208e138b86814705d132099fdcb6fdfb4e6966329b3018c54f0acef2f"
+      "sha256": "73a8b5ffe7d31492e56a30af3fcc01f094c3e001f0cfda667a6f3dca3596171a"
     },
     {
       "segment_index": 8,
@@ -157,13 +161,13 @@
       "operation_end_exclusive": 147456,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 10428,
+        "ccx": 14658,
         "cx": 0,
         "x": 0,
-        "measurement": 5956
+        "measurement": 1726
       },
-      "non_clifford_count": 10428,
-      "sha256": "f40e71c871b6bb8e7cb8a5ce8c11092aa7c977a87f7115ae9b39ba3c1279574d"
+      "non_clifford_count": 14658,
+      "sha256": "b2ef9ed2237334d49f85b1fa77064e2f40bdedeb84c2f65dbe908f2437361675"
     },
     {
       "segment_index": 9,
@@ -171,13 +175,13 @@
       "operation_end_exclusive": 163840,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 16384,
+        "ccx": 11644,
         "cx": 0,
         "x": 0,
-        "measurement": 0
+        "measurement": 4740
       },
-      "non_clifford_count": 16384,
-      "sha256": "ba80e9372399b7735f5ee585640ca57a995e1413fadfdad819840edfea52b7d5"
+      "non_clifford_count": 11644,
+      "sha256": "418f2410993f5926abe383a91c7290a7dc6530495689ffeb88998f3b386b0324"
     },
     {
       "segment_index": 10,
@@ -191,7 +195,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "2e5c7365cdd2fc0b8c2c1c24f85d118be94681f93283a9859f3b55068e26372e"
+      "sha256": "8d89f70d0c9288e7b9562099848c55530f3def6665fc9c0cfd896c0651b206df"
     },
     {
       "segment_index": 11,
@@ -205,7 +209,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "8774c7af6640e2f06a9d20459b6cc0bac1a80021bd1e0418889eecaf50a930f6"
+      "sha256": "c0d903db8cbad7dfa8e8f629bebd5f456251eb50b73e8643410ee684d459b266"
     },
     {
       "segment_index": 12,
@@ -219,7 +223,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "155da281e6f402ad7b482d6611c8dc87852a6d73b11a9ca65be8131eb90b8cdb"
+      "sha256": "a7574bbf66b0ae89355b10fb1541624afc24f45f0f4ca925059a7b42b1932f86"
     },
     {
       "segment_index": 13,
@@ -227,13 +231,13 @@
       "operation_end_exclusive": 229376,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 16384,
+        "ccx": 12932,
         "cx": 0,
         "x": 0,
-        "measurement": 0
+        "measurement": 3452
       },
-      "non_clifford_count": 16384,
-      "sha256": "12acd247e0cf7d57056d8928901553cc57257d0b1dfcf050ea224a2c6594cde0"
+      "non_clifford_count": 12932,
+      "sha256": "707772d754135b5314384c1bd1897ed0e6219131b0ab8f383279ae7ebe4e523c"
     },
     {
       "segment_index": 14,
@@ -241,13 +245,13 @@
       "operation_end_exclusive": 245760,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 16384,
+        "ccx": 10820,
         "cx": 0,
         "x": 0,
-        "measurement": 0
+        "measurement": 5564
       },
-      "non_clifford_count": 16384,
-      "sha256": "4e2ecaf34603b388f7a9fa984c04c50a7cfcb4f4d76b38fe96b012e4197b8509"
+      "non_clifford_count": 10820,
+      "sha256": "88ea4cf5ff0932ea3de1dea8fd572ac55578b6ae7459fab8f54c3bbd3cb0ab74"
     },
     {
       "segment_index": 15,
@@ -261,7 +265,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "dc5eef25387cf518291477dca0f2411e4dc66e2db7ecdc98d2ec8c066e704138"
+      "sha256": "3dbf04c5f8200c91db27259356fe1281556a577774328354ef2a971331e0801f"
     },
     {
       "segment_index": 16,
@@ -269,13 +273,13 @@
       "operation_end_exclusive": 278528,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 14658,
+        "ccx": 16384,
         "cx": 0,
         "x": 0,
-        "measurement": 1726
+        "measurement": 0
       },
-      "non_clifford_count": 14658,
-      "sha256": "587405ba787703c34cc95b5e6fc2564c99ec241ea192ecd659943bdcd3ecfc3d"
+      "non_clifford_count": 16384,
+      "sha256": "441ee5f37d788b02052599516bef02075dd875be93bf0668efcd1ab4a2c4edc3"
     },
     {
       "segment_index": 17,
@@ -283,13 +287,13 @@
       "operation_end_exclusive": 294912,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 11644,
+        "ccx": 16384,
         "cx": 0,
         "x": 0,
-        "measurement": 4740
+        "measurement": 0
       },
-      "non_clifford_count": 11644,
-      "sha256": "9db279dc494d3eecd73bcc483f0f34670abc8904397c19cab11251a3e61b8120"
+      "non_clifford_count": 16384,
+      "sha256": "a817bf88bf75aed4e7c5396f5556a5fa0cc23f4c085b6d35ad85544abccc22f6"
     },
     {
       "segment_index": 18,
@@ -297,13 +301,13 @@
       "operation_end_exclusive": 311296,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 16384,
+        "ccx": 13756,
         "cx": 0,
         "x": 0,
-        "measurement": 0
+        "measurement": 2628
       },
-      "non_clifford_count": 16384,
-      "sha256": "c8d55a49633c061242ee0833a1b7f3db7640c545803a658fa26179364f21926e"
+      "non_clifford_count": 13756,
+      "sha256": "2582b27c77a7f06d707e131348d97a6b9404cb1065324cd9cf288f7b6ae14ad2"
     },
     {
       "segment_index": 19,
@@ -311,13 +315,13 @@
       "operation_end_exclusive": 327680,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 16384,
+        "ccx": 12546,
         "cx": 0,
         "x": 0,
-        "measurement": 0
+        "measurement": 3838
       },
-      "non_clifford_count": 16384,
-      "sha256": "2dcfca5ea4b4b28191b6eea3fcd448ebcef83dc0fbdae3eeceac2caffa12d6ee"
+      "non_clifford_count": 12546,
+      "sha256": "76810d476443ff44dba78d4ab8636b55fe99a8cdef4412a44ab1c62f2b91e25e"
     },
     {
       "segment_index": 20,
@@ -331,7 +335,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "b01771347f3e77537c2ad24bd7e3281f8d6aeca4aaa949bd5438447c7571ecb8"
+      "sha256": "7f5bdccee152b79d2abd7ce12fa2f2ff8ac12f5c241f9448f6be2da25fab4138"
     },
     {
       "segment_index": 21,
@@ -345,7 +349,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "33f63469584c98044612890e974200f2a1d96ac64098c454bbada5468949f49c"
+      "sha256": "07b52ed05cf0a5cbaf537d17cb01758d44b995136672b6f5758159407b3b3651"
     },
     {
       "segment_index": 22,
@@ -359,7 +363,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "f78f906ce73bee46148621e077b0343315f38c455a6d5efe3f3caaf515d2c5df"
+      "sha256": "828b885dfc0cadcf4875960eb3c2ee4f2e5ce98f2497eeb84ecce79336b9ff07"
     },
     {
       "segment_index": 23,
@@ -367,13 +371,13 @@
       "operation_end_exclusive": 393216,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 16384,
+        "ccx": 12030,
         "cx": 0,
         "x": 0,
-        "measurement": 0
+        "measurement": 4354
       },
-      "non_clifford_count": 16384,
-      "sha256": "a448ad039da85d1264ac7efe62ffb197bc0c4e0c6cb9ac5c1b7e72aa8aabf778"
+      "non_clifford_count": 12030,
+      "sha256": "df717d0866c00c4081b6bc4f2a012881873efbf65b469ee2798dd4e71d2b36ec"
     },
     {
       "segment_index": 24,
@@ -381,13 +385,13 @@
       "operation_end_exclusive": 409600,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 16384,
+        "ccx": 8662,
         "cx": 0,
         "x": 0,
-        "measurement": 0
+        "measurement": 7722
       },
-      "non_clifford_count": 16384,
-      "sha256": "a93a101428a4bcda8dbfe523e4552c82a56c61e4f76bce214d35ef50fa63e4a8"
+      "non_clifford_count": 8662,
+      "sha256": "fc5820e6af9ed073eff5197f7a6e5b625c6cbace6fb8cc46d461c0ffa2315524"
     },
     {
       "segment_index": 25,
@@ -395,13 +399,13 @@
       "operation_end_exclusive": 425984,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 12932,
+        "ccx": 16384,
         "cx": 0,
         "x": 0,
-        "measurement": 3452
+        "measurement": 0
       },
-      "non_clifford_count": 12932,
-      "sha256": "b7bf1a7dbfea62d3a802df3ff4625d9b9344da65e8a807a75f3203396ed64cb6"
+      "non_clifford_count": 16384,
+      "sha256": "6b126183eedf5e16d73201e7a18f4e920d5bd50bacc546b206fcf7eae8e5addd"
     },
     {
       "segment_index": 26,
@@ -409,13 +413,13 @@
       "operation_end_exclusive": 442368,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 10820,
+        "ccx": 16384,
         "cx": 0,
         "x": 0,
-        "measurement": 5564
+        "measurement": 0
       },
-      "non_clifford_count": 10820,
-      "sha256": "68ef5c69dff92e0e3b99e64ff85c66b176c62df7cc25b8201a0c991f4eba2466"
+      "non_clifford_count": 16384,
+      "sha256": "e3f86929aeb36c30b50169f3ae3a7a6f1e8105298659f671747ca9687c183b34"
     },
     {
       "segment_index": 27,
@@ -429,7 +433,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "3917baea0e0686c9224a396fcd878bbaeb027b81396e7121114ca65191bd2e6e"
+      "sha256": "390e5617774f207e1f8960c64f9fd41fa9d2657b58d6b680311b2c4c18bb5db5"
     },
     {
       "segment_index": 28,
@@ -437,13 +441,13 @@
       "operation_end_exclusive": 475136,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 16384,
+        "ccx": 15914,
         "cx": 0,
         "x": 0,
-        "measurement": 0
+        "measurement": 470
       },
-      "non_clifford_count": 16384,
-      "sha256": "8e0cbb838ab2eb7f34df79fa7525489013be61eee056b5b601ca33f583a8a029"
+      "non_clifford_count": 15914,
+      "sha256": "c483f423fc463ae066ca2126ac2ce0c42c0f0ed1604583c099542d7903a0ebcf"
     },
     {
       "segment_index": 29,
@@ -451,13 +455,13 @@
       "operation_end_exclusive": 491520,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 16384,
+        "ccx": 10898,
         "cx": 0,
         "x": 0,
-        "measurement": 0
+        "measurement": 5486
       },
-      "non_clifford_count": 16384,
-      "sha256": "a5278713601a7acf864a3a99ee5edf172ca2dd10e5eabf9517992cce99a90551"
+      "non_clifford_count": 10898,
+      "sha256": "0416333ff959bc0f8f6fd01d5726a96c9186bd2066aaed87f9360cd05dc63336"
     },
     {
       "segment_index": 30,
@@ -471,7 +475,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "65ee2817a1deb8ca0c3e0c1e54114a2a00a7c5692f1a3bd038c1f696fdf72b24"
+      "sha256": "21d25fb527450ab438de9cb412b1e25fc1c1e1a67e4762145213fba219351ffd"
     },
     {
       "segment_index": 31,
@@ -485,7 +489,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "07dbdde400bd09ed6f91df4a07c96b5c71d8b98daf32db94eabda9fcc2ad14f4"
+      "sha256": "065f48e99197690ec27ebc988d64f2db086a1ba727b082e5954e5f15df4385e3"
     },
     {
       "segment_index": 32,
@@ -499,12 +503,40 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "616071025678bb38955a6e1e1de223337cf87a058c9254095f51cea3658a3eb4"
+      "sha256": "265ebf6396456c23b9b5c292b20f91b4c67781d441bf3b26ed789cdf5425a2c9"
     },
     {
       "segment_index": 33,
       "operation_start": 540672,
       "operation_end_exclusive": 557056,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 13678,
+        "cx": 0,
+        "x": 0,
+        "measurement": 2706
+      },
+      "non_clifford_count": 13678,
+      "sha256": "e2e7a320c2a1bf70769f043b9403e69f4fd2889a3c474a412a8631a174ad03f6"
+    },
+    {
+      "segment_index": 34,
+      "operation_start": 557056,
+      "operation_end_exclusive": 573440,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 12624,
+        "cx": 0,
+        "x": 0,
+        "measurement": 3760
+      },
+      "non_clifford_count": 12624,
+      "sha256": "30baf2b552834961988f5a2ee1cfae7747e52a8182e901f6df0293f15df016c8"
+    },
+    {
+      "segment_index": 35,
+      "operation_start": 573440,
+      "operation_end_exclusive": 589824,
       "operation_count": 16384,
       "primitive_counts_total": {
         "ccx": 16384,
@@ -513,35 +545,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "bdc495b8a84accee4827d3c3da829de7d85c18a3934f0173895543d3be2eb0cb"
-    },
-    {
-      "segment_index": 34,
-      "operation_start": 557056,
-      "operation_end_exclusive": 573440,
-      "operation_count": 16384,
-      "primitive_counts_total": {
-        "ccx": 13756,
-        "cx": 0,
-        "x": 0,
-        "measurement": 2628
-      },
-      "non_clifford_count": 13756,
-      "sha256": "37bab82436f456fee5568e5bae76aed390b1b056b9836903249923c6586b3d4c"
-    },
-    {
-      "segment_index": 35,
-      "operation_start": 573440,
-      "operation_end_exclusive": 589824,
-      "operation_count": 16384,
-      "primitive_counts_total": {
-        "ccx": 12546,
-        "cx": 0,
-        "x": 0,
-        "measurement": 3838
-      },
-      "non_clifford_count": 12546,
-      "sha256": "4455a662f4b60071ff0e5b8542b9c1df00b71c7c7e3e0778629cdbfff116d4cb"
+      "sha256": "e9510ddff8176e06a80f61fcb6e45c087c7ca8d13976e3913cd34ae54b1fa9e1"
     },
     {
       "segment_index": 36,
@@ -555,7 +559,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "43116d4348f820ab5da54f46beab4cbcdca5c7be85d6426c7fb243118db910dc"
+      "sha256": "9b3e7a7c99f6eef6a0efaceeb18eb3a51838d4bdf8c7cbbfaa0ffa3a564c2092"
     },
     {
       "segment_index": 37,
@@ -569,7 +573,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "31cdbc4c595f4ab5b0ca83c704ee958f6cc21f448eca5be2269729b106773b41"
+      "sha256": "6e1a659e243d3563f60971d2e3349219f5ecb52470e5158494806df40cf08ac0"
     },
     {
       "segment_index": 38,
@@ -577,13 +581,13 @@
       "operation_end_exclusive": 638976,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 16384,
+        "ccx": 11952,
         "cx": 0,
         "x": 0,
-        "measurement": 0
+        "measurement": 4432
       },
-      "non_clifford_count": 16384,
-      "sha256": "e2841b138dc8feff44aa26b73743f3bcd84a711cb153fce8247e7bb87ccb15d5"
+      "non_clifford_count": 11952,
+      "sha256": "c5b6866d7c85c1a8aae2a99f1f4aa9174c21177a05fa3bfecd09b1ec9ec9b722"
     },
     {
       "segment_index": 39,
@@ -591,13 +595,13 @@
       "operation_end_exclusive": 655360,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 16384,
+        "ccx": 14860,
         "cx": 0,
         "x": 0,
-        "measurement": 0
+        "measurement": 1524
       },
-      "non_clifford_count": 16384,
-      "sha256": "71131783dc56ff440ae8ea6e1f2c53a03a71f9f256011af8e450fd0a116ad9d4"
+      "non_clifford_count": 14860,
+      "sha256": "69000b5a39e2e5dee95462c39033f32a7af75073256e09ae8fa0ec4278b19055"
     },
     {
       "segment_index": 40,
@@ -611,7 +615,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "71c86287e5026fdaa3777b5030ba4e0f1099d8dc1fddaa45349927608af3d7ba"
+      "sha256": "d0fce9f8880309f5a02c76c92317746517e59eb5fbe43833f55d62547bf32310"
     },
     {
       "segment_index": 41,
@@ -625,7 +629,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "e5cfcc14838f8e1768cfe98e3c09449b2bf7a4413c1fe4d9f8cd4d27a046a92c"
+      "sha256": "0512fd859705831fd0940ec324b2cd684d0283032890161ee48d634ed3a4a5ed"
     },
     {
       "segment_index": 42,
@@ -639,7 +643,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "b32294b16ab067ebec81a89ae2eee273df828d9ce15ce0f8c642e3aa0b2cc3c4"
+      "sha256": "0ee6856d3de2e279279b9eb11ac8152adbb8354441184ac5ef80e48e6e60984e"
     },
     {
       "segment_index": 43,
@@ -647,13 +651,13 @@
       "operation_end_exclusive": 720896,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 12030,
+        "ccx": 9918,
         "cx": 0,
         "x": 0,
-        "measurement": 4354
+        "measurement": 6466
       },
-      "non_clifford_count": 12030,
-      "sha256": "76aa22f6f9b716c29ff6f9a2d66e72e06c66ec795637e16c6de3c1693748b362"
+      "non_clifford_count": 9918,
+      "sha256": "b9b6286d8d5bd757f64257955a50dee5c62523c338d04979cbc90fa07b2c1577"
     },
     {
       "segment_index": 44,
@@ -661,13 +665,13 @@
       "operation_end_exclusive": 737280,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 8662,
+        "ccx": 16384,
         "cx": 0,
         "x": 0,
-        "measurement": 7722
+        "measurement": 0
       },
-      "non_clifford_count": 8662,
-      "sha256": "27cebd74ed02cc612c08f6e32067c13adc3da472c400f7afece45719d4a3a8cf"
+      "non_clifford_count": 16384,
+      "sha256": "1f287b716c028c1b30a050c50eacc427cad4cd1372fa00af1f73695b90fe88b9"
     },
     {
       "segment_index": 45,
@@ -681,7 +685,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "9184d8f6481a5039f1682e8593019f4407b4982a6aadc9ce99e14db9ab9c56d3"
+      "sha256": "d3c5784b39a85a07d6dbef506902f45d8e0a6ec0dd37b75b717a5d7ce272576f"
     },
     {
       "segment_index": 46,
@@ -695,7 +699,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "0c0c03c8a976bc25a323e0de6fdc9d3af229b42977a2e0ee67ead48947dac7af"
+      "sha256": "ebd947af27db34024ba4edf616fd0e6c9a6f1b014ac84603c9a9b9e7bab60942"
     },
     {
       "segment_index": 47,
@@ -709,7 +713,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "a5c4cf5ae2f5d1aecd7030889d2c33dee3a49c55e988e3ac4ba6a58abeb29ec5"
+      "sha256": "c7a347d8b8e32d0910e0bd8256e927a2f8d88fd9c5b389e3ebb3abfa67e926fa"
     },
     {
       "segment_index": 48,
@@ -717,13 +721,13 @@
       "operation_end_exclusive": 802816,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 15914,
+        "ccx": 10428,
         "cx": 0,
         "x": 0,
-        "measurement": 470
+        "measurement": 5956
       },
-      "non_clifford_count": 15914,
-      "sha256": "7e494a7cd258a49c04526a632e500f1343724a3c47ffa8e110d9877d1f02f458"
+      "non_clifford_count": 10428,
+      "sha256": "f5dcf08fa614903fd6eb50b269f7c26bdf66c76e71138bee9cf3b24aeabc079a"
     },
     {
       "segment_index": 49,
@@ -731,13 +735,13 @@
       "operation_end_exclusive": 819200,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 10898,
+        "ccx": 16384,
         "cx": 0,
         "x": 0,
-        "measurement": 5486
+        "measurement": 0
       },
-      "non_clifford_count": 10898,
-      "sha256": "8bbc7ddeafad883fccef18d5fad1ee69d8c7f3085124940110792434429e85b3"
+      "non_clifford_count": 16384,
+      "sha256": "e0d35f6dc021a0b27ba81e07174a4360df5f1b9b0604e95bcb877c73f81b78ef"
     },
     {
       "segment_index": 50,
@@ -751,7 +755,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "764e7e7a969030c66ebc608aaa0f0a2b787c59290bc1d59b0df77e0c08b2dd6f"
+      "sha256": "04179170528d3608aa90237ae61d5f891ecf0050fadb95e838efd7962049b5e7"
     },
     {
       "segment_index": 51,
@@ -765,12 +769,40 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "f1e21c2fd444a790a26435c316cbea9d9554c5a24f9c4cfa4c91fe40879b8cff"
+      "sha256": "d62a1c153e7d577793b98988d0bdfd5341a7012094f312587d29d24948de7546"
     },
     {
       "segment_index": 52,
       "operation_start": 851968,
       "operation_end_exclusive": 868352,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 14201,
+        "cx": 0,
+        "x": 0,
+        "measurement": 2183
+      },
+      "non_clifford_count": 14201,
+      "sha256": "d6344e976216a83963afc3c306d56f289305fae93378fcced08ecf53a49510af"
+    },
+    {
+      "segment_index": 53,
+      "operation_start": 868352,
+      "operation_end_exclusive": 884736,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 12101,
+        "cx": 0,
+        "x": 0,
+        "measurement": 4283
+      },
+      "non_clifford_count": 12101,
+      "sha256": "137bf905dee2b799bde805320212e39f5ebac579760d83768c03c6418f9fcff2"
+    },
+    {
+      "segment_index": 54,
+      "operation_start": 884736,
+      "operation_end_exclusive": 901120,
       "operation_count": 16384,
       "primitive_counts_total": {
         "ccx": 16384,
@@ -779,35 +811,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "7e81e72616d7b25ac616ea586278afcf7ce972457ec115b3eb0934d2e71cbf69"
-    },
-    {
-      "segment_index": 53,
-      "operation_start": 868352,
-      "operation_end_exclusive": 884736,
-      "operation_count": 16384,
-      "primitive_counts_total": {
-        "ccx": 13678,
-        "cx": 0,
-        "x": 0,
-        "measurement": 2706
-      },
-      "non_clifford_count": 13678,
-      "sha256": "08d3535111272b552f296de526587affd38e38584688e4d5e9eaebc824ad9843"
-    },
-    {
-      "segment_index": 54,
-      "operation_start": 884736,
-      "operation_end_exclusive": 901120,
-      "operation_count": 16384,
-      "primitive_counts_total": {
-        "ccx": 12624,
-        "cx": 0,
-        "x": 0,
-        "measurement": 3760
-      },
-      "non_clifford_count": 12624,
-      "sha256": "3432dfe9a4ad4396911dd584e4717547f0ed6b1531e785fa5b323b055203f059"
+      "sha256": "30c5465893a24f62225a8b38a528b8946bffc2564fb7fddf0b1bb7d2bb923052"
     },
     {
       "segment_index": 55,
@@ -821,7 +825,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "52c45e3ed43d996ecd68afcb24704737b0ac4589c522d0b905a7d8e2e7ae87ca"
+      "sha256": "8cdb94e9011be03add77a6925c77583548ecb2026402b01f481a396bbc963329"
     },
     {
       "segment_index": 56,
@@ -835,7 +839,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "cab88c5eeb73b309f31d45dc7eac9fed31f2985d8ee6e3fcbe6fe8514c0b8832"
+      "sha256": "bd7515df365cbae61e3b499731376d84ab459aeb66fc6043be571bc1057e3680"
     },
     {
       "segment_index": 57,
@@ -849,7 +853,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "2300210386968849d59442f05348e0471a3ed77ce156038befe88804894f0b84"
+      "sha256": "979f88998089182e57e93be6988c39696ae592820b118ab8e421a439134e582d"
     },
     {
       "segment_index": 58,
@@ -857,13 +861,13 @@
       "operation_end_exclusive": 966656,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 11952,
+        "ccx": 16384,
         "cx": 0,
         "x": 0,
-        "measurement": 4432
+        "measurement": 0
       },
-      "non_clifford_count": 11952,
-      "sha256": "456a5b1da3ffb46d7942d433c9d353d5011a277562a1ac6562932344220493d8"
+      "non_clifford_count": 16384,
+      "sha256": "da64c869b2a8463b9f8941d6ffae678062441d619f387badb9ecadc62c668192"
     },
     {
       "segment_index": 59,
@@ -871,13 +875,13 @@
       "operation_end_exclusive": 983040,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 14860,
+        "ccx": 16384,
         "cx": 0,
         "x": 0,
-        "measurement": 1524
+        "measurement": 0
       },
-      "non_clifford_count": 14860,
-      "sha256": "6d65b97226e2a7c14fb1659f448763c1c84b0860f8a341b4711694b1bc2ac023"
+      "non_clifford_count": 16384,
+      "sha256": "56c313cad049c451ad6d1d74da621a3108d230141e13af3772b385fc4e43b555"
     },
     {
       "segment_index": 60,
@@ -891,7 +895,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "5620adfd4f3f8fc6fbae6e81c5e85a3a46594f953235e525208c1b604318051d"
+      "sha256": "f4c6f699185055a1451c0640be15dca3bfdb4471d7d6bc76e142e318c98e99bb"
     },
     {
       "segment_index": 61,
@@ -905,7 +909,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "10383c05e970d2b87e83779f99a75121f065334dad45a50cbbf9a0d72dbc9d9d"
+      "sha256": "1bb70702993d118424628a882b53c7f2c45cc44ac750a08d5c1530b2ba485faa"
     },
     {
       "segment_index": 62,
@@ -919,7 +923,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "cb5badfe914968fe189fd51c84303949d09f1d7e4762c14200269e6ef208a883"
+      "sha256": "00fa347513ca5e700a7bb5c39b14183c770b8c8273f8a40e324e2a512189e87e"
     },
     {
       "segment_index": 63,
@@ -927,13 +931,13 @@
       "operation_end_exclusive": 1048576,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 9918,
+        "ccx": 16384,
         "cx": 0,
         "x": 0,
-        "measurement": 6466
+        "measurement": 0
       },
-      "non_clifford_count": 9918,
-      "sha256": "847b6996dbe0266e1472f96fb11f0da367707110289cfb5bbe7eb7c0ca19c246"
+      "non_clifford_count": 16384,
+      "sha256": "0cf3a7eb27a4d8b9d7063cb8fead07488c253ddcb11708578d863469968b5285"
     },
     {
       "segment_index": 64,
@@ -947,7 +951,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "6c791d2a5a8b17f96d9e7bcb8e672b743c25d5726b0525833ae9a02501cdfaa4"
+      "sha256": "2d50f275c76e8b481d62e598c4d26067ee7e627392aa1b1a1c890ad00cf99284"
     },
     {
       "segment_index": 65,
@@ -961,7 +965,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "a2956c8e03a41d462ea90fe51d68c817b6a37c153de8e8d90410e63af2956482"
+      "sha256": "4706ca0d60c2492bbbc18fc65aedd746633b8c1e7f350dcd51d6c53b950ac4a5"
     },
     {
       "segment_index": 66,
@@ -975,7 +979,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "98bb0f998129d633e0c135c3e82e50437c5b9629b5cc1dfccfff89ecfe93305a"
+      "sha256": "bf4b63927edf6b5814658e49076eac6b4c5ff9053bcd74fcb3e4b8549fe1d4de"
     },
     {
       "segment_index": 67,
@@ -989,7 +993,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "c136dc9a004ba06602b0290b748acfca7aefadfacf20586226e8cf34305f883a"
+      "sha256": "6e965e6de422f6da51cf5d1ba6ef7c947b3ceeceade2df65e7614c60d91fba0a"
     },
     {
       "segment_index": 68,
@@ -997,13 +1001,13 @@
       "operation_end_exclusive": 1130496,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 10428,
+        "ccx": 16384,
         "cx": 0,
         "x": 0,
-        "measurement": 5956
+        "measurement": 0
       },
-      "non_clifford_count": 10428,
-      "sha256": "e974dab9b159bf7ad627ebe12b3bb358465df70d09f8081aa87e8e72ffdeea81"
+      "non_clifford_count": 16384,
+      "sha256": "72c743d51249cd2d5622ea9c33b2a258fde5e38760b69d57524f590fafa91fb2"
     },
     {
       "segment_index": 69,
@@ -1017,7 +1021,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "47e3dd7328721584f78b47394b8536d147b53e877de9670fc8d99e97d9e2a403"
+      "sha256": "675f03d9f56be13d34aedf0083c4c24d82343d60a4722c2a2e8a53d50c8344bc"
     },
     {
       "segment_index": 70,
@@ -1031,7 +1035,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "1ebfe4a2c544ee8e2a22995bc6b4db1a4c1871e8dcdf93e7f6728b6ffc47a6a3"
+      "sha256": "ff9efeac4f528e302f4ee501a58dc48f5fea0ab6aa8b2c7010d3acee545d6887"
     },
     {
       "segment_index": 71,
@@ -1045,7 +1049,7 @@
         "measurement": 0
       },
       "non_clifford_count": 16384,
-      "sha256": "3b6a08032fb3ea9cc7ec01e4e454d5e997a62b88ee2c9d0dc4fd46e7006326a9"
+      "sha256": "68ce6b7a959943b60819c8683a029ce5bb6eccbd221e444ac5d1b0ac9bc33d35"
     },
     {
       "segment_index": 72,
@@ -1053,31 +1057,87 @@
       "operation_end_exclusive": 1196032,
       "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 14201,
+        "ccx": 16384,
         "cx": 0,
         "x": 0,
-        "measurement": 2183
+        "measurement": 0
       },
-      "non_clifford_count": 14201,
-      "sha256": "06bcecce47b7c0e27335807f5d2795f4884a2c11a0739aa72f0f5acce1235e30"
+      "non_clifford_count": 16384,
+      "sha256": "531602495ae4a20d9262ad0e8b00c56561dc408439737087af46a6cbc9cd7c5d"
     },
     {
       "segment_index": 73,
       "operation_start": 1196032,
-      "operation_end_exclusive": 1204598,
-      "operation_count": 8566,
+      "operation_end_exclusive": 1212416,
+      "operation_count": 16384,
       "primitive_counts_total": {
-        "ccx": 4283,
+        "ccx": 16384,
         "cx": 0,
         "x": 0,
-        "measurement": 4283
+        "measurement": 0
       },
-      "non_clifford_count": 4283,
-      "sha256": "9f0fd1dbd482d382cefdd3e73280360b3fb13bdf3619a78af33fdab769e9be76"
+      "non_clifford_count": 16384,
+      "sha256": "afd0882ba33fc6af249cfc792094b270a22e94c543228c73393e0dd9e62b22a9"
+    },
+    {
+      "segment_index": 74,
+      "operation_start": 1212416,
+      "operation_end_exclusive": 1228800,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "fc5e6f0c6e3679be4f27d32e05851d57451e9203f5b0ff50427cbc7ddc57bb6f"
+    },
+    {
+      "segment_index": 75,
+      "operation_start": 1228800,
+      "operation_end_exclusive": 1245184,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "6d67830c245f4b0d2c1504da3f1f338ae30d580868625ec9e3f6c00b50a4dd7a"
+    },
+    {
+      "segment_index": 76,
+      "operation_start": 1245184,
+      "operation_end_exclusive": 1261568,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "c149f3559a35635895ef88284db8248f84b0a009322ae0db13b5b05e67a19029"
+    },
+    {
+      "segment_index": 77,
+      "operation_start": 1261568,
+      "operation_end_exclusive": 1270134,
+      "operation_count": 8566,
+      "primitive_counts_total": {
+        "ccx": 8566,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 8566,
+      "sha256": "43324add7b42392092224f1a6fa5d3371e122b42bf1a97f53ebb81537fc1994a"
     }
   ],
-  "suboperation_count": 29,
-  "suboperation_counts_sha256": "d05b9eac2bd4c98f8cef17385aa082d973798df466963f7bf95ee55ae56e3cea",
+  "suboperation_count": 24,
+  "suboperation_counts_sha256": "877598a412bc52d860573ee83083052186395b421defe35ab08505224fc7d10a",
   "preview_head": [
     {
       "operation_index": 0,
@@ -1244,165 +1304,165 @@
   ],
   "preview_tail": [
     {
-      "operation_index": 1204592,
-      "suboperation_index": 28,
-      "schedule_index": 16,
-      "tail_operation_index": 16,
-      "kind": "fused_output_combine",
-      "modular_opcode": "field_add",
-      "stage": "carry_resolution",
-      "block": "conditional_subtract_modulus",
-      "local_operation_index": 1014,
-      "block_operation_index": 504,
+      "operation_index": 1270128,
+      "suboperation_index": -6,
+      "schedule_index": null,
+      "tail_operation_index": null,
+      "kind": "public_qroam_chunk_stream",
+      "modular_opcode": null,
+      "stage": "public_qroam_chunk_stream",
+      "block": "lookup_x_plus_y:chunk_1",
+      "local_operation_index": 65530,
+      "block_operation_index": 65530,
       "gate": "ccx",
       "local_operands": [
-        252
+        65530
       ],
-      "target": "Z3",
-      "target_slot": 1,
-      "owner_id": "tail_reordered_slot_1",
+      "target": "lookup_x_plus_y.chunk[1]",
+      "target_slot": null,
+      "owner_id": "lookup_workspace",
       "sources": [
-        "Z3.product_0",
-        "Z3.product_1"
+        "lookup_x_plus_y"
       ],
       "operand_wires": [
-        "field:Z3.product_0.bit[252]",
-        "field:Z3.product_1.bit[252]",
-        "field:Z3.bit[252]"
+        "lookup_workspace:lookup_x_plus_y:chunk[1].select[32762]",
+        "lookup_workspace:lookup_x_plus_y:chunk[1].target[120]",
+        "lookup_workspace:lookup_x_plus_y:chunk[1].scratch[65530]"
       ]
     },
     {
-      "operation_index": 1204593,
-      "suboperation_index": 28,
-      "schedule_index": 16,
-      "tail_operation_index": 16,
-      "kind": "fused_output_combine",
-      "modular_opcode": "field_add",
-      "stage": "carry_resolution",
-      "block": "conditional_subtract_modulus",
-      "local_operation_index": 1015,
-      "block_operation_index": 505,
-      "gate": "measurement",
-      "local_operands": [
-        252
-      ],
-      "target": "Z3",
-      "target_slot": 1,
-      "owner_id": "tail_reordered_slot_1",
-      "sources": [
-        "Z3.product_0",
-        "Z3.product_1"
-      ],
-      "operand_wires": [
-        "field:Z3.bit[252]"
-      ]
-    },
-    {
-      "operation_index": 1204594,
-      "suboperation_index": 28,
-      "schedule_index": 16,
-      "tail_operation_index": 16,
-      "kind": "fused_output_combine",
-      "modular_opcode": "field_add",
-      "stage": "carry_resolution",
-      "block": "conditional_subtract_modulus",
-      "local_operation_index": 1016,
-      "block_operation_index": 506,
+      "operation_index": 1270129,
+      "suboperation_index": -6,
+      "schedule_index": null,
+      "tail_operation_index": null,
+      "kind": "public_qroam_chunk_stream",
+      "modular_opcode": null,
+      "stage": "public_qroam_chunk_stream",
+      "block": "lookup_x_plus_y:chunk_1",
+      "local_operation_index": 65531,
+      "block_operation_index": 65531,
       "gate": "ccx",
       "local_operands": [
-        253
+        65531
       ],
-      "target": "Z3",
-      "target_slot": 1,
-      "owner_id": "tail_reordered_slot_1",
+      "target": "lookup_x_plus_y.chunk[1]",
+      "target_slot": null,
+      "owner_id": "lookup_workspace",
       "sources": [
-        "Z3.product_0",
-        "Z3.product_1"
+        "lookup_x_plus_y"
       ],
       "operand_wires": [
-        "field:Z3.product_0.bit[253]",
-        "field:Z3.product_1.bit[253]",
-        "field:Z3.bit[253]"
+        "lookup_workspace:lookup_x_plus_y:chunk[1].select[32763]",
+        "lookup_workspace:lookup_x_plus_y:chunk[1].target[121]",
+        "lookup_workspace:lookup_x_plus_y:chunk[1].scratch[65531]"
       ]
     },
     {
-      "operation_index": 1204595,
-      "suboperation_index": 28,
-      "schedule_index": 16,
-      "tail_operation_index": 16,
-      "kind": "fused_output_combine",
-      "modular_opcode": "field_add",
-      "stage": "carry_resolution",
-      "block": "conditional_subtract_modulus",
-      "local_operation_index": 1017,
-      "block_operation_index": 507,
-      "gate": "measurement",
-      "local_operands": [
-        253
-      ],
-      "target": "Z3",
-      "target_slot": 1,
-      "owner_id": "tail_reordered_slot_1",
-      "sources": [
-        "Z3.product_0",
-        "Z3.product_1"
-      ],
-      "operand_wires": [
-        "field:Z3.bit[253]"
-      ]
-    },
-    {
-      "operation_index": 1204596,
-      "suboperation_index": 28,
-      "schedule_index": 16,
-      "tail_operation_index": 16,
-      "kind": "fused_output_combine",
-      "modular_opcode": "field_add",
-      "stage": "carry_resolution",
-      "block": "conditional_subtract_modulus",
-      "local_operation_index": 1018,
-      "block_operation_index": 508,
+      "operation_index": 1270130,
+      "suboperation_index": -6,
+      "schedule_index": null,
+      "tail_operation_index": null,
+      "kind": "public_qroam_chunk_stream",
+      "modular_opcode": null,
+      "stage": "public_qroam_chunk_stream",
+      "block": "lookup_x_plus_y:chunk_1",
+      "local_operation_index": 65532,
+      "block_operation_index": 65532,
       "gate": "ccx",
       "local_operands": [
-        254
+        65532
       ],
-      "target": "Z3",
-      "target_slot": 1,
-      "owner_id": "tail_reordered_slot_1",
+      "target": "lookup_x_plus_y.chunk[1]",
+      "target_slot": null,
+      "owner_id": "lookup_workspace",
       "sources": [
-        "Z3.product_0",
-        "Z3.product_1"
+        "lookup_x_plus_y"
       ],
       "operand_wires": [
-        "field:Z3.product_0.bit[254]",
-        "field:Z3.product_1.bit[254]",
-        "field:Z3.bit[254]"
+        "lookup_workspace:lookup_x_plus_y:chunk[1].select[32764]",
+        "lookup_workspace:lookup_x_plus_y:chunk[1].target[122]",
+        "lookup_workspace:lookup_x_plus_y:chunk[1].scratch[65532]"
       ]
     },
     {
-      "operation_index": 1204597,
-      "suboperation_index": 28,
-      "schedule_index": 16,
-      "tail_operation_index": 16,
-      "kind": "fused_output_combine",
-      "modular_opcode": "field_add",
-      "stage": "carry_resolution",
-      "block": "conditional_subtract_modulus",
-      "local_operation_index": 1019,
-      "block_operation_index": 509,
-      "gate": "measurement",
+      "operation_index": 1270131,
+      "suboperation_index": -6,
+      "schedule_index": null,
+      "tail_operation_index": null,
+      "kind": "public_qroam_chunk_stream",
+      "modular_opcode": null,
+      "stage": "public_qroam_chunk_stream",
+      "block": "lookup_x_plus_y:chunk_1",
+      "local_operation_index": 65533,
+      "block_operation_index": 65533,
+      "gate": "ccx",
       "local_operands": [
-        254
+        65533
       ],
-      "target": "Z3",
-      "target_slot": 1,
-      "owner_id": "tail_reordered_slot_1",
+      "target": "lookup_x_plus_y.chunk[1]",
+      "target_slot": null,
+      "owner_id": "lookup_workspace",
       "sources": [
-        "Z3.product_0",
-        "Z3.product_1"
+        "lookup_x_plus_y"
       ],
       "operand_wires": [
-        "field:Z3.bit[254]"
+        "lookup_workspace:lookup_x_plus_y:chunk[1].select[32765]",
+        "lookup_workspace:lookup_x_plus_y:chunk[1].target[123]",
+        "lookup_workspace:lookup_x_plus_y:chunk[1].scratch[65533]"
+      ]
+    },
+    {
+      "operation_index": 1270132,
+      "suboperation_index": -6,
+      "schedule_index": null,
+      "tail_operation_index": null,
+      "kind": "public_qroam_chunk_stream",
+      "modular_opcode": null,
+      "stage": "public_qroam_chunk_stream",
+      "block": "lookup_x_plus_y:chunk_1",
+      "local_operation_index": 65534,
+      "block_operation_index": 65534,
+      "gate": "ccx",
+      "local_operands": [
+        65534
+      ],
+      "target": "lookup_x_plus_y.chunk[1]",
+      "target_slot": null,
+      "owner_id": "lookup_workspace",
+      "sources": [
+        "lookup_x_plus_y"
+      ],
+      "operand_wires": [
+        "lookup_workspace:lookup_x_plus_y:chunk[1].select[32766]",
+        "lookup_workspace:lookup_x_plus_y:chunk[1].target[124]",
+        "lookup_workspace:lookup_x_plus_y:chunk[1].scratch[65534]"
+      ]
+    },
+    {
+      "operation_index": 1270133,
+      "suboperation_index": -6,
+      "schedule_index": null,
+      "tail_operation_index": null,
+      "kind": "public_qroam_chunk_stream",
+      "modular_opcode": null,
+      "stage": "public_qroam_chunk_stream",
+      "block": "lookup_x_plus_y:chunk_1",
+      "local_operation_index": 65535,
+      "block_operation_index": 65535,
+      "gate": "ccx",
+      "local_operands": [
+        65535
+      ],
+      "target": "lookup_x_plus_y.chunk[1]",
+      "target_slot": null,
+      "owner_id": "lookup_workspace",
+      "sources": [
+        "lookup_x_plus_y"
+      ],
+      "operand_wires": [
+        "lookup_workspace:lookup_x_plus_y:chunk[1].select[32767]",
+        "lookup_workspace:lookup_x_plus_y:chunk[1].target[125]",
+        "lookup_workspace:lookup_x_plus_y:chunk[1].scratch[65535]"
       ]
     }
   ],
@@ -1410,9 +1470,11 @@
     "modular_execution_trace_passes": true,
     "modular_arithmetic_certificate_passes": true,
     "all_suboperation_counts_match_trace": true,
-    "total_counts_match_trace_suboperations": true,
-    "non_clifford_matches_trace": true,
+    "public_qroam_chunk_counts_match_stream_plan": true,
+    "total_counts_match_trace_suboperations_plus_public_qroam": true,
+    "non_clifford_matches_public_strict_leaf": true,
     "stream_scanned_every_operation": true,
+    "trace_lookup_interface_replaced_by_public_qroam_stream_plan": true,
     "all_rows_have_concrete_operand_wires": true
   },
   "pass": true,

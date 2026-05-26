@@ -408,6 +408,7 @@ def build_scheduled_modular_primitive_netlist_artifact() -> None:
             modular_execution_trace=load_json(artifact_dir / 'modular_execution_trace.json'),
             modular_arithmetic_certificate=load_json(artifact_dir / 'modular_arithmetic_certificate.json'),
             arithmetic_lowerings=load_json(artifact_dir / 'arithmetic_lowerings.json'),
+            reusable_chunk_lowering=load_json(artifact_dir / 'reusable_chunk_lowering.json'),
         ),
     )
 
