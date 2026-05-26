@@ -52,6 +52,7 @@ def build_engine_completion_audit(
     tail_macro_reversibility: Mapping[str, Any],
     tail_macro_schedule_search: Mapping[str, Any],
     compiler_parameters: Mapping[str, Any],
+    zkp_attestation_input: Mapping[str, Any],
 ) -> Dict[str, Any]:
     selected_family_name = str(compiler_parameters['public_headline_policy']['selected_public_family_name'])
     materialized_flat = public_candidate_materialized_circuit_manifest[LEGACY_WRAPPER_MATERIALIZED_FLAT_NETLIST]
@@ -77,6 +78,11 @@ def build_engine_completion_audit(
         'operation_count': int(canonical_materialized_flat['operation_count']),
         'source': PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE,
     }
+    zkp_claim_summary = zkp_attestation_input['claim_summary']
+    primary_strict_claim_document = zkp_attestation_input['primary_strict_claim_document']
+    primary_strict_claim = primary_strict_claim_document['payload']
+    primary_strict_selected = primary_strict_claim['selected_result']
+    primary_strict_level = primary_strict_claim['resource_claim_level']
     arithmetic_leaf_summary = arithmetic_operation_ir['leaf_arithmetic_summary']
     qroam_counts = qroam_primitive_certificate['traversed_counts']
     qroam_cost = qroam_primitive_certificate['qroamclean_cost_model']
@@ -224,6 +230,29 @@ def build_engine_completion_audit(
             public_engine_manifest['fast_no_zkp_contract']['prover_required'] is False
             and public_engine_manifest['fast_no_zkp_contract']['verify_group'] == 'public_engine_manifest_checks'
         ),
+        'zkp_input_binds_primary_strict_claim_without_cycle': (
+            zkp_attestation_input['primary_strict_claim_sha256'] == primary_strict_claim_document['sha256']
+            and primary_strict_claim_document['document_type'] == 'primary_strict_claim'
+            and primary_strict_claim_document['artifact_path'] == 'compiler_verification_project/artifacts/primary_strict_result.json'
+            and primary_strict_claim['schema'] == 'compiler-project-primary-strict-claim-v1'
+            and primary_strict_claim['source_artifact_path'] == 'compiler_verification_project/artifacts/primary_strict_result.json'
+            and primary_strict_claim['pass'] is True
+            and int(primary_strict_selected['non_clifford']) == public_totals['non_clifford']
+            and int(primary_strict_selected['logical_qubits']) == public_totals['logical_qubits']
+            and int(primary_strict_selected['non_clifford']) == int(zkp_claim_summary['expected_full_oracle_non_clifford'])
+            and int(primary_strict_selected['logical_qubits']) == int(zkp_claim_summary['expected_total_logical_qubits'])
+            and int(primary_strict_selected['tail_field_slots']) == int(zkp_claim_summary['logical_qubit_formula']['arithmetic_slot_count'])
+            and int(primary_strict_selected['field_bits']) == int(zkp_claim_summary['logical_qubit_formula']['field_bits'])
+            and int(primary_strict_selected['lookup_workspace_qubits']) == int(zkp_claim_summary['logical_qubit_formula']['lookup_workspace_qubits'])
+            and int(primary_strict_selected['control_qubits']) == int(zkp_claim_summary['logical_qubit_formula']['control_slot_count'])
+            and int(primary_strict_selected['phase_qubits']) == int(zkp_claim_summary['logical_qubit_formula']['live_phase_bits'])
+            and primary_strict_level['strict_resource_headline'] == 'current_primary'
+            and primary_strict_level['clifford_complete_flat_netlist'] == 'not_yet_achieved'
+            and primary_strict_level['zkp_binds_this_strict_result'] == 'not_yet_achieved'
+            and 'source_digests' not in primary_strict_claim
+            and 'primary_strict_result_sha256' not in zkp_attestation_input
+            and 'primary_strict_result_document' not in zkp_attestation_input
+        ),
         'remaining_macro_boundaries_are_explicit': True,
         'public_claim_not_marked_full_clifford_complete_until_macro_boundaries_flattened': True,
     }
@@ -288,6 +317,11 @@ def build_engine_completion_audit(
             'status': 'release_corpus_and_equivalence_checked',
             'evidence': 'streamed_lookup_tail_leaf_equivalence + release_corpus_preflight',
         },
+        {
+            'name': 'primary_strict_claim_zkp_input_binding',
+            'status': 'cycle_free_claim_bound_by_candidate_input_and_guest',
+            'evidence': 'zkp_attestation_reusable_chunk_candidate_input.primary_strict_claim_document + Rust prepared guest validation',
+        },
     ]
     remaining_macro_boundaries = [
         {
@@ -328,6 +362,10 @@ def build_engine_completion_audit(
                 ),
                 'legacy_wrapper_logical_qubits': int(public_engine_manifest['legacy_wrapper_totals']['logical_qubits']),
                 'public_engine_manifest_source': str(public_engine_manifest['public_totals']['source']),
+                'primary_strict_claim_bound_by_candidate_input': bool(checks['zkp_input_binds_primary_strict_claim_without_cycle']),
+                'primary_strict_claim_sha256': str(zkp_attestation_input['primary_strict_claim_sha256']),
+                'primary_strict_claim_non_clifford': int(primary_strict_selected['non_clifford']),
+                'primary_strict_claim_logical_qubits': int(primary_strict_selected['logical_qubits']),
             },
         },
     ]
@@ -369,6 +407,7 @@ def build_engine_completion_audit(
             'tail_macro_reversibility': tail_macro_reversibility,
             'tail_macro_schedule_search': tail_macro_schedule_search,
             'compiler_parameters': compiler_parameters,
+            'zkp_attestation_reusable_chunk_candidate_input': zkp_attestation_input,
         }),
         'source_binding_summary': {
             'rows_checked': int(source_binding['rows_checked']),

@@ -330,6 +330,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 tail_macro_reversibility=load_json(artifact_root / 'tail_macro_reversibility.json'),
                 tail_macro_schedule_search=load_json(artifact_root / 'tail_macro_schedule_search.json'),
                 compiler_parameters=load_json(artifact_root / 'compiler_parameters.json'),
+                zkp_attestation_input=load_json(artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json'),
             ),
         )
     return {name: _load_artifact(path) for name, path in required.items()}
@@ -2529,6 +2530,7 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
         tail_macro_reversibility=artifacts['tail_macro_reversibility'],
         tail_macro_schedule_search=artifacts['tail_macro_schedule_search'],
         compiler_parameters=artifacts['compiler_parameters'],
+        zkp_attestation_input=artifacts['zkp_attestation_reusable_chunk_candidate_input'],
     )
     materialized_flat = artifacts['public_candidate_materialized_circuit_manifest'][CANONICAL_MATERIALIZED_FLAT_NETLIST]
     checks = [
@@ -2545,9 +2547,10 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
             }.issubset({row['name'] for row in audit['remaining_macro_boundaries']})
             and 'qroam_bit_level_netlist_expansion' in {row['name'] for row in audit['covered_boundaries']}
             and 'arithmetic_operand_replay' in {row['name'] for row in audit['covered_boundaries']}
+            and 'primary_strict_claim_zkp_input_binding' in {row['name'] for row in audit['covered_boundaries']}
             and audit['checks']['remaining_macro_boundaries_are_explicit'] is True
             and audit['checks']['public_claim_not_marked_full_clifford_complete_until_macro_boundaries_flattened'] is True,
-            'explicit arithmetic, tail, and zkp boundaries remain; qroam and arithmetic operand replay are covered without a full-completion claim',
+            'explicit arithmetic, tail, and zkp boundaries remain; qroam, arithmetic operand replay, and primary strict input binding are covered without a full-completion claim',
             {'clifford_complete_goal_achieved': audit['clifford_complete_goal_achieved'], 'covered_boundaries': audit['covered_boundaries'], 'remaining_macro_boundaries': audit['remaining_macro_boundaries'], 'checks': audit['checks']},
         ),
         _check('engine_completion_audit_source_binding_covers_all_run_length_rows', audit['checks']['source_binding_covers_every_run_length_row'] is True and audit['source_binding_summary']['rows_checked'] == artifacts['public_candidate_materialized_circuit_manifest']['run_length_row_count'] and sum(audit['source_binding_summary']['rows_by_source_kind'].values()) == audit['source_binding_summary']['rows_checked'], 'all run-length rows source-bound', audit['source_binding_summary']),

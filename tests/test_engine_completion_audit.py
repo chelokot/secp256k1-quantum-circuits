@@ -30,6 +30,7 @@ def _build_audit(
     qroam_primitive: dict | None = None,
     qroam_table_cnot: dict | None = None,
     lookup_lowerings: dict | None = None,
+    zkp_input: dict | None = None,
 ) -> dict:
     return build_engine_completion_audit(
         public_engine_manifest=public_engine or _load('public_engine_manifest.json'),
@@ -49,6 +50,7 @@ def _build_audit(
         tail_macro_reversibility=_load('tail_macro_reversibility.json'),
         tail_macro_schedule_search=_load('tail_macro_schedule_search.json'),
         compiler_parameters=_load('compiler_parameters.json'),
+        zkp_attestation_input=zkp_input or _load('zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json'),
     )
 
 
@@ -74,8 +76,11 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     covered = {row['name']: row for row in expected['covered_boundaries']}
     assert covered['arithmetic_operand_replay']['status'] == 'exact_source_operands_replayed_to_counted_flat_netlist_wires'
     assert covered['qroam_bit_level_netlist_expansion']['status'] == 'indexed_table_cnot_rows_in_canonical_physical_flat_stream_with_iterator_export'
+    assert covered['primary_strict_claim_zkp_input_binding']['status'] == 'cycle_free_claim_bound_by_candidate_input_and_guest'
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['source_bound_run_length_rows'] == expected['source_binding_summary']['rows_by_source_kind']['arithmetic_operation_ir']
+    assert remaining['single_engine_zkp_input_derivation']['evidence_metrics']['primary_strict_claim_bound_by_candidate_input'] is True
     assert expected['checks']['arithmetic_rows_are_operation_ir_bound'] is True
+    assert expected['checks']['zkp_input_binds_primary_strict_claim_without_cycle'] is True
     qroam_table_cnot = _load('qroam_table_cnot_materialization.json')
     physical = _load('public_candidate_materialized_circuit_manifest.json')['canonical_physical_flat_netlist']
     assert physical['gate_totals']['cx'] == qroam_table_cnot['totals']['full_oracle_emitted_clifford_cx']
@@ -112,6 +117,14 @@ def test_engine_completion_audit_rejects_forged_qroam_row_index_contract() -> No
     qroam_table_cnot['checks']['row_decoder_samples_are_exact_table_cnot_rows'] = False
     observed = _build_audit(qroam_table_cnot=qroam_table_cnot)
     assert observed['checks']['qroam_table_cnot_extension_binds_counted_liveness'] is False
+    assert observed['pass'] is False
+
+
+def test_engine_completion_audit_rejects_forged_primary_strict_claim() -> None:
+    zkp_input = _load('zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json')
+    zkp_input['primary_strict_claim_document']['payload']['selected_result']['logical_qubits'] -= 1
+    observed = _build_audit(zkp_input=zkp_input)
+    assert observed['checks']['zkp_input_binds_primary_strict_claim_without_cycle'] is False
     assert observed['pass'] is False
 
 

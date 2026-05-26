@@ -430,6 +430,7 @@ def build_engine_completion_audit_artifact() -> None:
         tail_macro_reversibility=load_json(artifact_dir / 'tail_macro_reversibility.json'),
         tail_macro_schedule_search=load_json(artifact_dir / 'tail_macro_schedule_search.json'),
         compiler_parameters=compiler_parameters,
+        zkp_attestation_input=load_json(artifact_dir / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json'),
     )
     dump_json(artifact_dir / 'engine_completion_audit.json', payload)
 
@@ -534,10 +535,10 @@ def main() -> None:
         payload['arithmetic_operand_replay_audit'] = 'compiler_verification_project/artifacts/arithmetic_operand_replay_audit.json'
         build_public_engine_manifest_artifact()
         payload['public_engine_manifest'] = 'compiler_verification_project/artifacts/public_engine_manifest.json'
-        build_engine_completion_audit_artifact()
-        payload['engine_completion_audit'] = 'compiler_verification_project/artifacts/engine_completion_audit.json'
         build_candidate_zkp()
         payload['zkp_attestation_reusable_chunk_candidate'] = 'compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json'
+        build_engine_completion_audit_artifact()
+        payload['engine_completion_audit'] = 'compiler_verification_project/artifacts/engine_completion_audit.json'
     if args.target in ('release-candidate-zkp',):
         build_release_candidate_zkp()
         payload['zkp_attestation_release_candidate'] = 'compiler_verification_project/artifacts/zkp_attestation_release_candidate/zkp_attestation_input.json'
