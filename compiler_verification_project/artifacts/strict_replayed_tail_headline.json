@@ -65,7 +65,7 @@
   },
   "source_digests": {
     "tail_macro_engine_sha256": "eea48169b9577864a0dae285c1ee31e17e7329c8cb3cadb0606657871c5b7d2d",
-    "reusable_chunk_lowering_sha256": "22284a48d52f2844153dbdfcd971b1fea7fd562051a650fc4d9a5107f1955b65"
+    "reusable_chunk_lowering_sha256": "fd8751901698b247356faee49e65f9c1f65375e31bd431825add95eca281b326"
   },
   "checks": {
     "tail_engine_passes": true,

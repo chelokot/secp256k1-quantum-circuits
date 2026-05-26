@@ -299,7 +299,7 @@ def build_engine_completion_audit(
         {
             'name': 'modular_arithmetic_kernel_generation',
             'status': 'generated_from_executable_modular_circuit_ir',
-            'evidence': 'arithmetic_lowerings.executable_modular_circuit_ir + arithmetic_operation_ir.executable_modular_circuit_ir + modular_arithmetic_certificate',
+            'evidence': 'arithmetic_lowerings.executable_modular_circuit_ir + arithmetic_operation_ir.executable_modular_circuit_ir + modular_arithmetic_certificate.modular_primitive_stream_certificate',
         },
         {
             'name': 'tail_macro_cost_formula_binding',
@@ -335,9 +335,9 @@ def build_engine_completion_audit(
     remaining_macro_boundaries = [
         {
             'name': 'modular_arithmetic_clifford_expansion',
-            'status': 'generated_modular_ir_count_bound_not_one_global_clifford_schedule',
+            'status': 'local_modular_primitive_streams_hashed_not_one_global_clifford_schedule',
             'required_to_close': 'Emit and count exact concrete Clifford/CCX wire operations for every modular add, subtract, multiply, fold, and reduction step inside the same global flat schedule as the point-add leaf.',
-            'current_evidence': 'arithmetic_operation_ir + modular_arithmetic_certificate + public_candidate_materialized_circuit_manifest.operand_source_binding',
+            'current_evidence': 'arithmetic_operation_ir + modular_arithmetic_certificate.modular_primitive_stream_certificate + public_candidate_materialized_circuit_manifest.operand_source_binding',
             'evidence_metrics': {
                 'source_bound_run_length_rows': rows_by_source_kind['arithmetic_operation_ir'],
                 'leaf_arithmetic_non_clifford': int(arithmetic_leaf_summary['non_clifford_total']),
@@ -347,6 +347,9 @@ def build_engine_completion_audit(
                 'arithmetic_operand_replay_pass': bool(arithmetic_operand_replay_audit['pass']),
                 'arithmetic_operand_replay_source_operations_checked': int(arithmetic_operand_replay_audit['source_operations_checked']),
                 'arithmetic_operand_replay_rows_with_failures': int(arithmetic_operand_replay_audit['rows_with_failures']),
+                'local_modular_primitive_stream_pass': bool(modular_arithmetic_certificate['modular_primitive_stream_certificate']['pass']),
+                'local_modular_primitive_stream_operation_count': int(modular_arithmetic_certificate['modular_primitive_stream_certificate']['operation_count']),
+                'local_modular_primitive_stream_sha256': modular_arithmetic_certificate['modular_primitive_stream_certificate']['operation_stream_sha256'],
                 'field_mul_non_clifford': int(modular_arithmetic_certificate['field_mul_stage_count_certificate']['observed_total_ccx']),
                 'field_mul_stage_counts_match': bool(modular_arithmetic_certificate['field_mul_stage_count_certificate']['stage_counts_match']),
                 'modular_ir_counts_match_lowerings': bool(modular_arithmetic_certificate['executable_circuit_ir_count_certificate']['counts_match_arithmetic_lowerings']),

@@ -56,7 +56,7 @@ What it does ship is:
 - `release_corpus_preflight.json` — fast deterministic 9024-case Google-comparable semantic preflight over the executable leaf, with edge-category counts and a rolling case-stream digest
 - `arithmetic_lowerings.json` — generated primitive-operation inventories for the named arithmetic-kernel family
 - `arithmetic_operation_ir.json` — compact arithmetic operation-stream IR: every arithmetic lowering block is materialized into a canonical primitive-operation stream with per-block digests and reconstructed stage/kernel/leaf totals; modular add/sub/mul kernels are generated from the embedded `executable_modular_circuit_ir`, the selected tail macro is bound to `tail_macro_engine`, and drift between those IRs and emitted arithmetic kernels is a fast-check failure
-- `modular_arithmetic_certificate.json` — proof-bound reduced-width executable pseudo-Mersenne arithmetic certificate plus 256-bit field-mul stage-count binding
+- `modular_arithmetic_certificate.json` — proof-bound reduced-width executable pseudo-Mersenne arithmetic certificate plus a 256-bit local primitive-stream certificate that hashes every generated modular add/sub/mul kernel row before the remaining global-schedule expansion
 - `tail_macro_engine.json` — executable expanded field-operation contract for `complete_a0_all_streamed_tail`: formula rows, 23-op field-kernel stream, opcode histogram, tail non-Clifford total, strict nine-slot single-assignment fallback schedule, fixed-order and all-operand local-inverse overwrite screens, a reordered eight-slot local-inverse schedule, a fused-output seven-slot schedule with generated slot assignment, replay certificate, and owner capacity, and an unpromoted semantic six-slot pair-output candidate
 - `tail_macro_liveness.json` — generated diagnostic liveness pressure test for the `complete_a0_all_streamed_tail` formula DAG, strict fallback schedule, and tail schedule-search artifacts
 - `tail_macro_reversibility.json` — generated raw-domain and valid-projective-subspace injectivity check for the tail macro's reversible boundary
@@ -186,8 +186,8 @@ Its defining exact features are:
 - explicit arithmetic lowerings reconstruct the leaf-side non-Clifford totals
   from generated primitive-operation inventories instead of from naked opcode formulas;
 - the modular arithmetic certificate executes reduced-width pseudo-Mersenne
-  analogues exhaustively and binds the 256-bit field-mul reduction stage counts
-  back to the arithmetic lowering artifact;
+  analogues exhaustively and hashes the 256-bit local primitive streams for
+  modular add/sub/mul kernels back to the arithmetic lowering artifact;
 - explicit lookup lowerings reconstruct each lookup-family count from generated
   primitive-operation inventories instead of from naked family formulas;
 - explicit phase-shell lowerings reconstruct Hadamard, rotation, measurement,

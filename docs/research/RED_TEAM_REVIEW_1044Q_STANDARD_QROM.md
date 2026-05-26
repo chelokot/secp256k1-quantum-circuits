@@ -91,7 +91,7 @@ resource semantics and macro boundaries.
 | --- | --- | --- | --- | --- |
 | ZK-1 | P0 reviewed-state; remediated on current branch | Reviewed SP1 prepared path did not recompute sidecar hashes; current path now recomputes committed claim/leaf/family/case/resource hashes in guest | This used to let public values carry hash labels trusted from the input builder; current tests reject stale digest labels and mutated committed payloads | Keep full committed documents in the guest input and keep negative digest/payload tests |
 | ZK-2 | P0 | ZKP executes high-level field/macro semantics, not primitive QROAM/arithmetic lowerings | The proof checks point-add behavior for prepared cases, but not that the resource-counted primitive circuit implements that behavior | Feed the same resource IR into the guest or prove a separate lowering certificate |
-| RES-1 | P0 partially mitigated | The public reusable-chunk leaf now traces the counted `qchunk` scratch lane, and the primary headline counts the replayed fused-output seven-slot tail instead of the old four-slot macro tail | The `1,968` qubit result removes the old tail-slot fantasy from the public headline, but modular arithmetic and the ZKP input still are not one single Clifford-complete flat schedule | Flatten modular arithmetic into scheduled IR and make the ZKP guest/input consume `strict_replayed_tail_headline.json` |
+| RES-1 | P0 partially mitigated | The public reusable-chunk leaf now traces the counted `qchunk` scratch lane, and the primary headline counts the replayed fused-output seven-slot tail instead of the old four-slot macro tail | The `1,968` qubit result removes the old tail-slot fantasy from the public headline, and the ZKP input binds the canonical public engine manifest; modular arithmetic is still not allocated into one single Clifford-complete flat schedule | Flatten modular arithmetic into scheduled IR and keep the ZKP guest/input bound to the canonical engine manifest |
 | RES-2 | P0 partially mitigated | Modular field arithmetic costs are now digest-bound operation streams, but still not a generated modular circuit | Rust semantics applies `% p`; arithmetic lowering counts abstract add/sub/mul kernels whose modular-reduction completeness must still be trusted below the compact operation IR | Generate modular add/sub/mul circuits including reduction and count them |
 | RES-3 | P0 materially improved; still below physical-layout FT schedule | The public reusable-chunk resource ledger now has a guest-checked contract engine and a materialized flat primitive stream over counted IR, executable liveness, owner capacity, QROAM target/chunk wires, arithmetic rows, lookup rows, and phase rows | It now catches counted/executable liveness drift, owner-capacity underprovisioning, and missing full-stream materialization, but the deepest arithmetic macro semantics are still certified by generated IR/certificates rather than a routed physical FT schedule | Keep reducing the remaining macro boundary by lowering modular arithmetic certificates into the same flat primitive stream |
 | ZK-3 | P1 remediated for out-of-line proof binding | Checked compressed fixture JSON keeps `proof: null` while binary proof is separate | Large compressed proof bytes remain out-of-line, but fixtures now bind proof/verifier-key path, size, digest, and curated proof-manifest records | Keep `proof_status.py` manifest cross-checks and fixture metadata tests in the release gate |
@@ -249,7 +249,8 @@ Current additional diagnostic:
   exposes the selected zero-lifted in-place `Y3` over `C` field permutation,
   including the counted `L == 0` guard and cost reconstruction. It is now the
   primary strict resource headline, while the ZKP guest/input still needs to be
-  rebuilt to bind this exact strict contract.
+  kept bound to the canonical public engine manifest and regenerated when the
+  checked artifacts change.
 - `compiler_verification_project/artifacts/tail_macro_schedule_search.json`
   adds a stricter destructive-schedule search for the current formula DAG. It
   permits computing a formula value and dropping old values whenever the
@@ -1644,11 +1645,12 @@ Current remediation:
   makes that caveat machine-readable. It regenerates the public totals from the
   strict materialized flat netlist, checks that all run-length rows are
   source-bound by kind, rechecks the standard-QROAM cost link, checks that
-  modular arithmetic kernels derive from `executable_modular_circuit_ir`, binds
-  the selected tail macro to `tail_macro_engine`, and keeps
-  `clifford_complete_goal_achieved = false` while the tail in-place schedule
-  and single-engine ZKP-input derivation remain explicit macro
-  boundaries. The fast engine loop now includes this audit, so a future patch
+  modular arithmetic kernels derive from `executable_modular_circuit_ir` and
+  the local modular primitive-stream certificate, binds the selected tail macro
+  to `tail_macro_engine`, and keeps
+  `clifford_complete_goal_achieved = false` while the modular arithmetic
+  primitive streams are not yet allocated into one global Clifford schedule.
+  The fast engine loop now includes this audit, so a future patch
   cannot silently promote the current boundary result into a stronger
   full-engine claim by editing prose alone.
 - `compiler_verification_project/artifacts/arithmetic_operation_ir.json` now
@@ -1656,7 +1658,7 @@ Current remediation:
   materialized operation streams and digests. Modular add/sub/mul kernels are
   generated from the embedded `executable_modular_circuit_ir`; the modular
   arithmetic certificate consumes that same IR for reduced-width semantic
-  execution instead of being an independent formula source. The resource-liveness certificate
+  execution and local primitive-stream hashing instead of being an independent formula source. The resource-liveness certificate
   embeds the full compact arithmetic IR, and fast integrity checks regenerate it.
   The generated-block operand contract also distinguishes bit-index ladder
   operands from operation ordinals, so the IR's operand-capacity profile is no
@@ -1670,9 +1672,8 @@ Current remediation:
   modular-circuit IR for canonical add/sub, double-sub, triple, multiplication
   by 21, and pseudo-Mersenne multiplication. Reduced-width exhaustive tests run
   through that IR, the 256-bit IR opcode counts are checked against
-  `arithmetic_lowerings.json` and the reusable-chunk public headline metadata,
-  and the SP1 guest now reconstructs the executable modular IR step/opcode
-  counts before accepting the resource certificate.
+  `arithmetic_lowerings.json`, and the local 256-bit modular primitive streams
+  are generated and SHA-256-bound before accepting the resource certificate.
 
 Still open:
 
@@ -1884,8 +1885,8 @@ phrasing:
 - strong: checked standard-QROM compiler-family boundary at `36,973,222 / 1,968`
 - not yet strong enough: Google-equivalent proof confidence
 - not yet strong enough: fully flattened primitive-gate Shor circuit
-- most urgent engineering gap: make the ZKP guest/input bind the strict
-  replayed-tail headline and keep reducing the tail below eight field slots
+- most urgent engineering gap: allocate modular arithmetic into the same global
+  Clifford-complete schedule and keep reducing the tail below seven field slots
 
 ## Post-Review Remediation Status
 
@@ -1930,8 +1931,11 @@ Fixed after review:
   by `21`, and pseudo-Mersenne multiplication. The 256-bit IR derives the
   opcode non-Clifford counts checked against `arithmetic_lowerings.json`, and
   the same IR is executed exhaustively on reduced-width pseudo-Mersenne
-  analogues over `23^2` and `53^2` input pairs. Integrity checks and narrow
-  tests reject forged IR count bindings, forged reduction-stage counts, and
+  analogues over `23^2` and `53^2` input pairs. The certificate now also
+  materializes and hashes local 256-bit primitive streams for each modular
+  opcode: `89,688` local rows, including `77,612` CCX rows, are bound back to
+  the lowering kernels. Integrity checks and narrow tests reject forged IR count
+  bindings, forged primitive-stream counts, forged reduction-stage counts, and
   forged reduced-width results. The reusable-chunk resource certificate embeds
   this certificate, and the SP1 guest validates it before accepting the public
   resource digest.

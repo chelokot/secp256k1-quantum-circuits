@@ -2,17 +2,17 @@
   "schema": "compiler-project-zkp-attestation-input-v5",
   "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
   "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
-  "claim_sha256": "ee7f5bdc71b957bf7c4f803b232671a35677efeedfb9cc305fef203e379819d0",
+  "claim_sha256": "78f48e9423f327df51382d8a2ec2e8f0266bfc724b6bcfe995d934b73d5b2ad3",
   "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
   "family_sha256": "c6a7146ac5c0d7a63f733b0224ac9dc6fbaafb576d196128f882ecbc01e42b2b",
   "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
-  "resource_certificate_sha256": "b66f0c2c173a54da30fb1cb7c73334aec353ae525e8d0f5e7cfe4078833d31dd",
+  "resource_certificate_sha256": "c36b02da281b1e17b8b2d531b6eeb3144089c87d3f03be34ac7d3ce6ae9ca69c",
   "compiler_parameters_sha256": "e186d4ce1da44de2ed9a827d2d8e2ebd47ea665ee784f5781233ad3c429ea17f",
   "claim_document": {
     "document_type": "attestation_claim",
     "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_claim.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "ee7f5bdc71b957bf7c4f803b232671a35677efeedfb9cc305fef203e379819d0",
+    "sha256": "78f48e9423f327df51382d8a2ec2e8f0266bfc724b6bcfe995d934b73d5b2ad3",
     "payload": {
       "schema": "compiler-project-zkp-attestation-claim-v1",
       "selected_family_alias": "reusable-chunk",
@@ -25,7 +25,7 @@
       "resource_engine_summary": {
         "source": "public_engine_manifest.public_totals",
         "source_document_type": "public_engine_manifest",
-        "source_sha256": "ebe25b6ade731aa3297c6295ecadcb5dfa5293e4d3e989b550e1f9b491c9019f",
+        "source_sha256": "018fb878589c06c1d7c4f2ceefcd27e4b701aa3953d3da20942e0f8e92d880d2",
         "non_clifford": 36973222,
         "logical_qubits": 1968,
         "matches_family_snapshot": false,
@@ -324,7 +324,7 @@
     "document_type": "reusable_chunk_lowering",
     "artifact_path": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "b66f0c2c173a54da30fb1cb7c73334aec353ae525e8d0f5e7cfe4078833d31dd",
+    "sha256": "c36b02da281b1e17b8b2d531b6eeb3144089c87d3f03be34ac7d3ce6ae9ca69c",
     "payload": {
       "schema": "compiler-project-reusable-chunk-lowering-v2",
       "status": "proven_public_headline",
@@ -3506,6 +3506,2149 @@
           },
           "counts_match_arithmetic_lowerings": true
         },
+        "modular_primitive_stream_certificate": {
+          "schema": "compiler-project-modular-primitive-stream-certificate-v1",
+          "scope": "local primitive Clifford/CCX operation streams for executable modular arithmetic opcodes",
+          "operation_encoding": [
+            "opcode",
+            "step",
+            "stage",
+            "block",
+            "operation_index",
+            "block_operation_index",
+            "gate",
+            "operand_0",
+            "operand_1",
+            "operand_2"
+          ],
+          "operation_rows_materialized_in_json": false,
+          "field_bits": 256,
+          "opcode_count": 6,
+          "operation_count": 89688,
+          "primitive_counts_total": {
+            "ccx": 77612,
+            "cx": 0,
+            "x": 0,
+            "measurement": 12076
+          },
+          "non_clifford_total": 77612,
+          "operation_stream_sha256": "b171751b0773577a61045d397a493777397ed15eeece50d559c12f012199c6c7",
+          "opcodes": [
+            {
+              "opcode": "field_add",
+              "operation_count": 1020,
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              },
+              "lowering_primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              },
+              "non_clifford_total": 510,
+              "operation_stream_sha256": "5c2496ac3c58397ce7000539c82e2ce2b6011bd7b9d90b0c840fc2737cfaa179",
+              "step_count": 2,
+              "steps": [
+                {
+                  "step": "carry_ladder",
+                  "kind": "ripple_carry",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 0,
+                  "operation_end_exclusive": 510,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "carry_resolution",
+                      "block": "carry_ladder",
+                      "operation_start": 0,
+                      "operation_end_exclusive": 510,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                },
+                {
+                  "step": "conditional_subtract_modulus",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 510,
+                  "operation_end_exclusive": 1020,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "carry_resolution",
+                      "block": "conditional_subtract_modulus",
+                      "operation_start": 510,
+                      "operation_end_exclusive": 1020,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                }
+              ],
+              "preview_head": [
+                {
+                  "opcode": "field_add",
+                  "step": "carry_ladder",
+                  "stage": "carry_resolution",
+                  "block": "carry_ladder",
+                  "operation_index": 0,
+                  "block_operation_index": 0,
+                  "gate": "ccx",
+                  "operands": [
+                    0
+                  ]
+                },
+                {
+                  "opcode": "field_add",
+                  "step": "carry_ladder",
+                  "stage": "carry_resolution",
+                  "block": "carry_ladder",
+                  "operation_index": 1,
+                  "block_operation_index": 1,
+                  "gate": "measurement",
+                  "operands": [
+                    0
+                  ]
+                },
+                {
+                  "opcode": "field_add",
+                  "step": "carry_ladder",
+                  "stage": "carry_resolution",
+                  "block": "carry_ladder",
+                  "operation_index": 2,
+                  "block_operation_index": 2,
+                  "gate": "ccx",
+                  "operands": [
+                    1
+                  ]
+                },
+                {
+                  "opcode": "field_add",
+                  "step": "carry_ladder",
+                  "stage": "carry_resolution",
+                  "block": "carry_ladder",
+                  "operation_index": 3,
+                  "block_operation_index": 3,
+                  "gate": "measurement",
+                  "operands": [
+                    1
+                  ]
+                }
+              ],
+              "preview_tail": [
+                {
+                  "opcode": "field_add",
+                  "step": "conditional_subtract_modulus",
+                  "stage": "carry_resolution",
+                  "block": "conditional_subtract_modulus",
+                  "operation_index": 1016,
+                  "block_operation_index": 506,
+                  "gate": "ccx",
+                  "operands": [
+                    253
+                  ]
+                },
+                {
+                  "opcode": "field_add",
+                  "step": "conditional_subtract_modulus",
+                  "stage": "carry_resolution",
+                  "block": "conditional_subtract_modulus",
+                  "operation_index": 1017,
+                  "block_operation_index": 507,
+                  "gate": "measurement",
+                  "operands": [
+                    253
+                  ]
+                },
+                {
+                  "opcode": "field_add",
+                  "step": "conditional_subtract_modulus",
+                  "stage": "carry_resolution",
+                  "block": "conditional_subtract_modulus",
+                  "operation_index": 1018,
+                  "block_operation_index": 508,
+                  "gate": "ccx",
+                  "operands": [
+                    254
+                  ]
+                },
+                {
+                  "opcode": "field_add",
+                  "step": "conditional_subtract_modulus",
+                  "stage": "carry_resolution",
+                  "block": "conditional_subtract_modulus",
+                  "operation_index": 1019,
+                  "block_operation_index": 509,
+                  "gate": "measurement",
+                  "operands": [
+                    254
+                  ]
+                }
+              ],
+              "counts_match_executable_ir_opcode": true,
+              "counts_match_lowering_kernel": true
+            },
+            {
+              "opcode": "field_sub",
+              "operation_count": 1020,
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              },
+              "lowering_primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              },
+              "non_clifford_total": 510,
+              "operation_stream_sha256": "aece57b7cb67031af8b4e2a0402dddc7e7c1a274b576796f39c660e368a98c98",
+              "step_count": 2,
+              "steps": [
+                {
+                  "step": "borrow_ladder",
+                  "kind": "ripple_borrow",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 0,
+                  "operation_end_exclusive": 510,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "borrow_resolution",
+                      "block": "borrow_ladder",
+                      "operation_start": 0,
+                      "operation_end_exclusive": 510,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                },
+                {
+                  "step": "conditional_add_modulus",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 510,
+                  "operation_end_exclusive": 1020,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "borrow_resolution",
+                      "block": "conditional_add_modulus",
+                      "operation_start": 510,
+                      "operation_end_exclusive": 1020,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                }
+              ],
+              "preview_head": [
+                {
+                  "opcode": "field_sub",
+                  "step": "borrow_ladder",
+                  "stage": "borrow_resolution",
+                  "block": "borrow_ladder",
+                  "operation_index": 0,
+                  "block_operation_index": 0,
+                  "gate": "ccx",
+                  "operands": [
+                    0
+                  ]
+                },
+                {
+                  "opcode": "field_sub",
+                  "step": "borrow_ladder",
+                  "stage": "borrow_resolution",
+                  "block": "borrow_ladder",
+                  "operation_index": 1,
+                  "block_operation_index": 1,
+                  "gate": "measurement",
+                  "operands": [
+                    0
+                  ]
+                },
+                {
+                  "opcode": "field_sub",
+                  "step": "borrow_ladder",
+                  "stage": "borrow_resolution",
+                  "block": "borrow_ladder",
+                  "operation_index": 2,
+                  "block_operation_index": 2,
+                  "gate": "ccx",
+                  "operands": [
+                    1
+                  ]
+                },
+                {
+                  "opcode": "field_sub",
+                  "step": "borrow_ladder",
+                  "stage": "borrow_resolution",
+                  "block": "borrow_ladder",
+                  "operation_index": 3,
+                  "block_operation_index": 3,
+                  "gate": "measurement",
+                  "operands": [
+                    1
+                  ]
+                }
+              ],
+              "preview_tail": [
+                {
+                  "opcode": "field_sub",
+                  "step": "conditional_add_modulus",
+                  "stage": "borrow_resolution",
+                  "block": "conditional_add_modulus",
+                  "operation_index": 1016,
+                  "block_operation_index": 506,
+                  "gate": "ccx",
+                  "operands": [
+                    253
+                  ]
+                },
+                {
+                  "opcode": "field_sub",
+                  "step": "conditional_add_modulus",
+                  "stage": "borrow_resolution",
+                  "block": "conditional_add_modulus",
+                  "operation_index": 1017,
+                  "block_operation_index": 507,
+                  "gate": "measurement",
+                  "operands": [
+                    253
+                  ]
+                },
+                {
+                  "opcode": "field_sub",
+                  "step": "conditional_add_modulus",
+                  "stage": "borrow_resolution",
+                  "block": "conditional_add_modulus",
+                  "operation_index": 1018,
+                  "block_operation_index": 508,
+                  "gate": "ccx",
+                  "operands": [
+                    254
+                  ]
+                },
+                {
+                  "opcode": "field_sub",
+                  "step": "conditional_add_modulus",
+                  "stage": "borrow_resolution",
+                  "block": "conditional_add_modulus",
+                  "operation_index": 1019,
+                  "block_operation_index": 509,
+                  "gate": "measurement",
+                  "operands": [
+                    254
+                  ]
+                }
+              ],
+              "counts_match_executable_ir_opcode": true,
+              "counts_match_lowering_kernel": true
+            },
+            {
+              "opcode": "field_sub_sum",
+              "operation_count": 2040,
+              "primitive_counts_total": {
+                "ccx": 1020,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1020
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 1020,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1020
+              },
+              "lowering_primitive_counts_total": {
+                "ccx": 1020,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1020
+              },
+              "non_clifford_total": 1020,
+              "operation_stream_sha256": "26ad397d77bd729644c169f07bb2f8f4c7364a92ac026ae716b0a0ecca60b364",
+              "step_count": 4,
+              "steps": [
+                {
+                  "step": "first_subtract_borrow_ladder",
+                  "kind": "ripple_borrow",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 0,
+                  "operation_end_exclusive": 510,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "borrow_resolution_pair",
+                      "block": "first_subtract_borrow_ladder",
+                      "operation_start": 0,
+                      "operation_end_exclusive": 510,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                },
+                {
+                  "step": "first_subtract_conditional_add_modulus",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 510,
+                  "operation_end_exclusive": 1020,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "borrow_resolution_pair",
+                      "block": "first_subtract_conditional_add_modulus",
+                      "operation_start": 510,
+                      "operation_end_exclusive": 1020,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                },
+                {
+                  "step": "second_subtract_borrow_ladder",
+                  "kind": "ripple_borrow",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 1020,
+                  "operation_end_exclusive": 1530,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "borrow_resolution_pair",
+                      "block": "second_subtract_borrow_ladder",
+                      "operation_start": 1020,
+                      "operation_end_exclusive": 1530,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                },
+                {
+                  "step": "second_subtract_conditional_add_modulus",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 1530,
+                  "operation_end_exclusive": 2040,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "borrow_resolution_pair",
+                      "block": "second_subtract_conditional_add_modulus",
+                      "operation_start": 1530,
+                      "operation_end_exclusive": 2040,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                }
+              ],
+              "preview_head": [
+                {
+                  "opcode": "field_sub_sum",
+                  "step": "first_subtract_borrow_ladder",
+                  "stage": "borrow_resolution_pair",
+                  "block": "first_subtract_borrow_ladder",
+                  "operation_index": 0,
+                  "block_operation_index": 0,
+                  "gate": "ccx",
+                  "operands": [
+                    0
+                  ]
+                },
+                {
+                  "opcode": "field_sub_sum",
+                  "step": "first_subtract_borrow_ladder",
+                  "stage": "borrow_resolution_pair",
+                  "block": "first_subtract_borrow_ladder",
+                  "operation_index": 1,
+                  "block_operation_index": 1,
+                  "gate": "measurement",
+                  "operands": [
+                    0
+                  ]
+                },
+                {
+                  "opcode": "field_sub_sum",
+                  "step": "first_subtract_borrow_ladder",
+                  "stage": "borrow_resolution_pair",
+                  "block": "first_subtract_borrow_ladder",
+                  "operation_index": 2,
+                  "block_operation_index": 2,
+                  "gate": "ccx",
+                  "operands": [
+                    1
+                  ]
+                },
+                {
+                  "opcode": "field_sub_sum",
+                  "step": "first_subtract_borrow_ladder",
+                  "stage": "borrow_resolution_pair",
+                  "block": "first_subtract_borrow_ladder",
+                  "operation_index": 3,
+                  "block_operation_index": 3,
+                  "gate": "measurement",
+                  "operands": [
+                    1
+                  ]
+                }
+              ],
+              "preview_tail": [
+                {
+                  "opcode": "field_sub_sum",
+                  "step": "second_subtract_conditional_add_modulus",
+                  "stage": "borrow_resolution_pair",
+                  "block": "second_subtract_conditional_add_modulus",
+                  "operation_index": 2036,
+                  "block_operation_index": 506,
+                  "gate": "ccx",
+                  "operands": [
+                    253
+                  ]
+                },
+                {
+                  "opcode": "field_sub_sum",
+                  "step": "second_subtract_conditional_add_modulus",
+                  "stage": "borrow_resolution_pair",
+                  "block": "second_subtract_conditional_add_modulus",
+                  "operation_index": 2037,
+                  "block_operation_index": 507,
+                  "gate": "measurement",
+                  "operands": [
+                    253
+                  ]
+                },
+                {
+                  "opcode": "field_sub_sum",
+                  "step": "second_subtract_conditional_add_modulus",
+                  "stage": "borrow_resolution_pair",
+                  "block": "second_subtract_conditional_add_modulus",
+                  "operation_index": 2038,
+                  "block_operation_index": 508,
+                  "gate": "ccx",
+                  "operands": [
+                    254
+                  ]
+                },
+                {
+                  "opcode": "field_sub_sum",
+                  "step": "second_subtract_conditional_add_modulus",
+                  "stage": "borrow_resolution_pair",
+                  "block": "second_subtract_conditional_add_modulus",
+                  "operation_index": 2039,
+                  "block_operation_index": 509,
+                  "gate": "measurement",
+                  "operands": [
+                    254
+                  ]
+                }
+              ],
+              "counts_match_executable_ir_opcode": true,
+              "counts_match_lowering_kernel": true
+            },
+            {
+              "opcode": "field_triple",
+              "operation_count": 2040,
+              "primitive_counts_total": {
+                "ccx": 1020,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1020
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 1020,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1020
+              },
+              "lowering_primitive_counts_total": {
+                "ccx": 1020,
+                "cx": 0,
+                "x": 0,
+                "measurement": 1020
+              },
+              "non_clifford_total": 1020,
+              "operation_stream_sha256": "9007dd13da4826b6dff118e5202ec87642f56886f25387aaaf295a4df997e433",
+              "step_count": 4,
+              "steps": [
+                {
+                  "step": "first_add_carry_ladder",
+                  "kind": "ripple_carry",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 0,
+                  "operation_end_exclusive": 510,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "carry_resolution_pair",
+                      "block": "first_add_carry_ladder",
+                      "operation_start": 0,
+                      "operation_end_exclusive": 510,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                },
+                {
+                  "step": "first_add_conditional_subtract_modulus",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 510,
+                  "operation_end_exclusive": 1020,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "carry_resolution_pair",
+                      "block": "first_add_conditional_subtract_modulus",
+                      "operation_start": 510,
+                      "operation_end_exclusive": 1020,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                },
+                {
+                  "step": "second_add_carry_ladder",
+                  "kind": "ripple_carry",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 1020,
+                  "operation_end_exclusive": 1530,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "carry_resolution_pair",
+                      "block": "second_add_carry_ladder",
+                      "operation_start": 1020,
+                      "operation_end_exclusive": 1530,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                },
+                {
+                  "step": "second_add_conditional_subtract_modulus",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 1530,
+                  "operation_end_exclusive": 2040,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "carry_resolution_pair",
+                      "block": "second_add_conditional_subtract_modulus",
+                      "operation_start": 1530,
+                      "operation_end_exclusive": 2040,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                }
+              ],
+              "preview_head": [
+                {
+                  "opcode": "field_triple",
+                  "step": "first_add_carry_ladder",
+                  "stage": "carry_resolution_pair",
+                  "block": "first_add_carry_ladder",
+                  "operation_index": 0,
+                  "block_operation_index": 0,
+                  "gate": "ccx",
+                  "operands": [
+                    0
+                  ]
+                },
+                {
+                  "opcode": "field_triple",
+                  "step": "first_add_carry_ladder",
+                  "stage": "carry_resolution_pair",
+                  "block": "first_add_carry_ladder",
+                  "operation_index": 1,
+                  "block_operation_index": 1,
+                  "gate": "measurement",
+                  "operands": [
+                    0
+                  ]
+                },
+                {
+                  "opcode": "field_triple",
+                  "step": "first_add_carry_ladder",
+                  "stage": "carry_resolution_pair",
+                  "block": "first_add_carry_ladder",
+                  "operation_index": 2,
+                  "block_operation_index": 2,
+                  "gate": "ccx",
+                  "operands": [
+                    1
+                  ]
+                },
+                {
+                  "opcode": "field_triple",
+                  "step": "first_add_carry_ladder",
+                  "stage": "carry_resolution_pair",
+                  "block": "first_add_carry_ladder",
+                  "operation_index": 3,
+                  "block_operation_index": 3,
+                  "gate": "measurement",
+                  "operands": [
+                    1
+                  ]
+                }
+              ],
+              "preview_tail": [
+                {
+                  "opcode": "field_triple",
+                  "step": "second_add_conditional_subtract_modulus",
+                  "stage": "carry_resolution_pair",
+                  "block": "second_add_conditional_subtract_modulus",
+                  "operation_index": 2036,
+                  "block_operation_index": 506,
+                  "gate": "ccx",
+                  "operands": [
+                    253
+                  ]
+                },
+                {
+                  "opcode": "field_triple",
+                  "step": "second_add_conditional_subtract_modulus",
+                  "stage": "carry_resolution_pair",
+                  "block": "second_add_conditional_subtract_modulus",
+                  "operation_index": 2037,
+                  "block_operation_index": 507,
+                  "gate": "measurement",
+                  "operands": [
+                    253
+                  ]
+                },
+                {
+                  "opcode": "field_triple",
+                  "step": "second_add_conditional_subtract_modulus",
+                  "stage": "carry_resolution_pair",
+                  "block": "second_add_conditional_subtract_modulus",
+                  "operation_index": 2038,
+                  "block_operation_index": 508,
+                  "gate": "ccx",
+                  "operands": [
+                    254
+                  ]
+                },
+                {
+                  "opcode": "field_triple",
+                  "step": "second_add_conditional_subtract_modulus",
+                  "stage": "carry_resolution_pair",
+                  "block": "second_add_conditional_subtract_modulus",
+                  "operation_index": 2039,
+                  "block_operation_index": 509,
+                  "gate": "measurement",
+                  "operands": [
+                    254
+                  ]
+                }
+              ],
+              "counts_match_executable_ir_opcode": true,
+              "counts_match_lowering_kernel": true
+            },
+            {
+              "opcode": "mul_const",
+              "operation_count": 6120,
+              "primitive_counts_total": {
+                "ccx": 3060,
+                "cx": 0,
+                "x": 0,
+                "measurement": 3060
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 3060,
+                "cx": 0,
+                "x": 0,
+                "measurement": 3060
+              },
+              "lowering_primitive_counts_total": {
+                "ccx": 3060,
+                "cx": 0,
+                "x": 0,
+                "measurement": 3060
+              },
+              "non_clifford_total": 3060,
+              "operation_stream_sha256": "e6ed119767dfedafa9bfd864bd462bf2b17b13b2bac45363fdc25c478aa0b330",
+              "step_count": 12,
+              "steps": [
+                {
+                  "step": "chain_1_to_2_carry_ladder",
+                  "kind": "ripple_carry",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 0,
+                  "operation_end_exclusive": 510,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "addition_chain",
+                      "block": "chain_1_to_2_carry_ladder",
+                      "operation_start": 0,
+                      "operation_end_exclusive": 510,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                },
+                {
+                  "step": "chain_1_to_2_conditional_subtract_modulus",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 510,
+                  "operation_end_exclusive": 1020,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "addition_chain",
+                      "block": "chain_1_to_2_conditional_subtract_modulus",
+                      "operation_start": 510,
+                      "operation_end_exclusive": 1020,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                },
+                {
+                  "step": "chain_2_to_4_carry_ladder",
+                  "kind": "ripple_carry",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 1020,
+                  "operation_end_exclusive": 1530,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "addition_chain",
+                      "block": "chain_2_to_4_carry_ladder",
+                      "operation_start": 1020,
+                      "operation_end_exclusive": 1530,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                },
+                {
+                  "step": "chain_2_to_4_conditional_subtract_modulus",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 1530,
+                  "operation_end_exclusive": 2040,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "addition_chain",
+                      "block": "chain_2_to_4_conditional_subtract_modulus",
+                      "operation_start": 1530,
+                      "operation_end_exclusive": 2040,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                },
+                {
+                  "step": "chain_4_to_8_carry_ladder",
+                  "kind": "ripple_carry",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 2040,
+                  "operation_end_exclusive": 2550,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "addition_chain",
+                      "block": "chain_4_to_8_carry_ladder",
+                      "operation_start": 2040,
+                      "operation_end_exclusive": 2550,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                },
+                {
+                  "step": "chain_4_to_8_conditional_subtract_modulus",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 2550,
+                  "operation_end_exclusive": 3060,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "addition_chain",
+                      "block": "chain_4_to_8_conditional_subtract_modulus",
+                      "operation_start": 2550,
+                      "operation_end_exclusive": 3060,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                },
+                {
+                  "step": "chain_8_to_16_carry_ladder",
+                  "kind": "ripple_carry",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 3060,
+                  "operation_end_exclusive": 3570,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "addition_chain",
+                      "block": "chain_8_to_16_carry_ladder",
+                      "operation_start": 3060,
+                      "operation_end_exclusive": 3570,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                },
+                {
+                  "step": "chain_8_to_16_conditional_subtract_modulus",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 3570,
+                  "operation_end_exclusive": 4080,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "addition_chain",
+                      "block": "chain_8_to_16_conditional_subtract_modulus",
+                      "operation_start": 3570,
+                      "operation_end_exclusive": 4080,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                },
+                {
+                  "step": "chain_16_to_20_carry_ladder",
+                  "kind": "ripple_carry",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 4080,
+                  "operation_end_exclusive": 4590,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "addition_chain",
+                      "block": "chain_16_to_20_carry_ladder",
+                      "operation_start": 4080,
+                      "operation_end_exclusive": 4590,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                },
+                {
+                  "step": "chain_16_to_20_conditional_subtract_modulus",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 4590,
+                  "operation_end_exclusive": 5100,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "addition_chain",
+                      "block": "chain_16_to_20_conditional_subtract_modulus",
+                      "operation_start": 4590,
+                      "operation_end_exclusive": 5100,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                },
+                {
+                  "step": "chain_20_to_21_carry_ladder",
+                  "kind": "ripple_carry",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 5100,
+                  "operation_end_exclusive": 5610,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "addition_chain",
+                      "block": "chain_20_to_21_carry_ladder",
+                      "operation_start": 5100,
+                      "operation_end_exclusive": 5610,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                },
+                {
+                  "step": "chain_20_to_21_conditional_subtract_modulus",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 5610,
+                  "operation_end_exclusive": 6120,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "addition_chain",
+                      "block": "chain_20_to_21_conditional_subtract_modulus",
+                      "operation_start": 5610,
+                      "operation_end_exclusive": 6120,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                }
+              ],
+              "preview_head": [
+                {
+                  "opcode": "mul_const",
+                  "step": "chain_1_to_2_carry_ladder",
+                  "stage": "addition_chain",
+                  "block": "chain_1_to_2_carry_ladder",
+                  "operation_index": 0,
+                  "block_operation_index": 0,
+                  "gate": "ccx",
+                  "operands": [
+                    0
+                  ]
+                },
+                {
+                  "opcode": "mul_const",
+                  "step": "chain_1_to_2_carry_ladder",
+                  "stage": "addition_chain",
+                  "block": "chain_1_to_2_carry_ladder",
+                  "operation_index": 1,
+                  "block_operation_index": 1,
+                  "gate": "measurement",
+                  "operands": [
+                    0
+                  ]
+                },
+                {
+                  "opcode": "mul_const",
+                  "step": "chain_1_to_2_carry_ladder",
+                  "stage": "addition_chain",
+                  "block": "chain_1_to_2_carry_ladder",
+                  "operation_index": 2,
+                  "block_operation_index": 2,
+                  "gate": "ccx",
+                  "operands": [
+                    1
+                  ]
+                },
+                {
+                  "opcode": "mul_const",
+                  "step": "chain_1_to_2_carry_ladder",
+                  "stage": "addition_chain",
+                  "block": "chain_1_to_2_carry_ladder",
+                  "operation_index": 3,
+                  "block_operation_index": 3,
+                  "gate": "measurement",
+                  "operands": [
+                    1
+                  ]
+                }
+              ],
+              "preview_tail": [
+                {
+                  "opcode": "mul_const",
+                  "step": "chain_20_to_21_conditional_subtract_modulus",
+                  "stage": "addition_chain",
+                  "block": "chain_20_to_21_conditional_subtract_modulus",
+                  "operation_index": 6116,
+                  "block_operation_index": 506,
+                  "gate": "ccx",
+                  "operands": [
+                    253
+                  ]
+                },
+                {
+                  "opcode": "mul_const",
+                  "step": "chain_20_to_21_conditional_subtract_modulus",
+                  "stage": "addition_chain",
+                  "block": "chain_20_to_21_conditional_subtract_modulus",
+                  "operation_index": 6117,
+                  "block_operation_index": 507,
+                  "gate": "measurement",
+                  "operands": [
+                    253
+                  ]
+                },
+                {
+                  "opcode": "mul_const",
+                  "step": "chain_20_to_21_conditional_subtract_modulus",
+                  "stage": "addition_chain",
+                  "block": "chain_20_to_21_conditional_subtract_modulus",
+                  "operation_index": 6118,
+                  "block_operation_index": 508,
+                  "gate": "ccx",
+                  "operands": [
+                    254
+                  ]
+                },
+                {
+                  "opcode": "mul_const",
+                  "step": "chain_20_to_21_conditional_subtract_modulus",
+                  "stage": "addition_chain",
+                  "block": "chain_20_to_21_conditional_subtract_modulus",
+                  "operation_index": 6119,
+                  "block_operation_index": 509,
+                  "gate": "measurement",
+                  "operands": [
+                    254
+                  ]
+                }
+              ],
+              "counts_match_executable_ir_opcode": true,
+              "counts_match_lowering_kernel": true
+            },
+            {
+              "opcode": "field_mul",
+              "operation_count": 77448,
+              "primitive_counts_total": {
+                "ccx": 71492,
+                "cx": 0,
+                "x": 0,
+                "measurement": 5956
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 71492,
+                "cx": 0,
+                "x": 0,
+                "measurement": 5956
+              },
+              "lowering_primitive_counts_total": {
+                "ccx": 71492,
+                "cx": 0,
+                "x": 0,
+                "measurement": 5956
+              },
+              "non_clifford_total": 71492,
+              "operation_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+              "step_count": 6,
+              "steps": [
+                {
+                  "step": "partial_product_grid",
+                  "kind": "schoolbook_partial_products",
+                  "bit_count": 65536,
+                  "repeat_count": 1,
+                  "operation_start": 0,
+                  "operation_end_exclusive": 65536,
+                  "operation_count": 65536,
+                  "primitive_counts_total": {
+                    "ccx": 65536,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 0
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 65536,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 0
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "partial_products",
+                      "block": "partial_product_grid",
+                      "operation_start": 0,
+                      "operation_end_exclusive": 65536,
+                      "operation_count": 65536,
+                      "primitive_counts_total": {
+                        "ccx": 65536,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 0
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 65536,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 0
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                },
+                {
+                  "step": "controlled_add_path",
+                  "kind": "controlled_accumulator_add",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "operation_start": 65536,
+                  "operation_end_exclusive": 66046,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "controlled_add_path",
+                      "block": "controlled_add_path",
+                      "operation_start": 65536,
+                      "operation_end_exclusive": 66046,
+                      "operation_count": 510,
+                      "primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 255,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 255
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                },
+                {
+                  "step": "controlled_sub_path",
+                  "kind": "controlled_accumulator_subtract",
+                  "bit_count": 256,
+                  "repeat_count": 1,
+                  "operation_start": 66046,
+                  "operation_end_exclusive": 66558,
+                  "operation_count": 512,
+                  "primitive_counts_total": {
+                    "ccx": 256,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 256
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 256,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 256
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "controlled_sub_path",
+                      "block": "controlled_sub_path",
+                      "operation_start": 66046,
+                      "operation_end_exclusive": 66558,
+                      "operation_count": 512,
+                      "primitive_counts_total": {
+                        "ccx": 256,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 256
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 256,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 256
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                },
+                {
+                  "step": "pseudo_mersenne_first_fold",
+                  "kind": "pseudo_mersenne_fold",
+                  "bit_count": 287,
+                  "repeat_count": 15,
+                  "operation_start": 66558,
+                  "operation_end_exclusive": 75168,
+                  "operation_count": 8610,
+                  "primitive_counts_total": {
+                    "ccx": 4305,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 4305
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 4305,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 4305
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "pseudo_mersenne_first_fold",
+                      "block": "pseudo_mersenne_first_fold",
+                      "operation_start": 66558,
+                      "operation_end_exclusive": 75168,
+                      "operation_count": 8610,
+                      "primitive_counts_total": {
+                        "ccx": 4305,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 4305
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 4305,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 4305
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                },
+                {
+                  "step": "pseudo_mersenne_second_fold",
+                  "kind": "pseudo_mersenne_fold",
+                  "bit_count": 42,
+                  "repeat_count": 15,
+                  "operation_start": 75168,
+                  "operation_end_exclusive": 76428,
+                  "operation_count": 1260,
+                  "primitive_counts_total": {
+                    "ccx": 630,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 630
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 630,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 630
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "pseudo_mersenne_second_fold",
+                      "block": "pseudo_mersenne_second_fold",
+                      "operation_start": 75168,
+                      "operation_end_exclusive": 76428,
+                      "operation_count": 1260,
+                      "primitive_counts_total": {
+                        "ccx": 630,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 630
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 630,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 630
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                },
+                {
+                  "step": "pseudo_mersenne_canonicalize",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 255,
+                  "repeat_count": 2,
+                  "operation_start": 76428,
+                  "operation_end_exclusive": 77448,
+                  "operation_count": 1020,
+                  "primitive_counts_total": {
+                    "ccx": 510,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 510
+                  },
+                  "expected_primitive_counts_total": {
+                    "ccx": 510,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 510
+                  },
+                  "counts_match_executable_ir_step": true,
+                  "blocks": [
+                    {
+                      "stage": "pseudo_mersenne_canonicalize",
+                      "block": "pseudo_mersenne_canonicalize",
+                      "operation_start": 76428,
+                      "operation_end_exclusive": 77448,
+                      "operation_count": 1020,
+                      "primitive_counts_total": {
+                        "ccx": 510,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 510
+                      },
+                      "declared_primitive_counts_total": {
+                        "ccx": 510,
+                        "cx": 0,
+                        "x": 0,
+                        "measurement": 510
+                      },
+                      "counts_match_declared_block": true
+                    }
+                  ]
+                }
+              ],
+              "preview_head": [
+                {
+                  "opcode": "field_mul",
+                  "step": "partial_product_grid",
+                  "stage": "partial_products",
+                  "block": "partial_product_grid",
+                  "operation_index": 0,
+                  "block_operation_index": 0,
+                  "gate": "ccx",
+                  "operands": [
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "opcode": "field_mul",
+                  "step": "partial_product_grid",
+                  "stage": "partial_products",
+                  "block": "partial_product_grid",
+                  "operation_index": 1,
+                  "block_operation_index": 1,
+                  "gate": "ccx",
+                  "operands": [
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "opcode": "field_mul",
+                  "step": "partial_product_grid",
+                  "stage": "partial_products",
+                  "block": "partial_product_grid",
+                  "operation_index": 2,
+                  "block_operation_index": 2,
+                  "gate": "ccx",
+                  "operands": [
+                    0,
+                    2
+                  ]
+                },
+                {
+                  "opcode": "field_mul",
+                  "step": "partial_product_grid",
+                  "stage": "partial_products",
+                  "block": "partial_product_grid",
+                  "operation_index": 3,
+                  "block_operation_index": 3,
+                  "gate": "ccx",
+                  "operands": [
+                    0,
+                    3
+                  ]
+                }
+              ],
+              "preview_tail": [
+                {
+                  "opcode": "field_mul",
+                  "step": "pseudo_mersenne_canonicalize",
+                  "stage": "pseudo_mersenne_canonicalize",
+                  "block": "pseudo_mersenne_canonicalize",
+                  "operation_index": 77444,
+                  "block_operation_index": 1016,
+                  "gate": "ccx",
+                  "operands": [
+                    253
+                  ]
+                },
+                {
+                  "opcode": "field_mul",
+                  "step": "pseudo_mersenne_canonicalize",
+                  "stage": "pseudo_mersenne_canonicalize",
+                  "block": "pseudo_mersenne_canonicalize",
+                  "operation_index": 77445,
+                  "block_operation_index": 1017,
+                  "gate": "measurement",
+                  "operands": [
+                    253
+                  ]
+                },
+                {
+                  "opcode": "field_mul",
+                  "step": "pseudo_mersenne_canonicalize",
+                  "stage": "pseudo_mersenne_canonicalize",
+                  "block": "pseudo_mersenne_canonicalize",
+                  "operation_index": 77446,
+                  "block_operation_index": 1018,
+                  "gate": "ccx",
+                  "operands": [
+                    254
+                  ]
+                },
+                {
+                  "opcode": "field_mul",
+                  "step": "pseudo_mersenne_canonicalize",
+                  "stage": "pseudo_mersenne_canonicalize",
+                  "block": "pseudo_mersenne_canonicalize",
+                  "operation_index": 77447,
+                  "block_operation_index": 1019,
+                  "gate": "measurement",
+                  "operands": [
+                    254
+                  ]
+                }
+              ],
+              "counts_match_executable_ir_opcode": true,
+              "counts_match_lowering_kernel": true
+            }
+          ],
+          "failures": [],
+          "checks": {
+            "all_ir_opcodes_have_lowering_kernels": true,
+            "all_steps_have_lowering_blocks": true,
+            "all_block_streams_match_declared_counts": true,
+            "all_step_streams_match_executable_ir": true,
+            "all_opcode_streams_match_executable_ir": true,
+            "all_opcode_streams_match_lowering_kernels": true,
+            "total_stream_counts_match_executable_ir": true
+          },
+          "pass": true,
+          "notes": [
+            "Rows are generated by materializing the arithmetic lowering blocks selected by executable_modular_circuit_ir, then hashing the local primitive stream.",
+            "This certificate removes formula-only modular stage counting, but it is still a local kernel stream: operands are local bit indices, not yet allocated in one global Clifford-complete point-add schedule."
+          ]
+        },
         "opcode_count_certificate": {
           "field_bits": 256,
           "modular_add_correction_policy": "carry ladder plus conditional subtract-p correction",
@@ -6437,13 +8580,14 @@
           "arithmetic_lowering_embeds_current_executable_modular_circuit_ir": true,
           "opcode_counts_match_modular_operation_contracts": true,
           "executable_circuit_ir_counts_match_arithmetic_lowering": true,
+          "primitive_stream_certificate_matches_executable_modular_circuit_ir": true,
           "field_mul_stage_counts_match_arithmetic_lowering": true,
           "reduced_width_cases_exhaustive_pass": true
         },
         "pass": true,
         "boundary": [
-          "The arithmetic lowering now embeds the executable modular-circuit IR used to generate the modular arithmetic kernels; this certificate consumes that same IR for reduced-width semantic execution and 256-bit count binding.",
-          "Remaining work is to connect this arithmetic IR to the tail schedule as one global reversible schedule instead of a separate tail auxiliary boundary."
+          "The arithmetic lowering embeds the executable modular-circuit IR used to generate the modular arithmetic kernels; this certificate consumes that same IR for reduced-width semantic execution, 256-bit count binding, and local primitive stream hashing.",
+          "Remaining work is to allocate these local modular primitive streams into one global Clifford-complete point-add schedule with concrete wire owners and liveness."
         ]
       },
       "chunked_multiplier_primitive_contract": {
@@ -7910,7 +10054,7 @@
     "resource_engine_summary": {
       "source": "public_engine_manifest.public_totals",
       "source_document_type": "public_engine_manifest",
-      "source_sha256": "ebe25b6ade731aa3297c6295ecadcb5dfa5293e4d3e989b550e1f9b491c9019f",
+      "source_sha256": "018fb878589c06c1d7c4f2ceefcd27e4b701aa3953d3da20942e0f8e92d880d2",
       "non_clifford": 36973222,
       "logical_qubits": 1968,
       "matches_family_snapshot": false,
@@ -8274,12 +10418,12 @@
     "The proof input carries both the committed source documents and proof-ready reductions.",
     "The guest recomputes every source-document digest and derives the prepared leaf/case reductions from those documents before publishing public values."
   ],
-  "public_engine_manifest_sha256": "ebe25b6ade731aa3297c6295ecadcb5dfa5293e4d3e989b550e1f9b491c9019f",
+  "public_engine_manifest_sha256": "018fb878589c06c1d7c4f2ceefcd27e4b701aa3953d3da20942e0f8e92d880d2",
   "public_engine_manifest_document": {
     "document_type": "public_engine_manifest",
     "artifact_path": "compiler_verification_project/artifacts/public_engine_manifest.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "ebe25b6ade731aa3297c6295ecadcb5dfa5293e4d3e989b550e1f9b491c9019f",
+    "sha256": "018fb878589c06c1d7c4f2ceefcd27e4b701aa3953d3da20942e0f8e92d880d2",
     "payload": {
       "schema": "compiler-project-public-engine-manifest-v1",
       "scope": "current public reusable-chunk executable resource engine manifest",
@@ -8303,7 +10447,7 @@
         "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
         "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
         "resource_contract_engine_sha256": "0447031a514b04038ab0f51e63a0e1a5ffa187d1cab694de20d7dfc8196ea1e0",
-        "public_candidate_materialized_circuit_manifest_sha256": "8148f73a687e8bdf8c3381c4ca02548444cf9c8f0ba6800f689baba4e97f18e5",
+        "public_candidate_materialized_circuit_manifest_sha256": "6157cd0d5556a19493f4f7f15bd1411085120bf5430fc0d9e054a7c1ed8cfc0d",
         "qroam_table_cnot_materialization_sha256": "b783455ac10c7da613d154ada14315069926fddec5ce0a1ebd23e1cb4d8f3916"
       },
       "instruction_stream": {
@@ -8993,7 +11137,7 @@
       "primitive_operation_evidence": {
         "public_candidate_materialized_circuit_manifest": {
           "schema": "compiler-project-public-candidate-materialized-circuit-manifest-v1",
-          "sha256": "8148f73a687e8bdf8c3381c4ca02548444cf9c8f0ba6800f689baba4e97f18e5",
+          "sha256": "6157cd0d5556a19493f4f7f15bd1411085120bf5430fc0d9e054a7c1ed8cfc0d",
           "pass": true,
           "operation_stream_sha256": "e8b1167c3f632c2682bd6defce6e5cad8473d5da814a5e402f2a12c959823f84",
           "liveness_binding_stream_sha256": "064b5825a77559fdaab046854b89afdf58e1d3da0be53ab53652bb913c87b8eb",

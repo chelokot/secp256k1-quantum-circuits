@@ -191,17 +191,18 @@ publication wrapper rather than an upstream claim source.
 "is this already the full Clifford-complete engine?". It is generated from the
 materialized/public engine artifacts and passes only when the headline totals,
 source binding, operand ownership, QROAM primitive cost, modular arithmetic IR
-generation, semantic corpus, and tail auxiliary evidence are coherent. It
-deliberately keeps `clifford_complete_goal_achieved = false` while the tail
-macro in-place schedule and modular arithmetic Clifford expansion are not yet
-direct single-engine products. The ZKP input now uses `public_engine_manifest`
-as the strict resource authority instead of a compact strict-claim side
-document.
-Modular arithmetic is no longer a separate formula
-source: the arithmetic lowering embeds `executable_modular_circuit_ir`, emits
-the modular kernels from it, and the modular certificate consumes that same IR;
-the remaining arithmetic row in `engine_completion_audit.json` is the exact
-Clifford expansion of those modular kernels into the same global flat schedule.
+generation, semantic corpus, and tail evidence are coherent. It deliberately
+keeps `clifford_complete_goal_achieved = false` while modular arithmetic
+Clifford expansion is not yet a direct single-engine product. The ZKP input now
+uses `public_engine_manifest` as the strict resource authority instead of a
+compact strict-claim side document.
+Modular arithmetic is no longer a separate formula source: the arithmetic
+lowering embeds `executable_modular_circuit_ir`, emits the modular kernels from
+it, and the modular certificate consumes that same IR plus a generated local
+primitive-stream certificate. The remaining arithmetic row in
+`engine_completion_audit.json` is the allocation of those local modular
+primitive streams into the same global flat schedule with concrete wires,
+owners, and liveness.
 The QROAM row similarly records that the current standard-QROAMClean certificate
 now hashes generated word-level unary-iteration rows and target-bit Clifford
 load-site rows with selection-control, target-register, and loaded-bit source

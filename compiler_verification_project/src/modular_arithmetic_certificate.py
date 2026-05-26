@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 from typing import Any, Dict, List, Mapping
 
 from arithmetic_lowering import (
@@ -9,11 +11,296 @@ from arithmetic_lowering import (
     SECP256K1_PSEUDO_MERSENNE_LOW_TERM,
     SECP256K1_PSEUDO_MERSENNE_SHIFT,
     build_executable_modular_circuit_ir,
+    materialize_arithmetic_primitive_operations,
     pseudo_mersenne_modulus,
     pseudo_mersenne_reduce,
 )
 from common import SECP_P
 from derived_resources import minimal_addition_chain
+
+PRIMITIVE_KEYS = ('ccx', 'cx', 'x', 'measurement')
+MODULAR_PRIMITIVE_STREAM_ENCODING = [
+    'opcode',
+    'step',
+    'stage',
+    'block',
+    'operation_index',
+    'block_operation_index',
+    'gate',
+    'operand_0',
+    'operand_1',
+    'operand_2',
+]
+
+
+def _canonical_json(payload: Any) -> str:
+    return json.dumps(payload, sort_keys=True, separators=(',', ':'), ensure_ascii=True)
+
+
+def _empty_counts() -> Dict[str, int]:
+    return {key: 0 for key in PRIMITIVE_KEYS}
+
+
+def _add_counts(left: Dict[str, int], right: Mapping[str, Any]) -> None:
+    for key in PRIMITIVE_KEYS:
+        left[key] += int(right.get(key, 0))
+
+
+def _operation_counts(operations: List[List[Any]]) -> Dict[str, int]:
+    counts = _empty_counts()
+    for operation in operations:
+        counts[str(operation[0])] += 1
+    return counts
+
+
+def _encoded_modular_primitive_row(
+    *,
+    opcode: str,
+    step: str,
+    stage: str,
+    block: str,
+    operation_index: int,
+    block_operation_index: int,
+    operation: List[Any],
+) -> str:
+    operands = [int(value) for value in operation[1:]]
+    row = [
+        opcode,
+        step,
+        stage,
+        block,
+        int(operation_index),
+        int(block_operation_index),
+        str(operation[0]),
+        operands[0] if len(operands) > 0 else '',
+        operands[1] if len(operands) > 1 else '',
+        operands[2] if len(operands) > 2 else '',
+    ]
+    return '\t'.join(str(value) for value in row) + '\n'
+
+
+def _compact_operation_row(
+    *,
+    opcode: str,
+    step: str,
+    stage: str,
+    block: str,
+    operation_index: int,
+    block_operation_index: int,
+    operation: List[Any],
+) -> Dict[str, Any]:
+    return {
+        'opcode': opcode,
+        'step': step,
+        'stage': stage,
+        'block': block,
+        'operation_index': int(operation_index),
+        'block_operation_index': int(block_operation_index),
+        'gate': str(operation[0]),
+        'operands': [int(value) for value in operation[1:]],
+    }
+
+
+def _stage_by_name(kernel: Mapping[str, Any]) -> Dict[str, Mapping[str, Any]]:
+    return {str(stage['name']): stage for stage in kernel['stages']}
+
+
+def _blocks_for_modular_step(kernel: Mapping[str, Any], opcode: str, step_name: str) -> List[Mapping[str, Any]]:
+    if opcode == 'field_mul':
+        stage_name = {
+            'partial_product_grid': 'partial_products',
+            'controlled_add_path': 'controlled_add_path',
+            'controlled_sub_path': 'controlled_sub_path',
+            'pseudo_mersenne_first_fold': 'pseudo_mersenne_first_fold',
+            'pseudo_mersenne_second_fold': 'pseudo_mersenne_second_fold',
+            'pseudo_mersenne_canonicalize': 'pseudo_mersenne_canonicalize',
+        }[step_name]
+        return list(_stage_by_name(kernel)[stage_name]['blocks'])
+    return [
+        block
+        for stage in kernel['stages']
+        for block in stage['blocks']
+        if str(block['name']) == step_name
+    ]
+
+
+def _stage_name_for_block(kernel: Mapping[str, Any], block_name: str) -> str:
+    for stage in kernel['stages']:
+        if any(str(block['name']) == block_name for block in stage['blocks']):
+            return str(stage['name'])
+    raise ValueError(f'block {block_name} not found in kernel {kernel["opcode"]}')
+
+
+def build_modular_primitive_stream_certificate(
+    *,
+    arithmetic_lowerings: Mapping[str, Any],
+    circuit_ir: Mapping[str, Any],
+) -> Dict[str, Any]:
+    kernel_by_opcode = {
+        str(kernel['opcode']): kernel
+        for kernel in arithmetic_lowerings['kernels']
+    }
+    opcode_rows = []
+    total_counts = _empty_counts()
+    total_operation_count = 0
+    stream_root = hashlib.sha256()
+    stream_root.update(('\t'.join(MODULAR_PRIMITIVE_STREAM_ENCODING) + '\n').encode('ascii'))
+    failures: List[Dict[str, Any]] = []
+    for operation in circuit_ir['operations']:
+        opcode = str(operation['opcode'])
+        kernel = kernel_by_opcode.get(opcode)
+        if kernel is None:
+            failures.append({'opcode': opcode, 'reason': 'no_lowering_kernel'})
+            continue
+        opcode_hash = hashlib.sha256()
+        opcode_hash.update(('\t'.join(MODULAR_PRIMITIVE_STREAM_ENCODING) + '\n').encode('ascii'))
+        opcode_counts = _empty_counts()
+        opcode_operation_index = 0
+        step_rows = []
+        preview_head: List[Dict[str, Any]] = []
+        preview_tail: List[Dict[str, Any]] = []
+        for step in operation['steps']:
+            step_name = str(step['name'])
+            blocks = _blocks_for_modular_step(kernel, opcode, step_name)
+            step_counts = _empty_counts()
+            step_start = opcode_operation_index
+            block_rows = []
+            if not blocks:
+                failures.append({'opcode': opcode, 'step': step_name, 'reason': 'no_lowering_blocks'})
+            for block in blocks:
+                block_name = str(block['name'])
+                stage_name = _stage_name_for_block(kernel, block_name)
+                block_operations = materialize_arithmetic_primitive_operations(block)
+                block_counts = _operation_counts(block_operations)
+                block_start = opcode_operation_index
+                for block_operation_index, primitive_operation in enumerate(block_operations):
+                    encoded = _encoded_modular_primitive_row(
+                        opcode=opcode,
+                        step=step_name,
+                        stage=stage_name,
+                        block=block_name,
+                        operation_index=opcode_operation_index,
+                        block_operation_index=block_operation_index,
+                        operation=primitive_operation,
+                    )
+                    opcode_hash.update(encoded.encode('ascii'))
+                    stream_root.update(encoded.encode('ascii'))
+                    compact = _compact_operation_row(
+                        opcode=opcode,
+                        step=step_name,
+                        stage=stage_name,
+                        block=block_name,
+                        operation_index=opcode_operation_index,
+                        block_operation_index=block_operation_index,
+                        operation=primitive_operation,
+                    )
+                    if len(preview_head) < 4:
+                        preview_head.append(compact)
+                    preview_tail.append(compact)
+                    if len(preview_tail) > 4:
+                        preview_tail.pop(0)
+                    opcode_operation_index += 1
+                _add_counts(step_counts, block_counts)
+                block_rows.append({
+                    'stage': stage_name,
+                    'block': block_name,
+                    'operation_start': block_start,
+                    'operation_end_exclusive': opcode_operation_index,
+                    'operation_count': len(block_operations),
+                    'primitive_counts_total': block_counts,
+                    'declared_primitive_counts_total': {
+                        key: int(block['primitive_counts_total'][key])
+                        for key in PRIMITIVE_KEYS
+                    },
+                    'counts_match_declared_block': block_counts == {
+                        key: int(block['primitive_counts_total'][key])
+                        for key in PRIMITIVE_KEYS
+                    },
+                })
+            _add_counts(opcode_counts, step_counts)
+            expected_step_counts = {
+                key: int(step['primitive_counts_total'][key])
+                for key in PRIMITIVE_KEYS
+            }
+            step_rows.append({
+                'step': step_name,
+                'kind': str(step['kind']),
+                'bit_count': int(step['bit_count']),
+                'repeat_count': int(step['repeat_count']),
+                'operation_start': step_start,
+                'operation_end_exclusive': opcode_operation_index,
+                'operation_count': opcode_operation_index - step_start,
+                'primitive_counts_total': step_counts,
+                'expected_primitive_counts_total': expected_step_counts,
+                'counts_match_executable_ir_step': step_counts == expected_step_counts,
+                'blocks': block_rows,
+            })
+        expected_opcode_counts = {
+            key: int(operation['primitive_counts_total'][key])
+            for key in PRIMITIVE_KEYS
+        }
+        lowering_counts = {
+            key: int(kernel['primitive_counts_total'][key])
+            for key in PRIMITIVE_KEYS
+        }
+        _add_counts(total_counts, opcode_counts)
+        total_operation_count += opcode_operation_index
+        opcode_rows.append({
+            'opcode': opcode,
+            'operation_count': opcode_operation_index,
+            'primitive_counts_total': opcode_counts,
+            'expected_primitive_counts_total': expected_opcode_counts,
+            'lowering_primitive_counts_total': lowering_counts,
+            'non_clifford_total': int(opcode_counts['ccx']),
+            'operation_stream_sha256': opcode_hash.hexdigest(),
+            'step_count': len(step_rows),
+            'steps': step_rows,
+            'preview_head': preview_head,
+            'preview_tail': preview_tail,
+            'counts_match_executable_ir_opcode': opcode_counts == expected_opcode_counts,
+            'counts_match_lowering_kernel': opcode_counts == lowering_counts,
+        })
+    expected_total_counts = _empty_counts()
+    for operation in circuit_ir['operations']:
+        _add_counts(expected_total_counts, operation['primitive_counts_total'])
+    checks = {
+        'all_ir_opcodes_have_lowering_kernels': all(str(operation['opcode']) in kernel_by_opcode for operation in circuit_ir['operations']),
+        'all_steps_have_lowering_blocks': not failures,
+        'all_block_streams_match_declared_counts': all(
+            block['counts_match_declared_block']
+            for opcode_row in opcode_rows
+            for step_row in opcode_row['steps']
+            for block in step_row['blocks']
+        ),
+        'all_step_streams_match_executable_ir': all(
+            step_row['counts_match_executable_ir_step']
+            for opcode_row in opcode_rows
+            for step_row in opcode_row['steps']
+        ),
+        'all_opcode_streams_match_executable_ir': all(row['counts_match_executable_ir_opcode'] for row in opcode_rows),
+        'all_opcode_streams_match_lowering_kernels': all(row['counts_match_lowering_kernel'] for row in opcode_rows),
+        'total_stream_counts_match_executable_ir': total_counts == expected_total_counts,
+    }
+    return {
+        'schema': 'compiler-project-modular-primitive-stream-certificate-v1',
+        'scope': 'local primitive Clifford/CCX operation streams for executable modular arithmetic opcodes',
+        'operation_encoding': MODULAR_PRIMITIVE_STREAM_ENCODING,
+        'operation_rows_materialized_in_json': False,
+        'field_bits': int(circuit_ir['field_bits']),
+        'opcode_count': len(opcode_rows),
+        'operation_count': total_operation_count,
+        'primitive_counts_total': total_counts,
+        'non_clifford_total': int(total_counts['ccx']),
+        'operation_stream_sha256': stream_root.hexdigest(),
+        'opcodes': opcode_rows,
+        'failures': failures[:8],
+        'checks': checks,
+        'pass': all(checks.values()),
+        'notes': [
+            'Rows are generated by materializing the arithmetic lowering blocks selected by executable_modular_circuit_ir, then hashing the local primitive stream.',
+            'This certificate removes formula-only modular stage counting, but it is still a local kernel stream: operands are local bit indices, not yet allocated in one global Clifford-complete point-add schedule.',
+        ],
+    }
 
 
 def _binary_addition_chain_step_count(constant: int) -> int:
@@ -274,6 +561,10 @@ def build_modular_arithmetic_certificate(*, arithmetic_lowerings: Mapping[str, A
     )
     circuit_ir = arithmetic_lowerings['executable_modular_circuit_ir']
     circuit_ir_counts = _circuit_ir_count_certificate(circuit_ir, arithmetic_lowerings)
+    primitive_stream_certificate = build_modular_primitive_stream_certificate(
+        arithmetic_lowerings=arithmetic_lowerings,
+        circuit_ir=circuit_ir,
+    )
     reduced_width_cases = [
         _exhaustive_case(field_bits=5, shift=2, low_term=5),
         _exhaustive_case(field_bits=6, shift=3, low_term=3),
@@ -283,6 +574,7 @@ def build_modular_arithmetic_certificate(*, arithmetic_lowerings: Mapping[str, A
         'arithmetic_lowering_embeds_current_executable_modular_circuit_ir': circuit_ir == expected_circuit_ir,
         'opcode_counts_match_modular_operation_contracts': bool(opcode_counts['opcode_counts_match']),
         'executable_circuit_ir_counts_match_arithmetic_lowering': bool(circuit_ir_counts['counts_match_arithmetic_lowerings']),
+        'primitive_stream_certificate_matches_executable_modular_circuit_ir': primitive_stream_certificate['pass'] is True,
         'field_mul_stage_counts_match_arithmetic_lowering': bool(stage_counts['stage_counts_match']),
         'reduced_width_cases_exhaustive_pass': all(row['pass'] for row in reduced_width_cases),
     }
@@ -299,14 +591,15 @@ def build_modular_arithmetic_certificate(*, arithmetic_lowerings: Mapping[str, A
         },
         'executable_modular_circuit_ir': circuit_ir,
         'executable_circuit_ir_count_certificate': circuit_ir_counts,
+        'modular_primitive_stream_certificate': primitive_stream_certificate,
         'opcode_count_certificate': opcode_counts,
         'field_mul_stage_count_certificate': stage_counts,
         'reduced_width_exhaustive_cases': reduced_width_cases,
         'checks': checks,
         'pass': all(checks.values()),
         'boundary': [
-            'The arithmetic lowering now embeds the executable modular-circuit IR used to generate the modular arithmetic kernels; this certificate consumes that same IR for reduced-width semantic execution and 256-bit count binding.',
-            'Remaining work is to connect this arithmetic IR to the tail schedule as one global reversible schedule instead of a separate tail auxiliary boundary.',
+            'The arithmetic lowering embeds the executable modular-circuit IR used to generate the modular arithmetic kernels; this certificate consumes that same IR for reduced-width semantic execution, 256-bit count binding, and local primitive stream hashing.',
+            'Remaining work is to allocate these local modular primitive streams into one global Clifford-complete point-add schedule with concrete wire owners and liveness.',
         ],
     }
 
@@ -314,5 +607,6 @@ def build_modular_arithmetic_certificate(*, arithmetic_lowerings: Mapping[str, A
 __all__ = [
     'build_executable_modular_circuit_ir',
     'build_modular_arithmetic_certificate',
+    'build_modular_primitive_stream_certificate',
     'pseudo_mersenne_reduce',
 ]

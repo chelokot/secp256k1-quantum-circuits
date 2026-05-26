@@ -18,7 +18,7 @@ if str(COMPILER_SRC) not in sys.path:
     sys.path.insert(0, str(COMPILER_SRC))
 
 from integrity import build_modular_arithmetic_certificate_checks  # noqa: E402
-from modular_arithmetic_certificate import build_executable_modular_circuit_ir, build_modular_arithmetic_certificate, pseudo_mersenne_reduce  # noqa: E402
+from modular_arithmetic_certificate import build_executable_modular_circuit_ir, build_modular_arithmetic_certificate, build_modular_primitive_stream_certificate, pseudo_mersenne_reduce  # noqa: E402
 from project import FIELD_BITS, FOLDED_MAG_DOMAIN, arithmetic_lowering_library, leaf_opcode_histogram  # noqa: E402
 
 
@@ -87,6 +87,31 @@ def test_executable_modular_circuit_ir_derives_256_bit_opcode_counts() -> None:
     assert ir['non_clifford_by_opcode']['field_mul'] == certificate['field_mul_stage_count_certificate']['observed_total_ccx']
 
 
+def test_modular_primitive_stream_certificate_materializes_all_local_kernel_rows() -> None:
+    arithmetic_lowerings = _arithmetic_lowerings()
+    certificate = build_modular_arithmetic_certificate(
+        arithmetic_lowerings=arithmetic_lowerings,
+        field_bits=FIELD_BITS,
+    )
+    stream = certificate['modular_primitive_stream_certificate']
+    expected = build_modular_primitive_stream_certificate(
+        arithmetic_lowerings=arithmetic_lowerings,
+        circuit_ir=certificate['executable_modular_circuit_ir'],
+    )
+    expected_counts = {
+        key: sum(int(operation['primitive_counts_total'][key]) for operation in certificate['executable_modular_circuit_ir']['operations'])
+        for key in ('ccx', 'cx', 'x', 'measurement')
+    }
+    assert stream == expected
+    assert stream['pass'] is True
+    assert stream['opcode_count'] == len(certificate['executable_modular_circuit_ir']['operations'])
+    assert stream['primitive_counts_total'] == expected_counts
+    assert stream['non_clifford_total'] == sum(certificate['executable_modular_circuit_ir']['non_clifford_by_opcode'].values())
+    assert all(len(row['operation_stream_sha256']) == 64 for row in stream['opcodes'])
+    assert stream['checks']['all_step_streams_match_executable_ir'] is True
+    assert stream['checks']['all_opcode_streams_match_lowering_kernels'] is True
+
+
 def test_modular_arithmetic_certificate_detects_forged_stage_count() -> None:
     arithmetic_lowerings = _arithmetic_lowerings()
     certificate = build_modular_arithmetic_certificate(
@@ -131,6 +156,18 @@ def test_modular_arithmetic_certificate_detects_forged_executable_ir_count() -> 
     )
     forged = deepcopy(certificate)
     forged['executable_circuit_ir_count_certificate']['observed_non_clifford_per_opcode']['field_mul'] -= 1
+    checks = build_modular_arithmetic_certificate_checks(_artifacts(forged, arithmetic_lowerings))
+    assert checks['pass'] < checks['total']
+
+
+def test_modular_arithmetic_certificate_detects_forged_primitive_stream() -> None:
+    arithmetic_lowerings = _arithmetic_lowerings()
+    certificate = build_modular_arithmetic_certificate(
+        arithmetic_lowerings=arithmetic_lowerings,
+        field_bits=FIELD_BITS,
+    )
+    forged = deepcopy(certificate)
+    forged['modular_primitive_stream_certificate']['opcodes'][0]['primitive_counts_total']['ccx'] -= 1
     checks = build_modular_arithmetic_certificate_checks(_artifacts(forged, arithmetic_lowerings))
     assert checks['pass'] < checks['total']
 
