@@ -53,6 +53,7 @@ def _build_audit(
         scheduled_modular_primitive_netlist=_load('scheduled_modular_primitive_netlist.json'),
         modular_primitive_wire_audit=_load('modular_primitive_wire_audit.json'),
         modular_multiplier_lifecycle=_load('modular_multiplier_lifecycle.json'),
+        modular_accumulator_lowering=_load('modular_accumulator_lowering.json'),
         tail_macro_engine=_load('tail_macro_engine.json'),
         tail_macro_liveness=_load('tail_macro_liveness.json'),
         tail_macro_reversibility=_load('tail_macro_reversibility.json'),
@@ -102,6 +103,8 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['synthetic_arithmetic_scratch_cleanup_observations'] == 0
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['synthetic_arithmetic_scratch_abandoned_garbage'] == remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['synthetic_arithmetic_scratch_wire_observations']
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_multiplier_lifecycle_pass'] is True
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_lowering_pass'] is True
+    assert len(remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_lowering_sha256']) == 64
     assert len(remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_candidate_event_stream_sha256']) == 64
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_candidate_event_count'] == remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['synthetic_arithmetic_scratch_wire_observations'] * 3
     field_bits = _load('modular_multiplier_lifecycle.json')['field_bits']
@@ -111,6 +114,10 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_product_column_max'] == 2 * field_bits - 2
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_materialized_product_accumulator_bits_required'] == 2 * field_bits
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_rejects_materialized_field_slot_shortcut'] is True
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_single_grid_column_count'] == 2 * field_bits - 1
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_fold_route_count'] == 2 * field_bits - 1
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_overflowing_shift_column_count'] == 31
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_promotion_status'] == 'lowering_plan_not_promoted_to_scheduled_primitive_netlist'
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_candidate_required_consume_events'] == remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['synthetic_arithmetic_scratch_wire_observations']
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_candidate_required_cleanup_events'] == remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['synthetic_arithmetic_scratch_wire_observations']
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_candidate_peak_temporary_and_wires'] == 1

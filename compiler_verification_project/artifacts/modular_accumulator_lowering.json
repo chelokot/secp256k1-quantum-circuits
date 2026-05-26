@@ -1,0 +1,256 @@
+{
+  "schema": "compiler-project-modular-accumulator-lowering-v1",
+  "definition": "Generated lowering plan for consuming schoolbook partial-product temporary ANDs into a streamed secp256k1 pseudo-Mersenne accumulator without materializing a 512-bit product register inside a 256-bit field slot.",
+  "source_digests": {
+    "modular_multiplier_lifecycle_sha256": "4e92cb1421749f7fbcfa9f3229a83f732a67ddc67822a58e69b2ab9a14ae160b"
+  },
+  "field_bits": 256,
+  "pseudo_mersenne": {
+    "identity": "2^256 = 2^32 + 977 mod p",
+    "shift": 32,
+    "low_term": 977
+  },
+  "single_schoolbook_grid": {
+    "partial_product_count": 65536,
+    "column_count": 511,
+    "column_histogram_sha256": "e12e8933566f137176eb790991382bfd59d57ad4af3289eab86dcf843eda6596",
+    "column_min": 0,
+    "column_max": 510,
+    "preview_head": [
+      {
+        "column": 0,
+        "partial_products": 1
+      },
+      {
+        "column": 1,
+        "partial_products": 2
+      },
+      {
+        "column": 2,
+        "partial_products": 3
+      },
+      {
+        "column": 3,
+        "partial_products": 4
+      },
+      {
+        "column": 4,
+        "partial_products": 5
+      },
+      {
+        "column": 5,
+        "partial_products": 6
+      },
+      {
+        "column": 6,
+        "partial_products": 7
+      },
+      {
+        "column": 7,
+        "partial_products": 8
+      }
+    ],
+    "preview_tail": [
+      {
+        "column": 503,
+        "partial_products": 8
+      },
+      {
+        "column": 504,
+        "partial_products": 7
+      },
+      {
+        "column": 505,
+        "partial_products": 6
+      },
+      {
+        "column": 506,
+        "partial_products": 5
+      },
+      {
+        "column": 507,
+        "partial_products": 4
+      },
+      {
+        "column": 508,
+        "partial_products": 3
+      },
+      {
+        "column": 509,
+        "partial_products": 2
+      },
+      {
+        "column": 510,
+        "partial_products": 1
+      }
+    ]
+  },
+  "public_tail_route_count": {
+    "schoolbook_grid_count": 11,
+    "partial_product_routes": 720896,
+    "expected_partial_product_routes": 720896,
+    "zero_lift_guard_routes": 510,
+    "unrouted_scratch_targets": 0
+  },
+  "pseudo_mersenne_fold_routes": {
+    "route_count": 511,
+    "low_product_column_count": 256,
+    "high_product_column_count": 255,
+    "overflowing_shift_column_count": 31,
+    "routes_sha256": "05f6da34a89ec644662ee688d511e57c6a3aabd0936b5222bc81d78ac9b10e4d",
+    "preview_head": [
+      {
+        "source_column": 0,
+        "source_region": "low_product_column",
+        "low_accumulator_column": 0,
+        "shifted_accumulator_column": null,
+        "low_term_multiplier": 0,
+        "requires_second_fold_if_column_overflows_field": false
+      },
+      {
+        "source_column": 1,
+        "source_region": "low_product_column",
+        "low_accumulator_column": 1,
+        "shifted_accumulator_column": null,
+        "low_term_multiplier": 0,
+        "requires_second_fold_if_column_overflows_field": false
+      },
+      {
+        "source_column": 2,
+        "source_region": "low_product_column",
+        "low_accumulator_column": 2,
+        "shifted_accumulator_column": null,
+        "low_term_multiplier": 0,
+        "requires_second_fold_if_column_overflows_field": false
+      },
+      {
+        "source_column": 3,
+        "source_region": "low_product_column",
+        "low_accumulator_column": 3,
+        "shifted_accumulator_column": null,
+        "low_term_multiplier": 0,
+        "requires_second_fold_if_column_overflows_field": false
+      },
+      {
+        "source_column": 4,
+        "source_region": "low_product_column",
+        "low_accumulator_column": 4,
+        "shifted_accumulator_column": null,
+        "low_term_multiplier": 0,
+        "requires_second_fold_if_column_overflows_field": false
+      },
+      {
+        "source_column": 5,
+        "source_region": "low_product_column",
+        "low_accumulator_column": 5,
+        "shifted_accumulator_column": null,
+        "low_term_multiplier": 0,
+        "requires_second_fold_if_column_overflows_field": false
+      },
+      {
+        "source_column": 6,
+        "source_region": "low_product_column",
+        "low_accumulator_column": 6,
+        "shifted_accumulator_column": null,
+        "low_term_multiplier": 0,
+        "requires_second_fold_if_column_overflows_field": false
+      },
+      {
+        "source_column": 7,
+        "source_region": "low_product_column",
+        "low_accumulator_column": 7,
+        "shifted_accumulator_column": null,
+        "low_term_multiplier": 0,
+        "requires_second_fold_if_column_overflows_field": false
+      }
+    ],
+    "preview_tail": [
+      {
+        "source_column": 503,
+        "source_region": "high_product_column",
+        "low_accumulator_column": null,
+        "shifted_accumulator_column": 279,
+        "low_term_multiplier": 977,
+        "requires_second_fold_if_column_overflows_field": true
+      },
+      {
+        "source_column": 504,
+        "source_region": "high_product_column",
+        "low_accumulator_column": null,
+        "shifted_accumulator_column": 280,
+        "low_term_multiplier": 977,
+        "requires_second_fold_if_column_overflows_field": true
+      },
+      {
+        "source_column": 505,
+        "source_region": "high_product_column",
+        "low_accumulator_column": null,
+        "shifted_accumulator_column": 281,
+        "low_term_multiplier": 977,
+        "requires_second_fold_if_column_overflows_field": true
+      },
+      {
+        "source_column": 506,
+        "source_region": "high_product_column",
+        "low_accumulator_column": null,
+        "shifted_accumulator_column": 282,
+        "low_term_multiplier": 977,
+        "requires_second_fold_if_column_overflows_field": true
+      },
+      {
+        "source_column": 507,
+        "source_region": "high_product_column",
+        "low_accumulator_column": null,
+        "shifted_accumulator_column": 283,
+        "low_term_multiplier": 977,
+        "requires_second_fold_if_column_overflows_field": true
+      },
+      {
+        "source_column": 508,
+        "source_region": "high_product_column",
+        "low_accumulator_column": null,
+        "shifted_accumulator_column": 284,
+        "low_term_multiplier": 977,
+        "requires_second_fold_if_column_overflows_field": true
+      },
+      {
+        "source_column": 509,
+        "source_region": "high_product_column",
+        "low_accumulator_column": null,
+        "shifted_accumulator_column": 285,
+        "low_term_multiplier": 977,
+        "requires_second_fold_if_column_overflows_field": true
+      },
+      {
+        "source_column": 510,
+        "source_region": "high_product_column",
+        "low_accumulator_column": null,
+        "shifted_accumulator_column": 286,
+        "low_term_multiplier": 977,
+        "requires_second_fold_if_column_overflows_field": true
+      }
+    ]
+  },
+  "promotion_status": {
+    "status": "lowering_plan_not_promoted_to_scheduled_primitive_netlist",
+    "required_to_promote": [
+      "Emit primitive rows that add each routed partial product into a counted streamed accumulator lane.",
+      "Emit pseudo-Mersenne fold rows for every high product column using shift=32 and low_term=977.",
+      "Emit cleanup or measurement rows that return each temporary AND to zero before reuse.",
+      "Recompute non-Clifford and measurement totals from the promoted primitive rows."
+    ]
+  },
+  "checks": {
+    "lifecycle_schema_is_routed": true,
+    "lifecycle_passes": true,
+    "partial_product_route_count_matches_eleven_schoolbook_grids": true,
+    "single_grid_histogram_covers_all_product_columns": true,
+    "lifecycle_column_range_matches_schoolbook_histogram": true,
+    "pseudo_mersenne_fold_routes_every_product_column": true,
+    "fold_routes_preserve_low_and_high_column_counts": true,
+    "high_columns_use_checked_secp256k1_fold_constants": true,
+    "materialized_product_accumulator_shortcut_is_rejected": true,
+    "streamed_lowering_is_not_promoted_until_primitive_rows_exist": true
+  },
+  "pass": true
+}

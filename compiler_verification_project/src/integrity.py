@@ -32,6 +32,7 @@ from engine_completion_audit import ENGINE_COMPLETION_AUDIT_SCHEMA, build_engine
 from fallback_frontier_stress import build_fallback_frontier_stress
 from lookup_lowering import lookup_lowering_library, lowered_lookup_semantic_summary, materialize_lookup_primitive_operations
 from materialized_circuit import PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, build_arithmetic_operand_replay_audit, build_public_candidate_materialized_circuit_manifest
+from modular_accumulator_lowering import MODULAR_ACCUMULATOR_LOWERING_SCHEMA, build_modular_accumulator_lowering
 from modular_execution_trace import build_modular_execution_trace
 from modular_multiplier_lifecycle import MODULAR_MULTIPLIER_LIFECYCLE_SCHEMA, build_modular_multiplier_lifecycle
 from modular_primitive_wire_audit import MODULAR_PRIMITIVE_WIRE_AUDIT_SCHEMA, build_modular_primitive_wire_audit
@@ -193,6 +194,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'scheduled_modular_primitive_netlist': artifact_root / 'scheduled_modular_primitive_netlist.json',
         'modular_primitive_wire_audit': artifact_root / 'modular_primitive_wire_audit.json',
         'modular_multiplier_lifecycle': artifact_root / 'modular_multiplier_lifecycle.json',
+        'modular_accumulator_lowering': artifact_root / 'modular_accumulator_lowering.json',
         'tail_macro_liveness': artifact_root / 'tail_macro_liveness.json',
         'tail_macro_reversibility': artifact_root / 'tail_macro_reversibility.json',
         'tail_macro_schedule_search': artifact_root / 'tail_macro_schedule_search.json',
@@ -336,6 +338,13 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
             ),
         )
         dump_json(
+            artifact_root / 'modular_accumulator_lowering.json',
+            build_modular_accumulator_lowering(
+                modular_multiplier_lifecycle=load_json(artifact_root / 'modular_multiplier_lifecycle.json'),
+                field_bits=FIELD_BITS,
+            ),
+        )
+        dump_json(
             artifact_root / 'public_engine_manifest.json',
             build_public_engine_manifest(
                 reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
@@ -380,6 +389,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 scheduled_modular_primitive_netlist=load_json(artifact_root / 'scheduled_modular_primitive_netlist.json'),
                 modular_primitive_wire_audit=load_json(artifact_root / 'modular_primitive_wire_audit.json'),
                 modular_multiplier_lifecycle=load_json(artifact_root / 'modular_multiplier_lifecycle.json'),
+                modular_accumulator_lowering=load_json(artifact_root / 'modular_accumulator_lowering.json'),
                 tail_macro_engine=load_json(artifact_root / 'tail_macro_engine.json'),
                 tail_macro_liveness=load_json(artifact_root / 'tail_macro_liveness.json'),
                 tail_macro_reversibility=load_json(artifact_root / 'tail_macro_reversibility.json'),
@@ -2662,6 +2672,22 @@ def build_modular_multiplier_lifecycle_checks(artifacts: Mapping[str, Any]) -> D
     return _summarize_checks(checks)
 
 
+def build_modular_accumulator_lowering_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    lowering = artifacts['modular_accumulator_lowering']
+    expected = build_modular_accumulator_lowering(
+        modular_multiplier_lifecycle=artifacts['modular_multiplier_lifecycle'],
+        field_bits=FIELD_BITS,
+    )
+    checks = [
+        _check('modular_accumulator_lowering_matches_generator', lowering == expected, expected, lowering),
+        _check('modular_accumulator_lowering_schema_is_current', lowering['schema'] == MODULAR_ACCUMULATOR_LOWERING_SCHEMA, MODULAR_ACCUMULATOR_LOWERING_SCHEMA, lowering['schema']),
+        _check('modular_accumulator_lowering_passes_internal_checks', lowering['pass'] is True and all(lowering['checks'].values()), True, lowering['checks']),
+        _check('modular_accumulator_lowering_rejects_512_to_256_shortcut', lowering['checks']['materialized_product_accumulator_shortcut_is_rejected'] is True and lowering['single_schoolbook_grid']['column_count'] == 2 * FIELD_BITS - 1 and lowering['public_tail_route_count']['partial_product_routes'] == 11 * FIELD_BITS * FIELD_BITS, 'streamed accumulator plan rejects materialized product shortcut', lowering),
+        _check('modular_accumulator_lowering_remains_unpromoted_until_rows_exist', lowering['promotion_status']['status'] == 'lowering_plan_not_promoted_to_scheduled_primitive_netlist', 'lowering_plan_not_promoted_to_scheduled_primitive_netlist', lowering['promotion_status']),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     audit = artifacts['engine_completion_audit']
     expected = build_engine_completion_audit(
@@ -2681,6 +2707,7 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
         scheduled_modular_primitive_netlist=artifacts['scheduled_modular_primitive_netlist'],
         modular_primitive_wire_audit=artifacts['modular_primitive_wire_audit'],
         modular_multiplier_lifecycle=artifacts['modular_multiplier_lifecycle'],
+        modular_accumulator_lowering=artifacts['modular_accumulator_lowering'],
         tail_macro_engine=artifacts['tail_macro_engine'],
         tail_macro_liveness=artifacts['tail_macro_liveness'],
         tail_macro_reversibility=artifacts['tail_macro_reversibility'],
@@ -3495,6 +3522,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'scheduled_modular_primitive_netlist_checks': lambda: build_scheduled_modular_primitive_netlist_checks(artifacts),
         'modular_primitive_wire_audit_checks': lambda: build_modular_primitive_wire_audit_checks(artifacts),
         'modular_multiplier_lifecycle_checks': lambda: build_modular_multiplier_lifecycle_checks(artifacts),
+        'modular_accumulator_lowering_checks': lambda: build_modular_accumulator_lowering_checks(artifacts),
         'public_engine_manifest_checks': lambda: build_public_engine_manifest_checks(artifacts),
         'engine_completion_audit_checks': lambda: build_engine_completion_audit_checks(artifacts),
         'arithmetic_operand_replay_audit_checks': lambda: build_arithmetic_operand_replay_audit_checks(artifacts),

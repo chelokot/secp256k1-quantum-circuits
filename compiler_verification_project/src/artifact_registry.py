@@ -54,6 +54,7 @@ BUILD_SUMMARY_ARTIFACT_PATHS: Dict[str, str] = {
     'scheduled_modular_primitive_netlist': 'compiler_verification_project/artifacts/scheduled_modular_primitive_netlist.json',
     'modular_primitive_wire_audit': 'compiler_verification_project/artifacts/modular_primitive_wire_audit.json',
     'modular_multiplier_lifecycle': 'compiler_verification_project/artifacts/modular_multiplier_lifecycle.json',
+    'modular_accumulator_lowering': 'compiler_verification_project/artifacts/modular_accumulator_lowering.json',
     'arithmetic_operand_replay_audit': 'compiler_verification_project/artifacts/arithmetic_operand_replay_audit.json',
     'headline_resource_manifest': 'compiler_verification_project/artifacts/headline_resource_manifest.json',
     'public_engine_manifest': 'compiler_verification_project/artifacts/public_engine_manifest.json',

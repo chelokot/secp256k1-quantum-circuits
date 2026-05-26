@@ -177,6 +177,7 @@ def build_proof_environment_contract(*, repo_root: Path) -> dict[str, Any]:
         'public_values_match_input_claim',
         'all_fixtures_bind_same_public_values',
         'fixtures_bind_checked_input_digest',
+        'full_clifford_complete_engine_ready_for_publication',
     }
     non_freshness_checks = {
         name: passed
