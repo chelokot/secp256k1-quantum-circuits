@@ -146,6 +146,7 @@ def build_public_engine_manifest(
     phase_shell_lowerings: Mapping[str, Any],
     public_candidate_materialized_circuit_manifest: Mapping[str, Any],
     modular_execution_trace: Mapping[str, Any],
+    scheduled_modular_primitive_netlist: Mapping[str, Any],
     selected_family_name: str,
 ) -> Dict[str, Any]:
     executable_resource_engine = reusable_chunk_lowering['executable_resource_engine']
@@ -391,6 +392,13 @@ def build_public_engine_manifest(
             and modular_execution_trace['source_digests']['public_candidate_materialized_circuit_manifest_sha256'] == _sha256_payload(public_candidate_materialized_circuit_manifest)
             and public_candidate_materialized_circuit_manifest['modular_arithmetic_engine_integration']['pass'] is True
         ),
+        'scheduled_modular_primitive_netlist_is_bound': (
+            scheduled_modular_primitive_netlist['pass'] is True
+            and scheduled_modular_primitive_netlist['source_digests']['modular_execution_trace_sha256'] == _sha256_payload(modular_execution_trace)
+            and int(scheduled_modular_primitive_netlist['non_clifford_count']) == int(modular_execution_trace['reconstructed_non_clifford'])
+            and int(scheduled_modular_primitive_netlist['operation_count']) >= int(scheduled_modular_primitive_netlist['non_clifford_count'])
+            and len(str(scheduled_modular_primitive_netlist['operation_stream_sha256'])) == 64
+        ),
     }
     return {
         'schema': PUBLIC_ENGINE_MANIFEST_SCHEMA,
@@ -409,6 +417,7 @@ def build_public_engine_manifest(
             'resource_contract_engine_sha256': executable_resource_engine['resource_contract_engine_sha256'],
             'public_candidate_materialized_circuit_manifest_sha256': _sha256_payload(public_candidate_materialized_circuit_manifest),
             'modular_execution_trace_sha256': _sha256_payload(modular_execution_trace),
+            'scheduled_modular_primitive_netlist_sha256': _sha256_payload(scheduled_modular_primitive_netlist),
             'qroam_table_cnot_materialization_sha256': _sha256_payload(qroam_table_cnot_materialization),
         },
         'instruction_stream': {
@@ -609,6 +618,20 @@ def build_public_engine_manifest(
                         key: int(value)
                         for key, value in sorted(modular_execution_trace['modular_opcode_histogram'].items())
                     },
+                },
+                'scheduled_modular_primitive_netlist': {
+                    'schema': scheduled_modular_primitive_netlist['schema'],
+                    'sha256': _sha256_payload(scheduled_modular_primitive_netlist),
+                    'pass': bool(scheduled_modular_primitive_netlist['pass']),
+                    'operation_count': int(scheduled_modular_primitive_netlist['operation_count']),
+                    'segment_count': int(scheduled_modular_primitive_netlist['segment_count']),
+                    'operation_stream_sha256': scheduled_modular_primitive_netlist['operation_stream_sha256'],
+                    'primitive_counts_total': {
+                        key: int(value)
+                        for key, value in scheduled_modular_primitive_netlist['primitive_counts_total'].items()
+                    },
+                    'non_clifford_count': int(scheduled_modular_primitive_netlist['non_clifford_count']),
+                    'suboperation_count': int(scheduled_modular_primitive_netlist['suboperation_count']),
                 },
                 'non_clifford': int(public_candidate_materialized_circuit_manifest['public_totals']['non_clifford']),
                 'peak_live_qubits': int(public_candidate_materialized_circuit_manifest['public_totals']['logical_qubits']),

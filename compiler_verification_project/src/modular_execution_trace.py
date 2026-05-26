@@ -355,7 +355,7 @@ def build_modular_execution_trace(
         'pass': all(checks.values()),
         'boundary': [
             'This trace gives one scheduled tail-level modular execution trace with explicit slots, source liveness, reversible overwrite contracts, modular primitive stream bindings, lookup stream rows, and the zero-lift guard row.',
-            'It is still a compact step trace rather than a JSON dump of every primitive gate row; exact primitive rows remain available through the materialized netlist iterator and modular primitive stream hashes.',
+            'The scheduled_modular_primitive_netlist artifact expands this compact trace into a deterministic primitive-row stream with segment hashes and derived CCX/measurement totals.',
         ],
     }
 

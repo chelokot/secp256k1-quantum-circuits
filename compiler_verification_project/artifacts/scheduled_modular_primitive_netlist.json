@@ -1,0 +1,1423 @@
+{
+  "schema": "compiler-project-scheduled-modular-primitive-netlist-v1",
+  "definition": "Deterministic primitive-row expansion of the scheduled modular execution trace; every generated row is scanned into the stream hash and segment hashes.",
+  "source_digests": {
+    "modular_execution_trace_sha256": "4d8dbe6e13e09da859e1dc1c640917d33973a9c9907ca336fc80bd3d070a127c",
+    "modular_arithmetic_certificate_sha256": "5dc1bc120d7c52d9b0118c1ff01d28e8bb13fa6060da2aafaed6e15200e38ff8",
+    "arithmetic_lowerings_sha256": "d7f6819b985e388f16948aace8a636aa853b5b4dadadd6042095bf6fb047621a"
+  },
+  "stream_columns": [
+    "operation_index",
+    "suboperation_index",
+    "schedule_index",
+    "tail_operation_index",
+    "kind",
+    "modular_opcode",
+    "stage",
+    "block",
+    "local_operation_index",
+    "block_operation_index",
+    "gate",
+    "local_operands",
+    "target",
+    "target_slot",
+    "owner_id",
+    "sources",
+    "operand_wires"
+  ],
+  "exact_operation_stream_materialized_by_iterator": true,
+  "operation_rows_materialized_in_json": false,
+  "segment_size": 16384,
+  "operation_count": 1204598,
+  "segment_count": 74,
+  "operation_stream_sha256": "ee8d63635ea649092474479cf000ee20eb876ea6b6e83a032b68248a65f92690",
+  "primitive_counts_total": {
+    "ccx": 1126842,
+    "cx": 0,
+    "x": 0,
+    "measurement": 77756
+  },
+  "non_clifford_count": 1126842,
+  "segments": [
+    {
+      "segment_index": 0,
+      "operation_start": 0,
+      "operation_end_exclusive": 16384,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 15874,
+        "cx": 0,
+        "x": 0,
+        "measurement": 510
+      },
+      "non_clifford_count": 15874,
+      "sha256": "1da29a7b567065ddc31fd236a8e51f2f05a0d46f9015755a2a2723a984438de3"
+    },
+    {
+      "segment_index": 1,
+      "operation_start": 16384,
+      "operation_end_exclusive": 32768,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "a5d18d38fbe6fc181762976786e23e032167e31013989502d86ecb38d10854e0"
+    },
+    {
+      "segment_index": 2,
+      "operation_start": 32768,
+      "operation_end_exclusive": 49152,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "eaa3d4df92f403b062902ad0ee2e9fa4ae2d9fc9c171ebc817daec8631b1bb04"
+    },
+    {
+      "segment_index": 3,
+      "operation_start": 49152,
+      "operation_end_exclusive": 65536,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "3fa28a72667b6c78ef0d15e4a7d8c7fb0c0395018611797adcd0abc4fa69d173"
+    },
+    {
+      "segment_index": 4,
+      "operation_start": 65536,
+      "operation_end_exclusive": 81920,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "fe5ed47def1fcda76ee5f791c2af5d2e8e2d68577b8904a5cf86aa7d20a5816d"
+    },
+    {
+      "segment_index": 5,
+      "operation_start": 81920,
+      "operation_end_exclusive": 98304,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "f363227465f3256856f74efeba5c42f6f58d33379c17a253d9ec58591260328a"
+    },
+    {
+      "segment_index": 6,
+      "operation_start": 98304,
+      "operation_end_exclusive": 114688,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "7505ddfd9df0207988af75ab757087ae771c238e9428681dbd3c76c4494ea38c"
+    },
+    {
+      "segment_index": 7,
+      "operation_start": 114688,
+      "operation_end_exclusive": 131072,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "9a24d99208e138b86814705d132099fdcb6fdfb4e6966329b3018c54f0acef2f"
+    },
+    {
+      "segment_index": 8,
+      "operation_start": 131072,
+      "operation_end_exclusive": 147456,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 10428,
+        "cx": 0,
+        "x": 0,
+        "measurement": 5956
+      },
+      "non_clifford_count": 10428,
+      "sha256": "f40e71c871b6bb8e7cb8a5ce8c11092aa7c977a87f7115ae9b39ba3c1279574d"
+    },
+    {
+      "segment_index": 9,
+      "operation_start": 147456,
+      "operation_end_exclusive": 163840,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "ba80e9372399b7735f5ee585640ca57a995e1413fadfdad819840edfea52b7d5"
+    },
+    {
+      "segment_index": 10,
+      "operation_start": 163840,
+      "operation_end_exclusive": 180224,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "2e5c7365cdd2fc0b8c2c1c24f85d118be94681f93283a9859f3b55068e26372e"
+    },
+    {
+      "segment_index": 11,
+      "operation_start": 180224,
+      "operation_end_exclusive": 196608,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "8774c7af6640e2f06a9d20459b6cc0bac1a80021bd1e0418889eecaf50a930f6"
+    },
+    {
+      "segment_index": 12,
+      "operation_start": 196608,
+      "operation_end_exclusive": 212992,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "155da281e6f402ad7b482d6611c8dc87852a6d73b11a9ca65be8131eb90b8cdb"
+    },
+    {
+      "segment_index": 13,
+      "operation_start": 212992,
+      "operation_end_exclusive": 229376,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "12acd247e0cf7d57056d8928901553cc57257d0b1dfcf050ea224a2c6594cde0"
+    },
+    {
+      "segment_index": 14,
+      "operation_start": 229376,
+      "operation_end_exclusive": 245760,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "4e2ecaf34603b388f7a9fa984c04c50a7cfcb4f4d76b38fe96b012e4197b8509"
+    },
+    {
+      "segment_index": 15,
+      "operation_start": 245760,
+      "operation_end_exclusive": 262144,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "dc5eef25387cf518291477dca0f2411e4dc66e2db7ecdc98d2ec8c066e704138"
+    },
+    {
+      "segment_index": 16,
+      "operation_start": 262144,
+      "operation_end_exclusive": 278528,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 14658,
+        "cx": 0,
+        "x": 0,
+        "measurement": 1726
+      },
+      "non_clifford_count": 14658,
+      "sha256": "587405ba787703c34cc95b5e6fc2564c99ec241ea192ecd659943bdcd3ecfc3d"
+    },
+    {
+      "segment_index": 17,
+      "operation_start": 278528,
+      "operation_end_exclusive": 294912,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 11644,
+        "cx": 0,
+        "x": 0,
+        "measurement": 4740
+      },
+      "non_clifford_count": 11644,
+      "sha256": "9db279dc494d3eecd73bcc483f0f34670abc8904397c19cab11251a3e61b8120"
+    },
+    {
+      "segment_index": 18,
+      "operation_start": 294912,
+      "operation_end_exclusive": 311296,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "c8d55a49633c061242ee0833a1b7f3db7640c545803a658fa26179364f21926e"
+    },
+    {
+      "segment_index": 19,
+      "operation_start": 311296,
+      "operation_end_exclusive": 327680,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "2dcfca5ea4b4b28191b6eea3fcd448ebcef83dc0fbdae3eeceac2caffa12d6ee"
+    },
+    {
+      "segment_index": 20,
+      "operation_start": 327680,
+      "operation_end_exclusive": 344064,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "b01771347f3e77537c2ad24bd7e3281f8d6aeca4aaa949bd5438447c7571ecb8"
+    },
+    {
+      "segment_index": 21,
+      "operation_start": 344064,
+      "operation_end_exclusive": 360448,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "33f63469584c98044612890e974200f2a1d96ac64098c454bbada5468949f49c"
+    },
+    {
+      "segment_index": 22,
+      "operation_start": 360448,
+      "operation_end_exclusive": 376832,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "f78f906ce73bee46148621e077b0343315f38c455a6d5efe3f3caaf515d2c5df"
+    },
+    {
+      "segment_index": 23,
+      "operation_start": 376832,
+      "operation_end_exclusive": 393216,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "a448ad039da85d1264ac7efe62ffb197bc0c4e0c6cb9ac5c1b7e72aa8aabf778"
+    },
+    {
+      "segment_index": 24,
+      "operation_start": 393216,
+      "operation_end_exclusive": 409600,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "a93a101428a4bcda8dbfe523e4552c82a56c61e4f76bce214d35ef50fa63e4a8"
+    },
+    {
+      "segment_index": 25,
+      "operation_start": 409600,
+      "operation_end_exclusive": 425984,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 12932,
+        "cx": 0,
+        "x": 0,
+        "measurement": 3452
+      },
+      "non_clifford_count": 12932,
+      "sha256": "b7bf1a7dbfea62d3a802df3ff4625d9b9344da65e8a807a75f3203396ed64cb6"
+    },
+    {
+      "segment_index": 26,
+      "operation_start": 425984,
+      "operation_end_exclusive": 442368,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 10820,
+        "cx": 0,
+        "x": 0,
+        "measurement": 5564
+      },
+      "non_clifford_count": 10820,
+      "sha256": "68ef5c69dff92e0e3b99e64ff85c66b176c62df7cc25b8201a0c991f4eba2466"
+    },
+    {
+      "segment_index": 27,
+      "operation_start": 442368,
+      "operation_end_exclusive": 458752,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "3917baea0e0686c9224a396fcd878bbaeb027b81396e7121114ca65191bd2e6e"
+    },
+    {
+      "segment_index": 28,
+      "operation_start": 458752,
+      "operation_end_exclusive": 475136,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "8e0cbb838ab2eb7f34df79fa7525489013be61eee056b5b601ca33f583a8a029"
+    },
+    {
+      "segment_index": 29,
+      "operation_start": 475136,
+      "operation_end_exclusive": 491520,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "a5278713601a7acf864a3a99ee5edf172ca2dd10e5eabf9517992cce99a90551"
+    },
+    {
+      "segment_index": 30,
+      "operation_start": 491520,
+      "operation_end_exclusive": 507904,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "65ee2817a1deb8ca0c3e0c1e54114a2a00a7c5692f1a3bd038c1f696fdf72b24"
+    },
+    {
+      "segment_index": 31,
+      "operation_start": 507904,
+      "operation_end_exclusive": 524288,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "07dbdde400bd09ed6f91df4a07c96b5c71d8b98daf32db94eabda9fcc2ad14f4"
+    },
+    {
+      "segment_index": 32,
+      "operation_start": 524288,
+      "operation_end_exclusive": 540672,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "616071025678bb38955a6e1e1de223337cf87a058c9254095f51cea3658a3eb4"
+    },
+    {
+      "segment_index": 33,
+      "operation_start": 540672,
+      "operation_end_exclusive": 557056,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "bdc495b8a84accee4827d3c3da829de7d85c18a3934f0173895543d3be2eb0cb"
+    },
+    {
+      "segment_index": 34,
+      "operation_start": 557056,
+      "operation_end_exclusive": 573440,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 13756,
+        "cx": 0,
+        "x": 0,
+        "measurement": 2628
+      },
+      "non_clifford_count": 13756,
+      "sha256": "37bab82436f456fee5568e5bae76aed390b1b056b9836903249923c6586b3d4c"
+    },
+    {
+      "segment_index": 35,
+      "operation_start": 573440,
+      "operation_end_exclusive": 589824,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 12546,
+        "cx": 0,
+        "x": 0,
+        "measurement": 3838
+      },
+      "non_clifford_count": 12546,
+      "sha256": "4455a662f4b60071ff0e5b8542b9c1df00b71c7c7e3e0778629cdbfff116d4cb"
+    },
+    {
+      "segment_index": 36,
+      "operation_start": 589824,
+      "operation_end_exclusive": 606208,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "43116d4348f820ab5da54f46beab4cbcdca5c7be85d6426c7fb243118db910dc"
+    },
+    {
+      "segment_index": 37,
+      "operation_start": 606208,
+      "operation_end_exclusive": 622592,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "31cdbc4c595f4ab5b0ca83c704ee958f6cc21f448eca5be2269729b106773b41"
+    },
+    {
+      "segment_index": 38,
+      "operation_start": 622592,
+      "operation_end_exclusive": 638976,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "e2841b138dc8feff44aa26b73743f3bcd84a711cb153fce8247e7bb87ccb15d5"
+    },
+    {
+      "segment_index": 39,
+      "operation_start": 638976,
+      "operation_end_exclusive": 655360,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "71131783dc56ff440ae8ea6e1f2c53a03a71f9f256011af8e450fd0a116ad9d4"
+    },
+    {
+      "segment_index": 40,
+      "operation_start": 655360,
+      "operation_end_exclusive": 671744,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "71c86287e5026fdaa3777b5030ba4e0f1099d8dc1fddaa45349927608af3d7ba"
+    },
+    {
+      "segment_index": 41,
+      "operation_start": 671744,
+      "operation_end_exclusive": 688128,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "e5cfcc14838f8e1768cfe98e3c09449b2bf7a4413c1fe4d9f8cd4d27a046a92c"
+    },
+    {
+      "segment_index": 42,
+      "operation_start": 688128,
+      "operation_end_exclusive": 704512,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "b32294b16ab067ebec81a89ae2eee273df828d9ce15ce0f8c642e3aa0b2cc3c4"
+    },
+    {
+      "segment_index": 43,
+      "operation_start": 704512,
+      "operation_end_exclusive": 720896,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 12030,
+        "cx": 0,
+        "x": 0,
+        "measurement": 4354
+      },
+      "non_clifford_count": 12030,
+      "sha256": "76aa22f6f9b716c29ff6f9a2d66e72e06c66ec795637e16c6de3c1693748b362"
+    },
+    {
+      "segment_index": 44,
+      "operation_start": 720896,
+      "operation_end_exclusive": 737280,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 8662,
+        "cx": 0,
+        "x": 0,
+        "measurement": 7722
+      },
+      "non_clifford_count": 8662,
+      "sha256": "27cebd74ed02cc612c08f6e32067c13adc3da472c400f7afece45719d4a3a8cf"
+    },
+    {
+      "segment_index": 45,
+      "operation_start": 737280,
+      "operation_end_exclusive": 753664,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "9184d8f6481a5039f1682e8593019f4407b4982a6aadc9ce99e14db9ab9c56d3"
+    },
+    {
+      "segment_index": 46,
+      "operation_start": 753664,
+      "operation_end_exclusive": 770048,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "0c0c03c8a976bc25a323e0de6fdc9d3af229b42977a2e0ee67ead48947dac7af"
+    },
+    {
+      "segment_index": 47,
+      "operation_start": 770048,
+      "operation_end_exclusive": 786432,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "a5c4cf5ae2f5d1aecd7030889d2c33dee3a49c55e988e3ac4ba6a58abeb29ec5"
+    },
+    {
+      "segment_index": 48,
+      "operation_start": 786432,
+      "operation_end_exclusive": 802816,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 15914,
+        "cx": 0,
+        "x": 0,
+        "measurement": 470
+      },
+      "non_clifford_count": 15914,
+      "sha256": "7e494a7cd258a49c04526a632e500f1343724a3c47ffa8e110d9877d1f02f458"
+    },
+    {
+      "segment_index": 49,
+      "operation_start": 802816,
+      "operation_end_exclusive": 819200,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 10898,
+        "cx": 0,
+        "x": 0,
+        "measurement": 5486
+      },
+      "non_clifford_count": 10898,
+      "sha256": "8bbc7ddeafad883fccef18d5fad1ee69d8c7f3085124940110792434429e85b3"
+    },
+    {
+      "segment_index": 50,
+      "operation_start": 819200,
+      "operation_end_exclusive": 835584,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "764e7e7a969030c66ebc608aaa0f0a2b787c59290bc1d59b0df77e0c08b2dd6f"
+    },
+    {
+      "segment_index": 51,
+      "operation_start": 835584,
+      "operation_end_exclusive": 851968,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "f1e21c2fd444a790a26435c316cbea9d9554c5a24f9c4cfa4c91fe40879b8cff"
+    },
+    {
+      "segment_index": 52,
+      "operation_start": 851968,
+      "operation_end_exclusive": 868352,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "7e81e72616d7b25ac616ea586278afcf7ce972457ec115b3eb0934d2e71cbf69"
+    },
+    {
+      "segment_index": 53,
+      "operation_start": 868352,
+      "operation_end_exclusive": 884736,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 13678,
+        "cx": 0,
+        "x": 0,
+        "measurement": 2706
+      },
+      "non_clifford_count": 13678,
+      "sha256": "08d3535111272b552f296de526587affd38e38584688e4d5e9eaebc824ad9843"
+    },
+    {
+      "segment_index": 54,
+      "operation_start": 884736,
+      "operation_end_exclusive": 901120,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 12624,
+        "cx": 0,
+        "x": 0,
+        "measurement": 3760
+      },
+      "non_clifford_count": 12624,
+      "sha256": "3432dfe9a4ad4396911dd584e4717547f0ed6b1531e785fa5b323b055203f059"
+    },
+    {
+      "segment_index": 55,
+      "operation_start": 901120,
+      "operation_end_exclusive": 917504,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "52c45e3ed43d996ecd68afcb24704737b0ac4589c522d0b905a7d8e2e7ae87ca"
+    },
+    {
+      "segment_index": 56,
+      "operation_start": 917504,
+      "operation_end_exclusive": 933888,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "cab88c5eeb73b309f31d45dc7eac9fed31f2985d8ee6e3fcbe6fe8514c0b8832"
+    },
+    {
+      "segment_index": 57,
+      "operation_start": 933888,
+      "operation_end_exclusive": 950272,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "2300210386968849d59442f05348e0471a3ed77ce156038befe88804894f0b84"
+    },
+    {
+      "segment_index": 58,
+      "operation_start": 950272,
+      "operation_end_exclusive": 966656,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 11952,
+        "cx": 0,
+        "x": 0,
+        "measurement": 4432
+      },
+      "non_clifford_count": 11952,
+      "sha256": "456a5b1da3ffb46d7942d433c9d353d5011a277562a1ac6562932344220493d8"
+    },
+    {
+      "segment_index": 59,
+      "operation_start": 966656,
+      "operation_end_exclusive": 983040,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 14860,
+        "cx": 0,
+        "x": 0,
+        "measurement": 1524
+      },
+      "non_clifford_count": 14860,
+      "sha256": "6d65b97226e2a7c14fb1659f448763c1c84b0860f8a341b4711694b1bc2ac023"
+    },
+    {
+      "segment_index": 60,
+      "operation_start": 983040,
+      "operation_end_exclusive": 999424,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "5620adfd4f3f8fc6fbae6e81c5e85a3a46594f953235e525208c1b604318051d"
+    },
+    {
+      "segment_index": 61,
+      "operation_start": 999424,
+      "operation_end_exclusive": 1015808,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "10383c05e970d2b87e83779f99a75121f065334dad45a50cbbf9a0d72dbc9d9d"
+    },
+    {
+      "segment_index": 62,
+      "operation_start": 1015808,
+      "operation_end_exclusive": 1032192,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "cb5badfe914968fe189fd51c84303949d09f1d7e4762c14200269e6ef208a883"
+    },
+    {
+      "segment_index": 63,
+      "operation_start": 1032192,
+      "operation_end_exclusive": 1048576,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 9918,
+        "cx": 0,
+        "x": 0,
+        "measurement": 6466
+      },
+      "non_clifford_count": 9918,
+      "sha256": "847b6996dbe0266e1472f96fb11f0da367707110289cfb5bbe7eb7c0ca19c246"
+    },
+    {
+      "segment_index": 64,
+      "operation_start": 1048576,
+      "operation_end_exclusive": 1064960,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "6c791d2a5a8b17f96d9e7bcb8e672b743c25d5726b0525833ae9a02501cdfaa4"
+    },
+    {
+      "segment_index": 65,
+      "operation_start": 1064960,
+      "operation_end_exclusive": 1081344,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "a2956c8e03a41d462ea90fe51d68c817b6a37c153de8e8d90410e63af2956482"
+    },
+    {
+      "segment_index": 66,
+      "operation_start": 1081344,
+      "operation_end_exclusive": 1097728,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "98bb0f998129d633e0c135c3e82e50437c5b9629b5cc1dfccfff89ecfe93305a"
+    },
+    {
+      "segment_index": 67,
+      "operation_start": 1097728,
+      "operation_end_exclusive": 1114112,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "c136dc9a004ba06602b0290b748acfca7aefadfacf20586226e8cf34305f883a"
+    },
+    {
+      "segment_index": 68,
+      "operation_start": 1114112,
+      "operation_end_exclusive": 1130496,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 10428,
+        "cx": 0,
+        "x": 0,
+        "measurement": 5956
+      },
+      "non_clifford_count": 10428,
+      "sha256": "e974dab9b159bf7ad627ebe12b3bb358465df70d09f8081aa87e8e72ffdeea81"
+    },
+    {
+      "segment_index": 69,
+      "operation_start": 1130496,
+      "operation_end_exclusive": 1146880,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "47e3dd7328721584f78b47394b8536d147b53e877de9670fc8d99e97d9e2a403"
+    },
+    {
+      "segment_index": 70,
+      "operation_start": 1146880,
+      "operation_end_exclusive": 1163264,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "1ebfe4a2c544ee8e2a22995bc6b4db1a4c1871e8dcdf93e7f6728b6ffc47a6a3"
+    },
+    {
+      "segment_index": 71,
+      "operation_start": 1163264,
+      "operation_end_exclusive": 1179648,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 16384,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "non_clifford_count": 16384,
+      "sha256": "3b6a08032fb3ea9cc7ec01e4e454d5e997a62b88ee2c9d0dc4fd46e7006326a9"
+    },
+    {
+      "segment_index": 72,
+      "operation_start": 1179648,
+      "operation_end_exclusive": 1196032,
+      "operation_count": 16384,
+      "primitive_counts_total": {
+        "ccx": 14201,
+        "cx": 0,
+        "x": 0,
+        "measurement": 2183
+      },
+      "non_clifford_count": 14201,
+      "sha256": "06bcecce47b7c0e27335807f5d2795f4884a2c11a0739aa72f0f5acce1235e30"
+    },
+    {
+      "segment_index": 73,
+      "operation_start": 1196032,
+      "operation_end_exclusive": 1204598,
+      "operation_count": 8566,
+      "primitive_counts_total": {
+        "ccx": 4283,
+        "cx": 0,
+        "x": 0,
+        "measurement": 4283
+      },
+      "non_clifford_count": 4283,
+      "sha256": "9f0fd1dbd482d382cefdd3e73280360b3fb13bdf3619a78af33fdab769e9be76"
+    }
+  ],
+  "suboperation_count": 29,
+  "suboperation_counts_sha256": "d05b9eac2bd4c98f8cef17385aa082d973798df466963f7bf95ee55ae56e3cea",
+  "preview_head": [
+    {
+      "operation_index": 0,
+      "suboperation_index": 0,
+      "schedule_index": 0,
+      "tail_operation_index": 0,
+      "kind": "modular_field_operation",
+      "modular_opcode": "field_add",
+      "stage": "carry_resolution",
+      "block": "carry_ladder",
+      "local_operation_index": 0,
+      "block_operation_index": 0,
+      "gate": "ccx",
+      "local_operands": [
+        0
+      ],
+      "target": "G",
+      "target_slot": 3,
+      "owner_id": "tail_reordered_slot_3",
+      "sources": [
+        "X",
+        "Y"
+      ],
+      "operand_wires": [
+        "field:X.bit[0]",
+        "field:Y.bit[0]",
+        "field:G.bit[0]"
+      ]
+    },
+    {
+      "operation_index": 1,
+      "suboperation_index": 0,
+      "schedule_index": 0,
+      "tail_operation_index": 0,
+      "kind": "modular_field_operation",
+      "modular_opcode": "field_add",
+      "stage": "carry_resolution",
+      "block": "carry_ladder",
+      "local_operation_index": 1,
+      "block_operation_index": 1,
+      "gate": "measurement",
+      "local_operands": [
+        0
+      ],
+      "target": "G",
+      "target_slot": 3,
+      "owner_id": "tail_reordered_slot_3",
+      "sources": [
+        "X",
+        "Y"
+      ],
+      "operand_wires": [
+        "field:G.bit[0]"
+      ]
+    },
+    {
+      "operation_index": 2,
+      "suboperation_index": 0,
+      "schedule_index": 0,
+      "tail_operation_index": 0,
+      "kind": "modular_field_operation",
+      "modular_opcode": "field_add",
+      "stage": "carry_resolution",
+      "block": "carry_ladder",
+      "local_operation_index": 2,
+      "block_operation_index": 2,
+      "gate": "ccx",
+      "local_operands": [
+        1
+      ],
+      "target": "G",
+      "target_slot": 3,
+      "owner_id": "tail_reordered_slot_3",
+      "sources": [
+        "X",
+        "Y"
+      ],
+      "operand_wires": [
+        "field:X.bit[1]",
+        "field:Y.bit[1]",
+        "field:G.bit[1]"
+      ]
+    },
+    {
+      "operation_index": 3,
+      "suboperation_index": 0,
+      "schedule_index": 0,
+      "tail_operation_index": 0,
+      "kind": "modular_field_operation",
+      "modular_opcode": "field_add",
+      "stage": "carry_resolution",
+      "block": "carry_ladder",
+      "local_operation_index": 3,
+      "block_operation_index": 3,
+      "gate": "measurement",
+      "local_operands": [
+        1
+      ],
+      "target": "G",
+      "target_slot": 3,
+      "owner_id": "tail_reordered_slot_3",
+      "sources": [
+        "X",
+        "Y"
+      ],
+      "operand_wires": [
+        "field:G.bit[1]"
+      ]
+    },
+    {
+      "operation_index": 4,
+      "suboperation_index": 0,
+      "schedule_index": 0,
+      "tail_operation_index": 0,
+      "kind": "modular_field_operation",
+      "modular_opcode": "field_add",
+      "stage": "carry_resolution",
+      "block": "carry_ladder",
+      "local_operation_index": 4,
+      "block_operation_index": 4,
+      "gate": "ccx",
+      "local_operands": [
+        2
+      ],
+      "target": "G",
+      "target_slot": 3,
+      "owner_id": "tail_reordered_slot_3",
+      "sources": [
+        "X",
+        "Y"
+      ],
+      "operand_wires": [
+        "field:X.bit[2]",
+        "field:Y.bit[2]",
+        "field:G.bit[2]"
+      ]
+    },
+    {
+      "operation_index": 5,
+      "suboperation_index": 0,
+      "schedule_index": 0,
+      "tail_operation_index": 0,
+      "kind": "modular_field_operation",
+      "modular_opcode": "field_add",
+      "stage": "carry_resolution",
+      "block": "carry_ladder",
+      "local_operation_index": 5,
+      "block_operation_index": 5,
+      "gate": "measurement",
+      "local_operands": [
+        2
+      ],
+      "target": "G",
+      "target_slot": 3,
+      "owner_id": "tail_reordered_slot_3",
+      "sources": [
+        "X",
+        "Y"
+      ],
+      "operand_wires": [
+        "field:G.bit[2]"
+      ]
+    }
+  ],
+  "preview_tail": [
+    {
+      "operation_index": 1204592,
+      "suboperation_index": 28,
+      "schedule_index": 16,
+      "tail_operation_index": 16,
+      "kind": "fused_output_combine",
+      "modular_opcode": "field_add",
+      "stage": "carry_resolution",
+      "block": "conditional_subtract_modulus",
+      "local_operation_index": 1014,
+      "block_operation_index": 504,
+      "gate": "ccx",
+      "local_operands": [
+        252
+      ],
+      "target": "Z3",
+      "target_slot": 1,
+      "owner_id": "tail_reordered_slot_1",
+      "sources": [
+        "Z3.product_0",
+        "Z3.product_1"
+      ],
+      "operand_wires": [
+        "field:Z3.product_0.bit[252]",
+        "field:Z3.product_1.bit[252]",
+        "field:Z3.bit[252]"
+      ]
+    },
+    {
+      "operation_index": 1204593,
+      "suboperation_index": 28,
+      "schedule_index": 16,
+      "tail_operation_index": 16,
+      "kind": "fused_output_combine",
+      "modular_opcode": "field_add",
+      "stage": "carry_resolution",
+      "block": "conditional_subtract_modulus",
+      "local_operation_index": 1015,
+      "block_operation_index": 505,
+      "gate": "measurement",
+      "local_operands": [
+        252
+      ],
+      "target": "Z3",
+      "target_slot": 1,
+      "owner_id": "tail_reordered_slot_1",
+      "sources": [
+        "Z3.product_0",
+        "Z3.product_1"
+      ],
+      "operand_wires": [
+        "field:Z3.bit[252]"
+      ]
+    },
+    {
+      "operation_index": 1204594,
+      "suboperation_index": 28,
+      "schedule_index": 16,
+      "tail_operation_index": 16,
+      "kind": "fused_output_combine",
+      "modular_opcode": "field_add",
+      "stage": "carry_resolution",
+      "block": "conditional_subtract_modulus",
+      "local_operation_index": 1016,
+      "block_operation_index": 506,
+      "gate": "ccx",
+      "local_operands": [
+        253
+      ],
+      "target": "Z3",
+      "target_slot": 1,
+      "owner_id": "tail_reordered_slot_1",
+      "sources": [
+        "Z3.product_0",
+        "Z3.product_1"
+      ],
+      "operand_wires": [
+        "field:Z3.product_0.bit[253]",
+        "field:Z3.product_1.bit[253]",
+        "field:Z3.bit[253]"
+      ]
+    },
+    {
+      "operation_index": 1204595,
+      "suboperation_index": 28,
+      "schedule_index": 16,
+      "tail_operation_index": 16,
+      "kind": "fused_output_combine",
+      "modular_opcode": "field_add",
+      "stage": "carry_resolution",
+      "block": "conditional_subtract_modulus",
+      "local_operation_index": 1017,
+      "block_operation_index": 507,
+      "gate": "measurement",
+      "local_operands": [
+        253
+      ],
+      "target": "Z3",
+      "target_slot": 1,
+      "owner_id": "tail_reordered_slot_1",
+      "sources": [
+        "Z3.product_0",
+        "Z3.product_1"
+      ],
+      "operand_wires": [
+        "field:Z3.bit[253]"
+      ]
+    },
+    {
+      "operation_index": 1204596,
+      "suboperation_index": 28,
+      "schedule_index": 16,
+      "tail_operation_index": 16,
+      "kind": "fused_output_combine",
+      "modular_opcode": "field_add",
+      "stage": "carry_resolution",
+      "block": "conditional_subtract_modulus",
+      "local_operation_index": 1018,
+      "block_operation_index": 508,
+      "gate": "ccx",
+      "local_operands": [
+        254
+      ],
+      "target": "Z3",
+      "target_slot": 1,
+      "owner_id": "tail_reordered_slot_1",
+      "sources": [
+        "Z3.product_0",
+        "Z3.product_1"
+      ],
+      "operand_wires": [
+        "field:Z3.product_0.bit[254]",
+        "field:Z3.product_1.bit[254]",
+        "field:Z3.bit[254]"
+      ]
+    },
+    {
+      "operation_index": 1204597,
+      "suboperation_index": 28,
+      "schedule_index": 16,
+      "tail_operation_index": 16,
+      "kind": "fused_output_combine",
+      "modular_opcode": "field_add",
+      "stage": "carry_resolution",
+      "block": "conditional_subtract_modulus",
+      "local_operation_index": 1019,
+      "block_operation_index": 509,
+      "gate": "measurement",
+      "local_operands": [
+        254
+      ],
+      "target": "Z3",
+      "target_slot": 1,
+      "owner_id": "tail_reordered_slot_1",
+      "sources": [
+        "Z3.product_0",
+        "Z3.product_1"
+      ],
+      "operand_wires": [
+        "field:Z3.bit[254]"
+      ]
+    }
+  ],
+  "checks": {
+    "modular_execution_trace_passes": true,
+    "modular_arithmetic_certificate_passes": true,
+    "all_suboperation_counts_match_trace": true,
+    "total_counts_match_trace_suboperations": true,
+    "non_clifford_matches_trace": true,
+    "stream_scanned_every_operation": true,
+    "all_rows_have_concrete_operand_wires": true
+  },
+  "pass": true,
+  "boundary": [
+    "The artifact expands the scheduled modular trace into every generated primitive row through a deterministic iterator and derives counts by scanning that stream.",
+    "The full row list is not checked into JSON; the checked artifact commits to segment hashes and the full stream hash, following the public flat-netlist manifest pattern."
+  ]
+}

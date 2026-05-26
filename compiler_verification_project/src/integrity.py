@@ -57,6 +57,7 @@ from qroam_table_cnot_materialization import QROAM_TABLE_CNOT_MATERIALIZATION_SC
 from release_corpus_preflight import build_release_corpus_preflight
 from reusable_chunk_lowering import build_reusable_chunk_lowering
 from reusable_chunk_tail_candidate import build_reusable_chunk_tail_candidate
+from scheduled_modular_primitive_netlist import build_scheduled_modular_primitive_netlist
 from resource_ledger import build_logical_resource_ledger, qroam_clean_stream_cost
 from resource_certificate import build_resource_liveness_certificate
 from resource_ir_engine import (
@@ -187,6 +188,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'arithmetic_operation_ir': artifact_root / 'arithmetic_operation_ir.json',
         'modular_arithmetic_certificate': artifact_root / 'modular_arithmetic_certificate.json',
         'modular_execution_trace': artifact_root / 'modular_execution_trace.json',
+        'scheduled_modular_primitive_netlist': artifact_root / 'scheduled_modular_primitive_netlist.json',
         'tail_macro_liveness': artifact_root / 'tail_macro_liveness.json',
         'tail_macro_reversibility': artifact_root / 'tail_macro_reversibility.json',
         'tail_macro_schedule_search': artifact_root / 'tail_macro_schedule_search.json',
@@ -299,6 +301,14 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
             ),
         )
         dump_json(
+            artifact_root / 'scheduled_modular_primitive_netlist.json',
+            build_scheduled_modular_primitive_netlist(
+                modular_execution_trace=load_json(artifact_root / 'modular_execution_trace.json'),
+                modular_arithmetic_certificate=load_json(artifact_root / 'modular_arithmetic_certificate.json'),
+                arithmetic_lowerings=load_json(artifact_root / 'arithmetic_lowerings.json'),
+            ),
+        )
+        dump_json(
             artifact_root / 'public_engine_manifest.json',
             build_public_engine_manifest(
                 reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
@@ -312,6 +322,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 phase_shell_lowerings=load_json(artifact_root / 'phase_shell_lowerings.json'),
                 public_candidate_materialized_circuit_manifest=load_json(artifact_root / 'public_candidate_materialized_circuit_manifest.json'),
                 modular_execution_trace=load_json(artifact_root / 'modular_execution_trace.json'),
+                scheduled_modular_primitive_netlist=load_json(artifact_root / 'scheduled_modular_primitive_netlist.json'),
                 selected_family_name=load_json(artifact_root / 'compiler_parameters.json')['public_headline_policy']['selected_public_family_name'],
             ),
         )
@@ -339,6 +350,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 streamed_lookup_tail_leaf_equivalence=load_json(artifact_root / 'streamed_lookup_tail_leaf_equivalence.json'),
                 modular_arithmetic_certificate=load_json(artifact_root / 'modular_arithmetic_certificate.json'),
                 modular_execution_trace=load_json(artifact_root / 'modular_execution_trace.json'),
+                scheduled_modular_primitive_netlist=load_json(artifact_root / 'scheduled_modular_primitive_netlist.json'),
                 tail_macro_engine=load_json(artifact_root / 'tail_macro_engine.json'),
                 tail_macro_liveness=load_json(artifact_root / 'tail_macro_liveness.json'),
                 tail_macro_reversibility=load_json(artifact_root / 'tail_macro_reversibility.json'),
@@ -2526,6 +2538,7 @@ def build_public_engine_manifest_checks(artifacts: Mapping[str, Any]) -> Dict[st
         phase_shell_lowerings=artifacts['phase_shell_lowerings'],
         public_candidate_materialized_circuit_manifest=artifacts['public_candidate_materialized_circuit_manifest'],
         modular_execution_trace=artifacts['modular_execution_trace'],
+        scheduled_modular_primitive_netlist=artifacts['scheduled_modular_primitive_netlist'],
         selected_family_name=selected_family_name,
     )
     executable_resource_engine = lowering['executable_resource_engine']
@@ -2557,7 +2570,25 @@ def build_public_engine_manifest_checks(artifacts: Mapping[str, Any]) -> Dict[st
         _check('public_engine_manifest_binds_semantic_boundary_evidence', manifest['semantic_boundary_evidence']['streamed_lookup_tail_leaf_equivalence']['pass'] == manifest['semantic_boundary_evidence']['streamed_lookup_tail_leaf_equivalence']['total'] and manifest['semantic_boundary_evidence']['release_corpus_preflight']['case_count'] == GOOGLE_COMPARABLE_CASE_COUNT and all(manifest['semantic_boundary_evidence']['release_corpus_preflight']['category_counts'].get(category, 0) > 0 for category in manifest['semantic_boundary_evidence']['required_categories']) and manifest['semantic_boundary_evidence']['compiler_parameters']['selected_public_family_name'] == selected_family_name, 'semantic boundary evidence covers required categories in release corpus and binds compiler parameters', manifest['semantic_boundary_evidence']),
         _check('public_engine_manifest_binds_primitive_operation_evidence', manifest['primitive_operation_evidence']['arithmetic_operation_ir']['pass'] is True and manifest['primitive_operation_evidence']['qroam_primitive_certificate']['pass'] is True and manifest['primitive_operation_evidence']['qroam_table_cnot_materialization']['pass'] is True and manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['pass'] is True and manifest['primitive_operation_evidence']['qroam_primitive_certificate']['whole_oracle_non_clifford'] == lowering['non_clifford_derivation']['qroam_chunk_non_clifford'] and manifest['primitive_operation_evidence']['qroam_table_cnot_materialization']['full_oracle_emitted_clifford_cx'] == qroam_table_cnot['totals']['full_oracle_emitted_clifford_cx'] and manifest['primitive_operation_evidence']['phase_shell']['name'] in selected_family_name, 'primitive operation evidence binds materialized public candidate, arithmetic, qroam, table-CNOT, and phase shell sources', manifest['primitive_operation_evidence']),
         _check('public_engine_manifest_binds_modular_execution_trace', manifest['checks']['modular_execution_trace_is_bound'] is True and manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['modular_execution_trace']['pass'] is True and manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['modular_execution_trace']['reconstructed_non_clifford'] == artifacts['modular_execution_trace']['reconstructed_non_clifford'], 'modular execution trace is bound into public engine evidence', manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['modular_execution_trace']),
+        _check('public_engine_manifest_binds_scheduled_modular_primitive_netlist', manifest['checks']['scheduled_modular_primitive_netlist_is_bound'] is True and manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['scheduled_modular_primitive_netlist']['pass'] is True and manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['scheduled_modular_primitive_netlist']['operation_stream_sha256'] == artifacts['scheduled_modular_primitive_netlist']['operation_stream_sha256'], 'scheduled modular primitive netlist is bound into public engine evidence', manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['scheduled_modular_primitive_netlist']),
         _check('public_engine_manifest_passes_internal_checks', manifest['pass'] is True and all(manifest['checks'].values()), True, manifest['checks']),
+    ]
+    return _summarize_checks(checks)
+
+
+def build_scheduled_modular_primitive_netlist_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    netlist = artifacts['scheduled_modular_primitive_netlist']
+    expected = build_scheduled_modular_primitive_netlist(
+        modular_execution_trace=artifacts['modular_execution_trace'],
+        modular_arithmetic_certificate=artifacts['modular_arithmetic_certificate'],
+        arithmetic_lowerings=artifacts['arithmetic_lowerings'],
+    )
+    checks = [
+        _check('scheduled_modular_primitive_netlist_matches_generator', netlist == expected, expected, netlist),
+        _check('scheduled_modular_primitive_netlist_schema_is_current', netlist['schema'] == 'compiler-project-scheduled-modular-primitive-netlist-v1', 'compiler-project-scheduled-modular-primitive-netlist-v1', netlist['schema']),
+        _check('scheduled_modular_primitive_netlist_passes_internal_checks', netlist['pass'] is True and all(netlist['checks'].values()), True, netlist['checks']),
+        _check('scheduled_modular_primitive_netlist_reconstructs_tail_non_clifford', netlist['non_clifford_count'] == artifacts['modular_execution_trace']['reconstructed_non_clifford'], artifacts['modular_execution_trace']['reconstructed_non_clifford'], netlist['non_clifford_count']),
+        _check('scheduled_modular_primitive_netlist_has_segmented_stream_commitment', netlist['operation_count'] > 0 and netlist['segment_count'] > 0 and len(netlist['operation_stream_sha256']) == 64 and all(len(segment['sha256']) == 64 for segment in netlist['segments']), 'nonempty segmented stream with 64-char hashes', {'operation_count': netlist['operation_count'], 'segment_count': netlist['segment_count'], 'operation_stream_sha256': netlist['operation_stream_sha256']}),
     ]
     return _summarize_checks(checks)
 
@@ -2578,6 +2609,7 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
         streamed_lookup_tail_leaf_equivalence=artifacts['streamed_lookup_tail_leaf_equivalence'],
         modular_arithmetic_certificate=artifacts['modular_arithmetic_certificate'],
         modular_execution_trace=artifacts['modular_execution_trace'],
+        scheduled_modular_primitive_netlist=artifacts['scheduled_modular_primitive_netlist'],
         tail_macro_engine=artifacts['tail_macro_engine'],
         tail_macro_liveness=artifacts['tail_macro_liveness'],
         tail_macro_reversibility=artifacts['tail_macro_reversibility'],
@@ -3388,6 +3420,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'subcircuit_equivalence_checks': lambda: build_subcircuit_equivalence_checks(artifacts, repo_root),
         'headline_opcode_coverage_checks': lambda: build_headline_opcode_coverage_checks(artifacts),
         'headline_resource_manifest_checks': lambda: build_headline_resource_manifest_checks(artifacts),
+        'scheduled_modular_primitive_netlist_checks': lambda: build_scheduled_modular_primitive_netlist_checks(artifacts),
         'public_engine_manifest_checks': lambda: build_public_engine_manifest_checks(artifacts),
         'engine_completion_audit_checks': lambda: build_engine_completion_audit_checks(artifacts),
         'arithmetic_operand_replay_audit_checks': lambda: build_arithmetic_operand_replay_audit_checks(artifacts),

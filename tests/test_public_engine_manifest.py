@@ -35,6 +35,7 @@ def _build_manifest(
     phase_shell: dict | None = None,
     public_candidate_materialized: dict | None = None,
     modular_execution_trace: dict | None = None,
+    scheduled_modular_primitive_netlist: dict | None = None,
 ) -> dict:
     resolved_compiler_parameters = compiler_parameters or _load('compiler_parameters.json')
     return build_public_engine_manifest(
@@ -49,6 +50,7 @@ def _build_manifest(
         phase_shell_lowerings=phase_shell or _load('phase_shell_lowerings.json'),
         public_candidate_materialized_circuit_manifest=public_candidate_materialized or _load('public_candidate_materialized_circuit_manifest.json'),
         modular_execution_trace=modular_execution_trace or _load('modular_execution_trace.json'),
+        scheduled_modular_primitive_netlist=scheduled_modular_primitive_netlist or _load('scheduled_modular_primitive_netlist.json'),
         selected_family_name=resolved_compiler_parameters['public_headline_policy']['selected_public_family_name'],
     )
 
@@ -93,6 +95,11 @@ def test_public_engine_manifest_reconstructs_checked_artifact() -> None:
     assert modular_trace['pass'] is True
     assert modular_trace['reconstructed_non_clifford'] == expected['primitive_operation_evidence']['arithmetic_operation_ir']['tail_kernel_non_clifford_per_instance']
     assert modular_trace['modular_opcode_histogram']['field_mul'] == 11
+    scheduled_modular_netlist = expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['scheduled_modular_primitive_netlist']
+    assert expected['checks']['scheduled_modular_primitive_netlist_is_bound'] is True
+    assert scheduled_modular_netlist['pass'] is True
+    assert scheduled_modular_netlist['non_clifford_count'] == modular_trace['reconstructed_non_clifford']
+    assert scheduled_modular_netlist['primitive_counts_total']['measurement'] == 77756
     exact_arithmetic = expected['primitive_operation_evidence']['arithmetic_operation_ir']['selected_leaf_exact_operation_stream']
     assert exact_arithmetic['pass'] is True
     assert exact_arithmetic['non_clifford_count'] == arithmetic_ir['leaf_arithmetic_summary']['non_clifford_total']

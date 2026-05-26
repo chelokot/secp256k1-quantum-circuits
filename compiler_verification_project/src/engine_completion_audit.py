@@ -48,6 +48,7 @@ def build_engine_completion_audit(
     streamed_lookup_tail_leaf_equivalence: Mapping[str, Any],
     modular_arithmetic_certificate: Mapping[str, Any],
     modular_execution_trace: Mapping[str, Any],
+    scheduled_modular_primitive_netlist: Mapping[str, Any],
     tail_macro_engine: Mapping[str, Any],
     tail_macro_liveness: Mapping[str, Any],
     tail_macro_reversibility: Mapping[str, Any],
@@ -196,6 +197,12 @@ def build_engine_completion_audit(
             and int(modular_execution_trace['tail_schedule_row_count']) == len(tail_macro_engine['fused_output_reordered_schedule']['rows'])
             and modular_execution_trace['source_digests']['modular_arithmetic_certificate_sha256'] == _sha256_payload(modular_arithmetic_certificate)
             and public_engine_manifest['checks']['modular_execution_trace_is_bound'] is True
+        ),
+        'scheduled_modular_primitive_netlist_binds_trace': (
+            scheduled_modular_primitive_netlist['pass'] is True
+            and scheduled_modular_primitive_netlist['source_digests']['modular_execution_trace_sha256'] == _sha256_payload(modular_execution_trace)
+            and int(scheduled_modular_primitive_netlist['non_clifford_count']) == int(modular_execution_trace['reconstructed_non_clifford'])
+            and public_engine_manifest['checks']['scheduled_modular_primitive_netlist_is_bound'] is True
         ),
         'phase_rows_are_lowering_bound': (
             rows_by_source_kind['phase_shell_lowering'] > 0
@@ -346,9 +353,9 @@ def build_engine_completion_audit(
     remaining_macro_boundaries = [
         {
             'name': 'modular_arithmetic_clifford_expansion',
-            'status': 'scheduled_modular_execution_trace_bound_not_full_primitive_dump',
+            'status': 'scheduled_modular_primitive_stream_bound_not_global_physical_netlist_export',
             'required_to_close': 'Emit and count exact concrete Clifford/CCX wire operations for every modular add, subtract, multiply, fold, and reduction step inside the same global flat schedule as the point-add leaf.',
-            'current_evidence': 'modular_execution_trace + modular_arithmetic_certificate.modular_primitive_stream_certificate + public_candidate_materialized_circuit_manifest.modular_arithmetic_engine_integration',
+            'current_evidence': 'scheduled_modular_primitive_netlist + modular_execution_trace + modular_arithmetic_certificate.modular_primitive_stream_certificate + public_candidate_materialized_circuit_manifest.modular_arithmetic_engine_integration',
             'evidence_metrics': {
                 'source_bound_run_length_rows': rows_by_source_kind['arithmetic_operation_ir'],
                 'leaf_arithmetic_non_clifford': int(arithmetic_leaf_summary['non_clifford_total']),
@@ -367,6 +374,10 @@ def build_engine_completion_audit(
                 'modular_execution_trace_pass': bool(modular_execution_trace['pass']),
                 'modular_execution_trace_suboperation_count': int(modular_execution_trace['suboperation_count']),
                 'modular_execution_trace_sha256': modular_execution_trace['trace_stream_sha256'],
+                'scheduled_modular_primitive_netlist_pass': bool(scheduled_modular_primitive_netlist['pass']),
+                'scheduled_modular_primitive_netlist_operation_count': int(scheduled_modular_primitive_netlist['operation_count']),
+                'scheduled_modular_primitive_netlist_non_clifford': int(scheduled_modular_primitive_netlist['non_clifford_count']),
+                'scheduled_modular_primitive_netlist_sha256': scheduled_modular_primitive_netlist['operation_stream_sha256'],
                 'field_mul_non_clifford': int(modular_arithmetic_certificate['field_mul_stage_count_certificate']['observed_total_ccx']),
                 'field_mul_stage_counts_match': bool(modular_arithmetic_certificate['field_mul_stage_count_certificate']['stage_counts_match']),
                 'modular_ir_counts_match_lowerings': bool(modular_arithmetic_certificate['executable_circuit_ir_count_certificate']['counts_match_arithmetic_lowerings']),
@@ -392,6 +403,7 @@ def build_engine_completion_audit(
         'source_digests': _source_digests({
             'public_engine_manifest': public_engine_manifest,
             'modular_execution_trace': modular_execution_trace,
+            'scheduled_modular_primitive_netlist': scheduled_modular_primitive_netlist,
             'public_candidate_materialized_circuit_manifest': public_candidate_materialized_circuit_manifest,
             'reusable_chunk_lowering': reusable_chunk_lowering,
             'arithmetic_operation_ir': arithmetic_operation_ir,

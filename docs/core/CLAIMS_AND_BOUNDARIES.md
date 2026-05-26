@@ -204,10 +204,14 @@ those local modular streams to arithmetic engine kernels, public arithmetic
 rows, exact operand domains, and the strict liveness projection.
 `modular_execution_trace.json` then binds the selected seven-slot tail schedule
 to modular sub-operations, lookup interface rows, strict slot/liveness owners,
-and the counted zero-lift guard. The remaining arithmetic row in
-`engine_completion_audit.json` is the final expansion step: dumping and checking
-every primitive modular gate row from that scheduled trace, not only the compact
-step trace plus stream hashes.
+and the counted zero-lift guard. `scheduled_modular_primitive_netlist.json`
+expands that scheduled trace through a deterministic primitive-row iterator and
+derives the tail primitive stream hash, segment hashes, CCX count, and
+measurement count by scanning `1,204,598` generated rows. The remaining
+arithmetic row in `engine_completion_audit.json` is now the final integration
+step: splice this scheduled modular primitive stream into the same global
+public-candidate physical netlist/export and ZKP boundary, rather than keeping it
+as a separately bound tail stream.
 The QROAM row similarly records that the current standard-QROAMClean certificate
 now hashes generated word-level unary-iteration rows and target-bit Clifford
 load-site rows with selection-control, target-register, and loaded-bit source
