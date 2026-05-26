@@ -31,6 +31,7 @@ from modular_accumulator_carry_obligations import build_modular_accumulator_carr
 from modular_accumulator_carry_save_candidate import build_modular_accumulator_carry_save_candidate  # noqa: E402
 from modular_accumulator_full_adder_contract import build_modular_accumulator_full_adder_contract  # noqa: E402
 from modular_accumulator_full_adder_liveness import build_modular_accumulator_full_adder_liveness  # noqa: E402
+from modular_accumulator_full_adder_reversibility import build_modular_accumulator_full_adder_reversibility  # noqa: E402
 from modular_accumulator_full_adder_stream import build_modular_accumulator_full_adder_stream  # noqa: E402
 from modular_accumulator_lowering import build_modular_accumulator_lowering  # noqa: E402
 from modular_accumulator_row_stream import build_modular_accumulator_row_stream  # noqa: E402
@@ -81,6 +82,7 @@ BUILD_TARGETS = (
     'modular-accumulator-full-adder-contract',
     'modular-accumulator-full-adder-stream',
     'modular-accumulator-full-adder-liveness',
+    'modular-accumulator-full-adder-reversibility',
     'headline-resource-manifest',
     'public-engine-manifest',
     'engine-completion-audit',
@@ -584,6 +586,16 @@ def build_modular_accumulator_full_adder_liveness_artifact() -> None:
     )
 
 
+def build_modular_accumulator_full_adder_reversibility_artifact() -> None:
+    artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
+    dump_json(
+        artifact_dir / 'modular_accumulator_full_adder_reversibility.json',
+        build_modular_accumulator_full_adder_reversibility(
+            modular_accumulator_full_adder_liveness=load_json(artifact_dir / 'modular_accumulator_full_adder_liveness.json'),
+        ),
+    )
+
+
 def build_headline_resource_manifest_artifact() -> None:
     artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
     compiler_parameters = load_json(artifact_dir / 'compiler_parameters.json')
@@ -645,6 +657,7 @@ def build_engine_completion_audit_artifact() -> None:
         modular_accumulator_full_adder_contract=load_json(artifact_dir / 'modular_accumulator_full_adder_contract.json'),
         modular_accumulator_full_adder_stream=load_json(artifact_dir / 'modular_accumulator_full_adder_stream.json'),
         modular_accumulator_full_adder_liveness=load_json(artifact_dir / 'modular_accumulator_full_adder_liveness.json'),
+        modular_accumulator_full_adder_reversibility=load_json(artifact_dir / 'modular_accumulator_full_adder_reversibility.json'),
         tail_macro_engine=load_json(artifact_dir / 'tail_macro_engine.json'),
         tail_macro_liveness=load_json(artifact_dir / 'tail_macro_liveness.json'),
         tail_macro_reversibility=load_json(artifact_dir / 'tail_macro_reversibility.json'),
@@ -746,6 +759,8 @@ def main() -> None:
         payload['modular_accumulator_full_adder_stream'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_stream.json'
         build_modular_accumulator_full_adder_liveness_artifact()
         payload['modular_accumulator_full_adder_liveness'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_liveness.json'
+        build_modular_accumulator_full_adder_reversibility_artifact()
+        payload['modular_accumulator_full_adder_reversibility'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_reversibility.json'
         build_public_engine_manifest_artifact()
         payload['public_engine_manifest'] = 'compiler_verification_project/artifacts/public_engine_manifest.json'
     if args.target in ('engine-completion-audit',):
@@ -779,6 +794,8 @@ def main() -> None:
         payload['modular_accumulator_full_adder_stream'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_stream.json'
         build_modular_accumulator_full_adder_liveness_artifact()
         payload['modular_accumulator_full_adder_liveness'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_liveness.json'
+        build_modular_accumulator_full_adder_reversibility_artifact()
+        payload['modular_accumulator_full_adder_reversibility'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_reversibility.json'
         build_engine_completion_audit_artifact()
         payload['engine_completion_audit'] = 'compiler_verification_project/artifacts/engine_completion_audit.json'
     if args.target in ('engine-completion-audit-current',):
@@ -840,6 +857,8 @@ def main() -> None:
         payload['modular_accumulator_full_adder_stream'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_stream.json'
         build_modular_accumulator_full_adder_liveness_artifact()
         payload['modular_accumulator_full_adder_liveness'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_liveness.json'
+        build_modular_accumulator_full_adder_reversibility_artifact()
+        payload['modular_accumulator_full_adder_reversibility'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_reversibility.json'
         build_public_engine_manifest_artifact()
         payload['public_engine_manifest'] = 'compiler_verification_project/artifacts/public_engine_manifest.json'
         build_candidate_zkp()
@@ -894,6 +913,9 @@ def main() -> None:
     if args.target in ('modular-accumulator-full-adder-liveness',):
         build_modular_accumulator_full_adder_liveness_artifact()
         payload['modular_accumulator_full_adder_liveness'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_liveness.json'
+    if args.target in ('modular-accumulator-full-adder-reversibility',):
+        build_modular_accumulator_full_adder_reversibility_artifact()
+        payload['modular_accumulator_full_adder_reversibility'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_reversibility.json'
     if args.target in ('all', 'public-headline', 'strict-replayed-tail-headline', 'zkp-and-public', 'resource-zkp-and-public'):
         build_strict_replayed_tail_headline()
         payload['strict_replayed_tail_headline'] = 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json'

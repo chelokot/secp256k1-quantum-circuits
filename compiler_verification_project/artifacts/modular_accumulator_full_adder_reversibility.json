@@ -1,0 +1,126 @@
+{
+  "schema": "compiler-project-modular-accumulator-full-adder-reversibility-v1",
+  "definition": "Local reversibility lower bound for using a full-adder as a carry-save compression cell. The map from three input bits to sum/carry has output classes of size three, so no one-bit witness can make the transformation injective; any local reversible embedding that exposes sum and carry needs at least two witness bits unless a separate source-uncompute proof is supplied.",
+  "source_digests": {
+    "modular_accumulator_full_adder_liveness_sha256": "00178724340eb38bd9c546da8a0566afd9ff0d414c2220c313dd5f8f94cf8187"
+  },
+  "output_classes": {
+    "sum=0,carry=0": [
+      {
+        "a": 0,
+        "b": 0,
+        "c": 0,
+        "sum": 0,
+        "carry": 0
+      }
+    ],
+    "sum=0,carry=1": [
+      {
+        "a": 0,
+        "b": 1,
+        "c": 1,
+        "sum": 0,
+        "carry": 1
+      },
+      {
+        "a": 1,
+        "b": 0,
+        "c": 1,
+        "sum": 0,
+        "carry": 1
+      },
+      {
+        "a": 1,
+        "b": 1,
+        "c": 0,
+        "sum": 0,
+        "carry": 1
+      }
+    ],
+    "sum=1,carry=0": [
+      {
+        "a": 0,
+        "b": 0,
+        "c": 1,
+        "sum": 1,
+        "carry": 0
+      },
+      {
+        "a": 0,
+        "b": 1,
+        "c": 0,
+        "sum": 1,
+        "carry": 0
+      },
+      {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "sum": 1,
+        "carry": 0
+      }
+    ],
+    "sum=1,carry=1": [
+      {
+        "a": 1,
+        "b": 1,
+        "c": 1,
+        "sum": 1,
+        "carry": 1
+      }
+    ]
+  },
+  "output_class_sizes": {
+    "sum=0,carry=0": 1,
+    "sum=0,carry=1": 3,
+    "sum=1,carry=0": 3,
+    "sum=1,carry=1": 1
+  },
+  "max_preimage_size": 3,
+  "minimum_witness_bits_per_cell": 2,
+  "minimum_witness_bits_total": 1424940,
+  "one_bit_witness_exhaustive_search": {
+    "candidate_function_count": 256,
+    "collision_free_function_count": 0,
+    "best_distinct_tag_count": 6,
+    "best_witness_truth_table_index": 18
+  },
+  "two_bit_witness_assignment": {
+    "sum=0,carry=0": [
+      0
+    ],
+    "sum=0,carry=1": [
+      0,
+      1,
+      2
+    ],
+    "sum=1,carry=0": [
+      0,
+      1,
+      2
+    ],
+    "sum=1,carry=1": [
+      0
+    ]
+  },
+  "promotion_status": {
+    "status": "full_adder_reversibility_lower_bound_not_promoted_to_global_resource_contract",
+    "required_to_promote": [
+      "Either count at least two local witness bits per full-adder cell in the global owner-capacity model, or provide a concrete source-uncompute schedule that removes the need for local witnesses.",
+      "Bind the selected witness or uncompute schedule into the same primitive stream and liveness engine as the public resource headline.",
+      "Reject one-bit in-place carry-save rewrites unless a separate non-local reversible construction proves injectivity."
+    ]
+  },
+  "checks": {
+    "source_full_adder_liveness_passes": true,
+    "source_full_adder_liveness_is_unpromoted": true,
+    "full_adder_output_classes_cover_all_inputs": true,
+    "full_adder_has_three_input_preimage_class": true,
+    "minimum_witness_bits_is_two": true,
+    "one_bit_witness_is_impossible_by_exhaustive_function_search": true,
+    "two_bit_witness_assignment_is_sufficient_locally": true,
+    "minimum_witness_total_matches_cell_count": true,
+    "reversibility_lower_bound_not_promoted_to_global_resource_contract": true
+  },
+  "pass": true
+}
