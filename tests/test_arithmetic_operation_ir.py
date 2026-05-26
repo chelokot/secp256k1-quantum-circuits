@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import copy
+import gzip
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -14,7 +16,12 @@ if str(ROOT_SRC) not in sys.path:
 if str(COMPILER_SRC) not in sys.path:
     sys.path.insert(0, str(COMPILER_SRC))
 
-from arithmetic_operation_ir import ARITHMETIC_OPERATION_IR_SCHEMA, build_arithmetic_operation_ir  # noqa: E402
+from arithmetic_operation_ir import (  # noqa: E402
+    ARITHMETIC_OPERATION_IR_SCHEMA,
+    SELECTED_LEAF_EXACT_OPERATION_COLUMNS,
+    build_arithmetic_operation_ir,
+    iter_selected_leaf_exact_arithmetic_operations,
+)
 from project import leaf_opcode_histogram  # noqa: E402
 
 
@@ -24,11 +31,28 @@ def _arithmetic_lowerings() -> dict:
     )
 
 
-def test_arithmetic_operation_ir_reconstructs_checked_artifact() -> None:
-    lowerings = _arithmetic_lowerings()
-    expected = json.loads(
+def _checked_arithmetic_operation_ir() -> dict:
+    return json.loads(
         (REPO_ROOT / 'compiler_verification_project' / 'artifacts' / 'arithmetic_operation_ir.json').read_text()
     )
+
+
+def _preview_row(row: dict) -> dict:
+    return {
+        'operation_index': int(row['operation_index']),
+        'leaf_instance_index': int(row['leaf_instance_index']),
+        'kernel': str(row['kernel']),
+        'stage': str(row['stage']),
+        'block': str(row['block']),
+        'block_operation_index': int(row['block_operation_index']),
+        'gate': str(row['gate']),
+        'operands': list(row['operands']),
+    }
+
+
+def test_arithmetic_operation_ir_reconstructs_checked_artifact() -> None:
+    lowerings = _arithmetic_lowerings()
+    expected = _checked_arithmetic_operation_ir()
     observed = build_arithmetic_operation_ir(
         arithmetic_lowerings=lowerings,
         leaf_opcode_histogram=leaf_opcode_histogram(),
@@ -50,9 +74,7 @@ def test_arithmetic_operation_ir_reconstructs_checked_artifact() -> None:
 
 
 def test_arithmetic_operation_ir_ladder_generators_use_bit_indices() -> None:
-    observed = json.loads(
-        (REPO_ROOT / 'compiler_verification_project' / 'artifacts' / 'arithmetic_operation_ir.json').read_text()
-    )
+    observed = _checked_arithmetic_operation_ir()
     ladder_contracts = [
         block['source_contract']['generator_operand_contract']
         for kernel in observed['kernels']
@@ -68,6 +90,54 @@ def test_arithmetic_operation_ir_ladder_generators_use_bit_indices() -> None:
     assert all(contract['operand_domain'] == 'ladder_bit_index' for contract in ladder_contracts)
     assert max(contract['observed_operand_slots_required'] for contract in ladder_contracts) == 287
     assert any(contract['repeat_count'] > 1 for contract in ladder_contracts)
+
+
+def test_selected_leaf_exact_arithmetic_iterator_matches_checked_preview() -> None:
+    expected_stream = _checked_arithmetic_operation_ir()['selected_leaf_exact_operation_stream']
+    rows = list(iter_selected_leaf_exact_arithmetic_operations(
+        arithmetic_lowerings=_arithmetic_lowerings(),
+        leaf_opcode_histogram=leaf_opcode_histogram(),
+        start=0,
+        stop=6,
+    ))
+    assert [_preview_row(row) for row in rows] == expected_stream['preview_head']
+
+    tail_start = int(expected_stream['operation_count']) - 6
+    tail_rows = list(iter_selected_leaf_exact_arithmetic_operations(
+        arithmetic_lowerings=_arithmetic_lowerings(),
+        leaf_opcode_histogram=leaf_opcode_histogram(),
+        start=tail_start,
+        stop=tail_start + 6,
+    ))
+    assert [_preview_row(row) for row in tail_rows] == expected_stream['preview_tail']
+
+
+def test_selected_leaf_exact_arithmetic_export_cli_writes_slice(tmp_path: Path) -> None:
+    subprocess.run(
+        [
+            sys.executable,
+            str(REPO_ROOT / 'compiler_verification_project' / 'scripts' / 'materialize_exact_circuits.py'),
+            '--selected-leaf-exact-arithmetic',
+            '--slice-start',
+            '0',
+            '--slice-count',
+            '6',
+            '--output-dir',
+            str(tmp_path),
+        ],
+        cwd=REPO_ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    output_path = tmp_path / 'selected_leaf_exact_arithmetic' / 'operations.tsv.gz'
+    with gzip.open(output_path, 'rt', encoding='utf-8') as handle:
+        rows = [line.rstrip('\n').split('\t') for line in handle]
+    assert rows[0] == SELECTED_LEAF_EXACT_OPERATION_COLUMNS
+    assert len(rows) == 7
+    expected_head = _checked_arithmetic_operation_ir()['selected_leaf_exact_operation_stream']['preview_head']
+    assert [int(row[0]) for row in rows[1:]] == [int(row['operation_index']) for row in expected_head]
+    assert [row[6] for row in rows[1:]] == [row['gate'] for row in expected_head]
 
 
 def test_arithmetic_operation_ir_rejects_forged_block_total() -> None:

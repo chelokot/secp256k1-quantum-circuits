@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import gzip
 import hashlib
 import json
-from typing import Any, Dict, List, Mapping
+from pathlib import Path
+from typing import Any, Dict, Iterator, List, Mapping, Optional
 
 from arithmetic_lowering import materialize_arithmetic_primitive_operations
 
@@ -22,6 +24,18 @@ ARITHMETIC_OPERATION_STREAM_ENCODING = [
 ]
 PRIMITIVE_KEYS = ('ccx', 'cx', 'x', 'measurement')
 LEAF_EXACT_OPERATION_STREAM_SEGMENT_SIZE = 1_000_000
+SELECTED_LEAF_EXACT_OPERATION_COLUMNS = [
+    'operation_index',
+    'leaf_instance_index',
+    'kernel',
+    'stage',
+    'block',
+    'block_operation_index',
+    'gate',
+    'operand_0',
+    'operand_1',
+    'operand_2',
+]
 
 
 def _canonical_json(payload: Any) -> str:
@@ -73,7 +87,7 @@ def _encoded_operation(
     return '\t'.join(str(value) for value in row) + '\n'
 
 
-def _encoded_leaf_exact_operation(
+def _leaf_exact_operation_row(
     *,
     operation_index: int,
     leaf_instance_index: int,
@@ -82,21 +96,71 @@ def _encoded_leaf_exact_operation(
     block: str,
     block_operation_index: int,
     operation: List[Any],
-) -> str:
+) -> Dict[str, Any]:
     operands = [int(value) for value in operation[1:]]
-    row = [
-        int(operation_index),
-        int(leaf_instance_index),
-        kernel,
-        stage,
-        block,
-        int(block_operation_index),
-        str(operation[0]),
-        operands[0] if len(operands) > 0 else '',
-        operands[1] if len(operands) > 1 else '',
-        operands[2] if len(operands) > 2 else '',
-    ]
-    return '\t'.join(str(value) for value in row) + '\n'
+    return {
+        'operation_index': int(operation_index),
+        'leaf_instance_index': int(leaf_instance_index),
+        'kernel': kernel,
+        'stage': stage,
+        'block': block,
+        'block_operation_index': int(block_operation_index),
+        'gate': str(operation[0]),
+        'operands': operands,
+        'operand_0': operands[0] if len(operands) > 0 else '',
+        'operand_1': operands[1] if len(operands) > 1 else '',
+        'operand_2': operands[2] if len(operands) > 2 else '',
+    }
+
+
+def _encoded_leaf_exact_operation_row(row: Mapping[str, Any]) -> str:
+    return '\t'.join(str(row[column]) for column in SELECTED_LEAF_EXACT_OPERATION_COLUMNS) + '\n'
+
+
+def iter_selected_leaf_exact_arithmetic_operations(
+    *,
+    arithmetic_lowerings: Mapping[str, Any],
+    leaf_opcode_histogram: Mapping[str, int],
+    start: int = 0,
+    stop: Optional[int] = None,
+) -> Iterator[Dict[str, Any]]:
+    if start < 0:
+        raise ValueError('start must be non-negative')
+    stop_index = None if stop is None else int(stop)
+    if stop_index is not None and stop_index < start:
+        raise ValueError('stop must be greater than or equal to start')
+    kernel_lookup = {
+        str(kernel['opcode']): kernel
+        for kernel in arithmetic_lowerings['kernels']
+    }
+    operation_index = 0
+    for opcode, leaf_instance_count in sorted(leaf_opcode_histogram.items()):
+        if int(leaf_instance_count) == 0 or opcode not in kernel_lookup:
+            continue
+        kernel = kernel_lookup[opcode]
+        for leaf_instance_index in range(int(leaf_instance_count)):
+            for stage in kernel['stages']:
+                for block in stage['blocks']:
+                    operations = materialize_arithmetic_primitive_operations(block)
+                    block_start = operation_index
+                    block_end = block_start + len(operations)
+                    requested_stop = block_end if stop_index is None else min(stop_index, block_end)
+                    if requested_stop > start:
+                        local_start = max(start, block_start) - block_start
+                        local_stop = requested_stop - block_start
+                        for block_operation_index in range(local_start, local_stop):
+                            yield _leaf_exact_operation_row(
+                                operation_index=block_start + block_operation_index,
+                                leaf_instance_index=leaf_instance_index,
+                                kernel=opcode,
+                                stage=str(stage['name']),
+                                block=str(block['name']),
+                                block_operation_index=block_operation_index,
+                                operation=operations[block_operation_index],
+                            )
+                    operation_index = block_end
+                    if stop_index is not None and operation_index >= stop_index:
+                        return
 
 
 def _operation_profile(operations: List[List[Any]]) -> Dict[str, Any]:
@@ -369,29 +433,14 @@ def _leaf_exact_operation_stream(
     arithmetic_lowerings: Mapping[str, Any],
     leaf_opcode_histogram: Mapping[str, int],
 ) -> Dict[str, Any]:
-    columns = [
-        'operation_index',
-        'leaf_instance_index',
-        'kernel',
-        'stage',
-        'block',
-        'block_operation_index',
-        'gate',
-        'operand_0',
-        'operand_1',
-        'operand_2',
-    ]
-    kernel_lookup = {
-        str(kernel['opcode']): kernel
-        for kernel in arithmetic_lowerings['kernels']
-    }
     operation_count = 0
     gate_totals = _empty_counts()
     segment_start = 0
     segment_count = 0
     segment_gate_totals = _empty_counts()
     segment_digest = hashlib.sha256()
-    segment_digest.update(('\t'.join(columns) + '\n').encode('ascii'))
+    stream_header = '\t'.join(SELECTED_LEAF_EXACT_OPERATION_COLUMNS) + '\n'
+    segment_digest.update(stream_header.encode('ascii'))
     segments: List[Dict[str, Any]] = []
     preview_head: List[Dict[str, Any]] = []
     preview_tail: List[Dict[str, Any]] = []
@@ -413,49 +462,36 @@ def _leaf_exact_operation_stream(
         segment_count = 0
         segment_gate_totals = _empty_counts()
         segment_digest = hashlib.sha256()
-        segment_digest.update(('\t'.join(columns) + '\n').encode('ascii'))
+        segment_digest.update(stream_header.encode('ascii'))
 
-    for opcode, leaf_instance_count in sorted(leaf_opcode_histogram.items()):
-        if int(leaf_instance_count) == 0 or opcode not in kernel_lookup:
-            continue
-        kernel = kernel_lookup[opcode]
-        for leaf_instance_index in range(int(leaf_instance_count)):
-            for stage in kernel['stages']:
-                for block in stage['blocks']:
-                    operations = materialize_arithmetic_primitive_operations(block)
-                    for block_operation_index, operation in enumerate(operations):
-                        gate = str(operation[0])
-                        encoded = _encoded_leaf_exact_operation(
-                            operation_index=operation_count,
-                            leaf_instance_index=leaf_instance_index,
-                            kernel=opcode,
-                            stage=str(stage['name']),
-                            block=str(block['name']),
-                            block_operation_index=block_operation_index,
-                            operation=operation,
-                        )
-                        segment_digest.update(encoded.encode('ascii'))
-                        gate_totals[gate] += 1
-                        segment_gate_totals[gate] += 1
-                        compact = {
-                            'operation_index': operation_count,
-                            'leaf_instance_index': leaf_instance_index,
-                            'kernel': opcode,
-                            'stage': str(stage['name']),
-                            'block': str(block['name']),
-                            'block_operation_index': block_operation_index,
-                            'gate': gate,
-                            'operands': [int(value) for value in operation[1:]],
-                        }
-                        if len(preview_head) < 6:
-                            preview_head.append(compact)
-                        preview_tail.append(compact)
-                        if len(preview_tail) > 6:
-                            preview_tail.pop(0)
-                        operation_count += 1
-                        segment_count += 1
-                        if segment_count == LEAF_EXACT_OPERATION_STREAM_SEGMENT_SIZE:
-                            flush_segment()
+    for row in iter_selected_leaf_exact_arithmetic_operations(
+        arithmetic_lowerings=arithmetic_lowerings,
+        leaf_opcode_histogram=leaf_opcode_histogram,
+    ):
+        gate = str(row['gate'])
+        encoded = _encoded_leaf_exact_operation_row(row)
+        segment_digest.update(encoded.encode('ascii'))
+        gate_totals[gate] += 1
+        segment_gate_totals[gate] += 1
+        compact = {
+            'operation_index': int(row['operation_index']),
+            'leaf_instance_index': int(row['leaf_instance_index']),
+            'kernel': str(row['kernel']),
+            'stage': str(row['stage']),
+            'block': str(row['block']),
+            'block_operation_index': int(row['block_operation_index']),
+            'gate': gate,
+            'operands': list(row['operands']),
+        }
+        if len(preview_head) < 6:
+            preview_head.append(compact)
+        preview_tail.append(compact)
+        if len(preview_tail) > 6:
+            preview_tail.pop(0)
+        operation_count += 1
+        segment_count += 1
+        if segment_count == LEAF_EXACT_OPERATION_STREAM_SEGMENT_SIZE:
+            flush_segment()
     flush_segment()
     checks = {
         'segment_rows_cover_operation_count': sum(int(segment['operation_count']) for segment in segments) == operation_count,
@@ -467,7 +503,7 @@ def _leaf_exact_operation_stream(
     return {
         'schema': 'compiler-project-selected-leaf-exact-arithmetic-operation-stream-v1',
         'definition': 'Exact primitive operation stream for arithmetic opcodes selected by the leaf opcode histogram. Rows are generated from arithmetic_lowerings primitive operations and segmented without checking every row into JSON.',
-        'operation_columns': columns,
+        'operation_columns': SELECTED_LEAF_EXACT_OPERATION_COLUMNS,
         'operation_rows_materialized_in_json': False,
         'segment_size': LEAF_EXACT_OPERATION_STREAM_SEGMENT_SIZE,
         'operation_count': operation_count,
@@ -483,6 +519,45 @@ def _leaf_exact_operation_stream(
             checks['segment_rows_cover_operation_count'] is True
             and all(checks['segment_gate_totals_cover_stream'].values())
         ),
+    }
+
+
+def write_selected_leaf_exact_arithmetic_operations(
+    *,
+    arithmetic_lowerings: Mapping[str, Any],
+    leaf_opcode_histogram: Mapping[str, int],
+    output_path: Path,
+    gzip_output: bool = True,
+    start: int = 0,
+    stop: Optional[int] = None,
+) -> Dict[str, Any]:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    opener = gzip.open if gzip_output else open
+    row_count = 0
+    stream_hash = hashlib.sha256()
+    header = '\t'.join(SELECTED_LEAF_EXACT_OPERATION_COLUMNS) + '\n'
+    stream_hash.update(header.encode('ascii'))
+    with opener(output_path, 'wt', encoding='utf-8') as handle:
+        handle.write(header)
+        for row in iter_selected_leaf_exact_arithmetic_operations(
+            arithmetic_lowerings=arithmetic_lowerings,
+            leaf_opcode_histogram=leaf_opcode_histogram,
+            start=start,
+            stop=stop,
+        ):
+            encoded_row = _encoded_leaf_exact_operation_row(row)
+            handle.write(encoded_row)
+            stream_hash.update(encoded_row.encode('ascii'))
+            row_count += 1
+    return {
+        'schema': 'compiler-project-selected-leaf-exact-arithmetic-operation-export-v1',
+        'columns': SELECTED_LEAF_EXACT_OPERATION_COLUMNS,
+        'path': str(output_path),
+        'gzip': bool(gzip_output),
+        'start': int(start),
+        'stop': None if stop is None else int(stop),
+        'row_count': row_count,
+        'sha256': stream_hash.hexdigest(),
     }
 
 
@@ -648,5 +723,8 @@ def build_arithmetic_operation_ir(
 
 __all__ = [
     'ARITHMETIC_OPERATION_IR_SCHEMA',
+    'SELECTED_LEAF_EXACT_OPERATION_COLUMNS',
     'build_arithmetic_operation_ir',
+    'iter_selected_leaf_exact_arithmetic_operations',
+    'write_selected_leaf_exact_arithmetic_operations',
 ]
