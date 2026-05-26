@@ -11,7 +11,7 @@ SRC = PROJECT_ROOT / 'compiler_verification_project' / 'src'
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from materialized_circuit import available_family_names, resolve_selected_family_names, write_materialized_family_circuit, write_public_candidate_flat_netlist  # noqa: E402
+from materialized_circuit import available_family_names, resolve_selected_family_names, write_canonical_physical_flat_netlist, write_materialized_family_circuit, write_public_candidate_flat_netlist  # noqa: E402
 from project import compiler_family_frontier  # noqa: E402
 
 
@@ -24,6 +24,11 @@ def checked_frontier_artifact() -> dict | None:
 
 def checked_public_candidate_materialized_artifact() -> dict:
     path = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts' / 'public_candidate_materialized_circuit_manifest.json'
+    return json.loads(path.read_text())
+
+
+def checked_artifact(name: str) -> dict:
+    path = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts' / name
     return json.loads(path.read_text())
 
 
@@ -42,8 +47,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument('--no-gzip', action='store_true', help='Write plain TSV instead of operations.tsv.gz.')
     parser.add_argument('--list-families', action='store_true', help='Print the available family names and exit.')
     parser.add_argument('--public-candidate-flat-netlist', action='store_true', help='Stream the current public-candidate flat primitive netlist from the checked materialized manifest.')
+    parser.add_argument('--canonical-physical-flat-netlist', action='store_true', help='Stream the current canonical physical flat netlist, including indexed QROAM table-CNOT rows.')
     parser.add_argument('--slice-start', type=int, default=0, help='First operation index to export for --public-candidate-flat-netlist.')
-    parser.add_argument('--slice-count', type=int, default=None, help='Optional operation count to export for --public-candidate-flat-netlist.')
+    parser.add_argument('--slice-count', type=int, default=None, help='Optional operation count to export for the selected flat netlist.')
     return parser.parse_args()
 
 
@@ -75,6 +81,29 @@ def main() -> None:
         print(json.dumps({
             'output_dir': display_path(output_root),
             'public_candidate_flat_netlist': {
+                **export_manifest,
+                'path': display_path(output_path),
+            },
+        }, indent=2))
+        return
+    if args.canonical_physical_flat_netlist:
+        manifest = checked_public_candidate_materialized_artifact()
+        stop = None if args.slice_count is None else int(args.slice_start) + int(args.slice_count)
+        suffix = 'tsv.gz' if not args.no_gzip else 'tsv'
+        output_path = output_root / 'canonical_physical_flat_netlist' / f'operations.{suffix}'
+        export_manifest = write_canonical_physical_flat_netlist(
+            manifest,
+            output_path,
+            table_manifests=checked_artifact('table_manifests.json'),
+            raw32_schedule=checked_artifact('full_raw32_oracle.json'),
+            qroam_table_cnot_materialization=checked_artifact('qroam_table_cnot_materialization.json'),
+            gzip_output=not args.no_gzip,
+            start=int(args.slice_start),
+            stop=stop,
+        )
+        print(json.dumps({
+            'output_dir': display_path(output_root),
+            'canonical_physical_flat_netlist': {
                 **export_manifest,
                 'path': display_path(output_path),
             },

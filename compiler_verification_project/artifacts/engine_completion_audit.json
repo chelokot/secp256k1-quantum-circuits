@@ -15,10 +15,10 @@
     "lookup_lowerings_sha256": "70e8ff627f0c537f73162c1d3ccf259a94c3dd756568947c7b4f3cf4665a5637",
     "modular_arithmetic_certificate_sha256": "058cc2c95b3b8f65d39f8c91f56b5256322e0fa00853466facb980d60c1e783e",
     "phase_shell_lowerings_sha256": "4411ea5f699e5950a32783f2232796a63987efb5d939f98ac400f4f02ddd415b",
-    "public_candidate_materialized_circuit_manifest_sha256": "1c11bc8b331545ff41226aa9ecbc514cfdd8a97256f9aca8cb3edbc0af45326d",
-    "public_engine_manifest_sha256": "2e778288c6c6a40d2d6d8a97a13b047c015105319b9962d36f797a6d75db58f9",
+    "public_candidate_materialized_circuit_manifest_sha256": "f6f9940e305ca7464dd8594bd90c7ca14473c071d83be22bb4978b2f6921ee53",
+    "public_engine_manifest_sha256": "0d8c54b3cb060936352fdc67a71e91e89b8dec1b57d8e74e57060c3aa2a08cc1",
     "qroam_primitive_certificate_sha256": "9b6d9fd817284d64b5e56f5e804f025cca897dfd19455f637643813bc57700dc",
-    "qroam_table_cnot_materialization_sha256": "0cfec0b2f407e8cda087699321256adfda441bb00f9aecba5c7abca8875cd191",
+    "qroam_table_cnot_materialization_sha256": "b783455ac10c7da613d154ada14315069926fddec5ce0a1ebd23e1cb4d8f3916",
     "release_corpus_preflight_sha256": "e8cc293c4fc4702e1fbc0bfcb9b8749515de99a348ecbf55ed123d68738c2f3a",
     "reusable_chunk_lowering_sha256": "22284a48d52f2844153dbdfcd971b1fea7fd562051a650fc4d9a5107f1955b65",
     "streamed_lookup_tail_leaf_equivalence_sha256": "90f1880c839d7892eab0b748683d3186cbea9811409a4ab090c9d60d8cca0db3",
@@ -80,8 +80,8 @@
       "evidence": "qroam_primitive_certificate.qroamclean_cost_model"
     },
     {
-      "name": "qroam_table_cnot_physical_splice",
-      "status": "indexed_table_cnot_rows_in_canonical_physical_flat_stream",
+      "name": "qroam_bit_level_netlist_expansion",
+      "status": "indexed_table_cnot_rows_in_canonical_physical_flat_stream_with_iterator_export",
       "evidence": "canonical_physical_flat_netlist + qroam_table_cnot_flat_extension + qroam_table_cnot_materialization.row_index_contract"
     },
     {
@@ -122,34 +122,6 @@
         "field_mul_non_clifford": 71492,
         "field_mul_stage_counts_match": true,
         "modular_ir_counts_match_lowerings": true
-      }
-    },
-    {
-      "name": "qroam_bit_level_netlist_expansion",
-      "status": "indexed_table_cnot_rows_spliced_into_canonical_physical_stream",
-      "required_to_close": "Replace the indexed virtual QROAM table-CNOT contribution stream with the same per-operation executable iterator/export path as the non-QROAM primitive rows.",
-      "current_evidence": "qroam_primitive_certificate + qroam_table_cnot_materialization + public_candidate_materialized_circuit_manifest.qroam_table_cnot_flat_extension + operand_source_binding",
-      "evidence_metrics": {
-        "source_bound_run_length_rows": 2976,
-        "operation_level": "word_level_unary_iteration_rows",
-        "target_bit_load_site_level": "target_bit_clifford_load_sites",
-        "potential_target_bit_cnot_sites_per_stream": 10158080,
-        "full_oracle_emitted_table_clifford_cx": 780087406,
-        "table_cnot_segment_count": 2976,
-        "rank_checkpoint_count": 50592,
-        "row_decoder_sample_count": 5952,
-        "row_index_contract_merkle_root_sha256": "305bb2eae547bf785794f69947ebc6c5e4dced6583ba01e67ff18b9f2d0778d0",
-        "row_decoder_sample_merkle_root_sha256": "f8f6ab8165c861b2c20f384f62afe41f9bea95850fb6cd6fc46335763d533490",
-        "table_cnot_extension_stream_sha256": "076e232c736494c80c9389d5cb84cf5df68e9a89901bd211dc287d4b6de316e9",
-        "canonical_physical_operation_count": 819473943,
-        "canonical_physical_cx_count": 780087406,
-        "canonical_physical_stream_sha256": "a07fd29b458997db5bae179699d128bd9ab4b81a2403cb2c3a32b4597b3efd47",
-        "canonical_physical_segment_merkle_root_sha256": "5afa50b1712496d34d5cf8cce2e980528686c6ba203ac610ab28ce7904e1cb35",
-        "table_cnot_extension_peak_live_qubits": 1199,
-        "domain_size": 32768,
-        "block_size": 1,
-        "target_plus_junk_qubits": 155,
-        "per_stream_non_clifford": 65536
       }
     },
     {

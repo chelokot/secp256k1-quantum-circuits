@@ -467282,6 +467282,6 @@
   "pass": true,
   "notes": [
     "This artifact affects Clifford CNOT materialization evidence, not the public non-Clifford headline.",
-    "The artifact records global emitted-CNOT operation ranges, rank checkpoints, and an executable per-CNOT row decoder for each segment; the remaining QROAM work is to splice the indexed virtual CNOT rows into the canonical global flat stream."
+    "The artifact records global emitted-CNOT operation ranges, rank checkpoints, and an executable per-CNOT row decoder for each segment; materialized_circuit.py splices these indexed rows into the canonical physical flat stream and exports decoded slices through materialize_exact_circuits.py."
   ]
 }

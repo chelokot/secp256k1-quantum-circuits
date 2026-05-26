@@ -249,8 +249,8 @@ def build_engine_completion_audit(
             'evidence': 'qroam_primitive_certificate.qroamclean_cost_model',
         },
         {
-            'name': 'qroam_table_cnot_physical_splice',
-            'status': 'indexed_table_cnot_rows_in_canonical_physical_flat_stream',
+            'name': 'qroam_bit_level_netlist_expansion',
+            'status': 'indexed_table_cnot_rows_in_canonical_physical_flat_stream_with_iterator_export',
             'evidence': 'canonical_physical_flat_netlist + qroam_table_cnot_flat_extension + qroam_table_cnot_materialization.row_index_contract',
         },
         {
@@ -294,34 +294,6 @@ def build_engine_completion_audit(
             },
         },
         {
-            'name': 'qroam_bit_level_netlist_expansion',
-            'status': 'indexed_table_cnot_rows_spliced_into_canonical_physical_stream',
-            'required_to_close': 'Replace the indexed virtual QROAM table-CNOT contribution stream with the same per-operation executable iterator/export path as the non-QROAM primitive rows.',
-            'current_evidence': 'qroam_primitive_certificate + qroam_table_cnot_materialization + public_candidate_materialized_circuit_manifest.qroam_table_cnot_flat_extension + operand_source_binding',
-            'evidence_metrics': {
-                'source_bound_run_length_rows': rows_by_source_kind['qroam_primitive_certificate'],
-                'operation_level': str(qroam_primitive_certificate['operation_stream']['operation_level']),
-                'target_bit_load_site_level': str(qroam_primitive_certificate['target_bit_load_site_stream']['operation_level']),
-                'potential_target_bit_cnot_sites_per_stream': int(qroam_primitive_certificate['target_bit_load_site_stream']['potential_cnot_site_count']),
-                'full_oracle_emitted_table_clifford_cx': int(qroam_table_cnot_materialization['totals']['full_oracle_emitted_clifford_cx']),
-                'table_cnot_segment_count': int(qroam_table_cnot_materialization['totals']['segment_count']),
-                'rank_checkpoint_count': int(qroam_table_cnot_materialization['totals']['rank_checkpoint_count']),
-                'row_decoder_sample_count': int(qroam_table_cnot_materialization['totals']['row_decoder_sample_count']),
-                'row_index_contract_merkle_root_sha256': qroam_table_cnot_materialization['row_index_contract_merkle_root_sha256'],
-                'row_decoder_sample_merkle_root_sha256': qroam_table_cnot_materialization['row_decoder_sample_merkle_root_sha256'],
-                'table_cnot_extension_stream_sha256': public_candidate_materialized_circuit_manifest['qroam_table_cnot_flat_extension']['operation_stream_sha256'],
-                'canonical_physical_operation_count': int(canonical_physical_flat['operation_count']),
-                'canonical_physical_cx_count': int(canonical_physical_flat['gate_totals']['cx']),
-                'canonical_physical_stream_sha256': canonical_physical_flat['operation_stream_sha256'],
-                'canonical_physical_segment_merkle_root_sha256': canonical_physical_flat['segment_merkle_root_sha256'],
-                'table_cnot_extension_peak_live_qubits': int(public_candidate_materialized_circuit_manifest['qroam_table_cnot_flat_extension']['peak_live_qubits']),
-                'domain_size': int(qroam_cost['domain_size']),
-                'block_size': int(qroam_cost['block_size']),
-                'target_plus_junk_qubits': int(qroam_cost['target_plus_junk_qubits']),
-                'per_stream_non_clifford': int(qroam_cost['per_stream_non_clifford']),
-            },
-        },
-        {
             'name': 'tail_macro_schedule_and_reversibility',
             'status': 'in_place_three_slot_schedule_boundary_not_eliminated',
             'required_to_close': 'Promote an executable reversible/permutation-extension tail schedule into the counted resource contract, or promote a generated expanded/reordered slot schedule into the public qubit budget.',
@@ -338,7 +310,6 @@ def build_engine_completion_audit(
     checks['remaining_macro_boundaries_are_explicit'] = (
         {
             'modular_arithmetic_clifford_expansion',
-            'qroam_bit_level_netlist_expansion',
             'tail_macro_schedule_and_reversibility',
             'single_engine_zkp_input_derivation',
         }.issubset(remaining_boundary_names)

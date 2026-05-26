@@ -17,6 +17,7 @@ if str(ROOT_SRC) not in sys.path:
 from arithmetic_lowering import arithmetic_lowering_library, materialize_arithmetic_primitive_operations
 from lookup_lowering import lookup_lowering_library, materialize_lookup_primitive_operations
 from phase_shell_lowering import materialize_phase_operations, phase_shell_lowering_library
+from qroam_table_cnot_materialization import decode_segment_emitted_cx
 from public_engine_contract import (
     CANONICAL_FLAT_NETLIST_IS_STRICT_REPLAY_CHECK,
     CANONICAL_MATERIALIZED_FLAT_NETLIST,
@@ -33,6 +34,20 @@ MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA = 'compiler-project-materialized-circuit-ma
 PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA = 'compiler-project-public-candidate-materialized-circuit-manifest-v1'
 PUBLIC_CANDIDATE_FLAT_NETLIST_COLUMNS = [
     'operation_index',
+    'run_length_row_index',
+    'row_instance_ordinal',
+    'scope',
+    'source',
+    'gate',
+    'operand_wires',
+    'liveness_interval_id',
+    'total_live_qubits',
+    'primitive_operand_contract_sha256',
+    'liveness_binding_sha256',
+]
+CANONICAL_PHYSICAL_FLAT_NETLIST_COLUMNS = [
+    'operation_index',
+    'contribution_kind',
     'run_length_row_index',
     'row_instance_ordinal',
     'scope',
@@ -716,6 +731,236 @@ def write_public_candidate_flat_netlist(
         'source_manifest_schema': manifest['schema'],
         'source_manifest_sha256': _sha256_payload(manifest),
         'columns': PUBLIC_CANDIDATE_FLAT_NETLIST_COLUMNS,
+        'path': str(output_path),
+        'gzip': bool(gzip_output),
+        'start': int(start),
+        'stop': None if stop is None else int(stop),
+        'row_count': row_count,
+        'sha256': stream_hash.hexdigest(),
+    }
+
+
+def _base_point_from_table_manifests(raw32_call: Mapping[str, Any], table_manifests: Mapping[str, Any]) -> tuple[int, int]:
+    phase_register = str(raw32_call['phase_register'])
+    window_index = int(raw32_call['window_index_within_register'])
+    if phase_register == 'phase_a':
+        row = table_manifests['phase_a_bases'][window_index]
+    elif phase_register == 'phase_b':
+        row = table_manifests['phase_b_bases'][window_index]
+    else:
+        raise KeyError(f'unknown phase register: {phase_register}')
+    return int(str(row['base_x_hex']), 16), int(str(row['base_y_hex']), 16)
+
+
+def _qroam_table_cnot_operand_wires(
+    *,
+    extension: Mapping[str, Any],
+    decoded: Mapping[str, Any],
+) -> List[Dict[str, Any]]:
+    table = str(extension['table'])
+    chunk_index = int(extension['chunk_index'])
+    address = int(decoded['address'])
+    target_bit_index = int(decoded['target_bit_index'])
+    target_parent = f'qroam_chunk_target__{table}__chunk_{chunk_index}'
+    return [
+        {
+            'domain_id': f'{table}:chunk_{chunk_index}:qroam_table_cnot_control',
+            'owner_id': 'lookup_workspace',
+            'role': 'qroam_table_cnot_control',
+            'operand_index': address,
+            'parent_wire_id': 'folded_lookup_control_workspace',
+            'parent_bit_index': address % 18,
+            'wire_id': str(decoded['control_wire']),
+        },
+        {
+            'domain_id': f'{table}:chunk_{chunk_index}:qroam_table_cnot_target',
+            'owner_id': 'lookup_workspace',
+            'role': 'qroam_table_cnot_target',
+            'operand_index': target_bit_index,
+            'parent_wire_id': target_parent,
+            'parent_bit_index': target_bit_index,
+            'wire_id': f'{target_parent}.bit[{target_bit_index}]',
+        },
+    ]
+
+
+def _qroam_segment_by_extension_key(qroam_table_cnot_materialization: Mapping[str, Any]) -> Dict[tuple[Any, ...], Mapping[str, Any]]:
+    return {
+        (
+            int(segment['call_index']),
+            str(segment['table']),
+            int(segment['chunk_index']),
+            str(segment['phase']),
+            int(segment['start_address']),
+            int(segment['end_address_exclusive']),
+        ): segment
+        for segment in qroam_table_cnot_materialization['segments']
+    }
+
+
+def iter_canonical_physical_flat_netlist(
+    manifest: Mapping[str, Any],
+    *,
+    table_manifests: Mapping[str, Any],
+    raw32_schedule: Mapping[str, Any],
+    qroam_table_cnot_materialization: Mapping[str, Any],
+    start: int = 0,
+    stop: Optional[int] = None,
+) -> Iterator[Dict[str, Any]]:
+    if start < 0:
+        raise ValueError('start must be non-negative')
+    stop_index = None if stop is None else int(stop)
+    raw32_call_by_index = {
+        int(call['call_index']): call
+        for call in raw32_schedule['leaf_calls']
+    }
+    qroam_segment_by_key = _qroam_segment_by_extension_key(qroam_table_cnot_materialization)
+    qroam_extension_by_row_index = {
+        int(row['run_length_row_index']): row
+        for row in manifest['qroam_table_cnot_flat_extension']['rows']
+    }
+    liveness_by_row_index = {
+        int(row['row_index']): row
+        for row in manifest['strict_replayed_tail_liveness_projection']['rows']
+    }
+    operation_index = 0
+    for row in manifest['run_length_rows']:
+        row_index = int(row['row_index'])
+        row_total = int(row['total_count'])
+        row_start = operation_index
+        row_end = row_start + row_total
+        requested_stop = row_end if stop_index is None else min(stop_index, row_end)
+        if requested_stop > start and row_total > 0:
+            local_start = max(int(start), row_start) - row_start
+            local_stop = requested_stop - row_start
+            liveness = liveness_by_row_index[row_index]
+            for row_instance_ordinal in range(local_start, local_stop):
+                yield {
+                    'operation_index': row_start + row_instance_ordinal,
+                    'contribution_kind': 'run_length_primitive_row',
+                    'run_length_row_index': row_index,
+                    'row_instance_ordinal': row_instance_ordinal,
+                    'scope': str(row['scope']),
+                    'source': str(row['source']),
+                    'gate': str(row['gate']),
+                    'operand_wires': _operation_domain_wires(row, row_instance_ordinal),
+                    'liveness': {
+                        'interval_id': str(liveness['interval_id']),
+                        'live_wire_ids': list(liveness['live_wire_ids']),
+                        'derived_owner_live_qubits': dict(liveness['derived_owner_live_qubits']),
+                        'total_live_qubits': int(liveness['total_live_qubits']),
+                    },
+                    'primitive_operand_contract_sha256': str(row['primitive_operand_contract_sha256']),
+                    'liveness_binding_sha256': _sha256_payload(liveness),
+                }
+        operation_index = row_end
+        extension = qroam_extension_by_row_index.get(row_index)
+        if extension is not None:
+            emitted_cx_count = int(extension['emitted_cx_count'])
+            extension_start = operation_index
+            extension_end = extension_start + emitted_cx_count
+            requested_extension_stop = extension_end if stop_index is None else min(stop_index, extension_end)
+            if requested_extension_stop > start and emitted_cx_count > 0:
+                local_start = max(int(start), extension_start) - extension_start
+                local_stop = requested_extension_stop - extension_start
+                segment_key = (
+                    int(extension['call_index']),
+                    str(extension['table']),
+                    int(extension['chunk_index']),
+                    str(extension['phase']),
+                    int(extension['start_address']),
+                    int(extension['end_address_exclusive']),
+                )
+                segment = qroam_segment_by_key[segment_key]
+                base = _base_point_from_table_manifests(raw32_call_by_index[int(extension['call_index'])], table_manifests)
+                row_liveness = liveness_by_row_index[row_index]
+                liveness = {
+                    'interval_id': str(row_liveness['interval_id']),
+                    'live_wire_ids': list(row_liveness['live_wire_ids']),
+                    'derived_owner_live_qubits': dict(row_liveness['derived_owner_live_qubits']),
+                    'total_live_qubits': int(row_liveness['total_live_qubits']),
+                }
+                for local_index in range(local_start, local_stop):
+                    decoded = decode_segment_emitted_cx(
+                        segment=segment,
+                        base=base,
+                        local_emitted_cx_index=local_index,
+                        field_bits=int(qroam_table_cnot_materialization['parameters']['field_bits']),
+                        chunk_bits=int(qroam_table_cnot_materialization['parameters']['chunk_bits']),
+                    )
+                    yield {
+                        'operation_index': extension_start + local_index,
+                        'contribution_kind': 'qroam_table_cnot_indexed_row',
+                        'run_length_row_index': row_index,
+                        'row_instance_ordinal': local_index,
+                        'scope': 'qroam_table_cnot_indexed_stream',
+                        'source': 'qroam_table_cnot_materialization.row_index_contract',
+                        'gate': 'cx',
+                        'operand_wires': _qroam_table_cnot_operand_wires(extension=extension, decoded=decoded),
+                        'liveness': liveness,
+                        'primitive_operand_contract_sha256': str(extension['primitive_operand_contract_sha256']),
+                        'liveness_binding_sha256': str(extension['liveness_binding_sha256']),
+                        'qroam_table_cnot': decoded,
+                    }
+            operation_index = extension_end
+        if stop_index is not None and operation_index >= stop_index:
+            break
+
+
+def _encoded_canonical_physical_flat_operation(row: Mapping[str, Any]) -> str:
+    encoded = [
+        int(row['operation_index']),
+        str(row['contribution_kind']),
+        int(row['run_length_row_index']),
+        int(row['row_instance_ordinal']),
+        str(row['scope']),
+        str(row['source']),
+        str(row['gate']),
+        _canonical_json(row['operand_wires']),
+        str(row['liveness']['interval_id']),
+        int(row['liveness']['total_live_qubits']),
+        str(row['primitive_operand_contract_sha256']),
+        str(row['liveness_binding_sha256']),
+    ]
+    return '\t'.join(str(value) for value in encoded) + '\n'
+
+
+def write_canonical_physical_flat_netlist(
+    manifest: Mapping[str, Any],
+    output_path: Path,
+    *,
+    table_manifests: Mapping[str, Any],
+    raw32_schedule: Mapping[str, Any],
+    qroam_table_cnot_materialization: Mapping[str, Any],
+    gzip_output: bool = True,
+    start: int = 0,
+    stop: Optional[int] = None,
+) -> Dict[str, Any]:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    opener = gzip.open if gzip_output else open
+    row_count = 0
+    stream_hash = hashlib.sha256()
+    header = '\t'.join(CANONICAL_PHYSICAL_FLAT_NETLIST_COLUMNS) + '\n'
+    stream_hash.update(header.encode('ascii'))
+    with opener(output_path, 'wt', encoding='utf-8') as handle:
+        handle.write(header)
+        for row in iter_canonical_physical_flat_netlist(
+            manifest,
+            table_manifests=table_manifests,
+            raw32_schedule=raw32_schedule,
+            qroam_table_cnot_materialization=qroam_table_cnot_materialization,
+            start=start,
+            stop=stop,
+        ):
+            encoded_row = _encoded_canonical_physical_flat_operation(row)
+            handle.write(encoded_row)
+            stream_hash.update(encoded_row.encode('utf-8'))
+            row_count += 1
+    return {
+        'schema': 'compiler-project-canonical-physical-flat-netlist-export-v1',
+        'source_manifest_schema': manifest['schema'],
+        'source_manifest_sha256': _sha256_payload(manifest),
+        'columns': CANONICAL_PHYSICAL_FLAT_NETLIST_COLUMNS,
         'path': str(output_path),
         'gzip': bool(gzip_output),
         'start': int(start),
@@ -1959,6 +2204,7 @@ def _spliced_physical_flat_netlist(
     segment_non_clifford = 0
     segment_digest_contributions: List[Dict[str, Any]] = []
     segments: List[Dict[str, Any]] = []
+    qroam_table_cnot_splices: List[Dict[str, Any]] = []
     preview_head: List[Dict[str, Any]] = []
     preview_tail: List[Dict[str, Any]] = []
 
@@ -2044,6 +2290,18 @@ def _spliced_physical_flat_netlist(
         extension = extension_by_row_index.get(row_index)
         if extension is not None:
             emitted_cx_count = int(extension['emitted_cx_count'])
+            qroam_table_cnot_splices.append({
+                'extension_segment_index': int(extension['extension_segment_index']),
+                'run_length_row_index': row_index,
+                'operation_start': operation_cursor,
+                'operation_end_exclusive': operation_cursor + emitted_cx_count,
+                'operation_count': emitted_cx_count,
+                'emitted_cx_operation_start': int(extension['emitted_cx_operation_start']),
+                'emitted_cx_operation_end_exclusive': int(extension['emitted_cx_operation_end_exclusive']),
+                'source_segment_sha256': str(extension['source_segment_sha256']),
+                'liveness_binding_sha256': str(extension['liveness_binding_sha256']),
+                'qroam_target_wire': str(extension['qroam_target_wire']),
+            })
             append_contribution({
                 'contribution_kind': 'qroam_table_cnot_indexed_rows',
                 'operation_start': operation_cursor,
@@ -2091,6 +2349,14 @@ def _spliced_physical_flat_netlist(
             peak_live_qubits >= int(canonical_materialized_flat_netlist['peak_live_qubits'])
             and peak_live_qubits >= int(qroam_table_cnot_flat_extension['peak_live_qubits'])
         ),
+        'qroam_table_cnot_splice_ranges_cover_cx_total': (
+            len(qroam_table_cnot_splices) == qroam_table_cnot_splice_count
+            and sum(int(row['operation_count']) for row in qroam_table_cnot_splices) == qroam_table_cnot_operation_count
+            and all(
+                int(row['operation_end_exclusive']) - int(row['operation_start']) == int(row['operation_count'])
+                for row in qroam_table_cnot_splices
+            )
+        ),
     }
     return {
         'schema': 'compiler-project-canonical-physical-flat-netlist-v1',
@@ -2121,6 +2387,7 @@ def _spliced_physical_flat_netlist(
         'peak_live_qubits': peak_live_qubits,
         'qroam_table_cnot_splice_count': qroam_table_cnot_splice_count,
         'qroam_table_cnot_operation_count': qroam_table_cnot_operation_count,
+        'qroam_table_cnot_splices': qroam_table_cnot_splices,
         'segments': segments,
         'preview_head': preview_head,
         'preview_tail': preview_tail,
@@ -3126,9 +3393,11 @@ __all__ = [
     'available_family_names',
     'build_materialized_family_manifest',
     'build_public_candidate_materialized_circuit_manifest',
+    'iter_canonical_physical_flat_netlist',
     'iter_public_candidate_flat_netlist',
     'iter_family_operation_stream',
     'resolve_selected_family_names',
+    'write_canonical_physical_flat_netlist',
     'write_public_candidate_flat_netlist',
     'write_materialized_family_circuit',
 ]

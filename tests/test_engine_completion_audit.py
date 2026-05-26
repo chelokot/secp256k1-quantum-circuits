@@ -66,23 +66,16 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     remaining = {row['name']: row for row in expected['remaining_macro_boundaries']}
     assert {
         'modular_arithmetic_clifford_expansion',
-        'qroam_bit_level_netlist_expansion',
         'tail_macro_schedule_and_reversibility',
         'single_engine_zkp_input_derivation',
     }.issubset(remaining)
+    covered = {row['name']: row for row in expected['covered_boundaries']}
+    assert covered['qroam_bit_level_netlist_expansion']['status'] == 'indexed_table_cnot_rows_in_canonical_physical_flat_stream_with_iterator_export'
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['source_bound_run_length_rows'] == expected['source_binding_summary']['rows_by_source_kind']['arithmetic_operation_ir']
-    assert remaining['qroam_bit_level_netlist_expansion']['evidence_metrics']['source_bound_run_length_rows'] == expected['source_binding_summary']['rows_by_source_kind']['qroam_primitive_certificate']
     qroam_table_cnot = _load('qroam_table_cnot_materialization.json')
-    qroam_metrics = remaining['qroam_bit_level_netlist_expansion']['evidence_metrics']
-    assert remaining['qroam_bit_level_netlist_expansion']['status'] == 'indexed_table_cnot_rows_spliced_into_canonical_physical_stream'
-    assert qroam_metrics['full_oracle_emitted_table_clifford_cx'] == qroam_table_cnot['totals']['full_oracle_emitted_clifford_cx']
-    assert qroam_metrics['rank_checkpoint_count'] == qroam_table_cnot['totals']['rank_checkpoint_count']
-    assert qroam_metrics['row_decoder_sample_count'] == qroam_table_cnot['totals']['row_decoder_sample_count']
-    assert qroam_metrics['row_index_contract_merkle_root_sha256'] == qroam_table_cnot['row_index_contract_merkle_root_sha256']
-    assert qroam_metrics['row_decoder_sample_merkle_root_sha256'] == qroam_table_cnot['row_decoder_sample_merkle_root_sha256']
-    assert qroam_metrics['canonical_physical_cx_count'] == qroam_table_cnot['totals']['full_oracle_emitted_clifford_cx']
-    assert len(qroam_metrics['canonical_physical_stream_sha256']) == 64
-    assert len(remaining['qroam_bit_level_netlist_expansion']['evidence_metrics']['table_cnot_extension_stream_sha256']) == 64
+    physical = _load('public_candidate_materialized_circuit_manifest.json')['canonical_physical_flat_netlist']
+    assert physical['gate_totals']['cx'] == qroam_table_cnot['totals']['full_oracle_emitted_clifford_cx']
+    assert physical['pass'] is True
     assert all(expected['checks'].values())
 
 

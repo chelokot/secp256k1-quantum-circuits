@@ -15,7 +15,7 @@ COMPILER_SRC = REPO_ROOT / 'compiler_verification_project' / 'src'
 if str(COMPILER_SRC) not in sys.path:
     sys.path.insert(0, str(COMPILER_SRC))
 
-from materialized_circuit import MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, PRIMITIVE_GATE_ARITY, PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, build_public_candidate_materialized_circuit_manifest, iter_family_operation_stream, iter_public_candidate_flat_netlist, resolve_selected_family_names  # noqa: E402
+from materialized_circuit import MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, PRIMITIVE_GATE_ARITY, PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, build_public_candidate_materialized_circuit_manifest, iter_canonical_physical_flat_netlist, iter_family_operation_stream, iter_public_candidate_flat_netlist, resolve_selected_family_names  # noqa: E402
 from public_engine_contract import CANONICAL_FLAT_NETLIST_IS_STRICT_REPLAY_CHECK, CANONICAL_MATERIALIZED_FLAT_NETLIST, PUBLIC_CANDIDATE_CANONICAL_TOTALS_SOURCE, PUBLIC_TOTALS_DERIVE_FROM_CANONICAL_CHECK, STRICT_REPLAYED_TAIL_MATERIALIZED_FLAT_NETLIST  # noqa: E402
 
 
@@ -345,6 +345,50 @@ def test_public_candidate_flat_netlist_iterator_emits_qroam_three_operands() -> 
     assert all(operation['liveness']['total_live_qubits'] == manifest['materialized_flat_netlist']['peak_live_qubits'] for operation in operations)
 
 
+def test_canonical_physical_flat_netlist_iterator_emits_qroam_table_cnot_rows() -> None:
+    manifest = _artifact('public_candidate_materialized_circuit_manifest.json')
+    first_splice = manifest['canonical_physical_flat_netlist']['qroam_table_cnot_splices'][0]
+    first_extension = manifest['qroam_table_cnot_flat_extension']['rows'][first_splice['extension_segment_index']]
+    start = int(first_splice['operation_start'])
+    operations = list(iter_canonical_physical_flat_netlist(
+        manifest,
+        table_manifests=_artifact('table_manifests.json'),
+        raw32_schedule=_artifact('full_raw32_oracle.json'),
+        qroam_table_cnot_materialization=_artifact('qroam_table_cnot_materialization.json'),
+        start=start,
+        stop=start + 3,
+    ))
+    assert [operation['operation_index'] for operation in operations] == [start, start + 1, start + 2]
+    assert all(operation['contribution_kind'] == 'qroam_table_cnot_indexed_row' for operation in operations)
+    assert all(operation['gate'] == 'cx' for operation in operations)
+    assert all(len(operation['operand_wires']) == 2 for operation in operations)
+    assert operations[0]['qroam_table_cnot']['global_emitted_cx_index'] == first_extension['emitted_cx_operation_start']
+    assert operations[0]['operand_wires'][0]['wire_id'] == operations[0]['qroam_table_cnot']['control_wire']
+    assert operations[0]['operand_wires'][1]['parent_wire_id'] == first_extension['qroam_target_wire']
+    assert all(operation['liveness']['total_live_qubits'] == first_extension['total_live_qubits'] for operation in operations)
+
+
+def test_canonical_physical_flat_netlist_iterator_emits_later_qroam_splice_at_physical_index() -> None:
+    manifest = _artifact('public_candidate_materialized_circuit_manifest.json')
+    later_splice = manifest['canonical_physical_flat_netlist']['qroam_table_cnot_splices'][100]
+    extension = manifest['qroam_table_cnot_flat_extension']['rows'][later_splice['extension_segment_index']]
+    start = int(later_splice['operation_start']) + 5
+    operations = list(iter_canonical_physical_flat_netlist(
+        manifest,
+        table_manifests=_artifact('table_manifests.json'),
+        raw32_schedule=_artifact('full_raw32_oracle.json'),
+        qroam_table_cnot_materialization=_artifact('qroam_table_cnot_materialization.json'),
+        start=start,
+        stop=start + 2,
+    ))
+    assert [operation['operation_index'] for operation in operations] == [start, start + 1]
+    assert all(operation['contribution_kind'] == 'qroam_table_cnot_indexed_row' for operation in operations)
+    assert operations[0]['qroam_table_cnot']['global_emitted_cx_index'] == int(extension['emitted_cx_operation_start']) + 5
+    assert operations[1]['qroam_table_cnot']['global_emitted_cx_index'] == int(extension['emitted_cx_operation_start']) + 6
+    assert operations[0]['run_length_row_index'] == later_splice['run_length_row_index']
+    assert operations[0]['liveness_binding_sha256'] == later_splice['liveness_binding_sha256']
+
+
 def test_public_candidate_materialized_manifest_rejects_forged_operand_parent_owner() -> None:
     reusable = _artifact('reusable_chunk_lowering.json')
     reusable['executable_liveness']['wire_catalog']['qchunk']['owner_id'] = 'lookup_workspace'
@@ -555,3 +599,37 @@ def test_materialized_circuit_script_exports_public_candidate_flat_netlist_slice
     assert len(lines) == 6
     assert lines[0].startswith('operation_index\trun_length_row_index\trow_instance_ordinal')
     assert lines[1].startswith('0\t0\t0\tdirect_seed_base')
+
+
+def test_materialized_circuit_script_exports_canonical_physical_qroam_cnot_slice(tmp_path: Path) -> None:
+    manifest = _artifact('public_candidate_materialized_circuit_manifest.json')
+    start = int(manifest['canonical_physical_flat_netlist']['qroam_table_cnot_splices'][0]['operation_start'])
+    output_dir = tmp_path / 'physical-export'
+    output = subprocess.check_output(
+        [
+            sys.executable,
+            'compiler_verification_project/scripts/materialize_exact_circuits.py',
+            '--canonical-physical-flat-netlist',
+            '--slice-start',
+            str(start),
+            '--slice-count',
+            '3',
+            '--output-dir',
+            str(output_dir),
+        ],
+        cwd=REPO_ROOT,
+        text=True,
+    )
+    payload = json.loads(output)
+    export = payload['canonical_physical_flat_netlist']
+    assert export['schema'] == 'compiler-project-canonical-physical-flat-netlist-export-v1'
+    assert export['row_count'] == 3
+    exported_path = Path(export['path'])
+    if not exported_path.is_absolute():
+        exported_path = REPO_ROOT / exported_path
+    with gzip.open(exported_path, 'rt', encoding='utf-8') as handle:
+        lines = handle.readlines()
+    assert len(lines) == 4
+    assert lines[0].startswith('operation_index\tcontribution_kind\trun_length_row_index')
+    assert '\tqroam_table_cnot_indexed_row\t' in lines[1]
+    assert '\tcx\t' in lines[1]
