@@ -193,9 +193,12 @@ materialized/public engine artifacts and passes only when the headline totals,
 source binding, operand ownership, QROAM primitive cost, modular arithmetic IR
 generation, semantic corpus, and tail auxiliary evidence are coherent. It
 deliberately keeps `clifford_complete_goal_achieved = false` while the tail
-macro in-place schedule, modular arithmetic Clifford expansion, QROAM bit-level
-netlist expansion, and the final ZKP input bundle are not yet direct
-single-engine products. Modular arithmetic is no longer a separate formula
+macro in-place schedule, modular arithmetic Clifford expansion, and final
+canonical-engine ZKP authority are not yet direct single-engine products.
+The ZKP input already carries a cycle-free strict claim sourced from
+`strict_replayed_tail_headline.json`; the remaining ZKP row is the move from
+that compact claim plus legacy witnesses to canonical engine-artifact authority.
+Modular arithmetic is no longer a separate formula
 source: the arithmetic lowering embeds `executable_modular_circuit_ir`, emits
 the modular kernels from it, and the modular certificate consumes that same IR;
 the remaining arithmetic row in `engine_completion_audit.json` is the exact

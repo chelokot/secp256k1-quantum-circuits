@@ -351,9 +351,9 @@ def build_engine_completion_audit(
         },
         {
             'name': 'single_engine_zkp_input_derivation',
-            'status': 'canonical_public_engine_totals_guest_bound_legacy_source_documents_still_carried',
+            'status': 'strict_claim_guest_bound_canonical_engine_not_sole_authority',
             'required_to_close': 'Have ZKP input bind the canonical engine artifact as the only authoritative resource document, with legacy source documents reduced to recomputable witnesses or removed from the guest resource authority path.',
-            'current_evidence': 'public_engine_manifest.public_totals + public_engine_manifest.strict_public_owner_capacity_stream + checked attestation input bundle + Rust prepared guest validation',
+            'current_evidence': 'public_engine_manifest.public_totals + public_engine_manifest.strict_public_owner_capacity_stream + zkp primary_strict_claim from strict_replayed_tail_headline + Rust prepared guest validation',
             'evidence_metrics': {
                 'public_engine_total_logical_qubits': int(public_engine_manifest['public_totals']['logical_qubits']),
                 'strict_public_owner_capacity_total': sum(
@@ -363,6 +363,7 @@ def build_engine_completion_audit(
                 'legacy_wrapper_logical_qubits': int(public_engine_manifest['legacy_wrapper_totals']['logical_qubits']),
                 'public_engine_manifest_source': str(public_engine_manifest['public_totals']['source']),
                 'primary_strict_claim_bound_by_candidate_input': bool(checks['zkp_input_binds_primary_strict_claim_without_cycle']),
+                'primary_strict_claim_source_artifact_path': str(primary_strict_claim['source_artifact_path']),
                 'primary_strict_claim_sha256': str(zkp_attestation_input['primary_strict_claim_sha256']),
                 'primary_strict_claim_non_clifford': int(primary_strict_selected['non_clifford']),
                 'primary_strict_claim_logical_qubits': int(primary_strict_selected['logical_qubits']),

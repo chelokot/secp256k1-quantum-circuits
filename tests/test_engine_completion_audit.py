@@ -78,7 +78,9 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     assert covered['qroam_bit_level_netlist_expansion']['status'] == 'indexed_table_cnot_rows_in_canonical_physical_flat_stream_with_iterator_export'
     assert covered['primary_strict_claim_zkp_input_binding']['status'] == 'cycle_free_claim_bound_by_candidate_input_and_guest'
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['source_bound_run_length_rows'] == expected['source_binding_summary']['rows_by_source_kind']['arithmetic_operation_ir']
+    assert remaining['single_engine_zkp_input_derivation']['status'] == 'strict_claim_guest_bound_canonical_engine_not_sole_authority'
     assert remaining['single_engine_zkp_input_derivation']['evidence_metrics']['primary_strict_claim_bound_by_candidate_input'] is True
+    assert remaining['single_engine_zkp_input_derivation']['evidence_metrics']['primary_strict_claim_source_artifact_path'] == 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json'
     assert expected['checks']['arithmetic_rows_are_operation_ir_bound'] is True
     assert expected['checks']['zkp_input_binds_primary_strict_claim_without_cycle'] is True
     qroam_table_cnot = _load('qroam_table_cnot_materialization.json')
@@ -123,6 +125,15 @@ def test_engine_completion_audit_rejects_forged_qroam_row_index_contract() -> No
 def test_engine_completion_audit_rejects_forged_primary_strict_claim() -> None:
     zkp_input = _load('zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json')
     zkp_input['primary_strict_claim_document']['payload']['selected_result']['logical_qubits'] -= 1
+    observed = _build_audit(zkp_input=zkp_input)
+    assert observed['checks']['zkp_input_binds_primary_strict_claim_without_cycle'] is False
+    assert observed['pass'] is False
+
+
+def test_engine_completion_audit_rejects_downstream_primary_result_claim_source() -> None:
+    zkp_input = _load('zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json')
+    zkp_input['primary_strict_claim_document']['artifact_path'] = 'compiler_verification_project/artifacts/primary_strict_result.json'
+    zkp_input['primary_strict_claim_document']['payload']['source_artifact_path'] = 'compiler_verification_project/artifacts/primary_strict_result.json'
     observed = _build_audit(zkp_input=zkp_input)
     assert observed['checks']['zkp_input_binds_primary_strict_claim_without_cycle'] is False
     assert observed['pass'] is False

@@ -16,8 +16,8 @@
     "lookup_lowerings_sha256": "70e8ff627f0c537f73162c1d3ccf259a94c3dd756568947c7b4f3cf4665a5637",
     "modular_arithmetic_certificate_sha256": "058cc2c95b3b8f65d39f8c91f56b5256322e0fa00853466facb980d60c1e783e",
     "phase_shell_lowerings_sha256": "4411ea5f699e5950a32783f2232796a63987efb5d939f98ac400f4f02ddd415b",
-    "public_candidate_materialized_circuit_manifest_sha256": "2d12416e147862d9b0172885f4cb69e33ae303375c50b0db1584ee986170786b",
-    "public_engine_manifest_sha256": "0bb1c371178a06c006b4ef24fabc68560c494a9e02107aae909c6a26061b8a49",
+    "public_candidate_materialized_circuit_manifest_sha256": "287d4c9850dcb2394c2152d6b380efc3458d34fad5a4558e7af6f010029f3821",
+    "public_engine_manifest_sha256": "d01dc9535c2df5a4aec4d53ad139c8d70cbd3d3fba46ca303e3c74a2e79f646c",
     "qroam_primitive_certificate_sha256": "9b6d9fd817284d64b5e56f5e804f025cca897dfd19455f637643813bc57700dc",
     "qroam_table_cnot_materialization_sha256": "b783455ac10c7da613d154ada14315069926fddec5ce0a1ebd23e1cb4d8f3916",
     "release_corpus_preflight_sha256": "e8cc293c4fc4702e1fbc0bfcb9b8749515de99a348ecbf55ed123d68738c2f3a",
@@ -27,7 +27,7 @@
     "tail_macro_liveness_sha256": "5f60042f2ae891387583cc6ee10cb6fdd11aeef460eadac18c6e512712736cb1",
     "tail_macro_reversibility_sha256": "a5474f2a4b950577da8013b0023ead318a7ea92610406fce869c3adac4d0830a",
     "tail_macro_schedule_search_sha256": "f3af1926dd886d4c8a25831821657bcef57c3b589daddec08957cab7b1dcf81b",
-    "zkp_attestation_reusable_chunk_candidate_input_sha256": "a8df9f51fe81d236990f6b9fd11af66d548fd6cd3a817736c213784d819be0ec"
+    "zkp_attestation_reusable_chunk_candidate_input_sha256": "aa8bdd986d1fe1963f79b7cc3968cbe4c3ec4b9bbfe8db3967a2269a1c5c687c"
   },
   "source_binding_summary": {
     "rows_checked": 5836,
@@ -150,15 +150,16 @@
     },
     {
       "name": "single_engine_zkp_input_derivation",
-      "status": "canonical_public_engine_totals_guest_bound_legacy_source_documents_still_carried",
+      "status": "strict_claim_guest_bound_canonical_engine_not_sole_authority",
       "required_to_close": "Have ZKP input bind the canonical engine artifact as the only authoritative resource document, with legacy source documents reduced to recomputable witnesses or removed from the guest resource authority path.",
-      "current_evidence": "public_engine_manifest.public_totals + public_engine_manifest.strict_public_owner_capacity_stream + checked attestation input bundle + Rust prepared guest validation",
+      "current_evidence": "public_engine_manifest.public_totals + public_engine_manifest.strict_public_owner_capacity_stream + zkp primary_strict_claim from strict_replayed_tail_headline + Rust prepared guest validation",
       "evidence_metrics": {
         "public_engine_total_logical_qubits": 1968,
         "strict_public_owner_capacity_total": 1968,
         "legacy_wrapper_logical_qubits": 1199,
         "public_engine_manifest_source": "public_candidate_materialized_circuit_manifest.canonical_materialized_flat_netlist",
         "primary_strict_claim_bound_by_candidate_input": true,
+        "primary_strict_claim_source_artifact_path": "compiler_verification_project/artifacts/strict_replayed_tail_headline.json",
         "primary_strict_claim_sha256": "d288d53e84253a99c9bb4c3f28ac0accc571ebcd5e570e90ff82eccc7194810e",
         "primary_strict_claim_non_clifford": 36973222,
         "primary_strict_claim_logical_qubits": 1968

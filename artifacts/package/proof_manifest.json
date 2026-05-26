@@ -175,8 +175,8 @@
       "bytes": 9464
     },
     "compiler_verification_project/README.md": {
-      "sha256": "3190a4dd1c4f9e62bbe02b1d10900c57cd0516bb558c46a8c2c3840a3b8f6db2",
-      "bytes": 35064
+      "sha256": "570d442d8f2db035530d60760a697bd97212889bdb278ce1874f3cb2721401bc",
+      "bytes": 35103
     },
     "compiler_verification_project/src/artifact_registry.py": {
       "sha256": "cee2af096f3376c8b709452c0fc296b958e6c8f127746395f7c840f665d155d5",
@@ -223,8 +223,8 @@
       "bytes": 5670
     },
     "compiler_verification_project/src/engine_completion_audit.py": {
-      "sha256": "95458d49f99aef01eb705bf3c9543867ddbd5391f92062a8cc9935056d8c286b",
-      "bytes": 30448
+      "sha256": "598b45f137652a2cec177b4be948917c1b58372e9321c3c0f109f5e50b802c13",
+      "bytes": 30567
     },
     "compiler_verification_project/src/public_engine_manifest.py": {
       "sha256": "01ab539882d99850932eccf9b7ae087d8e642dfc142326cc467213fe953e9f3f",
@@ -723,7 +723,7 @@
       "bytes": 27244
     },
     "compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json": {
-      "sha256": "a2b9add0e89f53ce0251ea4142f756ad659bbfaa784192688ac10c5602edf491",
+      "sha256": "0883abcd83ae7bfd70e6980255eb7f7ac7f7e4d6914bbfac082377c5da513af8",
       "bytes": 45656481
     },
     "compiler_verification_project/artifacts/arithmetic_operand_replay_audit.json": {
@@ -747,23 +747,23 @@
       "bytes": 51858
     },
     "compiler_verification_project/artifacts/public_engine_manifest.json": {
-      "sha256": "0376fa4341d3f87243fa4f758b808ee35fad84630a65cea24ce7d16dd511c32d",
+      "sha256": "16b7fb55095700ec1a0bd1b8bad60347456f37d54c635ee9aa7380be1d99bab0",
       "bytes": 30733
     },
     "compiler_verification_project/artifacts/engine_completion_audit.json": {
-      "sha256": "d51e299673ee1916f6d18885f0164afbb8ca0e56759bf3c0f338b258fe410747",
-      "bytes": 10888
+      "sha256": "e0c38a8808baf3f4ed1f723cb929913703c665d626bf5f0f2d530a0b805d4de9",
+      "bytes": 11026
     },
     "compiler_verification_project/artifacts/public_headline_result.json": {
-      "sha256": "6b8b2389e7addf43326aaa97b6e6df4a7deee124d565883aab0cc502fc967075",
+      "sha256": "5e6ccc5a8215768602d1b8241b5a8d0bdce112917fc3430cac0cf0924d8f39d5",
       "bytes": 15836
     },
     "compiler_verification_project/artifacts/strict_replayed_tail_headline.json": {
-      "sha256": "2fdeaa50f6188aa206617b4c29b08040ea040f0eadbeaec5b0567343caa3185d",
+      "sha256": "d6de276d38140c9ac61d98c1bebd11b81eda2e876038d503a0f3fd870855c3d5",
       "bytes": 3457
     },
     "compiler_verification_project/artifacts/primary_strict_result.json": {
-      "sha256": "df5c3a859b88be8d41d34ef15dbd1661ddaf0f18ac4acc7436c50ae1db3d4c70",
+      "sha256": "3492bc917a3b0058c9439834aefc8f472fa9b0a10c7ef7e2c82fb40490ea47ba",
       "bytes": 6160
     },
     "compiler_verification_project/artifacts/hybrid_bridge_search.json": {
@@ -787,7 +787,7 @@
       "bytes": 42211
     },
     "compiler_verification_project/artifacts/artifact_digest_tree.json": {
-      "sha256": "d47f7730451b7f7b943b375ef3684c84f1b083403d9e9031ac420eef1d93e521",
+      "sha256": "cbd3cf1389fe1767599520bf6e407cae09d415c2c122002dcdb0727dde0754c8",
       "bytes": 35685
     },
     "compiler_verification_project/artifacts/zkp_attestation_input.json": {
@@ -807,11 +807,11 @@
       "bytes": 5139
     },
     "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json": {
-      "sha256": "f99b1045799a3cb6fa1739239becdcb027c771f6e467adb20b41007c5a58c0fa",
+      "sha256": "f683333e319145f12547875097d3e3134fb08202066edbf5b7990280119cd3b1",
       "bytes": 345732
     },
     "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json": {
-      "sha256": "30f1d2f73ca9c8328bef1c666b0086dd081a7c134cd69a25c51319d67ef2c941",
+      "sha256": "ebab43aeb62d37c03896a55dfbdba88c50471753db9df6f5ad01250f2ea7c998",
       "bytes": 1709
     },
     "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_family.json": {
