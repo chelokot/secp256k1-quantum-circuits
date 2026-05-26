@@ -258,7 +258,7 @@
     },
     "proof_environment_contract": {
       "path": "compiler_verification_project/artifacts/proof_environment_contract.json",
-      "sha256": "3bd71d0bba5acc1bc1d1199a005a1f54f873040fcef41ce2073ec19f97ecd9cd"
+      "sha256": "29f66efe7ada52484e9ce11cacc18085cbaeb745d1aaa318e1b674808c163a86"
     },
     "proof_manifest": {
       "path": "artifacts/package/proof_manifest.json",
@@ -273,11 +273,11 @@
     "public_headline_checked_input_digest_matches_proof_status": true,
     "public_headline_resource_digest_matches_proof_status_input": true,
     "proof_manifest_path_matches_environment_contract": true,
-    "environment_contract_has_current_publication_gates": false,
+    "environment_contract_has_current_publication_gates": true,
     "stale_publication_has_explicit_blockers": true,
     "publication_ready_requires_compressed_and_groth16_verification": true
   },
-  "pass": false,
+  "pass": true,
   "notes": [
     "pass means the publication status was derived consistently; publication_ready is the separate freshness verdict.",
     "The publication artifact records proof-manifest path and file count; proof_status.py remains the authority for manifest freshness.",

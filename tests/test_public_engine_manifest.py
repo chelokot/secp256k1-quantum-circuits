@@ -13,6 +13,7 @@ if str(COMPILER_SRC) not in sys.path:
     sys.path.insert(0, str(COMPILER_SRC))
 
 from public_engine_manifest import PUBLIC_ENGINE_MANIFEST_SCHEMA, build_public_engine_manifest  # noqa: E402
+from public_engine_contract import CANONICAL_MATERIALIZED_FLAT_NETLIST, PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE, PUBLIC_TOTALS_DERIVE_FROM_CANONICAL_CHECK, PUBLIC_TOTALS_MATCH_CANONICAL_ENGINE_CHECK, STRICT_REPLAYED_TAIL_MATERIALIZED_FLAT_NETLIST  # noqa: E402
 from proof_corpus_profiles import GOOGLE_COMPARABLE_CASE_COUNT  # noqa: E402
 
 
@@ -55,7 +56,7 @@ def test_public_engine_manifest_reconstructs_checked_artifact() -> None:
     assert observed == expected
     assert expected['schema'] == PUBLIC_ENGINE_MANIFEST_SCHEMA
     assert expected['pass'] is True
-    assert expected['public_totals']['source'] == 'public_candidate_materialized_circuit_manifest.canonical_materialized_flat_netlist'
+    assert expected['public_totals']['source'] == PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE
     assert expected['public_totals']['non_clifford'] == reusable['executable_resource_engine']['public_totals']['non_clifford']
     assert expected['public_totals']['logical_qubits'] == _load('strict_replayed_tail_headline.json')['selected_result']['logical_qubits']
     assert expected['legacy_wrapper_totals']['logical_qubits'] == reusable['executable_resource_engine']['public_totals']['logical_qubits']
@@ -79,8 +80,8 @@ def test_public_engine_manifest_reconstructs_checked_artifact() -> None:
     assert materialized_flat['peak_live_qubits'] == reusable['qubit_derivation']['candidate_total_logical_qubits']
     assert len(materialized_flat['operation_stream_sha256']) == 64
     assert len(materialized_flat['segment_merkle_root_sha256']) == 64
-    strict_flat = expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['strict_replayed_tail_materialized_flat_netlist']
-    canonical_flat = expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['canonical_materialized_flat_netlist']
+    strict_flat = expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest'][STRICT_REPLAYED_TAIL_MATERIALIZED_FLAT_NETLIST]
+    canonical_flat = expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest'][CANONICAL_MATERIALIZED_FLAT_NETLIST]
     assert strict_flat['exact_operation_stream_materialized'] is True
     assert strict_flat['operation_count'] == materialized_flat['operation_count']
     assert strict_flat['non_clifford_count'] == expected['public_totals']['non_clifford']
@@ -157,10 +158,10 @@ def test_public_engine_manifest_rejects_public_candidate_materialized_drift() ->
 
 def test_public_engine_manifest_derives_totals_from_flat_materialized_engine() -> None:
     public_candidate_materialized = _load('public_candidate_materialized_circuit_manifest.json')
-    public_candidate_materialized['canonical_materialized_flat_netlist']['non_clifford_count'] -= 1
+    public_candidate_materialized[CANONICAL_MATERIALIZED_FLAT_NETLIST]['non_clifford_count'] -= 1
     observed = _build_manifest(public_candidate_materialized=public_candidate_materialized)
-    assert observed['public_totals']['non_clifford'] == public_candidate_materialized['canonical_materialized_flat_netlist']['non_clifford_count']
-    assert observed['checks']['public_totals_match_canonical_materialized_flat_engine'] is False
+    assert observed['public_totals']['non_clifford'] == public_candidate_materialized[CANONICAL_MATERIALIZED_FLAT_NETLIST]['non_clifford_count']
+    assert observed['checks'][PUBLIC_TOTALS_MATCH_CANONICAL_ENGINE_CHECK] is False
     assert observed['checks']['resource_terms_sum_to_public_total'] is False
     assert observed['checks']['public_candidate_materialized_stream_binds_engine_totals'] is False
     assert observed['pass'] is False
@@ -168,10 +169,10 @@ def test_public_engine_manifest_derives_totals_from_flat_materialized_engine() -
 
 def test_public_engine_manifest_rejects_missing_full_materialized_netlist() -> None:
     public_candidate_materialized = _load('public_candidate_materialized_circuit_manifest.json')
-    public_candidate_materialized['canonical_materialized_flat_netlist']['exact_operation_stream_materialized'] = False
-    public_candidate_materialized['checks']['public_totals_derive_from_canonical_materialized_flat_netlist'] = False
+    public_candidate_materialized[CANONICAL_MATERIALIZED_FLAT_NETLIST]['exact_operation_stream_materialized'] = False
+    public_candidate_materialized['checks'][PUBLIC_TOTALS_DERIVE_FROM_CANONICAL_CHECK] = False
     observed = _build_manifest(public_candidate_materialized=public_candidate_materialized)
-    assert observed['checks']['public_totals_match_canonical_materialized_flat_engine'] is False
+    assert observed['checks'][PUBLIC_TOTALS_MATCH_CANONICAL_ENGINE_CHECK] is False
     assert observed['checks']['public_candidate_materialized_stream_binds_engine_totals'] is False
     assert observed['pass'] is False
 

@@ -19,6 +19,7 @@ if str(ROOT_SRC) not in sys.path:
 from common import SECP_P, add_affine, affine_to_proj, proj_to_affine  # noqa: E402
 from lookup_fed_leaf import build_streamed_lookup_tail_leaf, execute_leaf_contract  # noqa: E402
 from proof_corpus_profiles import GOOGLE_COMPARABLE_CASE_COUNT, GOOGLE_COMPARABLE_PROFILE, resolve_proof_corpus_profile, selected_public_case_count  # noqa: E402
+from public_engine_contract import PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE  # noqa: E402
 from zkp_attestation import DIGEST_SCHEME, build_zkp_attestation_input, write_zkp_attestation_inputs  # noqa: E402
 
 
@@ -114,7 +115,7 @@ def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None
     assert public_engine_document['document_type'] == 'public_engine_manifest'
     assert public_engine_manifest['pass'] is True
     assert public_engine_manifest['selected_family_name'] == payload['selected_family_name']
-    assert public_engine_manifest['public_totals']['source'] == 'public_candidate_materialized_circuit_manifest.canonical_materialized_flat_netlist'
+    assert public_engine_manifest['public_totals']['source'] == PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE
     assert public_engine_manifest['legacy_wrapper_totals']['logical_qubits'] == qubit_derivation['candidate_total_logical_qubits']
     assert claim['expected_total_logical_qubits'] == public_engine_manifest['public_totals']['logical_qubits']
     assert claim['logical_qubit_formula']['reconstructed_total'] == public_engine_manifest['legacy_wrapper_totals']['logical_qubits']

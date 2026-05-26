@@ -6,6 +6,14 @@ import hashlib
 import json
 from typing import Any, Dict, Mapping
 
+from public_engine_contract import (
+    CANONICAL_MATERIALIZED_FLAT_NETLIST,
+    LEGACY_WRAPPER_MATERIALIZED_FLAT_NETLIST,
+    PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE,
+    PUBLIC_TOTALS_DERIVE_FROM_CANONICAL_CHECK,
+    STRICT_REPLAYED_TAIL_MATERIALIZED_FLAT_NETLIST,
+)
+
 
 ENGINE_COMPLETION_AUDIT_SCHEMA = 'compiler-project-engine-completion-audit-v1'
 
@@ -44,9 +52,9 @@ def build_engine_completion_audit(
     compiler_parameters: Mapping[str, Any],
 ) -> Dict[str, Any]:
     selected_family_name = str(compiler_parameters['public_headline_policy']['selected_public_family_name'])
-    materialized_flat = public_candidate_materialized_circuit_manifest['legacy_wrapper_materialized_flat_netlist']
-    canonical_materialized_flat = public_candidate_materialized_circuit_manifest['canonical_materialized_flat_netlist']
-    strict_materialized_flat = public_candidate_materialized_circuit_manifest['strict_replayed_tail_materialized_flat_netlist']
+    materialized_flat = public_candidate_materialized_circuit_manifest[LEGACY_WRAPPER_MATERIALIZED_FLAT_NETLIST]
+    canonical_materialized_flat = public_candidate_materialized_circuit_manifest[CANONICAL_MATERIALIZED_FLAT_NETLIST]
+    strict_materialized_flat = public_candidate_materialized_circuit_manifest[STRICT_REPLAYED_TAIL_MATERIALIZED_FLAT_NETLIST]
     strict_completeness = public_candidate_materialized_circuit_manifest['strict_primitive_completeness']
     source_binding = public_candidate_materialized_circuit_manifest['operand_source_binding']
     parent_binding = public_candidate_materialized_circuit_manifest['operand_parent_binding']
@@ -64,7 +72,7 @@ def build_engine_completion_audit(
         'non_clifford': int(canonical_materialized_flat['non_clifford_count']),
         'logical_qubits': int(canonical_materialized_flat['peak_live_qubits']),
         'operation_count': int(canonical_materialized_flat['operation_count']),
-        'source': 'public_candidate_materialized_circuit_manifest.canonical_materialized_flat_netlist',
+        'source': PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE,
     }
     arithmetic_leaf_summary = arithmetic_operation_ir['leaf_arithmetic_summary']
     qroam_counts = qroam_primitive_certificate['traversed_counts']
@@ -81,13 +89,13 @@ def build_engine_completion_audit(
         'lookup_infinity',
     ]
     checks = {
-        'public_totals_derive_from_canonical_materialized_flat_netlist': (
+        PUBLIC_TOTALS_DERIVE_FROM_CANONICAL_CHECK: (
             public_engine_manifest['public_totals']['source'] == public_totals['source']
             and int(public_engine_manifest['public_totals']['non_clifford']) == public_totals['non_clifford']
             and int(public_engine_manifest['public_totals']['logical_qubits']) == public_totals['logical_qubits']
             and public_candidate_materialized_circuit_manifest['public_totals']['non_clifford'] == public_totals['non_clifford']
             and public_candidate_materialized_circuit_manifest['public_totals']['logical_qubits'] == public_totals['logical_qubits']
-            and public_candidate_materialized_circuit_manifest['checks']['public_totals_derive_from_canonical_materialized_flat_netlist'] is True
+            and public_candidate_materialized_circuit_manifest['checks'][PUBLIC_TOTALS_DERIVE_FROM_CANONICAL_CHECK] is True
         ),
         'legacy_materialized_flat_stream_is_exact_and_counted': (
             materialized_flat['exact_operation_stream_materialized'] is True
@@ -201,7 +209,7 @@ def build_engine_completion_audit(
         {
             'name': 'public_totals',
             'status': 'derived_from_canonical_materialized_flat_netlist',
-            'evidence': 'public_engine_manifest.public_totals + public_candidate_materialized_circuit_manifest.canonical_materialized_flat_netlist',
+            'evidence': f'public_engine_manifest.public_totals + {PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE}',
         },
         {
             'name': 'flat_primitive_stream_counts',

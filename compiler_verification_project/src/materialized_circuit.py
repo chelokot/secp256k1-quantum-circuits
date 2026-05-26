@@ -17,6 +17,14 @@ if str(ROOT_SRC) not in sys.path:
 from arithmetic_lowering import arithmetic_lowering_library, materialize_arithmetic_primitive_operations
 from lookup_lowering import lookup_lowering_library, materialize_lookup_primitive_operations
 from phase_shell_lowering import materialize_phase_operations, phase_shell_lowering_library
+from public_engine_contract import (
+    CANONICAL_FLAT_NETLIST_IS_STRICT_REPLAY_CHECK,
+    CANONICAL_MATERIALIZED_FLAT_NETLIST,
+    LEGACY_WRAPPER_MATERIALIZED_FLAT_NETLIST,
+    PUBLIC_CANDIDATE_CANONICAL_TOTALS_SOURCE,
+    PUBLIC_TOTALS_DERIVE_FROM_CANONICAL_CHECK,
+    STRICT_REPLAYED_TAIL_MATERIALIZED_FLAT_NETLIST,
+)
 
 
 STREAM_COLUMNS = ['stream_index', 'family', 'scope', 'invocation', 'source', 'gate', 'operand_0', 'operand_1', 'operand_2']
@@ -2277,13 +2285,13 @@ def build_public_candidate_materialized_circuit_manifest(
         public_totals = {
             'non_clifford': int(canonical_materialized_flat_netlist['non_clifford_count']),
             'logical_qubits': int(canonical_materialized_flat_netlist['peak_live_qubits']),
-            'source': 'public_candidate_materialized.canonical_materialized_flat_netlist.non_clifford_count + canonical_materialized_flat_netlist.peak_live_qubits',
+            'source': PUBLIC_CANDIDATE_CANONICAL_TOTALS_SOURCE,
         }
     else:
         canonical_materialized_flat_netlist = materialized_flat_netlist
         public_totals = {
             **materialized_public_totals,
-            'source': 'public_candidate_materialized.canonical_materialized_flat_netlist.non_clifford_count + canonical_materialized_flat_netlist.peak_live_qubits',
+            'source': PUBLIC_CANDIDATE_CANONICAL_TOTALS_SOURCE,
         }
     base_rows = [row for row in rows if row['scope'] in ('direct_seed_base', 'lookup_leaf_base', 'arithmetic_leaf_block')]
     direct_seed_rows = [row for row in rows if row['scope'] == 'direct_seed_base']
@@ -2418,13 +2426,13 @@ def build_public_candidate_materialized_circuit_manifest(
         ),
         'flat_netlist_gate_totals_match_run_length_rows': flat_netlist['gate_totals'] == gate_totals,
         'flat_netlist_non_clifford_matches_public_candidate': materialized_public_totals['non_clifford'] == int(public_totals['non_clifford']),
-        'public_totals_derive_from_canonical_materialized_flat_netlist': (
+        PUBLIC_TOTALS_DERIVE_FROM_CANONICAL_CHECK: (
             canonical_materialized_flat_netlist['exact_operation_stream_materialized'] is True
-            and public_totals['source'] == 'public_candidate_materialized.canonical_materialized_flat_netlist.non_clifford_count + canonical_materialized_flat_netlist.peak_live_qubits'
+            and public_totals['source'] == PUBLIC_CANDIDATE_CANONICAL_TOTALS_SOURCE
             and int(public_totals['non_clifford']) == int(canonical_materialized_flat_netlist['non_clifford_count'])
             and int(public_totals['logical_qubits']) == int(canonical_materialized_flat_netlist['peak_live_qubits'])
         ),
-        'canonical_materialized_flat_netlist_is_strict_replayed_tail_stream': (
+        CANONICAL_FLAT_NETLIST_IS_STRICT_REPLAY_CHECK: (
             strict_materialized_flat_netlist is not None
             and canonical_materialized_flat_netlist['operation_stream_sha256'] == strict_materialized_flat_netlist['operation_stream_sha256']
             and int(canonical_materialized_flat_netlist['peak_live_qubits']) == int(public_totals['logical_qubits'])
@@ -2614,9 +2622,9 @@ def build_public_candidate_materialized_circuit_manifest(
         },
         'strict_replayed_tail_capacity_overlay': strict_capacity_overlay,
         'strict_replayed_tail_liveness_projection': strict_liveness_projection,
-        'strict_replayed_tail_materialized_flat_netlist': strict_materialized_flat_netlist,
-        'canonical_materialized_flat_netlist': canonical_materialized_flat_netlist,
-        'legacy_wrapper_materialized_flat_netlist': materialized_flat_netlist,
+        STRICT_REPLAYED_TAIL_MATERIALIZED_FLAT_NETLIST: strict_materialized_flat_netlist,
+        CANONICAL_MATERIALIZED_FLAT_NETLIST: canonical_materialized_flat_netlist,
+        LEGACY_WRAPPER_MATERIALIZED_FLAT_NETLIST: materialized_flat_netlist,
         'flat_netlist': flat_netlist,
         'materialized_flat_netlist': materialized_flat_netlist,
         'flat_execution_probe': flat_execution_probe,

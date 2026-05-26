@@ -42,6 +42,11 @@ from proof_corpus_profiles import GOOGLE_COMPARABLE_CASE_COUNT, GOOGLE_COMPARABL
 from proof_environment_contract import PROOF_ENVIRONMENT_CONTRACT_SCHEMA, build_proof_environment_contract
 from proof_publication_status import PROOF_PUBLICATION_STATUS_SCHEMA, build_proof_publication_status
 from primary_strict_result import PRIMARY_STRICT_RESULT_SCHEMA, build_primary_strict_result, write_primary_strict_result
+from public_engine_contract import (
+    CANONICAL_MATERIALIZED_FLAT_NETLIST,
+    PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE,
+    PUBLIC_TOTALS_MATCH_CANONICAL_ENGINE_CHECK,
+)
 from public_engine_manifest import PUBLIC_ENGINE_MANIFEST_SCHEMA, build_public_engine_manifest
 from public_result import build_public_headline_result, write_public_headline_result
 from qroam_primitive import build_qroam_k1_primitive_certificate
@@ -2374,15 +2379,15 @@ def build_public_engine_manifest_checks(artifacts: Mapping[str, Any]) -> Dict[st
         _check('public_engine_manifest_binds_selected_family', manifest['selected_family_name'] == selected_family_name, selected_family_name, manifest['selected_family_name']),
         _check(
             'public_engine_manifest_derives_public_totals_from_materialized_flat_engine',
-            manifest['public_totals']['source'] == 'public_candidate_materialized_circuit_manifest.canonical_materialized_flat_netlist'
-            and manifest['public_totals']['non_clifford'] == artifacts['public_candidate_materialized_circuit_manifest']['canonical_materialized_flat_netlist']['non_clifford_count']
-            and manifest['public_totals']['logical_qubits'] == artifacts['public_candidate_materialized_circuit_manifest']['canonical_materialized_flat_netlist']['peak_live_qubits']
-            and artifacts['public_candidate_materialized_circuit_manifest']['canonical_materialized_flat_netlist']['exact_operation_stream_materialized'] is True
-            and manifest['checks']['public_totals_match_canonical_materialized_flat_engine'] is True,
+            manifest['public_totals']['source'] == PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE
+            and manifest['public_totals']['non_clifford'] == artifacts['public_candidate_materialized_circuit_manifest'][CANONICAL_MATERIALIZED_FLAT_NETLIST]['non_clifford_count']
+            and manifest['public_totals']['logical_qubits'] == artifacts['public_candidate_materialized_circuit_manifest'][CANONICAL_MATERIALIZED_FLAT_NETLIST]['peak_live_qubits']
+            and artifacts['public_candidate_materialized_circuit_manifest'][CANONICAL_MATERIALIZED_FLAT_NETLIST]['exact_operation_stream_materialized'] is True
+            and manifest['checks'][PUBLIC_TOTALS_MATCH_CANONICAL_ENGINE_CHECK] is True,
             {
-                'source': 'public_candidate_materialized_circuit_manifest.canonical_materialized_flat_netlist',
-                'non_clifford': artifacts['public_candidate_materialized_circuit_manifest']['canonical_materialized_flat_netlist']['non_clifford_count'],
-                'logical_qubits': artifacts['public_candidate_materialized_circuit_manifest']['canonical_materialized_flat_netlist']['peak_live_qubits'],
+                'source': PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE,
+                'non_clifford': artifacts['public_candidate_materialized_circuit_manifest'][CANONICAL_MATERIALIZED_FLAT_NETLIST]['non_clifford_count'],
+                'logical_qubits': artifacts['public_candidate_materialized_circuit_manifest'][CANONICAL_MATERIALIZED_FLAT_NETLIST]['peak_live_qubits'],
             },
             manifest['public_totals'],
         ),
@@ -2416,11 +2421,11 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
         tail_macro_schedule_search=artifacts['tail_macro_schedule_search'],
         compiler_parameters=artifacts['compiler_parameters'],
     )
-    materialized_flat = artifacts['public_candidate_materialized_circuit_manifest']['canonical_materialized_flat_netlist']
+    materialized_flat = artifacts['public_candidate_materialized_circuit_manifest'][CANONICAL_MATERIALIZED_FLAT_NETLIST]
     checks = [
         _check('engine_completion_audit_matches_generator', audit == expected, expected, audit),
         _check('engine_completion_audit_schema_is_current', audit['schema'] == ENGINE_COMPLETION_AUDIT_SCHEMA, ENGINE_COMPLETION_AUDIT_SCHEMA, audit['schema']),
-        _check('engine_completion_audit_derives_headline_from_canonical_materialized_flat_netlist', audit['public_totals']['source'] == 'public_candidate_materialized_circuit_manifest.canonical_materialized_flat_netlist' and audit['public_totals']['non_clifford'] == materialized_flat['non_clifford_count'] and audit['public_totals']['logical_qubits'] == materialized_flat['peak_live_qubits'] and audit['public_totals']['operation_count'] == materialized_flat['operation_count'], materialized_flat, audit['public_totals']),
+        _check('engine_completion_audit_derives_headline_from_canonical_materialized_flat_netlist', audit['public_totals']['source'] == PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE and audit['public_totals']['non_clifford'] == materialized_flat['non_clifford_count'] and audit['public_totals']['logical_qubits'] == materialized_flat['peak_live_qubits'] and audit['public_totals']['operation_count'] == materialized_flat['operation_count'], materialized_flat, audit['public_totals']),
         _check('engine_completion_audit_requires_explicit_remaining_macro_boundaries', audit['clifford_complete_goal_achieved'] is False and len(audit['remaining_macro_boundaries']) > 0 and audit['checks']['remaining_macro_boundaries_are_explicit'] is True and audit['checks']['public_claim_not_marked_full_clifford_complete_until_macro_boundaries_flattened'] is True, 'explicit remaining macro boundaries and no full-completion claim', {'clifford_complete_goal_achieved': audit['clifford_complete_goal_achieved'], 'remaining_macro_boundaries': audit['remaining_macro_boundaries'], 'checks': audit['checks']}),
         _check('engine_completion_audit_source_binding_covers_all_run_length_rows', audit['checks']['source_binding_covers_every_run_length_row'] is True and audit['source_binding_summary']['rows_checked'] == artifacts['public_candidate_materialized_circuit_manifest']['run_length_row_count'] and sum(audit['source_binding_summary']['rows_by_source_kind'].values()) == audit['source_binding_summary']['rows_checked'], 'all run-length rows source-bound', audit['source_binding_summary']),
         _check('engine_completion_audit_passes_internal_checks', audit['pass'] is True and all(audit['checks'].values()), True, audit['checks']),

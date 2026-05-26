@@ -207,8 +207,8 @@
       "bytes": 26931
     },
     "compiler_verification_project/src/integrity.py": {
-      "sha256": "718d873f5e36cf441e9b16d8d6fa186ad9697eed46025a253301d6e1623b45c5",
-      "bytes": 251685
+      "sha256": "7593df35e01c7ae1dd2b2709a2aba8496533d1f499f82489203def8212165134",
+      "bytes": 251689
     },
     "compiler_verification_project/src/generated_block_inventory.py": {
       "sha256": "9a5a8cdc5369e43cb88df726d08fbc88ba727a43b72962388357546b8d382d89",
@@ -223,12 +223,12 @@
       "bytes": 5670
     },
     "compiler_verification_project/src/engine_completion_audit.py": {
-      "sha256": "e3b23d11a6ea141c51fe15a627733b6035043ad21efe2358432e7ea60fb6659b",
-      "bytes": 20170
+      "sha256": "8bc1f4d8424ae491159331628da126943f932a8f95c51a878b8b7e5c9f9db46c",
+      "bytes": 20300
     },
     "compiler_verification_project/src/public_engine_manifest.py": {
-      "sha256": "55ecd01ab71555d9af46e2782b0ef075e7e7f00831203c52edf1549162e1dcb9",
-      "bytes": 38197
+      "sha256": "5e3b6a316879a010289530913610ec99cce273a28baf8d85a356c80b0999fd33",
+      "bytes": 38406
     },
     "compiler_verification_project/src/lookup_fed_leaf.py": {
       "sha256": "92a9532e751d92bf151074e44be390e591e41afd948cde842447321460da2acc",
@@ -239,8 +239,8 @@
       "bytes": 38865
     },
     "compiler_verification_project/src/materialized_circuit.py": {
-      "sha256": "0754f34cc074421fec6f8e803f9d5555bd6c382d6208cebeffd42c132c416f87",
-      "bytes": 135107
+      "sha256": "587bf341d23d76bf19141f8321d61ddc4692a4ffb6397c7a14442751a15b7af3",
+      "bytes": 135075
     },
     "compiler_verification_project/src/modular_arithmetic_certificate.py": {
       "sha256": "fecaffe8a12ae73c04dc400c47642abda3bcdc58645a66d88c1758493ee2ce5e",
@@ -267,8 +267,8 @@
       "bytes": 4784
     },
     "compiler_verification_project/src/proof_environment_contract.py": {
-      "sha256": "9ff20bcc48df715b40fba5d65c85fe767ea8b8442e0c9f22d11aa38fb97e9724",
-      "bytes": 11030
+      "sha256": "f0191720b5f260f5f58996a25ee64746773acd380f5539147dfdc5ed8cc1a5a6",
+      "bytes": 11100
     },
     "compiler_verification_project/src/proof_publication_status.py": {
       "sha256": "8dea52ed0d24640821ce20d243d3cb39a151ead196a0b9b900cb5a94d2510e85",
