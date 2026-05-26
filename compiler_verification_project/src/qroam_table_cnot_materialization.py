@@ -9,7 +9,7 @@ from common import SECP_B, SECP_P, add_affine, sha256_bytes
 
 PointAffine = Optional[Tuple[int, int]]
 
-QROAM_TABLE_CNOT_MATERIALIZATION_SCHEMA = 'compiler-project-qroam-table-cnot-materialization-v1'
+QROAM_TABLE_CNOT_MATERIALIZATION_SCHEMA = 'compiler-project-qroam-table-cnot-materialization-v2'
 TABLE_NAMES = ('lookup_x', 'lookup_y', 'lookup_x_plus_y')
 
 
@@ -123,6 +123,8 @@ def _new_segment_accumulator(
         'effective_target_bit_sites': address_count * int(effective_constant_bits),
         'zero_padded_target_bit_sites': address_count * (int(target_capacity_bits) - int(effective_constant_bits)),
         'emitted_cx_count': 0,
+        '_first_emitted_cx': None,
+        '_last_emitted_cx': None,
         '_digest': digest,
     }
 
@@ -133,14 +135,20 @@ def _finalize_segment(segment: Mapping[str, Any], phase: str) -> Dict[str, Any]:
     digest.update(str(phase).encode('ascii'))
     digest.update(b'\n')
     digest.update(segment['_digest'].hexdigest().encode('ascii'))
+    public_fields = {
+        key: value
+        for key, value in segment.items()
+        if not key.startswith('_')
+    }
+    public_fields['first_emitted_cx'] = segment['_first_emitted_cx']
+    public_fields['last_emitted_cx'] = segment['_last_emitted_cx']
     return {
         key: value
         for key, value in {
-            **segment,
+            **public_fields,
             'phase': phase,
             'sha256': digest.hexdigest(),
         }.items()
-        if key != '_digest'
     }
 
 
@@ -214,7 +222,26 @@ def _call_segments(
                     chunk_bits=chunk_bits,
                     chunk_index=chunk_index,
                 )
+                local_emitted_start = int(segment['emitted_cx_count'])
                 emitted_cx = int(chunk_value).bit_count()
+                if emitted_cx:
+                    first_bit = (int(chunk_value) & -int(chunk_value)).bit_length() - 1
+                    last_bit = int(chunk_value).bit_length() - 1
+                    first_row = {
+                        'local_emitted_cx_index': local_emitted_start,
+                        'address': int(address),
+                        'target_bit_index': first_bit,
+                        'chunk_value': int(chunk_value),
+                    }
+                    last_row = {
+                        'local_emitted_cx_index': local_emitted_start + emitted_cx - 1,
+                        'address': int(address),
+                        'target_bit_index': last_bit,
+                        'chunk_value': int(chunk_value),
+                    }
+                    if segment['_first_emitted_cx'] is None:
+                        segment['_first_emitted_cx'] = first_row
+                    segment['_last_emitted_cx'] = last_row
                 segment['emitted_cx_count'] += emitted_cx
                 segment['_digest'].update(int(address).to_bytes(2, 'big'))
                 segment['_digest'].update(int(chunk_value).to_bytes((effective_bits + 7) // 8, 'little'))
@@ -243,6 +270,29 @@ def _call_segments(
     return finalized
 
 
+def _with_global_emitted_cx_ranges(segments: List[Mapping[str, Any]]) -> List[Dict[str, Any]]:
+    cursor = 0
+    ranged_segments: List[Dict[str, Any]] = []
+    for segment in segments:
+        emitted_cx_count = int(segment['emitted_cx_count'])
+        row = dict(segment)
+        row['emitted_cx_operation_start'] = cursor
+        row['emitted_cx_operation_end_exclusive'] = cursor + emitted_cx_count
+        for key in ('first_emitted_cx', 'last_emitted_cx'):
+            sample = row.get(key)
+            if sample is None:
+                continue
+            row[key] = {
+                **dict(sample),
+                'global_emitted_cx_index': cursor + int(sample['local_emitted_cx_index']),
+                'control_wire': f"qroam_unary_match_control[{int(sample['address'])}]",
+                'target_wire': f"qroam_target.bit[{int(sample['target_bit_index'])}]",
+            }
+        ranged_segments.append(row)
+        cursor += emitted_cx_count
+    return ranged_segments
+
+
 def build_qroam_table_cnot_materialization(
     *,
     table_manifests: Mapping[str, Any],
@@ -267,6 +317,7 @@ def build_qroam_table_cnot_materialization(
             chunk_bits=chunk_bits,
             chunk_count=chunk_count,
         ))
+    segments = _with_global_emitted_cx_ranges(segments)
     full_oracle_chunk_streams = int(reusable_chunk_lowering['stream_plan']['whole_oracle_chunk_streams'])
     per_stream_potential_sites = int(qroam_primitive_certificate['target_bit_load_site_stream']['potential_cnot_site_count'])
     total_potential_sites = sum(int(segment['potential_target_bit_sites']) for segment in segments)
@@ -285,6 +336,26 @@ def build_qroam_table_cnot_materialization(
             for segment in segments
         ),
         'emitted_cx_count_is_within_effective_sites': 0 <= total_emitted_cx <= total_effective_sites,
+        'emitted_cx_operation_ranges_cover_total': (
+            segments[0]['emitted_cx_operation_start'] == 0
+            and segments[-1]['emitted_cx_operation_end_exclusive'] == total_emitted_cx
+            and all(
+                int(left['emitted_cx_operation_end_exclusive']) == int(right['emitted_cx_operation_start'])
+                for left, right in zip(segments, segments[1:])
+            )
+        ),
+        'emitted_cx_probes_are_within_effective_target_bits': all(
+            sample is None
+            or (
+                0 <= int(sample['local_emitted_cx_index']) < int(segment['emitted_cx_count'])
+                and int(segment['start_address']) <= int(sample['address']) < int(segment['end_address_exclusive'])
+                and 0 <= int(sample['target_bit_index']) < int(segment['effective_constant_bits'])
+                and ((int(sample['chunk_value']) >> int(sample['target_bit_index'])) & 1) == 1
+                and int(segment['emitted_cx_operation_start']) <= int(sample['global_emitted_cx_index']) < int(segment['emitted_cx_operation_end_exclusive'])
+            )
+            for segment in segments
+            for sample in (segment.get('first_emitted_cx'), segment.get('last_emitted_cx'))
+        ),
     }
     return {
         'schema': QROAM_TABLE_CNOT_MATERIALIZATION_SCHEMA,
@@ -317,7 +388,7 @@ def build_qroam_table_cnot_materialization(
         'pass': all(checks.values()),
         'notes': [
             'This artifact affects Clifford CNOT materialization evidence, not the public non-Clifford headline.',
-            'The remaining QROAM work is to splice these concrete table-bit CNOT segments into the single global physical netlist alongside address-control, measurement, and uncompute rows.',
+            'The artifact records global emitted-CNOT operation ranges and first/last emitted target-bit probes for each segment; the remaining QROAM work is to splice every emitted CNOT row into the canonical global flat stream.',
         ],
     }
 

@@ -4,21 +4,21 @@
   "size_threshold_bytes": 1048576,
   "chunk_size_bytes": 1048576,
   "file_count": 12,
-  "repository_digest_sha256": "f9a8ee827571d28c747e64068e6810d31490423c1f3636f7e7d9de37890ca25d",
+  "repository_digest_sha256": "0366a0b9f4f0902ddbbb991a9f301d0fc2377181e3f85b3ea9b3968df15d76b2",
   "files": [
     {
       "path": "compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json",
-      "bytes": 35933559,
-      "sha256": "1e9301a67c82f0aead914551b75a9e0dc5e861ad4cf5d6313fab0ab743de01b8",
+      "bytes": 35940392,
+      "sha256": "18f777346fb2f2280f23ffbe537e07b9452109469be45b450fd024e386d34d78",
       "chunk_size_bytes": 1048576,
       "chunk_count": 35,
-      "chunk_merkle_root_sha256": "1c311613940e97e393099e24318b61fd26574f1d07ded3a8875ce35282a1e350",
+      "chunk_merkle_root_sha256": "6bb4811b036d94bb31cd9b87c22b62b6a3da49eebc1252259de9b65cded20c1e",
       "chunks": [
         {
           "index": 0,
           "offset": 0,
           "bytes": 1048576,
-          "sha256": "3768a33098434c9a45645b25450fd3f9ad863d1272f36672a0ac5bd12dc93a5a"
+          "sha256": "fbce2ede6a5a249d4b1230a8fc12ead41513debbe66eade857269fb3df5a40be"
         },
         {
           "index": 1,
@@ -221,8 +221,8 @@
         {
           "index": 34,
           "offset": 35651584,
-          "bytes": 281975,
-          "sha256": "4ecc093839aa6387b2ce2d3bec49ce4eb9d8d479e5680349215c40be667994d4"
+          "bytes": 288808,
+          "sha256": "b73fc33c540dde0c5ade6b7b7e5ba37f7d1a2deb55018d7bdfe95fce27d7d254"
         }
       ]
     },
@@ -845,6 +845,46 @@
       ]
     },
     {
+      "path": "compiler_verification_project/artifacts/qroam_table_cnot_materialization.json",
+      "bytes": 4913142,
+      "sha256": "8dbdcf5d92cb550cdc9cf9a372f40372e440815afb7cb7f2d18d03f06f746bce",
+      "chunk_size_bytes": 1048576,
+      "chunk_count": 5,
+      "chunk_merkle_root_sha256": "e0a18d25444cdb6912d191aefc142c01db72163529a7e3000d2ac6444f949675",
+      "chunks": [
+        {
+          "index": 0,
+          "offset": 0,
+          "bytes": 1048576,
+          "sha256": "feebc321f770064debd5acb3811049cb510f8223996e8168d79ed8ae39dd48f9"
+        },
+        {
+          "index": 1,
+          "offset": 1048576,
+          "bytes": 1048576,
+          "sha256": "99ded8e2fa705ec30b30535885977e3c8d098c05e238c0facc35c42d3e544268"
+        },
+        {
+          "index": 2,
+          "offset": 2097152,
+          "bytes": 1048576,
+          "sha256": "e95aed8323e2bfca334dbd1df7baa01ecd406b0f4221fbadad8bbb84f4c496bd"
+        },
+        {
+          "index": 3,
+          "offset": 3145728,
+          "bytes": 1048576,
+          "sha256": "7ed2dabdcdca692ad89e862b21919d05db4ede295765735bf2996557db2722df"
+        },
+        {
+          "index": 4,
+          "offset": 4194304,
+          "bytes": 718838,
+          "sha256": "4cb9f75ea7268253ec68e1deb0b4fa45dbd847e84a1945ae034e5b4d5514aa1c"
+        }
+      ]
+    },
+    {
       "path": "artifacts/lookup/lookup_signed_fold_multibase_sampled.csv",
       "bytes": 4856150,
       "sha256": "f128545f585e58545a15f30db78fb2040b48e6e83bdaa6cb6805892db7e831c4",
@@ -881,34 +921,6 @@
           "offset": 4194304,
           "bytes": 661846,
           "sha256": "61208f58f22d2c8e740329e101551845cba32e85237076e189a2553629ba210c"
-        }
-      ]
-    },
-    {
-      "path": "compiler_verification_project/artifacts/qroam_table_cnot_materialization.json",
-      "bytes": 2537417,
-      "sha256": "98e1627965a55303ae3d4b4a347383b0bbd48c8e9a684d1a389ab17e4c9c79bb",
-      "chunk_size_bytes": 1048576,
-      "chunk_count": 3,
-      "chunk_merkle_root_sha256": "b28d626938993ea9086b7bd85b838bdadfc5e6cb7b3f883cc58acfa102d5b171",
-      "chunks": [
-        {
-          "index": 0,
-          "offset": 0,
-          "bytes": 1048576,
-          "sha256": "5e01756082285532bc69c8580c5f489a99de9374c294d0e9d34a5d6ec01780d8"
-        },
-        {
-          "index": 1,
-          "offset": 1048576,
-          "bytes": 1048576,
-          "sha256": "443a0bd724aae84c36d184a8aa7297fb0c5c71bd4eb66363f2f9c1221d517f35"
-        },
-        {
-          "index": 2,
-          "offset": 2097152,
-          "bytes": 440265,
-          "sha256": "4bab11b14c6e10383b27d244ccb8964c060f7512ab7b4fb9673772b2702291e3"
         }
       ]
     },

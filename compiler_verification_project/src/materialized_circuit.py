@@ -1793,8 +1793,12 @@ def _qroam_table_cnot_flat_extension(
             'start_address': int(segment['start_address']),
             'end_address_exclusive': int(segment['end_address_exclusive']),
             'emitted_cx_count': int(segment['emitted_cx_count']),
+            'emitted_cx_operation_start': int(segment['emitted_cx_operation_start']),
+            'emitted_cx_operation_end_exclusive': int(segment['emitted_cx_operation_end_exclusive']),
             'effective_target_bit_sites': int(segment['effective_target_bit_sites']),
             'zero_padded_target_bit_sites': int(segment['zero_padded_target_bit_sites']),
+            'first_emitted_cx': segment.get('first_emitted_cx'),
+            'last_emitted_cx': segment.get('last_emitted_cx'),
             'source_segment_sha256': str(segment['sha256']),
             'qroam_run_length_segment_sha256': str(row['qroam_segment_sha256']),
             'primitive_operand_contract_sha256': str(row['primitive_operand_contract_sha256']),
@@ -1816,8 +1820,12 @@ def _qroam_table_cnot_flat_extension(
         'start_address',
         'end_address_exclusive',
         'emitted_cx_count',
+        'emitted_cx_operation_start',
+        'emitted_cx_operation_end_exclusive',
         'effective_target_bit_sites',
         'zero_padded_target_bit_sites',
+        'first_emitted_cx',
+        'last_emitted_cx',
         'source_segment_sha256',
         'qroam_run_length_segment_sha256',
         'primitive_operand_contract_sha256',
@@ -1844,6 +1852,19 @@ def _qroam_table_cnot_flat_extension(
             and len(extension_rows) == len(qroam_rows) == int(qroam_table_cnot_materialization['totals']['segment_count'])
         ),
         'table_cnot_operation_count_matches_artifact': emitted_cx_count == int(qroam_table_cnot_materialization['totals']['full_oracle_emitted_clifford_cx']),
+        'table_cnot_operation_ranges_match_artifact': all(
+            int(row['emitted_cx_operation_end_exclusive']) - int(row['emitted_cx_operation_start']) == int(row['emitted_cx_count'])
+            and int(row['emitted_cx_operation_start']) <= int(row['emitted_cx_operation_end_exclusive'])
+            and (
+                row['first_emitted_cx'] is None
+                or int(row['first_emitted_cx']['global_emitted_cx_index']) == int(row['emitted_cx_operation_start'])
+            )
+            and (
+                row['last_emitted_cx'] is None
+                or int(row['last_emitted_cx']['global_emitted_cx_index']) == int(row['emitted_cx_operation_end_exclusive']) - 1
+            )
+            for row in extension_rows
+        ),
         'table_cnot_extension_adds_only_clifford_cx': True,
         'table_cnot_liveness_reuses_counted_qroam_rows': all(
             bool(row['qroam_target_wire_live'])

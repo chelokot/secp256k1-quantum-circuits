@@ -66,3 +66,13 @@ def test_qroam_table_cnot_materialization_classifies_toy_domain_sites() -> None:
     assert payload['totals']['full_oracle_zero_padded_target_bit_sites'] == 3 * domain_size * (155 - 101) * 2
     assert 0 < payload['totals']['full_oracle_emitted_clifford_cx'] < payload['totals']['full_oracle_effective_target_bit_sites']
     assert len(payload['segment_merkle_root_sha256']) == 64
+    assert payload['checks']['emitted_cx_operation_ranges_cover_total'] is True
+    assert payload['checks']['emitted_cx_probes_are_within_effective_target_bits'] is True
+    emitted_segments = [segment for segment in payload['segments'] if segment['emitted_cx_count'] > 0]
+    assert emitted_segments
+    first_sample = emitted_segments[0]['first_emitted_cx']
+    last_sample = emitted_segments[-1]['last_emitted_cx']
+    assert first_sample['global_emitted_cx_index'] == emitted_segments[0]['emitted_cx_operation_start']
+    assert last_sample['global_emitted_cx_index'] == emitted_segments[-1]['emitted_cx_operation_end_exclusive'] - 1
+    assert first_sample['control_wire'] == f"qroam_unary_match_control[{first_sample['address']}]"
+    assert first_sample['target_wire'] == f"qroam_target.bit[{first_sample['target_bit_index']}]"
