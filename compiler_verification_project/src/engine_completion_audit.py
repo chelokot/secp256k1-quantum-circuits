@@ -217,8 +217,11 @@ def build_engine_completion_audit(
             and modular_primitive_wire_audit['checks']['scanned_operation_count_matches_scheduled_netlist'] is True
             and modular_primitive_wire_audit['checks']['scanned_gate_counts_match_scheduled_netlist'] is True
             and modular_primitive_wire_audit['checks']['field_operand_wires_are_live_in_trace'] is False
+            and modular_primitive_wire_audit['checks']['lookup_virtual_field_operands_are_classified'] is True
+            and modular_primitive_wire_audit['checks']['no_unresolved_virtual_field_operands'] is False
             and modular_primitive_wire_audit['checks']['no_synthetic_arithmetic_scratch_wires_without_owner_capacity'] is False
             and int(modular_primitive_wire_audit['field_wire_missing_liveness_count']) > 0
+            and int(modular_primitive_wire_audit['unresolved_virtual_field_observation_count']) > 0
             and int(modular_primitive_wire_audit['arithmetic_scratch_wire_observation_count']) > 0
         ),
         'phase_rows_are_lowering_bound': (
@@ -409,6 +412,8 @@ def build_engine_completion_audit(
                 'modular_primitive_wire_audit_pass': bool(modular_primitive_wire_audit['pass']),
                 'modular_primitive_wire_audit_sha256': _sha256_payload(modular_primitive_wire_audit),
                 'field_operand_wires_missing_liveness': int(modular_primitive_wire_audit['field_wire_missing_liveness_count']),
+                'lookup_virtual_field_operands_classified': int(modular_primitive_wire_audit['lookup_virtual_field_observation_count']),
+                'unresolved_virtual_field_operands': int(modular_primitive_wire_audit['unresolved_virtual_field_observation_count']),
                 'synthetic_arithmetic_scratch_wire_observations': int(modular_primitive_wire_audit['arithmetic_scratch_wire_observation_count']),
                 'synthetic_arithmetic_scratch_unique_wires': int(modular_primitive_wire_audit['arithmetic_scratch_unique_wire_count']),
                 'field_mul_non_clifford': int(modular_arithmetic_certificate['field_mul_stage_count_certificate']['observed_total_ccx']),

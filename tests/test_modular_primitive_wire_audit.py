@@ -44,11 +44,19 @@ def test_modular_primitive_wire_audit_names_current_scratch_gap() -> None:
     assert audit['operation_count'] == scheduled['operation_count']
     assert audit['gate_counts'] == scheduled['primitive_counts_total']
     assert audit['checks']['field_operand_wires_are_live_in_trace'] is False
+    assert audit['checks']['lookup_virtual_field_operands_are_classified'] is True
+    assert audit['checks']['no_unresolved_virtual_field_operands'] is False
     assert audit['checks']['no_unclassified_non_lookup_operand_wires'] is True
     assert audit['checks']['no_synthetic_arithmetic_scratch_wires_without_owner_capacity'] is False
     assert audit['pass'] is False
     assert audit['field_wire_missing_liveness_count'] > 0
+    assert audit['lookup_virtual_field_observation_count'] > 0
+    assert audit['unresolved_virtual_field_observation_count'] > 0
     assert audit['arithmetic_scratch_wire_observation_count'] > 0
     assert audit['arithmetic_scratch_unique_wire_count'] > 0
+    assert set(audit['lookup_virtual_field_names']) == {'lookup_x', 'lookup_y', 'lookup_x_plus_y'}
+    assert 'Y3.product_1' in audit['unresolved_virtual_field_names']
     assert audit['sample_missing_liveness']
+    assert audit['sample_lookup_virtual']
+    assert audit['sample_unresolved_virtual_field']
     assert audit['sample_synthetic_scratch']

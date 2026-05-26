@@ -36,6 +36,10 @@ def _scratch_prefix(wire_id: str) -> str | None:
     return wire_id[:wire_id.index('.bit[')]
 
 
+def _is_lookup_virtual_field(field_name: str) -> bool:
+    return field_name in {'lookup_x', 'lookup_y', 'lookup_x_plus_y'}
+
+
 def build_modular_primitive_wire_audit(
     *,
     modular_execution_trace: Mapping[str, Any],
@@ -60,14 +64,22 @@ def build_modular_primitive_wire_audit(
     operation_count = 0
     gate_counts = _empty_gate_counts()
     field_wire_observation_count = 0
+    trace_live_field_wire_observation_count = 0
     field_wire_missing_liveness_count = 0
+    lookup_virtual_field_observation_count = 0
+    unresolved_virtual_field_observation_count = 0
     lookup_workspace_wire_observation_count = 0
     non_lookup_unclassified_wire_count = 0
     arithmetic_scratch_wire_observation_count = 0
     arithmetic_scratch_unique_ids: set[str] = set()
     arithmetic_scratch_prefixes: Dict[str, int] = {}
     observed_suboperation_owners: Dict[str, int] = {}
+    missing_field_names: Dict[str, int] = {}
+    lookup_virtual_field_names: Dict[str, int] = {}
+    unresolved_virtual_field_names: Dict[str, int] = {}
     sample_missing_liveness = []
+    sample_lookup_virtual = []
+    sample_unresolved_virtual_field = []
     sample_synthetic_scratch = []
     sample_unclassified = []
 
@@ -89,16 +101,34 @@ def build_modular_primitive_wire_audit(
             field_name = _field_wire_name(wire_id)
             if field_name is not None:
                 field_wire_observation_count += 1
-                if field_name not in live_during:
-                    field_wire_missing_liveness_count += 1
-                    if len(sample_missing_liveness) < 16:
-                        sample_missing_liveness.append({
-                            'operation_index': int(row['operation_index']),
-                            'suboperation_index': suboperation_index,
-                            'wire_id': wire_id,
-                            'field_name': field_name,
-                            'live_during': dict(live_during),
-                        })
+                if field_name in live_during:
+                    trace_live_field_wire_observation_count += 1
+                    continue
+                field_wire_missing_liveness_count += 1
+                missing_field_names[field_name] = missing_field_names.get(field_name, 0) + 1
+                sample = {
+                    'operation_index': int(row['operation_index']),
+                    'suboperation_index': suboperation_index,
+                    'wire_id': wire_id,
+                    'field_name': field_name,
+                    'target': str(row['target']),
+                    'kind': str(row['kind']),
+                    'modular_opcode': None if row['modular_opcode'] is None else str(row['modular_opcode']),
+                    'block': str(row['block']),
+                    'live_during': dict(live_during),
+                }
+                if len(sample_missing_liveness) < 16:
+                    sample_missing_liveness.append(dict(sample))
+                if _is_lookup_virtual_field(field_name):
+                    lookup_virtual_field_observation_count += 1
+                    lookup_virtual_field_names[field_name] = lookup_virtual_field_names.get(field_name, 0) + 1
+                    if len(sample_lookup_virtual) < 16:
+                        sample_lookup_virtual.append(dict(sample))
+                    continue
+                unresolved_virtual_field_observation_count += 1
+                unresolved_virtual_field_names[field_name] = unresolved_virtual_field_names.get(field_name, 0) + 1
+                if len(sample_unresolved_virtual_field) < 16:
+                    sample_unresolved_virtual_field.append(dict(sample))
                 continue
             if wire_id.startswith('lookup_workspace:'):
                 lookup_workspace_wire_observation_count += 1
@@ -141,6 +171,12 @@ def build_modular_primitive_wire_audit(
             for key in gate_counts
         },
         'field_operand_wires_are_live_in_trace': field_wire_missing_liveness_count == 0,
+        'lookup_virtual_field_operands_are_classified': (
+            lookup_virtual_field_observation_count > 0
+            and set(lookup_virtual_field_names).issubset({'lookup_x', 'lookup_y', 'lookup_x_plus_y'})
+            and int(reusable_chunk_lowering['stream_plan']['chunk_streams_per_leaf']) > 0
+        ),
+        'no_unresolved_virtual_field_operands': unresolved_virtual_field_observation_count == 0,
         'qroam_operand_wires_are_explicit_lookup_workspace_wires': lookup_workspace_wire_observation_count > 0,
         'no_unclassified_non_lookup_operand_wires': non_lookup_unclassified_wire_count == 0,
         'no_synthetic_arithmetic_scratch_wires_without_owner_capacity': arithmetic_scratch_wire_observation_count == 0,
@@ -158,7 +194,10 @@ def build_modular_primitive_wire_audit(
         'operation_count': operation_count,
         'gate_counts': gate_counts,
         'field_wire_observation_count': field_wire_observation_count,
+        'trace_live_field_wire_observation_count': trace_live_field_wire_observation_count,
         'field_wire_missing_liveness_count': field_wire_missing_liveness_count,
+        'lookup_virtual_field_observation_count': lookup_virtual_field_observation_count,
+        'unresolved_virtual_field_observation_count': unresolved_virtual_field_observation_count,
         'lookup_workspace_wire_observation_count': lookup_workspace_wire_observation_count,
         'arithmetic_scratch_wire_observation_count': arithmetic_scratch_wire_observation_count,
         'arithmetic_scratch_unique_wire_count': len(arithmetic_scratch_unique_ids),
@@ -167,8 +206,22 @@ def build_modular_primitive_wire_audit(
             key: int(value)
             for key, value in sorted(observed_suboperation_owners.items())
         },
+        'missing_field_names': {
+            key: int(value)
+            for key, value in sorted(missing_field_names.items(), key=lambda item: (-item[1], item[0]))
+        },
+        'lookup_virtual_field_names': {
+            key: int(value)
+            for key, value in sorted(lookup_virtual_field_names.items(), key=lambda item: (-item[1], item[0]))
+        },
+        'unresolved_virtual_field_names': {
+            key: int(value)
+            for key, value in sorted(unresolved_virtual_field_names.items(), key=lambda item: (-item[1], item[0]))
+        },
         'top_synthetic_scratch_prefixes': top_scratch_prefixes,
         'sample_missing_liveness': sample_missing_liveness,
+        'sample_lookup_virtual': sample_lookup_virtual,
+        'sample_unresolved_virtual_field': sample_unresolved_virtual_field,
         'sample_synthetic_scratch': sample_synthetic_scratch,
         'sample_unclassified': sample_unclassified,
         'checks': checks,
@@ -176,8 +229,13 @@ def build_modular_primitive_wire_audit(
         'completion_blockers': [
             {
                 'name': 'field_operand_liveness_binding',
-                'active': field_wire_missing_liveness_count > 0,
-                'required_to_close': 'Bind every field:* operand used by the modular primitive iterator to the scheduled trace liveness map, or replace virtual lookup/internal-product field operands with a wire-level streaming circuit whose wires have counted owners.',
+                'active': unresolved_virtual_field_observation_count > 0,
+                'required_to_close': 'Bind every non-lookup field:* operand used by the modular primitive iterator to the scheduled trace liveness map, or replace virtual internal-product field operands with a wire-level streaming circuit whose wires have counted owners.',
+            },
+            {
+                'name': 'lookup_virtual_field_stream_binding',
+                'active': False,
+                'required_to_close': 'Lookup virtual operands are classified separately from unresolved field slots and are backed by the public QROAM stream plan; the remaining task is to preserve that binding through the final modular physical stream.',
             },
             {
                 'name': 'synthetic_arithmetic_scratch_owner_capacity',
