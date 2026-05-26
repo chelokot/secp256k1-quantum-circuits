@@ -171,6 +171,11 @@
         "synthetic_arithmetic_scratch_ccx_target_observations": 721406,
         "synthetic_arithmetic_scratch_cleanup_observations": 0,
         "synthetic_arithmetic_scratch_abandoned_garbage": 721406,
+        "modular_multiplier_lifecycle_pass": true,
+        "modular_multiplier_lifecycle_sha256": "97f3f0e23d39733010c44a55e06cda2d8df5672bb3b0277f603a719b71180bd3",
+        "streamed_lifecycle_candidate_required_consume_events": 721406,
+        "streamed_lifecycle_candidate_required_cleanup_events": 721406,
+        "streamed_lifecycle_candidate_peak_temporary_and_wires": 1,
         "field_mul_non_clifford": 71492,
         "field_mul_stage_counts_match": true,
         "modular_ir_counts_match_lowerings": true

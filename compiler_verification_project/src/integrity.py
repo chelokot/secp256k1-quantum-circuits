@@ -33,6 +33,7 @@ from fallback_frontier_stress import build_fallback_frontier_stress
 from lookup_lowering import lookup_lowering_library, lowered_lookup_semantic_summary, materialize_lookup_primitive_operations
 from materialized_circuit import PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, build_arithmetic_operand_replay_audit, build_public_candidate_materialized_circuit_manifest
 from modular_execution_trace import build_modular_execution_trace
+from modular_multiplier_lifecycle import MODULAR_MULTIPLIER_LIFECYCLE_SCHEMA, build_modular_multiplier_lifecycle
 from modular_primitive_wire_audit import MODULAR_PRIMITIVE_WIRE_AUDIT_SCHEMA, build_modular_primitive_wire_audit
 from modular_arithmetic_certificate import build_modular_arithmetic_certificate
 from phase_shell_lowering import materialize_phase_operations, phase_shell_family_summary, phase_shell_lowering_library
@@ -191,6 +192,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'modular_execution_trace': artifact_root / 'modular_execution_trace.json',
         'scheduled_modular_primitive_netlist': artifact_root / 'scheduled_modular_primitive_netlist.json',
         'modular_primitive_wire_audit': artifact_root / 'modular_primitive_wire_audit.json',
+        'modular_multiplier_lifecycle': artifact_root / 'modular_multiplier_lifecycle.json',
         'tail_macro_liveness': artifact_root / 'tail_macro_liveness.json',
         'tail_macro_reversibility': artifact_root / 'tail_macro_reversibility.json',
         'tail_macro_schedule_search': artifact_root / 'tail_macro_schedule_search.json',
@@ -322,6 +324,14 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
             ),
         )
         dump_json(
+            artifact_root / 'modular_multiplier_lifecycle.json',
+            build_modular_multiplier_lifecycle(
+                scheduled_modular_primitive_netlist=load_json(artifact_root / 'scheduled_modular_primitive_netlist.json'),
+                modular_primitive_wire_audit=load_json(artifact_root / 'modular_primitive_wire_audit.json'),
+                field_bits=FIELD_BITS,
+            ),
+        )
+        dump_json(
             artifact_root / 'public_engine_manifest.json',
             build_public_engine_manifest(
                 reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
@@ -365,6 +375,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 modular_execution_trace=load_json(artifact_root / 'modular_execution_trace.json'),
                 scheduled_modular_primitive_netlist=load_json(artifact_root / 'scheduled_modular_primitive_netlist.json'),
                 modular_primitive_wire_audit=load_json(artifact_root / 'modular_primitive_wire_audit.json'),
+                modular_multiplier_lifecycle=load_json(artifact_root / 'modular_multiplier_lifecycle.json'),
                 tail_macro_engine=load_json(artifact_root / 'tail_macro_engine.json'),
                 tail_macro_liveness=load_json(artifact_root / 'tail_macro_liveness.json'),
                 tail_macro_reversibility=load_json(artifact_root / 'tail_macro_reversibility.json'),
@@ -2627,6 +2638,22 @@ def build_modular_primitive_wire_audit_checks(artifacts: Mapping[str, Any]) -> D
     return _summarize_checks(checks)
 
 
+def build_modular_multiplier_lifecycle_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    lifecycle = artifacts['modular_multiplier_lifecycle']
+    expected = build_modular_multiplier_lifecycle(
+        scheduled_modular_primitive_netlist=artifacts['scheduled_modular_primitive_netlist'],
+        modular_primitive_wire_audit=artifacts['modular_primitive_wire_audit'],
+        field_bits=FIELD_BITS,
+    )
+    checks = [
+        _check('modular_multiplier_lifecycle_matches_generator', lifecycle == expected, expected, lifecycle),
+        _check('modular_multiplier_lifecycle_schema_is_current', lifecycle['schema'] == MODULAR_MULTIPLIER_LIFECYCLE_SCHEMA, MODULAR_MULTIPLIER_LIFECYCLE_SCHEMA, lifecycle['schema']),
+        _check('modular_multiplier_lifecycle_passes_internal_checks', lifecycle['pass'] is True and all(lifecycle['checks'].values()), True, lifecycle['checks']),
+        _check('modular_multiplier_lifecycle_records_current_invalid_garbage', lifecycle['current_stream']['physical_lifecycle_status'] == 'invalid_abandoned_temporary_and_targets' and lifecycle['current_stream']['scratch_abandoned_garbage_count'] > 0 and lifecycle['streamed_lifecycle_candidate']['status'] == 'candidate_not_promoted_to_public_resource_contract', 'invalid current scratch with unpromoted streamed lifecycle candidate', lifecycle['current_stream']),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     audit = artifacts['engine_completion_audit']
     expected = build_engine_completion_audit(
@@ -2645,6 +2672,7 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
         modular_execution_trace=artifacts['modular_execution_trace'],
         scheduled_modular_primitive_netlist=artifacts['scheduled_modular_primitive_netlist'],
         modular_primitive_wire_audit=artifacts['modular_primitive_wire_audit'],
+        modular_multiplier_lifecycle=artifacts['modular_multiplier_lifecycle'],
         tail_macro_engine=artifacts['tail_macro_engine'],
         tail_macro_liveness=artifacts['tail_macro_liveness'],
         tail_macro_reversibility=artifacts['tail_macro_reversibility'],
@@ -3457,6 +3485,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'headline_resource_manifest_checks': lambda: build_headline_resource_manifest_checks(artifacts),
         'scheduled_modular_primitive_netlist_checks': lambda: build_scheduled_modular_primitive_netlist_checks(artifacts),
         'modular_primitive_wire_audit_checks': lambda: build_modular_primitive_wire_audit_checks(artifacts),
+        'modular_multiplier_lifecycle_checks': lambda: build_modular_multiplier_lifecycle_checks(artifacts),
         'public_engine_manifest_checks': lambda: build_public_engine_manifest_checks(artifacts),
         'engine_completion_audit_checks': lambda: build_engine_completion_audit_checks(artifacts),
         'arithmetic_operand_replay_audit_checks': lambda: build_arithmetic_operand_replay_audit_checks(artifacts),

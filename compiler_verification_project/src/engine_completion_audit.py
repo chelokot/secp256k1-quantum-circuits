@@ -50,6 +50,7 @@ def build_engine_completion_audit(
     modular_execution_trace: Mapping[str, Any],
     scheduled_modular_primitive_netlist: Mapping[str, Any],
     modular_primitive_wire_audit: Mapping[str, Any],
+    modular_multiplier_lifecycle: Mapping[str, Any],
     tail_macro_engine: Mapping[str, Any],
     tail_macro_liveness: Mapping[str, Any],
     tail_macro_reversibility: Mapping[str, Any],
@@ -222,6 +223,9 @@ def build_engine_completion_audit(
             and modular_primitive_wire_audit['checks']['synthetic_scratch_wires_are_single_use_ccx_targets'] is True
             and modular_primitive_wire_audit['checks']['synthetic_scratch_wires_have_cleanup_or_counted_capacity'] is False
             and modular_primitive_wire_audit['checks']['no_synthetic_arithmetic_scratch_wires_without_owner_capacity'] is False
+            and modular_multiplier_lifecycle['pass'] is True
+            and modular_multiplier_lifecycle['current_stream']['physical_lifecycle_status'] == 'invalid_abandoned_temporary_and_targets'
+            and int(modular_multiplier_lifecycle['current_stream']['scratch_abandoned_garbage_count']) == int(modular_primitive_wire_audit['arithmetic_scratch_abandoned_garbage_count'])
             and int(modular_primitive_wire_audit['field_wire_missing_liveness_count']) > 0
             and int(modular_primitive_wire_audit['unresolved_virtual_field_observation_count']) == 0
             and int(modular_primitive_wire_audit['arithmetic_scratch_wire_observation_count']) > 0
@@ -423,6 +427,11 @@ def build_engine_completion_audit(
                 'synthetic_arithmetic_scratch_ccx_target_observations': int(modular_primitive_wire_audit['arithmetic_scratch_ccx_target_observation_count']),
                 'synthetic_arithmetic_scratch_cleanup_observations': int(modular_primitive_wire_audit['arithmetic_scratch_cleanup_observation_count']),
                 'synthetic_arithmetic_scratch_abandoned_garbage': int(modular_primitive_wire_audit['arithmetic_scratch_abandoned_garbage_count']),
+                'modular_multiplier_lifecycle_pass': bool(modular_multiplier_lifecycle['pass']),
+                'modular_multiplier_lifecycle_sha256': _sha256_payload(modular_multiplier_lifecycle),
+                'streamed_lifecycle_candidate_required_consume_events': int(modular_multiplier_lifecycle['streamed_lifecycle_candidate']['required_consume_events']),
+                'streamed_lifecycle_candidate_required_cleanup_events': int(modular_multiplier_lifecycle['streamed_lifecycle_candidate']['required_cleanup_events']),
+                'streamed_lifecycle_candidate_peak_temporary_and_wires': int(modular_multiplier_lifecycle['streamed_lifecycle_candidate']['peak_temporary_and_wires_if_serialized']),
                 'field_mul_non_clifford': int(modular_arithmetic_certificate['field_mul_stage_count_certificate']['observed_total_ccx']),
                 'field_mul_stage_counts_match': bool(modular_arithmetic_certificate['field_mul_stage_count_certificate']['stage_counts_match']),
                 'modular_ir_counts_match_lowerings': bool(modular_arithmetic_certificate['executable_circuit_ir_count_certificate']['counts_match_arithmetic_lowerings']),

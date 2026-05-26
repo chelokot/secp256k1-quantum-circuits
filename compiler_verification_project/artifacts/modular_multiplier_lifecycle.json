@@ -1,0 +1,56 @@
+{
+  "schema": "compiler-project-modular-multiplier-lifecycle-v1",
+  "definition": "Generated lifecycle audit for modular-multiplier temporary-AND scratch targets. It distinguishes the current abandoned scratch placeholders from the compute-consume-cleanup lifecycle required by a physical primitive lowering.",
+  "source_digests": {
+    "scheduled_modular_primitive_netlist_sha256": "ff3662c1b383c32858465f567fbc09bb8654b1fb08eb13f3ab277b3c1323ec5c",
+    "modular_primitive_wire_audit_sha256": "ade7278c3ae75bcb0c90ca1b8e300bee99f97578dfc9bb57352f5da86317cd43"
+  },
+  "field_bits": 256,
+  "current_stream": {
+    "operation_count": 1270134,
+    "non_clifford_count": 1192378,
+    "scratch_observation_count": 721406,
+    "scratch_unique_wire_count": 721406,
+    "scratch_single_use_wire_count": 721406,
+    "scratch_cleanup_observation_count": 0,
+    "scratch_abandoned_garbage_count": 721406,
+    "partial_product_scratch_observation_count": 720896,
+    "non_partial_product_scratch_observation_count": 510,
+    "physical_lifecycle_status": "invalid_abandoned_temporary_and_targets"
+  },
+  "streamed_lifecycle_candidate": {
+    "model": "serial_temporary_and_consume_cleanup",
+    "status": "candidate_not_promoted_to_public_resource_contract",
+    "temporary_and_compute_events": 721406,
+    "required_consume_events": 721406,
+    "required_cleanup_events": 721406,
+    "peak_temporary_and_wires_if_serialized": 1,
+    "additional_measurements_for_measured_cleanup": 721406,
+    "non_clifford_delta_unproven_until_consume_cleanup_lowering_exists": null,
+    "notes": [
+      "This is a generated target lifecycle for closing the current gap, not a claimed public lowering.",
+      "Promotion requires replacing each producer-only scratch target with a compute-consume-cleanup sequence that updates a counted accumulator wire and returns the temporary AND wire to zero."
+    ]
+  },
+  "checks": {
+    "wire_audit_binds_current_scheduled_netlist": true,
+    "current_scratch_is_single_use_ccx_target_only": true,
+    "current_scratch_has_no_cleanup_or_counted_capacity": true,
+    "streamed_candidate_covers_every_current_scratch_target": true,
+    "streamed_candidate_peak_is_serial_constant": true,
+    "not_promoted_until_consume_cleanup_lowering_exists": true
+  },
+  "pass": true,
+  "promotion_blockers": [
+    {
+      "name": "consume_cleanup_lowering_missing",
+      "active": true,
+      "required_to_close": "Generate primitive rows that consume each temporary AND into a counted accumulator update and then cleanup or measure-uncompute the temporary wire before reuse."
+    },
+    {
+      "name": "candidate_cost_not_public",
+      "active": true,
+      "required_to_close": "Bind the consume and cleanup rows into scheduled_modular_primitive_netlist, recompute non-Clifford/measurement totals, and only then update public resource claims."
+    }
+  ]
+}

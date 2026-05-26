@@ -27,6 +27,7 @@ from headline_resource_manifest import build_headline_resource_manifest  # noqa:
 from hybrid_bridge_search import build_hybrid_bridge_search  # noqa: E402
 from materialized_circuit import build_arithmetic_operand_replay_audit, build_materialized_family_manifest, build_public_candidate_materialized_circuit_manifest  # noqa: E402
 from modular_execution_trace import build_modular_execution_trace  # noqa: E402
+from modular_multiplier_lifecycle import build_modular_multiplier_lifecycle  # noqa: E402
 from modular_primitive_wire_audit import build_modular_primitive_wire_audit  # noqa: E402
 from project import FIELD_BITS, build_all_artifacts, build_resource_stack_artifacts, full_attack_inventory, write_cain_transfer  # noqa: E402
 from public_result import write_public_headline_result  # noqa: E402
@@ -59,6 +60,7 @@ BUILD_TARGETS = (
     'modular-execution-trace',
     'scheduled-modular-primitive-netlist',
     'modular-primitive-wire-audit',
+    'modular-multiplier-lifecycle',
     'headline-resource-manifest',
     'public-engine-manifest',
     'engine-completion-audit',
@@ -429,6 +431,18 @@ def build_modular_primitive_wire_audit_artifact() -> None:
     )
 
 
+def build_modular_multiplier_lifecycle_artifact() -> None:
+    artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
+    dump_json(
+        artifact_dir / 'modular_multiplier_lifecycle.json',
+        build_modular_multiplier_lifecycle(
+            scheduled_modular_primitive_netlist=load_json(artifact_dir / 'scheduled_modular_primitive_netlist.json'),
+            modular_primitive_wire_audit=load_json(artifact_dir / 'modular_primitive_wire_audit.json'),
+            field_bits=FIELD_BITS,
+        ),
+    )
+
+
 def build_headline_resource_manifest_artifact() -> None:
     artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
     compiler_parameters = load_json(artifact_dir / 'compiler_parameters.json')
@@ -479,6 +493,7 @@ def build_engine_completion_audit_artifact() -> None:
         modular_execution_trace=load_json(artifact_dir / 'modular_execution_trace.json'),
         scheduled_modular_primitive_netlist=load_json(artifact_dir / 'scheduled_modular_primitive_netlist.json'),
         modular_primitive_wire_audit=load_json(artifact_dir / 'modular_primitive_wire_audit.json'),
+        modular_multiplier_lifecycle=load_json(artifact_dir / 'modular_multiplier_lifecycle.json'),
         tail_macro_engine=load_json(artifact_dir / 'tail_macro_engine.json'),
         tail_macro_liveness=load_json(artifact_dir / 'tail_macro_liveness.json'),
         tail_macro_reversibility=load_json(artifact_dir / 'tail_macro_reversibility.json'),
@@ -558,6 +573,8 @@ def main() -> None:
         payload['scheduled_modular_primitive_netlist'] = 'compiler_verification_project/artifacts/scheduled_modular_primitive_netlist.json'
         build_modular_primitive_wire_audit_artifact()
         payload['modular_primitive_wire_audit'] = 'compiler_verification_project/artifacts/modular_primitive_wire_audit.json'
+        build_modular_multiplier_lifecycle_artifact()
+        payload['modular_multiplier_lifecycle'] = 'compiler_verification_project/artifacts/modular_multiplier_lifecycle.json'
         build_public_engine_manifest_artifact()
         payload['public_engine_manifest'] = 'compiler_verification_project/artifacts/public_engine_manifest.json'
     if args.target in ('engine-completion-audit',):
@@ -569,6 +586,8 @@ def main() -> None:
         payload['scheduled_modular_primitive_netlist'] = 'compiler_verification_project/artifacts/scheduled_modular_primitive_netlist.json'
         build_modular_primitive_wire_audit_artifact()
         payload['modular_primitive_wire_audit'] = 'compiler_verification_project/artifacts/modular_primitive_wire_audit.json'
+        build_modular_multiplier_lifecycle_artifact()
+        payload['modular_multiplier_lifecycle'] = 'compiler_verification_project/artifacts/modular_multiplier_lifecycle.json'
         build_engine_completion_audit_artifact()
         payload['engine_completion_audit'] = 'compiler_verification_project/artifacts/engine_completion_audit.json'
     if args.target in ('resource-stack', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
@@ -605,6 +624,8 @@ def main() -> None:
         payload['scheduled_modular_primitive_netlist'] = 'compiler_verification_project/artifacts/scheduled_modular_primitive_netlist.json'
         build_modular_primitive_wire_audit_artifact()
         payload['modular_primitive_wire_audit'] = 'compiler_verification_project/artifacts/modular_primitive_wire_audit.json'
+        build_modular_multiplier_lifecycle_artifact()
+        payload['modular_multiplier_lifecycle'] = 'compiler_verification_project/artifacts/modular_multiplier_lifecycle.json'
         build_public_engine_manifest_artifact()
         payload['public_engine_manifest'] = 'compiler_verification_project/artifacts/public_engine_manifest.json'
         build_candidate_zkp()
@@ -626,6 +647,9 @@ def main() -> None:
     if args.target in ('modular-primitive-wire-audit',):
         build_modular_primitive_wire_audit_artifact()
         payload['modular_primitive_wire_audit'] = 'compiler_verification_project/artifacts/modular_primitive_wire_audit.json'
+    if args.target in ('modular-multiplier-lifecycle',):
+        build_modular_multiplier_lifecycle_artifact()
+        payload['modular_multiplier_lifecycle'] = 'compiler_verification_project/artifacts/modular_multiplier_lifecycle.json'
     if args.target in ('all', 'public-headline', 'strict-replayed-tail-headline', 'zkp-and-public', 'resource-zkp-and-public'):
         build_strict_replayed_tail_headline()
         payload['strict_replayed_tail_headline'] = 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json'
