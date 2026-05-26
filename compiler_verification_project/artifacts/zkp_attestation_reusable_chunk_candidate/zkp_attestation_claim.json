@@ -10,7 +10,7 @@
   "resource_engine_summary": {
     "source": "public_engine_manifest.public_totals",
     "source_document_type": "public_engine_manifest",
-    "source_sha256": "6ebd1a95bbd552fdae4fe37d725b768d8d04795c66d912eb3e733666abcbf0a6",
+    "source_sha256": "6440ce692f2506b7bc1e15815becbef182f66ff5cfc35ea1f0d77e9d9fd9789f",
     "non_clifford": 36973222,
     "logical_qubits": 1968,
     "matches_family_snapshot": false,
@@ -27,13 +27,13 @@
   },
   "logical_qubit_formula": {
     "field_bits": 256,
-    "arithmetic_slot_count": 4,
-    "control_slot_count": 1,
+    "arithmetic_slot_count": 7,
+    "control_slot_count": 2,
     "borrowed_interface_qubits": 0,
     "lookup_workspace_qubits": 173,
     "live_phase_bits": 1,
-    "arithmetic_component": 1024,
-    "reconstructed_total": 1199
+    "arithmetic_component": 1792,
+    "reconstructed_total": 1968
   },
   "notes": [
     "This claim intentionally stays at the repository exact-family boundary: exact point-add witness semantics plus exact compiler-family resource derivation.",

@@ -118,7 +118,10 @@ def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None
     assert public_engine_manifest['public_totals']['source'] == PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE
     assert public_engine_manifest['legacy_wrapper_totals']['logical_qubits'] == qubit_derivation['candidate_total_logical_qubits']
     assert claim['expected_total_logical_qubits'] == public_engine_manifest['public_totals']['logical_qubits']
-    assert claim['logical_qubit_formula']['reconstructed_total'] == public_engine_manifest['legacy_wrapper_totals']['logical_qubits']
+    assert claim['logical_qubit_formula']['reconstructed_total'] == public_engine_manifest['public_totals']['logical_qubits']
+    assert sum(row['logical_qubits'] for row in public_engine_manifest['strict_public_owner_capacity_stream']['rows']) == claim['expected_total_logical_qubits']
+    assert claim['logical_qubit_formula']['arithmetic_slot_count'] == 7
+    assert claim['logical_qubit_formula']['control_slot_count'] == 2
     assert claim['resource_engine_summary']['source'] == 'public_engine_manifest.public_totals'
     assert claim['resource_engine_summary']['source_document_type'] == 'public_engine_manifest'
     assert claim['resource_engine_summary']['source_sha256'] == payload['public_engine_manifest_sha256']
@@ -334,9 +337,9 @@ def test_public_headline_result_binds_reusable_chunk_candidate_artifacts() -> No
     assert public_result['checks']['reusable_chunk_binds_modular_arithmetic_certificate'] is True
     assert public_result['checks']['reusable_chunk_tail_contract_is_proven_for_public_headline'] is True
     assert selected['non_clifford'] == input_payload['claim_summary']['expected_full_oracle_non_clifford']
-    assert selected['logical_qubits'] == public_engine_manifest['legacy_wrapper_totals']['logical_qubits']
+    assert selected['logical_qubits'] == public_engine_manifest['public_totals']['logical_qubits']
     assert selected['logical_qubits'] == input_payload['claim_summary']['logical_qubit_formula']['reconstructed_total']
-    assert selected['logical_qubits'] != input_payload['claim_summary']['expected_total_logical_qubits']
+    assert selected['logical_qubits'] == input_payload['claim_summary']['expected_total_logical_qubits']
     public_policy = public_result['selection_policy']['limits']
     assert selected['non_clifford'] < public_policy['non_clifford_limit_exclusive']
     assert selected['logical_qubits'] < public_policy['logical_qubit_limit_exclusive']

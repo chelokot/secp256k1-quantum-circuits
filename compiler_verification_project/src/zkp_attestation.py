@@ -219,6 +219,32 @@ def _family_proof_payload(family: Mapping[str, Any]) -> Dict[str, Any]:
     }
 
 
+def _public_engine_logical_qubit_formula(public_engine_manifest: Mapping[str, Any], field_bits: int) -> Dict[str, int]:
+    owner_qubits = {
+        str(row['owner_id']): int(row['logical_qubits'])
+        for row in public_engine_manifest['strict_public_owner_capacity_stream']['rows']
+    }
+    arithmetic_slots = sum(
+        1
+        for owner_id, qubits in owner_qubits.items()
+        if owner_id.startswith('tail_reordered_slot_') and qubits == field_bits
+    )
+    arithmetic_component = arithmetic_slots * field_bits
+    lookup_workspace_qubits = owner_qubits['lookup_workspace']
+    control_slot_count = owner_qubits['control_slot_register_file']
+    live_phase_bits = owner_qubits['phase_shell_live_register']
+    return {
+        'field_bits': field_bits,
+        'arithmetic_slot_count': arithmetic_slots,
+        'control_slot_count': control_slot_count,
+        'borrowed_interface_qubits': 0,
+        'lookup_workspace_qubits': lookup_workspace_qubits,
+        'live_phase_bits': live_phase_bits,
+        'arithmetic_component': arithmetic_component,
+        'reconstructed_total': arithmetic_component + control_slot_count + lookup_workspace_qubits + live_phase_bits,
+    }
+
+
 def _leaf_for_family(family: Mapping[str, Any]) -> Dict[str, Any]:
     slot_family = str(family['slot_allocation_family'])
     if slot_family == 'streamed_lookup_tail_leaf_v1':
@@ -881,12 +907,23 @@ def _build_zkp_attestation_materials(
         resource_engine_source_document_type = 'public_engine_manifest'
         assert public_engine_manifest_blob is not None
         resource_engine_source_sha256 = public_engine_manifest_blob['sha256']
+        logical_qubit_formula = _public_engine_logical_qubit_formula(public_engine_manifest, 256)
     else:
         resource_engine_non_clifford = int(family_payload['full_oracle_non_clifford'])
         resource_engine_logical_qubits = int(family_payload['total_logical_qubits'])
         resource_engine_source = 'compiler_family_summary'
         resource_engine_source_document_type = 'compiler_family_summary'
         resource_engine_source_sha256 = family_blob['sha256']
+        logical_qubit_formula = {
+            'field_bits': 256,
+            'arithmetic_slot_count': int(family_payload['arithmetic_slot_count']),
+            'control_slot_count': int(family_payload['control_slot_count']),
+            'borrowed_interface_qubits': borrowed_interface_qubits,
+            'lookup_workspace_qubits': int(family_payload['lookup_workspace_qubits']),
+            'live_phase_bits': int(family_payload['live_phase_bits']),
+            'arithmetic_component': arithmetic_qubits,
+            'reconstructed_total': total_logical_qubits,
+        }
     resource_certificate_totals = resource_certificate.get('executable_resource_engine', {}).get('public_totals')
     matches_resource_certificate_snapshot = (
         resource_certificate_totals is not None
@@ -923,16 +960,7 @@ def _build_zkp_attestation_materials(
             'lookup_component': lookup_component,
             'reconstructed_total': full_oracle_non_clifford,
         },
-        'logical_qubit_formula': {
-            'field_bits': 256,
-            'arithmetic_slot_count': int(family_payload['arithmetic_slot_count']),
-            'control_slot_count': int(family_payload['control_slot_count']),
-            'borrowed_interface_qubits': borrowed_interface_qubits,
-            'lookup_workspace_qubits': int(family_payload['lookup_workspace_qubits']),
-            'live_phase_bits': int(family_payload['live_phase_bits']),
-            'arithmetic_component': arithmetic_qubits,
-            'reconstructed_total': total_logical_qubits,
-        },
+        'logical_qubit_formula': logical_qubit_formula,
         'notes': [
             'This claim intentionally stays at the repository exact-family boundary: exact point-add witness semantics plus exact compiler-family resource derivation.',
             'It is similar in shape to the Google disclosure model, but it proves a public deterministic point-add corpus instead of Fiat-Shamir-generated hidden tests.',

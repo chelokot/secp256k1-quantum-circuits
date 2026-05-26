@@ -3679,11 +3679,25 @@ fn merkle_root_from_hex_leaves(leaves: &[String]) -> String {
         .expect("non-empty Merkle tree must produce a root")
 }
 
-fn qroam_segment_digest(phase: &str, start_address: u64, end_address_exclusive: u64) -> String {
+fn qroam_segment_digest(
+    phase: &str,
+    start_address: u64,
+    end_address_exclusive: u64,
+    selection_bit_count: u64,
+    target_register_qubits: u64,
+) -> String {
     let mut digest = sha256_hex(b"");
     for address in start_address..end_address_exclusive {
+        let control_wires = (0..selection_bit_count)
+            .map(|bit_index| format!("\"selection.bit[{bit_index}]\""))
+            .collect::<Vec<_>>()
+            .join(",");
+        let control_pattern = (0..selection_bit_count)
+            .map(|bit_index| ((address >> bit_index) & 1).to_string())
+            .collect::<Vec<_>>()
+            .join(",");
         let row = format!(
-            "{{\"address\":{address},\"ccx\":1,\"phase\":\"{phase}\",\"primitive\":\"qroamclean_k1_unary_iteration_step\"}}"
+            "{{\"address\":{address},\"ccx\":1,\"loaded_word_source\":{{\"bit_range\":[0,{target_register_qubits}],\"table_address\":{address}}},\"phase\":\"{phase}\",\"primitive\":\"qroamclean_k1_unary_iteration_word_step\",\"selection_bit_count\":{selection_bit_count},\"selection_control_pattern_lsb_first\":[{control_pattern}],\"selection_control_wires\":[{control_wires}],\"target_register\":{{\"bit_count\":{target_register_qubits},\"wire_template\":\"qroam_target.bit[{{bit_index}}]\"}}}}"
         );
         let row_digest = sha256_hex(row.as_bytes());
         digest = sha256_hex(format!("{digest}{row_digest}").as_bytes());
@@ -4938,7 +4952,9 @@ fn validate_reusable_chunk_lowering(
             qroam_segment_digest(
                 json_string_field(segment, "phase"),
                 json_u64_field(segment, "start_address"),
-                json_u64_field(segment, "end_address_exclusive")
+                json_u64_field(segment, "end_address_exclusive"),
+                json_u64_field(segment, "selection_bit_count"),
+                json_u64_field(segment, "target_register_qubits")
             )
         );
         qroam_segment_hashes.push(segment_hash.to_owned());
@@ -5148,6 +5164,10 @@ fn validate_reusable_chunk_lowering(
     );
     assert_eq!(
         json_u64_field(qubits, "candidate_total_logical_qubits"),
+        family.total_logical_qubits
+    );
+    assert_ne!(
+        json_u64_field(qubits, "candidate_total_logical_qubits"),
         claim.expected_total_logical_qubits
     );
 
@@ -5228,7 +5248,7 @@ fn validate_reusable_chunk_lowering(
     }
     assert_eq!(
         counted_peak_live_qubits,
-        claim.expected_total_logical_qubits
+        family.total_logical_qubits
     );
     assert_eq!(
         json_u64_field(counted_ir, "recomputed_peak_live_qubits"),
@@ -5356,11 +5376,11 @@ fn validate_reusable_chunk_lowering(
     let owner_capacity = json_object_field(certificate, "owner_capacity");
     assert_eq!(
         json_u64_field(owner_capacity, "required_global_peak_qubits"),
-        claim.expected_total_logical_qubits
+        family.total_logical_qubits
     );
     assert_eq!(
         json_u64_field(owner_capacity, "capacity_global_peak_qubits"),
-        claim.expected_total_logical_qubits
+        family.total_logical_qubits
     );
     let mut owner_ids = BTreeSet::new();
     let mut required_peak_total = 0u64;
@@ -5384,8 +5404,8 @@ fn validate_reusable_chunk_lowering(
             "phase_shell_live_register".to_owned(),
         ])
     );
-    assert_eq!(required_peak_total, claim.expected_total_logical_qubits);
-    assert_eq!(capacity_peak_total, claim.expected_total_logical_qubits);
+    assert_eq!(required_peak_total, family.total_logical_qubits);
+    assert_eq!(capacity_peak_total, family.total_logical_qubits);
 
     let executable_liveness = json_object_field(certificate, "executable_liveness");
     assert_eq!(
@@ -5451,7 +5471,7 @@ fn validate_reusable_chunk_lowering(
     }
     assert_eq!(
         json_u64_field(executable_liveness, "global_peak_live_qubits"),
-        claim.expected_total_logical_qubits
+        family.total_logical_qubits
     );
     assert!(
         json_array_field(executable_liveness, "duplicate_owner_wires").is_empty(),
@@ -5647,7 +5667,7 @@ fn validate_reusable_chunk_lowering(
         qchunk_qroam_concurrent |= interval_has_qchunk && interval_has_qroam_target;
     }
     assert!(qchunk_qroam_concurrent);
-    assert_eq!(peak_total, claim.expected_total_logical_qubits);
+    assert_eq!(peak_total, family.total_logical_qubits);
     assert_eq!(
         json_string_field(executable_liveness, "global_peak_interval_id"),
         peak_interval_id
@@ -5688,7 +5708,7 @@ fn validate_reusable_chunk_lowering(
     );
     assert_eq!(
         json_u64_field(resource_contract_engine, "peak_live_qubits"),
-        claim.expected_total_logical_qubits
+        family.total_logical_qubits
     );
     assert_eq!(
         json_string_field(resource_contract_engine, "peak_interval_id"),
@@ -5735,7 +5755,7 @@ fn validate_reusable_chunk_lowering(
     );
     assert_eq!(
         json_u64_field(executable_resource_public_totals, "logical_qubits"),
-        claim.expected_total_logical_qubits
+        family.total_logical_qubits
     );
     assert_eq!(
         json_string_field(executable_resource_engine, "counted_resource_ir_sha256"),
@@ -5790,7 +5810,7 @@ fn validate_public_engine_manifest(
     let public_totals = json_object_field(manifest, "public_totals");
     assert_eq!(
         json_string_field(public_totals, "source"),
-        "public_candidate_materialized_circuit_manifest.materialized_flat_netlist"
+        "public_candidate_materialized_circuit_manifest.canonical_materialized_flat_netlist"
     );
     assert_eq!(
         json_u64_field(public_totals, "non_clifford"),
@@ -5807,8 +5827,8 @@ fn validate_public_engine_manifest(
     assert_eq!(summary.source_sha256, manifest_sha256);
     assert_eq!(summary.non_clifford, claim.expected_full_oracle_non_clifford);
     assert_eq!(summary.logical_qubits, claim.expected_total_logical_qubits);
-    assert!(summary.matches_family_snapshot);
-    assert!(summary.matches_resource_certificate_snapshot);
+    assert!(!summary.matches_family_snapshot);
+    assert!(!summary.matches_resource_certificate_snapshot);
 
     let resource_totals = json_object_field(
         json_object_field(resource_certificate, "executable_resource_engine"),
@@ -5818,9 +5838,21 @@ fn validate_public_engine_manifest(
         json_u64_field(resource_totals, "non_clifford"),
         claim.expected_full_oracle_non_clifford
     );
-    assert_eq!(
+    assert_ne!(
         json_u64_field(resource_totals, "logical_qubits"),
         claim.expected_total_logical_qubits
+    );
+
+    let strict_public_owner_stream = json_object_field(manifest, "strict_public_owner_capacity_stream");
+    let strict_public_owner_rows = json_array_field(strict_public_owner_stream, "rows");
+    let strict_public_owner_total: u64 = strict_public_owner_rows
+        .iter()
+        .map(|row| json_u64_field(row, "logical_qubits"))
+        .sum();
+    assert_eq!(strict_public_owner_total, claim.expected_total_logical_qubits);
+    assert_eq!(
+        json_string_field(strict_public_owner_stream, "source"),
+        "public_candidate_materialized_circuit_manifest.strict_replayed_tail_liveness_projection.peak_interval"
     );
 
     let compiler_policy = json_object_field(compiler_parameters, "public_headline_policy");
@@ -5849,7 +5881,7 @@ fn validate_public_engine_manifest(
         "public_candidate_materialized_circuit_manifest",
     );
     assert!(json_bool_field(public_materialized, "pass"));
-    let materialized_flat_netlist = json_object_field(public_materialized, "materialized_flat_netlist");
+    let materialized_flat_netlist = json_object_field(public_materialized, "canonical_materialized_flat_netlist");
     assert!(json_bool_field(
         materialized_flat_netlist,
         "exact_operation_stream_materialized"
@@ -5869,6 +5901,17 @@ fn validate_public_engine_manifest(
     assert!(
         json_string_field(materialized_flat_netlist, "operation_stream_sha256").len() == 64,
         "materialized flat netlist operation stream digest must be bound"
+    );
+    let canonical_physical_flat_netlist =
+        json_object_field(public_materialized, "canonical_physical_flat_netlist");
+    assert!(json_bool_field(canonical_physical_flat_netlist, "pass"));
+    assert_eq!(
+        json_u64_field(canonical_physical_flat_netlist, "non_clifford_count"),
+        claim.expected_full_oracle_non_clifford
+    );
+    assert_eq!(
+        json_u64_field(canonical_physical_flat_netlist, "peak_live_qubits"),
+        claim.expected_total_logical_qubits
     );
     let operand_source_binding = json_object_field(public_materialized, "operand_source_binding");
     assert_eq!(
@@ -6094,45 +6137,37 @@ pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValue
 
     assert_eq!(claim.logical_qubit_formula.field_bits, claim.field_bits);
     assert_eq!(
-        claim.logical_qubit_formula.arithmetic_slot_count,
-        family.arithmetic_slot_count
-    );
-    assert_eq!(
-        claim.logical_qubit_formula.control_slot_count,
-        family.control_slot_count
-    );
-    assert_eq!(
-        claim.logical_qubit_formula.borrowed_interface_qubits,
-        family.borrowed_interface_qubits
-    );
-    assert_eq!(
-        claim.logical_qubit_formula.lookup_workspace_qubits,
-        family.lookup_workspace_qubits
-    );
-    assert_eq!(
-        claim.logical_qubit_formula.live_phase_bits,
-        family.live_phase_bits
-    );
-    assert_eq!(
         claim.logical_qubit_formula.arithmetic_component,
-        claim.field_bits as u64 * family.arithmetic_slot_count as u64
+        claim.field_bits as u64 * claim.logical_qubit_formula.arithmetic_slot_count as u64
     );
     assert_eq!(
         claim.logical_qubit_formula.reconstructed_total,
         claim.logical_qubit_formula.arithmetic_component
-            + family.control_slot_count as u64
-            + family.borrowed_interface_qubits as u64
-            + family.lookup_workspace_qubits as u64
-            + family.live_phase_bits as u64
-    );
-    assert_eq!(
-        claim.logical_qubit_formula.reconstructed_total,
-        family.total_logical_qubits
+            + claim.logical_qubit_formula.control_slot_count as u64
+            + claim.logical_qubit_formula.borrowed_interface_qubits as u64
+            + claim.logical_qubit_formula.lookup_workspace_qubits as u64
+            + claim.logical_qubit_formula.live_phase_bits as u64
     );
     assert_eq!(
         claim.expected_total_logical_qubits,
-        family.total_logical_qubits
+        claim.logical_qubit_formula.reconstructed_total
     );
+    if input.resource_certificate_document.document_type == "reusable_chunk_lowering" {
+        assert_ne!(claim.expected_total_logical_qubits, family.total_logical_qubits);
+    } else {
+        assert_eq!(claim.logical_qubit_formula.arithmetic_slot_count, family.arithmetic_slot_count);
+        assert_eq!(claim.logical_qubit_formula.control_slot_count, family.control_slot_count);
+        assert_eq!(
+            claim.logical_qubit_formula.borrowed_interface_qubits,
+            family.borrowed_interface_qubits
+        );
+        assert_eq!(
+            claim.logical_qubit_formula.lookup_workspace_qubits,
+            family.lookup_workspace_qubits
+        );
+        assert_eq!(claim.logical_qubit_formula.live_phase_bits, family.live_phase_bits);
+        assert_eq!(claim.expected_total_logical_qubits, family.total_logical_qubits);
+    }
 
     let modulus = parse_hex_uint(&case_corpus.field_modulus_hex);
     let mut passed_case_count = 0u32;

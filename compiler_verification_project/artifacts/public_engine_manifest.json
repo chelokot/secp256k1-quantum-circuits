@@ -21,7 +21,7 @@
     "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
     "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
     "resource_contract_engine_sha256": "0447031a514b04038ab0f51e63a0e1a5ffa187d1cab694de20d7dfc8196ea1e0",
-    "public_candidate_materialized_circuit_manifest_sha256": "f6f9940e305ca7464dd8594bd90c7ca14473c071d83be22bb4978b2f6921ee53",
+    "public_candidate_materialized_circuit_manifest_sha256": "19a14f04ff92bfa27030148542edbc09bf8ebe013dec734414f73f69bea86441",
     "qroam_table_cnot_materialization_sha256": "b783455ac10c7da613d154ada14315069926fddec5ce0a1ebd23e1cb4d8f3916"
   },
   "instruction_stream": {
@@ -459,6 +459,101 @@
       }
     ]
   },
+  "strict_public_owner_capacity_stream": {
+    "encoding": [
+      "row_index",
+      "owner_id",
+      "logical_qubits",
+      "required_peak_qubits",
+      "capacity_pass",
+      "source_interval_id"
+    ],
+    "row_count": 10,
+    "sha256": "e8baf5a0eaea45e69410dd43254e4493727e2c11c4f18080d411411b32a72af9",
+    "source": "public_candidate_materialized_circuit_manifest.strict_replayed_tail_liveness_projection.peak_interval",
+    "rows": [
+      {
+        "row_index": 0,
+        "owner_id": "control_slot_register_file",
+        "logical_qubits": 2,
+        "required_peak_qubits": 2,
+        "capacity_pass": true,
+        "source_interval_id": "strict_replayed_tail_capacity"
+      },
+      {
+        "row_index": 1,
+        "owner_id": "lookup_workspace",
+        "logical_qubits": 173,
+        "required_peak_qubits": 173,
+        "capacity_pass": true,
+        "source_interval_id": "strict_replayed_tail_capacity"
+      },
+      {
+        "row_index": 2,
+        "owner_id": "phase_shell_live_register",
+        "logical_qubits": 1,
+        "required_peak_qubits": 1,
+        "capacity_pass": true,
+        "source_interval_id": "strict_replayed_tail_capacity"
+      },
+      {
+        "row_index": 3,
+        "owner_id": "tail_reordered_slot_0",
+        "logical_qubits": 256,
+        "required_peak_qubits": 256,
+        "capacity_pass": true,
+        "source_interval_id": "strict_replayed_tail_capacity"
+      },
+      {
+        "row_index": 4,
+        "owner_id": "tail_reordered_slot_1",
+        "logical_qubits": 256,
+        "required_peak_qubits": 256,
+        "capacity_pass": true,
+        "source_interval_id": "strict_replayed_tail_capacity"
+      },
+      {
+        "row_index": 5,
+        "owner_id": "tail_reordered_slot_2",
+        "logical_qubits": 256,
+        "required_peak_qubits": 256,
+        "capacity_pass": true,
+        "source_interval_id": "strict_replayed_tail_capacity"
+      },
+      {
+        "row_index": 6,
+        "owner_id": "tail_reordered_slot_3",
+        "logical_qubits": 256,
+        "required_peak_qubits": 256,
+        "capacity_pass": true,
+        "source_interval_id": "strict_replayed_tail_capacity"
+      },
+      {
+        "row_index": 7,
+        "owner_id": "tail_reordered_slot_4",
+        "logical_qubits": 256,
+        "required_peak_qubits": 256,
+        "capacity_pass": true,
+        "source_interval_id": "strict_replayed_tail_capacity"
+      },
+      {
+        "row_index": 8,
+        "owner_id": "tail_reordered_slot_5",
+        "logical_qubits": 256,
+        "required_peak_qubits": 256,
+        "capacity_pass": true,
+        "source_interval_id": "strict_replayed_tail_capacity"
+      },
+      {
+        "row_index": 9,
+        "owner_id": "tail_reordered_slot_6",
+        "logical_qubits": 256,
+        "required_peak_qubits": 256,
+        "capacity_pass": true,
+        "source_interval_id": "strict_replayed_tail_capacity"
+      }
+    ]
+  },
   "resource_term_stream": {
     "encoding": [
       "row_index",
@@ -616,7 +711,7 @@
   "primitive_operation_evidence": {
     "public_candidate_materialized_circuit_manifest": {
       "schema": "compiler-project-public-candidate-materialized-circuit-manifest-v1",
-      "sha256": "f6f9940e305ca7464dd8594bd90c7ca14473c071d83be22bb4978b2f6921ee53",
+      "sha256": "19a14f04ff92bfa27030148542edbc09bf8ebe013dec734414f73f69bea86441",
       "pass": true,
       "operation_stream_sha256": "1b91eac3d5109522a43f3fcc09a40d91f2a83ae730581878979f127e0788588e",
       "liveness_binding_stream_sha256": "064b5825a77559fdaab046854b89afdf58e1d3da0be53ab53652bb913c87b8eb",
@@ -648,6 +743,7 @@
       },
       "canonical_physical_flat_netlist": {
         "schema": "compiler-project-canonical-physical-flat-netlist-v1",
+        "pass": true,
         "exact_virtual_operation_stream_materialized": true,
         "per_operation_rows_materialized_in_json": false,
         "operation_count": 819473943,
@@ -808,6 +904,7 @@
     "wire_rows_cover_liveness_catalog": true,
     "owner_rows_cover_capacity_catalog": true,
     "resource_terms_sum_to_public_total": true,
+    "strict_public_owner_capacity_stream_sums_to_public_qubits": true,
     "streamed_tail_equivalence_covers_required_categories": true,
     "toy_tail_semantics_cover_required_categories": true,
     "release_corpus_preflight_covers_required_categories": true,

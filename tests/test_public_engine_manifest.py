@@ -62,6 +62,12 @@ def test_public_engine_manifest_reconstructs_checked_artifact() -> None:
     assert expected['public_totals']['non_clifford'] == reusable['executable_resource_engine']['public_totals']['non_clifford']
     assert expected['public_totals']['logical_qubits'] == _load('strict_replayed_tail_headline.json')['selected_result']['logical_qubits']
     assert expected['legacy_wrapper_totals']['logical_qubits'] == reusable['executable_resource_engine']['public_totals']['logical_qubits']
+    strict_owner_rows = expected['strict_public_owner_capacity_stream']['rows']
+    strict_owner_qubits = {row['owner_id']: row['logical_qubits'] for row in strict_owner_rows}
+    assert sum(strict_owner_qubits.values()) == expected['public_totals']['logical_qubits']
+    assert strict_owner_qubits['lookup_workspace'] == 173
+    assert strict_owner_qubits['control_slot_register_file'] == 2
+    assert len([owner_id for owner_id in strict_owner_qubits if owner_id.startswith('tail_reordered_slot_')]) == 7
     assert expected['fast_no_zkp_contract']['prover_required'] is False
     assert expected['semantic_boundary_evidence']['release_corpus_preflight']['case_count'] == GOOGLE_COMPARABLE_CASE_COUNT
     assert expected['semantic_boundary_evidence']['compiler_parameters']['selected_public_family_name'] == expected['selected_family_name']

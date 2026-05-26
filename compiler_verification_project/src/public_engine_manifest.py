@@ -93,6 +93,23 @@ def _owner_rows(owner_capacity: Mapping[str, Any]) -> List[Dict[str, Any]]:
     ]
 
 
+def _strict_public_owner_rows(public_candidate_materialized_circuit_manifest: Mapping[str, Any]) -> List[Dict[str, Any]]:
+    projection = public_candidate_materialized_circuit_manifest['strict_replayed_tail_liveness_projection']
+    peak = max(projection['rows'], key=lambda row: int(row['total_live_qubits']))
+    owners = peak['derived_owner_live_qubits']
+    return [
+        {
+            'row_index': row_index,
+            'owner_id': str(owner_id),
+            'logical_qubits': int(logical_qubits),
+            'required_peak_qubits': int(logical_qubits),
+            'capacity_pass': True,
+            'source_interval_id': str(peak['interval_id']),
+        }
+        for row_index, (owner_id, logical_qubits) in enumerate(sorted(owners.items()))
+    ]
+
+
 def _resource_term_rows(counted_resource_ir: Mapping[str, Any]) -> List[Dict[str, Any]]:
     return [
         {
@@ -173,12 +190,14 @@ def build_public_engine_manifest(
     wire_rows = _wire_rows(executable_liveness['wire_catalog'])
     schedule_rows = _schedule_rows(list(executable_schedule['events']))
     owner_rows = _owner_rows(owner_capacity)
+    strict_public_owner_rows = _strict_public_owner_rows(public_candidate_materialized_circuit_manifest)
     resource_term_rows = _resource_term_rows(counted_resource_ir)
 
     instruction_columns = ['row_index', 'pc', 'op', 'reads', 'writes']
     wire_columns = ['row_index', 'wire_id', 'owner_id', 'qubits', 'role']
     schedule_columns = ['row_index', 'event_id', 'event_type', 'pc_range', 'source_instruction_pcs', 'source_instruction_ops', 'live_wire_ids']
     owner_columns = ['row_index', 'owner_id', 'logical_qubits', 'required_peak_qubits', 'capacity_pass']
+    strict_public_owner_columns = ['row_index', 'owner_id', 'logical_qubits', 'required_peak_qubits', 'capacity_pass', 'source_interval_id']
     term_columns = ['row_index', 'term_id', 'category', 'instances', 'per_instance_non_clifford', 'total_non_clifford', 'source']
 
     materialized_flat_netlist = public_candidate_materialized_circuit_manifest[LEGACY_WRAPPER_MATERIALIZED_FLAT_NETLIST]
@@ -236,6 +255,11 @@ def build_public_engine_manifest(
         'wire_rows_cover_liveness_catalog': len(wire_rows) == len(executable_liveness['wire_catalog']),
         'owner_rows_cover_capacity_catalog': len(owner_rows) == len(owner_capacity['rows']),
         'resource_terms_sum_to_public_total': sum(row['total_non_clifford'] for row in resource_term_rows) == public_totals['non_clifford'],
+        'strict_public_owner_capacity_stream_sums_to_public_qubits': (
+            sum(row['logical_qubits'] for row in strict_public_owner_rows) == public_totals['logical_qubits']
+            and all(row['capacity_pass'] is True for row in strict_public_owner_rows)
+            and all(row['logical_qubits'] == row['required_peak_qubits'] for row in strict_public_owner_rows)
+        ),
         'streamed_tail_equivalence_covers_required_categories': (
             int(streamed_equivalence_summary['pass']) == int(streamed_equivalence_summary['total'])
             and all(
@@ -400,6 +424,13 @@ def build_public_engine_manifest(
             'sha256': _stream_hash(owner_rows, owner_columns),
             'rows': owner_rows,
         },
+        'strict_public_owner_capacity_stream': {
+            'encoding': strict_public_owner_columns,
+            'row_count': len(strict_public_owner_rows),
+            'sha256': _stream_hash(strict_public_owner_rows, strict_public_owner_columns),
+            'source': 'public_candidate_materialized_circuit_manifest.strict_replayed_tail_liveness_projection.peak_interval',
+            'rows': strict_public_owner_rows,
+        },
         'resource_term_stream': {
             'encoding': term_columns,
             'row_count': len(resource_term_rows),
@@ -480,6 +511,7 @@ def build_public_engine_manifest(
                 },
                 'canonical_physical_flat_netlist': {
                     'schema': canonical_physical_flat_netlist['schema'],
+                    'pass': bool(canonical_physical_flat_netlist['pass']),
                     'exact_virtual_operation_stream_materialized': bool(canonical_physical_flat_netlist['exact_virtual_operation_stream_materialized']),
                     'per_operation_rows_materialized_in_json': bool(canonical_physical_flat_netlist['per_operation_rows_materialized_in_json']),
                     'operation_count': int(canonical_physical_flat_netlist['operation_count']),

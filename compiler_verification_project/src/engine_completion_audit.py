@@ -301,9 +301,18 @@ def build_engine_completion_audit(
         },
         {
             'name': 'single_engine_zkp_input_derivation',
-            'status': 'strict_public_totals_engine_bound_but_zkp_bundle_still_document_bundle_oriented',
-            'required_to_close': 'Have ZKP input bind the canonical engine artifact as the only authoritative resource document.',
-            'current_evidence': 'public_engine_manifest + checked attestation input bundle',
+            'status': 'canonical_public_engine_totals_guest_bound_legacy_source_documents_still_carried',
+            'required_to_close': 'Have ZKP input bind the canonical engine artifact as the only authoritative resource document, with legacy source documents reduced to recomputable witnesses or removed from the guest resource authority path.',
+            'current_evidence': 'public_engine_manifest.public_totals + public_engine_manifest.strict_public_owner_capacity_stream + checked attestation input bundle + Rust prepared guest validation',
+            'evidence_metrics': {
+                'public_engine_total_logical_qubits': int(public_engine_manifest['public_totals']['logical_qubits']),
+                'strict_public_owner_capacity_total': sum(
+                    int(row['logical_qubits'])
+                    for row in public_engine_manifest['strict_public_owner_capacity_stream']['rows']
+                ),
+                'legacy_wrapper_logical_qubits': int(public_engine_manifest['legacy_wrapper_totals']['logical_qubits']),
+                'public_engine_manifest_source': str(public_engine_manifest['public_totals']['source']),
+            },
         },
     ]
     remaining_boundary_names = {row['name'] for row in remaining_macro_boundaries}
