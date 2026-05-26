@@ -1,0 +1,214 @@
+{
+  "schema": "compiler-project-hybrid-bridge-search-v1",
+  "status": "blocked_no_promotable_hybrid_found",
+  "target": {
+    "logical_qubits_exclusive": 1600,
+    "non_clifford_exclusive": 40000000
+  },
+  "source_strict_result": {
+    "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__strict_fused_output_tail_7_slot_v1__semiclassical_qft_v1",
+    "logical_qubits": 1968,
+    "non_clifford": 36973222,
+    "field_slots": 7
+  },
+  "strict_qubit_budget_analysis": {
+    "field_bits": 256,
+    "lookup_workspace_qubits": 173,
+    "non_field_qubits": 176,
+    "max_field_slots_with_current_lookup_workspace": 5,
+    "six_slot_lookup_workspace_budget": 60,
+    "six_slot_required_lookup_workspace_reduction": 113
+  },
+  "strict_lookup_chunk_tradeoff_for_six_slots": {
+    "chunk_bits_budget": 42,
+    "chunks_per_coordinate": 7,
+    "coordinate_table_count": 3,
+    "leaf_call_count_total": 31,
+    "qroam_streams": 651,
+    "qroam_non_clifford": 42663936,
+    "base_non_clifford_without_streamed_qroam": 24783526,
+    "total_non_clifford_lower_bound": 67447462
+  },
+  "affine_boundary_obstruction": {
+    "claim": "A low-qubit affine boundary can drop the carried Z lane only by normalizing each dependent point-add result or by reintroducing projective state across calls.",
+    "secp256k1_denominator_witnesses": [
+      {
+        "accumulator_scalar": 1,
+        "lookup_scalar": 2,
+        "z3_hex": "91dd980d04d143bbaf3a44613c0494bff04757be695495005c2c04f02e28e940",
+        "z3_is_one": false,
+        "z3_is_zero": false
+      },
+      {
+        "accumulator_scalar": 3,
+        "lookup_scalar": 5,
+        "z3_hex": "5d38e9eb208eea18a269e7665462d68f9fe4ad50d01c1b23f2aaa328721a8a78",
+        "z3_is_one": false,
+        "z3_is_zero": false
+      },
+      {
+        "accumulator_scalar": 7,
+        "lookup_scalar": 11,
+        "z3_hex": "ce5ba060be9bba2404d1661f7d29a9ce5791a70d5d52354a8a7c159df5864e53",
+        "z3_is_one": false,
+        "z3_is_zero": false
+      },
+      {
+        "accumulator_scalar": 13,
+        "lookup_scalar": 17,
+        "z3_hex": "824cc5742d2acd72c78e8294f7391323b273ed2c7df1d0a438c2961508b31e4b",
+        "z3_is_one": false,
+        "z3_is_zero": false
+      },
+      {
+        "accumulator_scalar": 1,
+        "lookup_scalar": 115792089237316195423570985008687907852837564279074904382605163141518161494336,
+        "case": "inverse_pair",
+        "z3_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+        "z3_is_one": false,
+        "z3_is_zero": true
+      }
+    ],
+    "denominator_varies": true,
+    "inverse_pair_reaches_infinity": true,
+    "sequential_dependency": "Batch inversion across retained point additions requires carrying projective X/Y/Z state between additions; otherwise the next affine add has no normalized accumulator input."
+  },
+  "periodic_normalization_search": {
+    "retained_addition_count": 31,
+    "rows": [
+      {
+        "normalization_period_retained_additions": 1,
+        "logical_qubits_lower_bound": 1447,
+        "non_clifford_reference": 81105024,
+        "status": "affine_every_step_fits_qubits_not_gates",
+        "fits_logical_qubit_limit": true,
+        "fits_non_clifford_limit": false,
+        "blocker": "one field inverse per dependent retained addition keeps the non-Clifford count above the target"
+      },
+      {
+        "normalization_period_retained_additions": 2,
+        "logical_qubits_lower_bound": 1968,
+        "non_clifford_reference": 36973222,
+        "status": "projective_state_required_between_normalizations",
+        "fits_logical_qubit_limit": false,
+        "fits_non_clifford_limit": true,
+        "blocker": "any period greater than one must carry projective X/Y/Z state across at least one dependent addition before normalization, so the peak inherits the strict projective register footprint before inverse workspace is added"
+      },
+      {
+        "normalization_period_retained_additions": 4,
+        "logical_qubits_lower_bound": 1968,
+        "non_clifford_reference": 36973222,
+        "status": "projective_state_required_between_normalizations",
+        "fits_logical_qubit_limit": false,
+        "fits_non_clifford_limit": true,
+        "blocker": "any period greater than one must carry projective X/Y/Z state across at least one dependent addition before normalization, so the peak inherits the strict projective register footprint before inverse workspace is added"
+      },
+      {
+        "normalization_period_retained_additions": 7,
+        "logical_qubits_lower_bound": 1968,
+        "non_clifford_reference": 36973222,
+        "status": "projective_state_required_between_normalizations",
+        "fits_logical_qubit_limit": false,
+        "fits_non_clifford_limit": true,
+        "blocker": "any period greater than one must carry projective X/Y/Z state across at least one dependent addition before normalization, so the peak inherits the strict projective register footprint before inverse workspace is added"
+      },
+      {
+        "normalization_period_retained_additions": 14,
+        "logical_qubits_lower_bound": 1968,
+        "non_clifford_reference": 36973222,
+        "status": "projective_state_required_between_normalizations",
+        "fits_logical_qubit_limit": false,
+        "fits_non_clifford_limit": true,
+        "blocker": "any period greater than one must carry projective X/Y/Z state across at least one dependent addition before normalization, so the peak inherits the strict projective register footprint before inverse workspace is added"
+      },
+      {
+        "normalization_period_retained_additions": 28,
+        "logical_qubits_lower_bound": 1968,
+        "non_clifford_reference": 36973222,
+        "status": "projective_state_required_between_normalizations",
+        "fits_logical_qubit_limit": false,
+        "fits_non_clifford_limit": true,
+        "blocker": "any period greater than one must carry projective X/Y/Z state across at least one dependent addition before normalization, so the peak inherits the strict projective register footprint before inverse workspace is added"
+      }
+    ],
+    "result": "no row fits both the logical-qubit and non-Clifford target under the current proven primitive inventory"
+  },
+  "corrected_public_envelope": {
+    "source": "downloaded supporting_data.zip low_qubit_circuit.json arithmetic check",
+    "claimed_point_add_logical_qubits": 1175,
+    "listed_register_qubits": 1431,
+    "missing_field_lane_qubits": 256,
+    "corrected_ecdlp_logical_qubits_with_window_key": 1447,
+    "claimed_ecdlp_non_clifford": 81105024,
+    "fits_logical_qubit_limit": true,
+    "fits_non_clifford_limit": false
+  },
+  "candidate_rows": [
+    {
+      "name": "current_strict_projective_seven_slot",
+      "logical_qubits": 1968,
+      "non_clifford": 36973222,
+      "field_slots": 7,
+      "status": "proven_current_strict_baseline",
+      "fits_logical_qubit_limit": false,
+      "fits_non_clifford_limit": true,
+      "blocker": "qubit_count_above_target"
+    },
+    {
+      "name": "projective_six_slot_with_current_lookup_workspace",
+      "logical_qubits": 1712,
+      "non_clifford": 36973222,
+      "field_slots": 6,
+      "status": "numeric_projection_only_not_lowered",
+      "fits_logical_qubit_limit": false,
+      "fits_non_clifford_limit": true,
+      "blocker": "six field slots still exceed the qubit target with the strict reusable QROAM workspace"
+    },
+    {
+      "name": "projective_six_slot_with_lookup_workspace_reduced_to_fit",
+      "logical_qubits": 1599,
+      "non_clifford": 67447462,
+      "field_slots": 6,
+      "status": "derived_lower_bound_fails_gate_budget",
+      "fits_logical_qubit_limit": true,
+      "fits_non_clifford_limit": false,
+      "blocker": "forcing lookup workspace below the six-slot qubit budget requires enough QROAM chunk streams to exceed the non-Clifford target"
+    },
+    {
+      "name": "projective_five_slot_no_inverse_core",
+      "logical_qubits": 1456,
+      "non_clifford": 36973222,
+      "field_slots": 5,
+      "status": "only_numeric_target_that_would_fit_current_lookup_and_gate_budget",
+      "fits_logical_qubit_limit": true,
+      "fits_non_clifford_limit": true,
+      "blocker": "no executable five-field-slot no-inverse projective schedule or primitive lowering is known"
+    },
+    {
+      "name": "corrected_affine_inversion_public_envelope",
+      "logical_qubits": 1447,
+      "non_clifford": 81105024,
+      "status": "corrected_external_envelope_not_primitive_proven",
+      "fits_logical_qubit_limit": true,
+      "fits_non_clifford_limit": false,
+      "blocker": "normalizing the accumulator to affine after every dependent point addition pays an inverse-heavy gate budget"
+    }
+  ],
+  "next_required_breakthrough": {
+    "primary": "executable five-field-slot no-inverse projective core under the strict lookup workspace",
+    "secondary": "new standard-QROM lookup/workspace construction that keeps six projective slots under the qubit target without pushing non-Clifford above the gate target",
+    "not_enough": "affine boundary alone; it fits qubits only by paying inverse-heavy non-Clifford cost"
+  },
+  "checks": {
+    "current_strict_baseline_fits_gate_not_qubits": true,
+    "current_lookup_workspace_allows_at_most_five_field_slots_under_target": true,
+    "six_slot_current_lookup_fails_qubit_target": true,
+    "six_slot_reduced_lookup_fails_non_clifford_target": true,
+    "corrected_affine_line_fits_qubits_not_gates": true,
+    "periodic_normalization_has_no_target_fitting_row": true,
+    "affine_projective_denominator_is_not_constant": true,
+    "affine_inverse_pair_denominator_reaches_zero": true,
+    "only_numeric_survivor_requires_unproven_five_slot_no_inverse_core": true
+  },
+  "pass": true
+}

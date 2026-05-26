@@ -63,6 +63,7 @@ from tail_macro_reversibility import build_tail_macro_reversibility
 from tail_macro_schedule_search import build_tail_macro_schedule_search
 from headline_opcode_coverage import build_headline_opcode_coverage
 from headline_resource_manifest import HEADLINE_RESOURCE_MANIFEST_SCHEMA, build_headline_resource_manifest
+from hybrid_bridge_search import HYBRID_BRIDGE_SEARCH_SCHEMA, build_hybrid_bridge_search
 from project import (
     FIELD_BITS,
     FOLDED_MAG_BITS,
@@ -206,6 +207,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'headline_opcode_coverage': artifact_root / 'headline_opcode_coverage.json',
         'public_headline_result': artifact_root / 'public_headline_result.json',
         'strict_replayed_tail_headline': artifact_root / 'strict_replayed_tail_headline.json',
+        'hybrid_bridge_search': artifact_root / 'hybrid_bridge_search.json',
         'zkp_attestation_reusable_chunk_candidate_input': artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json',
         'zkp_attestation_reusable_chunk_candidate_public_values': artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_public_values.json',
         'build_summary': artifact_root / 'build_summary.json',
@@ -227,6 +229,13 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         from strict_replayed_tail_result import write_strict_replayed_tail_headline_result
 
         write_strict_replayed_tail_headline_result(baseline=PUBLIC_GOOGLE_BASELINE)
+        dump_json(
+            artifact_root / 'hybrid_bridge_search.json',
+            build_hybrid_bridge_search(
+                strict_replayed_tail_headline=load_json(artifact_root / 'strict_replayed_tail_headline.json'),
+                reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
+            ),
+        )
         dump_json(
             artifact_root / 'proof_environment_contract.json',
             build_proof_environment_contract(repo_root=repo_root),
@@ -2807,6 +2816,30 @@ def build_strict_replayed_tail_headline_checks(artifacts: Mapping[str, Any]) -> 
     return _summarize_checks(checks)
 
 
+def build_hybrid_bridge_search_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    observed = artifacts['hybrid_bridge_search']
+    expected = build_hybrid_bridge_search(
+        strict_replayed_tail_headline=artifacts['strict_replayed_tail_headline'],
+        reusable_chunk_lowering=artifacts['reusable_chunk_lowering'],
+    )
+    corrected_affine = observed['corrected_public_envelope']
+    strict_budget = observed['strict_qubit_budget_analysis']
+    lookup_tradeoff = observed['strict_lookup_chunk_tradeoff_for_six_slots']
+    periodic_rows = observed['periodic_normalization_search']['rows']
+    five_slot = next(row for row in observed['candidate_rows'] if row['name'] == 'projective_five_slot_no_inverse_core')
+    checks = [
+        _check('hybrid_bridge_search_matches_generator', observed == expected, expected, observed),
+        _check('hybrid_bridge_search_schema_is_current', observed['schema'] == HYBRID_BRIDGE_SEARCH_SCHEMA, HYBRID_BRIDGE_SEARCH_SCHEMA, observed['schema']),
+        _check('hybrid_bridge_search_pass_flag_matches_internal_checks', observed['pass'] == all(observed['checks'].values()), all(observed['checks'].values()), {'pass': observed['pass'], 'checks': observed['checks']}),
+        _check('hybrid_bridge_search_corrects_public_envelope_free_lane', corrected_affine['listed_register_qubits'] - corrected_affine['claimed_point_add_logical_qubits'] == corrected_affine['missing_field_lane_qubits'] == 256 and corrected_affine['corrected_ecdlp_logical_qubits_with_window_key'] == 1447, 'one 256-bit lane must be counted', corrected_affine),
+        _check('hybrid_bridge_search_shows_current_lookup_budget_allows_only_five_slots', strict_budget['max_field_slots_with_current_lookup_workspace'] == 5 and strict_budget['six_slot_required_lookup_workspace_reduction'] > 0, 'strict lookup workspace leaves room for at most five field slots under 1600', strict_budget),
+        _check('hybrid_bridge_search_reduced_lookup_six_slot_fails_gate_target', lookup_tradeoff['total_non_clifford_lower_bound'] >= observed['target']['non_clifford_exclusive'] and observed['checks']['six_slot_reduced_lookup_fails_non_clifford_target'] is True, 'six-slot lookup squeeze exceeds non-Clifford target', lookup_tradeoff),
+        _check('hybrid_bridge_search_periodic_normalization_has_no_survivor', not any(row['fits_logical_qubit_limit'] and row['fits_non_clifford_limit'] for row in periodic_rows) and observed['checks']['periodic_normalization_has_no_target_fitting_row'] is True, 'no periodic normalization row fits both targets', periodic_rows),
+        _check('hybrid_bridge_search_only_survivor_is_unproven_five_slot_core', five_slot['fits_logical_qubit_limit'] is True and five_slot['fits_non_clifford_limit'] is True and five_slot['status'] == 'only_numeric_target_that_would_fit_current_lookup_and_gate_budget', 'five-slot no-inverse projective core remains the required breakthrough', five_slot),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_cain_transfer_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     expected = build_cain_transfer_payload(artifacts['family_frontier'])
     checks = [
@@ -3120,6 +3153,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'release_corpus_preflight_checks': lambda: build_release_corpus_preflight_checks(artifacts),
         'public_headline_result_checks': lambda: build_public_headline_result_checks(artifacts, repo_root),
         'strict_replayed_tail_headline_checks': lambda: build_strict_replayed_tail_headline_checks(artifacts),
+        'hybrid_bridge_search_checks': lambda: build_hybrid_bridge_search_checks(artifacts),
         'cain_transfer_checks': lambda: build_cain_transfer_checks(artifacts),
         'azure_seed_checks': lambda: build_azure_seed_checks(artifacts),
         'physical_estimator_target_checks': lambda: build_physical_estimator_target_checks(artifacts),

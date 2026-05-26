@@ -24,6 +24,7 @@ from constant_provenance import build_constant_provenance  # noqa: E402
 from engine_completion_audit import build_engine_completion_audit  # noqa: E402
 from headline_opcode_coverage import build_headline_opcode_coverage  # noqa: E402
 from headline_resource_manifest import build_headline_resource_manifest  # noqa: E402
+from hybrid_bridge_search import build_hybrid_bridge_search  # noqa: E402
 from materialized_circuit import build_materialized_family_manifest, build_public_candidate_materialized_circuit_manifest  # noqa: E402
 from project import FIELD_BITS, build_all_artifacts, build_resource_stack_artifacts, full_attack_inventory, write_cain_transfer  # noqa: E402
 from public_result import write_public_headline_result  # noqa: E402
@@ -64,6 +65,7 @@ BUILD_TARGETS = (
     'release-candidate-zkp',
     'public-headline',
     'strict-replayed-tail-headline',
+    'hybrid-bridge-search',
     'zkp-and-public',
     'resource-zkp-and-public',
 )
@@ -105,6 +107,17 @@ def build_public_headline() -> None:
 def build_strict_replayed_tail_headline() -> None:
     write_strict_replayed_tail_headline_result(
         baseline=load_public_google_baseline_lines(),
+    )
+
+
+def build_hybrid_bridge_search_artifact() -> None:
+    artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
+    dump_json(
+        artifact_dir / 'hybrid_bridge_search.json',
+        build_hybrid_bridge_search(
+            strict_replayed_tail_headline=load_json(artifact_dir / 'strict_replayed_tail_headline.json'),
+            reusable_chunk_lowering=load_json(artifact_dir / 'reusable_chunk_lowering.json'),
+        ),
     )
 
 
@@ -488,6 +501,9 @@ def main() -> None:
     if args.target in ('all', 'public-headline', 'strict-replayed-tail-headline', 'zkp-and-public', 'resource-zkp-and-public'):
         build_strict_replayed_tail_headline()
         payload['strict_replayed_tail_headline'] = 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json'
+    if args.target in ('all', 'hybrid-bridge-search', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
+        build_hybrid_bridge_search_artifact()
+        payload['hybrid_bridge_search'] = 'compiler_verification_project/artifacts/hybrid_bridge_search.json'
     if args.target in ('all', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
         build_proof_environment_contract_artifact()
         payload['proof_environment_contract'] = 'compiler_verification_project/artifacts/proof_environment_contract.json'
@@ -518,6 +534,7 @@ def main() -> None:
         'reusable_chunk_lowering': payload.get('reusable_chunk_lowering'),
         'public_headline_result': payload.get('public_headline_result'),
         'strict_replayed_tail_headline': payload.get('strict_replayed_tail_headline'),
+        'hybrid_bridge_search': payload.get('hybrid_bridge_search'),
         'zkp_attestation_input': 'compiler_verification_project/artifacts/zkp_attestation_input.json' if 'zkp_attestation' in payload else None,
         'zkp_attestation_reusable_chunk_candidate_input': payload.get('zkp_attestation_reusable_chunk_candidate'),
         'zkp_attestation_release_candidate_input': payload.get('zkp_attestation_release_candidate'),
