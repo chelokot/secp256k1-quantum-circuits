@@ -17,21 +17,33 @@ class IBMRoadmapContextTests(unittest.TestCase):
         cls.headline = json.loads(
             (REPO_ROOT / 'compiler_verification_project' / 'artifacts' / 'strict_replayed_tail_headline.json').read_text()
         )
+        cls.baseline_status = json.loads(
+            (REPO_ROOT / 'compiler_verification_project' / 'artifacts' / 'current_baseline_status.json').read_text()
+        )
         cls.readme = (REPO_ROOT / 'README.md').read_text()
         cls.reference_note = (REPO_ROOT / 'docs' / 'references' / 'IBM_QUANTUM_ROADMAP_CONTEXT.md').read_text()
 
     def test_ibm_context_uses_checked_strict_replayed_tail_headline(self):
         selected = self.headline['selected_result']
         repo_headline = self.context['repo_headline_used_for_comparison']
+        guard_corrected = self.context['repo_guard_corrected_no_alias_consequence']
         self.assertEqual(repo_headline['non_clifford'], selected['non_clifford'])
         self.assertEqual(repo_headline['logical_qubits'], selected['logical_qubits'])
+        self.assertEqual(repo_headline['status'], 'current_strict_candidate_not_accepted_physical_baseline')
+        self.assertEqual(
+            guard_corrected['logical_qubits'],
+            self.baseline_status['guard_corrected_no_alias_candidate']['logical_qubits'],
+        )
+        self.assertEqual(guard_corrected['status'], 'not_promoted')
 
     def test_roadmap_milestone_arithmetic_is_derived_from_artifact_values(self):
         milestones = self.context['roadmap_milestones']
         derived = self.context['derived_comparison']
         repo_headline = self.context['repo_headline_used_for_comparison']
+        guard_corrected = self.context['repo_guard_corrected_no_alias_consequence']
         non_clifford = repo_headline['non_clifford']
         logical_qubits = repo_headline['logical_qubits']
+        guard_corrected_logical_qubits = guard_corrected['logical_qubits']
 
         starling = milestones['starling_2029']
         blue_jay = milestones['blue_jay_2033_plus']
@@ -57,6 +69,14 @@ class IBMRoadmapContextTests(unittest.TestCase):
             derived['blue_jay_logical_qubit_headroom_vs_repo'],
             blue_jay['logical_qubits'] - logical_qubits,
         )
+        self.assertEqual(
+            derived['starling_logical_qubit_shortfall_vs_guard_corrected_no_alias'],
+            guard_corrected_logical_qubits - starling['logical_qubits'],
+        )
+        self.assertEqual(
+            derived['blue_jay_logical_qubit_shortfall_vs_guard_corrected_no_alias'],
+            guard_corrected_logical_qubits - blue_jay['logical_qubits'],
+        )
 
     def test_docs_preserve_favorable_but_bounded_ibm_claim(self):
         selected = self.headline['selected_result']
@@ -65,6 +85,7 @@ class IBMRoadmapContextTests(unittest.TestCase):
         for text in [self.readme, self.reference_note]:
             self.assertIn(non_clifford, text)
             self.assertIn(logical_qubits, text)
+            self.assertIn('2,222', text)
             self.assertIn('Starling', text)
             self.assertIn('Blue Jay', text)
             self.assertRegex(text, r'not (as )?a claim|not claimed')

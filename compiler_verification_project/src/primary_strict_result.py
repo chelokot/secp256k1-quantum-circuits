@@ -10,7 +10,7 @@ from typing import Any, Dict, Mapping
 from public_engine_contract import (
     STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH,
     STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED,
-    STRICT_RESOURCE_HEADLINE_CURRENT_PRIMARY,
+    STRICT_RESOURCE_HEADLINE_STRICT_CANDIDATE,
 )
 
 
@@ -52,7 +52,7 @@ def build_primary_strict_result(
     strict_logical_qubits = int(selected['logical_qubits'])
     checks = {
         'strict_headline_passes': strict_replayed_tail_headline['pass'] is True,
-        'strict_headline_is_current_primary_resource_result': strict_replayed_tail_headline['status'] == 'primary_strict_replayed_tail_headline',
+        'strict_headline_is_current_strict_engine_candidate': strict_replayed_tail_headline['status'] == 'primary_strict_replayed_tail_headline',
         'strict_headline_totals_match_hybrid_search_current_row': strict_non_clifford == int(hybrid_current['non_clifford']) and strict_logical_qubits == int(hybrid_current['logical_qubits']),
         'strict_headline_fits_current_gate_goal': strict_non_clifford < int(hybrid_bridge_search['target']['non_clifford_exclusive']),
         'strict_headline_does_not_fit_current_qubit_goal': strict_logical_qubits >= int(hybrid_bridge_search['target']['logical_qubits_exclusive']),
@@ -87,12 +87,12 @@ def build_primary_strict_result(
     }
     payload = {
         'schema': PRIMARY_STRICT_RESULT_SCHEMA,
-        'role': 'single current public resource headline',
-        'status': 'primary_strict_result_with_explicit_unclosed_flattening_and_zkp_boundaries',
+        'role': 'strict replayed-tail engine candidate, not repo physical baseline',
+        'status': 'strict_candidate_with_explicit_unclosed_flattening_and_zkp_boundaries',
         'selected_result': dict(selected),
         'source_artifact': STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH,
         'resource_claim_level': {
-            'strict_resource_headline': STRICT_RESOURCE_HEADLINE_CURRENT_PRIMARY,
+            'strict_resource_headline': STRICT_RESOURCE_HEADLINE_STRICT_CANDIDATE,
             'clifford_complete_flat_netlist': STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED,
             'zkp_binds_this_strict_result': STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED,
         },
@@ -143,7 +143,7 @@ def build_primary_strict_result(
         'remaining_completion_requirements': [
             'replace the strict liveness projection overlay and legacy companion stream with one canonical executable flat IR that directly emits the strict liveness rows',
             'keep the ZKP candidate input and guest bound to public_engine_manifest as the strict resource authority',
-            'keep public presentation generated from this artifact or from strict_replayed_tail_headline.json, never from hand-copied headline numbers',
+            'keep repo presentation generated from current_baseline_status.json plus strict_replayed_tail_headline.json, never from hand-copied headline numbers',
         ],
         'source_digests': {
             'strict_replayed_tail_headline_sha256': _sha256_payload(strict_replayed_tail_headline),

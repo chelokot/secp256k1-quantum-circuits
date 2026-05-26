@@ -1,7 +1,7 @@
 {
   "schema": "compiler-project-primary-strict-result-v1",
-  "role": "single current public resource headline",
-  "status": "primary_strict_result_with_explicit_unclosed_flattening_and_zkp_boundaries",
+  "role": "strict replayed-tail engine candidate, not repo physical baseline",
+  "status": "strict_candidate_with_explicit_unclosed_flattening_and_zkp_boundaries",
   "selected_result": {
     "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__strict_fused_output_tail_7_slot_v1__semiclassical_qft_v1",
     "non_clifford": 36973222,
@@ -15,7 +15,7 @@
   },
   "source_artifact": "compiler_verification_project/artifacts/strict_replayed_tail_headline.json",
   "resource_claim_level": {
-    "strict_resource_headline": "current_primary",
+    "strict_resource_headline": "strict_candidate_not_repo_baseline",
     "clifford_complete_flat_netlist": "not_yet_achieved",
     "zkp_binds_this_strict_result": "not_yet_achieved"
   },
@@ -43,7 +43,7 @@
   },
   "legacy_wrapper_reference": {
     "path": "compiler_verification_project/artifacts/public_headline_result.json",
-    "sha256": "89dcab6ba7c195e4ce44fee01c1079e8195512cd0ade7bf0b01b4237cc2dbafb",
+    "sha256": "972ededd6dc3bb8ff74bea783e22c64c90e94003d8df5ea3d29818f868c62dd2",
     "selected_result": {
       "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
       "non_clifford": 36973222,
@@ -82,18 +82,18 @@
   "remaining_completion_requirements": [
     "replace the strict liveness projection overlay and legacy companion stream with one canonical executable flat IR that directly emits the strict liveness rows",
     "keep the ZKP candidate input and guest bound to public_engine_manifest as the strict resource authority",
-    "keep public presentation generated from this artifact or from strict_replayed_tail_headline.json, never from hand-copied headline numbers"
+    "keep repo presentation generated from current_baseline_status.json plus strict_replayed_tail_headline.json, never from hand-copied headline numbers"
   ],
   "source_digests": {
     "strict_replayed_tail_headline_sha256": "04536688a7f4b54f521f9284f8bc11f9498d3e5e0f416c3f2fd255a40fea03bd",
-    "public_headline_result_sha256": "89dcab6ba7c195e4ce44fee01c1079e8195512cd0ade7bf0b01b4237cc2dbafb",
-    "engine_completion_audit_sha256": "5a7497fb1b8fd5140a33ce8ae91e337fb15a9f3eae9b43bb234375b760e62e50",
+    "public_headline_result_sha256": "972ededd6dc3bb8ff74bea783e22c64c90e94003d8df5ea3d29818f868c62dd2",
+    "engine_completion_audit_sha256": "e1a9311807e1a9422e9389884aa8c015f30f4a150b478a3c8fcd268bdbb1fb90",
     "public_candidate_materialized_circuit_manifest_sha256": "84cbfedf654cd2b373e8abda64222649d468fe05b52b8da6b403102e410b049c",
     "hybrid_bridge_search_sha256": "f4938cd63465eedff6b0ed58a462084ac41099c0da7b3e2ff8297b794edd3ef3"
   },
   "checks": {
     "strict_headline_passes": true,
-    "strict_headline_is_current_primary_resource_result": true,
+    "strict_headline_is_current_strict_engine_candidate": true,
     "strict_headline_totals_match_hybrid_search_current_row": true,
     "strict_headline_fits_current_gate_goal": true,
     "strict_headline_does_not_fit_current_qubit_goal": true,

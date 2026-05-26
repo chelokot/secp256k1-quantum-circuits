@@ -26,21 +26,32 @@ which implementation gaps remain open.
 - unpromoted semantic six-slot tail candidate in `tail_macro_engine.json`,
   using `(I,F) -> (M,N)` and `(E,K) -> (X3,Z3)` pair transforms with checked
   determinant/replay evidence
+- repo-wide baseline gate in `current_baseline_status.json`, which keeps the
+  `36,973,222 / 1,968` strict candidate and the `36,973,222 / 2,222`
+  guard-corrected hardening target out of accepted physical-baseline status
+  until every primitive-stream and liveness blocker is closed
 
 The main open directions are therefore:
 
-1. primitive resource lowering for the six-slot variable 2x2 in-place output matrix
-2. Clifford-complete arithmetic and lookup micro-expansion below the shipped generated compiler-family operation inventories
-3. external equivalence checking below the named arithmetic, lookup, and phase-shell blocks
-4. flatter end-to-end Shor fragments with external equivalence checking
+1. promote the guard-corrected `2,222` capacity into the same scheduled
+   primitive liveness model or prove a concrete alias/no-ancilla guard
+   construction
+2. replace the remaining synthetic modular-arithmetic scratch rows with a
+   physical compute-consume-cleanup primitive stream
+3. primitive resource lowering for the six-slot variable 2x2 in-place output matrix
+4. Clifford-complete arithmetic and lookup micro-expansion below the shipped generated compiler-family operation inventories
+5. external equivalence checking below the named arithmetic, lookup, and phase-shell blocks
+6. flatter end-to-end Shor fragments with external equivalence checking
 
 ## What would be overclaim
 
 It would be inaccurate to describe the repository as already having:
 
 - a Clifford-complete primitive-gate full-oracle implementation,
-- a standard-QROM primitive-circuit realization with lower cost than the checked
-  `36,973,222 / 1,968` guarded strict replayed-tail public headline,
+- an accepted Clifford-complete physical baseline at either `36,973,222 /
+  1,968` or `36,973,222 / 2,222`,
+- a standard-QROM primitive-circuit realization with lower cost than the
+  conservative `36,973,222 / 2,222` hardening target,
 - a primitive-gate cleanup proof,
 - a fully flattened Shor circuit,
 - a globally optimal primitive-gate total.

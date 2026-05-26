@@ -73,7 +73,8 @@ What it does ship is:
 - `public_candidate_materialized_circuit_manifest.json` — no-ZKP public-candidate primitive-stream manifest binding the reusable-chunk headline to deterministic base, QROAM-segment, phase-shell rows, concrete operand wires, liveness/owner bindings, and a full materialized flat-netlist digest derived by scanning every emitted primitive operation
 - `public_engine_manifest.json` — no-ZKP public engine manifest deriving public totals from the public-candidate `materialized_flat_netlist`, then binding executable instruction/wire/schedule/owner/resource-term streams, the flat execution probe, compiler parameters, semantic-boundary evidence, and primitive-operation evidence from arithmetic operation IR, QROAM primitive certificate, and phase-shell lowering; this artifact no longer consumes the ZKP input
 - `engine_completion_audit.json` — no-ZKP completion/status audit generated from the materialized public engine artifacts; it passes only when public totals, source bindings, QROAM costs, owner/liveness probes, modular arithmetic IR generation, the seven-slot tail reversible field-schedule contract, semantic boundary evidence, and canonical-engine ZKP authority are coherent, and it keeps `clifford_complete_goal_achieved` false while the modular Clifford expansion boundary remains explicit
-- `strict_replayed_tail_headline.json` — primary strict headline artifact deriving the public resource presentation from the fused-output seven-slot tail replay, generated owner-capacity rows, and standard-QROAM reusable-chunk lookup resource; it demotes the four-slot macro/ZKP wrapper to a non-primary reference
+- `strict_replayed_tail_headline.json` — strict replayed-tail candidate artifact deriving the seven-slot resource presentation from the fused-output tail replay, generated owner-capacity rows, and standard-QROAM reusable-chunk lookup resource; it demotes the four-slot macro/ZKP wrapper to a non-primary reference
+- `current_baseline_status.json` — repo-wide acceptance gate and conservative hardening target; it records no accepted Clifford-complete physical baseline yet and makes `36,973,222 / 2,222` the default presentation target until the gate closes
 - `artifact_digest_tree.json` — chunked SHA-256/Merkle manifest for tracked large artifacts, generated from the checked tree so reviewers can verify large JSON/CSV/proof blobs by chunks rather than by one opaque file hash
 - `proof_environment_contract.json` — checked proof-environment contract binding required tools, no-prover edit-loop gates, publication freshness gates, direct compressed/Groth16 verifier commands, public-headline artifact digests, and curated proof-manifest records
 - `proof_publication_status.json` — checked publication-readiness artifact derived from the shared proof-status engine; it keeps `publication_ready` separate from resource-contract `pass`, records stale systems/blockers, and binds the public headline, proof manifest, and proof-environment contract
@@ -110,9 +111,17 @@ What it does ship is:
 
 ## Current central boundary result
 
-- **primary strict replayed-tail headline:** `36,973,222 non-Clifford`, `1,968 logical qubits`
+- **accepted Clifford-complete physical baseline:** none yet
+- **conservative hardening target:** `36,973,222 non-Clifford`, `2,222 logical qubits`
+- **strict replayed-tail engine candidate:** `36,973,222 non-Clifford`, `1,968 logical qubits`
 
-The primary strict headline is selected in
+The conservative hardening target is selected by
+`compiler_verification_project/artifacts/current_baseline_status.json` from the
+guard-corrected no-alias consequence. It is the number this repository should
+show by default while the physical-baseline gate is closed, but it is not an
+accepted baseline and not a fresh compressed/Groth16 proof claim.
+
+The strict replayed-tail candidate is selected in
 `compiler_verification_project/artifacts/strict_replayed_tail_headline.json`.
 It uses a reusable-chunk standard QROAMClean `K = 1` lookup boundary, an exact
 semiclassical-QFT phase shell, and the fused-output seven-slot executable tail
@@ -120,6 +129,17 @@ schedule replayed by `tail_macro_engine.json`. The resulting live-qubit formula
 is:
 
 `7 * 256 + 173 lookup workspace + 2 control/guard + 1 phase = 1,968 logical qubits`
+
+The conservative hardening-target formula is:
+
+`1,968 strict candidate qubits + 254 clean-ladder guard qubits = 2,222 logical qubits`
+
+This is still a candidate layer, not an accepted Clifford-complete physical
+baseline. `current_baseline_status.json` is the promotion authority. Its
+`accepted_baseline_gate` currently blocks both the `1,968` strict candidate and
+the `2,222` guard-corrected no-alias consequence until guard capacity, modular
+accumulator cleanup, synthetic scratch ownership, and publication gates are all
+closed in the same primitive stream.
 
 The seven-slot schedule is not a free-output shortcut: `tail_macro_engine.json`
 rejects the old unguarded `Y3` over `N` reuse with a concrete secp256k1
@@ -271,7 +291,7 @@ macro-wrapper proof bundle lives in
 and must be rebuilt before it can bind the current reusable-chunk macro result
 with `8 / 8` deterministic public cases. The current reusable-chunk candidate
 input and Rust guest bind `public_engine_manifest.json` as the strict resource
-authority for the guarded replayed-tail `36,973,222 / 1,968` headline, but the
+authority for the guarded replayed-tail `36,973,222 / 1,968` candidate, but the
 checked compressed and Groth16 proof fixtures remain stale until rebuilt
 against that input.
 

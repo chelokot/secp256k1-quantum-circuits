@@ -15,6 +15,7 @@ PUBLIC_ENGINE_RESOURCE_SUMMARY_SOURCE = 'public_engine_manifest.public_totals'
 
 STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH = 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json'
 STRICT_RESOURCE_HEADLINE_CURRENT_PRIMARY = 'current_primary'
+STRICT_RESOURCE_HEADLINE_STRICT_CANDIDATE = 'strict_candidate_not_repo_baseline'
 STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED = 'not_yet_achieved'
 
 PUBLIC_TOTALS_DERIVE_FROM_CANONICAL_CHECK = 'public_totals_derive_from_canonical_materialized_flat_netlist'
@@ -37,4 +38,5 @@ __all__ = [
     'STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH',
     'STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED',
     'STRICT_RESOURCE_HEADLINE_CURRENT_PRIMARY',
+    'STRICT_RESOURCE_HEADLINE_STRICT_CANDIDATE',
 ]

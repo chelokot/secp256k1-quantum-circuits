@@ -133,20 +133,29 @@
     }
   },
   "repo_headline_used_for_comparison": {
+    "status": "current_strict_candidate_not_accepted_physical_baseline",
     "non_clifford": 36973222,
     "logical_qubits": 1968,
     "source": "compiler_verification_project/artifacts/strict_replayed_tail_headline.json"
+  },
+  "repo_guard_corrected_no_alias_consequence": {
+    "status": "not_promoted",
+    "non_clifford": 36973222,
+    "logical_qubits": 2222,
+    "source": "compiler_verification_project/artifacts/current_baseline_status.json"
   },
   "derived_comparison": {
     "starling_gate_scale_ratio_vs_repo_non_clifford": 2.704660145658931,
     "starling_logical_qubit_shortfall_vs_repo": 1768,
     "blue_jay_gate_scale_ratio_vs_repo_non_clifford": 27.04660145658931,
-    "blue_jay_logical_qubit_headroom_vs_repo": 32
+    "blue_jay_logical_qubit_headroom_vs_repo": 32,
+    "starling_logical_qubit_shortfall_vs_guard_corrected_no_alias": 2022,
+    "blue_jay_logical_qubit_shortfall_vs_guard_corrected_no_alias": 222
   },
   "claims": [
     "Current IBM processors are relevant as roadmap and software-stack context, not as machines that can run this secp256k1 circuit.",
-    "Starling is a strong gate-scale reference point because its 100-million-gate target is above this repository's non-Clifford count, but its 200 logical qubits are below the current logical-qubit requirement.",
-    "Blue Jay is the first named IBM roadmap target with natural logical-qubit headroom for this repository's current strict secp256k1 resource estimate.",
+    "Starling is a strong gate-scale reference point because its 100-million-gate target is above this repository's non-Clifford count, but its 200 logical qubits are below either current candidate qubit scale.",
+    "Blue Jay is the first named IBM roadmap target close to this repository's current strict secp256k1 resource candidate scale.",
     "IBM's roadmap is unusually useful for cryptographic-risk interpretation because it publishes logical-qubit and gate-scale milestones rather than only physical-qubit counts."
   ],
   "non_claims": [

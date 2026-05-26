@@ -2,6 +2,14 @@
 
 Date: 2026-05-14
 
+> [!WARNING]
+> This is a historical adversarial report, not the current release authority.
+> The current repo authority is
+> `compiler_verification_project/artifacts/current_baseline_status.json`: it
+> records no accepted Clifford-complete physical baseline yet. The `1,968`
+> replayed-tail number is a strict candidate, while `2,222` is the conservative
+> guard-corrected hardening target under review.
+
 Reviewed commit: `4d9fefed41ca0f6b5cf6528ce8366065fc6d557a`
 
 Headline under review:
@@ -18,7 +26,8 @@ Historical macro/ZKP wrapper reviewed before the guarded replayed-tail promotion
   `folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1`
 - no longer selected as the current public headline
 
-Current primary strict replayed-tail headline on this branch:
+Current strict replayed-tail candidate on this branch, not accepted as a
+Clifford-complete physical baseline:
 
 - `36,973,222` non-Clifford
 - `1,968` logical qubits
@@ -28,6 +37,8 @@ Current primary strict replayed-tail headline on this branch:
   non-infinity toy boundary pairs, 610 lookup-infinity no-op pairs, generated
   seven-slot owner capacity, and a strict materialized flat-netlist stream
   whose segment hashes include the projected `1,968`-qubit liveness
+- blocked from accepted-baseline status by
+  `compiler_verification_project/artifacts/current_baseline_status.json`
 
 This document is intentionally adversarial. It is not a release note and not a
 claim that the result is false. It records every major place where an external
@@ -54,9 +65,11 @@ leaf-sigma rows.
 The strongest defensible statement is:
 
 > The repository currently contains a checked standard-QROM compiler-family
-> boundary whose primary strict resource headline is the replayed-tail
-> `36,973,222 / 1,968` artifact, including a strict materialized flat-netlist
-> commitment with the projected `1,968`-qubit liveness in its segment hashes.
+> boundary whose strict replayed-tail candidate is the `36,973,222 / 1,968`
+> artifact, including a strict materialized flat-netlist commitment with the
+> projected `1,968`-qubit liveness in its segment hashes. The current
+> conservative presentation target is `36,973,222 / 2,222`, and it is also not
+> accepted as a Clifford-complete physical baseline.
 > The older `36,957,412 / 1,199` artifact is now only a macro/ZKP wrapper
 > reference whose claim/leaf/family/case/resource document hashes are recomputed
 > inside the active ZKP guest. The ZKP guest and public values must be rebuilt
@@ -69,9 +82,11 @@ the macro wrapper to `36,957,412 / 1,199` after adding explicit modular-reductio
 cost for field multiplication and canonical modular add/sub correction costs,
 stronger ZKP resource binding, in-guest committed-document hash binding, and
 the reusable-chunk four-slot candidate proof bundle with explicit freshness
-checks. The current primary strict presentation then demotes that macro wrapper
-and counts the replayed fused-output seven-slot tail instead, giving
-`36,973,222 / 1,968`.
+checks. The current strict candidate presentation then demotes that macro
+wrapper and counts the replayed fused-output seven-slot tail instead, giving
+`36,973,222 / 1,968`; `current_baseline_status.json` keeps both that candidate
+and the guard-corrected `36,973,222 / 2,222` consequence out of accepted
+physical-baseline status.
 
 The statement that is not yet defensible without more engineering is:
 
@@ -91,7 +106,7 @@ resource semantics and macro boundaries.
 | --- | --- | --- | --- | --- |
 | ZK-1 | P0 reviewed-state; remediated on current branch | Reviewed SP1 prepared path did not recompute sidecar hashes; current path now recomputes committed claim/leaf/family/case/resource hashes in guest | This used to let public values carry hash labels trusted from the input builder; current tests reject stale digest labels and mutated committed payloads | Keep full committed documents in the guest input and keep negative digest/payload tests |
 | ZK-2 | P0 | ZKP executes high-level field/macro semantics, not primitive QROAM/arithmetic lowerings | The proof checks point-add behavior for prepared cases, but not that the resource-counted primitive circuit implements that behavior | Feed the same resource IR into the guest or prove a separate lowering certificate |
-| RES-1 | P0 partially mitigated | The public reusable-chunk leaf now traces the counted `qchunk` scratch lane, and the primary headline counts the replayed fused-output seven-slot tail instead of the old four-slot macro tail | The `1,968` qubit result removes the old tail-slot fantasy from the public headline, the ZKP input binds the canonical public engine manifest, local modular streams are bound to public arithmetic engine rows, `modular_execution_trace.json` schedules the tail into modular sub-operations with slot/liveness ownership, `scheduled_modular_primitive_netlist.json` scans the strict public leaf into `1,270,134` primitive rows, and the public engine binds a global splice over the grouped arithmetic+QROAM rows | Make the ZKP guest and exported full physical stream consume that spliced global physical boundary directly |
+| RES-1 | P0 partially mitigated | The public reusable-chunk leaf now traces the counted `qchunk` scratch lane, and the strict candidate counts the replayed fused-output seven-slot tail instead of the old four-slot macro tail | The `1,968` qubit result removes the old tail-slot fantasy from the strict candidate layer, the ZKP input binds the canonical public engine manifest, local modular streams are bound to public arithmetic engine rows, `modular_execution_trace.json` schedules the tail into modular sub-operations with slot/liveness ownership, `scheduled_modular_primitive_netlist.json` scans the strict public leaf into `1,270,134` primitive rows, and the public engine binds a global splice over the grouped arithmetic+QROAM rows | Make the ZKP guest and exported full physical stream consume that spliced global physical boundary directly |
 | RES-2 | P0 partially mitigated | Modular field arithmetic costs are now digest-bound operation streams, but still not a generated modular circuit | Rust semantics applies `% p`; arithmetic lowering counts abstract add/sub/mul kernels whose modular-reduction completeness must still be trusted below the compact operation IR | Generate modular add/sub/mul circuits including reduction and count them |
 | RES-3 | P0 materially improved; still below physical-layout FT schedule | The public reusable-chunk resource ledger now has a guest-checked contract engine and a materialized flat primitive stream over counted IR, executable liveness, owner capacity, QROAM target/chunk wires, arithmetic rows, lookup rows, and phase rows | It now catches counted/executable liveness drift, owner-capacity underprovisioning, and missing full-stream materialization, but the deepest arithmetic macro semantics are still certified by generated IR/certificates rather than a routed physical FT schedule | Keep reducing the remaining macro boundary by lowering modular arithmetic certificates into the same flat primitive stream |
 | ZK-3 | P1 remediated for out-of-line proof binding | Checked compressed fixture JSON keeps `proof: null` while binary proof is separate | Large compressed proof bytes remain out-of-line, but fixtures now bind proof/verifier-key path, size, digest, and curated proof-manifest records | Keep `proof_status.py` manifest cross-checks and fixture metadata tests in the release gate |
@@ -252,7 +267,7 @@ Current additional diagnostic:
   unguarded `Y3` over `N` reuse with a concrete secp256k1 `M == 0` witness and
   exposes the selected zero-lifted in-place `Y3` over `C` field permutation,
   including the counted `L == 0` guard and cost reconstruction. It is now the
-  primary strict resource headline, while the ZKP guest/input still needs to be
+  strict replayed-tail candidate, while the ZKP guest/input still needs to be
   kept bound to the canonical public engine manifest and regenerated when the
   checked artifacts change.
 - `compiler_verification_project/artifacts/tail_macro_schedule_search.json`
@@ -1878,8 +1893,10 @@ Avoid:
 Use:
 
 > Under the repository's checked standard-QROM compiler-family boundary, the
-> current primary strict artifacts define a `36,973,222` non-Clifford / `1,968`
-> logical-qubit result; the older `1,199` artifact is only a macro/ZKP wrapper.
+> current strict candidate artifacts define a `36,973,222` non-Clifford /
+> `1,968` logical-qubit candidate; the conservative hardening target is
+> `36,973,222 / 2,222`, and neither number is accepted as a Clifford-complete
+> physical baseline. The older `1,199` artifact is only a macro/ZKP wrapper.
 > `proof_status.py --require-all-current` is the release gate for checked SP1
 > compressed/Groth16 proof freshness. This improves the cited public Google
 > 2026 non-Clifford lines numerically, but no longer beats Google's published
@@ -1896,7 +1913,10 @@ resource model fixes the previous lookup/QROAM accounting failures. But the
 credible external claim is still narrower than the most excited internal
 phrasing:
 
-- strong: checked standard-QROM compiler-family boundary at `36,973,222 / 1,968`
+- strong: checked standard-QROM compiler-family candidate boundary at
+  `36,973,222 / 1,968`, plus a conservative `36,973,222 / 2,222` hardening
+  target under the current baseline gate
+- not yet strong enough: accepted Clifford-complete physical baseline
 - not yet strong enough: Google-equivalent proof confidence
 - not yet strong enough: fully flattened primitive-gate Shor circuit
 - most urgent engineering gap: allocate modular arithmetic into the same global
@@ -2094,14 +2114,17 @@ Partially mitigated after review:
   binds and executes `complete_a0_reusable_chunk_tail`, commits
   `reusable_chunk_lowering.json`, recomputes the executable-liveness peak from
   the certificate's interval rows, rejects failing liveness checks, and returns
-  strict public-engine claim `36,973,222 / 1,968`. The candidate directory also contains
+  strict public-engine candidate `36,973,222 / 1,968`. The candidate directory also contains
   checked core, compressed, and Groth16 fixtures, the compressed proof bundle,
   the Groth16 proof bundle, the wrap proof bundle, and the matching Groth16
   verifier key. After the modular-arithmetic certificate was bound into the
   reusable-chunk resource document, `proof_status.py` correctly marks those
   proof layers stale until the final compressed/Groth16 rebuild is run.
 - `compiler_verification_project/artifacts/primary_strict_result.json` selects
-  `36,973,222 / 1,968` as the single current public resource headline.
+  `36,973,222 / 1,968` as the strict replayed-tail engine candidate, not as an
+  accepted physical baseline. `current_baseline_status.json` derives
+  `36,973,222 / 2,222` as the conservative guard-corrected hardening target and
+  keeps the accepted-baseline gate closed.
   `compiler_verification_project/artifacts/public_headline_result.json` remains
   the legacy macro/ZKP publication-wrapper reference. It records the checked
   proof files, verifier key, input/public-value hashes, exact comparison ratios

@@ -1,0 +1,148 @@
+{
+  "schema": "compiler-project-current-baseline-status-v1",
+  "status": "no_accepted_clifford_complete_physical_baseline",
+  "scope": "single repo authority for whether any checked resource number is accepted as the Clifford-complete physical baseline",
+  "source_digests": {
+    "strict_replayed_tail_headline_sha256": "04536688a7f4b54f521f9284f8bc11f9498d3e5e0f416c3f2fd255a40fea03bd",
+    "public_headline_result_sha256": "972ededd6dc3bb8ff74bea783e22c64c90e94003d8df5ea3d29818f868c62dd2",
+    "primary_strict_result_sha256": "d00cd2655fd22d6ae9a4305a40f33695e863c224d007b9fb88eb8112775615a9",
+    "engine_completion_audit_sha256": "e1a9311807e1a9422e9389884aa8c015f30f4a150b478a3c8fcd268bdbb1fb90",
+    "zero_lift_guard_resource_audit_sha256": "ed2aa2ab7e17621077d86d3f75198a5d2357f41883865d47a0a057ba862207c6",
+    "modular_accumulator_source_uncompute_sha256": "7730f2a321508ee066b7a788252d9599656a0d5f518b5bcb5d1484a27e6f4de8"
+  },
+  "accepted_physical_baseline": null,
+  "current_strict_candidate": {
+    "status": "not_accepted_as_physical_baseline",
+    "reason": "strict replayed-tail count still depends on unpromoted modular arithmetic and guard-capacity boundaries",
+    "non_clifford": 36973222,
+    "logical_qubits": 1968,
+    "source_artifact": "compiler_verification_project/artifacts/strict_replayed_tail_headline.json"
+  },
+  "guard_corrected_no_alias_candidate": {
+    "status": "guard_corrected_no_alias_total_not_promoted",
+    "reason": "counts the clean-ladder zero-lift guard workspace if no aliasing/no-ancilla proof exists, but the corrected owner model is not yet promoted into the global primitive stream",
+    "non_clifford": 36973222,
+    "logical_qubits": 2222,
+    "derivation": {
+      "strict_candidate_logical_qubits": 1968,
+      "zero_lift_guard_current_logical_qubits": 1,
+      "zero_lift_guard_clean_ladder_logical_qubits": 255,
+      "additional_logical_qubits_if_no_aliasing_proof": 254,
+      "reconstructed_logical_qubits": 2222
+    }
+  },
+  "conservative_hardening_target": {
+    "status": "repo_presentation_target_not_accepted_physical_baseline",
+    "source": "guard_corrected_no_alias_candidate",
+    "reason": "use the guard-corrected no-alias total as the conservative repo-wide hardening target while the accepted physical baseline gate is closed",
+    "non_clifford": 36973222,
+    "logical_qubits": 2222,
+    "derivation": {
+      "strict_replayed_tail_candidate_logical_qubits": 1968,
+      "additional_clean_ladder_guard_qubits": 254,
+      "reconstructed_logical_qubits": 2222
+    },
+    "not_claimed": [
+      "not an accepted Clifford-complete physical baseline",
+      "not a fresh compressed/Groth16 proof claim",
+      "not a sub-1600 optimization result"
+    ]
+  },
+  "accepted_baseline_gate": {
+    "status": "blocked",
+    "decision": "do_not_promote_any_resource_number_to_accepted_physical_baseline",
+    "candidate_under_review": "guard_corrected_no_alias_candidate",
+    "candidate_under_review_logical_qubits": 2222,
+    "candidate_under_review_non_clifford": 36973222,
+    "policy": "accepted_physical_baseline may be populated only when every gate row passes and the accepted totals are recomputed from that same primitive stream",
+    "rows": [
+      {
+        "name": "single_authoritative_primitive_stream",
+        "status": "blocked",
+        "pass": false,
+        "evidence": "engine_completion_audit.clifford_complete_goal_achieved",
+        "required_to_close": "Make the global flat primitive stream the only source for execution, liveness, owner capacity, and resource totals."
+      },
+      {
+        "name": "guard_corrected_no_alias_capacity_promoted_into_liveness",
+        "status": "blocked",
+        "pass": false,
+        "evidence": "zero_lift_guard_resource_audit.promotion_status",
+        "required_to_close": "Promote the zero-lift guard capacity into the scheduled primitive liveness owner model or prove a concrete alias/no-ancilla predicate construction."
+      },
+      {
+        "name": "modular_accumulator_source_uncompute_promoted",
+        "status": "blocked",
+        "pass": false,
+        "evidence": "modular_accumulator_source_uncompute.promotion_status",
+        "required_to_close": "Promote consume/fold/source-uncompute rows into the same scheduled primitive netlist used for the public peak calculation."
+      },
+      {
+        "name": "no_abandoned_synthetic_arithmetic_scratch",
+        "status": "blocked",
+        "pass": false,
+        "evidence": "engine_completion_audit.remaining_macro_boundaries[0].evidence_metrics.synthetic_arithmetic_scratch_abandoned_garbage",
+        "required_to_close": "Replace synthetic modular-arithmetic scratch observations with concrete primitive wires, owners, liveness, and cleanup."
+      },
+      {
+        "name": "publication_gate_allows_resource_headline",
+        "status": "blocked",
+        "pass": false,
+        "evidence": "public_headline_result.pass + publication_blockers",
+        "required_to_close": "Clear public-headline publication blockers before any accepted baseline is advertised outside the candidate layer."
+      }
+    ]
+  },
+  "remaining_physical_baseline_blockers": [
+    {
+      "name": "zero_lift_guard_capacity_not_promoted",
+      "status": "zero_lift_guard_capacity_gap_not_promoted_to_public_contract",
+      "minimum_clean_ladder_logical_qubits": 255,
+      "missing_logical_qubits_under_clean_ladder": 254
+    },
+    {
+      "name": "modular_accumulator_source_uncompute_not_promoted",
+      "status": "source_uncompute_contract_not_promoted_to_scheduled_primitive_netlist",
+      "partial_product_cleanup_ccx_proven": 720896,
+      "guard_cleanup_ccx_missing_source_controls": 510
+    },
+    {
+      "name": "modular_arithmetic_clifford_expansion_not_flattened",
+      "status": "modular_arithmetic_clifford_expansion",
+      "engine_clifford_complete_goal_achieved": false
+    }
+  ],
+  "publication_policy": {
+    "may_publish_resource_headline_as_physical_baseline": false,
+    "default_docs_resource_target_before_acceptance": "conservative_hardening_target",
+    "default_docs_logical_qubits_before_acceptance": 2222,
+    "default_docs_non_clifford_before_acceptance": 36973222,
+    "forbidden_presentations_until_gate_closes": [
+      "do not present 1199, 1044, or 1968 logical qubits as the accepted physical baseline",
+      "do not present 2222 logical qubits as accepted; present it only as the conservative hardening target under review",
+      "do not run or advertise proof freshness until the cheap artifact gates and proof_status gates pass"
+    ],
+    "required_to_publish": [
+      "Promote zero-lift guard capacity into the scheduled primitive liveness owner model or prove an executable alias/no-ancilla construction.",
+      "Promote modular accumulator consume/fold/source-uncompute rows into the global scheduled primitive netlist.",
+      "Recompute public totals from the same primitive stream used by tests and ZKP input.",
+      "Only then rebuild proof inputs and proof bundles if a ZKP-backed release claim is desired."
+    ]
+  },
+  "checks": {
+    "strict_replayed_tail_artifact_passes": true,
+    "primary_strict_result_binds_strict_replayed_tail": true,
+    "public_headline_result_blocks_publication": true,
+    "engine_completion_blocks_clifford_complete_claim": true,
+    "zero_lift_guard_audit_passes": true,
+    "guard_corrected_total_is_derived_not_literal": true,
+    "guard_corrected_total_is_not_promoted": true,
+    "modular_accumulator_source_uncompute_not_promoted": true,
+    "partial_product_cleanup_proven_but_guard_cleanup_unproven": true,
+    "acceptance_gate_blocks_guard_corrected_total_until_every_required_gate_passes": true,
+    "no_accepted_physical_baseline_until_all_blockers_close": true,
+    "hardening_target_uses_guard_corrected_total_not_lower_strict_candidate": true,
+    "presentation_policy_uses_hardening_target_without_accepting_it": true
+  },
+  "pass": true
+}

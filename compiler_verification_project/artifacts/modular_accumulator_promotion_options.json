@@ -2,7 +2,7 @@
   "schema": "compiler-project-modular-accumulator-promotion-options-v1",
   "definition": "Promotion-options audit for replacing synthetic modular-accumulator scratch with a physical reversible primitive schedule. The artifact rejects placeholder scratch, forward-only carry-save, local one-bit witnesses, and local two-bit witnesses under the current headline; source-uncompute or streaming multiply-add remains the required next construction, not a promoted result.",
   "source_digests": {
-    "primary_strict_result_sha256": "6fdc386939b2072f0d7b7c85bfe2ce935a455a981bf9eab6cdb6697c389109a3",
+    "primary_strict_result_sha256": "27e64ebeee87e55bc2f7461b86f14bd677f5f4212993a0f8f4326f65d8a1dcf5",
     "modular_primitive_wire_audit_sha256": "2b26e94fcf9f531d2f8bd0ae3962082bac179102402ffe8350213615bc0777d2",
     "modular_accumulator_full_adder_liveness_sha256": "00178724340eb38bd9c546da8a0566afd9ff0d414c2220c313dd5f8f94cf8187",
     "modular_accumulator_full_adder_reversibility_sha256": "7d5bd3438736a551abe8a053a96484f4469799b1562d6990ff454f4e84b1e003"

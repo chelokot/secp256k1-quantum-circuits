@@ -43,7 +43,10 @@ hypothesis note.
    hashed input documents, a deterministic public point-add corpus, checked
    core/compressed/Groth16 fixtures, and a repo-contained Groth16 verifier
    bundle.
-4. Lower-exact implementation ideas are isolated in
+4. `education/` is a personal interactive web course for learning the quantum,
+   elliptic-curve, netlist, liveness, and resource-contract ideas behind this
+   project from first principles.
+5. Lower-exact implementation ideas are isolated in
    `docs/research/MODELED_IMPLEMENTATION_HYPOTHESES.md` and are not used for
    top-level claims, tests, or headline comparisons.
 
@@ -64,34 +67,60 @@ exact layer below the ISA boundary. Its checked-in central whole-oracle result
 is:
 
 <!-- BEGIN GENERATED: strict-replayed-tail-headline -->
-- **primary strict replayed-tail headline:** `36,973,222 non-Clifford`, `1,968 logical qubits`
-- **logical-qubit formula:** `7 * 256 + 173 + 2 + 1 = 1,968`
-- **vs Google low-qubit line:** `2.4342x` lower non-Clifford, `+768` logical qubits
-- **vs Google low-gate line:** `1.8933x` lower non-Clifford, `+518` logical qubits
+- **accepted Clifford-complete physical baseline:** `none yet`
+- **conservative hardening target:** `36,973,222 non-Clifford`, `2,222 logical qubits` (`not accepted; gate blocked`)
+- **strict replayed-tail engine candidate:** `36,973,222 non-Clifford`, `1,968 logical qubits` (`guard capacity not promoted`)
+- **strict-candidate formula:** `7 * 256 + 173 + 2 + 1 = 1,968`
+- **hardening-target formula:** `1,968 + 254 = 2,222`
+- **hardening target vs Google low-qubit line:** `2.4342x` lower non-Clifford, `+1,022` logical qubits
+- **hardening target vs Google low-gate line:** `1.8933x` lower non-Clifford, `+772` logical qubits
 <!-- END GENERATED: strict-replayed-tail-headline -->
 
-Those numbers are exact for the chosen compiler family, not a claim of global
-optimality or a Clifford-complete full-Shor netlist. The primary public resource
-headline is selected in
-`compiler_verification_project/artifacts/public_headline_result.json` and
+The status block is generated from checked artifacts. The repository currently
+has no accepted Clifford-complete physical baseline: `1,968` is the strict
+replayed-tail candidate, while `2,222` is the conservative guard-corrected
+no-alias consequence of replacing the one-qubit zero-lift guard owner with the
+standard 255-qubit clean ladder. Until the acceptance gate closes, repo-facing
+presentation should use `36,973,222 / 2,222` as the conservative hardening
+target, not as an accepted baseline and not as a sub-1600 result. Neither
+number is promoted as the final physical baseline until the guard capacity and
+modular accumulator boundaries are in the same executable primitive liveness
+model. The release authority for that decision is
+`compiler_verification_project/artifacts/current_baseline_status.json`.
+That artifact also carries the machine-readable acceptance gate for the next
+baseline promotion. Today every gate row is blocked: there is no single
+Clifford-complete primitive stream, the guard-corrected `2,222` capacity is not
+promoted into global liveness, modular accumulator source-uncompute is not
+promoted into the scheduled primitive netlist, synthetic arithmetic scratch is
+still present, and the public-headline publication gate is closed.
+
+The strict candidate is exact for the chosen compiler-family boundary, not a
+claim of global optimality or a Clifford-complete full-Shor netlist. The current
+strict resource candidate is selected in
 `compiler_verification_project/artifacts/primary_strict_result.json`, which
-point to the replayed-tail source artifact
+points to the replayed-tail source artifact
 `compiler_verification_project/artifacts/strict_replayed_tail_headline.json`.
+`compiler_verification_project/artifacts/public_headline_result.json` remains a
+publication-gated wrapper and must not be read as approving a physical baseline
+while its pass flag is false.
 It combines the standard QROAMClean `K = 1` reusable-chunk lookup resource with
 the fused-output seven-slot tail schedule replayed by
 `compiler_verification_project/artifacts/tail_macro_engine.json`. The counted
 lookup workspace includes folded-control qubits plus one live 155-bit QROAM
 chunk target and no free full-coordinate lookup lane. The strict count also
 includes the one extra guard qubit and 510 non-Clifford operations per tail
-needed for the zero-lifted in-place `Y3` register reuse. The old four-slot
+needed for the zero-lifted in-place `Y3` register reuse; the guard-capacity
+audit now records that this one-qubit owner is insufficient for a standard
+clean-ladder predicate unless an executable alias/no-ancilla construction is
+proved. The old four-slot
 macro contract remains a ZKP/publication wrapper reference under
 `public_headline_result.json.legacy_wrapper_reference` and in
 `headline_resource_manifest.json`; it is not the selected resource headline. The older
 `34,925,796 / 1,044` three-slot family remains checked as a reference boundary,
 not as the promoted public claim.
 
-Against Google's published 2026 secp256k1 baseline, the public standard-QROAM
-result is:
+Against Google's published 2026 secp256k1 baseline, the current strict
+standard-QROAM candidate, not yet an accepted physical baseline, is:
 
 - **2.4342x** lower in non-Clifford cost than the public low-qubit line
 - **1.8933x** lower in non-Clifford cost than the public low-gate line
@@ -150,14 +179,15 @@ materialized primitive stream: every emitted operation has concrete operand
 wires, parent-wire bindings, liveness interval, and owner-qubit total. The
 checked stream carries a full-stream SHA-256 plus segment Merkle root. It also
 records a strict replayed-tail capacity overlay that binds the flat operation
-stream's non-Clifford count to the `1,968`-qubit seven-slot capacity result.
+stream's non-Clifford count to the `1,968`-qubit seven-slot candidate.
 The same manifest now emits a strict liveness projection over every run-length
 row: arithmetic-tail rows scan to the `1,968` peak, while non-tail rows keep the
 materialized engine liveness. It also emits a separate strict materialized
 flat-netlist commitment whose segment hashes include the projected liveness and
-scan to the same `36,973,222 / 1,968` result. That strict materialized stream is
-the canonical public-engine source for current resource totals; the remaining
-open engine step is to flatten the modular arithmetic expansion underneath it.
+scan to the same `36,973,222 / 1,968` candidate. That strict materialized stream
+is the canonical public-engine source for current candidate totals; the
+remaining open engine steps are to promote the corrected guard capacity and
+flatten the modular arithmetic expansion underneath it.
 Segment
 and preview rows bind the contributing run-length rows, operation-index ranges,
 liveness rows, derived owner-qubit sums, all 186 QROAM streams over the
@@ -192,12 +222,13 @@ checks 610 lookup-infinity no-op boundary pairs, and derives a seven-slot
 owner-capacity ledger. The artifact also rejects the old unguarded `Y3` over
 `N` reuse with a concrete secp256k1 `M == 0` witness, then proves the selected
 zero-lifted in-place `Y3` over `C` field permutation with an explicit counted
-`L == 0` guard. That seven-slot replayed-tail result is now the primary strict
-headline in `strict_replayed_tail_headline.json`, and
+`L == 0` guard. That seven-slot replayed-tail result is now the current strict
+candidate in `strict_replayed_tail_headline.json`, and
 `engine_completion_audit.json` treats the tail field schedule as covered by the
-generated reversible contract. The remaining engine gap is the modular
-arithmetic Clifford expansion boundary; proof fixtures still need a final
-compressed/Groth16 rebuild after cheap artifacts settle.
+generated reversible contract. The remaining physical-baseline gaps are the
+zero-lift guard capacity promotion and the modular arithmetic Clifford
+expansion boundary; proof fixtures should only be rebuilt after those cheap
+artifacts settle.
 
 `tail_macro_engine.json` now also carries an unpromoted semantic six-slot
 candidate. It combines `(I,F) -> (M,N)` as an in-place sum/difference pair and
@@ -320,15 +351,16 @@ language rather than only in physical-qubit counts. That makes IBM's roadmap
 especially useful for reading this repository's logical result as an
 engineering-scale signal, not just as an abstract asymptotic risk.
 
-The current strict replayed-tail headline here is **36,973,222 non-Clifford
-operations** and **1,968 logical qubits**. IBM's public roadmap frames Starling as a 2029
-fault-tolerant system with **200 logical qubits** and **100 million gates**,
-and Blue Jay as a 2033+ class system with about **2,000 logical qubits** and
-**1 billion gates**. Starling is therefore already in the right gate-scale
-conversation, but below this repository's current logical-qubit requirement.
-Blue Jay is the first named IBM target with natural logical-qubit headroom for
-this strict replayed-tail count, with 32 logical qubits above the current
-headline.
+The current strict replayed-tail candidate here is **36,973,222 non-Clifford
+operations** and **1,968 logical qubits**, while the guard-corrected no-alias
+consequence is **2,222 logical qubits** and is not promoted. IBM's public
+roadmap frames Starling as a 2029 fault-tolerant system with **200 logical
+qubits** and **100 million gates**, and Blue Jay as a 2033+ class system with
+about **2,000 logical qubits** and **1 billion gates**. Starling is therefore
+already in the right gate-scale conversation, but below this repository's
+current candidate qubit scale. Blue Jay is the first named IBM target close to
+the current strict candidate scale; a promoted guard-corrected no-alias baseline
+would require more than 2,000 logical qubits.
 
 The favorable, bounded interpretation is: if IBM delivers the post-Starling
 logical-qubit and gate-scale targets it has publicly described, secp256k1 ECDLP
@@ -391,10 +423,11 @@ Use `build.py --target resource-zkp-and-public` for the normal reusable-chunk
 resource edit loop: it refreshes `reusable_chunk_lowering.json`,
 `public_engine_manifest.json`, the candidate ZKP input bundle, and the public
 headline JSON without rebuilding every compiler artifact. It also refreshes
-`strict_replayed_tail_headline.json`, the primary strict resource presentation
-artifact. Use `compiler_verification_project/scripts/update_readme_headline.py`
-after that build to rewrite the generated README headline block from the strict
-artifact, or pass `--check` in CI/review. Use
+`strict_replayed_tail_headline.json` and `current_baseline_status.json`, which
+together drive the conservative `2,222` hardening-target presentation. Use
+`compiler_verification_project/scripts/update_readme_headline.py` after that
+build to rewrite the generated README headline block from those checked
+artifacts, or pass `--check` in CI/review. Use
 `build.py --target public-engine-manifest` after changing only the no-ZKP public
 engine manifest layer. Use `build.py --target engine-completion-audit` after
 changing only the no-ZKP completion/status layer that classifies covered engine

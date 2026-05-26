@@ -27,39 +27,54 @@ The repository's exact comparison layer is generated from:
 - `compiler_verification_project/artifacts/primary_strict_result.json`
 - `compiler_verification_project/artifacts/strict_replayed_tail_headline.json`
 - `compiler_verification_project/artifacts/public_headline_result.json`
+- `compiler_verification_project/artifacts/current_baseline_status.json`
 - `compiler_verification_project/artifacts/family_frontier.json`
 - `compiler_verification_project/artifacts/standard_qrom_lookup_assessment.json`
 - `compiler_verification_project/artifacts/logical_resource_ledger.json`
 
-Its checked primary strict headline is one standard-QROAM reusable-chunk family
-with the fused-output seven-slot tail:
+The checked current strict candidate is one standard-QROAM reusable-chunk family
+with the fused-output seven-slot tail, but it is not accepted as a
+Clifford-complete physical baseline:
 
-- **primary strict replayed-tail headline:** `36,973,222 non-Clifford / 1,968 q`
+- **current strict replayed-tail candidate:** `36,973,222 non-Clifford / 1,968 q`
+- **conservative hardening target:** `36,973,222 non-Clifford / 2,222 q`
+- **accepted physical baseline:** none yet
 
 The primary strict result selects the strict replayed-tail artifact and records
-that the legacy macro/ZKP wrapper is not the current resource headline. The
+that the legacy macro/ZKP wrapper is not the current strict candidate. The
 strict replayed-tail artifact records the seven-slot owner-capacity replay,
 the counted zero-lift guard for the in-place `Y3` over `C` reuse, the demoted
-macro-contract reference, and the exact ratios below. The old four-slot macro
+macro-contract reference, and the exact ratios below. The current baseline
+status artifact records that the one-qubit guard owner is not enough for the
+standard clean-ladder predicate unless a concrete alias/no-ancilla construction
+is promoted, keeps both `1,968` and `2,222` out of accepted-baseline status
+until the modular arithmetic primitive boundary is closed, and makes `2,222`
+the default conservative presentation target while that gate is closed. The old four-slot macro
 contract remains checked as a ZKP/publication-wrapper reference, but it is not
-the primary strict headline.
+the current strict candidate.
 The older `34,925,796 / 1,044` three-slot family remains checked as a reference
-boundary, but it is not the single public headline.
+boundary, but it is not an accepted physical baseline.
 
 ## Exact non-Clifford comparison
 
-For the **primary strict replayed-tail headline**:
+For the **conservative hardening target** and the lower strict candidate, the
+non-Clifford count is the same:
 
 - **2.4342x** lower non-Clifford than the public low-qubit line
 - **1.8933x** lower non-Clifford than the public low-gate line
 
 ## Exact qubit comparison
 
-The public headline does not beat Google's published qubit lines under the
-strict replayed-tail count:
+Neither current repo-facing number beats Google's published qubit lines. The
+default conservative presentation target is `2,222 q`:
 
-- the primary strict replayed-tail headline is **768 qubits above** the public low-qubit line
-- the primary strict replayed-tail headline is **518 qubits above** the public low-gate line
+- the current strict replayed-tail candidate is **768 qubits above** the public low-qubit line
+- the current strict replayed-tail candidate is **518 qubits above** the public low-gate line
+- the conservative hardening target is **1,022 qubits
+above** the public low-qubit line and **772 qubits above** the public low-gate
+line
+
+The hardening target is a blocker-derived consequence, not an accepted baseline.
 
 The generated QROAMClean tradeoff ledger also records that, in the current
 standard-QROAM family, the lowest-qubit point below `24M` non-Clifford is

@@ -20,6 +20,7 @@ def test_build_targets_include_no_prover_release_candidate() -> None:
     assert 'public-engine-manifest' in MODULE.BUILD_TARGETS
     assert 'engine-completion-audit' in MODULE.BUILD_TARGETS
     assert 'engine-completion-audit-current' in MODULE.BUILD_TARGETS
+    assert 'current-baseline-status' in MODULE.BUILD_TARGETS
 
 
 def test_release_candidate_zkp_uses_release_profile(monkeypatch: Any) -> None:

@@ -21,6 +21,7 @@ from artifact_digest_tree import build_artifact_digest_tree  # noqa: E402
 from artifact_registry import BUILD_SUMMARY_ARTIFACT_PATHS, BUILD_SUMMARY_SCHEMA  # noqa: E402
 from arithmetic_operation_ir import build_arithmetic_operation_ir  # noqa: E402
 from constant_provenance import build_constant_provenance  # noqa: E402
+from current_baseline_status import build_current_baseline_status  # noqa: E402
 from engine_completion_audit import build_engine_completion_audit  # noqa: E402
 from headline_opcode_coverage import build_headline_opcode_coverage  # noqa: E402
 from headline_resource_manifest import build_headline_resource_manifest  # noqa: E402
@@ -89,6 +90,7 @@ BUILD_TARGETS = (
     'modular-accumulator-promotion-options',
     'modular-accumulator-source-uncompute',
     'zero-lift-guard-resource-audit',
+    'current-baseline-status',
     'headline-resource-manifest',
     'public-engine-manifest',
     'engine-completion-audit',
@@ -641,6 +643,21 @@ def build_zero_lift_guard_resource_audit_artifact() -> None:
     )
 
 
+def build_current_baseline_status_artifact() -> None:
+    artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
+    dump_json(
+        artifact_dir / 'current_baseline_status.json',
+        build_current_baseline_status(
+            strict_replayed_tail_headline=load_json(artifact_dir / 'strict_replayed_tail_headline.json'),
+            public_headline_result=load_json(artifact_dir / 'public_headline_result.json'),
+            primary_strict_result=load_json(artifact_dir / 'primary_strict_result.json'),
+            engine_completion_audit=load_json(artifact_dir / 'engine_completion_audit.json'),
+            zero_lift_guard_resource_audit=load_json(artifact_dir / 'zero_lift_guard_resource_audit.json'),
+            modular_accumulator_source_uncompute=load_json(artifact_dir / 'modular_accumulator_source_uncompute.json'),
+        ),
+    )
+
+
 def build_headline_resource_manifest_artifact() -> None:
     artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
     compiler_parameters = load_json(artifact_dir / 'compiler_parameters.json')
@@ -730,6 +747,7 @@ def build_summary_artifact() -> None:
             'public_headline_result_artifact': 'compiler_verification_project/artifacts/public_headline_result.json',
             'strict_replayed_tail_headline_artifact': 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json',
             'primary_strict_result_artifact': 'compiler_verification_project/artifacts/primary_strict_result.json',
+            'current_baseline_status_artifact': 'compiler_verification_project/artifacts/current_baseline_status.json',
         },
         'notes': [
             'Targeted build-summary refresh: artifact paths and headline references are read from checked registry and frontier artifacts.',
@@ -991,6 +1009,9 @@ def main() -> None:
     if args.target in ('zero-lift-guard-resource-audit',):
         build_zero_lift_guard_resource_audit_artifact()
         payload['zero_lift_guard_resource_audit'] = 'compiler_verification_project/artifacts/zero_lift_guard_resource_audit.json'
+    if args.target in ('current-baseline-status',):
+        build_current_baseline_status_artifact()
+        payload['current_baseline_status'] = 'compiler_verification_project/artifacts/current_baseline_status.json'
     if args.target in ('all', 'public-headline', 'strict-replayed-tail-headline', 'zkp-and-public', 'resource-zkp-and-public'):
         build_strict_replayed_tail_headline()
         payload['strict_replayed_tail_headline'] = 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json'
@@ -1003,6 +1024,9 @@ def main() -> None:
     if args.target in ('all', 'primary-strict-result', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
         build_primary_strict_result_artifact()
         payload['primary_strict_result'] = 'compiler_verification_project/artifacts/primary_strict_result.json'
+    if args.target in ('all', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
+        build_current_baseline_status_artifact()
+        payload['current_baseline_status'] = 'compiler_verification_project/artifacts/current_baseline_status.json'
     if args.target in ('all', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
         build_proof_environment_contract_artifact()
         payload['proof_environment_contract'] = 'compiler_verification_project/artifacts/proof_environment_contract.json'
@@ -1039,6 +1063,7 @@ def main() -> None:
         'public_headline_result': payload.get('public_headline_result'),
         'strict_replayed_tail_headline': payload.get('strict_replayed_tail_headline'),
         'primary_strict_result': payload.get('primary_strict_result'),
+        'current_baseline_status': payload.get('current_baseline_status'),
         'hybrid_bridge_search': payload.get('hybrid_bridge_search'),
         'zkp_attestation_input': 'compiler_verification_project/artifacts/zkp_attestation_input.json' if 'zkp_attestation' in payload else None,
         'zkp_attestation_reusable_chunk_candidate_input': payload.get('zkp_attestation_reusable_chunk_candidate'),

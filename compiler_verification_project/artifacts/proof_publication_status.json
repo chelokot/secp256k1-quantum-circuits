@@ -272,7 +272,7 @@
     },
     "proof_manifest": {
       "path": "artifacts/package/proof_manifest.json",
-      "file_count": 255
+      "file_count": 257
     }
   },
   "checks": {

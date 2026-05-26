@@ -94,12 +94,13 @@ def test_public_engine_manifest_reconstructs_checked_artifact() -> None:
     assert expected['checks']['modular_execution_trace_is_bound'] is True
     assert modular_trace['pass'] is True
     assert modular_trace['reconstructed_non_clifford'] == expected['primitive_operation_evidence']['arithmetic_operation_ir']['tail_kernel_non_clifford_per_instance']
-    assert modular_trace['modular_opcode_histogram']['field_mul'] == 11
+    assert modular_trace['modular_opcode_histogram'] == _load('modular_execution_trace.json')['modular_opcode_histogram']
     scheduled_modular_netlist = expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['scheduled_modular_primitive_netlist']
+    checked_scheduled_modular_netlist = _load('scheduled_modular_primitive_netlist.json')
     assert expected['checks']['scheduled_modular_primitive_netlist_is_bound'] is True
     assert scheduled_modular_netlist['pass'] is True
-    assert scheduled_modular_netlist['non_clifford_count'] == 1192378
-    assert scheduled_modular_netlist['primitive_counts_total']['measurement'] == 77756
+    assert scheduled_modular_netlist['non_clifford_count'] == checked_scheduled_modular_netlist['non_clifford_count']
+    assert scheduled_modular_netlist['primitive_counts_total'] == checked_scheduled_modular_netlist['primitive_counts_total']
     scheduled_splice = expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['scheduled_modular_global_splice']
     assert expected['checks']['scheduled_modular_primitive_netlist_splices_global_public_rows'] is True
     assert scheduled_splice['pass'] is True

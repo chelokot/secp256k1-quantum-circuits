@@ -9,3 +9,8 @@ compiler_verification_project/generated_circuits/
 compiler_verification_project/zkp_attestation/target/
 compiler_verification_project/artifacts/zkp_attestation_wrap_proof.bin
 .tmp_qubit_iteration_log.csv
+education/dist/
+education/node_modules/
+education/playwright-report/
+education/test-results/
+education/tsconfig.tsbuildinfo

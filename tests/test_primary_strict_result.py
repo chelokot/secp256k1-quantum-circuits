@@ -34,7 +34,7 @@ def test_primary_strict_result_matches_generator_and_demotes_legacy_wrapper() ->
 
     assert observed == expected
     assert observed['pass'] is True
-    assert observed['role'] == 'single current public resource headline'
+    assert observed['role'] == 'strict replayed-tail engine candidate, not repo physical baseline'
     assert observed['selected_result'] == strict_headline['selected_result']
     assert observed['selected_result']['logical_qubits'] == public_engine['public_totals']['logical_qubits']
     assert observed['selected_result']['non_clifford'] == public_engine['public_totals']['non_clifford']

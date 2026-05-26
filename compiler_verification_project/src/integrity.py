@@ -28,6 +28,7 @@ from arithmetic_lowering import arithmetic_kernel_summary, arithmetic_lowering_l
 from arithmetic_operation_ir import ARITHMETIC_OPERATION_IR_SCHEMA, build_arithmetic_operation_ir
 from compiler_parameters import COMPILER_PARAMETERS_SCHEMA, build_compiler_parameters
 from constant_provenance import CONSTANT_PROVENANCE_SCHEMA, build_constant_provenance
+from current_baseline_status import CURRENT_BASELINE_STATUS_SCHEMA, STATUS_GUARD_CORRECTED_NOT_PROMOTED, STATUS_NO_ACCEPTED_PHYSICAL_BASELINE, build_current_baseline_status
 from engine_completion_audit import ENGINE_COMPLETION_AUDIT_SCHEMA, build_engine_completion_audit
 from fallback_frontier_stress import build_fallback_frontier_stress
 from lookup_lowering import lookup_lowering_library, lowered_lookup_semantic_summary, materialize_lookup_primitive_operations
@@ -277,6 +278,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'public_headline_result': artifact_root / 'public_headline_result.json',
         'strict_replayed_tail_headline': artifact_root / 'strict_replayed_tail_headline.json',
         'primary_strict_result': artifact_root / 'primary_strict_result.json',
+        'current_baseline_status': artifact_root / 'current_baseline_status.json',
         'hybrid_bridge_search': artifact_root / 'hybrid_bridge_search.json',
         'zkp_attestation_reusable_chunk_candidate_input': artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json',
         'zkp_attestation_reusable_chunk_candidate_public_values': artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_public_values.json',
@@ -556,6 +558,17 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 tail_macro_schedule_search=load_json(artifact_root / 'tail_macro_schedule_search.json'),
                 compiler_parameters=load_json(artifact_root / 'compiler_parameters.json'),
                 zkp_attestation_input=load_json(artifact_root / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json'),
+            ),
+        )
+        dump_json(
+            artifact_root / 'current_baseline_status.json',
+            build_current_baseline_status(
+                strict_replayed_tail_headline=load_json(artifact_root / 'strict_replayed_tail_headline.json'),
+                public_headline_result=load_json(artifact_root / 'public_headline_result.json'),
+                primary_strict_result=load_json(artifact_root / 'primary_strict_result.json'),
+                engine_completion_audit=load_json(artifact_root / 'engine_completion_audit.json'),
+                zero_lift_guard_resource_audit=load_json(artifact_root / 'zero_lift_guard_resource_audit.json'),
+                modular_accumulator_source_uncompute=load_json(artifact_root / 'modular_accumulator_source_uncompute.json'),
             ),
         )
     return {name: _load_artifact(path) for name, path in required.items()}
@@ -3633,6 +3646,35 @@ def build_primary_strict_result_checks(artifacts: Mapping[str, Any]) -> Dict[str
     return _summarize_checks(checks)
 
 
+def build_current_baseline_status_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    observed = artifacts['current_baseline_status']
+    expected = build_current_baseline_status(
+        strict_replayed_tail_headline=artifacts['strict_replayed_tail_headline'],
+        public_headline_result=artifacts['public_headline_result'],
+        primary_strict_result=artifacts['primary_strict_result'],
+        engine_completion_audit=artifacts['engine_completion_audit'],
+        zero_lift_guard_resource_audit=artifacts['zero_lift_guard_resource_audit'],
+        modular_accumulator_source_uncompute=artifacts['modular_accumulator_source_uncompute'],
+    )
+    strict = artifacts['strict_replayed_tail_headline']['selected_result']
+    guard_gap = artifacts['zero_lift_guard_resource_audit']['capacity_gap']
+    guard_corrected = observed['guard_corrected_no_alias_candidate']
+    hardening_target = observed['conservative_hardening_target']
+    acceptance_gate = observed['accepted_baseline_gate']
+    checks = [
+        _check('current_baseline_status_matches_generator', observed == expected, expected, observed),
+        _check('current_baseline_status_schema_is_current', observed['schema'] == CURRENT_BASELINE_STATUS_SCHEMA, CURRENT_BASELINE_STATUS_SCHEMA, observed['schema']),
+        _check('current_baseline_status_passes_internal_checks', observed['pass'] is True and all(observed['checks'].values()), True, observed['checks']),
+        _check('current_baseline_status_has_no_accepted_physical_baseline', observed['status'] == STATUS_NO_ACCEPTED_PHYSICAL_BASELINE and observed['accepted_physical_baseline'] is None and observed['publication_policy']['may_publish_resource_headline_as_physical_baseline'] is False, STATUS_NO_ACCEPTED_PHYSICAL_BASELINE, observed),
+        _check('current_baseline_status_keeps_1968_as_unaccepted_candidate', observed['current_strict_candidate']['logical_qubits'] == strict['logical_qubits'] == 1968 and observed['current_strict_candidate']['status'] == 'not_accepted_as_physical_baseline', '1968 remains unaccepted strict candidate', observed['current_strict_candidate']),
+        _check('current_baseline_status_derives_guard_corrected_no_alias_candidate', guard_corrected['status'] == STATUS_GUARD_CORRECTED_NOT_PROMOTED and guard_corrected['logical_qubits'] == strict['logical_qubits'] + guard_gap['missing_logical_qubits_under_clean_ladder'], 'guard-corrected total is derived from strict candidate plus guard gap, not promoted', guard_corrected),
+        _check('current_baseline_status_sets_guard_corrected_total_as_conservative_hardening_target', hardening_target['source'] == 'guard_corrected_no_alias_candidate' and hardening_target['logical_qubits'] == guard_corrected['logical_qubits'] and observed['publication_policy']['default_docs_resource_target_before_acceptance'] == 'conservative_hardening_target', 'docs default to conservative hardening target while gate remains closed', {'hardening_target': hardening_target, 'publication_policy': observed['publication_policy']}),
+        _check('current_baseline_status_blocks_guard_corrected_total_with_explicit_acceptance_gate', acceptance_gate['status'] == 'blocked' and acceptance_gate['candidate_under_review_logical_qubits'] == guard_corrected['logical_qubits'] and all(row['pass'] is False for row in acceptance_gate['rows']), 'guard-corrected acceptance gate is explicit and blocked', acceptance_gate),
+        _check('current_baseline_status_lists_all_active_physical_blockers', {row['name'] for row in observed['remaining_physical_baseline_blockers']} == {'zero_lift_guard_capacity_not_promoted', 'modular_accumulator_source_uncompute_not_promoted', 'modular_arithmetic_clifford_expansion_not_flattened'}, 'three active physical baseline blockers', observed['remaining_physical_baseline_blockers']),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_hybrid_bridge_search_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     observed = artifacts['hybrid_bridge_search']
     expected = build_hybrid_bridge_search(
@@ -3990,6 +4032,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'public_headline_result_checks': lambda: build_public_headline_result_checks(artifacts, repo_root),
         'strict_replayed_tail_headline_checks': lambda: build_strict_replayed_tail_headline_checks(artifacts),
         'primary_strict_result_checks': lambda: build_primary_strict_result_checks(artifacts),
+        'current_baseline_status_checks': lambda: build_current_baseline_status_checks(artifacts),
         'hybrid_bridge_search_checks': lambda: build_hybrid_bridge_search_checks(artifacts),
         'cain_transfer_checks': lambda: build_cain_transfer_checks(artifacts),
         'azure_seed_checks': lambda: build_azure_seed_checks(artifacts),

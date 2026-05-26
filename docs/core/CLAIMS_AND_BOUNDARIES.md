@@ -10,33 +10,51 @@ metadata, together with deterministic audits, finite-model checks, and a
 separate exact compiler-family oracle subproject that closes the
 classical-tail-elision gap for a fully quantum raw-32 schedule. It now also
 ships an SP1 attestation bundle for one selected standard-QROM family claim at
-that same boundary. The current primary strict headline is the reusable-chunk
-standard-QROAM family with the guarded fused-output seven-slot tail at
-`36,973,222` non-Clifford operations and `1,968` logical qubits. That primary
-public resource result is selected in
-`compiler_verification_project/artifacts/public_headline_result.json` and
+that same boundary.
+
+The repository currently has **no accepted Clifford-complete physical
+baseline**. The current strict reusable-chunk standard-QROAM candidate with the
+guarded fused-output seven-slot tail is `36,973,222` non-Clifford operations and
+`1,968` logical qubits, but it is not accepted as a physical baseline. The
+guard-corrected no-alias consequence is `36,973,222 / 2,222`, derived by adding
+the missing 254 clean-ladder predicate workspace qubits for the zero-lift guard;
+that number is also not promoted. It is the conservative hardening target for
+repo presentation while the gate is closed, so reviewers see the stricter
+`2,222` consequence instead of the lower `1,968` candidate, but it must still be
+described as unaccepted. The authoritative checked status is
+`compiler_verification_project/artifacts/current_baseline_status.json`.
+Its `accepted_baseline_gate` is the repo-wide promotion rule: no resource number
+may become the accepted physical baseline until every listed gate row passes and
+the accepted totals are recomputed from that same executable primitive stream.
+At the current branch state, the gate explicitly blocks promotion of the
+`2,222` guard-corrected consequence.
+
+The strict candidate is selected in
 `compiler_verification_project/artifacts/primary_strict_result.json`, with the
 replayed-tail source in
 `compiler_verification_project/artifacts/strict_replayed_tail_headline.json`.
+`compiler_verification_project/artifacts/public_headline_result.json` remains
+publication-gated and does not approve a physical baseline while its pass flag
+is false.
 The four-slot macro contract remains checked as a ZKP/publication wrapper
 reference under `public_headline_result.json.legacy_wrapper_reference`, but it
 is not the selected resource headline. The older `34,925,796 / 1,044`
 family remains checked as a reference boundary, not as the promoted public
 claim. The generated QROAMClean tradeoff ledger still records the higher-space
-rows needed for the older `<24M` non-Clifford target; the repository headline
-is the single checked central family bound by the executable leaf, resource
-ledger, and replayed-tail owner capacity. The materialized public-candidate
+rows needed for the older `<24M` non-Clifford target; those rows are comparison
+data, not the current accepted baseline. The materialized public-candidate
 manifest now includes a strict replayed-tail capacity overlay that binds the
-flat operation stream's non-Clifford count to that seven-slot capacity result,
+flat operation stream's non-Clifford count to the seven-slot candidate,
 and a strict run-length liveness projection that scans arithmetic-tail rows to
-the `1,968`-qubit peak while leaving non-tail rows unchanged. The manifest also
+the `1,968`-qubit candidate peak while leaving non-tail rows unchanged. The manifest also
 emits a separate strict materialized flat-netlist commitment whose segment
-hashes include that projected liveness. The remaining promotion step is to make
-that strict flat stream the canonical public-engine source instead of keeping
-the old wrapper stream beside it. The current reusable-chunk ZKP candidate
-input and guest bind `public_engine_manifest.json` as the strict resource
-authority for the strict seven-slot contract, while the checked compressed and
-Groth16 proof fixtures remain stale until rebuilt against that input.
+hashes include that projected liveness. The remaining physical-baseline
+promotion steps are to promote the corrected zero-lift guard capacity and
+modular accumulator consume/fold/source-uncompute rows into the same global
+primitive liveness model. The current reusable-chunk ZKP candidate input and
+guest bind `public_engine_manifest.json` as the strict resource authority for
+the strict seven-slot contract, while the checked compressed and Groth16 proof
+fixtures remain stale until rebuilt against that input.
 
 ## Exact layers
 
@@ -211,9 +229,11 @@ leaf primitive stream hash, segment hashes, CCX count, and measurement count by
 scanning `1,270,134` generated rows. `public_engine_manifest.json` now binds the
 global splice certificate showing that 31 copies of this leaf stream preserve
 the grouped public `arithmetic_leaf_block + qroam_chunk_stream` operation and
-gate totals. The remaining arithmetic row in `engine_completion_audit.json` is
-now the final ZKP/export integration step: make the ZKP guest and exported full
-physical stream consume that spliced global physical boundary directly.
+gate totals. The remaining arithmetic boundary in `engine_completion_audit.json`
+is not just ZKP/export integration: modular accumulator consume/fold/source
+uncompute and the corrected zero-lift guard capacity still have to be promoted
+into that spliced global physical boundary before any physical baseline is
+accepted.
 The QROAM row similarly records that the current standard-QROAMClean certificate
 now hashes generated word-level unary-iteration rows and target-bit Clifford
 load-site rows with selection-control, target-register, and loaded-bit source
@@ -243,11 +263,13 @@ field permutation required to stay at seven slots. The selected reuse counts
 one `L == 0` guard qubit and 510 non-Clifford guard operations per tail, proves
 that `L == 0` implies accumulator infinity on the valid non-infinity lookup
 domain, and keeps lookup-infinity rows on the checked external bypass path.
-`strict_replayed_tail_headline.json` promotes that replayed
-seven-slot tail into the primary strict resource headline. The remaining
-optimization target is reducing the tail below seven field slots and then
-making the arithmetic/QROAM/tail/ZKP layers all bind that same strict resource
-contract as one engine product.
+`strict_replayed_tail_headline.json` records that replayed seven-slot tail as
+the current strict candidate. `current_baseline_status.json` keeps it out of
+accepted physical-baseline status until the guard-capacity and modular
+accumulator boundaries are promoted. The remaining optimization target comes
+after that: reduce the tail below seven field slots and make the
+arithmetic/QROAM/tail/ZKP layers all bind the same strict resource contract as
+one engine product.
 The same `tail_macro_engine.json` artifact now records an unpromoted semantic
 six-slot candidate using the pair transforms `(I,F) -> (M,N)` and
 `(E,K) -> (X3,Z3)`. Its determinant certificate proves the pair-output matrix
@@ -330,7 +352,7 @@ primitive-gate Shor implementation.
 
 Lower-exact budgeting artifacts are intentionally isolated in
 `docs/research/MODELED_IMPLEMENTATION_HYPOTHESES.md`. They are not the
-repository's headline result.
+repository's accepted physical baseline.
 
 ## Public baseline boundary
 
@@ -353,10 +375,10 @@ Exact lookup-contract semantics: yes.
 
 Mainline exact primitive-gate lookup, cleanup, and full Shor flattening: no.
 
-Exact compiler-family whole-oracle standard-QROM counts: yes, in `compiler_verification_project/`, but only for the named compiler families checked into that subproject.
+Exact compiler-family whole-oracle standard-QROM candidate counts: yes, in `compiler_verification_project/`, but only for the named compiler families checked into that subproject.
 
 Exact compiler-family SP1 attestation for one selected family claim and public deterministic point-add corpus: yes.
 
-Standard-QROM compiler-family comparison against the public Google baseline: yes.
+Standard-QROM compiler-family candidate comparison against the public Google baseline: yes.
 
 Clifford-complete full-Shor primitive-gate comparison against the public Google baseline: no.
