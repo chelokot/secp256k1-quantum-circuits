@@ -525,7 +525,7 @@
   "proof_manifest": {
     "path": "artifacts/package/proof_manifest.json",
     "schema": null,
-    "file_count": 217
+    "file_count": 218
   },
   "public_headline_result": {
     "path": "compiler_verification_project/artifacts/public_headline_result.json",

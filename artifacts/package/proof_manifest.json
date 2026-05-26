@@ -239,8 +239,8 @@
       "bytes": 38865
     },
     "compiler_verification_project/src/materialized_circuit.py": {
-      "sha256": "ac1a023619d9f109c0dce115d7c16a37aa3244565ef2fa6bfd34bdda9871715f",
-      "bytes": 168949
+      "sha256": "6e1966d6fb46863ed6df9a76ccf7670bbf1886ccb767d40c03fa42766c91c787",
+      "bytes": 175038
     },
     "compiler_verification_project/src/modular_arithmetic_certificate.py": {
       "sha256": "fecaffe8a12ae73c04dc400c47642abda3bcdc58645a66d88c1758493ee2ce5e",
@@ -353,6 +353,10 @@
     "compiler_verification_project/src/zkp_attestation.py": {
       "sha256": "22ebf1a1d6a74615e2716bf6abaeb61e1ea348e3547f457377bcbc1aaf142b58",
       "bytes": 52332
+    },
+    "compiler_verification_project/scripts/audit_arithmetic_operand_replay.py": {
+      "sha256": "113fb29bafa29cd01a80818f3222c389e5154aad2d1678a5c54a1d8bbb70fd87",
+      "bytes": 1932
     },
     "compiler_verification_project/scripts/build.py": {
       "sha256": "0eaad6fd6561c0b4d08e11787b4b806c1a53a173e02fc917a3a922b93be0c485",

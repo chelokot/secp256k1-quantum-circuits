@@ -258,11 +258,11 @@
     },
     "proof_environment_contract": {
       "path": "compiler_verification_project/artifacts/proof_environment_contract.json",
-      "sha256": "3c4b878fc7489028ad4ad6a165ae46339d471961be81d47bc9f94d48d604a738"
+      "sha256": "d217855903c0d3e41add9a666ae95df49f032e763c9b79db1b3bfe4d63d67100"
     },
     "proof_manifest": {
       "path": "artifacts/package/proof_manifest.json",
-      "file_count": 217
+      "file_count": 218
     }
   },
   "checks": {

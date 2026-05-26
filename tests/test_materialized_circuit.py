@@ -15,7 +15,7 @@ COMPILER_SRC = REPO_ROOT / 'compiler_verification_project' / 'src'
 if str(COMPILER_SRC) not in sys.path:
     sys.path.insert(0, str(COMPILER_SRC))
 
-from materialized_circuit import MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, PRIMITIVE_GATE_ARITY, PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, build_public_candidate_materialized_circuit_manifest, iter_canonical_physical_flat_netlist, iter_family_operation_stream, iter_public_candidate_flat_netlist, resolve_selected_family_names  # noqa: E402
+from materialized_circuit import MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, PRIMITIVE_GATE_ARITY, PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, build_arithmetic_operand_replay_audit, build_public_candidate_materialized_circuit_manifest, iter_canonical_physical_flat_netlist, iter_family_operation_stream, iter_public_candidate_flat_netlist, resolve_selected_family_names  # noqa: E402
 from public_engine_contract import CANONICAL_FLAT_NETLIST_IS_STRICT_REPLAY_CHECK, CANONICAL_MATERIALIZED_FLAT_NETLIST, PUBLIC_CANDIDATE_CANONICAL_TOTALS_SOURCE, PUBLIC_TOTALS_DERIVE_FROM_CANONICAL_CHECK, STRICT_REPLAYED_TAIL_MATERIALIZED_FLAT_NETLIST  # noqa: E402
 
 
@@ -283,6 +283,19 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
         len(row['primitive_operand_contract']['operand_domains']) == PRIMITIVE_GATE_ARITY[row['gate']]
         for row in manifest['run_length_rows']
     )
+
+
+def test_arithmetic_operand_replay_audit_exposes_current_flattening_gap() -> None:
+    report = build_arithmetic_operand_replay_audit(
+        public_candidate_materialized_circuit_manifest=_artifact('public_candidate_materialized_circuit_manifest.json'),
+        arithmetic_lowerings=_artifact('arithmetic_lowerings.json'),
+        arithmetic_operation_ir=_artifact('arithmetic_operation_ir.json'),
+    )
+    assert report['pass'] is False
+    assert report['rows_with_failures'] > 0
+    first_failure = report['sample_failures'][0]['first_failure']
+    assert first_failure['reason'] == 'source_operand_tuple_not_replayed_by_materialized_domain'
+    assert first_failure['source_operands'] != first_failure['materialized_parent_bits']
 
 
 def test_public_candidate_flat_netlist_iterator_emits_concrete_operand_wires() -> None:

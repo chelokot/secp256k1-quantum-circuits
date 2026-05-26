@@ -136,6 +136,7 @@ PROOF_MANIFEST_PATHS = [
     'compiler_verification_project/src/tail_macro_schedule_search.py',
     'compiler_verification_project/src/whole_oracle_recount.py',
     'compiler_verification_project/src/zkp_attestation.py',
+    'compiler_verification_project/scripts/audit_arithmetic_operand_replay.py',
     'compiler_verification_project/scripts/build.py',
     'compiler_verification_project/scripts/build_zkp_attestation_input.py',
     'compiler_verification_project/scripts/fast_engine_verify.py',

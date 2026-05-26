@@ -1505,6 +1505,148 @@ def _operand_source_binding_report(
     }
 
 
+def _arithmetic_source_blocks(
+    *,
+    arithmetic_lowerings: Mapping[str, Any],
+    arithmetic_operation_ir: Mapping[str, Any],
+) -> Dict[tuple[str, str], Mapping[str, Any]]:
+    selected_kernel = _selected_arithmetic_kernel(arithmetic_operation_ir)
+    lowering_kernel = next(
+        kernel
+        for kernel in arithmetic_lowerings['kernels']
+        if str(kernel['opcode']) == str(selected_kernel['opcode'])
+    )
+    return {
+        (str(stage['name']), str(block['name'])): block
+        for stage in lowering_kernel['stages']
+        for block in stage['blocks']
+    }
+
+
+def build_arithmetic_operand_replay_audit(
+    *,
+    public_candidate_materialized_circuit_manifest: Mapping[str, Any],
+    arithmetic_lowerings: Mapping[str, Any],
+    arithmetic_operation_ir: Mapping[str, Any],
+    max_failures: int = 32,
+) -> Dict[str, Any]:
+    source_blocks = _arithmetic_source_blocks(
+        arithmetic_lowerings=arithmetic_lowerings,
+        arithmetic_operation_ir=arithmetic_operation_ir,
+    )
+    arithmetic_rows = [
+        row
+        for row in public_candidate_materialized_circuit_manifest['run_length_rows']
+        if row['scope'] == 'arithmetic_leaf_block'
+    ]
+    cache: Dict[tuple[str, str, str], Dict[str, Any]] = {}
+    failures: List[Dict[str, Any]] = []
+    rows_with_failures = 0
+    source_operations_checked = 0
+
+    def replay_block_gate(row: Mapping[str, Any]) -> Dict[str, Any]:
+        key = (str(row['arithmetic_stage']), str(row['arithmetic_block']), str(row['gate']))
+        if key in cache:
+            return cache[key]
+        block = source_blocks.get((key[0], key[1]))
+        if block is None:
+            result = {
+                'source_operation_count': 0,
+                'operations_checked': 0,
+                'failure_count': 1,
+                'first_failure': {
+                    'reason': 'missing_arithmetic_source_block',
+                    'arithmetic_stage': key[0],
+                    'arithmetic_block': key[1],
+                    'gate': key[2],
+                },
+            }
+            cache[key] = result
+            return result
+        source_operations = [
+            operation
+            for operation in materialize_arithmetic_primitive_operations(block)
+            if str(operation[0]) == key[2]
+        ]
+        first_failure = None
+        failure_count = 0
+        for occurrence_index, operation in enumerate(source_operations):
+            source_operands = [int(value) for value in operation[1:]]
+            materialized_wires = _operation_domain_wires(row, occurrence_index)
+            materialized_parent_bits = [
+                int(wire['parent_bit_index'])
+                for wire in materialized_wires[:len(source_operands)]
+            ]
+            if source_operands != materialized_parent_bits:
+                failure_count += 1
+                if first_failure is None:
+                    first_failure = {
+                        'reason': 'source_operand_tuple_not_replayed_by_materialized_domain',
+                        'arithmetic_stage': key[0],
+                        'arithmetic_block': key[1],
+                        'gate': key[2],
+                        'occurrence_index': occurrence_index,
+                        'source_operands': source_operands,
+                        'materialized_parent_bits': materialized_parent_bits,
+                        'materialized_wires': materialized_wires,
+                    }
+        result = {
+            'source_operation_count': len(source_operations),
+            'operations_checked': len(source_operations),
+            'failure_count': failure_count,
+            'first_failure': first_failure,
+        }
+        cache[key] = result
+        return result
+
+    for row in arithmetic_rows:
+        result = replay_block_gate(row)
+        source_operations_checked += int(result['operations_checked'])
+        count_matches = int(result['source_operation_count']) == int(row['total_count'])
+        row_failure_count = int(result['failure_count'])
+        if not count_matches:
+            row_failure_count += 1
+        if row_failure_count:
+            rows_with_failures += 1
+            if len(failures) < max_failures:
+                failures.append({
+                    'row_index': int(row['row_index']),
+                    'source': str(row['source']),
+                    'arithmetic_stage': str(row['arithmetic_stage']),
+                    'arithmetic_block': str(row['arithmetic_block']),
+                    'gate': str(row['gate']),
+                    'row_total_count': int(row['total_count']),
+                    'source_operation_count': int(result['source_operation_count']),
+                    'count_matches': count_matches,
+                    'failure_count': row_failure_count,
+                    'first_failure': result['first_failure'],
+                })
+    unique_failures = [
+        {
+            'arithmetic_stage': stage,
+            'arithmetic_block': block,
+            'gate': gate,
+            'source_operation_count': int(result['source_operation_count']),
+            'failure_count': int(result['failure_count']),
+            'first_failure': result['first_failure'],
+        }
+        for (stage, block, gate), result in sorted(cache.items())
+        if int(result['failure_count']) > 0
+    ]
+    return {
+        'schema': 'compiler-project-arithmetic-operand-replay-audit-v1',
+        'definition': 'Compares generated arithmetic primitive operands with the concrete parent-bit operands emitted by the public flat-netlist operand-domain replay.',
+        'arithmetic_run_length_rows_checked': len(arithmetic_rows),
+        'unique_block_gate_pairs_checked': len(cache),
+        'source_operations_checked': source_operations_checked,
+        'rows_with_failures': rows_with_failures,
+        'unique_block_gate_failures': len(unique_failures),
+        'sample_failures': failures,
+        'unique_failures': unique_failures[:max_failures],
+        'pass': rows_with_failures == 0 and len(unique_failures) == 0,
+    }
+
+
 def _project_defaults() -> Dict[str, Any]:
     from project import FIELD_BITS, FOLDED_MAG_DOMAIN, FULL_PHASE_REGISTER_BITS, central_executable_leaf, compiler_family_frontier, leaf_opcode_histogram, raw32_schedule
 
@@ -3391,6 +3533,7 @@ __all__ = [
     'PRIMITIVE_GATE_ARITY',
     'PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA',
     'available_family_names',
+    'build_arithmetic_operand_replay_audit',
     'build_materialized_family_manifest',
     'build_public_candidate_materialized_circuit_manifest',
     'iter_canonical_physical_flat_netlist',
