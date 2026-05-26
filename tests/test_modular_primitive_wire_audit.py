@@ -50,13 +50,19 @@ def test_modular_primitive_wire_audit_names_current_scratch_gap() -> None:
     assert audit['checks']['no_synthetic_arithmetic_scratch_wires_without_owner_capacity'] is False
     assert audit['pass'] is False
     assert audit['field_wire_missing_liveness_count'] > 0
+    assert audit['overwritten_source_field_observation_count'] > 0
     assert audit['lookup_virtual_field_observation_count'] > 0
     assert audit['unresolved_virtual_field_observation_count'] > 0
     assert audit['arithmetic_scratch_wire_observation_count'] > 0
     assert audit['arithmetic_scratch_unique_wire_count'] > 0
     assert set(audit['lookup_virtual_field_names']) == {'lookup_x', 'lookup_y', 'lookup_x_plus_y'}
+    assert {'C', 'X', 'Y'}.issubset(set(audit['overwritten_source_field_names']))
     assert 'Y3.product_1' in audit['unresolved_virtual_field_names']
+    assert audit['unresolved_virtual_field_roles']['source_field_wire_without_trace_liveness'] > 0
+    assert audit['unresolved_virtual_field_roles']['target_field_wire_without_trace_liveness'] > 0
+    assert 'Y3.product_1' in audit['unresolved_virtual_field_names_by_role']['target_field_wire_without_trace_liveness']
     assert audit['sample_missing_liveness']
     assert audit['sample_lookup_virtual']
     assert audit['sample_unresolved_virtual_field']
+    assert 'unresolved_role' in audit['sample_unresolved_virtual_field'][0]
     assert audit['sample_synthetic_scratch']

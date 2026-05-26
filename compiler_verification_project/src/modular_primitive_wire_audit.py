@@ -61,11 +61,22 @@ def build_modular_primitive_wire_audit(
         for trace_row in modular_execution_trace['trace_rows']
         for suboperation in trace_row['suboperations']
     }
+    suboperation_overwrite_by_index = {
+        int(suboperation['global_suboperation_index']): {
+            'overwritten_source': None if suboperation.get('overwritten_source') is None else str(suboperation['overwritten_source']),
+            'target': str(suboperation['target']),
+            'target_slot': None if suboperation.get('target_slot') is None else int(suboperation['target_slot']),
+            'owner_id': str(suboperation['owner_id']),
+        }
+        for trace_row in modular_execution_trace['trace_rows']
+        for suboperation in trace_row['suboperations']
+    }
     operation_count = 0
     gate_counts = _empty_gate_counts()
     field_wire_observation_count = 0
     trace_live_field_wire_observation_count = 0
     field_wire_missing_liveness_count = 0
+    overwritten_source_field_observation_count = 0
     lookup_virtual_field_observation_count = 0
     unresolved_virtual_field_observation_count = 0
     lookup_workspace_wire_observation_count = 0
@@ -75,8 +86,11 @@ def build_modular_primitive_wire_audit(
     arithmetic_scratch_prefixes: Dict[str, int] = {}
     observed_suboperation_owners: Dict[str, int] = {}
     missing_field_names: Dict[str, int] = {}
+    overwritten_source_field_names: Dict[str, int] = {}
     lookup_virtual_field_names: Dict[str, int] = {}
     unresolved_virtual_field_names: Dict[str, int] = {}
+    unresolved_virtual_field_roles: Dict[str, int] = {}
+    unresolved_virtual_field_names_by_role: Dict[str, Dict[str, int]] = {}
     sample_missing_liveness = []
     sample_lookup_virtual = []
     sample_unresolved_virtual_field = []
@@ -125,9 +139,29 @@ def build_modular_primitive_wire_audit(
                     if len(sample_lookup_virtual) < 16:
                         sample_lookup_virtual.append(dict(sample))
                     continue
+                overwrite = suboperation_overwrite_by_index.get(suboperation_index, {})
+                if (
+                    field_name == overwrite.get('overwritten_source')
+                    and overwrite.get('target_slot') is not None
+                    and overwrite.get('owner_id') == str(row['owner_id'])
+                ):
+                    overwritten_source_field_observation_count += 1
+                    overwritten_source_field_names[field_name] = overwritten_source_field_names.get(field_name, 0) + 1
+                    continue
                 unresolved_virtual_field_observation_count += 1
                 unresolved_virtual_field_names[field_name] = unresolved_virtual_field_names.get(field_name, 0) + 1
+                source_names = {str(source) for source in row['sources']}
+                if field_name == str(row['target']):
+                    unresolved_role = 'target_field_wire_without_trace_liveness'
+                elif field_name in source_names:
+                    unresolved_role = 'source_field_wire_without_trace_liveness'
+                else:
+                    unresolved_role = 'implicit_field_wire_without_trace_liveness'
+                unresolved_virtual_field_roles[unresolved_role] = unresolved_virtual_field_roles.get(unresolved_role, 0) + 1
+                names_for_role = unresolved_virtual_field_names_by_role.setdefault(unresolved_role, {})
+                names_for_role[field_name] = names_for_role.get(field_name, 0) + 1
                 if len(sample_unresolved_virtual_field) < 16:
+                    sample['unresolved_role'] = unresolved_role
                     sample_unresolved_virtual_field.append(dict(sample))
                 continue
             if wire_id.startswith('lookup_workspace:'):
@@ -196,6 +230,7 @@ def build_modular_primitive_wire_audit(
         'field_wire_observation_count': field_wire_observation_count,
         'trace_live_field_wire_observation_count': trace_live_field_wire_observation_count,
         'field_wire_missing_liveness_count': field_wire_missing_liveness_count,
+        'overwritten_source_field_observation_count': overwritten_source_field_observation_count,
         'lookup_virtual_field_observation_count': lookup_virtual_field_observation_count,
         'unresolved_virtual_field_observation_count': unresolved_virtual_field_observation_count,
         'lookup_workspace_wire_observation_count': lookup_workspace_wire_observation_count,
@@ -210,6 +245,10 @@ def build_modular_primitive_wire_audit(
             key: int(value)
             for key, value in sorted(missing_field_names.items(), key=lambda item: (-item[1], item[0]))
         },
+        'overwritten_source_field_names': {
+            key: int(value)
+            for key, value in sorted(overwritten_source_field_names.items(), key=lambda item: (-item[1], item[0]))
+        },
         'lookup_virtual_field_names': {
             key: int(value)
             for key, value in sorted(lookup_virtual_field_names.items(), key=lambda item: (-item[1], item[0]))
@@ -217,6 +256,17 @@ def build_modular_primitive_wire_audit(
         'unresolved_virtual_field_names': {
             key: int(value)
             for key, value in sorted(unresolved_virtual_field_names.items(), key=lambda item: (-item[1], item[0]))
+        },
+        'unresolved_virtual_field_roles': {
+            key: int(value)
+            for key, value in sorted(unresolved_virtual_field_roles.items(), key=lambda item: (-item[1], item[0]))
+        },
+        'unresolved_virtual_field_names_by_role': {
+            role: {
+                key: int(value)
+                for key, value in sorted(names.items(), key=lambda item: (-item[1], item[0]))
+            }
+            for role, names in sorted(unresolved_virtual_field_names_by_role.items())
         },
         'top_synthetic_scratch_prefixes': top_scratch_prefixes,
         'sample_missing_liveness': sample_missing_liveness,
