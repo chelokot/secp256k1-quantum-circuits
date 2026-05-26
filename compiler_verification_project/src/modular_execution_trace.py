@@ -213,15 +213,9 @@ def _decompose_tail_operation(
         ))
         append_modular('modular_field_operation', 'field_mul', f'execute {opcode} after streamed lookup source', [str(source) for source in row['sources']])
     elif opcode == 'field_double_mul_add':
-        sources = [str(source) for source in row['sources']]
-        append_modular('fused_output_internal_product', 'field_mul', 'first product for fused add output', sources[:2], f'{target}.product_0')
-        append_modular('fused_output_internal_product', 'field_mul', 'second product for fused add output', sources[2:], f'{target}.product_1')
-        append_modular('fused_output_combine', 'field_add', 'combine fused output products by addition', [f'{target}.product_0', f'{target}.product_1'])
+        append_modular('fused_output_accumulator', 'field_double_mul_add', 'fused output a*b + c*d without materialized product field lanes', [str(source) for source in row['sources']])
     elif opcode == 'field_double_mul_sub':
-        sources = [str(source) for source in row['sources']]
-        append_modular('fused_output_internal_product', 'field_mul', 'first product for fused subtract output', sources[:2], f'{target}.product_0')
-        append_modular('fused_output_internal_product', 'field_mul', 'second product for fused subtract output', sources[2:], f'{target}.product_1')
-        append_modular('fused_output_combine', 'field_sub', 'combine fused output products by subtraction', [f'{target}.product_0', f'{target}.product_1'])
+        append_modular('fused_output_accumulator', 'field_double_mul_sub', 'fused output a*b - c*d without materialized product field lanes', [str(source) for source in row['sources']])
     else:
         raise ValueError(f'unsupported tail opcode for modular execution trace: {opcode}')
 

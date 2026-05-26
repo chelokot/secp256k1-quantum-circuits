@@ -3,8 +3,8 @@
   "status": "selected_tail_schedule_decomposed_into_modular_execution_trace",
   "source_digests": {
     "tail_macro_engine_sha256": "eea48169b9577864a0dae285c1ee31e17e7329c8cb3cadb0606657871c5b7d2d",
-    "modular_arithmetic_certificate_sha256": "5dc1bc120d7c52d9b0118c1ff01d28e8bb13fa6060da2aafaed6e15200e38ff8",
-    "public_candidate_materialized_circuit_manifest_sha256": "25d2f9d31df95bb4fde297e3bc127948c8ff69e5c8fe56eb0d8d996dcfbf8818"
+    "modular_arithmetic_certificate_sha256": "ed2acdd360c42d2d13712f9413b7d8990cc2997616bc4063d399f908d53c4584",
+    "public_candidate_materialized_circuit_manifest_sha256": "134afbb1cc421c48f5f128a5bcbfb52dc9b5cd315a0c652c04ce6a4d47aebe16"
   },
   "trace_encoding": [
     "global_suboperation_index",
@@ -21,14 +21,16 @@
     "non_clifford",
     "operation_count"
   ],
-  "trace_stream_sha256": "d8fe637009767d7729c8ec732908306b646dc3307fe3559803ac010da9fed155",
+  "trace_stream_sha256": "22ae963c074f8cf0bec0fa595ccd6b47ce50ce4912803f2be06f555b517a0873",
   "tail_schedule_row_count": 17,
-  "suboperation_count": 29,
-  "modular_suboperation_count": 23,
+  "suboperation_count": 23,
+  "modular_suboperation_count": 17,
   "modular_opcode_histogram": {
-    "field_add": 6,
-    "field_mul": 11,
-    "field_sub": 2,
+    "field_add": 4,
+    "field_double_mul_add": 2,
+    "field_double_mul_sub": 1,
+    "field_mul": 5,
+    "field_sub": 1,
     "field_sub_sum": 1,
     "field_triple": 1,
     "mul_const": 2
@@ -1996,128 +1998,37 @@
       "reconstructed_non_clifford": 143494,
       "cost_matches_tail_row": true,
       "suboperation_start": 19,
-      "suboperation_end_exclusive": 22,
+      "suboperation_end_exclusive": 20,
       "suboperations": [
         {
           "global_suboperation_index": 19,
           "schedule_index": 14,
           "tail_operation_index": 14,
-          "target": "X3.product_0",
-          "kind": "fused_output_internal_product",
-          "modular_opcode": "field_mul",
-          "semantic_role": "first product for fused subtract output",
+          "target": "X3",
+          "kind": "fused_output_accumulator",
+          "modular_opcode": "field_double_mul_sub",
+          "semantic_role": "fused output a*b - c*d without materialized product field lanes",
           "sources": [
             "K",
-            "N"
-          ],
-          "target_slot": 2,
-          "owner_id": "tail_reordered_slot_2",
-          "overwritten_source": null,
-          "non_clifford": 71492,
-          "operation_count": 77448,
-          "primitive_counts_total": {
-            "ccx": 71492,
-            "cx": 0,
-            "x": 0,
-            "measurement": 5956
-          },
-          "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
-          "step_rows": [
-            {
-              "step": "partial_product_grid",
-              "kind": "schoolbook_partial_products",
-              "operation_count": 65536,
-              "primitive_counts_total": {
-                "ccx": 65536,
-                "cx": 0,
-                "x": 0,
-                "measurement": 0
-              }
-            },
-            {
-              "step": "controlled_add_path",
-              "kind": "controlled_accumulator_add",
-              "operation_count": 510,
-              "primitive_counts_total": {
-                "ccx": 255,
-                "cx": 0,
-                "x": 0,
-                "measurement": 255
-              }
-            },
-            {
-              "step": "controlled_sub_path",
-              "kind": "controlled_accumulator_subtract",
-              "operation_count": 512,
-              "primitive_counts_total": {
-                "ccx": 256,
-                "cx": 0,
-                "x": 0,
-                "measurement": 256
-              }
-            },
-            {
-              "step": "pseudo_mersenne_first_fold",
-              "kind": "pseudo_mersenne_fold",
-              "operation_count": 8610,
-              "primitive_counts_total": {
-                "ccx": 4305,
-                "cx": 0,
-                "x": 0,
-                "measurement": 4305
-              }
-            },
-            {
-              "step": "pseudo_mersenne_second_fold",
-              "kind": "pseudo_mersenne_fold",
-              "operation_count": 1260,
-              "primitive_counts_total": {
-                "ccx": 630,
-                "cx": 0,
-                "x": 0,
-                "measurement": 630
-              }
-            },
-            {
-              "step": "pseudo_mersenne_canonicalize",
-              "kind": "conditional_modulus_correction",
-              "operation_count": 1020,
-              "primitive_counts_total": {
-                "ccx": 510,
-                "cx": 0,
-                "x": 0,
-                "measurement": 510
-              }
-            }
-          ]
-        },
-        {
-          "global_suboperation_index": 20,
-          "schedule_index": 14,
-          "tail_operation_index": 14,
-          "target": "X3.product_1",
-          "kind": "fused_output_internal_product",
-          "modular_opcode": "field_mul",
-          "semantic_role": "second product for fused subtract output",
-          "sources": [
+            "N",
             "E",
             "C"
           ],
           "target_slot": 2,
           "owner_id": "tail_reordered_slot_2",
           "overwritten_source": null,
-          "non_clifford": 71492,
-          "operation_count": 77448,
+          "non_clifford": 143494,
+          "operation_count": 155916,
           "primitive_counts_total": {
-            "ccx": 71492,
+            "ccx": 143494,
             "cx": 0,
             "x": 0,
-            "measurement": 5956
+            "measurement": 12422
           },
-          "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+          "primitive_stream_sha256": "1ce23721b89edc7c9ed00fb2ff98e1350e7942724f92eaa1f8ce11fdd2d60892",
           "step_rows": [
             {
-              "step": "partial_product_grid",
+              "step": "first_product_partial_product_grid",
               "kind": "schoolbook_partial_products",
               "operation_count": 65536,
               "primitive_counts_total": {
@@ -2128,7 +2039,7 @@
               }
             },
             {
-              "step": "controlled_add_path",
+              "step": "first_product_controlled_add_path",
               "kind": "controlled_accumulator_add",
               "operation_count": 510,
               "primitive_counts_total": {
@@ -2139,7 +2050,7 @@
               }
             },
             {
-              "step": "controlled_sub_path",
+              "step": "first_product_controlled_sub_path",
               "kind": "controlled_accumulator_subtract",
               "operation_count": 512,
               "primitive_counts_total": {
@@ -2150,7 +2061,7 @@
               }
             },
             {
-              "step": "pseudo_mersenne_first_fold",
+              "step": "first_product_pseudo_mersenne_first_fold",
               "kind": "pseudo_mersenne_fold",
               "operation_count": 8610,
               "primitive_counts_total": {
@@ -2161,7 +2072,7 @@
               }
             },
             {
-              "step": "pseudo_mersenne_second_fold",
+              "step": "first_product_pseudo_mersenne_second_fold",
               "kind": "pseudo_mersenne_fold",
               "operation_count": 1260,
               "primitive_counts_total": {
@@ -2172,7 +2083,7 @@
               }
             },
             {
-              "step": "pseudo_mersenne_canonicalize",
+              "step": "first_product_pseudo_mersenne_canonicalize",
               "kind": "conditional_modulus_correction",
               "operation_count": 1020,
               "primitive_counts_total": {
@@ -2181,36 +2092,75 @@
                 "x": 0,
                 "measurement": 510
               }
-            }
-          ]
-        },
-        {
-          "global_suboperation_index": 21,
-          "schedule_index": 14,
-          "tail_operation_index": 14,
-          "target": "X3",
-          "kind": "fused_output_combine",
-          "modular_opcode": "field_sub",
-          "semantic_role": "combine fused output products by subtraction",
-          "sources": [
-            "X3.product_0",
-            "X3.product_1"
-          ],
-          "target_slot": 2,
-          "owner_id": "tail_reordered_slot_2",
-          "overwritten_source": null,
-          "non_clifford": 510,
-          "operation_count": 1020,
-          "primitive_counts_total": {
-            "ccx": 510,
-            "cx": 0,
-            "x": 0,
-            "measurement": 510
-          },
-          "primitive_stream_sha256": "aece57b7cb67031af8b4e2a0402dddc7e7c1a274b576796f39c660e368a98c98",
-          "step_rows": [
+            },
             {
-              "step": "borrow_ladder",
+              "step": "second_product_partial_product_grid",
+              "kind": "schoolbook_partial_products",
+              "operation_count": 65536,
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              }
+            },
+            {
+              "step": "second_product_controlled_add_path",
+              "kind": "controlled_accumulator_add",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "second_product_controlled_sub_path",
+              "kind": "controlled_accumulator_subtract",
+              "operation_count": 512,
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              }
+            },
+            {
+              "step": "second_product_pseudo_mersenne_first_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 8610,
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              }
+            },
+            {
+              "step": "second_product_pseudo_mersenne_second_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 1260,
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              }
+            },
+            {
+              "step": "second_product_pseudo_mersenne_canonicalize",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 1020,
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              }
+            },
+            {
+              "step": "combine_difference_borrow_ladder",
               "kind": "ripple_borrow",
               "operation_count": 510,
               "primitive_counts_total": {
@@ -2221,7 +2171,7 @@
               }
             },
             {
-              "step": "conditional_add_modulus",
+              "step": "combine_difference_conditional_add_modulus",
               "kind": "conditional_modulus_correction",
               "operation_count": 510,
               "primitive_counts_total": {
@@ -2280,129 +2230,38 @@
       "tail_row_non_clifford": 144004,
       "reconstructed_non_clifford": 144004,
       "cost_matches_tail_row": true,
-      "suboperation_start": 22,
-      "suboperation_end_exclusive": 26,
+      "suboperation_start": 20,
+      "suboperation_end_exclusive": 22,
       "suboperations": [
         {
-          "global_suboperation_index": 22,
+          "global_suboperation_index": 20,
           "schedule_index": 15,
           "tail_operation_index": 15,
-          "target": "Y3.product_0",
-          "kind": "fused_output_internal_product",
-          "modular_opcode": "field_mul",
-          "semantic_role": "first product for fused add output",
+          "target": "Y3",
+          "kind": "fused_output_accumulator",
+          "modular_opcode": "field_double_mul_add",
+          "semantic_role": "fused output a*b + c*d without materialized product field lanes",
           "sources": [
             "N",
-            "M"
-          ],
-          "target_slot": 3,
-          "owner_id": "tail_reordered_slot_3",
-          "overwritten_source": "C",
-          "non_clifford": 71492,
-          "operation_count": 77448,
-          "primitive_counts_total": {
-            "ccx": 71492,
-            "cx": 0,
-            "x": 0,
-            "measurement": 5956
-          },
-          "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
-          "step_rows": [
-            {
-              "step": "partial_product_grid",
-              "kind": "schoolbook_partial_products",
-              "operation_count": 65536,
-              "primitive_counts_total": {
-                "ccx": 65536,
-                "cx": 0,
-                "x": 0,
-                "measurement": 0
-              }
-            },
-            {
-              "step": "controlled_add_path",
-              "kind": "controlled_accumulator_add",
-              "operation_count": 510,
-              "primitive_counts_total": {
-                "ccx": 255,
-                "cx": 0,
-                "x": 0,
-                "measurement": 255
-              }
-            },
-            {
-              "step": "controlled_sub_path",
-              "kind": "controlled_accumulator_subtract",
-              "operation_count": 512,
-              "primitive_counts_total": {
-                "ccx": 256,
-                "cx": 0,
-                "x": 0,
-                "measurement": 256
-              }
-            },
-            {
-              "step": "pseudo_mersenne_first_fold",
-              "kind": "pseudo_mersenne_fold",
-              "operation_count": 8610,
-              "primitive_counts_total": {
-                "ccx": 4305,
-                "cx": 0,
-                "x": 0,
-                "measurement": 4305
-              }
-            },
-            {
-              "step": "pseudo_mersenne_second_fold",
-              "kind": "pseudo_mersenne_fold",
-              "operation_count": 1260,
-              "primitive_counts_total": {
-                "ccx": 630,
-                "cx": 0,
-                "x": 0,
-                "measurement": 630
-              }
-            },
-            {
-              "step": "pseudo_mersenne_canonicalize",
-              "kind": "conditional_modulus_correction",
-              "operation_count": 1020,
-              "primitive_counts_total": {
-                "ccx": 510,
-                "cx": 0,
-                "x": 0,
-                "measurement": 510
-              }
-            }
-          ]
-        },
-        {
-          "global_suboperation_index": 23,
-          "schedule_index": 15,
-          "tail_operation_index": 15,
-          "target": "Y3.product_1",
-          "kind": "fused_output_internal_product",
-          "modular_opcode": "field_mul",
-          "semantic_role": "second product for fused add output",
-          "sources": [
+            "M",
             "C",
             "L"
           ],
           "target_slot": 3,
           "owner_id": "tail_reordered_slot_3",
           "overwritten_source": "C",
-          "non_clifford": 71492,
-          "operation_count": 77448,
+          "non_clifford": 143494,
+          "operation_count": 155916,
           "primitive_counts_total": {
-            "ccx": 71492,
+            "ccx": 143494,
             "cx": 0,
             "x": 0,
-            "measurement": 5956
+            "measurement": 12422
           },
-          "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+          "primitive_stream_sha256": "f0145d780ced811e2d80b740fad3a911ddef47964ba301eadcdf03a1a89acdfc",
           "step_rows": [
             {
-              "step": "partial_product_grid",
+              "step": "first_product_partial_product_grid",
               "kind": "schoolbook_partial_products",
               "operation_count": 65536,
               "primitive_counts_total": {
@@ -2413,7 +2272,7 @@
               }
             },
             {
-              "step": "controlled_add_path",
+              "step": "first_product_controlled_add_path",
               "kind": "controlled_accumulator_add",
               "operation_count": 510,
               "primitive_counts_total": {
@@ -2424,7 +2283,7 @@
               }
             },
             {
-              "step": "controlled_sub_path",
+              "step": "first_product_controlled_sub_path",
               "kind": "controlled_accumulator_subtract",
               "operation_count": 512,
               "primitive_counts_total": {
@@ -2435,7 +2294,7 @@
               }
             },
             {
-              "step": "pseudo_mersenne_first_fold",
+              "step": "first_product_pseudo_mersenne_first_fold",
               "kind": "pseudo_mersenne_fold",
               "operation_count": 8610,
               "primitive_counts_total": {
@@ -2446,7 +2305,7 @@
               }
             },
             {
-              "step": "pseudo_mersenne_second_fold",
+              "step": "first_product_pseudo_mersenne_second_fold",
               "kind": "pseudo_mersenne_fold",
               "operation_count": 1260,
               "primitive_counts_total": {
@@ -2457,7 +2316,7 @@
               }
             },
             {
-              "step": "pseudo_mersenne_canonicalize",
+              "step": "first_product_pseudo_mersenne_canonicalize",
               "kind": "conditional_modulus_correction",
               "operation_count": 1020,
               "primitive_counts_total": {
@@ -2466,36 +2325,75 @@
                 "x": 0,
                 "measurement": 510
               }
-            }
-          ]
-        },
-        {
-          "global_suboperation_index": 24,
-          "schedule_index": 15,
-          "tail_operation_index": 15,
-          "target": "Y3",
-          "kind": "fused_output_combine",
-          "modular_opcode": "field_add",
-          "semantic_role": "combine fused output products by addition",
-          "sources": [
-            "Y3.product_0",
-            "Y3.product_1"
-          ],
-          "target_slot": 3,
-          "owner_id": "tail_reordered_slot_3",
-          "overwritten_source": "C",
-          "non_clifford": 510,
-          "operation_count": 1020,
-          "primitive_counts_total": {
-            "ccx": 510,
-            "cx": 0,
-            "x": 0,
-            "measurement": 510
-          },
-          "primitive_stream_sha256": "5c2496ac3c58397ce7000539c82e2ce2b6011bd7b9d90b0c840fc2737cfaa179",
-          "step_rows": [
+            },
             {
-              "step": "carry_ladder",
+              "step": "second_product_partial_product_grid",
+              "kind": "schoolbook_partial_products",
+              "operation_count": 65536,
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              }
+            },
+            {
+              "step": "second_product_controlled_add_path",
+              "kind": "controlled_accumulator_add",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "second_product_controlled_sub_path",
+              "kind": "controlled_accumulator_subtract",
+              "operation_count": 512,
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              }
+            },
+            {
+              "step": "second_product_pseudo_mersenne_first_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 8610,
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              }
+            },
+            {
+              "step": "second_product_pseudo_mersenne_second_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 1260,
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              }
+            },
+            {
+              "step": "second_product_pseudo_mersenne_canonicalize",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 1020,
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              }
+            },
+            {
+              "step": "combine_sum_carry_ladder",
               "kind": "ripple_carry",
               "operation_count": 510,
               "primitive_counts_total": {
@@ -2506,7 +2404,7 @@
               }
             },
             {
-              "step": "conditional_subtract_modulus",
+              "step": "combine_sum_conditional_subtract_modulus",
               "kind": "conditional_modulus_correction",
               "operation_count": 510,
               "primitive_counts_total": {
@@ -2519,7 +2417,7 @@
           ]
         },
         {
-          "global_suboperation_index": 25,
+          "global_suboperation_index": 21,
           "schedule_index": 15,
           "tail_operation_index": 15,
           "target": "Y3",
@@ -2586,129 +2484,38 @@
       "tail_row_non_clifford": 143494,
       "reconstructed_non_clifford": 143494,
       "cost_matches_tail_row": true,
-      "suboperation_start": 26,
-      "suboperation_end_exclusive": 29,
+      "suboperation_start": 22,
+      "suboperation_end_exclusive": 23,
       "suboperations": [
         {
-          "global_suboperation_index": 26,
+          "global_suboperation_index": 22,
           "schedule_index": 16,
           "tail_operation_index": 16,
-          "target": "Z3.product_0",
-          "kind": "fused_output_internal_product",
-          "modular_opcode": "field_mul",
-          "semantic_role": "first product for fused add output",
+          "target": "Z3",
+          "kind": "fused_output_accumulator",
+          "modular_opcode": "field_double_mul_add",
+          "semantic_role": "fused output a*b + c*d without materialized product field lanes",
           "sources": [
             "M",
-            "E"
-          ],
-          "target_slot": 1,
-          "owner_id": "tail_reordered_slot_1",
-          "overwritten_source": null,
-          "non_clifford": 71492,
-          "operation_count": 77448,
-          "primitive_counts_total": {
-            "ccx": 71492,
-            "cx": 0,
-            "x": 0,
-            "measurement": 5956
-          },
-          "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
-          "step_rows": [
-            {
-              "step": "partial_product_grid",
-              "kind": "schoolbook_partial_products",
-              "operation_count": 65536,
-              "primitive_counts_total": {
-                "ccx": 65536,
-                "cx": 0,
-                "x": 0,
-                "measurement": 0
-              }
-            },
-            {
-              "step": "controlled_add_path",
-              "kind": "controlled_accumulator_add",
-              "operation_count": 510,
-              "primitive_counts_total": {
-                "ccx": 255,
-                "cx": 0,
-                "x": 0,
-                "measurement": 255
-              }
-            },
-            {
-              "step": "controlled_sub_path",
-              "kind": "controlled_accumulator_subtract",
-              "operation_count": 512,
-              "primitive_counts_total": {
-                "ccx": 256,
-                "cx": 0,
-                "x": 0,
-                "measurement": 256
-              }
-            },
-            {
-              "step": "pseudo_mersenne_first_fold",
-              "kind": "pseudo_mersenne_fold",
-              "operation_count": 8610,
-              "primitive_counts_total": {
-                "ccx": 4305,
-                "cx": 0,
-                "x": 0,
-                "measurement": 4305
-              }
-            },
-            {
-              "step": "pseudo_mersenne_second_fold",
-              "kind": "pseudo_mersenne_fold",
-              "operation_count": 1260,
-              "primitive_counts_total": {
-                "ccx": 630,
-                "cx": 0,
-                "x": 0,
-                "measurement": 630
-              }
-            },
-            {
-              "step": "pseudo_mersenne_canonicalize",
-              "kind": "conditional_modulus_correction",
-              "operation_count": 1020,
-              "primitive_counts_total": {
-                "ccx": 510,
-                "cx": 0,
-                "x": 0,
-                "measurement": 510
-              }
-            }
-          ]
-        },
-        {
-          "global_suboperation_index": 27,
-          "schedule_index": 16,
-          "tail_operation_index": 16,
-          "target": "Z3.product_1",
-          "kind": "fused_output_internal_product",
-          "modular_opcode": "field_mul",
-          "semantic_role": "second product for fused add output",
-          "sources": [
+            "E",
             "L",
             "K"
           ],
           "target_slot": 1,
           "owner_id": "tail_reordered_slot_1",
           "overwritten_source": null,
-          "non_clifford": 71492,
-          "operation_count": 77448,
+          "non_clifford": 143494,
+          "operation_count": 155916,
           "primitive_counts_total": {
-            "ccx": 71492,
+            "ccx": 143494,
             "cx": 0,
             "x": 0,
-            "measurement": 5956
+            "measurement": 12422
           },
-          "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+          "primitive_stream_sha256": "f0145d780ced811e2d80b740fad3a911ddef47964ba301eadcdf03a1a89acdfc",
           "step_rows": [
             {
-              "step": "partial_product_grid",
+              "step": "first_product_partial_product_grid",
               "kind": "schoolbook_partial_products",
               "operation_count": 65536,
               "primitive_counts_total": {
@@ -2719,7 +2526,7 @@
               }
             },
             {
-              "step": "controlled_add_path",
+              "step": "first_product_controlled_add_path",
               "kind": "controlled_accumulator_add",
               "operation_count": 510,
               "primitive_counts_total": {
@@ -2730,7 +2537,7 @@
               }
             },
             {
-              "step": "controlled_sub_path",
+              "step": "first_product_controlled_sub_path",
               "kind": "controlled_accumulator_subtract",
               "operation_count": 512,
               "primitive_counts_total": {
@@ -2741,7 +2548,7 @@
               }
             },
             {
-              "step": "pseudo_mersenne_first_fold",
+              "step": "first_product_pseudo_mersenne_first_fold",
               "kind": "pseudo_mersenne_fold",
               "operation_count": 8610,
               "primitive_counts_total": {
@@ -2752,7 +2559,7 @@
               }
             },
             {
-              "step": "pseudo_mersenne_second_fold",
+              "step": "first_product_pseudo_mersenne_second_fold",
               "kind": "pseudo_mersenne_fold",
               "operation_count": 1260,
               "primitive_counts_total": {
@@ -2763,7 +2570,7 @@
               }
             },
             {
-              "step": "pseudo_mersenne_canonicalize",
+              "step": "first_product_pseudo_mersenne_canonicalize",
               "kind": "conditional_modulus_correction",
               "operation_count": 1020,
               "primitive_counts_total": {
@@ -2772,36 +2579,75 @@
                 "x": 0,
                 "measurement": 510
               }
-            }
-          ]
-        },
-        {
-          "global_suboperation_index": 28,
-          "schedule_index": 16,
-          "tail_operation_index": 16,
-          "target": "Z3",
-          "kind": "fused_output_combine",
-          "modular_opcode": "field_add",
-          "semantic_role": "combine fused output products by addition",
-          "sources": [
-            "Z3.product_0",
-            "Z3.product_1"
-          ],
-          "target_slot": 1,
-          "owner_id": "tail_reordered_slot_1",
-          "overwritten_source": null,
-          "non_clifford": 510,
-          "operation_count": 1020,
-          "primitive_counts_total": {
-            "ccx": 510,
-            "cx": 0,
-            "x": 0,
-            "measurement": 510
-          },
-          "primitive_stream_sha256": "5c2496ac3c58397ce7000539c82e2ce2b6011bd7b9d90b0c840fc2737cfaa179",
-          "step_rows": [
+            },
             {
-              "step": "carry_ladder",
+              "step": "second_product_partial_product_grid",
+              "kind": "schoolbook_partial_products",
+              "operation_count": 65536,
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              }
+            },
+            {
+              "step": "second_product_controlled_add_path",
+              "kind": "controlled_accumulator_add",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "second_product_controlled_sub_path",
+              "kind": "controlled_accumulator_subtract",
+              "operation_count": 512,
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              }
+            },
+            {
+              "step": "second_product_pseudo_mersenne_first_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 8610,
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              }
+            },
+            {
+              "step": "second_product_pseudo_mersenne_second_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 1260,
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              }
+            },
+            {
+              "step": "second_product_pseudo_mersenne_canonicalize",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 1020,
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              }
+            },
+            {
+              "step": "combine_sum_carry_ladder",
               "kind": "ripple_carry",
               "operation_count": 510,
               "primitive_counts_total": {
@@ -2812,7 +2658,7 @@
               }
             },
             {
-              "step": "conditional_subtract_modulus",
+              "step": "combine_sum_conditional_subtract_modulus",
               "kind": "conditional_modulus_correction",
               "operation_count": 510,
               "primitive_counts_total": {
@@ -3283,20 +3129,297 @@
   ],
   "suboperation_preview_tail": [
     {
-      "global_suboperation_index": 21,
-      "schedule_index": 14,
-      "tail_operation_index": 14,
-      "target": "X3",
-      "kind": "fused_output_combine",
-      "modular_opcode": "field_sub",
-      "semantic_role": "combine fused output products by subtraction",
+      "global_suboperation_index": 15,
+      "schedule_index": 10,
+      "tail_operation_index": 8,
+      "target": "L",
+      "kind": "modular_field_operation",
+      "modular_opcode": "field_triple",
+      "semantic_role": "execute field_triple for tail row",
       "sources": [
-        "X3.product_0",
-        "X3.product_1"
+        "A"
+      ],
+      "target_slot": 0,
+      "owner_id": "tail_reordered_slot_0",
+      "overwritten_source": "A",
+      "non_clifford": 1020,
+      "operation_count": 2040,
+      "primitive_counts_total": {
+        "ccx": 1020,
+        "cx": 0,
+        "x": 0,
+        "measurement": 1020
+      },
+      "primitive_stream_sha256": "9007dd13da4826b6dff118e5202ec87642f56886f25387aaaf295a4df997e433",
+      "step_rows": [
+        {
+          "step": "first_add_carry_ladder",
+          "kind": "ripple_carry",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "first_add_conditional_subtract_modulus",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "second_add_carry_ladder",
+          "kind": "ripple_carry",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "second_add_conditional_subtract_modulus",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        }
+      ]
+    },
+    {
+      "global_suboperation_index": 16,
+      "schedule_index": 11,
+      "tail_operation_index": 11,
+      "target": "F",
+      "kind": "modular_field_operation",
+      "modular_opcode": "mul_const",
+      "semantic_role": "execute mul_const for tail row",
+      "sources": [
+        "Z"
       ],
       "target_slot": 2,
       "owner_id": "tail_reordered_slot_2",
+      "overwritten_source": "Z",
+      "non_clifford": 3060,
+      "operation_count": 6120,
+      "primitive_counts_total": {
+        "ccx": 3060,
+        "cx": 0,
+        "x": 0,
+        "measurement": 3060
+      },
+      "primitive_stream_sha256": "e6ed119767dfedafa9bfd864bd462bf2b17b13b2bac45363fdc25c478aa0b330",
+      "step_rows": [
+        {
+          "step": "chain_1_to_2_carry_ladder",
+          "kind": "ripple_carry",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "chain_1_to_2_conditional_subtract_modulus",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "chain_2_to_4_carry_ladder",
+          "kind": "ripple_carry",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "chain_2_to_4_conditional_subtract_modulus",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "chain_4_to_8_carry_ladder",
+          "kind": "ripple_carry",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "chain_4_to_8_conditional_subtract_modulus",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "chain_8_to_16_carry_ladder",
+          "kind": "ripple_carry",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "chain_8_to_16_conditional_subtract_modulus",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "chain_16_to_20_carry_ladder",
+          "kind": "ripple_carry",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "chain_16_to_20_conditional_subtract_modulus",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "chain_20_to_21_carry_ladder",
+          "kind": "ripple_carry",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "chain_20_to_21_conditional_subtract_modulus",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        }
+      ]
+    },
+    {
+      "global_suboperation_index": 17,
+      "schedule_index": 12,
+      "tail_operation_index": 12,
+      "target": "M",
+      "kind": "modular_field_operation",
+      "modular_opcode": "field_add",
+      "semantic_role": "execute field_add for tail row",
+      "sources": [
+        "I",
+        "F"
+      ],
+      "target_slot": 6,
+      "owner_id": "tail_reordered_slot_6",
       "overwritten_source": null,
+      "non_clifford": 510,
+      "operation_count": 1020,
+      "primitive_counts_total": {
+        "ccx": 510,
+        "cx": 0,
+        "x": 0,
+        "measurement": 510
+      },
+      "primitive_stream_sha256": "5c2496ac3c58397ce7000539c82e2ce2b6011bd7b9d90b0c840fc2737cfaa179",
+      "step_rows": [
+        {
+          "step": "carry_ladder",
+          "kind": "ripple_carry",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "conditional_subtract_modulus",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        }
+      ]
+    },
+    {
+      "global_suboperation_index": 18,
+      "schedule_index": 13,
+      "tail_operation_index": 13,
+      "target": "N",
+      "kind": "modular_field_operation",
+      "modular_opcode": "field_sub",
+      "semantic_role": "execute field_sub for tail row",
+      "sources": [
+        "I",
+        "F"
+      ],
+      "target_slot": 1,
+      "owner_id": "tail_reordered_slot_1",
+      "overwritten_source": "I",
       "non_clifford": 510,
       "operation_count": 1020,
       "primitive_counts_total": {
@@ -3332,32 +3455,34 @@
       ]
     },
     {
-      "global_suboperation_index": 22,
-      "schedule_index": 15,
-      "tail_operation_index": 15,
-      "target": "Y3.product_0",
-      "kind": "fused_output_internal_product",
-      "modular_opcode": "field_mul",
-      "semantic_role": "first product for fused add output",
+      "global_suboperation_index": 19,
+      "schedule_index": 14,
+      "tail_operation_index": 14,
+      "target": "X3",
+      "kind": "fused_output_accumulator",
+      "modular_opcode": "field_double_mul_sub",
+      "semantic_role": "fused output a*b - c*d without materialized product field lanes",
       "sources": [
+        "K",
         "N",
-        "M"
+        "E",
+        "C"
       ],
-      "target_slot": 3,
-      "owner_id": "tail_reordered_slot_3",
-      "overwritten_source": "C",
-      "non_clifford": 71492,
-      "operation_count": 77448,
+      "target_slot": 2,
+      "owner_id": "tail_reordered_slot_2",
+      "overwritten_source": null,
+      "non_clifford": 143494,
+      "operation_count": 155916,
       "primitive_counts_total": {
-        "ccx": 71492,
+        "ccx": 143494,
         "cx": 0,
         "x": 0,
-        "measurement": 5956
+        "measurement": 12422
       },
-      "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+      "primitive_stream_sha256": "1ce23721b89edc7c9ed00fb2ff98e1350e7942724f92eaa1f8ce11fdd2d60892",
       "step_rows": [
         {
-          "step": "partial_product_grid",
+          "step": "first_product_partial_product_grid",
           "kind": "schoolbook_partial_products",
           "operation_count": 65536,
           "primitive_counts_total": {
@@ -3368,7 +3493,7 @@
           }
         },
         {
-          "step": "controlled_add_path",
+          "step": "first_product_controlled_add_path",
           "kind": "controlled_accumulator_add",
           "operation_count": 510,
           "primitive_counts_total": {
@@ -3379,7 +3504,7 @@
           }
         },
         {
-          "step": "controlled_sub_path",
+          "step": "first_product_controlled_sub_path",
           "kind": "controlled_accumulator_subtract",
           "operation_count": 512,
           "primitive_counts_total": {
@@ -3390,7 +3515,7 @@
           }
         },
         {
-          "step": "pseudo_mersenne_first_fold",
+          "step": "first_product_pseudo_mersenne_first_fold",
           "kind": "pseudo_mersenne_fold",
           "operation_count": 8610,
           "primitive_counts_total": {
@@ -3401,7 +3526,7 @@
           }
         },
         {
-          "step": "pseudo_mersenne_second_fold",
+          "step": "first_product_pseudo_mersenne_second_fold",
           "kind": "pseudo_mersenne_fold",
           "operation_count": 1260,
           "primitive_counts_total": {
@@ -3412,7 +3537,7 @@
           }
         },
         {
-          "step": "pseudo_mersenne_canonicalize",
+          "step": "first_product_pseudo_mersenne_canonicalize",
           "kind": "conditional_modulus_correction",
           "operation_count": 1020,
           "primitive_counts_total": {
@@ -3421,36 +3546,126 @@
             "x": 0,
             "measurement": 510
           }
+        },
+        {
+          "step": "second_product_partial_product_grid",
+          "kind": "schoolbook_partial_products",
+          "operation_count": 65536,
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          }
+        },
+        {
+          "step": "second_product_controlled_add_path",
+          "kind": "controlled_accumulator_add",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "second_product_controlled_sub_path",
+          "kind": "controlled_accumulator_subtract",
+          "operation_count": 512,
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          }
+        },
+        {
+          "step": "second_product_pseudo_mersenne_first_fold",
+          "kind": "pseudo_mersenne_fold",
+          "operation_count": 8610,
+          "primitive_counts_total": {
+            "ccx": 4305,
+            "cx": 0,
+            "x": 0,
+            "measurement": 4305
+          }
+        },
+        {
+          "step": "second_product_pseudo_mersenne_second_fold",
+          "kind": "pseudo_mersenne_fold",
+          "operation_count": 1260,
+          "primitive_counts_total": {
+            "ccx": 630,
+            "cx": 0,
+            "x": 0,
+            "measurement": 630
+          }
+        },
+        {
+          "step": "second_product_pseudo_mersenne_canonicalize",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 1020,
+          "primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          }
+        },
+        {
+          "step": "combine_difference_borrow_ladder",
+          "kind": "ripple_borrow",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "combine_difference_conditional_add_modulus",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
         }
       ]
     },
     {
-      "global_suboperation_index": 23,
+      "global_suboperation_index": 20,
       "schedule_index": 15,
       "tail_operation_index": 15,
-      "target": "Y3.product_1",
-      "kind": "fused_output_internal_product",
-      "modular_opcode": "field_mul",
-      "semantic_role": "second product for fused add output",
+      "target": "Y3",
+      "kind": "fused_output_accumulator",
+      "modular_opcode": "field_double_mul_add",
+      "semantic_role": "fused output a*b + c*d without materialized product field lanes",
       "sources": [
+        "N",
+        "M",
         "C",
         "L"
       ],
       "target_slot": 3,
       "owner_id": "tail_reordered_slot_3",
       "overwritten_source": "C",
-      "non_clifford": 71492,
-      "operation_count": 77448,
+      "non_clifford": 143494,
+      "operation_count": 155916,
       "primitive_counts_total": {
-        "ccx": 71492,
+        "ccx": 143494,
         "cx": 0,
         "x": 0,
-        "measurement": 5956
+        "measurement": 12422
       },
-      "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+      "primitive_stream_sha256": "f0145d780ced811e2d80b740fad3a911ddef47964ba301eadcdf03a1a89acdfc",
       "step_rows": [
         {
-          "step": "partial_product_grid",
+          "step": "first_product_partial_product_grid",
           "kind": "schoolbook_partial_products",
           "operation_count": 65536,
           "primitive_counts_total": {
@@ -3461,7 +3676,7 @@
           }
         },
         {
-          "step": "controlled_add_path",
+          "step": "first_product_controlled_add_path",
           "kind": "controlled_accumulator_add",
           "operation_count": 510,
           "primitive_counts_total": {
@@ -3472,7 +3687,7 @@
           }
         },
         {
-          "step": "controlled_sub_path",
+          "step": "first_product_controlled_sub_path",
           "kind": "controlled_accumulator_subtract",
           "operation_count": 512,
           "primitive_counts_total": {
@@ -3483,7 +3698,7 @@
           }
         },
         {
-          "step": "pseudo_mersenne_first_fold",
+          "step": "first_product_pseudo_mersenne_first_fold",
           "kind": "pseudo_mersenne_fold",
           "operation_count": 8610,
           "primitive_counts_total": {
@@ -3494,7 +3709,7 @@
           }
         },
         {
-          "step": "pseudo_mersenne_second_fold",
+          "step": "first_product_pseudo_mersenne_second_fold",
           "kind": "pseudo_mersenne_fold",
           "operation_count": 1260,
           "primitive_counts_total": {
@@ -3505,7 +3720,7 @@
           }
         },
         {
-          "step": "pseudo_mersenne_canonicalize",
+          "step": "first_product_pseudo_mersenne_canonicalize",
           "kind": "conditional_modulus_correction",
           "operation_count": 1020,
           "primitive_counts_total": {
@@ -3514,36 +3729,75 @@
             "x": 0,
             "measurement": 510
           }
-        }
-      ]
-    },
-    {
-      "global_suboperation_index": 24,
-      "schedule_index": 15,
-      "tail_operation_index": 15,
-      "target": "Y3",
-      "kind": "fused_output_combine",
-      "modular_opcode": "field_add",
-      "semantic_role": "combine fused output products by addition",
-      "sources": [
-        "Y3.product_0",
-        "Y3.product_1"
-      ],
-      "target_slot": 3,
-      "owner_id": "tail_reordered_slot_3",
-      "overwritten_source": "C",
-      "non_clifford": 510,
-      "operation_count": 1020,
-      "primitive_counts_total": {
-        "ccx": 510,
-        "cx": 0,
-        "x": 0,
-        "measurement": 510
-      },
-      "primitive_stream_sha256": "5c2496ac3c58397ce7000539c82e2ce2b6011bd7b9d90b0c840fc2737cfaa179",
-      "step_rows": [
+        },
         {
-          "step": "carry_ladder",
+          "step": "second_product_partial_product_grid",
+          "kind": "schoolbook_partial_products",
+          "operation_count": 65536,
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          }
+        },
+        {
+          "step": "second_product_controlled_add_path",
+          "kind": "controlled_accumulator_add",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "second_product_controlled_sub_path",
+          "kind": "controlled_accumulator_subtract",
+          "operation_count": 512,
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          }
+        },
+        {
+          "step": "second_product_pseudo_mersenne_first_fold",
+          "kind": "pseudo_mersenne_fold",
+          "operation_count": 8610,
+          "primitive_counts_total": {
+            "ccx": 4305,
+            "cx": 0,
+            "x": 0,
+            "measurement": 4305
+          }
+        },
+        {
+          "step": "second_product_pseudo_mersenne_second_fold",
+          "kind": "pseudo_mersenne_fold",
+          "operation_count": 1260,
+          "primitive_counts_total": {
+            "ccx": 630,
+            "cx": 0,
+            "x": 0,
+            "measurement": 630
+          }
+        },
+        {
+          "step": "second_product_pseudo_mersenne_canonicalize",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 1020,
+          "primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          }
+        },
+        {
+          "step": "combine_sum_carry_ladder",
           "kind": "ripple_carry",
           "operation_count": 510,
           "primitive_counts_total": {
@@ -3554,7 +3808,7 @@
           }
         },
         {
-          "step": "conditional_subtract_modulus",
+          "step": "combine_sum_conditional_subtract_modulus",
           "kind": "conditional_modulus_correction",
           "operation_count": 510,
           "primitive_counts_total": {
@@ -3567,7 +3821,7 @@
       ]
     },
     {
-      "global_suboperation_index": 25,
+      "global_suboperation_index": 21,
       "schedule_index": 15,
       "tail_operation_index": 15,
       "target": "Y3",
@@ -3592,125 +3846,34 @@
       "step_rows": []
     },
     {
-      "global_suboperation_index": 26,
+      "global_suboperation_index": 22,
       "schedule_index": 16,
       "tail_operation_index": 16,
-      "target": "Z3.product_0",
-      "kind": "fused_output_internal_product",
-      "modular_opcode": "field_mul",
-      "semantic_role": "first product for fused add output",
+      "target": "Z3",
+      "kind": "fused_output_accumulator",
+      "modular_opcode": "field_double_mul_add",
+      "semantic_role": "fused output a*b + c*d without materialized product field lanes",
       "sources": [
         "M",
-        "E"
-      ],
-      "target_slot": 1,
-      "owner_id": "tail_reordered_slot_1",
-      "overwritten_source": null,
-      "non_clifford": 71492,
-      "operation_count": 77448,
-      "primitive_counts_total": {
-        "ccx": 71492,
-        "cx": 0,
-        "x": 0,
-        "measurement": 5956
-      },
-      "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
-      "step_rows": [
-        {
-          "step": "partial_product_grid",
-          "kind": "schoolbook_partial_products",
-          "operation_count": 65536,
-          "primitive_counts_total": {
-            "ccx": 65536,
-            "cx": 0,
-            "x": 0,
-            "measurement": 0
-          }
-        },
-        {
-          "step": "controlled_add_path",
-          "kind": "controlled_accumulator_add",
-          "operation_count": 510,
-          "primitive_counts_total": {
-            "ccx": 255,
-            "cx": 0,
-            "x": 0,
-            "measurement": 255
-          }
-        },
-        {
-          "step": "controlled_sub_path",
-          "kind": "controlled_accumulator_subtract",
-          "operation_count": 512,
-          "primitive_counts_total": {
-            "ccx": 256,
-            "cx": 0,
-            "x": 0,
-            "measurement": 256
-          }
-        },
-        {
-          "step": "pseudo_mersenne_first_fold",
-          "kind": "pseudo_mersenne_fold",
-          "operation_count": 8610,
-          "primitive_counts_total": {
-            "ccx": 4305,
-            "cx": 0,
-            "x": 0,
-            "measurement": 4305
-          }
-        },
-        {
-          "step": "pseudo_mersenne_second_fold",
-          "kind": "pseudo_mersenne_fold",
-          "operation_count": 1260,
-          "primitive_counts_total": {
-            "ccx": 630,
-            "cx": 0,
-            "x": 0,
-            "measurement": 630
-          }
-        },
-        {
-          "step": "pseudo_mersenne_canonicalize",
-          "kind": "conditional_modulus_correction",
-          "operation_count": 1020,
-          "primitive_counts_total": {
-            "ccx": 510,
-            "cx": 0,
-            "x": 0,
-            "measurement": 510
-          }
-        }
-      ]
-    },
-    {
-      "global_suboperation_index": 27,
-      "schedule_index": 16,
-      "tail_operation_index": 16,
-      "target": "Z3.product_1",
-      "kind": "fused_output_internal_product",
-      "modular_opcode": "field_mul",
-      "semantic_role": "second product for fused add output",
-      "sources": [
+        "E",
         "L",
         "K"
       ],
       "target_slot": 1,
       "owner_id": "tail_reordered_slot_1",
       "overwritten_source": null,
-      "non_clifford": 71492,
-      "operation_count": 77448,
+      "non_clifford": 143494,
+      "operation_count": 155916,
       "primitive_counts_total": {
-        "ccx": 71492,
+        "ccx": 143494,
         "cx": 0,
         "x": 0,
-        "measurement": 5956
+        "measurement": 12422
       },
-      "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+      "primitive_stream_sha256": "f0145d780ced811e2d80b740fad3a911ddef47964ba301eadcdf03a1a89acdfc",
       "step_rows": [
         {
-          "step": "partial_product_grid",
+          "step": "first_product_partial_product_grid",
           "kind": "schoolbook_partial_products",
           "operation_count": 65536,
           "primitive_counts_total": {
@@ -3721,7 +3884,7 @@
           }
         },
         {
-          "step": "controlled_add_path",
+          "step": "first_product_controlled_add_path",
           "kind": "controlled_accumulator_add",
           "operation_count": 510,
           "primitive_counts_total": {
@@ -3732,7 +3895,7 @@
           }
         },
         {
-          "step": "controlled_sub_path",
+          "step": "first_product_controlled_sub_path",
           "kind": "controlled_accumulator_subtract",
           "operation_count": 512,
           "primitive_counts_total": {
@@ -3743,7 +3906,7 @@
           }
         },
         {
-          "step": "pseudo_mersenne_first_fold",
+          "step": "first_product_pseudo_mersenne_first_fold",
           "kind": "pseudo_mersenne_fold",
           "operation_count": 8610,
           "primitive_counts_total": {
@@ -3754,7 +3917,7 @@
           }
         },
         {
-          "step": "pseudo_mersenne_second_fold",
+          "step": "first_product_pseudo_mersenne_second_fold",
           "kind": "pseudo_mersenne_fold",
           "operation_count": 1260,
           "primitive_counts_total": {
@@ -3765,7 +3928,7 @@
           }
         },
         {
-          "step": "pseudo_mersenne_canonicalize",
+          "step": "first_product_pseudo_mersenne_canonicalize",
           "kind": "conditional_modulus_correction",
           "operation_count": 1020,
           "primitive_counts_total": {
@@ -3774,36 +3937,75 @@
             "x": 0,
             "measurement": 510
           }
-        }
-      ]
-    },
-    {
-      "global_suboperation_index": 28,
-      "schedule_index": 16,
-      "tail_operation_index": 16,
-      "target": "Z3",
-      "kind": "fused_output_combine",
-      "modular_opcode": "field_add",
-      "semantic_role": "combine fused output products by addition",
-      "sources": [
-        "Z3.product_0",
-        "Z3.product_1"
-      ],
-      "target_slot": 1,
-      "owner_id": "tail_reordered_slot_1",
-      "overwritten_source": null,
-      "non_clifford": 510,
-      "operation_count": 1020,
-      "primitive_counts_total": {
-        "ccx": 510,
-        "cx": 0,
-        "x": 0,
-        "measurement": 510
-      },
-      "primitive_stream_sha256": "5c2496ac3c58397ce7000539c82e2ce2b6011bd7b9d90b0c840fc2737cfaa179",
-      "step_rows": [
+        },
         {
-          "step": "carry_ladder",
+          "step": "second_product_partial_product_grid",
+          "kind": "schoolbook_partial_products",
+          "operation_count": 65536,
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          }
+        },
+        {
+          "step": "second_product_controlled_add_path",
+          "kind": "controlled_accumulator_add",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "second_product_controlled_sub_path",
+          "kind": "controlled_accumulator_subtract",
+          "operation_count": 512,
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          }
+        },
+        {
+          "step": "second_product_pseudo_mersenne_first_fold",
+          "kind": "pseudo_mersenne_fold",
+          "operation_count": 8610,
+          "primitive_counts_total": {
+            "ccx": 4305,
+            "cx": 0,
+            "x": 0,
+            "measurement": 4305
+          }
+        },
+        {
+          "step": "second_product_pseudo_mersenne_second_fold",
+          "kind": "pseudo_mersenne_fold",
+          "operation_count": 1260,
+          "primitive_counts_total": {
+            "ccx": 630,
+            "cx": 0,
+            "x": 0,
+            "measurement": 630
+          }
+        },
+        {
+          "step": "second_product_pseudo_mersenne_canonicalize",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 1020,
+          "primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          }
+        },
+        {
+          "step": "combine_sum_carry_ladder",
           "kind": "ripple_carry",
           "operation_count": 510,
           "primitive_counts_total": {
@@ -3814,7 +4016,7 @@
           }
         },
         {
-          "step": "conditional_subtract_modulus",
+          "step": "combine_sum_conditional_subtract_modulus",
           "kind": "conditional_modulus_correction",
           "operation_count": 510,
           "primitive_counts_total": {

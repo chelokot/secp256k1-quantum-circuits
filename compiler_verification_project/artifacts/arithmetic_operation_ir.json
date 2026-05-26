@@ -41,14 +41,16 @@
   "executable_modular_circuit_ir": {
     "schema": "compiler-project-executable-modular-circuit-ir-v1",
     "field_bits": 256,
-    "operation_count": 6,
+    "operation_count": 8,
     "non_clifford_by_opcode": {
       "field_add": 510,
       "field_sub": 510,
       "field_sub_sum": 1020,
       "field_triple": 1020,
       "mul_const": 3060,
-      "field_mul": 71492
+      "field_mul": 71492,
+      "field_double_mul_add": 143494,
+      "field_double_mul_sub": 143494
     }
   },
   "tail_macro_engine": {
@@ -76,10 +78,10 @@
     "completion_status": "tail_cost_bound_to_reversible_seven_slot_field_schedule_contract"
   },
   "summary": {
-    "kernel_count": 13,
-    "stage_count": 143,
-    "block_count": 190,
-    "kernel_operation_count_total": 4010325,
+    "kernel_count": 15,
+    "stage_count": 171,
+    "block_count": 218,
+    "kernel_operation_count_total": 4322157,
     "max_block_operand_slots_required": 32768,
     "generated_ladder_max_operand_slots_required": 287
   },
@@ -3362,6 +3364,2128 @@
               },
               "source_contract": {
                 "summary": "canonicalize raw sum by subtracting p when needed",
+                "instance_count": 255,
+                "has_expanded_operations": false,
+                "has_generator": true,
+                "generator_operand_contract": {
+                  "kind": "repeated_ladder_with_measurement",
+                  "operand_domain": "ladder_bit_index",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "expected_operation_count": 510,
+                  "expected_operand_slots_required": 255,
+                  "observed_operation_count": 510,
+                  "observed_operand_slots_required": 255,
+                  "pass": true
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "opcode": "field_double_mul_add",
+      "summary": "Exact fused output kernel for a*b + c*d without materialized product field lanes.",
+      "operation_count": 155916,
+      "stage_count": 14,
+      "block_count": 14,
+      "stage_digest_sha256": "86b2bbf704e9127aac844de5bd76fa528203bd7c658fe2ac315088db62c30317",
+      "primitive_counts_total": {
+        "ccx": 143494,
+        "cx": 0,
+        "x": 0,
+        "measurement": 12422
+      },
+      "declared_primitive_counts_total": {
+        "ccx": 143494,
+        "cx": 0,
+        "x": 0,
+        "measurement": 12422
+      },
+      "exact_non_clifford_per_kernel": 143494,
+      "stages": [
+        {
+          "kernel": "field_double_mul_add",
+          "stage": "first_product_partial_product_grid",
+          "category": "first_product_accumulator",
+          "operation_start": 0,
+          "operation_end_exclusive": 65536,
+          "operation_count": 65536,
+          "block_count": 1,
+          "block_digest_sha256": "f6b448789024544aa57d035f1690ce725d99bed8a2a3805bacc82df377f537e8",
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_add",
+              "stage": "first_product_partial_product_grid",
+              "block": "first_product_partial_product_grid",
+              "operation_start": 0,
+              "operation_end_exclusive": 65536,
+              "operation_count": 65536,
+              "operation_stream_sha256": "5643f7841e41acd1ef750fa5b9d02646f632f43e77807ccd4ee4edc9fa3b1f85",
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    2
+                  ]
+                },
+                "max_operand_index": 255,
+                "operand_slots_required": 256,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "first product: one controlled interaction for each field-bit product",
+                "instance_count": 65536,
+                "has_expanded_operations": true,
+                "has_generator": false,
+                "generator_operand_contract": null
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_add",
+          "stage": "first_product_controlled_add_path",
+          "category": "first_product_accumulator",
+          "operation_start": 65536,
+          "operation_end_exclusive": 66046,
+          "operation_count": 510,
+          "block_count": 1,
+          "block_digest_sha256": "224ed8bdbfb196c71e066a0c02a3c65a14dcd81ac5b4f8356c15b779a7719ecb",
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_add",
+              "stage": "first_product_controlled_add_path",
+              "block": "first_product_controlled_add_path",
+              "operation_start": 65536,
+              "operation_end_exclusive": 66046,
+              "operation_count": 510,
+              "operation_stream_sha256": "ac71b962e7a3a57a21c1a16f89ab5821863babe68df85532201e8070a6a86a02",
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ],
+                  "measurement": [
+                    1
+                  ]
+                },
+                "max_operand_index": 254,
+                "operand_slots_required": 255,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "first product: carry path for controlled add half of schoolbook multiplier",
+                "instance_count": 255,
+                "has_expanded_operations": false,
+                "has_generator": true,
+                "generator_operand_contract": {
+                  "kind": "repeated_ladder_with_measurement",
+                  "operand_domain": "ladder_bit_index",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "expected_operation_count": 510,
+                  "expected_operand_slots_required": 255,
+                  "observed_operation_count": 510,
+                  "observed_operand_slots_required": 255,
+                  "pass": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_add",
+          "stage": "first_product_controlled_sub_path",
+          "category": "first_product_accumulator",
+          "operation_start": 66046,
+          "operation_end_exclusive": 66558,
+          "operation_count": 512,
+          "block_count": 1,
+          "block_digest_sha256": "3e9870c7650c27d08b16d341221f9cf48d967b2aedaede1ea428abab318ff0f3",
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_add",
+              "stage": "first_product_controlled_sub_path",
+              "block": "first_product_controlled_sub_path",
+              "operation_start": 66046,
+              "operation_end_exclusive": 66558,
+              "operation_count": 512,
+              "operation_stream_sha256": "b137819ba896543a6959ca095da87fb15970de81068bb32e7327c69fcbac82b1",
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ],
+                  "measurement": [
+                    1
+                  ]
+                },
+                "max_operand_index": 255,
+                "operand_slots_required": 256,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "first product: borrow path for controlled subtract half of schoolbook multiplier",
+                "instance_count": 256,
+                "has_expanded_operations": false,
+                "has_generator": true,
+                "generator_operand_contract": {
+                  "kind": "repeated_ladder_with_measurement",
+                  "operand_domain": "ladder_bit_index",
+                  "bit_count": 256,
+                  "repeat_count": 1,
+                  "expected_operation_count": 512,
+                  "expected_operand_slots_required": 256,
+                  "observed_operation_count": 512,
+                  "observed_operand_slots_required": 256,
+                  "pass": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_add",
+          "stage": "first_product_pseudo_mersenne_first_fold",
+          "category": "first_product_accumulator",
+          "operation_start": 66558,
+          "operation_end_exclusive": 75168,
+          "operation_count": 8610,
+          "block_count": 1,
+          "block_digest_sha256": "77deb24b14f9b7e84ec486a02e97d4c92a3ebd2408b212e8a41202a0fedf95ca",
+          "primitive_counts_total": {
+            "ccx": 4305,
+            "cx": 0,
+            "x": 0,
+            "measurement": 4305
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 4305,
+            "cx": 0,
+            "x": 0,
+            "measurement": 4305
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_add",
+              "stage": "first_product_pseudo_mersenne_first_fold",
+              "block": "first_product_pseudo_mersenne_first_fold",
+              "operation_start": 66558,
+              "operation_end_exclusive": 75168,
+              "operation_count": 8610,
+              "operation_stream_sha256": "beea8eb4895f078a404c039098f2bc5dc744e0403b22815a17707cb3835c9ae4",
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ],
+                  "measurement": [
+                    1
+                  ]
+                },
+                "max_operand_index": 286,
+                "operand_slots_required": 287,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "first product: fold high product half via 2^n = 2^shift + low_term",
+                "instance_count": 4305,
+                "has_expanded_operations": false,
+                "has_generator": true,
+                "generator_operand_contract": {
+                  "kind": "repeated_ladder_with_measurement",
+                  "operand_domain": "ladder_bit_index",
+                  "bit_count": 287,
+                  "repeat_count": 15,
+                  "expected_operation_count": 8610,
+                  "expected_operand_slots_required": 287,
+                  "observed_operation_count": 8610,
+                  "observed_operand_slots_required": 287,
+                  "pass": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_add",
+          "stage": "first_product_pseudo_mersenne_second_fold",
+          "category": "first_product_accumulator",
+          "operation_start": 75168,
+          "operation_end_exclusive": 76428,
+          "operation_count": 1260,
+          "block_count": 1,
+          "block_digest_sha256": "67b3c90643a4eaf038eaa9dff387e53dec0a54b6f2ff948dcd6b2db051cb6d05",
+          "primitive_counts_total": {
+            "ccx": 630,
+            "cx": 0,
+            "x": 0,
+            "measurement": 630
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 630,
+            "cx": 0,
+            "x": 0,
+            "measurement": 630
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_add",
+              "stage": "first_product_pseudo_mersenne_second_fold",
+              "block": "first_product_pseudo_mersenne_second_fold",
+              "operation_start": 75168,
+              "operation_end_exclusive": 76428,
+              "operation_count": 1260,
+              "operation_stream_sha256": "3c703993c0430edff9e2d3ab4a1c08c89fd5b3f6a03e39eb59566cba5b2ec35f",
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ],
+                  "measurement": [
+                    1
+                  ]
+                },
+                "max_operand_index": 41,
+                "operand_slots_required": 42,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "first product: fold residual high component after first fold",
+                "instance_count": 630,
+                "has_expanded_operations": false,
+                "has_generator": true,
+                "generator_operand_contract": {
+                  "kind": "repeated_ladder_with_measurement",
+                  "operand_domain": "ladder_bit_index",
+                  "bit_count": 42,
+                  "repeat_count": 15,
+                  "expected_operation_count": 1260,
+                  "expected_operand_slots_required": 42,
+                  "observed_operation_count": 1260,
+                  "observed_operand_slots_required": 42,
+                  "pass": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_add",
+          "stage": "first_product_pseudo_mersenne_canonicalize",
+          "category": "first_product_accumulator",
+          "operation_start": 76428,
+          "operation_end_exclusive": 77448,
+          "operation_count": 1020,
+          "block_count": 1,
+          "block_digest_sha256": "848e973d8c7d41637b611efe1e8958b971931fa2a597cf8da15d020a39eb4068",
+          "primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_add",
+              "stage": "first_product_pseudo_mersenne_canonicalize",
+              "block": "first_product_pseudo_mersenne_canonicalize",
+              "operation_start": 76428,
+              "operation_end_exclusive": 77448,
+              "operation_count": 1020,
+              "operation_stream_sha256": "42ac90b940e2212ce0672a39dbd7b9dc885bbebe543e038ab86da93936265b46",
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ],
+                  "measurement": [
+                    1
+                  ]
+                },
+                "max_operand_index": 254,
+                "operand_slots_required": 255,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "first product: canonicalize product with bounded subtract-p passes",
+                "instance_count": 510,
+                "has_expanded_operations": false,
+                "has_generator": true,
+                "generator_operand_contract": {
+                  "kind": "repeated_ladder_with_measurement",
+                  "operand_domain": "ladder_bit_index",
+                  "bit_count": 255,
+                  "repeat_count": 2,
+                  "expected_operation_count": 1020,
+                  "expected_operand_slots_required": 255,
+                  "observed_operation_count": 1020,
+                  "observed_operand_slots_required": 255,
+                  "pass": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_add",
+          "stage": "second_product_partial_product_grid",
+          "category": "second_product_accumulator",
+          "operation_start": 77448,
+          "operation_end_exclusive": 142984,
+          "operation_count": 65536,
+          "block_count": 1,
+          "block_digest_sha256": "74cb5816a30e88965c2ff7cf60056a3f1d33db116d391cba5ed19a7e99ceac72",
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_add",
+              "stage": "second_product_partial_product_grid",
+              "block": "second_product_partial_product_grid",
+              "operation_start": 77448,
+              "operation_end_exclusive": 142984,
+              "operation_count": 65536,
+              "operation_stream_sha256": "08350c3103e28728d84b63665d7c674fb797a4110b3feb83a51e7cb3f4b60279",
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    2
+                  ]
+                },
+                "max_operand_index": 255,
+                "operand_slots_required": 256,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "second product: one controlled interaction for each field-bit product",
+                "instance_count": 65536,
+                "has_expanded_operations": true,
+                "has_generator": false,
+                "generator_operand_contract": null
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_add",
+          "stage": "second_product_controlled_add_path",
+          "category": "second_product_accumulator",
+          "operation_start": 142984,
+          "operation_end_exclusive": 143494,
+          "operation_count": 510,
+          "block_count": 1,
+          "block_digest_sha256": "97f7a4affc42adc51c2457f65cb0da6ad9b4bda65140bad890ea0509b22cc46b",
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_add",
+              "stage": "second_product_controlled_add_path",
+              "block": "second_product_controlled_add_path",
+              "operation_start": 142984,
+              "operation_end_exclusive": 143494,
+              "operation_count": 510,
+              "operation_stream_sha256": "d05b05f0e956eba3c4a9fd3f8fba0007830e644ef062af7e69e3e01d177532f4",
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ],
+                  "measurement": [
+                    1
+                  ]
+                },
+                "max_operand_index": 254,
+                "operand_slots_required": 255,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "second product: carry path for controlled add half of schoolbook multiplier",
+                "instance_count": 255,
+                "has_expanded_operations": false,
+                "has_generator": true,
+                "generator_operand_contract": {
+                  "kind": "repeated_ladder_with_measurement",
+                  "operand_domain": "ladder_bit_index",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "expected_operation_count": 510,
+                  "expected_operand_slots_required": 255,
+                  "observed_operation_count": 510,
+                  "observed_operand_slots_required": 255,
+                  "pass": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_add",
+          "stage": "second_product_controlled_sub_path",
+          "category": "second_product_accumulator",
+          "operation_start": 143494,
+          "operation_end_exclusive": 144006,
+          "operation_count": 512,
+          "block_count": 1,
+          "block_digest_sha256": "f2f4cc79ad1da9b8a3790f08e0bc3f8f465f4e7fe01ed59373fb4684e708fb64",
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_add",
+              "stage": "second_product_controlled_sub_path",
+              "block": "second_product_controlled_sub_path",
+              "operation_start": 143494,
+              "operation_end_exclusive": 144006,
+              "operation_count": 512,
+              "operation_stream_sha256": "ce55d2a87ab3ad3771b550dabb3d146226f54466e0aa49aec897bd19f73e5967",
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ],
+                  "measurement": [
+                    1
+                  ]
+                },
+                "max_operand_index": 255,
+                "operand_slots_required": 256,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "second product: borrow path for controlled subtract half of schoolbook multiplier",
+                "instance_count": 256,
+                "has_expanded_operations": false,
+                "has_generator": true,
+                "generator_operand_contract": {
+                  "kind": "repeated_ladder_with_measurement",
+                  "operand_domain": "ladder_bit_index",
+                  "bit_count": 256,
+                  "repeat_count": 1,
+                  "expected_operation_count": 512,
+                  "expected_operand_slots_required": 256,
+                  "observed_operation_count": 512,
+                  "observed_operand_slots_required": 256,
+                  "pass": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_add",
+          "stage": "second_product_pseudo_mersenne_first_fold",
+          "category": "second_product_accumulator",
+          "operation_start": 144006,
+          "operation_end_exclusive": 152616,
+          "operation_count": 8610,
+          "block_count": 1,
+          "block_digest_sha256": "0ea77c22357deadd039c30055fd47c5f6973a3f33142e9e1cdad0273ab484735",
+          "primitive_counts_total": {
+            "ccx": 4305,
+            "cx": 0,
+            "x": 0,
+            "measurement": 4305
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 4305,
+            "cx": 0,
+            "x": 0,
+            "measurement": 4305
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_add",
+              "stage": "second_product_pseudo_mersenne_first_fold",
+              "block": "second_product_pseudo_mersenne_first_fold",
+              "operation_start": 144006,
+              "operation_end_exclusive": 152616,
+              "operation_count": 8610,
+              "operation_stream_sha256": "43bbd5e6bcd89c504b86f16ce9616cee623948e382b41f9f4161d86d63f30312",
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ],
+                  "measurement": [
+                    1
+                  ]
+                },
+                "max_operand_index": 286,
+                "operand_slots_required": 287,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "second product: fold high product half via 2^n = 2^shift + low_term",
+                "instance_count": 4305,
+                "has_expanded_operations": false,
+                "has_generator": true,
+                "generator_operand_contract": {
+                  "kind": "repeated_ladder_with_measurement",
+                  "operand_domain": "ladder_bit_index",
+                  "bit_count": 287,
+                  "repeat_count": 15,
+                  "expected_operation_count": 8610,
+                  "expected_operand_slots_required": 287,
+                  "observed_operation_count": 8610,
+                  "observed_operand_slots_required": 287,
+                  "pass": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_add",
+          "stage": "second_product_pseudo_mersenne_second_fold",
+          "category": "second_product_accumulator",
+          "operation_start": 152616,
+          "operation_end_exclusive": 153876,
+          "operation_count": 1260,
+          "block_count": 1,
+          "block_digest_sha256": "24e5df8f402f1964f29968ecdc2c75810a11d74bfe82be4b90a32af80e952506",
+          "primitive_counts_total": {
+            "ccx": 630,
+            "cx": 0,
+            "x": 0,
+            "measurement": 630
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 630,
+            "cx": 0,
+            "x": 0,
+            "measurement": 630
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_add",
+              "stage": "second_product_pseudo_mersenne_second_fold",
+              "block": "second_product_pseudo_mersenne_second_fold",
+              "operation_start": 152616,
+              "operation_end_exclusive": 153876,
+              "operation_count": 1260,
+              "operation_stream_sha256": "47665dcfefecbf4e3379bfcb6fd4c5843b21558ed9dbe3d7eacc341788153024",
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ],
+                  "measurement": [
+                    1
+                  ]
+                },
+                "max_operand_index": 41,
+                "operand_slots_required": 42,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "second product: fold residual high component after first fold",
+                "instance_count": 630,
+                "has_expanded_operations": false,
+                "has_generator": true,
+                "generator_operand_contract": {
+                  "kind": "repeated_ladder_with_measurement",
+                  "operand_domain": "ladder_bit_index",
+                  "bit_count": 42,
+                  "repeat_count": 15,
+                  "expected_operation_count": 1260,
+                  "expected_operand_slots_required": 42,
+                  "observed_operation_count": 1260,
+                  "observed_operand_slots_required": 42,
+                  "pass": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_add",
+          "stage": "second_product_pseudo_mersenne_canonicalize",
+          "category": "second_product_accumulator",
+          "operation_start": 153876,
+          "operation_end_exclusive": 154896,
+          "operation_count": 1020,
+          "block_count": 1,
+          "block_digest_sha256": "9ce7420943ba8105762ef03141c49db64112eed017f86c8525e48af03a310b2d",
+          "primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_add",
+              "stage": "second_product_pseudo_mersenne_canonicalize",
+              "block": "second_product_pseudo_mersenne_canonicalize",
+              "operation_start": 153876,
+              "operation_end_exclusive": 154896,
+              "operation_count": 1020,
+              "operation_stream_sha256": "375ad5e72a4042791df0e49ca96f02fb7cd8a5ab09df59c79a964c50f4b4c984",
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ],
+                  "measurement": [
+                    1
+                  ]
+                },
+                "max_operand_index": 254,
+                "operand_slots_required": 255,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "second product: canonicalize product with bounded subtract-p passes",
+                "instance_count": 510,
+                "has_expanded_operations": false,
+                "has_generator": true,
+                "generator_operand_contract": {
+                  "kind": "repeated_ladder_with_measurement",
+                  "operand_domain": "ladder_bit_index",
+                  "bit_count": 255,
+                  "repeat_count": 2,
+                  "expected_operation_count": 1020,
+                  "expected_operand_slots_required": 255,
+                  "observed_operation_count": 1020,
+                  "observed_operand_slots_required": 255,
+                  "pass": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_add",
+          "stage": "combine_sum_carry_ladder",
+          "category": "combine_accumulator",
+          "operation_start": 154896,
+          "operation_end_exclusive": 155406,
+          "operation_count": 510,
+          "block_count": 1,
+          "block_digest_sha256": "a87320f827787720483aae1674832c9ce3a270687a6b1711691da0330041cf0a",
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_add",
+              "stage": "combine_sum_carry_ladder",
+              "block": "combine_sum_carry_ladder",
+              "operation_start": 154896,
+              "operation_end_exclusive": 155406,
+              "operation_count": 510,
+              "operation_stream_sha256": "f7ee448b4fd967b4453d9eea9e14772ebba53dcb0716c7edeb290a6959a5010b",
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ],
+                  "measurement": [
+                    1
+                  ]
+                },
+                "max_operand_index": 254,
+                "operand_slots_required": 255,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "combine sum: compute raw sum carry path",
+                "instance_count": 255,
+                "has_expanded_operations": false,
+                "has_generator": true,
+                "generator_operand_contract": {
+                  "kind": "repeated_ladder_with_measurement",
+                  "operand_domain": "ladder_bit_index",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "expected_operation_count": 510,
+                  "expected_operand_slots_required": 255,
+                  "observed_operation_count": 510,
+                  "observed_operand_slots_required": 255,
+                  "pass": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_add",
+          "stage": "combine_sum_conditional_subtract_modulus",
+          "category": "combine_accumulator",
+          "operation_start": 155406,
+          "operation_end_exclusive": 155916,
+          "operation_count": 510,
+          "block_count": 1,
+          "block_digest_sha256": "140a76ebba6bd4a56267aa814d340e57f26d919fac463d1dff9d514e30656d15",
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_add",
+              "stage": "combine_sum_conditional_subtract_modulus",
+              "block": "combine_sum_conditional_subtract_modulus",
+              "operation_start": 155406,
+              "operation_end_exclusive": 155916,
+              "operation_count": 510,
+              "operation_stream_sha256": "699d4c384014a6a0b9d241b25138fe321b7c7d004fe9aa89077c41c258545143",
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ],
+                  "measurement": [
+                    1
+                  ]
+                },
+                "max_operand_index": 254,
+                "operand_slots_required": 255,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "combine sum: canonicalize raw sum by subtracting p when needed",
+                "instance_count": 255,
+                "has_expanded_operations": false,
+                "has_generator": true,
+                "generator_operand_contract": {
+                  "kind": "repeated_ladder_with_measurement",
+                  "operand_domain": "ladder_bit_index",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "expected_operation_count": 510,
+                  "expected_operand_slots_required": 255,
+                  "observed_operation_count": 510,
+                  "observed_operand_slots_required": 255,
+                  "pass": true
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "opcode": "field_double_mul_sub",
+      "summary": "Exact fused output kernel for a*b - c*d without materialized product field lanes.",
+      "operation_count": 155916,
+      "stage_count": 14,
+      "block_count": 14,
+      "stage_digest_sha256": "c2cce2257cd870d021791f26ed36daa402b76ef1c180724ca39cc0c1c3ba226b",
+      "primitive_counts_total": {
+        "ccx": 143494,
+        "cx": 0,
+        "x": 0,
+        "measurement": 12422
+      },
+      "declared_primitive_counts_total": {
+        "ccx": 143494,
+        "cx": 0,
+        "x": 0,
+        "measurement": 12422
+      },
+      "exact_non_clifford_per_kernel": 143494,
+      "stages": [
+        {
+          "kernel": "field_double_mul_sub",
+          "stage": "first_product_partial_product_grid",
+          "category": "first_product_accumulator",
+          "operation_start": 0,
+          "operation_end_exclusive": 65536,
+          "operation_count": 65536,
+          "block_count": 1,
+          "block_digest_sha256": "ffbd5db6b259347784bde26610e00016ce11949cfcf21ea4f10203cc6cbbd4f9",
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_sub",
+              "stage": "first_product_partial_product_grid",
+              "block": "first_product_partial_product_grid",
+              "operation_start": 0,
+              "operation_end_exclusive": 65536,
+              "operation_count": 65536,
+              "operation_stream_sha256": "ce4cc671884353fc4875043920aabf0f4a15c877d09e3aaef830104a104b9cc1",
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    2
+                  ]
+                },
+                "max_operand_index": 255,
+                "operand_slots_required": 256,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "first product: one controlled interaction for each field-bit product",
+                "instance_count": 65536,
+                "has_expanded_operations": true,
+                "has_generator": false,
+                "generator_operand_contract": null
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_sub",
+          "stage": "first_product_controlled_add_path",
+          "category": "first_product_accumulator",
+          "operation_start": 65536,
+          "operation_end_exclusive": 66046,
+          "operation_count": 510,
+          "block_count": 1,
+          "block_digest_sha256": "19881f41020625234098d33a7e968e81ed2703af04950bc80bbaf236c17102c3",
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_sub",
+              "stage": "first_product_controlled_add_path",
+              "block": "first_product_controlled_add_path",
+              "operation_start": 65536,
+              "operation_end_exclusive": 66046,
+              "operation_count": 510,
+              "operation_stream_sha256": "3950c0141401bcf175ffe28adcf492141b8fbbd5157159bfd22d3f93ac0b99ec",
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ],
+                  "measurement": [
+                    1
+                  ]
+                },
+                "max_operand_index": 254,
+                "operand_slots_required": 255,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "first product: carry path for controlled add half of schoolbook multiplier",
+                "instance_count": 255,
+                "has_expanded_operations": false,
+                "has_generator": true,
+                "generator_operand_contract": {
+                  "kind": "repeated_ladder_with_measurement",
+                  "operand_domain": "ladder_bit_index",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "expected_operation_count": 510,
+                  "expected_operand_slots_required": 255,
+                  "observed_operation_count": 510,
+                  "observed_operand_slots_required": 255,
+                  "pass": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_sub",
+          "stage": "first_product_controlled_sub_path",
+          "category": "first_product_accumulator",
+          "operation_start": 66046,
+          "operation_end_exclusive": 66558,
+          "operation_count": 512,
+          "block_count": 1,
+          "block_digest_sha256": "cfc9a1ab7beb0b3acf9fa3f6dadadd3264ea13d9d9d5435bb1c7fe0982c0c799",
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_sub",
+              "stage": "first_product_controlled_sub_path",
+              "block": "first_product_controlled_sub_path",
+              "operation_start": 66046,
+              "operation_end_exclusive": 66558,
+              "operation_count": 512,
+              "operation_stream_sha256": "f3c8cef74f8c66a8d3e61f6b9897bc8dc4fea8145b3178b31a609f8e9d6ffdcc",
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ],
+                  "measurement": [
+                    1
+                  ]
+                },
+                "max_operand_index": 255,
+                "operand_slots_required": 256,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "first product: borrow path for controlled subtract half of schoolbook multiplier",
+                "instance_count": 256,
+                "has_expanded_operations": false,
+                "has_generator": true,
+                "generator_operand_contract": {
+                  "kind": "repeated_ladder_with_measurement",
+                  "operand_domain": "ladder_bit_index",
+                  "bit_count": 256,
+                  "repeat_count": 1,
+                  "expected_operation_count": 512,
+                  "expected_operand_slots_required": 256,
+                  "observed_operation_count": 512,
+                  "observed_operand_slots_required": 256,
+                  "pass": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_sub",
+          "stage": "first_product_pseudo_mersenne_first_fold",
+          "category": "first_product_accumulator",
+          "operation_start": 66558,
+          "operation_end_exclusive": 75168,
+          "operation_count": 8610,
+          "block_count": 1,
+          "block_digest_sha256": "3fec0b7fdc8cacbdd57192047fb977249152c24c686cb26b8d17cb76edfb9758",
+          "primitive_counts_total": {
+            "ccx": 4305,
+            "cx": 0,
+            "x": 0,
+            "measurement": 4305
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 4305,
+            "cx": 0,
+            "x": 0,
+            "measurement": 4305
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_sub",
+              "stage": "first_product_pseudo_mersenne_first_fold",
+              "block": "first_product_pseudo_mersenne_first_fold",
+              "operation_start": 66558,
+              "operation_end_exclusive": 75168,
+              "operation_count": 8610,
+              "operation_stream_sha256": "7a7bbd9e915fb58e93b9288034d89dfd4b84196f0c3053090b20333c923c75e7",
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ],
+                  "measurement": [
+                    1
+                  ]
+                },
+                "max_operand_index": 286,
+                "operand_slots_required": 287,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "first product: fold high product half via 2^n = 2^shift + low_term",
+                "instance_count": 4305,
+                "has_expanded_operations": false,
+                "has_generator": true,
+                "generator_operand_contract": {
+                  "kind": "repeated_ladder_with_measurement",
+                  "operand_domain": "ladder_bit_index",
+                  "bit_count": 287,
+                  "repeat_count": 15,
+                  "expected_operation_count": 8610,
+                  "expected_operand_slots_required": 287,
+                  "observed_operation_count": 8610,
+                  "observed_operand_slots_required": 287,
+                  "pass": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_sub",
+          "stage": "first_product_pseudo_mersenne_second_fold",
+          "category": "first_product_accumulator",
+          "operation_start": 75168,
+          "operation_end_exclusive": 76428,
+          "operation_count": 1260,
+          "block_count": 1,
+          "block_digest_sha256": "92ce22093a1fab0d5e94c809127f77114e094088ccc8f8ae37f792b50598ce82",
+          "primitive_counts_total": {
+            "ccx": 630,
+            "cx": 0,
+            "x": 0,
+            "measurement": 630
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 630,
+            "cx": 0,
+            "x": 0,
+            "measurement": 630
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_sub",
+              "stage": "first_product_pseudo_mersenne_second_fold",
+              "block": "first_product_pseudo_mersenne_second_fold",
+              "operation_start": 75168,
+              "operation_end_exclusive": 76428,
+              "operation_count": 1260,
+              "operation_stream_sha256": "b46e626e684cedeb9c9d06819a28cc2cff2239da4e8f8fd4480a2a97197c47a2",
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ],
+                  "measurement": [
+                    1
+                  ]
+                },
+                "max_operand_index": 41,
+                "operand_slots_required": 42,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "first product: fold residual high component after first fold",
+                "instance_count": 630,
+                "has_expanded_operations": false,
+                "has_generator": true,
+                "generator_operand_contract": {
+                  "kind": "repeated_ladder_with_measurement",
+                  "operand_domain": "ladder_bit_index",
+                  "bit_count": 42,
+                  "repeat_count": 15,
+                  "expected_operation_count": 1260,
+                  "expected_operand_slots_required": 42,
+                  "observed_operation_count": 1260,
+                  "observed_operand_slots_required": 42,
+                  "pass": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_sub",
+          "stage": "first_product_pseudo_mersenne_canonicalize",
+          "category": "first_product_accumulator",
+          "operation_start": 76428,
+          "operation_end_exclusive": 77448,
+          "operation_count": 1020,
+          "block_count": 1,
+          "block_digest_sha256": "ef74b3cd2bb12bb994903c380c85ee8ede78b14a6b50d76c021158c3fc31c013",
+          "primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_sub",
+              "stage": "first_product_pseudo_mersenne_canonicalize",
+              "block": "first_product_pseudo_mersenne_canonicalize",
+              "operation_start": 76428,
+              "operation_end_exclusive": 77448,
+              "operation_count": 1020,
+              "operation_stream_sha256": "32f1b49734c2dd7ee1a09eb19629e2b8d0eaf7c7d5855bba8ad716b27b064400",
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ],
+                  "measurement": [
+                    1
+                  ]
+                },
+                "max_operand_index": 254,
+                "operand_slots_required": 255,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "first product: canonicalize product with bounded subtract-p passes",
+                "instance_count": 510,
+                "has_expanded_operations": false,
+                "has_generator": true,
+                "generator_operand_contract": {
+                  "kind": "repeated_ladder_with_measurement",
+                  "operand_domain": "ladder_bit_index",
+                  "bit_count": 255,
+                  "repeat_count": 2,
+                  "expected_operation_count": 1020,
+                  "expected_operand_slots_required": 255,
+                  "observed_operation_count": 1020,
+                  "observed_operand_slots_required": 255,
+                  "pass": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_sub",
+          "stage": "second_product_partial_product_grid",
+          "category": "second_product_accumulator",
+          "operation_start": 77448,
+          "operation_end_exclusive": 142984,
+          "operation_count": 65536,
+          "block_count": 1,
+          "block_digest_sha256": "e4a9ea6e03aa4725e123ccdfb4bc0c539a452a80443ed945b80523cc2fb5ffff",
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_sub",
+              "stage": "second_product_partial_product_grid",
+              "block": "second_product_partial_product_grid",
+              "operation_start": 77448,
+              "operation_end_exclusive": 142984,
+              "operation_count": 65536,
+              "operation_stream_sha256": "213b22814a6aad81a630a9e662ef9169f706ee8af437e53ae4e848eed8fdfbb2",
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    2
+                  ]
+                },
+                "max_operand_index": 255,
+                "operand_slots_required": 256,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "second product: one controlled interaction for each field-bit product",
+                "instance_count": 65536,
+                "has_expanded_operations": true,
+                "has_generator": false,
+                "generator_operand_contract": null
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_sub",
+          "stage": "second_product_controlled_add_path",
+          "category": "second_product_accumulator",
+          "operation_start": 142984,
+          "operation_end_exclusive": 143494,
+          "operation_count": 510,
+          "block_count": 1,
+          "block_digest_sha256": "0b042b709a12febb2ab7581c99df30d2ab66ecad867b2ead11cad756b7ebd459",
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_sub",
+              "stage": "second_product_controlled_add_path",
+              "block": "second_product_controlled_add_path",
+              "operation_start": 142984,
+              "operation_end_exclusive": 143494,
+              "operation_count": 510,
+              "operation_stream_sha256": "f098fbe36ec84a410b694cc164e548691e38022c06d922cfd8ef041437a62c23",
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ],
+                  "measurement": [
+                    1
+                  ]
+                },
+                "max_operand_index": 254,
+                "operand_slots_required": 255,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "second product: carry path for controlled add half of schoolbook multiplier",
+                "instance_count": 255,
+                "has_expanded_operations": false,
+                "has_generator": true,
+                "generator_operand_contract": {
+                  "kind": "repeated_ladder_with_measurement",
+                  "operand_domain": "ladder_bit_index",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "expected_operation_count": 510,
+                  "expected_operand_slots_required": 255,
+                  "observed_operation_count": 510,
+                  "observed_operand_slots_required": 255,
+                  "pass": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_sub",
+          "stage": "second_product_controlled_sub_path",
+          "category": "second_product_accumulator",
+          "operation_start": 143494,
+          "operation_end_exclusive": 144006,
+          "operation_count": 512,
+          "block_count": 1,
+          "block_digest_sha256": "e319fbe9a5ce4712e96b42ce4b8d9ec5d83e6dd2d348d05e17ce665934de0767",
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_sub",
+              "stage": "second_product_controlled_sub_path",
+              "block": "second_product_controlled_sub_path",
+              "operation_start": 143494,
+              "operation_end_exclusive": 144006,
+              "operation_count": 512,
+              "operation_stream_sha256": "4c54e2f9fe0cac07a4da9ebc0984373b219f96a5ad0d8f2a803569aaa95c6996",
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ],
+                  "measurement": [
+                    1
+                  ]
+                },
+                "max_operand_index": 255,
+                "operand_slots_required": 256,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "second product: borrow path for controlled subtract half of schoolbook multiplier",
+                "instance_count": 256,
+                "has_expanded_operations": false,
+                "has_generator": true,
+                "generator_operand_contract": {
+                  "kind": "repeated_ladder_with_measurement",
+                  "operand_domain": "ladder_bit_index",
+                  "bit_count": 256,
+                  "repeat_count": 1,
+                  "expected_operation_count": 512,
+                  "expected_operand_slots_required": 256,
+                  "observed_operation_count": 512,
+                  "observed_operand_slots_required": 256,
+                  "pass": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_sub",
+          "stage": "second_product_pseudo_mersenne_first_fold",
+          "category": "second_product_accumulator",
+          "operation_start": 144006,
+          "operation_end_exclusive": 152616,
+          "operation_count": 8610,
+          "block_count": 1,
+          "block_digest_sha256": "ebb4dcdd31bb5326ebae53c46a235271f869cae0f0617ffaef998860ed51a3f4",
+          "primitive_counts_total": {
+            "ccx": 4305,
+            "cx": 0,
+            "x": 0,
+            "measurement": 4305
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 4305,
+            "cx": 0,
+            "x": 0,
+            "measurement": 4305
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_sub",
+              "stage": "second_product_pseudo_mersenne_first_fold",
+              "block": "second_product_pseudo_mersenne_first_fold",
+              "operation_start": 144006,
+              "operation_end_exclusive": 152616,
+              "operation_count": 8610,
+              "operation_stream_sha256": "37499a26d8b304a0715664c5a69d653820924ab81e48389a8beeaa6ac4267dee",
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ],
+                  "measurement": [
+                    1
+                  ]
+                },
+                "max_operand_index": 286,
+                "operand_slots_required": 287,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "second product: fold high product half via 2^n = 2^shift + low_term",
+                "instance_count": 4305,
+                "has_expanded_operations": false,
+                "has_generator": true,
+                "generator_operand_contract": {
+                  "kind": "repeated_ladder_with_measurement",
+                  "operand_domain": "ladder_bit_index",
+                  "bit_count": 287,
+                  "repeat_count": 15,
+                  "expected_operation_count": 8610,
+                  "expected_operand_slots_required": 287,
+                  "observed_operation_count": 8610,
+                  "observed_operand_slots_required": 287,
+                  "pass": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_sub",
+          "stage": "second_product_pseudo_mersenne_second_fold",
+          "category": "second_product_accumulator",
+          "operation_start": 152616,
+          "operation_end_exclusive": 153876,
+          "operation_count": 1260,
+          "block_count": 1,
+          "block_digest_sha256": "7577b34b11e3574464e27e54782275357721e4262c86c6833321f7d3dad7d57e",
+          "primitive_counts_total": {
+            "ccx": 630,
+            "cx": 0,
+            "x": 0,
+            "measurement": 630
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 630,
+            "cx": 0,
+            "x": 0,
+            "measurement": 630
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_sub",
+              "stage": "second_product_pseudo_mersenne_second_fold",
+              "block": "second_product_pseudo_mersenne_second_fold",
+              "operation_start": 152616,
+              "operation_end_exclusive": 153876,
+              "operation_count": 1260,
+              "operation_stream_sha256": "4b5eafdec8c9b0406ad9926b0b820bec21fb17e883d66efe344a8325176e8bc9",
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ],
+                  "measurement": [
+                    1
+                  ]
+                },
+                "max_operand_index": 41,
+                "operand_slots_required": 42,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "second product: fold residual high component after first fold",
+                "instance_count": 630,
+                "has_expanded_operations": false,
+                "has_generator": true,
+                "generator_operand_contract": {
+                  "kind": "repeated_ladder_with_measurement",
+                  "operand_domain": "ladder_bit_index",
+                  "bit_count": 42,
+                  "repeat_count": 15,
+                  "expected_operation_count": 1260,
+                  "expected_operand_slots_required": 42,
+                  "observed_operation_count": 1260,
+                  "observed_operand_slots_required": 42,
+                  "pass": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_sub",
+          "stage": "second_product_pseudo_mersenne_canonicalize",
+          "category": "second_product_accumulator",
+          "operation_start": 153876,
+          "operation_end_exclusive": 154896,
+          "operation_count": 1020,
+          "block_count": 1,
+          "block_digest_sha256": "56080195912ab0e44790e05a0533746b6601e4234e1b28d5157dfe94bd9fccf5",
+          "primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_sub",
+              "stage": "second_product_pseudo_mersenne_canonicalize",
+              "block": "second_product_pseudo_mersenne_canonicalize",
+              "operation_start": 153876,
+              "operation_end_exclusive": 154896,
+              "operation_count": 1020,
+              "operation_stream_sha256": "4e96a505ce93e4f6496c23ffa77e74264385c7718a840b3be1cc9599e2b51369",
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ],
+                  "measurement": [
+                    1
+                  ]
+                },
+                "max_operand_index": 254,
+                "operand_slots_required": 255,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "second product: canonicalize product with bounded subtract-p passes",
+                "instance_count": 510,
+                "has_expanded_operations": false,
+                "has_generator": true,
+                "generator_operand_contract": {
+                  "kind": "repeated_ladder_with_measurement",
+                  "operand_domain": "ladder_bit_index",
+                  "bit_count": 255,
+                  "repeat_count": 2,
+                  "expected_operation_count": 1020,
+                  "expected_operand_slots_required": 255,
+                  "observed_operation_count": 1020,
+                  "observed_operand_slots_required": 255,
+                  "pass": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_sub",
+          "stage": "combine_difference_borrow_ladder",
+          "category": "combine_accumulator",
+          "operation_start": 154896,
+          "operation_end_exclusive": 155406,
+          "operation_count": 510,
+          "block_count": 1,
+          "block_digest_sha256": "1e692b19edb0659af8de5f6aeba9f6b8ffea02c75b28bbe0244edc5274b138cb",
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_sub",
+              "stage": "combine_difference_borrow_ladder",
+              "block": "combine_difference_borrow_ladder",
+              "operation_start": 154896,
+              "operation_end_exclusive": 155406,
+              "operation_count": 510,
+              "operation_stream_sha256": "3036ac8ab5f814a8db5efc42717237d47d6d4f867c9e1491761d96d90706968b",
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ],
+                  "measurement": [
+                    1
+                  ]
+                },
+                "max_operand_index": 254,
+                "operand_slots_required": 255,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "combine difference: compute raw difference borrow path",
+                "instance_count": 255,
+                "has_expanded_operations": false,
+                "has_generator": true,
+                "generator_operand_contract": {
+                  "kind": "repeated_ladder_with_measurement",
+                  "operand_domain": "ladder_bit_index",
+                  "bit_count": 255,
+                  "repeat_count": 1,
+                  "expected_operation_count": 510,
+                  "expected_operand_slots_required": 255,
+                  "observed_operation_count": 510,
+                  "observed_operand_slots_required": 255,
+                  "pass": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kernel": "field_double_mul_sub",
+          "stage": "combine_difference_conditional_add_modulus",
+          "category": "combine_accumulator",
+          "operation_start": 155406,
+          "operation_end_exclusive": 155916,
+          "operation_count": 510,
+          "block_count": 1,
+          "block_digest_sha256": "051363ce9f16b25967fc4fb11850a6cf604ca78d8ec8791732695fbbd78e6797",
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "declared_primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          },
+          "blocks": [
+            {
+              "kernel": "field_double_mul_sub",
+              "stage": "combine_difference_conditional_add_modulus",
+              "block": "combine_difference_conditional_add_modulus",
+              "operation_start": 155406,
+              "operation_end_exclusive": 155916,
+              "operation_count": 510,
+              "operation_stream_sha256": "c873554ea1328a92c9965f4f5b383242368fa8e397d5aa1b2c86d02de9dc0e4c",
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "declared_primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "operand_profile": {
+                "gate_arities": {
+                  "ccx": [
+                    1
+                  ],
+                  "measurement": [
+                    1
+                  ]
+                },
+                "max_operand_index": 254,
+                "operand_slots_required": 255,
+                "negative_operand_count": 0,
+                "too_wide_operand_rows": 0
+              },
+              "source_contract": {
+                "summary": "combine difference: canonicalize raw difference by adding p when needed",
                 "instance_count": 255,
                 "has_expanded_operations": false,
                 "has_generator": true,

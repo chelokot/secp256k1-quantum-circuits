@@ -365,6 +365,8 @@ def _opcode_count_certificate(arithmetic_lowerings: Mapping[str, Any], field_bit
         'mul_const': (len(chain) - 1) * modular_add,
         'field_mul': _stage_count_certificate(arithmetic_lowerings, field_bits)['expected_total_ccx'],
     }
+    expected['field_double_mul_add'] = 2 * expected['field_mul'] + expected['field_add']
+    expected['field_double_mul_sub'] = 2 * expected['field_mul'] + expected['field_sub']
     observed = {
         opcode: int(_kernel(arithmetic_lowerings, opcode)['exact_non_clifford_per_kernel'])
         for opcode in expected

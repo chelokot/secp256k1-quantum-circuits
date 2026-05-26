@@ -2,11 +2,11 @@
   "schema": "compiler-project-modular-primitive-wire-audit-v1",
   "definition": "Wire-level audit of the scheduled modular primitive iterator. It separates field wires backed by trace liveness from lookup-workspace wires and synthetic arithmetic scratch wires that still need a counted owner/reuse proof before the modular primitive stream can be called fully physical.",
   "source_digests": {
-    "modular_execution_trace_sha256": "4d8dbe6e13e09da859e1dc1c640917d33973a9c9907ca336fc80bd3d070a127c",
-    "modular_arithmetic_certificate_sha256": "5dc1bc120d7c52d9b0118c1ff01d28e8bb13fa6060da2aafaed6e15200e38ff8",
-    "arithmetic_lowerings_sha256": "d7f6819b985e388f16948aace8a636aa853b5b4dadadd6042095bf6fb047621a",
-    "reusable_chunk_lowering_sha256": "fd8751901698b247356faee49e65f9c1f65375e31bd431825add95eca281b326",
-    "scheduled_modular_primitive_netlist_sha256": "124251bf6ccc78ab5440740ea8b45569a5cbc400487bc8c2302d51bad02a9ab2"
+    "modular_execution_trace_sha256": "bcb390405b89ba335be5b37fe67d3a51ec3d12c61e01966b69e6bae17730c9a2",
+    "modular_arithmetic_certificate_sha256": "ed2acdd360c42d2d13712f9413b7d8990cc2997616bc4063d399f908d53c4584",
+    "arithmetic_lowerings_sha256": "3686d34edff9e9edfa4712f895b2b5687484b8271269b9264fc133d5a29a66a7",
+    "reusable_chunk_lowering_sha256": "c33b966de5d3e98e3a403052f4b854d7db34e766419de623a321a69d06517698",
+    "scheduled_modular_primitive_netlist_sha256": "0ee289e9d6d9c5367c08a7d1b5d08a7450434a45171bdb3a3ce56daf0c7d1fe3"
   },
   "operation_count": 1270134,
   "gate_counts": {
@@ -16,11 +16,11 @@
     "measurement": 77756
   },
   "field_wire_observation_count": 1752816,
-  "trace_live_field_wire_observation_count": 1089518,
-  "field_wire_missing_liveness_count": 663298,
-  "overwritten_source_field_observation_count": 231306,
+  "trace_live_field_wire_observation_count": 1170006,
+  "field_wire_missing_liveness_count": 582810,
+  "overwritten_source_field_observation_count": 225350,
   "lookup_virtual_field_observation_count": 357460,
-  "unresolved_virtual_field_observation_count": 74532,
+  "unresolved_virtual_field_observation_count": 0,
   "lookup_workspace_wire_observation_count": 1179648,
   "arithmetic_scratch_wire_observation_count": 721406,
   "arithmetic_scratch_unique_wire_count": 721406,
@@ -38,16 +38,10 @@
   "missing_field_names": {
     "lookup_x": 142984,
     "lookup_y": 142984,
-    "C": 71492,
     "X": 71492,
     "Y": 71492,
     "lookup_x_plus_y": 71492,
-    "X3.product_0": 12422,
-    "X3.product_1": 12422,
-    "Y3.product_0": 12422,
-    "Y3.product_1": 12422,
-    "Z3.product_0": 12422,
-    "Z3.product_1": 12422,
+    "C": 65536,
     "C_input": 6120,
     "Z": 6120,
     "A": 2040,
@@ -57,9 +51,9 @@
     "yZ": 510
   },
   "overwritten_source_field_names": {
-    "C": 71492,
     "X": 71492,
     "Y": 71492,
+    "C": 65536,
     "C_input": 6120,
     "Z": 6120,
     "A": 2040,
@@ -73,36 +67,9 @@
     "lookup_y": 142984,
     "lookup_x_plus_y": 71492
   },
-  "unresolved_virtual_field_names": {
-    "X3.product_0": 12422,
-    "X3.product_1": 12422,
-    "Y3.product_0": 12422,
-    "Y3.product_1": 12422,
-    "Z3.product_0": 12422,
-    "Z3.product_1": 12422
-  },
-  "unresolved_virtual_field_roles": {
-    "target_field_wire_without_trace_liveness": 71472,
-    "source_field_wire_without_trace_liveness": 3060
-  },
-  "unresolved_virtual_field_names_by_role": {
-    "source_field_wire_without_trace_liveness": {
-      "X3.product_0": 510,
-      "X3.product_1": 510,
-      "Y3.product_0": 510,
-      "Y3.product_1": 510,
-      "Z3.product_0": 510,
-      "Z3.product_1": 510
-    },
-    "target_field_wire_without_trace_liveness": {
-      "X3.product_0": 11912,
-      "X3.product_1": 11912,
-      "Y3.product_0": 11912,
-      "Y3.product_1": 11912,
-      "Z3.product_0": 11912,
-      "Z3.product_1": 11912
-    }
-  },
+  "unresolved_virtual_field_names": {},
+  "unresolved_virtual_field_roles": {},
+  "unresolved_virtual_field_names_by_role": {},
   "top_synthetic_scratch_prefixes": [
     {
       "scratch_prefix": "arithmetic_scratch:A:partial_product_grid",
@@ -117,27 +84,27 @@
       "observation_count": 65536
     },
     {
-      "scratch_prefix": "arithmetic_scratch:X3.product_0:partial_product_grid",
+      "scratch_prefix": "arithmetic_scratch:X3:first_product_partial_product_grid",
       "observation_count": 65536
     },
     {
-      "scratch_prefix": "arithmetic_scratch:X3.product_1:partial_product_grid",
+      "scratch_prefix": "arithmetic_scratch:X3:second_product_partial_product_grid",
       "observation_count": 65536
     },
     {
-      "scratch_prefix": "arithmetic_scratch:Y3.product_0:partial_product_grid",
+      "scratch_prefix": "arithmetic_scratch:Y3:first_product_partial_product_grid",
       "observation_count": 65536
     },
     {
-      "scratch_prefix": "arithmetic_scratch:Y3.product_1:partial_product_grid",
+      "scratch_prefix": "arithmetic_scratch:Y3:second_product_partial_product_grid",
       "observation_count": 65536
     },
     {
-      "scratch_prefix": "arithmetic_scratch:Z3.product_0:partial_product_grid",
+      "scratch_prefix": "arithmetic_scratch:Z3:first_product_partial_product_grid",
       "observation_count": 65536
     },
     {
-      "scratch_prefix": "arithmetic_scratch:Z3.product_1:partial_product_grid",
+      "scratch_prefix": "arithmetic_scratch:Z3:second_product_partial_product_grid",
       "observation_count": 65536
     },
     {
@@ -701,328 +668,7 @@
       }
     }
   ],
-  "sample_unresolved_virtual_field": [
-    {
-      "operation_index": 474196,
-      "suboperation_index": 19,
-      "wire_id": "field:X3.product_0.bit[0]",
-      "field_name": "X3.product_0",
-      "target": "X3.product_0",
-      "kind": "fused_output_internal_product",
-      "modular_opcode": "field_mul",
-      "block": "controlled_add_path",
-      "live_during": {
-        "C": 3,
-        "E": 5,
-        "K": 4,
-        "L": 0,
-        "M": 6,
-        "N": 1,
-        "X3": 2
-      },
-      "unresolved_role": "target_field_wire_without_trace_liveness"
-    },
-    {
-      "operation_index": 474197,
-      "suboperation_index": 19,
-      "wire_id": "field:X3.product_0.bit[0]",
-      "field_name": "X3.product_0",
-      "target": "X3.product_0",
-      "kind": "fused_output_internal_product",
-      "modular_opcode": "field_mul",
-      "block": "controlled_add_path",
-      "live_during": {
-        "C": 3,
-        "E": 5,
-        "K": 4,
-        "L": 0,
-        "M": 6,
-        "N": 1,
-        "X3": 2
-      },
-      "unresolved_role": "target_field_wire_without_trace_liveness"
-    },
-    {
-      "operation_index": 474198,
-      "suboperation_index": 19,
-      "wire_id": "field:X3.product_0.bit[1]",
-      "field_name": "X3.product_0",
-      "target": "X3.product_0",
-      "kind": "fused_output_internal_product",
-      "modular_opcode": "field_mul",
-      "block": "controlled_add_path",
-      "live_during": {
-        "C": 3,
-        "E": 5,
-        "K": 4,
-        "L": 0,
-        "M": 6,
-        "N": 1,
-        "X3": 2
-      },
-      "unresolved_role": "target_field_wire_without_trace_liveness"
-    },
-    {
-      "operation_index": 474199,
-      "suboperation_index": 19,
-      "wire_id": "field:X3.product_0.bit[1]",
-      "field_name": "X3.product_0",
-      "target": "X3.product_0",
-      "kind": "fused_output_internal_product",
-      "modular_opcode": "field_mul",
-      "block": "controlled_add_path",
-      "live_during": {
-        "C": 3,
-        "E": 5,
-        "K": 4,
-        "L": 0,
-        "M": 6,
-        "N": 1,
-        "X3": 2
-      },
-      "unresolved_role": "target_field_wire_without_trace_liveness"
-    },
-    {
-      "operation_index": 474200,
-      "suboperation_index": 19,
-      "wire_id": "field:X3.product_0.bit[2]",
-      "field_name": "X3.product_0",
-      "target": "X3.product_0",
-      "kind": "fused_output_internal_product",
-      "modular_opcode": "field_mul",
-      "block": "controlled_add_path",
-      "live_during": {
-        "C": 3,
-        "E": 5,
-        "K": 4,
-        "L": 0,
-        "M": 6,
-        "N": 1,
-        "X3": 2
-      },
-      "unresolved_role": "target_field_wire_without_trace_liveness"
-    },
-    {
-      "operation_index": 474201,
-      "suboperation_index": 19,
-      "wire_id": "field:X3.product_0.bit[2]",
-      "field_name": "X3.product_0",
-      "target": "X3.product_0",
-      "kind": "fused_output_internal_product",
-      "modular_opcode": "field_mul",
-      "block": "controlled_add_path",
-      "live_during": {
-        "C": 3,
-        "E": 5,
-        "K": 4,
-        "L": 0,
-        "M": 6,
-        "N": 1,
-        "X3": 2
-      },
-      "unresolved_role": "target_field_wire_without_trace_liveness"
-    },
-    {
-      "operation_index": 474202,
-      "suboperation_index": 19,
-      "wire_id": "field:X3.product_0.bit[3]",
-      "field_name": "X3.product_0",
-      "target": "X3.product_0",
-      "kind": "fused_output_internal_product",
-      "modular_opcode": "field_mul",
-      "block": "controlled_add_path",
-      "live_during": {
-        "C": 3,
-        "E": 5,
-        "K": 4,
-        "L": 0,
-        "M": 6,
-        "N": 1,
-        "X3": 2
-      },
-      "unresolved_role": "target_field_wire_without_trace_liveness"
-    },
-    {
-      "operation_index": 474203,
-      "suboperation_index": 19,
-      "wire_id": "field:X3.product_0.bit[3]",
-      "field_name": "X3.product_0",
-      "target": "X3.product_0",
-      "kind": "fused_output_internal_product",
-      "modular_opcode": "field_mul",
-      "block": "controlled_add_path",
-      "live_during": {
-        "C": 3,
-        "E": 5,
-        "K": 4,
-        "L": 0,
-        "M": 6,
-        "N": 1,
-        "X3": 2
-      },
-      "unresolved_role": "target_field_wire_without_trace_liveness"
-    },
-    {
-      "operation_index": 474204,
-      "suboperation_index": 19,
-      "wire_id": "field:X3.product_0.bit[4]",
-      "field_name": "X3.product_0",
-      "target": "X3.product_0",
-      "kind": "fused_output_internal_product",
-      "modular_opcode": "field_mul",
-      "block": "controlled_add_path",
-      "live_during": {
-        "C": 3,
-        "E": 5,
-        "K": 4,
-        "L": 0,
-        "M": 6,
-        "N": 1,
-        "X3": 2
-      },
-      "unresolved_role": "target_field_wire_without_trace_liveness"
-    },
-    {
-      "operation_index": 474205,
-      "suboperation_index": 19,
-      "wire_id": "field:X3.product_0.bit[4]",
-      "field_name": "X3.product_0",
-      "target": "X3.product_0",
-      "kind": "fused_output_internal_product",
-      "modular_opcode": "field_mul",
-      "block": "controlled_add_path",
-      "live_during": {
-        "C": 3,
-        "E": 5,
-        "K": 4,
-        "L": 0,
-        "M": 6,
-        "N": 1,
-        "X3": 2
-      },
-      "unresolved_role": "target_field_wire_without_trace_liveness"
-    },
-    {
-      "operation_index": 474206,
-      "suboperation_index": 19,
-      "wire_id": "field:X3.product_0.bit[5]",
-      "field_name": "X3.product_0",
-      "target": "X3.product_0",
-      "kind": "fused_output_internal_product",
-      "modular_opcode": "field_mul",
-      "block": "controlled_add_path",
-      "live_during": {
-        "C": 3,
-        "E": 5,
-        "K": 4,
-        "L": 0,
-        "M": 6,
-        "N": 1,
-        "X3": 2
-      },
-      "unresolved_role": "target_field_wire_without_trace_liveness"
-    },
-    {
-      "operation_index": 474207,
-      "suboperation_index": 19,
-      "wire_id": "field:X3.product_0.bit[5]",
-      "field_name": "X3.product_0",
-      "target": "X3.product_0",
-      "kind": "fused_output_internal_product",
-      "modular_opcode": "field_mul",
-      "block": "controlled_add_path",
-      "live_during": {
-        "C": 3,
-        "E": 5,
-        "K": 4,
-        "L": 0,
-        "M": 6,
-        "N": 1,
-        "X3": 2
-      },
-      "unresolved_role": "target_field_wire_without_trace_liveness"
-    },
-    {
-      "operation_index": 474208,
-      "suboperation_index": 19,
-      "wire_id": "field:X3.product_0.bit[6]",
-      "field_name": "X3.product_0",
-      "target": "X3.product_0",
-      "kind": "fused_output_internal_product",
-      "modular_opcode": "field_mul",
-      "block": "controlled_add_path",
-      "live_during": {
-        "C": 3,
-        "E": 5,
-        "K": 4,
-        "L": 0,
-        "M": 6,
-        "N": 1,
-        "X3": 2
-      },
-      "unresolved_role": "target_field_wire_without_trace_liveness"
-    },
-    {
-      "operation_index": 474209,
-      "suboperation_index": 19,
-      "wire_id": "field:X3.product_0.bit[6]",
-      "field_name": "X3.product_0",
-      "target": "X3.product_0",
-      "kind": "fused_output_internal_product",
-      "modular_opcode": "field_mul",
-      "block": "controlled_add_path",
-      "live_during": {
-        "C": 3,
-        "E": 5,
-        "K": 4,
-        "L": 0,
-        "M": 6,
-        "N": 1,
-        "X3": 2
-      },
-      "unresolved_role": "target_field_wire_without_trace_liveness"
-    },
-    {
-      "operation_index": 474210,
-      "suboperation_index": 19,
-      "wire_id": "field:X3.product_0.bit[7]",
-      "field_name": "X3.product_0",
-      "target": "X3.product_0",
-      "kind": "fused_output_internal_product",
-      "modular_opcode": "field_mul",
-      "block": "controlled_add_path",
-      "live_during": {
-        "C": 3,
-        "E": 5,
-        "K": 4,
-        "L": 0,
-        "M": 6,
-        "N": 1,
-        "X3": 2
-      },
-      "unresolved_role": "target_field_wire_without_trace_liveness"
-    },
-    {
-      "operation_index": 474211,
-      "suboperation_index": 19,
-      "wire_id": "field:X3.product_0.bit[7]",
-      "field_name": "X3.product_0",
-      "target": "X3.product_0",
-      "kind": "fused_output_internal_product",
-      "modular_opcode": "field_mul",
-      "block": "controlled_add_path",
-      "live_during": {
-        "C": 3,
-        "E": 5,
-        "K": 4,
-        "L": 0,
-        "M": 6,
-        "N": 1,
-        "X3": 2
-      },
-      "unresolved_role": "target_field_wire_without_trace_liveness"
-    }
-  ],
+  "sample_unresolved_virtual_field": [],
   "sample_synthetic_scratch": [
     {
       "operation_index": 1020,
@@ -1160,7 +806,7 @@
     "scanned_gate_counts_match_scheduled_netlist": true,
     "field_operand_wires_are_live_in_trace": false,
     "lookup_virtual_field_operands_are_classified": true,
-    "no_unresolved_virtual_field_operands": false,
+    "no_unresolved_virtual_field_operands": true,
     "qroam_operand_wires_are_explicit_lookup_workspace_wires": true,
     "no_unclassified_non_lookup_operand_wires": true,
     "no_synthetic_arithmetic_scratch_wires_without_owner_capacity": false
@@ -1169,7 +815,7 @@
   "completion_blockers": [
     {
       "name": "field_operand_liveness_binding",
-      "active": true,
+      "active": false,
       "required_to_close": "Bind every non-lookup field:* operand used by the modular primitive iterator to the scheduled trace liveness map, or replace virtual internal-product field operands with a wire-level streaming circuit whose wires have counted owners."
     },
     {

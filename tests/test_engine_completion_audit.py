@@ -94,7 +94,7 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['field_operand_wires_missing_liveness'] > 0
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['overwritten_source_field_operands_counted_by_target_owner'] > 0
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['lookup_virtual_field_operands_classified'] > 0
-    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['unresolved_virtual_field_operands'] > 0
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['unresolved_virtual_field_operands'] == 0
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['synthetic_arithmetic_scratch_wire_observations'] > 0
     assert expected['checks']['arithmetic_rows_are_operation_ir_bound'] is True
     assert expected['checks']['modular_primitive_wire_audit_records_remaining_scratch_gap'] is True

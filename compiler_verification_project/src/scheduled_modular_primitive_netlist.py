@@ -67,11 +67,20 @@ def _scratch_wire(target: str, block: str, bit_index: int) -> str:
     return f'arithmetic_scratch:{target}:{block}.bit[{int(bit_index)}]'
 
 
+def _double_mul_source_pair(sources: List[str], block: str) -> tuple[str, str]:
+    if block.startswith('first_product_'):
+        return sources[0], sources[1]
+    if block.startswith('second_product_'):
+        return sources[2], sources[3]
+    return sources[0], sources[-1]
+
+
 def _operand_wires(suboperation: Mapping[str, Any], block: str, operation: List[Any]) -> List[str]:
     gate = str(operation[0])
     local_operands = [int(value) for value in operation[1:]]
     sources = [str(source) for source in suboperation['sources']]
     target = str(suboperation['target'])
+    modular_opcode = None if suboperation['modular_opcode'] is None else str(suboperation['modular_opcode'])
     if gate == 'measurement':
         bit_index = local_operands[0] if local_operands else 0
         return [_field_bit_wire(target, bit_index)]
@@ -80,13 +89,18 @@ def _operand_wires(suboperation: Mapping[str, Any], block: str, operation: List[
         return [_field_bit_wire(target, bit_index)]
     if gate == 'cx':
         bit_index = local_operands[0] if local_operands else 0
+        if modular_opcode in {'field_double_mul_add', 'field_double_mul_sub'}:
+            return [_field_bit_wire(target, bit_index), _field_bit_wire(target, bit_index)]
         left = sources[0] if sources else target
         return [_field_bit_wire(left, bit_index), _field_bit_wire(target, bit_index)]
     if gate == 'ccx' and len(local_operands) >= 2:
         left_bit = local_operands[0]
         right_bit = local_operands[1]
-        left = sources[0] if sources else target
-        right = sources[1] if len(sources) > 1 else left
+        if modular_opcode in {'field_double_mul_add', 'field_double_mul_sub'}:
+            left, right = _double_mul_source_pair(sources, block)
+        else:
+            left = sources[0] if sources else target
+            right = sources[1] if len(sources) > 1 else left
         return [
             _field_bit_wire(left, left_bit),
             _field_bit_wire(right, right_bit),
@@ -94,6 +108,12 @@ def _operand_wires(suboperation: Mapping[str, Any], block: str, operation: List[
         ]
     if gate == 'ccx':
         bit_index = local_operands[0] if local_operands else 0
+        if modular_opcode in {'field_double_mul_add', 'field_double_mul_sub'}:
+            return [
+                _field_bit_wire(target, bit_index),
+                _field_bit_wire(target, bit_index),
+                _field_bit_wire(target, bit_index),
+            ]
         left = sources[0] if sources else target
         right = sources[-1] if sources else target
         return [

@@ -3148,6 +3148,424 @@
             "measurement": 5956
           },
           "non_clifford_total": 71492
+        },
+        {
+          "opcode": "field_double_mul_add",
+          "semantic": "two canonical modular multiplications accumulated with one canonical modular addition",
+          "steps": [
+            {
+              "name": "first_product_partial_product_grid",
+              "kind": "schoolbook_partial_products",
+              "bit_count": 65536,
+              "repeat_count": 1,
+              "semantic": "first product: one controlled interaction for each field-bit product",
+              "measured": false,
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              }
+            },
+            {
+              "name": "first_product_controlled_add_path",
+              "kind": "controlled_accumulator_add",
+              "bit_count": 255,
+              "repeat_count": 1,
+              "semantic": "first product: carry path for controlled add half of schoolbook multiplier",
+              "measured": true,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "name": "first_product_controlled_sub_path",
+              "kind": "controlled_accumulator_subtract",
+              "bit_count": 256,
+              "repeat_count": 1,
+              "semantic": "first product: borrow path for controlled subtract half of schoolbook multiplier",
+              "measured": true,
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              }
+            },
+            {
+              "name": "first_product_pseudo_mersenne_first_fold",
+              "kind": "pseudo_mersenne_fold",
+              "bit_count": 287,
+              "repeat_count": 15,
+              "semantic": "first product: fold high product half via 2^n = 2^shift + low_term",
+              "measured": true,
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              }
+            },
+            {
+              "name": "first_product_pseudo_mersenne_second_fold",
+              "kind": "pseudo_mersenne_fold",
+              "bit_count": 42,
+              "repeat_count": 15,
+              "semantic": "first product: fold residual high component after first fold",
+              "measured": true,
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              }
+            },
+            {
+              "name": "first_product_pseudo_mersenne_canonicalize",
+              "kind": "conditional_modulus_correction",
+              "bit_count": 255,
+              "repeat_count": 2,
+              "semantic": "first product: canonicalize product with bounded subtract-p passes",
+              "measured": true,
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              }
+            },
+            {
+              "name": "second_product_partial_product_grid",
+              "kind": "schoolbook_partial_products",
+              "bit_count": 65536,
+              "repeat_count": 1,
+              "semantic": "second product: one controlled interaction for each field-bit product",
+              "measured": false,
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              }
+            },
+            {
+              "name": "second_product_controlled_add_path",
+              "kind": "controlled_accumulator_add",
+              "bit_count": 255,
+              "repeat_count": 1,
+              "semantic": "second product: carry path for controlled add half of schoolbook multiplier",
+              "measured": true,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "name": "second_product_controlled_sub_path",
+              "kind": "controlled_accumulator_subtract",
+              "bit_count": 256,
+              "repeat_count": 1,
+              "semantic": "second product: borrow path for controlled subtract half of schoolbook multiplier",
+              "measured": true,
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              }
+            },
+            {
+              "name": "second_product_pseudo_mersenne_first_fold",
+              "kind": "pseudo_mersenne_fold",
+              "bit_count": 287,
+              "repeat_count": 15,
+              "semantic": "second product: fold high product half via 2^n = 2^shift + low_term",
+              "measured": true,
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              }
+            },
+            {
+              "name": "second_product_pseudo_mersenne_second_fold",
+              "kind": "pseudo_mersenne_fold",
+              "bit_count": 42,
+              "repeat_count": 15,
+              "semantic": "second product: fold residual high component after first fold",
+              "measured": true,
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              }
+            },
+            {
+              "name": "second_product_pseudo_mersenne_canonicalize",
+              "kind": "conditional_modulus_correction",
+              "bit_count": 255,
+              "repeat_count": 2,
+              "semantic": "second product: canonicalize product with bounded subtract-p passes",
+              "measured": true,
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              }
+            },
+            {
+              "name": "combine_sum_carry_ladder",
+              "kind": "ripple_carry",
+              "bit_count": 255,
+              "repeat_count": 1,
+              "semantic": "combine sum: compute raw sum carry path",
+              "measured": true,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "name": "combine_sum_conditional_subtract_modulus",
+              "kind": "conditional_modulus_correction",
+              "bit_count": 255,
+              "repeat_count": 1,
+              "semantic": "combine sum: canonicalize raw sum by subtracting p when needed",
+              "measured": true,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 143494,
+            "cx": 0,
+            "x": 0,
+            "measurement": 12422
+          },
+          "non_clifford_total": 143494
+        },
+        {
+          "opcode": "field_double_mul_sub",
+          "semantic": "two canonical modular multiplications accumulated with one canonical modular subtraction",
+          "steps": [
+            {
+              "name": "first_product_partial_product_grid",
+              "kind": "schoolbook_partial_products",
+              "bit_count": 65536,
+              "repeat_count": 1,
+              "semantic": "first product: one controlled interaction for each field-bit product",
+              "measured": false,
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              }
+            },
+            {
+              "name": "first_product_controlled_add_path",
+              "kind": "controlled_accumulator_add",
+              "bit_count": 255,
+              "repeat_count": 1,
+              "semantic": "first product: carry path for controlled add half of schoolbook multiplier",
+              "measured": true,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "name": "first_product_controlled_sub_path",
+              "kind": "controlled_accumulator_subtract",
+              "bit_count": 256,
+              "repeat_count": 1,
+              "semantic": "first product: borrow path for controlled subtract half of schoolbook multiplier",
+              "measured": true,
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              }
+            },
+            {
+              "name": "first_product_pseudo_mersenne_first_fold",
+              "kind": "pseudo_mersenne_fold",
+              "bit_count": 287,
+              "repeat_count": 15,
+              "semantic": "first product: fold high product half via 2^n = 2^shift + low_term",
+              "measured": true,
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              }
+            },
+            {
+              "name": "first_product_pseudo_mersenne_second_fold",
+              "kind": "pseudo_mersenne_fold",
+              "bit_count": 42,
+              "repeat_count": 15,
+              "semantic": "first product: fold residual high component after first fold",
+              "measured": true,
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              }
+            },
+            {
+              "name": "first_product_pseudo_mersenne_canonicalize",
+              "kind": "conditional_modulus_correction",
+              "bit_count": 255,
+              "repeat_count": 2,
+              "semantic": "first product: canonicalize product with bounded subtract-p passes",
+              "measured": true,
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              }
+            },
+            {
+              "name": "second_product_partial_product_grid",
+              "kind": "schoolbook_partial_products",
+              "bit_count": 65536,
+              "repeat_count": 1,
+              "semantic": "second product: one controlled interaction for each field-bit product",
+              "measured": false,
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              }
+            },
+            {
+              "name": "second_product_controlled_add_path",
+              "kind": "controlled_accumulator_add",
+              "bit_count": 255,
+              "repeat_count": 1,
+              "semantic": "second product: carry path for controlled add half of schoolbook multiplier",
+              "measured": true,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "name": "second_product_controlled_sub_path",
+              "kind": "controlled_accumulator_subtract",
+              "bit_count": 256,
+              "repeat_count": 1,
+              "semantic": "second product: borrow path for controlled subtract half of schoolbook multiplier",
+              "measured": true,
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              }
+            },
+            {
+              "name": "second_product_pseudo_mersenne_first_fold",
+              "kind": "pseudo_mersenne_fold",
+              "bit_count": 287,
+              "repeat_count": 15,
+              "semantic": "second product: fold high product half via 2^n = 2^shift + low_term",
+              "measured": true,
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              }
+            },
+            {
+              "name": "second_product_pseudo_mersenne_second_fold",
+              "kind": "pseudo_mersenne_fold",
+              "bit_count": 42,
+              "repeat_count": 15,
+              "semantic": "second product: fold residual high component after first fold",
+              "measured": true,
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              }
+            },
+            {
+              "name": "second_product_pseudo_mersenne_canonicalize",
+              "kind": "conditional_modulus_correction",
+              "bit_count": 255,
+              "repeat_count": 2,
+              "semantic": "second product: canonicalize product with bounded subtract-p passes",
+              "measured": true,
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              }
+            },
+            {
+              "name": "combine_difference_borrow_ladder",
+              "kind": "ripple_borrow",
+              "bit_count": 255,
+              "repeat_count": 1,
+              "semantic": "combine difference: compute raw difference borrow path",
+              "measured": true,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "name": "combine_difference_conditional_add_modulus",
+              "kind": "conditional_modulus_correction",
+              "bit_count": 255,
+              "repeat_count": 1,
+              "semantic": "combine difference: canonicalize raw difference by adding p when needed",
+              "measured": true,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            }
+          ],
+          "primitive_counts_total": {
+            "ccx": 143494,
+            "cx": 0,
+            "x": 0,
+            "measurement": 12422
+          },
+          "non_clifford_total": 143494
         }
       ],
       "non_clifford_by_opcode": {
@@ -3156,7 +3574,9 @@
         "field_sub_sum": 1020,
         "field_triple": 1020,
         "mul_const": 3060,
-        "field_mul": 71492
+        "field_mul": 71492,
+        "field_double_mul_add": 143494,
+        "field_double_mul_sub": 143494
       }
     },
     "executable_circuit_ir_count_certificate": {
@@ -3167,7 +3587,9 @@
         "field_sub_sum": 1020,
         "field_triple": 1020,
         "mul_const": 3060,
-        "field_mul": 71492
+        "field_mul": 71492,
+        "field_double_mul_add": 143494,
+        "field_double_mul_sub": 143494
       },
       "observed_non_clifford_per_opcode": {
         "field_add": 510,
@@ -3175,7 +3597,9 @@
         "field_sub_sum": 1020,
         "field_triple": 1020,
         "mul_const": 3060,
-        "field_mul": 71492
+        "field_mul": 71492,
+        "field_double_mul_add": 143494,
+        "field_double_mul_sub": 143494
       },
       "counts_match_arithmetic_lowerings": true
     },
@@ -3196,16 +3620,16 @@
       ],
       "operation_rows_materialized_in_json": false,
       "field_bits": 256,
-      "opcode_count": 6,
-      "operation_count": 89688,
+      "opcode_count": 8,
+      "operation_count": 401520,
       "primitive_counts_total": {
-        "ccx": 77612,
+        "ccx": 364600,
         "cx": 0,
         "x": 0,
-        "measurement": 12076
+        "measurement": 36920
       },
-      "non_clifford_total": 77612,
-      "operation_stream_sha256": "b171751b0773577a61045d397a493777397ed15eeece50d559c12f012199c6c7",
+      "non_clifford_total": 364600,
+      "operation_stream_sha256": "d2f348bac6a6f63917824bf74da4d6f5979b665ef3c07e6f869ed0b4164e37d7",
       "opcodes": [
         {
           "opcode": "field_add",
@@ -5304,6 +5728,1504 @@
           ],
           "counts_match_executable_ir_opcode": true,
           "counts_match_lowering_kernel": true
+        },
+        {
+          "opcode": "field_double_mul_add",
+          "operation_count": 155916,
+          "primitive_counts_total": {
+            "ccx": 143494,
+            "cx": 0,
+            "x": 0,
+            "measurement": 12422
+          },
+          "expected_primitive_counts_total": {
+            "ccx": 143494,
+            "cx": 0,
+            "x": 0,
+            "measurement": 12422
+          },
+          "lowering_primitive_counts_total": {
+            "ccx": 143494,
+            "cx": 0,
+            "x": 0,
+            "measurement": 12422
+          },
+          "non_clifford_total": 143494,
+          "operation_stream_sha256": "f0145d780ced811e2d80b740fad3a911ddef47964ba301eadcdf03a1a89acdfc",
+          "step_count": 14,
+          "steps": [
+            {
+              "step": "first_product_partial_product_grid",
+              "kind": "schoolbook_partial_products",
+              "bit_count": 65536,
+              "repeat_count": 1,
+              "operation_start": 0,
+              "operation_end_exclusive": 65536,
+              "operation_count": 65536,
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "first_product_partial_product_grid",
+                  "block": "first_product_partial_product_grid",
+                  "operation_start": 0,
+                  "operation_end_exclusive": 65536,
+                  "operation_count": 65536,
+                  "primitive_counts_total": {
+                    "ccx": 65536,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 0
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 65536,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 0
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "first_product_controlled_add_path",
+              "kind": "controlled_accumulator_add",
+              "bit_count": 255,
+              "repeat_count": 1,
+              "operation_start": 65536,
+              "operation_end_exclusive": 66046,
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "first_product_controlled_add_path",
+                  "block": "first_product_controlled_add_path",
+                  "operation_start": 65536,
+                  "operation_end_exclusive": 66046,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "first_product_controlled_sub_path",
+              "kind": "controlled_accumulator_subtract",
+              "bit_count": 256,
+              "repeat_count": 1,
+              "operation_start": 66046,
+              "operation_end_exclusive": 66558,
+              "operation_count": 512,
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "first_product_controlled_sub_path",
+                  "block": "first_product_controlled_sub_path",
+                  "operation_start": 66046,
+                  "operation_end_exclusive": 66558,
+                  "operation_count": 512,
+                  "primitive_counts_total": {
+                    "ccx": 256,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 256
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 256,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 256
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "first_product_pseudo_mersenne_first_fold",
+              "kind": "pseudo_mersenne_fold",
+              "bit_count": 287,
+              "repeat_count": 15,
+              "operation_start": 66558,
+              "operation_end_exclusive": 75168,
+              "operation_count": 8610,
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "first_product_pseudo_mersenne_first_fold",
+                  "block": "first_product_pseudo_mersenne_first_fold",
+                  "operation_start": 66558,
+                  "operation_end_exclusive": 75168,
+                  "operation_count": 8610,
+                  "primitive_counts_total": {
+                    "ccx": 4305,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 4305
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 4305,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 4305
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "first_product_pseudo_mersenne_second_fold",
+              "kind": "pseudo_mersenne_fold",
+              "bit_count": 42,
+              "repeat_count": 15,
+              "operation_start": 75168,
+              "operation_end_exclusive": 76428,
+              "operation_count": 1260,
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "first_product_pseudo_mersenne_second_fold",
+                  "block": "first_product_pseudo_mersenne_second_fold",
+                  "operation_start": 75168,
+                  "operation_end_exclusive": 76428,
+                  "operation_count": 1260,
+                  "primitive_counts_total": {
+                    "ccx": 630,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 630
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 630,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 630
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "first_product_pseudo_mersenne_canonicalize",
+              "kind": "conditional_modulus_correction",
+              "bit_count": 255,
+              "repeat_count": 2,
+              "operation_start": 76428,
+              "operation_end_exclusive": 77448,
+              "operation_count": 1020,
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "first_product_pseudo_mersenne_canonicalize",
+                  "block": "first_product_pseudo_mersenne_canonicalize",
+                  "operation_start": 76428,
+                  "operation_end_exclusive": 77448,
+                  "operation_count": 1020,
+                  "primitive_counts_total": {
+                    "ccx": 510,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 510
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 510,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 510
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "second_product_partial_product_grid",
+              "kind": "schoolbook_partial_products",
+              "bit_count": 65536,
+              "repeat_count": 1,
+              "operation_start": 77448,
+              "operation_end_exclusive": 142984,
+              "operation_count": 65536,
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "second_product_partial_product_grid",
+                  "block": "second_product_partial_product_grid",
+                  "operation_start": 77448,
+                  "operation_end_exclusive": 142984,
+                  "operation_count": 65536,
+                  "primitive_counts_total": {
+                    "ccx": 65536,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 0
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 65536,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 0
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "second_product_controlled_add_path",
+              "kind": "controlled_accumulator_add",
+              "bit_count": 255,
+              "repeat_count": 1,
+              "operation_start": 142984,
+              "operation_end_exclusive": 143494,
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "second_product_controlled_add_path",
+                  "block": "second_product_controlled_add_path",
+                  "operation_start": 142984,
+                  "operation_end_exclusive": 143494,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "second_product_controlled_sub_path",
+              "kind": "controlled_accumulator_subtract",
+              "bit_count": 256,
+              "repeat_count": 1,
+              "operation_start": 143494,
+              "operation_end_exclusive": 144006,
+              "operation_count": 512,
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "second_product_controlled_sub_path",
+                  "block": "second_product_controlled_sub_path",
+                  "operation_start": 143494,
+                  "operation_end_exclusive": 144006,
+                  "operation_count": 512,
+                  "primitive_counts_total": {
+                    "ccx": 256,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 256
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 256,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 256
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "second_product_pseudo_mersenne_first_fold",
+              "kind": "pseudo_mersenne_fold",
+              "bit_count": 287,
+              "repeat_count": 15,
+              "operation_start": 144006,
+              "operation_end_exclusive": 152616,
+              "operation_count": 8610,
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "second_product_pseudo_mersenne_first_fold",
+                  "block": "second_product_pseudo_mersenne_first_fold",
+                  "operation_start": 144006,
+                  "operation_end_exclusive": 152616,
+                  "operation_count": 8610,
+                  "primitive_counts_total": {
+                    "ccx": 4305,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 4305
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 4305,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 4305
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "second_product_pseudo_mersenne_second_fold",
+              "kind": "pseudo_mersenne_fold",
+              "bit_count": 42,
+              "repeat_count": 15,
+              "operation_start": 152616,
+              "operation_end_exclusive": 153876,
+              "operation_count": 1260,
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "second_product_pseudo_mersenne_second_fold",
+                  "block": "second_product_pseudo_mersenne_second_fold",
+                  "operation_start": 152616,
+                  "operation_end_exclusive": 153876,
+                  "operation_count": 1260,
+                  "primitive_counts_total": {
+                    "ccx": 630,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 630
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 630,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 630
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "second_product_pseudo_mersenne_canonicalize",
+              "kind": "conditional_modulus_correction",
+              "bit_count": 255,
+              "repeat_count": 2,
+              "operation_start": 153876,
+              "operation_end_exclusive": 154896,
+              "operation_count": 1020,
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "second_product_pseudo_mersenne_canonicalize",
+                  "block": "second_product_pseudo_mersenne_canonicalize",
+                  "operation_start": 153876,
+                  "operation_end_exclusive": 154896,
+                  "operation_count": 1020,
+                  "primitive_counts_total": {
+                    "ccx": 510,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 510
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 510,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 510
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "combine_sum_carry_ladder",
+              "kind": "ripple_carry",
+              "bit_count": 255,
+              "repeat_count": 1,
+              "operation_start": 154896,
+              "operation_end_exclusive": 155406,
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "combine_sum_carry_ladder",
+                  "block": "combine_sum_carry_ladder",
+                  "operation_start": 154896,
+                  "operation_end_exclusive": 155406,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "combine_sum_conditional_subtract_modulus",
+              "kind": "conditional_modulus_correction",
+              "bit_count": 255,
+              "repeat_count": 1,
+              "operation_start": 155406,
+              "operation_end_exclusive": 155916,
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "combine_sum_conditional_subtract_modulus",
+                  "block": "combine_sum_conditional_subtract_modulus",
+                  "operation_start": 155406,
+                  "operation_end_exclusive": 155916,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            }
+          ],
+          "preview_head": [
+            {
+              "opcode": "field_double_mul_add",
+              "step": "first_product_partial_product_grid",
+              "stage": "first_product_partial_product_grid",
+              "block": "first_product_partial_product_grid",
+              "operation_index": 0,
+              "block_operation_index": 0,
+              "gate": "ccx",
+              "operands": [
+                0,
+                0
+              ]
+            },
+            {
+              "opcode": "field_double_mul_add",
+              "step": "first_product_partial_product_grid",
+              "stage": "first_product_partial_product_grid",
+              "block": "first_product_partial_product_grid",
+              "operation_index": 1,
+              "block_operation_index": 1,
+              "gate": "ccx",
+              "operands": [
+                0,
+                1
+              ]
+            },
+            {
+              "opcode": "field_double_mul_add",
+              "step": "first_product_partial_product_grid",
+              "stage": "first_product_partial_product_grid",
+              "block": "first_product_partial_product_grid",
+              "operation_index": 2,
+              "block_operation_index": 2,
+              "gate": "ccx",
+              "operands": [
+                0,
+                2
+              ]
+            },
+            {
+              "opcode": "field_double_mul_add",
+              "step": "first_product_partial_product_grid",
+              "stage": "first_product_partial_product_grid",
+              "block": "first_product_partial_product_grid",
+              "operation_index": 3,
+              "block_operation_index": 3,
+              "gate": "ccx",
+              "operands": [
+                0,
+                3
+              ]
+            }
+          ],
+          "preview_tail": [
+            {
+              "opcode": "field_double_mul_add",
+              "step": "combine_sum_conditional_subtract_modulus",
+              "stage": "combine_sum_conditional_subtract_modulus",
+              "block": "combine_sum_conditional_subtract_modulus",
+              "operation_index": 155912,
+              "block_operation_index": 506,
+              "gate": "ccx",
+              "operands": [
+                253
+              ]
+            },
+            {
+              "opcode": "field_double_mul_add",
+              "step": "combine_sum_conditional_subtract_modulus",
+              "stage": "combine_sum_conditional_subtract_modulus",
+              "block": "combine_sum_conditional_subtract_modulus",
+              "operation_index": 155913,
+              "block_operation_index": 507,
+              "gate": "measurement",
+              "operands": [
+                253
+              ]
+            },
+            {
+              "opcode": "field_double_mul_add",
+              "step": "combine_sum_conditional_subtract_modulus",
+              "stage": "combine_sum_conditional_subtract_modulus",
+              "block": "combine_sum_conditional_subtract_modulus",
+              "operation_index": 155914,
+              "block_operation_index": 508,
+              "gate": "ccx",
+              "operands": [
+                254
+              ]
+            },
+            {
+              "opcode": "field_double_mul_add",
+              "step": "combine_sum_conditional_subtract_modulus",
+              "stage": "combine_sum_conditional_subtract_modulus",
+              "block": "combine_sum_conditional_subtract_modulus",
+              "operation_index": 155915,
+              "block_operation_index": 509,
+              "gate": "measurement",
+              "operands": [
+                254
+              ]
+            }
+          ],
+          "counts_match_executable_ir_opcode": true,
+          "counts_match_lowering_kernel": true
+        },
+        {
+          "opcode": "field_double_mul_sub",
+          "operation_count": 155916,
+          "primitive_counts_total": {
+            "ccx": 143494,
+            "cx": 0,
+            "x": 0,
+            "measurement": 12422
+          },
+          "expected_primitive_counts_total": {
+            "ccx": 143494,
+            "cx": 0,
+            "x": 0,
+            "measurement": 12422
+          },
+          "lowering_primitive_counts_total": {
+            "ccx": 143494,
+            "cx": 0,
+            "x": 0,
+            "measurement": 12422
+          },
+          "non_clifford_total": 143494,
+          "operation_stream_sha256": "1ce23721b89edc7c9ed00fb2ff98e1350e7942724f92eaa1f8ce11fdd2d60892",
+          "step_count": 14,
+          "steps": [
+            {
+              "step": "first_product_partial_product_grid",
+              "kind": "schoolbook_partial_products",
+              "bit_count": 65536,
+              "repeat_count": 1,
+              "operation_start": 0,
+              "operation_end_exclusive": 65536,
+              "operation_count": 65536,
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "first_product_partial_product_grid",
+                  "block": "first_product_partial_product_grid",
+                  "operation_start": 0,
+                  "operation_end_exclusive": 65536,
+                  "operation_count": 65536,
+                  "primitive_counts_total": {
+                    "ccx": 65536,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 0
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 65536,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 0
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "first_product_controlled_add_path",
+              "kind": "controlled_accumulator_add",
+              "bit_count": 255,
+              "repeat_count": 1,
+              "operation_start": 65536,
+              "operation_end_exclusive": 66046,
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "first_product_controlled_add_path",
+                  "block": "first_product_controlled_add_path",
+                  "operation_start": 65536,
+                  "operation_end_exclusive": 66046,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "first_product_controlled_sub_path",
+              "kind": "controlled_accumulator_subtract",
+              "bit_count": 256,
+              "repeat_count": 1,
+              "operation_start": 66046,
+              "operation_end_exclusive": 66558,
+              "operation_count": 512,
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "first_product_controlled_sub_path",
+                  "block": "first_product_controlled_sub_path",
+                  "operation_start": 66046,
+                  "operation_end_exclusive": 66558,
+                  "operation_count": 512,
+                  "primitive_counts_total": {
+                    "ccx": 256,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 256
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 256,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 256
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "first_product_pseudo_mersenne_first_fold",
+              "kind": "pseudo_mersenne_fold",
+              "bit_count": 287,
+              "repeat_count": 15,
+              "operation_start": 66558,
+              "operation_end_exclusive": 75168,
+              "operation_count": 8610,
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "first_product_pseudo_mersenne_first_fold",
+                  "block": "first_product_pseudo_mersenne_first_fold",
+                  "operation_start": 66558,
+                  "operation_end_exclusive": 75168,
+                  "operation_count": 8610,
+                  "primitive_counts_total": {
+                    "ccx": 4305,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 4305
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 4305,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 4305
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "first_product_pseudo_mersenne_second_fold",
+              "kind": "pseudo_mersenne_fold",
+              "bit_count": 42,
+              "repeat_count": 15,
+              "operation_start": 75168,
+              "operation_end_exclusive": 76428,
+              "operation_count": 1260,
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "first_product_pseudo_mersenne_second_fold",
+                  "block": "first_product_pseudo_mersenne_second_fold",
+                  "operation_start": 75168,
+                  "operation_end_exclusive": 76428,
+                  "operation_count": 1260,
+                  "primitive_counts_total": {
+                    "ccx": 630,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 630
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 630,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 630
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "first_product_pseudo_mersenne_canonicalize",
+              "kind": "conditional_modulus_correction",
+              "bit_count": 255,
+              "repeat_count": 2,
+              "operation_start": 76428,
+              "operation_end_exclusive": 77448,
+              "operation_count": 1020,
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "first_product_pseudo_mersenne_canonicalize",
+                  "block": "first_product_pseudo_mersenne_canonicalize",
+                  "operation_start": 76428,
+                  "operation_end_exclusive": 77448,
+                  "operation_count": 1020,
+                  "primitive_counts_total": {
+                    "ccx": 510,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 510
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 510,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 510
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "second_product_partial_product_grid",
+              "kind": "schoolbook_partial_products",
+              "bit_count": 65536,
+              "repeat_count": 1,
+              "operation_start": 77448,
+              "operation_end_exclusive": 142984,
+              "operation_count": 65536,
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "second_product_partial_product_grid",
+                  "block": "second_product_partial_product_grid",
+                  "operation_start": 77448,
+                  "operation_end_exclusive": 142984,
+                  "operation_count": 65536,
+                  "primitive_counts_total": {
+                    "ccx": 65536,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 0
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 65536,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 0
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "second_product_controlled_add_path",
+              "kind": "controlled_accumulator_add",
+              "bit_count": 255,
+              "repeat_count": 1,
+              "operation_start": 142984,
+              "operation_end_exclusive": 143494,
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "second_product_controlled_add_path",
+                  "block": "second_product_controlled_add_path",
+                  "operation_start": 142984,
+                  "operation_end_exclusive": 143494,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "second_product_controlled_sub_path",
+              "kind": "controlled_accumulator_subtract",
+              "bit_count": 256,
+              "repeat_count": 1,
+              "operation_start": 143494,
+              "operation_end_exclusive": 144006,
+              "operation_count": 512,
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "second_product_controlled_sub_path",
+                  "block": "second_product_controlled_sub_path",
+                  "operation_start": 143494,
+                  "operation_end_exclusive": 144006,
+                  "operation_count": 512,
+                  "primitive_counts_total": {
+                    "ccx": 256,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 256
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 256,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 256
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "second_product_pseudo_mersenne_first_fold",
+              "kind": "pseudo_mersenne_fold",
+              "bit_count": 287,
+              "repeat_count": 15,
+              "operation_start": 144006,
+              "operation_end_exclusive": 152616,
+              "operation_count": 8610,
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "second_product_pseudo_mersenne_first_fold",
+                  "block": "second_product_pseudo_mersenne_first_fold",
+                  "operation_start": 144006,
+                  "operation_end_exclusive": 152616,
+                  "operation_count": 8610,
+                  "primitive_counts_total": {
+                    "ccx": 4305,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 4305
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 4305,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 4305
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "second_product_pseudo_mersenne_second_fold",
+              "kind": "pseudo_mersenne_fold",
+              "bit_count": 42,
+              "repeat_count": 15,
+              "operation_start": 152616,
+              "operation_end_exclusive": 153876,
+              "operation_count": 1260,
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "second_product_pseudo_mersenne_second_fold",
+                  "block": "second_product_pseudo_mersenne_second_fold",
+                  "operation_start": 152616,
+                  "operation_end_exclusive": 153876,
+                  "operation_count": 1260,
+                  "primitive_counts_total": {
+                    "ccx": 630,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 630
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 630,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 630
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "second_product_pseudo_mersenne_canonicalize",
+              "kind": "conditional_modulus_correction",
+              "bit_count": 255,
+              "repeat_count": 2,
+              "operation_start": 153876,
+              "operation_end_exclusive": 154896,
+              "operation_count": 1020,
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "second_product_pseudo_mersenne_canonicalize",
+                  "block": "second_product_pseudo_mersenne_canonicalize",
+                  "operation_start": 153876,
+                  "operation_end_exclusive": 154896,
+                  "operation_count": 1020,
+                  "primitive_counts_total": {
+                    "ccx": 510,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 510
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 510,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 510
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "combine_difference_borrow_ladder",
+              "kind": "ripple_borrow",
+              "bit_count": 255,
+              "repeat_count": 1,
+              "operation_start": 154896,
+              "operation_end_exclusive": 155406,
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "combine_difference_borrow_ladder",
+                  "block": "combine_difference_borrow_ladder",
+                  "operation_start": 154896,
+                  "operation_end_exclusive": 155406,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            },
+            {
+              "step": "combine_difference_conditional_add_modulus",
+              "kind": "conditional_modulus_correction",
+              "bit_count": 255,
+              "repeat_count": 1,
+              "operation_start": 155406,
+              "operation_end_exclusive": 155916,
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "expected_primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              },
+              "counts_match_executable_ir_step": true,
+              "blocks": [
+                {
+                  "stage": "combine_difference_conditional_add_modulus",
+                  "block": "combine_difference_conditional_add_modulus",
+                  "operation_start": 155406,
+                  "operation_end_exclusive": 155916,
+                  "operation_count": 510,
+                  "primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "declared_primitive_counts_total": {
+                    "ccx": 255,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 255
+                  },
+                  "counts_match_declared_block": true
+                }
+              ]
+            }
+          ],
+          "preview_head": [
+            {
+              "opcode": "field_double_mul_sub",
+              "step": "first_product_partial_product_grid",
+              "stage": "first_product_partial_product_grid",
+              "block": "first_product_partial_product_grid",
+              "operation_index": 0,
+              "block_operation_index": 0,
+              "gate": "ccx",
+              "operands": [
+                0,
+                0
+              ]
+            },
+            {
+              "opcode": "field_double_mul_sub",
+              "step": "first_product_partial_product_grid",
+              "stage": "first_product_partial_product_grid",
+              "block": "first_product_partial_product_grid",
+              "operation_index": 1,
+              "block_operation_index": 1,
+              "gate": "ccx",
+              "operands": [
+                0,
+                1
+              ]
+            },
+            {
+              "opcode": "field_double_mul_sub",
+              "step": "first_product_partial_product_grid",
+              "stage": "first_product_partial_product_grid",
+              "block": "first_product_partial_product_grid",
+              "operation_index": 2,
+              "block_operation_index": 2,
+              "gate": "ccx",
+              "operands": [
+                0,
+                2
+              ]
+            },
+            {
+              "opcode": "field_double_mul_sub",
+              "step": "first_product_partial_product_grid",
+              "stage": "first_product_partial_product_grid",
+              "block": "first_product_partial_product_grid",
+              "operation_index": 3,
+              "block_operation_index": 3,
+              "gate": "ccx",
+              "operands": [
+                0,
+                3
+              ]
+            }
+          ],
+          "preview_tail": [
+            {
+              "opcode": "field_double_mul_sub",
+              "step": "combine_difference_conditional_add_modulus",
+              "stage": "combine_difference_conditional_add_modulus",
+              "block": "combine_difference_conditional_add_modulus",
+              "operation_index": 155912,
+              "block_operation_index": 506,
+              "gate": "ccx",
+              "operands": [
+                253
+              ]
+            },
+            {
+              "opcode": "field_double_mul_sub",
+              "step": "combine_difference_conditional_add_modulus",
+              "stage": "combine_difference_conditional_add_modulus",
+              "block": "combine_difference_conditional_add_modulus",
+              "operation_index": 155913,
+              "block_operation_index": 507,
+              "gate": "measurement",
+              "operands": [
+                253
+              ]
+            },
+            {
+              "opcode": "field_double_mul_sub",
+              "step": "combine_difference_conditional_add_modulus",
+              "stage": "combine_difference_conditional_add_modulus",
+              "block": "combine_difference_conditional_add_modulus",
+              "operation_index": 155914,
+              "block_operation_index": 508,
+              "gate": "ccx",
+              "operands": [
+                254
+              ]
+            },
+            {
+              "opcode": "field_double_mul_sub",
+              "step": "combine_difference_conditional_add_modulus",
+              "stage": "combine_difference_conditional_add_modulus",
+              "block": "combine_difference_conditional_add_modulus",
+              "operation_index": 155915,
+              "block_operation_index": 509,
+              "gate": "measurement",
+              "operands": [
+                254
+              ]
+            }
+          ],
+          "counts_match_executable_ir_opcode": true,
+          "counts_match_lowering_kernel": true
         }
       ],
       "failures": [],
@@ -5341,7 +7263,9 @@
         "field_sub_sum": 1020,
         "field_triple": 1020,
         "mul_const": 3060,
-        "field_mul": 71492
+        "field_mul": 71492,
+        "field_double_mul_add": 143494,
+        "field_double_mul_sub": 143494
       },
       "observed_non_clifford_per_opcode": {
         "field_add": 510,
@@ -5349,7 +7273,9 @@
         "field_sub_sum": 1020,
         "field_triple": 1020,
         "mul_const": 3060,
-        "field_mul": 71492
+        "field_mul": 71492,
+        "field_double_mul_add": 143494,
+        "field_double_mul_sub": 143494
       },
       "opcode_counts_match": true
     },
@@ -5908,6 +7834,424 @@
                 "measurement": 61
               },
               "non_clifford_total": 86
+            },
+            {
+              "opcode": "field_double_mul_add",
+              "semantic": "two canonical modular multiplications accumulated with one canonical modular addition",
+              "steps": [
+                {
+                  "name": "first_product_partial_product_grid",
+                  "kind": "schoolbook_partial_products",
+                  "bit_count": 25,
+                  "repeat_count": 1,
+                  "semantic": "first product: one controlled interaction for each field-bit product",
+                  "measured": false,
+                  "primitive_counts_total": {
+                    "ccx": 25,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 0
+                  }
+                },
+                {
+                  "name": "first_product_controlled_add_path",
+                  "kind": "controlled_accumulator_add",
+                  "bit_count": 4,
+                  "repeat_count": 1,
+                  "semantic": "first product: carry path for controlled add half of schoolbook multiplier",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 4,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 4
+                  }
+                },
+                {
+                  "name": "first_product_controlled_sub_path",
+                  "kind": "controlled_accumulator_subtract",
+                  "bit_count": 5,
+                  "repeat_count": 1,
+                  "semantic": "first product: borrow path for controlled subtract half of schoolbook multiplier",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 5,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 5
+                  }
+                },
+                {
+                  "name": "first_product_pseudo_mersenne_first_fold",
+                  "kind": "pseudo_mersenne_fold",
+                  "bit_count": 6,
+                  "repeat_count": 4,
+                  "semantic": "first product: fold high product half via 2^n = 2^shift + low_term",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 24,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 24
+                  }
+                },
+                {
+                  "name": "first_product_pseudo_mersenne_second_fold",
+                  "kind": "pseudo_mersenne_fold",
+                  "bit_count": 5,
+                  "repeat_count": 4,
+                  "semantic": "first product: fold residual high component after first fold",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 20,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 20
+                  }
+                },
+                {
+                  "name": "first_product_pseudo_mersenne_canonicalize",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 4,
+                  "repeat_count": 2,
+                  "semantic": "first product: canonicalize product with bounded subtract-p passes",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 8,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 8
+                  }
+                },
+                {
+                  "name": "second_product_partial_product_grid",
+                  "kind": "schoolbook_partial_products",
+                  "bit_count": 25,
+                  "repeat_count": 1,
+                  "semantic": "second product: one controlled interaction for each field-bit product",
+                  "measured": false,
+                  "primitive_counts_total": {
+                    "ccx": 25,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 0
+                  }
+                },
+                {
+                  "name": "second_product_controlled_add_path",
+                  "kind": "controlled_accumulator_add",
+                  "bit_count": 4,
+                  "repeat_count": 1,
+                  "semantic": "second product: carry path for controlled add half of schoolbook multiplier",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 4,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 4
+                  }
+                },
+                {
+                  "name": "second_product_controlled_sub_path",
+                  "kind": "controlled_accumulator_subtract",
+                  "bit_count": 5,
+                  "repeat_count": 1,
+                  "semantic": "second product: borrow path for controlled subtract half of schoolbook multiplier",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 5,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 5
+                  }
+                },
+                {
+                  "name": "second_product_pseudo_mersenne_first_fold",
+                  "kind": "pseudo_mersenne_fold",
+                  "bit_count": 6,
+                  "repeat_count": 4,
+                  "semantic": "second product: fold high product half via 2^n = 2^shift + low_term",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 24,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 24
+                  }
+                },
+                {
+                  "name": "second_product_pseudo_mersenne_second_fold",
+                  "kind": "pseudo_mersenne_fold",
+                  "bit_count": 5,
+                  "repeat_count": 4,
+                  "semantic": "second product: fold residual high component after first fold",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 20,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 20
+                  }
+                },
+                {
+                  "name": "second_product_pseudo_mersenne_canonicalize",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 4,
+                  "repeat_count": 2,
+                  "semantic": "second product: canonicalize product with bounded subtract-p passes",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 8,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 8
+                  }
+                },
+                {
+                  "name": "combine_sum_carry_ladder",
+                  "kind": "ripple_carry",
+                  "bit_count": 4,
+                  "repeat_count": 1,
+                  "semantic": "combine sum: compute raw sum carry path",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 4,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 4
+                  }
+                },
+                {
+                  "name": "combine_sum_conditional_subtract_modulus",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 4,
+                  "repeat_count": 1,
+                  "semantic": "combine sum: canonicalize raw sum by subtracting p when needed",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 4,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 4
+                  }
+                }
+              ],
+              "primitive_counts_total": {
+                "ccx": 180,
+                "cx": 0,
+                "x": 0,
+                "measurement": 130
+              },
+              "non_clifford_total": 180
+            },
+            {
+              "opcode": "field_double_mul_sub",
+              "semantic": "two canonical modular multiplications accumulated with one canonical modular subtraction",
+              "steps": [
+                {
+                  "name": "first_product_partial_product_grid",
+                  "kind": "schoolbook_partial_products",
+                  "bit_count": 25,
+                  "repeat_count": 1,
+                  "semantic": "first product: one controlled interaction for each field-bit product",
+                  "measured": false,
+                  "primitive_counts_total": {
+                    "ccx": 25,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 0
+                  }
+                },
+                {
+                  "name": "first_product_controlled_add_path",
+                  "kind": "controlled_accumulator_add",
+                  "bit_count": 4,
+                  "repeat_count": 1,
+                  "semantic": "first product: carry path for controlled add half of schoolbook multiplier",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 4,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 4
+                  }
+                },
+                {
+                  "name": "first_product_controlled_sub_path",
+                  "kind": "controlled_accumulator_subtract",
+                  "bit_count": 5,
+                  "repeat_count": 1,
+                  "semantic": "first product: borrow path for controlled subtract half of schoolbook multiplier",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 5,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 5
+                  }
+                },
+                {
+                  "name": "first_product_pseudo_mersenne_first_fold",
+                  "kind": "pseudo_mersenne_fold",
+                  "bit_count": 6,
+                  "repeat_count": 4,
+                  "semantic": "first product: fold high product half via 2^n = 2^shift + low_term",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 24,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 24
+                  }
+                },
+                {
+                  "name": "first_product_pseudo_mersenne_second_fold",
+                  "kind": "pseudo_mersenne_fold",
+                  "bit_count": 5,
+                  "repeat_count": 4,
+                  "semantic": "first product: fold residual high component after first fold",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 20,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 20
+                  }
+                },
+                {
+                  "name": "first_product_pseudo_mersenne_canonicalize",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 4,
+                  "repeat_count": 2,
+                  "semantic": "first product: canonicalize product with bounded subtract-p passes",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 8,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 8
+                  }
+                },
+                {
+                  "name": "second_product_partial_product_grid",
+                  "kind": "schoolbook_partial_products",
+                  "bit_count": 25,
+                  "repeat_count": 1,
+                  "semantic": "second product: one controlled interaction for each field-bit product",
+                  "measured": false,
+                  "primitive_counts_total": {
+                    "ccx": 25,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 0
+                  }
+                },
+                {
+                  "name": "second_product_controlled_add_path",
+                  "kind": "controlled_accumulator_add",
+                  "bit_count": 4,
+                  "repeat_count": 1,
+                  "semantic": "second product: carry path for controlled add half of schoolbook multiplier",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 4,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 4
+                  }
+                },
+                {
+                  "name": "second_product_controlled_sub_path",
+                  "kind": "controlled_accumulator_subtract",
+                  "bit_count": 5,
+                  "repeat_count": 1,
+                  "semantic": "second product: borrow path for controlled subtract half of schoolbook multiplier",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 5,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 5
+                  }
+                },
+                {
+                  "name": "second_product_pseudo_mersenne_first_fold",
+                  "kind": "pseudo_mersenne_fold",
+                  "bit_count": 6,
+                  "repeat_count": 4,
+                  "semantic": "second product: fold high product half via 2^n = 2^shift + low_term",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 24,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 24
+                  }
+                },
+                {
+                  "name": "second_product_pseudo_mersenne_second_fold",
+                  "kind": "pseudo_mersenne_fold",
+                  "bit_count": 5,
+                  "repeat_count": 4,
+                  "semantic": "second product: fold residual high component after first fold",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 20,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 20
+                  }
+                },
+                {
+                  "name": "second_product_pseudo_mersenne_canonicalize",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 4,
+                  "repeat_count": 2,
+                  "semantic": "second product: canonicalize product with bounded subtract-p passes",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 8,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 8
+                  }
+                },
+                {
+                  "name": "combine_difference_borrow_ladder",
+                  "kind": "ripple_borrow",
+                  "bit_count": 4,
+                  "repeat_count": 1,
+                  "semantic": "combine difference: compute raw difference borrow path",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 4,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 4
+                  }
+                },
+                {
+                  "name": "combine_difference_conditional_add_modulus",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 4,
+                  "repeat_count": 1,
+                  "semantic": "combine difference: canonicalize raw difference by adding p when needed",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 4,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 4
+                  }
+                }
+              ],
+              "primitive_counts_total": {
+                "ccx": 180,
+                "cx": 0,
+                "x": 0,
+                "measurement": 130
+              },
+              "non_clifford_total": 180
             }
           ],
           "non_clifford_by_opcode": {
@@ -5916,7 +8260,9 @@
             "field_sub_sum": 16,
             "field_triple": 16,
             "mul_const": 48,
-            "field_mul": 86
+            "field_mul": 86,
+            "field_double_mul_add": 180,
+            "field_double_mul_sub": 180
           }
         },
         "sample_traces": [
@@ -7343,6 +9689,424 @@
                 "measurement": 60
               },
               "non_clifford_total": 96
+            },
+            {
+              "opcode": "field_double_mul_add",
+              "semantic": "two canonical modular multiplications accumulated with one canonical modular addition",
+              "steps": [
+                {
+                  "name": "first_product_partial_product_grid",
+                  "kind": "schoolbook_partial_products",
+                  "bit_count": 36,
+                  "repeat_count": 1,
+                  "semantic": "first product: one controlled interaction for each field-bit product",
+                  "measured": false,
+                  "primitive_counts_total": {
+                    "ccx": 36,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 0
+                  }
+                },
+                {
+                  "name": "first_product_controlled_add_path",
+                  "kind": "controlled_accumulator_add",
+                  "bit_count": 5,
+                  "repeat_count": 1,
+                  "semantic": "first product: carry path for controlled add half of schoolbook multiplier",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 5,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 5
+                  }
+                },
+                {
+                  "name": "first_product_controlled_sub_path",
+                  "kind": "controlled_accumulator_subtract",
+                  "bit_count": 6,
+                  "repeat_count": 1,
+                  "semantic": "first product: borrow path for controlled subtract half of schoolbook multiplier",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 6,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 6
+                  }
+                },
+                {
+                  "name": "first_product_pseudo_mersenne_first_fold",
+                  "kind": "pseudo_mersenne_fold",
+                  "bit_count": 8,
+                  "repeat_count": 3,
+                  "semantic": "first product: fold high product half via 2^n = 2^shift + low_term",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 24,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 24
+                  }
+                },
+                {
+                  "name": "first_product_pseudo_mersenne_second_fold",
+                  "kind": "pseudo_mersenne_fold",
+                  "bit_count": 5,
+                  "repeat_count": 3,
+                  "semantic": "first product: fold residual high component after first fold",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 15,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 15
+                  }
+                },
+                {
+                  "name": "first_product_pseudo_mersenne_canonicalize",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 5,
+                  "repeat_count": 2,
+                  "semantic": "first product: canonicalize product with bounded subtract-p passes",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 10,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 10
+                  }
+                },
+                {
+                  "name": "second_product_partial_product_grid",
+                  "kind": "schoolbook_partial_products",
+                  "bit_count": 36,
+                  "repeat_count": 1,
+                  "semantic": "second product: one controlled interaction for each field-bit product",
+                  "measured": false,
+                  "primitive_counts_total": {
+                    "ccx": 36,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 0
+                  }
+                },
+                {
+                  "name": "second_product_controlled_add_path",
+                  "kind": "controlled_accumulator_add",
+                  "bit_count": 5,
+                  "repeat_count": 1,
+                  "semantic": "second product: carry path for controlled add half of schoolbook multiplier",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 5,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 5
+                  }
+                },
+                {
+                  "name": "second_product_controlled_sub_path",
+                  "kind": "controlled_accumulator_subtract",
+                  "bit_count": 6,
+                  "repeat_count": 1,
+                  "semantic": "second product: borrow path for controlled subtract half of schoolbook multiplier",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 6,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 6
+                  }
+                },
+                {
+                  "name": "second_product_pseudo_mersenne_first_fold",
+                  "kind": "pseudo_mersenne_fold",
+                  "bit_count": 8,
+                  "repeat_count": 3,
+                  "semantic": "second product: fold high product half via 2^n = 2^shift + low_term",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 24,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 24
+                  }
+                },
+                {
+                  "name": "second_product_pseudo_mersenne_second_fold",
+                  "kind": "pseudo_mersenne_fold",
+                  "bit_count": 5,
+                  "repeat_count": 3,
+                  "semantic": "second product: fold residual high component after first fold",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 15,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 15
+                  }
+                },
+                {
+                  "name": "second_product_pseudo_mersenne_canonicalize",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 5,
+                  "repeat_count": 2,
+                  "semantic": "second product: canonicalize product with bounded subtract-p passes",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 10,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 10
+                  }
+                },
+                {
+                  "name": "combine_sum_carry_ladder",
+                  "kind": "ripple_carry",
+                  "bit_count": 5,
+                  "repeat_count": 1,
+                  "semantic": "combine sum: compute raw sum carry path",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 5,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 5
+                  }
+                },
+                {
+                  "name": "combine_sum_conditional_subtract_modulus",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 5,
+                  "repeat_count": 1,
+                  "semantic": "combine sum: canonicalize raw sum by subtracting p when needed",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 5,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 5
+                  }
+                }
+              ],
+              "primitive_counts_total": {
+                "ccx": 202,
+                "cx": 0,
+                "x": 0,
+                "measurement": 130
+              },
+              "non_clifford_total": 202
+            },
+            {
+              "opcode": "field_double_mul_sub",
+              "semantic": "two canonical modular multiplications accumulated with one canonical modular subtraction",
+              "steps": [
+                {
+                  "name": "first_product_partial_product_grid",
+                  "kind": "schoolbook_partial_products",
+                  "bit_count": 36,
+                  "repeat_count": 1,
+                  "semantic": "first product: one controlled interaction for each field-bit product",
+                  "measured": false,
+                  "primitive_counts_total": {
+                    "ccx": 36,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 0
+                  }
+                },
+                {
+                  "name": "first_product_controlled_add_path",
+                  "kind": "controlled_accumulator_add",
+                  "bit_count": 5,
+                  "repeat_count": 1,
+                  "semantic": "first product: carry path for controlled add half of schoolbook multiplier",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 5,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 5
+                  }
+                },
+                {
+                  "name": "first_product_controlled_sub_path",
+                  "kind": "controlled_accumulator_subtract",
+                  "bit_count": 6,
+                  "repeat_count": 1,
+                  "semantic": "first product: borrow path for controlled subtract half of schoolbook multiplier",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 6,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 6
+                  }
+                },
+                {
+                  "name": "first_product_pseudo_mersenne_first_fold",
+                  "kind": "pseudo_mersenne_fold",
+                  "bit_count": 8,
+                  "repeat_count": 3,
+                  "semantic": "first product: fold high product half via 2^n = 2^shift + low_term",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 24,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 24
+                  }
+                },
+                {
+                  "name": "first_product_pseudo_mersenne_second_fold",
+                  "kind": "pseudo_mersenne_fold",
+                  "bit_count": 5,
+                  "repeat_count": 3,
+                  "semantic": "first product: fold residual high component after first fold",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 15,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 15
+                  }
+                },
+                {
+                  "name": "first_product_pseudo_mersenne_canonicalize",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 5,
+                  "repeat_count": 2,
+                  "semantic": "first product: canonicalize product with bounded subtract-p passes",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 10,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 10
+                  }
+                },
+                {
+                  "name": "second_product_partial_product_grid",
+                  "kind": "schoolbook_partial_products",
+                  "bit_count": 36,
+                  "repeat_count": 1,
+                  "semantic": "second product: one controlled interaction for each field-bit product",
+                  "measured": false,
+                  "primitive_counts_total": {
+                    "ccx": 36,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 0
+                  }
+                },
+                {
+                  "name": "second_product_controlled_add_path",
+                  "kind": "controlled_accumulator_add",
+                  "bit_count": 5,
+                  "repeat_count": 1,
+                  "semantic": "second product: carry path for controlled add half of schoolbook multiplier",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 5,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 5
+                  }
+                },
+                {
+                  "name": "second_product_controlled_sub_path",
+                  "kind": "controlled_accumulator_subtract",
+                  "bit_count": 6,
+                  "repeat_count": 1,
+                  "semantic": "second product: borrow path for controlled subtract half of schoolbook multiplier",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 6,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 6
+                  }
+                },
+                {
+                  "name": "second_product_pseudo_mersenne_first_fold",
+                  "kind": "pseudo_mersenne_fold",
+                  "bit_count": 8,
+                  "repeat_count": 3,
+                  "semantic": "second product: fold high product half via 2^n = 2^shift + low_term",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 24,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 24
+                  }
+                },
+                {
+                  "name": "second_product_pseudo_mersenne_second_fold",
+                  "kind": "pseudo_mersenne_fold",
+                  "bit_count": 5,
+                  "repeat_count": 3,
+                  "semantic": "second product: fold residual high component after first fold",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 15,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 15
+                  }
+                },
+                {
+                  "name": "second_product_pseudo_mersenne_canonicalize",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 5,
+                  "repeat_count": 2,
+                  "semantic": "second product: canonicalize product with bounded subtract-p passes",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 10,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 10
+                  }
+                },
+                {
+                  "name": "combine_difference_borrow_ladder",
+                  "kind": "ripple_borrow",
+                  "bit_count": 5,
+                  "repeat_count": 1,
+                  "semantic": "combine difference: compute raw difference borrow path",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 5,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 5
+                  }
+                },
+                {
+                  "name": "combine_difference_conditional_add_modulus",
+                  "kind": "conditional_modulus_correction",
+                  "bit_count": 5,
+                  "repeat_count": 1,
+                  "semantic": "combine difference: canonicalize raw difference by adding p when needed",
+                  "measured": true,
+                  "primitive_counts_total": {
+                    "ccx": 5,
+                    "cx": 0,
+                    "x": 0,
+                    "measurement": 5
+                  }
+                }
+              ],
+              "primitive_counts_total": {
+                "ccx": 202,
+                "cx": 0,
+                "x": 0,
+                "measurement": 130
+              },
+              "non_clifford_total": 202
             }
           ],
           "non_clifford_by_opcode": {
@@ -7351,7 +10115,9 @@
             "field_sub_sum": 20,
             "field_triple": 20,
             "mul_const": 60,
-            "field_mul": 96
+            "field_mul": 96,
+            "field_double_mul_add": 202,
+            "field_double_mul_sub": 202
           }
         },
         "sample_traces": [

@@ -172,6 +172,27 @@ def build_executable_modular_circuit_ir(*, field_bits: int, shift: int, low_term
             semantic='canonicalize product with bounded subtract-p passes',
         ),
     ]
+
+    def prefixed_steps(prefix: str, steps: List[Mapping[str, Any]]) -> List[Dict[str, Any]]:
+        return [
+            {
+                **step,
+                'name': f'{prefix}_{step["name"]}',
+                'semantic': f'{prefix.replace("_", " ")}: {step["semantic"]}',
+            }
+            for step in steps
+        ]
+
+    field_double_mul_add_steps = (
+        prefixed_steps('first_product', field_mul_steps)
+        + prefixed_steps('second_product', field_mul_steps)
+        + prefixed_steps('combine_sum', add_steps)
+    )
+    field_double_mul_sub_steps = (
+        prefixed_steps('first_product', field_mul_steps)
+        + prefixed_steps('second_product', field_mul_steps)
+        + prefixed_steps('combine_difference', sub_steps)
+    )
     operations = [
         _modular_operation_ir('field_add', add_steps, 'canonical modular addition'),
         _modular_operation_ir('field_sub', sub_steps, 'canonical modular subtraction'),
@@ -197,6 +218,16 @@ def build_executable_modular_circuit_ir(*, field_bits: int, shift: int, low_term
             'fixed multiplication by 21 through canonical modular additions',
         ),
         _modular_operation_ir('field_mul', field_mul_steps, 'schoolbook multiplication followed by pseudo-Mersenne reduction'),
+        _modular_operation_ir(
+            'field_double_mul_add',
+            field_double_mul_add_steps,
+            'two canonical modular multiplications accumulated with one canonical modular addition',
+        ),
+        _modular_operation_ir(
+            'field_double_mul_sub',
+            field_double_mul_sub_steps,
+            'two canonical modular multiplications accumulated with one canonical modular subtraction',
+        ),
     ]
     return {
         'schema': 'compiler-project-executable-modular-circuit-ir-v1',
@@ -670,6 +701,41 @@ def _field_mul_kernel(field_bits: int) -> Dict[str, Any]:
         ],
         notes=[
             'The kernel reconstructs the controlled add-subtract schoolbook core plus explicit pseudo-Mersenne reduction and canonical subtract-p correction for secp256k1.',
+            'Source: executable_modular_circuit_ir emitted by arithmetic_lowering.build_executable_modular_circuit_ir.',
+        ],
+    )
+
+
+def _field_double_mul_kernel(field_bits: int, opcode: str, combine_opcode: str, summary: str) -> Dict[str, Any]:
+    operation = _modular_operation(opcode, field_bits)
+    stages = []
+    for step in operation['steps']:
+        step_name = str(step['name'])
+        if step_name.startswith('first_product_'):
+            category_prefix = 'first_product'
+        elif step_name.startswith('second_product_'):
+            category_prefix = 'second_product'
+        elif step_name.startswith('combine_'):
+            category_prefix = 'combine'
+        else:
+            raise ValueError(f'unexpected {opcode} step name: {step_name}')
+        stages.append(_stage(
+            name=step_name,
+            summary=str(step['semantic']),
+            category=f'{category_prefix}_accumulator',
+            blocks=[_modular_step_block(step, field_bits)],
+            notes=[
+                f'Generated directly from executable_modular_circuit_ir for {opcode}.',
+                'The scheduled primitive netlist maps this step to the final target accumulator, not to a materialized product field lane.',
+            ],
+        ))
+    return _kernel(
+        opcode=opcode,
+        summary=summary,
+        stages=stages,
+        notes=[
+            f'This fused kernel has the same primitive count as two field_mul kernels plus one {combine_opcode} kernel.',
+            'It exists so the global primitive stream can bind fused output arithmetic without virtual product_0/product_1 field registers.',
             'Source: executable_modular_circuit_ir emitted by arithmetic_lowering.build_executable_modular_circuit_ir.',
         ],
     )
@@ -1187,6 +1253,18 @@ def arithmetic_lowering_library(
         _field_sub_kernel(field_bits),
         _field_sub_sum_kernel(field_bits),
         _field_triple_kernel(field_bits),
+        _field_double_mul_kernel(
+            field_bits,
+            'field_double_mul_add',
+            'field_add',
+            'Exact fused output kernel for a*b + c*d without materialized product field lanes.',
+        ),
+        _field_double_mul_kernel(
+            field_bits,
+            'field_double_mul_sub',
+            'field_sub',
+            'Exact fused output kernel for a*b - c*d without materialized product field lanes.',
+        ),
         _complete_a0_streamed_tail_kernel(field_bits, qroam_block_size, qroam_domain_size),
         _complete_a0_fully_streamed_tail_kernel(field_bits, qroam_block_size, qroam_domain_size),
         _complete_a0_all_streamed_tail_kernel(field_bits, qroam_block_size, qroam_domain_size),
