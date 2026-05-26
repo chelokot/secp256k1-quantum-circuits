@@ -2,7 +2,7 @@
   "schema": "compiler-project-zkp-attestation-input-v5",
   "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
   "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
-  "claim_sha256": "23da81167ac369cfc6f054995c07a3bcd6235c276172e78636e9a441b14a77a4",
+  "claim_sha256": "fca2f40adec120699e1ec71d8d612d293a83688d6463e169b45d327245c2ab2a",
   "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
   "family_sha256": "c6a7146ac5c0d7a63f733b0224ac9dc6fbaafb576d196128f882ecbc01e42b2b",
   "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
@@ -12,7 +12,7 @@
     "document_type": "attestation_claim",
     "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_claim.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "23da81167ac369cfc6f054995c07a3bcd6235c276172e78636e9a441b14a77a4",
+    "sha256": "fca2f40adec120699e1ec71d8d612d293a83688d6463e169b45d327245c2ab2a",
     "payload": {
       "schema": "compiler-project-zkp-attestation-claim-v1",
       "selected_family_alias": "reusable-chunk",
@@ -25,7 +25,7 @@
       "resource_engine_summary": {
         "source": "public_engine_manifest.public_totals",
         "source_document_type": "public_engine_manifest",
-        "source_sha256": "b007dde78c0aa285ece6465a3b530e6a56d9857f010898fd94d7dc52cadaef26",
+        "source_sha256": "a6e5e7e9a35c561ec0a6f9db51fc0b876b3631276ce88422cb9ff2f93bd25c94",
         "non_clifford": 36973222,
         "logical_qubits": 1968,
         "matches_family_snapshot": false,
@@ -7023,7 +7023,7 @@
     "resource_engine_summary": {
       "source": "public_engine_manifest.public_totals",
       "source_document_type": "public_engine_manifest",
-      "source_sha256": "b007dde78c0aa285ece6465a3b530e6a56d9857f010898fd94d7dc52cadaef26",
+      "source_sha256": "a6e5e7e9a35c561ec0a6f9db51fc0b876b3631276ce88422cb9ff2f93bd25c94",
       "non_clifford": 36973222,
       "logical_qubits": 1968,
       "matches_family_snapshot": false,
@@ -7387,12 +7387,12 @@
     "The proof input carries both the committed source documents and proof-ready reductions.",
     "The guest recomputes every source-document digest and derives the prepared leaf/case reductions from those documents before publishing public values."
   ],
-  "public_engine_manifest_sha256": "b007dde78c0aa285ece6465a3b530e6a56d9857f010898fd94d7dc52cadaef26",
+  "public_engine_manifest_sha256": "a6e5e7e9a35c561ec0a6f9db51fc0b876b3631276ce88422cb9ff2f93bd25c94",
   "public_engine_manifest_document": {
     "document_type": "public_engine_manifest",
     "artifact_path": "compiler_verification_project/artifacts/public_engine_manifest.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "b007dde78c0aa285ece6465a3b530e6a56d9857f010898fd94d7dc52cadaef26",
+    "sha256": "a6e5e7e9a35c561ec0a6f9db51fc0b876b3631276ce88422cb9ff2f93bd25c94",
     "payload": {
       "schema": "compiler-project-public-engine-manifest-v1",
       "scope": "current public reusable-chunk executable resource engine manifest",
@@ -7402,7 +7402,7 @@
       "public_totals": {
         "non_clifford": 36973222,
         "logical_qubits": 1968,
-        "source": "public_candidate_materialized_circuit_manifest.strict_replayed_tail_materialized_flat_netlist"
+        "source": "public_candidate_materialized_circuit_manifest.canonical_materialized_flat_netlist"
       },
       "legacy_wrapper_totals": {
         "non_clifford": 36973222,
@@ -7416,7 +7416,7 @@
         "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
         "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
         "resource_contract_engine_sha256": "0447031a514b04038ab0f51e63a0e1a5ffa187d1cab694de20d7dfc8196ea1e0",
-        "public_candidate_materialized_circuit_manifest_sha256": "329ab4b61eca64db2301a47791b6a0b6a240bcb9a2829b2b7a992e40aef0b66f"
+        "public_candidate_materialized_circuit_manifest_sha256": "0a1d705a4a6cbeb12feb2c366835261fe5eaf7e23016a968543140f07118c946"
       },
       "instruction_stream": {
         "encoding": [
@@ -8010,7 +8010,7 @@
       "primitive_operation_evidence": {
         "public_candidate_materialized_circuit_manifest": {
           "schema": "compiler-project-public-candidate-materialized-circuit-manifest-v1",
-          "sha256": "329ab4b61eca64db2301a47791b6a0b6a240bcb9a2829b2b7a992e40aef0b66f",
+          "sha256": "0a1d705a4a6cbeb12feb2c366835261fe5eaf7e23016a968543140f07118c946",
           "pass": true,
           "operation_stream_sha256": "8e7bb094bed9d407a2b7c5c52583d0fe6215cb50ca84ff1140a2200ddb1c69d6",
           "liveness_binding_stream_sha256": "064b5825a77559fdaab046854b89afdf58e1d3da0be53ab53652bb913c87b8eb",
@@ -8029,6 +8029,16 @@
             "segment_merkle_root_sha256": "8633466fd0fbc0b4265857152d338dd1a48d287858b3e705257e78f22506b635",
             "non_clifford_count": 36973222,
             "peak_live_qubits": 1199
+          },
+          "canonical_materialized_flat_netlist": {
+            "schema": "compiler-project-public-candidate-materialized-flat-netlist-v1",
+            "exact_operation_stream_materialized": true,
+            "operation_count": 39386537,
+            "operation_stream_sha256": "2d7808c0797e256fad58c99592d71ca726764bfd9a632e93fe5c37a89590d087",
+            "segment_count": 40,
+            "segment_merkle_root_sha256": "d0b63dbdee34be8d7ed581392aeeb0abeb6dbcba7f2e650e82c483c911651361",
+            "non_clifford_count": 36973222,
+            "peak_live_qubits": 1968
           },
           "strict_replayed_tail_materialized_flat_netlist": {
             "schema": "compiler-project-public-candidate-materialized-flat-netlist-v1",
@@ -8134,7 +8144,7 @@
         "executable_resource_engine_passes": true,
         "counted_resource_engine_passes": true,
         "resource_contract_engine_passes": true,
-        "public_totals_match_strict_materialized_flat_engine": true,
+        "public_totals_match_canonical_materialized_flat_engine": true,
         "legacy_wrapper_totals_match_executable_resource_engine_snapshot": true,
         "legacy_wrapper_totals_match_counted_resource_engine": true,
         "legacy_wrapper_totals_match_resource_contract_engine": true,

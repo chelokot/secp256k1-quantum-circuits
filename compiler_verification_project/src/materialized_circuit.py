@@ -2273,15 +2273,17 @@ def build_public_candidate_materialized_circuit_manifest(
         )
         strict_liveness_projection['pass'] = all(strict_liveness_projection['checks'].values())
     if strict_materialized_flat_netlist is not None and strict_materialized_flat_netlist['exact_operation_stream_materialized'] is True:
+        canonical_materialized_flat_netlist = strict_materialized_flat_netlist
         public_totals = {
-            'non_clifford': int(strict_materialized_flat_netlist['non_clifford_count']),
-            'logical_qubits': int(strict_materialized_flat_netlist['peak_live_qubits']),
-            'source': 'public_candidate_materialized.strict_replayed_tail_materialized_flat_netlist.non_clifford_count + strict_replayed_tail_materialized_flat_netlist.peak_live_qubits',
+            'non_clifford': int(canonical_materialized_flat_netlist['non_clifford_count']),
+            'logical_qubits': int(canonical_materialized_flat_netlist['peak_live_qubits']),
+            'source': 'public_candidate_materialized.canonical_materialized_flat_netlist.non_clifford_count + canonical_materialized_flat_netlist.peak_live_qubits',
         }
     else:
+        canonical_materialized_flat_netlist = materialized_flat_netlist
         public_totals = {
             **materialized_public_totals,
-            'source': 'public_candidate_materialized.materialized_flat_netlist.non_clifford_count + materialized_flat_netlist.peak_live_qubits',
+            'source': 'public_candidate_materialized.canonical_materialized_flat_netlist.non_clifford_count + canonical_materialized_flat_netlist.peak_live_qubits',
         }
     base_rows = [row for row in rows if row['scope'] in ('direct_seed_base', 'lookup_leaf_base', 'arithmetic_leaf_block')]
     direct_seed_rows = [row for row in rows if row['scope'] == 'direct_seed_base']
@@ -2416,12 +2418,16 @@ def build_public_candidate_materialized_circuit_manifest(
         ),
         'flat_netlist_gate_totals_match_run_length_rows': flat_netlist['gate_totals'] == gate_totals,
         'flat_netlist_non_clifford_matches_public_candidate': materialized_public_totals['non_clifford'] == int(public_totals['non_clifford']),
-        'public_totals_derive_from_strict_replayed_tail_materialized_flat_netlist': (
+        'public_totals_derive_from_canonical_materialized_flat_netlist': (
+            canonical_materialized_flat_netlist['exact_operation_stream_materialized'] is True
+            and public_totals['source'] == 'public_candidate_materialized.canonical_materialized_flat_netlist.non_clifford_count + canonical_materialized_flat_netlist.peak_live_qubits'
+            and int(public_totals['non_clifford']) == int(canonical_materialized_flat_netlist['non_clifford_count'])
+            and int(public_totals['logical_qubits']) == int(canonical_materialized_flat_netlist['peak_live_qubits'])
+        ),
+        'canonical_materialized_flat_netlist_is_strict_replayed_tail_stream': (
             strict_materialized_flat_netlist is not None
-            and strict_materialized_flat_netlist['exact_operation_stream_materialized'] is True
-            and public_totals['source'] == 'public_candidate_materialized.strict_replayed_tail_materialized_flat_netlist.non_clifford_count + strict_replayed_tail_materialized_flat_netlist.peak_live_qubits'
-            and int(public_totals['non_clifford']) == int(strict_materialized_flat_netlist['non_clifford_count'])
-            and int(public_totals['logical_qubits']) == int(strict_materialized_flat_netlist['peak_live_qubits'])
+            and canonical_materialized_flat_netlist['operation_stream_sha256'] == strict_materialized_flat_netlist['operation_stream_sha256']
+            and int(canonical_materialized_flat_netlist['peak_live_qubits']) == int(public_totals['logical_qubits'])
         ),
         'materialized_flat_netlist_stream_is_exact': (
             materialized_flat_netlist['exact_operation_stream_materialized'] is True
@@ -2609,6 +2615,8 @@ def build_public_candidate_materialized_circuit_manifest(
         'strict_replayed_tail_capacity_overlay': strict_capacity_overlay,
         'strict_replayed_tail_liveness_projection': strict_liveness_projection,
         'strict_replayed_tail_materialized_flat_netlist': strict_materialized_flat_netlist,
+        'canonical_materialized_flat_netlist': canonical_materialized_flat_netlist,
+        'legacy_wrapper_materialized_flat_netlist': materialized_flat_netlist,
         'flat_netlist': flat_netlist,
         'materialized_flat_netlist': materialized_flat_netlist,
         'flat_execution_probe': flat_execution_probe,

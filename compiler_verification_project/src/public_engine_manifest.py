@@ -167,7 +167,8 @@ def build_public_engine_manifest(
     owner_columns = ['row_index', 'owner_id', 'logical_qubits', 'required_peak_qubits', 'capacity_pass']
     term_columns = ['row_index', 'term_id', 'category', 'instances', 'per_instance_non_clifford', 'total_non_clifford', 'source']
 
-    materialized_flat_netlist = public_candidate_materialized_circuit_manifest['materialized_flat_netlist']
+    materialized_flat_netlist = public_candidate_materialized_circuit_manifest['legacy_wrapper_materialized_flat_netlist']
+    canonical_materialized_flat_netlist = public_candidate_materialized_circuit_manifest['canonical_materialized_flat_netlist']
     strict_materialized_flat_netlist = public_candidate_materialized_circuit_manifest['strict_replayed_tail_materialized_flat_netlist']
     legacy_wrapper_totals = {
         'non_clifford': int(materialized_flat_netlist['non_clifford_count']),
@@ -175,22 +176,23 @@ def build_public_engine_manifest(
         'source': 'public_candidate_materialized_circuit_manifest.materialized_flat_netlist',
     }
     public_totals = {
-        'non_clifford': int(strict_materialized_flat_netlist['non_clifford_count']),
-        'logical_qubits': int(strict_materialized_flat_netlist['peak_live_qubits']),
-        'source': 'public_candidate_materialized_circuit_manifest.strict_replayed_tail_materialized_flat_netlist',
+        'non_clifford': int(canonical_materialized_flat_netlist['non_clifford_count']),
+        'logical_qubits': int(canonical_materialized_flat_netlist['peak_live_qubits']),
+        'source': 'public_candidate_materialized_circuit_manifest.canonical_materialized_flat_netlist',
     }
     checks = {
         'executable_resource_engine_passes': executable_resource_engine['pass'] is True,
         'counted_resource_engine_passes': counted_resource_engine['pass'] is True,
         'resource_contract_engine_passes': resource_contract_engine['pass'] is True,
-        'public_totals_match_strict_materialized_flat_engine': (
-            public_totals['non_clifford'] == int(strict_materialized_flat_netlist['non_clifford_count'])
-            and public_totals['logical_qubits'] == int(strict_materialized_flat_netlist['peak_live_qubits'])
-            and int(strict_materialized_flat_netlist['operation_count']) == int(public_candidate_materialized_circuit_manifest['flat_netlist']['operation_count'])
-            and int(strict_materialized_flat_netlist['non_clifford_count']) == int(public_candidate_materialized_circuit_manifest['flat_netlist']['non_clifford_count'])
-            and int(strict_materialized_flat_netlist['peak_live_qubits']) == int(public_candidate_materialized_circuit_manifest['strict_replayed_tail_liveness_projection']['peak_live_qubits'])
-            and strict_materialized_flat_netlist['exact_operation_stream_materialized'] is True
-            and public_candidate_materialized_circuit_manifest['checks']['strict_replayed_tail_materialized_flat_netlist_is_bound'] is True
+        'public_totals_match_canonical_materialized_flat_engine': (
+            public_totals['non_clifford'] == int(canonical_materialized_flat_netlist['non_clifford_count'])
+            and public_totals['logical_qubits'] == int(canonical_materialized_flat_netlist['peak_live_qubits'])
+            and int(canonical_materialized_flat_netlist['operation_count']) == int(public_candidate_materialized_circuit_manifest['flat_netlist']['operation_count'])
+            and int(canonical_materialized_flat_netlist['non_clifford_count']) == int(public_candidate_materialized_circuit_manifest['flat_netlist']['non_clifford_count'])
+            and int(canonical_materialized_flat_netlist['peak_live_qubits']) == int(public_candidate_materialized_circuit_manifest['strict_replayed_tail_liveness_projection']['peak_live_qubits'])
+            and canonical_materialized_flat_netlist['exact_operation_stream_materialized'] is True
+            and public_candidate_materialized_circuit_manifest['checks']['public_totals_derive_from_canonical_materialized_flat_netlist'] is True
+            and public_candidate_materialized_circuit_manifest['checks']['canonical_materialized_flat_netlist_is_strict_replayed_tail_stream'] is True
         ),
         'legacy_wrapper_totals_match_executable_resource_engine_snapshot': (
             legacy_wrapper_totals['non_clifford'] == int(executable_resource_engine['public_totals']['non_clifford'])
@@ -286,12 +288,12 @@ def build_public_engine_manifest(
             and int(public_candidate_materialized_circuit_manifest['qroam_expansion']['non_clifford']) == int(reusable_chunk_lowering['non_clifford_derivation']['qroam_chunk_non_clifford'])
             and int(public_candidate_materialized_circuit_manifest['flat_netlist']['non_clifford_count']) == public_totals['non_clifford']
             and public_candidate_materialized_circuit_manifest['flat_netlist']['gate_totals']['ccx'] == public_totals['non_clifford']
-            and public_candidate_materialized_circuit_manifest['strict_replayed_tail_materialized_flat_netlist']['exact_operation_stream_materialized'] is True
-            and int(public_candidate_materialized_circuit_manifest['strict_replayed_tail_materialized_flat_netlist']['operation_count']) == int(public_candidate_materialized_circuit_manifest['flat_netlist']['operation_count'])
-            and int(public_candidate_materialized_circuit_manifest['strict_replayed_tail_materialized_flat_netlist']['non_clifford_count']) == public_totals['non_clifford']
-            and int(public_candidate_materialized_circuit_manifest['strict_replayed_tail_materialized_flat_netlist']['peak_live_qubits']) == public_totals['logical_qubits']
-            and public_candidate_materialized_circuit_manifest['checks']['strict_replayed_tail_materialized_flat_netlist_is_bound'] is True
-            and public_candidate_materialized_circuit_manifest['checks']['strict_replayed_tail_materialized_flat_netlist_segments_cover_stream'] is True
+            and public_candidate_materialized_circuit_manifest['canonical_materialized_flat_netlist']['exact_operation_stream_materialized'] is True
+            and int(public_candidate_materialized_circuit_manifest['canonical_materialized_flat_netlist']['operation_count']) == int(public_candidate_materialized_circuit_manifest['flat_netlist']['operation_count'])
+            and int(public_candidate_materialized_circuit_manifest['canonical_materialized_flat_netlist']['non_clifford_count']) == public_totals['non_clifford']
+            and int(public_candidate_materialized_circuit_manifest['canonical_materialized_flat_netlist']['peak_live_qubits']) == public_totals['logical_qubits']
+            and public_candidate_materialized_circuit_manifest['checks']['public_totals_derive_from_canonical_materialized_flat_netlist'] is True
+            and public_candidate_materialized_circuit_manifest['checks']['canonical_materialized_flat_netlist_is_strict_replayed_tail_stream'] is True
             and all(bool(value) for value in public_candidate_materialized_circuit_manifest['flat_execution_probe']['checks'].values())
         ),
         'strict_primitive_completeness_report_is_bound': (
@@ -425,6 +427,16 @@ def build_public_engine_manifest(
                     'segment_merkle_root_sha256': public_candidate_materialized_circuit_manifest['materialized_flat_netlist']['segment_merkle_root_sha256'],
                     'non_clifford_count': int(public_candidate_materialized_circuit_manifest['materialized_flat_netlist']['non_clifford_count']),
                     'peak_live_qubits': int(public_candidate_materialized_circuit_manifest['materialized_flat_netlist']['peak_live_qubits']),
+                },
+                'canonical_materialized_flat_netlist': {
+                    'schema': public_candidate_materialized_circuit_manifest['canonical_materialized_flat_netlist']['schema'],
+                    'exact_operation_stream_materialized': bool(public_candidate_materialized_circuit_manifest['canonical_materialized_flat_netlist']['exact_operation_stream_materialized']),
+                    'operation_count': int(public_candidate_materialized_circuit_manifest['canonical_materialized_flat_netlist']['operation_count']),
+                    'operation_stream_sha256': public_candidate_materialized_circuit_manifest['canonical_materialized_flat_netlist']['operation_stream_sha256'],
+                    'segment_count': int(public_candidate_materialized_circuit_manifest['canonical_materialized_flat_netlist']['segment_count']),
+                    'segment_merkle_root_sha256': public_candidate_materialized_circuit_manifest['canonical_materialized_flat_netlist']['segment_merkle_root_sha256'],
+                    'non_clifford_count': int(public_candidate_materialized_circuit_manifest['canonical_materialized_flat_netlist']['non_clifford_count']),
+                    'peak_live_qubits': int(public_candidate_materialized_circuit_manifest['canonical_materialized_flat_netlist']['peak_live_qubits']),
                 },
                 'strict_replayed_tail_materialized_flat_netlist': {
                     'schema': public_candidate_materialized_circuit_manifest['strict_replayed_tail_materialized_flat_netlist']['schema'],

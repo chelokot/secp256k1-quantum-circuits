@@ -50,12 +50,12 @@ def _build_audit(
 def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     expected = _load('engine_completion_audit.json')
     observed = _build_audit()
-    materialized = _load('public_candidate_materialized_circuit_manifest.json')['strict_replayed_tail_materialized_flat_netlist']
+    materialized = _load('public_candidate_materialized_circuit_manifest.json')['canonical_materialized_flat_netlist']
     assert observed == expected
     assert expected['schema'] == ENGINE_COMPLETION_AUDIT_SCHEMA
     assert expected['pass'] is True
     assert expected['clifford_complete_goal_achieved'] is False
-    assert expected['public_totals']['source'] == 'public_candidate_materialized_circuit_manifest.strict_replayed_tail_materialized_flat_netlist'
+    assert expected['public_totals']['source'] == 'public_candidate_materialized_circuit_manifest.canonical_materialized_flat_netlist'
     assert expected['public_totals']['non_clifford'] == materialized['non_clifford_count']
     assert expected['public_totals']['logical_qubits'] == materialized['peak_live_qubits']
     assert expected['public_totals']['operation_count'] == materialized['operation_count']
@@ -67,7 +67,7 @@ def test_engine_completion_audit_rejects_public_total_drift() -> None:
     public_engine = _load('public_engine_manifest.json')
     public_engine['public_totals']['non_clifford'] -= 1
     observed = _build_audit(public_engine=public_engine)
-    assert observed['checks']['public_totals_derive_from_strict_materialized_flat_netlist'] is False
+    assert observed['checks']['public_totals_derive_from_canonical_materialized_flat_netlist'] is False
     assert observed['pass'] is False
 
 

@@ -119,7 +119,7 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert manifest['schema'] == PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA
     assert manifest['selected_family_name'] == _public_family_name()
     assert manifest['pass'] is True
-    assert manifest['public_totals']['source'] == 'public_candidate_materialized.strict_replayed_tail_materialized_flat_netlist.non_clifford_count + strict_replayed_tail_materialized_flat_netlist.peak_live_qubits'
+    assert manifest['public_totals']['source'] == 'public_candidate_materialized.canonical_materialized_flat_netlist.non_clifford_count + canonical_materialized_flat_netlist.peak_live_qubits'
     assert manifest['public_totals']['non_clifford'] == reusable['non_clifford_derivation']['candidate_total_non_clifford']
     assert manifest['public_totals']['logical_qubits'] == _artifact('strict_replayed_tail_headline.json')['selected_result']['logical_qubits']
     assert manifest['liveness_binding_row_count'] == manifest['run_length_row_count']
@@ -158,7 +158,8 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert manifest['checks']['flat_netlist_expands_all_run_length_rows'] is True
     assert manifest['checks']['flat_netlist_gate_totals_match_run_length_rows'] is True
     assert manifest['checks']['flat_netlist_non_clifford_matches_public_candidate'] is True
-    assert manifest['checks']['public_totals_derive_from_strict_replayed_tail_materialized_flat_netlist'] is True
+    assert manifest['checks']['public_totals_derive_from_canonical_materialized_flat_netlist'] is True
+    assert manifest['checks']['canonical_materialized_flat_netlist_is_strict_replayed_tail_stream'] is True
     assert manifest['checks']['materialized_flat_netlist_stream_is_exact'] is True
     assert manifest['checks']['materialized_flat_netlist_counts_match_index_netlist'] is True
     assert manifest['checks']['materialized_flat_netlist_segments_cover_stream'] is True
@@ -207,6 +208,7 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert manifest['checks']['strict_replayed_tail_materialized_flat_netlist_segments_cover_stream'] is True
     assert manifest['checks']['strict_replayed_tail_materialized_flat_netlist_preview_rows_are_concrete'] is True
     strict_flat = manifest['strict_replayed_tail_materialized_flat_netlist']
+    canonical_flat = manifest['canonical_materialized_flat_netlist']
     assert strict_flat['schema'] == 'compiler-project-public-candidate-materialized-flat-netlist-v1'
     assert strict_flat['exact_operation_stream_materialized'] is True
     assert strict_flat['operation_count'] == manifest['materialized_flat_netlist']['operation_count']
@@ -217,6 +219,8 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert len(strict_flat['operation_stream_sha256']) == 64
     assert len(strict_flat['segment_merkle_root_sha256']) == 64
     assert strict_flat['operation_stream_sha256'] != manifest['materialized_flat_netlist']['operation_stream_sha256']
+    assert canonical_flat['operation_stream_sha256'] == strict_flat['operation_stream_sha256']
+    assert canonical_flat['peak_live_qubits'] == manifest['public_totals']['logical_qubits']
     assert manifest['materialized_liveness']['preview_head'][0]['total_live_qubits'] < manifest['public_totals']['logical_qubits']
     assert 'arithmetic_leaf_base' not in {row['scope'] for row in manifest['preview_head'] + manifest['preview_tail']}
     first_arithmetic_row = next(row for row in manifest['run_length_rows'] if row['scope'] == 'arithmetic_leaf_block')

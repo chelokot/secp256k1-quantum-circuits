@@ -44,7 +44,8 @@ def build_engine_completion_audit(
     compiler_parameters: Mapping[str, Any],
 ) -> Dict[str, Any]:
     selected_family_name = str(compiler_parameters['public_headline_policy']['selected_public_family_name'])
-    materialized_flat = public_candidate_materialized_circuit_manifest['materialized_flat_netlist']
+    materialized_flat = public_candidate_materialized_circuit_manifest['legacy_wrapper_materialized_flat_netlist']
+    canonical_materialized_flat = public_candidate_materialized_circuit_manifest['canonical_materialized_flat_netlist']
     strict_materialized_flat = public_candidate_materialized_circuit_manifest['strict_replayed_tail_materialized_flat_netlist']
     strict_completeness = public_candidate_materialized_circuit_manifest['strict_primitive_completeness']
     source_binding = public_candidate_materialized_circuit_manifest['operand_source_binding']
@@ -60,10 +61,10 @@ def build_engine_completion_audit(
         'qroam_primitive_certificate',
     }
     public_totals = {
-        'non_clifford': int(strict_materialized_flat['non_clifford_count']),
-        'logical_qubits': int(strict_materialized_flat['peak_live_qubits']),
-        'operation_count': int(strict_materialized_flat['operation_count']),
-        'source': 'public_candidate_materialized_circuit_manifest.strict_replayed_tail_materialized_flat_netlist',
+        'non_clifford': int(canonical_materialized_flat['non_clifford_count']),
+        'logical_qubits': int(canonical_materialized_flat['peak_live_qubits']),
+        'operation_count': int(canonical_materialized_flat['operation_count']),
+        'source': 'public_candidate_materialized_circuit_manifest.canonical_materialized_flat_netlist',
     }
     arithmetic_leaf_summary = arithmetic_operation_ir['leaf_arithmetic_summary']
     qroam_counts = qroam_primitive_certificate['traversed_counts']
@@ -80,12 +81,13 @@ def build_engine_completion_audit(
         'lookup_infinity',
     ]
     checks = {
-        'public_totals_derive_from_strict_materialized_flat_netlist': (
+        'public_totals_derive_from_canonical_materialized_flat_netlist': (
             public_engine_manifest['public_totals']['source'] == public_totals['source']
             and int(public_engine_manifest['public_totals']['non_clifford']) == public_totals['non_clifford']
             and int(public_engine_manifest['public_totals']['logical_qubits']) == public_totals['logical_qubits']
             and public_candidate_materialized_circuit_manifest['public_totals']['non_clifford'] == public_totals['non_clifford']
             and public_candidate_materialized_circuit_manifest['public_totals']['logical_qubits'] == public_totals['logical_qubits']
+            and public_candidate_materialized_circuit_manifest['checks']['public_totals_derive_from_canonical_materialized_flat_netlist'] is True
         ),
         'legacy_materialized_flat_stream_is_exact_and_counted': (
             materialized_flat['exact_operation_stream_materialized'] is True
@@ -198,8 +200,8 @@ def build_engine_completion_audit(
     covered_boundaries = [
         {
             'name': 'public_totals',
-            'status': 'derived_from_strict_materialized_flat_netlist',
-            'evidence': 'public_engine_manifest.public_totals + public_candidate_materialized_circuit_manifest.strict_replayed_tail_materialized_flat_netlist',
+            'status': 'derived_from_canonical_materialized_flat_netlist',
+            'evidence': 'public_engine_manifest.public_totals + public_candidate_materialized_circuit_manifest.canonical_materialized_flat_netlist',
         },
         {
             'name': 'flat_primitive_stream_counts',
@@ -301,9 +303,9 @@ def build_engine_completion_audit(
             'operation_count': public_totals['operation_count'],
             'non_clifford_count': public_totals['non_clifford'],
             'peak_live_qubits': public_totals['logical_qubits'],
-            'operation_stream_sha256': strict_materialized_flat['operation_stream_sha256'],
-            'segment_merkle_root_sha256': strict_materialized_flat['segment_merkle_root_sha256'],
-            'exact_operation_stream_materialized': bool(strict_materialized_flat['exact_operation_stream_materialized']),
+            'operation_stream_sha256': canonical_materialized_flat['operation_stream_sha256'],
+            'segment_merkle_root_sha256': canonical_materialized_flat['segment_merkle_root_sha256'],
+            'exact_operation_stream_materialized': bool(canonical_materialized_flat['exact_operation_stream_materialized']),
         },
         'covered_boundaries': covered_boundaries,
         'remaining_macro_boundaries': remaining_macro_boundaries,

@@ -178,7 +178,7 @@ checks that every row binds to a concrete arithmetic block, lookup block, QROAM
 segment, or phase-shell block, and that lookup-family aggregate counts still
 match their block streams. The public engine manifest derives the public
 non-Clifford count and public qubit count from
-`strict_replayed_tail_materialized_flat_netlist`; the legacy wrapper/resource
+`canonical_materialized_flat_netlist`; the legacy wrapper/resource
 totals are checked against those values as snapshots. The
 materialized/public engine layer is generated from compiler parameters and
 resource artifacts, not from the ZKP input, leaving ZKP as a downstream

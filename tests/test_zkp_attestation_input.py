@@ -110,21 +110,23 @@ def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None
             direct_seed_values.add(int(selected['reconstruction']['direct_seed_non_clifford']))
     assert payload['selected_family_name'].endswith('__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1')
     assert claim['expected_full_oracle_non_clifford'] == non_clifford_derivation['candidate_total_non_clifford']
-    assert claim['expected_total_logical_qubits'] == qubit_derivation['candidate_total_logical_qubits']
     assert payload['public_engine_manifest_sha256'] == public_engine_document['sha256']
     assert public_engine_document['document_type'] == 'public_engine_manifest'
     assert public_engine_manifest['pass'] is True
     assert public_engine_manifest['selected_family_name'] == payload['selected_family_name']
-    assert public_engine_manifest['public_totals']['source'] == 'public_candidate_materialized_circuit_manifest.materialized_flat_netlist'
+    assert public_engine_manifest['public_totals']['source'] == 'public_candidate_materialized_circuit_manifest.canonical_materialized_flat_netlist'
+    assert public_engine_manifest['legacy_wrapper_totals']['logical_qubits'] == qubit_derivation['candidate_total_logical_qubits']
+    assert claim['expected_total_logical_qubits'] == public_engine_manifest['public_totals']['logical_qubits']
+    assert claim['logical_qubit_formula']['reconstructed_total'] == public_engine_manifest['legacy_wrapper_totals']['logical_qubits']
     assert claim['resource_engine_summary']['source'] == 'public_engine_manifest.public_totals'
     assert claim['resource_engine_summary']['source_document_type'] == 'public_engine_manifest'
     assert claim['resource_engine_summary']['source_sha256'] == payload['public_engine_manifest_sha256']
     assert claim['resource_engine_summary']['non_clifford'] == public_engine_manifest['public_totals']['non_clifford']
     assert claim['resource_engine_summary']['logical_qubits'] == public_engine_manifest['public_totals']['logical_qubits']
     assert claim['resource_engine_summary']['non_clifford'] == resource_document['payload']['executable_resource_engine']['public_totals']['non_clifford']
-    assert claim['resource_engine_summary']['logical_qubits'] == resource_document['payload']['executable_resource_engine']['public_totals']['logical_qubits']
-    assert claim['resource_engine_summary']['matches_family_snapshot'] is True
-    assert claim['resource_engine_summary']['matches_resource_certificate_snapshot'] is True
+    assert claim['resource_engine_summary']['logical_qubits'] != resource_document['payload']['executable_resource_engine']['public_totals']['logical_qubits']
+    assert claim['resource_engine_summary']['matches_family_snapshot'] is False
+    assert claim['resource_engine_summary']['matches_resource_certificate_snapshot'] is False
     assert len(direct_seed_values) == 1
     assert family['direct_seed_non_clifford'] == next(iter(direct_seed_values))
     assert family['arithmetic_slot_count'] == qubit_derivation['arithmetic_slot_count']
@@ -180,7 +182,8 @@ def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None
     assert counted_resource_ir['recomputed_total_non_clifford'] == non_clifford_derivation['candidate_total_non_clifford']
     assert counted_resource_ir['recomputed_peak_live_qubits'] == qubit_derivation['candidate_total_logical_qubits']
     assert sum(row['total_non_clifford'] for row in counted_resource_ir['non_clifford_terms']) == claim['expected_full_oracle_non_clifford']
-    assert max(row['total_live_qubits'] for row in counted_resource_ir['liveness_intervals']) == claim['expected_total_logical_qubits']
+    assert max(row['total_live_qubits'] for row in counted_resource_ir['liveness_intervals']) == public_engine_manifest['legacy_wrapper_totals']['logical_qubits']
+    assert public_engine_manifest['legacy_wrapper_totals']['logical_qubits'] != claim['expected_total_logical_qubits']
     assert proof_register_contract['pass'] is True
     assert proof_register_contract['checks']['every_register_has_declared_contract_class'] is True
     assert proof_register_contract['checks']['every_unclassified_written_register_is_rejected'] is True
@@ -315,6 +318,7 @@ def test_public_headline_result_binds_reusable_chunk_candidate_artifacts() -> No
     selected = public_result['selected_result']
     input_payload = json.loads((artifact_dir / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_input.json').read_text())
     public_values = json.loads((artifact_dir / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_public_values.json').read_text())
+    public_engine_manifest = json.loads((artifact_dir / 'public_engine_manifest.json').read_text())
     status = _proof_status_report()
     assert public_result['pass'] is status['all_current']
     if status['all_current']:
@@ -329,7 +333,9 @@ def test_public_headline_result_binds_reusable_chunk_candidate_artifacts() -> No
     assert public_result['checks']['reusable_chunk_binds_modular_arithmetic_certificate'] is True
     assert public_result['checks']['reusable_chunk_tail_contract_is_proven_for_public_headline'] is True
     assert selected['non_clifford'] == input_payload['claim_summary']['expected_full_oracle_non_clifford']
-    assert selected['logical_qubits'] == input_payload['claim_summary']['expected_total_logical_qubits']
+    assert selected['logical_qubits'] == public_engine_manifest['legacy_wrapper_totals']['logical_qubits']
+    assert selected['logical_qubits'] == input_payload['claim_summary']['logical_qubit_formula']['reconstructed_total']
+    assert selected['logical_qubits'] != input_payload['claim_summary']['expected_total_logical_qubits']
     public_policy = public_result['selection_policy']['limits']
     assert selected['non_clifford'] < public_policy['non_clifford_limit_exclusive']
     assert selected['logical_qubits'] < public_policy['logical_qubit_limit_exclusive']

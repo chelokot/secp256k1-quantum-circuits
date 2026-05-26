@@ -206,7 +206,7 @@ strict materialized flat stream, executable instruction rows, wires, schedule ev
 owner-capacity rows, resource terms, semantic-boundary evidence, arithmetic
 operation IR, the generated QROAMClean `K = 1` primitive certificate, and the
 selected semiclassical phase shell into the same public claim layer. Its public
-totals are derived from `strict_replayed_tail_materialized_flat_netlist`, while
+totals are derived from `canonical_materialized_flat_netlist`, while
 the legacy wrapper/resource totals are retained as cross-check snapshots, not as
 the authoritative source. The materialized flat engine and public engine are
 built from compiler/resource artifacts rather than from the ZKP input, so the

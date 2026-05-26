@@ -7,7 +7,7 @@
     "non_clifford": 36973222,
     "logical_qubits": 1968,
     "operation_count": 39386537,
-    "source": "public_candidate_materialized_circuit_manifest.strict_replayed_tail_materialized_flat_netlist"
+    "source": "public_candidate_materialized_circuit_manifest.canonical_materialized_flat_netlist"
   },
   "source_digests": {
     "arithmetic_operation_ir_sha256": "99c199a6b3b9bbf4d7c3899e93c97513b5e62f14ef0a109b359b1eb9f4f18ae4",
@@ -15,8 +15,8 @@
     "lookup_lowerings_sha256": "70e8ff627f0c537f73162c1d3ccf259a94c3dd756568947c7b4f3cf4665a5637",
     "modular_arithmetic_certificate_sha256": "058cc2c95b3b8f65d39f8c91f56b5256322e0fa00853466facb980d60c1e783e",
     "phase_shell_lowerings_sha256": "4411ea5f699e5950a32783f2232796a63987efb5d939f98ac400f4f02ddd415b",
-    "public_candidate_materialized_circuit_manifest_sha256": "329ab4b61eca64db2301a47791b6a0b6a240bcb9a2829b2b7a992e40aef0b66f",
-    "public_engine_manifest_sha256": "7ee977c4c22b34667e08fc93a4fd0d5762cc13f3d7b4cef50e7582dc6cc3c1ba",
+    "public_candidate_materialized_circuit_manifest_sha256": "0a1d705a4a6cbeb12feb2c366835261fe5eaf7e23016a968543140f07118c946",
+    "public_engine_manifest_sha256": "ba70929a244c57de2b8582fb835a47f6e37fc6092a0137ba447f6c3a812f1b2c",
     "qroam_primitive_certificate_sha256": "9a97e536aa4e15e25873adf187db977910a0ef8fb03914958d409940a54eb125",
     "release_corpus_preflight_sha256": "e8cc293c4fc4702e1fbc0bfcb9b8749515de99a348ecbf55ed123d68738c2f3a",
     "reusable_chunk_lowering_sha256": "7ebcb0fe8db50c03f84ac9cc10ab906fd921dd8d98670ef61fa4237e8b49f334",
@@ -55,8 +55,8 @@
   "covered_boundaries": [
     {
       "name": "public_totals",
-      "status": "derived_from_strict_materialized_flat_netlist",
-      "evidence": "public_engine_manifest.public_totals + public_candidate_materialized_circuit_manifest.strict_replayed_tail_materialized_flat_netlist"
+      "status": "derived_from_canonical_materialized_flat_netlist",
+      "evidence": "public_engine_manifest.public_totals + public_candidate_materialized_circuit_manifest.canonical_materialized_flat_netlist"
     },
     {
       "name": "flat_primitive_stream_counts",
@@ -119,7 +119,7 @@
     }
   ],
   "checks": {
-    "public_totals_derive_from_strict_materialized_flat_netlist": true,
+    "public_totals_derive_from_canonical_materialized_flat_netlist": true,
     "legacy_materialized_flat_stream_is_exact_and_counted": true,
     "strict_materialized_flat_stream_is_exact_and_counted": true,
     "run_length_rows_are_primitive_complete": true,
