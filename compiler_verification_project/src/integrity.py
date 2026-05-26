@@ -35,6 +35,7 @@ from materialized_circuit import PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_
 from modular_accumulator_capacity_certificate import MODULAR_ACCUMULATOR_CAPACITY_CERTIFICATE_SCHEMA, build_modular_accumulator_capacity_certificate
 from modular_accumulator_carry_obligations import MODULAR_ACCUMULATOR_CARRY_OBLIGATIONS_SCHEMA, build_modular_accumulator_carry_obligations
 from modular_accumulator_carry_save_candidate import MODULAR_ACCUMULATOR_CARRY_SAVE_CANDIDATE_SCHEMA, build_modular_accumulator_carry_save_candidate
+from modular_accumulator_full_adder_contract import FULL_ADDER_CONTRACT_UNPROMOTED_STATUS, FULL_ADDER_PRIMITIVE_COUNTS_PER_CELL, MODULAR_ACCUMULATOR_FULL_ADDER_CONTRACT_SCHEMA, build_modular_accumulator_full_adder_contract
 from modular_accumulator_lowering import MODULAR_ACCUMULATOR_LOWERING_SCHEMA, build_modular_accumulator_lowering
 from modular_accumulator_row_stream import MODULAR_ACCUMULATOR_ROW_STREAM_SCHEMA, build_modular_accumulator_row_stream
 from modular_accumulator_scratch_schedule import MODULAR_ACCUMULATOR_SCRATCH_SCHEDULE_SCHEMA, build_modular_accumulator_scratch_schedule
@@ -207,6 +208,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'modular_accumulator_semantic_obligations': artifact_root / 'modular_accumulator_semantic_obligations.json',
         'modular_accumulator_carry_obligations': artifact_root / 'modular_accumulator_carry_obligations.json',
         'modular_accumulator_carry_save_candidate': artifact_root / 'modular_accumulator_carry_save_candidate.json',
+        'modular_accumulator_full_adder_contract': artifact_root / 'modular_accumulator_full_adder_contract.json',
         'tail_macro_liveness': artifact_root / 'tail_macro_liveness.json',
         'tail_macro_reversibility': artifact_root / 'tail_macro_reversibility.json',
         'tail_macro_schedule_search': artifact_root / 'tail_macro_schedule_search.json',
@@ -406,6 +408,12 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
             ),
         )
         dump_json(
+            artifact_root / 'modular_accumulator_full_adder_contract.json',
+            build_modular_accumulator_full_adder_contract(
+                modular_accumulator_carry_save_candidate=load_json(artifact_root / 'modular_accumulator_carry_save_candidate.json'),
+            ),
+        )
+        dump_json(
             artifact_root / 'public_engine_manifest.json',
             build_public_engine_manifest(
                 reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
@@ -457,6 +465,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 modular_accumulator_semantic_obligations=load_json(artifact_root / 'modular_accumulator_semantic_obligations.json'),
                 modular_accumulator_carry_obligations=load_json(artifact_root / 'modular_accumulator_carry_obligations.json'),
                 modular_accumulator_carry_save_candidate=load_json(artifact_root / 'modular_accumulator_carry_save_candidate.json'),
+                modular_accumulator_full_adder_contract=load_json(artifact_root / 'modular_accumulator_full_adder_contract.json'),
                 tail_macro_engine=load_json(artifact_root / 'tail_macro_engine.json'),
                 tail_macro_liveness=load_json(artifact_root / 'tail_macro_liveness.json'),
                 tail_macro_reversibility=load_json(artifact_root / 'tail_macro_reversibility.json'),
@@ -2879,6 +2888,25 @@ def build_modular_accumulator_carry_save_candidate_checks(artifacts: Mapping[str
     return _summarize_checks(checks)
 
 
+def build_modular_accumulator_full_adder_contract_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    contract = artifacts['modular_accumulator_full_adder_contract']
+    expected = build_modular_accumulator_full_adder_contract(
+        modular_accumulator_carry_save_candidate=artifacts['modular_accumulator_carry_save_candidate'],
+    )
+    cell = contract['cell_contract']
+    totals = contract['candidate_totals']
+    checks = [
+        _check('modular_accumulator_full_adder_contract_matches_generator', contract == expected, expected, contract),
+        _check('modular_accumulator_full_adder_contract_schema_is_current', contract['schema'] == MODULAR_ACCUMULATOR_FULL_ADDER_CONTRACT_SCHEMA, MODULAR_ACCUMULATOR_FULL_ADDER_CONTRACT_SCHEMA, contract['schema']),
+        _check('modular_accumulator_full_adder_contract_passes_internal_checks', contract['pass'] is True and all(contract['checks'].values()), True, contract['checks']),
+        _check('modular_accumulator_full_adder_contract_truth_table_passes', len(cell['truth_table']) == 8 and all(row['passes'] is True for row in cell['truth_table']) and all(row['inputs_retained'] is True for row in cell['truth_table']), 'full-adder reversible embedding truth table passes', cell['truth_table']),
+        _check('modular_accumulator_full_adder_contract_rejects_irreversible_compression', cell['irreversible_three_to_two_collision_count'] > 0 and cell['primitive_counts_per_cell'] == FULL_ADDER_PRIMITIVE_COUNTS_PER_CELL, '3-to-2 logical compression is not reversible without retained or uncomputed inputs', cell),
+        _check('modular_accumulator_full_adder_contract_totals_match_candidate', totals['full_adder_cell_count'] == artifacts['modular_accumulator_carry_save_candidate']['all_grids']['carry_save_full_adder_count'] and totals['embedded_full_adder_primitive_counts']['ccx'] == 3 * totals['full_adder_cell_count'] and totals['retained_input_obligation_bits'] == 3 * totals['full_adder_cell_count'], 'embedded full-adder totals derive from carry-save candidate cell count', totals),
+        _check('modular_accumulator_full_adder_contract_remains_unpromoted', contract['promotion_status']['status'] == FULL_ADDER_CONTRACT_UNPROMOTED_STATUS, 'full-adder contract is explicit but not promoted', contract['promotion_status']),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     audit = artifacts['engine_completion_audit']
     expected = build_engine_completion_audit(
@@ -2905,6 +2933,7 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
         modular_accumulator_semantic_obligations=artifacts['modular_accumulator_semantic_obligations'],
         modular_accumulator_carry_obligations=artifacts['modular_accumulator_carry_obligations'],
         modular_accumulator_carry_save_candidate=artifacts['modular_accumulator_carry_save_candidate'],
+        modular_accumulator_full_adder_contract=artifacts['modular_accumulator_full_adder_contract'],
         tail_macro_engine=artifacts['tail_macro_engine'],
         tail_macro_liveness=artifacts['tail_macro_liveness'],
         tail_macro_reversibility=artifacts['tail_macro_reversibility'],
@@ -3726,6 +3755,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'modular_accumulator_semantic_obligations_checks': lambda: build_modular_accumulator_semantic_obligations_checks(artifacts),
         'modular_accumulator_carry_obligations_checks': lambda: build_modular_accumulator_carry_obligations_checks(artifacts),
         'modular_accumulator_carry_save_candidate_checks': lambda: build_modular_accumulator_carry_save_candidate_checks(artifacts),
+        'modular_accumulator_full_adder_contract_checks': lambda: build_modular_accumulator_full_adder_contract_checks(artifacts),
         'public_engine_manifest_checks': lambda: build_public_engine_manifest_checks(artifacts),
         'engine_completion_audit_checks': lambda: build_engine_completion_audit_checks(artifacts),
         'arithmetic_operand_replay_audit_checks': lambda: build_arithmetic_operand_replay_audit_checks(artifacts),

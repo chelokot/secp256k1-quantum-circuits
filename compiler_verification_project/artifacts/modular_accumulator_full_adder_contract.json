@@ -1,0 +1,196 @@
+{
+  "schema": "compiler-project-modular-accumulator-full-adder-contract-v1",
+  "definition": "Reversible full-adder embedding contract for the carry-save accumulator candidate. The cell computes sum=a xor b xor c and carry=majority(a,b,c) into zero output lanes while retaining all three input bits; promotion must either keep those retained inputs counted or prove source uncomputation.",
+  "source_digests": {
+    "modular_accumulator_carry_save_candidate_sha256": "aad81d5368274140a6e4c9d6cdff860fbe5ea9b17060b7dcfce8040a126d07dc"
+  },
+  "cell_contract": {
+    "input_bits": [
+      "a",
+      "b",
+      "c"
+    ],
+    "zero_output_bits": [
+      "sum",
+      "carry"
+    ],
+    "retained_input_bits_per_cell": 3,
+    "output_bits_per_cell": 2,
+    "gate_sequence": [
+      {
+        "gate": "cx",
+        "controls": [
+          "a"
+        ],
+        "target": "sum"
+      },
+      {
+        "gate": "cx",
+        "controls": [
+          "b"
+        ],
+        "target": "sum"
+      },
+      {
+        "gate": "cx",
+        "controls": [
+          "c"
+        ],
+        "target": "sum"
+      },
+      {
+        "gate": "ccx",
+        "controls": [
+          "a",
+          "b"
+        ],
+        "target": "carry"
+      },
+      {
+        "gate": "ccx",
+        "controls": [
+          "a",
+          "c"
+        ],
+        "target": "carry"
+      },
+      {
+        "gate": "ccx",
+        "controls": [
+          "b",
+          "c"
+        ],
+        "target": "carry"
+      }
+    ],
+    "primitive_counts_per_cell": {
+      "ccx": 3,
+      "cx": 3,
+      "x": 0,
+      "measurement": 0
+    },
+    "truth_table": [
+      {
+        "a": 0,
+        "b": 0,
+        "c": 0,
+        "sum": 0,
+        "carry": 0,
+        "inputs_retained": true,
+        "expected_sum": 0,
+        "expected_carry": 0,
+        "passes": true
+      },
+      {
+        "a": 0,
+        "b": 0,
+        "c": 1,
+        "sum": 1,
+        "carry": 0,
+        "inputs_retained": true,
+        "expected_sum": 1,
+        "expected_carry": 0,
+        "passes": true
+      },
+      {
+        "a": 0,
+        "b": 1,
+        "c": 0,
+        "sum": 1,
+        "carry": 0,
+        "inputs_retained": true,
+        "expected_sum": 1,
+        "expected_carry": 0,
+        "passes": true
+      },
+      {
+        "a": 0,
+        "b": 1,
+        "c": 1,
+        "sum": 0,
+        "carry": 1,
+        "inputs_retained": true,
+        "expected_sum": 0,
+        "expected_carry": 1,
+        "passes": true
+      },
+      {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "sum": 1,
+        "carry": 0,
+        "inputs_retained": true,
+        "expected_sum": 1,
+        "expected_carry": 0,
+        "passes": true
+      },
+      {
+        "a": 1,
+        "b": 0,
+        "c": 1,
+        "sum": 0,
+        "carry": 1,
+        "inputs_retained": true,
+        "expected_sum": 0,
+        "expected_carry": 1,
+        "passes": true
+      },
+      {
+        "a": 1,
+        "b": 1,
+        "c": 0,
+        "sum": 0,
+        "carry": 1,
+        "inputs_retained": true,
+        "expected_sum": 0,
+        "expected_carry": 1,
+        "passes": true
+      },
+      {
+        "a": 1,
+        "b": 1,
+        "c": 1,
+        "sum": 1,
+        "carry": 1,
+        "inputs_retained": true,
+        "expected_sum": 1,
+        "expected_carry": 1,
+        "passes": true
+      }
+    ],
+    "irreversible_three_to_two_collision_count": 4
+  },
+  "candidate_totals": {
+    "full_adder_cell_count": 712470,
+    "embedded_full_adder_primitive_counts": {
+      "ccx": 2137410,
+      "cx": 2137410,
+      "x": 0,
+      "measurement": 0
+    },
+    "retained_input_obligation_bits": 2137410,
+    "output_obligation_bits": 1424940,
+    "final_carry_propagate_bits": 5632
+  },
+  "promotion_status": {
+    "status": "full_adder_contract_not_promoted_to_public_resource_contract",
+    "required_to_promote": [
+      "Assign retained input bits, sum output bits, and carry output bits to counted owners in the global liveness engine.",
+      "Prove source uncomputation for retained inputs that are not kept live after compression.",
+      "Splice the per-cell CX/CCX sequence into the materialized primitive netlist with exact owner capacity.",
+      "Recompute public non-Clifford and peak-live-qubit totals from that promoted primitive stream."
+    ]
+  },
+  "checks": {
+    "source_carry_save_candidate_passes": true,
+    "truth_table_passes": true,
+    "embedding_retains_inputs": true,
+    "primitive_counts_match_gate_sequence": true,
+    "irreversible_three_to_two_compression_is_rejected": true,
+    "full_adder_cell_count_matches_candidate": true,
+    "retained_inputs_or_cleanup_are_explicit": true,
+    "contract_not_promoted_to_public_resource_contract": true
+  },
+  "pass": true
+}
