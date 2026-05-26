@@ -427,18 +427,22 @@ any command plan containing a prover. The fast gate also rebuild-checks the
 9024-case release-corpus preflight as semantic evidence only; it is not a
 substitute for compressed/Groth16 proof freshness.
 Use `compiler_verification_project/scripts/fast_engine_verify.py` for the
-engine-only no-ZKP loop. It rebuilds the current public resource artifacts,
-verifies the reusable engine, public engine manifest, headline resource
-manifest, macro public headline, strict replayed-tail headline, and proof
-runbook/status metadata, and then runs the
-focused Python mutation tests. The public engine manifest also binds semantic
-boundary evidence: the streamed-tail edge-case equivalence, reusable-tail toy
-semantic/scratch trace, 9024-case release corpus preflight, and checked smoke
-case categories. It also binds the public-candidate materialized run-length
-stream, the flat-index netlist segment root, and primitive-operation evidence
-from the arithmetic operation IR, QROAM primitive certificate, and phase-shell
-lowering so drift in those generated streams fails before any prover is
-considered. Add
+engine-only no-ZKP loop. It refreshes only the focused engine artifacts
+(`arithmetic-operand-replay-audit`, `public-engine-manifest`,
+`engine-completion-audit`, `strict-replayed-tail-headline`, and
+`primary-strict-result`), verifies the reusable engine, public engine manifest,
+headline resource manifest, strict replayed-tail headline, primary strict
+result, and arithmetic replay audit, and then runs the focused Python mutation
+tests. The script rejects broad build targets such as
+`resource-zkp-and-public`, `zkp-and-public`, and candidate ZKP refreshes; use
+`fast_zkp_preflight.py` for public ZKP metadata and proof-freshness checks. The
+public engine manifest also binds semantic boundary evidence: the streamed-tail
+edge-case equivalence, reusable-tail toy semantic/scratch trace, 9024-case
+release corpus preflight, and checked smoke case categories. It also binds the
+public-candidate materialized run-length stream, the flat-index netlist segment
+root, and primitive-operation evidence from the arithmetic operation IR, QROAM
+primitive certificate, and phase-shell lowering so drift in those generated
+streams fails before any prover is considered. Add
 `--include-rust` when you also want the SP1
 attestation-library reusable-chunk unit tests, still without proving.
 After compressed/Groth16 proof rebuilds, run the same preflight with

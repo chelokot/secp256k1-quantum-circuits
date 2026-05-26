@@ -66,7 +66,7 @@
   "source_digests": {
     "tail_macro_engine_sha256": "9fdd9f1c0b5bb583f462077053d4cf479b7eea4e1379653a701847fcdfaccf2d",
     "reusable_chunk_lowering_sha256": "22284a48d52f2844153dbdfcd971b1fea7fd562051a650fc4d9a5107f1955b65",
-    "public_headline_result_sha256": "91721d0d11fc1d2accc199e76f731b5bb11593aadeb4bb2e6ebf073a82b8c4c0"
+    "public_headline_result_sha256": "b59f0a10b69e938c09510ab3dc4deb56314af20358c2101780807b1040250858"
   },
   "checks": {
     "tail_engine_passes": true,

@@ -279,6 +279,7 @@ python compiler_verification_project/scripts/build.py --target zkp-and-public
 python compiler_verification_project/scripts/build.py --target release-candidate-zkp
 python compiler_verification_project/scripts/verify.py --cases 16
 python compiler_verification_project/scripts/proof_status.py
+python compiler_verification_project/scripts/fast_engine_verify.py
 python compiler_verification_project/scripts/fast_zkp_preflight.py
 python compiler_verification_project/scripts/release_candidate_preproof.py --dry-run-json
 python compiler_verification_project/scripts/proof_environment_report.py
@@ -320,6 +321,12 @@ release-corpus preflight, so corpus drift is caught before spending prover time.
 For a publication gate after proof rebuilds, add `--require-current-proofs`;
 this changes only the freshness check to `proof_status.py --require-all-current`
 and still does not invoke a prover.
+Use `fast_engine_verify.py` for the no-prover engine loop. It refreshes only
+`arithmetic-operand-replay-audit`, `public-engine-manifest`,
+`engine-completion-audit`, `strict-replayed-tail-headline`, and
+`primary-strict-result`, then runs focused engine integrity groups and Python
+tests. Its command-plan guard rejects provers and broad build targets such as
+`resource-zkp-and-public`, `zkp-and-public`, and candidate ZKP refreshes.
 Use `proof_environment_report.py` before a compressed/Groth16 rebuild; it emits
 a JSON readiness report for the local Rust/SP1/protobuf/clang/Go toolchain and
 can fail closed with `--require-ready`.
@@ -346,10 +353,11 @@ QROAM primitive, and independent QROAM reference certificates, so changing any
 of them invalidates the proof input until the proof layers are rebuilt.
 For the no-prover engine loop, `public_engine_manifest.json` and
 `engine_completion_audit.json` are the tighter artifacts:
-`fast_engine_verify.py` regenerates them, checks the public-candidate
-materialized flat stream and semantic evidence, and rejects
-arithmetic-operation, QROAM-cost/workspace, or phase-shell drift before
-compressed or Groth16 proof work is relevant. The completion audit also rejects
+`fast_engine_verify.py` regenerates only focused engine artifacts, checks the
+public-candidate materialized flat stream and semantic evidence, and rejects
+arithmetic-operation, QROAM-cost/workspace, phase-shell, or arithmetic operand
+replay drift before compressed or Groth16 proof work is relevant. The completion
+audit also rejects
 false full-completion claims: a passing audit currently means the public claim
 is materialized and source-bound with explicit remaining macro boundaries, not
 that the full Clifford-complete engine goal is done.
