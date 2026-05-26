@@ -56,6 +56,7 @@ def build_engine_completion_audit(
     modular_accumulator_capacity_certificate: Mapping[str, Any],
     modular_accumulator_scratch_schedule: Mapping[str, Any],
     modular_accumulator_semantic_obligations: Mapping[str, Any],
+    modular_accumulator_carry_obligations: Mapping[str, Any],
     tail_macro_engine: Mapping[str, Any],
     tail_macro_liveness: Mapping[str, Any],
     tail_macro_reversibility: Mapping[str, Any],
@@ -236,11 +237,13 @@ def build_engine_completion_audit(
             and modular_accumulator_capacity_certificate['pass'] is True
             and modular_accumulator_scratch_schedule['pass'] is True
             and modular_accumulator_semantic_obligations['pass'] is True
+            and modular_accumulator_carry_obligations['pass'] is True
             and modular_accumulator_lowering['promotion_status']['status'] == 'lowering_plan_not_promoted_to_scheduled_primitive_netlist'
             and modular_accumulator_row_stream['promotion_status']['status'] == 'row_stream_obligations_not_promoted_to_scheduled_primitive_netlist'
             and modular_accumulator_capacity_certificate['promotion_status']['status'] == 'capacity_certificate_not_promoted_to_public_resource_contract'
             and modular_accumulator_scratch_schedule['promotion_status']['status'] == 'scratch_schedule_not_promoted_to_public_resource_contract'
             and modular_accumulator_semantic_obligations['promotion_status']['status'] == 'semantic_obligations_not_promoted_to_public_resource_contract'
+            and modular_accumulator_carry_obligations['promotion_status']['status'] == 'carry_obligations_not_promoted_to_public_resource_contract'
             and modular_accumulator_lowering['checks']['materialized_product_accumulator_shortcut_is_rejected'] is True
             and modular_accumulator_row_stream['checks']['row_stream_rejects_hidden_512_bit_field_slot'] is True
             and modular_accumulator_capacity_certificate['checks']['product_column_owner_includes_final_carry_bit_and_exceeds_single_field_slot'] is True
@@ -248,6 +251,8 @@ def build_engine_completion_audit(
             and modular_accumulator_semantic_obligations['checks']['consume_events_cover_product_and_guard_rows'] is True
             and modular_accumulator_semantic_obligations['checks']['obligation_classes_cover_every_row_stream_row'] is True
             and modular_accumulator_semantic_obligations['obligation_summary']['semantic_gate_lowering_proven'] is False
+            and modular_accumulator_carry_obligations['checks']['reduced_width_parity_only_is_rejected'] is True
+            and modular_accumulator_carry_obligations['checks']['carry_obligation_exceeds_parity_only_rows'] is True
             and modular_multiplier_lifecycle['current_stream']['physical_lifecycle_status'] == 'invalid_abandoned_temporary_and_targets'
             and int(modular_multiplier_lifecycle['current_stream']['scratch_abandoned_garbage_count']) == int(modular_primitive_wire_audit['arithmetic_scratch_abandoned_garbage_count'])
             and int(modular_primitive_wire_audit['field_wire_missing_liveness_count']) > 0
@@ -415,7 +420,7 @@ def build_engine_completion_audit(
             'name': 'modular_arithmetic_clifford_expansion',
             'status': 'scheduled_modular_primitive_stream_bound_to_zkp_physical_boundary_not_full_clifford_decomposition',
             'required_to_close': 'Replace every synthetic arithmetic scratch operand in modular primitive rows with exact counted owner/liveness assignments, then decompose every modular add, subtract, multiply, fold, and reduction primitive into exact concrete Clifford/CCX wire operations inside the same global flat schedule as the point-add leaf.',
-            'current_evidence': 'scheduled_modular_primitive_netlist + modular_primitive_wire_audit + modular_accumulator_semantic_obligations + scheduled_modular_global_splice + physical_boundary_summary + Rust prepared guest validation',
+            'current_evidence': 'scheduled_modular_primitive_netlist + modular_primitive_wire_audit + modular_accumulator_semantic_obligations + modular_accumulator_carry_obligations + scheduled_modular_global_splice + physical_boundary_summary + Rust prepared guest validation',
             'evidence_metrics': {
                 'source_bound_run_length_rows': rows_by_source_kind['arithmetic_operation_ir'],
                 'leaf_arithmetic_non_clifford': int(arithmetic_leaf_summary['non_clifford_total']),
@@ -465,6 +470,8 @@ def build_engine_completion_audit(
                 'modular_accumulator_scratch_schedule_sha256': _sha256_payload(modular_accumulator_scratch_schedule),
                 'modular_accumulator_semantic_obligations_pass': bool(modular_accumulator_semantic_obligations['pass']),
                 'modular_accumulator_semantic_obligations_sha256': _sha256_payload(modular_accumulator_semantic_obligations),
+                'modular_accumulator_carry_obligations_pass': bool(modular_accumulator_carry_obligations['pass']),
+                'modular_accumulator_carry_obligations_sha256': _sha256_payload(modular_accumulator_carry_obligations),
                 'modular_accumulator_single_grid_column_count': int(modular_accumulator_lowering['single_schoolbook_grid']['column_count']),
                 'modular_accumulator_fold_route_count': int(modular_accumulator_lowering['pseudo_mersenne_fold_routes']['route_count']),
                 'modular_accumulator_overflowing_shift_column_count': int(modular_accumulator_lowering['pseudo_mersenne_fold_routes']['overflowing_shift_column_count']),
@@ -491,6 +498,11 @@ def build_engine_completion_audit(
                 'modular_accumulator_semantic_fold_rows': int(modular_accumulator_semantic_obligations['obligation_summary']['pseudo_mersenne_fold_rows']),
                 'modular_accumulator_semantic_temporary_cleanup_rows': int(modular_accumulator_semantic_obligations['obligation_summary']['temporary_cleanup_rows']),
                 'modular_accumulator_semantic_gate_lowering_proven': bool(modular_accumulator_semantic_obligations['obligation_summary']['semantic_gate_lowering_proven']),
+                'modular_accumulator_carry_obligation_row_count': int(modular_accumulator_carry_obligations['column_carry_obligation_stream']['total_carry_obligation_rows']),
+                'modular_accumulator_carry_obligation_column_count': int(modular_accumulator_carry_obligations['column_carry_obligation_stream']['column_count']),
+                'modular_accumulator_carry_max_span_bits': int(modular_accumulator_carry_obligations['column_carry_obligation_stream']['max_single_increment_carry_span_bits']),
+                'modular_accumulator_carry_reduced_width_case_count': sum(int(row['total_cases']) for row in modular_accumulator_carry_obligations['reduced_width_exhaustive_checks']),
+                'modular_accumulator_carry_parity_mismatch_count': sum(int(row['parity_only_mismatch_count']) for row in modular_accumulator_carry_obligations['reduced_width_exhaustive_checks']),
                 'streamed_lifecycle_candidate_event_stream_sha256': str(modular_multiplier_lifecycle['candidate_lifecycle_stream']['operation_stream_sha256']),
                 'streamed_lifecycle_candidate_event_count': int(modular_multiplier_lifecycle['candidate_lifecycle_stream']['event_count']),
                 'streamed_lifecycle_partial_product_routes': int(modular_multiplier_lifecycle['candidate_lifecycle_stream']['route_summary']['partial_product_routes']),
@@ -544,6 +556,7 @@ def build_engine_completion_audit(
             'modular_accumulator_capacity_certificate': modular_accumulator_capacity_certificate,
             'modular_accumulator_scratch_schedule': modular_accumulator_scratch_schedule,
             'modular_accumulator_semantic_obligations': modular_accumulator_semantic_obligations,
+            'modular_accumulator_carry_obligations': modular_accumulator_carry_obligations,
             'tail_macro_engine': tail_macro_engine,
             'tail_macro_liveness': tail_macro_liveness,
             'tail_macro_reversibility': tail_macro_reversibility,

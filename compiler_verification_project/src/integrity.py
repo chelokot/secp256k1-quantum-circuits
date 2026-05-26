@@ -33,6 +33,7 @@ from fallback_frontier_stress import build_fallback_frontier_stress
 from lookup_lowering import lookup_lowering_library, lowered_lookup_semantic_summary, materialize_lookup_primitive_operations
 from materialized_circuit import PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, build_arithmetic_operand_replay_audit, build_public_candidate_materialized_circuit_manifest
 from modular_accumulator_capacity_certificate import MODULAR_ACCUMULATOR_CAPACITY_CERTIFICATE_SCHEMA, build_modular_accumulator_capacity_certificate
+from modular_accumulator_carry_obligations import MODULAR_ACCUMULATOR_CARRY_OBLIGATIONS_SCHEMA, build_modular_accumulator_carry_obligations
 from modular_accumulator_lowering import MODULAR_ACCUMULATOR_LOWERING_SCHEMA, build_modular_accumulator_lowering
 from modular_accumulator_row_stream import MODULAR_ACCUMULATOR_ROW_STREAM_SCHEMA, build_modular_accumulator_row_stream
 from modular_accumulator_scratch_schedule import MODULAR_ACCUMULATOR_SCRATCH_SCHEDULE_SCHEMA, build_modular_accumulator_scratch_schedule
@@ -203,6 +204,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'modular_accumulator_capacity_certificate': artifact_root / 'modular_accumulator_capacity_certificate.json',
         'modular_accumulator_scratch_schedule': artifact_root / 'modular_accumulator_scratch_schedule.json',
         'modular_accumulator_semantic_obligations': artifact_root / 'modular_accumulator_semantic_obligations.json',
+        'modular_accumulator_carry_obligations': artifact_root / 'modular_accumulator_carry_obligations.json',
         'tail_macro_liveness': artifact_root / 'tail_macro_liveness.json',
         'tail_macro_reversibility': artifact_root / 'tail_macro_reversibility.json',
         'tail_macro_schedule_search': artifact_root / 'tail_macro_schedule_search.json',
@@ -385,6 +387,15 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
             ),
         )
         dump_json(
+            artifact_root / 'modular_accumulator_carry_obligations.json',
+            build_modular_accumulator_carry_obligations(
+                modular_accumulator_row_stream=load_json(artifact_root / 'modular_accumulator_row_stream.json'),
+                modular_accumulator_capacity_certificate=load_json(artifact_root / 'modular_accumulator_capacity_certificate.json'),
+                modular_accumulator_semantic_obligations=load_json(artifact_root / 'modular_accumulator_semantic_obligations.json'),
+                field_bits=FIELD_BITS,
+            ),
+        )
+        dump_json(
             artifact_root / 'public_engine_manifest.json',
             build_public_engine_manifest(
                 reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
@@ -434,6 +445,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 modular_accumulator_capacity_certificate=load_json(artifact_root / 'modular_accumulator_capacity_certificate.json'),
                 modular_accumulator_scratch_schedule=load_json(artifact_root / 'modular_accumulator_scratch_schedule.json'),
                 modular_accumulator_semantic_obligations=load_json(artifact_root / 'modular_accumulator_semantic_obligations.json'),
+                modular_accumulator_carry_obligations=load_json(artifact_root / 'modular_accumulator_carry_obligations.json'),
                 tail_macro_engine=load_json(artifact_root / 'tail_macro_engine.json'),
                 tail_macro_liveness=load_json(artifact_root / 'tail_macro_liveness.json'),
                 tail_macro_reversibility=load_json(artifact_root / 'tail_macro_reversibility.json'),
@@ -2813,6 +2825,27 @@ def build_modular_accumulator_semantic_obligations_checks(artifacts: Mapping[str
     return _summarize_checks(checks)
 
 
+def build_modular_accumulator_carry_obligations_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    obligations = artifacts['modular_accumulator_carry_obligations']
+    expected = build_modular_accumulator_carry_obligations(
+        modular_accumulator_row_stream=artifacts['modular_accumulator_row_stream'],
+        modular_accumulator_capacity_certificate=artifacts['modular_accumulator_capacity_certificate'],
+        modular_accumulator_semantic_obligations=artifacts['modular_accumulator_semantic_obligations'],
+        field_bits=FIELD_BITS,
+    )
+    stream = obligations['column_carry_obligation_stream']
+    reduced_width = obligations['reduced_width_exhaustive_checks']
+    checks = [
+        _check('modular_accumulator_carry_obligations_matches_generator', obligations == expected, expected, obligations),
+        _check('modular_accumulator_carry_obligations_schema_is_current', obligations['schema'] == MODULAR_ACCUMULATOR_CARRY_OBLIGATIONS_SCHEMA, MODULAR_ACCUMULATOR_CARRY_OBLIGATIONS_SCHEMA, obligations['schema']),
+        _check('modular_accumulator_carry_obligations_passes_internal_checks', obligations['pass'] is True and all(obligations['checks'].values()), True, obligations['checks']),
+        _check('modular_accumulator_carry_obligations_cover_product_columns', stream['column_count'] == 2 * FIELD_BITS - 1 and stream['total_partial_product_rows'] == artifacts['modular_accumulator_row_stream']['expanded_counts']['partial_product_consume_rows'] and obligations['product_owner']['carry_complete_capacity_bits'] == 2 * FIELD_BITS, 'carry obligations cover all partial-product columns and final carry bit', stream),
+        _check('modular_accumulator_carry_obligations_reject_parity_consume', stream['total_carry_obligation_rows'] > stream['total_partial_product_rows'] and all(row['parity_only_rejected'] is True for row in reduced_width) and sum(int(row['parity_only_mismatch_count']) for row in reduced_width) > 0, 'parity-only consume fails reduced-width exhaustive checks', reduced_width),
+        _check('modular_accumulator_carry_obligations_remain_unpromoted', obligations['promotion_status']['status'] == 'carry_obligations_not_promoted_to_public_resource_contract', 'carry obligations are explicit but not promoted', obligations['promotion_status']),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     audit = artifacts['engine_completion_audit']
     expected = build_engine_completion_audit(
@@ -2837,6 +2870,7 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
         modular_accumulator_capacity_certificate=artifacts['modular_accumulator_capacity_certificate'],
         modular_accumulator_scratch_schedule=artifacts['modular_accumulator_scratch_schedule'],
         modular_accumulator_semantic_obligations=artifacts['modular_accumulator_semantic_obligations'],
+        modular_accumulator_carry_obligations=artifacts['modular_accumulator_carry_obligations'],
         tail_macro_engine=artifacts['tail_macro_engine'],
         tail_macro_liveness=artifacts['tail_macro_liveness'],
         tail_macro_reversibility=artifacts['tail_macro_reversibility'],
@@ -3656,6 +3690,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'modular_accumulator_capacity_certificate_checks': lambda: build_modular_accumulator_capacity_certificate_checks(artifacts),
         'modular_accumulator_scratch_schedule_checks': lambda: build_modular_accumulator_scratch_schedule_checks(artifacts),
         'modular_accumulator_semantic_obligations_checks': lambda: build_modular_accumulator_semantic_obligations_checks(artifacts),
+        'modular_accumulator_carry_obligations_checks': lambda: build_modular_accumulator_carry_obligations_checks(artifacts),
         'public_engine_manifest_checks': lambda: build_public_engine_manifest_checks(artifacts),
         'engine_completion_audit_checks': lambda: build_engine_completion_audit_checks(artifacts),
         'arithmetic_operand_replay_audit_checks': lambda: build_arithmetic_operand_replay_audit_checks(artifacts),

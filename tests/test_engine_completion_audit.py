@@ -58,6 +58,7 @@ def _build_audit(
         modular_accumulator_capacity_certificate=_load('modular_accumulator_capacity_certificate.json'),
         modular_accumulator_scratch_schedule=_load('modular_accumulator_scratch_schedule.json'),
         modular_accumulator_semantic_obligations=_load('modular_accumulator_semantic_obligations.json'),
+        modular_accumulator_carry_obligations=_load('modular_accumulator_carry_obligations.json'),
         tail_macro_engine=_load('tail_macro_engine.json'),
         tail_macro_liveness=_load('tail_macro_liveness.json'),
         tail_macro_reversibility=_load('tail_macro_reversibility.json'),
@@ -132,6 +133,12 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_semantic_fold_rows'] == remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_row_stream_fold_rows']
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_semantic_temporary_cleanup_rows'] == remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['synthetic_arithmetic_scratch_wire_observations']
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_semantic_gate_lowering_proven'] is False
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_carry_obligations_pass'] is True
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_carry_obligation_column_count'] == 2 * field_bits - 1
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_carry_obligation_row_count'] > remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_semantic_partial_product_rows']
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_carry_max_span_bits'] == 2 * field_bits
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_carry_reduced_width_case_count'] > 0
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_carry_parity_mismatch_count'] > 0
     assert len(remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_candidate_event_stream_sha256']) == 64
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_candidate_event_count'] == remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['synthetic_arithmetic_scratch_wire_observations'] * 3
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_partial_product_routes'] == 11 * field_bits * field_bits

@@ -1,0 +1,234 @@
+{
+  "schema": "compiler-project-modular-accumulator-carry-obligations-v1",
+  "definition": "Generated carry-completeness obligations for the modular product accumulator. It proves that partial-product consume cannot be modeled as one parity/XOR write per source bit; a promoted lowering must implement or otherwise prove carry propagation into a 512-bit product owner.",
+  "source_digests": {
+    "modular_accumulator_row_stream_sha256": "5d448f757f16fa01639c8343a8e39789a2a8f29413615d784db88c6659bb4971",
+    "modular_accumulator_capacity_certificate_sha256": "f008ee0a97f61eabb15da6f5a9a3eaee45c06175b71321ec0009c20c38ad9c31",
+    "modular_accumulator_semantic_obligations_sha256": "01327aba0cbad8764b4d2add11503ac1cb0920abb991a8170ea5f8cc65b94dde"
+  },
+  "field_bits": 256,
+  "schoolbook_grid_count": 11,
+  "product_owner": {
+    "partial_product_column_count": 511,
+    "carry_complete_capacity_bits": 512,
+    "field_slot_capacity_bits": 256,
+    "fits_single_field_slot": false
+  },
+  "column_carry_obligation_stream": {
+    "column_count": 511,
+    "columns_materialized_in_json": false,
+    "segment_size": 64,
+    "segment_count": 8,
+    "segments": [
+      {
+        "segment_index": 0,
+        "column_start": 0,
+        "column_end_exclusive": 64,
+        "column_count": 64,
+        "sha256": "65cbaf7c525c85cb70f1ed560a228bb7b0c405e49970254617913cf8a5ecc39b"
+      },
+      {
+        "segment_index": 1,
+        "column_start": 64,
+        "column_end_exclusive": 128,
+        "column_count": 64,
+        "sha256": "54b4d1ce5e17b7fc4c5acb79420c357d90e0f4bdccdb1fd524389a71b3dead77"
+      },
+      {
+        "segment_index": 2,
+        "column_start": 128,
+        "column_end_exclusive": 192,
+        "column_count": 64,
+        "sha256": "0450e39b416e443093a8d19865a1286ebb38fbb619781e9790c3cac68c6249fd"
+      },
+      {
+        "segment_index": 3,
+        "column_start": 192,
+        "column_end_exclusive": 256,
+        "column_count": 64,
+        "sha256": "9be7fc6638f73c52334ba9d5b2aed1b9ce731facd73e6467c44ae1b0983b2c7c"
+      },
+      {
+        "segment_index": 4,
+        "column_start": 256,
+        "column_end_exclusive": 320,
+        "column_count": 64,
+        "sha256": "533f679ea93bbdd7847e78868ae74515a713c66753b53a760fea1d220a16cbd6"
+      },
+      {
+        "segment_index": 5,
+        "column_start": 320,
+        "column_end_exclusive": 384,
+        "column_count": 64,
+        "sha256": "1d7454434453cd522881bdf3f65639ae2bbc6c0da065dda2b8ea8bbe9e5f3749"
+      },
+      {
+        "segment_index": 6,
+        "column_start": 384,
+        "column_end_exclusive": 448,
+        "column_count": 64,
+        "sha256": "43f54f80ab03a4580494c728d0e781d1151d62e873d243aa3ed20cccdcba6be4"
+      },
+      {
+        "segment_index": 7,
+        "column_start": 448,
+        "column_end_exclusive": 511,
+        "column_count": 63,
+        "sha256": "082824f6f65bbec6c9251911cd128d24d3e9f5622c0f7038392b35863de026f3"
+      }
+    ],
+    "column_stream_sha256": "fe6fa3d5ee37463a295cbee2a34ae18498671a84169f139819500d22cc09a520",
+    "total_partial_product_rows": 720896,
+    "total_carry_obligation_rows": 185270272,
+    "max_single_increment_carry_span_bits": 512,
+    "preview_head": [
+      {
+        "column": 0,
+        "partial_product_rows": 11,
+        "single_increment_carry_span_bits": 512,
+        "carry_obligation_rows": 5632
+      },
+      {
+        "column": 1,
+        "partial_product_rows": 22,
+        "single_increment_carry_span_bits": 511,
+        "carry_obligation_rows": 11242
+      },
+      {
+        "column": 2,
+        "partial_product_rows": 33,
+        "single_increment_carry_span_bits": 510,
+        "carry_obligation_rows": 16830
+      },
+      {
+        "column": 3,
+        "partial_product_rows": 44,
+        "single_increment_carry_span_bits": 509,
+        "carry_obligation_rows": 22396
+      },
+      {
+        "column": 4,
+        "partial_product_rows": 55,
+        "single_increment_carry_span_bits": 508,
+        "carry_obligation_rows": 27940
+      },
+      {
+        "column": 5,
+        "partial_product_rows": 66,
+        "single_increment_carry_span_bits": 507,
+        "carry_obligation_rows": 33462
+      }
+    ],
+    "preview_tail": [
+      {
+        "column": 505,
+        "partial_product_rows": 66,
+        "single_increment_carry_span_bits": 7,
+        "carry_obligation_rows": 462
+      },
+      {
+        "column": 506,
+        "partial_product_rows": 55,
+        "single_increment_carry_span_bits": 6,
+        "carry_obligation_rows": 330
+      },
+      {
+        "column": 507,
+        "partial_product_rows": 44,
+        "single_increment_carry_span_bits": 5,
+        "carry_obligation_rows": 220
+      },
+      {
+        "column": 508,
+        "partial_product_rows": 33,
+        "single_increment_carry_span_bits": 4,
+        "carry_obligation_rows": 132
+      },
+      {
+        "column": 509,
+        "partial_product_rows": 22,
+        "single_increment_carry_span_bits": 3,
+        "carry_obligation_rows": 66
+      },
+      {
+        "column": 510,
+        "partial_product_rows": 11,
+        "single_increment_carry_span_bits": 2,
+        "carry_obligation_rows": 22
+      }
+    ]
+  },
+  "reduced_width_exhaustive_checks": [
+    {
+      "width": 2,
+      "product_bits": 4,
+      "total_cases": 48,
+      "parity_only_mismatch_count": 24,
+      "carry_reference_mismatch_count": 0,
+      "max_observed_carry_span_bits": 4,
+      "parity_only_rejected": true,
+      "carry_reference_passes": true
+    },
+    {
+      "width": 3,
+      "product_bits": 6,
+      "total_cases": 320,
+      "parity_only_mismatch_count": 160,
+      "carry_reference_mismatch_count": 0,
+      "max_observed_carry_span_bits": 6,
+      "parity_only_rejected": true,
+      "carry_reference_passes": true
+    },
+    {
+      "width": 4,
+      "product_bits": 8,
+      "total_cases": 1792,
+      "parity_only_mismatch_count": 896,
+      "carry_reference_mismatch_count": 0,
+      "max_observed_carry_span_bits": 8,
+      "parity_only_rejected": true,
+      "carry_reference_passes": true
+    },
+    {
+      "width": 5,
+      "product_bits": 10,
+      "total_cases": 9216,
+      "parity_only_mismatch_count": 4608,
+      "carry_reference_mismatch_count": 0,
+      "max_observed_carry_span_bits": 10,
+      "parity_only_rejected": true,
+      "carry_reference_passes": true
+    },
+    {
+      "width": 6,
+      "product_bits": 12,
+      "total_cases": 45056,
+      "parity_only_mismatch_count": 22528,
+      "carry_reference_mismatch_count": 0,
+      "max_observed_carry_span_bits": 12,
+      "parity_only_rejected": true,
+      "carry_reference_passes": true
+    }
+  ],
+  "promotion_status": {
+    "status": "carry_obligations_not_promoted_to_public_resource_contract",
+    "required_to_promote": [
+      "Replace parity-style consume with concrete reversible carry-propagating accumulator update gates.",
+      "Bind every carry wire to exactly one counted owner with capacity at least the generated carry span.",
+      "Rebuild non-Clifford and peak-live-qubit totals from the promoted carry gate stream."
+    ]
+  },
+  "checks": {
+    "source_row_stream_passes": true,
+    "source_capacity_certificate_passes": true,
+    "source_semantic_obligations_pass": true,
+    "product_capacity_is_carry_complete": true,
+    "column_histogram_covers_partial_products": true,
+    "max_increment_span_reaches_final_carry_bit": true,
+    "carry_obligation_exceeds_parity_only_rows": true,
+    "reduced_width_carry_reference_passes": true,
+    "reduced_width_parity_only_is_rejected": true,
+    "carry_gate_lowering_not_promoted": true
+  },
+  "pass": true
+}
