@@ -35,6 +35,7 @@ from materialized_circuit import PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_
 from modular_accumulator_capacity_certificate import MODULAR_ACCUMULATOR_CAPACITY_CERTIFICATE_SCHEMA, build_modular_accumulator_capacity_certificate
 from modular_accumulator_lowering import MODULAR_ACCUMULATOR_LOWERING_SCHEMA, build_modular_accumulator_lowering
 from modular_accumulator_row_stream import MODULAR_ACCUMULATOR_ROW_STREAM_SCHEMA, build_modular_accumulator_row_stream
+from modular_accumulator_scratch_schedule import MODULAR_ACCUMULATOR_SCRATCH_SCHEDULE_SCHEMA, build_modular_accumulator_scratch_schedule
 from modular_execution_trace import build_modular_execution_trace
 from modular_multiplier_lifecycle import MODULAR_MULTIPLIER_LIFECYCLE_SCHEMA, build_modular_multiplier_lifecycle
 from modular_primitive_wire_audit import MODULAR_PRIMITIVE_WIRE_AUDIT_SCHEMA, build_modular_primitive_wire_audit
@@ -199,6 +200,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'modular_accumulator_lowering': artifact_root / 'modular_accumulator_lowering.json',
         'modular_accumulator_row_stream': artifact_root / 'modular_accumulator_row_stream.json',
         'modular_accumulator_capacity_certificate': artifact_root / 'modular_accumulator_capacity_certificate.json',
+        'modular_accumulator_scratch_schedule': artifact_root / 'modular_accumulator_scratch_schedule.json',
         'tail_macro_liveness': artifact_root / 'tail_macro_liveness.json',
         'tail_macro_reversibility': artifact_root / 'tail_macro_reversibility.json',
         'tail_macro_schedule_search': artifact_root / 'tail_macro_schedule_search.json',
@@ -364,6 +366,14 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
             ),
         )
         dump_json(
+            artifact_root / 'modular_accumulator_scratch_schedule.json',
+            build_modular_accumulator_scratch_schedule(
+                modular_multiplier_lifecycle=load_json(artifact_root / 'modular_multiplier_lifecycle.json'),
+                modular_accumulator_capacity_certificate=load_json(artifact_root / 'modular_accumulator_capacity_certificate.json'),
+                field_bits=FIELD_BITS,
+            ),
+        )
+        dump_json(
             artifact_root / 'public_engine_manifest.json',
             build_public_engine_manifest(
                 reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
@@ -411,6 +421,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 modular_accumulator_lowering=load_json(artifact_root / 'modular_accumulator_lowering.json'),
                 modular_accumulator_row_stream=load_json(artifact_root / 'modular_accumulator_row_stream.json'),
                 modular_accumulator_capacity_certificate=load_json(artifact_root / 'modular_accumulator_capacity_certificate.json'),
+                modular_accumulator_scratch_schedule=load_json(artifact_root / 'modular_accumulator_scratch_schedule.json'),
                 tail_macro_engine=load_json(artifact_root / 'tail_macro_engine.json'),
                 tail_macro_liveness=load_json(artifact_root / 'tail_macro_liveness.json'),
                 tail_macro_reversibility=load_json(artifact_root / 'tail_macro_reversibility.json'),
@@ -2748,6 +2759,24 @@ def build_modular_accumulator_capacity_certificate_checks(artifacts: Mapping[str
     return _summarize_checks(checks)
 
 
+def build_modular_accumulator_scratch_schedule_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    schedule = artifacts['modular_accumulator_scratch_schedule']
+    expected = build_modular_accumulator_scratch_schedule(
+        modular_multiplier_lifecycle=artifacts['modular_multiplier_lifecycle'],
+        modular_accumulator_capacity_certificate=artifacts['modular_accumulator_capacity_certificate'],
+        field_bits=FIELD_BITS,
+    )
+    stream = schedule['schedule_stream']
+    checks = [
+        _check('modular_accumulator_scratch_schedule_matches_generator', schedule == expected, expected, schedule),
+        _check('modular_accumulator_scratch_schedule_schema_is_current', schedule['schema'] == MODULAR_ACCUMULATOR_SCRATCH_SCHEDULE_SCHEMA, MODULAR_ACCUMULATOR_SCRATCH_SCHEDULE_SCHEMA, schedule['schema']),
+        _check('modular_accumulator_scratch_schedule_passes_internal_checks', schedule['pass'] is True and all(schedule['checks'].values()), True, schedule['checks']),
+        _check('modular_accumulator_scratch_schedule_is_adjacent_triplets', stream['event_count'] == schedule['triplet_count'] * 3 and all(stream['phase_counts'][phase] == schedule['triplet_count'] for phase in ('temporary_and_compute', 'consume_into_counted_owner', 'cleanup_or_measure_uncompute')), 'three adjacent lifecycle events per scratch route', stream['phase_counts']),
+        _check('modular_accumulator_scratch_schedule_keeps_semantics_unpromoted', schedule['liveness_certificate']['serialized_schedule_temporary_peak_qubits'] == 1 and schedule['liveness_certificate']['semantic_gate_lowering_proven'] is False and schedule['promotion_status']['status'] == 'scratch_schedule_not_promoted_to_public_resource_contract', 'shape liveness only; semantic gate lowering remains unpromoted', schedule['liveness_certificate']),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     audit = artifacts['engine_completion_audit']
     expected = build_engine_completion_audit(
@@ -2770,6 +2799,7 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
         modular_accumulator_lowering=artifacts['modular_accumulator_lowering'],
         modular_accumulator_row_stream=artifacts['modular_accumulator_row_stream'],
         modular_accumulator_capacity_certificate=artifacts['modular_accumulator_capacity_certificate'],
+        modular_accumulator_scratch_schedule=artifacts['modular_accumulator_scratch_schedule'],
         tail_macro_engine=artifacts['tail_macro_engine'],
         tail_macro_liveness=artifacts['tail_macro_liveness'],
         tail_macro_reversibility=artifacts['tail_macro_reversibility'],
@@ -3587,6 +3617,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'modular_accumulator_lowering_checks': lambda: build_modular_accumulator_lowering_checks(artifacts),
         'modular_accumulator_row_stream_checks': lambda: build_modular_accumulator_row_stream_checks(artifacts),
         'modular_accumulator_capacity_certificate_checks': lambda: build_modular_accumulator_capacity_certificate_checks(artifacts),
+        'modular_accumulator_scratch_schedule_checks': lambda: build_modular_accumulator_scratch_schedule_checks(artifacts),
         'public_engine_manifest_checks': lambda: build_public_engine_manifest_checks(artifacts),
         'engine_completion_audit_checks': lambda: build_engine_completion_audit_checks(artifacts),
         'arithmetic_operand_replay_audit_checks': lambda: build_arithmetic_operand_replay_audit_checks(artifacts),
