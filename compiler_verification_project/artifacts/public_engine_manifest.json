@@ -21,7 +21,7 @@
     "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
     "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
     "resource_contract_engine_sha256": "0447031a514b04038ab0f51e63a0e1a5ffa187d1cab694de20d7dfc8196ea1e0",
-    "public_candidate_materialized_circuit_manifest_sha256": "24b23106b5a9ee98e63470a978bdaf2a23c4bd1b324a7ef8e28419503994ce56"
+    "public_candidate_materialized_circuit_manifest_sha256": "2ca0fc26147fb0d69bef5bac41f55a7ce2cd957e3f3ce4fa07e6846dce622316"
   },
   "instruction_stream": {
     "encoding": [
@@ -615,23 +615,23 @@
   "primitive_operation_evidence": {
     "public_candidate_materialized_circuit_manifest": {
       "schema": "compiler-project-public-candidate-materialized-circuit-manifest-v1",
-      "sha256": "24b23106b5a9ee98e63470a978bdaf2a23c4bd1b324a7ef8e28419503994ce56",
+      "sha256": "2ca0fc26147fb0d69bef5bac41f55a7ce2cd957e3f3ce4fa07e6846dce622316",
       "pass": true,
-      "operation_stream_sha256": "8e7bb094bed9d407a2b7c5c52583d0fe6215cb50ca84ff1140a2200ddb1c69d6",
+      "operation_stream_sha256": "1b91eac3d5109522a43f3fcc09a40d91f2a83ae730581878979f127e0788588e",
       "liveness_binding_stream_sha256": "064b5825a77559fdaab046854b89afdf58e1d3da0be53ab53652bb913c87b8eb",
       "run_length_row_count": 5836,
       "liveness_binding_row_count": 5836,
       "qroam_segment_row_count": 2976,
       "flat_operation_count": 39386537,
       "flat_segment_count": 40,
-      "flat_segment_merkle_root_sha256": "2436e5f0f30f12c93def21291507397703276946858ec90e17dea3b62ef2911a",
+      "flat_segment_merkle_root_sha256": "44249ab4cae2f3599b9c765b30b40c7fe6d2dc034ff33402ca7e1dab37d2b943",
       "materialized_flat_netlist": {
         "schema": "compiler-project-public-candidate-materialized-flat-netlist-v1",
         "exact_operation_stream_materialized": true,
         "operation_count": 39386537,
-        "operation_stream_sha256": "7d051f068558d52c88bdbd5e7188c41d06b3f06ee2f18f864f170bbbb0c07255",
+        "operation_stream_sha256": "6a6f301f89ce69ff71f6d63ecb01c2824e165e20cf71f00a84774091054d1a51",
         "segment_count": 40,
-        "segment_merkle_root_sha256": "8633466fd0fbc0b4265857152d338dd1a48d287858b3e705257e78f22506b635",
+        "segment_merkle_root_sha256": "b2f66b4ed1b93b46525caefccf7112b7b5271f146e83fb6b842a66f5fab5f09b",
         "non_clifford_count": 36973222,
         "peak_live_qubits": 1199
       },
@@ -639,9 +639,9 @@
         "schema": "compiler-project-public-candidate-materialized-flat-netlist-v1",
         "exact_operation_stream_materialized": true,
         "operation_count": 39386537,
-        "operation_stream_sha256": "2d7808c0797e256fad58c99592d71ca726764bfd9a632e93fe5c37a89590d087",
+        "operation_stream_sha256": "21ef9e5af68f3c3136b134df81ccfccf8c15bb4b62bbf7f73b6f4d1319f2c00b",
         "segment_count": 40,
-        "segment_merkle_root_sha256": "d0b63dbdee34be8d7ed581392aeeb0abeb6dbcba7f2e650e82c483c911651361",
+        "segment_merkle_root_sha256": "53b4445459f4e8f70433405577aa56aa5366715deb3257dcde6c639e2b24e13c",
         "non_clifford_count": 36973222,
         "peak_live_qubits": 1968
       },
@@ -649,9 +649,9 @@
         "schema": "compiler-project-public-candidate-materialized-flat-netlist-v1",
         "exact_operation_stream_materialized": true,
         "operation_count": 39386537,
-        "operation_stream_sha256": "2d7808c0797e256fad58c99592d71ca726764bfd9a632e93fe5c37a89590d087",
+        "operation_stream_sha256": "21ef9e5af68f3c3136b134df81ccfccf8c15bb4b62bbf7f73b6f4d1319f2c00b",
         "segment_count": 40,
-        "segment_merkle_root_sha256": "d0b63dbdee34be8d7ed581392aeeb0abeb6dbcba7f2e650e82c483c911651361",
+        "segment_merkle_root_sha256": "53b4445459f4e8f70433405577aa56aa5366715deb3257dcde6c639e2b24e13c",
         "non_clifford_count": 36973222,
         "peak_live_qubits": 1968
       },
@@ -715,11 +715,11 @@
     },
     "qroam_primitive_certificate": {
       "schema": "compiler-project-qroam-k1-primitive-certificate-v1",
-      "sha256": "9a97e536aa4e15e25873adf187db977910a0ef8fb03914958d409940a54eb125",
+      "sha256": "6193a716018dfcd989719161d334e9e8f9ca72c0d109b8a41707a26d4db4fbc0",
       "pass": true,
-      "operation_schema": "qroamclean-k1-unary-iteration-step-v1",
+      "operation_schema": "qroamclean-k1-unary-iteration-word-step-v1",
       "segment_count": 16,
-      "segment_merkle_root_sha256": "4adf8b1389ac2ad67551a4a058377b919ac446b88ae22da3ab68bc84f2156cb5",
+      "segment_merkle_root_sha256": "40fa8c214c4cb0352ebb7ed2282ae679f70455143a254edd5c9768573f78092e",
       "block_size": 1,
       "per_stream_non_clifford": 65536,
       "target_register_qubits": 155,

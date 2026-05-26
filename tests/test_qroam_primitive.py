@@ -59,6 +59,13 @@ def test_qroam_k1_certificate_reconstructs_selected_stream_counts() -> None:
     assert certificate['traversed_counts']['measured_uncompute_non_clifford'] == parameters['domain_size']
     assert certificate['traversed_counts']['per_stream_non_clifford'] == parameters['domain_size'] * 2
     assert certificate['traversed_counts']['target_plus_junk_qubits'] == parameters['target_bits']
+    assert certificate['operation_stream']['operation_schema'] == 'qroamclean-k1-unary-iteration-word-step-v1'
+    assert certificate['operation_stream']['target_register_qubits'] == parameters['target_bits']
+    assert all(
+        row['target_register']['bit_count'] == parameters['target_bits']
+        and row['loaded_word_source']['table_address'] == row['address']
+        for row in certificate['operation_stream']['preview_head'] + certificate['operation_stream']['preview_tail']
+    )
     assert checks['pass'] == checks['total']
 
 
@@ -74,5 +81,21 @@ def test_qroam_k1_certificate_checks_reject_forged_workspace() -> None:
     certificate = build_qroam_k1_primitive_certificate(**_selected_parameters())
     forged = deepcopy(certificate)
     forged['wire_catalog']['target_register']['qubits'] -= 1
+    checks = build_qroam_primitive_certificate_checks(_minimal_artifacts(forged))
+    assert checks['pass'] < checks['total']
+
+
+def test_qroam_k1_certificate_checks_reject_forged_word_level_contract() -> None:
+    certificate = build_qroam_k1_primitive_certificate(**_selected_parameters())
+    forged = deepcopy(certificate)
+    forged['operation_stream']['preview_head'][0]['loaded_word_source']['table_address'] += 1
+    checks = build_qroam_primitive_certificate_checks(_minimal_artifacts(forged))
+    assert checks['pass'] < checks['total']
+
+
+def test_qroam_k1_certificate_checks_reject_forged_segment_wire_width() -> None:
+    certificate = build_qroam_k1_primitive_certificate(**_selected_parameters())
+    forged = deepcopy(certificate)
+    forged['operation_stream']['segments'][0]['target_register_qubits'] -= 1
     checks = build_qroam_primitive_certificate_checks(_minimal_artifacts(forged))
     assert checks['pass'] < checks['total']

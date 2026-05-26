@@ -273,11 +273,12 @@ def build_engine_completion_audit(
         },
         {
             'name': 'qroam_bit_level_netlist_expansion',
-            'status': 'standard_qroamclean_cost_bound_not_bit_level_qroam_netlist',
+            'status': 'word_level_qroamclean_stream_bound_not_bit_level_qroam_netlist',
             'required_to_close': 'Emit and count the exact QROAM address, control, target, measurement, and uncompute operations in the same flat primitive schedule instead of relying on the compact QROAMClean K=1 resource certificate.',
             'current_evidence': 'qroam_primitive_certificate + public_candidate_materialized_circuit_manifest.operand_source_binding',
             'evidence_metrics': {
                 'source_bound_run_length_rows': rows_by_source_kind['qroam_primitive_certificate'],
+                'operation_level': str(qroam_primitive_certificate['operation_stream']['operation_level']),
                 'domain_size': int(qroam_cost['domain_size']),
                 'block_size': int(qroam_cost['block_size']),
                 'target_plus_junk_qubits': int(qroam_cost['target_plus_junk_qubits']),

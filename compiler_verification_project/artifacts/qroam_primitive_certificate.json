@@ -26,7 +26,10 @@
     }
   },
   "operation_stream": {
-    "operation_schema": "qroamclean-k1-unary-iteration-step-v1",
+    "operation_schema": "qroamclean-k1-unary-iteration-word-step-v1",
+    "operation_level": "word_level_unary_iteration_rows",
+    "selection_bit_count": 15,
+    "target_register_qubits": 155,
     "segments": [
       {
         "phase": "compute",
@@ -34,7 +37,9 @@
         "end_address_exclusive": 4096,
         "operation_count": 4096,
         "ccx": 4096,
-        "sha256": "5a3205fe608b5f245e42f64f40e4414cdac537178b30602588232e2be016ad13"
+        "selection_bit_count": 15,
+        "target_register_qubits": 155,
+        "sha256": "8524cb2f35c7b46446aef38e2929f9ec8a5f9a7c7ab5f6552bdb5a7052289895"
       },
       {
         "phase": "compute",
@@ -42,7 +47,9 @@
         "end_address_exclusive": 8192,
         "operation_count": 4096,
         "ccx": 4096,
-        "sha256": "a594f084c6f3cf3a603c4eab021a14ca4e229e24a7e33b98e320c5aea344419d"
+        "selection_bit_count": 15,
+        "target_register_qubits": 155,
+        "sha256": "595261a29ca32085d9e587998239d6e6b1f3fab07266187665bd600593d784e9"
       },
       {
         "phase": "compute",
@@ -50,7 +57,9 @@
         "end_address_exclusive": 12288,
         "operation_count": 4096,
         "ccx": 4096,
-        "sha256": "aef30cf3b3b2f4a74b3b101694b8c95f5ee05905dc016db44817d91a43a841f9"
+        "selection_bit_count": 15,
+        "target_register_qubits": 155,
+        "sha256": "29b0c2f6913010ae62d174f6cb86327535b3405a415e4a9e723be4a068f44484"
       },
       {
         "phase": "compute",
@@ -58,7 +67,9 @@
         "end_address_exclusive": 16384,
         "operation_count": 4096,
         "ccx": 4096,
-        "sha256": "73d586c06888b85ea1960b6a0ff67aa3fc6e366149b1c967a98314c3d216390d"
+        "selection_bit_count": 15,
+        "target_register_qubits": 155,
+        "sha256": "d707ba01d58d6dccc6a74aca1224fc4b9821c7cb3975480a20171a513c8f5f8e"
       },
       {
         "phase": "compute",
@@ -66,7 +77,9 @@
         "end_address_exclusive": 20480,
         "operation_count": 4096,
         "ccx": 4096,
-        "sha256": "c68fc829523acf80461b5d4d9626b8a9491b288ef04782cedd757f3a57070ed8"
+        "selection_bit_count": 15,
+        "target_register_qubits": 155,
+        "sha256": "f7a329d4d4d328d9c8907189d05d9776d50249481057b1763c3598032f8e9b03"
       },
       {
         "phase": "compute",
@@ -74,7 +87,9 @@
         "end_address_exclusive": 24576,
         "operation_count": 4096,
         "ccx": 4096,
-        "sha256": "17ac86ace23504f00f06c2f46eec29356973b86302add49fa441aea643fc0bfe"
+        "selection_bit_count": 15,
+        "target_register_qubits": 155,
+        "sha256": "44135c07c93078f56b396d454b9e5fdd49672766b566063fab68786bcf057b4d"
       },
       {
         "phase": "compute",
@@ -82,7 +97,9 @@
         "end_address_exclusive": 28672,
         "operation_count": 4096,
         "ccx": 4096,
-        "sha256": "00d1ff812cc5c664e5420e998be6d486310f172f78e520cec5421e8f0283e6cd"
+        "selection_bit_count": 15,
+        "target_register_qubits": 155,
+        "sha256": "d43d68db19d4b32001b4e4ae70c6f0ddbec431a61eb3202de3774f799a26b800"
       },
       {
         "phase": "compute",
@@ -90,7 +107,9 @@
         "end_address_exclusive": 32768,
         "operation_count": 4096,
         "ccx": 4096,
-        "sha256": "d096976dcbe8c9d3912c27ed2f7f458a7274c0e6e70e5ab6ec6a771909cc1d7e"
+        "selection_bit_count": 15,
+        "target_register_qubits": 155,
+        "sha256": "b2fab3d2375ff53336b804a613d8547f94bc990ca455833b5b8371344fbbe69e"
       },
       {
         "phase": "measured_uncompute",
@@ -98,7 +117,9 @@
         "end_address_exclusive": 4096,
         "operation_count": 4096,
         "ccx": 4096,
-        "sha256": "2a556222dfe51e42b09bc8e8646a7ca78fbf43b8776392d368bbbf27a68fee92"
+        "selection_bit_count": 15,
+        "target_register_qubits": 155,
+        "sha256": "e1dad2835f9c435bf3523651567bc83172ec6365c5d93af3a5fc75f3f225f5c3"
       },
       {
         "phase": "measured_uncompute",
@@ -106,7 +127,9 @@
         "end_address_exclusive": 8192,
         "operation_count": 4096,
         "ccx": 4096,
-        "sha256": "0dafb3452a6b3e06024003062a6a409a187504913836afb4f7207e77a5bb68d6"
+        "selection_bit_count": 15,
+        "target_register_qubits": 155,
+        "sha256": "4449bc5a917f8703de4b4dc714ad59ba0fade07802f1480a68c2249536ce9586"
       },
       {
         "phase": "measured_uncompute",
@@ -114,7 +137,9 @@
         "end_address_exclusive": 12288,
         "operation_count": 4096,
         "ccx": 4096,
-        "sha256": "11650d64aef263af960dcc266937fe47ea1ef10f92836bc068a0f8b989fca012"
+        "selection_bit_count": 15,
+        "target_register_qubits": 155,
+        "sha256": "36e7becc35f35171404495ea2bda6f2c46d2d4ec95fe4f2cc209d86313ef4757"
       },
       {
         "phase": "measured_uncompute",
@@ -122,7 +147,9 @@
         "end_address_exclusive": 16384,
         "operation_count": 4096,
         "ccx": 4096,
-        "sha256": "d1d6aafdf22b7743fe5260cfe26828f10358be735b9bd90f785becccb5aed381"
+        "selection_bit_count": 15,
+        "target_register_qubits": 155,
+        "sha256": "fe9bfc7e9fa2f8d464bc60a1c730c3350eb109c8959309e5d2fff9020b279bd9"
       },
       {
         "phase": "measured_uncompute",
@@ -130,7 +157,9 @@
         "end_address_exclusive": 20480,
         "operation_count": 4096,
         "ccx": 4096,
-        "sha256": "63ae4140a030cd2ef5cf28622482da0f8906ff9074dfab64a0c0c30b0455420b"
+        "selection_bit_count": 15,
+        "target_register_qubits": 155,
+        "sha256": "f17a26d1d6dd27e64ac7a47ca16a673b988f9f20a1f7667a4528f51d5bd520a7"
       },
       {
         "phase": "measured_uncompute",
@@ -138,7 +167,9 @@
         "end_address_exclusive": 24576,
         "operation_count": 4096,
         "ccx": 4096,
-        "sha256": "6e892de8e10699eb5b98d9802370eadc0e2ad051a4722fb46100fc659568c72b"
+        "selection_bit_count": 15,
+        "target_register_qubits": 155,
+        "sha256": "e007f7b4af80cfbe91217183f1e5b912c66e14b114d876c18ce8321a52197e58"
       },
       {
         "phase": "measured_uncompute",
@@ -146,7 +177,9 @@
         "end_address_exclusive": 28672,
         "operation_count": 4096,
         "ccx": 4096,
-        "sha256": "ef58ff7cdee2902843ea435dd13e768fcc9ce6270d63dae1a10ee80760a9c39e"
+        "selection_bit_count": 15,
+        "target_register_qubits": 155,
+        "sha256": "811b4002e763ec22e4d4f86ddabd66c56515cc1c95506d93e707381df39fba4f"
       },
       {
         "phase": "measured_uncompute",
@@ -154,11 +187,433 @@
         "end_address_exclusive": 32768,
         "operation_count": 4096,
         "ccx": 4096,
-        "sha256": "a5be377d32d8cf09f694e21d435a0ef049c7d87dcba56ba62ea4d50e23da21ba"
+        "selection_bit_count": 15,
+        "target_register_qubits": 155,
+        "sha256": "cc1198a86aa3968ead283cf695a8947d47c3e36ec66fec4f9490a18bca6c8594"
       }
     ],
     "segment_count": 16,
-    "segment_merkle_root_sha256": "4adf8b1389ac2ad67551a4a058377b919ac446b88ae22da3ab68bc84f2156cb5"
+    "segment_merkle_root_sha256": "40fa8c214c4cb0352ebb7ed2282ae679f70455143a254edd5c9768573f78092e",
+    "preview_head": [
+      {
+        "phase": "compute",
+        "address": 0,
+        "primitive": "qroamclean_k1_unary_iteration_word_step",
+        "ccx": 1,
+        "selection_bit_count": 15,
+        "selection_control_wires": [
+          "selection.bit[0]",
+          "selection.bit[1]",
+          "selection.bit[2]",
+          "selection.bit[3]",
+          "selection.bit[4]",
+          "selection.bit[5]",
+          "selection.bit[6]",
+          "selection.bit[7]",
+          "selection.bit[8]",
+          "selection.bit[9]",
+          "selection.bit[10]",
+          "selection.bit[11]",
+          "selection.bit[12]",
+          "selection.bit[13]",
+          "selection.bit[14]"
+        ],
+        "selection_control_pattern_lsb_first": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "target_register": {
+          "wire_template": "qroam_target.bit[{bit_index}]",
+          "bit_count": 155
+        },
+        "loaded_word_source": {
+          "table_address": 0,
+          "bit_range": [
+            0,
+            155
+          ]
+        }
+      },
+      {
+        "phase": "compute",
+        "address": 1,
+        "primitive": "qroamclean_k1_unary_iteration_word_step",
+        "ccx": 1,
+        "selection_bit_count": 15,
+        "selection_control_wires": [
+          "selection.bit[0]",
+          "selection.bit[1]",
+          "selection.bit[2]",
+          "selection.bit[3]",
+          "selection.bit[4]",
+          "selection.bit[5]",
+          "selection.bit[6]",
+          "selection.bit[7]",
+          "selection.bit[8]",
+          "selection.bit[9]",
+          "selection.bit[10]",
+          "selection.bit[11]",
+          "selection.bit[12]",
+          "selection.bit[13]",
+          "selection.bit[14]"
+        ],
+        "selection_control_pattern_lsb_first": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "target_register": {
+          "wire_template": "qroam_target.bit[{bit_index}]",
+          "bit_count": 155
+        },
+        "loaded_word_source": {
+          "table_address": 1,
+          "bit_range": [
+            0,
+            155
+          ]
+        }
+      },
+      {
+        "phase": "compute",
+        "address": 32766,
+        "primitive": "qroamclean_k1_unary_iteration_word_step",
+        "ccx": 1,
+        "selection_bit_count": 15,
+        "selection_control_wires": [
+          "selection.bit[0]",
+          "selection.bit[1]",
+          "selection.bit[2]",
+          "selection.bit[3]",
+          "selection.bit[4]",
+          "selection.bit[5]",
+          "selection.bit[6]",
+          "selection.bit[7]",
+          "selection.bit[8]",
+          "selection.bit[9]",
+          "selection.bit[10]",
+          "selection.bit[11]",
+          "selection.bit[12]",
+          "selection.bit[13]",
+          "selection.bit[14]"
+        ],
+        "selection_control_pattern_lsb_first": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "target_register": {
+          "wire_template": "qroam_target.bit[{bit_index}]",
+          "bit_count": 155
+        },
+        "loaded_word_source": {
+          "table_address": 32766,
+          "bit_range": [
+            0,
+            155
+          ]
+        }
+      },
+      {
+        "phase": "compute",
+        "address": 32767,
+        "primitive": "qroamclean_k1_unary_iteration_word_step",
+        "ccx": 1,
+        "selection_bit_count": 15,
+        "selection_control_wires": [
+          "selection.bit[0]",
+          "selection.bit[1]",
+          "selection.bit[2]",
+          "selection.bit[3]",
+          "selection.bit[4]",
+          "selection.bit[5]",
+          "selection.bit[6]",
+          "selection.bit[7]",
+          "selection.bit[8]",
+          "selection.bit[9]",
+          "selection.bit[10]",
+          "selection.bit[11]",
+          "selection.bit[12]",
+          "selection.bit[13]",
+          "selection.bit[14]"
+        ],
+        "selection_control_pattern_lsb_first": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "target_register": {
+          "wire_template": "qroam_target.bit[{bit_index}]",
+          "bit_count": 155
+        },
+        "loaded_word_source": {
+          "table_address": 32767,
+          "bit_range": [
+            0,
+            155
+          ]
+        }
+      }
+    ],
+    "preview_tail": [
+      {
+        "phase": "measured_uncompute",
+        "address": 0,
+        "primitive": "qroamclean_k1_unary_iteration_word_step",
+        "ccx": 1,
+        "selection_bit_count": 15,
+        "selection_control_wires": [
+          "selection.bit[0]",
+          "selection.bit[1]",
+          "selection.bit[2]",
+          "selection.bit[3]",
+          "selection.bit[4]",
+          "selection.bit[5]",
+          "selection.bit[6]",
+          "selection.bit[7]",
+          "selection.bit[8]",
+          "selection.bit[9]",
+          "selection.bit[10]",
+          "selection.bit[11]",
+          "selection.bit[12]",
+          "selection.bit[13]",
+          "selection.bit[14]"
+        ],
+        "selection_control_pattern_lsb_first": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "target_register": {
+          "wire_template": "qroam_target.bit[{bit_index}]",
+          "bit_count": 155
+        },
+        "loaded_word_source": {
+          "table_address": 0,
+          "bit_range": [
+            0,
+            155
+          ]
+        }
+      },
+      {
+        "phase": "measured_uncompute",
+        "address": 1,
+        "primitive": "qroamclean_k1_unary_iteration_word_step",
+        "ccx": 1,
+        "selection_bit_count": 15,
+        "selection_control_wires": [
+          "selection.bit[0]",
+          "selection.bit[1]",
+          "selection.bit[2]",
+          "selection.bit[3]",
+          "selection.bit[4]",
+          "selection.bit[5]",
+          "selection.bit[6]",
+          "selection.bit[7]",
+          "selection.bit[8]",
+          "selection.bit[9]",
+          "selection.bit[10]",
+          "selection.bit[11]",
+          "selection.bit[12]",
+          "selection.bit[13]",
+          "selection.bit[14]"
+        ],
+        "selection_control_pattern_lsb_first": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "target_register": {
+          "wire_template": "qroam_target.bit[{bit_index}]",
+          "bit_count": 155
+        },
+        "loaded_word_source": {
+          "table_address": 1,
+          "bit_range": [
+            0,
+            155
+          ]
+        }
+      },
+      {
+        "phase": "measured_uncompute",
+        "address": 32766,
+        "primitive": "qroamclean_k1_unary_iteration_word_step",
+        "ccx": 1,
+        "selection_bit_count": 15,
+        "selection_control_wires": [
+          "selection.bit[0]",
+          "selection.bit[1]",
+          "selection.bit[2]",
+          "selection.bit[3]",
+          "selection.bit[4]",
+          "selection.bit[5]",
+          "selection.bit[6]",
+          "selection.bit[7]",
+          "selection.bit[8]",
+          "selection.bit[9]",
+          "selection.bit[10]",
+          "selection.bit[11]",
+          "selection.bit[12]",
+          "selection.bit[13]",
+          "selection.bit[14]"
+        ],
+        "selection_control_pattern_lsb_first": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "target_register": {
+          "wire_template": "qroam_target.bit[{bit_index}]",
+          "bit_count": 155
+        },
+        "loaded_word_source": {
+          "table_address": 32766,
+          "bit_range": [
+            0,
+            155
+          ]
+        }
+      },
+      {
+        "phase": "measured_uncompute",
+        "address": 32767,
+        "primitive": "qroamclean_k1_unary_iteration_word_step",
+        "ccx": 1,
+        "selection_bit_count": 15,
+        "selection_control_wires": [
+          "selection.bit[0]",
+          "selection.bit[1]",
+          "selection.bit[2]",
+          "selection.bit[3]",
+          "selection.bit[4]",
+          "selection.bit[5]",
+          "selection.bit[6]",
+          "selection.bit[7]",
+          "selection.bit[8]",
+          "selection.bit[9]",
+          "selection.bit[10]",
+          "selection.bit[11]",
+          "selection.bit[12]",
+          "selection.bit[13]",
+          "selection.bit[14]"
+        ],
+        "selection_control_pattern_lsb_first": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "target_register": {
+          "wire_template": "qroam_target.bit[{bit_index}]",
+          "bit_count": 155
+        },
+        "loaded_word_source": {
+          "table_address": 32767,
+          "bit_range": [
+            0,
+            155
+          ]
+        }
+      }
+    ]
   },
   "traversed_counts": {
     "lookup_compute_non_clifford": 32768,
@@ -184,13 +639,14 @@
     "block_size_is_k1": true,
     "segment_rows_cover_compute_domain": true,
     "segment_rows_cover_cleanup_domain": true,
+    "segment_rows_bind_selection_and_target_widths": true,
     "traversed_counts_match_qroamclean_cost": true,
     "workspace_matches_cost_model": true,
     "no_junk_registers_for_k1": true
   },
   "pass": true,
   "notes": [
-    "This is a compact deterministic primitive-count certificate, not a Clifford-complete bit-level QROAM netlist.",
-    "Counts are obtained by traversing generated compute and measured-uncompute unary-iteration segments, then checked against the QROAMClean K=1 resource rule."
+    "This is a deterministic word-level unary-iteration stream certificate with concrete selection-control and target-register contracts; it is still not a Clifford-complete routed bit-level QROAM netlist.",
+    "Counts are obtained by traversing generated compute and measured-uncompute unary-iteration word segments, then checked against the QROAMClean K=1 resource rule."
   ]
 }

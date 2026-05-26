@@ -27,24 +27,51 @@ def _merkle_root(hashes: List[str]) -> str:
     return level[0]
 
 
-def _segment_digest(*, phase: str, start_index: int, end_index: int) -> str:
+def _selection_bit_count(domain_size: int) -> int:
+    return (int(domain_size) - 1).bit_length()
+
+
+def _operation_row(*, phase: str, address: int, domain_size: int, target_bits: int) -> Dict[str, Any]:
+    selection_bit_count = _selection_bit_count(domain_size)
+    return {
+        'phase': phase,
+        'address': int(address),
+        'primitive': 'qroamclean_k1_unary_iteration_word_step',
+        'ccx': 1,
+        'selection_bit_count': selection_bit_count,
+        'selection_control_wires': [
+            f'selection.bit[{bit_index}]'
+            for bit_index in range(selection_bit_count)
+        ],
+        'selection_control_pattern_lsb_first': [
+            (int(address) >> bit_index) & 1
+            for bit_index in range(selection_bit_count)
+        ],
+        'target_register': {
+            'wire_template': 'qroam_target.bit[{bit_index}]',
+            'bit_count': int(target_bits),
+        },
+        'loaded_word_source': {
+            'table_address': int(address),
+            'bit_range': [0, int(target_bits)],
+        },
+    }
+
+
+def _segment_digest(*, phase: str, start_index: int, end_index: int, domain_size: int, target_bits: int) -> str:
     digest = sha256_bytes(b'')
     for address in range(start_index, end_index):
-        digest = sha256_bytes(
-            (
-                digest
-                + _digest_row({
-                    'phase': phase,
-                    'address': address,
-                    'primitive': 'qroamclean_k1_unary_iteration_step',
-                    'ccx': 1,
-                })
-            ).encode()
+        row = _operation_row(
+            phase=phase,
+            address=address,
+            domain_size=domain_size,
+            target_bits=target_bits,
         )
+        digest = sha256_bytes((digest + _digest_row(row)).encode())
     return digest
 
 
-def _segments(*, phase: str, domain_size: int, segment_size: int) -> List[Dict[str, Any]]:
+def _segments(*, phase: str, domain_size: int, target_bits: int, segment_size: int) -> List[Dict[str, Any]]:
     rows = []
     for start in range(0, domain_size, segment_size):
         end = min(start + segment_size, domain_size)
@@ -54,9 +81,30 @@ def _segments(*, phase: str, domain_size: int, segment_size: int) -> List[Dict[s
             'end_address_exclusive': end,
             'operation_count': end - start,
             'ccx': end - start,
-            'sha256': _segment_digest(phase=phase, start_index=start, end_index=end),
+            'selection_bit_count': _selection_bit_count(domain_size),
+            'target_register_qubits': int(target_bits),
+            'sha256': _segment_digest(
+                phase=phase,
+                start_index=start,
+                end_index=end,
+                domain_size=domain_size,
+                target_bits=target_bits,
+            ),
         })
     return rows
+
+
+def _preview_rows(*, phase: str, domain_size: int, target_bits: int) -> List[Dict[str, Any]]:
+    addresses = [0, 1, max(0, int(domain_size) - 2), int(domain_size) - 1]
+    return [
+        _operation_row(
+            phase=phase,
+            address=address,
+            domain_size=domain_size,
+            target_bits=target_bits,
+        )
+        for address in dict.fromkeys(addresses)
+    ]
 
 
 def build_qroam_k1_primitive_certificate(
@@ -70,11 +118,13 @@ def build_qroam_k1_primitive_certificate(
     compute_segments = _segments(
         phase='compute',
         domain_size=int(domain_size),
+        target_bits=int(target_bits),
         segment_size=int(segment_size),
     )
     cleanup_segments = _segments(
         phase='measured_uncompute',
         domain_size=int(domain_size),
+        target_bits=int(target_bits),
         segment_size=int(segment_size),
     )
     all_segments = compute_segments + cleanup_segments
@@ -102,6 +152,11 @@ def build_qroam_k1_primitive_certificate(
         'block_size_is_k1': int(block_size) == 1,
         'segment_rows_cover_compute_domain': compute_ccx == int(domain_size),
         'segment_rows_cover_cleanup_domain': cleanup_ccx == int(domain_size),
+        'segment_rows_bind_selection_and_target_widths': all(
+            int(row['selection_bit_count']) == int(wire_catalog['selection_register']['qubits'])
+            and int(row['target_register_qubits']) == int(target_bits)
+            for row in all_segments
+        ),
         'traversed_counts_match_qroamclean_cost': (
             compute_ccx == int(cost['lookup_compute_non_clifford'])
             and cleanup_ccx == int(cost['measured_uncompute_non_clifford'])
@@ -125,10 +180,23 @@ def build_qroam_k1_primitive_certificate(
         },
         'wire_catalog': wire_catalog,
         'operation_stream': {
-            'operation_schema': 'qroamclean-k1-unary-iteration-step-v1',
+            'operation_schema': 'qroamclean-k1-unary-iteration-word-step-v1',
+            'operation_level': 'word_level_unary_iteration_rows',
+            'selection_bit_count': int(wire_catalog['selection_register']['qubits']),
+            'target_register_qubits': int(target_bits),
             'segments': all_segments,
             'segment_count': len(all_segments),
             'segment_merkle_root_sha256': _merkle_root([row['sha256'] for row in all_segments]),
+            'preview_head': _preview_rows(
+                phase='compute',
+                domain_size=int(domain_size),
+                target_bits=int(target_bits),
+            ),
+            'preview_tail': _preview_rows(
+                phase='measured_uncompute',
+                domain_size=int(domain_size),
+                target_bits=int(target_bits),
+            ),
         },
         'traversed_counts': {
             'lookup_compute_non_clifford': compute_ccx,
@@ -142,8 +210,8 @@ def build_qroam_k1_primitive_certificate(
         'checks': checks,
         'pass': all(checks.values()),
         'notes': [
-            'This is a compact deterministic primitive-count certificate, not a Clifford-complete bit-level QROAM netlist.',
-            'Counts are obtained by traversing generated compute and measured-uncompute unary-iteration segments, then checked against the QROAMClean K=1 resource rule.',
+            'This is a deterministic word-level unary-iteration stream certificate with concrete selection-control and target-register contracts; it is still not a Clifford-complete routed bit-level QROAM netlist.',
+            'Counts are obtained by traversing generated compute and measured-uncompute unary-iteration word segments, then checked against the QROAMClean K=1 resource rule.',
         ],
     }
 

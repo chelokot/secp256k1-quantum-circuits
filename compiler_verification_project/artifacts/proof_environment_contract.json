@@ -237,21 +237,21 @@
   "checked_artifacts": {
     "input": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
-      "sha256": "3a75e07a2c527a210a0165933ed5199feb5c1201079e2d3770addb9f368ee2f6",
-      "bytes": 304495,
+      "sha256": "609157ba170db68fc5052a81220ee2b16189acc3094dcb10cca129d1135de245",
+      "bytes": 318492,
       "manifest_record": {
-        "sha256": "3a75e07a2c527a210a0165933ed5199feb5c1201079e2d3770addb9f368ee2f6",
-        "bytes": 304495
+        "sha256": "609157ba170db68fc5052a81220ee2b16189acc3094dcb10cca129d1135de245",
+        "bytes": 318492
       },
       "manifest_record_present": true,
       "manifest_sha256_matches_checked_record": true
     },
     "claim": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json",
-      "sha256": "e5a4d212bd5de1d5b48da94af828566c094fb3b08975f1f7889d2cdadb8cc911",
+      "sha256": "c37a462590232cc84ca88626237034baf9147774367d3e482dd8ff7a56e59abf",
       "bytes": 1709,
       "manifest_record": {
-        "sha256": "e5a4d212bd5de1d5b48da94af828566c094fb3b08975f1f7889d2cdadb8cc911",
+        "sha256": "c37a462590232cc84ca88626237034baf9147774367d3e482dd8ff7a56e59abf",
         "bytes": 1709
       },
       "manifest_record_present": true,
@@ -424,11 +424,11 @@
     },
     "qroam_primitive_certificate": {
       "path": "compiler_verification_project/artifacts/qroam_primitive_certificate.json",
-      "sha256": "69d0ebe49b5d88c4627f3dd06f47e54ba7d67f9d4c4d32c96fdf8f2c82c1a9d1",
-      "bytes": 6369,
+      "sha256": "40194db80d3ac805cd7dc9c0f1ed698f4dac56db190f57b773a84059994a909f",
+      "bytes": 17625,
       "manifest_record": {
-        "sha256": "69d0ebe49b5d88c4627f3dd06f47e54ba7d67f9d4c4d32c96fdf8f2c82c1a9d1",
-        "bytes": 6369
+        "sha256": "40194db80d3ac805cd7dc9c0f1ed698f4dac56db190f57b773a84059994a909f",
+        "bytes": 17625
       },
       "manifest_record_present": true,
       "manifest_sha256_matches_checked_record": true
@@ -457,11 +457,11 @@
     },
     "reusable_chunk_lowering": {
       "path": "compiler_verification_project/artifacts/reusable_chunk_lowering.json",
-      "sha256": "f248e1dd31be3d9ec018dd473241da1335425e00639f4381d3d8bee688face0a",
-      "bytes": 221012,
+      "sha256": "7058d6a9f65fb5162c4d41bde99f8775a15c4c5484223c8043bf0f313118744a",
+      "bytes": 233180,
       "manifest_record": {
-        "sha256": "f248e1dd31be3d9ec018dd473241da1335425e00639f4381d3d8bee688face0a",
-        "bytes": 221012
+        "sha256": "7058d6a9f65fb5162c4d41bde99f8775a15c4c5484223c8043bf0f313118744a",
+        "bytes": 233180
       },
       "manifest_record_present": true,
       "manifest_sha256_matches_checked_record": true
@@ -490,10 +490,10 @@
     },
     "public_candidate_materialized_circuit_manifest": {
       "path": "compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json",
-      "sha256": "48c8cbac045dd748963a5f0ec6413dd6e94fc7ece7d443a194bb79b41b2c2e6a",
+      "sha256": "52aa4c3d1af76f4e79c7d02a1b53199ed5392b28dc08be763d19e7fbe44e29a5",
       "bytes": 35687072,
       "manifest_record": {
-        "sha256": "48c8cbac045dd748963a5f0ec6413dd6e94fc7ece7d443a194bb79b41b2c2e6a",
+        "sha256": "52aa4c3d1af76f4e79c7d02a1b53199ed5392b28dc08be763d19e7fbe44e29a5",
         "bytes": 35687072
       },
       "manifest_record_present": true,
@@ -501,22 +501,22 @@
     },
     "public_engine_manifest": {
       "path": "compiler_verification_project/artifacts/public_engine_manifest.json",
-      "sha256": "093e32cabadcac73d1873c5ad683f022a01a6eb695f5290ea20df0447fbd8317",
-      "bytes": 24514,
+      "sha256": "6a4df4a971d0f3c64d1ae179c0511a37e1c19613e83594eac8ccf27d5427c84d",
+      "bytes": 24519,
       "manifest_record": {
-        "sha256": "093e32cabadcac73d1873c5ad683f022a01a6eb695f5290ea20df0447fbd8317",
-        "bytes": 24514
+        "sha256": "6a4df4a971d0f3c64d1ae179c0511a37e1c19613e83594eac8ccf27d5427c84d",
+        "bytes": 24519
       },
       "manifest_record_present": true,
       "manifest_sha256_matches_checked_record": true
     },
     "engine_completion_audit": {
       "path": "compiler_verification_project/artifacts/engine_completion_audit.json",
-      "sha256": "16db7c94a60938198c0c1931779330c3b82edfd4f0889cb8fe2a602145e8ea40",
-      "bytes": 9183,
+      "sha256": "56ed7852a1cc4f915f768499b951e7026a350a06fa6955366901889873e9134b",
+      "bytes": 9249,
       "manifest_record": {
-        "sha256": "16db7c94a60938198c0c1931779330c3b82edfd4f0889cb8fe2a602145e8ea40",
-        "bytes": 9183
+        "sha256": "56ed7852a1cc4f915f768499b951e7026a350a06fa6955366901889873e9134b",
+        "bytes": 9249
       },
       "manifest_record_present": true,
       "manifest_sha256_matches_checked_record": true
@@ -529,8 +529,8 @@
   },
   "public_headline_result": {
     "path": "compiler_verification_project/artifacts/public_headline_result.json",
-    "sha256": "3247b5e756a75cdf221d8b26d0f9c34519e4e24750c15ef376925f05adb2927f",
-    "bytes": 15182
+    "sha256": "1fd64cf33af6eeef5c66ec01751466a099684afe8a74473ec0819bcbdcf15ed5",
+    "bytes": 15183
   },
   "notes": [
     "This artifact is deterministic and repository-bound; it is not a pinned container or Nix lock.",

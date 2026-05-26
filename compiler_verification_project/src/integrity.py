@@ -1698,12 +1698,39 @@ def build_qroam_primitive_certificate_checks(artifacts: Mapping[str, Any]) -> Di
     cleanup_segments = [row for row in segments if row['phase'] == 'measured_uncompute']
     compute_ccx = sum(int(row['ccx']) for row in compute_segments)
     cleanup_ccx = sum(int(row['ccx']) for row in cleanup_segments)
+    operation_stream = certificate['operation_stream']
+    preview_rows = operation_stream['preview_head'] + operation_stream['preview_tail']
+    expected_selection_bits = int(certificate['wire_catalog']['selection_register']['qubits'])
+    stream_binds_word_level_contract = (
+        operation_stream['operation_schema'] == 'qroamclean-k1-unary-iteration-word-step-v1'
+        and operation_stream['operation_level'] == 'word_level_unary_iteration_rows'
+        and int(operation_stream['selection_bit_count']) == expected_selection_bits
+        and int(operation_stream['target_register_qubits']) == target_bits
+        and all(
+            int(row['selection_bit_count']) == expected_selection_bits
+            and int(row['target_register_qubits']) == target_bits
+            for row in segments
+        )
+    )
+    preview_rows_bind_word_sources = (
+        len(preview_rows) >= 4
+        and all(
+            len(row['selection_control_wires']) == expected_selection_bits
+            and len(row['selection_control_pattern_lsb_first']) == expected_selection_bits
+            and row['target_register']['bit_count'] == target_bits
+            and row['loaded_word_source']['bit_range'] == [0, target_bits]
+            and row['loaded_word_source']['table_address'] == row['address']
+            for row in preview_rows
+        )
+    )
     checks = [
         _check('qroam_primitive_certificate_matches_generator', certificate == expected, expected, certificate),
         _check('qroam_primitive_certificate_schema_is_current', certificate['schema'] == 'compiler-project-qroam-k1-primitive-certificate-v1', 'compiler-project-qroam-k1-primitive-certificate-v1', certificate['schema']),
         _check('qroam_primitive_certificate_passes_internal_checks', certificate['pass'] is True and all(certificate['checks'].values()), True, certificate['checks']),
         _check('qroam_primitive_certificate_uses_public_k1_stream_parameters', int(parameters['domain_size']) == int(selected_row['domain_size']) and int(parameters['target_bits']) == target_bits and int(parameters['block_size']) == 1, {'domain_size': selected_row['domain_size'], 'target_bits': target_bits, 'block_size': 1}, parameters),
         _check('qroam_primitive_certificate_traverses_compute_and_cleanup_domains', compute_ccx == cleanup_ccx == int(parameters['domain_size']) and len(compute_segments) == len(cleanup_segments) and len(segments) == int(certificate['operation_stream']['segment_count']), {'compute_ccx': parameters['domain_size'], 'cleanup_ccx': parameters['domain_size']}, {'compute_ccx': compute_ccx, 'cleanup_ccx': cleanup_ccx, 'segment_count': len(segments)}),
+        _check('qroam_primitive_certificate_segments_bind_word_level_wire_contract', stream_binds_word_level_contract, {'operation_schema': 'qroamclean-k1-unary-iteration-word-step-v1', 'selection_bit_count': expected_selection_bits, 'target_register_qubits': target_bits}, operation_stream),
+        _check('qroam_primitive_certificate_preview_rows_bind_selection_patterns_and_target_range', preview_rows_bind_word_sources, 'preview rows bind selection controls, address patterns, target width, and loaded word range', preview_rows),
         _check('qroam_primitive_certificate_counts_match_qroamclean_cost_model', int(traversed['lookup_compute_non_clifford']) == int(qroam_cost['lookup_compute_non_clifford']) and int(traversed['measured_uncompute_non_clifford']) == int(qroam_cost['measured_uncompute_non_clifford']) and int(traversed['per_stream_non_clifford']) == int(qroam_cost['per_stream_non_clifford']) and int(traversed['target_plus_junk_qubits']) == int(qroam_cost['target_plus_junk_qubits']), qroam_cost, traversed),
         _check('qroam_primitive_certificate_workspace_decomposes_target_and_junk', int(certificate['wire_catalog']['target_register']['qubits']) == int(parameters['target_bits']) and int(certificate['wire_catalog']['junk_registers']['qubits']) == 0 and int(traversed['target_plus_junk_qubits']) == int(parameters['target_bits']), {'target_register_qubits': parameters['target_bits'], 'junk_register_qubits': 0}, certificate['wire_catalog']),
     ]
