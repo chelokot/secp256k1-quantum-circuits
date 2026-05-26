@@ -39,6 +39,18 @@ from modular_accumulator_full_adder_contract import FULL_ADDER_CONTRACT_UNPROMOT
 from modular_accumulator_full_adder_liveness import FULL_ADDER_LIVENESS_UNPROMOTED_STATUS, MODULAR_ACCUMULATOR_FULL_ADDER_LIVENESS_SCHEMA, build_modular_accumulator_full_adder_liveness
 from modular_accumulator_full_adder_reversibility import FULL_ADDER_REVERSIBILITY_UNPROMOTED_STATUS, MODULAR_ACCUMULATOR_FULL_ADDER_REVERSIBILITY_SCHEMA, build_modular_accumulator_full_adder_reversibility
 from modular_accumulator_full_adder_stream import FULL_ADDER_STREAM_UNPROMOTED_STATUS, MODULAR_ACCUMULATOR_FULL_ADDER_STREAM_SCHEMA, build_modular_accumulator_full_adder_stream
+from modular_accumulator_promotion_options import (
+    MODULAR_ACCUMULATOR_PROMOTION_OPTIONS_SCHEMA,
+    OPTION_FORWARD_ONLY_CARRY_SAVE,
+    OPTION_LOCAL_ONE_BIT_WITNESS,
+    OPTION_LOCAL_TWO_BIT_WITNESS,
+    OPTION_SOURCE_UNCOMPUTE,
+    PROMOTION_OPTIONS_UNPROMOTED_STATUS,
+    STATUS_ONLY_REMAINING_UNPROVEN,
+    STATUS_REJECTED_HEADLINE_QUBITS,
+    STATUS_REJECTED_NON_INJECTIVE,
+    build_modular_accumulator_promotion_options,
+)
 from modular_accumulator_lowering import MODULAR_ACCUMULATOR_LOWERING_SCHEMA, build_modular_accumulator_lowering
 from modular_accumulator_row_stream import MODULAR_ACCUMULATOR_ROW_STREAM_SCHEMA, build_modular_accumulator_row_stream
 from modular_accumulator_scratch_schedule import MODULAR_ACCUMULATOR_SCRATCH_SCHEDULE_SCHEMA, build_modular_accumulator_scratch_schedule
@@ -215,6 +227,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'modular_accumulator_full_adder_stream': artifact_root / 'modular_accumulator_full_adder_stream.json',
         'modular_accumulator_full_adder_liveness': artifact_root / 'modular_accumulator_full_adder_liveness.json',
         'modular_accumulator_full_adder_reversibility': artifact_root / 'modular_accumulator_full_adder_reversibility.json',
+        'modular_accumulator_promotion_options': artifact_root / 'modular_accumulator_promotion_options.json',
         'tail_macro_liveness': artifact_root / 'tail_macro_liveness.json',
         'tail_macro_reversibility': artifact_root / 'tail_macro_reversibility.json',
         'tail_macro_schedule_search': artifact_root / 'tail_macro_schedule_search.json',
@@ -440,6 +453,15 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
             ),
         )
         dump_json(
+            artifact_root / 'modular_accumulator_promotion_options.json',
+            build_modular_accumulator_promotion_options(
+                primary_strict_result=load_json(artifact_root / 'primary_strict_result.json'),
+                modular_primitive_wire_audit=load_json(artifact_root / 'modular_primitive_wire_audit.json'),
+                modular_accumulator_full_adder_liveness=load_json(artifact_root / 'modular_accumulator_full_adder_liveness.json'),
+                modular_accumulator_full_adder_reversibility=load_json(artifact_root / 'modular_accumulator_full_adder_reversibility.json'),
+            ),
+        )
+        dump_json(
             artifact_root / 'public_engine_manifest.json',
             build_public_engine_manifest(
                 reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
@@ -495,6 +517,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 modular_accumulator_full_adder_stream=load_json(artifact_root / 'modular_accumulator_full_adder_stream.json'),
                 modular_accumulator_full_adder_liveness=load_json(artifact_root / 'modular_accumulator_full_adder_liveness.json'),
                 modular_accumulator_full_adder_reversibility=load_json(artifact_root / 'modular_accumulator_full_adder_reversibility.json'),
+                modular_accumulator_promotion_options=load_json(artifact_root / 'modular_accumulator_promotion_options.json'),
                 tail_macro_engine=load_json(artifact_root / 'tail_macro_engine.json'),
                 tail_macro_liveness=load_json(artifact_root / 'tail_macro_liveness.json'),
                 tail_macro_reversibility=load_json(artifact_root / 'tail_macro_reversibility.json'),
@@ -2991,6 +3014,30 @@ def build_modular_accumulator_full_adder_reversibility_checks(artifacts: Mapping
     return _summarize_checks(checks)
 
 
+def build_modular_accumulator_promotion_options_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    options = artifacts['modular_accumulator_promotion_options']
+    expected = build_modular_accumulator_promotion_options(
+        primary_strict_result=artifacts['primary_strict_result'],
+        modular_primitive_wire_audit=artifacts['modular_primitive_wire_audit'],
+        modular_accumulator_full_adder_liveness=artifacts['modular_accumulator_full_adder_liveness'],
+        modular_accumulator_full_adder_reversibility=artifacts['modular_accumulator_full_adder_reversibility'],
+    )
+    option_statuses = {
+        row['name']: row['status']
+        for row in options['options']
+    }
+    checks = [
+        _check('modular_accumulator_promotion_options_matches_generator', options == expected, expected, options),
+        _check('modular_accumulator_promotion_options_schema_is_current', options['schema'] == MODULAR_ACCUMULATOR_PROMOTION_OPTIONS_SCHEMA, MODULAR_ACCUMULATOR_PROMOTION_OPTIONS_SCHEMA, options['schema']),
+        _check('modular_accumulator_promotion_options_passes_internal_checks', options['pass'] is True and all(options['checks'].values()), True, options['checks']),
+        _check('modular_accumulator_promotion_options_rejects_local_carry_save_promotions', option_statuses[OPTION_FORWARD_ONLY_CARRY_SAVE] == STATUS_REJECTED_HEADLINE_QUBITS and option_statuses[OPTION_LOCAL_TWO_BIT_WITNESS] == STATUS_REJECTED_HEADLINE_QUBITS and option_statuses[OPTION_LOCAL_ONE_BIT_WITNESS] == STATUS_REJECTED_NON_INJECTIVE, 'local carry-save promotion paths are rejected', option_statuses),
+        _check('modular_accumulator_promotion_options_keeps_source_uncompute_as_only_candidate', option_statuses[OPTION_SOURCE_UNCOMPUTE] == STATUS_ONLY_REMAINING_UNPROVEN and sum(1 for status in option_statuses.values() if status == STATUS_ONLY_REMAINING_UNPROVEN) == 1, 'source-uncompute or streaming multiply-add is the only remaining candidate', option_statuses),
+        _check('modular_accumulator_promotion_options_witness_bound_exceeds_headline', options['carry_save_local_bounds']['local_witness_sequential_peak_lower_bound'] > options['current_public_headline']['logical_qubits'], 'local witness peak lower bound exceeds current headline qubits', options['carry_save_local_bounds']),
+        _check('modular_accumulator_promotion_options_remains_unpromoted', options['promotion_status']['status'] == PROMOTION_OPTIONS_UNPROMOTED_STATUS, 'promotion-options audit is not a promoted global resource contract', options['promotion_status']),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     audit = artifacts['engine_completion_audit']
     expected = build_engine_completion_audit(
@@ -3021,6 +3068,7 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
         modular_accumulator_full_adder_stream=artifacts['modular_accumulator_full_adder_stream'],
         modular_accumulator_full_adder_liveness=artifacts['modular_accumulator_full_adder_liveness'],
         modular_accumulator_full_adder_reversibility=artifacts['modular_accumulator_full_adder_reversibility'],
+        modular_accumulator_promotion_options=artifacts['modular_accumulator_promotion_options'],
         tail_macro_engine=artifacts['tail_macro_engine'],
         tail_macro_liveness=artifacts['tail_macro_liveness'],
         tail_macro_reversibility=artifacts['tail_macro_reversibility'],
@@ -3846,6 +3894,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'modular_accumulator_full_adder_stream_checks': lambda: build_modular_accumulator_full_adder_stream_checks(artifacts),
         'modular_accumulator_full_adder_liveness_checks': lambda: build_modular_accumulator_full_adder_liveness_checks(artifacts),
         'modular_accumulator_full_adder_reversibility_checks': lambda: build_modular_accumulator_full_adder_reversibility_checks(artifacts),
+        'modular_accumulator_promotion_options_checks': lambda: build_modular_accumulator_promotion_options_checks(artifacts),
         'public_engine_manifest_checks': lambda: build_public_engine_manifest_checks(artifacts),
         'engine_completion_audit_checks': lambda: build_engine_completion_audit_checks(artifacts),
         'arithmetic_operand_replay_audit_checks': lambda: build_arithmetic_operand_replay_audit_checks(artifacts),

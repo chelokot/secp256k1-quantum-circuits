@@ -1,0 +1,90 @@
+{
+  "schema": "compiler-project-modular-accumulator-promotion-options-v1",
+  "definition": "Promotion-options audit for replacing synthetic modular-accumulator scratch with a physical reversible primitive schedule. The artifact rejects placeholder scratch, forward-only carry-save, local one-bit witnesses, and local two-bit witnesses under the current headline; source-uncompute or streaming multiply-add remains the required next construction, not a promoted result.",
+  "source_digests": {
+    "primary_strict_result_sha256": "6fdc386939b2072f0d7b7c85bfe2ce935a455a981bf9eab6cdb6697c389109a3",
+    "modular_primitive_wire_audit_sha256": "2b26e94fcf9f531d2f8bd0ae3962082bac179102402ffe8350213615bc0777d2",
+    "modular_accumulator_full_adder_liveness_sha256": "00178724340eb38bd9c546da8a0566afd9ff0d414c2220c313dd5f8f94cf8187",
+    "modular_accumulator_full_adder_reversibility_sha256": "7d5bd3438736a551abe8a053a96484f4469799b1562d6990ff454f4e84b1e003"
+  },
+  "current_public_headline": {
+    "logical_qubits": 1968,
+    "non_clifford": 36973222
+  },
+  "scratch_placeholder": {
+    "synthetic_scratch_wire_observations": 721406,
+    "abandoned_scratch_wire_observations": 721406
+  },
+  "carry_save_local_bounds": {
+    "forward_only_sequential_peak_live_wires": 195076,
+    "optimistic_consumed_sequential_peak_live_wires": 65538,
+    "minimum_witness_bits_per_cell": 2,
+    "local_witness_sequential_bits": 129540,
+    "local_witness_all_grid_bits": 1424940,
+    "local_witness_sequential_peak_lower_bound": 195078
+  },
+  "options": [
+    {
+      "name": "current_synthetic_scratch_placeholder",
+      "status": "invalid_not_a_physical_resource_contract",
+      "peak_live_wire_lower_bound": null,
+      "non_clifford_delta_lower_bound": 0,
+      "reason": "scheduled modular primitive rows still contain abandoned arithmetic_scratch targets with no cleanup or counted owner capacity",
+      "can_promote": false
+    },
+    {
+      "name": "forward_only_reversible_carry_save",
+      "status": "rejected_exceeds_current_qubit_headline",
+      "peak_live_wire_lower_bound": 195076,
+      "non_clifford_delta_lower_bound": 2137410,
+      "reason": "retaining every full-adder input makes the sequential-grid peak far above the current public qubit headline",
+      "can_promote": false
+    },
+    {
+      "name": "local_two_bit_witness_carry_save",
+      "status": "rejected_exceeds_current_qubit_headline",
+      "peak_live_wire_lower_bound": 195078,
+      "non_clifford_delta_lower_bound": 2137410,
+      "reason": "local injective sum/carry embedding needs at least two witness bits per cell, still far above the current public qubit headline",
+      "can_promote": false
+    },
+    {
+      "name": "local_one_bit_witness_carry_save",
+      "status": "rejected_non_injective",
+      "peak_live_wire_lower_bound": null,
+      "non_clifford_delta_lower_bound": null,
+      "reason": "exhaustive search finds no one-bit witness function that separates all full-adder preimages",
+      "can_promote": false
+    },
+    {
+      "name": "source_uncompute_or_streaming_multiply_add",
+      "status": "only_remaining_candidate_not_yet_proven",
+      "peak_live_wire_lower_bound": null,
+      "non_clifford_delta_lower_bound": null,
+      "reason": "must avoid retaining local full-adder inputs or witnesses by giving a concrete reversible source-uncompute or streaming multiply-add schedule",
+      "can_promote": false
+    }
+  ],
+  "promotion_status": {
+    "status": "promotion_options_not_promoted_to_global_resource_contract",
+    "required_to_promote": [
+      "Construct source-uncompute or streaming multiply-add rows that replace arithmetic_scratch placeholders without local retained-input or witness blow-up.",
+      "Assign the resulting wires to counted owners in the global liveness engine.",
+      "Recompute public qubits and non-Clifford from the promoted primitive stream before changing the headline."
+    ]
+  },
+  "checks": {
+    "primary_strict_result_passes": true,
+    "full_adder_liveness_passes": true,
+    "full_adder_liveness_is_unpromoted": true,
+    "full_adder_reversibility_passes": true,
+    "full_adder_reversibility_is_unpromoted": true,
+    "synthetic_scratch_placeholder_is_active": true,
+    "forward_only_option_exceeds_headline_qubits": true,
+    "local_two_bit_witness_option_exceeds_headline_qubits": true,
+    "one_bit_witness_option_is_rejected": true,
+    "source_uncompute_or_streaming_is_only_remaining_candidate": true,
+    "no_option_is_promoted_to_global_contract": true
+  },
+  "pass": true
+}

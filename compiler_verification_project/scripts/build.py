@@ -33,6 +33,7 @@ from modular_accumulator_full_adder_contract import build_modular_accumulator_fu
 from modular_accumulator_full_adder_liveness import build_modular_accumulator_full_adder_liveness  # noqa: E402
 from modular_accumulator_full_adder_reversibility import build_modular_accumulator_full_adder_reversibility  # noqa: E402
 from modular_accumulator_full_adder_stream import build_modular_accumulator_full_adder_stream  # noqa: E402
+from modular_accumulator_promotion_options import build_modular_accumulator_promotion_options  # noqa: E402
 from modular_accumulator_lowering import build_modular_accumulator_lowering  # noqa: E402
 from modular_accumulator_row_stream import build_modular_accumulator_row_stream  # noqa: E402
 from modular_accumulator_scratch_schedule import build_modular_accumulator_scratch_schedule  # noqa: E402
@@ -83,6 +84,7 @@ BUILD_TARGETS = (
     'modular-accumulator-full-adder-stream',
     'modular-accumulator-full-adder-liveness',
     'modular-accumulator-full-adder-reversibility',
+    'modular-accumulator-promotion-options',
     'headline-resource-manifest',
     'public-engine-manifest',
     'engine-completion-audit',
@@ -596,6 +598,19 @@ def build_modular_accumulator_full_adder_reversibility_artifact() -> None:
     )
 
 
+def build_modular_accumulator_promotion_options_artifact() -> None:
+    artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
+    dump_json(
+        artifact_dir / 'modular_accumulator_promotion_options.json',
+        build_modular_accumulator_promotion_options(
+            primary_strict_result=load_json(artifact_dir / 'primary_strict_result.json'),
+            modular_primitive_wire_audit=load_json(artifact_dir / 'modular_primitive_wire_audit.json'),
+            modular_accumulator_full_adder_liveness=load_json(artifact_dir / 'modular_accumulator_full_adder_liveness.json'),
+            modular_accumulator_full_adder_reversibility=load_json(artifact_dir / 'modular_accumulator_full_adder_reversibility.json'),
+        ),
+    )
+
+
 def build_headline_resource_manifest_artifact() -> None:
     artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
     compiler_parameters = load_json(artifact_dir / 'compiler_parameters.json')
@@ -658,6 +673,7 @@ def build_engine_completion_audit_artifact() -> None:
         modular_accumulator_full_adder_stream=load_json(artifact_dir / 'modular_accumulator_full_adder_stream.json'),
         modular_accumulator_full_adder_liveness=load_json(artifact_dir / 'modular_accumulator_full_adder_liveness.json'),
         modular_accumulator_full_adder_reversibility=load_json(artifact_dir / 'modular_accumulator_full_adder_reversibility.json'),
+        modular_accumulator_promotion_options=load_json(artifact_dir / 'modular_accumulator_promotion_options.json'),
         tail_macro_engine=load_json(artifact_dir / 'tail_macro_engine.json'),
         tail_macro_liveness=load_json(artifact_dir / 'tail_macro_liveness.json'),
         tail_macro_reversibility=load_json(artifact_dir / 'tail_macro_reversibility.json'),
@@ -761,6 +777,8 @@ def main() -> None:
         payload['modular_accumulator_full_adder_liveness'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_liveness.json'
         build_modular_accumulator_full_adder_reversibility_artifact()
         payload['modular_accumulator_full_adder_reversibility'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_reversibility.json'
+        build_modular_accumulator_promotion_options_artifact()
+        payload['modular_accumulator_promotion_options'] = 'compiler_verification_project/artifacts/modular_accumulator_promotion_options.json'
         build_public_engine_manifest_artifact()
         payload['public_engine_manifest'] = 'compiler_verification_project/artifacts/public_engine_manifest.json'
     if args.target in ('engine-completion-audit',):
@@ -796,6 +814,8 @@ def main() -> None:
         payload['modular_accumulator_full_adder_liveness'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_liveness.json'
         build_modular_accumulator_full_adder_reversibility_artifact()
         payload['modular_accumulator_full_adder_reversibility'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_reversibility.json'
+        build_modular_accumulator_promotion_options_artifact()
+        payload['modular_accumulator_promotion_options'] = 'compiler_verification_project/artifacts/modular_accumulator_promotion_options.json'
         build_engine_completion_audit_artifact()
         payload['engine_completion_audit'] = 'compiler_verification_project/artifacts/engine_completion_audit.json'
     if args.target in ('engine-completion-audit-current',):
@@ -859,6 +879,8 @@ def main() -> None:
         payload['modular_accumulator_full_adder_liveness'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_liveness.json'
         build_modular_accumulator_full_adder_reversibility_artifact()
         payload['modular_accumulator_full_adder_reversibility'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_reversibility.json'
+        build_modular_accumulator_promotion_options_artifact()
+        payload['modular_accumulator_promotion_options'] = 'compiler_verification_project/artifacts/modular_accumulator_promotion_options.json'
         build_public_engine_manifest_artifact()
         payload['public_engine_manifest'] = 'compiler_verification_project/artifacts/public_engine_manifest.json'
         build_candidate_zkp()
@@ -916,6 +938,9 @@ def main() -> None:
     if args.target in ('modular-accumulator-full-adder-reversibility',):
         build_modular_accumulator_full_adder_reversibility_artifact()
         payload['modular_accumulator_full_adder_reversibility'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_reversibility.json'
+    if args.target in ('modular-accumulator-promotion-options',):
+        build_modular_accumulator_promotion_options_artifact()
+        payload['modular_accumulator_promotion_options'] = 'compiler_verification_project/artifacts/modular_accumulator_promotion_options.json'
     if args.target in ('all', 'public-headline', 'strict-replayed-tail-headline', 'zkp-and-public', 'resource-zkp-and-public'):
         build_strict_replayed_tail_headline()
         payload['strict_replayed_tail_headline'] = 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json'
