@@ -48,5 +48,8 @@ def test_primary_strict_result_does_not_confuse_legacy_flat_netlist_with_strict_
     assert flat_status['strict_capacity_overlay_binds_selected_result'] is True
     assert flat_status['strict_capacity_overlay_is_full_liveness_rewrite'] is False
     assert flat_status['strict_capacity_peak_qubits'] == observed['selected_result']['logical_qubits']
+    assert flat_status['strict_liveness_projection_binds_selected_result'] is True
+    assert flat_status['strict_liveness_projection_is_segment_hashed_flat_netlist'] is False
+    assert flat_status['strict_liveness_projection_peak_qubits'] == observed['selected_result']['logical_qubits']
     assert flat_status['peak_live_qubits'] == observed['legacy_wrapper_reference']['selected_result']['logical_qubits']
     assert flat_status['peak_live_qubits'] != observed['selected_result']['logical_qubits']

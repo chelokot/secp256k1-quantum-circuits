@@ -27,9 +27,11 @@ is the single checked central family bound by the executable leaf, resource
 ledger, and replayed-tail owner capacity. The materialized public-candidate
 manifest now includes a strict replayed-tail capacity overlay that binds the
 flat operation stream's non-Clifford count to that seven-slot capacity result,
-but it still does not replace the full operation-index liveness stream with a
-strict `1,968`-qubit liveness scan. The ZKP guest/input still binds the old
-macro wrapper until it is rebuilt around the strict seven-slot contract.
+and a strict run-length liveness projection that scans arithmetic-tail rows to
+the `1,968`-qubit peak while leaving non-tail rows unchanged. It still does not
+make the fully materialized flat-netlist segment hashes include that projected
+liveness. The ZKP guest/input still binds the old macro wrapper until it is
+rebuilt around the strict seven-slot contract.
 
 ## Exact layers
 

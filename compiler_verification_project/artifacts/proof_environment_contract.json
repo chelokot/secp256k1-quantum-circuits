@@ -490,21 +490,21 @@
     },
     "public_candidate_materialized_circuit_manifest": {
       "path": "compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json",
-      "sha256": "cf554be898b8e5d68464ad6f48f856e4f86c59d5289c403bc96e753bd35b8b97",
-      "bytes": 27409940,
+      "sha256": "49f0482fe7d6d6fa04d4240eb45019fa693255cf658a8143649b7f30a3f416ea",
+      "bytes": 35591180,
       "manifest_record": {
-        "sha256": "c6609adf62ea7b815b796905d0b1ba69e8ed00e12214a05521076312a2620eb1",
-        "bytes": 27405943
+        "sha256": "cf554be898b8e5d68464ad6f48f856e4f86c59d5289c403bc96e753bd35b8b97",
+        "bytes": 27409940
       },
       "manifest_record_present": true,
       "manifest_sha256_matches_checked_record": false
     },
     "public_engine_manifest": {
       "path": "compiler_verification_project/artifacts/public_engine_manifest.json",
-      "sha256": "9c7e684ca6acabbc62400693010cd3da25d00c28bc3df9e94c65eb0f516242a2",
+      "sha256": "7021f85c56765ea3d1b77e028e3e20c2da307ce1f18412a48a40244abc797c5e",
       "bytes": 23138,
       "manifest_record": {
-        "sha256": "3e986eb9ae28f7be9f971dc4fcf4b6ee1f319add697e5060944e73970d53490d",
+        "sha256": "9c7e684ca6acabbc62400693010cd3da25d00c28bc3df9e94c65eb0f516242a2",
         "bytes": 23138
       },
       "manifest_record_present": true,
@@ -512,10 +512,10 @@
     },
     "engine_completion_audit": {
       "path": "compiler_verification_project/artifacts/engine_completion_audit.json",
-      "sha256": "a956ebddc6e47638acdaf34dad2264dedd686ef686b3de2d7030c4064424ffa2",
+      "sha256": "03a05c88d53df7c0997277ab6b4663e3fa2c97e30090a11d92dfe7d99c230f03",
       "bytes": 7132,
       "manifest_record": {
-        "sha256": "d6d87f7b2322baf118c4e4192fb584f6b65f9511ae6449c11b69c1b8dd1f08ff",
+        "sha256": "a956ebddc6e47638acdaf34dad2264dedd686ef686b3de2d7030c4064424ffa2",
         "bytes": 7132
       },
       "manifest_record_present": true,
@@ -529,7 +529,7 @@
   },
   "public_headline_result": {
     "path": "compiler_verification_project/artifacts/public_headline_result.json",
-    "sha256": "d48391c5465874ee507173a461e5cd29cc72fc0661443422b5eae7d971c8f0f9",
+    "sha256": "c961f4b7e824cd5dca7c33f57ff4075bd3160e1c4ce9392784b4778bf19a6621",
     "bytes": 15183
   },
   "notes": [

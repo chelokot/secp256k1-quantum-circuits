@@ -193,6 +193,15 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert overlay['claim_boundary']['flat_operation_stream_binds_non_clifford'] is True
     assert overlay['claim_boundary']['strict_replayed_tail_capacity_binds_logical_qubits'] is True
     assert overlay['claim_boundary']['full_operation_index_liveness_rewrite_binds_strict_qubits'] is False
+    assert manifest['checks']['strict_replayed_tail_liveness_projection_is_bound'] is True
+    projection = manifest['strict_replayed_tail_liveness_projection']
+    assert projection['pass'] is True
+    assert projection['row_count'] == manifest['liveness_binding_row_count']
+    assert projection['peak_live_qubits'] == strict_headline['selected_result']['logical_qubits']
+    assert projection['claim_boundary']['run_length_rows_bind_strict_tail_liveness'] is True
+    assert projection['claim_boundary']['operation_index_rows_can_inherit_projected_liveness'] is True
+    assert projection['claim_boundary']['materialized_flat_netlist_segment_hashes_include_projected_liveness'] is False
+    assert all(row['total_live_qubits'] == projection['peak_live_qubits'] for row in projection['rows'] if row['scope'] == 'arithmetic_leaf_block')
     assert manifest['materialized_liveness']['preview_head'][0]['total_live_qubits'] < manifest['public_totals']['logical_qubits']
     assert 'arithmetic_leaf_base' not in {row['scope'] for row in manifest['preview_head'] + manifest['preview_tail']}
     first_arithmetic_row = next(row for row in manifest['run_length_rows'] if row['scope'] == 'arithmetic_leaf_block')

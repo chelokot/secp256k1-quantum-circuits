@@ -207,8 +207,8 @@
       "bytes": 26931
     },
     "compiler_verification_project/src/integrity.py": {
-      "sha256": "d374c6531c8dd5a0059e13f8acdfc7ecd69e13506234b76cd3148903a08fd6de",
-      "bytes": 250552
+      "sha256": "cce8a5eecb2bd33a9e024867c5697167598bb5a67a4561f7ef83bd6c0f7f5409",
+      "bytes": 250958
     },
     "compiler_verification_project/src/generated_block_inventory.py": {
       "sha256": "9a5a8cdc5369e43cb88df726d08fbc88ba727a43b72962388357546b8d382d89",
@@ -239,8 +239,8 @@
       "bytes": 38865
     },
     "compiler_verification_project/src/materialized_circuit.py": {
-      "sha256": "1a43016db13a7e2ecabf67b3563eeebb356d08bc98ef6e3bfeebaa1fac05764d",
-      "bytes": 124488
+      "sha256": "f60188dcf0c921519a8fec0a1e9cabfd0ae23995b77ce1c7f56ddb71edc71740",
+      "bytes": 129468
     },
     "compiler_verification_project/src/modular_arithmetic_certificate.py": {
       "sha256": "fecaffe8a12ae73c04dc400c47642abda3bcdc58645a66d88c1758493ee2ce5e",
@@ -275,8 +275,8 @@
       "bytes": 5913
     },
     "compiler_verification_project/src/primary_strict_result.py": {
-      "sha256": "4d68822af9fcaf68f205077d1a5f28aa283763574bbacda02e5fdddaf8f26639",
-      "bytes": 8071
+      "sha256": "fea8eaa4a9843dd4e9ccb603db90846d077153cbad892b5cad50e23e8d6ed98b",
+      "bytes": 8925
     },
     "compiler_verification_project/src/proof_status_report.py": {
       "sha256": "1d63b9f44ce3bf21f651d861c8a84788727d7ef9b26065770847e5d53dabf960",
@@ -719,8 +719,8 @@
       "bytes": 27244
     },
     "compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json": {
-      "sha256": "cf554be898b8e5d68464ad6f48f856e4f86c59d5289c403bc96e753bd35b8b97",
-      "bytes": 27409940
+      "sha256": "49f0482fe7d6d6fa04d4240eb45019fa693255cf658a8143649b7f30a3f416ea",
+      "bytes": 35591180
     },
     "compiler_verification_project/artifacts/qubit_breakthrough_analysis.json": {
       "sha256": "3133426aa9630b6895e1116866ae416725315c493840004a2a40b5f95cb38cfb",
@@ -739,24 +739,24 @@
       "bytes": 51858
     },
     "compiler_verification_project/artifacts/public_engine_manifest.json": {
-      "sha256": "9c7e684ca6acabbc62400693010cd3da25d00c28bc3df9e94c65eb0f516242a2",
+      "sha256": "7021f85c56765ea3d1b77e028e3e20c2da307ce1f18412a48a40244abc797c5e",
       "bytes": 23138
     },
     "compiler_verification_project/artifacts/engine_completion_audit.json": {
-      "sha256": "a956ebddc6e47638acdaf34dad2264dedd686ef686b3de2d7030c4064424ffa2",
+      "sha256": "03a05c88d53df7c0997277ab6b4663e3fa2c97e30090a11d92dfe7d99c230f03",
       "bytes": 7132
     },
     "compiler_verification_project/artifacts/public_headline_result.json": {
-      "sha256": "d48391c5465874ee507173a461e5cd29cc72fc0661443422b5eae7d971c8f0f9",
+      "sha256": "c961f4b7e824cd5dca7c33f57ff4075bd3160e1c4ce9392784b4778bf19a6621",
       "bytes": 15183
     },
     "compiler_verification_project/artifacts/strict_replayed_tail_headline.json": {
-      "sha256": "af9557ab1d1e85e4205db28c76105b9b473c863b1e000f07553f87d61ee76dd0",
+      "sha256": "fc3611b2c9717be4099f3c1e804e97ce0ebb3ef71caf2f563e39e01a831993d9",
       "bytes": 3457
     },
     "compiler_verification_project/artifacts/primary_strict_result.json": {
-      "sha256": "a4b43527649561cc818841e1fb11aec91a2e91d7c6e9c3ad884743079abb237b",
-      "bytes": 4942
+      "sha256": "4e1cbe5ecb20a55a9e88c6cd8380a0335c362f57ace44e592d12f950772b6ec8",
+      "bytes": 5299
     },
     "compiler_verification_project/artifacts/hybrid_bridge_search.json": {
       "sha256": "ec72a93835588c17b354878d375c5b08bcf23c71e746e439c84c302daf01a29d",
@@ -779,8 +779,8 @@
       "bytes": 42211
     },
     "compiler_verification_project/artifacts/artifact_digest_tree.json": {
-      "sha256": "cf9e8157664de52fe490e28a6ddae7c3cd0b5d46422eb5741aa01a179c332d2d",
-      "bytes": 29448
+      "sha256": "b78a5e7754b70e615794b08fcdb1f2bf3d9fc3c6add8dec395975e294658ed69",
+      "bytes": 30771
     },
     "compiler_verification_project/artifacts/zkp_attestation_input.json": {
       "sha256": "b5bd48ed57b50824d42f21bd907e6aab3084751404c88165ff22a3efd2dad323",

@@ -147,8 +147,12 @@ materialized primitive stream: every emitted operation has concrete operand
 wires, parent-wire bindings, liveness interval, and owner-qubit total. The
 checked stream carries a full-stream SHA-256 plus segment Merkle root. It also
 records a strict replayed-tail capacity overlay that binds the flat operation
-stream's non-Clifford count to the `1,968`-qubit seven-slot capacity result,
-while still marking the full operation-index liveness rewrite as open. Segment
+stream's non-Clifford count to the `1,968`-qubit seven-slot capacity result.
+The same manifest now emits a strict liveness projection over every run-length
+row: arithmetic-tail rows scan to the `1,968` peak, while non-tail rows keep the
+materialized engine liveness. The remaining open step is to make the segment
+hashes of the fully materialized flat netlist include that projected liveness.
+Segment
 and preview rows bind the contributing run-length rows, operation-index ranges,
 liveness rows, derived owner-qubit sums, all 186 QROAM streams over the
 generated QROAMClean segment certificate, arithmetic-operation IR rows,

@@ -2103,6 +2103,87 @@ def _strict_replayed_tail_capacity_overlay(
     }
 
 
+def _strict_replayed_tail_liveness_projection(
+    *,
+    liveness_rows: List[Mapping[str, Any]],
+    strict_capacity_overlay: Mapping[str, Any],
+) -> Dict[str, Any]:
+    strict_terms = strict_capacity_overlay['strict_capacity_terms']
+    strict_tail_owner_qubits = {
+        str(row['owner_id']): int(row['logical_qubits'])
+        for row in strict_capacity_overlay['tail_owner_capacity_rows']
+    }
+    strict_tail_owner_qubits['lookup_workspace'] = int(strict_terms['lookup_workspace_qubits'])
+    strict_tail_owner_qubits['control_slot_register_file'] = int(strict_terms['control_qubits'])
+    strict_tail_owner_qubits['phase_shell_live_register'] = int(strict_terms['phase_qubits'])
+    strict_tail_wire_ids = [f"{owner_id}.strict_live" for owner_id in strict_tail_owner_qubits]
+    projected_rows: List[Dict[str, Any]] = []
+    for row in liveness_rows:
+        if row['scope'] == 'arithmetic_leaf_block':
+            projected_rows.append({
+                'row_index': int(row['row_index']),
+                'scope': str(row['scope']),
+                'interval_id': 'strict_replayed_tail_capacity',
+                'live_wire_ids': strict_tail_wire_ids,
+                'owner_live_qubits': dict(strict_tail_owner_qubits),
+                'derived_owner_live_qubits': dict(strict_tail_owner_qubits),
+                'total_live_qubits': int(strict_terms['reconstructed_logical_qubits']),
+                'owner_capacity_pass': True,
+                'source_liveness_interval_id': str(row['interval_id']),
+                'projection_reason': 'arithmetic tail row uses the replayed seven-slot capacity contract',
+            })
+        else:
+            projected_rows.append({
+                **row,
+                'source_liveness_interval_id': str(row['interval_id']),
+                'projection_reason': 'non-tail row keeps materialized engine liveness',
+            })
+    peak_live_qubits = max(int(row['total_live_qubits']) for row in projected_rows)
+    peak_interval_ids = sorted({
+        str(row['interval_id'])
+        for row in projected_rows
+        if int(row['total_live_qubits']) == peak_live_qubits
+    })
+    checks = {
+        'projection_covers_all_liveness_rows': len(projected_rows) == len(liveness_rows),
+        'strict_tail_rows_get_strict_capacity_peak': all(
+            int(row['total_live_qubits']) == int(strict_terms['reconstructed_logical_qubits'])
+            for row in projected_rows
+            if row['scope'] == 'arithmetic_leaf_block'
+        ),
+        'non_tail_rows_keep_materialized_liveness': all(
+            int(row['total_live_qubits']) == int(liveness_rows[int(row['row_index'])]['total_live_qubits'])
+            and row['live_wire_ids'] == liveness_rows[int(row['row_index'])]['live_wire_ids']
+            for row in projected_rows
+            if row['scope'] != 'arithmetic_leaf_block'
+        ),
+        'projection_peak_matches_strict_capacity': peak_live_qubits == int(strict_terms['reconstructed_logical_qubits']),
+        'projected_owner_sums_reconstruct_totals': all(
+            sum(int(qubits) for qubits in row['derived_owner_live_qubits'].values()) == int(row['total_live_qubits'])
+            for row in projected_rows
+        ),
+    }
+    return {
+        'schema': 'compiler-project-strict-replayed-tail-liveness-projection-v1',
+        'status': 'run_length_liveness_projection_bound_to_strict_replayed_tail_capacity',
+        'row_count': len(projected_rows),
+        'peak_live_qubits': peak_live_qubits,
+        'peak_interval_ids': peak_interval_ids,
+        'strict_tail_owner_capacity_qubits': strict_tail_owner_qubits,
+        'liveness_binding_stream_sha256': _public_candidate_liveness_hash(projected_rows),
+        'rows': projected_rows,
+        'preview_head': projected_rows[:8],
+        'preview_tail': projected_rows[-8:],
+        'claim_boundary': {
+            'run_length_rows_bind_strict_tail_liveness': True,
+            'operation_index_rows_can_inherit_projected_liveness': True,
+            'materialized_flat_netlist_segment_hashes_include_projected_liveness': False,
+        },
+        'checks': checks,
+        'pass': all(checks.values()),
+    }
+
+
 def build_public_candidate_materialized_circuit_manifest(
     *,
     reusable_chunk_lowering: Mapping[str, Any],
@@ -2165,6 +2246,12 @@ def build_public_candidate_materialized_circuit_manifest(
             tail_macro_engine=tail_macro_engine,
             reusable_chunk_lowering=reusable_chunk_lowering,
             materialized_flat_netlist=materialized_flat_netlist,
+        )
+    strict_liveness_projection = None
+    if strict_capacity_overlay is not None:
+        strict_liveness_projection = _strict_replayed_tail_liveness_projection(
+            liveness_rows=liveness_rows,
+            strict_capacity_overlay=strict_capacity_overlay,
         )
     base_rows = [row for row in rows if row['scope'] in ('direct_seed_base', 'lookup_leaf_base', 'arithmetic_leaf_block')]
     direct_seed_rows = [row for row in rows if row['scope'] == 'direct_seed_base']
@@ -2401,6 +2488,12 @@ def build_public_candidate_materialized_circuit_manifest(
             and strict_capacity_overlay['pass'] is True
             and strict_capacity_overlay['claim_boundary']['full_operation_index_liveness_rewrite_binds_strict_qubits'] is False
         ),
+        'strict_replayed_tail_liveness_projection_is_bound': (
+            strict_liveness_projection is not None
+            and strict_liveness_projection['pass'] is True
+            and strict_liveness_projection['peak_live_qubits'] == strict_capacity_overlay['strict_capacity_terms']['reconstructed_logical_qubits']
+            and strict_liveness_projection['claim_boundary']['materialized_flat_netlist_segment_hashes_include_projected_liveness'] is False
+        ),
     }
     return {
         'schema': PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA,
@@ -2448,6 +2541,7 @@ def build_public_candidate_materialized_circuit_manifest(
             'preview_tail': liveness_rows[-8:],
         },
         'strict_replayed_tail_capacity_overlay': strict_capacity_overlay,
+        'strict_replayed_tail_liveness_projection': strict_liveness_projection,
         'flat_netlist': flat_netlist,
         'materialized_flat_netlist': materialized_flat_netlist,
         'flat_execution_probe': flat_execution_probe,
