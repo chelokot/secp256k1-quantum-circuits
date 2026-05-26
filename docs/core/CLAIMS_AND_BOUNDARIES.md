@@ -198,9 +198,10 @@ the modular kernels from it, and the modular certificate consumes that same IR;
 the remaining arithmetic row in `engine_completion_audit.json` is the exact
 Clifford expansion of those modular kernels into the same global flat schedule.
 The QROAM row similarly records that the current standard-QROAMClean certificate
-now hashes generated word-level unary-iteration rows with selection-control and
-target-register contracts, but is not yet emitted as a routed bit-level QROAM
-netlist in the global schedule.
+now hashes generated word-level unary-iteration rows and target-bit Clifford
+load-site rows with selection-control, target-register, and loaded-bit source
+contracts, but is not yet emitted as a routed bit-level QROAM netlist with
+concrete table-bit CNOT hamming in the global schedule.
 The selected tail macro is also no longer only prose plus a stage inventory:
 `tail_macro_engine.json` expands the formula into a 23-operation field-kernel
 stream, binds that stream's opcode histogram to the counted tail kernel, and

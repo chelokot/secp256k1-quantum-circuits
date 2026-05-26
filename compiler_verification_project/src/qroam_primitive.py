@@ -58,6 +58,21 @@ def _operation_row(*, phase: str, address: int, domain_size: int, target_bits: i
     }
 
 
+def _target_bit_site_row(*, phase: str, address: int, target_bit_index: int) -> Dict[str, Any]:
+    return {
+        'phase': phase,
+        'address': int(address),
+        'target_bit_index': int(target_bit_index),
+        'primitive': 'qroamclean_k1_classically_gated_target_cnot_site',
+        'control_wire': f'qroam_unary_match_control[{int(address)}]',
+        'target_wire': f'qroam_target.bit[{int(target_bit_index)}]',
+        'loaded_bit_source': {
+            'table_address': int(address),
+            'bit_index': int(target_bit_index),
+        },
+    }
+
+
 def _segment_digest(*, phase: str, start_index: int, end_index: int, domain_size: int, target_bits: int) -> str:
     digest = sha256_bytes(b'')
     for address in range(start_index, end_index):
@@ -94,6 +109,51 @@ def _segments(*, phase: str, domain_size: int, target_bits: int, segment_size: i
     return rows
 
 
+def _target_bit_site_segment_digest(*, phase: str, start_index: int, end_index: int, target_bits: int) -> str:
+    return _digest_row({
+        'schema': 'qroamclean-k1-target-bit-load-site-segment-v1',
+        'phase': phase,
+        'start_address': int(start_index),
+        'end_address_exclusive': int(end_index),
+        'target_bits': int(target_bits),
+        'expansion_rule': 'for address in [start,end) and target_bit_index in [0,target_bits), emit qroamclean_k1_classically_gated_target_cnot_site(address,target_bit_index)',
+        'first_site': _target_bit_site_row(
+            phase=phase,
+            address=int(start_index),
+            target_bit_index=0,
+        ) if int(start_index) < int(end_index) and int(target_bits) > 0 else None,
+        'last_site': _target_bit_site_row(
+            phase=phase,
+            address=int(end_index) - 1,
+            target_bit_index=int(target_bits) - 1,
+        ) if int(start_index) < int(end_index) and int(target_bits) > 0 else None,
+    })
+
+
+def _target_bit_site_segments(*, phase: str, domain_size: int, target_bits: int, segment_size: int) -> List[Dict[str, Any]]:
+    rows = []
+    for start in range(0, domain_size, segment_size):
+        end = min(start + segment_size, domain_size)
+        rows.append({
+            'phase': phase,
+            'start_address': start,
+            'end_address_exclusive': end,
+            'address_count': end - start,
+            'target_bit_count': int(target_bits),
+            'potential_cnot_site_count': (end - start) * int(target_bits),
+            'expansion_rule': 'address-major target-bit load-site expansion',
+            'control_wire_template': 'qroam_unary_match_control[{address}]',
+            'target_wire_template': 'qroam_target.bit[{target_bit_index}]',
+            'sha256': _target_bit_site_segment_digest(
+                phase=phase,
+                start_index=start,
+                end_index=end,
+                target_bits=int(target_bits),
+            ),
+        })
+    return rows
+
+
 def _preview_rows(*, phase: str, domain_size: int, target_bits: int) -> List[Dict[str, Any]]:
     addresses = [0, 1, max(0, int(domain_size) - 2), int(domain_size) - 1]
     return [
@@ -104,6 +164,20 @@ def _preview_rows(*, phase: str, domain_size: int, target_bits: int) -> List[Dic
             target_bits=target_bits,
         )
         for address in dict.fromkeys(addresses)
+    ]
+
+
+def _preview_target_bit_site_rows(*, phase: str, domain_size: int, target_bits: int) -> List[Dict[str, Any]]:
+    addresses = [0, 1, max(0, int(domain_size) - 1)]
+    target_bits_to_show = [0, 1, max(0, int(target_bits) - 1)]
+    return [
+        _target_bit_site_row(
+            phase=phase,
+            address=address,
+            target_bit_index=target_bit_index,
+        )
+        for address in dict.fromkeys(addresses)
+        for target_bit_index in dict.fromkeys(target_bits_to_show)
     ]
 
 
@@ -128,8 +202,22 @@ def build_qroam_k1_primitive_certificate(
         segment_size=int(segment_size),
     )
     all_segments = compute_segments + cleanup_segments
+    compute_target_bit_site_segments = _target_bit_site_segments(
+        phase='compute',
+        domain_size=int(domain_size),
+        target_bits=int(target_bits),
+        segment_size=int(segment_size),
+    )
+    cleanup_target_bit_site_segments = _target_bit_site_segments(
+        phase='measured_uncompute',
+        domain_size=int(domain_size),
+        target_bits=int(target_bits),
+        segment_size=int(segment_size),
+    )
+    all_target_bit_site_segments = compute_target_bit_site_segments + cleanup_target_bit_site_segments
     compute_ccx = sum(row['ccx'] for row in compute_segments)
     cleanup_ccx = sum(row['ccx'] for row in cleanup_segments)
+    target_bit_site_count = sum(row['potential_cnot_site_count'] for row in all_target_bit_site_segments)
     wire_catalog = {
         'selection_register': {
             'role': 'folded table address',
@@ -156,6 +244,9 @@ def build_qroam_k1_primitive_certificate(
             int(row['selection_bit_count']) == int(wire_catalog['selection_register']['qubits'])
             and int(row['target_register_qubits']) == int(target_bits)
             for row in all_segments
+        ),
+        'target_bit_site_rows_cover_compute_and_cleanup_targets': (
+            target_bit_site_count == (compute_ccx + cleanup_ccx) * int(target_bits)
         ),
         'traversed_counts_match_qroamclean_cost': (
             compute_ccx == int(cost['lookup_compute_non_clifford'])
@@ -198,6 +289,26 @@ def build_qroam_k1_primitive_certificate(
                 target_bits=int(target_bits),
             ),
         },
+        'target_bit_load_site_stream': {
+            'operation_schema': 'qroamclean-k1-target-bit-load-site-v1',
+            'operation_level': 'target_bit_clifford_load_sites',
+            'definition': 'Each unary-iteration word step exposes one potential classically-gated Clifford CNOT site per target bit; actual emitted CNOTs require binding concrete table-bit values and omitting zero-valued sites.',
+            'target_register_qubits': int(target_bits),
+            'potential_cnot_site_count': target_bit_site_count,
+            'segments': all_target_bit_site_segments,
+            'segment_count': len(all_target_bit_site_segments),
+            'segment_merkle_root_sha256': _merkle_root([row['sha256'] for row in all_target_bit_site_segments]),
+            'preview_head': _preview_target_bit_site_rows(
+                phase='compute',
+                domain_size=int(domain_size),
+                target_bits=int(target_bits),
+            ),
+            'preview_tail': _preview_target_bit_site_rows(
+                phase='measured_uncompute',
+                domain_size=int(domain_size),
+                target_bits=int(target_bits),
+            ),
+        },
         'traversed_counts': {
             'lookup_compute_non_clifford': compute_ccx,
             'measured_uncompute_non_clifford': cleanup_ccx,
@@ -210,7 +321,7 @@ def build_qroam_k1_primitive_certificate(
         'checks': checks,
         'pass': all(checks.values()),
         'notes': [
-            'This is a deterministic word-level unary-iteration stream certificate with concrete selection-control and target-register contracts; it is still not a Clifford-complete routed bit-level QROAM netlist.',
+            'This is a deterministic word-level unary-iteration stream certificate with generated target-bit Clifford load sites; it is still not a Clifford-complete routed bit-level QROAM netlist with concrete table-bit hamming materialized.',
             'Counts are obtained by traversing generated compute and measured-uncompute unary-iteration word segments, then checked against the QROAMClean K=1 resource rule.',
         ],
     }

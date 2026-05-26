@@ -61,10 +61,21 @@ def test_qroam_k1_certificate_reconstructs_selected_stream_counts() -> None:
     assert certificate['traversed_counts']['target_plus_junk_qubits'] == parameters['target_bits']
     assert certificate['operation_stream']['operation_schema'] == 'qroamclean-k1-unary-iteration-word-step-v1'
     assert certificate['operation_stream']['target_register_qubits'] == parameters['target_bits']
+    assert certificate['target_bit_load_site_stream']['operation_schema'] == 'qroamclean-k1-target-bit-load-site-v1'
+    assert certificate['target_bit_load_site_stream']['potential_cnot_site_count'] == (
+        parameters['domain_size'] * parameters['target_bits'] * 2
+    )
     assert all(
         row['target_register']['bit_count'] == parameters['target_bits']
         and row['loaded_word_source']['table_address'] == row['address']
         for row in certificate['operation_stream']['preview_head'] + certificate['operation_stream']['preview_tail']
+    )
+    assert all(
+        row['target_wire'] == f"qroam_target.bit[{row['target_bit_index']}]"
+        and row['loaded_bit_source']['table_address'] == row['address']
+        and row['loaded_bit_source']['bit_index'] == row['target_bit_index']
+        for row in certificate['target_bit_load_site_stream']['preview_head']
+        + certificate['target_bit_load_site_stream']['preview_tail']
     )
     assert checks['pass'] == checks['total']
 
@@ -97,5 +108,13 @@ def test_qroam_k1_certificate_checks_reject_forged_segment_wire_width() -> None:
     certificate = build_qroam_k1_primitive_certificate(**_selected_parameters())
     forged = deepcopy(certificate)
     forged['operation_stream']['segments'][0]['target_register_qubits'] -= 1
+    checks = build_qroam_primitive_certificate_checks(_minimal_artifacts(forged))
+    assert checks['pass'] < checks['total']
+
+
+def test_qroam_k1_certificate_checks_reject_forged_target_bit_site_source() -> None:
+    certificate = build_qroam_k1_primitive_certificate(**_selected_parameters())
+    forged = deepcopy(certificate)
+    forged['target_bit_load_site_stream']['preview_head'][0]['loaded_bit_source']['bit_index'] += 1
     checks = build_qroam_primitive_certificate_checks(_minimal_artifacts(forged))
     assert checks['pass'] < checks['total']

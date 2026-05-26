@@ -1699,7 +1699,9 @@ def build_qroam_primitive_certificate_checks(artifacts: Mapping[str, Any]) -> Di
     compute_ccx = sum(int(row['ccx']) for row in compute_segments)
     cleanup_ccx = sum(int(row['ccx']) for row in cleanup_segments)
     operation_stream = certificate['operation_stream']
+    target_bit_load_site_stream = certificate['target_bit_load_site_stream']
     preview_rows = operation_stream['preview_head'] + operation_stream['preview_tail']
+    target_bit_preview_rows = target_bit_load_site_stream['preview_head'] + target_bit_load_site_stream['preview_tail']
     expected_selection_bits = int(certificate['wire_catalog']['selection_register']['qubits'])
     stream_binds_word_level_contract = (
         operation_stream['operation_schema'] == 'qroamclean-k1-unary-iteration-word-step-v1'
@@ -1723,6 +1725,29 @@ def build_qroam_primitive_certificate_checks(artifacts: Mapping[str, Any]) -> Di
             for row in preview_rows
         )
     )
+    target_bit_load_sites_bind_target_width = (
+        target_bit_load_site_stream['operation_schema'] == 'qroamclean-k1-target-bit-load-site-v1'
+        and target_bit_load_site_stream['operation_level'] == 'target_bit_clifford_load_sites'
+        and int(target_bit_load_site_stream['target_register_qubits']) == target_bits
+        and int(target_bit_load_site_stream['potential_cnot_site_count']) == (compute_ccx + cleanup_ccx) * target_bits
+        and all(
+            int(row['target_bit_count']) == target_bits
+            and int(row['potential_cnot_site_count']) == (
+                int(row['end_address_exclusive']) - int(row['start_address'])
+            ) * target_bits
+            for row in target_bit_load_site_stream['segments']
+        )
+    )
+    target_bit_preview_rows_bind_sources = (
+        len(target_bit_preview_rows) >= 6
+        and all(
+            row['target_wire'] == f"qroam_target.bit[{int(row['target_bit_index'])}]"
+            and row['loaded_bit_source']['table_address'] == row['address']
+            and row['loaded_bit_source']['bit_index'] == row['target_bit_index']
+            and 0 <= int(row['target_bit_index']) < target_bits
+            for row in target_bit_preview_rows
+        )
+    )
     checks = [
         _check('qroam_primitive_certificate_matches_generator', certificate == expected, expected, certificate),
         _check('qroam_primitive_certificate_schema_is_current', certificate['schema'] == 'compiler-project-qroam-k1-primitive-certificate-v1', 'compiler-project-qroam-k1-primitive-certificate-v1', certificate['schema']),
@@ -1731,6 +1756,8 @@ def build_qroam_primitive_certificate_checks(artifacts: Mapping[str, Any]) -> Di
         _check('qroam_primitive_certificate_traverses_compute_and_cleanup_domains', compute_ccx == cleanup_ccx == int(parameters['domain_size']) and len(compute_segments) == len(cleanup_segments) and len(segments) == int(certificate['operation_stream']['segment_count']), {'compute_ccx': parameters['domain_size'], 'cleanup_ccx': parameters['domain_size']}, {'compute_ccx': compute_ccx, 'cleanup_ccx': cleanup_ccx, 'segment_count': len(segments)}),
         _check('qroam_primitive_certificate_segments_bind_word_level_wire_contract', stream_binds_word_level_contract, {'operation_schema': 'qroamclean-k1-unary-iteration-word-step-v1', 'selection_bit_count': expected_selection_bits, 'target_register_qubits': target_bits}, operation_stream),
         _check('qroam_primitive_certificate_preview_rows_bind_selection_patterns_and_target_range', preview_rows_bind_word_sources, 'preview rows bind selection controls, address patterns, target width, and loaded word range', preview_rows),
+        _check('qroam_primitive_certificate_target_bit_load_sites_bind_target_width', target_bit_load_sites_bind_target_width, {'operation_schema': 'qroamclean-k1-target-bit-load-site-v1', 'potential_cnot_site_count': (compute_ccx + cleanup_ccx) * target_bits}, target_bit_load_site_stream),
+        _check('qroam_primitive_certificate_target_bit_preview_rows_bind_sources', target_bit_preview_rows_bind_sources, 'target-bit preview rows bind target wire and loaded bit source', target_bit_preview_rows),
         _check('qroam_primitive_certificate_counts_match_qroamclean_cost_model', int(traversed['lookup_compute_non_clifford']) == int(qroam_cost['lookup_compute_non_clifford']) and int(traversed['measured_uncompute_non_clifford']) == int(qroam_cost['measured_uncompute_non_clifford']) and int(traversed['per_stream_non_clifford']) == int(qroam_cost['per_stream_non_clifford']) and int(traversed['target_plus_junk_qubits']) == int(qroam_cost['target_plus_junk_qubits']), qroam_cost, traversed),
         _check('qroam_primitive_certificate_workspace_decomposes_target_and_junk', int(certificate['wire_catalog']['target_register']['qubits']) == int(parameters['target_bits']) and int(certificate['wire_catalog']['junk_registers']['qubits']) == 0 and int(traversed['target_plus_junk_qubits']) == int(parameters['target_bits']), {'target_register_qubits': parameters['target_bits'], 'junk_register_qubits': 0}, certificate['wire_catalog']),
     ]
