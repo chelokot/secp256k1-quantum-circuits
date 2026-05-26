@@ -34,6 +34,7 @@ from lookup_lowering import lookup_lowering_library, lowered_lookup_semantic_sum
 from materialized_circuit import PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, build_arithmetic_operand_replay_audit, build_public_candidate_materialized_circuit_manifest
 from modular_accumulator_capacity_certificate import MODULAR_ACCUMULATOR_CAPACITY_CERTIFICATE_SCHEMA, build_modular_accumulator_capacity_certificate
 from modular_accumulator_carry_obligations import MODULAR_ACCUMULATOR_CARRY_OBLIGATIONS_SCHEMA, build_modular_accumulator_carry_obligations
+from modular_accumulator_carry_save_candidate import MODULAR_ACCUMULATOR_CARRY_SAVE_CANDIDATE_SCHEMA, build_modular_accumulator_carry_save_candidate
 from modular_accumulator_lowering import MODULAR_ACCUMULATOR_LOWERING_SCHEMA, build_modular_accumulator_lowering
 from modular_accumulator_row_stream import MODULAR_ACCUMULATOR_ROW_STREAM_SCHEMA, build_modular_accumulator_row_stream
 from modular_accumulator_scratch_schedule import MODULAR_ACCUMULATOR_SCRATCH_SCHEDULE_SCHEMA, build_modular_accumulator_scratch_schedule
@@ -205,6 +206,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'modular_accumulator_scratch_schedule': artifact_root / 'modular_accumulator_scratch_schedule.json',
         'modular_accumulator_semantic_obligations': artifact_root / 'modular_accumulator_semantic_obligations.json',
         'modular_accumulator_carry_obligations': artifact_root / 'modular_accumulator_carry_obligations.json',
+        'modular_accumulator_carry_save_candidate': artifact_root / 'modular_accumulator_carry_save_candidate.json',
         'tail_macro_liveness': artifact_root / 'tail_macro_liveness.json',
         'tail_macro_reversibility': artifact_root / 'tail_macro_reversibility.json',
         'tail_macro_schedule_search': artifact_root / 'tail_macro_schedule_search.json',
@@ -396,6 +398,14 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
             ),
         )
         dump_json(
+            artifact_root / 'modular_accumulator_carry_save_candidate.json',
+            build_modular_accumulator_carry_save_candidate(
+                modular_accumulator_row_stream=load_json(artifact_root / 'modular_accumulator_row_stream.json'),
+                modular_accumulator_carry_obligations=load_json(artifact_root / 'modular_accumulator_carry_obligations.json'),
+                field_bits=FIELD_BITS,
+            ),
+        )
+        dump_json(
             artifact_root / 'public_engine_manifest.json',
             build_public_engine_manifest(
                 reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
@@ -446,6 +456,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 modular_accumulator_scratch_schedule=load_json(artifact_root / 'modular_accumulator_scratch_schedule.json'),
                 modular_accumulator_semantic_obligations=load_json(artifact_root / 'modular_accumulator_semantic_obligations.json'),
                 modular_accumulator_carry_obligations=load_json(artifact_root / 'modular_accumulator_carry_obligations.json'),
+                modular_accumulator_carry_save_candidate=load_json(artifact_root / 'modular_accumulator_carry_save_candidate.json'),
                 tail_macro_engine=load_json(artifact_root / 'tail_macro_engine.json'),
                 tail_macro_liveness=load_json(artifact_root / 'tail_macro_liveness.json'),
                 tail_macro_reversibility=load_json(artifact_root / 'tail_macro_reversibility.json'),
@@ -2846,6 +2857,28 @@ def build_modular_accumulator_carry_obligations_checks(artifacts: Mapping[str, A
     return _summarize_checks(checks)
 
 
+def build_modular_accumulator_carry_save_candidate_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    candidate = artifacts['modular_accumulator_carry_save_candidate']
+    expected = build_modular_accumulator_carry_save_candidate(
+        modular_accumulator_row_stream=artifacts['modular_accumulator_row_stream'],
+        modular_accumulator_carry_obligations=artifacts['modular_accumulator_carry_obligations'],
+        field_bits=FIELD_BITS,
+    )
+    single_grid = candidate['single_grid']
+    all_grids = candidate['all_grids']
+    reduced_width = candidate['reduced_width_exhaustive_checks']
+    checks = [
+        _check('modular_accumulator_carry_save_candidate_matches_generator', candidate == expected, expected, candidate),
+        _check('modular_accumulator_carry_save_candidate_schema_is_current', candidate['schema'] == MODULAR_ACCUMULATOR_CARRY_SAVE_CANDIDATE_SCHEMA, MODULAR_ACCUMULATOR_CARRY_SAVE_CANDIDATE_SCHEMA, candidate['schema']),
+        _check('modular_accumulator_carry_save_candidate_passes_internal_checks', candidate['pass'] is True and all(candidate['checks'].values()), True, candidate['checks']),
+        _check('modular_accumulator_carry_save_candidate_reduces_to_two_rows', single_grid['input_column_count'] == 2 * FIELD_BITS - 1 and single_grid['final_max_column_height'] <= 2 and single_grid['final_carry_propagate_bits'] == 2 * FIELD_BITS, 'carry-save compression leaves two-row final carry boundary', single_grid),
+        _check('modular_accumulator_carry_save_candidate_beats_naive_touch_count', all_grids['candidate_touch_count'] < all_grids['naive_carry_obligation_rows'] and all_grids['carry_save_full_adder_count'] > 0 and all_grids['final_carry_propagate_bits'] == candidate['schoolbook_grid_count'] * 2 * FIELD_BITS, 'carry-save candidate reduces the naive per-increment carry touch count', all_grids),
+        _check('modular_accumulator_carry_save_candidate_reduced_width_replay_passes', all(row['pass'] is True for row in reduced_width) and sum(int(row['total_cases']) for row in reduced_width) > 0, 'reduced-width carry-save replay matches integer products', reduced_width),
+        _check('modular_accumulator_carry_save_candidate_remains_unpromoted', candidate['promotion_status']['status'] == 'carry_save_candidate_not_promoted_to_public_resource_contract', 'candidate is explicit but not promoted', candidate['promotion_status']),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     audit = artifacts['engine_completion_audit']
     expected = build_engine_completion_audit(
@@ -2871,6 +2904,7 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
         modular_accumulator_scratch_schedule=artifacts['modular_accumulator_scratch_schedule'],
         modular_accumulator_semantic_obligations=artifacts['modular_accumulator_semantic_obligations'],
         modular_accumulator_carry_obligations=artifacts['modular_accumulator_carry_obligations'],
+        modular_accumulator_carry_save_candidate=artifacts['modular_accumulator_carry_save_candidate'],
         tail_macro_engine=artifacts['tail_macro_engine'],
         tail_macro_liveness=artifacts['tail_macro_liveness'],
         tail_macro_reversibility=artifacts['tail_macro_reversibility'],
@@ -3691,6 +3725,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'modular_accumulator_scratch_schedule_checks': lambda: build_modular_accumulator_scratch_schedule_checks(artifacts),
         'modular_accumulator_semantic_obligations_checks': lambda: build_modular_accumulator_semantic_obligations_checks(artifacts),
         'modular_accumulator_carry_obligations_checks': lambda: build_modular_accumulator_carry_obligations_checks(artifacts),
+        'modular_accumulator_carry_save_candidate_checks': lambda: build_modular_accumulator_carry_save_candidate_checks(artifacts),
         'public_engine_manifest_checks': lambda: build_public_engine_manifest_checks(artifacts),
         'engine_completion_audit_checks': lambda: build_engine_completion_audit_checks(artifacts),
         'arithmetic_operand_replay_audit_checks': lambda: build_arithmetic_operand_replay_audit_checks(artifacts),

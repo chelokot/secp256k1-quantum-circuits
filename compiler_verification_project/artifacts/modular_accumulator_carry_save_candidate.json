@@ -1,0 +1,1889 @@
+{
+  "schema": "compiler-project-modular-accumulator-carry-save-candidate-v1",
+  "definition": "Generated carry-save product-accumulator candidate. It compresses each schoolbook partial-product column set with 3-to-2 full-adder layers before one final carry-propagate boundary, and validates the transform on reduced-width exhaustive products. It is not a promoted reversible primitive lowering.",
+  "source_digests": {
+    "modular_accumulator_row_stream_sha256": "5d448f757f16fa01639c8343a8e39789a2a8f29413615d784db88c6659bb4971",
+    "modular_accumulator_carry_obligations_sha256": "a47f9d1d4be46d7a21aab417525cd067f79eaff59543f5bfcaae9c171695bdd4"
+  },
+  "field_bits": 256,
+  "schoolbook_grid_count": 11,
+  "single_grid": {
+    "input_column_count": 511,
+    "initial_partial_product_bits": 65536,
+    "layer_count": 255,
+    "full_adder_count": 64770,
+    "final_column_count": 511,
+    "final_live_column_bits": 766,
+    "final_max_column_height": 2,
+    "final_carry_propagate_bits": 512,
+    "layers_materialized_in_json": true,
+    "layers": [
+      {
+        "layer_index": 0,
+        "full_adder_count": 21675,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 171,
+        "live_column_bits_after_layer": 43861
+      },
+      {
+        "layer_index": 1,
+        "full_adder_count": 14450,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 115,
+        "live_column_bits_after_layer": 29411
+      },
+      {
+        "layer_index": 2,
+        "full_adder_count": 9632,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 77,
+        "live_column_bits_after_layer": 19779
+      },
+      {
+        "layer_index": 3,
+        "full_adder_count": 6422,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 52,
+        "live_column_bits_after_layer": 13357
+      },
+      {
+        "layer_index": 4,
+        "full_adder_count": 4281,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 35,
+        "live_column_bits_after_layer": 9076
+      },
+      {
+        "layer_index": 5,
+        "full_adder_count": 2856,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 24,
+        "live_column_bits_after_layer": 6220
+      },
+      {
+        "layer_index": 6,
+        "full_adder_count": 1896,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 17,
+        "live_column_bits_after_layer": 4324
+      },
+      {
+        "layer_index": 7,
+        "full_adder_count": 1260,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 12,
+        "live_column_bits_after_layer": 3064
+      },
+      {
+        "layer_index": 8,
+        "full_adder_count": 828,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 9,
+        "live_column_bits_after_layer": 2236
+      },
+      {
+        "layer_index": 9,
+        "full_adder_count": 567,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 7,
+        "live_column_bits_after_layer": 1669
+      },
+      {
+        "layer_index": 10,
+        "full_adder_count": 340,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 5,
+        "live_column_bits_after_layer": 1329
+      },
+      {
+        "layer_index": 11,
+        "full_adder_count": 230,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 4,
+        "live_column_bits_after_layer": 1099
+      },
+      {
+        "layer_index": 12,
+        "full_adder_count": 89,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 1010
+      },
+      {
+        "layer_index": 13,
+        "full_adder_count": 3,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 1007
+      },
+      {
+        "layer_index": 14,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 1006
+      },
+      {
+        "layer_index": 15,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 1005
+      },
+      {
+        "layer_index": 16,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 1004
+      },
+      {
+        "layer_index": 17,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 1003
+      },
+      {
+        "layer_index": 18,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 1002
+      },
+      {
+        "layer_index": 19,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 1001
+      },
+      {
+        "layer_index": 20,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 1000
+      },
+      {
+        "layer_index": 21,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 999
+      },
+      {
+        "layer_index": 22,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 998
+      },
+      {
+        "layer_index": 23,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 997
+      },
+      {
+        "layer_index": 24,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 996
+      },
+      {
+        "layer_index": 25,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 995
+      },
+      {
+        "layer_index": 26,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 994
+      },
+      {
+        "layer_index": 27,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 993
+      },
+      {
+        "layer_index": 28,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 992
+      },
+      {
+        "layer_index": 29,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 991
+      },
+      {
+        "layer_index": 30,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 990
+      },
+      {
+        "layer_index": 31,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 989
+      },
+      {
+        "layer_index": 32,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 988
+      },
+      {
+        "layer_index": 33,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 987
+      },
+      {
+        "layer_index": 34,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 986
+      },
+      {
+        "layer_index": 35,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 985
+      },
+      {
+        "layer_index": 36,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 984
+      },
+      {
+        "layer_index": 37,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 983
+      },
+      {
+        "layer_index": 38,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 982
+      },
+      {
+        "layer_index": 39,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 981
+      },
+      {
+        "layer_index": 40,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 980
+      },
+      {
+        "layer_index": 41,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 979
+      },
+      {
+        "layer_index": 42,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 978
+      },
+      {
+        "layer_index": 43,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 977
+      },
+      {
+        "layer_index": 44,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 976
+      },
+      {
+        "layer_index": 45,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 975
+      },
+      {
+        "layer_index": 46,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 974
+      },
+      {
+        "layer_index": 47,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 973
+      },
+      {
+        "layer_index": 48,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 972
+      },
+      {
+        "layer_index": 49,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 971
+      },
+      {
+        "layer_index": 50,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 970
+      },
+      {
+        "layer_index": 51,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 969
+      },
+      {
+        "layer_index": 52,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 968
+      },
+      {
+        "layer_index": 53,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 967
+      },
+      {
+        "layer_index": 54,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 966
+      },
+      {
+        "layer_index": 55,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 965
+      },
+      {
+        "layer_index": 56,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 964
+      },
+      {
+        "layer_index": 57,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 963
+      },
+      {
+        "layer_index": 58,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 962
+      },
+      {
+        "layer_index": 59,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 961
+      },
+      {
+        "layer_index": 60,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 960
+      },
+      {
+        "layer_index": 61,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 959
+      },
+      {
+        "layer_index": 62,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 958
+      },
+      {
+        "layer_index": 63,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 957
+      },
+      {
+        "layer_index": 64,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 956
+      },
+      {
+        "layer_index": 65,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 955
+      },
+      {
+        "layer_index": 66,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 954
+      },
+      {
+        "layer_index": 67,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 953
+      },
+      {
+        "layer_index": 68,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 952
+      },
+      {
+        "layer_index": 69,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 951
+      },
+      {
+        "layer_index": 70,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 950
+      },
+      {
+        "layer_index": 71,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 949
+      },
+      {
+        "layer_index": 72,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 948
+      },
+      {
+        "layer_index": 73,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 947
+      },
+      {
+        "layer_index": 74,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 946
+      },
+      {
+        "layer_index": 75,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 945
+      },
+      {
+        "layer_index": 76,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 944
+      },
+      {
+        "layer_index": 77,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 943
+      },
+      {
+        "layer_index": 78,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 942
+      },
+      {
+        "layer_index": 79,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 941
+      },
+      {
+        "layer_index": 80,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 940
+      },
+      {
+        "layer_index": 81,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 939
+      },
+      {
+        "layer_index": 82,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 938
+      },
+      {
+        "layer_index": 83,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 937
+      },
+      {
+        "layer_index": 84,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 936
+      },
+      {
+        "layer_index": 85,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 935
+      },
+      {
+        "layer_index": 86,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 934
+      },
+      {
+        "layer_index": 87,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 933
+      },
+      {
+        "layer_index": 88,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 932
+      },
+      {
+        "layer_index": 89,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 931
+      },
+      {
+        "layer_index": 90,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 930
+      },
+      {
+        "layer_index": 91,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 929
+      },
+      {
+        "layer_index": 92,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 928
+      },
+      {
+        "layer_index": 93,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 927
+      },
+      {
+        "layer_index": 94,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 926
+      },
+      {
+        "layer_index": 95,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 925
+      },
+      {
+        "layer_index": 96,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 924
+      },
+      {
+        "layer_index": 97,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 923
+      },
+      {
+        "layer_index": 98,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 922
+      },
+      {
+        "layer_index": 99,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 921
+      },
+      {
+        "layer_index": 100,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 920
+      },
+      {
+        "layer_index": 101,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 919
+      },
+      {
+        "layer_index": 102,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 918
+      },
+      {
+        "layer_index": 103,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 917
+      },
+      {
+        "layer_index": 104,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 916
+      },
+      {
+        "layer_index": 105,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 915
+      },
+      {
+        "layer_index": 106,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 914
+      },
+      {
+        "layer_index": 107,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 913
+      },
+      {
+        "layer_index": 108,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 912
+      },
+      {
+        "layer_index": 109,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 911
+      },
+      {
+        "layer_index": 110,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 910
+      },
+      {
+        "layer_index": 111,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 909
+      },
+      {
+        "layer_index": 112,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 908
+      },
+      {
+        "layer_index": 113,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 907
+      },
+      {
+        "layer_index": 114,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 906
+      },
+      {
+        "layer_index": 115,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 905
+      },
+      {
+        "layer_index": 116,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 904
+      },
+      {
+        "layer_index": 117,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 903
+      },
+      {
+        "layer_index": 118,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 902
+      },
+      {
+        "layer_index": 119,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 901
+      },
+      {
+        "layer_index": 120,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 900
+      },
+      {
+        "layer_index": 121,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 899
+      },
+      {
+        "layer_index": 122,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 898
+      },
+      {
+        "layer_index": 123,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 897
+      },
+      {
+        "layer_index": 124,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 896
+      },
+      {
+        "layer_index": 125,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 895
+      },
+      {
+        "layer_index": 126,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 894
+      },
+      {
+        "layer_index": 127,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 893
+      },
+      {
+        "layer_index": 128,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 892
+      },
+      {
+        "layer_index": 129,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 891
+      },
+      {
+        "layer_index": 130,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 890
+      },
+      {
+        "layer_index": 131,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 889
+      },
+      {
+        "layer_index": 132,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 888
+      },
+      {
+        "layer_index": 133,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 887
+      },
+      {
+        "layer_index": 134,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 886
+      },
+      {
+        "layer_index": 135,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 885
+      },
+      {
+        "layer_index": 136,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 884
+      },
+      {
+        "layer_index": 137,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 883
+      },
+      {
+        "layer_index": 138,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 882
+      },
+      {
+        "layer_index": 139,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 881
+      },
+      {
+        "layer_index": 140,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 880
+      },
+      {
+        "layer_index": 141,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 879
+      },
+      {
+        "layer_index": 142,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 878
+      },
+      {
+        "layer_index": 143,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 877
+      },
+      {
+        "layer_index": 144,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 876
+      },
+      {
+        "layer_index": 145,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 875
+      },
+      {
+        "layer_index": 146,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 874
+      },
+      {
+        "layer_index": 147,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 873
+      },
+      {
+        "layer_index": 148,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 872
+      },
+      {
+        "layer_index": 149,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 871
+      },
+      {
+        "layer_index": 150,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 870
+      },
+      {
+        "layer_index": 151,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 869
+      },
+      {
+        "layer_index": 152,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 868
+      },
+      {
+        "layer_index": 153,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 867
+      },
+      {
+        "layer_index": 154,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 866
+      },
+      {
+        "layer_index": 155,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 865
+      },
+      {
+        "layer_index": 156,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 864
+      },
+      {
+        "layer_index": 157,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 863
+      },
+      {
+        "layer_index": 158,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 862
+      },
+      {
+        "layer_index": 159,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 861
+      },
+      {
+        "layer_index": 160,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 860
+      },
+      {
+        "layer_index": 161,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 859
+      },
+      {
+        "layer_index": 162,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 858
+      },
+      {
+        "layer_index": 163,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 857
+      },
+      {
+        "layer_index": 164,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 856
+      },
+      {
+        "layer_index": 165,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 855
+      },
+      {
+        "layer_index": 166,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 854
+      },
+      {
+        "layer_index": 167,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 853
+      },
+      {
+        "layer_index": 168,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 852
+      },
+      {
+        "layer_index": 169,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 851
+      },
+      {
+        "layer_index": 170,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 850
+      },
+      {
+        "layer_index": 171,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 849
+      },
+      {
+        "layer_index": 172,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 848
+      },
+      {
+        "layer_index": 173,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 847
+      },
+      {
+        "layer_index": 174,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 846
+      },
+      {
+        "layer_index": 175,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 845
+      },
+      {
+        "layer_index": 176,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 844
+      },
+      {
+        "layer_index": 177,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 843
+      },
+      {
+        "layer_index": 178,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 842
+      },
+      {
+        "layer_index": 179,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 841
+      },
+      {
+        "layer_index": 180,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 840
+      },
+      {
+        "layer_index": 181,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 839
+      },
+      {
+        "layer_index": 182,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 838
+      },
+      {
+        "layer_index": 183,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 837
+      },
+      {
+        "layer_index": 184,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 836
+      },
+      {
+        "layer_index": 185,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 835
+      },
+      {
+        "layer_index": 186,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 834
+      },
+      {
+        "layer_index": 187,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 833
+      },
+      {
+        "layer_index": 188,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 832
+      },
+      {
+        "layer_index": 189,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 831
+      },
+      {
+        "layer_index": 190,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 830
+      },
+      {
+        "layer_index": 191,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 829
+      },
+      {
+        "layer_index": 192,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 828
+      },
+      {
+        "layer_index": 193,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 827
+      },
+      {
+        "layer_index": 194,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 826
+      },
+      {
+        "layer_index": 195,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 825
+      },
+      {
+        "layer_index": 196,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 824
+      },
+      {
+        "layer_index": 197,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 823
+      },
+      {
+        "layer_index": 198,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 822
+      },
+      {
+        "layer_index": 199,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 821
+      },
+      {
+        "layer_index": 200,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 820
+      },
+      {
+        "layer_index": 201,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 819
+      },
+      {
+        "layer_index": 202,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 818
+      },
+      {
+        "layer_index": 203,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 817
+      },
+      {
+        "layer_index": 204,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 816
+      },
+      {
+        "layer_index": 205,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 815
+      },
+      {
+        "layer_index": 206,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 814
+      },
+      {
+        "layer_index": 207,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 813
+      },
+      {
+        "layer_index": 208,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 812
+      },
+      {
+        "layer_index": 209,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 811
+      },
+      {
+        "layer_index": 210,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 810
+      },
+      {
+        "layer_index": 211,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 809
+      },
+      {
+        "layer_index": 212,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 808
+      },
+      {
+        "layer_index": 213,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 807
+      },
+      {
+        "layer_index": 214,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 806
+      },
+      {
+        "layer_index": 215,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 805
+      },
+      {
+        "layer_index": 216,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 804
+      },
+      {
+        "layer_index": 217,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 803
+      },
+      {
+        "layer_index": 218,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 802
+      },
+      {
+        "layer_index": 219,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 801
+      },
+      {
+        "layer_index": 220,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 800
+      },
+      {
+        "layer_index": 221,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 799
+      },
+      {
+        "layer_index": 222,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 798
+      },
+      {
+        "layer_index": 223,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 797
+      },
+      {
+        "layer_index": 224,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 796
+      },
+      {
+        "layer_index": 225,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 795
+      },
+      {
+        "layer_index": 226,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 794
+      },
+      {
+        "layer_index": 227,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 793
+      },
+      {
+        "layer_index": 228,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 792
+      },
+      {
+        "layer_index": 229,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 791
+      },
+      {
+        "layer_index": 230,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 790
+      },
+      {
+        "layer_index": 231,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 789
+      },
+      {
+        "layer_index": 232,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 788
+      },
+      {
+        "layer_index": 233,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 787
+      },
+      {
+        "layer_index": 234,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 786
+      },
+      {
+        "layer_index": 235,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 785
+      },
+      {
+        "layer_index": 236,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 784
+      },
+      {
+        "layer_index": 237,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 783
+      },
+      {
+        "layer_index": 238,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 782
+      },
+      {
+        "layer_index": 239,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 781
+      },
+      {
+        "layer_index": 240,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 780
+      },
+      {
+        "layer_index": 241,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 779
+      },
+      {
+        "layer_index": 242,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 778
+      },
+      {
+        "layer_index": 243,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 777
+      },
+      {
+        "layer_index": 244,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 776
+      },
+      {
+        "layer_index": 245,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 775
+      },
+      {
+        "layer_index": 246,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 774
+      },
+      {
+        "layer_index": 247,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 773
+      },
+      {
+        "layer_index": 248,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 772
+      },
+      {
+        "layer_index": 249,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 771
+      },
+      {
+        "layer_index": 250,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 770
+      },
+      {
+        "layer_index": 251,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 769
+      },
+      {
+        "layer_index": 252,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 768
+      },
+      {
+        "layer_index": 253,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 3,
+        "live_column_bits_after_layer": 767
+      },
+      {
+        "layer_index": 254,
+        "full_adder_count": 1,
+        "column_count_after_layer": 511,
+        "max_column_height_after_layer": 2,
+        "live_column_bits_after_layer": 766
+      }
+    ]
+  },
+  "all_grids": {
+    "partial_product_rows": 720896,
+    "carry_save_full_adder_count": 712470,
+    "final_carry_propagate_bits": 5632,
+    "candidate_touch_count": 718102,
+    "naive_carry_obligation_rows": 185270272,
+    "touch_reduction_numerator": 185270272,
+    "touch_reduction_denominator": 718102
+  },
+  "reduced_width_exhaustive_checks": [
+    {
+      "width": 2,
+      "total_cases": 16,
+      "mismatch_count": 0,
+      "pass": true,
+      "full_adder_count": 0,
+      "layer_count": 0,
+      "final_max_column_height": 2,
+      "max_result": 9
+    },
+    {
+      "width": 3,
+      "total_cases": 64,
+      "mismatch_count": 0,
+      "pass": true,
+      "full_adder_count": 2,
+      "layer_count": 2,
+      "final_max_column_height": 2,
+      "max_result": 49
+    },
+    {
+      "width": 4,
+      "total_cases": 256,
+      "mismatch_count": 0,
+      "pass": true,
+      "full_adder_count": 6,
+      "layer_count": 3,
+      "final_max_column_height": 2,
+      "max_result": 225
+    },
+    {
+      "width": 5,
+      "total_cases": 1024,
+      "mismatch_count": 0,
+      "pass": true,
+      "full_adder_count": 12,
+      "layer_count": 4,
+      "final_max_column_height": 2,
+      "max_result": 961
+    },
+    {
+      "width": 6,
+      "total_cases": 4096,
+      "mismatch_count": 0,
+      "pass": true,
+      "full_adder_count": 20,
+      "layer_count": 5,
+      "final_max_column_height": 2,
+      "max_result": 3969
+    }
+  ],
+  "promotion_status": {
+    "status": "carry_save_candidate_not_promoted_to_public_resource_contract",
+    "required_to_promote": [
+      "Lower each 3-to-2 compression cell to concrete reversible gates with counted temporary and output owners.",
+      "Prove cleanup or retained-owner semantics for every full-adder carry and sum output.",
+      "Lower the final two-row carry-propagate adder into the global primitive schedule.",
+      "Recompute public non-Clifford and peak-live-qubit totals from the promoted primitive gate stream."
+    ]
+  },
+  "checks": {
+    "source_row_stream_passes": true,
+    "source_carry_obligations_pass": true,
+    "grid_count_matches_partial_product_rows": true,
+    "single_grid_reduces_columns_to_two_rows": true,
+    "single_grid_keeps_carry_complete_capacity": true,
+    "candidate_touch_count_below_naive_carry_obligations": true,
+    "reduced_width_semantic_replay_passes": true,
+    "candidate_not_promoted_to_public_resource_contract": true
+  },
+  "pass": true
+}

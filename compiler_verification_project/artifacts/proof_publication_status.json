@@ -264,15 +264,15 @@
   "source_artifacts": {
     "public_headline_result": {
       "path": "compiler_verification_project/artifacts/public_headline_result.json",
-      "sha256": "23f1c9bb1888066e9ef550050cf857ce43cb8880b8b66d7bdbba975dc5b62314"
+      "sha256": "14cbd16afc9b5847f5235db5387ec27b119b47bbf9a65a2619fadf887883d223"
     },
     "proof_environment_contract": {
       "path": "compiler_verification_project/artifacts/proof_environment_contract.json",
-      "sha256": "b9db30dfa9373ae8a3fab47e291d4870e5e7b0b4e55c9cc894878132ae9d8b80"
+      "sha256": "8477bf9e0e3b6c1e51487a9a02012343c6799cf57f08847fad35ec28bee56fa0"
     },
     "proof_manifest": {
       "path": "artifacts/package/proof_manifest.json",
-      "file_count": 239
+      "file_count": 241
     }
   },
   "checks": {
