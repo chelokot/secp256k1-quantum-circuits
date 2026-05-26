@@ -285,6 +285,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 selected_family_name=load_json(artifact_root / 'compiler_parameters.json')['public_headline_policy']['selected_public_family_name'],
                 strict_replayed_tail_headline=load_json(artifact_root / 'strict_replayed_tail_headline.json'),
                 tail_macro_engine=load_json(artifact_root / 'tail_macro_engine.json'),
+                modular_arithmetic_certificate=load_json(artifact_root / 'modular_arithmetic_certificate.json'),
             ),
         )
         dump_json(

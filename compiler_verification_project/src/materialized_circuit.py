@@ -33,6 +33,7 @@ STREAM_COLUMNS = ['stream_index', 'family', 'scope', 'invocation', 'source', 'ga
 DEFAULT_SEGMENT_SIZE = 1_000_000
 MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA = 'compiler-project-materialized-circuit-manifest-v1'
 PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA = 'compiler-project-public-candidate-materialized-circuit-manifest-v1'
+PRIMITIVE_COUNT_KEYS = ('ccx', 'cx', 'x', 'measurement')
 PUBLIC_CANDIDATE_FLAT_NETLIST_COLUMNS = [
     'operation_index',
     'run_length_row_index',
@@ -3024,6 +3025,116 @@ def _strict_replayed_tail_liveness_projection(
     }
 
 
+def _modular_arithmetic_engine_integration_report(
+    *,
+    modular_arithmetic_certificate: Optional[Mapping[str, Any]],
+    arithmetic_operation_ir: Mapping[str, Any],
+    rows: List[Mapping[str, Any]],
+    strict_liveness_projection: Optional[Mapping[str, Any]],
+) -> Dict[str, Any]:
+    if modular_arithmetic_certificate is None:
+        return {
+            'schema': 'compiler-project-modular-arithmetic-engine-integration-v1',
+            'status': 'missing_modular_arithmetic_certificate',
+            'checks': {'modular_certificate_present': False},
+            'pass': False,
+        }
+    primitive_stream = modular_arithmetic_certificate['modular_primitive_stream_certificate']
+    kernel_by_opcode = {
+        str(kernel['opcode']): kernel
+        for kernel in arithmetic_operation_ir['kernels']
+    }
+    engine_kernel_rows = []
+    for opcode_row in primitive_stream['opcodes']:
+        opcode = str(opcode_row['opcode'])
+        kernel = kernel_by_opcode.get(opcode)
+        counts_match_engine_kernel = (
+            kernel is not None
+            and int(kernel['operation_count']) == int(opcode_row['operation_count'])
+            and int(kernel['exact_non_clifford_per_kernel']) == int(opcode_row['non_clifford_total'])
+            and {
+                key: int(kernel['primitive_counts_total'][key])
+                for key in PRIMITIVE_COUNT_KEYS
+            } == {
+                key: int(opcode_row['primitive_counts_total'][key])
+                for key in PRIMITIVE_COUNT_KEYS
+            }
+        )
+        engine_kernel_rows.append({
+            'opcode': opcode,
+            'local_operation_count': int(opcode_row['operation_count']),
+            'local_non_clifford_count': int(opcode_row['non_clifford_total']),
+            'local_operation_stream_sha256': str(opcode_row['operation_stream_sha256']),
+            'engine_kernel_present': kernel is not None,
+            'engine_kernel_operation_count': None if kernel is None else int(kernel['operation_count']),
+            'engine_kernel_non_clifford_count': None if kernel is None else int(kernel['exact_non_clifford_per_kernel']),
+            'counts_match_engine_kernel': counts_match_engine_kernel,
+        })
+    arithmetic_rows = [
+        row
+        for row in rows
+        if row['scope'] == 'arithmetic_leaf_block'
+    ]
+    strict_liveness_by_row = {
+        int(row['row_index']): row
+        for row in (strict_liveness_projection or {}).get('rows', [])
+    }
+    strict_rows_checked = [
+        strict_liveness_by_row[int(row['row_index'])]
+        for row in arithmetic_rows
+        if int(row['row_index']) in strict_liveness_by_row
+    ]
+    checks = {
+        'modular_certificate_present': True,
+        'local_modular_stream_passes': primitive_stream['pass'] is True,
+        'local_modular_opcodes_have_engine_kernels': all(row['engine_kernel_present'] for row in engine_kernel_rows),
+        'local_modular_opcode_counts_match_engine_kernels': all(row['counts_match_engine_kernel'] for row in engine_kernel_rows),
+        'public_arithmetic_rows_exist': len(arithmetic_rows) > 0,
+        'public_arithmetic_rows_are_operation_ir_sourced': all(
+            row['primitive_operand_contract']['source_kind'] == 'arithmetic_operation_ir'
+            for row in arithmetic_rows
+        ),
+        'public_arithmetic_rows_have_exact_operand_domains': all(
+            len(row['primitive_operand_contract']['operand_domains']) == PRIMITIVE_GATE_ARITY[str(row['gate'])]
+            for row in arithmetic_rows
+        ),
+        'strict_liveness_projection_covers_public_arithmetic_rows': (
+            strict_liveness_projection is not None
+            and len(strict_rows_checked) == len(arithmetic_rows)
+            and all(row['owner_capacity_pass'] is True for row in strict_rows_checked)
+        ),
+    }
+    return {
+        'schema': 'compiler-project-modular-arithmetic-engine-integration-v1',
+        'status': 'local_modular_primitive_streams_bound_to_public_arithmetic_engine_rows',
+        'local_modular_primitive_stream': {
+            'operation_count': int(primitive_stream['operation_count']),
+            'non_clifford_total': int(primitive_stream['non_clifford_total']),
+            'operation_stream_sha256': str(primitive_stream['operation_stream_sha256']),
+        },
+        'engine_kernel_rows': engine_kernel_rows,
+        'public_arithmetic_rows': {
+            'run_length_row_count': len(arithmetic_rows),
+            'operation_count': sum(int(row['total_count']) for row in arithmetic_rows),
+            'source_kinds': sorted({
+                str(row['primitive_operand_contract']['source_kind'])
+                for row in arithmetic_rows
+            }),
+        },
+        'strict_liveness_projection': {
+            'rows_checked': len(strict_rows_checked),
+            'peak_live_qubits': None if strict_liveness_projection is None else int(strict_liveness_projection['peak_live_qubits']),
+            'liveness_binding_stream_sha256': None if strict_liveness_projection is None else str(strict_liveness_projection['liveness_binding_stream_sha256']),
+        },
+        'checks': checks,
+        'pass': all(checks.values()),
+        'boundary': [
+            'This report binds local modular primitive streams into the public arithmetic engine row set and strict liveness projection.',
+            'It does not yet replace the remaining global-schedule goal: operation semantics still need one end-to-end modular arithmetic schedule rather than per-kernel allocation evidence.',
+        ],
+    }
+
+
 def build_public_candidate_materialized_circuit_manifest(
     *,
     reusable_chunk_lowering: Mapping[str, Any],
@@ -3039,6 +3150,7 @@ def build_public_candidate_materialized_circuit_manifest(
     strict_materialized_flat_netlist_override: Optional[Mapping[str, Any]] = None,
     strict_replayed_tail_headline: Optional[Mapping[str, Any]] = None,
     tail_macro_engine: Optional[Mapping[str, Any]] = None,
+    modular_arithmetic_certificate: Optional[Mapping[str, Any]] = None,
 ) -> Dict[str, Any]:
     counted_resource_ir = reusable_chunk_lowering['counted_resource_ir']
     public_totals = reusable_chunk_lowering['executable_resource_engine']['public_totals']
@@ -3113,6 +3225,12 @@ def build_public_candidate_materialized_circuit_manifest(
             strict_materialized_flat_netlist['exact_operation_stream_materialized'] is True
         )
         strict_liveness_projection['pass'] = all(strict_liveness_projection['checks'].values())
+    modular_arithmetic_engine_integration = _modular_arithmetic_engine_integration_report(
+        modular_arithmetic_certificate=modular_arithmetic_certificate,
+        arithmetic_operation_ir=arithmetic_operation_ir,
+        rows=rows,
+        strict_liveness_projection=strict_liveness_projection,
+    )
     if strict_materialized_flat_netlist is not None and strict_materialized_flat_netlist['exact_operation_stream_materialized'] is True:
         canonical_materialized_flat_netlist = strict_materialized_flat_netlist
         public_totals = {
@@ -3405,6 +3523,7 @@ def build_public_candidate_materialized_circuit_manifest(
             and strict_liveness_projection['peak_live_qubits'] == strict_capacity_overlay['strict_capacity_terms']['reconstructed_logical_qubits']
             and strict_liveness_projection['claim_boundary']['materialized_flat_netlist_segment_hashes_include_projected_liveness'] is True
         ),
+        'modular_arithmetic_engine_integration_is_bound': modular_arithmetic_engine_integration['pass'] is True,
         'strict_replayed_tail_materialized_flat_netlist_is_bound': (
             strict_materialized_flat_netlist is not None
             and strict_materialized_flat_netlist['exact_operation_stream_materialized'] is True
@@ -3455,6 +3574,7 @@ def build_public_candidate_materialized_circuit_manifest(
             'compiler_parameters_sha256': _sha256_payload(compiler_parameters),
             'strict_replayed_tail_headline_sha256': _sha256_payload(strict_replayed_tail_headline) if strict_replayed_tail_headline is not None else None,
             'tail_macro_engine_sha256': _sha256_payload(tail_macro_engine) if tail_macro_engine is not None else None,
+            'modular_arithmetic_certificate_sha256': _sha256_payload(modular_arithmetic_certificate) if modular_arithmetic_certificate is not None else None,
         },
         'operation_stream_sha256': _public_candidate_stream_hash(rows),
         'liveness_binding_stream_sha256': _public_candidate_liveness_hash(liveness_rows),
@@ -3483,6 +3603,7 @@ def build_public_candidate_materialized_circuit_manifest(
         },
         'strict_replayed_tail_capacity_overlay': strict_capacity_overlay,
         'strict_replayed_tail_liveness_projection': strict_liveness_projection,
+        'modular_arithmetic_engine_integration': modular_arithmetic_engine_integration,
         STRICT_REPLAYED_TAIL_MATERIALIZED_FLAT_NETLIST: strict_materialized_flat_netlist,
         CANONICAL_MATERIALIZED_FLAT_NETLIST: canonical_materialized_flat_netlist,
         'canonical_physical_flat_netlist': canonical_physical_flat_netlist,

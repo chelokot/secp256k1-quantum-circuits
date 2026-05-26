@@ -306,6 +306,7 @@ def build_public_candidate_materialized_circuit_manifest_artifact() -> None:
     qroam_primitive_certificate = load_json(artifact_dir / 'qroam_primitive_certificate.json')
     qroam_table_cnot_materialization = load_json(artifact_dir / 'qroam_table_cnot_materialization.json')
     phase_shell_lowerings = load_json(artifact_dir / 'phase_shell_lowerings.json')
+    modular_arithmetic_certificate = load_json(artifact_dir / 'modular_arithmetic_certificate.json')
     source_digests = {
         'reusable_chunk_lowering_sha256': _sha256_payload(reusable_chunk_lowering),
         'counted_resource_ir_sha256': reusable_chunk_lowering['executable_resource_engine']['counted_resource_ir_sha256'],
@@ -316,6 +317,7 @@ def build_public_candidate_materialized_circuit_manifest_artifact() -> None:
         'compiler_parameters_sha256': _sha256_payload(compiler_parameters),
         'strict_replayed_tail_headline_sha256': _sha256_payload(load_json(artifact_dir / 'strict_replayed_tail_headline.json')),
         'tail_macro_engine_sha256': _sha256_payload(load_json(artifact_dir / 'tail_macro_engine.json')),
+        'modular_arithmetic_certificate_sha256': _sha256_payload(modular_arithmetic_certificate),
     }
     existing_path = artifact_dir / 'public_candidate_materialized_circuit_manifest.json'
     materialized_flat_netlist_override = None
@@ -336,6 +338,7 @@ def build_public_candidate_materialized_circuit_manifest_artifact() -> None:
             include_materialized_flat_netlist=False,
             strict_replayed_tail_headline=load_json(artifact_dir / 'strict_replayed_tail_headline.json'),
             tail_macro_engine=load_json(artifact_dir / 'tail_macro_engine.json'),
+            modular_arithmetic_certificate=modular_arithmetic_certificate,
         )
         if (
             existing.get('operation_stream_sha256') == lightweight_payload['operation_stream_sha256']
@@ -364,6 +367,7 @@ def build_public_candidate_materialized_circuit_manifest_artifact() -> None:
         strict_materialized_flat_netlist_override=strict_materialized_flat_netlist_override,
         strict_replayed_tail_headline=load_json(artifact_dir / 'strict_replayed_tail_headline.json'),
         tail_macro_engine=load_json(artifact_dir / 'tail_macro_engine.json'),
+        modular_arithmetic_certificate=modular_arithmetic_certificate,
     )
     dump_json(artifact_dir / 'public_candidate_materialized_circuit_manifest.json', payload)
 

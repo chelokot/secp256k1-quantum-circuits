@@ -199,10 +199,12 @@ compact strict-claim side document.
 Modular arithmetic is no longer a separate formula source: the arithmetic
 lowering embeds `executable_modular_circuit_ir`, emits the modular kernels from
 it, and the modular certificate consumes that same IR plus a generated local
-primitive-stream certificate. The remaining arithmetic row in
-`engine_completion_audit.json` is the allocation of those local modular
-primitive streams into the same global flat schedule with concrete wires,
-owners, and liveness.
+primitive-stream certificate. The public materialized-engine manifest now binds
+those local modular streams to arithmetic engine kernels, public arithmetic
+rows, exact operand domains, and the strict liveness projection. The remaining
+arithmetic row in `engine_completion_audit.json` is the stronger semantic
+schedule: a single end-to-end modular arithmetic execution schedule rather than
+per-kernel allocation evidence.
 The QROAM row similarly records that the current standard-QROAMClean certificate
 now hashes generated word-level unary-iteration rows and target-bit Clifford
 load-site rows with selection-control, target-register, and loaded-bit source

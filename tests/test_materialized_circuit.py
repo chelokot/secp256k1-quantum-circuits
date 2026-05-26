@@ -71,6 +71,7 @@ def _build_public_candidate_materialized(
         include_materialized_flat_netlist=False,
         strict_replayed_tail_headline=_artifact('strict_replayed_tail_headline.json'),
         tail_macro_engine=_artifact('tail_macro_engine.json'),
+        modular_arithmetic_certificate=_artifact('modular_arithmetic_certificate.json'),
     )
 
 
@@ -227,6 +228,13 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert projection['claim_boundary']['operation_index_rows_can_inherit_projected_liveness'] is True
     assert projection['claim_boundary']['materialized_flat_netlist_segment_hashes_include_projected_liveness'] is True
     assert all(row['total_live_qubits'] == projection['peak_live_qubits'] for row in projection['rows'] if row['scope'] == 'arithmetic_leaf_block')
+    assert manifest['checks']['modular_arithmetic_engine_integration_is_bound'] is True
+    modular = manifest['modular_arithmetic_engine_integration']
+    assert modular['pass'] is True
+    assert modular['local_modular_primitive_stream']['operation_count'] == _artifact('modular_arithmetic_certificate.json')['modular_primitive_stream_certificate']['operation_count']
+    assert modular['public_arithmetic_rows']['run_length_row_count'] == manifest['arithmetic_leaf_block_row_count']
+    assert modular['strict_liveness_projection']['rows_checked'] == manifest['arithmetic_leaf_block_row_count']
+    assert all(row['counts_match_engine_kernel'] is True for row in modular['engine_kernel_rows'])
     assert manifest['checks']['strict_replayed_tail_materialized_flat_netlist_is_bound'] is True
     assert manifest['checks']['strict_replayed_tail_materialized_flat_netlist_segments_cover_stream'] is True
     assert manifest['checks']['strict_replayed_tail_materialized_flat_netlist_preview_rows_are_concrete'] is True

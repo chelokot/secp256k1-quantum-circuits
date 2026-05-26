@@ -60,6 +60,7 @@ def build_engine_completion_audit(
     canonical_physical_flat = public_candidate_materialized_circuit_manifest['canonical_physical_flat_netlist']
     strict_materialized_flat = public_candidate_materialized_circuit_manifest[STRICT_REPLAYED_TAIL_MATERIALIZED_FLAT_NETLIST]
     strict_completeness = public_candidate_materialized_circuit_manifest['strict_primitive_completeness']
+    modular_engine_integration = public_candidate_materialized_circuit_manifest['modular_arithmetic_engine_integration']
     source_binding = public_candidate_materialized_circuit_manifest['operand_source_binding']
     parent_binding = public_candidate_materialized_circuit_manifest['operand_parent_binding']
     rows_by_source_kind = {
@@ -180,6 +181,8 @@ def build_engine_completion_audit(
             and int(arithmetic_operand_replay_audit['rows_with_failures']) == 0
             and int(arithmetic_operand_replay_audit['unique_block_gate_failures']) == 0
             and arithmetic_operation_ir['checks']['modular_kernels_derive_from_executable_modular_circuit_ir'] is True
+            and modular_engine_integration['pass'] is True
+            and public_candidate_materialized_circuit_manifest['checks']['modular_arithmetic_engine_integration_is_bound'] is True
             and arithmetic_operation_ir['checks']['tail_macro_kernel_derives_from_tail_macro_engine'] is True
             and int(arithmetic_leaf_summary['non_clifford_total']) == sum(
                 int(row['kernel_non_clifford_per_instance']) * int(row['leaf_instance_count'])
@@ -335,9 +338,9 @@ def build_engine_completion_audit(
     remaining_macro_boundaries = [
         {
             'name': 'modular_arithmetic_clifford_expansion',
-            'status': 'local_modular_primitive_streams_hashed_not_one_global_clifford_schedule',
+            'status': 'local_modular_primitive_streams_bound_to_public_engine_rows_not_one_global_semantic_schedule',
             'required_to_close': 'Emit and count exact concrete Clifford/CCX wire operations for every modular add, subtract, multiply, fold, and reduction step inside the same global flat schedule as the point-add leaf.',
-            'current_evidence': 'arithmetic_operation_ir + modular_arithmetic_certificate.modular_primitive_stream_certificate + public_candidate_materialized_circuit_manifest.operand_source_binding',
+            'current_evidence': 'arithmetic_operation_ir + modular_arithmetic_certificate.modular_primitive_stream_certificate + public_candidate_materialized_circuit_manifest.modular_arithmetic_engine_integration',
             'evidence_metrics': {
                 'source_bound_run_length_rows': rows_by_source_kind['arithmetic_operation_ir'],
                 'leaf_arithmetic_non_clifford': int(arithmetic_leaf_summary['non_clifford_total']),
@@ -350,6 +353,9 @@ def build_engine_completion_audit(
                 'local_modular_primitive_stream_pass': bool(modular_arithmetic_certificate['modular_primitive_stream_certificate']['pass']),
                 'local_modular_primitive_stream_operation_count': int(modular_arithmetic_certificate['modular_primitive_stream_certificate']['operation_count']),
                 'local_modular_primitive_stream_sha256': modular_arithmetic_certificate['modular_primitive_stream_certificate']['operation_stream_sha256'],
+                'modular_engine_integration_pass': bool(modular_engine_integration['pass']),
+                'modular_engine_integration_public_arithmetic_operation_count': int(modular_engine_integration['public_arithmetic_rows']['operation_count']),
+                'modular_engine_integration_strict_liveness_rows_checked': int(modular_engine_integration['strict_liveness_projection']['rows_checked']),
                 'field_mul_non_clifford': int(modular_arithmetic_certificate['field_mul_stage_count_certificate']['observed_total_ccx']),
                 'field_mul_stage_counts_match': bool(modular_arithmetic_certificate['field_mul_stage_count_certificate']['stage_counts_match']),
                 'modular_ir_counts_match_lowerings': bool(modular_arithmetic_certificate['executable_circuit_ir_count_certificate']['counts_match_arithmetic_lowerings']),

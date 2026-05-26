@@ -490,36 +490,36 @@
     },
     "public_candidate_materialized_circuit_manifest": {
       "path": "compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json",
-      "sha256": "70172ee675563d2ca82d291c6b2c5ce4d36a0ebad4a2f066b04899779c12fc46",
-      "bytes": 45656481,
+      "sha256": "e1536b577a5c3f60e8125886354ed2bde1796e0c9378068fbc801aaf3ada0d1b",
+      "bytes": 45660844,
       "manifest_record": {
         "sha256": "70172ee675563d2ca82d291c6b2c5ce4d36a0ebad4a2f066b04899779c12fc46",
         "bytes": 45656481
       },
       "manifest_record_present": true,
-      "manifest_sha256_matches_checked_record": true
+      "manifest_sha256_matches_checked_record": false
     },
     "public_engine_manifest": {
       "path": "compiler_verification_project/artifacts/public_engine_manifest.json",
-      "sha256": "85363e9fc31479cb1303f7200edf15cd8686679e647016eee9d95399b644c651",
+      "sha256": "c95364714c30c3bf30392a3fb6c74a2fce97427b896b28d217f59ebce338bd30",
       "bytes": 30733,
       "manifest_record": {
         "sha256": "85363e9fc31479cb1303f7200edf15cd8686679e647016eee9d95399b644c651",
         "bytes": 30733
       },
       "manifest_record_present": true,
-      "manifest_sha256_matches_checked_record": true
+      "manifest_sha256_matches_checked_record": false
     },
     "engine_completion_audit": {
       "path": "compiler_verification_project/artifacts/engine_completion_audit.json",
-      "sha256": "4e1b235e03eff856ac45522bf16839acf4360906b232ad60d6bd23b2dfdc387b",
-      "bytes": 10038,
+      "sha256": "af284551123034f1d8fb584b51df4379b83644e400bfa6d1ec52d911b8a311de",
+      "bytes": 10280,
       "manifest_record": {
         "sha256": "4e1b235e03eff856ac45522bf16839acf4360906b232ad60d6bd23b2dfdc387b",
         "bytes": 10038
       },
       "manifest_record_present": true,
-      "manifest_sha256_matches_checked_record": true
+      "manifest_sha256_matches_checked_record": false
     }
   },
   "proof_manifest": {
@@ -529,8 +529,8 @@
   },
   "public_headline_result": {
     "path": "compiler_verification_project/artifacts/public_headline_result.json",
-    "sha256": "93baa5401776bc7d4b10ace718a5b850666447c2fecef4b1decbf430ae78dde2",
-    "bytes": 15840
+    "sha256": "b6a762fc254b529e1819d2fffb9a2bea5c8b8d9ebd848f643959b54eade2b8c4",
+    "bytes": 15843
   },
   "notes": [
     "This artifact is deterministic and repository-bound; it is not a pinned container or Nix lock.",
@@ -539,11 +539,11 @@
     "No command in this contract invokes --prove; proof rebuilds remain an explicit separate operation."
   ],
   "checks": {
-    "public_headline_result_metadata_is_self_consistent": true,
+    "public_headline_result_metadata_is_self_consistent": false,
     "public_headline_result_keeps_proof_freshness_separate": true,
-    "all_checked_artifacts_exist_and_match_digest": true,
+    "all_checked_artifacts_exist_and_match_digest": false,
     "proof_manifest_records_public_headline_checked_artifacts": true,
-    "proof_manifest_records_match_public_headline_checked_artifacts": true,
+    "proof_manifest_records_match_public_headline_checked_artifacts": false,
     "publication_freshness_gate_requires_all_current_proofs": true,
     "fast_publication_gate_uses_current_proof_requirement": true,
     "no_fast_or_metadata_command_invokes_prover": true,
@@ -551,5 +551,5 @@
     "direct_verify_commands_bind_checked_input_and_proofs": true,
     "tool_contract_lists_required_sp1_stack": true
   },
-  "pass": true
+  "pass": false
 }
