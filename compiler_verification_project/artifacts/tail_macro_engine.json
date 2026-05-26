@@ -13805,7 +13805,7 @@
   },
   "fused_output_reordered_schedule": {
     "schedule_model": "reordered_dag_local_inverse_overwrite_search",
-    "status": "solution_found_with_boundary_replay_and_fused_output_lowering_contract",
+    "status": "solution_found_with_replay_and_reversible_field_schedule_contract",
     "field_bits": 256,
     "counted_arithmetic_slots": 3,
     "max_peak_field_slots_searched": 7,
@@ -14473,6 +14473,7 @@
     "notes": [
       "This schedule reorders the fused-output tail DAG and allows an overwrite only when the chosen operand passed the toy-boundary operand screen.",
       "The paired fused_output_lowering_contract reconstructs the double-product output costs and names the required affine output overwrite.",
+      "The paired fused_output_reversible_schedule_contract assigns every reused field lane to a reversible field-operation contract over counted seven-slot owners.",
       "This remains a strict point-add boundary resource contract rather than a fully flattened Clifford-level ZKP guest."
     ]
   },
@@ -15334,6 +15335,417 @@
       "The contract is checked on the same toy point-add boundary as the replay certificate, plus an explicit secp256k1 coefficient/counterexample certificate."
     ]
   },
+  "fused_output_reversible_schedule_contract": {
+    "schema": "compiler-project-tail-fused-output-reversible-schedule-contract-v1",
+    "status": "seven_slot_field_operation_schedule_has_reversible_contract",
+    "scope": "field_operation_schedule_over_counted_tail_slots",
+    "field_bits": 256,
+    "peak_field_slots": 7,
+    "owner_capacity_total_logical_qubits": 1792,
+    "operation_count": 17,
+    "overwritten_row_count": 10,
+    "fresh_target_row_count": 7,
+    "rows": [
+      {
+        "schedule_index": 0,
+        "operation_index": 0,
+        "opcode": "field_add",
+        "target": "G",
+        "sources": [
+          "X",
+          "Y"
+        ],
+        "target_slot": 3,
+        "overwritten_source": null,
+        "contract_kind": "fresh_target_field_register",
+        "reversibility_proof": {
+          "kind": "fresh_target",
+          "target_slot": 3,
+          "capacity_owner_id": "tail_reordered_slot_3"
+        },
+        "reversible_field_operation_contract_pass": true
+      },
+      {
+        "schedule_index": 1,
+        "operation_index": 1,
+        "opcode": "field_mul_lookup_sum",
+        "target": "H",
+        "sources": [
+          "G",
+          "lookup_x_plus_y"
+        ],
+        "target_slot": 4,
+        "overwritten_source": null,
+        "contract_kind": "fresh_target_field_register",
+        "reversibility_proof": {
+          "kind": "fresh_target",
+          "target_slot": 4,
+          "capacity_owner_id": "tail_reordered_slot_4"
+        },
+        "reversible_field_operation_contract_pass": true
+      },
+      {
+        "schedule_index": 2,
+        "operation_index": 3,
+        "opcode": "field_mul_lookup_x",
+        "target": "Zx",
+        "sources": [
+          "Z",
+          "lookup_x"
+        ],
+        "target_slot": 3,
+        "overwritten_source": null,
+        "contract_kind": "fresh_target_field_register",
+        "reversibility_proof": {
+          "kind": "fresh_target",
+          "target_slot": 3,
+          "capacity_owner_id": "tail_reordered_slot_3"
+        },
+        "reversible_field_operation_contract_pass": true
+      },
+      {
+        "schedule_index": 3,
+        "operation_index": 4,
+        "opcode": "field_add",
+        "target": "C_input",
+        "sources": [
+          "X",
+          "Zx"
+        ],
+        "target_slot": 3,
+        "overwritten_source": "Zx",
+        "contract_kind": "screened_local_inverse_field_permutation",
+        "reversibility_proof": {
+          "kind": "affine_unit_coefficient",
+          "overwritten_source": "Zx",
+          "domain_rows_checked": 110082,
+          "screen_pass": true,
+          "rule": {
+            "kind": "affine_unit_coefficient",
+            "symbolic_inverse_exists_over_field": true
+          }
+        },
+        "reversible_field_operation_contract_pass": true
+      },
+      {
+        "schedule_index": 4,
+        "operation_index": 2,
+        "opcode": "field_mul_lookup_x",
+        "target": "A",
+        "sources": [
+          "X",
+          "lookup_x"
+        ],
+        "target_slot": 0,
+        "overwritten_source": "X",
+        "contract_kind": "screened_local_inverse_field_permutation",
+        "reversibility_proof": {
+          "kind": "lookup_constant_multiply",
+          "overwritten_source": "X",
+          "domain_rows_checked": 110082,
+          "screen_pass": true,
+          "rule": {
+            "kind": "lookup_constant_multiply",
+            "constant_source": "lookup_x",
+            "symbolic_inverse_exists_over_field": null
+          }
+        },
+        "reversible_field_operation_contract_pass": true
+      },
+      {
+        "schedule_index": 5,
+        "operation_index": 5,
+        "opcode": "mul_const",
+        "target": "C",
+        "sources": [
+          "C_input"
+        ],
+        "target_slot": 3,
+        "overwritten_source": "C_input",
+        "contract_kind": "screened_local_inverse_field_permutation",
+        "reversibility_proof": {
+          "kind": "constant_multiply",
+          "overwritten_source": "C_input",
+          "domain_rows_checked": 110082,
+          "screen_pass": true,
+          "rule": {
+            "kind": "constant_multiply",
+            "constant": 21,
+            "symbolic_inverse_exists_over_field": true
+          }
+        },
+        "reversible_field_operation_contract_pass": true
+      },
+      {
+        "schedule_index": 6,
+        "operation_index": 9,
+        "opcode": "field_mul_lookup_y",
+        "target": "yZ",
+        "sources": [
+          "Z",
+          "lookup_y"
+        ],
+        "target_slot": 5,
+        "overwritten_source": null,
+        "contract_kind": "fresh_target_field_register",
+        "reversibility_proof": {
+          "kind": "fresh_target",
+          "target_slot": 5,
+          "capacity_owner_id": "tail_reordered_slot_5"
+        },
+        "reversible_field_operation_contract_pass": true
+      },
+      {
+        "schedule_index": 7,
+        "operation_index": 10,
+        "opcode": "field_add",
+        "target": "E",
+        "sources": [
+          "Y",
+          "yZ"
+        ],
+        "target_slot": 5,
+        "overwritten_source": "yZ",
+        "contract_kind": "screened_local_inverse_field_permutation",
+        "reversibility_proof": {
+          "kind": "affine_unit_coefficient",
+          "overwritten_source": "yZ",
+          "domain_rows_checked": 110082,
+          "screen_pass": true,
+          "rule": {
+            "kind": "affine_unit_coefficient",
+            "symbolic_inverse_exists_over_field": true
+          }
+        },
+        "reversible_field_operation_contract_pass": true
+      },
+      {
+        "schedule_index": 8,
+        "operation_index": 6,
+        "opcode": "field_mul_lookup_y",
+        "target": "I",
+        "sources": [
+          "Y",
+          "lookup_y"
+        ],
+        "target_slot": 1,
+        "overwritten_source": "Y",
+        "contract_kind": "screened_local_inverse_field_permutation",
+        "reversibility_proof": {
+          "kind": "lookup_constant_multiply",
+          "overwritten_source": "Y",
+          "domain_rows_checked": 110082,
+          "screen_pass": true,
+          "rule": {
+            "kind": "lookup_constant_multiply",
+            "constant_source": "lookup_y",
+            "symbolic_inverse_exists_over_field": null
+          }
+        },
+        "reversible_field_operation_contract_pass": true
+      },
+      {
+        "schedule_index": 9,
+        "operation_index": 7,
+        "opcode": "field_sub_sum",
+        "target": "K",
+        "sources": [
+          "H",
+          "A",
+          "I"
+        ],
+        "target_slot": 4,
+        "overwritten_source": "H",
+        "contract_kind": "screened_local_inverse_field_permutation",
+        "reversibility_proof": {
+          "kind": "affine_unit_coefficient",
+          "overwritten_source": "H",
+          "domain_rows_checked": 110082,
+          "screen_pass": true,
+          "rule": {
+            "kind": "affine_unit_coefficient",
+            "symbolic_inverse_exists_over_field": true
+          }
+        },
+        "reversible_field_operation_contract_pass": true
+      },
+      {
+        "schedule_index": 10,
+        "operation_index": 8,
+        "opcode": "field_triple",
+        "target": "L",
+        "sources": [
+          "A"
+        ],
+        "target_slot": 0,
+        "overwritten_source": "A",
+        "contract_kind": "screened_local_inverse_field_permutation",
+        "reversibility_proof": {
+          "kind": "constant_multiply",
+          "overwritten_source": "A",
+          "domain_rows_checked": 110082,
+          "screen_pass": true,
+          "rule": {
+            "kind": "constant_multiply",
+            "constant": 3,
+            "symbolic_inverse_exists_over_field": true
+          }
+        },
+        "reversible_field_operation_contract_pass": true
+      },
+      {
+        "schedule_index": 11,
+        "operation_index": 11,
+        "opcode": "mul_const",
+        "target": "F",
+        "sources": [
+          "Z"
+        ],
+        "target_slot": 2,
+        "overwritten_source": "Z",
+        "contract_kind": "screened_local_inverse_field_permutation",
+        "reversibility_proof": {
+          "kind": "constant_multiply",
+          "overwritten_source": "Z",
+          "domain_rows_checked": 110082,
+          "screen_pass": true,
+          "rule": {
+            "kind": "constant_multiply",
+            "constant": 21,
+            "symbolic_inverse_exists_over_field": true
+          }
+        },
+        "reversible_field_operation_contract_pass": true
+      },
+      {
+        "schedule_index": 12,
+        "operation_index": 12,
+        "opcode": "field_add",
+        "target": "M",
+        "sources": [
+          "I",
+          "F"
+        ],
+        "target_slot": 6,
+        "overwritten_source": null,
+        "contract_kind": "fresh_target_field_register",
+        "reversibility_proof": {
+          "kind": "fresh_target",
+          "target_slot": 6,
+          "capacity_owner_id": "tail_reordered_slot_6"
+        },
+        "reversible_field_operation_contract_pass": true
+      },
+      {
+        "schedule_index": 13,
+        "operation_index": 13,
+        "opcode": "field_sub",
+        "target": "N",
+        "sources": [
+          "I",
+          "F"
+        ],
+        "target_slot": 1,
+        "overwritten_source": "I",
+        "contract_kind": "screened_local_inverse_field_permutation",
+        "reversibility_proof": {
+          "kind": "affine_unit_coefficient",
+          "overwritten_source": "I",
+          "domain_rows_checked": 110082,
+          "screen_pass": true,
+          "rule": {
+            "kind": "affine_unit_coefficient",
+            "symbolic_inverse_exists_over_field": true
+          }
+        },
+        "reversible_field_operation_contract_pass": true
+      },
+      {
+        "schedule_index": 14,
+        "operation_index": 14,
+        "opcode": "field_double_mul_sub",
+        "target": "X3",
+        "sources": [
+          "K",
+          "N",
+          "E",
+          "C"
+        ],
+        "target_slot": 2,
+        "overwritten_source": null,
+        "contract_kind": "fresh_target_field_register",
+        "reversibility_proof": {
+          "kind": "fresh_target",
+          "target_slot": 2,
+          "capacity_owner_id": "tail_reordered_slot_2"
+        },
+        "reversible_field_operation_contract_pass": true
+      },
+      {
+        "schedule_index": 15,
+        "operation_index": 15,
+        "opcode": "field_double_mul_add",
+        "target": "Y3",
+        "sources": [
+          "N",
+          "M",
+          "C",
+          "L"
+        ],
+        "target_slot": 3,
+        "overwritten_source": "C",
+        "contract_kind": "secp256k1_zero_lifted_fused_output_permutation",
+        "reversibility_proof": {
+          "kind": "secp256k1_zero_lifted_in_place_field_permutation",
+          "overwritten_source": "C",
+          "screen_pass": true,
+          "secp256k1_permutation_pass": true,
+          "guard_owner_id": "tail_fused_output_zero_lift_guard",
+          "guard_logical_qubits": 1,
+          "guard_non_clifford": 510,
+          "domain_rows_checked": 110082
+        },
+        "reversible_field_operation_contract_pass": true
+      },
+      {
+        "schedule_index": 16,
+        "operation_index": 16,
+        "opcode": "field_double_mul_add",
+        "target": "Z3",
+        "sources": [
+          "M",
+          "E",
+          "L",
+          "K"
+        ],
+        "target_slot": 1,
+        "overwritten_source": null,
+        "contract_kind": "fresh_target_field_register",
+        "reversibility_proof": {
+          "kind": "fresh_target",
+          "target_slot": 1,
+          "capacity_owner_id": "tail_reordered_slot_1"
+        },
+        "reversible_field_operation_contract_pass": true
+      }
+    ],
+    "checks": {
+      "schedule_solution_reaches_seven_slots": true,
+      "slot_owner_capacity_covers_peak": true,
+      "all_reused_lanes_have_reversible_contract": true,
+      "fresh_target_rows_have_capacity_owner": true,
+      "fused_output_guard_is_counted": true,
+      "replay_and_owner_capacity_pass": true,
+      "lowering_contract_pass": true,
+      "final_live_values_are_projective_outputs": true
+    },
+    "pass": true,
+    "notes": [
+      "This promotes the selected seven-slot tail schedule from a replay diagnostic to a field-operation reversible schedule contract.",
+      "The contract is still above the modular-arithmetic Clifford expansion layer; each field operation is delegated to the remaining modular arithmetic lowering boundary.",
+      "Every lane reuse is backed either by the operand-screen local inverse certificate or by the secp256k1 zero-lift fused-output permutation with its guard qubit counted."
+    ]
+  },
   "checks": {
     "formula_targets_match_engine_targets": true,
     "expanded_operation_stream_covers_formula_targets": true,
@@ -15342,8 +15754,9 @@
     "fused_output_replay_passes": true,
     "fused_output_schedule_reaches_seven_slots": true,
     "fused_output_lowering_contract_passes": true,
+    "fused_output_reversible_schedule_contract_passes": true,
     "counted_slots_cover_expanded_single_assignment_peak": false
   },
   "pass": true,
-  "completion_status": "tail_cost_bound_to_expanded_field_operation_stream_but_in_place_schedule_unproven"
+  "completion_status": "tail_cost_bound_to_reversible_seven_slot_field_schedule_contract"
 }

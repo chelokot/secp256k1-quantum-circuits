@@ -73,7 +73,7 @@
       "mul_const": 2
     },
     "non_clifford_total": 1126842,
-    "completion_status": "tail_cost_bound_to_expanded_field_operation_stream_but_in_place_schedule_unproven"
+    "completion_status": "tail_cost_bound_to_reversible_seven_slot_field_schedule_contract"
   },
   "summary": {
     "kernel_count": 13,

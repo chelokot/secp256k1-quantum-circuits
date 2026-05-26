@@ -58,22 +58,22 @@
     }
   },
   "bound_documents": {
-    "claim_sha256": "bbec8745514ca8c2fff901e43797842aa8c1794a70349fad6a703315e2a2f376",
+    "claim_sha256": "ee7f5bdc71b957bf7c4f803b232671a35677efeedfb9cc305fef203e379819d0",
     "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
     "family_sha256": "c6a7146ac5c0d7a63f733b0224ac9dc6fbaafb576d196128f882ecbc01e42b2b",
     "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
     "resource_certificate_sha256": "b66f0c2c173a54da30fb1cb7c73334aec353ae525e8d0f5e7cfe4078833d31dd",
-    "public_engine_manifest_sha256": "e24e171b8224e831577cccdb3310a6e4f09faab5e9c6f72ad7fd189aadfaf02b"
+    "public_engine_manifest_sha256": "ebe25b6ade731aa3297c6295ecadcb5dfa5293e4d3e989b550e1f9b491c9019f"
   },
   "checked_artifacts": {
     "input": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
-      "sha256": "6e26cb5e7c25459047d92cd0cfd2ade17e68dcce104e29a95ac420b59f70513d",
+      "sha256": "4631831ada365c71af436a558568e31b503d9a335cd4d7bc87f3f0f2427b3bc7",
       "bytes": 344446
     },
     "claim": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json",
-      "sha256": "ebab43aeb62d37c03896a55dfbdba88c50471753db9df6f5ad01250f2ea7c998",
+      "sha256": "5ddd447f4c92f4fd4dbcc636143bacb567e3fce71eebb6959a3aae0c9791831f",
       "bytes": 1709
     },
     "family": {
@@ -201,18 +201,18 @@
     },
     "public_candidate_materialized_circuit_manifest": {
       "path": "compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json",
-      "sha256": "0883abcd83ae7bfd70e6980255eb7f7ac7f7e4d6914bbfac082377c5da513af8",
+      "sha256": "5000e19d1839ab3920f65c1138ebcfc4c332c9ebb5618d75b9cb0c377db8ec4d",
       "bytes": 45656481
     },
     "public_engine_manifest": {
       "path": "compiler_verification_project/artifacts/public_engine_manifest.json",
-      "sha256": "16b7fb55095700ec1a0bd1b8bad60347456f37d54c635ee9aa7380be1d99bab0",
+      "sha256": "072584d43fd20968e1839befdefaedb834596b5d0a7e646715f0cb388c479600",
       "bytes": 30733
     },
     "engine_completion_audit": {
       "path": "compiler_verification_project/artifacts/engine_completion_audit.json",
-      "sha256": "211139a025e171f57ed9141520bf2c4ec4ff247577927173fe0a22657205fa88",
-      "bytes": 9953
+      "sha256": "73af8dea68de4c09fbe995cb3a3a5212e70208db92a5fdfa5db09aae45f354d2",
+      "bytes": 9723
     }
   },
   "verification_commands": {

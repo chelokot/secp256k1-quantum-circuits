@@ -72,15 +72,13 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     assert expected['public_totals']['operation_count'] == materialized['operation_count']
     assert len(expected['remaining_macro_boundaries']) > 0
     remaining = {row['name']: row for row in expected['remaining_macro_boundaries']}
-    assert {
-        'modular_arithmetic_clifford_expansion',
-        'tail_macro_schedule_and_reversibility',
-    }.issubset(remaining)
+    assert set(remaining) == {'modular_arithmetic_clifford_expansion'}
     assert 'single_engine_zkp_input_derivation' not in remaining
     covered = {row['name']: row for row in expected['covered_boundaries']}
     assert covered['arithmetic_operand_replay']['status'] == 'exact_source_operands_replayed_to_counted_flat_netlist_wires'
     assert covered['qroam_bit_level_netlist_expansion']['status'] == 'indexed_table_cnot_rows_in_canonical_physical_flat_stream_with_iterator_export'
     assert covered['canonical_engine_zkp_input_authority']['status'] == 'public_engine_manifest_bound_by_candidate_input_and_guest_without_compact_strict_claim'
+    assert covered['tail_reversible_field_schedule_contract']['status'] == 'seven_slot_field_operation_schedule_bound_to_reversible_contract'
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['source_bound_run_length_rows'] == expected['source_binding_summary']['rows_by_source_kind']['arithmetic_operation_ir']
     assert expected['checks']['arithmetic_rows_are_operation_ir_bound'] is True
     assert expected['checks']['zkp_input_binds_canonical_engine_without_compact_strict_claim'] is True

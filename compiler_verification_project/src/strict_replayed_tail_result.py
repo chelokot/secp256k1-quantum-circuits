@@ -129,7 +129,6 @@ def build_strict_replayed_tail_headline_result(
         'source_digests': {
             'tail_macro_engine_sha256': _sha256_payload(tail_macro_engine),
             'reusable_chunk_lowering_sha256': _sha256_payload(reusable_chunk_lowering),
-            'public_headline_result_sha256': _sha256_payload(public_headline_result),
         },
         'checks': checks,
         'pass': all(checks.values()),

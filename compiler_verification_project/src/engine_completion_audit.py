@@ -198,8 +198,15 @@ def build_engine_completion_audit(
         ),
         'tail_macro_auxiliary_artifacts_are_current': (
             tail_macro_engine['pass'] is True
-            and tail_macro_engine['completion_status'] == 'tail_cost_bound_to_expanded_field_operation_stream_but_in_place_schedule_unproven'
+            and tail_macro_engine['completion_status'] == 'tail_cost_bound_to_reversible_seven_slot_field_schedule_contract'
             and tail_macro_engine['checks']['counted_slots_cover_expanded_single_assignment_peak'] is False
+            and tail_macro_engine['checks']['fused_output_reversible_schedule_contract_passes'] is True
+            and tail_macro_engine['fused_output_reversible_schedule_contract']['pass'] is True
+            and tail_macro_engine['fused_output_reversible_schedule_contract']['status'] == 'seven_slot_field_operation_schedule_has_reversible_contract'
+            and int(tail_macro_engine['fused_output_reversible_schedule_contract']['peak_field_slots']) == 7
+            and int(tail_macro_engine['fused_output_reversible_schedule_contract']['owner_capacity_total_logical_qubits']) == 7 * int(tail_macro_engine['field_bits'])
+            and int(tail_macro_engine['fused_output_reversible_schedule_contract']['operation_count']) == len(tail_macro_engine['fused_output_reordered_schedule']['rows'])
+            and int(tail_macro_engine['fused_output_reversible_schedule_contract']['overwritten_row_count']) == int(tail_macro_engine['fused_output_reordered_schedule']['overwritten_row_count'])
             and int(tail_macro_engine['expanded_slot_schedule']['peak_field_slots']) == int(tail_macro_engine['slot_gap']['expanded_single_assignment_peak_field_values'])
             and int(tail_macro_engine['expanded_slot_schedule']['additional_logical_qubits_over_counted_leaf']) == int(tail_macro_engine['slot_gap']['additional_logical_qubits_needed_without_in_place_schedule'])
             and tail_macro_engine['expanded_slot_schedule']['status'] == 'executable_capacity_fallback_not_reversible_cleanup_proof'
@@ -215,6 +222,11 @@ def build_engine_completion_audit(
             and int(tail_macro_engine['reordered_slot_assignment']['peak_field_slots']) == 8
             and tail_macro_engine['reordered_replay_certificate']['pass'] is True
             and tail_macro_engine['reordered_replay_certificate']['owner_capacity_pass'] is True
+            and tail_macro_engine['fused_output_reordered_schedule']['status'] == 'solution_found_with_replay_and_reversible_field_schedule_contract'
+            and tail_macro_engine['fused_output_replay_certificate']['pass'] is True
+            and tail_macro_engine['fused_output_replay_certificate']['owner_capacity_pass'] is True
+            and tail_macro_engine['fused_output_slot_assignment']['pass'] is True
+            and int(tail_macro_engine['fused_output_slot_assignment']['peak_field_slots']) == 7
             and tail_macro_liveness['pass'] is True
             and tail_macro_reversibility['canonical_subgroup_domain']['all_checked_rows_injective'] is True
             and tail_macro_reversibility['fixed_lookup_reachable_orbit_domain']['all_checked_rows_injective'] is True
@@ -301,8 +313,13 @@ def build_engine_completion_audit(
         },
         {
             'name': 'tail_macro_in_place_optimizer_signal',
-            'status': 'reordered_eight_slot_schedule_replayed_not_full_circuit_proof',
+            'status': 'reordered_eight_slot_schedule_replayed_diagnostic',
             'evidence': 'tail_macro_engine.reordered_local_inverse_schedule + tail_macro_engine.operand_overwrite_screen + tail_macro_engine.reordered_replay_certificate',
+        },
+        {
+            'name': 'tail_reversible_field_schedule_contract',
+            'status': 'seven_slot_field_operation_schedule_bound_to_reversible_contract',
+            'evidence': 'tail_macro_engine.fused_output_reversible_schedule_contract + fused_output_replay_certificate + fused_output_slot_assignment',
         },
         {
             'name': 'point_add_semantic_boundary',
@@ -335,19 +352,10 @@ def build_engine_completion_audit(
                 'modular_ir_counts_match_lowerings': bool(modular_arithmetic_certificate['executable_circuit_ir_count_certificate']['counts_match_arithmetic_lowerings']),
             },
         },
-        {
-            'name': 'tail_macro_schedule_and_reversibility',
-            'status': 'in_place_three_slot_schedule_boundary_not_eliminated',
-            'required_to_close': 'Promote an executable reversible/permutation-extension tail schedule into the counted resource contract, or promote a generated expanded/reordered slot schedule into the public qubit budget.',
-            'current_evidence': 'tail_macro_engine + tail_macro_liveness + tail_macro_reversibility + tail_macro_schedule_search + arithmetic_operation_ir',
-        },
     ]
     remaining_boundary_names = {row['name'] for row in remaining_macro_boundaries}
     checks['remaining_macro_boundaries_are_explicit'] = (
-        {
-            'modular_arithmetic_clifford_expansion',
-            'tail_macro_schedule_and_reversibility',
-        }.issubset(remaining_boundary_names)
+        remaining_boundary_names == {'modular_arithmetic_clifford_expansion'}
         and all(
             row['status']
             and row['required_to_close']
@@ -407,9 +415,9 @@ def build_engine_completion_audit(
         'checks': checks,
         'pass': all(checks.values()) and len(remaining_macro_boundaries) > 0,
         'notes': [
-            'This audit passing means the current public claim is internally source-bound and the remaining macro boundaries are explicit.',
+            'This audit passing means the current public claim is internally source-bound and the remaining macro boundary is explicit.',
             'The candidate ZKP input uses public_engine_manifest as the strict resource authority; compact primary_strict_claim is no longer part of the active ZKP authority path.',
-            'It does not mean the full thread goal is complete; clifford_complete_goal_achieved remains false until the remaining macro boundaries are eliminated.',
+            'It does not mean the full thread goal is complete; clifford_complete_goal_achieved remains false until the remaining macro boundary is eliminated.',
         ],
     }
 

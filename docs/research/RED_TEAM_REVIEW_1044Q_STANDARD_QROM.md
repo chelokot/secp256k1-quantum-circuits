@@ -10,14 +10,13 @@ Headline under review:
 - `1,044` logical qubits
 - family: `folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1`
 
-Current post-remediation macro/ZKP wrapper on this branch (stale until rebuilt
-after the guarded tail-resource change):
+Historical macro/ZKP wrapper reviewed before the guarded replayed-tail promotion:
 
 - `36,957,412` non-Clifford
 - `1,199` logical qubits
 - family:
   `folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1`
-- selected by `compiler_verification_project/artifacts/public_headline_result.json`
+- no longer selected as the current public headline
 
 Current primary strict replayed-tail headline on this branch:
 
@@ -1950,9 +1949,9 @@ Fixed after review:
 - `ZK-2` / resource-IR binding: `reusable_chunk_lowering.json` now includes
   `counted_resource_ir`, a committed counted-resource representation containing
   the non-Clifford terms and liveness intervals used for the public
-  reusable-chunk macro wrapper. Integrity checks, `verify_public_headline.py`, and the
-  SP1 guest recompute `36,957,412` non-Clifford operations and the `1,199`
-  live-qubit peak from that IR; guest tests reject forged counted-resource
+  reusable-chunk public engine. Integrity checks, `verify_public_headline.py`, and the
+  SP1 guest recompute `36,973,222` non-Clifford operations and the `1,968`
+  live-qubit peak from the current strict public engine input; guest tests reject forged counted-resource
   terms. The new `resource_contract_engine` additionally proves that the counted
   resource IR uses exactly the same wire catalog and interval liveness rows as
   executable liveness, and that owner-capacity rows equal the engine-derived
@@ -1961,11 +1960,12 @@ Fixed after review:
   macro wrapper.
 - `ZK-2` / current-headline stream manifest: the repo now emits
   `compiler_verification_project/artifacts/headline_resource_manifest.json`
-  for the macro reusable-chunk result. It expands the ZKP-bound
-  `counted_resource_ir` into counted term rows and liveness rows, recomputes
-  `36,957,412` non-Clifford operations and the `1,199`-qubit peak, and is bound
-  by `public_headline_result.json` plus integrity checks. The repo also emits
-  `public_candidate_materialized_circuit_manifest.json` for the macro
+  for the reusable-chunk result. It expands the ZKP-bound
+  `counted_resource_ir` into counted term rows and liveness rows, while the
+  current strict public engine recomputes `36,973,222` non-Clifford operations
+  and the `1,968`-qubit peak, and is bound by `public_headline_result.json` plus
+  integrity checks. The repo also emits
+  `public_candidate_materialized_circuit_manifest.json` for the current
   result, so the public candidate has its own checked run-length primitive
   stream and flat-index segment commitment instead of relying on the older
   `34,925,796 / 1,044` materialized frontier family. The current artifact
@@ -2063,14 +2063,14 @@ Partially mitigated after review:
   previous class of width/workspace mix-ups for the reusable-chunk candidate.
   The primary strict headline does not reuse the `1199` macro total; it replaces
   the four-slot arithmetic term with the replayed fused-output seven-slot tail
-  term and publishes `7 * 256 + 173 + 1 + 1 = 1967`.
+  term and publishes `7 * 256 + 173 + 2 + 1 = 1968`.
 - `compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/`
   now contains a checked candidate ZKP input bundle, and the Rust guest library
   accepts it in `run_prepared_attestation`. This means the native guest path
   binds and executes `complete_a0_reusable_chunk_tail`, commits
   `reusable_chunk_lowering.json`, recomputes the executable-liveness peak from
   the certificate's interval rows, rejects failing liveness checks, and returns
-  macro input claim `36,957,412 / 1,199`. The candidate directory also contains
+  strict public-engine claim `36,973,222 / 1,968`. The candidate directory also contains
   checked core, compressed, and Groth16 fixtures, the compressed proof bundle,
   the Groth16 proof bundle, the wrap proof bundle, and the matching Groth16
   verifier key. After the modular-arithmetic certificate was bound into the

@@ -2,7 +2,7 @@
   "schema": "compiler-project-zkp-attestation-input-v5",
   "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
   "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
-  "claim_sha256": "bbec8745514ca8c2fff901e43797842aa8c1794a70349fad6a703315e2a2f376",
+  "claim_sha256": "ee7f5bdc71b957bf7c4f803b232671a35677efeedfb9cc305fef203e379819d0",
   "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
   "family_sha256": "c6a7146ac5c0d7a63f733b0224ac9dc6fbaafb576d196128f882ecbc01e42b2b",
   "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
@@ -12,7 +12,7 @@
     "document_type": "attestation_claim",
     "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_claim.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "bbec8745514ca8c2fff901e43797842aa8c1794a70349fad6a703315e2a2f376",
+    "sha256": "ee7f5bdc71b957bf7c4f803b232671a35677efeedfb9cc305fef203e379819d0",
     "payload": {
       "schema": "compiler-project-zkp-attestation-claim-v1",
       "selected_family_alias": "reusable-chunk",
@@ -25,7 +25,7 @@
       "resource_engine_summary": {
         "source": "public_engine_manifest.public_totals",
         "source_document_type": "public_engine_manifest",
-        "source_sha256": "e24e171b8224e831577cccdb3310a6e4f09faab5e9c6f72ad7fd189aadfaf02b",
+        "source_sha256": "ebe25b6ade731aa3297c6295ecadcb5dfa5293e4d3e989b550e1f9b491c9019f",
         "non_clifford": 36973222,
         "logical_qubits": 1968,
         "matches_family_snapshot": false,
@@ -7910,7 +7910,7 @@
     "resource_engine_summary": {
       "source": "public_engine_manifest.public_totals",
       "source_document_type": "public_engine_manifest",
-      "source_sha256": "e24e171b8224e831577cccdb3310a6e4f09faab5e9c6f72ad7fd189aadfaf02b",
+      "source_sha256": "ebe25b6ade731aa3297c6295ecadcb5dfa5293e4d3e989b550e1f9b491c9019f",
       "non_clifford": 36973222,
       "logical_qubits": 1968,
       "matches_family_snapshot": false,
@@ -8274,12 +8274,12 @@
     "The proof input carries both the committed source documents and proof-ready reductions.",
     "The guest recomputes every source-document digest and derives the prepared leaf/case reductions from those documents before publishing public values."
   ],
-  "public_engine_manifest_sha256": "e24e171b8224e831577cccdb3310a6e4f09faab5e9c6f72ad7fd189aadfaf02b",
+  "public_engine_manifest_sha256": "ebe25b6ade731aa3297c6295ecadcb5dfa5293e4d3e989b550e1f9b491c9019f",
   "public_engine_manifest_document": {
     "document_type": "public_engine_manifest",
     "artifact_path": "compiler_verification_project/artifacts/public_engine_manifest.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "e24e171b8224e831577cccdb3310a6e4f09faab5e9c6f72ad7fd189aadfaf02b",
+    "sha256": "ebe25b6ade731aa3297c6295ecadcb5dfa5293e4d3e989b550e1f9b491c9019f",
     "payload": {
       "schema": "compiler-project-public-engine-manifest-v1",
       "scope": "current public reusable-chunk executable resource engine manifest",
@@ -8303,7 +8303,7 @@
         "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
         "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
         "resource_contract_engine_sha256": "0447031a514b04038ab0f51e63a0e1a5ffa187d1cab694de20d7dfc8196ea1e0",
-        "public_candidate_materialized_circuit_manifest_sha256": "287d4c9850dcb2394c2152d6b380efc3458d34fad5a4558e7af6f010029f3821",
+        "public_candidate_materialized_circuit_manifest_sha256": "8148f73a687e8bdf8c3381c4ca02548444cf9c8f0ba6800f689baba4e97f18e5",
         "qroam_table_cnot_materialization_sha256": "b783455ac10c7da613d154ada14315069926fddec5ce0a1ebd23e1cb4d8f3916"
       },
       "instruction_stream": {
@@ -8993,7 +8993,7 @@
       "primitive_operation_evidence": {
         "public_candidate_materialized_circuit_manifest": {
           "schema": "compiler-project-public-candidate-materialized-circuit-manifest-v1",
-          "sha256": "287d4c9850dcb2394c2152d6b380efc3458d34fad5a4558e7af6f010029f3821",
+          "sha256": "8148f73a687e8bdf8c3381c4ca02548444cf9c8f0ba6800f689baba4e97f18e5",
           "pass": true,
           "operation_stream_sha256": "e8b1167c3f632c2682bd6defce6e5cad8473d5da814a5e402f2a12c959823f84",
           "liveness_binding_stream_sha256": "064b5825a77559fdaab046854b89afdf58e1d3da0be53ab53652bb913c87b8eb",
@@ -9111,7 +9111,7 @@
         },
         "arithmetic_operation_ir": {
           "schema": "compiler-project-arithmetic-operation-ir-v1",
-          "sha256": "db536497b5af9943c5e22886c68d8447b253f604ae61166d21300f3a396928e4",
+          "sha256": "caf29908e075ddb1d1e0b406c474036962c565ad7f0e07336e3257e6d3cce50f",
           "pass": true,
           "tail_opcode": "complete_a0_all_streamed_tail",
           "tail_kernel_stage_digest_sha256": "b679c4660bcb71e7ac043f8262b490bc98c533b61ec94d70d769e9a7a92088e8",

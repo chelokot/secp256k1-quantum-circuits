@@ -621,6 +621,7 @@ def build_tail_macro_engine_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
     fused_output_slot_assignment = engine['fused_output_slot_assignment']
     fused_output_replay = engine['fused_output_replay_certificate']
     fused_output_lowering_contract = engine['fused_output_lowering_contract']
+    fused_output_reversible_schedule_contract = engine['fused_output_reversible_schedule_contract']
     fused_output_permutation = engine['fused_output_in_place_permutation_certificate']
     six_slot_candidate = engine['six_slot_pair_output_candidate']
     pair_output_determinant = engine['pair_output_determinant_certificate']
@@ -708,6 +709,7 @@ def build_tail_macro_engine_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
             'tail_macro_engine_fused_output_stream_is_cost_equivalent_to_expanded_stream',
             engine['checks']['fused_output_stream_cost_matches_expanded_stream'] is True
             and engine['checks']['fused_output_lowering_contract_passes'] is True
+            and engine['checks']['fused_output_reversible_schedule_contract_passes'] is True
             and engine['fused_output_non_clifford_total'] == engine['non_clifford_total']
             and [row['target'] for row in engine['fused_output_field_operation_stream'][-3:]] == ['X3', 'Y3', 'Z3'],
             'fused output stream finishes with X3/Y3/Z3 and preserves expanded non-Clifford total',
@@ -721,7 +723,7 @@ def build_tail_macro_engine_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
         _check(
             'tail_macro_engine_finds_fused_output_seven_slot_schedule',
             engine['checks']['fused_output_schedule_reaches_seven_slots'] is True
-            and fused_output_schedule['status'] == 'solution_found_with_boundary_replay_and_fused_output_lowering_contract'
+            and fused_output_schedule['status'] == 'solution_found_with_replay_and_reversible_field_schedule_contract'
             and fused_output_schedule['solution_found'] is True
             and fused_output_schedule['peak_field_slots'] == 7
             and fused_output_schedule['overwritten_row_count'] == 10
@@ -738,6 +740,22 @@ def build_tail_macro_engine_checks(artifacts: Mapping[str, Any]) -> Dict[str, An
                 'slot_assignment': fused_output_slot_assignment,
                 'slot_gap': slot_gap,
             },
+        ),
+        _check(
+            'tail_macro_engine_binds_fused_output_to_reversible_schedule_contract',
+            fused_output_reversible_schedule_contract['pass'] is True
+            and fused_output_reversible_schedule_contract['status'] == 'seven_slot_field_operation_schedule_has_reversible_contract'
+            and fused_output_reversible_schedule_contract['peak_field_slots'] == 7
+            and fused_output_reversible_schedule_contract['owner_capacity_total_logical_qubits'] == 7 * FIELD_BITS
+            and fused_output_reversible_schedule_contract['operation_count'] == len(fused_output_schedule['rows'])
+            and fused_output_reversible_schedule_contract['overwritten_row_count'] == fused_output_schedule['overwritten_row_count']
+            and fused_output_reversible_schedule_contract['fresh_target_row_count'] + fused_output_reversible_schedule_contract['overwritten_row_count'] == fused_output_reversible_schedule_contract['operation_count']
+            and fused_output_reversible_schedule_contract['checks']['all_reused_lanes_have_reversible_contract'] is True
+            and fused_output_reversible_schedule_contract['checks']['slot_owner_capacity_covers_peak'] is True
+            and fused_output_reversible_schedule_contract['checks']['fused_output_guard_is_counted'] is True
+            and all(row['reversible_field_operation_contract_pass'] is True for row in fused_output_reversible_schedule_contract['rows']),
+            'seven-slot fused-output schedule has generated owner capacity and a reversible field-operation contract for every reused lane',
+            fused_output_reversible_schedule_contract,
         ),
         _check(
             'tail_macro_engine_fused_output_replay_and_owner_capacity_pass',
@@ -2543,17 +2561,15 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
         _check(
             'engine_completion_audit_requires_explicit_remaining_macro_boundaries',
             audit['clifford_complete_goal_achieved'] is False
-            and {
-                'modular_arithmetic_clifford_expansion',
-                'tail_macro_schedule_and_reversibility',
-            }.issubset({row['name'] for row in audit['remaining_macro_boundaries']})
+            and {row['name'] for row in audit['remaining_macro_boundaries']} == {'modular_arithmetic_clifford_expansion'}
             and 'single_engine_zkp_input_derivation' not in {row['name'] for row in audit['remaining_macro_boundaries']}
             and 'qroam_bit_level_netlist_expansion' in {row['name'] for row in audit['covered_boundaries']}
             and 'arithmetic_operand_replay' in {row['name'] for row in audit['covered_boundaries']}
             and 'canonical_engine_zkp_input_authority' in {row['name'] for row in audit['covered_boundaries']}
+            and 'tail_reversible_field_schedule_contract' in {row['name'] for row in audit['covered_boundaries']}
             and audit['checks']['remaining_macro_boundaries_are_explicit'] is True
             and audit['checks']['public_claim_not_marked_full_clifford_complete_until_macro_boundaries_flattened'] is True,
-            'explicit arithmetic and tail boundaries remain; qroam, arithmetic operand replay, and canonical engine ZKP authority are covered without a full-completion claim',
+            'the modular arithmetic Clifford expansion boundary remains; qroam, arithmetic operand replay, tail reversible schedule, and canonical engine ZKP authority are covered without a full-completion claim',
             {'clifford_complete_goal_achieved': audit['clifford_complete_goal_achieved'], 'covered_boundaries': audit['covered_boundaries'], 'remaining_macro_boundaries': audit['remaining_macro_boundaries'], 'checks': audit['checks']},
         ),
         _check('engine_completion_audit_source_binding_covers_all_run_length_rows', audit['checks']['source_binding_covers_every_run_length_row'] is True and audit['source_binding_summary']['rows_checked'] == artifacts['public_candidate_materialized_circuit_manifest']['run_length_row_count'] and sum(audit['source_binding_summary']['rows_by_source_kind'].values()) == audit['source_binding_summary']['rows_checked'], 'all run-length rows source-bound', audit['source_binding_summary']),

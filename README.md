@@ -155,9 +155,10 @@ The same manifest now emits a strict liveness projection over every run-length
 row: arithmetic-tail rows scan to the `1,968` peak, while non-tail rows keep the
 materialized engine liveness. It also emits a separate strict materialized
 flat-netlist commitment whose segment hashes include the projected liveness and
-scan to the same `36,973,222 / 1,968` result. The remaining open step is to make
-that strict flat stream the canonical public-engine/ZKP source instead of
-keeping the old wrapper stream beside it. Segment
+scan to the same `36,973,222 / 1,968` result. That strict materialized stream is
+the canonical public-engine source for current resource totals; the remaining
+open engine step is to flatten the modular arithmetic expansion underneath it.
+Segment
 and preview rows bind the contributing run-length rows, operation-index ranges,
 liveness rows, derived owner-qubit sums, all 186 QROAM streams over the
 generated QROAMClean segment certificate, arithmetic-operation IR rows,
@@ -174,10 +175,9 @@ semiclassical phase bit, and require each run-length row to bind to a concrete
 arithmetic block, lookup block, QROAM segment, or phase-shell block rather than
 only to a family aggregate. The completion audit is intentionally stricter than
 the headline: it passes only when those source bindings are current and the
-remaining macro boundaries are explicit, while keeping
-`clifford_complete_goal_achieved = false` until modular arithmetic expansion,
-and the tail macro in-place schedule are internal products of one canonical
-executable flat IR.
+remaining macro boundary is explicit, while keeping
+`clifford_complete_goal_achieved = false` until modular arithmetic expansion is
+an internal product of one canonical executable flat IR.
 Modular arithmetic kernels are now generated from the
 embedded `executable_modular_circuit_ir`; the modular certificate consumes that
 same IR instead of being an independent source of arithmetic resource formulas.
@@ -192,11 +192,12 @@ checks 610 lookup-infinity no-op boundary pairs, and derives a seven-slot
 owner-capacity ledger. The artifact also rejects the old unguarded `Y3` over
 `N` reuse with a concrete secp256k1 `M == 0` witness, then proves the selected
 zero-lifted in-place `Y3` over `C` field permutation with an explicit counted
-`L == 0` guard. That seven-slot replayed-tail
-result is now the primary strict headline in
-`strict_replayed_tail_headline.json`; the remaining work is to reduce it below
-seven field slots and eventually make the ZKP guest/input consume that exact
-strict contract.
+`L == 0` guard. That seven-slot replayed-tail result is now the primary strict
+headline in `strict_replayed_tail_headline.json`, and
+`engine_completion_audit.json` treats the tail field schedule as covered by the
+generated reversible contract. The remaining engine gap is the modular
+arithmetic Clifford expansion boundary; proof fixtures still need a final
+compressed/Groth16 rebuild after cheap artifacts settle.
 
 `tail_macro_engine.json` now also carries an unpromoted semantic six-slot
 candidate. It combines `(I,F) -> (M,N)` as an in-place sum/difference pair and

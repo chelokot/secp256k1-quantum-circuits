@@ -115,6 +115,19 @@ def test_tail_macro_engine_exposes_unclosed_three_slot_gap() -> None:
     assert checked['fused_output_lowering_contract']['rows'][1]['schedule_overwritten_source'] == 'C'
     assert checked['fused_output_lowering_contract']['rows'][1]['overwrite_contract']['kind'] == 'secp256k1_zero_lifted_in_place_field_permutation'
     assert checked['fused_output_lowering_contract']['rows'][1]['overwrite_contract']['domain_rows_checked'] == 110082
+    reversible_contract = checked['fused_output_reversible_schedule_contract']
+    assert checked['checks']['fused_output_reversible_schedule_contract_passes'] is True
+    assert reversible_contract['pass'] is True
+    assert reversible_contract['status'] == 'seven_slot_field_operation_schedule_has_reversible_contract'
+    assert reversible_contract['peak_field_slots'] == 7
+    assert reversible_contract['owner_capacity_total_logical_qubits'] == 1792
+    assert reversible_contract['operation_count'] == len(checked['fused_output_reordered_schedule']['rows'])
+    assert reversible_contract['overwritten_row_count'] == checked['fused_output_reordered_schedule']['overwritten_row_count']
+    assert reversible_contract['fresh_target_row_count'] + reversible_contract['overwritten_row_count'] == reversible_contract['operation_count']
+    assert reversible_contract['checks']['slot_owner_capacity_covers_peak'] is True
+    assert reversible_contract['checks']['all_reused_lanes_have_reversible_contract'] is True
+    assert reversible_contract['checks']['fused_output_guard_is_counted'] is True
+    assert all(row['reversible_field_operation_contract_pass'] is True for row in reversible_contract['rows'])
     assert checked['fused_output_in_place_permutation_certificate']['pass'] is True
     assert checked['fused_output_in_place_permutation_certificate']['checks']['three_is_invertible_mod_secp256k1_p'] is True
     assert checked['fused_output_in_place_permutation_certificate']['checks']['l_zero_implies_accumulator_infinity_on_valid_non_infinity_lookup_domain'] is True
@@ -127,7 +140,7 @@ def test_tail_macro_engine_exposes_unclosed_three_slot_gap() -> None:
     assert checked['slot_gap']['fused_output_slot_assignment_peak_field_values'] == 7
     assert checked['slot_gap']['fused_output_replay_pass'] is True
     assert checked['slot_gap']['destructive_candidate_peak_field_values'] == 8
-    assert checked['completion_status'] == 'tail_cost_bound_to_expanded_field_operation_stream_but_in_place_schedule_unproven'
+    assert checked['completion_status'] == 'tail_cost_bound_to_reversible_seven_slot_field_schedule_contract'
     assert checked['six_slot_pair_output_candidate']['pass'] is True
     assert checked['six_slot_pair_output_candidate']['peak_field_slots'] == 6
     assert checked['six_slot_pair_output_candidate']['status'] == 'semantic_candidate_not_promoted_to_public_headline'

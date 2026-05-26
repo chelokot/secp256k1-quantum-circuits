@@ -1003,6 +1003,141 @@ def _fused_output_lowering_contract(
     }
 
 
+def _fused_output_reversible_schedule_contract(
+    *,
+    schedule: Mapping[str, Any],
+    slot_assignment: Mapping[str, Any],
+    operand_screen: Mapping[str, Any],
+    replay_certificate: Mapping[str, Any],
+    lowering_contract: Mapping[str, Any],
+    field_bits: int,
+) -> Dict[str, Any]:
+    choices_by_row_and_source = {
+        (int(choice['index']), str(choice['overwritten_source'])): choice
+        for choice in operand_screen['choices']
+    }
+    fused_output_overwrite_by_operation = {
+        int(row['operation_index']): row['overwrite_contract']
+        for row in lowering_contract['rows']
+        if row['overwrite_contract'] is not None
+    }
+    owner_capacity_by_slot = {
+        int(row['slot']): row
+        for row in slot_assignment['owner_capacity_rows']
+    }
+    slot_row_by_schedule = {
+        int(row['schedule_index']): row
+        for row in slot_assignment['rows']
+    }
+    contract_rows = []
+    for row in schedule['rows']:
+        operation_index = int(row['operation_index'])
+        overwritten_source = row['overwritten_source']
+        target_slot = int(slot_row_by_schedule[int(row['schedule_index'])]['target_slot'])
+        if overwritten_source is None:
+            contract_kind = 'fresh_target_field_register'
+            proof = {
+                'kind': 'fresh_target',
+                'target_slot': target_slot,
+                'capacity_owner_id': owner_capacity_by_slot[target_slot]['owner_id'],
+            }
+            reversible = True
+        else:
+            screen_choice = choices_by_row_and_source[(operation_index, str(overwritten_source))]
+            fused_contract = fused_output_overwrite_by_operation.get(operation_index)
+            if fused_contract is not None:
+                contract_kind = 'secp256k1_zero_lifted_fused_output_permutation'
+                proof = {
+                    'kind': fused_contract['kind'],
+                    'overwritten_source': str(overwritten_source),
+                    'screen_pass': bool(fused_contract['screen_pass']),
+                    'secp256k1_permutation_pass': bool(fused_contract['secp256k1_permutation_pass']),
+                    'guard_owner_id': fused_contract['guard_owner_id'],
+                    'guard_logical_qubits': int(fused_contract['guard_logical_qubits']),
+                    'guard_non_clifford': int(fused_contract['guard_non_clifford']),
+                    'domain_rows_checked': int(fused_contract['domain_rows_checked']),
+                }
+                reversible = (
+                    fused_contract['kind'] == 'secp256k1_zero_lifted_in_place_field_permutation'
+                    and bool(fused_contract['screen_pass'])
+                    and bool(fused_contract['secp256k1_permutation_pass'])
+                )
+            else:
+                contract_kind = 'screened_local_inverse_field_permutation'
+                proof = {
+                    'kind': screen_choice['rule']['kind'],
+                    'overwritten_source': str(overwritten_source),
+                    'domain_rows_checked': int(screen_choice['domain_rows_checked']),
+                    'screen_pass': bool(screen_choice['pass']),
+                    'rule': screen_choice['rule'],
+                }
+                reversible = bool(screen_choice['pass'])
+        contract_rows.append({
+            'schedule_index': int(row['schedule_index']),
+            'operation_index': operation_index,
+            'opcode': str(row['opcode']),
+            'target': str(row['target']),
+            'sources': [str(source) for source in row['sources']],
+            'target_slot': target_slot,
+            'overwritten_source': overwritten_source,
+            'contract_kind': contract_kind,
+            'reversibility_proof': proof,
+            'reversible_field_operation_contract_pass': reversible,
+        })
+    owner_capacity_total = sum(int(row['logical_qubits']) for row in slot_assignment['owner_capacity_rows'])
+    peak_field_slots = int(schedule['peak_field_slots'])
+    checks = {
+        'schedule_solution_reaches_seven_slots': (
+            schedule['solution_found'] is True
+            and peak_field_slots == 7
+            and int(slot_assignment['peak_field_slots']) == 7
+        ),
+        'slot_owner_capacity_covers_peak': owner_capacity_total == peak_field_slots * int(field_bits),
+        'all_reused_lanes_have_reversible_contract': all(
+            row['reversible_field_operation_contract_pass']
+            for row in contract_rows
+            if row['overwritten_source'] is not None
+        ),
+        'fresh_target_rows_have_capacity_owner': all(
+            row['reversibility_proof']['kind'] != 'fresh_target'
+            or bool(row['reversibility_proof']['capacity_owner_id'])
+            for row in contract_rows
+        ),
+        'fused_output_guard_is_counted': (
+            int(lowering_contract['guard_owner_capacity']['logical_qubits']) == 1
+            and int(lowering_contract['guard_owner_capacity']['non_clifford']) == _zero_lift_guard_non_clifford(field_bits)
+        ),
+        'replay_and_owner_capacity_pass': (
+            replay_certificate['pass'] is True
+            and replay_certificate['owner_capacity_pass'] is True
+        ),
+        'lowering_contract_pass': (
+            lowering_contract['cost_matches_rows'] is True
+            and lowering_contract['all_output_overwrites_have_boundary_permutation_contract'] is True
+        ),
+        'final_live_values_are_projective_outputs': schedule['terminal_live_values'] == list(QUANTUM_OUTPUTS),
+    }
+    return {
+        'schema': 'compiler-project-tail-fused-output-reversible-schedule-contract-v1',
+        'status': 'seven_slot_field_operation_schedule_has_reversible_contract',
+        'scope': 'field_operation_schedule_over_counted_tail_slots',
+        'field_bits': int(field_bits),
+        'peak_field_slots': peak_field_slots,
+        'owner_capacity_total_logical_qubits': owner_capacity_total,
+        'operation_count': len(contract_rows),
+        'overwritten_row_count': sum(1 for row in contract_rows if row['overwritten_source'] is not None),
+        'fresh_target_row_count': sum(1 for row in contract_rows if row['overwritten_source'] is None),
+        'rows': contract_rows,
+        'checks': checks,
+        'pass': all(checks.values()),
+        'notes': [
+            'This promotes the selected seven-slot tail schedule from a replay diagnostic to a field-operation reversible schedule contract.',
+            'The contract is still above the modular-arithmetic Clifford expansion layer; each field operation is delegated to the remaining modular arithmetic lowering boundary.',
+            'Every lane reuse is backed either by the operand-screen local inverse certificate or by the secp256k1 zero-lift fused-output permutation with its guard qubit counted.',
+        ],
+    }
+
+
 def _one_compute_liveness(rows: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
     last: Dict[str, int] = {value: -1 for value in QUANTUM_INPUTS}
     for index, row in enumerate(rows):
@@ -2198,16 +2333,26 @@ def build_tail_macro_engine(
         fused_output_reordered_schedule,
         fused_output_in_place_permutation_certificate,
     )
+    fused_output_reversible_schedule_contract = _fused_output_reversible_schedule_contract(
+        schedule=fused_output_reordered_schedule,
+        slot_assignment=fused_output_slot_assignment,
+        operand_screen=fused_output_operand_screen,
+        replay_certificate=fused_output_replay_certificate,
+        lowering_contract=fused_output_lowering_contract,
+        field_bits=field_bits,
+    )
     if (
         fused_output_reordered_schedule['solution_found'] is True
         and fused_output_replay_certificate['pass'] is True
         and fused_output_lowering_contract['cost_matches_rows'] is True
         and fused_output_lowering_contract['all_output_overwrites_have_boundary_permutation_contract'] is True
+        and fused_output_reversible_schedule_contract['pass'] is True
     ):
-        fused_output_reordered_schedule['status'] = 'solution_found_with_boundary_replay_and_fused_output_lowering_contract'
+        fused_output_reordered_schedule['status'] = 'solution_found_with_replay_and_reversible_field_schedule_contract'
         fused_output_reordered_schedule['notes'] = [
             'This schedule reorders the fused-output tail DAG and allows an overwrite only when the chosen operand passed the toy-boundary operand screen.',
             'The paired fused_output_lowering_contract reconstructs the double-product output costs and names the required affine output overwrite.',
+            'The paired fused_output_reversible_schedule_contract assigns every reused field lane to a reversible field-operation contract over counted seven-slot owners.',
             'This remains a strict point-add boundary resource contract rather than a fully flattened Clifford-level ZKP guest.',
         ]
     locally_invertible_indices = {
@@ -2250,6 +2395,9 @@ def build_tail_macro_engine(
             and fused_output_lowering_contract['all_output_overwrites_have_boundary_permutation_contract'] is True
             and int(fused_output_lowering_contract['overwritten_output_row_count']) == 1
             and fused_output_in_place_permutation_certificate['pass'] is True
+        ),
+        'fused_output_reversible_schedule_contract_passes': (
+            fused_output_reversible_schedule_contract['pass'] is True
         ),
         'counted_slots_cover_expanded_single_assignment_peak': strict_peak_fields <= counted_slots,
     }
@@ -2320,10 +2468,13 @@ def build_tail_macro_engine(
         'fused_output_slot_assignment': fused_output_slot_assignment,
         'fused_output_replay_certificate': fused_output_replay_certificate,
         'fused_output_lowering_contract': fused_output_lowering_contract,
+        'fused_output_reversible_schedule_contract': fused_output_reversible_schedule_contract,
         'checks': checks,
         'pass': all(value is True for value in required_checks.values()),
         'completion_status': (
-            'tail_cost_bound_to_expanded_field_operation_stream_but_in_place_schedule_unproven'
+            'tail_cost_bound_to_reversible_seven_slot_field_schedule_contract'
+            if checks['fused_output_reversible_schedule_contract_passes']
+            else 'tail_cost_bound_to_expanded_field_operation_stream_but_in_place_schedule_unproven'
             if not checks['counted_slots_cover_expanded_single_assignment_peak']
             else 'tail_cost_and_counted_slots_bound_to_expanded_field_operation_stream'
         ),
