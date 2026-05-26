@@ -33,6 +33,7 @@ from fallback_frontier_stress import build_fallback_frontier_stress
 from lookup_lowering import lookup_lowering_library, lowered_lookup_semantic_summary, materialize_lookup_primitive_operations
 from materialized_circuit import PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, build_arithmetic_operand_replay_audit, build_public_candidate_materialized_circuit_manifest
 from modular_execution_trace import build_modular_execution_trace
+from modular_primitive_wire_audit import MODULAR_PRIMITIVE_WIRE_AUDIT_SCHEMA, build_modular_primitive_wire_audit
 from modular_arithmetic_certificate import build_modular_arithmetic_certificate
 from phase_shell_lowering import materialize_phase_operations, phase_shell_family_summary, phase_shell_lowering_library
 from physical_estimator import (
@@ -189,6 +190,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'modular_arithmetic_certificate': artifact_root / 'modular_arithmetic_certificate.json',
         'modular_execution_trace': artifact_root / 'modular_execution_trace.json',
         'scheduled_modular_primitive_netlist': artifact_root / 'scheduled_modular_primitive_netlist.json',
+        'modular_primitive_wire_audit': artifact_root / 'modular_primitive_wire_audit.json',
         'tail_macro_liveness': artifact_root / 'tail_macro_liveness.json',
         'tail_macro_reversibility': artifact_root / 'tail_macro_reversibility.json',
         'tail_macro_schedule_search': artifact_root / 'tail_macro_schedule_search.json',
@@ -310,6 +312,16 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
             ),
         )
         dump_json(
+            artifact_root / 'modular_primitive_wire_audit.json',
+            build_modular_primitive_wire_audit(
+                modular_execution_trace=load_json(artifact_root / 'modular_execution_trace.json'),
+                modular_arithmetic_certificate=load_json(artifact_root / 'modular_arithmetic_certificate.json'),
+                arithmetic_lowerings=load_json(artifact_root / 'arithmetic_lowerings.json'),
+                reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
+                scheduled_modular_primitive_netlist=load_json(artifact_root / 'scheduled_modular_primitive_netlist.json'),
+            ),
+        )
+        dump_json(
             artifact_root / 'public_engine_manifest.json',
             build_public_engine_manifest(
                 reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
@@ -352,6 +364,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 modular_arithmetic_certificate=load_json(artifact_root / 'modular_arithmetic_certificate.json'),
                 modular_execution_trace=load_json(artifact_root / 'modular_execution_trace.json'),
                 scheduled_modular_primitive_netlist=load_json(artifact_root / 'scheduled_modular_primitive_netlist.json'),
+                modular_primitive_wire_audit=load_json(artifact_root / 'modular_primitive_wire_audit.json'),
                 tail_macro_engine=load_json(artifact_root / 'tail_macro_engine.json'),
                 tail_macro_liveness=load_json(artifact_root / 'tail_macro_liveness.json'),
                 tail_macro_reversibility=load_json(artifact_root / 'tail_macro_reversibility.json'),
@@ -2596,6 +2609,24 @@ def build_scheduled_modular_primitive_netlist_checks(artifacts: Mapping[str, Any
     return _summarize_checks(checks)
 
 
+def build_modular_primitive_wire_audit_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    audit = artifacts['modular_primitive_wire_audit']
+    expected = build_modular_primitive_wire_audit(
+        modular_execution_trace=artifacts['modular_execution_trace'],
+        modular_arithmetic_certificate=artifacts['modular_arithmetic_certificate'],
+        arithmetic_lowerings=artifacts['arithmetic_lowerings'],
+        reusable_chunk_lowering=artifacts['reusable_chunk_lowering'],
+        scheduled_modular_primitive_netlist=artifacts['scheduled_modular_primitive_netlist'],
+    )
+    checks = [
+        _check('modular_primitive_wire_audit_matches_generator', audit == expected, expected, audit),
+        _check('modular_primitive_wire_audit_schema_is_current', audit['schema'] == MODULAR_PRIMITIVE_WIRE_AUDIT_SCHEMA, MODULAR_PRIMITIVE_WIRE_AUDIT_SCHEMA, audit['schema']),
+        _check('modular_primitive_wire_audit_binds_scheduled_operation_stream', audit['operation_count'] == artifacts['scheduled_modular_primitive_netlist']['operation_count'] and audit['gate_counts'] == artifacts['scheduled_modular_primitive_netlist']['primitive_counts_total'], artifacts['scheduled_modular_primitive_netlist']['primitive_counts_total'], {'operation_count': audit['operation_count'], 'gate_counts': audit['gate_counts']}),
+        _check('modular_primitive_wire_audit_records_current_wire_gaps', audit['pass'] is False and audit['checks']['field_operand_wires_are_live_in_trace'] is False and audit['checks']['no_synthetic_arithmetic_scratch_wires_without_owner_capacity'] is False and audit['field_wire_missing_liveness_count'] > 0 and audit['arithmetic_scratch_wire_observation_count'] > 0, 'current modular primitive stream still has virtual field operands and synthetic arithmetic scratch wires', {'pass': audit['pass'], 'checks': audit['checks'], 'field_missing_liveness': audit['field_wire_missing_liveness_count'], 'scratch_observations': audit['arithmetic_scratch_wire_observation_count']}),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     audit = artifacts['engine_completion_audit']
     expected = build_engine_completion_audit(
@@ -2613,6 +2644,7 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
         modular_arithmetic_certificate=artifacts['modular_arithmetic_certificate'],
         modular_execution_trace=artifacts['modular_execution_trace'],
         scheduled_modular_primitive_netlist=artifacts['scheduled_modular_primitive_netlist'],
+        modular_primitive_wire_audit=artifacts['modular_primitive_wire_audit'],
         tail_macro_engine=artifacts['tail_macro_engine'],
         tail_macro_liveness=artifacts['tail_macro_liveness'],
         tail_macro_reversibility=artifacts['tail_macro_reversibility'],
@@ -3424,6 +3456,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'headline_opcode_coverage_checks': lambda: build_headline_opcode_coverage_checks(artifacts),
         'headline_resource_manifest_checks': lambda: build_headline_resource_manifest_checks(artifacts),
         'scheduled_modular_primitive_netlist_checks': lambda: build_scheduled_modular_primitive_netlist_checks(artifacts),
+        'modular_primitive_wire_audit_checks': lambda: build_modular_primitive_wire_audit_checks(artifacts),
         'public_engine_manifest_checks': lambda: build_public_engine_manifest_checks(artifacts),
         'engine_completion_audit_checks': lambda: build_engine_completion_audit_checks(artifacts),
         'arithmetic_operand_replay_audit_checks': lambda: build_arithmetic_operand_replay_audit_checks(artifacts),

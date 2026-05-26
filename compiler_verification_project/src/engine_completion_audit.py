@@ -49,6 +49,7 @@ def build_engine_completion_audit(
     modular_arithmetic_certificate: Mapping[str, Any],
     modular_execution_trace: Mapping[str, Any],
     scheduled_modular_primitive_netlist: Mapping[str, Any],
+    modular_primitive_wire_audit: Mapping[str, Any],
     tail_macro_engine: Mapping[str, Any],
     tail_macro_liveness: Mapping[str, Any],
     tail_macro_reversibility: Mapping[str, Any],
@@ -210,6 +211,16 @@ def build_engine_completion_audit(
             and public_engine_manifest['checks']['scheduled_modular_primitive_netlist_is_bound'] is True
             and public_engine_manifest['checks']['scheduled_modular_primitive_netlist_splices_global_public_rows'] is True
         ),
+        'modular_primitive_wire_audit_records_remaining_scratch_gap': (
+            modular_primitive_wire_audit['pass'] is False
+            and modular_primitive_wire_audit['checks']['scheduled_modular_primitive_netlist_passes'] is True
+            and modular_primitive_wire_audit['checks']['scanned_operation_count_matches_scheduled_netlist'] is True
+            and modular_primitive_wire_audit['checks']['scanned_gate_counts_match_scheduled_netlist'] is True
+            and modular_primitive_wire_audit['checks']['field_operand_wires_are_live_in_trace'] is False
+            and modular_primitive_wire_audit['checks']['no_synthetic_arithmetic_scratch_wires_without_owner_capacity'] is False
+            and int(modular_primitive_wire_audit['field_wire_missing_liveness_count']) > 0
+            and int(modular_primitive_wire_audit['arithmetic_scratch_wire_observation_count']) > 0
+        ),
         'phase_rows_are_lowering_bound': (
             rows_by_source_kind['phase_shell_lowering'] > 0
             and phase_shell_lowerings['schema'].startswith('compiler-project-phase-shell-lowerings-')
@@ -370,8 +381,8 @@ def build_engine_completion_audit(
         {
             'name': 'modular_arithmetic_clifford_expansion',
             'status': 'scheduled_modular_primitive_stream_bound_to_zkp_physical_boundary_not_full_clifford_decomposition',
-            'required_to_close': 'Decompose every modular add, subtract, multiply, fold, and reduction primitive into exact concrete Clifford/CCX wire operations inside the same global flat schedule as the point-add leaf.',
-            'current_evidence': 'scheduled_modular_primitive_netlist + scheduled_modular_global_splice + physical_boundary_summary + Rust prepared guest validation',
+            'required_to_close': 'Replace every synthetic arithmetic scratch operand in modular primitive rows with exact counted owner/liveness assignments, then decompose every modular add, subtract, multiply, fold, and reduction primitive into exact concrete Clifford/CCX wire operations inside the same global flat schedule as the point-add leaf.',
+            'current_evidence': 'scheduled_modular_primitive_netlist + modular_primitive_wire_audit + scheduled_modular_global_splice + physical_boundary_summary + Rust prepared guest validation',
             'evidence_metrics': {
                 'source_bound_run_length_rows': rows_by_source_kind['arithmetic_operation_ir'],
                 'leaf_arithmetic_non_clifford': int(arithmetic_leaf_summary['non_clifford_total']),
@@ -395,6 +406,11 @@ def build_engine_completion_audit(
                 'scheduled_modular_primitive_netlist_non_clifford': int(scheduled_modular_primitive_netlist['non_clifford_count']),
                 'scheduled_modular_primitive_netlist_sha256': scheduled_modular_primitive_netlist['operation_stream_sha256'],
                 'scheduled_modular_global_splice_pass': bool(public_engine_manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['scheduled_modular_global_splice']['pass']),
+                'modular_primitive_wire_audit_pass': bool(modular_primitive_wire_audit['pass']),
+                'modular_primitive_wire_audit_sha256': _sha256_payload(modular_primitive_wire_audit),
+                'field_operand_wires_missing_liveness': int(modular_primitive_wire_audit['field_wire_missing_liveness_count']),
+                'synthetic_arithmetic_scratch_wire_observations': int(modular_primitive_wire_audit['arithmetic_scratch_wire_observation_count']),
+                'synthetic_arithmetic_scratch_unique_wires': int(modular_primitive_wire_audit['arithmetic_scratch_unique_wire_count']),
                 'field_mul_non_clifford': int(modular_arithmetic_certificate['field_mul_stage_count_certificate']['observed_total_ccx']),
                 'field_mul_stage_counts_match': bool(modular_arithmetic_certificate['field_mul_stage_count_certificate']['stage_counts_match']),
                 'modular_ir_counts_match_lowerings': bool(modular_arithmetic_certificate['executable_circuit_ir_count_certificate']['counts_match_arithmetic_lowerings']),
@@ -421,6 +437,7 @@ def build_engine_completion_audit(
             'public_engine_manifest': public_engine_manifest,
             'modular_execution_trace': modular_execution_trace,
             'scheduled_modular_primitive_netlist': scheduled_modular_primitive_netlist,
+            'modular_primitive_wire_audit': modular_primitive_wire_audit,
             'public_candidate_materialized_circuit_manifest': public_candidate_materialized_circuit_manifest,
             'reusable_chunk_lowering': reusable_chunk_lowering,
             'arithmetic_operation_ir': arithmetic_operation_ir,

@@ -1,0 +1,452 @@
+{
+  "schema": "compiler-project-modular-primitive-wire-audit-v1",
+  "definition": "Wire-level audit of the scheduled modular primitive iterator. It separates field wires backed by trace liveness from lookup-workspace wires and synthetic arithmetic scratch wires that still need a counted owner/reuse proof before the modular primitive stream can be called fully physical.",
+  "source_digests": {
+    "modular_execution_trace_sha256": "4d8dbe6e13e09da859e1dc1c640917d33973a9c9907ca336fc80bd3d070a127c",
+    "modular_arithmetic_certificate_sha256": "5dc1bc120d7c52d9b0118c1ff01d28e8bb13fa6060da2aafaed6e15200e38ff8",
+    "arithmetic_lowerings_sha256": "d7f6819b985e388f16948aace8a636aa853b5b4dadadd6042095bf6fb047621a",
+    "reusable_chunk_lowering_sha256": "fd8751901698b247356faee49e65f9c1f65375e31bd431825add95eca281b326",
+    "scheduled_modular_primitive_netlist_sha256": "124251bf6ccc78ab5440740ea8b45569a5cbc400487bc8c2302d51bad02a9ab2"
+  },
+  "operation_count": 1270134,
+  "gate_counts": {
+    "ccx": 1192378,
+    "cx": 0,
+    "x": 0,
+    "measurement": 77756
+  },
+  "field_wire_observation_count": 1752816,
+  "field_wire_missing_liveness_count": 663298,
+  "lookup_workspace_wire_observation_count": 1179648,
+  "arithmetic_scratch_wire_observation_count": 721406,
+  "arithmetic_scratch_unique_wire_count": 721406,
+  "non_lookup_unclassified_wire_count": 0,
+  "observed_suboperation_owner_counts": {
+    "tail_fused_output_zero_lift_guard": 510,
+    "tail_reordered_slot_0": 79488,
+    "tail_reordered_slot_1": 234384,
+    "tail_reordered_slot_2": 162036,
+    "tail_reordered_slot_3": 241524,
+    "tail_reordered_slot_4": 79488,
+    "tail_reordered_slot_5": 78468,
+    "tail_reordered_slot_6": 1020
+  },
+  "top_synthetic_scratch_prefixes": [
+    {
+      "scratch_prefix": "arithmetic_scratch:A:partial_product_grid",
+      "observation_count": 65536
+    },
+    {
+      "scratch_prefix": "arithmetic_scratch:H:partial_product_grid",
+      "observation_count": 65536
+    },
+    {
+      "scratch_prefix": "arithmetic_scratch:I:partial_product_grid",
+      "observation_count": 65536
+    },
+    {
+      "scratch_prefix": "arithmetic_scratch:X3.product_0:partial_product_grid",
+      "observation_count": 65536
+    },
+    {
+      "scratch_prefix": "arithmetic_scratch:X3.product_1:partial_product_grid",
+      "observation_count": 65536
+    },
+    {
+      "scratch_prefix": "arithmetic_scratch:Y3.product_0:partial_product_grid",
+      "observation_count": 65536
+    },
+    {
+      "scratch_prefix": "arithmetic_scratch:Y3.product_1:partial_product_grid",
+      "observation_count": 65536
+    },
+    {
+      "scratch_prefix": "arithmetic_scratch:Z3.product_0:partial_product_grid",
+      "observation_count": 65536
+    },
+    {
+      "scratch_prefix": "arithmetic_scratch:Z3.product_1:partial_product_grid",
+      "observation_count": 65536
+    },
+    {
+      "scratch_prefix": "arithmetic_scratch:Zx:partial_product_grid",
+      "observation_count": 65536
+    },
+    {
+      "scratch_prefix": "arithmetic_scratch:yZ:partial_product_grid",
+      "observation_count": 65536
+    },
+    {
+      "scratch_prefix": "arithmetic_scratch:Y3:zero_lift_guard_compute_uncompute",
+      "observation_count": 510
+    }
+  ],
+  "sample_missing_liveness": [
+    {
+      "operation_index": 1020,
+      "suboperation_index": 2,
+      "wire_id": "field:lookup_x_plus_y.bit[0]",
+      "field_name": "lookup_x_plus_y",
+      "live_during": {
+        "G": 3,
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      }
+    },
+    {
+      "operation_index": 1021,
+      "suboperation_index": 2,
+      "wire_id": "field:lookup_x_plus_y.bit[1]",
+      "field_name": "lookup_x_plus_y",
+      "live_during": {
+        "G": 3,
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      }
+    },
+    {
+      "operation_index": 1022,
+      "suboperation_index": 2,
+      "wire_id": "field:lookup_x_plus_y.bit[2]",
+      "field_name": "lookup_x_plus_y",
+      "live_during": {
+        "G": 3,
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      }
+    },
+    {
+      "operation_index": 1023,
+      "suboperation_index": 2,
+      "wire_id": "field:lookup_x_plus_y.bit[3]",
+      "field_name": "lookup_x_plus_y",
+      "live_during": {
+        "G": 3,
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      }
+    },
+    {
+      "operation_index": 1024,
+      "suboperation_index": 2,
+      "wire_id": "field:lookup_x_plus_y.bit[4]",
+      "field_name": "lookup_x_plus_y",
+      "live_during": {
+        "G": 3,
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      }
+    },
+    {
+      "operation_index": 1025,
+      "suboperation_index": 2,
+      "wire_id": "field:lookup_x_plus_y.bit[5]",
+      "field_name": "lookup_x_plus_y",
+      "live_during": {
+        "G": 3,
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      }
+    },
+    {
+      "operation_index": 1026,
+      "suboperation_index": 2,
+      "wire_id": "field:lookup_x_plus_y.bit[6]",
+      "field_name": "lookup_x_plus_y",
+      "live_during": {
+        "G": 3,
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      }
+    },
+    {
+      "operation_index": 1027,
+      "suboperation_index": 2,
+      "wire_id": "field:lookup_x_plus_y.bit[7]",
+      "field_name": "lookup_x_plus_y",
+      "live_during": {
+        "G": 3,
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      }
+    },
+    {
+      "operation_index": 1028,
+      "suboperation_index": 2,
+      "wire_id": "field:lookup_x_plus_y.bit[8]",
+      "field_name": "lookup_x_plus_y",
+      "live_during": {
+        "G": 3,
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      }
+    },
+    {
+      "operation_index": 1029,
+      "suboperation_index": 2,
+      "wire_id": "field:lookup_x_plus_y.bit[9]",
+      "field_name": "lookup_x_plus_y",
+      "live_during": {
+        "G": 3,
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      }
+    },
+    {
+      "operation_index": 1030,
+      "suboperation_index": 2,
+      "wire_id": "field:lookup_x_plus_y.bit[10]",
+      "field_name": "lookup_x_plus_y",
+      "live_during": {
+        "G": 3,
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      }
+    },
+    {
+      "operation_index": 1031,
+      "suboperation_index": 2,
+      "wire_id": "field:lookup_x_plus_y.bit[11]",
+      "field_name": "lookup_x_plus_y",
+      "live_during": {
+        "G": 3,
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      }
+    },
+    {
+      "operation_index": 1032,
+      "suboperation_index": 2,
+      "wire_id": "field:lookup_x_plus_y.bit[12]",
+      "field_name": "lookup_x_plus_y",
+      "live_during": {
+        "G": 3,
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      }
+    },
+    {
+      "operation_index": 1033,
+      "suboperation_index": 2,
+      "wire_id": "field:lookup_x_plus_y.bit[13]",
+      "field_name": "lookup_x_plus_y",
+      "live_during": {
+        "G": 3,
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      }
+    },
+    {
+      "operation_index": 1034,
+      "suboperation_index": 2,
+      "wire_id": "field:lookup_x_plus_y.bit[14]",
+      "field_name": "lookup_x_plus_y",
+      "live_during": {
+        "G": 3,
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      }
+    },
+    {
+      "operation_index": 1035,
+      "suboperation_index": 2,
+      "wire_id": "field:lookup_x_plus_y.bit[15]",
+      "field_name": "lookup_x_plus_y",
+      "live_during": {
+        "G": 3,
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      }
+    }
+  ],
+  "sample_synthetic_scratch": [
+    {
+      "operation_index": 1020,
+      "suboperation_index": 2,
+      "gate": "ccx",
+      "target": "H",
+      "block": "partial_product_grid",
+      "wire_id": "arithmetic_scratch:H:partial_product_grid.bit[0]"
+    },
+    {
+      "operation_index": 1021,
+      "suboperation_index": 2,
+      "gate": "ccx",
+      "target": "H",
+      "block": "partial_product_grid",
+      "wire_id": "arithmetic_scratch:H:partial_product_grid.bit[1]"
+    },
+    {
+      "operation_index": 1022,
+      "suboperation_index": 2,
+      "gate": "ccx",
+      "target": "H",
+      "block": "partial_product_grid",
+      "wire_id": "arithmetic_scratch:H:partial_product_grid.bit[2]"
+    },
+    {
+      "operation_index": 1023,
+      "suboperation_index": 2,
+      "gate": "ccx",
+      "target": "H",
+      "block": "partial_product_grid",
+      "wire_id": "arithmetic_scratch:H:partial_product_grid.bit[3]"
+    },
+    {
+      "operation_index": 1024,
+      "suboperation_index": 2,
+      "gate": "ccx",
+      "target": "H",
+      "block": "partial_product_grid",
+      "wire_id": "arithmetic_scratch:H:partial_product_grid.bit[4]"
+    },
+    {
+      "operation_index": 1025,
+      "suboperation_index": 2,
+      "gate": "ccx",
+      "target": "H",
+      "block": "partial_product_grid",
+      "wire_id": "arithmetic_scratch:H:partial_product_grid.bit[5]"
+    },
+    {
+      "operation_index": 1026,
+      "suboperation_index": 2,
+      "gate": "ccx",
+      "target": "H",
+      "block": "partial_product_grid",
+      "wire_id": "arithmetic_scratch:H:partial_product_grid.bit[6]"
+    },
+    {
+      "operation_index": 1027,
+      "suboperation_index": 2,
+      "gate": "ccx",
+      "target": "H",
+      "block": "partial_product_grid",
+      "wire_id": "arithmetic_scratch:H:partial_product_grid.bit[7]"
+    },
+    {
+      "operation_index": 1028,
+      "suboperation_index": 2,
+      "gate": "ccx",
+      "target": "H",
+      "block": "partial_product_grid",
+      "wire_id": "arithmetic_scratch:H:partial_product_grid.bit[8]"
+    },
+    {
+      "operation_index": 1029,
+      "suboperation_index": 2,
+      "gate": "ccx",
+      "target": "H",
+      "block": "partial_product_grid",
+      "wire_id": "arithmetic_scratch:H:partial_product_grid.bit[9]"
+    },
+    {
+      "operation_index": 1030,
+      "suboperation_index": 2,
+      "gate": "ccx",
+      "target": "H",
+      "block": "partial_product_grid",
+      "wire_id": "arithmetic_scratch:H:partial_product_grid.bit[10]"
+    },
+    {
+      "operation_index": 1031,
+      "suboperation_index": 2,
+      "gate": "ccx",
+      "target": "H",
+      "block": "partial_product_grid",
+      "wire_id": "arithmetic_scratch:H:partial_product_grid.bit[11]"
+    },
+    {
+      "operation_index": 1032,
+      "suboperation_index": 2,
+      "gate": "ccx",
+      "target": "H",
+      "block": "partial_product_grid",
+      "wire_id": "arithmetic_scratch:H:partial_product_grid.bit[12]"
+    },
+    {
+      "operation_index": 1033,
+      "suboperation_index": 2,
+      "gate": "ccx",
+      "target": "H",
+      "block": "partial_product_grid",
+      "wire_id": "arithmetic_scratch:H:partial_product_grid.bit[13]"
+    },
+    {
+      "operation_index": 1034,
+      "suboperation_index": 2,
+      "gate": "ccx",
+      "target": "H",
+      "block": "partial_product_grid",
+      "wire_id": "arithmetic_scratch:H:partial_product_grid.bit[14]"
+    },
+    {
+      "operation_index": 1035,
+      "suboperation_index": 2,
+      "gate": "ccx",
+      "target": "H",
+      "block": "partial_product_grid",
+      "wire_id": "arithmetic_scratch:H:partial_product_grid.bit[15]"
+    }
+  ],
+  "sample_unclassified": [],
+  "checks": {
+    "scheduled_modular_primitive_netlist_passes": true,
+    "scanned_operation_count_matches_scheduled_netlist": true,
+    "scanned_gate_counts_match_scheduled_netlist": true,
+    "field_operand_wires_are_live_in_trace": false,
+    "qroam_operand_wires_are_explicit_lookup_workspace_wires": true,
+    "no_unclassified_non_lookup_operand_wires": true,
+    "no_synthetic_arithmetic_scratch_wires_without_owner_capacity": false
+  },
+  "pass": false,
+  "completion_blockers": [
+    {
+      "name": "field_operand_liveness_binding",
+      "active": true,
+      "required_to_close": "Bind every field:* operand used by the modular primitive iterator to the scheduled trace liveness map, or replace virtual lookup/internal-product field operands with a wire-level streaming circuit whose wires have counted owners."
+    },
+    {
+      "name": "synthetic_arithmetic_scratch_owner_capacity",
+      "active": true,
+      "required_to_close": "Replace arithmetic_scratch:* operand wires with a primitive lowering that assigns every scratch/control/target wire to counted field slots or to an explicit counted scratch owner with a liveness/reuse proof."
+    },
+    {
+      "name": "modular_multiplier_physical_wire_semantics",
+      "active": true,
+      "required_to_close": "Give the modular multiplication primitive a reversible wire-level circuit instead of treating the schoolbook partial-product grid as independent synthetic scratch targets."
+    }
+  ]
+}

@@ -16,6 +16,7 @@
     "lookup_lowerings_sha256": "70e8ff627f0c537f73162c1d3ccf259a94c3dd756568947c7b4f3cf4665a5637",
     "modular_arithmetic_certificate_sha256": "5dc1bc120d7c52d9b0118c1ff01d28e8bb13fa6060da2aafaed6e15200e38ff8",
     "modular_execution_trace_sha256": "4d8dbe6e13e09da859e1dc1c640917d33973a9c9907ca336fc80bd3d070a127c",
+    "modular_primitive_wire_audit_sha256": "2cb95940444a25d4ea08186f8277b5f879ab1ae5dd090e581eee1d4f81512b85",
     "phase_shell_lowerings_sha256": "4411ea5f699e5950a32783f2232796a63987efb5d939f98ac400f4f02ddd415b",
     "public_candidate_materialized_circuit_manifest_sha256": "25d2f9d31df95bb4fde297e3bc127948c8ff69e5c8fe56eb0d8d996dcfbf8818",
     "public_engine_manifest_sha256": "f9221fb8f1d5c9ffb41be6663c4fba775f884e5449c9f01f37ea0d98d44bcbac",
@@ -133,8 +134,8 @@
     {
       "name": "modular_arithmetic_clifford_expansion",
       "status": "scheduled_modular_primitive_stream_bound_to_zkp_physical_boundary_not_full_clifford_decomposition",
-      "required_to_close": "Decompose every modular add, subtract, multiply, fold, and reduction primitive into exact concrete Clifford/CCX wire operations inside the same global flat schedule as the point-add leaf.",
-      "current_evidence": "scheduled_modular_primitive_netlist + scheduled_modular_global_splice + physical_boundary_summary + Rust prepared guest validation",
+      "required_to_close": "Replace every synthetic arithmetic scratch operand in modular primitive rows with exact counted owner/liveness assignments, then decompose every modular add, subtract, multiply, fold, and reduction primitive into exact concrete Clifford/CCX wire operations inside the same global flat schedule as the point-add leaf.",
+      "current_evidence": "scheduled_modular_primitive_netlist + modular_primitive_wire_audit + scheduled_modular_global_splice + physical_boundary_summary + Rust prepared guest validation",
       "evidence_metrics": {
         "source_bound_run_length_rows": 2697,
         "leaf_arithmetic_non_clifford": 1126842,
@@ -158,6 +159,11 @@
         "scheduled_modular_primitive_netlist_non_clifford": 1192378,
         "scheduled_modular_primitive_netlist_sha256": "b2c282a3e1162d7333130de97f40786e454493510101de98499735121599aef1",
         "scheduled_modular_global_splice_pass": true,
+        "modular_primitive_wire_audit_pass": false,
+        "modular_primitive_wire_audit_sha256": "2cb95940444a25d4ea08186f8277b5f879ab1ae5dd090e581eee1d4f81512b85",
+        "field_operand_wires_missing_liveness": 663298,
+        "synthetic_arithmetic_scratch_wire_observations": 721406,
+        "synthetic_arithmetic_scratch_unique_wires": 721406,
         "field_mul_non_clifford": 71492,
         "field_mul_stage_counts_match": true,
         "modular_ir_counts_match_lowerings": true
@@ -177,6 +183,7 @@
     "arithmetic_rows_are_operation_ir_bound": true,
     "modular_execution_trace_binds_scheduled_tail": true,
     "scheduled_modular_primitive_netlist_binds_trace": true,
+    "modular_primitive_wire_audit_records_remaining_scratch_gap": true,
     "phase_rows_are_lowering_bound": true,
     "semantic_boundary_cases_cover_public_point_add_boundary": true,
     "tail_macro_auxiliary_artifacts_are_current": true,

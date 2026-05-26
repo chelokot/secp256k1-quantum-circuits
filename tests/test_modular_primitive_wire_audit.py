@@ -1,0 +1,54 @@
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+COMPILER_SRC = REPO_ROOT / 'compiler_verification_project' / 'src'
+ROOT_SRC = REPO_ROOT / 'src'
+if str(COMPILER_SRC) not in sys.path:
+    sys.path.insert(0, str(COMPILER_SRC))
+if str(ROOT_SRC) not in sys.path:
+    sys.path.insert(0, str(ROOT_SRC))
+
+from modular_primitive_wire_audit import MODULAR_PRIMITIVE_WIRE_AUDIT_SCHEMA, build_modular_primitive_wire_audit  # noqa: E402
+
+
+ARTIFACT_DIR = REPO_ROOT / 'compiler_verification_project' / 'artifacts'
+
+
+def _load(name: str) -> dict:
+    return json.loads((ARTIFACT_DIR / name).read_text())
+
+
+def _build() -> dict:
+    return build_modular_primitive_wire_audit(
+        modular_execution_trace=_load('modular_execution_trace.json'),
+        modular_arithmetic_certificate=_load('modular_arithmetic_certificate.json'),
+        arithmetic_lowerings=_load('arithmetic_lowerings.json'),
+        reusable_chunk_lowering=_load('reusable_chunk_lowering.json'),
+        scheduled_modular_primitive_netlist=_load('scheduled_modular_primitive_netlist.json'),
+    )
+
+
+def test_modular_primitive_wire_audit_reconstructs_checked_artifact() -> None:
+    assert _load('modular_primitive_wire_audit.json') == _build()
+
+
+def test_modular_primitive_wire_audit_names_current_scratch_gap() -> None:
+    audit = _load('modular_primitive_wire_audit.json')
+    scheduled = _load('scheduled_modular_primitive_netlist.json')
+    assert audit['schema'] == MODULAR_PRIMITIVE_WIRE_AUDIT_SCHEMA
+    assert audit['operation_count'] == scheduled['operation_count']
+    assert audit['gate_counts'] == scheduled['primitive_counts_total']
+    assert audit['checks']['field_operand_wires_are_live_in_trace'] is False
+    assert audit['checks']['no_unclassified_non_lookup_operand_wires'] is True
+    assert audit['checks']['no_synthetic_arithmetic_scratch_wires_without_owner_capacity'] is False
+    assert audit['pass'] is False
+    assert audit['field_wire_missing_liveness_count'] > 0
+    assert audit['arithmetic_scratch_wire_observation_count'] > 0
+    assert audit['arithmetic_scratch_unique_wire_count'] > 0
+    assert audit['sample_missing_liveness']
+    assert audit['sample_synthetic_scratch']

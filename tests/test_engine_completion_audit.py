@@ -51,6 +51,7 @@ def _build_audit(
         modular_arithmetic_certificate=_load('modular_arithmetic_certificate.json'),
         modular_execution_trace=_load('modular_execution_trace.json'),
         scheduled_modular_primitive_netlist=_load('scheduled_modular_primitive_netlist.json'),
+        modular_primitive_wire_audit=_load('modular_primitive_wire_audit.json'),
         tail_macro_engine=_load('tail_macro_engine.json'),
         tail_macro_liveness=_load('tail_macro_liveness.json'),
         tail_macro_reversibility=_load('tail_macro_reversibility.json'),
@@ -89,7 +90,11 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_execution_trace_pass'] is True
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['scheduled_modular_primitive_netlist_pass'] is True
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['scheduled_modular_global_splice_pass'] is True
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_primitive_wire_audit_pass'] is False
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['field_operand_wires_missing_liveness'] > 0
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['synthetic_arithmetic_scratch_wire_observations'] > 0
     assert expected['checks']['arithmetic_rows_are_operation_ir_bound'] is True
+    assert expected['checks']['modular_primitive_wire_audit_records_remaining_scratch_gap'] is True
     assert expected['checks']['zkp_input_binds_canonical_engine_without_compact_strict_claim'] is True
     qroam_table_cnot = _load('qroam_table_cnot_materialization.json')
     physical = _load('public_candidate_materialized_circuit_manifest.json')['canonical_physical_flat_netlist']
