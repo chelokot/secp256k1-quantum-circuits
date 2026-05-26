@@ -25,7 +25,7 @@ from engine_completion_audit import build_engine_completion_audit  # noqa: E402
 from headline_opcode_coverage import build_headline_opcode_coverage  # noqa: E402
 from headline_resource_manifest import build_headline_resource_manifest  # noqa: E402
 from hybrid_bridge_search import build_hybrid_bridge_search  # noqa: E402
-from materialized_circuit import build_materialized_family_manifest, build_public_candidate_materialized_circuit_manifest  # noqa: E402
+from materialized_circuit import build_arithmetic_operand_replay_audit, build_materialized_family_manifest, build_public_candidate_materialized_circuit_manifest  # noqa: E402
 from project import FIELD_BITS, build_all_artifacts, build_resource_stack_artifacts, full_attack_inventory, write_cain_transfer  # noqa: E402
 from public_result import write_public_headline_result  # noqa: E402
 from qroam_reference_crosscheck import build_qroam_reference_crosscheck  # noqa: E402
@@ -52,6 +52,7 @@ BUILD_TARGETS = (
     'release-corpus-preflight',
     'materialized-circuit-manifest',
     'public-candidate-materialized-circuit-manifest',
+    'arithmetic-operand-replay-audit',
     'headline-resource-manifest',
     'public-engine-manifest',
     'engine-completion-audit',
@@ -367,6 +368,18 @@ def build_public_candidate_materialized_circuit_manifest_artifact() -> None:
     dump_json(artifact_dir / 'public_candidate_materialized_circuit_manifest.json', payload)
 
 
+def build_arithmetic_operand_replay_audit_artifact() -> None:
+    artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
+    dump_json(
+        artifact_dir / 'arithmetic_operand_replay_audit.json',
+        build_arithmetic_operand_replay_audit(
+            public_candidate_materialized_circuit_manifest=load_json(artifact_dir / 'public_candidate_materialized_circuit_manifest.json'),
+            arithmetic_lowerings=load_json(artifact_dir / 'arithmetic_lowerings.json'),
+            arithmetic_operation_ir=load_json(artifact_dir / 'arithmetic_operation_ir.json'),
+        ),
+    )
+
+
 def build_headline_resource_manifest_artifact() -> None:
     artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
     compiler_parameters = load_json(artifact_dir / 'compiler_parameters.json')
@@ -402,6 +415,7 @@ def build_engine_completion_audit_artifact() -> None:
     payload = build_engine_completion_audit(
         public_engine_manifest=load_json(artifact_dir / 'public_engine_manifest.json'),
         public_candidate_materialized_circuit_manifest=load_json(artifact_dir / 'public_candidate_materialized_circuit_manifest.json'),
+        arithmetic_operand_replay_audit=load_json(artifact_dir / 'arithmetic_operand_replay_audit.json'),
         reusable_chunk_lowering=load_json(artifact_dir / 'reusable_chunk_lowering.json'),
         arithmetic_operation_ir=load_json(artifact_dir / 'arithmetic_operation_ir.json'),
         lookup_lowerings=load_json(artifact_dir / 'lookup_lowerings.json'),
@@ -486,6 +500,8 @@ def main() -> None:
         build_public_engine_manifest_artifact()
         payload['public_engine_manifest'] = 'compiler_verification_project/artifacts/public_engine_manifest.json'
     if args.target in ('engine-completion-audit',):
+        build_arithmetic_operand_replay_audit_artifact()
+        payload['arithmetic_operand_replay_audit'] = 'compiler_verification_project/artifacts/arithmetic_operand_replay_audit.json'
         build_engine_completion_audit_artifact()
         payload['engine_completion_audit'] = 'compiler_verification_project/artifacts/engine_completion_audit.json'
     if args.target in ('resource-stack', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
@@ -514,6 +530,8 @@ def main() -> None:
         payload['headline_resource_manifest'] = 'compiler_verification_project/artifacts/headline_resource_manifest.json'
         build_public_candidate_materialized_circuit_manifest_artifact()
         payload['public_candidate_materialized_circuit_manifest'] = 'compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json'
+        build_arithmetic_operand_replay_audit_artifact()
+        payload['arithmetic_operand_replay_audit'] = 'compiler_verification_project/artifacts/arithmetic_operand_replay_audit.json'
         build_public_engine_manifest_artifact()
         payload['public_engine_manifest'] = 'compiler_verification_project/artifacts/public_engine_manifest.json'
         build_engine_completion_audit_artifact()
@@ -523,6 +541,9 @@ def main() -> None:
     if args.target in ('release-candidate-zkp',):
         build_release_candidate_zkp()
         payload['zkp_attestation_release_candidate'] = 'compiler_verification_project/artifacts/zkp_attestation_release_candidate/zkp_attestation_input.json'
+    if args.target in ('arithmetic-operand-replay-audit',):
+        build_arithmetic_operand_replay_audit_artifact()
+        payload['arithmetic_operand_replay_audit'] = 'compiler_verification_project/artifacts/arithmetic_operand_replay_audit.json'
     if args.target in ('all', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
         build_public_headline()
         payload['public_headline_result'] = 'compiler_verification_project/artifacts/public_headline_result.json'
@@ -553,6 +574,7 @@ def main() -> None:
         'release_corpus_preflight': payload.get('release_corpus_preflight'),
         'materialized_circuit_manifest': payload.get('materialized_circuit_manifest'),
         'public_candidate_materialized_circuit_manifest': payload.get('public_candidate_materialized_circuit_manifest'),
+        'arithmetic_operand_replay_audit': payload.get('arithmetic_operand_replay_audit'),
         'headline_resource_manifest': payload.get('headline_resource_manifest'),
         'public_engine_manifest': payload.get('public_engine_manifest'),
         'engine_completion_audit': payload.get('engine_completion_audit'),

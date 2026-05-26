@@ -1,0 +1,12 @@
+{
+  "schema": "compiler-project-arithmetic-operand-replay-audit-v1",
+  "definition": "Compares generated arithmetic primitive operands with the concrete parent-bit operands emitted by the public flat-netlist operand-domain replay.",
+  "arithmetic_run_length_rows_checked": 2697,
+  "unique_block_gate_pairs_checked": 87,
+  "source_operations_checked": 27184458,
+  "rows_with_failures": 0,
+  "unique_block_gate_failures": 0,
+  "sample_failures": [],
+  "unique_failures": [],
+  "pass": true
+}

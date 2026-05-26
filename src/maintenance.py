@@ -196,6 +196,7 @@ PROOF_MANIFEST_PATHS = [
     'compiler_verification_project/artifacts/resource_liveness_certificate.json',
     'compiler_verification_project/artifacts/materialized_circuit_manifest.json',
     'compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json',
+    'compiler_verification_project/artifacts/arithmetic_operand_replay_audit.json',
     'compiler_verification_project/artifacts/qubit_breakthrough_analysis.json',
     'compiler_verification_project/artifacts/subcircuit_equivalence.json',
     'compiler_verification_project/artifacts/headline_opcode_coverage.json',

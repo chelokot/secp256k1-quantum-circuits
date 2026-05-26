@@ -25,6 +25,7 @@ def _build_audit(
     *,
     public_engine: dict | None = None,
     public_candidate: dict | None = None,
+    arithmetic_operand_replay: dict | None = None,
     arithmetic_ir: dict | None = None,
     qroam_primitive: dict | None = None,
     qroam_table_cnot: dict | None = None,
@@ -33,6 +34,7 @@ def _build_audit(
     return build_engine_completion_audit(
         public_engine_manifest=public_engine or _load('public_engine_manifest.json'),
         public_candidate_materialized_circuit_manifest=public_candidate or _load('public_candidate_materialized_circuit_manifest.json'),
+        arithmetic_operand_replay_audit=arithmetic_operand_replay or _load('arithmetic_operand_replay_audit.json'),
         reusable_chunk_lowering=_load('reusable_chunk_lowering.json'),
         arithmetic_operation_ir=arithmetic_ir or _load('arithmetic_operation_ir.json'),
         lookup_lowerings=lookup_lowerings or _load('lookup_lowerings.json'),
@@ -70,8 +72,10 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
         'single_engine_zkp_input_derivation',
     }.issubset(remaining)
     covered = {row['name']: row for row in expected['covered_boundaries']}
+    assert covered['arithmetic_operand_replay']['status'] == 'exact_source_operands_replayed_to_counted_flat_netlist_wires'
     assert covered['qroam_bit_level_netlist_expansion']['status'] == 'indexed_table_cnot_rows_in_canonical_physical_flat_stream_with_iterator_export'
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['source_bound_run_length_rows'] == expected['source_binding_summary']['rows_by_source_kind']['arithmetic_operation_ir']
+    assert expected['checks']['arithmetic_rows_are_operation_ir_bound'] is True
     qroam_table_cnot = _load('qroam_table_cnot_materialization.json')
     physical = _load('public_candidate_materialized_circuit_manifest.json')['canonical_physical_flat_netlist']
     assert physical['gate_totals']['cx'] == qroam_table_cnot['totals']['full_oracle_emitted_clifford_cx']
@@ -117,6 +121,15 @@ def test_engine_completion_audit_rejects_lookup_block_stream_drift() -> None:
     block['primitive_operation_stream']['operation_count'] += 1
     observed = _build_audit(lookup_lowerings=lookup_lowerings)
     assert observed['checks']['lookup_rows_are_per_block_source_bound'] is False
+    assert observed['pass'] is False
+
+
+def test_engine_completion_audit_rejects_arithmetic_operand_replay_drift() -> None:
+    arithmetic_operand_replay = _load('arithmetic_operand_replay_audit.json')
+    arithmetic_operand_replay['rows_with_failures'] = 1
+    arithmetic_operand_replay['pass'] = False
+    observed = _build_audit(arithmetic_operand_replay=arithmetic_operand_replay)
+    assert observed['checks']['arithmetic_rows_are_operation_ir_bound'] is False
     assert observed['pass'] is False
 
 

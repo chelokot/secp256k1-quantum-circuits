@@ -37,6 +37,7 @@ def build_engine_completion_audit(
     *,
     public_engine_manifest: Mapping[str, Any],
     public_candidate_materialized_circuit_manifest: Mapping[str, Any],
+    arithmetic_operand_replay_audit: Mapping[str, Any],
     reusable_chunk_lowering: Mapping[str, Any],
     arithmetic_operation_ir: Mapping[str, Any],
     lookup_lowerings: Mapping[str, Any],
@@ -171,6 +172,10 @@ def build_engine_completion_audit(
         'arithmetic_rows_are_operation_ir_bound': (
             rows_by_source_kind['arithmetic_operation_ir'] > 0
             and arithmetic_operation_ir['pass'] is True
+            and arithmetic_operand_replay_audit['pass'] is True
+            and int(arithmetic_operand_replay_audit['arithmetic_run_length_rows_checked']) == rows_by_source_kind['arithmetic_operation_ir']
+            and int(arithmetic_operand_replay_audit['rows_with_failures']) == 0
+            and int(arithmetic_operand_replay_audit['unique_block_gate_failures']) == 0
             and arithmetic_operation_ir['checks']['modular_kernels_derive_from_executable_modular_circuit_ir'] is True
             and arithmetic_operation_ir['checks']['tail_macro_kernel_derives_from_tail_macro_engine'] is True
             and int(arithmetic_leaf_summary['non_clifford_total']) == sum(
@@ -244,6 +249,11 @@ def build_engine_completion_audit(
             'evidence': 'operand_source_binding rows_by_source_kind',
         },
         {
+            'name': 'arithmetic_operand_replay',
+            'status': 'exact_source_operands_replayed_to_counted_flat_netlist_wires',
+            'evidence': 'arithmetic_operand_replay_audit',
+        },
+        {
             'name': 'standard_qroam_primitive_costs',
             'status': 'qroamclean_k1_bound',
             'evidence': 'qroam_primitive_certificate.qroamclean_cost_model',
@@ -291,6 +301,9 @@ def build_engine_completion_audit(
                 'selected_leaf_exact_arithmetic_operation_count': int(arithmetic_operation_ir['selected_leaf_exact_operation_stream']['operation_count']),
                 'selected_leaf_exact_arithmetic_segment_count': int(arithmetic_operation_ir['selected_leaf_exact_operation_stream']['segment_count']),
                 'selected_leaf_exact_arithmetic_stream_pass': bool(arithmetic_operation_ir['selected_leaf_exact_operation_stream']['pass']),
+                'arithmetic_operand_replay_pass': bool(arithmetic_operand_replay_audit['pass']),
+                'arithmetic_operand_replay_source_operations_checked': int(arithmetic_operand_replay_audit['source_operations_checked']),
+                'arithmetic_operand_replay_rows_with_failures': int(arithmetic_operand_replay_audit['rows_with_failures']),
                 'field_mul_non_clifford': int(modular_arithmetic_certificate['field_mul_stage_count_certificate']['observed_total_ccx']),
                 'field_mul_stage_counts_match': bool(modular_arithmetic_certificate['field_mul_stage_count_certificate']['stage_counts_match']),
                 'modular_ir_counts_match_lowerings': bool(modular_arithmetic_certificate['executable_circuit_ir_count_certificate']['counts_match_arithmetic_lowerings']),
@@ -343,6 +356,7 @@ def build_engine_completion_audit(
             'public_candidate_materialized_circuit_manifest': public_candidate_materialized_circuit_manifest,
             'reusable_chunk_lowering': reusable_chunk_lowering,
             'arithmetic_operation_ir': arithmetic_operation_ir,
+            'arithmetic_operand_replay_audit': arithmetic_operand_replay_audit,
             'lookup_lowerings': lookup_lowerings,
             'qroam_primitive_certificate': qroam_primitive_certificate,
             'qroam_table_cnot_materialization': qroam_table_cnot_materialization,

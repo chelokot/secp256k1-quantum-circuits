@@ -31,7 +31,7 @@ from constant_provenance import CONSTANT_PROVENANCE_SCHEMA, build_constant_prove
 from engine_completion_audit import ENGINE_COMPLETION_AUDIT_SCHEMA, build_engine_completion_audit
 from fallback_frontier_stress import build_fallback_frontier_stress
 from lookup_lowering import lookup_lowering_library, lowered_lookup_semantic_summary, materialize_lookup_primitive_operations
-from materialized_circuit import PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, build_public_candidate_materialized_circuit_manifest
+from materialized_circuit import PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, build_arithmetic_operand_replay_audit, build_public_candidate_materialized_circuit_manifest
 from modular_arithmetic_certificate import build_modular_arithmetic_certificate
 from phase_shell_lowering import materialize_phase_operations, phase_shell_family_summary, phase_shell_lowering_library
 from physical_estimator import (
@@ -207,6 +207,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'resource_liveness_certificate': artifact_root / 'resource_liveness_certificate.json',
         'materialized_circuit_manifest': artifact_root / 'materialized_circuit_manifest.json',
         'public_candidate_materialized_circuit_manifest': artifact_root / 'public_candidate_materialized_circuit_manifest.json',
+        'arithmetic_operand_replay_audit': artifact_root / 'arithmetic_operand_replay_audit.json',
         'headline_resource_manifest': artifact_root / 'headline_resource_manifest.json',
         'public_engine_manifest': artifact_root / 'public_engine_manifest.json',
         'engine_completion_audit': artifact_root / 'engine_completion_audit.json',
@@ -302,10 +303,19 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
             ),
         )
         dump_json(
+            artifact_root / 'arithmetic_operand_replay_audit.json',
+            build_arithmetic_operand_replay_audit(
+                public_candidate_materialized_circuit_manifest=load_json(artifact_root / 'public_candidate_materialized_circuit_manifest.json'),
+                arithmetic_lowerings=load_json(artifact_root / 'arithmetic_lowerings.json'),
+                arithmetic_operation_ir=load_json(artifact_root / 'arithmetic_operation_ir.json'),
+            ),
+        )
+        dump_json(
             artifact_root / 'engine_completion_audit.json',
             build_engine_completion_audit(
                 public_engine_manifest=load_json(artifact_root / 'public_engine_manifest.json'),
                 public_candidate_materialized_circuit_manifest=load_json(artifact_root / 'public_candidate_materialized_circuit_manifest.json'),
+                arithmetic_operand_replay_audit=load_json(artifact_root / 'arithmetic_operand_replay_audit.json'),
                 reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
                 arithmetic_operation_ir=load_json(artifact_root / 'arithmetic_operation_ir.json'),
                 lookup_lowerings=load_json(artifact_root / 'lookup_lowerings.json'),
@@ -2504,6 +2514,7 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
     expected = build_engine_completion_audit(
         public_engine_manifest=artifacts['public_engine_manifest'],
         public_candidate_materialized_circuit_manifest=artifacts['public_candidate_materialized_circuit_manifest'],
+        arithmetic_operand_replay_audit=artifacts['arithmetic_operand_replay_audit'],
         reusable_chunk_lowering=artifacts['reusable_chunk_lowering'],
         arithmetic_operation_ir=artifacts['arithmetic_operation_ir'],
         lookup_lowerings=artifacts['lookup_lowerings'],
@@ -2533,13 +2544,41 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
                 'single_engine_zkp_input_derivation',
             }.issubset({row['name'] for row in audit['remaining_macro_boundaries']})
             and 'qroam_bit_level_netlist_expansion' in {row['name'] for row in audit['covered_boundaries']}
+            and 'arithmetic_operand_replay' in {row['name'] for row in audit['covered_boundaries']}
             and audit['checks']['remaining_macro_boundaries_are_explicit'] is True
             and audit['checks']['public_claim_not_marked_full_clifford_complete_until_macro_boundaries_flattened'] is True,
-            'explicit arithmetic, tail, and zkp boundaries remain; qroam is covered without a full-completion claim',
+            'explicit arithmetic, tail, and zkp boundaries remain; qroam and arithmetic operand replay are covered without a full-completion claim',
             {'clifford_complete_goal_achieved': audit['clifford_complete_goal_achieved'], 'covered_boundaries': audit['covered_boundaries'], 'remaining_macro_boundaries': audit['remaining_macro_boundaries'], 'checks': audit['checks']},
         ),
         _check('engine_completion_audit_source_binding_covers_all_run_length_rows', audit['checks']['source_binding_covers_every_run_length_row'] is True and audit['source_binding_summary']['rows_checked'] == artifacts['public_candidate_materialized_circuit_manifest']['run_length_row_count'] and sum(audit['source_binding_summary']['rows_by_source_kind'].values()) == audit['source_binding_summary']['rows_checked'], 'all run-length rows source-bound', audit['source_binding_summary']),
         _check('engine_completion_audit_passes_internal_checks', audit['pass'] is True and all(audit['checks'].values()), True, audit['checks']),
+    ]
+    return _summarize_checks(checks)
+
+
+def build_arithmetic_operand_replay_audit_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    audit = artifacts['arithmetic_operand_replay_audit']
+    expected = build_arithmetic_operand_replay_audit(
+        public_candidate_materialized_circuit_manifest=artifacts['public_candidate_materialized_circuit_manifest'],
+        arithmetic_lowerings=artifacts['arithmetic_lowerings'],
+        arithmetic_operation_ir=artifacts['arithmetic_operation_ir'],
+    )
+    checks = [
+        _check('arithmetic_operand_replay_audit_matches_generator', audit == expected, expected, audit),
+        _check('arithmetic_operand_replay_audit_passes', audit['pass'] is True, True, audit),
+        _check(
+            'arithmetic_operand_replay_audit_checks_all_arithmetic_rows',
+            audit['arithmetic_run_length_rows_checked'] == artifacts['public_candidate_materialized_circuit_manifest']['arithmetic_leaf_block_row_count']
+            and audit['source_operations_checked'] > artifacts['arithmetic_operation_ir']['selected_leaf_exact_operation_stream']['operation_count']
+            and audit['rows_with_failures'] == 0
+            and audit['unique_block_gate_failures'] == 0,
+            {
+                'arithmetic_rows': artifacts['public_candidate_materialized_circuit_manifest']['arithmetic_leaf_block_row_count'],
+                'minimum_source_operations': artifacts['arithmetic_operation_ir']['selected_leaf_exact_operation_stream']['operation_count'],
+                'failures': 0,
+            },
+            audit,
+        ),
     ]
     return _summarize_checks(checks)
 
@@ -3297,6 +3336,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'headline_resource_manifest_checks': lambda: build_headline_resource_manifest_checks(artifacts),
         'public_engine_manifest_checks': lambda: build_public_engine_manifest_checks(artifacts),
         'engine_completion_audit_checks': lambda: build_engine_completion_audit_checks(artifacts),
+        'arithmetic_operand_replay_audit_checks': lambda: build_arithmetic_operand_replay_audit_checks(artifacts),
         'constant_provenance_checks': lambda: build_constant_provenance_checks(artifacts, repo_root),
         'primitive_multiplier_checks': lambda: build_primitive_multiplier_checks(artifacts),
         'frontier_checks': lambda: build_frontier_checks(artifacts),
