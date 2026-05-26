@@ -31,6 +31,7 @@ def _build_manifest(
     compiler_parameters: dict | None = None,
     arithmetic_operation_ir: dict | None = None,
     qroam_primitive: dict | None = None,
+    qroam_table_cnot: dict | None = None,
     phase_shell: dict | None = None,
     public_candidate_materialized: dict | None = None,
 ) -> dict:
@@ -43,6 +44,7 @@ def _build_manifest(
         compiler_parameters=resolved_compiler_parameters,
         arithmetic_operation_ir=arithmetic_operation_ir or _load('arithmetic_operation_ir.json'),
         qroam_primitive_certificate=qroam_primitive or _load('qroam_primitive_certificate.json'),
+        qroam_table_cnot_materialization=qroam_table_cnot or _load('qroam_table_cnot_materialization.json'),
         phase_shell_lowerings=phase_shell or _load('phase_shell_lowerings.json'),
         public_candidate_materialized_circuit_manifest=public_candidate_materialized or _load('public_candidate_materialized_circuit_manifest.json'),
         selected_family_name=resolved_compiler_parameters['public_headline_policy']['selected_public_family_name'],
@@ -67,6 +69,10 @@ def test_public_engine_manifest_reconstructs_checked_artifact() -> None:
         expected['semantic_boundary_evidence']['release_corpus_preflight']['category_counts']
     )
     assert expected['primitive_operation_evidence']['qroam_primitive_certificate']['whole_oracle_non_clifford'] == reusable['non_clifford_derivation']['qroam_chunk_non_clifford']
+    qroam_table_cnot = _load('qroam_table_cnot_materialization.json')
+    assert expected['source_digests']['qroam_table_cnot_materialization_sha256'] == expected['primitive_operation_evidence']['qroam_table_cnot_materialization']['sha256']
+    assert expected['primitive_operation_evidence']['qroam_table_cnot_materialization']['full_oracle_emitted_clifford_cx'] == qroam_table_cnot['totals']['full_oracle_emitted_clifford_cx']
+    assert expected['primitive_operation_evidence']['qroam_table_cnot_materialization']['segment_count'] == reusable['stream_plan']['whole_oracle_chunk_streams'] * expected['primitive_operation_evidence']['qroam_primitive_certificate']['segment_count']
     assert expected['primitive_operation_evidence']['phase_shell']['phase_register_bits'] == expected['primitive_operation_evidence']['phase_shell']['hadamard_count']
     assert expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['non_clifford'] == reusable['non_clifford_derivation']['candidate_total_non_clifford']
     assert expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['peak_live_qubits'] == expected['public_totals']['logical_qubits']
@@ -127,6 +133,14 @@ def test_public_engine_manifest_rejects_qroam_primitive_drift() -> None:
     qroam_primitive['traversed_counts']['per_stream_non_clifford'] += 1
     observed = _build_manifest(qroam_primitive=qroam_primitive)
     assert observed['checks']['qroam_primitive_stream_binds_stream_terms'] is False
+    assert observed['pass'] is False
+
+
+def test_public_engine_manifest_rejects_qroam_table_cnot_drift() -> None:
+    qroam_table_cnot = _load('qroam_table_cnot_materialization.json')
+    qroam_table_cnot['totals']['full_oracle_potential_target_bit_sites'] += 1
+    observed = _build_manifest(qroam_table_cnot=qroam_table_cnot)
+    assert observed['checks']['qroam_table_cnot_materialization_binds_target_bit_sites'] is False
     assert observed['pass'] is False
 
 

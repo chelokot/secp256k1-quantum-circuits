@@ -3,22 +3,22 @@
   "scope": "tracked repository files at or above the configured large-artifact threshold",
   "size_threshold_bytes": 1048576,
   "chunk_size_bytes": 1048576,
-  "file_count": 11,
-  "repository_digest_sha256": "e3a3ffb1e6ecde88ff9e6047d084b5c18395af627a92c06e9e1f7872d8ae3517",
+  "file_count": 12,
+  "repository_digest_sha256": "afe749eab0bc8a3930e4ea7fd7ce4e94bda0a4ba671e24691d6e59c0d4401ba3",
   "files": [
     {
       "path": "compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json",
       "bytes": 35687072,
-      "sha256": "c8cf08bd871035a228205ed62bbce889dabda92cb39566fd4fdb8a601bf0a2af",
+      "sha256": "2880e4e13d1171b3b5f2c4ff4c42fdd24c0f5de1c5e901163c455a4e40adb382",
       "chunk_size_bytes": 1048576,
       "chunk_count": 35,
-      "chunk_merkle_root_sha256": "97912ef4bdf94100d58499f218cb50baac8b884bbfcaacbeb4d3fe8a6741ddd8",
+      "chunk_merkle_root_sha256": "347ff2cb12193edb280c86ce49c2983bd12cdc99d2c5bf5550acce0d66e9f4db",
       "chunks": [
         {
           "index": 0,
           "offset": 0,
           "bytes": 1048576,
-          "sha256": "2b0c5e731c25cccc86a61d587f21cee68649afccb11222a0d3e4388e4a3317ec"
+          "sha256": "c8dd1c606d4e2e2d64595d7fdca4514e7f8f146b9acbe3274714b5bc77088ff5"
         },
         {
           "index": 1,
@@ -881,6 +881,34 @@
           "offset": 4194304,
           "bytes": 661846,
           "sha256": "61208f58f22d2c8e740329e101551845cba32e85237076e189a2553629ba210c"
+        }
+      ]
+    },
+    {
+      "path": "compiler_verification_project/artifacts/qroam_table_cnot_materialization.json",
+      "bytes": 2537417,
+      "sha256": "98e1627965a55303ae3d4b4a347383b0bbd48c8e9a684d1a389ab17e4c9c79bb",
+      "chunk_size_bytes": 1048576,
+      "chunk_count": 3,
+      "chunk_merkle_root_sha256": "b28d626938993ea9086b7bd85b838bdadfc5e6cb7b3f883cc58acfa102d5b171",
+      "chunks": [
+        {
+          "index": 0,
+          "offset": 0,
+          "bytes": 1048576,
+          "sha256": "5e01756082285532bc69c8580c5f489a99de9374c294d0e9d34a5d6ec01780d8"
+        },
+        {
+          "index": 1,
+          "offset": 1048576,
+          "bytes": 1048576,
+          "sha256": "443a0bd724aae84c36d184a8aa7297fb0c5c71bd4eb66363f2f9c1221d517f35"
+        },
+        {
+          "index": 2,
+          "offset": 2097152,
+          "bytes": 440265,
+          "sha256": "4bab11b14c6e10383b27d244ccb8964c060f7512ab7b4fb9673772b2702291e3"
         }
       ]
     },

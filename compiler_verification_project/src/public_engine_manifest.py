@@ -125,6 +125,7 @@ def build_public_engine_manifest(
     compiler_parameters: Mapping[str, Any],
     arithmetic_operation_ir: Mapping[str, Any],
     qroam_primitive_certificate: Mapping[str, Any],
+    qroam_table_cnot_materialization: Mapping[str, Any],
     phase_shell_lowerings: Mapping[str, Any],
     public_candidate_materialized_circuit_manifest: Mapping[str, Any],
     selected_family_name: str,
@@ -160,6 +161,8 @@ def build_public_engine_manifest(
         if row['opcode'] == tail_opcode
     )
     qroam_counts = qroam_primitive_certificate['traversed_counts']
+    qroam_table_totals = qroam_table_cnot_materialization['totals']
+    qroam_table_parameters = qroam_table_cnot_materialization['parameters']
     selected_phase_shell = next(
         row
         for row in phase_shell_lowerings['families']
@@ -281,6 +284,21 @@ def build_public_engine_manifest(
             and int(qroam_counts['junk_register_qubits']) == int(qroam_primitive_certificate['qroamclean_cost_model']['junk_register_qubits'])
             and int(qroam_counts['per_stream_non_clifford']) * int(reusable_chunk_lowering['stream_plan']['whole_oracle_chunk_streams']) == int(reusable_chunk_lowering['non_clifford_derivation']['qroam_chunk_non_clifford'])
         ),
+        'qroam_table_cnot_materialization_binds_target_bit_sites': (
+            qroam_table_cnot_materialization['pass'] is True
+            and int(qroam_table_parameters['domain_size']) == int(qroam_primitive_certificate['parameters']['domain_size'])
+            and int(qroam_table_parameters['segment_size']) == int(qroam_primitive_certificate['parameters']['segment_size'])
+            and int(qroam_table_parameters['chunk_bits']) == int(reusable_chunk_lowering['stream_plan']['chunk_bits'])
+            and int(qroam_table_parameters['chunk_count']) == int(reusable_chunk_lowering['stream_plan']['chunk_count'])
+            and list(qroam_table_parameters['tables']) == list(reusable_chunk_lowering['stream_plan']['coordinate_tables'])
+            and int(qroam_table_parameters['leaf_call_count']) == int(reusable_chunk_lowering['stream_plan']['leaf_call_count_total'])
+            and int(qroam_table_totals['chunk_stream_count']) == int(reusable_chunk_lowering['stream_plan']['whole_oracle_chunk_streams'])
+            and int(qroam_table_totals['segment_count']) == int(reusable_chunk_lowering['stream_plan']['whole_oracle_chunk_streams']) * int(qroam_primitive_certificate['operation_stream']['segment_count'])
+            and int(qroam_table_totals['full_oracle_potential_target_bit_sites']) == int(reusable_chunk_lowering['stream_plan']['whole_oracle_chunk_streams']) * int(qroam_primitive_certificate['target_bit_load_site_stream']['potential_cnot_site_count'])
+            and int(qroam_table_totals['full_oracle_effective_target_bit_sites']) + int(qroam_table_totals['full_oracle_zero_padded_target_bit_sites']) == int(qroam_table_totals['full_oracle_potential_target_bit_sites'])
+            and 0 <= int(qroam_table_totals['full_oracle_emitted_clifford_cx']) <= int(qroam_table_totals['full_oracle_effective_target_bit_sites'])
+            and len(qroam_table_cnot_materialization['segment_merkle_root_sha256']) == 64
+        ),
         'phase_shell_primitive_counts_bind_public_family': (
             selected_phase_shell['name'] in selected_family_name
             and int(phase_shell_lowerings['phase_register_bits']) == phase_register_bits
@@ -346,6 +364,7 @@ def build_public_engine_manifest(
             'owner_capacity_sha256': executable_resource_engine['owner_capacity_sha256'],
             'resource_contract_engine_sha256': executable_resource_engine['resource_contract_engine_sha256'],
             'public_candidate_materialized_circuit_manifest_sha256': _sha256_payload(public_candidate_materialized_circuit_manifest),
+            'qroam_table_cnot_materialization_sha256': _sha256_payload(qroam_table_cnot_materialization),
         },
         'instruction_stream': {
             'encoding': instruction_columns,
@@ -525,6 +544,18 @@ def build_public_engine_manifest(
                 'junk_register_qubits': int(qroam_counts['junk_register_qubits']),
                 'whole_oracle_streams': int(reusable_chunk_lowering['stream_plan']['whole_oracle_chunk_streams']),
                 'whole_oracle_non_clifford': int(qroam_counts['per_stream_non_clifford']) * int(reusable_chunk_lowering['stream_plan']['whole_oracle_chunk_streams']),
+            },
+            'qroam_table_cnot_materialization': {
+                'schema': qroam_table_cnot_materialization['schema'],
+                'sha256': _sha256_payload(qroam_table_cnot_materialization),
+                'pass': bool(qroam_table_cnot_materialization['pass']),
+                'chunk_stream_count': int(qroam_table_totals['chunk_stream_count']),
+                'segment_count': int(qroam_table_totals['segment_count']),
+                'segment_merkle_root_sha256': qroam_table_cnot_materialization['segment_merkle_root_sha256'],
+                'full_oracle_potential_target_bit_sites': int(qroam_table_totals['full_oracle_potential_target_bit_sites']),
+                'full_oracle_effective_target_bit_sites': int(qroam_table_totals['full_oracle_effective_target_bit_sites']),
+                'full_oracle_zero_padded_target_bit_sites': int(qroam_table_totals['full_oracle_zero_padded_target_bit_sites']),
+                'full_oracle_emitted_clifford_cx': int(qroam_table_totals['full_oracle_emitted_clifford_cx']),
             },
             'phase_shell': {
                 'schema': phase_shell_lowerings['schema'],

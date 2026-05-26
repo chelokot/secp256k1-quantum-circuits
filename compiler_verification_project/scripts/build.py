@@ -385,6 +385,7 @@ def build_public_engine_manifest_artifact() -> None:
         compiler_parameters=compiler_parameters,
         arithmetic_operation_ir=load_json(artifact_dir / 'arithmetic_operation_ir.json'),
         qroam_primitive_certificate=load_json(artifact_dir / 'qroam_primitive_certificate.json'),
+        qroam_table_cnot_materialization=load_json(artifact_dir / 'qroam_table_cnot_materialization.json'),
         phase_shell_lowerings=load_json(artifact_dir / 'phase_shell_lowerings.json'),
         public_candidate_materialized_circuit_manifest=load_json(artifact_dir / 'public_candidate_materialized_circuit_manifest.json'),
         selected_family_name=compiler_parameters['public_headline_policy']['selected_public_family_name'],

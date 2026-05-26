@@ -134,6 +134,10 @@ def _summarize_checks(checks: List[Dict[str, Any]]) -> Dict[str, Any]:
     }
 
 
+def _canonical_payload_sha256(payload: Any) -> str:
+    return sha256_bytes(json.dumps(payload, sort_keys=True, separators=(',', ':'), ensure_ascii=True).encode('ascii'))
+
+
 def _load_artifact(path: Path) -> Dict[str, Any]:
     return load_json(path)
 
@@ -291,6 +295,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 compiler_parameters=load_json(artifact_root / 'compiler_parameters.json'),
                 arithmetic_operation_ir=load_json(artifact_root / 'arithmetic_operation_ir.json'),
                 qroam_primitive_certificate=load_json(artifact_root / 'qroam_primitive_certificate.json'),
+                qroam_table_cnot_materialization=load_json(artifact_root / 'qroam_table_cnot_materialization.json'),
                 phase_shell_lowerings=load_json(artifact_root / 'phase_shell_lowerings.json'),
                 public_candidate_materialized_circuit_manifest=load_json(artifact_root / 'public_candidate_materialized_circuit_manifest.json'),
                 selected_family_name=load_json(artifact_root / 'compiler_parameters.json')['public_headline_policy']['selected_public_family_name'],
@@ -2450,12 +2455,14 @@ def build_public_engine_manifest_checks(artifacts: Mapping[str, Any]) -> Dict[st
         compiler_parameters=compiler_parameters,
         arithmetic_operation_ir=artifacts['arithmetic_operation_ir'],
         qroam_primitive_certificate=artifacts['qroam_primitive_certificate'],
+        qroam_table_cnot_materialization=artifacts['qroam_table_cnot_materialization'],
         phase_shell_lowerings=artifacts['phase_shell_lowerings'],
         public_candidate_materialized_circuit_manifest=artifacts['public_candidate_materialized_circuit_manifest'],
         selected_family_name=selected_family_name,
     )
     executable_resource_engine = lowering['executable_resource_engine']
     resource_contract_engine = lowering['resource_contract_engine']
+    qroam_table_cnot = artifacts['qroam_table_cnot_materialization']
     checks = [
         _check('public_engine_manifest_matches_generator', manifest == expected, expected, manifest),
         _check('public_engine_manifest_schema_is_current', manifest['schema'] == PUBLIC_ENGINE_MANIFEST_SCHEMA, PUBLIC_ENGINE_MANIFEST_SCHEMA, manifest['schema']),
@@ -2476,10 +2483,11 @@ def build_public_engine_manifest_checks(artifacts: Mapping[str, Any]) -> Dict[st
         ),
         _check('public_engine_manifest_binds_counted_ir_digest', manifest['source_digests']['counted_resource_ir_sha256'] == executable_resource_engine['counted_resource_ir_sha256'], executable_resource_engine['counted_resource_ir_sha256'], manifest['source_digests']['counted_resource_ir_sha256']),
         _check('public_engine_manifest_binds_liveness_and_owner_digests', manifest['source_digests']['executable_liveness_sha256'] == resource_contract_engine['executable_liveness_sha256'] and manifest['source_digests']['owner_capacity_sha256'] == resource_contract_engine['owner_capacity_sha256'], {'executable_liveness_sha256': resource_contract_engine['executable_liveness_sha256'], 'owner_capacity_sha256': resource_contract_engine['owner_capacity_sha256']}, manifest['source_digests']),
+        _check('public_engine_manifest_binds_qroam_table_cnot_digest', manifest['source_digests']['qroam_table_cnot_materialization_sha256'] == _canonical_payload_sha256(qroam_table_cnot), _canonical_payload_sha256(qroam_table_cnot), manifest['source_digests']['qroam_table_cnot_materialization_sha256']),
         _check('public_engine_manifest_instruction_schedule_and_wire_streams_are_nonempty', manifest['instruction_stream']['row_count'] > 0 and manifest['schedule_stream']['row_count'] > 0 and manifest['wire_catalog_stream']['row_count'] > 0, '> 0 rows', {'instruction_rows': manifest['instruction_stream']['row_count'], 'schedule_rows': manifest['schedule_stream']['row_count'], 'wire_rows': manifest['wire_catalog_stream']['row_count']}),
         _check('public_engine_manifest_fast_contract_is_no_zkp', manifest['fast_no_zkp_contract']['prover_required'] is False and manifest['fast_no_zkp_contract']['verify_group'] == 'public_engine_manifest_checks', {'prover_required': False, 'verify_group': 'public_engine_manifest_checks'}, manifest['fast_no_zkp_contract']),
         _check('public_engine_manifest_binds_semantic_boundary_evidence', manifest['semantic_boundary_evidence']['streamed_lookup_tail_leaf_equivalence']['pass'] == manifest['semantic_boundary_evidence']['streamed_lookup_tail_leaf_equivalence']['total'] and manifest['semantic_boundary_evidence']['release_corpus_preflight']['case_count'] == GOOGLE_COMPARABLE_CASE_COUNT and all(manifest['semantic_boundary_evidence']['release_corpus_preflight']['category_counts'].get(category, 0) > 0 for category in manifest['semantic_boundary_evidence']['required_categories']) and manifest['semantic_boundary_evidence']['compiler_parameters']['selected_public_family_name'] == selected_family_name, 'semantic boundary evidence covers required categories in release corpus and binds compiler parameters', manifest['semantic_boundary_evidence']),
-        _check('public_engine_manifest_binds_primitive_operation_evidence', manifest['primitive_operation_evidence']['arithmetic_operation_ir']['pass'] is True and manifest['primitive_operation_evidence']['qroam_primitive_certificate']['pass'] is True and manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['pass'] is True and manifest['primitive_operation_evidence']['qroam_primitive_certificate']['whole_oracle_non_clifford'] == lowering['non_clifford_derivation']['qroam_chunk_non_clifford'] and manifest['primitive_operation_evidence']['phase_shell']['name'] in selected_family_name, 'primitive operation evidence binds materialized public candidate, arithmetic, qroam, and phase shell sources', manifest['primitive_operation_evidence']),
+        _check('public_engine_manifest_binds_primitive_operation_evidence', manifest['primitive_operation_evidence']['arithmetic_operation_ir']['pass'] is True and manifest['primitive_operation_evidence']['qroam_primitive_certificate']['pass'] is True and manifest['primitive_operation_evidence']['qroam_table_cnot_materialization']['pass'] is True and manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['pass'] is True and manifest['primitive_operation_evidence']['qroam_primitive_certificate']['whole_oracle_non_clifford'] == lowering['non_clifford_derivation']['qroam_chunk_non_clifford'] and manifest['primitive_operation_evidence']['qroam_table_cnot_materialization']['full_oracle_emitted_clifford_cx'] == qroam_table_cnot['totals']['full_oracle_emitted_clifford_cx'] and manifest['primitive_operation_evidence']['phase_shell']['name'] in selected_family_name, 'primitive operation evidence binds materialized public candidate, arithmetic, qroam, table-CNOT, and phase shell sources', manifest['primitive_operation_evidence']),
         _check('public_engine_manifest_passes_internal_checks', manifest['pass'] is True and all(manifest['checks'].values()), True, manifest['checks']),
     ]
     return _summarize_checks(checks)

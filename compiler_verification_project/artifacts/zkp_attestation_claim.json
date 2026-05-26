@@ -4,26 +4,26 @@
   "selected_family_name": "folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1",
   "field_bits": 256,
   "leaf_call_count_total": 31,
-  "expected_full_oracle_non_clifford": 34925796,
+  "expected_full_oracle_non_clifford": 34941606,
   "expected_total_logical_qubits": 1044,
   "expected_case_count": 8,
   "resource_engine_summary": {
     "source": "compiler_family_summary",
     "source_document_type": "compiler_family_summary",
-    "source_sha256": "0b4986c9a0f5ceef844ba1ad18f7d6d5c83658bf02c6d0df65dc4fb256a33089",
-    "non_clifford": 34925796,
+    "source_sha256": "4a1222d452363f5c61ce12f9702cbfd03fa3a11596adf722ac41875707ba4713",
+    "non_clifford": 34941606,
     "logical_qubits": 1044,
     "matches_family_snapshot": true,
     "matches_resource_certificate_snapshot": false
   },
   "non_clifford_formula": {
-    "arithmetic_leaf_non_clifford": 1126332,
+    "arithmetic_leaf_non_clifford": 1126842,
     "per_leaf_lookup_non_clifford": 297,
     "direct_seed_non_clifford": 297,
     "leaf_call_count_total": 31,
-    "arithmetic_component": 34916292,
+    "arithmetic_component": 34932102,
     "lookup_component": 9207,
-    "reconstructed_total": 34925796
+    "reconstructed_total": 34941606
   },
   "logical_qubit_formula": {
     "field_bits": 256,
