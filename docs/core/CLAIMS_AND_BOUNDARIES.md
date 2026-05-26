@@ -202,9 +202,10 @@ now hashes generated word-level unary-iteration rows and target-bit Clifford
 load-site rows with selection-control, target-register, and loaded-bit source
 contracts. The table-CNOT materialization artifact now hashes the concrete
 folded secp256k1 table chunks for every retained raw32 lookup call, counts the
-emitted Clifford CNOTs, records global emitted-CNOT operation ranges, and binds
-first/last emitted target-bit probes for each segment. The remaining QROAM row
-is the per-CNOT splice into the single global schedule.
+emitted Clifford CNOTs, records global emitted-CNOT operation ranges, stores
+rank checkpoints, and binds executable per-CNOT row-decoder samples for each
+segment. The remaining QROAM row is splicing those indexed virtual CNOT rows
+into the single global schedule.
 The selected tail macro is also no longer only prose plus a stage inventory:
 `tail_macro_engine.json` expands the formula into a 23-operation field-kernel
 stream, binds that stream's opcode histogram to the counted tail kernel, and

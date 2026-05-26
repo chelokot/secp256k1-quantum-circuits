@@ -1799,6 +1799,14 @@ def _qroam_table_cnot_flat_extension(
             'zero_padded_target_bit_sites': int(segment['zero_padded_target_bit_sites']),
             'first_emitted_cx': segment.get('first_emitted_cx'),
             'last_emitted_cx': segment.get('last_emitted_cx'),
+            'row_index_contract': {
+                'global_index_domain_start': int(segment['row_index_contract']['global_index_domain_start']),
+                'global_index_domain_end_exclusive': int(segment['row_index_contract']['global_index_domain_end_exclusive']),
+                'rank_checkpoint_count': int(segment['row_index_contract']['rank_checkpoint_count']),
+                'rank_checkpoint_sha256': str(segment['row_index_contract']['rank_checkpoint_sha256']),
+                'sample_count': int(segment['row_index_contract']['sample_count']),
+                'sample_sha256': str(segment['row_index_contract']['sample_sha256']),
+            },
             'source_segment_sha256': str(segment['sha256']),
             'qroam_run_length_segment_sha256': str(row['qroam_segment_sha256']),
             'primitive_operand_contract_sha256': str(row['primitive_operand_contract_sha256']),
@@ -1826,6 +1834,7 @@ def _qroam_table_cnot_flat_extension(
         'zero_padded_target_bit_sites',
         'first_emitted_cx',
         'last_emitted_cx',
+        'row_index_contract',
         'source_segment_sha256',
         'qroam_run_length_segment_sha256',
         'primitive_operand_contract_sha256',
@@ -1863,6 +1872,15 @@ def _qroam_table_cnot_flat_extension(
                 row['last_emitted_cx'] is None
                 or int(row['last_emitted_cx']['global_emitted_cx_index']) == int(row['emitted_cx_operation_end_exclusive']) - 1
             )
+            for row in extension_rows
+        ),
+        'table_cnot_row_index_contract_matches_artifact': all(
+            int(row['row_index_contract']['global_index_domain_start']) == int(row['emitted_cx_operation_start'])
+            and int(row['row_index_contract']['global_index_domain_end_exclusive']) == int(row['emitted_cx_operation_end_exclusive'])
+            and int(row['row_index_contract']['rank_checkpoint_count']) > 0
+            and len(row['row_index_contract']['rank_checkpoint_sha256']) == 64
+            and int(row['row_index_contract']['sample_count']) in (0, 2)
+            and len(row['row_index_contract']['sample_sha256']) == 64
             for row in extension_rows
         ),
         'table_cnot_extension_adds_only_clifford_cx': True,

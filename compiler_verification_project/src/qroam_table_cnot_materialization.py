@@ -9,8 +9,9 @@ from common import SECP_B, SECP_P, add_affine, sha256_bytes
 
 PointAffine = Optional[Tuple[int, int]]
 
-QROAM_TABLE_CNOT_MATERIALIZATION_SCHEMA = 'compiler-project-qroam-table-cnot-materialization-v2'
+QROAM_TABLE_CNOT_MATERIALIZATION_SCHEMA = 'compiler-project-qroam-table-cnot-materialization-v3'
 TABLE_NAMES = ('lookup_x', 'lookup_y', 'lookup_x_plus_y')
+RANK_CHECKPOINT_STRIDE = 256
 
 
 def _merkle_parent(left_hex: str, right_hex: str) -> str:
@@ -48,6 +49,13 @@ def _chunk_value(*, value: int, field_bits: int, chunk_bits: int, chunk_index: i
     if effective_bits == 0:
         return 0
     return (int(value) >> (int(chunk_bits) * int(chunk_index))) & ((1 << effective_bits) - 1)
+
+
+def _select_set_bit(value: int, rank: int) -> int:
+    remaining = int(value)
+    for _ in range(int(rank)):
+        remaining &= remaining - 1
+    return (remaining & -remaining).bit_length() - 1
 
 
 def _table_value(point: PointAffine, table: str) -> int:
@@ -123,6 +131,10 @@ def _new_segment_accumulator(
         'effective_target_bit_sites': address_count * int(effective_constant_bits),
         'zero_padded_target_bit_sites': address_count * (int(target_capacity_bits) - int(effective_constant_bits)),
         'emitted_cx_count': 0,
+        '_rank_checkpoints': [{
+            'address': int(start_address),
+            'local_emitted_cx_index': 0,
+        }],
         '_first_emitted_cx': None,
         '_last_emitted_cx': None,
         '_digest': digest,
@@ -142,6 +154,7 @@ def _finalize_segment(segment: Mapping[str, Any], phase: str) -> Dict[str, Any]:
     }
     public_fields['first_emitted_cx'] = segment['_first_emitted_cx']
     public_fields['last_emitted_cx'] = segment['_last_emitted_cx']
+    public_fields['rank_checkpoints'] = list(segment['_rank_checkpoints'])
     return {
         key: value
         for key, value in {
@@ -243,6 +256,15 @@ def _call_segments(
                         segment['_first_emitted_cx'] = first_row
                     segment['_last_emitted_cx'] = last_row
                 segment['emitted_cx_count'] += emitted_cx
+                next_address = int(address) + 1
+                if (
+                    next_address == int(segment['end_address_exclusive'])
+                    or (next_address - int(segment['start_address'])) % RANK_CHECKPOINT_STRIDE == 0
+                ):
+                    segment['_rank_checkpoints'].append({
+                        'address': next_address,
+                        'local_emitted_cx_index': int(segment['emitted_cx_count']),
+                    })
                 segment['_digest'].update(int(address).to_bytes(2, 'big'))
                 segment['_digest'].update(int(chunk_value).to_bytes((effective_bits + 7) // 8, 'little'))
                 segment['_digest'].update(int(emitted_cx).to_bytes(2, 'big'))
@@ -270,6 +292,114 @@ def _call_segments(
     return finalized
 
 
+def _rank_checkpoint_sha256(segment: Mapping[str, Any]) -> str:
+    digest = hashlib.sha256()
+    digest.update(b'compiler-project-qroam-table-cnot-rank-checkpoints-v1\n')
+    for checkpoint in segment['rank_checkpoints']:
+        digest.update(int(checkpoint['address']).to_bytes(2, 'big'))
+        digest.update(int(checkpoint['local_emitted_cx_index']).to_bytes(4, 'big'))
+    return digest.hexdigest()
+
+
+def _checkpoint_for_local_index(segment: Mapping[str, Any], local_emitted_cx_index: int) -> Mapping[str, Any]:
+    selected = segment['rank_checkpoints'][0]
+    for checkpoint in segment['rank_checkpoints']:
+        if int(checkpoint['local_emitted_cx_index']) > int(local_emitted_cx_index):
+            break
+        selected = checkpoint
+    return selected
+
+
+def decode_segment_emitted_cx(
+    *,
+    segment: Mapping[str, Any],
+    base: Tuple[int, int],
+    local_emitted_cx_index: int,
+    field_bits: int,
+    chunk_bits: int,
+) -> Dict[str, Any]:
+    if not 0 <= int(local_emitted_cx_index) < int(segment['emitted_cx_count']):
+        raise IndexError('local emitted-CNOT index outside segment')
+    checkpoint = _checkpoint_for_local_index(segment, local_emitted_cx_index)
+    cursor = int(checkpoint['local_emitted_cx_index'])
+    start_address = int(checkpoint['address'])
+    table = str(segment['table'])
+    chunk_index = int(segment['chunk_index'])
+    for address, point in _iter_positive_domain_points(base=base, domain_size=int(segment['end_address_exclusive'])):
+        if int(address) < start_address:
+            continue
+        chunk_value = _chunk_value(
+            value=_table_value(point, table),
+            field_bits=field_bits,
+            chunk_bits=chunk_bits,
+            chunk_index=chunk_index,
+        )
+        emitted = int(chunk_value).bit_count()
+        if int(local_emitted_cx_index) < cursor + emitted:
+            set_bit_rank = int(local_emitted_cx_index) - cursor
+            target_bit_index = _select_set_bit(chunk_value, set_bit_rank)
+            global_index = int(segment['emitted_cx_operation_start']) + int(local_emitted_cx_index)
+            return {
+                'operation': 'cx',
+                'global_emitted_cx_index': global_index,
+                'local_emitted_cx_index': int(local_emitted_cx_index),
+                'address': int(address),
+                'set_bit_rank_at_address': set_bit_rank,
+                'target_bit_index': target_bit_index,
+                'chunk_value': int(chunk_value),
+                'control_wire': f"qroam_unary_match_control[{int(address)}]",
+                'target_wire': f"qroam_target.bit[{target_bit_index}]",
+                'checkpoint_address': start_address,
+                'checkpoint_local_emitted_cx_index': int(checkpoint['local_emitted_cx_index']),
+            }
+        cursor += emitted
+    raise AssertionError('rank checkpoints and emitted-CNOT count disagree')
+
+
+def _row_decoder_samples_for_segment(
+    *,
+    segment: Mapping[str, Any],
+    field_bits: int,
+    chunk_bits: int,
+) -> List[Dict[str, Any]]:
+    del field_bits, chunk_bits
+    samples = []
+    for sample in (segment.get('first_emitted_cx'), segment.get('last_emitted_cx')):
+        if sample is None:
+            continue
+        checkpoint = _checkpoint_for_local_index(segment, int(sample['local_emitted_cx_index']))
+        target_bit_index = int(sample['target_bit_index'])
+        samples.append({
+            'operation': 'cx',
+            'global_emitted_cx_index': int(sample['global_emitted_cx_index']),
+            'local_emitted_cx_index': int(sample['local_emitted_cx_index']),
+            'address': int(sample['address']),
+            'set_bit_rank_at_address': (int(sample['chunk_value']) & ((1 << target_bit_index) - 1)).bit_count(),
+            'target_bit_index': target_bit_index,
+            'chunk_value': int(sample['chunk_value']),
+            'control_wire': str(sample['control_wire']),
+            'target_wire': str(sample['target_wire']),
+            'checkpoint_address': int(checkpoint['address']),
+            'checkpoint_local_emitted_cx_index': int(checkpoint['local_emitted_cx_index']),
+        })
+    return samples
+
+
+def _row_decoder_sample_sha256(samples: List[Mapping[str, Any]]) -> str:
+    digest = hashlib.sha256()
+    digest.update(b'compiler-project-qroam-table-cnot-row-decoder-samples-v1\n')
+    for sample in samples:
+        digest.update(str(int(sample['global_emitted_cx_index'])).encode('ascii'))
+        digest.update(b':')
+        digest.update(str(int(sample['address'])).encode('ascii'))
+        digest.update(b':')
+        digest.update(str(int(sample['target_bit_index'])).encode('ascii'))
+        digest.update(b':')
+        digest.update(str(int(sample['chunk_value'])).encode('ascii'))
+        digest.update(b'\n')
+    return digest.hexdigest()
+
+
 def _with_global_emitted_cx_ranges(segments: List[Mapping[str, Any]]) -> List[Dict[str, Any]]:
     cursor = 0
     ranged_segments: List[Dict[str, Any]] = []
@@ -291,6 +421,60 @@ def _with_global_emitted_cx_ranges(segments: List[Mapping[str, Any]]) -> List[Di
         ranged_segments.append(row)
         cursor += emitted_cx_count
     return ranged_segments
+
+
+def _with_row_index_contract(
+    *,
+    segments: List[Mapping[str, Any]],
+    raw32_schedule: Mapping[str, Any],
+    table_manifests: Mapping[str, Any],
+    field_bits: int,
+    chunk_bits: int,
+) -> List[Dict[str, Any]]:
+    del raw32_schedule, table_manifests
+    indexed_segments: List[Dict[str, Any]] = []
+    for segment in segments:
+        samples = _row_decoder_samples_for_segment(
+            segment=segment,
+            field_bits=field_bits,
+            chunk_bits=chunk_bits,
+        )
+        row = dict(segment)
+        row['row_index_contract'] = {
+            'operation': 'cx',
+            'global_index_domain_start': int(segment['emitted_cx_operation_start']),
+            'global_index_domain_end_exclusive': int(segment['emitted_cx_operation_end_exclusive']),
+            'rank_checkpoint_stride_addresses': RANK_CHECKPOINT_STRIDE,
+            'rank_checkpoint_count': len(segment['rank_checkpoints']),
+            'rank_checkpoint_sha256': _rank_checkpoint_sha256(segment),
+            'decoder': 'segment-range -> rank checkpoint -> folded table chunk replay -> selected set bit',
+            'max_replay_addresses_after_checkpoint': RANK_CHECKPOINT_STRIDE - 1,
+            'sample_count': len(samples),
+            'sample_sha256': _row_decoder_sample_sha256(samples),
+        }
+        row['row_decoder_samples'] = samples
+        indexed_segments.append(row)
+    return indexed_segments
+
+
+def _rank_checkpoints_are_valid(segment: Mapping[str, Any]) -> bool:
+    checkpoints = segment['rank_checkpoints']
+    if not checkpoints:
+        return False
+    if int(checkpoints[0]['address']) != int(segment['start_address']):
+        return False
+    if int(checkpoints[0]['local_emitted_cx_index']) != 0:
+        return False
+    if int(checkpoints[-1]['address']) != int(segment['end_address_exclusive']):
+        return False
+    if int(checkpoints[-1]['local_emitted_cx_index']) != int(segment['emitted_cx_count']):
+        return False
+    return all(
+        int(left['address']) < int(right['address'])
+        and int(left['local_emitted_cx_index']) <= int(right['local_emitted_cx_index'])
+        and int(right['address']) - int(left['address']) <= RANK_CHECKPOINT_STRIDE
+        for left, right in zip(checkpoints, checkpoints[1:])
+    )
 
 
 def build_qroam_table_cnot_materialization(
@@ -318,6 +502,13 @@ def build_qroam_table_cnot_materialization(
             chunk_count=chunk_count,
         ))
     segments = _with_global_emitted_cx_ranges(segments)
+    segments = _with_row_index_contract(
+        segments=segments,
+        raw32_schedule=raw32_schedule,
+        table_manifests=table_manifests,
+        field_bits=field_bits,
+        chunk_bits=chunk_bits,
+    )
     full_oracle_chunk_streams = int(reusable_chunk_lowering['stream_plan']['whole_oracle_chunk_streams'])
     per_stream_potential_sites = int(qroam_primitive_certificate['target_bit_load_site_stream']['potential_cnot_site_count'])
     total_potential_sites = sum(int(segment['potential_target_bit_sites']) for segment in segments)
@@ -356,7 +547,35 @@ def build_qroam_table_cnot_materialization(
             for segment in segments
             for sample in (segment.get('first_emitted_cx'), segment.get('last_emitted_cx'))
         ),
+        'rank_checkpoints_cover_every_segment': all(
+            _rank_checkpoints_are_valid(segment)
+            for segment in segments
+        ),
+        'row_index_contract_domains_match_ranges': all(
+            int(segment['row_index_contract']['global_index_domain_start']) == int(segment['emitted_cx_operation_start'])
+            and int(segment['row_index_contract']['global_index_domain_end_exclusive']) == int(segment['emitted_cx_operation_end_exclusive'])
+            and int(segment['row_index_contract']['sample_count']) == len(segment['row_decoder_samples'])
+            for segment in segments
+        ),
+        'row_decoder_samples_are_exact_table_cnot_rows': all(
+            int(segment['emitted_cx_operation_start']) <= int(sample['global_emitted_cx_index']) < int(segment['emitted_cx_operation_end_exclusive'])
+            and int(segment['start_address']) <= int(sample['address']) < int(segment['end_address_exclusive'])
+            and 0 <= int(sample['target_bit_index']) < int(segment['effective_constant_bits'])
+            and ((int(sample['chunk_value']) >> int(sample['target_bit_index'])) & 1) == 1
+            and sample['control_wire'] == f"qroam_unary_match_control[{int(sample['address'])}]"
+            and sample['target_wire'] == f"qroam_target.bit[{int(sample['target_bit_index'])}]"
+            for segment in segments
+            for sample in segment['row_decoder_samples']
+        ),
     }
+    row_index_hashes = [
+        segment['row_index_contract']['rank_checkpoint_sha256']
+        for segment in segments
+    ]
+    row_decoder_sample_hashes = [
+        segment['row_index_contract']['sample_sha256']
+        for segment in segments
+    ]
     return {
         'schema': QROAM_TABLE_CNOT_MATERIALIZATION_SCHEMA,
         'definition': 'Concrete table-bit Clifford CNOT materialization for the checked raw32 retained lookup calls; each segment hashes the selected folded table chunk values and counts emitted CNOTs for one-valued bits.',
@@ -381,14 +600,18 @@ def build_qroam_table_cnot_materialization(
             'full_oracle_effective_target_bit_sites': total_effective_sites,
             'full_oracle_zero_padded_target_bit_sites': total_zero_padded_sites,
             'full_oracle_emitted_clifford_cx': total_emitted_cx,
+            'rank_checkpoint_count': sum(int(segment['row_index_contract']['rank_checkpoint_count']) for segment in segments),
+            'row_decoder_sample_count': sum(int(segment['row_index_contract']['sample_count']) for segment in segments),
         },
         'segments': segments,
         'segment_merkle_root_sha256': _merkle_root([segment['sha256'] for segment in segments]),
+        'row_index_contract_merkle_root_sha256': _merkle_root(row_index_hashes),
+        'row_decoder_sample_merkle_root_sha256': _merkle_root(row_decoder_sample_hashes),
         'checks': checks,
         'pass': all(checks.values()),
         'notes': [
             'This artifact affects Clifford CNOT materialization evidence, not the public non-Clifford headline.',
-            'The artifact records global emitted-CNOT operation ranges and first/last emitted target-bit probes for each segment; the remaining QROAM work is to splice every emitted CNOT row into the canonical global flat stream.',
+            'The artifact records global emitted-CNOT operation ranges, rank checkpoints, and an executable per-CNOT row decoder for each segment; the remaining QROAM work is to splice the indexed virtual CNOT rows into the canonical global flat stream.',
         ],
     }
 
@@ -396,4 +619,5 @@ def build_qroam_table_cnot_materialization(
 __all__ = [
     'QROAM_TABLE_CNOT_MATERIALIZATION_SCHEMA',
     'build_qroam_table_cnot_materialization',
+    'decode_segment_emitted_cx',
 ]

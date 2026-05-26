@@ -72,8 +72,14 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     }.issubset(remaining)
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['source_bound_run_length_rows'] == expected['source_binding_summary']['rows_by_source_kind']['arithmetic_operation_ir']
     assert remaining['qroam_bit_level_netlist_expansion']['evidence_metrics']['source_bound_run_length_rows'] == expected['source_binding_summary']['rows_by_source_kind']['qroam_primitive_certificate']
-    assert remaining['qroam_bit_level_netlist_expansion']['status'] == 'table_cnot_flat_extension_bound_not_per_cnot_row_spliced'
-    assert remaining['qroam_bit_level_netlist_expansion']['evidence_metrics']['full_oracle_emitted_table_clifford_cx'] == _load('qroam_table_cnot_materialization.json')['totals']['full_oracle_emitted_clifford_cx']
+    qroam_table_cnot = _load('qroam_table_cnot_materialization.json')
+    qroam_metrics = remaining['qroam_bit_level_netlist_expansion']['evidence_metrics']
+    assert remaining['qroam_bit_level_netlist_expansion']['status'] == 'indexed_virtual_per_cnot_rows_not_global_stream_materialized'
+    assert qroam_metrics['full_oracle_emitted_table_clifford_cx'] == qroam_table_cnot['totals']['full_oracle_emitted_clifford_cx']
+    assert qroam_metrics['rank_checkpoint_count'] == qroam_table_cnot['totals']['rank_checkpoint_count']
+    assert qroam_metrics['row_decoder_sample_count'] == qroam_table_cnot['totals']['row_decoder_sample_count']
+    assert qroam_metrics['row_index_contract_merkle_root_sha256'] == qroam_table_cnot['row_index_contract_merkle_root_sha256']
+    assert qroam_metrics['row_decoder_sample_merkle_root_sha256'] == qroam_table_cnot['row_decoder_sample_merkle_root_sha256']
     assert len(remaining['qroam_bit_level_netlist_expansion']['evidence_metrics']['table_cnot_extension_stream_sha256']) == 64
     assert all(expected['checks'].values())
 
@@ -99,6 +105,14 @@ def test_engine_completion_audit_rejects_forged_qroam_cost() -> None:
     qroam_primitive['qroamclean_cost_model']['per_stream_non_clifford'] -= 1
     observed = _build_audit(qroam_primitive=qroam_primitive)
     assert observed['checks']['qroam_rows_bind_standard_qroam_primitive_costs'] is False
+    assert observed['pass'] is False
+
+
+def test_engine_completion_audit_rejects_forged_qroam_row_index_contract() -> None:
+    qroam_table_cnot = _load('qroam_table_cnot_materialization.json')
+    qroam_table_cnot['checks']['row_decoder_samples_are_exact_table_cnot_rows'] = False
+    observed = _build_audit(qroam_table_cnot=qroam_table_cnot)
+    assert observed['checks']['qroam_table_cnot_extension_binds_counted_liveness'] is False
     assert observed['pass'] is False
 
 

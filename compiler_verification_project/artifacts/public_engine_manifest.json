@@ -21,8 +21,8 @@
     "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
     "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
     "resource_contract_engine_sha256": "0447031a514b04038ab0f51e63a0e1a5ffa187d1cab694de20d7dfc8196ea1e0",
-    "public_candidate_materialized_circuit_manifest_sha256": "a5eb1b8e8e4ce636920bb5c63ee6c0aef039c53691f55f4225aab77bac6356ba",
-    "qroam_table_cnot_materialization_sha256": "a47d62c2345594fdb08cfb4e1af29a0e161d913e0914ec69d53577a2dbca1691"
+    "public_candidate_materialized_circuit_manifest_sha256": "6806e281ca7cd63a3ff490facbfe60b1babf84eecfe9e1c7db3002aac93f9dc9",
+    "qroam_table_cnot_materialization_sha256": "0cfec0b2f407e8cda087699321256adfda441bb00f9aecba5c7abca8875cd191"
   },
   "instruction_stream": {
     "encoding": [
@@ -616,7 +616,7 @@
   "primitive_operation_evidence": {
     "public_candidate_materialized_circuit_manifest": {
       "schema": "compiler-project-public-candidate-materialized-circuit-manifest-v1",
-      "sha256": "a5eb1b8e8e4ce636920bb5c63ee6c0aef039c53691f55f4225aab77bac6356ba",
+      "sha256": "6806e281ca7cd63a3ff490facbfe60b1babf84eecfe9e1c7db3002aac93f9dc9",
       "pass": true,
       "operation_stream_sha256": "1b91eac3d5109522a43f3fcc09a40d91f2a83ae730581878979f127e0788588e",
       "liveness_binding_stream_sha256": "064b5825a77559fdaab046854b89afdf58e1d3da0be53ab53652bb913c87b8eb",
@@ -698,13 +698,13 @@
       "qroam_table_cnot_flat_extension": {
         "schema": "compiler-project-qroam-table-cnot-flat-extension-v1",
         "pass": true,
-        "source_sha256": "a47d62c2345594fdb08cfb4e1af29a0e161d913e0914ec69d53577a2dbca1691",
+        "source_sha256": "0cfec0b2f407e8cda087699321256adfda441bb00f9aecba5c7abca8875cd191",
         "segment_count": 2976,
         "operation_count": 780087406,
         "non_clifford_count": 0,
         "peak_live_qubits": 1199,
-        "operation_stream_sha256": "39df9c8f50ad5f20e764194a6a182ae120b42106302a909348fa3fa6d6feaa37",
-        "segment_merkle_root_sha256": "bb7eb7e4c2be563af8fd9e30a35aacb981b13a6e0da01f82c98dccb162f1d484"
+        "operation_stream_sha256": "076e232c736494c80c9389d5cb84cf5df68e9a89901bd211dc287d4b6de316e9",
+        "segment_merkle_root_sha256": "1fc4c98707a7bd67f18ce3d5dbbf8f98ee5f1ddb296caaca2877ab322ba3b08c"
       },
       "non_clifford": 36973222,
       "peak_live_qubits": 1968
@@ -740,16 +740,20 @@
       "whole_oracle_non_clifford": 12189696
     },
     "qroam_table_cnot_materialization": {
-      "schema": "compiler-project-qroam-table-cnot-materialization-v2",
-      "sha256": "a47d62c2345594fdb08cfb4e1af29a0e161d913e0914ec69d53577a2dbca1691",
+      "schema": "compiler-project-qroam-table-cnot-materialization-v3",
+      "sha256": "0cfec0b2f407e8cda087699321256adfda441bb00f9aecba5c7abca8875cd191",
       "pass": true,
       "chunk_stream_count": 186,
       "segment_count": 2976,
       "segment_merkle_root_sha256": "3c3670a457ca982a2551cc9ed7cd7812fa7eb1c70623a9910cffa71c5218a54a",
+      "row_index_contract_merkle_root_sha256": "305bb2eae547bf785794f69947ebc6c5e4dced6583ba01e67ff18b9f2d0778d0",
+      "row_decoder_sample_merkle_root_sha256": "f8f6ab8165c861b2c20f384f62afe41f9bea95850fb6cd6fc46335763d533490",
       "full_oracle_potential_target_bit_sites": 1889402880,
       "full_oracle_effective_target_bit_sites": 1560281088,
       "full_oracle_zero_padded_target_bit_sites": 329121792,
-      "full_oracle_emitted_clifford_cx": 780087406
+      "full_oracle_emitted_clifford_cx": 780087406,
+      "rank_checkpoint_count": 50592,
+      "row_decoder_sample_count": 5952
     },
     "phase_shell": {
       "schema": "compiler-project-phase-shell-lowerings-v2",

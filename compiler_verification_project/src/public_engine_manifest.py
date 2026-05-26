@@ -298,6 +298,10 @@ def build_public_engine_manifest(
             and int(qroam_table_totals['full_oracle_effective_target_bit_sites']) + int(qroam_table_totals['full_oracle_zero_padded_target_bit_sites']) == int(qroam_table_totals['full_oracle_potential_target_bit_sites'])
             and 0 <= int(qroam_table_totals['full_oracle_emitted_clifford_cx']) <= int(qroam_table_totals['full_oracle_effective_target_bit_sites'])
             and len(qroam_table_cnot_materialization['segment_merkle_root_sha256']) == 64
+            and int(qroam_table_totals['rank_checkpoint_count']) > int(qroam_table_totals['segment_count'])
+            and int(qroam_table_totals['row_decoder_sample_count']) > 0
+            and len(qroam_table_cnot_materialization['row_index_contract_merkle_root_sha256']) == 64
+            and len(qroam_table_cnot_materialization['row_decoder_sample_merkle_root_sha256']) == 64
         ),
         'phase_shell_primitive_counts_bind_public_family': (
             selected_phase_shell['name'] in selected_family_name
@@ -565,10 +569,14 @@ def build_public_engine_manifest(
                 'chunk_stream_count': int(qroam_table_totals['chunk_stream_count']),
                 'segment_count': int(qroam_table_totals['segment_count']),
                 'segment_merkle_root_sha256': qroam_table_cnot_materialization['segment_merkle_root_sha256'],
+                'row_index_contract_merkle_root_sha256': qroam_table_cnot_materialization['row_index_contract_merkle_root_sha256'],
+                'row_decoder_sample_merkle_root_sha256': qroam_table_cnot_materialization['row_decoder_sample_merkle_root_sha256'],
                 'full_oracle_potential_target_bit_sites': int(qroam_table_totals['full_oracle_potential_target_bit_sites']),
                 'full_oracle_effective_target_bit_sites': int(qroam_table_totals['full_oracle_effective_target_bit_sites']),
                 'full_oracle_zero_padded_target_bit_sites': int(qroam_table_totals['full_oracle_zero_padded_target_bit_sites']),
                 'full_oracle_emitted_clifford_cx': int(qroam_table_totals['full_oracle_emitted_clifford_cx']),
+                'rank_checkpoint_count': int(qroam_table_totals['rank_checkpoint_count']),
+                'row_decoder_sample_count': int(qroam_table_totals['row_decoder_sample_count']),
             },
             'phase_shell': {
                 'schema': phase_shell_lowerings['schema'],
