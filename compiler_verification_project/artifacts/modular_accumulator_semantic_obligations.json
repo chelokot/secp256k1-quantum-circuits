@@ -1,0 +1,100 @@
+{
+  "schema": "compiler-project-modular-accumulator-semantic-obligations-v1",
+  "definition": "Generated semantic-obligation boundary for promoting the modular accumulator scratch schedule. It enumerates the reversible consume, fold, and cleanup semantics still required before the serialized liveness schedule can become the public physical resource contract.",
+  "source_digests": {
+    "modular_accumulator_row_stream_sha256": "5d448f757f16fa01639c8343a8e39789a2a8f29413615d784db88c6659bb4971",
+    "modular_accumulator_capacity_certificate_sha256": "9b3dd43598dd0061ce9ed7705e83ad4114b55ece85c165364b5d7b61045a1df8",
+    "modular_accumulator_scratch_schedule_sha256": "61d9b95ba2ab90f3cbeed0d80efeedfb419902c7943268cdc012e5ba255505f1"
+  },
+  "field_bits": 256,
+  "obligation_summary": {
+    "row_stream_row_count": 1448433,
+    "consume_event_count": 721406,
+    "cleanup_event_count": 721406,
+    "partial_product_consume_rows": 720896,
+    "zero_lift_guard_consume_rows": 510,
+    "pseudo_mersenne_fold_rows": 5621,
+    "temporary_cleanup_rows": 721406,
+    "product_column_capacity_bits": 511,
+    "fold_overflow_column_count": 31,
+    "serialized_temporary_peak_logical_qubits": 1,
+    "semantic_gate_lowering_proven": false
+  },
+  "obligation_classes": [
+    {
+      "name": "partial_product_column_consume",
+      "row_count": 720896,
+      "route_kind": "partial_product_column_to_streamed_modular_accumulator",
+      "source_rows": "modular_accumulator_row_stream.role_counts.partial_product_accumulator_consume",
+      "required_semantics": "reversible_update_product_column_from_single_temporary_and_then_uncompute_temporary",
+      "required_owner": "streamed_product_accumulator_column_space",
+      "required_logical_qubit_capacity": 511,
+      "single_field_slot_shortcut_allowed": false,
+      "semantic_gate_lowering_proven": false
+    },
+    {
+      "name": "zero_lift_guard_consume",
+      "row_count": 510,
+      "route_kind": "zero_lift_guard_predicate_ladder",
+      "source_rows": "modular_accumulator_row_stream.expanded_counts.zero_lift_guard_rows",
+      "required_semantics": "reversible_update_guard_ladder_from_single_temporary_and_then_uncompute_temporary",
+      "required_owner": "guard_ladder_predicate_workspace",
+      "required_serialized_peak_logical_qubits": 1,
+      "semantic_gate_lowering_proven": false
+    },
+    {
+      "name": "pseudo_mersenne_low_column_fold",
+      "row_count": 2816,
+      "route_kind": "pseudo_mersenne_fold",
+      "source_rows": "modular_accumulator_row_stream.role_counts.pseudo_mersenne_low_column_fold",
+      "required_semantics": "reversible_fold_low_shifted_product_column_into_field_lane",
+      "required_owner": "streamed_modular_accumulator_field_lane",
+      "semantic_gate_lowering_proven": false
+    },
+    {
+      "name": "pseudo_mersenne_high_column_fold",
+      "row_count": 2805,
+      "route_kind": "pseudo_mersenne_fold",
+      "source_rows": "modular_accumulator_row_stream.role_counts.pseudo_mersenne_high_column_fold",
+      "required_semantics": "reversible_fold_high_shifted_product_column_with_second_fold_or_explicit_overflow_owner",
+      "required_owner": "streamed_modular_accumulator_field_lane",
+      "overflowing_shift_column_count": 31,
+      "fits_single_field_slot_without_second_fold": false,
+      "semantic_gate_lowering_proven": false
+    },
+    {
+      "name": "temporary_cleanup_uncompute",
+      "row_count": 721406,
+      "route_kind": "adjacent_compute_consume_cleanup_triplet",
+      "source_rows": "modular_accumulator_scratch_schedule.phase_counts.cleanup_or_measure_uncompute",
+      "required_semantics": "cleanup_must_return_each_scratch_target_to_zero_after_counted_owner_update",
+      "required_owner": "temporary_and_target_wire",
+      "obligation_order_peak_logical_qubits": 721406,
+      "serialized_candidate_peak_logical_qubits": 1,
+      "semantic_gate_lowering_proven": false
+    }
+  ],
+  "promotion_status": {
+    "status": "semantic_obligations_not_promoted_to_public_resource_contract",
+    "required_to_promote": [
+      "Replace partial_product_column_consume obligations with concrete reversible product-column update gates.",
+      "Replace zero_lift_guard_consume obligations with concrete reversible guard-ladder update gates.",
+      "Replace pseudo-Mersenne fold obligations with concrete low/high column fold gates that either prove second-fold cleanup or count overflow capacity.",
+      "Replace temporary_cleanup_uncompute obligations with concrete cleanup or measurement-uncompute gates whose side effects are included in the primitive stream.",
+      "Rebuild public non-Clifford and peak-live-qubit totals from the promoted primitive gate stream."
+    ]
+  },
+  "checks": {
+    "source_row_stream_passes": true,
+    "source_capacity_certificate_passes": true,
+    "source_scratch_schedule_passes": true,
+    "consume_events_cover_product_and_guard_rows": true,
+    "cleanup_events_cover_temporary_rows": true,
+    "fold_classes_cover_all_fold_rows": true,
+    "obligation_classes_cover_every_row_stream_row": true,
+    "product_consume_rejects_single_field_slot_shortcut": true,
+    "high_fold_overflow_is_explicit": true,
+    "temporary_cleanup_remains_semantically_unpromoted": true
+  },
+  "pass": true
+}

@@ -36,6 +36,7 @@ from modular_accumulator_capacity_certificate import MODULAR_ACCUMULATOR_CAPACIT
 from modular_accumulator_lowering import MODULAR_ACCUMULATOR_LOWERING_SCHEMA, build_modular_accumulator_lowering
 from modular_accumulator_row_stream import MODULAR_ACCUMULATOR_ROW_STREAM_SCHEMA, build_modular_accumulator_row_stream
 from modular_accumulator_scratch_schedule import MODULAR_ACCUMULATOR_SCRATCH_SCHEDULE_SCHEMA, build_modular_accumulator_scratch_schedule
+from modular_accumulator_semantic_obligations import MODULAR_ACCUMULATOR_SEMANTIC_OBLIGATIONS_SCHEMA, build_modular_accumulator_semantic_obligations
 from modular_execution_trace import build_modular_execution_trace
 from modular_multiplier_lifecycle import MODULAR_MULTIPLIER_LIFECYCLE_SCHEMA, build_modular_multiplier_lifecycle
 from modular_primitive_wire_audit import MODULAR_PRIMITIVE_WIRE_AUDIT_SCHEMA, build_modular_primitive_wire_audit
@@ -201,6 +202,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'modular_accumulator_row_stream': artifact_root / 'modular_accumulator_row_stream.json',
         'modular_accumulator_capacity_certificate': artifact_root / 'modular_accumulator_capacity_certificate.json',
         'modular_accumulator_scratch_schedule': artifact_root / 'modular_accumulator_scratch_schedule.json',
+        'modular_accumulator_semantic_obligations': artifact_root / 'modular_accumulator_semantic_obligations.json',
         'tail_macro_liveness': artifact_root / 'tail_macro_liveness.json',
         'tail_macro_reversibility': artifact_root / 'tail_macro_reversibility.json',
         'tail_macro_schedule_search': artifact_root / 'tail_macro_schedule_search.json',
@@ -374,6 +376,15 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
             ),
         )
         dump_json(
+            artifact_root / 'modular_accumulator_semantic_obligations.json',
+            build_modular_accumulator_semantic_obligations(
+                modular_accumulator_row_stream=load_json(artifact_root / 'modular_accumulator_row_stream.json'),
+                modular_accumulator_capacity_certificate=load_json(artifact_root / 'modular_accumulator_capacity_certificate.json'),
+                modular_accumulator_scratch_schedule=load_json(artifact_root / 'modular_accumulator_scratch_schedule.json'),
+                field_bits=FIELD_BITS,
+            ),
+        )
+        dump_json(
             artifact_root / 'public_engine_manifest.json',
             build_public_engine_manifest(
                 reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
@@ -422,6 +433,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 modular_accumulator_row_stream=load_json(artifact_root / 'modular_accumulator_row_stream.json'),
                 modular_accumulator_capacity_certificate=load_json(artifact_root / 'modular_accumulator_capacity_certificate.json'),
                 modular_accumulator_scratch_schedule=load_json(artifact_root / 'modular_accumulator_scratch_schedule.json'),
+                modular_accumulator_semantic_obligations=load_json(artifact_root / 'modular_accumulator_semantic_obligations.json'),
                 tail_macro_engine=load_json(artifact_root / 'tail_macro_engine.json'),
                 tail_macro_liveness=load_json(artifact_root / 'tail_macro_liveness.json'),
                 tail_macro_reversibility=load_json(artifact_root / 'tail_macro_reversibility.json'),
@@ -2777,6 +2789,30 @@ def build_modular_accumulator_scratch_schedule_checks(artifacts: Mapping[str, An
     return _summarize_checks(checks)
 
 
+def build_modular_accumulator_semantic_obligations_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    obligations = artifacts['modular_accumulator_semantic_obligations']
+    expected = build_modular_accumulator_semantic_obligations(
+        modular_accumulator_row_stream=artifacts['modular_accumulator_row_stream'],
+        modular_accumulator_capacity_certificate=artifacts['modular_accumulator_capacity_certificate'],
+        modular_accumulator_scratch_schedule=artifacts['modular_accumulator_scratch_schedule'],
+        field_bits=FIELD_BITS,
+    )
+    summary = obligations['obligation_summary']
+    classes = {
+        str(row['name']): row
+        for row in obligations['obligation_classes']
+    }
+    checks = [
+        _check('modular_accumulator_semantic_obligations_matches_generator', obligations == expected, expected, obligations),
+        _check('modular_accumulator_semantic_obligations_schema_is_current', obligations['schema'] == MODULAR_ACCUMULATOR_SEMANTIC_OBLIGATIONS_SCHEMA, MODULAR_ACCUMULATOR_SEMANTIC_OBLIGATIONS_SCHEMA, obligations['schema']),
+        _check('modular_accumulator_semantic_obligations_passes_internal_checks', obligations['pass'] is True and all(obligations['checks'].values()), True, obligations['checks']),
+        _check('modular_accumulator_semantic_obligations_cover_row_stream', summary['row_stream_row_count'] == artifacts['modular_accumulator_row_stream']['row_stream']['row_count'] and summary['consume_event_count'] == summary['partial_product_consume_rows'] + summary['zero_lift_guard_consume_rows'] and summary['cleanup_event_count'] == summary['temporary_cleanup_rows'], 'semantic obligation row counts cover row stream and scratch schedule consume/cleanup events', summary),
+        _check('modular_accumulator_semantic_obligations_keep_resource_shortcuts_rejected', classes['partial_product_column_consume']['required_logical_qubit_capacity'] == 2 * FIELD_BITS - 1 and classes['partial_product_column_consume']['single_field_slot_shortcut_allowed'] is False and classes['pseudo_mersenne_high_column_fold']['overflowing_shift_column_count'] == 31 and classes['pseudo_mersenne_high_column_fold']['fits_single_field_slot_without_second_fold'] is False, 'product columns and high-fold overflow cannot be hidden in one field slot', classes),
+        _check('modular_accumulator_semantic_obligations_remain_unpromoted', obligations['promotion_status']['status'] == 'semantic_obligations_not_promoted_to_public_resource_contract' and summary['semantic_gate_lowering_proven'] is False and all(row['semantic_gate_lowering_proven'] is False for row in obligations['obligation_classes']), 'semantic obligations are explicit but not promoted', obligations['promotion_status']),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     audit = artifacts['engine_completion_audit']
     expected = build_engine_completion_audit(
@@ -2800,6 +2836,7 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
         modular_accumulator_row_stream=artifacts['modular_accumulator_row_stream'],
         modular_accumulator_capacity_certificate=artifacts['modular_accumulator_capacity_certificate'],
         modular_accumulator_scratch_schedule=artifacts['modular_accumulator_scratch_schedule'],
+        modular_accumulator_semantic_obligations=artifacts['modular_accumulator_semantic_obligations'],
         tail_macro_engine=artifacts['tail_macro_engine'],
         tail_macro_liveness=artifacts['tail_macro_liveness'],
         tail_macro_reversibility=artifacts['tail_macro_reversibility'],
@@ -3618,6 +3655,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'modular_accumulator_row_stream_checks': lambda: build_modular_accumulator_row_stream_checks(artifacts),
         'modular_accumulator_capacity_certificate_checks': lambda: build_modular_accumulator_capacity_certificate_checks(artifacts),
         'modular_accumulator_scratch_schedule_checks': lambda: build_modular_accumulator_scratch_schedule_checks(artifacts),
+        'modular_accumulator_semantic_obligations_checks': lambda: build_modular_accumulator_semantic_obligations_checks(artifacts),
         'public_engine_manifest_checks': lambda: build_public_engine_manifest_checks(artifacts),
         'engine_completion_audit_checks': lambda: build_engine_completion_audit_checks(artifacts),
         'arithmetic_operand_replay_audit_checks': lambda: build_arithmetic_operand_replay_audit_checks(artifacts),
