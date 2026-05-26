@@ -42,6 +42,7 @@
     "tail_macro_liveness_sha256": "5f60042f2ae891387583cc6ee10cb6fdd11aeef460eadac18c6e512712736cb1",
     "tail_macro_reversibility_sha256": "a5474f2a4b950577da8013b0023ead318a7ea92610406fce869c3adac4d0830a",
     "tail_macro_schedule_search_sha256": "f3af1926dd886d4c8a25831821657bcef57c3b589daddec08957cab7b1dcf81b",
+    "zero_lift_guard_resource_audit_sha256": "ed2aa2ab7e17621077d86d3f75198a5d2357f41883865d47a0a057ba862207c6",
     "zkp_attestation_reusable_chunk_candidate_input_sha256": "804c6594f212e97015af414f9d36145c91b8651d5d29672ff43294c4d4478dab"
   },
   "source_binding_summary": {
@@ -147,7 +148,7 @@
       "name": "modular_arithmetic_clifford_expansion",
       "status": "scheduled_modular_primitive_stream_bound_to_zkp_physical_boundary_not_full_clifford_decomposition",
       "required_to_close": "Replace every synthetic arithmetic scratch operand in modular primitive rows with exact counted owner/liveness assignments, then decompose every modular add, subtract, multiply, fold, and reduction primitive into exact concrete Clifford/CCX wire operations inside the same global flat schedule as the point-add leaf.",
-      "current_evidence": "scheduled_modular_primitive_netlist + modular_primitive_wire_audit + modular_accumulator_semantic_obligations + modular_accumulator_carry_obligations + modular_accumulator_carry_save_candidate + modular_accumulator_full_adder_contract + modular_accumulator_full_adder_stream + modular_accumulator_full_adder_liveness + modular_accumulator_full_adder_reversibility + modular_accumulator_promotion_options + modular_accumulator_source_uncompute + scheduled_modular_global_splice + physical_boundary_summary + Rust prepared guest validation",
+      "current_evidence": "scheduled_modular_primitive_netlist + modular_primitive_wire_audit + modular_accumulator_semantic_obligations + modular_accumulator_carry_obligations + modular_accumulator_carry_save_candidate + modular_accumulator_full_adder_contract + modular_accumulator_full_adder_stream + modular_accumulator_full_adder_liveness + modular_accumulator_full_adder_reversibility + modular_accumulator_promotion_options + modular_accumulator_source_uncompute + zero_lift_guard_resource_audit + scheduled_modular_global_splice + physical_boundary_summary + Rust prepared guest validation",
       "evidence_metrics": {
         "source_bound_run_length_rows": 2697,
         "leaf_arithmetic_non_clifford": 1126842,
@@ -213,6 +214,8 @@
         "modular_accumulator_promotion_options_sha256": "885d2aaff972d86e6a4e2b4f182368b17472f95d654167c07459c625b7d71863",
         "modular_accumulator_source_uncompute_pass": true,
         "modular_accumulator_source_uncompute_sha256": "7730f2a321508ee066b7a788252d9599656a0d5f518b5bcb5d1484a27e6f4de8",
+        "zero_lift_guard_resource_audit_pass": true,
+        "zero_lift_guard_resource_audit_sha256": "ed2aa2ab7e17621077d86d3f75198a5d2357f41883865d47a0a057ba862207c6",
         "modular_accumulator_single_grid_column_count": 511,
         "modular_accumulator_fold_route_count": 511,
         "modular_accumulator_overflowing_shift_column_count": 31,
@@ -275,6 +278,9 @@
         "modular_accumulator_source_uncompute_partial_product_cleanup_ccx_delta": 720896,
         "modular_accumulator_source_uncompute_zero_lift_guard_cleanup_unproven": 510,
         "modular_accumulator_source_uncompute_truth_table_pass_count": 8,
+        "zero_lift_guard_current_logical_qubits": 1,
+        "zero_lift_guard_clean_ladder_minimum_logical_qubits": 255,
+        "zero_lift_guard_missing_logical_qubits_under_clean_ladder": 254,
         "streamed_lifecycle_candidate_event_stream_sha256": "282c56c0ecd13bc20d1910edbb89ee7dc7b46b83ebc929f7584e116256b5f6f1",
         "streamed_lifecycle_candidate_event_count": 2164218,
         "streamed_lifecycle_partial_product_routes": 720896,

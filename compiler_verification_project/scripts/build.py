@@ -52,6 +52,7 @@ from scheduled_modular_primitive_netlist import build_scheduled_modular_primitiv
 from strict_replayed_tail_result import write_strict_replayed_tail_headline_result  # noqa: E402
 from subcircuit_equivalence import build_subcircuit_equivalence_artifact  # noqa: E402
 from zkp_attestation import write_zkp_attestation_inputs  # noqa: E402
+from zero_lift_guard_resource_audit import build_zero_lift_guard_resource_audit  # noqa: E402
 from proof_corpus_profiles import resolve_proof_corpus_profile  # noqa: E402
 from proof_environment_contract import build_proof_environment_contract  # noqa: E402
 from proof_publication_status import build_proof_publication_status  # noqa: E402
@@ -87,6 +88,7 @@ BUILD_TARGETS = (
     'modular-accumulator-full-adder-reversibility',
     'modular-accumulator-promotion-options',
     'modular-accumulator-source-uncompute',
+    'zero-lift-guard-resource-audit',
     'headline-resource-manifest',
     'public-engine-manifest',
     'engine-completion-audit',
@@ -629,6 +631,16 @@ def build_modular_accumulator_source_uncompute_artifact() -> None:
     )
 
 
+def build_zero_lift_guard_resource_audit_artifact() -> None:
+    artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
+    dump_json(
+        artifact_dir / 'zero_lift_guard_resource_audit.json',
+        build_zero_lift_guard_resource_audit(
+            tail_macro_engine=load_json(artifact_dir / 'tail_macro_engine.json'),
+        ),
+    )
+
+
 def build_headline_resource_manifest_artifact() -> None:
     artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
     compiler_parameters = load_json(artifact_dir / 'compiler_parameters.json')
@@ -693,6 +705,7 @@ def build_engine_completion_audit_artifact() -> None:
         modular_accumulator_full_adder_reversibility=load_json(artifact_dir / 'modular_accumulator_full_adder_reversibility.json'),
         modular_accumulator_promotion_options=load_json(artifact_dir / 'modular_accumulator_promotion_options.json'),
         modular_accumulator_source_uncompute=load_json(artifact_dir / 'modular_accumulator_source_uncompute.json'),
+        zero_lift_guard_resource_audit=load_json(artifact_dir / 'zero_lift_guard_resource_audit.json'),
         tail_macro_engine=load_json(artifact_dir / 'tail_macro_engine.json'),
         tail_macro_liveness=load_json(artifact_dir / 'tail_macro_liveness.json'),
         tail_macro_reversibility=load_json(artifact_dir / 'tail_macro_reversibility.json'),
@@ -800,6 +813,8 @@ def main() -> None:
         payload['modular_accumulator_promotion_options'] = 'compiler_verification_project/artifacts/modular_accumulator_promotion_options.json'
         build_modular_accumulator_source_uncompute_artifact()
         payload['modular_accumulator_source_uncompute'] = 'compiler_verification_project/artifacts/modular_accumulator_source_uncompute.json'
+        build_zero_lift_guard_resource_audit_artifact()
+        payload['zero_lift_guard_resource_audit'] = 'compiler_verification_project/artifacts/zero_lift_guard_resource_audit.json'
         build_public_engine_manifest_artifact()
         payload['public_engine_manifest'] = 'compiler_verification_project/artifacts/public_engine_manifest.json'
     if args.target in ('engine-completion-audit',):
@@ -839,6 +854,8 @@ def main() -> None:
         payload['modular_accumulator_promotion_options'] = 'compiler_verification_project/artifacts/modular_accumulator_promotion_options.json'
         build_modular_accumulator_source_uncompute_artifact()
         payload['modular_accumulator_source_uncompute'] = 'compiler_verification_project/artifacts/modular_accumulator_source_uncompute.json'
+        build_zero_lift_guard_resource_audit_artifact()
+        payload['zero_lift_guard_resource_audit'] = 'compiler_verification_project/artifacts/zero_lift_guard_resource_audit.json'
         build_engine_completion_audit_artifact()
         payload['engine_completion_audit'] = 'compiler_verification_project/artifacts/engine_completion_audit.json'
     if args.target in ('engine-completion-audit-current',):
@@ -906,6 +923,8 @@ def main() -> None:
         payload['modular_accumulator_promotion_options'] = 'compiler_verification_project/artifacts/modular_accumulator_promotion_options.json'
         build_modular_accumulator_source_uncompute_artifact()
         payload['modular_accumulator_source_uncompute'] = 'compiler_verification_project/artifacts/modular_accumulator_source_uncompute.json'
+        build_zero_lift_guard_resource_audit_artifact()
+        payload['zero_lift_guard_resource_audit'] = 'compiler_verification_project/artifacts/zero_lift_guard_resource_audit.json'
         build_public_engine_manifest_artifact()
         payload['public_engine_manifest'] = 'compiler_verification_project/artifacts/public_engine_manifest.json'
         build_candidate_zkp()
@@ -969,6 +988,9 @@ def main() -> None:
     if args.target in ('modular-accumulator-source-uncompute',):
         build_modular_accumulator_source_uncompute_artifact()
         payload['modular_accumulator_source_uncompute'] = 'compiler_verification_project/artifacts/modular_accumulator_source_uncompute.json'
+    if args.target in ('zero-lift-guard-resource-audit',):
+        build_zero_lift_guard_resource_audit_artifact()
+        payload['zero_lift_guard_resource_audit'] = 'compiler_verification_project/artifacts/zero_lift_guard_resource_audit.json'
     if args.target in ('all', 'public-headline', 'strict-replayed-tail-headline', 'zkp-and-public', 'resource-zkp-and-public'):
         build_strict_replayed_tail_headline()
         payload['strict_replayed_tail_headline'] = 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json'

@@ -60,6 +60,7 @@ from modular_accumulator_source_uncompute import (
     STATUS_SOURCE_UNCOMPUTE_PROVEN,
     build_modular_accumulator_source_uncompute,
 )
+from zero_lift_guard_resource_audit import ZERO_LIFT_GUARD_RESOURCE_AUDIT_SCHEMA, ZERO_LIFT_GUARD_RESOURCE_GAP_STATUS, build_zero_lift_guard_resource_audit
 from modular_accumulator_lowering import MODULAR_ACCUMULATOR_LOWERING_SCHEMA, build_modular_accumulator_lowering
 from modular_accumulator_row_stream import MODULAR_ACCUMULATOR_ROW_STREAM_SCHEMA, build_modular_accumulator_row_stream
 from modular_accumulator_scratch_schedule import MODULAR_ACCUMULATOR_SCRATCH_SCHEDULE_SCHEMA, build_modular_accumulator_scratch_schedule
@@ -238,6 +239,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'modular_accumulator_full_adder_reversibility': artifact_root / 'modular_accumulator_full_adder_reversibility.json',
         'modular_accumulator_promotion_options': artifact_root / 'modular_accumulator_promotion_options.json',
         'modular_accumulator_source_uncompute': artifact_root / 'modular_accumulator_source_uncompute.json',
+        'zero_lift_guard_resource_audit': artifact_root / 'zero_lift_guard_resource_audit.json',
         'tail_macro_liveness': artifact_root / 'tail_macro_liveness.json',
         'tail_macro_reversibility': artifact_root / 'tail_macro_reversibility.json',
         'tail_macro_schedule_search': artifact_root / 'tail_macro_schedule_search.json',
@@ -484,6 +486,12 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
             ),
         )
         dump_json(
+            artifact_root / 'zero_lift_guard_resource_audit.json',
+            build_zero_lift_guard_resource_audit(
+                tail_macro_engine=load_json(artifact_root / 'tail_macro_engine.json'),
+            ),
+        )
+        dump_json(
             artifact_root / 'public_engine_manifest.json',
             build_public_engine_manifest(
                 reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
@@ -541,6 +549,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 modular_accumulator_full_adder_reversibility=load_json(artifact_root / 'modular_accumulator_full_adder_reversibility.json'),
                 modular_accumulator_promotion_options=load_json(artifact_root / 'modular_accumulator_promotion_options.json'),
                 modular_accumulator_source_uncompute=load_json(artifact_root / 'modular_accumulator_source_uncompute.json'),
+                zero_lift_guard_resource_audit=load_json(artifact_root / 'zero_lift_guard_resource_audit.json'),
                 tail_macro_engine=load_json(artifact_root / 'tail_macro_engine.json'),
                 tail_macro_liveness=load_json(artifact_root / 'tail_macro_liveness.json'),
                 tail_macro_reversibility=load_json(artifact_root / 'tail_macro_reversibility.json'),
@@ -3087,6 +3096,24 @@ def build_modular_accumulator_source_uncompute_checks(artifacts: Mapping[str, An
     return _summarize_checks(checks)
 
 
+def build_zero_lift_guard_resource_audit_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    audit = artifacts['zero_lift_guard_resource_audit']
+    expected = build_zero_lift_guard_resource_audit(
+        tail_macro_engine=artifacts['tail_macro_engine'],
+    )
+    gap = audit['capacity_gap']
+    ladder = audit['standard_clean_ladder_requirement']
+    checks = [
+        _check('zero_lift_guard_resource_audit_matches_generator', audit == expected, expected, audit),
+        _check('zero_lift_guard_resource_audit_schema_is_current', audit['schema'] == ZERO_LIFT_GUARD_RESOURCE_AUDIT_SCHEMA, ZERO_LIFT_GUARD_RESOURCE_AUDIT_SCHEMA, audit['schema']),
+        _check('zero_lift_guard_resource_audit_passes_internal_checks', audit['pass'] is True and all(audit['checks'].values()), True, audit['checks']),
+        _check('zero_lift_guard_clean_ladder_cost_matches_current_non_clifford', ladder['total_ccx'] == audit['current_guard_owner_capacity']['non_clifford'], 'current guard non-Clifford matches clean-ladder compute/uncompute', audit),
+        _check('zero_lift_guard_current_capacity_is_insufficient', gap['current_logical_qubits'] < gap['minimum_clean_ladder_logical_qubits'] and gap['missing_logical_qubits_under_clean_ladder'] == 254, 'current one-qubit guard owner does not cover the clean-ladder predicate workspace', gap),
+        _check('zero_lift_guard_resource_gap_remains_unpromoted', audit['promotion_status']['status'] == ZERO_LIFT_GUARD_RESOURCE_GAP_STATUS, 'zero-lift guard resource gap is not promoted to a public contract', audit['promotion_status']),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     audit = artifacts['engine_completion_audit']
     expected = build_engine_completion_audit(
@@ -3119,6 +3146,7 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
         modular_accumulator_full_adder_reversibility=artifacts['modular_accumulator_full_adder_reversibility'],
         modular_accumulator_promotion_options=artifacts['modular_accumulator_promotion_options'],
         modular_accumulator_source_uncompute=artifacts['modular_accumulator_source_uncompute'],
+        zero_lift_guard_resource_audit=artifacts['zero_lift_guard_resource_audit'],
         tail_macro_engine=artifacts['tail_macro_engine'],
         tail_macro_liveness=artifacts['tail_macro_liveness'],
         tail_macro_reversibility=artifacts['tail_macro_reversibility'],
@@ -3946,6 +3974,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'modular_accumulator_full_adder_reversibility_checks': lambda: build_modular_accumulator_full_adder_reversibility_checks(artifacts),
         'modular_accumulator_promotion_options_checks': lambda: build_modular_accumulator_promotion_options_checks(artifacts),
         'modular_accumulator_source_uncompute_checks': lambda: build_modular_accumulator_source_uncompute_checks(artifacts),
+        'zero_lift_guard_resource_audit_checks': lambda: build_zero_lift_guard_resource_audit_checks(artifacts),
         'public_engine_manifest_checks': lambda: build_public_engine_manifest_checks(artifacts),
         'engine_completion_audit_checks': lambda: build_engine_completion_audit_checks(artifacts),
         'arithmetic_operand_replay_audit_checks': lambda: build_arithmetic_operand_replay_audit_checks(artifacts),

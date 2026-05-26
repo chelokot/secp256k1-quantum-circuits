@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Dict
 
 
-BUILD_SUMMARY_SCHEMA = 'compiler-project-build-summary-v63'
+BUILD_SUMMARY_SCHEMA = 'compiler-project-build-summary-v64'
 
 BUILD_SUMMARY_ARTIFACT_PATHS: Dict[str, str] = {
     'canonical_public_point': 'compiler_verification_project/artifacts/canonical_public_point.json',
@@ -67,6 +67,7 @@ BUILD_SUMMARY_ARTIFACT_PATHS: Dict[str, str] = {
     'modular_accumulator_full_adder_reversibility': 'compiler_verification_project/artifacts/modular_accumulator_full_adder_reversibility.json',
     'modular_accumulator_promotion_options': 'compiler_verification_project/artifacts/modular_accumulator_promotion_options.json',
     'modular_accumulator_source_uncompute': 'compiler_verification_project/artifacts/modular_accumulator_source_uncompute.json',
+    'zero_lift_guard_resource_audit': 'compiler_verification_project/artifacts/zero_lift_guard_resource_audit.json',
     'arithmetic_operand_replay_audit': 'compiler_verification_project/artifacts/arithmetic_operand_replay_audit.json',
     'headline_resource_manifest': 'compiler_verification_project/artifacts/headline_resource_manifest.json',
     'public_engine_manifest': 'compiler_verification_project/artifacts/public_engine_manifest.json',

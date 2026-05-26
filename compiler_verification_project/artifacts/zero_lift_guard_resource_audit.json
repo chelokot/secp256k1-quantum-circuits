@@ -1,0 +1,48 @@
+{
+  "schema": "compiler-project-zero-lift-guard-resource-audit-v1",
+  "definition": "Resource audit for the L == 0 zero-lift guard used by the fused-output Y3-over-C in-place permutation. It separates the counted 510-CCX predicate compute/uncompute cost from the missing predicate-ladder workspace capacity.",
+  "source_digests": {
+    "tail_macro_engine_sha256": "eea48169b9577864a0dae285c1ee31e17e7329c8cb3cadb0606657871c5b7d2d"
+  },
+  "field_bits": 256,
+  "current_guard_owner_capacity": {
+    "owner_id": "tail_fused_output_zero_lift_guard",
+    "logical_qubits": 1,
+    "non_clifford": 510,
+    "construction": "compute and uncompute one L == 0 predicate bit around the Y3-over-C in-place output row"
+  },
+  "standard_clean_ladder_requirement": {
+    "control_register": "L",
+    "negative_control_bits": 256,
+    "compute_ccx": 255,
+    "uncompute_ccx": 255,
+    "total_ccx": 510,
+    "prefix_ancilla_bits": 254,
+    "predicate_output_bits": 1,
+    "peak_predicate_workspace_bits": 255,
+    "clifford_x_for_negative_controls_counted_as_non_clifford": false
+  },
+  "capacity_gap": {
+    "current_logical_qubits": 1,
+    "minimum_clean_ladder_logical_qubits": 255,
+    "missing_logical_qubits_under_clean_ladder": 254,
+    "corrected_public_qubit_delta_if_no_aliasing_proof": 254
+  },
+  "promotion_status": {
+    "status": "zero_lift_guard_capacity_gap_not_promoted_to_public_contract",
+    "required_to_promote": [
+      "Either provide an executable no-extra-ancilla or already-counted-alias construction for the L == 0 predicate, or count the clean-ladder prefix ancilla capacity.",
+      "Expose every zero-lift guard predicate wire in the scheduled primitive stream liveness owner model.",
+      "Recompute public peak logical qubits from the promoted primitive stream before claiming a Clifford-complete headline."
+    ]
+  },
+  "checks": {
+    "tail_macro_engine_passes": true,
+    "current_guard_non_clifford_matches_clean_ladder_ccx": true,
+    "current_guard_capacity_is_only_predicate_output_bit": true,
+    "clean_ladder_requires_prefix_ancilla_capacity": true,
+    "current_guard_capacity_does_not_cover_clean_ladder": true,
+    "capacity_gap_is_explicit": true
+  },
+  "pass": true
+}

@@ -25,6 +25,7 @@ from modular_accumulator_promotion_options import (
     STATUS_REJECTED_HEADLINE_QUBITS,
 )
 from modular_accumulator_source_uncompute import SOURCE_UNCOMPUTE_UNPROMOTED_STATUS
+from zero_lift_guard_resource_audit import ZERO_LIFT_GUARD_RESOURCE_GAP_STATUS
 
 
 ENGINE_COMPLETION_AUDIT_SCHEMA = 'compiler-project-engine-completion-audit-v1'
@@ -76,6 +77,7 @@ def build_engine_completion_audit(
     modular_accumulator_full_adder_reversibility: Mapping[str, Any],
     modular_accumulator_promotion_options: Mapping[str, Any],
     modular_accumulator_source_uncompute: Mapping[str, Any],
+    zero_lift_guard_resource_audit: Mapping[str, Any],
     tail_macro_engine: Mapping[str, Any],
     tail_macro_liveness: Mapping[str, Any],
     tail_macro_reversibility: Mapping[str, Any],
@@ -268,6 +270,7 @@ def build_engine_completion_audit(
             and modular_accumulator_full_adder_reversibility['pass'] is True
             and modular_accumulator_promotion_options['pass'] is True
             and modular_accumulator_source_uncompute['pass'] is True
+            and zero_lift_guard_resource_audit['pass'] is True
             and modular_accumulator_lowering['promotion_status']['status'] == 'lowering_plan_not_promoted_to_scheduled_primitive_netlist'
             and modular_accumulator_row_stream['promotion_status']['status'] == 'row_stream_obligations_not_promoted_to_scheduled_primitive_netlist'
             and modular_accumulator_capacity_certificate['promotion_status']['status'] == 'capacity_certificate_not_promoted_to_public_resource_contract'
@@ -281,6 +284,7 @@ def build_engine_completion_audit(
             and modular_accumulator_full_adder_reversibility['promotion_status']['status'] == FULL_ADDER_REVERSIBILITY_UNPROMOTED_STATUS
             and modular_accumulator_promotion_options['promotion_status']['status'] == PROMOTION_OPTIONS_UNPROMOTED_STATUS
             and modular_accumulator_source_uncompute['promotion_status']['status'] == SOURCE_UNCOMPUTE_UNPROMOTED_STATUS
+            and zero_lift_guard_resource_audit['promotion_status']['status'] == ZERO_LIFT_GUARD_RESOURCE_GAP_STATUS
             and modular_accumulator_lowering['checks']['materialized_product_accumulator_shortcut_is_rejected'] is True
             and modular_accumulator_row_stream['checks']['row_stream_rejects_hidden_512_bit_field_slot'] is True
             and modular_accumulator_capacity_certificate['checks']['product_column_owner_includes_final_carry_bit_and_exceeds_single_field_slot'] is True
@@ -304,6 +308,8 @@ def build_engine_completion_audit(
             and modular_accumulator_promotion_options['checks']['no_option_is_promoted_to_global_contract'] is True
             and modular_accumulator_source_uncompute['checks']['partial_product_cleanup_delta_is_exact'] is True
             and modular_accumulator_source_uncompute['checks']['zero_lift_guard_rows_are_the_only_source_uncompute_gap'] is True
+            and zero_lift_guard_resource_audit['checks']['current_guard_capacity_does_not_cover_clean_ladder'] is True
+            and zero_lift_guard_resource_audit['checks']['capacity_gap_is_explicit'] is True
             and modular_multiplier_lifecycle['current_stream']['physical_lifecycle_status'] == 'invalid_abandoned_temporary_and_targets'
             and int(modular_multiplier_lifecycle['current_stream']['scratch_abandoned_garbage_count']) == int(modular_primitive_wire_audit['arithmetic_scratch_abandoned_garbage_count'])
             and int(modular_primitive_wire_audit['field_wire_missing_liveness_count']) > 0
@@ -471,7 +477,7 @@ def build_engine_completion_audit(
             'name': 'modular_arithmetic_clifford_expansion',
             'status': 'scheduled_modular_primitive_stream_bound_to_zkp_physical_boundary_not_full_clifford_decomposition',
             'required_to_close': 'Replace every synthetic arithmetic scratch operand in modular primitive rows with exact counted owner/liveness assignments, then decompose every modular add, subtract, multiply, fold, and reduction primitive into exact concrete Clifford/CCX wire operations inside the same global flat schedule as the point-add leaf.',
-            'current_evidence': 'scheduled_modular_primitive_netlist + modular_primitive_wire_audit + modular_accumulator_semantic_obligations + modular_accumulator_carry_obligations + modular_accumulator_carry_save_candidate + modular_accumulator_full_adder_contract + modular_accumulator_full_adder_stream + modular_accumulator_full_adder_liveness + modular_accumulator_full_adder_reversibility + modular_accumulator_promotion_options + modular_accumulator_source_uncompute + scheduled_modular_global_splice + physical_boundary_summary + Rust prepared guest validation',
+            'current_evidence': 'scheduled_modular_primitive_netlist + modular_primitive_wire_audit + modular_accumulator_semantic_obligations + modular_accumulator_carry_obligations + modular_accumulator_carry_save_candidate + modular_accumulator_full_adder_contract + modular_accumulator_full_adder_stream + modular_accumulator_full_adder_liveness + modular_accumulator_full_adder_reversibility + modular_accumulator_promotion_options + modular_accumulator_source_uncompute + zero_lift_guard_resource_audit + scheduled_modular_global_splice + physical_boundary_summary + Rust prepared guest validation',
             'evidence_metrics': {
                 'source_bound_run_length_rows': rows_by_source_kind['arithmetic_operation_ir'],
                 'leaf_arithmetic_non_clifford': int(arithmetic_leaf_summary['non_clifford_total']),
@@ -537,6 +543,8 @@ def build_engine_completion_audit(
                 'modular_accumulator_promotion_options_sha256': _sha256_payload(modular_accumulator_promotion_options),
                 'modular_accumulator_source_uncompute_pass': bool(modular_accumulator_source_uncompute['pass']),
                 'modular_accumulator_source_uncompute_sha256': _sha256_payload(modular_accumulator_source_uncompute),
+                'zero_lift_guard_resource_audit_pass': bool(zero_lift_guard_resource_audit['pass']),
+                'zero_lift_guard_resource_audit_sha256': _sha256_payload(zero_lift_guard_resource_audit),
                 'modular_accumulator_single_grid_column_count': int(modular_accumulator_lowering['single_schoolbook_grid']['column_count']),
                 'modular_accumulator_fold_route_count': int(modular_accumulator_lowering['pseudo_mersenne_fold_routes']['route_count']),
                 'modular_accumulator_overflowing_shift_column_count': int(modular_accumulator_lowering['pseudo_mersenne_fold_routes']['overflowing_shift_column_count']),
@@ -599,6 +607,9 @@ def build_engine_completion_audit(
                 'modular_accumulator_source_uncompute_partial_product_cleanup_ccx_delta': int(modular_accumulator_source_uncompute['cleanup_cost_bounds']['partial_product_cleanup_ccx_delta_exact']),
                 'modular_accumulator_source_uncompute_zero_lift_guard_cleanup_unproven': int(modular_accumulator_source_uncompute['cleanup_cost_bounds']['zero_lift_guard_cleanup_delta_unproven']),
                 'modular_accumulator_source_uncompute_truth_table_pass_count': int(modular_accumulator_source_uncompute['truth_table']['pass_count']),
+                'zero_lift_guard_current_logical_qubits': int(zero_lift_guard_resource_audit['capacity_gap']['current_logical_qubits']),
+                'zero_lift_guard_clean_ladder_minimum_logical_qubits': int(zero_lift_guard_resource_audit['capacity_gap']['minimum_clean_ladder_logical_qubits']),
+                'zero_lift_guard_missing_logical_qubits_under_clean_ladder': int(zero_lift_guard_resource_audit['capacity_gap']['missing_logical_qubits_under_clean_ladder']),
                 'streamed_lifecycle_candidate_event_stream_sha256': str(modular_multiplier_lifecycle['candidate_lifecycle_stream']['operation_stream_sha256']),
                 'streamed_lifecycle_candidate_event_count': int(modular_multiplier_lifecycle['candidate_lifecycle_stream']['event_count']),
                 'streamed_lifecycle_partial_product_routes': int(modular_multiplier_lifecycle['candidate_lifecycle_stream']['route_summary']['partial_product_routes']),
@@ -660,6 +671,7 @@ def build_engine_completion_audit(
             'modular_accumulator_full_adder_reversibility': modular_accumulator_full_adder_reversibility,
             'modular_accumulator_promotion_options': modular_accumulator_promotion_options,
             'modular_accumulator_source_uncompute': modular_accumulator_source_uncompute,
+            'zero_lift_guard_resource_audit': zero_lift_guard_resource_audit,
             'tail_macro_engine': tail_macro_engine,
             'tail_macro_liveness': tail_macro_liveness,
             'tail_macro_reversibility': tail_macro_reversibility,
