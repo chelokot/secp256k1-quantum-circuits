@@ -36,6 +36,7 @@ from modular_accumulator_capacity_certificate import MODULAR_ACCUMULATOR_CAPACIT
 from modular_accumulator_carry_obligations import MODULAR_ACCUMULATOR_CARRY_OBLIGATIONS_SCHEMA, build_modular_accumulator_carry_obligations
 from modular_accumulator_carry_save_candidate import MODULAR_ACCUMULATOR_CARRY_SAVE_CANDIDATE_SCHEMA, build_modular_accumulator_carry_save_candidate
 from modular_accumulator_full_adder_contract import FULL_ADDER_CONTRACT_UNPROMOTED_STATUS, FULL_ADDER_PRIMITIVE_COUNTS_PER_CELL, MODULAR_ACCUMULATOR_FULL_ADDER_CONTRACT_SCHEMA, build_modular_accumulator_full_adder_contract
+from modular_accumulator_full_adder_liveness import FULL_ADDER_LIVENESS_UNPROMOTED_STATUS, MODULAR_ACCUMULATOR_FULL_ADDER_LIVENESS_SCHEMA, build_modular_accumulator_full_adder_liveness
 from modular_accumulator_full_adder_stream import FULL_ADDER_STREAM_UNPROMOTED_STATUS, MODULAR_ACCUMULATOR_FULL_ADDER_STREAM_SCHEMA, build_modular_accumulator_full_adder_stream
 from modular_accumulator_lowering import MODULAR_ACCUMULATOR_LOWERING_SCHEMA, build_modular_accumulator_lowering
 from modular_accumulator_row_stream import MODULAR_ACCUMULATOR_ROW_STREAM_SCHEMA, build_modular_accumulator_row_stream
@@ -211,6 +212,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'modular_accumulator_carry_save_candidate': artifact_root / 'modular_accumulator_carry_save_candidate.json',
         'modular_accumulator_full_adder_contract': artifact_root / 'modular_accumulator_full_adder_contract.json',
         'modular_accumulator_full_adder_stream': artifact_root / 'modular_accumulator_full_adder_stream.json',
+        'modular_accumulator_full_adder_liveness': artifact_root / 'modular_accumulator_full_adder_liveness.json',
         'tail_macro_liveness': artifact_root / 'tail_macro_liveness.json',
         'tail_macro_reversibility': artifact_root / 'tail_macro_reversibility.json',
         'tail_macro_schedule_search': artifact_root / 'tail_macro_schedule_search.json',
@@ -423,6 +425,13 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
             ),
         )
         dump_json(
+            artifact_root / 'modular_accumulator_full_adder_liveness.json',
+            build_modular_accumulator_full_adder_liveness(
+                modular_accumulator_carry_save_candidate=load_json(artifact_root / 'modular_accumulator_carry_save_candidate.json'),
+                modular_accumulator_full_adder_stream=load_json(artifact_root / 'modular_accumulator_full_adder_stream.json'),
+            ),
+        )
+        dump_json(
             artifact_root / 'public_engine_manifest.json',
             build_public_engine_manifest(
                 reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
@@ -476,6 +485,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 modular_accumulator_carry_save_candidate=load_json(artifact_root / 'modular_accumulator_carry_save_candidate.json'),
                 modular_accumulator_full_adder_contract=load_json(artifact_root / 'modular_accumulator_full_adder_contract.json'),
                 modular_accumulator_full_adder_stream=load_json(artifact_root / 'modular_accumulator_full_adder_stream.json'),
+                modular_accumulator_full_adder_liveness=load_json(artifact_root / 'modular_accumulator_full_adder_liveness.json'),
                 tail_macro_engine=load_json(artifact_root / 'tail_macro_engine.json'),
                 tail_macro_liveness=load_json(artifact_root / 'tail_macro_liveness.json'),
                 tail_macro_reversibility=load_json(artifact_root / 'tail_macro_reversibility.json'),
@@ -2936,6 +2946,25 @@ def build_modular_accumulator_full_adder_stream_checks(artifacts: Mapping[str, A
     return _summarize_checks(checks)
 
 
+def build_modular_accumulator_full_adder_liveness_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    liveness = artifacts['modular_accumulator_full_adder_liveness']
+    expected = build_modular_accumulator_full_adder_liveness(
+        modular_accumulator_carry_save_candidate=artifacts['modular_accumulator_carry_save_candidate'],
+        modular_accumulator_full_adder_stream=artifacts['modular_accumulator_full_adder_stream'],
+    )
+    stream = artifacts['modular_accumulator_full_adder_stream']
+    checks = [
+        _check('modular_accumulator_full_adder_liveness_matches_generator', liveness == expected, expected, liveness),
+        _check('modular_accumulator_full_adder_liveness_schema_is_current', liveness['schema'] == MODULAR_ACCUMULATOR_FULL_ADDER_LIVENESS_SCHEMA, MODULAR_ACCUMULATOR_FULL_ADDER_LIVENESS_SCHEMA, liveness['schema']),
+        _check('modular_accumulator_full_adder_liveness_passes_internal_checks', liveness['pass'] is True and all(liveness['checks'].values()), True, liveness['checks']),
+        _check('modular_accumulator_full_adder_liveness_scans_stream', liveness['operation_count'] == stream['operation_count'] and liveness['primitive_counts_total'] == stream['primitive_counts_total'], 'liveness scans the exact full-adder stream', liveness),
+        _check('modular_accumulator_full_adder_liveness_retained_wires_are_counted', liveness['retained_input_observation_count'] == stream['retained_input_obligation_bits'] and liveness['sum_carry_output_wire_count'] == stream['output_obligation_bits'], 'retained inputs and generated outputs are explicit liveness obligations', liveness),
+        _check('modular_accumulator_full_adder_liveness_rejects_free_consumed_model', liveness['forward_only']['sequential_grid_peak_live_wires'] > liveness['optimistic_consumed_lower_bound']['sequential_grid_peak_live_wires'], 'optimistic consumed liveness is lower but not reversible without cleanup proof', liveness),
+        _check('modular_accumulator_full_adder_liveness_remains_unpromoted', liveness['promotion_status']['status'] == FULL_ADDER_LIVENESS_UNPROMOTED_STATUS, 'full-adder liveness is exact but not globally promoted', liveness['promotion_status']),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     audit = artifacts['engine_completion_audit']
     expected = build_engine_completion_audit(
@@ -2964,6 +2993,7 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
         modular_accumulator_carry_save_candidate=artifacts['modular_accumulator_carry_save_candidate'],
         modular_accumulator_full_adder_contract=artifacts['modular_accumulator_full_adder_contract'],
         modular_accumulator_full_adder_stream=artifacts['modular_accumulator_full_adder_stream'],
+        modular_accumulator_full_adder_liveness=artifacts['modular_accumulator_full_adder_liveness'],
         tail_macro_engine=artifacts['tail_macro_engine'],
         tail_macro_liveness=artifacts['tail_macro_liveness'],
         tail_macro_reversibility=artifacts['tail_macro_reversibility'],
@@ -3787,6 +3817,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'modular_accumulator_carry_save_candidate_checks': lambda: build_modular_accumulator_carry_save_candidate_checks(artifacts),
         'modular_accumulator_full_adder_contract_checks': lambda: build_modular_accumulator_full_adder_contract_checks(artifacts),
         'modular_accumulator_full_adder_stream_checks': lambda: build_modular_accumulator_full_adder_stream_checks(artifacts),
+        'modular_accumulator_full_adder_liveness_checks': lambda: build_modular_accumulator_full_adder_liveness_checks(artifacts),
         'public_engine_manifest_checks': lambda: build_public_engine_manifest_checks(artifacts),
         'engine_completion_audit_checks': lambda: build_engine_completion_audit_checks(artifacts),
         'arithmetic_operand_replay_audit_checks': lambda: build_arithmetic_operand_replay_audit_checks(artifacts),

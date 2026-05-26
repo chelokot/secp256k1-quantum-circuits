@@ -290,6 +290,7 @@ def build_modular_accumulator_full_adder_stream(
             'modular_accumulator_full_adder_contract_sha256': _sha256_payload(modular_accumulator_full_adder_contract),
         },
         'stream_columns': STREAM_COLUMNS,
+        'cell_gate_sequence': gate_sequence,
         'field_bits': field_bits,
         'schoolbook_grid_count': grid_count,
         'segment_size': int(segment_size),

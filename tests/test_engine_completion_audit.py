@@ -62,6 +62,7 @@ def _build_audit(
         modular_accumulator_carry_save_candidate=_load('modular_accumulator_carry_save_candidate.json'),
         modular_accumulator_full_adder_contract=_load('modular_accumulator_full_adder_contract.json'),
         modular_accumulator_full_adder_stream=_load('modular_accumulator_full_adder_stream.json'),
+        modular_accumulator_full_adder_liveness=_load('modular_accumulator_full_adder_liveness.json'),
         tail_macro_engine=_load('tail_macro_engine.json'),
         tail_macro_liveness=_load('tail_macro_liveness.json'),
         tail_macro_reversibility=_load('tail_macro_reversibility.json'),
@@ -116,6 +117,7 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_lowering_pass'] is True
     assert len(remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_lowering_sha256']) == 64
     field_bits = _load('modular_multiplier_lifecycle.json')['field_bits']
+    carry_save_candidate = _load('modular_accumulator_carry_save_candidate.json')
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_row_stream_pass'] is True
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_row_stream_row_count'] > 0
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_capacity_certificate_pass'] is True
@@ -158,6 +160,10 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_full_adder_stream_non_clifford'] == remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_full_adder_ccx']
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_full_adder_stream_retained_input_bits'] == remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_full_adder_retained_input_bits']
     assert len(remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_full_adder_stream_operation_sha256']) == 64
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_full_adder_liveness_pass'] is True
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_full_adder_forward_only_sequential_peak_live_wires'] > remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_full_adder_optimistic_consumed_sequential_peak_live_wires']
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_full_adder_forward_only_all_grids_peak_live_wires'] == 11 * remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_full_adder_forward_only_sequential_peak_live_wires']
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_full_adder_optimistic_consumed_all_grids_final_live_wires'] == carry_save_candidate['schoolbook_grid_count'] * carry_save_candidate['single_grid']['final_live_column_bits']
     assert len(remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_candidate_event_stream_sha256']) == 64
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_candidate_event_count'] == remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['synthetic_arithmetic_scratch_wire_observations'] * 3
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_partial_product_routes'] == 11 * field_bits * field_bits

@@ -18,6 +18,53 @@
     "sum_wire",
     "carry_wire"
   ],
+  "cell_gate_sequence": [
+    {
+      "gate": "cx",
+      "controls": [
+        "a"
+      ],
+      "target": "sum"
+    },
+    {
+      "gate": "cx",
+      "controls": [
+        "b"
+      ],
+      "target": "sum"
+    },
+    {
+      "gate": "cx",
+      "controls": [
+        "c"
+      ],
+      "target": "sum"
+    },
+    {
+      "gate": "ccx",
+      "controls": [
+        "a",
+        "b"
+      ],
+      "target": "carry"
+    },
+    {
+      "gate": "ccx",
+      "controls": [
+        "a",
+        "c"
+      ],
+      "target": "carry"
+    },
+    {
+      "gate": "ccx",
+      "controls": [
+        "b",
+        "c"
+      ],
+      "target": "carry"
+    }
+  ],
   "field_bits": 256,
   "schoolbook_grid_count": 11,
   "segment_size": 16384,
