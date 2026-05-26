@@ -24,6 +24,7 @@ from public_engine_contract import (
     LEGACY_WRAPPER_MATERIALIZED_FLAT_NETLIST,
     PUBLIC_CANDIDATE_CANONICAL_TOTALS_SOURCE,
     PUBLIC_TOTALS_DERIVE_FROM_CANONICAL_CHECK,
+    STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH,
     STRICT_REPLAYED_TAIL_MATERIALIZED_FLAT_NETLIST,
 )
 
@@ -2909,7 +2910,7 @@ def _strict_replayed_tail_capacity_overlay(
         'schema': 'compiler-project-strict-replayed-tail-capacity-overlay-v1',
         'status': 'strict_capacity_overlay_bound_to_flat_operation_stream_not_full_liveness_rewrite',
         'selected_result_name': str(selected['name']),
-        'source_artifact': 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json',
+        'source_artifact': STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH,
         'flat_operation_stream': {
             'operation_count': int(materialized_flat_netlist['operation_count']),
             'non_clifford_count': int(materialized_flat_netlist['non_clifford_count']),

@@ -19,7 +19,12 @@ if str(ROOT_SRC) not in sys.path:
 from common import SECP_P, add_affine, affine_to_proj, proj_to_affine  # noqa: E402
 from lookup_fed_leaf import build_streamed_lookup_tail_leaf, execute_leaf_contract  # noqa: E402
 from proof_corpus_profiles import GOOGLE_COMPARABLE_CASE_COUNT, GOOGLE_COMPARABLE_PROFILE, resolve_proof_corpus_profile, selected_public_case_count  # noqa: E402
-from public_engine_contract import PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE  # noqa: E402
+from public_engine_contract import (  # noqa: E402
+    PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE,
+    PUBLIC_ENGINE_RESOURCE_SUMMARY_SOURCE,
+    STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED,
+    STRICT_RESOURCE_HEADLINE_CURRENT_PRIMARY,
+)
 from zkp_attestation import DIGEST_SCHEME, build_zkp_attestation_input, write_zkp_attestation_inputs  # noqa: E402
 
 
@@ -121,8 +126,8 @@ def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None
     assert primary_strict_claim['selected_result']['non_clifford'] == claim['expected_full_oracle_non_clifford']
     assert primary_strict_claim['selected_result']['logical_qubits'] == claim['expected_total_logical_qubits']
     assert primary_strict_claim['selected_result']['tail_field_slots'] == claim['logical_qubit_formula']['arithmetic_slot_count']
-    assert primary_strict_claim['resource_claim_level']['strict_resource_headline'] == 'current_primary'
-    assert primary_strict_claim['resource_claim_level']['zkp_binds_this_strict_result'] == 'not_yet_achieved'
+    assert primary_strict_claim['resource_claim_level']['strict_resource_headline'] == STRICT_RESOURCE_HEADLINE_CURRENT_PRIMARY
+    assert primary_strict_claim['resource_claim_level']['zkp_binds_this_strict_result'] == STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED
     assert 'source_digests' not in primary_strict_claim
     assert 'primary_strict_result_sha256' not in payload
     assert 'primary_strict_result_document' not in payload
@@ -135,7 +140,7 @@ def test_reusable_chunk_zkp_attestation_input_binds_candidate_contract() -> None
     assert sum(row['logical_qubits'] for row in public_engine_manifest['strict_public_owner_capacity_stream']['rows']) == claim['expected_total_logical_qubits']
     assert claim['logical_qubit_formula']['arithmetic_slot_count'] == 7
     assert claim['logical_qubit_formula']['control_slot_count'] == 2
-    assert claim['resource_engine_summary']['source'] == 'public_engine_manifest.public_totals'
+    assert claim['resource_engine_summary']['source'] == PUBLIC_ENGINE_RESOURCE_SUMMARY_SOURCE
     assert claim['resource_engine_summary']['source_document_type'] == 'public_engine_manifest'
     assert claim['resource_engine_summary']['source_sha256'] == payload['public_engine_manifest_sha256']
     assert claim['resource_engine_summary']['non_clifford'] == public_engine_manifest['public_totals']['non_clifford']

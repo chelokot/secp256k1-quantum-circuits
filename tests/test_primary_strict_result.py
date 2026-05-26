@@ -13,6 +13,7 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from primary_strict_result import build_primary_strict_result  # noqa: E402
+from public_engine_contract import STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED  # noqa: E402
 
 
 def _load(name: str) -> dict:
@@ -39,8 +40,8 @@ def test_primary_strict_result_matches_generator_and_demotes_legacy_wrapper() ->
     assert observed['selected_result']['non_clifford'] == public_engine['public_totals']['non_clifford']
     assert observed['selected_result']['logical_qubits'] != public_engine['legacy_wrapper_totals']['logical_qubits']
     assert observed['legacy_wrapper_reference']['status'] == 'legacy_macro_zkp_wrapper_not_primary_resource_headline'
-    assert observed['resource_claim_level']['clifford_complete_flat_netlist'] == 'not_yet_achieved'
-    assert observed['resource_claim_level']['zkp_binds_this_strict_result'] == 'not_yet_achieved'
+    assert observed['resource_claim_level']['clifford_complete_flat_netlist'] == STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED
+    assert observed['resource_claim_level']['zkp_binds_this_strict_result'] == STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED
 
 
 def test_primary_strict_result_does_not_confuse_legacy_flat_netlist_with_strict_headline() -> None:

@@ -9,9 +9,14 @@ from typing import Any, Dict, Mapping
 from public_engine_contract import (
     CANONICAL_MATERIALIZED_FLAT_NETLIST,
     LEGACY_WRAPPER_MATERIALIZED_FLAT_NETLIST,
+    PRIMARY_STRICT_CLAIM_DOCUMENT_TYPE,
+    PRIMARY_STRICT_CLAIM_SCHEMA,
     PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE,
     PUBLIC_TOTALS_DERIVE_FROM_CANONICAL_CHECK,
+    STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH,
     STRICT_REPLAYED_TAIL_MATERIALIZED_FLAT_NETLIST,
+    STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED,
+    STRICT_RESOURCE_HEADLINE_CURRENT_PRIMARY,
 )
 
 
@@ -232,10 +237,10 @@ def build_engine_completion_audit(
         ),
         'zkp_input_binds_primary_strict_claim_without_cycle': (
             zkp_attestation_input['primary_strict_claim_sha256'] == primary_strict_claim_document['sha256']
-            and primary_strict_claim_document['document_type'] == 'primary_strict_claim'
-            and primary_strict_claim_document['artifact_path'] == 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json'
-            and primary_strict_claim['schema'] == 'compiler-project-primary-strict-claim-v1'
-            and primary_strict_claim['source_artifact_path'] == 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json'
+            and primary_strict_claim_document['document_type'] == PRIMARY_STRICT_CLAIM_DOCUMENT_TYPE
+            and primary_strict_claim_document['artifact_path'] == STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH
+            and primary_strict_claim['schema'] == PRIMARY_STRICT_CLAIM_SCHEMA
+            and primary_strict_claim['source_artifact_path'] == STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH
             and primary_strict_claim['pass'] is True
             and int(primary_strict_selected['non_clifford']) == public_totals['non_clifford']
             and int(primary_strict_selected['logical_qubits']) == public_totals['logical_qubits']
@@ -246,9 +251,9 @@ def build_engine_completion_audit(
             and int(primary_strict_selected['lookup_workspace_qubits']) == int(zkp_claim_summary['logical_qubit_formula']['lookup_workspace_qubits'])
             and int(primary_strict_selected['control_qubits']) == int(zkp_claim_summary['logical_qubit_formula']['control_slot_count'])
             and int(primary_strict_selected['phase_qubits']) == int(zkp_claim_summary['logical_qubit_formula']['live_phase_bits'])
-            and primary_strict_level['strict_resource_headline'] == 'current_primary'
-            and primary_strict_level['clifford_complete_flat_netlist'] == 'not_yet_achieved'
-            and primary_strict_level['zkp_binds_this_strict_result'] == 'not_yet_achieved'
+            and primary_strict_level['strict_resource_headline'] == STRICT_RESOURCE_HEADLINE_CURRENT_PRIMARY
+            and primary_strict_level['clifford_complete_flat_netlist'] == STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED
+            and primary_strict_level['zkp_binds_this_strict_result'] == STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED
             and 'source_digests' not in primary_strict_claim
             and 'primary_strict_result_sha256' not in zkp_attestation_input
             and 'primary_strict_result_document' not in zkp_attestation_input

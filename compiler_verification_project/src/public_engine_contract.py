@@ -11,6 +11,13 @@ PUBLIC_CANDIDATE_CANONICAL_TOTALS_SOURCE = (
 )
 PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE = 'public_candidate_materialized_circuit_manifest.canonical_materialized_flat_netlist'
 PUBLIC_ENGINE_LEGACY_TOTALS_SOURCE = 'public_candidate_materialized_circuit_manifest.materialized_flat_netlist'
+PUBLIC_ENGINE_RESOURCE_SUMMARY_SOURCE = 'public_engine_manifest.public_totals'
+
+STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH = 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json'
+PRIMARY_STRICT_CLAIM_DOCUMENT_TYPE = 'primary_strict_claim'
+PRIMARY_STRICT_CLAIM_SCHEMA = 'compiler-project-primary-strict-claim-v1'
+STRICT_RESOURCE_HEADLINE_CURRENT_PRIMARY = 'current_primary'
+STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED = 'not_yet_achieved'
 
 PUBLIC_TOTALS_DERIVE_FROM_CANONICAL_CHECK = 'public_totals_derive_from_canonical_materialized_flat_netlist'
 CANONICAL_FLAT_NETLIST_IS_STRICT_REPLAY_CHECK = 'canonical_materialized_flat_netlist_is_strict_replayed_tail_stream'
@@ -25,7 +32,13 @@ __all__ = [
     'PUBLIC_CANDIDATE_CANONICAL_TOTALS_SOURCE',
     'PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE',
     'PUBLIC_ENGINE_LEGACY_TOTALS_SOURCE',
+    'PUBLIC_ENGINE_RESOURCE_SUMMARY_SOURCE',
     'PUBLIC_TOTALS_DERIVE_FROM_CANONICAL_CHECK',
     'PUBLIC_TOTALS_MATCH_CANONICAL_ENGINE_CHECK',
+    'PRIMARY_STRICT_CLAIM_DOCUMENT_TYPE',
+    'PRIMARY_STRICT_CLAIM_SCHEMA',
     'STRICT_REPLAYED_TAIL_MATERIALIZED_FLAT_NETLIST',
+    'STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH',
+    'STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED',
+    'STRICT_RESOURCE_HEADLINE_CURRENT_PRIMARY',
 ]

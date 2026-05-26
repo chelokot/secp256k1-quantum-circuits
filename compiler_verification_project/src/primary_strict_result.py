@@ -7,6 +7,12 @@ import json
 from pathlib import Path
 from typing import Any, Dict, Mapping
 
+from public_engine_contract import (
+    STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH,
+    STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED,
+    STRICT_RESOURCE_HEADLINE_CURRENT_PRIMARY,
+)
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 ARTIFACT_ROOT = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
@@ -84,15 +90,15 @@ def build_primary_strict_result(
         'role': 'single current public resource headline',
         'status': 'primary_strict_result_with_explicit_unclosed_flattening_and_zkp_boundaries',
         'selected_result': dict(selected),
-        'source_artifact': 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json',
+        'source_artifact': STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH,
         'resource_claim_level': {
-            'strict_resource_headline': 'current_primary',
-            'clifford_complete_flat_netlist': 'not_yet_achieved',
-            'zkp_binds_this_strict_result': 'not_yet_achieved',
+            'strict_resource_headline': STRICT_RESOURCE_HEADLINE_CURRENT_PRIMARY,
+            'clifford_complete_flat_netlist': STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED,
+            'zkp_binds_this_strict_result': STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED,
         },
         'closed_evidence': {
             'strict_replayed_tail_headline': {
-                'path': 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json',
+                'path': STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH,
                 'sha256': _sha256_payload(strict_replayed_tail_headline),
                 'status': strict_replayed_tail_headline['status'],
                 'pass': strict_replayed_tail_headline['pass'],
@@ -156,7 +162,7 @@ def write_primary_strict_result() -> None:
     from common import dump_json
 
     payload = build_primary_strict_result(
-        strict_replayed_tail_headline=_load(ARTIFACT_ROOT / 'strict_replayed_tail_headline.json'),
+        strict_replayed_tail_headline=_load(PROJECT_ROOT / STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH),
         public_headline_result=_load(ARTIFACT_ROOT / 'public_headline_result.json'),
         engine_completion_audit=_load(ARTIFACT_ROOT / 'engine_completion_audit.json'),
         public_candidate_materialized_circuit_manifest=_load(ARTIFACT_ROOT / 'public_candidate_materialized_circuit_manifest.json'),

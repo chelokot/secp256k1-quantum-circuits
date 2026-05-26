@@ -29,6 +29,14 @@ from common import (  # noqa: E402
 from lookup_fed_leaf import build_streamed_lookup_tail_leaf, execute_leaf_contract  # noqa: E402
 from project import compiler_family_frontier, project_artifact_path, raw32_schedule  # noqa: E402
 from proof_corpus_profiles import selected_public_case_count  # noqa: E402
+from public_engine_contract import (  # noqa: E402
+    PRIMARY_STRICT_CLAIM_DOCUMENT_TYPE,
+    PRIMARY_STRICT_CLAIM_SCHEMA,
+    PUBLIC_ENGINE_RESOURCE_SUMMARY_SOURCE,
+    STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH,
+    STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED,
+    STRICT_RESOURCE_HEADLINE_CURRENT_PRIMARY,
+)
 from reusable_chunk_tail_candidate import build_reusable_chunk_tail_leaf  # noqa: E402
 from verifier import exec_netlist  # noqa: E402
 
@@ -880,22 +888,21 @@ def _build_zkp_attestation_materials(
             artifact_path=public_engine_manifest_path,
             payload=public_engine_manifest,
         )
-        primary_strict_result_path = 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json'
-        primary_strict_result = json.loads((PROJECT_ROOT / primary_strict_result_path).read_text())
+        primary_strict_result = json.loads((PROJECT_ROOT / STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH).read_text())
         primary_strict_claim = {
-            'schema': 'compiler-project-primary-strict-claim-v1',
-            'source_artifact_path': primary_strict_result_path,
+            'schema': PRIMARY_STRICT_CLAIM_SCHEMA,
+            'source_artifact_path': STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH,
             'selected_result': dict(primary_strict_result['selected_result']),
             'resource_claim_level': {
-                'strict_resource_headline': 'current_primary',
-                'clifford_complete_flat_netlist': 'not_yet_achieved',
-                'zkp_binds_this_strict_result': 'not_yet_achieved',
+                'strict_resource_headline': STRICT_RESOURCE_HEADLINE_CURRENT_PRIMARY,
+                'clifford_complete_flat_netlist': STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED,
+                'zkp_binds_this_strict_result': STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED,
             },
             'pass': bool(primary_strict_result['pass']),
         }
         primary_strict_claim_blob = _committed_payload(
-            document_type='primary_strict_claim',
-            artifact_path=primary_strict_result_path,
+            document_type=PRIMARY_STRICT_CLAIM_DOCUMENT_TYPE,
+            artifact_path=STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH,
             payload=primary_strict_claim,
         )
     else:
@@ -922,7 +929,7 @@ def _build_zkp_attestation_materials(
         resource_engine_totals = public_engine_manifest['public_totals']
         resource_engine_non_clifford = int(resource_engine_totals['non_clifford'])
         resource_engine_logical_qubits = int(resource_engine_totals['logical_qubits'])
-        resource_engine_source = 'public_engine_manifest.public_totals'
+        resource_engine_source = PUBLIC_ENGINE_RESOURCE_SUMMARY_SOURCE
         resource_engine_source_document_type = 'public_engine_manifest'
         assert public_engine_manifest_blob is not None
         resource_engine_source_sha256 = public_engine_manifest_blob['sha256']

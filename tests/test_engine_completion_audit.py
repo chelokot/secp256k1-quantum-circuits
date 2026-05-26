@@ -13,7 +13,12 @@ if str(COMPILER_SRC) not in sys.path:
     sys.path.insert(0, str(COMPILER_SRC))
 
 from engine_completion_audit import ENGINE_COMPLETION_AUDIT_SCHEMA, build_engine_completion_audit  # noqa: E402
-from public_engine_contract import CANONICAL_MATERIALIZED_FLAT_NETLIST, PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE, PUBLIC_TOTALS_DERIVE_FROM_CANONICAL_CHECK  # noqa: E402
+from public_engine_contract import (  # noqa: E402
+    CANONICAL_MATERIALIZED_FLAT_NETLIST,
+    PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE,
+    PUBLIC_TOTALS_DERIVE_FROM_CANONICAL_CHECK,
+    STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH,
+)
 
 
 def _load(name: str) -> dict:
@@ -80,7 +85,7 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['source_bound_run_length_rows'] == expected['source_binding_summary']['rows_by_source_kind']['arithmetic_operation_ir']
     assert remaining['single_engine_zkp_input_derivation']['status'] == 'strict_claim_guest_bound_canonical_engine_not_sole_authority'
     assert remaining['single_engine_zkp_input_derivation']['evidence_metrics']['primary_strict_claim_bound_by_candidate_input'] is True
-    assert remaining['single_engine_zkp_input_derivation']['evidence_metrics']['primary_strict_claim_source_artifact_path'] == 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json'
+    assert remaining['single_engine_zkp_input_derivation']['evidence_metrics']['primary_strict_claim_source_artifact_path'] == STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH
     assert expected['checks']['arithmetic_rows_are_operation_ir_bound'] is True
     assert expected['checks']['zkp_input_binds_primary_strict_claim_without_cycle'] is True
     qroam_table_cnot = _load('qroam_table_cnot_materialization.json')
