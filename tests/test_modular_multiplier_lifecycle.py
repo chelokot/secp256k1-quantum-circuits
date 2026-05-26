@@ -25,6 +25,10 @@ def _load(name: str) -> dict:
 
 def _build() -> dict:
     return build_modular_multiplier_lifecycle(
+        modular_execution_trace=_load('modular_execution_trace.json'),
+        modular_arithmetic_certificate=_load('modular_arithmetic_certificate.json'),
+        arithmetic_lowerings=_load('arithmetic_lowerings.json'),
+        reusable_chunk_lowering=_load('reusable_chunk_lowering.json'),
         scheduled_modular_primitive_netlist=_load('scheduled_modular_primitive_netlist.json'),
         modular_primitive_wire_audit=_load('modular_primitive_wire_audit.json'),
         field_bits=256,
@@ -39,6 +43,7 @@ def test_modular_multiplier_lifecycle_keeps_candidate_unpromoted() -> None:
     lifecycle = _load('modular_multiplier_lifecycle.json')
     current = lifecycle['current_stream']
     candidate = lifecycle['streamed_lifecycle_candidate']
+    candidate_stream = lifecycle['candidate_lifecycle_stream']
     assert lifecycle['schema'] == MODULAR_MULTIPLIER_LIFECYCLE_SCHEMA
     assert lifecycle['pass'] is True
     assert current['physical_lifecycle_status'] == 'invalid_abandoned_temporary_and_targets'
@@ -49,3 +54,8 @@ def test_modular_multiplier_lifecycle_keeps_candidate_unpromoted() -> None:
     assert candidate['required_cleanup_events'] == current['scratch_observation_count']
     assert candidate['peak_temporary_and_wires_if_serialized'] == 1
     assert candidate['non_clifford_delta_unproven_until_consume_cleanup_lowering_exists'] is None
+    assert candidate_stream['temporary_and_compute_events'] == current['scratch_observation_count']
+    assert candidate_stream['consume_events'] == current['scratch_observation_count']
+    assert candidate_stream['cleanup_events'] == current['scratch_observation_count']
+    assert candidate_stream['event_count'] == current['scratch_observation_count'] * 3
+    assert len(candidate_stream['operation_stream_sha256']) == 64

@@ -429,6 +429,8 @@ def build_engine_completion_audit(
                 'synthetic_arithmetic_scratch_abandoned_garbage': int(modular_primitive_wire_audit['arithmetic_scratch_abandoned_garbage_count']),
                 'modular_multiplier_lifecycle_pass': bool(modular_multiplier_lifecycle['pass']),
                 'modular_multiplier_lifecycle_sha256': _sha256_payload(modular_multiplier_lifecycle),
+                'streamed_lifecycle_candidate_event_stream_sha256': str(modular_multiplier_lifecycle['candidate_lifecycle_stream']['operation_stream_sha256']),
+                'streamed_lifecycle_candidate_event_count': int(modular_multiplier_lifecycle['candidate_lifecycle_stream']['event_count']),
                 'streamed_lifecycle_candidate_required_consume_events': int(modular_multiplier_lifecycle['streamed_lifecycle_candidate']['required_consume_events']),
                 'streamed_lifecycle_candidate_required_cleanup_events': int(modular_multiplier_lifecycle['streamed_lifecycle_candidate']['required_cleanup_events']),
                 'streamed_lifecycle_candidate_peak_temporary_and_wires': int(modular_multiplier_lifecycle['streamed_lifecycle_candidate']['peak_temporary_and_wires_if_serialized']),

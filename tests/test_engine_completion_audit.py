@@ -102,6 +102,8 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['synthetic_arithmetic_scratch_cleanup_observations'] == 0
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['synthetic_arithmetic_scratch_abandoned_garbage'] == remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['synthetic_arithmetic_scratch_wire_observations']
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_multiplier_lifecycle_pass'] is True
+    assert len(remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_candidate_event_stream_sha256']) == 64
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_candidate_event_count'] == remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['synthetic_arithmetic_scratch_wire_observations'] * 3
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_candidate_required_consume_events'] == remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['synthetic_arithmetic_scratch_wire_observations']
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_candidate_required_cleanup_events'] == remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['synthetic_arithmetic_scratch_wire_observations']
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_candidate_peak_temporary_and_wires'] == 1

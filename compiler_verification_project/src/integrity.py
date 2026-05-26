@@ -326,6 +326,10 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         dump_json(
             artifact_root / 'modular_multiplier_lifecycle.json',
             build_modular_multiplier_lifecycle(
+                modular_execution_trace=load_json(artifact_root / 'modular_execution_trace.json'),
+                modular_arithmetic_certificate=load_json(artifact_root / 'modular_arithmetic_certificate.json'),
+                arithmetic_lowerings=load_json(artifact_root / 'arithmetic_lowerings.json'),
+                reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
                 scheduled_modular_primitive_netlist=load_json(artifact_root / 'scheduled_modular_primitive_netlist.json'),
                 modular_primitive_wire_audit=load_json(artifact_root / 'modular_primitive_wire_audit.json'),
                 field_bits=FIELD_BITS,
@@ -2641,6 +2645,10 @@ def build_modular_primitive_wire_audit_checks(artifacts: Mapping[str, Any]) -> D
 def build_modular_multiplier_lifecycle_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     lifecycle = artifacts['modular_multiplier_lifecycle']
     expected = build_modular_multiplier_lifecycle(
+        modular_execution_trace=artifacts['modular_execution_trace'],
+        modular_arithmetic_certificate=artifacts['modular_arithmetic_certificate'],
+        arithmetic_lowerings=artifacts['arithmetic_lowerings'],
+        reusable_chunk_lowering=artifacts['reusable_chunk_lowering'],
         scheduled_modular_primitive_netlist=artifacts['scheduled_modular_primitive_netlist'],
         modular_primitive_wire_audit=artifacts['modular_primitive_wire_audit'],
         field_bits=FIELD_BITS,
