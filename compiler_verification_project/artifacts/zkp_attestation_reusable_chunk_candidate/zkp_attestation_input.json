@@ -2,7 +2,7 @@
   "schema": "compiler-project-zkp-attestation-input-v6",
   "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
   "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
-  "claim_sha256": "5c4d2cfb5d81970502017e75df9b9909a90b5b89741643d93ef35a80b679da76",
+  "claim_sha256": "2a1e1dc950d141fa52ed42b1fb1131037cdbdb64a7425370a2a6fb56a34fb715",
   "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
   "family_sha256": "c6a7146ac5c0d7a63f733b0224ac9dc6fbaafb576d196128f882ecbc01e42b2b",
   "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
@@ -12,7 +12,7 @@
     "document_type": "attestation_claim",
     "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_claim.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "5c4d2cfb5d81970502017e75df9b9909a90b5b89741643d93ef35a80b679da76",
+    "sha256": "2a1e1dc950d141fa52ed42b1fb1131037cdbdb64a7425370a2a6fb56a34fb715",
     "payload": {
       "schema": "compiler-project-zkp-attestation-claim-v1",
       "selected_family_alias": "reusable-chunk",
@@ -25,7 +25,7 @@
       "resource_engine_summary": {
         "source": "public_engine_manifest.public_totals",
         "source_document_type": "public_engine_manifest",
-        "source_sha256": "f9ae7e5001faa57d9e1a2a6b5fa4b0527943edf48c03c9b953b714f2439e11af",
+        "source_sha256": "8f81a97c89da5e0a467e61aeb37a8b6e59afffb5492dff39ed155de11c705be3",
         "non_clifford": 36973222,
         "logical_qubits": 1968,
         "matches_family_snapshot": false,
@@ -34,11 +34,11 @@
       "physical_boundary_summary": {
         "source": "public_engine_manifest.scheduled_modular_global_splice",
         "source_document_type": "public_engine_manifest",
-        "source_sha256": "f9ae7e5001faa57d9e1a2a6b5fa4b0527943edf48c03c9b953b714f2439e11af",
+        "source_sha256": "8f81a97c89da5e0a467e61aeb37a8b6e59afffb5492dff39ed155de11c705be3",
         "canonical_materialized_operation_stream_sha256": "d15d0449ff7fefbe71e3f04cca538af7422badd03a0aba676050e378ab78d0a0",
         "canonical_physical_operation_stream_sha256": "779eec61e02cd602828871cf705c978ab893fa665b3ec615d7b26f939e25a92b",
         "scheduled_modular_leaf_operation_stream_sha256": "3d39ce3fb735a940720f6645cd6910b89e0c60f6ef5caf9b9a7e48e1231e1be5",
-        "scheduled_modular_global_splice_sha256": "e577a1231c4ee620ee4320805287fca03f1a4332644fcb8949123ddffa3ff667",
+        "scheduled_modular_global_splice_sha256": "d58a1309b8d89a9821f746f15ef168ff8bad650a656691c4fbc07de25e47426a",
         "scheduled_modular_leaf_operation_count": 1270134,
         "scheduled_modular_leaf_non_clifford": 1192378,
         "scheduled_global_operation_count": 39374154,
@@ -12833,7 +12833,7 @@
     "resource_engine_summary": {
       "source": "public_engine_manifest.public_totals",
       "source_document_type": "public_engine_manifest",
-      "source_sha256": "f9ae7e5001faa57d9e1a2a6b5fa4b0527943edf48c03c9b953b714f2439e11af",
+      "source_sha256": "8f81a97c89da5e0a467e61aeb37a8b6e59afffb5492dff39ed155de11c705be3",
       "non_clifford": 36973222,
       "logical_qubits": 1968,
       "matches_family_snapshot": false,
@@ -12842,11 +12842,11 @@
     "physical_boundary_summary": {
       "source": "public_engine_manifest.scheduled_modular_global_splice",
       "source_document_type": "public_engine_manifest",
-      "source_sha256": "f9ae7e5001faa57d9e1a2a6b5fa4b0527943edf48c03c9b953b714f2439e11af",
+      "source_sha256": "8f81a97c89da5e0a467e61aeb37a8b6e59afffb5492dff39ed155de11c705be3",
       "canonical_materialized_operation_stream_sha256": "d15d0449ff7fefbe71e3f04cca538af7422badd03a0aba676050e378ab78d0a0",
       "canonical_physical_operation_stream_sha256": "779eec61e02cd602828871cf705c978ab893fa665b3ec615d7b26f939e25a92b",
       "scheduled_modular_leaf_operation_stream_sha256": "3d39ce3fb735a940720f6645cd6910b89e0c60f6ef5caf9b9a7e48e1231e1be5",
-      "scheduled_modular_global_splice_sha256": "e577a1231c4ee620ee4320805287fca03f1a4332644fcb8949123ddffa3ff667",
+      "scheduled_modular_global_splice_sha256": "d58a1309b8d89a9821f746f15ef168ff8bad650a656691c4fbc07de25e47426a",
       "scheduled_modular_leaf_operation_count": 1270134,
       "scheduled_modular_leaf_non_clifford": 1192378,
       "scheduled_global_operation_count": 39374154,
@@ -13210,12 +13210,12 @@
     "The proof input carries both the committed source documents and proof-ready reductions.",
     "The guest recomputes every source-document digest and derives the prepared leaf/case reductions from those documents before publishing public values."
   ],
-  "public_engine_manifest_sha256": "f9ae7e5001faa57d9e1a2a6b5fa4b0527943edf48c03c9b953b714f2439e11af",
+  "public_engine_manifest_sha256": "8f81a97c89da5e0a467e61aeb37a8b6e59afffb5492dff39ed155de11c705be3",
   "public_engine_manifest_document": {
     "document_type": "public_engine_manifest",
     "artifact_path": "compiler_verification_project/artifacts/public_engine_manifest.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "f9ae7e5001faa57d9e1a2a6b5fa4b0527943edf48c03c9b953b714f2439e11af",
+    "sha256": "8f81a97c89da5e0a467e61aeb37a8b6e59afffb5492dff39ed155de11c705be3",
     "payload": {
       "schema": "compiler-project-public-engine-manifest-v1",
       "scope": "current public reusable-chunk executable resource engine manifest",
@@ -13239,9 +13239,9 @@
         "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
         "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
         "resource_contract_engine_sha256": "0447031a514b04038ab0f51e63a0e1a5ffa187d1cab694de20d7dfc8196ea1e0",
-        "public_candidate_materialized_circuit_manifest_sha256": "134afbb1cc421c48f5f128a5bcbfb52dc9b5cd315a0c652c04ce6a4d47aebe16",
-        "modular_execution_trace_sha256": "bcb390405b89ba335be5b37fe67d3a51ec3d12c61e01966b69e6bae17730c9a2",
-        "scheduled_modular_primitive_netlist_sha256": "0ee289e9d6d9c5367c08a7d1b5d08a7450434a45171bdb3a3ce56daf0c7d1fe3",
+        "public_candidate_materialized_circuit_manifest_sha256": "84cbfedf654cd2b373e8abda64222649d468fe05b52b8da6b403102e410b049c",
+        "modular_execution_trace_sha256": "eff6aa89184b032c520ad83095e76dc0c68199616aad5f1ca8610d701801e351",
+        "scheduled_modular_primitive_netlist_sha256": "ff3662c1b383c32858465f567fbc09bb8654b1fb08eb13f3ab277b3c1323ec5c",
         "qroam_table_cnot_materialization_sha256": "b783455ac10c7da613d154ada14315069926fddec5ce0a1ebd23e1cb4d8f3916"
       },
       "instruction_stream": {
@@ -13931,7 +13931,7 @@
       "primitive_operation_evidence": {
         "public_candidate_materialized_circuit_manifest": {
           "schema": "compiler-project-public-candidate-materialized-circuit-manifest-v1",
-          "sha256": "134afbb1cc421c48f5f128a5bcbfb52dc9b5cd315a0c652c04ce6a4d47aebe16",
+          "sha256": "84cbfedf654cd2b373e8abda64222649d468fe05b52b8da6b403102e410b049c",
           "pass": true,
           "operation_stream_sha256": "e8b1167c3f632c2682bd6defce6e5cad8473d5da814a5e402f2a12c959823f84",
           "liveness_binding_stream_sha256": "064b5825a77559fdaab046854b89afdf58e1d3da0be53ab53652bb913c87b8eb",
@@ -14046,7 +14046,7 @@
           },
           "modular_execution_trace": {
             "schema": "compiler-project-modular-execution-trace-v1",
-            "sha256": "bcb390405b89ba335be5b37fe67d3a51ec3d12c61e01966b69e6bae17730c9a2",
+            "sha256": "eff6aa89184b032c520ad83095e76dc0c68199616aad5f1ca8610d701801e351",
             "pass": true,
             "trace_stream_sha256": "22ae963c074f8cf0bec0fa595ccd6b47ce50ce4912803f2be06f555b517a0873",
             "tail_schedule_row_count": 17,
@@ -14067,7 +14067,7 @@
           },
           "scheduled_modular_primitive_netlist": {
             "schema": "compiler-project-scheduled-modular-primitive-netlist-v1",
-            "sha256": "0ee289e9d6d9c5367c08a7d1b5d08a7450434a45171bdb3a3ce56daf0c7d1fe3",
+            "sha256": "ff3662c1b383c32858465f567fbc09bb8654b1fb08eb13f3ab277b3c1323ec5c",
             "pass": true,
             "operation_count": 1270134,
             "segment_count": 78,
@@ -14106,7 +14106,7 @@
               "measurement": 2410436
             },
             "scheduled_leaf_operation_stream_sha256": "3d39ce3fb735a940720f6645cd6910b89e0c60f6ef5caf9b9a7e48e1231e1be5",
-            "global_splice_sha256": "e577a1231c4ee620ee4320805287fca03f1a4332644fcb8949123ddffa3ff667",
+            "global_splice_sha256": "d58a1309b8d89a9821f746f15ef168ff8bad650a656691c4fbc07de25e47426a",
             "checks": {
               "leaf_call_count_matches_public_stream_plan": true,
               "scheduled_splice_preserves_grouped_operation_count": true,

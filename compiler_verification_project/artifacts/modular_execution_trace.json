@@ -4,7 +4,7 @@
   "source_digests": {
     "tail_macro_engine_sha256": "eea48169b9577864a0dae285c1ee31e17e7329c8cb3cadb0606657871c5b7d2d",
     "modular_arithmetic_certificate_sha256": "ed2acdd360c42d2d13712f9413b7d8990cc2997616bc4063d399f908d53c4584",
-    "public_candidate_materialized_circuit_manifest_sha256": "134afbb1cc421c48f5f128a5bcbfb52dc9b5cd315a0c652c04ce6a4d47aebe16"
+    "public_candidate_materialized_circuit_manifest_sha256": "84cbfedf654cd2b373e8abda64222649d468fe05b52b8da6b403102e410b049c"
   },
   "trace_encoding": [
     "global_suboperation_index",

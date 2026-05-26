@@ -10,7 +10,7 @@
   "resource_engine_summary": {
     "source": "public_engine_manifest.public_totals",
     "source_document_type": "public_engine_manifest",
-    "source_sha256": "f9ae7e5001faa57d9e1a2a6b5fa4b0527943edf48c03c9b953b714f2439e11af",
+    "source_sha256": "8f81a97c89da5e0a467e61aeb37a8b6e59afffb5492dff39ed155de11c705be3",
     "non_clifford": 36973222,
     "logical_qubits": 1968,
     "matches_family_snapshot": false,
@@ -19,11 +19,11 @@
   "physical_boundary_summary": {
     "source": "public_engine_manifest.scheduled_modular_global_splice",
     "source_document_type": "public_engine_manifest",
-    "source_sha256": "f9ae7e5001faa57d9e1a2a6b5fa4b0527943edf48c03c9b953b714f2439e11af",
+    "source_sha256": "8f81a97c89da5e0a467e61aeb37a8b6e59afffb5492dff39ed155de11c705be3",
     "canonical_materialized_operation_stream_sha256": "d15d0449ff7fefbe71e3f04cca538af7422badd03a0aba676050e378ab78d0a0",
     "canonical_physical_operation_stream_sha256": "779eec61e02cd602828871cf705c978ab893fa665b3ec615d7b26f939e25a92b",
     "scheduled_modular_leaf_operation_stream_sha256": "3d39ce3fb735a940720f6645cd6910b89e0c60f6ef5caf9b9a7e48e1231e1be5",
-    "scheduled_modular_global_splice_sha256": "e577a1231c4ee620ee4320805287fca03f1a4332644fcb8949123ddffa3ff667",
+    "scheduled_modular_global_splice_sha256": "d58a1309b8d89a9821f746f15ef168ff8bad650a656691c4fbc07de25e47426a",
     "scheduled_modular_leaf_operation_count": 1270134,
     "scheduled_modular_leaf_non_clifford": 1192378,
     "scheduled_global_operation_count": 39374154,

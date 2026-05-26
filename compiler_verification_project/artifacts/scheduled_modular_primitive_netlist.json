@@ -2,7 +2,7 @@
   "schema": "compiler-project-scheduled-modular-primitive-netlist-v1",
   "definition": "Deterministic primitive-row expansion of the scheduled modular execution trace; every generated row is scanned into the stream hash and segment hashes.",
   "source_digests": {
-    "modular_execution_trace_sha256": "bcb390405b89ba335be5b37fe67d3a51ec3d12c61e01966b69e6bae17730c9a2",
+    "modular_execution_trace_sha256": "eff6aa89184b032c520ad83095e76dc0c68199616aad5f1ca8610d701801e351",
     "modular_arithmetic_certificate_sha256": "ed2acdd360c42d2d13712f9413b7d8990cc2997616bc4063d399f908d53c4584",
     "arithmetic_lowerings_sha256": "3686d34edff9e9edfa4712f895b2b5687484b8271269b9264fc133d5a29a66a7",
     "reusable_chunk_lowering_sha256": "c33b966de5d3e98e3a403052f4b854d7db34e766419de623a321a69d06517698"

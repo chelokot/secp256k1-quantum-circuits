@@ -2,11 +2,11 @@
   "schema": "compiler-project-modular-primitive-wire-audit-v1",
   "definition": "Wire-level audit of the scheduled modular primitive iterator. It separates field wires backed by trace liveness from lookup-workspace wires and synthetic arithmetic scratch wires that still need a counted owner/reuse proof before the modular primitive stream can be called fully physical.",
   "source_digests": {
-    "modular_execution_trace_sha256": "bcb390405b89ba335be5b37fe67d3a51ec3d12c61e01966b69e6bae17730c9a2",
+    "modular_execution_trace_sha256": "eff6aa89184b032c520ad83095e76dc0c68199616aad5f1ca8610d701801e351",
     "modular_arithmetic_certificate_sha256": "ed2acdd360c42d2d13712f9413b7d8990cc2997616bc4063d399f908d53c4584",
     "arithmetic_lowerings_sha256": "3686d34edff9e9edfa4712f895b2b5687484b8271269b9264fc133d5a29a66a7",
     "reusable_chunk_lowering_sha256": "c33b966de5d3e98e3a403052f4b854d7db34e766419de623a321a69d06517698",
-    "scheduled_modular_primitive_netlist_sha256": "0ee289e9d6d9c5367c08a7d1b5d08a7450434a45171bdb3a3ce56daf0c7d1fe3"
+    "scheduled_modular_primitive_netlist_sha256": "ff3662c1b383c32858465f567fbc09bb8654b1fb08eb13f3ab277b3c1323ec5c"
   },
   "operation_count": 1270134,
   "gate_counts": {
@@ -24,6 +24,13 @@
   "lookup_workspace_wire_observation_count": 1179648,
   "arithmetic_scratch_wire_observation_count": 721406,
   "arithmetic_scratch_unique_wire_count": 721406,
+  "arithmetic_scratch_single_use_wire_count": 721406,
+  "arithmetic_scratch_reused_wire_count": 0,
+  "arithmetic_scratch_ccx_target_observation_count": 721406,
+  "arithmetic_scratch_non_ccx_target_observation_count": 0,
+  "arithmetic_scratch_gate_counts": {
+    "ccx": 721406
+  },
   "non_lookup_unclassified_wire_count": 0,
   "observed_suboperation_owner_counts": {
     "tail_fused_output_zero_lift_guard": 510,
@@ -809,6 +816,7 @@
     "no_unresolved_virtual_field_operands": true,
     "qroam_operand_wires_are_explicit_lookup_workspace_wires": true,
     "no_unclassified_non_lookup_operand_wires": true,
+    "synthetic_scratch_wires_are_single_use_ccx_targets": true,
     "no_synthetic_arithmetic_scratch_wires_without_owner_capacity": false
   },
   "pass": false,
@@ -826,12 +834,12 @@
     {
       "name": "synthetic_arithmetic_scratch_owner_capacity",
       "active": true,
-      "required_to_close": "Replace arithmetic_scratch:* operand wires with a primitive lowering that assigns every scratch/control/target wire to counted field slots or to an explicit counted scratch owner with a liveness/reuse proof."
+      "required_to_close": "Replace arithmetic_scratch:* single-use CCX placeholder targets with a primitive lowering that writes the multiply/reduction effect into counted field slots or an explicit counted scratch owner with a liveness/reuse proof."
     },
     {
       "name": "modular_multiplier_physical_wire_semantics",
       "active": true,
-      "required_to_close": "Give the modular multiplication primitive a reversible wire-level circuit instead of treating the schoolbook partial-product grid as independent synthetic scratch targets."
+      "required_to_close": "Give the modular multiplication primitive a reversible wire-level circuit instead of treating schoolbook partial-product interactions as producer-only synthetic scratch targets."
     }
   ]
 }
