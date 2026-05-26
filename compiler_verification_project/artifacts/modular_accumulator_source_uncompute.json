@@ -1,0 +1,588 @@
+{
+  "schema": "compiler-project-modular-accumulator-source-uncompute-v1",
+  "definition": "Generated source-uncompute contract for modular-accumulator scratch cleanup. It proves that every partial-product temporary AND can be cleaned by replaying the same CCX controls, and keeps zero-lift guard cleanup unpromoted because the current primitive iterator does not expose guard predicate controls.",
+  "source_digests": {
+    "modular_execution_trace_sha256": "eff6aa89184b032c520ad83095e76dc0c68199616aad5f1ca8610d701801e351",
+    "modular_arithmetic_certificate_sha256": "ed2acdd360c42d2d13712f9413b7d8990cc2997616bc4063d399f908d53c4584",
+    "arithmetic_lowerings_sha256": "3686d34edff9e9edfa4712f895b2b5687484b8271269b9264fc133d5a29a66a7",
+    "reusable_chunk_lowering_sha256": "c33b966de5d3e98e3a403052f4b854d7db34e766419de623a321a69d06517698",
+    "scheduled_modular_primitive_netlist_sha256": "ff3662c1b383c32858465f567fbc09bb8654b1fb08eb13f3ab277b3c1323ec5c",
+    "modular_multiplier_lifecycle_sha256": "4598027f736f9238dc812970ac2cce7a6f6d968ac65e6877144072d8df263f10"
+  },
+  "field_bits": 256,
+  "source_uncompute_stream": {
+    "stream_columns": [
+      "source_operation_index",
+      "source_suboperation_index",
+      "route_kind",
+      "compute_gate",
+      "control_wire_count",
+      "scratch_wire",
+      "cleanup_status",
+      "cleanup_gate",
+      "cleanup_reuses_compute_controls"
+    ],
+    "rows_materialized_in_json": false,
+    "segment_size": 16384,
+    "row_count": 721406,
+    "operation_stream_sha256": "e25ab1189e7beba49c070f305cf828ae41b71651c93739bc8ba6278543fcd413",
+    "segment_count": 45,
+    "segments": [
+      {
+        "segment_index": 0,
+        "row_start": 0,
+        "row_end_exclusive": 16384,
+        "row_count": 16384,
+        "sha256": "b9d393794ee2fdad900ae6c20c2422e22cd49c9a05341e851334d10cee8db4b1"
+      },
+      {
+        "segment_index": 1,
+        "row_start": 16384,
+        "row_end_exclusive": 32768,
+        "row_count": 16384,
+        "sha256": "988f735f30ef668490d5875c7b9fd5caa792d3944cc9d4a36ca80f55f090fdb5"
+      },
+      {
+        "segment_index": 2,
+        "row_start": 32768,
+        "row_end_exclusive": 49152,
+        "row_count": 16384,
+        "sha256": "461a9724813f8b9a197218e15ab86bb2167e7179ee616a913f4f1b039ff8e9b3"
+      },
+      {
+        "segment_index": 3,
+        "row_start": 49152,
+        "row_end_exclusive": 65536,
+        "row_count": 16384,
+        "sha256": "3514f2b6fc528f20d378a99d8c264c32c72e08e8dfab7dddd9ee1bbc52dfc0fd"
+      },
+      {
+        "segment_index": 4,
+        "row_start": 65536,
+        "row_end_exclusive": 81920,
+        "row_count": 16384,
+        "sha256": "f2d231c365949855e0f9e2e8f7467f50a881aea03c7a6a867c5d947da3baccd4"
+      },
+      {
+        "segment_index": 5,
+        "row_start": 81920,
+        "row_end_exclusive": 98304,
+        "row_count": 16384,
+        "sha256": "1fc29cca5b5360eda5d8395790baf8dc59cf8d0baed2b778ac9ddb84dbee8296"
+      },
+      {
+        "segment_index": 6,
+        "row_start": 98304,
+        "row_end_exclusive": 114688,
+        "row_count": 16384,
+        "sha256": "a68a3f717a05cb344e4653026b9b76648fce49a06fcc15c0bfefb611d451a516"
+      },
+      {
+        "segment_index": 7,
+        "row_start": 114688,
+        "row_end_exclusive": 131072,
+        "row_count": 16384,
+        "sha256": "047874c7c5f5c676c93ae44c142fde215e7c3e5aae00fa3ffc7564a964567ba8"
+      },
+      {
+        "segment_index": 8,
+        "row_start": 131072,
+        "row_end_exclusive": 147456,
+        "row_count": 16384,
+        "sha256": "684d0e11a72b000740111be577a951fd3558a8b11f8a88d437641c2e627f9bc3"
+      },
+      {
+        "segment_index": 9,
+        "row_start": 147456,
+        "row_end_exclusive": 163840,
+        "row_count": 16384,
+        "sha256": "092651b10045dd2ce09c3034f86b27e26bccf0472aa8a20ded58681037d03990"
+      },
+      {
+        "segment_index": 10,
+        "row_start": 163840,
+        "row_end_exclusive": 180224,
+        "row_count": 16384,
+        "sha256": "6341e182f59195a48e8db38149fb304222280ec9351d84b10a9b7f4e0969601d"
+      },
+      {
+        "segment_index": 11,
+        "row_start": 180224,
+        "row_end_exclusive": 196608,
+        "row_count": 16384,
+        "sha256": "ec179a7cc5e01ae83fb31de61dad883a50f8abb09caabe245f5f86a305b8ef1d"
+      },
+      {
+        "segment_index": 12,
+        "row_start": 196608,
+        "row_end_exclusive": 212992,
+        "row_count": 16384,
+        "sha256": "a0cfc386412f515e44a0a1609efc84c405841a7a71cc9c9306f9023adc35be78"
+      },
+      {
+        "segment_index": 13,
+        "row_start": 212992,
+        "row_end_exclusive": 229376,
+        "row_count": 16384,
+        "sha256": "31f44a3d9835ea2bf34c0d3221f279961441e09e440835c4a7ab89b836fd5d03"
+      },
+      {
+        "segment_index": 14,
+        "row_start": 229376,
+        "row_end_exclusive": 245760,
+        "row_count": 16384,
+        "sha256": "11f1c6424024587c5654eda3c517a3ebfda7ed71ef88fa35e6ea832da8daa265"
+      },
+      {
+        "segment_index": 15,
+        "row_start": 245760,
+        "row_end_exclusive": 262144,
+        "row_count": 16384,
+        "sha256": "72a618d03709a0a09c813edc349d65f087c257e1f33ac994d8e94716322b0163"
+      },
+      {
+        "segment_index": 16,
+        "row_start": 262144,
+        "row_end_exclusive": 278528,
+        "row_count": 16384,
+        "sha256": "68efeca58f797f2ce05dfe1ae3530231fc78e7feb4a65418a26ec0da6ee16165"
+      },
+      {
+        "segment_index": 17,
+        "row_start": 278528,
+        "row_end_exclusive": 294912,
+        "row_count": 16384,
+        "sha256": "3b05f1825cf482e025f3f14a93cdb01873d898c219faa9c971a0028481287caf"
+      },
+      {
+        "segment_index": 18,
+        "row_start": 294912,
+        "row_end_exclusive": 311296,
+        "row_count": 16384,
+        "sha256": "746bcd5d8806f4f43e1d207bbc92e6896c3b570dd148951b9066429540d0a290"
+      },
+      {
+        "segment_index": 19,
+        "row_start": 311296,
+        "row_end_exclusive": 327680,
+        "row_count": 16384,
+        "sha256": "0840d1de34850d04f2f7ef7b3338b05056ef17ab3f4d2ee1ce36f1c6b09659d5"
+      },
+      {
+        "segment_index": 20,
+        "row_start": 327680,
+        "row_end_exclusive": 344064,
+        "row_count": 16384,
+        "sha256": "c8650d13e3af4095d22a46479184224f9a589cae08c66c4a5bf815396a74a7fb"
+      },
+      {
+        "segment_index": 21,
+        "row_start": 344064,
+        "row_end_exclusive": 360448,
+        "row_count": 16384,
+        "sha256": "037255d60f5ce5ad981ed7a53ef42d97ab8baa46ece902eeb844a0fdbe2ad4d1"
+      },
+      {
+        "segment_index": 22,
+        "row_start": 360448,
+        "row_end_exclusive": 376832,
+        "row_count": 16384,
+        "sha256": "bc4c699f8221148f4c6427a5f563eb10216b257e94c16bb8471a4cfcdf668c53"
+      },
+      {
+        "segment_index": 23,
+        "row_start": 376832,
+        "row_end_exclusive": 393216,
+        "row_count": 16384,
+        "sha256": "921167ed6934b6269658bec3bfd7aca76416f85ac620196826d7860f6446e6c1"
+      },
+      {
+        "segment_index": 24,
+        "row_start": 393216,
+        "row_end_exclusive": 409600,
+        "row_count": 16384,
+        "sha256": "ffb27ae9d78f57155e2f7e5e7c2ac187fd6f31beac96875cc7ca2c1e3fd27563"
+      },
+      {
+        "segment_index": 25,
+        "row_start": 409600,
+        "row_end_exclusive": 425984,
+        "row_count": 16384,
+        "sha256": "48e900ff7f3d329a20de173c45caf6cd7d5642b2d296443a4b3883d6f3459c49"
+      },
+      {
+        "segment_index": 26,
+        "row_start": 425984,
+        "row_end_exclusive": 442368,
+        "row_count": 16384,
+        "sha256": "c81fd63d0fd61726670e9eb7cdc85820066c4af1d1442b60392a2bb3b7678665"
+      },
+      {
+        "segment_index": 27,
+        "row_start": 442368,
+        "row_end_exclusive": 458752,
+        "row_count": 16384,
+        "sha256": "dbeb03b83ce96563e02ee50d0122571be25f3f64ff04ec9c1717c26b42979fff"
+      },
+      {
+        "segment_index": 28,
+        "row_start": 458752,
+        "row_end_exclusive": 475136,
+        "row_count": 16384,
+        "sha256": "3795510681d1cb6545077a46fb032651a7027a11dab3803a951aacac3c1b7122"
+      },
+      {
+        "segment_index": 29,
+        "row_start": 475136,
+        "row_end_exclusive": 491520,
+        "row_count": 16384,
+        "sha256": "2e4658a4b7272182058a49095cce6ed52a1984aace8d7b7145a6da7d054be0e8"
+      },
+      {
+        "segment_index": 30,
+        "row_start": 491520,
+        "row_end_exclusive": 507904,
+        "row_count": 16384,
+        "sha256": "9ba237e21390bc6d77ddf6d0d87575f5450fdca98bc80d5cda723f94ecd1fe67"
+      },
+      {
+        "segment_index": 31,
+        "row_start": 507904,
+        "row_end_exclusive": 524288,
+        "row_count": 16384,
+        "sha256": "387469c58e9fd2cc533199f93a1240adb257ddc3293a392d223206c921c78029"
+      },
+      {
+        "segment_index": 32,
+        "row_start": 524288,
+        "row_end_exclusive": 540672,
+        "row_count": 16384,
+        "sha256": "8b45f2889661ccbcf6ed846c0f9715c82e7247a4ada1d5b4ee8652248c59cd15"
+      },
+      {
+        "segment_index": 33,
+        "row_start": 540672,
+        "row_end_exclusive": 557056,
+        "row_count": 16384,
+        "sha256": "9e366c146be459f23282b6a79ea05a69cce2eaac066fdcf5620d197967daa607"
+      },
+      {
+        "segment_index": 34,
+        "row_start": 557056,
+        "row_end_exclusive": 573440,
+        "row_count": 16384,
+        "sha256": "449ba2ad481720abd3c64d8297b0cd4bee29a695ad08fbe49387e0836b187b64"
+      },
+      {
+        "segment_index": 35,
+        "row_start": 573440,
+        "row_end_exclusive": 589824,
+        "row_count": 16384,
+        "sha256": "6323705b1af771bb1e1397f2dcc000370000eb3c049849826e83383c5a3e1283"
+      },
+      {
+        "segment_index": 36,
+        "row_start": 589824,
+        "row_end_exclusive": 606208,
+        "row_count": 16384,
+        "sha256": "fb3dba276066d48c088639992234eb44525675cae5955a798aaff67e623b32bf"
+      },
+      {
+        "segment_index": 37,
+        "row_start": 606208,
+        "row_end_exclusive": 622592,
+        "row_count": 16384,
+        "sha256": "538e9c3b7f28689433539c6b559dac1fa2c92191c963cd1ac8a4151e8ffc2e6a"
+      },
+      {
+        "segment_index": 38,
+        "row_start": 622592,
+        "row_end_exclusive": 638976,
+        "row_count": 16384,
+        "sha256": "52f8e06e718704f1b380cf67e33c92f8980daf89809562754eb91ef0d5c419f2"
+      },
+      {
+        "segment_index": 39,
+        "row_start": 638976,
+        "row_end_exclusive": 655360,
+        "row_count": 16384,
+        "sha256": "d6e6fc0d472fe4d6ecaeacf08072d63f1e6239dde20219fe03b4678b52798721"
+      },
+      {
+        "segment_index": 40,
+        "row_start": 655360,
+        "row_end_exclusive": 671744,
+        "row_count": 16384,
+        "sha256": "f5d3d7f7467ecc6280d94646b2a81498f4cb1e56c96173da8a6986b5186d9abd"
+      },
+      {
+        "segment_index": 41,
+        "row_start": 671744,
+        "row_end_exclusive": 688128,
+        "row_count": 16384,
+        "sha256": "1009baac294462811fc6fe3719e5381840e90f6e85d15adbf4b864577795b5b7"
+      },
+      {
+        "segment_index": 42,
+        "row_start": 688128,
+        "row_end_exclusive": 704512,
+        "row_count": 16384,
+        "sha256": "597f998b85a55146f82c1c8d7ba68ce2e0e616f7ae9cfe0bc6552de0d4deea9f"
+      },
+      {
+        "segment_index": 43,
+        "row_start": 704512,
+        "row_end_exclusive": 720896,
+        "row_count": 16384,
+        "sha256": "5ae1aad7bf009eb1e2df7dfebe9df61809a9d8f200d00d6b0758411735510eeb"
+      },
+      {
+        "segment_index": 44,
+        "row_start": 720896,
+        "row_end_exclusive": 721406,
+        "row_count": 510,
+        "sha256": "9e0a541da07bef7bc33f69755c330d31acfd255679fee4f64c9e26f14d710692"
+      }
+    ],
+    "route_kind_counts": {
+      "partial_product_column_to_streamed_modular_accumulator": 720896,
+      "zero_lift_guard_predicate_ladder": 510
+    },
+    "cleanup_status_counts": {
+      "missing_source_controls_for_cleanup": 510,
+      "source_uncompute_cleanup_ccx_proven": 720896
+    },
+    "preview_head": [
+      {
+        "source_operation_index": 1020,
+        "source_suboperation_index": 2,
+        "route_kind": "partial_product_column_to_streamed_modular_accumulator",
+        "compute_gate": "ccx",
+        "control_wire_count": 2,
+        "scratch_wire": "arithmetic_scratch:H:partial_product_grid.bit[0]",
+        "cleanup_status": "source_uncompute_cleanup_ccx_proven",
+        "cleanup_gate": "ccx",
+        "cleanup_reuses_compute_controls": true
+      },
+      {
+        "source_operation_index": 1021,
+        "source_suboperation_index": 2,
+        "route_kind": "partial_product_column_to_streamed_modular_accumulator",
+        "compute_gate": "ccx",
+        "control_wire_count": 2,
+        "scratch_wire": "arithmetic_scratch:H:partial_product_grid.bit[1]",
+        "cleanup_status": "source_uncompute_cleanup_ccx_proven",
+        "cleanup_gate": "ccx",
+        "cleanup_reuses_compute_controls": true
+      },
+      {
+        "source_operation_index": 1022,
+        "source_suboperation_index": 2,
+        "route_kind": "partial_product_column_to_streamed_modular_accumulator",
+        "compute_gate": "ccx",
+        "control_wire_count": 2,
+        "scratch_wire": "arithmetic_scratch:H:partial_product_grid.bit[2]",
+        "cleanup_status": "source_uncompute_cleanup_ccx_proven",
+        "cleanup_gate": "ccx",
+        "cleanup_reuses_compute_controls": true
+      },
+      {
+        "source_operation_index": 1023,
+        "source_suboperation_index": 2,
+        "route_kind": "partial_product_column_to_streamed_modular_accumulator",
+        "compute_gate": "ccx",
+        "control_wire_count": 2,
+        "scratch_wire": "arithmetic_scratch:H:partial_product_grid.bit[3]",
+        "cleanup_status": "source_uncompute_cleanup_ccx_proven",
+        "cleanup_gate": "ccx",
+        "cleanup_reuses_compute_controls": true
+      },
+      {
+        "source_operation_index": 1024,
+        "source_suboperation_index": 2,
+        "route_kind": "partial_product_column_to_streamed_modular_accumulator",
+        "compute_gate": "ccx",
+        "control_wire_count": 2,
+        "scratch_wire": "arithmetic_scratch:H:partial_product_grid.bit[4]",
+        "cleanup_status": "source_uncompute_cleanup_ccx_proven",
+        "cleanup_gate": "ccx",
+        "cleanup_reuses_compute_controls": true
+      },
+      {
+        "source_operation_index": 1025,
+        "source_suboperation_index": 2,
+        "route_kind": "partial_product_column_to_streamed_modular_accumulator",
+        "compute_gate": "ccx",
+        "control_wire_count": 2,
+        "scratch_wire": "arithmetic_scratch:H:partial_product_grid.bit[5]",
+        "cleanup_status": "source_uncompute_cleanup_ccx_proven",
+        "cleanup_gate": "ccx",
+        "cleanup_reuses_compute_controls": true
+      }
+    ],
+    "preview_tail": [
+      {
+        "source_operation_index": 863980,
+        "source_suboperation_index": 22,
+        "route_kind": "partial_product_column_to_streamed_modular_accumulator",
+        "compute_gate": "ccx",
+        "control_wire_count": 2,
+        "scratch_wire": "arithmetic_scratch:Z3:second_product_partial_product_grid.bit[65530]",
+        "cleanup_status": "source_uncompute_cleanup_ccx_proven",
+        "cleanup_gate": "ccx",
+        "cleanup_reuses_compute_controls": true
+      },
+      {
+        "source_operation_index": 863981,
+        "source_suboperation_index": 22,
+        "route_kind": "partial_product_column_to_streamed_modular_accumulator",
+        "compute_gate": "ccx",
+        "control_wire_count": 2,
+        "scratch_wire": "arithmetic_scratch:Z3:second_product_partial_product_grid.bit[65531]",
+        "cleanup_status": "source_uncompute_cleanup_ccx_proven",
+        "cleanup_gate": "ccx",
+        "cleanup_reuses_compute_controls": true
+      },
+      {
+        "source_operation_index": 863982,
+        "source_suboperation_index": 22,
+        "route_kind": "partial_product_column_to_streamed_modular_accumulator",
+        "compute_gate": "ccx",
+        "control_wire_count": 2,
+        "scratch_wire": "arithmetic_scratch:Z3:second_product_partial_product_grid.bit[65532]",
+        "cleanup_status": "source_uncompute_cleanup_ccx_proven",
+        "cleanup_gate": "ccx",
+        "cleanup_reuses_compute_controls": true
+      },
+      {
+        "source_operation_index": 863983,
+        "source_suboperation_index": 22,
+        "route_kind": "partial_product_column_to_streamed_modular_accumulator",
+        "compute_gate": "ccx",
+        "control_wire_count": 2,
+        "scratch_wire": "arithmetic_scratch:Z3:second_product_partial_product_grid.bit[65533]",
+        "cleanup_status": "source_uncompute_cleanup_ccx_proven",
+        "cleanup_gate": "ccx",
+        "cleanup_reuses_compute_controls": true
+      },
+      {
+        "source_operation_index": 863984,
+        "source_suboperation_index": 22,
+        "route_kind": "partial_product_column_to_streamed_modular_accumulator",
+        "compute_gate": "ccx",
+        "control_wire_count": 2,
+        "scratch_wire": "arithmetic_scratch:Z3:second_product_partial_product_grid.bit[65534]",
+        "cleanup_status": "source_uncompute_cleanup_ccx_proven",
+        "cleanup_gate": "ccx",
+        "cleanup_reuses_compute_controls": true
+      },
+      {
+        "source_operation_index": 863985,
+        "source_suboperation_index": 22,
+        "route_kind": "partial_product_column_to_streamed_modular_accumulator",
+        "compute_gate": "ccx",
+        "control_wire_count": 2,
+        "scratch_wire": "arithmetic_scratch:Z3:second_product_partial_product_grid.bit[65535]",
+        "cleanup_status": "source_uncompute_cleanup_ccx_proven",
+        "cleanup_gate": "ccx",
+        "cleanup_reuses_compute_controls": true
+      }
+    ]
+  },
+  "cleanup_cost_bounds": {
+    "partial_product_cleanup_ccx_delta_exact": 720896,
+    "zero_lift_guard_cleanup_delta_unproven": 510,
+    "total_cleanup_ccx_delta_not_claimed": null,
+    "additional_witness_bits_for_partial_product_cleanup": 0
+  },
+  "truth_table": {
+    "case_count": 8,
+    "pass_count": 8,
+    "cases": [
+      {
+        "left": 0,
+        "right": 0,
+        "target": 0,
+        "after_compute": 0,
+        "after_uncompute": 0,
+        "pass": true
+      },
+      {
+        "left": 0,
+        "right": 0,
+        "target": 1,
+        "after_compute": 1,
+        "after_uncompute": 1,
+        "pass": true
+      },
+      {
+        "left": 0,
+        "right": 1,
+        "target": 0,
+        "after_compute": 0,
+        "after_uncompute": 0,
+        "pass": true
+      },
+      {
+        "left": 0,
+        "right": 1,
+        "target": 1,
+        "after_compute": 1,
+        "after_uncompute": 1,
+        "pass": true
+      },
+      {
+        "left": 1,
+        "right": 0,
+        "target": 0,
+        "after_compute": 0,
+        "after_uncompute": 0,
+        "pass": true
+      },
+      {
+        "left": 1,
+        "right": 0,
+        "target": 1,
+        "after_compute": 1,
+        "after_uncompute": 1,
+        "pass": true
+      },
+      {
+        "left": 1,
+        "right": 1,
+        "target": 0,
+        "after_compute": 1,
+        "after_uncompute": 0,
+        "pass": true
+      },
+      {
+        "left": 1,
+        "right": 1,
+        "target": 1,
+        "after_compute": 0,
+        "after_uncompute": 1,
+        "pass": true
+      }
+    ],
+    "pass": true
+  },
+  "promotion_status": {
+    "status": "source_uncompute_contract_not_promoted_to_scheduled_primitive_netlist",
+    "required_to_promote": [
+      "Expose concrete predicate controls for zero-lift guard scratch rows or remove those placeholders from the modular primitive iterator.",
+      "Lower consume_into_counted_accumulator rows to concrete read-only temporary-control accumulator gates.",
+      "Append the proven source-uncompute CCX cleanup rows to the promoted primitive stream and recompute global liveness and non-Clifford totals."
+    ]
+  },
+  "checks": {
+    "scheduled_modular_primitive_netlist_passes": true,
+    "modular_multiplier_lifecycle_passes": true,
+    "source_stream_scans_every_current_scratch_target": true,
+    "partial_product_source_uncompute_covers_all_partial_product_scratch": true,
+    "zero_lift_guard_rows_are_the_only_source_uncompute_gap": true,
+    "partial_product_cleanup_ccx_is_self_inverse": true,
+    "partial_product_cleanup_delta_is_exact": true,
+    "not_promoted_until_guard_controls_and_accumulator_consume_exist": true
+  },
+  "pass": true
+}

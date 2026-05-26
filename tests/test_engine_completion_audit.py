@@ -65,6 +65,7 @@ def _build_audit(
         modular_accumulator_full_adder_liveness=_load('modular_accumulator_full_adder_liveness.json'),
         modular_accumulator_full_adder_reversibility=_load('modular_accumulator_full_adder_reversibility.json'),
         modular_accumulator_promotion_options=_load('modular_accumulator_promotion_options.json'),
+        modular_accumulator_source_uncompute=_load('modular_accumulator_source_uncompute.json'),
         tail_macro_engine=_load('tail_macro_engine.json'),
         tail_macro_liveness=_load('tail_macro_liveness.json'),
         tail_macro_reversibility=_load('tail_macro_reversibility.json'),
@@ -175,6 +176,10 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_promotion_local_witness_sequential_peak_lower_bound'] > expected['public_totals']['logical_qubits']
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_promotion_forward_only_option_rejected'] is True
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_promotion_source_uncompute_required'] is True
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_source_uncompute_pass'] is True
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_source_uncompute_partial_product_cleanup_ccx_delta'] == remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_partial_product_routes']
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_source_uncompute_zero_lift_guard_cleanup_unproven'] == remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_zero_lift_guard_routes']
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_source_uncompute_truth_table_pass_count'] == 8
     assert len(remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_candidate_event_stream_sha256']) == 64
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_candidate_event_count'] == remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['synthetic_arithmetic_scratch_wire_observations'] * 3
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_partial_product_routes'] == 11 * field_bits * field_bits

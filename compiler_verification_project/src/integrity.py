@@ -51,6 +51,15 @@ from modular_accumulator_promotion_options import (
     STATUS_REJECTED_NON_INJECTIVE,
     build_modular_accumulator_promotion_options,
 )
+from modular_accumulator_source_uncompute import (
+    MODULAR_ACCUMULATOR_SOURCE_UNCOMPUTE_SCHEMA,
+    ROUTE_PARTIAL_PRODUCT,
+    ROUTE_ZERO_LIFT_GUARD,
+    SOURCE_UNCOMPUTE_UNPROMOTED_STATUS,
+    STATUS_MISSING_SOURCE_CONTROLS,
+    STATUS_SOURCE_UNCOMPUTE_PROVEN,
+    build_modular_accumulator_source_uncompute,
+)
 from modular_accumulator_lowering import MODULAR_ACCUMULATOR_LOWERING_SCHEMA, build_modular_accumulator_lowering
 from modular_accumulator_row_stream import MODULAR_ACCUMULATOR_ROW_STREAM_SCHEMA, build_modular_accumulator_row_stream
 from modular_accumulator_scratch_schedule import MODULAR_ACCUMULATOR_SCRATCH_SCHEDULE_SCHEMA, build_modular_accumulator_scratch_schedule
@@ -228,6 +237,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'modular_accumulator_full_adder_liveness': artifact_root / 'modular_accumulator_full_adder_liveness.json',
         'modular_accumulator_full_adder_reversibility': artifact_root / 'modular_accumulator_full_adder_reversibility.json',
         'modular_accumulator_promotion_options': artifact_root / 'modular_accumulator_promotion_options.json',
+        'modular_accumulator_source_uncompute': artifact_root / 'modular_accumulator_source_uncompute.json',
         'tail_macro_liveness': artifact_root / 'tail_macro_liveness.json',
         'tail_macro_reversibility': artifact_root / 'tail_macro_reversibility.json',
         'tail_macro_schedule_search': artifact_root / 'tail_macro_schedule_search.json',
@@ -462,6 +472,18 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
             ),
         )
         dump_json(
+            artifact_root / 'modular_accumulator_source_uncompute.json',
+            build_modular_accumulator_source_uncompute(
+                modular_execution_trace=load_json(artifact_root / 'modular_execution_trace.json'),
+                modular_arithmetic_certificate=load_json(artifact_root / 'modular_arithmetic_certificate.json'),
+                arithmetic_lowerings=load_json(artifact_root / 'arithmetic_lowerings.json'),
+                reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
+                scheduled_modular_primitive_netlist=load_json(artifact_root / 'scheduled_modular_primitive_netlist.json'),
+                modular_multiplier_lifecycle=load_json(artifact_root / 'modular_multiplier_lifecycle.json'),
+                field_bits=FIELD_BITS,
+            ),
+        )
+        dump_json(
             artifact_root / 'public_engine_manifest.json',
             build_public_engine_manifest(
                 reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
@@ -518,6 +540,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 modular_accumulator_full_adder_liveness=load_json(artifact_root / 'modular_accumulator_full_adder_liveness.json'),
                 modular_accumulator_full_adder_reversibility=load_json(artifact_root / 'modular_accumulator_full_adder_reversibility.json'),
                 modular_accumulator_promotion_options=load_json(artifact_root / 'modular_accumulator_promotion_options.json'),
+                modular_accumulator_source_uncompute=load_json(artifact_root / 'modular_accumulator_source_uncompute.json'),
                 tail_macro_engine=load_json(artifact_root / 'tail_macro_engine.json'),
                 tail_macro_liveness=load_json(artifact_root / 'tail_macro_liveness.json'),
                 tail_macro_reversibility=load_json(artifact_root / 'tail_macro_reversibility.json'),
@@ -3038,6 +3061,32 @@ def build_modular_accumulator_promotion_options_checks(artifacts: Mapping[str, A
     return _summarize_checks(checks)
 
 
+def build_modular_accumulator_source_uncompute_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    source_uncompute = artifacts['modular_accumulator_source_uncompute']
+    expected = build_modular_accumulator_source_uncompute(
+        modular_execution_trace=artifacts['modular_execution_trace'],
+        modular_arithmetic_certificate=artifacts['modular_arithmetic_certificate'],
+        arithmetic_lowerings=artifacts['arithmetic_lowerings'],
+        reusable_chunk_lowering=artifacts['reusable_chunk_lowering'],
+        scheduled_modular_primitive_netlist=artifacts['scheduled_modular_primitive_netlist'],
+        modular_multiplier_lifecycle=artifacts['modular_multiplier_lifecycle'],
+        field_bits=FIELD_BITS,
+    )
+    cleanup_counts = source_uncompute['source_uncompute_stream']['cleanup_status_counts']
+    route_counts = source_uncompute['source_uncompute_stream']['route_kind_counts']
+    lifecycle_current = artifacts['modular_multiplier_lifecycle']['current_stream']
+    checks = [
+        _check('modular_accumulator_source_uncompute_matches_generator', source_uncompute == expected, expected, source_uncompute),
+        _check('modular_accumulator_source_uncompute_schema_is_current', source_uncompute['schema'] == MODULAR_ACCUMULATOR_SOURCE_UNCOMPUTE_SCHEMA, MODULAR_ACCUMULATOR_SOURCE_UNCOMPUTE_SCHEMA, source_uncompute['schema']),
+        _check('modular_accumulator_source_uncompute_passes_internal_checks', source_uncompute['pass'] is True and all(source_uncompute['checks'].values()), True, source_uncompute['checks']),
+        _check('modular_accumulator_source_uncompute_covers_current_scratch', source_uncompute['source_uncompute_stream']['row_count'] == lifecycle_current['scratch_observation_count'], 'source-uncompute stream covers every current scratch target', source_uncompute['source_uncompute_stream']),
+        _check('modular_accumulator_source_uncompute_proves_partial_product_cleanup', cleanup_counts[STATUS_SOURCE_UNCOMPUTE_PROVEN] == lifecycle_current['partial_product_scratch_observation_count'] == route_counts[ROUTE_PARTIAL_PRODUCT], 'all partial-product scratch rows have source-uncompute cleanup', cleanup_counts),
+        _check('modular_accumulator_source_uncompute_keeps_zero_guard_gap_explicit', cleanup_counts[STATUS_MISSING_SOURCE_CONTROLS] == lifecycle_current['non_partial_product_scratch_observation_count'] == route_counts[ROUTE_ZERO_LIFT_GUARD], 'zero-lift guard rows remain the only missing source-control gap', cleanup_counts),
+        _check('modular_accumulator_source_uncompute_remains_unpromoted', source_uncompute['promotion_status']['status'] == SOURCE_UNCOMPUTE_UNPROMOTED_STATUS, 'source-uncompute contract is not a promoted global primitive stream', source_uncompute['promotion_status']),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     audit = artifacts['engine_completion_audit']
     expected = build_engine_completion_audit(
@@ -3069,6 +3118,7 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
         modular_accumulator_full_adder_liveness=artifacts['modular_accumulator_full_adder_liveness'],
         modular_accumulator_full_adder_reversibility=artifacts['modular_accumulator_full_adder_reversibility'],
         modular_accumulator_promotion_options=artifacts['modular_accumulator_promotion_options'],
+        modular_accumulator_source_uncompute=artifacts['modular_accumulator_source_uncompute'],
         tail_macro_engine=artifacts['tail_macro_engine'],
         tail_macro_liveness=artifacts['tail_macro_liveness'],
         tail_macro_reversibility=artifacts['tail_macro_reversibility'],
@@ -3895,6 +3945,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'modular_accumulator_full_adder_liveness_checks': lambda: build_modular_accumulator_full_adder_liveness_checks(artifacts),
         'modular_accumulator_full_adder_reversibility_checks': lambda: build_modular_accumulator_full_adder_reversibility_checks(artifacts),
         'modular_accumulator_promotion_options_checks': lambda: build_modular_accumulator_promotion_options_checks(artifacts),
+        'modular_accumulator_source_uncompute_checks': lambda: build_modular_accumulator_source_uncompute_checks(artifacts),
         'public_engine_manifest_checks': lambda: build_public_engine_manifest_checks(artifacts),
         'engine_completion_audit_checks': lambda: build_engine_completion_audit_checks(artifacts),
         'arithmetic_operand_replay_audit_checks': lambda: build_arithmetic_operand_replay_audit_checks(artifacts),
