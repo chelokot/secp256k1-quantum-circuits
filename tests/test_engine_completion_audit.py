@@ -115,7 +115,8 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_row_stream_pass'] is True
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_row_stream_row_count'] > 0
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_capacity_certificate_pass'] is True
-    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_product_column_capacity_bits'] == 2 * field_bits - 1
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_partial_product_column_count'] == 2 * field_bits - 1
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_product_column_capacity_bits'] == 2 * field_bits
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_fold_overflow_column_count'] == 31
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_obligation_order_temporary_peak_qubits'] == remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['synthetic_arithmetic_scratch_wire_observations']
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_serialized_candidate_temporary_peak_qubits'] == 1

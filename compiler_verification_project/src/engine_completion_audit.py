@@ -243,7 +243,7 @@ def build_engine_completion_audit(
             and modular_accumulator_semantic_obligations['promotion_status']['status'] == 'semantic_obligations_not_promoted_to_public_resource_contract'
             and modular_accumulator_lowering['checks']['materialized_product_accumulator_shortcut_is_rejected'] is True
             and modular_accumulator_row_stream['checks']['row_stream_rejects_hidden_512_bit_field_slot'] is True
-            and modular_accumulator_capacity_certificate['checks']['product_column_owner_exceeds_single_field_slot'] is True
+            and modular_accumulator_capacity_certificate['checks']['product_column_owner_includes_final_carry_bit_and_exceeds_single_field_slot'] is True
             and modular_accumulator_scratch_schedule['checks']['serialized_temporary_peak_matches_capacity_certificate'] is True
             and modular_accumulator_semantic_obligations['checks']['consume_events_cover_product_and_guard_rows'] is True
             and modular_accumulator_semantic_obligations['checks']['obligation_classes_cover_every_row_stream_row'] is True
@@ -476,6 +476,7 @@ def build_engine_completion_audit(
                 'modular_accumulator_row_stream_partial_product_rows': int(modular_accumulator_row_stream['expanded_counts']['partial_product_consume_rows']),
                 'modular_accumulator_row_stream_fold_rows': int(modular_accumulator_row_stream['expanded_counts']['pseudo_mersenne_fold_rows']),
                 'modular_accumulator_row_stream_cleanup_rows': int(modular_accumulator_row_stream['expanded_counts']['temporary_cleanup_rows']),
+                'modular_accumulator_partial_product_column_count': int(modular_accumulator_capacity_certificate['owner_capacity_obligations'][0]['partial_product_column_count']),
                 'modular_accumulator_product_column_capacity_bits': int(modular_accumulator_capacity_certificate['owner_capacity_obligations'][0]['logical_qubit_budget_required_by_materialized_columns']),
                 'modular_accumulator_fold_overflow_column_count': int(modular_accumulator_capacity_certificate['owner_capacity_obligations'][1]['overflowing_shift_column_count']),
                 'modular_accumulator_obligation_order_temporary_peak_qubits': int(modular_accumulator_capacity_certificate['owner_capacity_obligations'][2]['obligation_order_peak_logical_qubits']),

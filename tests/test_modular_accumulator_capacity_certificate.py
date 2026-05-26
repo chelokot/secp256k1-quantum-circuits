@@ -48,7 +48,8 @@ def test_modular_accumulator_capacity_certificate_blocks_free_scratch_and_produc
     fold = obligations['streamed_modular_accumulator_field_lane']
     temporary = obligations['temporary_and_target_wire']
     guard = obligations['guard_ladder_predicate_workspace']
-    assert product['logical_qubit_budget_required_by_materialized_columns'] == 2 * field_bits - 1
+    assert product['partial_product_column_count'] == 2 * field_bits - 1
+    assert product['logical_qubit_budget_required_by_materialized_columns'] == 2 * field_bits
     assert product['field_slot_capacity_bits'] == field_bits
     assert product['fits_single_field_slot'] is False
     assert fold['logical_qubit_budget_required_by_direct_shifted_columns'] == field_bits + 31

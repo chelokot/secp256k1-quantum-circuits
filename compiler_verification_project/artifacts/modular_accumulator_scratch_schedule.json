@@ -3,7 +3,7 @@
   "definition": "Generated serialized scratch lifecycle schedule for modular accumulator obligations. It proves the adjacent compute-consume-cleanup ordering and temporary-wire liveness peak for the schedule shape, but does not claim semantic lowering of the consume or fold operations.",
   "source_digests": {
     "modular_multiplier_lifecycle_sha256": "4598027f736f9238dc812970ac2cce7a6f6d968ac65e6877144072d8df263f10",
-    "modular_accumulator_capacity_certificate_sha256": "9b3dd43598dd0061ce9ed7705e83ad4114b55ece85c165364b5d7b61045a1df8"
+    "modular_accumulator_capacity_certificate_sha256": "f008ee0a97f61eabb15da6f5a9a3eaee45c06175b71321ec0009c20c38ad9c31"
   },
   "field_bits": 256,
   "triplet_count": 721406,

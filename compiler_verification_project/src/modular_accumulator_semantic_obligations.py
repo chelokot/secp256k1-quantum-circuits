@@ -7,7 +7,7 @@ import json
 from typing import Any, Dict, Mapping
 
 
-MODULAR_ACCUMULATOR_SEMANTIC_OBLIGATIONS_SCHEMA = 'compiler-project-modular-accumulator-semantic-obligations-v1'
+MODULAR_ACCUMULATOR_SEMANTIC_OBLIGATIONS_SCHEMA = 'compiler-project-modular-accumulator-semantic-obligations-v2'
 
 
 def _canonical_json(payload: Any) -> str:
@@ -113,7 +113,7 @@ def build_modular_accumulator_semantic_obligations(
         'cleanup_events_cover_temporary_rows': cleanup_events == temporary_rows,
         'fold_classes_cover_all_fold_rows': low_fold_rows + high_fold_rows == fold_rows,
         'obligation_classes_cover_every_row_stream_row': class_row_total == int(row_stream['row_count']),
-        'product_consume_rejects_single_field_slot_shortcut': obligation_classes[0]['single_field_slot_shortcut_allowed'] is False and obligation_classes[0]['required_logical_qubit_capacity'] == 2 * field_bits - 1,
+        'product_consume_rejects_single_field_slot_shortcut': obligation_classes[0]['single_field_slot_shortcut_allowed'] is False and obligation_classes[0]['required_logical_qubit_capacity'] == 2 * field_bits,
         'high_fold_overflow_is_explicit': obligation_classes[3]['overflowing_shift_column_count'] == 31 and obligation_classes[3]['fits_single_field_slot_without_second_fold'] is False,
         'temporary_cleanup_remains_semantically_unpromoted': obligation_classes[4]['serialized_candidate_peak_logical_qubits'] == 1 and all(row['semantic_gate_lowering_proven'] is False for row in obligation_classes),
     }
@@ -134,6 +134,7 @@ def build_modular_accumulator_semantic_obligations(
             'zero_lift_guard_consume_rows': guard_rows,
             'pseudo_mersenne_fold_rows': fold_rows,
             'temporary_cleanup_rows': temporary_rows,
+            'partial_product_column_count': int(product_capacity['partial_product_column_count']),
             'product_column_capacity_bits': int(product_capacity['logical_qubit_budget_required_by_materialized_columns']),
             'fold_overflow_column_count': int(fold_capacity['overflowing_shift_column_count']),
             'serialized_temporary_peak_logical_qubits': int(temporary_capacity['serialized_candidate_peak_logical_qubits']),

@@ -1,10 +1,10 @@
 {
-  "schema": "compiler-project-modular-accumulator-semantic-obligations-v1",
+  "schema": "compiler-project-modular-accumulator-semantic-obligations-v2",
   "definition": "Generated semantic-obligation boundary for promoting the modular accumulator scratch schedule. It enumerates the reversible consume, fold, and cleanup semantics still required before the serialized liveness schedule can become the public physical resource contract.",
   "source_digests": {
     "modular_accumulator_row_stream_sha256": "5d448f757f16fa01639c8343a8e39789a2a8f29413615d784db88c6659bb4971",
-    "modular_accumulator_capacity_certificate_sha256": "9b3dd43598dd0061ce9ed7705e83ad4114b55ece85c165364b5d7b61045a1df8",
-    "modular_accumulator_scratch_schedule_sha256": "61d9b95ba2ab90f3cbeed0d80efeedfb419902c7943268cdc012e5ba255505f1"
+    "modular_accumulator_capacity_certificate_sha256": "f008ee0a97f61eabb15da6f5a9a3eaee45c06175b71321ec0009c20c38ad9c31",
+    "modular_accumulator_scratch_schedule_sha256": "0396976c8b11360bd469e1e4c2f943ed0b12879b06ece95933704c0cf4bb9254"
   },
   "field_bits": 256,
   "obligation_summary": {
@@ -15,7 +15,8 @@
     "zero_lift_guard_consume_rows": 510,
     "pseudo_mersenne_fold_rows": 5621,
     "temporary_cleanup_rows": 721406,
-    "product_column_capacity_bits": 511,
+    "partial_product_column_count": 511,
+    "product_column_capacity_bits": 512,
     "fold_overflow_column_count": 31,
     "serialized_temporary_peak_logical_qubits": 1,
     "semantic_gate_lowering_proven": false
@@ -28,7 +29,7 @@
       "source_rows": "modular_accumulator_row_stream.role_counts.partial_product_accumulator_consume",
       "required_semantics": "reversible_update_product_column_from_single_temporary_and_then_uncompute_temporary",
       "required_owner": "streamed_product_accumulator_column_space",
-      "required_logical_qubit_capacity": 511,
+      "required_logical_qubit_capacity": 512,
       "single_field_slot_shortcut_allowed": false,
       "semantic_gate_lowering_proven": false
     },

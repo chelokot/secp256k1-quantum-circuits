@@ -53,7 +53,9 @@ def test_modular_accumulator_semantic_obligations_cover_schedule_without_promoti
     assert summary['zero_lift_guard_consume_rows'] == 2 * (field_bits - 1)
     assert summary['pseudo_mersenne_fold_rows'] == row_stream['expanded_counts']['pseudo_mersenne_fold_rows']
     assert summary['temporary_cleanup_rows'] == row_stream['expanded_counts']['temporary_cleanup_rows']
-    assert classes['partial_product_column_consume']['required_logical_qubit_capacity'] == 2 * field_bits - 1
+    assert summary['partial_product_column_count'] == 2 * field_bits - 1
+    assert summary['product_column_capacity_bits'] == 2 * field_bits
+    assert classes['partial_product_column_consume']['required_logical_qubit_capacity'] == 2 * field_bits
     assert classes['partial_product_column_consume']['single_field_slot_shortcut_allowed'] is False
     assert classes['pseudo_mersenne_high_column_fold']['overflowing_shift_column_count'] == 31
     assert classes['temporary_cleanup_uncompute']['serialized_candidate_peak_logical_qubits'] == 1

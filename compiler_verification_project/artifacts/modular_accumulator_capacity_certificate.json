@@ -1,6 +1,6 @@
 {
-  "schema": "compiler-project-modular-accumulator-capacity-certificate-v1",
-  "definition": "Generated owner-capacity certificate for the modular accumulator row-stream obligations. It distinguishes materialized obligation-order capacity from unpromoted serialized candidates so temporary, product-column, guard, and fold-overflow wires cannot be treated as free public resources.",
+  "schema": "compiler-project-modular-accumulator-capacity-certificate-v2",
+  "definition": "Generated owner-capacity certificate for the modular accumulator row-stream obligations. It distinguishes materialized obligation-order capacity from unpromoted serialized candidates so temporary, product-column, final-carry, guard, and fold-overflow wires cannot be treated as free public resources.",
   "source_digests": {
     "modular_accumulator_row_stream_sha256": "5d448f757f16fa01639c8343a8e39789a2a8f29413615d784db88c6659bb4971"
   },
@@ -21,7 +21,8 @@
     {
       "owner_id": "streamed_product_accumulator_column_space",
       "observed_rows": 720896,
-      "logical_qubit_budget_required_by_materialized_columns": 511,
+      "partial_product_column_count": 511,
+      "logical_qubit_budget_required_by_materialized_columns": 512,
       "field_slot_capacity_bits": 256,
       "fits_single_field_slot": false,
       "status": "requires_streaming_or_dedicated_product_column_owner_before_promotion"
@@ -54,7 +55,7 @@
     "status": "capacity_certificate_not_promoted_to_public_resource_contract",
     "required_to_promote": [
       "Replace obligation-order temporary rows with adjacent compute-consume-cleanup primitive rows or count the full obligation-order temporary peak.",
-      "Lower product-column accumulation so the 511-column owner is either streamed with proven non-concurrency or counted explicitly.",
+      "Lower product-column accumulation so the 511 product columns plus final carry bit are either streamed with proven non-concurrency or counted explicitly.",
       "Lower pseudo-Mersenne overflow columns through a second-fold primitive schedule or count the overflow owner explicitly.",
       "Recompute public peak liveness from the promoted primitive schedule rather than from this capacity certificate."
     ]
@@ -62,7 +63,7 @@
   "checks": {
     "source_row_stream_passes": true,
     "owner_counts_cover_all_rows": true,
-    "product_column_owner_exceeds_single_field_slot": true,
+    "product_column_owner_includes_final_carry_bit_and_exceeds_single_field_slot": true,
     "field_fold_overflow_columns_are_explicit": true,
     "temporary_owner_capacity_is_not_free_in_obligation_order": true,
     "serialized_temporary_peak_is_unpromoted": true,
