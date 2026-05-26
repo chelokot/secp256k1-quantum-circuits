@@ -33,6 +33,7 @@ from fallback_frontier_stress import build_fallback_frontier_stress
 from lookup_lowering import lookup_lowering_library, lowered_lookup_semantic_summary, materialize_lookup_primitive_operations
 from materialized_circuit import PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, build_arithmetic_operand_replay_audit, build_public_candidate_materialized_circuit_manifest
 from modular_accumulator_lowering import MODULAR_ACCUMULATOR_LOWERING_SCHEMA, build_modular_accumulator_lowering
+from modular_accumulator_row_stream import MODULAR_ACCUMULATOR_ROW_STREAM_SCHEMA, build_modular_accumulator_row_stream
 from modular_execution_trace import build_modular_execution_trace
 from modular_multiplier_lifecycle import MODULAR_MULTIPLIER_LIFECYCLE_SCHEMA, build_modular_multiplier_lifecycle
 from modular_primitive_wire_audit import MODULAR_PRIMITIVE_WIRE_AUDIT_SCHEMA, build_modular_primitive_wire_audit
@@ -195,6 +196,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'modular_primitive_wire_audit': artifact_root / 'modular_primitive_wire_audit.json',
         'modular_multiplier_lifecycle': artifact_root / 'modular_multiplier_lifecycle.json',
         'modular_accumulator_lowering': artifact_root / 'modular_accumulator_lowering.json',
+        'modular_accumulator_row_stream': artifact_root / 'modular_accumulator_row_stream.json',
         'tail_macro_liveness': artifact_root / 'tail_macro_liveness.json',
         'tail_macro_reversibility': artifact_root / 'tail_macro_reversibility.json',
         'tail_macro_schedule_search': artifact_root / 'tail_macro_schedule_search.json',
@@ -345,6 +347,14 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
             ),
         )
         dump_json(
+            artifact_root / 'modular_accumulator_row_stream.json',
+            build_modular_accumulator_row_stream(
+                modular_multiplier_lifecycle=load_json(artifact_root / 'modular_multiplier_lifecycle.json'),
+                modular_accumulator_lowering=load_json(artifact_root / 'modular_accumulator_lowering.json'),
+                field_bits=FIELD_BITS,
+            ),
+        )
+        dump_json(
             artifact_root / 'public_engine_manifest.json',
             build_public_engine_manifest(
                 reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
@@ -390,6 +400,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 modular_primitive_wire_audit=load_json(artifact_root / 'modular_primitive_wire_audit.json'),
                 modular_multiplier_lifecycle=load_json(artifact_root / 'modular_multiplier_lifecycle.json'),
                 modular_accumulator_lowering=load_json(artifact_root / 'modular_accumulator_lowering.json'),
+                modular_accumulator_row_stream=load_json(artifact_root / 'modular_accumulator_row_stream.json'),
                 tail_macro_engine=load_json(artifact_root / 'tail_macro_engine.json'),
                 tail_macro_liveness=load_json(artifact_root / 'tail_macro_liveness.json'),
                 tail_macro_reversibility=load_json(artifact_root / 'tail_macro_reversibility.json'),
@@ -2688,6 +2699,25 @@ def build_modular_accumulator_lowering_checks(artifacts: Mapping[str, Any]) -> D
     return _summarize_checks(checks)
 
 
+def build_modular_accumulator_row_stream_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    row_stream = artifacts['modular_accumulator_row_stream']
+    expected = build_modular_accumulator_row_stream(
+        modular_multiplier_lifecycle=artifacts['modular_multiplier_lifecycle'],
+        modular_accumulator_lowering=artifacts['modular_accumulator_lowering'],
+        field_bits=FIELD_BITS,
+    )
+    counts = row_stream['expanded_counts']
+    stream = row_stream['row_stream']
+    checks = [
+        _check('modular_accumulator_row_stream_matches_generator', row_stream == expected, expected, row_stream),
+        _check('modular_accumulator_row_stream_schema_is_current', row_stream['schema'] == MODULAR_ACCUMULATOR_ROW_STREAM_SCHEMA, MODULAR_ACCUMULATOR_ROW_STREAM_SCHEMA, row_stream['schema']),
+        _check('modular_accumulator_row_stream_passes_internal_checks', row_stream['pass'] is True and all(row_stream['checks'].values()), True, row_stream['checks']),
+        _check('modular_accumulator_row_stream_expands_all_lifecycle_routes', counts['partial_product_consume_rows'] == 11 * FIELD_BITS * FIELD_BITS and counts['temporary_cleanup_rows'] == counts['partial_product_consume_rows'] + counts['zero_lift_guard_rows'] and stream['route_kind_counts']['partial_product_column_to_streamed_modular_accumulator'] == counts['partial_product_consume_rows'] * 2, 'all partial-product routes have consume and cleanup rows', row_stream),
+        _check('modular_accumulator_row_stream_remains_unpromoted_until_gate_rows_exist', row_stream['promotion_status']['status'] == 'row_stream_obligations_not_promoted_to_scheduled_primitive_netlist' and row_stream['known_cost_status']['promoted_to_public_resource_contract'] is False and row_stream['known_cost_status']['exact_non_clifford_delta'] is None, 'row stream obligations are not public resource contract', row_stream['promotion_status']),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     audit = artifacts['engine_completion_audit']
     expected = build_engine_completion_audit(
@@ -2708,6 +2738,7 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
         modular_primitive_wire_audit=artifacts['modular_primitive_wire_audit'],
         modular_multiplier_lifecycle=artifacts['modular_multiplier_lifecycle'],
         modular_accumulator_lowering=artifacts['modular_accumulator_lowering'],
+        modular_accumulator_row_stream=artifacts['modular_accumulator_row_stream'],
         tail_macro_engine=artifacts['tail_macro_engine'],
         tail_macro_liveness=artifacts['tail_macro_liveness'],
         tail_macro_reversibility=artifacts['tail_macro_reversibility'],
@@ -3523,6 +3554,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'modular_primitive_wire_audit_checks': lambda: build_modular_primitive_wire_audit_checks(artifacts),
         'modular_multiplier_lifecycle_checks': lambda: build_modular_multiplier_lifecycle_checks(artifacts),
         'modular_accumulator_lowering_checks': lambda: build_modular_accumulator_lowering_checks(artifacts),
+        'modular_accumulator_row_stream_checks': lambda: build_modular_accumulator_row_stream_checks(artifacts),
         'public_engine_manifest_checks': lambda: build_public_engine_manifest_checks(artifacts),
         'engine_completion_audit_checks': lambda: build_engine_completion_audit_checks(artifacts),
         'arithmetic_operand_replay_audit_checks': lambda: build_arithmetic_operand_replay_audit_checks(artifacts),

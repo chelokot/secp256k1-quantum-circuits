@@ -54,6 +54,7 @@ def _build_audit(
         modular_primitive_wire_audit=_load('modular_primitive_wire_audit.json'),
         modular_multiplier_lifecycle=_load('modular_multiplier_lifecycle.json'),
         modular_accumulator_lowering=_load('modular_accumulator_lowering.json'),
+        modular_accumulator_row_stream=_load('modular_accumulator_row_stream.json'),
         tail_macro_engine=_load('tail_macro_engine.json'),
         tail_macro_liveness=_load('tail_macro_liveness.json'),
         tail_macro_reversibility=_load('tail_macro_reversibility.json'),
@@ -105,6 +106,8 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_multiplier_lifecycle_pass'] is True
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_lowering_pass'] is True
     assert len(remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_lowering_sha256']) == 64
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_row_stream_pass'] is True
+    assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['modular_accumulator_row_stream_row_count'] > 0
     assert len(remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_candidate_event_stream_sha256']) == 64
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['streamed_lifecycle_candidate_event_count'] == remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['synthetic_arithmetic_scratch_wire_observations'] * 3
     field_bits = _load('modular_multiplier_lifecycle.json')['field_bits']

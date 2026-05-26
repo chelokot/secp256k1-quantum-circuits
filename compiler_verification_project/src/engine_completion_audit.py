@@ -52,6 +52,7 @@ def build_engine_completion_audit(
     modular_primitive_wire_audit: Mapping[str, Any],
     modular_multiplier_lifecycle: Mapping[str, Any],
     modular_accumulator_lowering: Mapping[str, Any],
+    modular_accumulator_row_stream: Mapping[str, Any],
     tail_macro_engine: Mapping[str, Any],
     tail_macro_liveness: Mapping[str, Any],
     tail_macro_reversibility: Mapping[str, Any],
@@ -226,8 +227,11 @@ def build_engine_completion_audit(
             and modular_primitive_wire_audit['checks']['no_synthetic_arithmetic_scratch_wires_without_owner_capacity'] is False
             and modular_multiplier_lifecycle['pass'] is True
             and modular_accumulator_lowering['pass'] is True
+            and modular_accumulator_row_stream['pass'] is True
             and modular_accumulator_lowering['promotion_status']['status'] == 'lowering_plan_not_promoted_to_scheduled_primitive_netlist'
+            and modular_accumulator_row_stream['promotion_status']['status'] == 'row_stream_obligations_not_promoted_to_scheduled_primitive_netlist'
             and modular_accumulator_lowering['checks']['materialized_product_accumulator_shortcut_is_rejected'] is True
+            and modular_accumulator_row_stream['checks']['row_stream_rejects_hidden_512_bit_field_slot'] is True
             and modular_multiplier_lifecycle['current_stream']['physical_lifecycle_status'] == 'invalid_abandoned_temporary_and_targets'
             and int(modular_multiplier_lifecycle['current_stream']['scratch_abandoned_garbage_count']) == int(modular_primitive_wire_audit['arithmetic_scratch_abandoned_garbage_count'])
             and int(modular_primitive_wire_audit['field_wire_missing_liveness_count']) > 0
@@ -435,10 +439,19 @@ def build_engine_completion_audit(
                 'modular_multiplier_lifecycle_sha256': _sha256_payload(modular_multiplier_lifecycle),
                 'modular_accumulator_lowering_pass': bool(modular_accumulator_lowering['pass']),
                 'modular_accumulator_lowering_sha256': _sha256_payload(modular_accumulator_lowering),
+                'modular_accumulator_row_stream_pass': bool(modular_accumulator_row_stream['pass']),
+                'modular_accumulator_row_stream_sha256': _sha256_payload(modular_accumulator_row_stream),
                 'modular_accumulator_single_grid_column_count': int(modular_accumulator_lowering['single_schoolbook_grid']['column_count']),
                 'modular_accumulator_fold_route_count': int(modular_accumulator_lowering['pseudo_mersenne_fold_routes']['route_count']),
                 'modular_accumulator_overflowing_shift_column_count': int(modular_accumulator_lowering['pseudo_mersenne_fold_routes']['overflowing_shift_column_count']),
                 'modular_accumulator_promotion_status': str(modular_accumulator_lowering['promotion_status']['status']),
+                'modular_accumulator_row_stream_promotion_status': str(modular_accumulator_row_stream['promotion_status']['status']),
+                'modular_accumulator_row_stream_operation_sha256': str(modular_accumulator_row_stream['row_stream']['operation_stream_sha256']),
+                'modular_accumulator_row_stream_row_count': int(modular_accumulator_row_stream['row_stream']['row_count']),
+                'modular_accumulator_row_stream_segment_count': int(modular_accumulator_row_stream['row_stream']['segment_count']),
+                'modular_accumulator_row_stream_partial_product_rows': int(modular_accumulator_row_stream['expanded_counts']['partial_product_consume_rows']),
+                'modular_accumulator_row_stream_fold_rows': int(modular_accumulator_row_stream['expanded_counts']['pseudo_mersenne_fold_rows']),
+                'modular_accumulator_row_stream_cleanup_rows': int(modular_accumulator_row_stream['expanded_counts']['temporary_cleanup_rows']),
                 'streamed_lifecycle_candidate_event_stream_sha256': str(modular_multiplier_lifecycle['candidate_lifecycle_stream']['operation_stream_sha256']),
                 'streamed_lifecycle_candidate_event_count': int(modular_multiplier_lifecycle['candidate_lifecycle_stream']['event_count']),
                 'streamed_lifecycle_partial_product_routes': int(modular_multiplier_lifecycle['candidate_lifecycle_stream']['route_summary']['partial_product_routes']),
@@ -488,6 +501,7 @@ def build_engine_completion_audit(
             'release_corpus_preflight': release_corpus_preflight,
             'streamed_lookup_tail_leaf_equivalence': streamed_lookup_tail_leaf_equivalence,
             'modular_arithmetic_certificate': modular_arithmetic_certificate,
+            'modular_accumulator_row_stream': modular_accumulator_row_stream,
             'tail_macro_engine': tail_macro_engine,
             'tail_macro_liveness': tail_macro_liveness,
             'tail_macro_reversibility': tail_macro_reversibility,
