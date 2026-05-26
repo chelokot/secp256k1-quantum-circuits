@@ -6,7 +6,7 @@ import json
 import hashlib
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Mapping, Optional
+from typing import Any, Callable, Dict, List, Mapping, Optional
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 ROOT_SRC = PROJECT_ROOT / 'src'
@@ -47,6 +47,46 @@ CASE_SEED_SCHEME = 'compiler-project-leaf-canonical-json-sha256-v1'
 
 def _canonical_json(payload: Mapping[str, Any] | List[Any]) -> str:
     return json.dumps(payload, sort_keys=True, separators=(',', ':'), ensure_ascii=True)
+
+
+def _load_existing_json(relative_path: str) -> Dict[str, Any] | None:
+    path = PROJECT_ROOT / relative_path
+    if not path.exists():
+        return None
+    return json.loads(path.read_text())
+
+
+def _load_artifact_or_build(relative_path: str, build: Callable[[], Dict[str, Any]]) -> Dict[str, Any]:
+    existing = _load_existing_json(relative_path)
+    if existing is not None:
+        return existing
+    return build()
+
+
+def _leaf_document_from_artifact_or_build(family: Mapping[str, Any], artifact_path: str) -> Dict[str, Any]:
+    existing = _load_existing_json(artifact_path)
+    if existing is None:
+        return _leaf_for_family(family)
+    if 'instructions' in existing:
+        return existing
+    contract = existing['executable_leaf_contract']
+    return {
+        'schema': 'compiler-project-reusable-chunk-tail-leaf-candidate-v1',
+        'curve': 'secp256k1',
+        'field_modulus_hex': format(SECP_P, '064x'),
+        'curve_b': SECP_B,
+        'b3': 3 * SECP_B,
+        'variant': contract['variant'],
+        'interface_wires': ['Q.X', 'Q.Y', 'Q.Z', 'k'],
+        'lookup_interface_slots': list(contract['lookup_interface_slots']),
+        'arithmetic_slots': list(contract['arithmetic_slots']),
+        'lookup_infinity_policy': contract['lookup_infinity_policy'],
+        'instructions': list(contract['instructions']),
+        'notes': [
+            'Executable reusable-chunk tail candidate used by the ZKP attestation candidate path.',
+            'The qchunk slot is a counted scratch owner; no full lookup_x, lookup_y, or lookup_x_plus_y field lane is materialized.',
+        ],
+    }
 
 
 def _semantic_hash_feed(hasher: 'hashlib._Hash', value: Any) -> None:
@@ -836,12 +876,18 @@ def _build_zkp_attestation_materials(
     case_count: int = DEFAULT_CASE_COUNT,
     case_start: int = 0,
 ) -> Dict[str, Any]:
-    frontier = compiler_family_frontier()
+    frontier = _load_artifact_or_build(
+        'compiler_verification_project/artifacts/family_frontier.json',
+        compiler_family_frontier,
+    )
     family = _resolve_family(frontier, family_name)
     family_payload = _family_proof_payload(family)
-    leaf = _leaf_for_family(family)
     leaf_document_type, leaf_artifact_path = _leaf_commitment_metadata(family)
-    schedule = raw32_schedule()
+    leaf = _leaf_document_from_artifact_or_build(family, leaf_artifact_path)
+    schedule = _load_artifact_or_build(
+        'compiler_verification_project/artifacts/full_raw32_oracle.json',
+        raw32_schedule,
+    )
     leaf_case_seed_sha256 = sha256_bytes(_canonical_json(leaf).encode())
     leaf_blob = _committed_payload(
         document_type=leaf_document_type,

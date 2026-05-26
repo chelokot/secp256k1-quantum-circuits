@@ -7,7 +7,7 @@
   "family_sha256": "4a1222d452363f5c61ce12f9702cbfd03fa3a11596adf722ac41875707ba4713",
   "case_corpus_sha256": "bf3cb3d15e8cb9ba158e800047936d62d83aba34191ca50d5e6138dff57dd28b",
   "resource_certificate_sha256": "359b353692ed9ec443c55122e3437daa7d0d111f96583e752e0dd11ca5d325b4",
-  "compiler_parameters_sha256": "8015f87a4d334c61db0d2c8843fe12330db770a87e0c5c51e344347416a7555b",
+  "compiler_parameters_sha256": "e186d4ce1da44de2ed9a827d2d8e2ebd47ea665ee784f5781233ad3c429ea17f",
   "claim_document": {
     "document_type": "attestation_claim",
     "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_claim.json",
@@ -15433,7 +15433,7 @@
     "document_type": "compiler_parameters",
     "artifact_path": "compiler_verification_project/artifacts/compiler_parameters.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "8015f87a4d334c61db0d2c8843fe12330db770a87e0c5c51e344347416a7555b",
+    "sha256": "e186d4ce1da44de2ed9a827d2d8e2ebd47ea665ee784f5781233ad3c429ea17f",
     "payload": {
       "schema": "compiler-project-parameters-v1",
       "curve": {
@@ -15476,6 +15476,12 @@
         "logical_qubit_limit_exclusive": 1200,
         "proof_freshness_required_for_public_pass": true
       },
+      "primary_strict_headline_policy": {
+        "selected_result_source": "compiler_verification_project/artifacts/primary_strict_result.json",
+        "non_clifford_limit_exclusive": 40000000,
+        "logical_qubit_limit_exclusive": 2000,
+        "proof_freshness_required_for_public_pass": true
+      },
       "checks": {
         "field_modulus_has_declared_bit_width": true,
         "pseudo_mersenne_identity_matches_modulus": true,
@@ -15484,10 +15490,11 @@
         "qroamclean_selected_block_size_is_k1": true,
         "reusable_chunk_policy_covers_field_width": true,
         "selected_public_family_matches_reusable_chunk_policy": true,
-        "public_headline_limits_are_strict": true
+        "public_headline_limits_are_strict": true,
+        "primary_strict_headline_limits_cover_current_result": true
       },
       "pass": true,
-      "parameter_digest_sha256": "47f5bf03c24360d51e75ad4496f455a112b2a8abf7f93e3fef56d07780d5dd6e"
+      "parameter_digest_sha256": "92995f0a3b263b0ca43f12bf811d94304c9e45e36d21c889c021427d8571de2a"
     }
   },
   "claim_summary": {

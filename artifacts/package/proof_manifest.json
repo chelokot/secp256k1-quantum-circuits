@@ -351,8 +351,8 @@
       "bytes": 4853
     },
     "compiler_verification_project/src/zkp_attestation.py": {
-      "sha256": "f4bb6b2ab827ee6b58a1fc92888f7b3995917e5a71acc892764efad891e96188",
-      "bytes": 53905
+      "sha256": "3b17f743cf62e95f6225927c733971bf741b3f056e8d4a6b94c1473511c71b08",
+      "bytes": 55796
     },
     "compiler_verification_project/scripts/audit_arithmetic_operand_replay.py": {
       "sha256": "113fb29bafa29cd01a80818f3222c389e5154aad2d1678a5c54a1d8bbb70fd87",
@@ -791,8 +791,8 @@
       "bytes": 35685
     },
     "compiler_verification_project/artifacts/zkp_attestation_input.json": {
-      "sha256": "1d2d6f983ed96499a09525714d6700f5d29123700a85e22302ec1b53619f050d",
-      "bytes": 664035
+      "sha256": "11ce5419e637e5f7db39e78820d01ef1b0c3ca916a7d4be81fd952af6831c542",
+      "bytes": 664413
     },
     "compiler_verification_project/artifacts/zkp_attestation_claim.json": {
       "sha256": "2f5ca96f5b53734f109dd2c7985b38ae1ae91b6c5d3e76de877cfbfc76d8771d",
