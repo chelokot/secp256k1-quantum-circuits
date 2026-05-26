@@ -84,6 +84,7 @@ BUILD_TARGETS = (
     'headline-resource-manifest',
     'public-engine-manifest',
     'engine-completion-audit',
+    'engine-completion-audit-current',
     'arithmetic-operation-ir',
     'resource-liveness-certificate',
     'resource-stack',
@@ -778,6 +779,9 @@ def main() -> None:
         payload['modular_accumulator_full_adder_stream'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_stream.json'
         build_modular_accumulator_full_adder_liveness_artifact()
         payload['modular_accumulator_full_adder_liveness'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_liveness.json'
+        build_engine_completion_audit_artifact()
+        payload['engine_completion_audit'] = 'compiler_verification_project/artifacts/engine_completion_audit.json'
+    if args.target in ('engine-completion-audit-current',):
         build_engine_completion_audit_artifact()
         payload['engine_completion_audit'] = 'compiler_verification_project/artifacts/engine_completion_audit.json'
     if args.target in ('resource-stack', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):

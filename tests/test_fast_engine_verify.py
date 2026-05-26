@@ -26,7 +26,7 @@ def test_fast_engine_verify_plan_has_no_prover_or_broad_rebuild() -> None:
     assert 'zkp-and-public' not in rendered
     assert 'candidate-zkp' not in rendered
     assert 'arithmetic-operand-replay-audit' in rendered
-    assert 'engine-completion-audit' in rendered
+    assert 'engine-completion-audit-current' in rendered
     assert 'strict-replayed-tail-headline' in rendered
     assert 'primary-strict-result' in rendered
     assert 'arithmetic_operand_replay_audit_checks' in rendered

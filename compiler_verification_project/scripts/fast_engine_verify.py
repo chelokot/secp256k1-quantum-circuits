@@ -28,7 +28,7 @@ VERIFY_GROUPS = [
 REFRESH_TARGETS = [
     'arithmetic-operand-replay-audit',
     'public-engine-manifest',
-    'engine-completion-audit',
+    'engine-completion-audit-current',
     'strict-replayed-tail-headline',
     'primary-strict-result',
 ]
