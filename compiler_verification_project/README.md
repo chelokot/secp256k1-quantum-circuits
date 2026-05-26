@@ -69,7 +69,7 @@ What it does ship is:
 - `resource_liveness_certificate.json` — ZKP-bound liveness certificate deriving owner-capacity requirements from executable leaf liveness, QROAMClean workspace, and phase-shell lowering artifacts
 - `public_candidate_materialized_circuit_manifest.json` — no-ZKP public-candidate primitive-stream manifest binding the reusable-chunk headline to deterministic base, QROAM-segment, phase-shell rows, concrete operand wires, liveness/owner bindings, and a full materialized flat-netlist digest derived by scanning every emitted primitive operation
 - `public_engine_manifest.json` — no-ZKP public engine manifest deriving public totals from the public-candidate `materialized_flat_netlist`, then binding executable instruction/wire/schedule/owner/resource-term streams, the flat execution probe, compiler parameters, semantic-boundary evidence, and primitive-operation evidence from arithmetic operation IR, QROAM primitive certificate, and phase-shell lowering; this artifact no longer consumes the ZKP input
-- `engine_completion_audit.json` — no-ZKP completion/status audit generated from the materialized public engine artifacts; it passes only when public totals, source bindings, QROAM costs, owner/liveness probes, modular arithmetic IR generation, tail macro cost/formula binding, and semantic boundary evidence are coherent, and it keeps `clifford_complete_goal_achieved` false while the canonical-engine ZKP authority, modular Clifford expansion, and tail schedule boundaries remain explicit; the tail diagnostic currently proves the fused-output seven-slot schedule over the checked toy boundary domain with generated owner capacity
+- `engine_completion_audit.json` — no-ZKP completion/status audit generated from the materialized public engine artifacts; it passes only when public totals, source bindings, QROAM costs, owner/liveness probes, modular arithmetic IR generation, tail macro cost/formula binding, semantic boundary evidence, and canonical-engine ZKP authority are coherent, and it keeps `clifford_complete_goal_achieved` false while modular Clifford expansion and tail schedule boundaries remain explicit; the tail diagnostic currently proves the fused-output seven-slot schedule over the checked toy boundary domain with generated owner capacity
 - `strict_replayed_tail_headline.json` — primary strict headline artifact deriving the public resource presentation from the fused-output seven-slot tail replay, generated owner-capacity rows, and standard-QROAM reusable-chunk lookup resource; it demotes the four-slot macro/ZKP wrapper to a non-primary reference
 - `artifact_digest_tree.json` — chunked SHA-256/Merkle manifest for tracked large artifacts, generated from the checked tree so reviewers can verify large JSON/CSV/proof blobs by chunks rather than by one opaque file hash
 - `proof_environment_contract.json` — checked proof-environment contract binding required tools, no-prover edit-loop gates, publication freshness gates, direct compressed/Groth16 verifier commands, public-headline artifact digests, and curated proof-manifest records
@@ -258,9 +258,10 @@ macro-wrapper proof bundle lives in
 `compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/`
 and must be rebuilt before it can bind the current reusable-chunk macro result
 with `8 / 8` deterministic public cases. The current reusable-chunk candidate
-input and Rust guest carry a cycle-free `primary_strict_claim` for the guarded
-replayed-tail `36,973,222 / 1,968` headline, but the checked compressed and
-Groth16 proof fixtures remain stale until rebuilt against that input.
+input and Rust guest bind `public_engine_manifest.json` as the strict resource
+authority for the guarded replayed-tail `36,973,222 / 1,968` headline, but the
+checked compressed and Groth16 proof fixtures remain stale until rebuilt
+against that input.
 
 This is similar in shape to Google's disclosure model, but it is still a proof
 at the repository exact-family boundary, not a primitive-gate full-Shor proof.

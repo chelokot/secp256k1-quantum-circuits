@@ -1,7 +1,7 @@
 {
   "schema": "compiler-project-engine-completion-audit-v1",
   "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
-  "overall_status": "materialized_flat_public_claim_with_explicit_remaining_macro_boundaries",
+  "overall_status": "materialized_flat_public_claim_with_canonical_engine_zkp_authority_and_explicit_remaining_macro_boundaries",
   "clifford_complete_goal_achieved": false,
   "public_totals": {
     "non_clifford": 36973222,
@@ -27,7 +27,7 @@
     "tail_macro_liveness_sha256": "5f60042f2ae891387583cc6ee10cb6fdd11aeef460eadac18c6e512712736cb1",
     "tail_macro_reversibility_sha256": "a5474f2a4b950577da8013b0023ead318a7ea92610406fce869c3adac4d0830a",
     "tail_macro_schedule_search_sha256": "f3af1926dd886d4c8a25831821657bcef57c3b589daddec08957cab7b1dcf81b",
-    "zkp_attestation_reusable_chunk_candidate_input_sha256": "aa8bdd986d1fe1963f79b7cc3968cbe4c3ec4b9bbfe8db3967a2269a1c5c687c"
+    "zkp_attestation_reusable_chunk_candidate_input_sha256": "b9ee033a0c1d3399b5b9714ebcfee74fa50afc0dc5e8a146667bc743cff7ac8a"
   },
   "source_binding_summary": {
     "rows_checked": 5836,
@@ -117,9 +117,9 @@
       "evidence": "streamed_lookup_tail_leaf_equivalence + release_corpus_preflight"
     },
     {
-      "name": "primary_strict_claim_zkp_input_binding",
-      "status": "cycle_free_claim_bound_by_candidate_input_and_guest",
-      "evidence": "zkp_attestation_reusable_chunk_candidate_input.primary_strict_claim_document + Rust prepared guest validation"
+      "name": "canonical_engine_zkp_input_authority",
+      "status": "public_engine_manifest_bound_by_candidate_input_and_guest_without_compact_strict_claim",
+      "evidence": "zkp_attestation_reusable_chunk_candidate_input.public_engine_manifest_document + Rust prepared guest validation"
     }
   ],
   "remaining_macro_boundaries": [
@@ -147,23 +147,6 @@
       "status": "in_place_three_slot_schedule_boundary_not_eliminated",
       "required_to_close": "Promote an executable reversible/permutation-extension tail schedule into the counted resource contract, or promote a generated expanded/reordered slot schedule into the public qubit budget.",
       "current_evidence": "tail_macro_engine + tail_macro_liveness + tail_macro_reversibility + tail_macro_schedule_search + arithmetic_operation_ir"
-    },
-    {
-      "name": "single_engine_zkp_input_derivation",
-      "status": "strict_claim_guest_bound_canonical_engine_not_sole_authority",
-      "required_to_close": "Have ZKP input bind the canonical engine artifact as the only authoritative resource document, with legacy source documents reduced to recomputable witnesses or removed from the guest resource authority path.",
-      "current_evidence": "public_engine_manifest.public_totals + public_engine_manifest.strict_public_owner_capacity_stream + zkp primary_strict_claim from strict_replayed_tail_headline + Rust prepared guest validation",
-      "evidence_metrics": {
-        "public_engine_total_logical_qubits": 1968,
-        "strict_public_owner_capacity_total": 1968,
-        "legacy_wrapper_logical_qubits": 1199,
-        "public_engine_manifest_source": "public_candidate_materialized_circuit_manifest.canonical_materialized_flat_netlist",
-        "primary_strict_claim_bound_by_candidate_input": true,
-        "primary_strict_claim_source_artifact_path": "compiler_verification_project/artifacts/strict_replayed_tail_headline.json",
-        "primary_strict_claim_sha256": "d288d53e84253a99c9bb4c3f28ac0accc571ebcd5e570e90ff82eccc7194810e",
-        "primary_strict_claim_non_clifford": 36973222,
-        "primary_strict_claim_logical_qubits": 1968
-      }
     }
   ],
   "checks": {
@@ -181,13 +164,14 @@
     "semantic_boundary_cases_cover_public_point_add_boundary": true,
     "tail_macro_auxiliary_artifacts_are_current": true,
     "fast_path_is_no_zkp": true,
-    "zkp_input_binds_primary_strict_claim_without_cycle": true,
+    "zkp_input_binds_canonical_engine_without_compact_strict_claim": true,
     "remaining_macro_boundaries_are_explicit": true,
     "public_claim_not_marked_full_clifford_complete_until_macro_boundaries_flattened": true
   },
   "pass": true,
   "notes": [
     "This audit passing means the current public claim is internally source-bound and the remaining macro boundaries are explicit.",
+    "The candidate ZKP input uses public_engine_manifest as the strict resource authority; compact primary_strict_claim is no longer part of the active ZKP authority path.",
     "It does not mean the full thread goal is complete; clifford_complete_goal_achieved remains false until the remaining macro boundaries are eliminated."
   ]
 }

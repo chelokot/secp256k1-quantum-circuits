@@ -68,8 +68,8 @@
   "checked_artifacts": {
     "input": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
-      "sha256": "f683333e319145f12547875097d3e3134fb08202066edbf5b7990280119cd3b1",
-      "bytes": 345732
+      "sha256": "6e26cb5e7c25459047d92cd0cfd2ade17e68dcce104e29a95ac420b59f70513d",
+      "bytes": 344446
     },
     "claim": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json",
@@ -211,8 +211,8 @@
     },
     "engine_completion_audit": {
       "path": "compiler_verification_project/artifacts/engine_completion_audit.json",
-      "sha256": "e0c38a8808baf3f4ed1f723cb929913703c665d626bf5f0f2d530a0b805d4de9",
-      "bytes": 11026
+      "sha256": "211139a025e171f57ed9141520bf2c4ec4ff247577927173fe0a22657205fa88",
+      "bytes": 9953
     }
   },
   "verification_commands": {
@@ -241,7 +241,7 @@
     "public_values_match_input_claim": false,
     "public_headline_totals_come_from_engine_output": true,
     "input_claim_summary_is_engine_public_totals_snapshot": true,
-    "input_binds_primary_strict_claim_without_digest_cycle": true,
+    "input_binds_canonical_engine_without_primary_strict_claim": true,
     "all_fixtures_bind_same_public_values": false,
     "fixtures_bind_checked_input_digest": false,
     "compressed_fixture_binds_checked_proof_binary": true,

@@ -237,11 +237,11 @@
   "checked_artifacts": {
     "input": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
-      "sha256": "f683333e319145f12547875097d3e3134fb08202066edbf5b7990280119cd3b1",
-      "bytes": 345732,
+      "sha256": "6e26cb5e7c25459047d92cd0cfd2ade17e68dcce104e29a95ac420b59f70513d",
+      "bytes": 344446,
       "manifest_record": {
-        "sha256": "f683333e319145f12547875097d3e3134fb08202066edbf5b7990280119cd3b1",
-        "bytes": 345732
+        "sha256": "6e26cb5e7c25459047d92cd0cfd2ade17e68dcce104e29a95ac420b59f70513d",
+        "bytes": 344446
       },
       "manifest_record_present": true,
       "manifest_sha256_matches_checked_record": true
@@ -512,11 +512,11 @@
     },
     "engine_completion_audit": {
       "path": "compiler_verification_project/artifacts/engine_completion_audit.json",
-      "sha256": "e0c38a8808baf3f4ed1f723cb929913703c665d626bf5f0f2d530a0b805d4de9",
-      "bytes": 11026,
+      "sha256": "211139a025e171f57ed9141520bf2c4ec4ff247577927173fe0a22657205fa88",
+      "bytes": 9953,
       "manifest_record": {
-        "sha256": "e0c38a8808baf3f4ed1f723cb929913703c665d626bf5f0f2d530a0b805d4de9",
-        "bytes": 11026
+        "sha256": "211139a025e171f57ed9141520bf2c4ec4ff247577927173fe0a22657205fa88",
+        "bytes": 9953
       },
       "manifest_record_present": true,
       "manifest_sha256_matches_checked_record": true
@@ -529,8 +529,8 @@
   },
   "public_headline_result": {
     "path": "compiler_verification_project/artifacts/public_headline_result.json",
-    "sha256": "5e6ccc5a8215768602d1b8241b5a8d0bdce112917fc3430cac0cf0924d8f39d5",
-    "bytes": 15836
+    "sha256": "e19b29074a3cc4ef51a04f18d6bd9802849fdad4ea33d81f06b248939ee68a53",
+    "bytes": 15839
   },
   "notes": [
     "This artifact is deterministic and repository-bound; it is not a pinned container or Nix lock.",

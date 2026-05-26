@@ -2546,14 +2546,14 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
             and {
                 'modular_arithmetic_clifford_expansion',
                 'tail_macro_schedule_and_reversibility',
-                'single_engine_zkp_input_derivation',
             }.issubset({row['name'] for row in audit['remaining_macro_boundaries']})
+            and 'single_engine_zkp_input_derivation' not in {row['name'] for row in audit['remaining_macro_boundaries']}
             and 'qroam_bit_level_netlist_expansion' in {row['name'] for row in audit['covered_boundaries']}
             and 'arithmetic_operand_replay' in {row['name'] for row in audit['covered_boundaries']}
-            and 'primary_strict_claim_zkp_input_binding' in {row['name'] for row in audit['covered_boundaries']}
+            and 'canonical_engine_zkp_input_authority' in {row['name'] for row in audit['covered_boundaries']}
             and audit['checks']['remaining_macro_boundaries_are_explicit'] is True
             and audit['checks']['public_claim_not_marked_full_clifford_complete_until_macro_boundaries_flattened'] is True,
-            'explicit arithmetic, tail, and zkp boundaries remain; qroam, arithmetic operand replay, and primary strict input binding are covered without a full-completion claim',
+            'explicit arithmetic and tail boundaries remain; qroam, arithmetic operand replay, and canonical engine ZKP authority are covered without a full-completion claim',
             {'clifford_complete_goal_achieved': audit['clifford_complete_goal_achieved'], 'covered_boundaries': audit['covered_boundaries'], 'remaining_macro_boundaries': audit['remaining_macro_boundaries'], 'checks': audit['checks']},
         ),
         _check('engine_completion_audit_source_binding_covers_all_run_length_rows', audit['checks']['source_binding_covers_every_run_length_row'] is True and audit['source_binding_summary']['rows_checked'] == artifacts['public_candidate_materialized_circuit_manifest']['run_length_row_count'] and sum(audit['source_binding_summary']['rows_by_source_kind'].values()) == audit['source_binding_summary']['rows_checked'], 'all run-length rows source-bound', audit['source_binding_summary']),

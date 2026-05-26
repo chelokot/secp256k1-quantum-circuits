@@ -137,10 +137,11 @@ whether those proof layers still bind the current input; after the latest
 resource-certificate binding changes, final compressed/Groth16 rebuild remains
 the release gate before claiming current proof freshness. The checked proof
 fixtures still bind a stale macro/ZKP candidate claim and `8 / 8` public cases.
-The current candidate input and Rust guest now also carry a cycle-free
-`primary_strict_claim` for the guarded replayed-tail `36,973,222 / 1,968`
-result sourced from `strict_replayed_tail_headline.json`; the compressed/Groth16
-fixtures remain stale until rebuilt against that input.
+The current candidate input and Rust guest bind `public_engine_manifest.json`
+as the strict resource authority for the guarded replayed-tail
+`36,973,222 / 1,968` result; the older compact `primary_strict_claim` side
+document is no longer part of the active ZKP authority path. The
+compressed/Groth16 fixtures remain stale until rebuilt against that input.
 The compiler artifacts also include `public_candidate_materialized_circuit_manifest.json`,
 `public_engine_manifest.json`, and `engine_completion_audit.json`, the no-ZKP
 engine gate for the current public candidate. The public-candidate materialized manifest expands the reusable
@@ -175,10 +176,8 @@ only to a family aggregate. The completion audit is intentionally stricter than
 the headline: it passes only when those source bindings are current and the
 remaining macro boundaries are explicit, while keeping
 `clifford_complete_goal_achieved = false` until modular arithmetic expansion,
-the QROAM indexed table-bit CNOT contribution stream uses the same
-per-operation iterator/export path as the non-QROAM primitive rows, the tail
-macro in-place schedule, and the final ZKP input contract are internal products
-of one canonical executable flat IR.
+and the tail macro in-place schedule are internal products of one canonical
+executable flat IR.
 Modular arithmetic kernels are now generated from the
 embedded `executable_modular_circuit_ir`; the modular certificate consumes that
 same IR instead of being an independent source of arithmetic resource formulas.

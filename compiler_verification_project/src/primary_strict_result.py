@@ -142,7 +142,7 @@ def build_primary_strict_result(
         },
         'remaining_completion_requirements': [
             'replace the strict liveness projection overlay and legacy companion stream with one canonical executable flat IR that directly emits the strict liveness rows',
-            'replace the compact primary_strict_claim ZKP binding with canonical engine-artifact authority in the guest input',
+            'keep the ZKP candidate input and guest bound to public_engine_manifest as the strict resource authority',
             'keep public presentation generated from this artifact or from strict_replayed_tail_headline.json, never from hand-copied headline numbers',
         ],
         'source_digests': {

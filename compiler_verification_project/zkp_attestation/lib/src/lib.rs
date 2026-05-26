@@ -5977,61 +5977,6 @@ fn validate_public_engine_manifest(
     );
 }
 
-fn validate_primary_strict_claim(
-    result: &Value,
-    result_sha256: &str,
-    claim: &PreparedClaimSummary,
-) {
-    assert_eq!(
-        json_string_field(result, "schema"),
-        "compiler-project-primary-strict-claim-v1"
-    );
-    assert!(json_bool_field(result, "pass"));
-    assert_eq!(
-        json_string_field(result, "source_artifact_path"),
-        "compiler_verification_project/artifacts/strict_replayed_tail_headline.json"
-    );
-    let selected = json_object_field(result, "selected_result");
-    assert_eq!(
-        json_u64_field(selected, "non_clifford"),
-        claim.expected_full_oracle_non_clifford
-    );
-    assert_eq!(
-        json_u64_field(selected, "logical_qubits"),
-        claim.expected_total_logical_qubits
-    );
-    assert_eq!(
-        json_u64_field(selected, "tail_field_slots"),
-        claim.logical_qubit_formula.arithmetic_slot_count as u64
-    );
-    assert_eq!(
-        json_u64_field(selected, "field_bits"),
-        claim.logical_qubit_formula.field_bits as u64
-    );
-    assert_eq!(
-        json_u64_field(selected, "lookup_workspace_qubits"),
-        claim.logical_qubit_formula.lookup_workspace_qubits as u64
-    );
-    assert_eq!(
-        json_u64_field(selected, "control_qubits"),
-        claim.logical_qubit_formula.control_slot_count as u64
-    );
-    assert_eq!(
-        json_u64_field(selected, "phase_qubits"),
-        claim.logical_qubit_formula.live_phase_bits as u64
-    );
-    let resource_claim_level = json_object_field(result, "resource_claim_level");
-    assert_eq!(
-        json_string_field(resource_claim_level, "strict_resource_headline"),
-        "current_primary"
-    );
-    assert_eq!(
-        json_string_field(resource_claim_level, "zkp_binds_this_strict_result"),
-        "not_yet_achieved"
-    );
-    assert_eq!(result_sha256.len(), 64);
-}
-
 pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValues {
     assert_eq!(input.schema, "compiler-project-zkp-attestation-input-v5");
     assert_eq!(input.document_digest_scheme, DIGEST_SCHEME);
@@ -6088,18 +6033,10 @@ pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValue
             "public_engine_manifest",
             public_engine_manifest_sha256,
         );
-        let primary_strict_claim = input
-            .primary_strict_claim_document
-            .as_ref()
-            .expect("reusable-chunk input must carry the primary strict claim");
-        let primary_strict_claim_sha256 = input
-            .primary_strict_claim_sha256
-            .as_ref()
-            .expect("reusable-chunk input must carry the primary strict claim digest");
-        validate_committed_value_document(
-            primary_strict_claim,
-            "primary_strict_claim",
-            primary_strict_claim_sha256,
+        assert!(
+            input.primary_strict_claim_document.is_none()
+                && input.primary_strict_claim_sha256.is_none(),
+            "reusable-chunk input must use public_engine_manifest as the only strict resource authority"
         );
     }
     let compiler_parameters = &input.compiler_parameters_document.payload.0;
@@ -6171,19 +6108,6 @@ pub fn run_prepared_attestation(input: &PreparedAttestationInput) -> PublicValue
             family,
             &input.resource_certificate_document.payload.0,
             compiler_parameters,
-        );
-        validate_primary_strict_claim(
-            &input
-                .primary_strict_claim_document
-                .as_ref()
-                .expect("reusable-chunk input must carry the primary strict claim")
-                .payload
-                .0,
-            input
-                .primary_strict_claim_sha256
-                .as_ref()
-                .expect("reusable-chunk input must carry the primary strict claim digest"),
-            claim,
         );
     } else {
         validate_resource_certificate(
@@ -6410,16 +6334,6 @@ mod tests {
         input.public_engine_manifest_sha256 = Some(digest);
     }
 
-    fn refresh_primary_strict_claim_digest(input: &mut PreparedAttestationInput) {
-        let document = input
-            .primary_strict_claim_document
-            .as_mut()
-            .expect("reusable-chunk fixture must carry primary strict claim");
-        let digest = semantic_payload_sha256(&document.document_type, &document.payload);
-        document.sha256 = digest.clone();
-        input.primary_strict_claim_sha256 = Some(digest);
-    }
-
     #[test]
     fn native_run_prepared_attestation_matches_checked_in_input_shape() {
         let input = checked_input();
@@ -6535,6 +6449,14 @@ mod tests {
     fn prepared_attestation_rejects_stale_public_engine_manifest_digest() {
         let mut input = checked_reusable_chunk_input();
         input.public_engine_manifest_sha256 = Some("00".repeat(32));
+        run_prepared_attestation(&input);
+    }
+
+    #[test]
+    #[should_panic]
+    fn prepared_attestation_rejects_extra_primary_strict_claim_authority() {
+        let mut input = checked_reusable_chunk_input();
+        input.primary_strict_claim_sha256 = Some("00".repeat(32));
         run_prepared_attestation(&input);
     }
 
@@ -6756,34 +6678,6 @@ mod tests {
             .0["primitive_operation_evidence"]["public_candidate_materialized_circuit_manifest"]
             ["operand_source_binding"]["pass"] = serde_json::json!(false);
         refresh_public_engine_manifest_digest(&mut input);
-        run_prepared_attestation(&input);
-    }
-
-    #[test]
-    #[should_panic]
-    fn prepared_attestation_rejects_primary_strict_claim_total_forgery() {
-        let mut input = checked_reusable_chunk_input();
-        input
-            .primary_strict_claim_document
-            .as_mut()
-            .expect("reusable-chunk fixture must carry primary strict claim")
-            .payload
-            .0["selected_result"]["logical_qubits"] = serde_json::json!(1200);
-        refresh_primary_strict_claim_digest(&mut input);
-        run_prepared_attestation(&input);
-    }
-
-    #[test]
-    #[should_panic]
-    fn prepared_attestation_rejects_primary_strict_claim_level_forgery() {
-        let mut input = checked_reusable_chunk_input();
-        input
-            .primary_strict_claim_document
-            .as_mut()
-            .expect("reusable-chunk fixture must carry primary strict claim")
-            .payload
-            .0["resource_claim_level"]["strict_resource_headline"] = serde_json::json!("old");
-        refresh_primary_strict_claim_digest(&mut input);
         run_prepared_attestation(&input);
     }
 

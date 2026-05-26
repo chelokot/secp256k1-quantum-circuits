@@ -32,11 +32,11 @@ and a strict run-length liveness projection that scans arithmetic-tail rows to
 the `1,968`-qubit peak while leaving non-tail rows unchanged. The manifest also
 emits a separate strict materialized flat-netlist commitment whose segment
 hashes include that projected liveness. The remaining promotion step is to make
-that strict flat stream the canonical public-engine/ZKP source instead of
-keeping the old wrapper stream beside it. The current reusable-chunk ZKP
-candidate input and guest carry a cycle-free `primary_strict_claim` for the
-strict seven-slot contract, while the checked compressed and Groth16 proof
-fixtures remain stale until rebuilt against that input.
+that strict flat stream the canonical public-engine source instead of keeping
+the old wrapper stream beside it. The current reusable-chunk ZKP candidate
+input and guest bind `public_engine_manifest.json` as the strict resource
+authority for the strict seven-slot contract, while the checked compressed and
+Groth16 proof fixtures remain stale until rebuilt against that input.
 
 ## Exact layers
 
@@ -193,11 +193,10 @@ materialized/public engine artifacts and passes only when the headline totals,
 source binding, operand ownership, QROAM primitive cost, modular arithmetic IR
 generation, semantic corpus, and tail auxiliary evidence are coherent. It
 deliberately keeps `clifford_complete_goal_achieved = false` while the tail
-macro in-place schedule, modular arithmetic Clifford expansion, and final
-canonical-engine ZKP authority are not yet direct single-engine products.
-The ZKP input already carries a cycle-free strict claim sourced from
-`strict_replayed_tail_headline.json`; the remaining ZKP row is the move from
-that compact claim plus legacy witnesses to canonical engine-artifact authority.
+macro in-place schedule and modular arithmetic Clifford expansion are not yet
+direct single-engine products. The ZKP input now uses `public_engine_manifest`
+as the strict resource authority instead of a compact strict-claim side
+document.
 Modular arithmetic is no longer a separate formula
 source: the arithmetic lowering embeds `executable_modular_circuit_ir`, emits
 the modular kernels from it, and the modular certificate consumes that same IR;

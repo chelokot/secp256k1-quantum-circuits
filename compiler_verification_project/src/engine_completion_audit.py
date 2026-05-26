@@ -9,14 +9,9 @@ from typing import Any, Dict, Mapping
 from public_engine_contract import (
     CANONICAL_MATERIALIZED_FLAT_NETLIST,
     LEGACY_WRAPPER_MATERIALIZED_FLAT_NETLIST,
-    PRIMARY_STRICT_CLAIM_DOCUMENT_TYPE,
-    PRIMARY_STRICT_CLAIM_SCHEMA,
     PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE,
     PUBLIC_TOTALS_DERIVE_FROM_CANONICAL_CHECK,
-    STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH,
     STRICT_REPLAYED_TAIL_MATERIALIZED_FLAT_NETLIST,
-    STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED,
-    STRICT_RESOURCE_HEADLINE_CURRENT_PRIMARY,
 )
 
 
@@ -84,10 +79,7 @@ def build_engine_completion_audit(
         'source': PUBLIC_ENGINE_CANONICAL_TOTALS_SOURCE,
     }
     zkp_claim_summary = zkp_attestation_input['claim_summary']
-    primary_strict_claim_document = zkp_attestation_input['primary_strict_claim_document']
-    primary_strict_claim = primary_strict_claim_document['payload']
-    primary_strict_selected = primary_strict_claim['selected_result']
-    primary_strict_level = primary_strict_claim['resource_claim_level']
+    zkp_public_engine_document = zkp_attestation_input['public_engine_manifest_document']
     arithmetic_leaf_summary = arithmetic_operation_ir['leaf_arithmetic_summary']
     qroam_counts = qroam_primitive_certificate['traversed_counts']
     qroam_cost = qroam_primitive_certificate['qroamclean_cost_model']
@@ -235,26 +227,21 @@ def build_engine_completion_audit(
             public_engine_manifest['fast_no_zkp_contract']['prover_required'] is False
             and public_engine_manifest['fast_no_zkp_contract']['verify_group'] == 'public_engine_manifest_checks'
         ),
-        'zkp_input_binds_primary_strict_claim_without_cycle': (
-            zkp_attestation_input['primary_strict_claim_sha256'] == primary_strict_claim_document['sha256']
-            and primary_strict_claim_document['document_type'] == PRIMARY_STRICT_CLAIM_DOCUMENT_TYPE
-            and primary_strict_claim_document['artifact_path'] == STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH
-            and primary_strict_claim['schema'] == PRIMARY_STRICT_CLAIM_SCHEMA
-            and primary_strict_claim['source_artifact_path'] == STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH
-            and primary_strict_claim['pass'] is True
-            and int(primary_strict_selected['non_clifford']) == public_totals['non_clifford']
-            and int(primary_strict_selected['logical_qubits']) == public_totals['logical_qubits']
-            and int(primary_strict_selected['non_clifford']) == int(zkp_claim_summary['expected_full_oracle_non_clifford'])
-            and int(primary_strict_selected['logical_qubits']) == int(zkp_claim_summary['expected_total_logical_qubits'])
-            and int(primary_strict_selected['tail_field_slots']) == int(zkp_claim_summary['logical_qubit_formula']['arithmetic_slot_count'])
-            and int(primary_strict_selected['field_bits']) == int(zkp_claim_summary['logical_qubit_formula']['field_bits'])
-            and int(primary_strict_selected['lookup_workspace_qubits']) == int(zkp_claim_summary['logical_qubit_formula']['lookup_workspace_qubits'])
-            and int(primary_strict_selected['control_qubits']) == int(zkp_claim_summary['logical_qubit_formula']['control_slot_count'])
-            and int(primary_strict_selected['phase_qubits']) == int(zkp_claim_summary['logical_qubit_formula']['live_phase_bits'])
-            and primary_strict_level['strict_resource_headline'] == STRICT_RESOURCE_HEADLINE_CURRENT_PRIMARY
-            and primary_strict_level['clifford_complete_flat_netlist'] == STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED
-            and primary_strict_level['zkp_binds_this_strict_result'] == STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED
-            and 'source_digests' not in primary_strict_claim
+        'zkp_input_binds_canonical_engine_without_compact_strict_claim': (
+            zkp_attestation_input['public_engine_manifest_sha256'] == zkp_public_engine_document['sha256']
+            and zkp_public_engine_document['document_type'] == 'public_engine_manifest'
+            and zkp_public_engine_document['payload'] == public_engine_manifest
+            and zkp_claim_summary['resource_engine_summary']['source'] == 'public_engine_manifest.public_totals'
+            and zkp_claim_summary['resource_engine_summary']['source_sha256'] == zkp_attestation_input['public_engine_manifest_sha256']
+            and int(zkp_claim_summary['expected_full_oracle_non_clifford']) == public_totals['non_clifford']
+            and int(zkp_claim_summary['expected_total_logical_qubits']) == public_totals['logical_qubits']
+            and int(zkp_claim_summary['logical_qubit_formula']['reconstructed_total']) == public_totals['logical_qubits']
+            and sum(
+                int(row['logical_qubits'])
+                for row in public_engine_manifest['strict_public_owner_capacity_stream']['rows']
+            ) == public_totals['logical_qubits']
+            and 'primary_strict_claim_sha256' not in zkp_attestation_input
+            and 'primary_strict_claim_document' not in zkp_attestation_input
             and 'primary_strict_result_sha256' not in zkp_attestation_input
             and 'primary_strict_result_document' not in zkp_attestation_input
         ),
@@ -323,9 +310,9 @@ def build_engine_completion_audit(
             'evidence': 'streamed_lookup_tail_leaf_equivalence + release_corpus_preflight',
         },
         {
-            'name': 'primary_strict_claim_zkp_input_binding',
-            'status': 'cycle_free_claim_bound_by_candidate_input_and_guest',
-            'evidence': 'zkp_attestation_reusable_chunk_candidate_input.primary_strict_claim_document + Rust prepared guest validation',
+            'name': 'canonical_engine_zkp_input_authority',
+            'status': 'public_engine_manifest_bound_by_candidate_input_and_guest_without_compact_strict_claim',
+            'evidence': 'zkp_attestation_reusable_chunk_candidate_input.public_engine_manifest_document + Rust prepared guest validation',
         },
     ]
     remaining_macro_boundaries = [
@@ -354,33 +341,12 @@ def build_engine_completion_audit(
             'required_to_close': 'Promote an executable reversible/permutation-extension tail schedule into the counted resource contract, or promote a generated expanded/reordered slot schedule into the public qubit budget.',
             'current_evidence': 'tail_macro_engine + tail_macro_liveness + tail_macro_reversibility + tail_macro_schedule_search + arithmetic_operation_ir',
         },
-        {
-            'name': 'single_engine_zkp_input_derivation',
-            'status': 'strict_claim_guest_bound_canonical_engine_not_sole_authority',
-            'required_to_close': 'Have ZKP input bind the canonical engine artifact as the only authoritative resource document, with legacy source documents reduced to recomputable witnesses or removed from the guest resource authority path.',
-            'current_evidence': 'public_engine_manifest.public_totals + public_engine_manifest.strict_public_owner_capacity_stream + zkp primary_strict_claim from strict_replayed_tail_headline + Rust prepared guest validation',
-            'evidence_metrics': {
-                'public_engine_total_logical_qubits': int(public_engine_manifest['public_totals']['logical_qubits']),
-                'strict_public_owner_capacity_total': sum(
-                    int(row['logical_qubits'])
-                    for row in public_engine_manifest['strict_public_owner_capacity_stream']['rows']
-                ),
-                'legacy_wrapper_logical_qubits': int(public_engine_manifest['legacy_wrapper_totals']['logical_qubits']),
-                'public_engine_manifest_source': str(public_engine_manifest['public_totals']['source']),
-                'primary_strict_claim_bound_by_candidate_input': bool(checks['zkp_input_binds_primary_strict_claim_without_cycle']),
-                'primary_strict_claim_source_artifact_path': str(primary_strict_claim['source_artifact_path']),
-                'primary_strict_claim_sha256': str(zkp_attestation_input['primary_strict_claim_sha256']),
-                'primary_strict_claim_non_clifford': int(primary_strict_selected['non_clifford']),
-                'primary_strict_claim_logical_qubits': int(primary_strict_selected['logical_qubits']),
-            },
-        },
     ]
     remaining_boundary_names = {row['name'] for row in remaining_macro_boundaries}
     checks['remaining_macro_boundaries_are_explicit'] = (
         {
             'modular_arithmetic_clifford_expansion',
             'tail_macro_schedule_and_reversibility',
-            'single_engine_zkp_input_derivation',
         }.issubset(remaining_boundary_names)
         and all(
             row['status']
@@ -392,7 +358,7 @@ def build_engine_completion_audit(
     return {
         'schema': ENGINE_COMPLETION_AUDIT_SCHEMA,
         'selected_family_name': selected_family_name,
-        'overall_status': 'materialized_flat_public_claim_with_explicit_remaining_macro_boundaries',
+        'overall_status': 'materialized_flat_public_claim_with_canonical_engine_zkp_authority_and_explicit_remaining_macro_boundaries',
         'clifford_complete_goal_achieved': False,
         'public_totals': public_totals,
         'source_digests': _source_digests({
@@ -442,6 +408,7 @@ def build_engine_completion_audit(
         'pass': all(checks.values()) and len(remaining_macro_boundaries) > 0,
         'notes': [
             'This audit passing means the current public claim is internally source-bound and the remaining macro boundaries are explicit.',
+            'The candidate ZKP input uses public_engine_manifest as the strict resource authority; compact primary_strict_claim is no longer part of the active ZKP authority path.',
             'It does not mean the full thread goal is complete; clifford_complete_goal_achieved remains false until the remaining macro boundaries are eliminated.',
         ],
     }

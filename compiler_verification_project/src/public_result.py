@@ -9,12 +9,8 @@ from typing import Any, Dict, Mapping
 
 from public_engine_contract import (
     CANONICAL_MATERIALIZED_FLAT_NETLIST,
-    PRIMARY_STRICT_CLAIM_DOCUMENT_TYPE,
-    PRIMARY_STRICT_CLAIM_SCHEMA,
     PUBLIC_ENGINE_RESOURCE_SUMMARY_SOURCE,
     STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH,
-    STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED,
-    STRICT_RESOURCE_HEADLINE_CURRENT_PRIMARY,
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -168,17 +164,17 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             and int(input_payload['claim_summary']['non_clifford_formula']['reconstructed_total']) == non_clifford
             and int(input_payload['claim_summary']['logical_qubit_formula']['reconstructed_total']) == qubits
         ),
-        'input_binds_primary_strict_claim_without_digest_cycle': (
-            input_payload['primary_strict_claim_sha256'] == input_payload['primary_strict_claim_document']['sha256']
-            and input_payload['primary_strict_claim_document']['document_type'] == PRIMARY_STRICT_CLAIM_DOCUMENT_TYPE
-            and input_payload['primary_strict_claim_document']['payload']['schema'] == PRIMARY_STRICT_CLAIM_SCHEMA
-            and input_payload['primary_strict_claim_document']['payload']['source_artifact_path'] == STRICT_REPLAYED_TAIL_HEADLINE_ARTIFACT_PATH
-            and input_payload['primary_strict_claim_document']['payload']['selected_result'] == strict_replayed_tail_headline['selected_result']
-            and input_payload['primary_strict_claim_document']['payload']['selected_result']['non_clifford'] == int(input_payload['claim_summary']['expected_full_oracle_non_clifford'])
-            and input_payload['primary_strict_claim_document']['payload']['selected_result']['logical_qubits'] == int(input_payload['claim_summary']['expected_total_logical_qubits'])
-            and input_payload['primary_strict_claim_document']['payload']['resource_claim_level']['strict_resource_headline'] == STRICT_RESOURCE_HEADLINE_CURRENT_PRIMARY
-            and input_payload['primary_strict_claim_document']['payload']['resource_claim_level']['zkp_binds_this_strict_result'] == STRICT_RESOURCE_CLAIM_NOT_YET_ACHIEVED
-            and 'source_digests' not in input_payload['primary_strict_claim_document']['payload']
+        'input_binds_canonical_engine_without_primary_strict_claim': (
+            input_payload['public_engine_manifest_sha256'] == input_payload['public_engine_manifest_document']['sha256']
+            and input_payload['public_engine_manifest_document']['document_type'] == 'public_engine_manifest'
+            and input_payload['public_engine_manifest_document']['payload'] == public_engine_manifest
+            and input_payload['claim_summary']['resource_engine_summary']['source_sha256'] == input_payload['public_engine_manifest_sha256']
+            and int(input_payload['claim_summary']['expected_full_oracle_non_clifford']) == int(public_engine_manifest['public_totals']['non_clifford'])
+            and int(input_payload['claim_summary']['expected_total_logical_qubits']) == int(public_engine_manifest['public_totals']['logical_qubits'])
+            and input_payload['claim_summary']['expected_full_oracle_non_clifford'] == strict_replayed_tail_headline['selected_result']['non_clifford']
+            and input_payload['claim_summary']['expected_total_logical_qubits'] == strict_replayed_tail_headline['selected_result']['logical_qubits']
+            and 'primary_strict_claim_sha256' not in input_payload
+            and 'primary_strict_claim_document' not in input_payload
             and 'primary_strict_result_sha256' not in input_payload
             and 'primary_strict_result_document' not in input_payload
         ),
