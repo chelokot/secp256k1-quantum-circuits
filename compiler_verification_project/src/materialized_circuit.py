@@ -1737,9 +1737,146 @@ def _qroam_run_length_rows(
                     'table': str(term['table']),
                     'chunk_index': int(term['chunk_index']),
                     'qroam_phase': str(segment['phase']),
+                    'qroam_start_address': int(segment['start_address']),
+                    'qroam_end_address_exclusive': int(segment['end_address_exclusive']),
                     'qroam_segment_sha256': str(segment['sha256']),
                 })
     return rows
+
+
+def _qroam_table_cnot_flat_extension(
+    *,
+    qroam_rows: List[Mapping[str, Any]],
+    liveness_rows: List[Mapping[str, Any]],
+    qroam_table_cnot_materialization: Mapping[str, Any],
+) -> Dict[str, Any]:
+    liveness_by_row = {int(row['row_index']): row for row in liveness_rows}
+    qroam_row_by_key = {
+        (
+            int(row['term_instance_index']),
+            str(row['table']),
+            int(row['chunk_index']),
+            str(row['qroam_phase']),
+            int(row['qroam_start_address']),
+            int(row['qroam_end_address_exclusive']),
+        ): row
+        for row in qroam_rows
+    }
+    extension_rows: List[Dict[str, Any]] = []
+    missing_keys: List[Dict[str, Any]] = []
+    duplicate_keys = len(qroam_row_by_key) != len(qroam_rows)
+    for segment_index, segment in enumerate(qroam_table_cnot_materialization['segments']):
+        key = (
+            int(segment['call_index']),
+            str(segment['table']),
+            int(segment['chunk_index']),
+            str(segment['phase']),
+            int(segment['start_address']),
+            int(segment['end_address_exclusive']),
+        )
+        row = qroam_row_by_key.get(key)
+        if row is None:
+            missing_keys.append({
+                'segment_index': segment_index,
+                'key': list(key),
+            })
+            continue
+        liveness = liveness_by_row[int(row['row_index'])]
+        qroam_target_wire = f"qroam_chunk_target__{segment['table']}__chunk_{segment['chunk_index']}"
+        extension_rows.append({
+            'extension_segment_index': segment_index,
+            'run_length_row_index': int(row['row_index']),
+            'call_index': int(segment['call_index']),
+            'table': str(segment['table']),
+            'chunk_index': int(segment['chunk_index']),
+            'phase': str(segment['phase']),
+            'start_address': int(segment['start_address']),
+            'end_address_exclusive': int(segment['end_address_exclusive']),
+            'emitted_cx_count': int(segment['emitted_cx_count']),
+            'effective_target_bit_sites': int(segment['effective_target_bit_sites']),
+            'zero_padded_target_bit_sites': int(segment['zero_padded_target_bit_sites']),
+            'source_segment_sha256': str(segment['sha256']),
+            'qroam_run_length_segment_sha256': str(row['qroam_segment_sha256']),
+            'primitive_operand_contract_sha256': str(row['primitive_operand_contract_sha256']),
+            'liveness_binding_sha256': _sha256_payload(liveness),
+            'liveness_interval_id': str(liveness['interval_id']),
+            'total_live_qubits': int(liveness['total_live_qubits']),
+            'qroam_target_wire': qroam_target_wire,
+            'qroam_target_wire_live': qroam_target_wire in set(str(wire_id) for wire_id in liveness['live_wire_ids']),
+            'qchunk_wire_live': 'qchunk' in set(str(wire_id) for wire_id in liveness['live_wire_ids']),
+        })
+    stream_digest = hashlib.sha256()
+    columns = [
+        'extension_segment_index',
+        'run_length_row_index',
+        'call_index',
+        'table',
+        'chunk_index',
+        'phase',
+        'start_address',
+        'end_address_exclusive',
+        'emitted_cx_count',
+        'effective_target_bit_sites',
+        'zero_padded_target_bit_sites',
+        'source_segment_sha256',
+        'qroam_run_length_segment_sha256',
+        'primitive_operand_contract_sha256',
+        'liveness_binding_sha256',
+        'liveness_interval_id',
+        'total_live_qubits',
+        'qroam_target_wire',
+        'qroam_target_wire_live',
+        'qchunk_wire_live',
+    ]
+    stream_digest.update(('\t'.join(columns) + '\n').encode('ascii'))
+    segment_hashes: List[str] = []
+    for row in extension_rows:
+        encoded = '\t'.join(_canonical_json(row[column]) for column in columns) + '\n'
+        row_hash = hashlib.sha256(encoded.encode('ascii')).hexdigest()
+        segment_hashes.append(row_hash)
+        stream_digest.update(encoded.encode('ascii'))
+    emitted_cx_count = sum(int(row['emitted_cx_count']) for row in extension_rows)
+    peak_live_qubits = max((int(row['total_live_qubits']) for row in extension_rows), default=0)
+    checks = {
+        'table_cnot_segments_match_qroam_run_length_rows': (
+            not duplicate_keys
+            and not missing_keys
+            and len(extension_rows) == len(qroam_rows) == int(qroam_table_cnot_materialization['totals']['segment_count'])
+        ),
+        'table_cnot_operation_count_matches_artifact': emitted_cx_count == int(qroam_table_cnot_materialization['totals']['full_oracle_emitted_clifford_cx']),
+        'table_cnot_extension_adds_only_clifford_cx': True,
+        'table_cnot_liveness_reuses_counted_qroam_rows': all(
+            bool(row['qroam_target_wire_live'])
+            and bool(row['qchunk_wire_live'])
+            and int(row['total_live_qubits']) > 0
+            for row in extension_rows
+        ),
+        'table_cnot_segments_have_merkle_root': len(qroam_table_cnot_materialization['segment_merkle_root_sha256']) == 64,
+    }
+    return {
+        'schema': 'compiler-project-qroam-table-cnot-flat-extension-v1',
+        'definition': 'Concrete Clifford CNOT extension for QROAM table-bit loads, bound to the public candidate run-length QROAM rows and their counted liveness intervals.',
+        'source': 'qroam_table_cnot_materialization',
+        'source_sha256': _sha256_payload(qroam_table_cnot_materialization),
+        'columns': columns,
+        'segment_count': len(extension_rows),
+        'operation_count': emitted_cx_count,
+        'gate_totals': {
+            **_empty_gate_totals(),
+            'cx': emitted_cx_count,
+        },
+        'non_clifford_count': 0,
+        'peak_live_qubits': peak_live_qubits,
+        'operation_stream_sha256': stream_digest.hexdigest(),
+        'segment_merkle_root_sha256': _merkle_root(segment_hashes),
+        'source_segment_merkle_root_sha256': qroam_table_cnot_materialization['segment_merkle_root_sha256'],
+        'missing_segment_keys': missing_keys[:32],
+        'duplicate_qroam_row_keys': duplicate_keys,
+        'preview_head': extension_rows[:4],
+        'preview_tail': extension_rows[-4:],
+        'checks': checks,
+        'pass': all(checks.values()),
+    }
 
 
 def _count_rows_from_primitive_counts(
@@ -2198,6 +2335,7 @@ def build_public_candidate_materialized_circuit_manifest(
     arithmetic_operation_ir: Mapping[str, Any],
     lookup_lowerings: Mapping[str, Any],
     qroam_primitive_certificate: Mapping[str, Any],
+    qroam_table_cnot_materialization: Mapping[str, Any],
     phase_shell_lowerings: Mapping[str, Any],
     compiler_parameters: Mapping[str, Any],
     selected_family_name: str,
@@ -2299,6 +2437,11 @@ def build_public_candidate_materialized_circuit_manifest(
     arithmetic_leaf_rows = [row for row in rows if row['scope'] == 'arithmetic_leaf_block']
     qroam_rows = [row for row in rows if row['scope'] == 'qroam_chunk_stream']
     phase_rows = [row for row in rows if row['scope'] == 'phase_shell']
+    qroam_table_cnot_flat_extension = _qroam_table_cnot_flat_extension(
+        qroam_rows=qroam_rows,
+        liveness_rows=liveness_rows,
+        qroam_table_cnot_materialization=qroam_table_cnot_materialization,
+    )
     non_clifford_total = sum(int(row['non_clifford_count']) for row in rows)
     gate_totals = _empty_gate_totals()
     for row in rows:
@@ -2367,10 +2510,18 @@ def build_public_candidate_materialized_circuit_manifest(
             and reusable_chunk_lowering['counted_resource_engine']['pass'] is True
             and arithmetic_operation_ir['pass'] is True
             and qroam_primitive_certificate['pass'] is True
+            and qroam_table_cnot_materialization['pass'] is True
         ),
         'non_clifford_total_matches_public_candidate': non_clifford_total == int(public_totals['non_clifford']),
         'qroam_rows_expand_every_public_stream_segment': len(qroam_rows) == qroam_stream_term_instances * qroam_segment_count,
         'qroam_rows_sum_to_public_qroam_derivation': qroam_non_clifford_total == int(reusable_chunk_lowering['non_clifford_derivation']['qroam_chunk_non_clifford']),
+        'qroam_table_cnot_flat_extension_is_bound': (
+            qroam_table_cnot_flat_extension['pass'] is True
+            and int(qroam_table_cnot_flat_extension['segment_count']) == len(qroam_rows)
+            and int(qroam_table_cnot_flat_extension['operation_count']) == int(qroam_table_cnot_materialization['totals']['full_oracle_emitted_clifford_cx'])
+            and int(qroam_table_cnot_flat_extension['non_clifford_count']) == 0
+            and int(qroam_table_cnot_flat_extension['peak_live_qubits']) <= int(materialized_public_totals['logical_qubits'])
+        ),
         'base_rows_match_public_non_qroam_derivation': sum(int(row['non_clifford_count']) for row in base_rows) == base_non_clifford == int(public_totals['non_clifford']) - qroam_non_clifford_total,
         'generated_base_rows_match_public_non_qroam_derivation': (
             sum(int(row['non_clifford_count']) for row in direct_seed_rows) == lookup_base_non_clifford_per_leaf
@@ -2590,6 +2741,7 @@ def build_public_candidate_materialized_circuit_manifest(
             'arithmetic_operation_ir_sha256': _sha256_payload(arithmetic_operation_ir),
             'lookup_lowerings_sha256': _sha256_payload(lookup_lowerings),
             'qroam_primitive_certificate_sha256': _sha256_payload(qroam_primitive_certificate),
+            'qroam_table_cnot_materialization_sha256': _sha256_payload(qroam_table_cnot_materialization),
             'phase_shell_lowerings_sha256': _sha256_payload(phase_shell_lowerings),
             'compiler_parameters_sha256': _sha256_payload(compiler_parameters),
             'strict_replayed_tail_headline_sha256': _sha256_payload(strict_replayed_tail_headline) if strict_replayed_tail_headline is not None else None,
@@ -2631,6 +2783,7 @@ def build_public_candidate_materialized_circuit_manifest(
         'strict_primitive_completeness': strict_primitive_completeness,
         'operand_parent_binding': operand_parent_binding,
         'operand_source_binding': operand_source_binding,
+        'qroam_table_cnot_flat_extension': qroam_table_cnot_flat_extension,
         'qroam_expansion': {
             'stream_instances': qroam_stream_term_instances,
             'segments_per_stream': qroam_segment_count,

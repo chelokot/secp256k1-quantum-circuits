@@ -54,6 +54,7 @@ def _build_public_candidate_materialized(
     arithmetic_operation_ir: dict | None = None,
     lookup_lowerings: dict | None = None,
     qroam_primitive: dict | None = None,
+    qroam_table_cnot: dict | None = None,
     phase_shell: dict | None = None,
     compiler_parameters: dict | None = None,
 ) -> dict:
@@ -63,6 +64,7 @@ def _build_public_candidate_materialized(
         arithmetic_operation_ir=arithmetic_operation_ir or _artifact('arithmetic_operation_ir.json'),
         lookup_lowerings=lookup_lowerings or _artifact('lookup_lowerings.json'),
         qroam_primitive_certificate=qroam_primitive or _artifact('qroam_primitive_certificate.json'),
+        qroam_table_cnot_materialization=qroam_table_cnot or _artifact('qroam_table_cnot_materialization.json'),
         phase_shell_lowerings=phase_shell or _artifact('phase_shell_lowerings.json'),
         compiler_parameters=resolved_compiler_parameters,
         selected_family_name=resolved_compiler_parameters['public_headline_policy']['selected_public_family_name'],
@@ -140,6 +142,13 @@ def test_public_candidate_materialized_manifest_reconstructs_current_headline() 
     assert manifest['qroam_expansion']['stream_instances'] == reusable['stream_plan']['whole_oracle_chunk_streams']
     assert manifest['qroam_expansion']['non_clifford'] == reusable['non_clifford_derivation']['qroam_chunk_non_clifford']
     assert manifest['qroam_segment_row_count'] == manifest['qroam_expansion']['stream_instances'] * manifest['qroam_expansion']['segments_per_stream']
+    qroam_table_extension = manifest['qroam_table_cnot_flat_extension']
+    qroam_table_cnot = _artifact('qroam_table_cnot_materialization.json')
+    assert qroam_table_extension['pass'] is True
+    assert qroam_table_extension['operation_count'] == qroam_table_cnot['totals']['full_oracle_emitted_clifford_cx']
+    assert qroam_table_extension['segment_count'] == manifest['qroam_segment_row_count']
+    assert qroam_table_extension['non_clifford_count'] == 0
+    assert manifest['checks']['qroam_table_cnot_flat_extension_is_bound'] is True
     assert len(manifest['run_length_rows']) == manifest['run_length_row_count']
     assert len(manifest['materialized_liveness']['rows']) == manifest['liveness_binding_row_count']
     assert manifest['flat_netlist']['operation_count'] == sum(manifest['gate_totals'].values())
@@ -365,6 +374,22 @@ def test_public_candidate_materialized_manifest_rejects_qroam_segment_drift() ->
     )
     assert observed['checks']['non_clifford_total_matches_public_candidate'] is False
     assert observed['checks']['qroam_rows_sum_to_public_qroam_derivation'] is False
+    assert observed['pass'] is False
+
+
+def test_public_candidate_materialized_manifest_rejects_qroam_table_cnot_drift() -> None:
+    qroam_table_cnot = _artifact('qroam_table_cnot_materialization.json')
+    qroam_table_cnot['totals']['full_oracle_emitted_clifford_cx'] += 1
+    observed = _build_public_candidate_materialized(
+        reusable=_artifact('reusable_chunk_lowering.json'),
+        arithmetic_operation_ir=_artifact('arithmetic_operation_ir.json'),
+        lookup_lowerings=_artifact('lookup_lowerings.json'),
+        qroam_primitive=_artifact('qroam_primitive_certificate.json'),
+        qroam_table_cnot=qroam_table_cnot,
+        phase_shell=_artifact('phase_shell_lowerings.json'),
+    )
+    assert observed['checks']['qroam_table_cnot_flat_extension_is_bound'] is False
+    assert observed['qroam_table_cnot_flat_extension']['checks']['table_cnot_operation_count_matches_artifact'] is False
     assert observed['pass'] is False
 
 

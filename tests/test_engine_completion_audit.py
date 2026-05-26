@@ -72,7 +72,9 @@ def test_engine_completion_audit_reconstructs_checked_artifact() -> None:
     }.issubset(remaining)
     assert remaining['modular_arithmetic_clifford_expansion']['evidence_metrics']['source_bound_run_length_rows'] == expected['source_binding_summary']['rows_by_source_kind']['arithmetic_operation_ir']
     assert remaining['qroam_bit_level_netlist_expansion']['evidence_metrics']['source_bound_run_length_rows'] == expected['source_binding_summary']['rows_by_source_kind']['qroam_primitive_certificate']
+    assert remaining['qroam_bit_level_netlist_expansion']['status'] == 'table_cnot_flat_extension_bound_not_per_cnot_row_spliced'
     assert remaining['qroam_bit_level_netlist_expansion']['evidence_metrics']['full_oracle_emitted_table_clifford_cx'] == _load('qroam_table_cnot_materialization.json')['totals']['full_oracle_emitted_clifford_cx']
+    assert len(remaining['qroam_bit_level_netlist_expansion']['evidence_metrics']['table_cnot_extension_stream_sha256']) == 64
     assert all(expected['checks'].values())
 
 

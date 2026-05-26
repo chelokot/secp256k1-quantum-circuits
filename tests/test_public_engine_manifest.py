@@ -79,6 +79,10 @@ def test_public_engine_manifest_reconstructs_checked_artifact() -> None:
     assert expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['flat_operation_count'] > expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['run_length_row_count']
     assert expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['flat_segment_count'] > 1
     assert len(expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['flat_segment_merkle_root_sha256']) == 64
+    qroam_table_extension = expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['qroam_table_cnot_flat_extension']
+    assert qroam_table_extension['pass'] is True
+    assert qroam_table_extension['operation_count'] == qroam_table_cnot['totals']['full_oracle_emitted_clifford_cx']
+    assert qroam_table_extension['non_clifford_count'] == 0
     materialized_flat = expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['materialized_flat_netlist']
     assert materialized_flat['exact_operation_stream_materialized'] is True
     assert materialized_flat['operation_count'] == expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['flat_operation_count']

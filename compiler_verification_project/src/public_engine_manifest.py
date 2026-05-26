@@ -323,6 +323,8 @@ def build_public_engine_manifest(
             and int(public_candidate_materialized_circuit_manifest[CANONICAL_MATERIALIZED_FLAT_NETLIST]['peak_live_qubits']) == public_totals['logical_qubits']
             and public_candidate_materialized_circuit_manifest['checks'][PUBLIC_TOTALS_DERIVE_FROM_CANONICAL_CHECK] is True
             and public_candidate_materialized_circuit_manifest['checks'][CANONICAL_FLAT_NETLIST_IS_STRICT_REPLAY_CHECK] is True
+            and public_candidate_materialized_circuit_manifest['checks']['qroam_table_cnot_flat_extension_is_bound'] is True
+            and public_candidate_materialized_circuit_manifest['qroam_table_cnot_flat_extension']['pass'] is True
             and all(bool(value) for value in public_candidate_materialized_circuit_manifest['flat_execution_probe']['checks'].values())
         ),
         'strict_primitive_completeness_report_is_bound': (
@@ -513,6 +515,17 @@ def build_public_engine_manifest(
                         for key, value in sorted(public_candidate_materialized_circuit_manifest['operand_source_binding']['rows_by_source_kind'].items())
                     },
                     'failure_count': int(public_candidate_materialized_circuit_manifest['operand_source_binding']['failure_count']),
+                },
+                'qroam_table_cnot_flat_extension': {
+                    'schema': public_candidate_materialized_circuit_manifest['qroam_table_cnot_flat_extension']['schema'],
+                    'pass': bool(public_candidate_materialized_circuit_manifest['qroam_table_cnot_flat_extension']['pass']),
+                    'source_sha256': public_candidate_materialized_circuit_manifest['qroam_table_cnot_flat_extension']['source_sha256'],
+                    'segment_count': int(public_candidate_materialized_circuit_manifest['qroam_table_cnot_flat_extension']['segment_count']),
+                    'operation_count': int(public_candidate_materialized_circuit_manifest['qroam_table_cnot_flat_extension']['operation_count']),
+                    'non_clifford_count': int(public_candidate_materialized_circuit_manifest['qroam_table_cnot_flat_extension']['non_clifford_count']),
+                    'peak_live_qubits': int(public_candidate_materialized_circuit_manifest['qroam_table_cnot_flat_extension']['peak_live_qubits']),
+                    'operation_stream_sha256': public_candidate_materialized_circuit_manifest['qroam_table_cnot_flat_extension']['operation_stream_sha256'],
+                    'segment_merkle_root_sha256': public_candidate_materialized_circuit_manifest['qroam_table_cnot_flat_extension']['segment_merkle_root_sha256'],
                 },
                 'non_clifford': int(public_candidate_materialized_circuit_manifest['public_totals']['non_clifford']),
                 'peak_live_qubits': int(public_candidate_materialized_circuit_manifest['public_totals']['logical_qubits']),

@@ -303,6 +303,7 @@ def build_public_candidate_materialized_circuit_manifest_artifact() -> None:
     arithmetic_operation_ir = load_json(artifact_dir / 'arithmetic_operation_ir.json')
     lookup_lowerings = load_json(artifact_dir / 'lookup_lowerings.json')
     qroam_primitive_certificate = load_json(artifact_dir / 'qroam_primitive_certificate.json')
+    qroam_table_cnot_materialization = load_json(artifact_dir / 'qroam_table_cnot_materialization.json')
     phase_shell_lowerings = load_json(artifact_dir / 'phase_shell_lowerings.json')
     source_digests = {
         'reusable_chunk_lowering_sha256': _sha256_payload(reusable_chunk_lowering),
@@ -327,6 +328,7 @@ def build_public_candidate_materialized_circuit_manifest_artifact() -> None:
             arithmetic_operation_ir=arithmetic_operation_ir,
             lookup_lowerings=lookup_lowerings,
             qroam_primitive_certificate=qroam_primitive_certificate,
+            qroam_table_cnot_materialization=qroam_table_cnot_materialization,
             phase_shell_lowerings=phase_shell_lowerings,
             compiler_parameters=compiler_parameters,
             selected_family_name=compiler_parameters['public_headline_policy']['selected_public_family_name'],
@@ -353,6 +355,7 @@ def build_public_candidate_materialized_circuit_manifest_artifact() -> None:
         arithmetic_operation_ir=arithmetic_operation_ir,
         lookup_lowerings=lookup_lowerings,
         qroam_primitive_certificate=qroam_primitive_certificate,
+        qroam_table_cnot_materialization=qroam_table_cnot_materialization,
         phase_shell_lowerings=phase_shell_lowerings,
         compiler_parameters=compiler_parameters,
         selected_family_name=compiler_parameters['public_headline_policy']['selected_public_family_name'],

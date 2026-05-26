@@ -138,6 +138,13 @@ def build_engine_completion_audit(
             and int(qroam_cost['domain_size']) == int(qroam_primitive_certificate['parameters']['domain_size'])
             and int(qroam_cost['block_size']) == int(compiler_parameters['lookup_policy']['standard_qroamclean_block_size'])
         ),
+        'qroam_table_cnot_extension_binds_counted_liveness': (
+            public_candidate_materialized_circuit_manifest['qroam_table_cnot_flat_extension']['pass'] is True
+            and public_candidate_materialized_circuit_manifest['checks']['qroam_table_cnot_flat_extension_is_bound'] is True
+            and int(public_candidate_materialized_circuit_manifest['qroam_table_cnot_flat_extension']['segment_count']) == int(qroam_table_cnot_materialization['totals']['segment_count'])
+            and int(public_candidate_materialized_circuit_manifest['qroam_table_cnot_flat_extension']['operation_count']) == int(qroam_table_cnot_materialization['totals']['full_oracle_emitted_clifford_cx'])
+            and int(public_candidate_materialized_circuit_manifest['qroam_table_cnot_flat_extension']['non_clifford_count']) == 0
+        ),
         'lookup_rows_are_per_block_source_bound': (
             rows_by_source_kind['lookup_lowering_block'] > 0
             and lookup_lowerings['schema'].startswith('compiler-project-lookup-lowerings-')
@@ -274,9 +281,9 @@ def build_engine_completion_audit(
         },
         {
             'name': 'qroam_bit_level_netlist_expansion',
-            'status': 'concrete_table_cnot_materialization_not_spliced_into_global_flat_netlist',
-            'required_to_close': 'Splice the exact QROAM address-control, concrete table-bit CNOT, measurement, and uncompute operations into the same global flat primitive schedule instead of keeping QROAM table CNOT materialization as a separate segment-hashed artifact.',
-            'current_evidence': 'qroam_primitive_certificate + qroam_table_cnot_materialization + public_candidate_materialized_circuit_manifest.operand_source_binding',
+            'status': 'table_cnot_flat_extension_bound_not_per_cnot_row_spliced',
+            'required_to_close': 'Expand the QROAM table-CNOT extension from segment-counted Clifford CNOT rows into per-CNOT primitive rows in the canonical global flat stream, alongside address-control, measurement, and uncompute operations.',
+            'current_evidence': 'qroam_primitive_certificate + qroam_table_cnot_materialization + public_candidate_materialized_circuit_manifest.qroam_table_cnot_flat_extension + operand_source_binding',
             'evidence_metrics': {
                 'source_bound_run_length_rows': rows_by_source_kind['qroam_primitive_certificate'],
                 'operation_level': str(qroam_primitive_certificate['operation_stream']['operation_level']),
@@ -284,6 +291,8 @@ def build_engine_completion_audit(
                 'potential_target_bit_cnot_sites_per_stream': int(qroam_primitive_certificate['target_bit_load_site_stream']['potential_cnot_site_count']),
                 'full_oracle_emitted_table_clifford_cx': int(qroam_table_cnot_materialization['totals']['full_oracle_emitted_clifford_cx']),
                 'table_cnot_segment_count': int(qroam_table_cnot_materialization['totals']['segment_count']),
+                'table_cnot_extension_stream_sha256': public_candidate_materialized_circuit_manifest['qroam_table_cnot_flat_extension']['operation_stream_sha256'],
+                'table_cnot_extension_peak_live_qubits': int(public_candidate_materialized_circuit_manifest['qroam_table_cnot_flat_extension']['peak_live_qubits']),
                 'domain_size': int(qroam_cost['domain_size']),
                 'block_size': int(qroam_cost['block_size']),
                 'target_plus_junk_qubits': int(qroam_cost['target_plus_junk_qubits']),
